@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Basic input</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Basic_input"></a><a name="_Toc177320774"></a><span class="span_2">6.6 </span>Basic input</h2>
+        <p>The Basic input form is accessed through the Navigator window. Click once with the left mouse key in the group name column to enter group information.</p>
+        <h3>Habitat area</h3>
+        <p>The fraction of the total area in which the group occurs, that is, the fraction of the total area to which the biomass in habitat area pertains. Default is that the habitat area is 1, i.e. that the group occurs in the total area.</p>
+        <h3>Biomass in habitat area</h3>
+        <p>The average biomass per unit area in the habitat area where the group occurs. It is assumed that an average value can be used to represent the biomass of each group. Appropriate units should be used, (e.g., t/km²) for the biomasses. Entry of biomasses is optional for living groups but biomass(es) should be entered for the detritus group(s). However, if biomasses are unknown for all living groups and there are no exports from any of the groups, it is necessary to enter at least one biomass estimate, preferably of a top predator.</p>
+        <p>Biomasses should be entered relative to the habitat area where the group occurs. An example: assume a species for instance has a biomass of 1 t/km² in its habitat area, and the habitat area is 100 km², while the total area in your model is 1000 km². You should then enter a habitat area of 0.1 and a biomass in habitat area of 1 t/km² as the biomass for the group in your model.</p>
+        <h3>Production/biomass</h3>
+        <p>Enter the Production/Biomass (P/B) ratio for each group using consistent units, i.e., per year. The P/B ratio is equivalent to the instantaneous rate of total mortality (Z) used by fisheries biologists (Allen 1971). Entry of P/B ratios is optional. </p>
+        <p>Production includes fishery yield plus predation plus net migration plus biomass change plus other mortality; or </p>
+        <p>P/B = Z = F + M2 + NM + BA + M0. </p>
+        <p>For more details, see <a href="Production.htm#_Production">Production</a>.</p>
+        <h3>Consumption/biomass</h3>
+        <p>Consumption/biomass (Q/B) ratios are entered using the same units as for P/B. Entry of consumption/biomass ratios is optional. For more details, see <a href="Consumption.htm#_Consumption_2">Consumption</a>. </p>
+        <p>The Q/B input box will be blocked (blue color) for primary producers. If your model unit is carbon, you can however, click the blue input box, and enter a Q/B value, which will be used to calculate respiration for the group.</p>
+        <h3>Ecotrophic efficiency</h3>
+        <p>The ecotrophic efficiency (EE) is the fraction of the production that is used in the system, i.e. either passed up the food web, used for biomass accumulation, migration or export. Ecotrophic efficiency is difficult to measure directly. It varies between 0 and 1 and can be expected to approach 1 for groups with considerable predation pressure. The part of the production that is not included in the EE is often called ‘<a href="Other mortality.htm#_Other_mortality">other mortality</a>’. EE is dimensionless, and the entry of EE values is optional.</p>
+        <p>The ecotrophic efficiency of a detritus group is defined as the ratio between the flow out of a detritus box, and the flow into the same box. EE for detritus cannot be entered, it is always calculated.</p>
+        <h3>Production/consumption</h3>
+        <p>Production/consumption expresses the ratio between production (P) and consumption (Q) and is a dimensionless parameter. P/Q corresponds to what was called the gross food conversion efficiency (GE) in early versions of the software.</p>
+        <p>In normal cases, P/Q values will range from 0.05 to 0.3, i.e., the consumption of most groups is about 3-10 times higher than their production. Exceptions are top predators, e.g., marine mammals, which can have lower P/Q values, and small fast-growing fish larvae or nauplii or bacteria, which can have higher P/Q values. The value of the ratio is checked, in Ecopath, and warnings are given if production exceeds consumption (as can occur in organisms with symbiotic algae, such as corals and giant clams), or if the production exceeds half the consumption (which may be acceptable for bacteria, small nauplii and fish larvae, but usually not for other groups).</p>
+        <p>P/Q can only be entered if P/B and/or Q/B is left blank. If P/Q is entered along with, e.g., P/B, then Q/B will be calculated as,</p>
+        <p>Q/B = (P/B) / (P/Q).</p>
+        <h3>Unassimilated consumption</h3>
+        <p>An estimate of the fraction of the food that is not assimilated must be entered if the currency of your model is energy-related (see <a href="Ecosim menu.htm#_Tools_menu_1">Units</a>). Following Winberg (1956), a default value of 0.2 is suggested for carnivorous fish groups if other estimates are not available. Thus, 80% of the consumption is assumed to be physiologically useful while the non-assimilated food (consisting of faeces) is directed to the detritus. For herbivores, the proportion not assimilated may be considerably higher, e.g., up to 0.4 in zooplankton.</p>
+        <p>If the currency is a nutrient, there is no respiration, and the fraction of the food that is not assimilated is calculated as (1 - production / consumption). In this case, it is not possible to input the fraction of the food that is not assimilated.</p>
+        <p>The parameter for non-assimilated food is dimensionless, it is entered as a proportion. A routine checks whether the sum of gross efficiency plus proportion of food not assimilated exceeds 1, and displays a warning if so. Then, a new and consistent proportion for the non-assimilated food must be entered.</p>
+        <h3>Detritus import</h3>
+        <p>If there is import of detritus to the system, enter the quantity as a rate with a unit of, e.g., t / km² / year.</p>
+    </body>
+</html>

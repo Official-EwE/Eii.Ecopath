@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Electivity</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Electivity_1"></a><a name="_Toc177320796"></a><span class="span_4">7.11 </span>Electivity </h2>
+        <p>The electivity (selection index) describe a predator’s preference for prey. It scales from -1 to 1; where -1 indicates total avoidance of a prey; 0 indicates that a prey is taken in proportion to its abundance in the ecosystem; and 1 indicates total preference for a prey. The electivity values are highlighted using a color scale for the background, scaling from –1 (white) to 1 (red) using shades of red for intermediate values. The electivity index displayed is the standardized forage ration of Chesson(1983), see below.</p>
+        <p>One of the most widely used indices for selection is the Ivlev electivity index, Ei (Ivlev 1961) defined for a group (i) as:</p>
+        <p>Ei = (ri – Pi) / (ri +Pi)</p>
+        <p>where ri is the relative abundance of a prey in a predator's diet and Pi is the prey's relative abundance in the ecosystem. Ei is scaled so that Ei = -1 corresponds to total avoidance of, Ei = 0 represents non-selective feeding on, and Ei = 1 shows exclusive feeding on a given prey i. Note that within Ecopath, ri and Pi refer to biomass, not numbers.</p>
+        <p>The Ivlev electivity index was included in the DOS version of Ecopath because it often shows up in the literature. This index has, however, a major shortcoming, seriously limiting its usefulness as a selection index: as shown by several authors, e.g., Jacobs (1974), the Ivlev index is not independent of prey density.</p>
+        <p>A better approach is to use the standardized forage ratio (Si) as suggested by Chesson (1983). This index is independent of prey availability, and is given by:</p>
+        <p>
+            <img src="../Resources/Images/08000077.png" style="width: 96px;height: 67px;" />
+        </p>
+        <p>where ri and Pi are defined as above, and n is the number of groups in the system. The standardized forage ratio as originally presented takes values between 0 and 1, with Si = 0&#160; representing avoidance and Si = 1&#160; exclusive feeding.</p>
+        <p>As implemented in Ecopath the forage ratio has been transformed (linearly) such as to vary between -1 and 1, so that -1, 0 and 1 can be interpreted as for the Ivlev index.</p>
+    </body>
+</html>

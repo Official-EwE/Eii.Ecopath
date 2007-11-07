@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Ecosim parameters</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Import_time_series"></a><a name="_Ecosim_parameters"></a><a name="_Ecosim_input_data"></a><a name="_Toc177320813"></a><span class="span_2">8.2 </span>Ecosim parameters</h2>
+        <p>The Ecosim parameters form (Time dynamic (Ecosim) &gt;Input &gt; Ecosim parameters) is designed to enter and store key information on the current Ecosim simulation.</p>
+        <h3>Duration of simulation (years)</h3>
+        <p>Default is 20 years, while the maximum is 999 years. It is possible to save the end state of a simulation, and continue a new simulation from the end point, thus enabling even-longer term simulations.</p>
+        <h3>Base proportion of free nutrients</h3>
+        <p>The Base proportion of free nutrients parameter sets the base proportion of free nutrients in the algorithm used to represent nutrient cycling. You should read the section on <a href="Vulnerabilities in Ecosim.htm#_Nutrient_cycling_and">Nutrient cycling and nutrient limitation in Ecosim</a> before attempting to simulate nutrient forcing. </p>
+        <p>The default free nutrient proportion is set at unity, which causes the free nutrient concentration to be virtually constant over time. Thus to “turn on” nutrient limitation effects, you must set a lower value for the base proportion of free nutrients parameter, (e.g., 0.3). You can also assign a forcing function to drive nutrient cycling (see below).</p>
+        <h3>Nutrient loading forcing function number</h3>
+        <p>Changes in nutrient loading can be simulated by assigning a time forcing function number to the annual total nutrient concentration on the Ecosim parameters form (the forcing time series can be read from a csv file, see <a href="Import time series.htm#_Import_time_series_1">Import time series</a>, or typed directly using the <a href="Time series.htm#_Time_series">Time series</a> form). In this case, total nutrient concentration NT is calculated as NT = ft NTo&#160; where NTo is the Ecopath base estimate of NT (at the start of each simulation) and ft is a time multiplier (ft&#160; = 1 implies Ecopath base value of NTo) supplied by the user the same as any other time forcing function. </p>
+        <p>Before attempting to simulate nutrient forcing, you should read the section on <a href="Vulnerabilities in Ecosim.htm#_Nutrient_cycling_and">Nutrient cycling and nutrient limitation in Ecosim</a>.</p>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Dispersal</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Dispersal"></a><a name="_Toc177320844"></a><span class="span_4">10.6 </span>Dispersal</h2>
+        <p>The organisms (i) in an Ecopath model have an aggregated biomass (Bi), and are not assumed to move within the area covered by that Ecopath model. In Ecospace, a fraction (B’i) of the biomass of each cell is always on the move, wherein </p>
+        <p>B’ = m · Bi</p>
+        <p>with m having the dimension of length / time (i.e., km / year) i.e., a velocity or ‘speed’.</p>
+        <p>However, m is not a rate of directed migration, as occur seasonally in numerous fish populations. Rather, m should be regarded as dispersal and seen as the rate (km/year) the organisms of given ecosystem would disperse as a result of random movements.</p>
+        <p>Thus, Ecospace simulation are initiated by distributing all organisms evenly onto the basemap, at the density (t · km-2) defined by the underlying Ecopath model. Then all biomass pool start moving, as a function of their value of m, out of their cell and into adjacent cells, there consuming food, and being themselves consumed.</p>
+        <p>Given differential food consumption and survival rates in preferred vs. non-preferred habitat, this will soon generate richly patterned distributions, wherein each cell includes different biomass of each of the groups in the system.</p>
+        <p>Note that the final results of Ecopath simulations tend to be largely independent of the specific values of m used, and hence long debates on the best choice of these values may not be necessary – at least not until field estimate, based, e.g., on tagging studies have become available.</p>
+        <p>Note, finally that the biomass of a group within a given cell is usually not multiplied by the same value of m for each of the flows out of the cell (4 in the case of a cell not touching on land).</p>
+        <p>Rather, a distinct value of m’ is used for each cell, resulting from the multiplication of a group’s value of m with that cell’s index of suitability S. This index is itself computed, for each cell as the mean of its ‘preference values’. These preference values are automatically set at unity in non-preferred habitat, and a user-defined, higher value (PV&gt;1) can be entered for preferred habitat(s). Thus, if S &gt; 1, the movement rate into preferred habitat (and out of non-preferred habitat) will be higher than into non-preferred habitat (and out of preferred habitat). Setting PV for preferred habitat equal to unity (1) makes this mechanism of habitat differentiation inoperative.</p>
+        <h3>Base dispersal rate</h3>
+        <p>This is the absolute value of m to be used in the simulation. The default value is 300&#160; km · year-1 for all groups apart from detritus groups to which discards are added, (and for which we use a default of 10 km · year-1).</p>
+        <h3>Relative dispersal in bad habitats</h3>
+        <p>The dispersal rates are assumed to differ between preferred and non-preferred habitats, with higher values of m within non-preferred habitats than in preferred habitats.&#160; Such assumption is realistic as it implies that organisms in non-preferred habitats will strive to leave these, and attempt to return as rapidly as possible to their preferred habitats.</p>
+        <p>The default value for the multiplier of m is 2.0 and the upper limit 10.0.</p>
+        <h3>Vulnerability to predation in bad habitats</h3>
+        <p>The increased vulnerability to predation (or grazing) of various organisms outside their ‘preferred’ habitat can be changed using a multipliers. The default value of the multiplier is 2.0 for all groups, and it can be increased by up to a factor of 100, while entering a value of 1 will make this mechanism inoperative.</p>
+        <p>Conceptualizing this mechanism is straightforward: imagine as an extreme case how easy it would be for a pelagic carnivore to grab a typical coral reef fish, e.g. a butterfly fish, blown by a freak wave off its reef, into an open water area.&#160; A less extreme case would be a member of a very abundant population, pushed out of its preferred habitat by its competitors of the same species. </p>
+        <p>To avoid occurrence of groups outside of their preferred habitats you should set the vulnerability to a high value. </p>
+        <h3>Relative feeding rates in bad habitats</h3>
+        <p>Organisms outside their preferred habitat may be conceived as less likely to consume as much appropriate food as their congeners within preferred habitat, due to the unavailability of such food, or the danger associated with foraging.</p>
+        <p>To simulate this, Ecospace users can reduce the feeding rate of ecosystem components down to 0.01 times the Ecopath baseline (i.e., the Q/B value).&#160; The default is 0.5, and this mechanism can be made inoperative by setting the feeding rate multiplier equal to unity (1). </p>
+        <h3>Advected?</h3>
+        <p>Indicate here whether a group is advected or not, this may, e.g., be the case for plankton. See <a href="Advection in Ecospace.htm#_Advection__in">Advection in Ecospace</a> for more details on implementation of advection in Ecospace.</p>
+        <h3>Migrating?</h3>
+        <p>Indicate here whether a group is migrating or not. For migrating groups/life stages enter concentration parameters and define migration patterns (using the so named button).&#160; See <a href="Representing seasonal migration.htm#_Representing_seasonal_migration">Representing seasonal migration in Ecospace</a> for more details on implementation of seasonal migration in Ecospace.</p>
+        <h3>North/south and East/west concentration</h3>
+        <p>Larger organisms commonly have seasonal migration patterns that allow them to utilize favorable seasonal resource and environmental conditions over large spatial areas.&#160; Such movements can be represented in Ecospace in two ways.&#160; First is a simple “Lagrangian” approach that does not require explicit simulation of movement; the idea here is to simply think of the whole Ecospace map as moving in space so as to remain centered on the distribution of some dominant migratory specie(s).&#160; Second is a more complex “Eulerian” approach, which does involve explicitly modeling changes in instantaneous rates of biomass flow among the Ecospace spatial cells, in some way that approximates at least the changing center of distribution of the migratory species.</p>
+        <p>The Eulerian approach is implemented in Ecospace by allowing users to define a monthly sequence of “preferred” map cell positions and to define how spread out the migrating fish are likely to be around these preferred cells by setting north-south and east-west “concentration parameters”.</p>
+        <p>For more detail see <a href="Representing seasonal migration.htm#_Representing_seasonal_migration">Representing seasonal migration in Ecospace</a>.</p>
+        <h3>Barrier avoidance weight (by Will – EDIT)</h3>
+        <p>The old algorithm is very bad about getting fish stuck in complex habitat, if they have to migrate around it. I've put in an algorithm that gets fish around obstacles, but if used on it's own, there is no control over EW/NS concentrations, and the distribution of fish that results is diamond shaped.&#160; So now the way it works, is it uses the original method, but then modified by this path-finding algorithm which pushes the fish out of traps.&#160; How much weight is put on the path finding is in the barrierAvoidanceWeight. It should start out at 0 (it does nothing), and then can be increased slowly up to 1 if fish are getting stuck.&#160; Increasing this weight also tends to concentrate the fish more tightly, so the EW/NS concentrations can then be lowered to even things out.</p>
+        <p>
+            <img src="../Resources/Images/03000040.png" style="width: 647px;height: 470px;" />
+        </p>
+        <p><a name="_Ref120606093"></a>Figure 10.8.&#160; Ecospace dispersal rates and habitat specific information. Migration patterns are also defined on this form.</p>
+    </body>
+</html>

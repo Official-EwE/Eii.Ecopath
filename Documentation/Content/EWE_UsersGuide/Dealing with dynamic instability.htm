@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Dealing with dynamic instability in Ecosim Ecospace</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Dealing_with_dynamic"></a><a name="_Toc177320725"></a><a name="_Toc120960650"></a><span class="span_2">3.4 </span>Dealing with dynamic instability in Ecosim/Ecospace</h2>
+        <p>We commonly see several types of dynamic instability following small perturbations in fishing mortality rates (to get away from initial Ecopath equilibrium):</p>
+        <ol start="1" class="ol_1">
+            <li>Predator-prey cycles and related multi-trophic level patterns;</li>
+        </ol>
+        <ol start="2" class="ol_1">
+            <li>System simplification (loss of biomass pools due to competition/predation effects);</li>
+        </ol>
+        <ol start="3" class="ol_1">
+            <li>Stock-recruitment instabilities (cyclic or erratic changes in recruitment and stock size for split pool groups);</li>
+        </ol>
+        <ol start="4" class="ol_1">
+            <li>Numerical ‘chatter’ in time solutions (mainly in Ecospace).</li>
+        </ol>
+        <p>Such patterns are not particularly common in fisheries time series, so unless you have data to support a cyclic prediction, you should probably adjust the model parameters to get rid of it.</p>
+        <p>Predator-prey and simplification effects can usually be eliminated by reducing the predation vulnerability parameters (Ecosim <a href="Vulnerabilities flow control.htm#_Vulnerabilities">Vulnerabilities form</a>, set values to 4 or less). </p>
+        <p>We know of at least four common mechanisms that can decrease the vulnerability parameters so as to create stabilizing and the appearance of ‘ratio-dependent’ or ‘bottom-up’ control of consumption rates: </p>
+        <ol start="1" class="ol_1">
+            <li>Risk-sensitive prey behaviors:Prey may spend only a small proportion of their time in foraging arenas where they are subject to predation risk, otherwise taking refuge in schools, deep water, littoral refuge sites, etc.;</li>
+        </ol>
+        <ol start="2" class="ol_1">
+            <li>Risk-sensitive predator behaviors (the ‘three to tango’ argument):Especially if the predator is a small fish, it may severely restrict its own range relative to the range occupied by the prey, so that only a small proportion of the prey move or are mixed into the habitats used by it per unit time; in other words, its predators may drive it to behave in ways that make its own prey less vulnerable to it;</li>
+        </ol>
+        <ol start="3" class="ol_1">
+            <li>Size-dependent graduation effects:Typically a prey pool represents an aggregate of different prey sizes, and a predator&#160; can take only some limited range of sizes, limited vulnerability can represent a&#160; process of prey graduation into and out of the vulnerable size range due to growth. Size effects may of course be associated with distribution (predator-prey spatial overlap) shifts as well;</li>
+        </ol>
+        <ol start="4" class="ol_1">
+            <li>Passive, differential spatial depletion effects:Even if neither prey or predator shows active behaviors that create foraging arena patches, any physical or behavioral processes that create spatial variation in encounters between i and j will lead to local depletion of i in high risk areas and concentrations of i in partial predation ‘refuges’ represented by low risk areas.&#160; ‘Flow’ between low and high risk areas (vij) is then created by any processes that move organisms.</li>
+        </ol>
+        <p>These mechanisms are so ubiquitous that any reader with aquatic natural history experience might wonder why anyone would ever assume a mass-action, random encounter model (vulnerabilities = 100 in Vulnerabilities form) in the first place.</p>
+        <p>Methods for dealing with stock-recruitment instability are discussed in the help section on <a href="Using Ecosim to study compensation.htm#_Compensatory_recruitment_(models">using Ecosim to study compensation</a>. Generally the simplest solutions are to check (and reduce if needed) cannibalism rates, set higher foraging time adjustment rates (Ecosim <a href="Group info.htm#_Read_time_series">Group info</a> form) for juvenile pools and reduce vulnerabilities of prey to juvenile fishes (Vulnerabilities form).</p>
+        <p>Numerical instabilities (chatter, oscillations of growing amplitude) occur mainly in Ecospace. They are avoided in Ecosim by only doing time dynamic integration of change for pools that can change relatively slowly.&#160; In Ecospace, the only remedy for chatter is to reduce the prediction time step (from 12/year default value, sometimes very low values such as 0.05 year are required for stability).&#160; In extreme cases, it might be necessary to ‘fool’ Ecosim/Ecospace by implicitly moving to a shorter time step for all dynamics, which you can do by dividing every Ecopath input time rate (P/B, Q/B) with the same factor.</p>
+    </body>
+</html>

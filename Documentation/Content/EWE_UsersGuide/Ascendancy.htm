@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Ascendancy</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Ascendancy"></a><a name="_Toc177320807"></a><span class="span_5">7.22 </span>Ascendancy</h2>
+        <p>Ascendency is a measure of the average mutual information in a system, scaled by system throughput, and is derived from information theory (see Ulanowicz and Norden, 1990). If one knows the location of a unit of energy the uncertainty about where it will next flow to is reduced by an amount known as the average mutual information’,</p>
+        <p>
+            <img src="../Resources/Images/08000084.png" style="width: 189px;height: 41px;" />Eq. 37</p>
+        <p>where, if <img src="../Resources/Images/08000085.png" style="width: 17px;height: 21px;" /> is a measure of the energy flow from j to i, <img src="../Resources/Images/08000086.png" style="width: 19px;height: 21px;" /> is the fraction of the total flow from j that is represented by <img src="../Resources/Images/08000087.png" style="width: 17px;height: 21px;" />, or,</p>
+        <p>
+            <img src="../Resources/Images/08000088.png" style="width: 89px;height: 40px;" />Eq. 38</p>
+        <p>
+            <img src="../Resources/Images/08000089.png" style="width: 17px;height: 20px;" /> is the probability that a unit of energy passes through i, or</p>
+        <p>
+            <img src="../Resources/Images/0800008A.png" style="width: 120px;height: 41px;" />Eq. 39</p>
+        <p>
+            <img src="../Resources/Images/08000089.png" style="width: 17px;height: 20px;" /> is a probability and is scaled by multiplication with the total throughput of the system, T, where</p>
+        <p>
+            <img src="../Resources/Images/0800008B.png" style="width: 64px;height: 41px;" />Eq. 40</p>
+        <p>Further</p>
+        <p>
+            <img src="../Resources/Images/0800008C.png" style="width: 49px;height: 15px;" />Eq. 41</p>
+        <p>where, it is A that is called ‘ascendency’. The ascendency is symmetrical and will have the same value whether calculated from input or output.</p>
+        <p>There is an upper limit for the size of the ascendency. This upper limit is called the ‘development capacity’ and is estimated from</p>
+        <p>
+            <img src="../Resources/Images/0800008D.png" style="width: 53px;height: 15px;" />Eq. 42</p>
+        <p>where H is called the ‘statistical entropy’, and is estimated from</p>
+        <p>
+            <img src="../Resources/Images/0800008E.png" style="width: 80px;height: 40px;" />Eq. 43</p>
+        <p>The difference between the capacity and the ascendency is called ‘system overhead’. The overheads provide limits on how much the ascendency can increase and reflect the system's ‘strength in reserve’ from which it can draw to meet unexpected perturbations (Ulanowicz, 1986). As an example, the part of the ascendency that is due to imports, <img src="../Resources/Images/0800008F.png" style="width: 20px;height: 19px;" />, can increase at the expense of the overheads due to imports, <img src="../Resources/Images/08000090.png" style="width: 20px;height: 20px;" />. This can be done by either diminishing the imports or by importing from a few major sources only. The first solution would imply that the system should starve, while the latter would render the system more dependent on a few sources of imports. The system thus does not benefit from reducing <img src="../Resources/Images/08000090.png" style="width: 20px;height: 20px;" /> below a certain system-specific critical level (Ulanowicz and Norden, 1990).</p>
+        <p>The ascendency, overheads and capacity can all be split into contributions from imports, internal flow, exports and dissipation (respiration). These contributions are additive.</p>
+        <p>The unit for these measures is ‘flowbits’, or the product of flow (e.g., t·km-2 year-1) and bits. Here the ‘bit’ is an information unit, corresponding to the amount of uncertainty associated with a single binary decision. </p>
+        <p>The overheads on imports and internal flows (redundancy) may be seen as a measure of system stability sensu Odum, and the ascendency / system throughput ratio as a measure of information, as included in Odum’s attributes of ecosystem maturity.&#160; For a study of ecosystem maturity using Ecopath see Christensen (1995a).</p>
+        <p>Ecopath calculates ascendency, overheads and capacity for the whole system (Total form) and by group (By group form). </p>
+    </body>
+</html>

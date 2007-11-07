@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CatapultToc Version="1" sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <TocEntry Title="1 Introduction" Link="/Content/EWE_UsersGuide/Introduction.htm#_Toc177320708">
+        <TocEntry Title="1.1 About Ecopath with Ecosim" Link="/Content/EWE_UsersGuide/Introduction.htm#_Toc177320709" />
+        <TocEntry Title="1.2 On modelling" Link="/Content/EWE_UsersGuide/On modelling.htm#_Toc177320710" />
+    </TocEntry>
+    <TocEntry Title="2 Introductory material: Ecopath" Link="/Content/EWE_UsersGuide/Introductory material Ecopath.htm#_Toc177320711">
+        <TocEntry Title="2.1 Mortality for a prey is consumption for a predator" Link="/Content/EWE_UsersGuide/Introductory material Ecopath.htm#_Toc177320712" />
+        <TocEntry Title="2.2 The energy balance of a box" Link="/Content/EWE_UsersGuide/The energy balance of a box.htm#_Toc177320713" />
+        <TocEntry Title="2.3 On the need for input parameters" Link="/Content/EWE_UsersGuide/On the need for input parameters.htm#_Toc177320714" />
+        <TocEntry Title="2.4 Defining the system" Link="/Content/EWE_UsersGuide/Defining the system.htm#_Toc177320715" />
+        <TocEntry Title="2.5 Dealing with open system problems (species and fisheries that cross system boundaries)" Link="/Content/EWE_UsersGuide/Dealing with open system problems.htm#_Toc177320716" />
+        <TocEntry Title="2.6 Production" Link="/Content/EWE_UsersGuide/Production.htm#_Toc177320717" />
+        <TocEntry Title="2.7 Consumption" Link="/Content/EWE_UsersGuide/Consumption.htm#_Toc177320718" />
+        <TocEntry Title="2.8 Other mortality" Link="/Content/EWE_UsersGuide/Other mortality.htm#_Toc177320719" />
+        <TocEntry Title="2.9 Representation of multi-stanza life histories in Ecopath, Ecosim and Ecospace" Link="/Content/EWE_UsersGuide/Representation of multi stanza.htm#_Toc177320720" />
+    </TocEntry>
+    <TocEntry Title="3 Introductory material: Ecosim" Link="/Content/EWE_UsersGuide/Introductory material Ecosim.htm#_Toc177320721">
+        <TocEntry Title="3.1 An overview of Ecosim" Link="/Content/EWE_UsersGuide/Introductory material Ecosim.htm#_Toc177320722" />
+        <TocEntry Title="3.2 Ecosim basic" Link="/Content/EWE_UsersGuide/Ecosim basic.htm#_Toc177320723" />
+        <TocEntry Title="3.3 Vulnerabilities in Ecosim" Link="/Content/EWE_UsersGuide/Vulnerabilities in Ecosim.htm#_Toc177320724" />
+        <TocEntry Title="3.4 Dealing with dynamic instability in Ecosim/Ecospace" Link="/Content/EWE_UsersGuide/Dealing with dynamic instability.htm#_Toc177320725" />
+        <TocEntry Title="3.5 Predicting consumption" Link="/Content/EWE_UsersGuide/Predicting consumption.htm#_Toc177320726" />
+        <TocEntry Title="3.6 Foraging time and predation risk" Link="/Content/EWE_UsersGuide/Foraging time and predation.htm#_Toc177320727" />
+        <TocEntry Title="3.7 Time series fitting in Ecosim: evaluating fisheries and environmental effects" Link="/Content/EWE_UsersGuide/Time series fitting in Ecosim.htm#_Toc177320728" />
+        <TocEntry Title="3.8 Hints for fitting models to time series reference data" Link="/Content/EWE_UsersGuide/Hints for fitting models to.htm#_Toc177320729" />
+        <TocEntry Title="3.9 Effect of P/B (Z) and vulnerability for time series fitting" Link="/Content/EWE_UsersGuide/Effect of P B Z and vulnerability.htm#_Toc177320730" />
+        <TocEntry Title="3.10 Predator satiation and handling time effects" Link="/Content/EWE_UsersGuide/Predator satiation and handling.htm#_Toc177320731" />
+        <TocEntry Title="3.11 Modeling switching behavior in Ecosim" Link="/Content/EWE_UsersGuide/Modeling switching behavior.htm#_Toc177320732" />
+        <TocEntry Title="3.12 Compensatory mechanisms" Link="/Content/EWE_UsersGuide/Compensatory mechanisms.htm#_Toc177320733" />
+        <TocEntry Title="3.13 Using Ecosim to study compensation in recruitment relationships" Link="/Content/EWE_UsersGuide/Using Ecosim to study compensation.htm#_Toc177320734" />
+        <TocEntry Title="3.14 Compensatory growth (overall P/B)" Link="/Content/EWE_UsersGuide/Compensatory growth overall.htm#_Toc177320735" />
+        <TocEntry Title="3.15 Compensatory natural mortality" Link="/Content/EWE_UsersGuide/Compensatory natural mortality.htm#_Toc177320736" />
+        <TocEntry Title="3.16 Linking mediation and time forcing functions to trophic interaction rates" Link="/Content/EWE_UsersGuide/Linking mediation and time.htm#_Toc177320737" />
+        <TocEntry Title="3.17 Primary production" Link="/Content/EWE_UsersGuide/Primary production.htm#_Toc177320738" />
+        <TocEntry Title="3.18 Nutrient cycling and nutrient limitation in Ecosim" Link="/Content/EWE_UsersGuide/Nutrient cycling and nutrient.htm#_Toc177320739" />
+        <TocEntry Title="3.19 Density-dependent changes in catchability" Link="/Content/EWE_UsersGuide/Density dependent changes.htm#_Toc177320740" />
+        <TocEntry Title="3.20 Modelling effort dynamics" Link="/Content/EWE_UsersGuide/Modelling effort dynamics.htm#_Toc177320741" />
+        <TocEntry Title="3.21 Using Ecosim for Stock Reduction Analysis" Link="/Content/EWE_UsersGuide/Using Ecosim for Stock Reduction.htm#_Toc177320742" />
+        <TocEntry Title="3.22 Hatchery populations in Ecosim" Link="/Content/EWE_UsersGuide/Hatchery populations in Ecosim.htm#_Toc177320743" />
+        <TocEntry Title="3.23 Parameter sensitivity" Link="/Content/EWE_UsersGuide/Parameter sensitivity.htm#_Toc177320744" />
+    </TocEntry>
+    <TocEntry Title="4 Introductory material: Ecospace" Link="/Content/EWE_UsersGuide/Introductory material Ecospace.htm#_Toc177320745">
+        <TocEntry Title="4.1 An overview of Ecospace" Link="/Content/EWE_UsersGuide/Introductory material Ecospace.htm#_Toc177320746" />
+        <TocEntry Title="4.2 Representing seasonal migration in Ecospace" Link="/Content/EWE_UsersGuide/Representing seasonal migration.htm#_Toc177320747" />
+        <TocEntry Title="4.3 Advection in Ecospace" Link="/Content/EWE_UsersGuide/Advection in Ecospace.htm#_Toc177320748" />
+        <TocEntry Title="4.4 Fitness-driven dispersal behavior in Ecospace (by Bob Lessard)" Link="/Content/EWE_UsersGuide/Fitness-driven dispersal behavior in Ecospace.htm#_Toc177320749" />
+        <TocEntry Title="4.5 Prediction of mixing rates" Link="/Content/EWE_UsersGuide/Prediction of mixing rates.htm#_Toc177320750" />
+        <TocEntry Title="4.6 Predicting spatial fishing patterns" Link="/Content/EWE_UsersGuide/Predicting spatial fishing.htm#_Toc177320751" />
+        <TocEntry Title="4.7 Numerical solutions" Link="/Content/EWE_UsersGuide/Numerical solutions.htm#_Toc177320752" />
+    </TocEntry>
+    <TocEntry Title="5 Ecopath with Ecosim 6: Getting started" Link="/Content/EWE_UsersGuide/Ecopath with Ecosim 6 Getting started.htm#_Toc177320753">
+        <TocEntry Title="5.1 How to obtain the Ecopath with Ecosim 6 software" Link="/Content/EWE_UsersGuide/Ecopath with Ecosim 6 Getting started.htm#_Toc177320754" />
+        <TocEntry Title="5.2 Software support, copyright and liability" Link="/Content/EWE_UsersGuide/Software support copyright.htm#_Toc177320755" />
+        <TocEntry Title="5.3 Installing and running Ecopath with Ecosim" Link="/Content/EWE_UsersGuide/Installing and running Ecopath.htm#_Toc177320756" />
+        <TocEntry Title="5.4 Previous versions" Link="/Content/EWE_UsersGuide/Previous versions.htm#_Toc177320757" />
+        <TocEntry Title="5.5 Getting help" Link="/Content/EWE_UsersGuide/Getting help.htm#_Toc177320758" />
+        <TocEntry Title="5.6 General features of the Graphic User Interface" Link="/Content/EWE_UsersGuide/General features of the Graphic.htm#_Toc177320759" />
+        <TocEntry Title="5.7 File menu" Link="/Content/EWE_UsersGuide/File menu.htm#_Toc177320760" />
+        <TocEntry Title="5.8 View menu" Link="/Content/EWE_UsersGuide/View menu.htm#_Toc177320761" />
+        <TocEntry Title="5.9 Ecopath menu" Link="/Content/EWE_UsersGuide/View menu.htm#_Toc177320762" />
+        <TocEntry Title="5.10 Ecosim menu" Link="/Content/EWE_UsersGuide/Ecosim menu.htm#_Toc177320763" />
+        <TocEntry Title="5.11 Ecospace menu" Link="/Content/EWE_UsersGuide/Ecosim menu.htm#_Toc177320764" />
+        <TocEntry Title="5.12 Tools menu" Link="/Content/EWE_UsersGuide/Ecosim menu.htm#_Toc177320765" />
+        <TocEntry Title="5.13 Windows menu" Link="/Content/EWE_UsersGuide/Windows menu.htm#_Toc177320766" />
+        <TocEntry Title="5.14 Help menu" Link="/Content/EWE_UsersGuide/Help menu.htm#_Toc177320767" />
+    </TocEntry>
+    <TocEntry Title="6 Using Ecopath. Part 1: Ecopath inputs" Link="/Content/EWE_UsersGuide/Help menu.htm#_Toc177320768">
+        <TocEntry Title="6.1 Introduction" Link="/Content/EWE_UsersGuide/Help menu.htm#_Toc177320769" />
+        <TocEntry Title="6.2 Edit groups" Link="/Content/EWE_UsersGuide/Edit groups.htm#_Toc177320770" />
+        <TocEntry Title="6.3 Edit multi-stanza groups" Link="/Content/EWE_UsersGuide/Edit multi stanza groups.htm#_Toc177320771" />
+        <TocEntry Title="6.4 Edit fleets" Link="/Content/EWE_UsersGuide/Edit fleets.htm#_Toc177320772" />
+        <TocEntry Title="6.5 Ecopath input data" Link="/Content/EWE_UsersGuide/Ecopath input data.htm#_Toc177320773" />
+        <TocEntry Title="6.6 Basic input" Link="/Content/EWE_UsersGuide/Basic input.htm#_Toc177320774" />
+        <TocEntry Title="6.7 Diet composition" Link="/Content/EWE_UsersGuide/Diet composition.htm#_Toc177320775" />
+        <TocEntry Title="6.8 Detritus fate" Link="/Content/EWE_UsersGuide/Detritus fate.htm#_Toc177320776" />
+        <TocEntry Title="6.9 Other production" Link="/Content/EWE_UsersGuide/Other production.htm#_Toc177320777" />
+        <TocEntry Title="6.10 Fishery" Link="/Content/EWE_UsersGuide/Fishery.htm#_Toc177320778" />
+        <TocEntry Title="6.11 Definition of fleets" Link="/Content/EWE_UsersGuide/Fishery.htm#_Toc177320779" />
+        <TocEntry Title="6.12 Landings" Link="/Content/EWE_UsersGuide/Landings.htm#_Toc177320780" />
+        <TocEntry Title="6.13 Discards" Link="/Content/EWE_UsersGuide/Discards.htm#_Toc177320781" />
+        <TocEntry Title="6.14 Discard fate" Link="/Content/EWE_UsersGuide/Discard fate.htm#_Toc177320782" />
+        <TocEntry Title="6.15 Market price" Link="/Content/EWE_UsersGuide/Market price.htm#_Toc177320783" />
+        <TocEntry Title="6.16 Non-market price" Link="/Content/EWE_UsersGuide/Non market price.htm#_Toc177320784" />
+    </TocEntry>
+    <TocEntry Title="7 Using Ecopath. Part 2: Parameterization and outputs" Link="/Content/EWE_UsersGuide/Using Ecopath. Part 2 Parameterization and outputs.htm#_Toc177320785">
+        <TocEntry Title="7.1 Notes on parameterizing an Ecopath model" Link="/Content/EWE_UsersGuide/Using Ecopath. Part 2 Parameterization and outputs.htm#_Toc177320786" />
+        <TocEntry Title="7.2 Balancing a model" Link="/Content/EWE_UsersGuide/Balancing a model.htm#_Toc177320787" />
+        <TocEntry Title="7.3 Basic estimates" Link="/Content/EWE_UsersGuide/Basic estimates.htm#_Toc177320788" />
+        <TocEntry Title="7.4 Key indices" Link="/Content/EWE_UsersGuide/Key indices.htm#_Toc177320789" />
+        <TocEntry Title="7.5 Mortalities" Link="/Content/EWE_UsersGuide/Mortalities.htm#_Toc177320790" />
+        <TocEntry Title="7.6 Mortality coefficients" Link="/Content/EWE_UsersGuide/Mortality coefficients.htm#_Toc177320791" />
+        <TocEntry Title="7.7 Predation mortality" Link="/Content/EWE_UsersGuide/Predation mortality.htm#_Toc177320792" />
+        <TocEntry Title="7.8 Consumption" Link="/Content/EWE_UsersGuide/Consumption1.htm#_Toc177320793" />
+        <TocEntry Title="7.9 Respiration" Link="/Content/EWE_UsersGuide/Respiration.htm#_Toc177320794" />
+        <TocEntry Title="7.10 Niche overlap" Link="/Content/EWE_UsersGuide/Niche overlap.htm#_Toc177320795" />
+        <TocEntry Title="7.11 Electivity" Link="/Content/EWE_UsersGuide/Electivity.htm#_Toc177320796" />
+        <TocEntry Title="7.12 Search rates" Link="/Content/EWE_UsersGuide/Search rates.htm#_Toc177320797" />
+        <TocEntry Title="7.13 Fishery" Link="/Content/EWE_UsersGuide/Fishery1.htm#_Toc177320798" />
+        <TocEntry Title="7.14 Tools" Link="/Content/EWE_UsersGuide/Tools.htm#_Toc177320799" />
+        <TocEntry Title="7.15 Flow diagram" Link="/Content/EWE_UsersGuide/Tools.htm#_Toc177320800" />
+        <TocEntry Title="7.16 EwE network analysis plugin" Link="/Content/EWE_UsersGuide/Tools.htm#_Toc177320801" />
+        <TocEntry Title="7.17 Trophic level decomposition" Link="/Content/EWE_UsersGuide/Trophic level decomposition.htm#_Toc177320802" />
+        <TocEntry Title="7.18 Summary of flow data" Link="/Content/EWE_UsersGuide/Summary of flow data.htm#_Toc177320803" />
+        <TocEntry Title="7.19 Flows and biomasses" Link="/Content/EWE_UsersGuide/Flows and biomasses.htm#_Toc177320804" />
+        <TocEntry Title="7.20 Primary production required" Link="/Content/EWE_UsersGuide/Primary production required.htm#_Toc177320805" />
+        <TocEntry Title="7.21 Mixed trophic impact" Link="/Content/EWE_UsersGuide/Mixed trophic impact.htm#_Toc177320806" />
+        <TocEntry Title="7.22 Ascendancy" Link="/Content/EWE_UsersGuide/Ascendancy.htm#_Toc177320807" />
+        <TocEntry Title="7.23 Flow from detritus" Link="/Content/EWE_UsersGuide/Flow from detritus.htm#_Toc177320808" />
+        <TocEntry Title="7.24 Cycles and pathways" Link="/Content/EWE_UsersGuide/Cycles and pathways.htm#_Toc177320809" />
+        <TocEntry Title="7.25 Network analysis indices in Ecosim (by Sheila Heymans)" Link="/Content/EWE_UsersGuide/Network analysis indices in.htm#_Toc177320810" />
+    </TocEntry>
+    <TocEntry Title="8 Using Ecosim. Part 1: Ecosim inputs" Link="/Content/EWE_UsersGuide/Using Ecosim Part 1 Ecosim.htm#_Toc177320811">
+        <TocEntry Title="8.1 Getting started in Ecosim: The Ecosim menu" Link="/Content/EWE_UsersGuide/Getting started in Ecosim.htm#_Toc177320812" />
+        <TocEntry Title="8.2 Ecosim parameters" Link="/Content/EWE_UsersGuide/Ecosim parameters.htm#_Toc177320813" />
+        <TocEntry Title="8.3 Group info" Link="/Content/EWE_UsersGuide/Group info.htm#_Toc177320814" />
+        <TocEntry Title="8.4 Vulnerabilities (flow control: foraging arena parameter)" Link="/Content/EWE_UsersGuide/Vulnerabilities flow control.htm#_Toc177320815" />
+        <TocEntry Title="8.5 Time series" Link="/Content/EWE_UsersGuide/Time series.htm#_Toc177320816" />
+        <TocEntry Title="8.6 Import time series" Link="/Content/EWE_UsersGuide/Import time series.htm#_Toc177320817" />
+        <TocEntry Title="8.7 Mediation" Link="/Content/EWE_UsersGuide/Mediation.htm#_Toc177320818" />
+        <TocEntry Title="8.8 Apply mediation" Link="/Content/EWE_UsersGuide/Apply mediation.htm#_Toc177320819" />
+        <TocEntry Title="8.9 Forcing function" Link="/Content/EWE_UsersGuide/Forcing function.htm#_Toc177320820" />
+        <TocEntry Title="8.10 Apply forcing function (consumer)" Link="/Content/EWE_UsersGuide/Apply forcing function consumer.htm#_Toc177320821" />
+        <TocEntry Title="8.11 Apply forcing function (primary producer)" Link="/Content/EWE_UsersGuide/Apply forcing function primary.htm#_Toc177320822" />
+        <TocEntry Title="8.12 Egg production" Link="/Content/EWE_UsersGuide/Egg production.htm#_Toc177320823" />
+        <TocEntry Title="8.13 Apply egg production" Link="/Content/EWE_UsersGuide/Apply egg production.htm#_Toc177320824" />
+        <TocEntry Title="8.14 Fleet size dynamics" Link="/Content/EWE_UsersGuide/Fleet size dynamics.htm#_Toc177320825" />
+    </TocEntry>
+    <TocEntry Title="9 Ecosim. Part 2: Ecosim outputs" Link="/Content/EWE_UsersGuide/Using Ecosim. Part 2 Ecosim outputs.htm#_Toc177320826">
+        <TocEntry Title="9.1 An Ecosim exercise" Link="/Content/EWE_UsersGuide/An Ecosim exercise.htm#_Toc177320827" />
+        <TocEntry Title="9.2 Biomass" Link="/Content/EWE_UsersGuide/Biomass.htm#_Toc177320828" />
+        <TocEntry Title="9.3 Plots" Link="/Content/EWE_UsersGuide/Plots.htm#_Toc177320829" />
+        <TocEntry Title="9.4 Stock recruitment (S/R) plot (multi-stanza groups only)" Link="/Content/EWE_UsersGuide/Stock recruitment S R plot.htm#_Toc177320830" />
+        <TocEntry Title="9.5 Monte Carlo runs" Link="/Content/EWE_UsersGuide/runs.htm#_Toc177320831" />
+        <TocEntry Title="9.6 Fishing policy search" Link="/Content/EWE_UsersGuide/Fishing policy search.htm#_Toc177320832" />
+        <TocEntry Title="9.7 Implementing policy optimization in Ecosim" Link="/Content/EWE_UsersGuide/Implementing policy optimization.htm#_Toc177320833" />
+        <TocEntry Title="9.8 Maximize portfolio utility (maximizing risk-averse log utility for economic and existence values)" Link="/Content/EWE_UsersGuide/Maximize portfolio utility.htm#_Toc177320834" />
+        <TocEntry Title="9.9 Fit to time series" Link="/Content/EWE_UsersGuide/Fit to time series.htm#_Toc177320835" />
+        <TocEntry Title="9.10 Equilibrium analysis" Link="/Content/EWE_UsersGuide/Equilibrium analysis.htm#_Toc177320836" />
+    </TocEntry>
+    <TocEntry Title="10 Ecospace. Part 1: Ecospace inputs" Link="/Content/EWE_UsersGuide/Using Ecospace. Part 1 Ecospace inputs.htm#_Toc177320837">
+        <TocEntry Title="10.1 Getting started in Ecospace: The Ecospace menu" Link="/Content/EWE_UsersGuide/Using Ecospace. Part 1 Ecospace inputs.htm#_Toc177320838" />
+        <TocEntry Title="10.2 Ecospace parameters" Link="/Content/EWE_UsersGuide/Ecospace parameters.htm#_Toc177320839" />
+        <TocEntry Title="10.3 Define Ecospace habitats" Link="/Content/EWE_UsersGuide/Define Ecospace habitats.htm#_Toc177320840" />
+        <TocEntry Title="Figure 10.5" Link="/Content/EWE_UsersGuide/Figure 10 5.htm#_Toc177320841" />
+        <TocEntry Title="10.4 Basemap" Link="/Content/EWE_UsersGuide/Figure 10 5.htm#_Toc177320842" />
+        <TocEntry Title="10.5 Assign habitats" Link="/Content/EWE_UsersGuide/Assign habitats.htm#_Toc177320843" />
+        <TocEntry Title="10.6 Dispersal" Link="/Content/EWE_UsersGuide/Dispersal.htm#_Toc177320844" />
+        <TocEntry Title="10.7 Ecospace fishery" Link="/Content/EWE_UsersGuide/Ecospace fishery.htm#_Toc177320845" />
+    </TocEntry>
+    <TocEntry Title="11 Ecospace. Part 2: Ecospace outputs" Link="/Content/EWE_UsersGuide/Ecospace part 2 Ecospace outputs.htm#_Toc177320846">
+        <TocEntry Title="11.1 Run Ecospace" Link="/Content/EWE_UsersGuide/Ecospace part 2 Ecospace outputs.htm#_Toc177320847" />
+    </TocEntry>
+    <TocEntry Title="12 Capabilities and limitations" Link="/Content/EWE_UsersGuide/Capabilities and limitations.htm#_Toc177320848" />
+    <TocEntry Title="13 Major Pitfalls in the Application of EwE" Link="/Content/EWE_UsersGuide/Major Pitfalls in the Application of EwE.htm#_Toc177320849" />
+    <TocEntry Title="14 ACKNOWLEDGEMENTS" Link="/Content/EWE_UsersGuide/ACKNOWLEDGEMENTS.htm#_Toc177320850" />
+    <TocEntry Title="15 REFERENCES" Link="/Content/EWE_UsersGuide/REFERENCES.htm#_Toc177320851" />
+</CatapultToc>

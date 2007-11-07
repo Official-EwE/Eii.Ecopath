@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Ecosim basic</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Ecosim_basic"></a><a name="_Toc177320723"></a><a name="_Toc120960612"></a><span class="span_2">3.2 </span>Ecosim basic </h2>
+        <p>The basics of Ecosim consist of biomass dynamics expressed through a series of coupled differential equations. The equations are derived from the Ecopath master equation (<MadCap:xref href="Introductory material Ecopath.htm#_Ref484634641" mc-format="{para}">See "Production = catches + predation mortality + biomass accumulation + net migration + other mortality Eq. 1"</MadCap:xref>), and take the form</p>
+        <p><a name="_Ref478390841"></a>
+            <img src="../Resources/Images/08000022.png" style="width: 319px;height: 37px;" />Eq. 50</p>
+        <p>where dBi/dt represents the growth rate during the time interval dt of group (i) in terms of its biomass, Bi, gi is the net growth efficiency (production/consumption ratio), Mi the non-predation (‘other’) natural mortality rate, Fi is fishing mortality rate, ei is emigration rate, Ii is immigration rate, (and ei·Bi-Ii is the net migration rate). The two summations estimates consumption rates, the first expressing the total consumption by group (i), and the second the predation by all predators on the same group (i). The consumption rates, Qji, are calculated based on the ‘foraging arena’ concept, where Bi’s are divided into vulnerable and invulnerable components (Walters et al., 1997 Figure 1), and it is the transfer rate (vij) between these two components that determines if control is top-down (i.e., Lotka-Volterra), bottom-up (i.e., donor-driven), or of an intermediate type.</p>
+        <p>The set of differential equations is solved in Ecosim using (by default) an Adams-Bashford integration routine or (if selected) a Runge-Kutta 4th order routine.</p>
+        <p>Further reading: Walters et al. 1997; Walters et al. 2000)</p>
+    </body>
+</html>

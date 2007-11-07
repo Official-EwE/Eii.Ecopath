@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Linking mediation and time forcing functions to trophic interaction rates</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Linking_mediation_and"></a><a name="_Using_Ecosim_to"></a><a name="_Toc177320737"></a><span class="span_4">3.16 </span>Linking mediation and time forcing functions to trophic interaction rates</h2>
+        <p>The basic Ecosim prediction for “flow” rate of type-i prey biomass to type-j predators is of the functional form </p>
+        <p>flow (biomass/time) = aij∙Vij∙Pj</p>
+        <p>where aij is a “rate of effective search” parameter, Vij is vulnerable prey biomass, and Pj is effective predator abundance (for simple models Pj is just predator biomass; for multistanza groups it is the sum over ages in that group of numbers at age times body weight to the 2/3 power, an index of per-predator search rate).&#160; If vulnerable prey were randomly distributed over the modeled spatial area, and V, P were expressed as abundances per unit area, then aij would be interpretable as a volume or area swept per unit predator abundance (per Pj) per unit time, corrected for the proportion of time actually spent searching for food (foraging time and handling time adjustments reduce aij from its theoretical maximum value for a predator that searched all the time for food).</p>
+        <p>To understand how effects of habitat changes as represented through time forcing functions, and mediation effects as expressed through mediation functions of abundances of other organisms, are likely to affect trophic flow rates, we need to be a bit more careful about the aij parameter.&#160; In particular, we need to recognize that for most trophic interactions, predators search for prey only over restricted spatial foraging arenas, and hence Vij is distributed only over such areas rather than at random over the whole system.&#160; Suppose the (practically unmeasurable) restricted area where foraging by j on prey i takes place is Aij per unit total model area.&#160; Suppose that while in this area, each unit of predator abundance (per Pj) searches an effective area a*ij for prey.&#160; On average, each such area searched should result in capture of Vij/Aij prey, since this ratio is prey density in the arena area.&#160; In other words, the flow rate could be modeled more precisely (if we could measure Aij) as </p>
+        <p>flow rate=a*ij/Aij∙Vij∙Pj </p>
+        <p>i.e., the basic Ecosim equation’s aij can be interpreted as aij=a*ij/Aij.&#160; Expressed this way, we see that time forcing and/or mediation effects can influence the flow rate in at least three quite distinct ways:</p>
+        <ol start="1" class="ol_7">
+            <li>by altering the effective search rate a*ij of the predator, for example by using a turbidity time forcing function or a mediation function of algal biomass that reduces a*ij at high algal biomass;</li>
+        </ol>
+        <ol start="2" class="ol_7">
+            <li>by altering the area Aij over which vulnerable prey and/or predators are distributed, for example by a mediation effect where macrophyte or seagrass biomass limits the foraging area usable by small predatory fish, so increases in those plant biomasses should be represented as causing increases in Aij for all prey i of the small fish as predator j.&#160; Another example would be restriction of Aij for feeding on small fishes by pelagic birds caused by large pelagic fishes, which drive small fishes nearer to the surface where they are more available to the birds.</li>
+        </ol>
+        <ol start="3" class="ol_7">
+            <li>by altering the <a href="Vulnerabilities flow control.htm#_Vulnerabilities">vulnerability exchange rates</a> vij that determine (along with&#160; a*ij/Aij) Vij from total prey biomass Bi (the basic equation for V from B is Vij=vij∙Bi/(vij+v’ij+a*ij/AijPj). For example, if small fish respond to increased large plant biomass by occupying a larger area, the mixing rate (vij) of planktonic food organisms into that larger area will increase as well.</li>
+        </ol>
+        <p>Until recently, Ecosim only allowed users to apply a single time forcing function to each trophic flow rate (each i,j), and only as a multiplier (with base value 1.0) on the rate of effective search aij (Case 1 above).&#160; Likewise, users could only apply a single mediation function to each flow rate, as a multiplier on vij (Case 3 above).&#160; So, for example, users could model how increases in large plant biomass affect exchange rates of food organisms into areas adjacent to where small fish hide, but not how increases in Aij imply less severe intraspecific competition (reduced effect of Pj on Vij) and also reduced predation rates on j when it is spread over a larger area relative to its predators.&#160; Further, they could not represent such multiple impacts as reduced foraging efficiency (lower a*ij) associated with increased algal abundance, or reduction in area occupied by macrophytes due to shading by the algae.</p>
+        <p>We now allow users to apply up to 5 different multiplier (time forcing and/or mediation) functions to each trophic flow (i,j) rate prediction, and to specify whether each function multiplies a*ij, Aij, and/or vij.&#160; Two simple forms are used to specify these multiplier options, and it is invoked simply by clicking on the i,j cell in the Ecosim <a href="Apply forcing function consumer.htm#_Apply_forcing_function_2">Apply forcing function (consumer)</a> or <a href="Apply mediation.htm#_Apply_mediation">Apply mediation</a> forms. Using these forms, users can choose the parameter which is multiplied by each forcing or mediation function, i.e. one of the following choices:</p>
+        <ol start="1" class="ol_7">
+            <li>Multiply overall predator rate of effective search (ai,j), for example to represent time-varying turbidity changes that affect predator search efficiency or mediation effects of algal biomass on search efficiency.</li>
+        </ol>
+        <ol start="2" class="ol_7">
+            <li>Multiply vulnerability exchange rate (vij), for example to represent increased movement rates of prey into vulnerable behavioral state at times when water mixing rates are higher;</li>
+        </ol>
+        <ol start="3" class="ol_7">
+            <li>Multiply area of foraging arenas (divide Aij by multiplier), for example to represent increase in habitat area available for juvenile fish refuges;</li>
+        </ol>
+        <ol start="4" class="ol_7">
+            <li>Multiply area (divide Aij) and also multiply vij, for example to represent increase in safe foraging habitat available to a predator that feeds on prey that become available in foraging arenas through passive drift/mixing processes such that increasing area used by predator results in higher proportion of total prey population being available in foraging areas at any moment.</li>
+        </ol>
+        <p>Forms for setting up forcing and trophic mediation functions in Ecosim are found under the Ecosim input section of the Navigator window ( Time Dynamic (Ecosim) &gt; Input &gt; Forcing function; and Time Dynamic (Ecosim) &gt; Input &gt; Mediation; see <a href="Forcing function.htm#_Forcing_function_1">Forcing function</a> and <a href="Mediation.htm#_Mediation_1">Mediation</a>).</p>
+    </body>
+</html>

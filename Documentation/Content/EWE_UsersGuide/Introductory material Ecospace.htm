@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Introductory material: Ecospace</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1><a name="_Toc177320745"></a><span class="span_1">4 </span>Introductory material: Ecospace</h1>
+        <h2><a name="_An_overview_of_1"></a><a name="_Toc177320746"></a><span class="span_2">4.1 </span>An overview of Ecospace</h2>
+        <p>Real ecosystems are more complicated than the mass-balance fluxes of biomass in Ecopath, however large the number of functional groups we include in our models. Real ecosystems also have dynamics far more complex than represented in Ecosim. The issue to consider, when evaluating the realism of simulation software is, however, not how complex the software and the processes are therein. Rather, the question is which structure allows a representation of the basic features of an ecosystem, given a limited amount of inputs. On such criterion, it was obvious that the major deficiency of the Ecopath/Ecosim approach was its assumption of homogenous spatial behavior. This has been remedied through the development of Ecospace (Walters et al. 1999), a dynamic, spatial version of Ecopath, incorporating all the key elements of Ecosim. </p>
+        <p>Ecospace dynamically allocates biomass across a grid map (sketched with a mouse by the user, and typically defined by 20 x 20 cells), while accounting for: </p>
+        <ol start="1" class="ol_3">
+            <li>Symmetrical movements from a cell to its four adjacent cells, of rate m, modified by whether a cell is defined as ‘preferred habitat’ or not (running means over adjacent sets of five cells allows for smooth transitions between habitat types, which are also user-defined);</li>
+        </ol>
+        <ol start="2" class="ol_3">
+            <li>User-defined increased predation risk and reduced feeding rate in non-preferred habitat; </li>
+        </ol>
+        <ol start="3" class="ol_3">
+            <li>A level of fishing effort that is proportional, in each cell, to the overall profitability of fishing in that cell, and whose distribution can also be made sensitive to costs (e.g., of sailing to certain areas).&#160; </li>
+        </ol>
+        <p>Given its recent origin, only few published applications of Ecospace have been published. However, those so far examined have a number of interesting implications, briefly reviewed below. </p>
+        <p>The first of these is that, as in the case of Ecosim, using Ecospace immediately after initial parameterization of an Ecopath model will often identify problems with that model. Particularly, predators assigned to a given habitat type must be able to encounter sufficient prey in that habitat. Indeed, this suggests that Ecopath models, though they do not explicitly consider space, always should contain implicitly spatial subsystems, with distinct food webs, corresponding to the habitat types to be defined in Ecospace. Moreover, definition of such subsystems leads to more robust simulations (less self-simplification) when the file is run under Ecosim. This, obviously reflects the fact that, in reality as well, spatial patterns do generate refuges from predation. It is those refuges that bring us to the last aspect of Ecospace to be discussed here. </p>
+        <p>Given its structure, Ecospace allows users to explore the potential role of Marine Protected Areas (MPAs) as a tool to mitigate, and perhaps reverse various ecosystem effects of fishing, notably the effects of ‘Fishing down marine food webs’. The results obtained so far (Walters et al. 1998, Walters 1999) suggest that, due to the effects of trophic cascades within MPA (as result of MPAs protecting predators, whose biomass will thus increase), and the net movements of predators toward food concentrations (i.e., out the MPA), the net effect of small MPAs may be to increase the catch of the fisheries that will invariably concentrate their operation near their perimeter. Only large MPAs, with short outer perimeter relative to their surface areas would be protected from this, as would MPAs in bays or gulfs, with limited adjacency to exploited areas. </p>
+        <p>See <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Getting started in Ecospace</a> for details on how to start using Ecospace.</p>
+    </body>
+</html>

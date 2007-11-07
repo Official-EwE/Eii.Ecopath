@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Advection in Ecospace</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Advection__in"></a><a name="_Toc177320748"></a><span class="span_2">4.3 </span>Advection in Ecospace</h2>
+        <p>Advection processes are critical for productivity in most ocean areas. Currents deliver planktonic production to reef areas at much higher rates than would be predicted from simple turbulent mixing processes. Upwelling associated with movement of water away from coastlines delivers nutrients to surface waters, but the movement of nutrient rich water away from upwelling locations means that production and biomass may be highest well away from the actual upwelling locations. Convergence (down-welling) zones represent places where planktonic production from surrounding areas is concentrated, creating special opportunities for production of higher trophic levels.</p>
+        <p>Ecospace provides a user interface for sketching general current patterns or wind/geostrophic forcing patterns for surface currents. Based on these patterns Ecospace calculates equilibrium horizontal flow and upwelling/down-welling velocity fields that maintain continuity (water mass balance) and effects of Coriolis force. That is, the advection field is calculated by solving the linearized pressure field and velocity equations df / dt = 0, dvu / dt = 0, dvv / dt = 0 across the faces of each Ecospace grid (u,v) cell, where f is sea surface anomaly, the v’s are horizontal and velocity components (u, v directions) and the rate equations at each cell face satisfy (omitting grid size scaling factors for clarity):</p>
+        <p>
+            <img src="../Resources/Images/08000042.png" style="width: 133px;height: 43px;" />Eq. 74</p>
+        <p>
+            <img src="../Resources/Images/08000043.png" style="width: 232px;height: 43px;" />Eq. 75</p>
+        <p>
+            <img src="../Resources/Images/08000044.png" style="width: 231px;height: 43px;" /> Eq. 76</p>
+        <p>Here, the W’s represent the user sketched forcing or general circulation field, h sea surface anomaly, k represents bottom friction force, f the Coriolis force, D represents downwelling/upwelling rate, and g acceleration due to sea surface slope. </p>
+        <p>Solving these equations for equilibrium is not meant to be a replacement for more elaborate advection models; generally the Wu and Wv need to be provided either by such models or by direct analysis of surface current data, so the Ecospace solution scheme is only used to assure mass balance and correct for ‘local’ features caused by bottom topography and Coriolis forces. That is, absent shoreline, bottom, and sea surface anomaly (h) effects, the equilibrium velocities are just vu = Wu, vv = Wv up to corrections for Coriolis force. We could just allow users to input the W fields and then calculate upwelling/downwelling rates needed to satisfy these, but solving the equations using general forcing sketches of W patterns allows us to internally correct for factors such as topographic steering of currents near shorelines, without demanding that the user enter W fields that precisely maintain mass balance (and/or correct upwelling/downwelling velocities) absent any correction scheme.</p>
+        <p>Once an advection pattern has been defined, the user can specify which biomass pools are subject to the advection velocities (vu,vv field) in addition to movement caused by swimming and/or turbulent mixing. This allows examination of whether some apparent ‘migration’ and concentration patterns of actively swimming organisms, (e.g., tuna aggregations at convergence zones) might in fact be due mainly to random swimming combined with advective drift.</p>
+        <p />
+        <div style="height: 199.95pt;width: 468.85pt;" class="div_1">
+            <p>Advection fields can be read from text files. The procedure for this is as follows:</p>
+            <p>Create a .txt file, (e.g., in Notepad) with the following structure:</p>
+            <p>Number of columns in Ecospace basemap (nRow) ; Number of columns in Ecospace basemap (nCol) </p>
+            <p>Number of Months</p>
+            <p>(For each of the months specify the following:</p>
+            <p>Month Number</p>
+            <p>(For this month specify for 0 to nRow + 1, and for 0 to nCol+1, unit: m/s)</p>
+            <p>Current X-velocity, Current Y-velocity</p>
+            <p>(Repeat this for all months)</p>
+            <p>Currents for the Central Pacific may be obtained in a suitable format from <a href="http://www.oscar.noaa.gov/datadisplay/index.html">http://www.oscar.noaa.gov/datadisplay/index.html</a>) </p>
+        </div>
+        <p>&#160;</p>
+        <div>
+            <p>
+                <img src="../Resources/Images/02000045.jpg" style="width: 525px;height: 437px;" />
+            </p>
+            <p>Figure 4.4.&#160; Ecospace advection model interface </p>
+        </div>
+    </body>
+</html>

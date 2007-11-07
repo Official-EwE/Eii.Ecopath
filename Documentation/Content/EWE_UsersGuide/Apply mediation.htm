@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Apply mediation</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Apply_mediation"></a><a name="_Toc177320819"></a><span class="span_2">8.8 </span>Apply mediation</h2>
+        <p>The Apply mediation form  (Time dynamic (Ecosim) &gt; Input &gt; Mediation &gt; Apply Mediation) is used to apply the trophic mediation functions you defined using the Mediation form.</p>
+        <p>Before using the Apply mediation form, you must first define at least one trophic mediation function following the <a href="Mediation.htm#_Mediation_1">instructions for using the Mediation form</a>. It is recommended you read the introductory material on <a href="Linking mediation and time.htm#_Using_Ecosim_to">Linking mediation and time forcing functions to trophic interaction rates</a> to understand how trophic mediation functions are applied in Ecosim.</p>
+        <p>Selecting Apply mediation opens a form that consists of a grid representing predator (j) / prey (i) interactions (Figure 8.13). Predators are represented in columns with prey in rows. Predator/prey interactions, as defined in the <a href="Diet composition.htm#_Diet_composition">Diet composition </a>are indicated by white cells.</p>
+        <p>To apply a trophic mediation function, select the i,j cell representing the predator/prey interaction to which you wish to apply the function. This will open the Apply forcing and mediation functions dialogue box (Figure 8.14). The affected prey and predator group will be displayed at the top of the form. </p>
+        <p>Next, select the parameter to which the mediation multiplier is to be applied using the radio buttons at the bottom of the dialogue box. There are four possible options:</p>
+        <ol start="1" class="ol_7">
+            <li>Multiply overall predator rate of effective search (ai,j), for example to represent time-varying turbidity changes that affect predator search efficiency or mediation effects of algal biomass on search efficiency.</li>
+        </ol>
+        <ol start="2" class="ol_7">
+            <li>Multiply vulnerability exchange rate (vij), for example to represent increased movement rates of prey into vulnerable behavioral state at times when water mixing rates are higher;</li>
+        </ol>
+        <ol start="3" class="ol_7">
+            <li>Multiply area of foraging arenas (divide aij by multiplier), for example to represent increase in habitat area available for juvenile fish refuges;</li>
+        </ol>
+        <ol start="4" class="ol_7">
+            <li>Multiply area (divide aij) and also multiply vij, for example to represent increase in safe foraging habitat available to a predator that feeds on prey that become available in foraging arenas through passive drift/mixing processes such that increasing area used by predator results in higher proportion of total prey population being available in foraging areas at any moment.</li>
+        </ol>
+        <p>The selected modifier will be shown in the window Applied shape functions window (Figure 8.14).</p>
+        <p>Next, select the desired mediation shape from the Available shape functions window at the left of the dialogue box by clicking the green arrow. This will move the shape function into the Applied shape functions window. You can remove a shape from this window by clicking the remove button immediately below the green arrow. Note that a common form is used to apply Mediation and <a href="Forcing function.htm#_Forcing_function_1">Seasonal/Forcing</a> functions. Do not select a seasonal or forcing function.</p>
+        <p>Finally, click OK. You should see the number of the mediation function (preceded by ‘M’) you selected in the predator/prey cell.</p>
+        <p>Note that you can apply up to five seasonal, forcing and/or mediation functions to each predator-prey interaction.</p>
+        <h3>Clear all</h3>
+        <p>You can clear all applied seasonal, forcing and/or mediation functions from the predator-prey grid by selecting Clear all from the top of the Apply forcing function form.</p>
+        <h3>Set all …</h3>
+        <p>To apply a mediation function to the interactions between a&#160; particular predator and all of its prey species, click on the number of the predator at the top of the form. When the Apply forcing and mediation functions dialogue box opens you will see a message at the top of the box reflecting that all the prey are affected. Similarly, to apply a mediation function to the interactions between a&#160; particular prey species and all of its predators, click on the number of the prey at the side of the form to open the Apply forcing and mediation functions dialogue box. Follow the steps above to select shape function(s).</p>
+        <p><a name="_Forcing__function"></a><a name="_Forcing_function"></a>
+            <img src="../Resources/Images/030000A1.png" style="width: 420px;height: 303px;" />
+        </p>
+        <p>Figure 8.13</p>
+        <p>
+            <img src="../Resources/Images/030000A2.png" style="width: 444px;height: 318px;" />
+        </p>
+        <p>Figure 8.14. </p>
+    </body>
+</html>

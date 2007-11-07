@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Import time series</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Import_time_series_1"></a><a name="_Toc177320817"></a><span class="span_2">8.6 </span>Import time series</h2>
+        <p><a name="OLE_LINK14"></a><a name="OLE_LINK13"></a>There are two main types of data that you can read in to Ecosim: historical comparison data and time forcing data. Historical comparison data enable comparison between historical observations and the model’s predictions. Time forcing data are used to actually force certain variables (fishing effort, fishing mortality) in the model (i.e., ‘drive’ the model). You can load both types of data with the same data file, using the codes for different data types listed below (forcing data types are indicated in parentheses). </p>
+        <h3>The time series data file</h3>
+        <p>For historical comparison data, you can leave cells blank for which you have no data.&#160; Ecosim will assume that the first calendar year for which you enter a data row (e.g., 1976) is to be the simulation start year. Forcing time series must have an entry for every year of the simulation. Note that relative fishing rate by gear type must be scaled so relative value is 1.0 for the Ecopath base year (year for which catches are provided to Ecopath). </p>
+        <p>The spreadsheet must be identical in format as shown in Figure XX2 (i.e., cells 1-3 in the first column must read “Name”, “Pool code” and “Type” respectively and the years of the simulation must be listed below these in the first column).&#160; For each data series (column) you must enter the Ecopath group number (Pool code) and specify the data type (see list of data types below). You can use the first row (Name) to describe the group and the data. This information will be displayed on output graphs.</p>
+        <p>Overview of data types:</p>
+        <p>-1Force biomass (forcing) 0Relative biomass 1Absolute biomass 2Time forcing data (forcing) * 3Effort data by gear type (forcing) 4Fishing mortality, (F) by pool (forcing) 5Total mortality, (Z) by pool-5Forced total mortality (Z) (forcing) 6Catches-6Forced catches (forcing) † 7Average weight (stanzas only)</p>
+        <p>* Using data type 2, you can force nutrient concentrations (see <a href="Ecosim parameters.htm#_Ecosim_input_data">Ecosim parameters</a> and links therein); parameters that affect trophic interactions through abiotic factors (see <a href="Apply mediation.htm#_Forcing_function">Forcing function</a> and <a href="Apply forcing function consumer.htm#_Apply_forcing_function_2">Apply FF (consumer)</a>) or primary production (see <a href="Apply forcing function primary.htm#_Apply_forcing_function_3">Apply FF (primary producer)</a>).</p>
+        <p>† Forcing catches enables<a href="Using Ecosim for Stock Reduction.htm#_Using_Ecosim_for_1"> Use of Ecosim for Stock Reduction Analysis</a>.</p>
+        <p>How to import a time series data file</p>
+        <p>Important note. After importing a time series file, you must activate the time series using the <a href="Time series.htm#_Time_series">Time series</a> form.</p>
+        <p>Note that you must already have an Ecosim scenario loaded before you can import a time series data file (see <a href="Getting started in Ecosim.htm#_Loading_Ecosim_scenario">Ecosim menu</a> for instructions for creating and loading Ecosim scenarios).</p>
+        <p>The Import time series dialogue box (Figure 8.8) allows you to load time series data stored in CSV (comma separated values) or similar text format. It can be accessed: </p>
+        <p>(i) from the Ecosim; or </p>
+        <p>(ii) from the Time series form (Import…).</p>
+        <p>To read in a data file, click Browse to locate your file or select it from the clipboard. You must then set the delimiter used to separate the values in the .csv or text file and the separator used as a decimal point. Your data will be displayed in the bottom window of the form (see Figure XX2). If everything looks as you expected it, click the Import button. If the data is not displaying as expected, first double-check that the Delimiter and Decimal separator settings are correct before checking that your file is in the correct format.</p>
+        <p><a name="_Mediation"></a>
+            <img src="../Resources/Images/0300009B.png" style="width: 607px;height: 447px;" />
+        </p>
+        <p>Figure 8.8.</p>
+    </body>
+</html>

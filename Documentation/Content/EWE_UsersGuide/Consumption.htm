@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Consumption</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Consumption_2"></a><a name="_Toc177320718"></a><a name="_Toc120960536"></a><span class="span_2"><a name="_Consumption"></a>2.7 </span> Consumption</h2>
+        <p>Consumption is the intake of food by a group over the time period considered. It is entered as the ratio of consumption over biomass (Q/B). Absolute consumption computed by Ecopath is a flow expressed, e.g., in t/km² /year, while the corresponding Q/B would be /year. Consumption over biomass is entered on the <a href="Basic input.htm#_Basic_input">Basic input</a> form.</p>
+        <p>There are various approaches for obtaining estimates of the consumption/ biomass ratio (Q/B). They may be split into (i) analytical methods and (ii) holistic methods:</p>
+        <p>(i) The analytical methods involve estimation of ration, pertaining to one or several size/age classes, and their subsequent extrapolation to a wide range of size/age classes, representing an age-structured population exposed to a constant or variable mortality;</p>
+        <p>The required estimates of ration are obtained from laboratory experiments, from studies of the dynamics of stomach contents in nature (Jarre et al., 1991c), or by combining laboratory and field data (Pauly, 1986).</p>
+        <p>(ii) The existing methods for estimation of Q/B are empirical regressions for prediction of Q/B from some easy-to-quantify characteristics of the animals for which the Q/B values are required.</p>
+        <p>Palomares and Pauly (1989; 1998) described based on a data set of relative food-consumption estimates (Q/B, per year) of marine and freshwater population (n=108 populations, 38 species) a predictive model for Q/B using asymptotic weight, habitat temperature, a morphological variable and food type as independent variables. Salinity was not found to effect Q/B in fish well adapted to fresh or saltwater (other things being equal). In contrast the total mortality (Z, per year) showed a strong, positive effect on Q/B and also on the gross food-conversion efficiency (defined by GE = Z/ (Q/B)), by affecting the ratio of small to large fish. </p>
+        <p>The authors present three related models (see Ecoempire for implementation in EwE):</p>
+        <p>
+            <img src="../Resources/Images/08000019.png" style="width: 496px;height: 24px;" />Eq. 17</p>
+        <p>(R²=0.53, 98 df), where, W∞ is the asymptotic weight (g), T’ is an expression for the mean annual temperature of the water body, expressed using T’ = 1000/Kelvin (Kelvin = °C + 273.15), A is the aspect ratio (see <MadCap:xref href="#_Ref485228292" mc-format="{para}">See "Figure 2.1. Schematic representation of method to estimate the aspect ratio (Ar = h2/s) of the caudal fin of fish, given height (h) and surface area (s, in black)."</MadCap:xref>), h is a dummy variable expressing food type (1 for herbivores, and 0 for detritivores and carnivores), and d is a dummy variable also expressing food type (1 for detritivores, and 0 for herbivores and carnivores)</p>
+        <p>The equation was modified to investigate the effect on mortality on Q/B, and to derive predictive models of Q/B taking explicit account of different mortalities, values of Q/B were calculated using the equation above for mortalities corresponding to f · M, where f is a multiplicative factor with value of 0.5, 1, 2 or 4, and M is the natural mortality rate that is estimated from Pauly’s (1980) empirical relationship, (included in the Ecoempire relationships). </p>
+        <p>
+            <img src="../Resources/Images/0800001A.png" style="width: 528px;height: 22px;" />  Eq. 18</p>
+        <p>(R²=0.52, 102 df), where f is the multiplicative factor introduces above, and the rest of the variables are as defined earlier. Note that in Palomares and Pauly (1998) Equation 12, the sign for the T’ factor was reversed by mistake.</p>
+        <p>For cases where an estimate of total mortality, Z, (per year) is available the following relation may be used: </p>
+        <p>
+            <img src="../Resources/Images/0800001B.png" style="width: 528px;height: 21px;" />Eq. 19</p>
+        <p>The models presented here updates the models derived from 33 empirical estimates of the consumption/biomass ratio (Q/B) for marine fishes, and published by the same authors in 1989.</p>
+        <p>This relationship can be used only for fish groups that use their caudal fin as the (main) organ of propulsion.</p>
+        <p>
+            <img src="../Resources/Images/0300001C.png" style="width: 325px;height: 321px;" />
+        </p>
+        <p><a name="_Ref485228292"></a>Figure 2.1. Schematic representation of method to estimate the aspect ratio (Ar = h2/s) of the caudal fin of fish, given height (h) and surface area (s, in black).</p>
+    </body>
+</html>

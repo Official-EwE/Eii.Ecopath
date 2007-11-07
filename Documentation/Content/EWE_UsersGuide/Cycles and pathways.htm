@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Cycles and pathways</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Cycles_and_pathways"></a><a name="_Flow_from_detritus"></a><a name="_Toc177320809"></a><span class="span_5">7.24 </span>Cycles and pathways</h2>
+        <p>A routine based on an approach suggested by Ulanowicz (1986) has been implemented to describe the numerous cycles and pathways that are implied by the food web representing an ecosystem. For a further description see Ulanowicz (1986, his examples 4.4 and 4.5, page 65f.).</p>
+        <p>Each routine below has two forms: Pathway and Summary of pathways. The summary routine counts the number of all pathways leading from the prey to the selected consumer. The mean path length will be calculated and displayed on the form. This mean path length is calculated as the total number of trophic links divided by the number of pathways.</p>
+        <p>Note: For each of the subheadings below, to activate the Pathway and Summary of pathways routines, you must first select the appropriate Pathway menu item and select the groups to be used in the analysis.</p>
+        <h3>Consumer &lt;- TL1 </h3>
+        <p>This routine lists all pathways leading from all groups on Trophic Level I (primary producers and detritus) to any selected consumer. A list of all consumers in the system will be displayed, and one can select from this. The program then searches through the diet compositions, finds all the pathways from the primary producers to the specified consumer, and then presents these pathways. Further, a summary presents the total number of pathways and the mean length of the pathways (under the Summary of pathways menu item). The latter is calculated as the total number of trophic links divided by the number of pathways.</p>
+        <h3>Consumer &lt;- prey &lt;- TL1</h3>
+        <p>This routine lists all pathways leading from all groups on Trophic Level I (primary producers and detritus) to any selected consumer via a selected prey. A pull-down list of all consumers in the system will be displayed after the heading “Pathways leading to:”. Select the consumer of interest from this list then choose a specific prey from the right-hand pull-down list. The program searches through the diet compositions, finds all the pathways from the primary producers, via the selected prey, to the specified consumer, and then presents the pathways. A summary presents the total number of pathways and the mean length of the pathways (under the Summary of pathways menu item).</p>
+        <h3>Top predator &lt;- prey</h3>
+        <p>Here, one enters a prey group, and the program will find all pathways leading from this prey to all top predators. A summary presents the total number of pathways and the mean length of the pathways (under the Summary of pathways menu item).</p>
+        <h3>Cycles (living)</h3>
+        <p>The routine identifies all cycles in the system excluding detritus and displays these, in ascending order, starting with ‘zero order’ cycles (‘cannibalism’). In addition, the total number and the mean length of the cycles will be displayed.</p>
+        <h3>Cycles (all)</h3>
+        <p>The routine identifies all cycles in the system and displays these, in ascending order, starting with ‘zero order’ cycles (‘cannibalism’). In addition, the total number and the mean length of the cycles will be displayed.</p>
+        <h3>Cycling and path length</h3>
+        <p>The ‘cycling index’ is the fraction of an ecosystem's throughput that is recycled. This index, developed by Finn (1976), is expressed here (Figure 7.9) as a percentage, and quantifies one of Odum's (1969) 24 properties of system maturity (Christensen 1995). Recent work shows this index to strongly correlate with system maturity, resilience and stability.</p>
+        <p>In addition to Finn's cycling index, Ecopath includes a slightly modified ‘predatory cycling index’, computed after cycles involving detritus groups have been removed.</p>
+        <p>The path length is defined as the average number of groups that an inflow or outflow passes through (Finn 1980). It is calculated as</p>
+        <p>Path length = Total System Throughput / (<span class="span_3">å</span> Export + <span class="span_3">å</span> Respiration).</p>
+        <p>As diversity of flows and recycling is expected to increase with maturity, so is the path length. The effects of changes in the ecosystem on the network analysis indices (such as total systems throughput, Finn and predatory cycling indices, ascendency, overhead and their breakdown into various components) can then be plotted over time and compared for various scenarios of Ecosim (see <a href="Network analysis indices in.htm#_Network_analysis_indices">Network analysis indices in Ecosim</a>).</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/03000091.png" style="width: 647px;height: 468px;" />
+        </p>
+        <p>Figure 7.9.</p>
+    </body>
+</html>

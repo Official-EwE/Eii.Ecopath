@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Key indices</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Key_indices"></a><a name="_Toc177320789"></a><span class="span_2">7.4 </span>Key indices</h2>
+        <h3>Biomass accumulation</h3>
+        <p>Ecopath is not necessarily a steady-state model. If the biomass for a group is known, e.g., at the beginning of the year and at the beginning of the next year, the biomass accumulation (BA) can be calculated as the difference between these biomasses. BA is a production term that can be entered for all living groups (default is 0), but is calculated for detritus groups (see section 3.3.5 Detritus fate). BA is a flow term, with a rate unit of, e.g., t / km² / year. The default value for BA is zero indicating no biomass accumulation. A negative value signifies biomass depletion (biomass decreased during period modeled).</p>
+        <p>If B, P/B, Q/B and EE are entered for a group, a prompt will ask during parameterization if you want to estimate BA. If you answer yes to this question the BA will be calculated, overruling any BA you may have entered.</p>
+        <h3>Biomass accumulation rate</h3>
+        <p>Biomass accumulation can also be represented as a rate (i.e., proportion of the total biomass; unit is /year).</p>
+        <h3>Net migration</h3>
+        <p>The net migration is calculated as immigration less emigration. This means that net migration will be negative if there is more coming into the system than leaving it. This may seem contradictory but it should be remembered that a negative mortality yields an increase in population. Fisheries biologists rarely consider migration, at least in biomass terms, and even more rarely quantify it. If the net migration is positive (immigration &gt; emigration), but not entered, the main effect will depend on the previous entries:</p>
+        <ul class="ul_1">
+            <li class="li_1">if the production had been entered, the fraction of production directed toward the detritus will be overestimated; or </li>
+            <li class="li_1">if production was to be estimated, this estimate will be underestimated. </li>
+        </ul>
+        <p>See <a href="Other production.htm#_Other_production">Other production</a> and <a href="Dealing with open system problems.htm#_Representation_of_multi-stanza">Dealing with open system problems</a> for important notes about migration in Ecopath.</p>
+        <h3>Flow to detritus</h3>
+        <p>For each group, the flow to the detritus consists of what is egested (the non-assimilated food) and those elements of the group, which die of old age, diseases, etc., (i.e., of sources of ‘other mortality’, expressed by 1 - EE). The flow to the detritus, expressed, e.g., in t·km-2·year-1, should be positive for all groups.</p>
+        <h3>
+        </h3>
+        <div style="height: 93.6pt;width: 414pt;" class="div_2">
+            <p>Box 4. Problem: Estimation of Q/B for detritivores</p>
+            <p>It is not possible to estimate the consumption/biomass ratio for groups that feed exclusively on detritus. For detritus the production is not defined, and it will be necessary for such detritivores to input an estimate of Q/B (or P/B and an estimate for GE, gross food conversion efficiency).</p>
+            <p>&#160;</p>
+        </div>
+        <h3>&#160;</h3>
+        <h3>Net efficiency</h3>
+        <p>The net food conversion efficiency is calculated as the production divided by the assimilated part of the food, i.e.,</p>
+        <p>Net efficiency = P/B / (Q/B · (1 - GS))</p>
+        <p>where P/B is the production / biomass ratio, Q/B is the consumption / biomass ratio, and GS is the proportion of the food that is not assimilated.</p>
+        <p>The net efficiency can also be expressed</p>
+        <p>Net efficiency = Production / (production + respiration)</p>
+        <p>The net efficiency is a dimensionless fraction. It is positive and, in nearly all cases, less than 1, the exceptions being groups with intermediate trophic modes, e.g., groups with symbiotic algae. The net efficiency cannot be lower than the gross food conversion efficiency, GE.</p>
+        <h3>Omnivory index</h3>
+        <p>The ‘omnivory index’ was introduced in 1987 (Pauly et al., 1993a) in the initial version of the Ecopath II software. This index (OI) is calculated as the variance of the trophic level of a consumer's prey groups. Thus</p>
+        <p>
+            <img src="../Resources/Images/08000057.png" style="width: 207px;height: 43px;" />Eq. 22</p>
+        <p>where, <img src="../Resources/Images/08000058.png" style="width: 24px;height: 21px;" />is the trophic level of prey j, <img src="../Resources/Images/08000059.png" style="width: 23px;height: 19px;" /> is the trophic level of the predator i, and, <img src="../Resources/Images/0800005A.png" style="width: 29px;height: 21px;" /> is the proportion prey j constitutes to the diet of predator i.</p>
+        <p>When the value of the omnivory index is zero, the consumer in question is specialized, i.e., it feeds on a single trophic level. A large value indicates that the consumer feeds on many trophic levels. The omnivory index is dimensionless. </p>
+        <p>The square root of the omnivory index is the standard error of the trophic level, and a measure of the uncertainty about its precise value due to both omnivory and sampling variability.</p>
+    </body>
+</html>

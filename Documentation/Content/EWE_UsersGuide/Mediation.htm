@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Mediation</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Mediation_1"></a><a name="_Toc177320818"></a><span class="span_2">8.7 </span>Mediation</h2>
+        <p>You can define a series of ‘trophic mediation functions’ that are used to modify vulnerabilities of selected prey types i to their predators j using Ecosim’s Mediation form (see Using the trophic mediation form below for instructions, although you should read this brief introduction first).&#160; </p>
+        <p>It is not uncommon for some third type of organism (i.e., mediating organism) to affect the feeding rate of one type of organism j on another i.&#160; At least two types of effects are possible:</p>
+        <p>Facilitation: the third organism type behaves in some way that makes type i prey more available to predator j when the third organism is more abundant.&#160; For example, pelagic piscivores like tuna may drive smaller fishes to the surface, where these fishes are then more available to birds. This is a concern for marine mammals and birds in the Eastern Pacific Ocean, at least in areas where heavy fishing has reduced abundances of tunas and billfishes.</p>
+        <p>Protection: the third organism provides protection for prey type i when the third organism is more abundant.&#160; For example, juvenile fishes (as type i prey) may use corals, macrophytes, and/or sponges for protection from predators, and fishing may directly impact these ‘cover’ types. K. Sainsbury (pers. comm.) has emphasized the possible importance of this effect for evaluating impact of trawling on the Northwest Shelf of Australia.&#160; For another example, increases in phytoplankton may reduce water clarity and hence search efficiency of visual predators on small fishes, which would tend to reinforce the ‘cascade effect’ of increasing abundance of small fishes causing reduced zooplankton abundance and hence increased phytoplankton abundance.</p>
+        <p>Each trophic mediation function is defined in the following steps: </p>
+        <ol start="1" class="ol_3">
+            <li>Sketch a functional form (Mediation shape on the Mediation form) for the mediation effect (i.e. the mediation affect as a function of the biomass of the mediating organism); </li>
+        </ol>
+        <ol start="2" class="ol_3">
+            <li>Define the X variable for each function by specifying relative weightings for the effects of different mediating organisms. Weightings can be specified for one or more Ecopath groups, so that X becomes a weighted sum of mediating organism biomasses (i.e., more than one group can have the same trophic mediation effect but to different degrees); and</li>
+        </ol>
+        <ol start="3" class="ol_3">
+            <li>Applying the ‘trophic mediation function’ to specific predator-prey interactions (using the <a href="Apply mediation.htm#_Apply_mediation">Apply mediation</a> form).</li>
+        </ol>
+        <p>Sketching a function that increases with increasing X represents facilitation effects (prey more vulnerable when X is large), while sketching a function that decreases with X represents protection effects (prey less vulnerable when X is large).&#160; The idea behind making X a weighted sum of third organism biomasses is to:</p>
+        <ol start="1" class="ol_3">
+            <li>Allow differential protective ‘quality’ for alternative organisms that provide cover for prey; and </li>
+        </ol>
+        <ol start="2" class="ol_3">
+            <li>Recognize that several different groups may have different tendencies to generate facilitation effects, e.g., some tunas may commonly chase bait fishes to the surface while others may not.</li>
+        </ol>
+        <p>The sketch function approach allows considerable flexibility in specifying the form of the relationship between third organisms and trophic vulnerabilities. Such effects are essentially statistical, and cannot usually be described by any simple functional form. Effects may only occur above/below some threshold abundances, may or may not be large even when third organism abundances are very low, etc.&#160; </p>
+        <p>To avoid unnecessary parameter specification, the functions are automatically scaled relative to Ecopath baseline inputs: the X axis of each function is scaled relative to the weighted initial sum of third organism biomasses, and the function is internally scaled so that Y=1.0 when X = Ecopath initial weighted sum.&#160; The only restriction on the form of the function is that the user must not specify a relative Y value of 0.0 when X = Ecopath base value.</p>
+        <p>Internally, the Ecosim routines use the trophic mediation functions to modify prey vulnerabilities vij in the basic trophic flow equations.&#160; At each simulation time step, any i,j flow that has been defined to be affected by a mediation function is modified to use an effective vi,j = vi,j base · Y/Yo, where Y is the current value of the mediation function, which depends on the current X of that function, and Yo is the value of the function when X = Ecopath base weighted sum of mediating biomasses.</p>
+        <p>Using the trophic mediation form</p>
+        <p>To implement trophic mediation in Ecosim, open the Mediation form (Time dynamic (Ecosim) &gt; Input &gt; Mediation; see Figure 8.9). Note you must have an <a href="Getting started in Ecosim.htm#_Loading_Ecosim_scenario">Ecosim scenario loaded </a>before you can use the Mediation form. There are three steps to the process: </p>
+        <p>1. Define trophic mediation shapes;</p>
+        <p>2. Define and edit relative weight of impacting groups; and</p>
+        <p>3. Apply trophic mediation shapes to predator-prey interactions.</p>
+        <p>Details of each step are given below.</p>
+        <h3>Step 1. Define trophic mediation shapes </h3>
+        <p>When you open the Mediation form for the first time, you will see nine ‘blank’ mediation shapes with default value of 0.5. To define a mediation shape, first select one of these blank shapes. You can then define trophic mediation shapes in one of two ways:  </p>
+        <ol start="1" class="ol_8">
+            <p>Shapes can be drawn freehand using the blue sketch pad. You will see your sketched shape transferred to the thumbnail in the bottom pane;</p>
+            <p>Alternatively, you can use standard mathematical shapes. Click Options… at the top of the Mediation form to open the Options dialogue box. Select Shape from the menu on the left of the dialogue box (Figure 8.10a) to see a list of standard shapes (e.g., linear, sigmoid, exponential, ...). You can tailor the shape to your specific requirements by setting the Y Zero, Y End, Y Base and Steepness parameters in the cells provided. Select Options from the menu on the left of the dialogue box for display settings (Figure 8.10b).</p>
+        </ol>
+        <h3>Reset mediation shape</h3>
+        <p>Clicking the Reset button at the top of the Mediation form resets the current trophic mediation shape&#160; to the default value of 1.0.</p>
+        <h3>Save …</h3>
+        <p>Clicking the Save… button at the top of the Mediation form opens a dialogue box prompting you to save the current trophic mediation shape to a bitmap file (.bmp). Use this dialogue box to name the file and browse for a location to save it.</p>
+        <p>There are four additional menu items on the bottom pane of the Forcing function form that allow you add, copy, rename and delete forcing or seasonal shapes.</p>
+        <h3>Add…</h3>
+        <p>Adds an extra blank mediation shape. </p>
+        <h3>Duplicate</h3>
+        <p>Copies the currently-selected mediation shape.</p>
+        <h3>Remove</h3>
+        <p>Removes the currently-selected mediation shape.</p>
+        <h3>Rename</h3>
+        <p>Rename the currently-selected mediation shape by selecting Rename. You will then be able to type in a new name for the shape.</p>
+        <h3>Step 2. Define and edit relative weight of impacting groups</h3>
+        <p>The Edit relative weight (Edit…) button is found in the middle of the Mediation form just above the Relative weight graph (see Figure 8.9). As discussed above, the relative weightings are used to assign a weighted sum of third organism biomasses to the X axis of each trophic mediation function to represent several different groups having the same trophic mediation effect but to different degrees. Note that third-party groups can be functional groups of organisms (Ecopath groups) or fishing fleets.</p>
+        <p>Assign relative weightings in the following steps:</p>
+        <p>1. First, you must select a Mediation shape from the set of mediation shapes at the bottom of the Mediation form. Once you have selected the desired mediation shape, click the Edit… button to open a form to assign relative weightings by group for that particular mediation shape (Define biomass percentage form; Figure 8.11). </p>
+        <p>2. On the Define biomass percentage form, select third-party groups/fleets from the menu on the left and move them to the Assigned groups and fleets table using the green arrow. </p>
+        <p>3. For each third-party group, assign a relative weighting using the Relative weight box at the top of the form. To illustrate this: if you believe three of your model groups (Group 3, Group 4 and Group 5) act as third-party groups by facilitating a particular predator-prey interaction (represented by Mediation Shape 1), and you enter 2 for Group 3, 1 for Group 4, and 0.5 for Group 5, the biomasses on the X-axis of Mediation Shape 1 will be weighted as 2 · B3 + 1 · B4 + 0.5 · B5.</p>
+        <p>4. When you have finished assigning relative weightings, click OK.</p>
+        <p>Relative weights for each group will now be displayed as a bar graph on the lower panel of the Mediation form, with Ecopath Groups on the X-axis and Relative weight on the Y-axis (Figure 8.12).</p>
+        <p>
+            <img src="../Resources/Images/0300009C.png" style="width: 553px;height: 402px;" />
+        </p>
+        <p>Figure 8.9</p>
+        <img src="../Resources/Images/0300009D.png" style="width: 319px;height: 283px;" />&#160; <img src="../Resources/Images/0300009E.png" style="width: 319px;height: 284px;" /><p>Figure 8.10a &amp; b</p><p>&#160;</p><p>&#160;</p><p><img src="../Resources/Images/0300009F.png" style="width: 553px;height: 383px;" /></p><p>Figure 8.11. </p><p><img src="../Resources/Images/030000A0.png" style="width: 553px;height: 402px;" /></p><p>Figure 8.12</p><h3>Step 3. Apply mediation shapes</h3><p>After you have defined the mediation shapes continue to the <a href="Apply mediation.htm#_Apply_mediation">Apply mediation</a> form to define the predator-prey relationships that each of the mediation functions impact. This step is essential as your trophic mediation functions cannot be applied without it.</p></body>
+</html>

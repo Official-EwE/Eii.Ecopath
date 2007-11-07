@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Search rates</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Search_rates"></a><a name="_Toc177320797"></a><span class="span_4">7.12 </span>Search rates</h2>
+        <p><a name="_Fishery_1"></a>One surprising feature of the system of linear equations underlying the Ecopath approach is that it can be used to estimate the Lotka-Volterra mass-action term ‘a’, which has the dimension of a volume searched per unit time by a given predator j seeking a certain prey i.&#160; If we start from the first Ecopath Master Equation:</p>
+        <p>
+            <img src="../Resources/Images/08000078.png" style="width: 385px;height: 48px;" />
+        </p>
+        <p>where B is biomass, P production rate, EE the ecotrophic efficiency, C the catch rate, BA the biomass accumulation rate, E the net migration rate, Q the consumption rate, DCji the proportion i contributes to the diet of j (each of the consumers). Separating the biomass accumulation rate, BA, and re-expressing as a differential equation:</p>
+        <p>
+            <img src="../Resources/Images/08000079.png" style="width: 440px;height: 48px;" />
+        </p>
+        <p>
+            <img src="../Resources/Images/0800007A.png" style="width: 251px;height: 48px;" />
+        </p>
+        <p>where Qji expresses the consumption rate for consumer j of prey i. We can then solve for aji = Qji/(Bj·Bi), which defines the Lotka-Volterra mass-action term a the quotient of the amount of i consumed by j, divided by the product of their biomasses. </p>
+        <p>This mass-action term is used as ‘fixed support’ for the ‘lever’ which, in Ecosim, regulates the consumption of predators, given the changing biomasses of their preys, and their own changing biomasses.</p>
+        <p>The values of ‘a’ depend obviously on the units used, and the biomass units used in Ecopath render difficult a direct interpretation of the numbers in the ‘Search rate’ table. However, they can easily be converted into values of ‘a’ applying to single organisms, given that the ratio of the individual prey and predator weights are divided into the values of ‘a’ for each pair of prey and predator.&#160; </p>
+    </body>
+</html>

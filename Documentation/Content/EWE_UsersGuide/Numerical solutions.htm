@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Numerical solutions</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Toc177320752"></a><a name="_Toc120960666"></a><a name="_Toc480787450"></a><span class="span_2">4.7 </span>Numerical solutions</h2>
+        <p>Ecospace is based on the same set of differential equations as used in Ecosim, and in essence performs a complete set of Ecosim calculations for each cell for each time step. This represents a formidable amount of computations, but fortunately it has been possible to take a number of shortcuts to speed the processing up to an acceptable rate. Briefly explained the background for this takes its starting point in <MadCap:xref href="Ecosim basic.htm#_Ref478390841" mc-format="{para}">See "Eq. 50"</MadCap:xref> (on page <MadCap:xref href="Ecosim basic.htm#_Ref478390841" mc-format="{page}">See "Eq. 50"</MadCap:xref>), which expresses the rate of change for each biomass pool over time. If the rate constants were constant over time (they are not, but if!) the biomass would change as a linear dynamical system, and would move exponentially towards an equilibrium given by (omitting indices for cell and biomass pools)</p>
+        <p>
+            <img src="../Resources/Images/08000049.png" style="width: 83px;height: 41px;" />&#160; Eq. 71</p>
+        <p>while following the time trajectory </p>
+        <p>
+            <img src="../Resources/Images/0800004A.png" style="width: 205px;height: 25px;" />Eq. 72</p>
+        <p>Denoting the exponential weight term above Wt this can be re-expressed as,</p>
+        <p><a name="_Ref478391602"></a>
+            <img src="../Resources/Images/0800004B.png" style="width: 181px;height: 24px;" />Eq. 73</p>
+        <p>Hence, if input and output rates were constant, the time solutions would behave as weighted averages of past values and equilibrium values with weights depending on the mortality and migration rates. Using expressions of the type in <MadCap:xref href="#_Ref478391602" mc-format="{para}">See "Eq. 73"</MadCap:xref> the Ecospace computations can be greatly increased by using a variable time splitting where moving equilibria are calculated for groups with high turnover rates, (e.g., phytoplankton), while the integrations for groups with slower turnover rates, (e.g., fish and marine mammals) are based on a Runge-Kutta method. Comparisons indicate that this does not change the resulting time patterns for solutions in any noticeable way – hence, the ‘wrong’ assumption of time rate constancy introduced above is useful for speeding up the computations without noticeable detraction of the final results. The resulting computations are carried out orders of magnitude faster than it the time splitting was not included.</p>
+        <p>
+        </p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+    </body>
+</html>
