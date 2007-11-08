@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head><title></title>
         <link href="../Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
         <div>
-            <p>41</p>
+            <p>Please note: All help topics are currently in draft format. Please send your comments to support@ecopath.org.</p>
         </div>
         <MadCap:bodyProxy />
         <div>
-            <p>EwE 6.0 DRAFT help files© Lenfest Oceans Futures Project 2007</p>
-            <p>&#160;</p>
+            <p>© Lenfest Oceans Futures Project 2007</p>
         </div>
     </body>
 </html>
