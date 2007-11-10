@@ -6,10 +6,10 @@
     <body>
         <h2><a name="_Fleet_size_dynamics_1"></a><a name="_Toc177320825"></a><span class="span_4">8.14 </span>Fleet size dynamics</h2>
         <p>Ecosim users can choose to treat dynamics of fleet sizes and resulting fishing effort as unregulated and subject to fisher investment and operating decisions. The models are described in detail in the introductory material (<a href="Primary production.htm#_Modelling_effort_dynamics_1">Modelling effort dynamics</a>) and are also described briefly here. </p>
-        <p>Users wishing to use the fleet/effort dynamics model should check the “fleet/effort response” box on the <a href="Run ecosim.htm#_Biomass_1">Run Ecosim</a> form in Ecosim. When this box is checked, Ecosim erases all previously entered time patterns for fishing efforts and fishing rates (e.g., from the sketch pad or from the time series data file), and replaces these with simulated values generated as each simulation proceeds. </p>
+        <p>Users wishing to use the fleet/effort dynamics model should check the “fleet/effort response” box on the <a href="Ecosim parameters.htm">Ecosim parameters</a> form. When this box is checked, Ecosim erases all previously entered time patterns for fishing efforts and fishing rates (e.g., from the sketch pad or from the time series data file), and replaces these with simulated values generated as each simulation proceeds. </p>
         <p>In this model, there are two time scales of fisher response: (1) a short time response of fishing effort to potential income from fishing, and (2) a longer time investment/depreciation model for capital capacity. You need to set two parameters for the short time response model (‘Effort response power’ and ‘Initial effort/capital capacity’) and two for the longer time model (‘Capital depreciation rate’and ‘Initial capital growth rate’).</p>
-        <p>1. Fast time reponse model</p>
-        <p>For each time step, the “fast” effort response for the next (monthly) time step is predicted by a sigmoid function of income per effort and current fleet capacity. For each gear, g, at each monthly timestep, t, Effort, Eg,t is the current amount of active, searching gear, i.e., </p>
+        <h3>1. Fast time reponse model</h3>
+        <p>For each time step, the “fast” effort response for the next (monthly) time step is predicted by a sigmoid function of income per effort and current fleet capacity. For each gear, <i>g</i>, at each monthly timestep, t, Effort, Eg,t is the current amount of active, searching gear, i.e., </p>
         <p>
             <img src="../Resources/Images/080000A9.png" style="width: 120px;height: 53px;" />
         </p>
@@ -23,7 +23,7 @@
         <p>This parameter is the ratio of initial fishing effort to fleet capacity (i.e., the proportion of maximum effort deployed in the first time step). It is used to set the initial fleet capacity Kg,1 as well as the income level needed for half the maximum effort to be deployed (Ihg).</p>
         <p>Calculating Kg,1: For each fleet, initial fleet capacity K1 is calculated as the inverse of ‘Initial effort/capital capacity’ (initial effort is scaled to be 1 at Ecopath base condition), i.e., if ‘Initial effort/capital capacity’ is set at 0.5, then the fleet capacity will be set to 2 because half of the maximum effort is deployed. Kg,t is updated at each time step using the slow time response model.</p>
         <p>Calculating Ihg: ‘Initial effort/capital capacity’&#160; is also used to calculate Ihg. When the ratio is set at the 0.5 default value, Ihg is set to the initial income (summed over pools of Ecopath base catches x prices for each fleet).</p>
-        <p>2. Slow time reponse model</p>
+        <h3>2. Slow time reponse model</h3>
         <p>For each fleet, slow effort responses are modelled as changes in fleet capacity (Kg,t), which is a function of the ‘Capital depreciation rate’, the ‘Capital growth rate’ and Profit (calculated dynamically in Ecosim). See <a href="Hints for fitting models to.htm#_Fleet_and_effort">Modelling effort dynamics</a> for full description of the model.</p>
         <h3>Capital depreciation rate</h3>
         <p>Set the rate of capital depreciation here. Capital depreciation rates for fishing fleets are typically in the range 0.04 to 0.10 (equipment lasts 10-25 yrs), although will vary on a fleet by fleet basis.</p>
