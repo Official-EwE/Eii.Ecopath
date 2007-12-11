@@ -7,7 +7,7 @@
         <h2><a name="Run Ecosim"></a><a name="_Toc177320828"></a><span class="span_2">9.2 </span>Run Ecosim</h2>
         <p>The Ecosim module of EwE provides two ways to explore impacts of alternative fishing policies:</p>
         <p>1.Fishing rates can be ‘sketched’ over time and results (catches, economic performance indicators, biomass changes) examined for each sketch. This is using Ecosim in a ‘gaming’ mode, where the aim is to encourage rapid exploration of options (see below for help with this approach).</p>
-        <p>2.Formal optimization methods can be used to search for fishing policies that would maximize a particular policy goal or ‘objective function’ for management (see <a href="runs.htm#_Using_Ecosim_for">Using Ecosim for policy exploration</a> for help with this approach).</p>
+        <p>2.Formal optimization methods can be used to search for fishing policies that would maximize a particular policy goal or ‘objective function’ for management (see <a href="Monte Carlo runs.htm#_Using_Ecosim_for">Using Ecosim for policy exploration</a> for help with this approach).</p>
         <p>The first approach has been widely applied for exploring ecosystem effects of changes in fishing effort and is implemented using the Biomass form, the main form for running Ecosim (Time dynamic (Ecosim) &gt; Output &gt; Biomass). </p>
         <p>Before running Ecosim, you should be familiar with the introductory material (see links in <a href="Introductory material Ecosim.htm">Introductory material Ecosim</a>, also found in Chapter 3 of the User Guide).</p>
         <p>Running Ecosim</p>
@@ -26,24 +26,24 @@
         <p>To set linear trend for change in fishing rates: if you first click the start point with the left mouse button, and then the end point with shift + the left mouse button, a line will be drawn between the two points. Use this to enter, e.g., a linear increase over time in relative fishing rates.</p>
         <h3>Features of the upper (Ecosim biomass output) panel</h3>
         <h3>Overlay</h3>
-        <p>Check the Overlay box to display subsequent runs on the same plot (i.e., the plot is not cleared when the Run button is pressed).</p>
+        <p>Check the <i>Overlay</i> box to keep the outputs of subsequent runs. Results can be viewed under the <i>Layers</i> tab.</p>
         <h3>Annual output</h3>
-        <p>Check the Annual output box to display</p>
+        <p>&#160;</p>
         <h3>Scale</h3>
-        <p>Check the Scale box to display</p>
+        <p style="font-style: normal;">Check the <i>Fixed scale</i> checkbox to fix the Y axis of the main display. Set the Y axis upper value using the <i>Y axis value</i> box.</p>
         <h3>Show/hide groups</h3>
         <p>Opens a form for hiding/displaying groups on the biomass graph.</p>
         <h3>Sum of squared deviations (SS)</h3>
         <p>This is an Ecosim output. When an Ecosim model is loaded, you can load time series ‘reference’ data on relative and absolute biomasses of various groups over a particular historical period, along with estimates of changes in fishing impacts over that period.&#160; After time series data have been loaded and applied (see <a href="Time series.htm#_Time_series">Time series</a>), a statistical measure of goodness of fit to these data is generated each time Ecosim is run.&#160; This goodness of fit measure is a weighted sum of squared deviations (SS) of log biomasses from log predicted biomasses, scaled in the case of relative abundance data by the maximum likelihood estimate of the relative abundance scaling factor q in the equation y = qB (y = relative abundance, B = absolute abundance).</p>
         <p>See <a href="Time series fitting in Ecosim.htm#_Time_series_fitting">Time series fitting in Ecosim</a> for more details about the sum of squared deviations measure.</p>
-        <h3>Main upper panel </h3>
-        <p>The main part of the upper panel is used to display Ecosim’s predicted time series of biomass for groups selected using the Show/hide groups form. Biomasses are shown relative to their baseline Ecopath values. If time series have been loaded and applied, they will be displayed as colored dots on the graph, while Ecosim’s predicted outputs will be displayed as colored lines (Figure xx1).</p>
+        <h3>Main display <![CDATA[ ]]></h3>
+        <p>The main part of the upper panel is used to display Ecosim’s predicted time series of biomass for groups selected using the Show/hide groups form. Biomasses are shown relative to their baseline Ecopath values. If time series have been loaded and applied, they will be displayed as coloured dots on the graph, while Ecosim’s predicted outputs will be displayed as coloured lines (Figure 9.1).</p>
         <p>Vertical red lines indicate when to start averaging results for before/after comparisons (displayed using the Results button, see <MadCap:xref href="file:///C:/Ecopath/Ecopath6/Documentation/EWE_UsersGuide.doc#_Ref484825119" mc-format="{para}">Figure 62</MadCap:xref>). Use a left mouse-click to drag the lines to their desired positions. </p>
         <h3>Group tab</h3>
-        <p>To the right of the upper panel, under the Group tab, a smaller panel displays the groups’ names, in the same colors as used for the biomass lines, in order of group number. Clicking on the name of any group in this panel (and releasing the mouse button) results in all other groups being greyed out so that the group of interest can be clearly seen. Click on All groups at the top of the list to return all groups to their original colors.</p>
+        <p>To the right of the upper panel, under the <i>Group</i> tab, a smaller panel displays the groups’ names, in the same colors as used for the biomass lines. Clicking on the name of any group in this panel (and releasing the mouse button) results in all other groups being greyed out so that the group of interest can be clearly seen. Click on <i>All groups</i> at the top of the list to return all groups to their original colors.</p>
         <h3>Layer tab</h3>
-        <p>Behind the Group tab is the Layer tab.</p>
-        <p>Run Ecosim and view outputs</p>
+        <p>Behind the <i>Group</i> tab is the<i> Layer</i> tab. If the user has checked the <i>Overlay</i> checkbox, outputs of different runs will be displayed on different layers.</p>
+        <h3>Running Ecosim and viewing outputs</h3>
         <h3>Run</h3>
         <p>Click Run to generate time series of biomasses (which will be displayed in the upper panel). The magnitude of changes for each group will depend on many factors, chiefly the fishing regime and the <a href="Vulnerabilities flow control.htm#_Vulnerabilities">vulnerability</a> settings.</p>
         <p>Note that fishing regimes should generally change gradually from one fishing mortality level to the next, not abruptly. Also, the baseline (Ecopath) fishing mortality should be left unchanged for a year or so.</p>

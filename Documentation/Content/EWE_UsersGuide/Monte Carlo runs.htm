@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>runs</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><a name="_Monte_Carlo_runs"></a><a name="_Toc177320831"></a><span class="span_2">9.12 <![CDATA[ ]]></span>Monte Carlo runs</h2>
+        <p>Ecosim allows users to use a Monte Carlo approach to search for Ecopath parameter-combinations that improve the fit of the model to time series data (i.e., reduce the weighted sum of squared deviations, SS; see <a href="Time series fitting in Ecosim.htm#_Time_series_fitting">Time series fitting in Ecosim</a>). The Monte Carlo approach can be used to test for sensitivity of Ecosim’s outputs to Ecopath input parameters.</p>
+        <p>To use the Monte Carlo interface, open the Monte carlo runs form (Time dynamic (Ecosim) &gt; Output &gt; Monte carlo runs; Figure 9.6). </p>
+        <h3>Monte Carlo inputs</h3>
+        <h3>Number of simulation trials</h3>
+        <p>Set the number of trials. Each trial represents an Ecosim run with a randomly-selected set of Ecopath parameters (B, P/B, EE, BA) for each group. Parameters are drawn from a uniform distribution centred on the base Ecopath value with coefficient of variation (c.v.) set by the user. </p>
+        <h3>Show biomass trajectories on Ecosim plot</h3>
+        <p>Displays Ecosim results on the Biomass plot tab in the lower panel of the form.</p>
+        <h3>Retain better fitting estimates (use trials to seach)</h3>
+        <p>Retains …</p>
+        <h3>Retain current Ecosim fishing rate pattern</h3>
+        <p>Retains </p>
+        <h3>Apply time series</h3>
+        <p>Opens a dialogue box where you can apply time series that have been loaded into Ecosim (i.e., you do not have to return to the Time series form to apply time series). You can also remove time series from the analysis using this dialogue box. See <a href="Time series.htm#_Time_series">Time series</a> for more information about loading time series in Ecosim.</p>
+        <h3>B, P/B, EE, BA</h3>
+        <p>The Ecopath parameters tabs in the lower panel show the mean, lower limit and upper limit of the distribution used to draw random values for B, P/B, EE and BA for each group in the model. The mean of the distribution is set as the base Ecopath value of the parameter. Users can set the coefficient of variation (c.v.) which is then used to calculate the upper and lower limits of the distribution (upper limit = mean + 2*c.v.*mean; lower limit = mean - 2*c.v.*mean). For parameters you do not wish to change, set the c.v. to zero. Setting the c.v. for a group for one parameter applies the same c.v. to all parameters.</p>
+        <p>Note that the parameter combinations resulting from the random draw must result in a balanced Ecopath model (i.e., before running each trial, Ecosim keeps drawing new sets of parameters until a balanced Ecopath model is achieved). This means that the range of the parameter values actually used may be smaller than that set by the user. Users should check the range of the input parameters that were actually used in the trials in the output csv (see below).</p>
+        <h3>Monte Carlo outputs</h3>
+        <h3>Trial</h3>
+        <p>Tracks the current trial number.</p>
+        <h3>Ecopath runs</h3>
+        <p>Tracks the number of parameter-combinations tried until a balanced Ecopath model is achieved. Note that the maximum number of tries is 2000. If a trial reaches 2000 Ecopath runs then a balanced model could not be achieved with any parameter combinations and the simulation trial is run with an unbalanced model. This may indicate that the c.v.s have been set too large, reducing the likelihood of finding parameter values that combine to produce a balanced model.</p>
+        <h3>SS measures</h3>
+        <p>At the top right-hand side of the form, the original (i.e., before the simulation) weighted sum of squared deviations (SS) is shown. Current SS shows the value of SS achieved for the current trial. Best SS shows the lowest SS achieved for any of the runs.</p>
+        <h3>Data from best fitting trial</h3>
+        <p>After all trials have been completed, the parameter-values that resulted in the lowest SS are shown on the second-last tab in the lower panel of the form. When the trials are complete, the software automatically displays this tab.&#160; </p>
+        <h3>Biomass plot</h3>
+        <p>If the Show biomass trajectories on Ecosim plot box is checked, biomass trajectories are displayed for each trial on the Biomass plot tab (Figure 9.7). This tab is automatically displayed when you click Run trials.</p>
+        <p>You can choose to overlay trajectories for each trial, switch from monthly to annual output and scale the results using check boxes. Show/hide groups, highlighting of trajectories for a single group and viewing of layers is also enabled, with the same functionality as for the <a href="Run ecosim.htm#_Biomass_1">Run Ecosim</a> form.</p>
+        <p>The Apply best fits button applies the parameter-values that resulted in the lowest SS (shown on the Data from best fitting trial tab) to your Ecopath model (i.e., overwrites the original values). </p>
+        <p>Warning: it is a good idea to save a backup of your model using Save as on the File menu before you overwrite your original parameters using Apply best fits!</p>
+        <h3>Export results</h3>
+        <p>Not implemented yet</p>
+        <p><a name="_Fishing_policy_search"></a><a name="_Using__Ecosim"></a><a name="_Using_Ecosim_for"></a>
+            <img src="../Resources/Images/030000AF.png" style="width: 647px;height: 486px;" />
+        </p>
+        <p>Figure 9.6</p>
+        <p>
+            <img src="../Resources/Images/030000B0.png" style="width: 647px;height: 486px;" />
+        </p>
+        <p>Figure 9.7</p>
+    </body>
+</html>
