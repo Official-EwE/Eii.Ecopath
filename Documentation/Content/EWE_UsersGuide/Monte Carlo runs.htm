@@ -4,23 +4,23 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Monte_Carlo_runs"></a><a name="_Toc177320831"></a><span class="span_2">9.12 <![CDATA[ ]]></span>Monte Carlo runs</h2>
-        <p>Ecosim allows users to use a Monte Carlo approach to search for Ecopath parameter-combinations that improve the fit of the model to time series data (i.e., reduce the weighted sum of squared deviations, SS; see <a href="Time series fitting in Ecosim.htm#_Time_series_fitting">Time series fitting in Ecosim</a>). The Monte Carlo approach can be used to test for sensitivity of Ecosim’s outputs to Ecopath input parameters.</p>
-        <p>To use the Monte Carlo interface, open the Monte carlo runs form (Time dynamic (Ecosim) &gt; Output &gt; Monte carlo runs; Figure 9.6). </p>
+        <h2><a name="_Monte_Carlo_runs"></a><a name="_Toc177320831"></a><span class="span_2">9.6 <![CDATA[ ]]></span>Monte Carlo runs</h2>
+        <p>Ecosim allows users to use a Monte Carlo approach to search for Ecopath parameter-combinations that improve the fit of the model to time series data (i.e., reduce the weighted sum of squared deviations, SS; see <a href="Time series fitting in Ecosim.htm#_Time_series_fitting">Time series fitting in Ecosim</a>). The Monte Carlo approach can also be used to test for sensitivity of Ecosim’s outputs to Ecopath input parameters.</p>
+        <p>To use the Monte Carlo interface, open the <i>Monte Carlo runs</i> form (Time dynamic (Ecosim) &gt; Output &gt; Tools &gt;Monte Carlo runs; Figure 9.6). </p>
         <h3>Monte Carlo inputs</h3>
         <h3>Number of simulation trials</h3>
         <p>Set the number of trials. Each trial represents an Ecosim run with a randomly-selected set of Ecopath parameters (B, P/B, EE, BA) for each group. Parameters are drawn from a uniform distribution centred on the base Ecopath value with coefficient of variation (c.v.) set by the user. </p>
         <h3>Show biomass trajectories on Ecosim plot</h3>
-        <p>Displays Ecosim results on the Biomass plot tab in the lower panel of the form.</p>
-        <h3>Retain better fitting estimates (use trials to seach)</h3>
+        <p>Displays Ecosim results on the <i>Biomass plot</i> tab in the lower panel of the form.</p>
+        <h3>Retain better fitting estimates (use trials to search)</h3>
         <p>Retains …</p>
         <h3>Retain current Ecosim fishing rate pattern</h3>
         <p>Retains </p>
         <h3>Apply time series</h3>
         <p>Opens a dialogue box where you can apply time series that have been loaded into Ecosim (i.e., you do not have to return to the Time series form to apply time series). You can also remove time series from the analysis using this dialogue box. See <a href="Time series.htm#_Time_series">Time series</a> for more information about loading time series in Ecosim.</p>
         <h3>B, P/B, EE, BA</h3>
-        <p>The Ecopath parameters tabs in the lower panel show the mean, lower limit and upper limit of the distribution used to draw random values for B, P/B, EE and BA for each group in the model. The mean of the distribution is set as the base Ecopath value of the parameter. Users can set the coefficient of variation (c.v.) which is then used to calculate the upper and lower limits of the distribution (upper limit = mean + 2*c.v.*mean; lower limit = mean - 2*c.v.*mean). For parameters you do not wish to change, set the c.v. to zero. Setting the c.v. for a group for one parameter applies the same c.v. to all parameters.</p>
-        <p>Note that the parameter combinations resulting from the random draw must result in a balanced Ecopath model (i.e., before running each trial, Ecosim keeps drawing new sets of parameters until a balanced Ecopath model is achieved). This means that the range of the parameter values actually used may be smaller than that set by the user. Users should check the range of the input parameters that were actually used in the trials in the output csv (see below).</p>
+        <p>The Ecopath parameters tabs in the lower panel show the mean, lower limit and upper limit of the distribution used to draw random values for B, P/B, EE and BA for each group in the model. The mean of the distribution is set as the base Ecopath value of the parameter. Users can set the coefficient of variation (c.v.) which is then used to calculate the upper and lower limits of the distribution (upper limit = mean + 2*c.v.*mean; lower limit = mean - 2*c.v.*mean). For parameters you do not wish to change, set the c.v. to zero. </p>
+        <p>Note that the parameter combinations resulting from the random draw must result in a balanced Ecopath model (i.e., before running each trial, Ecosim keeps drawing new sets of parameters until a balanced Ecopath model is achieved). This means that the range of the parameter values actually used may be smaller than that set by the user. Users should check the range of the input parameters that were actually used in the trials in the output .csv file(see below).</p>
         <h3>Monte Carlo outputs</h3>
         <h3>Trial</h3>
         <p>Tracks the current trial number.</p>
@@ -33,8 +33,8 @@
         <h3>Biomass plot</h3>
         <p>If the Show biomass trajectories on Ecosim plot box is checked, biomass trajectories are displayed for each trial on the Biomass plot tab (Figure 9.7). This tab is automatically displayed when you click Run trials.</p>
         <p>You can choose to overlay trajectories for each trial, switch from monthly to annual output and scale the results using check boxes. Show/hide groups, highlighting of trajectories for a single group and viewing of layers is also enabled, with the same functionality as for the <a href="Run ecosim.htm#_Biomass_1">Run Ecosim</a> form.</p>
-        <p>The Apply best fits button applies the parameter-values that resulted in the lowest SS (shown on the Data from best fitting trial tab) to your Ecopath model (i.e., overwrites the original values). </p>
-        <p>Warning: it is a good idea to save a backup of your model using Save as on the File menu before you overwrite your original parameters using Apply best fits!</p>
+        <p>The <i>Apply best fits</i> button applies the parameter-values that resulted in the lowest SS (shown on the <i>Data from best fitting trial</i> tab) to your Ecopath model (i.e., overwrites the original values). </p>
+        <p>Warning: it is a good idea to save a backup of your model using <i>Save as</i> on the <a href="File menu.htm">File menu</a> before you overwrite your original parameters using <i>Apply best fits</i>!</p>
         <h3>Export results</h3>
         <p>Not implemented yet</p>
         <p><a name="_Fishing_policy_search"></a><a name="_Using__Ecosim"></a><a name="_Using_Ecosim_for"></a>
