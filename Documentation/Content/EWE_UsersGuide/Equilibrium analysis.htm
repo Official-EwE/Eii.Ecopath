@@ -4,13 +4,13 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Toc177320836"></a><a name="_Toc120960653"></a><span class="span_4">9.11 <![CDATA[ ]]></span>Equilibrium analysis</h2>
+        <h2><span class="span_4">9.11 <![CDATA[ ]]></span>Equilibrium analysis</h2>
         <p>This analysis takes the partial derivatives of the differential equations which define Ecosim (dB/dt = f(fishing rate, predation rate, etc.) with regard to fishing mortality (<span class="span_3">d</span>B/<span class="span_3">d</span>F), and sets these equal zero to identify the biomass values that would result from the continued application of the different levels of fishing mortality (F).</p>
         <p>The analysis can be performed by varying F for different fleet (in which case the x-axis is a multiplier of its effort) or for different groups (in which case the x-axis has the dimension /year).</p>
         <p>The results consist of a plot, centered about the Ecopath baseline value of F with, on the left, the biomasses of different groups resulting from low F (including F = 0 at the leftmost side of the graph), and on the right, the biomasses resulting from increasing effort above its Ecopath baseline.</p>
         <p>To accommodate a large number of groups, the y-scale can be represented as multiple of the biomasses in the underlying Ecopath files, with 8x the upper, and 1/8 the lower limit; further a linear scale for the biomass ratios can be activated by pressing the ‘linear-scale’ button.</p>
         <p>Also, the total value and the total catch is shown on the plot (unless hidden using the ‘Hide’ button in Ecosim.&#160; This catch line often takes a roughly parabolic form, as appropriate given that it roughly corresponds to the catch levels predicted by surplus-production models.</p>
-        <h3><a name="_Toc120960654"></a>Evaluation of equilibrium MSY reference points</h3>
+        <h3>Evaluation of equilibrium MSY reference points</h3>
         <p>Though most Ecosim harvest policy analyses are conducted by varying regulatory policies applied to fishing fleets, a command button on the Equilibrium form in Ecosim can be used to carry out a series of long term (100+yr) simulations to estimate single species MSY and Fmsy reference points and to evaluate ecosystem-scale performance if these reference points were simultaneously implemented.&#160; Three types of results are produced by the analysis:</p>
         <ol start="1" class="ol_1">
             <li>An estimate of MSY and Fmsy for each harvested group, obtained by running the Ecosim model to equilibrium for a range of F values while holding biomasses of all other groups constant (except other life history stanzas for the same species in split and multi-stanza cases).&#160; This essentially means treating the ecosystem that ‘surrounds’ each group as constant, then examining predicted compensatory responses by the group (and other stanzas representing the same species) caused by the foraging arena functional response and related foraging time adjustment parameters.</li>
