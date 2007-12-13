@@ -5,77 +5,7 @@
     </head>
     <body>
         <h1><a name="_Introductory_material:_Ecopath"></a><a name="_Toc177320711"></a><span class="span_1">2 </span>Introductory material: Ecopath</h1>
-        <h2><a name="_Mortality_for_a"></a><a name="_The_Ecopath_model"></a><a name="_Toc177320712"></a><a name="_Toc120960515"></a><a name="_Toc484631739"></a><a name="_Toc480787426"></a><span class="span_2">2.1 </span>Mortality for a prey is consumption for a predator</h2>
-        <p>The core routine of Ecopath is derived from the Ecopath program of Polovina (1984a; 1984b) modified to render superfluous its original assumption of steady state. Ecopath no longer assumes steady state but instead bases the parameterization on an assumption of mass balance over an arbitrary period, usually a year (but also see discussion about seasonal modeling). In its present implementation Ecopath parameterizes models based on two master equations, one to describe the production term and one for the energy balance of each group.</p>
-        <p>The first Ecopath equation describes how the production term for each group (i) can be split in components. This is implemented with the equation,</p>
-        <p><a name="_Ref484634641"></a>Production = catches + predation mortality + biomass accumulation + net migration + other mortality Eq. 1</p>
-        <p><a name="_Ref478031295"></a>or, more formally,</p>
-        <p><a name="_Ref484700147"></a>
-            <img src="../Resources/Images/08000001.png" style="width: 283px;height: 24px;" />Eq. 2</p>
-        <p>where Pi is the total production rate of (i), Yi is the total fishery catch rate of (i), M2i is the total predation rate for group (i), Bi the biomass of the group, E i the net migration rate (emigration – immigration), BA i is the biomass accumulation rate for (i), while M0i  = Pi · (1-EEi) is the ‘other mortality’ rate for (i). </p>
-        <p>This formulation incorporates most of the production (or mortality) components in common use, perhaps with the exception of gonadal products. Gonadal products however nearly always end up being eaten by other groups, and can be included in either predation or other mortality. </p>
-        <p>
-            <MadCap:xref href="#_Ref484700147" mc-format="{para}">See "Eq. 2"</MadCap:xref> can be re-expressed as</p>
-        <p><a name="_Ref484700143"></a>
-            <img src="../Resources/Images/08000002.png" style="width: 496px;height: 47px;" /> Eq. 3</p>
-        <p>or</p>
-        <p>
-            <img src="../Resources/Images/08000003.png" style="width: 381px;height: 47px;" />Eq. 4</p>
-        <p>where:&#160;&#160; <img src="../Resources/Images/08000004.png" style="width: 33px;height: 21px;" /> is the production/biomass ratio, <img src="../Resources/Images/08000005.png" style="width: 33px;height: 21px;" /> is the consumption / biomass ratio, and <img src="../Resources/Images/08000006.png" style="width: 35px;height: 21px;" /> is the fraction of prey (i) in the average diet of predator (j).</p>
-        <p>Based on <MadCap:xref href="#_Ref484700143" mc-format="{para}">See " Eq. 3"</MadCap:xref>, for a system with n groups, n linear equations can be given, in explicit terms,</p>
-        <p>
-            <img src="../Resources/Images/08000007.png" style="width: 528px;height: 130px;" />Eq. 5</p>
-        <p>This system of simultaneous linear equations can be re-expressed </p>
-        <p>
-            <img src="../Resources/Images/08000008.png" style="width: 215px;height: 100px;" />Eq. 6</p>
-        <p>with n being equal to the number of equations, and m to the number of unknowns.</p>
-        <p>This can be written in matrix notation as </p>
-        <p>
-            <img src="../Resources/Images/08000009.png" style="width: 144px;height: 22px;" />Eq. 7</p>
-        <p>Given the inverse A-1 of the matrix A, this provides</p>
-        <p>
-            <img src="../Resources/Images/0800000A.png" style="width: 148px;height: 23px;" />Eq. 8</p>
-        <p>If the determinant of a matrix is zero, or if the matrix is not square, it has no ordinary inverse. However, a generalized inverse can be found in most cases (Mackay, 1981). In the Ecopath model, the approach of Mackay (1981) is used to estimate the generalized inverse.</p>
-        <p>If the set of equations is over-determined (more equations than unknowns), and the equations are not consistent with each other, the generalized inverse method provides least squares estimates, which minimizes the discrepancies. If, on the other hand, the system is underdetermined (more unknowns than equations), an answer that is consistent with the data will still be output. However, it will not be a unique answer. </p>
-        <p>Of the terms <MadCap:xref href="#_Ref484700143" mc-format="{para}">See " Eq. 3"</MadCap:xref> the production rate, Pi, is calculated as the product of Bi, the biomass of (i) and Pi/Bi, the production/biomass ratio for group (i). The Pi/Bi rate under most conditions corresponds to the total mortality rate, Z, see Allen (1971), commonly estimated as part of fishery stock assessments. The ‘other mortality’ is a catch-all term including all mortality not elsewhere included, e.g., mortality due to diseases or old age, and is internally computed from,</p>
-        <p>M0i = Pi · (1 – EEi) Eq. 9</p>
-        <p>where EEi is called the ‘ecotrophic efficiency’ of (i), and can be described as the proportion of the production that is utilized in the system. The production term describing predation mortality, M2, serves to link predators and prey as,</p>
-        <p><a name="_Ref484700311"></a>
-            <img src="../Resources/Images/0800000B.png" style="width: 132px;height: 47px;" /> Eq. 10</p>
-        <p>where the summation is over all (n) predator groups (j) feeding on group (i), Qj is the total consumption rate for group (j), and DCji is the fraction of predator (j)’s diet contributed by prey (i). Qj is calculated as the product of Bj, the biomass of group (j) and Qj/Bj, the consumption/biomass ratio for group (j). </p>
-        <p>An important implication of the equation above is that information about predator consumption rates and diets concerning a given prey can be used to estimate the predation mortality term for the group, or, alternatively, that if the predation mortality for a given prey is known the equation can be used to estimate the consumption rates for one or more predators instead.</p>
-        <p>For parameterization Ecopath sets up a system with (at least in principle) as many linear equations as there are groups in a system, and it solves the set for one of the following parameters for each group:</p>
-        <ul class="ul_1">
-            <p class="p_1">Biomass;</p>
-            <p class="p_1">Production/biomass ratio;</p>
-            <p class="p_1">Consumption/biomass ratio; or</p>
-            <p class="p_1">Ecotrophic efficiency.</p>
-        </ul>
-        <p>If, and only if, all four of these parameters are entered, the program will prompt you during basic parameterization whether to estimate the biomass accumulation, or, alternatively, to estimate the net migration rate. If a positive response is given, the program will use all the four basic parameters and it will establish mass-balance by calculating one of the two other parameters. If only three of the basic parameters are entered the following parameters must be entered for all groups:</p>
-        <ul class="ul_1">
-            <p class="p_1">Catch rate;</p>
-            <p class="p_1">Net migration rate;</p>
-            <p class="p_1">Biomass accumulation rate;</p>
-            <p class="p_1">Assimilation rate; and</p>
-            <p class="p_1">Diet compositions.</p>
-        </ul>
-        <p>It was indicated above that Ecopath does not rely on solving a full set of linear equations, i.e., there may be less equations than there are groups in the system. This is due to a number of algorithms included in the parameterization routine that will try to estimate iteratively as many ‘missing’ parameters as possible before setting up the set of linear equations. The following loop is carried out until no additional parameters can be estimated.</p>
-        <p>The gross food conversion efficiency, gi, is estimated using </p>
-        <p><a name="_Ref478284153"></a>gi= (Pi/Bi) / (Qi/Bi)Eq. 11</p>
-        <p>while Pi/Bi and Qi/Bi are attempted solved by inverting the same equation. The P/B ratio is then estimated (if possible) from</p>
-        <p>&#160;</p>
-        <p>
-            <img src="../Resources/Images/0800000C.png" style="width: 221px;height: 61px;" />Eq. 12</p>
-        <p>This expression can be solved if both the catch, biomass and ecotrophic efficiency of group i, and the biomasses and consumption rates of all predators on group i are known (including group i if a zero order cycle, i.e., ‘cannibalism’ exists). The catch, net migration and biomass accumulation rates are required input, and hence always known;</p>
-        <p>The EE is sought estimated from</p>
-        <p>
-            <img src="../Resources/Images/0800000D.png" style="width: 204px;height: 47px;" />,Eq. 13</p>
-        <p>where the predation mortality M2 is estimated from <MadCap:xref href="#_Ref484700311" mc-format="{para}">See " Eq. 10"</MadCap:xref>.</p>
-        <p>In cases where all input parameters have been estimated for all prey for a given predator group it is possible to estimate both the biomass and consumption/biomass ratio for such a predator. The details of this are described in Appendix 4, Algorithm 3. </p>
-        <p>If for a group the total predation can be estimated it is possible to calculate the biomass for the group as described in detail in Appendix 4, Algorithm 4. </p>
-        <p>In cases where for a given predator j the P/B, B, and EE are known for all prey, and where all predation on these prey apart from that caused by predator j is known the B or Q/B for the predator may be estimated directly.</p>
-        <p>In cases where for a given prey the P/B, B, EE are known and where the only unknown predation is due to one predator whose B or Q/B is unknown, it may be possible to estimate the B or Q/B of the prey in question.</p>
-        <p>After the loop no longer results in estimate of any ‘missing’ parameters a set of linear equations is set up including the groups for which parameters are still ‘missing’. The set of linear equations is then solved using a generalized inverse method for matrix inversion described by Mackay (1981). It is usually possible to estimate P/B and EE values for groups without resorting to including such groups in the set of linear equations.</p>
-        <p>The loop above serves to minimize the computations associated with establishing mass-balance in Ecopath. The desired situation is, however, that the biomasses, production/biomass and consumption/biomass ratios are entered for all groups and that only the ecotrophic efficiency is estimated, given that no procedure exists for its field estimation.</p>
+        <p>This chapter contains details of the theory underpinning the functioning of Ecopath: <a href="Mortality for a prey is consumption for a predator.htm">Mortality for a prey is consumption for a predator</a>; <a href="The energy balance of a box.htm">The energy balance of a box</a>; <a href="On the need for input parameters.htm">On the need for input parameters</a>; <a href="Defining the system.htm">Defining the system</a>; <a href="Dealing with open system problems.htm">Dealing with open system problems</a>; <a href="Production.htm">Production</a>; <a href="Consumption.htm">Consumption</a>; <a href="Other mortality.htm">Other mortality</a>; and <a href="Representation of multi stanza.htm">Representation of multi-stanza life histories</a>.</p>
+        <p>See <a href="Using Ecopath. Part 1 Ecopath inputs2.htm">Ecopath inputs</a> and <a href="Using Ecopath. Part 2 Parameterization and outputs.htm">Ecopath outputs</a> for links to instructions for using Ecosim.</p>
     </body>
 </html>
