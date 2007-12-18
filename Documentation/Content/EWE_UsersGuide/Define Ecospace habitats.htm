@@ -4,33 +4,36 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Define_Ecospace_habitats"></a><a name="_Edit_habitats"></a><a name="_Toc177320840"></a><span class="span_4">10.3 </span>Define Ecospace habitats</h2>
+        <h2><span class="span_4">10.3 </span>Define Ecospace habitats</h2>
         <p>‘Habitats’, in Ecospace, are sets of (water) cells sharing certain features affecting the movements, feeding rate, and survival of the Ecopath model components occurring therein. Any number of user defined habitats can be used in Ecospace along with the catch-all habitat no. 1, called ‘All habitats’.</p>
         <p>Typically, the features defining habitats are distance from the coast (inshore, offshore…), or depth (shallow, intermediate, deep…) and/or bottom type (rocky, sandy, muddy…). Habitats are thus as easy to define as it is to obtain rough bathymetric maps or maps indicating bottom types.</p>
         <p>Ideally, the habitats defined in Ecospace should correspond to ‘sub-web’, i.e., to a set of primary producers, herbivorous and other consumers occurring only over that habitat.&#160; Such sub-webs, defined through the diet composition matrix of an Ecopath file may be linked, through higher trophic levels groups, with other sub-webs in the same system, as also occurs in nature. Herein, the higher trophic level groups, through their ability to feed in different habitats, integrate the different subsystem into a whole.</p>
-        <p>Assuming that such sub-webs are implicit in the Ecopath file underlying an Ecospace analysis, all that is needed is, thus to give names – preferably short and descriptive – to the habitat types in question, using the Edit habitats dialogue box (see below).&#160; Habitats can be set as MPAs for all or part of the year, using the Edit MPAs dialogue box (see below). Users can also define regions, using the Edit Regions dialogue box (see below).</p>
-        <p>Note organisms at the upper trophic levels, (i.e., nekton) due to their high mobility will tend to ‘prefer’ a wide range of habitats rather than a specific one.&#160; The habitat name ‘All’ should be used for organisms ranging across all habitat types. </p>
-        <p>Also note that definition of habitat in Ecospace usually includes the entire water column, from the surface to the bottom.&#160; Thus, while ‘rockfishes’ will tend to be limited to hard bottoms, and burrowing bivalves to soft bottoms, small coastal pelagics, which occur higher up in the water column, may ‘prefer’ hard and soft bottom habitats, as long as both are coastal.</p>
-        <p>To facilitate documentation of an Ecospace scenario, space is provided to add, besides the (short) name of each habitat, a longer definition, e.g., as taken from some published description.</p>
-        <h3><a name="_Toc120960657"></a>Edit habitats</h3>
-        <p>Habitats are defined using Edit habitats dialogue box, accesible from the Ecospace <a href="#_Basemap">Basemap</a> form or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a>&#160; (Figure 10.3). Any number of user defined habitats can be used in Ecospace along with the catch-all habitat No. 1, called ‘All’. Type the number of habitats in the Define number of habitats box then click Update # habitats. Type names for the habitats in the appropriate cells. After you have assigned the habitats to the base map using <a href="Assign habitats.htm#_Assign_habitats">Assign habitats</a> form the fractions of each habitat will be updated automatically.</p>
+        <p>Assuming that such sub-webs are implicit in the Ecopath file underlying an Ecospace analysis, all that is needed is to give short descriptive names to the habitat types in question, using the <i>Edit habitats</i> dialogue box (see below).&#160; Habitats can be set as MPAs for all or part of the year, using the <i>Edit MPAs</i> dialogue box (see below). Users can also define regions, using the <i>Edit Regions</i> dialogue box (see below).</p>
+        <h3>Edit habitats</h3>
+        <p>Habitats are defined using <i>Edit habitats</i> dialogue box (Figure 10.3), accessible from the Ecospace <a href="#_Basemap">Basemap</a> form (click on the symbol <img src="../Resources/Images/Habitat.png" />) or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a>. </p>
+        <p style="font-style: normal;">Any number of user defined habitats can be used in Ecospace. Add habitats using the <i>Add</i> button then type names for the habitats in the <i>Habitat</i> cell. Habitats can be deleted using the <i>Remove</i> button.</p>
+        <p style="font-style: normal;">Assign the habitats to the base map using the <i>Basemap</i> form.</p>
         <p>
-            <img src="../Resources/Images/030000B8.png" style="width: 444px;height: 326px;" />
-        </p>
-        <h3>Figure 10.3 </h3>
+            <img src="../Resources/Images/030000B8.png" style="width: 444px;height: 326px;" />Figure 10.3 </p>
         <h3>Edit MPAs</h3>
-        <p>Users can overlay habitats with designated marine protected areas (MPAs). MPAs are defined using Edit MPAs dialogue box, accesible from the Ecospace <a href="#_Basemap">Basemap</a> form or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a> (Figure 10.4). Type the number of MPAs in the Define number of MPAs box then click Update # MPAs.  MPAs will automatically be named MPA1, MPA2 etc. They can be renamed by typing directly in the name cell. </p>
-        <p>You can simulate seasonal MPAs by setting the months of the year that the MPA is operational in the check boxes provided. Use the <a href="Ecospace fishery.htm#_Ecospace_Fishery">Ecospace fishery</a> form to assign which fleets can and cannot fish in the MPA. Assign the MPAs to the base map using the Basemap form.</p>
+        <p>Users can overlay habitats with designated marine protected areas (MPAs). </p>
+        <p>MPAs are defined using <i>Edit MPAs</i> dialogue box (Figure 10.4), accesible from the Ecospace <a href="#_Basemap">Basemap</a> form (click on the symbol <img src="../Resources/Images/MPA.png" style="width: 23px;height: 23px;" />) or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a>. </p>
+        <p>Add MPAs using the <i>Add</i> button.  MPAs will automatically be named MPA1, MPA2 etc. They can be renamed by typing directly in the MPA cell. MPAs can be deleted using the <i>Remove</i> button.</p>
+        <p>You can simulate seasonal MPAs by setting the months of the year that the MPA is operational in the check boxes provided. Use the <a href="Ecospace fishery.htm#_Ecospace_Fishery">Ecospace fishery</a> form to assign which fleets can and cannot fish in the MPA. </p>
+        <p>Assign the MPAs to the base map using the <i>Basemap</i> form.</p>
         <p>
             <img src="../Resources/Images/030000B9.png" style="width: 527px;height: 387px;" />
         </p>
         <p>Figure 10.4</p>
         <h3>Edit regions</h3>
         <p>Users can also overlay habitats with statistical ‘regions’ (i.e., groups of cells). Regions represent areas of management interest and may or may not have biological significance. Organisms cannot be assigned to regions, only habitats. </p>
-        <p>Regions are defined using Edit regions dialogue box, accesible from the Ecospace <a href="#_Basemap">Basemap</a> form or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a> (Figure 10.5). Type the number of regions in the Define number of regions box then click Update # regions.&#160; Regions will automatically be named Region1, Region2 etc. They can be renamed by typing directly in the name cell. Assign the regions to the base map using the Basemap form. </p>
+        <p>Regions are defined using<i> Edit regions</i> dialogue box (Figure 10.5), accessible from the Ecospace <a href="#_Basemap">Basemap</a> form (click on the symbol <img src="../Resources/Images/Regions.png" />) or directly from the <a href="Using Ecospace. Part 1 Ecospace inputs.htm#_Loading_Ecospace_scenario">Ecospace menu</a>. </p>
+        <p>Add regions using the <i>Add</i> button. Regions will automatically be named Region 1, Region 2 etc. They can be renamed by typing directly in the Reg.Hab cell. Regions can be deleted using the <i>Remove</i> button.</p>
+        <p>Assign the regions to the base map using the<i> Basemap</i> form. </p>
         <p>To set each habitat as a region, click the Habitat = regions button on the Edit regions dialogue box. In this case, the regions will automatically be updated on the basemap to be the same as the habitats. Note, you must assign habitats on the basemap before setting each habitat as a region. To set each cell as a region, click the Make each cell a region button. Again, regions will automatically be updated on the basemap.</p>
-        <p><a name="_Basemap"></a>
-            <img src="../Resources/Images/030000BA.png" style="width: 527px;height: 387px;" />
+        <p>
+            <img src="../Resources/Images/030000BA.png" style="width: 527px;height: 387px;">
+            </img>
         </p>
     </body>
 </html>
