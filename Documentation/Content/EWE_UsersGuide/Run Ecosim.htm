@@ -12,55 +12,49 @@
         <p>Before running Ecosim, you should be familiar with the introductory material (see links in <a href="Introductory material Ecosim.htm">Introductory material Ecosim</a>, also found in Chapter 3 of the User Guide).</p>
         <p>Running Ecosim</p>
         <p>The Biomass form (Figure 9.1) consists of a lower panel, where users can sketch or set fishing rates by fleet/gear or Ecopath group and an upper panel where output biomasses are displayed. On the lower right-hand side of the form are buttons allowing the user to run Ecosim and view outputs (see sections below).</p>
-        <h3>Features of the lower (Fishing rate) panel</h3>
-        <h3>Drop-down menu with fleet and group names </h3>
-        <p>Use this list to select which fleets or groups you want to change fishing rate for. Note: if an Ecopath group is selected, then relative Fs sketched on the sketch pad will be applied across all fleets.</p>
-        <h3>Reset Fs</h3>
-        <p>Reset all fishing rates (all groups all fleets) to their Ecopath base values.</p>
-        <h3>Set F to 0</h3>
+        <h3><i style="font-size: 16pt;">Features of the lower (Fishing rate) panel</i>
+        </h3>
+        <h3>Target <![CDATA[ ]]></h3>
+        <p>Use this drop down list to select which fleets or groups you want to change fishing rate for. Note: if an Ecopath group is selected, then relative Fs sketched on the sketch pad will be applied across all fleets.</p>
+        <h3>Set to 0</h3>
         <p>Set fishing for the fleet/group selected to zero.</p>
-        <h3>F value …</h3>
+        <h3>Set to value ...</h3>
         <p>For entry of a fishing intensity value to be applied to the fleet/group selected (or enter a list of comma separated values to set Fs for all fleets).</p>
+        <h3>Reset All&#160;</h3>
+        <p>Reset all fishing rates (all groups all fleets) to their Ecopath base values.</p>
         <h3>Fishing rate sketch pad</h3>
         <p>The sketch pad is used to display time series of relative fishing rates when the fishing mortality is applied to an individual group.&#160; When the fishing mortality is applied to a ‘fleet’ the Y-scale of the sketch pad consists of effort multipliers. In either case (individual group or fleet), the default uniform series (representing the Ecopath base values) can be replaced by a time-varying shape, representing temporal changes in the pattern of fishing, by sketching with the mouse (left button held down). The Y-axis will automatically re-scale as you drag your mouse up or down on the sketchpad. The fishing rates are expressed relative to the fishing rates in the underlying Ecopath model.</p>
         <p>To set linear trend for change in fishing rates: if you first click the start point with the left mouse button, and then the end point with shift + the left mouse button, a line will be drawn between the two points. Use this to enter, e.g., a linear increase over time in relative fishing rates.</p>
-        <h3>Features of the upper (Ecosim biomass output) panel</h3>
-        <h3>Overlay</h3>
-        <p>Check the <i>Overlay</i> box to keep the outputs of subsequent runs. Results can be viewed under the <i>Layers</i> tab.</p>
-        <h3>Annual output</h3>
-        <p>&#160;</p>
-        <h3>Scale</h3>
-        <p style="font-style: normal;">Check the <i>Fixed scale</i> checkbox to fix the Y axis of the main display. Set the Y axis upper value using the <i>Y axis value</i> box.</p>
-        <h3>Show/hide groups</h3>
+        <h3><i style="font-size: 16pt;">Features of the upper (Ecosim biomass output) panel</i>
+        </h3>
+        <h3>Show groups</h3>
         <p>Opens a form for hiding/displaying groups on the biomass graph.</p>
+        <h3>Autoscale&#160;</h3>
+        <p style="font-style: normal;">Use the Autoscale button to tell Ecosim to automatically set the scale of the Y axis.</p>
+        <h3>Scale Y axis to</h3>
+        <p style="font-style: normal;">Manually set the Y axis upper value using the <i>Scale Y axis to</i> box.</p>
+        <h3>Graph options</h3>
+        <p>You can choose whether to display the current annual output in the main screen or whether to overlay results, in which case results are can be viewed under the <i>Layers</i> tab.</p>
         <h3>Sum of squared deviations (SS)</h3>
         <p>This is an Ecosim output. When an Ecosim model is loaded, you can load time series ‘reference’ data on relative and absolute biomasses of various groups over a particular historical period, along with estimates of changes in fishing impacts over that period.&#160; After time series data have been loaded and applied (see <a href="Time series.htm#_Time_series">Time series</a>), a statistical measure of goodness of fit to these data is generated each time Ecosim is run.&#160; This goodness of fit measure is a weighted sum of squared deviations (SS) of log biomasses from log predicted biomasses, scaled in the case of relative abundance data by the maximum likelihood estimate of the relative abundance scaling factor q in the equation y = qB (y = relative abundance, B = absolute abundance).</p>
         <p>See <a href="Time series fitting in Ecosim.htm#_Time_series_fitting">Time series fitting in Ecosim</a> for more details about the sum of squared deviations measure.</p>
-        <h3>Main display   <![CDATA[ ]]></h3>
-        <p>The main part of the upper panel is used to display Ecosim’s predicted time series of biomass for groups selected using the Show/hide groups form. Biomasses are shown relative to their baseline Ecopath values. If time series have been loaded and applied, they will be displayed as coloured dots on the graph, while Ecosim’s predicted outputs will be displayed as coloured lines (Figure 9.1).</p>
-        <p>Vertical red lines indicate when to start averaging results for before/after comparisons (displayed using the Results button, see <MadCap:xref href="file:///C:/Ecopath/Ecopath6/Documentation/EWE_UsersGuide.doc#_Ref484825119" mc-format="{para}">Figure 62</MadCap:xref>). Use a left mouse-click to drag the lines to their desired positions. </p>
+        <h3>Main display panel    <![CDATA[ ]]></h3>
+        <p>Displays Ecosim’s predicted time series of biomass for groups selected using the Show groups form. Biomasses are shown relative to their baseline Ecopath values. If time series have been loaded and applied, they will be displayed as coloured dots on the graph, while Ecosim’s predicted outputs will be displayed as coloured lines (Figure 9.1).</p>
+        <p>Vertical red lines indicate when to start averaging results for before/after comparisons (displayed using the <a href="Ecosim results.htm">Ecosim results</a> form). Use a left mouse-click to drag the lines to their desired positions. </p>
         <h3>Group tab</h3>
         <p>To the right of the upper panel, under the <i>Group</i> tab, a smaller panel displays the groups’ names, in the same colors as used for the biomass lines. Clicking on the name of any group in this panel (and releasing the mouse button) results in all other groups being greyed out so that the group of interest can be clearly seen. Click on <i>All groups</i> at the top of the list to return all groups to their original colors.</p>
         <h3>Layer tab</h3>
-        <p>Behind the <i>Group</i> tab is the<i> Layer</i> tab. If the user has checked the <i>Overlay</i> checkbox, outputs of different runs will be displayed on different layers.</p>
-        <h3>Running Ecosim and viewing outputs</h3>
+        <p>Behind the <i>Group</i> tab is the<i> Layer</i> tab. If the user has selected <i>Overlay</i> under <i>Graph options</i>, outputs of different runs will be displayed on different layers.</p>
+        <h3 style="font-size: 16pt;font-style: italic;">Running Ecosim and viewing outputs</h3>
         <h3>Run</h3>
-        <p>Click Run to generate time series of biomasses (which will be displayed in the upper panel). The magnitude of changes for each group will depend on many factors, chiefly the fishing regime and the <a href="Vulnerabilities flow control.htm#_Vulnerabilities">vulnerability</a> settings.</p>
+        <p>Click <i>Run </i>to generate time series of biomasses (which will be displayed in the upper panel). The magnitude of changes for each group will depend on many factors, chiefly the fishing regime and the <a href="Vulnerabilities flow control.htm#_Vulnerabilities">vulnerability</a> settings.</p>
         <p>Note that fishing regimes should generally change gradually from one fishing mortality level to the next, not abruptly. Also, the baseline (Ecopath) fishing mortality should be left unchanged for a year or so.</p>
-        <h3>Plots</h3>
-        <p>Click this button to open a form displaying a series of plots of the results of the Ecosim simulations (see <a href="Plots.htm#_Plots">Plots</a> for further help with this form).</p>
-        <h3>Results</h3>
-        <p>Clicking Results after a run opens the Ecosim results dialogue box (Figure 9.2), which shows a result summary for the run, with start and end dates set using the vertical red lines in the Main upper  panel (see above). If you wish to compare results from the beginning and end of the run, first move the vertical red lines accordingly.</p>
-        <p>You can choose to see results by fleet or by individual group. Results by individual group can be viewed by individual gears or by combined gears (selected using the drop-down menu).</p>
-        <p>Raw biomass  results can be seen by exporting them to a csv file, using Export biomass results to .csv file on the <a href="Ecosim menu.htm#_Loading_Ecosim_scenario">Ecosim menu</a>.</p>
-        <p>&#160;</p>
+        <p>After running Ecosim, use <a href="Ecosim plots.htm">Ecosim plots</a> <![CDATA[ ]]>and <a href="Ecosim results.htm">Ecosim results</a> to see results in graphic and tabular form.</p>
+        <h3>&#160;</h3>
         <h3>
             <img src="../Resources/Images/030000AA.png" style="width: 647px;height: 468px;" />
         </h3>
         <p>Figure 9.1. </p>
-        <h3>
-            <img src="../Resources/Images/030000AB.png" style="width: 647px;height: 218px;" />
-        </h3>
-        <p>Figure 9.2.</p>
+        <h3>&#160;</h3>
     </body>
 </html>
