@@ -4,13 +4,13 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <h1><span class="span_2">7.1 </span>Notes on parameterizing an Ecopath model</h1>
+        <h2><span class="span_2">7.1 </span>Notes on parameterizing an Ecopath model</h2>
         <p>Below are some important considerations for parameterizing (i.e., balancing) your Ecopath model so that mass balance is achieved. Make sure you are also familiar with the introductory material on Ecopath parameterization (<a href="Introductory material Ecopath.htm#_The_Ecopath_model">Mortality for a prey is consumption for a predator</a>, <a href="The energy balance of a box.htm#_The_energy_balance">The energy balance of a box</a> and <a href="On the need for input parameters.htm#_Defining_the_system">On the need for input parameters</a>).</p>
         <p>For more detailed notes on balancing your model we recommend you also read <a href="Balancing a model.htm#_Balancing_a_model">Balancing a model</a>. </p>
         <h3>Ecopath parameterization</h3>
         <p>Once you have entered sufficient input parameters you can proceed to estimate the parameters of Ecopath by selecting Basic estimates under the Parameterization node in the Navigator window. The missing parameters will be estimated so that mass balance is achieved. The estimation is performed using a number of algorithms and a routine for matrix inversion described in Section <MadCap:xref href="../../../../EWE_UsersGuide.doc#_Ref368108889" mc-format="{para}">3.3</MadCap:xref>, on page <MadCap:xref href="../../../../EWE_UsersGuide.doc#_Ref368108889" mc-format="{page}">12</MadCap:xref> in general terms. (See also Appendix 4 in the Help system for computational aspects).</p>
         <p>Once the program has estimated the parameters, the system balances the input and output of each group, using respiration for adjustments. The relationship used is:</p>
-        <p>Consumption&#160;&#160; =Production + Respiration + Non-assimilated food</p>
+        <p>Consumption&#160;&#160;= Production + Respiration + Non-assimilated food</p>
         <p>where, </p>
         <p>Consumption is the total consumption of a group, i.e., biomass · (consumption / biomass); </p>
         <p>Production excludes primary production, i.e., is defined by biomass · (production / biomass) · (1 - PP), </p>
@@ -18,7 +18,7 @@
         <p>Respiration is the part of the consumption that is not used for production or recycled as feces or urine. Respiration is nonusable currency, i.e., it cannot be used by the other groups in the system. Autotrophs with Q/B = 0 and detritus have zero respiration; </p>
         <p>Nonassimilated food is an input parameter expressing&#160; the fraction of food that is not assimilated, (i.e., is egested or excreted). For models whose currency is energy, the default is 0.20, i.e. 20% of consumption for all groups, though this is most applicable for finfish groups (Winberg, 1956). The non-assimilated food is directed to the detritus;</p>
         <p>If the model currency is a nutrient, there is no respiration. Instead, the model is balanced such that the non-assimilated food equals the difference between consumption and production. </p>
-        <h3><a name="_Toc120960555"></a><a name="_Toc484631784"></a><a name="_Toc373140617"></a><a name="_Ref367779591"></a><a name="_Ref367779582"></a><a name="_Ref367779573"></a>Parameter evaluation</h3>
+        <h3>Parameter evaluation</h3>
         <p>The program estimates the missing parameters and a number of indices without further input. Your model will probably not look very convincing the first time you run it. Keep an eye open for warning messages while you make your way through the forms. In the more serious cases, the parameter estimation will be aborted, and you will have to edit your data. To improve your chances of identifying problems, you will in some cases only get a warning and the program will continue. </p>
         <p>The sections below may help you evaluate the results of a run.</p>
         <h3>Are the EE’s between 0 and 1?</h3>

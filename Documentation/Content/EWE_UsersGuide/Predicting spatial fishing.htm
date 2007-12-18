@@ -4,11 +4,12 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Toc177320751"></a><a name="_Toc120960665"></a><a name="_Toc480787449"></a><span class="span_2">4.6 </span>Predicting spatial fishing patterns</h2>
+        <h2><span class="span_2">4.6 </span>Predicting spatial fishing patterns</h2>
         <p>EwE works with multiple fishing fleets, with fishing mortality rates (F) initially distributed between fleets based on the distribution in the underlying Ecopath base model. In Ecospace the F’s are distributed using a simple ‘gravity model’ where the proportion of the total effort allocated to each cell is assumed proportional to the sum over groups of the product of the biomass, the catchability, and the profitability of fishing the target groups (Caddy, 1975; Hilborn and Walters, 1987). This profitability of fishing includes factors such as the cell-specific cost of fishing.&#160; </p>
         <p>Assuming that there are N cells representing water areas, each fleet k can cause a total fishing mortality rate N · Fk. For each step in the simulation this rate is distributed among cells, c, in proportion to the weights Gkc based on:</p>
-        <p><a name="_Ref478386854"></a>
-            <img src="../Resources/Images/08000046.png" style="width: 203px;height: 59px;" />Eq. 68</p>
+        <p>
+            <img src="../Resources/Images/08000046.png" style="width: 203px;height: 59px;">
+            </img>Eq. 68</p>
         <p>where Okc is 1 if cell c is open to fishing by fleet k, and 0 if not; Ukc is 1 if the user has allowed fleet k to work in the habitat type to which cell c belongs, and 0 if not; pki is the relative price fleet k receives for group i fish, qki is the catchability of group i by fleet k (equal to the Fki in the Ecopath model); Bic is the biomass of group i in cell c; and Ckc is the cost for fleet k to operate in cell c. Based on the weights in <MadCap:xref href="#_Ref478386854" mc-format="{para}">See "Eq. 68"</MadCap:xref> the total mortality rate is distributed over cells according to</p>
         <p>
             <img src="../Resources/Images/08000047.png" style="width: 115px;height: 57px;" /> Eq. 69</p>

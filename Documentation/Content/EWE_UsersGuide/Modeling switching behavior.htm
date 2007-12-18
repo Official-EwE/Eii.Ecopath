@@ -4,7 +4,7 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Modeling_switching_behavior"></a><a name="_Toc177320732"></a><a name="_Toc120960628"></a><a name="_Ref120943383"></a><span class="span_4">3.11 </span>Modeling switching behavior in Ecosim</h2>
+        <h2><span class="span_4">3.11 </span>Modeling switching behavior in Ecosim</h2>
         <p>Predators are said to ‘switch’ from one prey to another when predator diet proportion of each type changes more rapidly than the relative abundance of that type in the environment.&#160; Eating more of something when it becomes abundant does NOT imply switching, but rather just more frequent encounters with that type; the predator is said to switch if it takes disproportionately more of the thing as it becomes more abundant.</p>
         <p>Three mechanisms that can lead to switching patterns in diet composition and prey mortality are represented in Ecosim:</p>
         <ol start="1" class="ol_3">
@@ -16,8 +16,7 @@
         <ol start="3" class="ol_3">
             <li>Explicit changes in Ecosim rates of effective search, representing fine-scale behavioral choices by predators to spend more or less foraging time in the arenas where specific prey are concentrated. In this case, the behavioral choice among arenas is predicted from Ideal Free Distribution (IFD) arguments that predators should allocate foraging time so as to minimize time needed to obtain normal food consumption rates.</li>
         </ol>
-        <p>In the third of these approaches, the Ecosim rate of effective search aij for predator type j on prey type i is modified at each simulation time step in relation to changes in abundance of all prey types, using a ‘gravity model’ approximation for the IFD allocation of predator foraging time among prey-specific foraging arenas.&#160; The equation used for this modification is </p>
-        <p><a name="_Ref105313348"></a>aij(t) = KijaijBi(t)Pj / Σi’ai’jBi ’(t)Pj  Eq. 55</p>
+        <p>In the third of these approaches, the Ecosim rate of effective search aij for predator type j on prey type i is modified at each simulation time step in relation to changes in abundance of all prey types, using a ‘gravity model’ approximation for the IFD allocation of predator foraging time among prey-specific foraging arenas.&#160; The equation used for this modification is aij(t) = KijaijBi(t)Pj / Σi’ai’jBi ’(t)Pj  Eq. 55</p>
         <p>Here, aij is the base rate of effective search calculated from Ecopath and vulnerability exchange parameters, Kij is a scaling constant that makes the time-specific aij(t) equal aij when all prey biomasses Bi are at Ecopath base values, and the ‘switching power parameter’ Pj is a user-supplied (empirical, to be estimated from field data or model fitting)&#160; power parameter representing how strongly the predator responds to changes in prey availability (switching power parameter on the Group info form).&#160; In particular:</p>
         <p>Pj = 0,no switching </p>
         <p>Pj &lt;&lt; 1,prey must become very rare before predator j stops searching for them</p>

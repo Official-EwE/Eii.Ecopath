@@ -4,13 +4,14 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><a name="_Foraging_time__1"></a><a name="_Toc177320727"></a><a name="_Toc120960637"></a><a name="_Toc480787436"></a><span class="span_2">3.6 </span>Foraging time and predation risk</h2>
+        <h2><span class="span_2">3.6 </span>Foraging time and predation risk</h2>
         <p>The food consumption prediction relationship in <MadCap:xref href="Predicting consumption.htm#_Ref478384235" mc-format="{para}">See "Eq. 52"</MadCap:xref> contains two parameters that directly influence the time spent feeding and the predation risk that feeding may entail: aij and v’ij. To model possible linked changes in these parameters with changes in food availability as measured by per biomass food intake rate cit = Qit / Bit (i=juvenile index J or adult index A), we need to specify how changes in cit will influence at least relative time spent foraging. </p>
         <p>Denoting the relative time spent foraging as Tit, measured such that the rate of effective search during any model time step can be predicted as ajit = Tit aji for each prey type j that i eats. Further, we assume that time spent vulnerable to predation, as measured by v’ij for all predators j on i, is inversely related to Tit, i.e., v’ijt = v’ij / Tit. An alternative structure that gives similar results is to leave the aij constant, while varying the vij by setting vijt = Tjt · vij in the numerator of <MadCap:xref href="Predicting consumption.htm#_Ref478384235" mc-format="{para}">See "Eq. 52"</MadCap:xref>, and vijt = Tit · vij in the denominator. </p>
         <p>For convenience in estimating the aij and v’ij parameters, we scale Tit so that Ti0 = 1, and v’I j= vij. Using these scaling conventions, the key issue then becomes how to functionally relate Tit to food intake rate cit so as to represent the hypothesis that animals with lots of food available will simply spend less time foraging, rather than increase food intake rates.</p>
         <p>In Ecosim a simple functional form for Tit is implemented that will result in near constant feeding rates, but changing time at risk to predation, in situations where rate of effective search aji is the main factor limiting food consumption rather than prey behavior as measured by vji. This is implemented in form of the relationship:</p>
-        <p><a name="_Ref478456737"></a>
-            <img src="../Resources/Images/0800002A.png" style="width: 184px;height: 53px;" />Eq. 65</p>
+        <p>
+            <img src="../Resources/Images/0800002A.png" style="width: 184px;height: 53px;">
+            </img>Eq. 65</p>
         <p>where, a is a user-defined Feeding time adjustment rate [0, 1] on the Ecosim <a href="Group info.htm#_Read_time_series">Group info</a> form; ci,opt is the (internally computed) feeding rate that optimizes feeding rate versus mortality risk for i; ci,t-1 is the consumption/biomass ratio in the previous time step for the group. The time spent feeding is constrained by a user-defined value (Maximum relative feeding time on the Group info form with default of two times the feeding rate in the Ecopath base model).</p>
         <p>The relationship between foraging time, consumption and predator biomass is illustrated in Figure 3.4. </p>
         <p>
