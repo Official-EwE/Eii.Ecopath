@@ -5,30 +5,51 @@
     </head>
     <body>
         <h2><span class="span_4">10.2 </span>Ecospace parameters</h2>
+        <p style="text-decoration: none;">Use the <i>Ecospace parameters</i> form to set non-spatial parameters for the Ecospace scenario. See <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a> for details on setting spatial (i.e., map-related) parameters.</p>
         <h3>Initialization</h3>
         <p>Users are given two options for initializing biomasses in Ecospace cells.</p>
-        <p>Ecopath base biomasses</p>
-        <p>&#160;</p>
-        <p>Simply assign the Ecopath mean biomass for each pool to every spatial cell that has suitable habitat for that type of organism, and lower biomass to every non-suitable cell.&#160; In this case the Ecosim estimates of predation parameters (vulnerabilities, predator search rates) are left unchanged.&#160; However, this option generally results in underestimates of biomass density in favorable habitats, especially for biomass types that actually have high biomass on just a few spatial sites or cells.</p>
-        <h3>Habitat-adjusted biomasses</h3>
-        <p>Distribute the entire Ecopath mean biomass for each pool onto just those cells that are suitable for the organism, i.e., to concentrate the overall mean biomass into those map cells where the biomass is actually found. For example, a creature with overall Ecopath mean biomass of 10 t/km² would be assigned a biomass of 100 t/km² in suitable cells, if just 10% of the cells are assigned a habitat type suitable for it. In this second option, predation vulnerabilities, predator search rates, and primary producer P/B vs B parameters are adjusted to reflect the new, localized ‘mean’ biomasses expected in habitat types where animals actually are abundant.</p>
+        <h4><i style="font-style: normal;">Ecopath base biomasses</i>
+        </h4>
+        <p>Assigns the Ecopath mean biomass for each pool to every spatial cell that has suitable habitat for that type of organism and lower biomass to every non-suitable cell.&#160; In this case the Ecosim estimates of predation parameters (vulnerabilities, predator search rates) are left unchanged.&#160; However, this option generally results in underestimates of biomass density in favourable habitats, especially for biomass types that actually have high biomass on just a few spatial sites or cells. </p>
+        <p>See <a href="Assign habitats.htm">Assign habitats</a> for details on setting suitable habitats.</p>
+        <h4><i style="font-style: normal;">Habitat-adjusted biomasses</i>
+        </h4>
+        <p>Distributes the entire Ecopath mean biomass for each pool onto just those cells that are suitable for the organism, i.e., to concentrate the overall mean biomass into those map cells where the biomass is actually found. For example, a creature with overall Ecopath mean biomass of 10 t/km² would be assigned a biomass of 100 t/km² in suitable cells, if just 10% of the cells are assigned a habitat type suitable for it. In this second option, predation vulnerabilities, predator search rates, and primary producer P/B vs B parameters are adjusted to reflect the new, localized ‘mean’ biomasses expected in habitat types where animals actually are abundant.</p>
         <h3>Model</h3>
-        <h3>Model type</h3>
-        <p>You must indicate the type of Ecopath model you are using. Model types can be EwE 6 multi-stanza model (i.e., created using EwE 6); IBM (i.e., individual-based model XXX); or EwE 5 style (i.e., created using EwE5.</p>
-        <h3>Threading</h3>
-        <h3>&#160;</h3>
-        <h3>Run time</h3>
-        <ul class="ul_1">
-            <p class="p_1">Set the Total run time for the simulation and the Number of time steps per year (i.e., set this to 12 for monthly time steps).</p>
-            <p class="p_1">Max no. of iterations.</p>
-            <p class="p_1">Tolerance</p>
-            <p class="p_1">Successive over-relaxation</p>
-            <p class="p_1">Predict effort</p>
-            <p class="p_1">Use exact calculations for migratory species</p>
-        </ul>
+        <h4>Model type</h4>
+        <p>EwE6 represents a major overhaul of the functioning of Ecospace and there are now three approaches to running Ecospace simulations.  <![CDATA[ ]]></p>
+        <p><i> EwE 6 multi-stanza model</i>
+        </p>
+        <p>&#160;</p>
+        <p><i>IBM (individual-based model)</i>
+        </p>
+        <p>&#160;</p>
+        <p><i>&#160;EwE5 approach</i>
+        </p>
+        <p>&#160;</p>
+        <h4>Threading</h4>
+        <p>Threading allows a program to split itself into multiple simultaneously running tasks. By default, Ecospace sets the number of threads to the number of processors available on your computer.</p>
+        <p>The greater the number of threads, the more of your computer's processing power will be used (hence faster calculations). If you have limited processing power or wish to work on other applications while running Ecospace, set the number of threads lower (hence slower calculations).</p>
+        <h4>Run time</h4>
+        <p>Set the <i>Total run time</i> and the <i>Number of time steps</i> per year (i.e., set this to 12 for monthly time steps).</p>
+        <p><i>Max no. of iterations</i>
+        </p>
+        <p>&#160;</p>
+        <p><i>Tolerance</i>
+        </p>
+        <p class="p_1">&#160;</p>
+        <p class="p_1"><i>Successive over-relaxation</i>
+        </p>
+        <p class="p_1">&#160;</p>
+        <h4 class="p_1">Predict effort</h4>
+        <p class="p_1">&#160;</p>
+        <h4 class="p_1">Use exact calculations for migratory species</h4>
+        <p class="p_1">&#160;</p>
         <h3>Summary</h3>
-        <h3>Start time</h3>
-        <h3>End time</h3>
-        <h3>Summary length (timesteps)</h3>
+        <p>At the end of the Ecospace run (see <a href="Run Ecospace.htm">Run Ecospace</a>), you can view a summary of results, using the <i>Results</i> button.</p>
+        <p><b>Start time</b> sets the start year for the summary.</p>
+        <p><b>End time</b> sets the end year for the summary. </p>
+        <p><i>Start time</i> and <i>End time</i> are equivalent to the red lines used to set the start and end time for the summary of Results in Ecosim (see <a href="Ecosim results.htm">Ecosim results</a>).</p>
+        <p><b>Summary length (timesteps)</b> sets the timesteps used in the summary.</p>
     </body>
 </html>

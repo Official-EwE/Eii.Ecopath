@@ -6,55 +6,81 @@
     <body>
         <h2><span class="span_4">10.4 </span>Basemap</h2>
         <p>The basemap is used to mediate between an Ecopath file - which assumes an homogenous distribution of the biomasses in an undefined space – and a real ecosystem with geographic features (land vs. water, bathymetry, etc.) impacting on the distribution of the biomasses in that file.</p>
-        <ul class="ul_2">
-            <li class="li_1">The Ecospace basemap is defined, at first, by entering the number of cells in rows and columns, and the cell length (in km). The cells are square units, but the maps not need be so; both square and rectangular maps can be accommodated, but rectangular maps should not be defined too ‘thin’, (i.e., their aspect ratio (AR = height/width) is recommended to remain in the range 5 <span class="span_3">£</span> AR <span class="span_3">£</span> 0.2).</li>
-        </ul>
-        <p>The number of homogenous cells in the basemap may range from 9 (for a square 3x3 map, used e.g. for verification or demonstration purposes) to 10 000, (e.g., for a square 100 x 100 map).</p>
-        <p>We recommend, unless otherwise required the intermediate 20 x 20 map provided as default, which represents a compromise between showing details and maintaining a high computing speed.&#160; When a desired number of cells is entered, the number of cells used in the basemap is computed as the number of square cells that is closest to the number entered, while remaining compatible with the aspect ratio of the map.</p>
-        <p>One defined in terms of its dimension, the basemap is used to sketch and show, by cell:</p>
-        <ul class="ul_2">
-            <li class="li_1">land vs. water areas: The distinction between land and water areas is crucial to the definition of the basemap: this distinction determines the map’s overall appearance (i.e., its resemblance to a geographic map) and, in case of detailed maps, the routes through which organisms move between adjacent cells.</li>
-        </ul>
-        <p>Thus, a system including a number of narrow, crooked channels must be simplified, as movements on Ecospace map can only resemble those of rooks on chessboards, but not those of bishops.</p>
-        <p>Figure A [from Tom Okey] gives an example of a highly structured system Prince William Sound (PWS), Alaska, while Figure X [also from T. Okey] shows the corresponding Ecospace basemap.&#160; Note the straightened arms of PWS, allowing unimpeded movement across the faces of the cells.</p>
-        <p>Though not contributing to the results, the basemap cells defined as ‘land’ consume memory and computing time; thus, their number should be kept as small as possible, e.g. by orienting the basemap sideways where appropriate.</p>
+        <p>Before sketching your basemap you must first set the dimensions of the map using the <i>Edit basemap</i> dialogue box (see below). You must also set the number of habitats and any marine protected areas and regions (see <i>Edit habitats...</i>, <i>Edit MPAs...</i> and <i>Edit regions...</i> below).</p>
+        <p>Once defined in terms of its dimension, the basemap is used to sketch and show, by cell, land and water areas. The distinction between land and water areas is crucial to the definition of the basemap. This distinction determines the map’s overall appearance (i.e., its resemblance to a geographic map) and, in case of detailed maps, the routes through which organisms move between adjacent cells.</p>
+        <p style="font-style: normal;">See <i style="font-weight: normal;font-style: italic;">Considerations for building the basemap</i> <![CDATA[ ]]><i style="font-style: normal;"></i>below for list of important issues to consider when building the basemap.</p>
+        <h3>1. Setting up the basemap</h3>
+        <h3>
+            <img src="../Resources/Images/Raster.png" />Edit basemap</h3>
+        <p>Opens the <i>Edit basemap</i> dialogue box, used for setting the dimensions and location of the Ecospace <a href="Define Ecospace habitats.htm#_Basemap">Basemap</a>. See <a href="Define Ecospace habitats.htm#_Define_Ecospace_habitats">Define Ecospace habitats</a> for help with this dialogue box.</p>
+        <h3>
+            <img src="../Resources/Images/Habitat.png">
+            </img>Edit habitats</h3>
+        <p>‘Habitats’, in Ecospace, are sets of (water) cells sharing certain features affecting the movements, feeding rate, and survival of the Ecopath model components occurring therein. The names and number of habitats are set using the <i>Edit habitats</i> dialogue box, available by clicking on the <img src="../Resources/Images/Habitat.png" /> icon at the top right of the <i>Basemap</i> form. The dialogue box can also be opened from the <i>Ecospace menu</i>. See <a href="Define Ecospace habitats.htm#_Define_Ecospace_habitats">Define Ecospace habitats</a> for help with this dialogue box.</p>
+        <h3>
+            <img src="../Resources/Images/MPA.png">
+            </img>Edit MPAs</h3>
+        <p>Users can overlay habitats with marine protected areas (MPAs), which are areas closed to fishing for all or part of the year. The names and number of MPAs are set using the <i>Edit MPAs</i> dialogue box, available by clicking on the <img src="../Resources/Images/MPA.png" /> icon at the top right of the <i>Basemap</i> form. The dialogue box can also be opened from the <i>Ecospace menu</i>. See <a href="Define Ecospace habitats.htm#_Define_Ecospace_habitats">Define Ecospace habitats</a> for help with this dialogue box.</p>
+        <h3>
+            <img src="../Resources/Images/Regions.png">
+            </img>Edit regions</h3>
+        <p>Users can also overlay habitats with statistical ‘regions’ (i.e., groups of cells). Regions represent areas of management interest and may or may not have biological significance. Organisms cannot be assigned to regions, only habitats. The names and number of regions are set using the <i>Edit regions</i> dialogue box, available by clicking on the <img src="../Resources/Images/Regions.png" /> icon at the top right of the <i>Basemap</i> form. See <a href="Define Ecospace habitats.htm#_Define_Ecospace_habitats">Define Ecospace habitats</a> for help with this dialogue box.</p>
+        <p>&#160;</p>
+        <h3>2. Sketching the basemap</h3>
+        <p>Once you have defined the dimensions of the basemap and the number of habitats, MPAs and regions to include, you are ready to begin sketching the map. </p>
+        <p>Using the<i> Basemap</i> form is intuitive. Simply click on the name of the layer you wish to activate and begin sketching with the mouse (holding down the left button). You can change the size of the pen using the <i>Size</i> sliding <i></i>scale under the <b>Pen</b> heading.</p>
+        <h3 class="li_1">Layers</h3>
+        <p>The <i>Basemap</i> form uses the concept of overlaid layers, commonly found in graphics software. One type of habitat/MPA/Region etc is shown on each layer.</p>
+        <p>Layers are grouped under the headings Land; Habitats; MPAs; Regions and Numerical layers. Expand each heading by clicking on the plus icon. There will be one land layer. The number of habitat layers will depend on the number of habitats set using the <i>Edit habitats</i> dialogue box (and so on for the number of MPAs and Regions). You can add new habitats etc. while the <i>Basemap</i> form is open.</p>
+        <p>In addition to defining water cells as habitats, MPAs and regions, users can assign numerical values to each cell. Currently this can only be done for primary production relative to the Ecopath base level. This is shown as Relative PP under the Numerical layers heading.</p>
+        <p>Edit the appearance of each layer using the<i> Edit layers</i> dialogue box, accessible by clicking on the coloured box next to the layer name. Here you can set the colours, patters and transparency of the cells as well as see summary statistics for the layer (see <a href="Edit layers.htm">Edit layers</a> for details).</p>
+        <p>Show or hide layers by clicking on the eye symbol (<img src="../Resources/Images/Eye_open.PNG" />) next to the layer name.</p>
+        <h4>Land</h4>
+        <p>It is recommended that you begin by sketching the land cells.</p>
+        <p>The distinction between land and water areas is crucial to the definition of the basemap. This distinction determines the map’s overall appearance (i.e., its resemblance to a geographic map) and, in case of detailed maps, the routes through which organisms move between adjacent cells. Movements on the Ecospace map can only resemble those of rooks on chessboards, but not those of bishops. Thus, a system including, e.g., a number of narrow, crooked channels must be simplified.</p>
+        <p>Though not contributing to the results, the basemap cells defined as ‘land’ consume memory and computing time. Their number should therefore be kept as small as possible, e.g., by orienting the basemap sideways where appropriate.</p>
+        <h4>Habitats</h4>
+        <p>Every non-land cell in the basemap needs to be assigned as a habitat. </p>
+        <p>Typically, the features defining habitats are distance from the coast (inshore, offshore…), or depth (shallow, intermediate, deep…) and/or bottom type (rocky, sandy, muddy…).
+</p>
+        <p>Note that definition of habitat in Ecospace usually includes the entire water column, from the surface to the bottom.  </p>
         <p>The basemap may include open borders, i.e., water areas not bounded by land.&#160; In such cases, the flow of organisms out of a border cell is compensated for by an equal flow of organisms into the cell, i.e., the system will not ‘leak’.</p>
-        <ul class="ul_2">
-            <li class="li_1">Different habitat types: These are defined on the ‘Define habitats’ tab. </li>
+        <p>Assign habitat preferences of the models's groups using the <a href="Assign habitats.htm">Assign habitats</a> form.</p>
+        <h4>MPAs</h4>
+        <p>MPAs are overlaid on top of habitats. MPAs can occupy as many or few cells as desired and can span different habitats. </p>
+        <p>Note, however that the size and position of individual MPA cells correspond directly with that of individual habitat cells (i.e., an MPA cell cannot be in half of one habitat cell and half of another).</p>
+        <p>Assign which fleets can and cannot fish in MPAs using <a href="Ecospace fishery.htm">Ecospace fishery</a> form.</p>
+        <h4>Regions</h4>
+        <p>Regions also overlay habitats. Regions represent areas of management interest and may or may not have biological significance. Organisms cannot be assigned to regions, only habitats.</p>
+        <h4>Numerical layers (primary production)</h4>
+        <p>Primary production may vary in different areas of an ecosystem, e.g., due to terrigenous inflow of nutrients, or processes that lead to mixing or upwelling of water masses.
+
+</p>
+        <p>Mapping such areas is done in one of two ways. </p>
+        <p>1. Sketching a multiplier of the baseline P/B for primary producers. This multiplier, which may range from 0.01 to 100, can thus be used to depict anything from areas with very low primary production rates to areas with very high rates compared to the underlying Ecopath model.The values entered are relative and the total primary production is scaled so that it will be the same as in the base Ecopath model.  
+Warning: Ecospace is sensitive to this setting. Even if the range is 0.01 to 100 such extremes should be used with great care only.</p>
+        <p style="font-style: normal;">To sketch in the multipliers, first select the <i>Relative PP</i> layer. Each cell will display 1 (i.e., every cell starts with the same amount of primary production as in the Ecopath base model). Next, set the new value of the multiplier in the <i>Value</i> box at the bottom right of the form. Finally, while holding down the left mouse button, sketch over the cells to be changed to the new value (see Figure 10.6b). Repeat the process as many times as needed.</p>
+        <p style="font-style: normal;">2. Reading in the data from an external source (e.g., Sea WiFS). This is done using the <a href="Edit layers.htm">Edit layers</a> dialogue box, <span style="color: #ff0000;">accessible by clicking on the </span><i style="color: #ff0000;">#</i><span style="color: #ff0000;"> symbol </span>under <b>Numerical layers</b> on the <i>Layers</i> menu.</p>
+        <p>&#160;<img src="../Resources/Images/Basemap.jpg"></img></p>
+        <p>
+            <img src="../Resources/Images/Basemap2.jpg">
+            </img>
+        </p>
+        <p>10.6a basemap showing habitat layers</p>
+        <p>10.6b Basemap showing numerical (relative PP) layer</p>
+        <p>&#160;</p>
+        <h3>3. Considerations for building the basemap</h3>
+        <ul>
+            <li>The cells are square units, but the maps not need be so, both square and rectangular maps can be accommodated. Rectangular maps should not be defined too ‘thin’, (i.e., their aspect ratio (AR = height/width) is recommended to remain in the range 5 <span class="span_3">£</span> AR <span class="span_3">£</span> 0.2).</li>
+            <li><span style="color: #000000;">The number of cells in the basemap may range from 4 (for a square 2x2 map, used e.g. for verification or demonstration purposes) to 10,000, (e.g., for a square 100 x 100 map). We recommend, unless otherwise required, the intermediate 20 x 20 map provided as default, which represents a compromise between showing details and maintaining a high computing speed.&#160;</span>
+            </li>
+            <li>Protected areas are defined as set of cells in which no fleet is permitted to operate(although ‘cheating’, wherein one or several fleets illegally operate inside a protected area, can be accommodated by Ecospace).</li>
+            <li>Restricted or protected areas (R/PAs) may consist of one or several cells, adjacent or not, and may touch upon a coastline, or not.</li>
+            <li>Note that for a number of theoretical and practical reasons, marine protected areas (MPAs) and other forms of R/PAs are more effective when they have as few cells as possible that are adjacent to exploited cells.&#160; This can be achieved by making the R/PA as compact as possible (i.e., ‘round’ or square rather than elongated), and locating it adjacent to a coastline.</li>
+            <li>
+            </li>
         </ul>
-        <ul class="ul_2">
-            <li class="li_1">Restricted or protected areas; Restricted areas are here defined as set of (water) cells in which at least one fleet is restricted from fishing, and at least one other fleet may operate.</li>
-        </ul>
-        <div>
-            <p>
-                <img src="../Resources/Images/030000BB.png" style="width: 615px;height: 376px;" />
-            </p>
-            <p>Figure 10.6.&#160; Ecospace basemap. Land areas, habitat types, MPA areas, relative primary production, and cost of fishing can be defined on the spatial grid. The ‘Set Advection field’ links to an advection model. This basemap is read via the Web from a linked server at UBC (available through ‘Define habitat’ map), and illustrates spatial primary productivity based on SeaWiFS data.</p>
-        </div>
-        <p>Protected areas are defined as set of cells in which no fleet is permitted to operate.&#160; (Thus, ‘cheating’, wherein one or several fleets illegally operate inside a protected area, can be accommodated by Ecospace).</p>
-        <p>Restricted or protected areas (R/PAs) may consist of one or several cells, adjacent or not, and may touch upon a coastline, or not.</p>
-        <p>Note that for a number of theoretical and practical reasons, marine protected areas (MPAs) and other forms of R/PAs are more effective when they have as few cells as possible that are adjacent to exploited cells.&#160; This can be achieved by making the R/PA as compact as possible (i.e., ‘round’ or square rather than elongated), and locating it adjacent to a coastline.</p>
-        <ul class="ul_2">
-            <li class="li_1">Distribution of primary producers P/B: Primary production may vary in different areas of an ecosystem, e.g., due to terrigenous inflow of nutrients, or processes that lead to mixing or upwelling of water masses.</li>
-        </ul>
-        <p>Mapping such areas is done by sketching a multiplier of the baseline P/B for primary producers.&#160; This multiplier, which may range from 0.01 to 100, can thus be used to depict anything from areas with very low primary production rates to areas with very high rates compared to the underlying Ecopath model. The values entered are relative and the total primary production is scaled so that it will be the same as in the base Ecopath model.&#160; </p>
-        <p>Warning: Ecospace is sensitive to this setting. Even if the range is 0.01 to 100 such extremes should be used with great care only.</p>
-        <ul class="ul_2">
-            <li class="li_1">and by fleet: Pressing ‘fleet operations’ and choosing one of the fleets (defined in the underlying Ecopath file) opens a small text box, which allows:</li>
-        </ul>
-        <ol start="1" class="ol_1">
-            <li>Identification of a port/landing place: Ecospace allows only one port/landing place per fleet. Hence, if one’s fleet use several ports/landing places, the underlying Ecopath file must be modified accordingly (by replacing the existing fleet by several fleets, of which each has its own port/landing place). Also note that, to avoid ambiguities, a port/landing place is defined by a (yellow) water cell, not by a land cell.&#160; Note: this feature not yet activated.</li>
-        </ol>
-        <ol start="2" class="ol_1">
-            <li>Mapping the cost of sailing: Costs of sailing are multipliers of variable costs, sketched onto the map.&#160; These costs should reflect distance from the port/landing place, as modified by other factors (e.g., winds or currents).</li>
-        </ol>
-        <p>[A routine is planned to automatically calculate nearest sailing distances from a port/landing place (while considering obstacles, e.g., islands)]</p>
-        <ul class="ul_2">
-            <li class="li_1">Show transect: Show a biomass transect, whose two ends (red buttons) can be moved. This is used to further facilitate interpretation of an Ecospace run. The small display below the distribution map shows the (log) biomass of the different groups along a transect defined by the position of the two red/orange buttons on the basemap.</li>
-        </ul>
-        <p>As might be seen (once a simulation has been performed), the biomass drop when the transect line crosses cells defined as land.&#160; The transect line allows identification of trophic cascades (abundant predators, scarce prey, and vice versa) in an ecosystem context, notably when drawn across Restricted/Protected Areas, where top predator biomasses tend to be high.&#160; </p>
-        <p>Completing the basemap is achieved by clicking any of the buttons defined by the above bullets, then using the mouse to sketch the corresponding map information. </p>
-        <p>Details on ‘Habitat’ and the Fishery can be obtained by clicking the corresponding tabs.</p>
+        <p>&#160;</p>
         <p>&#160;</p>
     </body>
 </html>
