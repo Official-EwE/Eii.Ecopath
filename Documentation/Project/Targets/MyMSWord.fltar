@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<CatapultTarget Version="1" 
-	Comment="Microsoft Word Target" 
-	Type="MsWord"
-  GlossaryTermConversion="marked">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CatapultTarget Version="1" Comment="Microsoft Word Target" Type="MsWord" GlossaryTermConversion="marked" MasterToc="/Project/TOCs/EWE_UsersGuide.fltoc" MasterPage="/Content/Resources/MasterPages/EWE_UsersGuide.flmsp" ConditionTagExpression="include[Default.PrintOnly] ">
+    <Destinations>
+    </Destinations>
+    <PrintedOutput GeneratePDF="False" ExpandingTextConversion="expand" MultiDocWordOutput="False" />
 </CatapultTarget>

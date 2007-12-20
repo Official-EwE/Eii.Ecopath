@@ -5,7 +5,12 @@
     </head>
     <body>
         <div>
-            <p>Please note: All help topics are currently in draft format. Please send your comments to support@ecopath.org.</p>
+            <p>
+                <MadCap:pageFooter class="">
+                    <MadCap:pageFooter class="">
+                        <p>&#160;</p>
+                    </MadCap:pageFooter>
+                </MadCap:pageFooter><i>Please note: All help topics are currently in draft format. Please send your comments to support@ecopath.org</i>.</p>
         </div>
         <MadCap:bodyProxy />
         <div>
