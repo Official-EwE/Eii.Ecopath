@@ -5,13 +5,16 @@
     </head>
     <body>
         <h2><span class="span_2">7.6 </span>Mortality coefficients</h2>
-        <p>The Mortality coefficients form (Figure 7.1) is one of the most important forms on the Parameterization menu and it is, as a rule, the first one that should be checked when balancing a model. This form gives the Ecopath-predicted values of each type of mortality for each group in the model (see below). During balancing, the Mortality coefficients form will guide you in identifying where problems are (e.g., if it’s fishing or predation mortality that is too high). If predation mortality is too high, then you can use the <a href="Predation mortality.htm#_Predation_mortality">Predation mortality</a> form to identify which predators are causing the problem.</p>
-        <p>Components of mortality in Ecopath </p>
-        <p>Under equilibrium, each group can be represented by an average organism, with an average weight. This makes it possible to use equations for estimating mortality in numbers, even when dealing with biomass. One such equation is</p>
+        <p>
+            <MadCap:keyword term="Mortality coefficients" />The <i>Mortality coefficients form</i> (Figure 7.1) is one of the most important forms on the <i>Parameterization menu</i> and it is, as a rule, the first one that should be checked when balancing a model. </p>
+        <p>This form gives the Ecopath-predicted values of each type of mortality for each group in the model (see below). During balancing, the <i>Mortality coefficients form</i> will guide you in identifying where problems are (e.g., if it’s fishing or predation mortality that is too high). If predation mortality is too high, then you can use the <a href="Predation mortality.htm">Predation mortality</a> form to identify which predators are causing the problem.</p>
+        <h3>Components of mortality in Ecopath </h3>
+        <p>
+            <MadCap:keyword term="Mortality components;Other mortality;Total mortality;P/B;Z, Total mortality;Predation mortality;Ecotrophic efficiency;Mortality" />Under equilibrium, each group can be represented by an average organism, with an average weight. This makes it possible to use equations for estimating mortality in numbers, even when dealing with biomass. One such equation is</p>
         <p>
             <img src="../Resources/Images/0800005B.png" style="width: 87px;height: 25px;" />Eq. 25</p>
-        <p>where <img src="../Resources/Images/0800005C.png" style="width: 23px;height: 24px;" />is a number of organism at time = 0; <img src="../Resources/Images/0800005D.png" style="width: 21px;height: 24px;" />is the number of survivors at time = t; and Z is the instantaneous rate of mortality.</p>
-        <p>Under the assumption that <img src="../Resources/Images/0800005E.png" style="width: 19px;height: 24px;" />, the mortality of group i, is constant for the organisms included in i, it turns out that, for a large number of growth functions (including the von Bertalanffy Growth Function, or VBGF):</p>
+        <p>where <i>N<sub>0</sub></i><sub><![CDATA[ ]]></sub>is a number of organism at time = 0; <i>N<sub>t</sub></i> is the number of survivors at time = <i>t</i>; and Z is the instantaneous rate of mortality.</p>
+        <p>Under the assumption that <i>Z<sub>i</sub></i>, the mortality of group <i>i</i>, is constant for the organisms included in i, it turns out that, for a large number of growth functions (including the von Bertalanffy Growth Function, or VBGF):</p>
         <p>
             <img src="../Resources/Images/0800005F.png" style="width: 233px;height: 24px;" />Eq. 26</p>
         <p>or instantaneous mortality equals total production over mean biomass (Allen, 1971).</p>
@@ -20,20 +23,20 @@
         <p>or </p>
         <p>
             <img src="../Resources/Images/08000060.png" style="width: 36px;height: 24px;" />=<img src="../Resources/Images/08000061.png" style="width: 168px;height: 24px;" />Eq. 27</p>
-        <p>In some models, (e.g., the Multispecies Virtual Population Analysis model of the North Sea, Sparre, 1991), the ‘other mortality’ component is split between M1i, i.e., predation by predators not included in the model, and <img src="../Resources/Images/08000062.png" style="width: 33px;height: 24px;" />, ‘other mortality’, caused by diseases, senescence, etc. In Ecopath, M1 is not included, as all predation mortality should be described explicitly. Further, M0i is not entered directly, but is computed from the ecotrophic efficiency, EEi, Thus:</p>
-        <p>Fi is the Fishing mortality coefficient;</p>
-        <p>M2i is the Predation mortality coefficient;</p>
-        <p>BAi is the Biomass accumulation coefficient;</p>
-        <p>Ei is the Net migration coefficient (immigration less emigration). </p>
-        <p>M0i is the Other mortality coefficient.</p>
-        <p>Ecopath-predicted values for these coefficients are given on the Mortality coefficients form. The mortality coefficients are estimated from the following equations:</p>
-        <p>Zi = P/Bi</p>
-        <p>M2i = (∑Bi · Q/Bi · DCji) / Bi</p>
-        <p>Fi = Yi/Bi </p>
-        <p>M0i = (1-EEi) · P/Bi</p>
-        <p>where Q/Bj is the consumption/biomass ratio of predator j;<img src="../Resources/Images/08000063.png" style="width: 36px;height: 25px;" />is the proportion prey i constitutes to the diet of predator j, <img src="../Resources/Images/08000064.png" style="width: 17px;height: 24px;" /> is the average biomass of i, and <img src="../Resources/Images/08000065.png" style="width: 19px;height: 24px;" /> is the catch of i. The biomass accumulation term, BAi, is a basic input term.</p>
-        <p>If any component of the system is harvested, a summary of the mortality coefficients can be displayed, which presents total mortality (Z = P/B) and its component: fishing mortality (F), other exports (E), other mortality (M0), and predation mortality (M2). Predation mortality is further broken down to show the contribution of each consumer groups to the total predation mortality of each prey group.</p>
-        <p>See also introductory material on <a href="Production.htm#_Production">Production</a>, <a href="Consumption.htm#_Consumption_2">Consumption</a>, <a href="Dealing with open system problems.htm#_Representation_of_multi-stanza">Dealing with open system problems</a> and <a href="Other mortality.htm#_Other_mortality">Other mortality</a>.</p>
+        <p>In some models, (e.g., the Multispecies Virtual Population Analysis model of the North Sea, Sparre, 1991), the ‘other mortality’ component is split between <i>M1</i><sub style="font-style: italic;">i</sub>, i.e., predation by predators not included in the model, and <i>M0</i><sub style="font-style: italic;">i</sub>, ‘other mortality’, caused by diseases, senescence, etc. In Ecopath, <i>M1</i> is not included, as all predation mortality should be described explicitly. Further, <i>M0</i><sub style="font-style: italic;">i</sub> is not entered directly, but is computed from the ecotrophic efficiency, <i>EE</i><sub style="font-style: italic;">i</sub>, Thus:</p>
+        <p><i>F<sub>i</sub></i> is the Fishing mortality coefficient;</p>
+        <p><i>M2<sub>i</sub></i> is the Predation mortality coefficient;</p>
+        <p><i>BA<sub>i</sub></i> is the Biomass accumulation coefficient;</p>
+        <p><i>E<sub>i</sub></i> is the Net migration coefficient (immigration less emigration). </p>
+        <p><i>M0<sub>i</sub></i><sub><![CDATA[ ]]></sub>is the Other mortality coefficient.</p>
+        <p>Ecopath-predicted values for these coefficients are given on the <i>Mortality coefficients</i> form. The mortality coefficients are estimated from the following equations:</p>
+        <p style="font-style: italic;">Z<sub>i</sub> = P/B<sub>i</sub></p>
+        <p style="font-style: italic;">M2<sub>i </sub>= (∑B<sub>i</sub> · Q/B<sub>i</sub> · DC<sub>ji</sub>) / B<sub>i</sub></p>
+        <p style="font-style: italic;">F<sub>i</sub> = Y<sub>i</sub>/B<sub>i</sub> <![CDATA[ ]]></p>
+        <p style="font-style: italic;">M0<sub>i</sub> = (1-EE<sub>i</sub>) · P/B<sub>i</sub></p>
+        <p>where <i>Q/B</i><sub>j</sub> is the consumption/biomass ratio of predator j; <i>DC<sub>ji</sub></i> is the proportion prey <i>i</i> constitutes to the diet of predator <i>j</i>, <i>B<sub>i</sub></i> is the average biomass of <i>i</i>, and <i>C<sub>i</sub></i> is the catch o<i>f i</i>. The biomass accumulation term, <i>BA<sub>i</sub></i>, is a basic input term.</p>
+        <p>If any component of the system is harvested, a summary of the mortality coefficients can be displayed, which presents total mortality (<i>Z = P/B</i>) and its component: fishing mortality (<i>F</i>), other exports (<i>E</i>), other mortality (<i>M<sub>0</sub></i>), and predation mortality (<i>M2</i>). Predation mortality is further broken down to show the contribution of each consumer groups to the total predation mortality of each prey group.</p>
+        <p>See also introductory material on <a href="Production.htm">Production</a>, <a href="Consumption.htm">Consumption</a>, <a href="Dealing with open system problems.htm">Dealing with open system problems</a> and <a href="Other mortality.htm">Other mortality</a>.</p>
         <h3>
             <img src="../Resources/Images/03000066.png" style="width: 648px;height: 495px;" />
         </h3>

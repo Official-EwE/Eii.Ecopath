@@ -5,7 +5,31 @@
     </head>
     <body>
         <h2>7.15 Flow diagram</h2>
-        <p><span class="span_4">7.15 </span>Flow diagram</p>
+        <p>
+            <MadCap:keyword term="Flow diagram;Trophic level;Trophic links" />One of the characteristics of network ecosystem models is that all flows and biomasses can be shown in a single graph. </p>
+        <p>The traditional method of representing trophic flow in ecosystem models, usually by scattering interconnected boxes across a page, both under-utilizes the potential descriptive and explanatory power of graphical representations and makes it difficult to compare different system representations. 
+Often, trophic models are drawn such that the boxes representing organisms low in the food web are placed in the lower part of the graph, along with the plants, while the boxes representing organisms high in the food web are put higher up.
+</p>
+        <p>In the flow chart incorporated in Ecopath, explicit use is made of this mode of graphing, i.e., to plot the boxes representing the organisms of an ecosystem such that the horizontal axis of symmetry of each box is aligned with the (functional) <a href="Basic estimates.htm">trophic level</a> of the box in question.
+Using trophic level as the Y-axis is not sufficient to define the relative position of the elements of a model, and two approaches may be considered for ordering the boxes along the X-axis:
+</p>
+        <blockquote>
+            <p>(i)	arranging the boxes such that they do not overlap, and/or with emphasis on some symmetry, such that the resulting graph is aesthetically pleasing, or,
+</p>
+            <p>(ii)	arranging the boxes such that the arrows linking the boxes cross each other as little as possible, hence maximizing clarity of the graph.
+</p>
+        </blockquote>
+        <p>You might consider (i) and (ii) when constructing flow charts using the flow diagram in this version of Ecopath. The size of each (round) box is proportional to the biomass it represents. This trick is particularly useful in helping to visualize the relative role and impact of the organisms in each box.
+</p>
+        <p>Another rule of construction was incorporated in the flow chart design of Ecopath. Flows entering a box do this on the lower half of the box, while flows exiting a box do it from the upper half. Flows that enter a box can be combined, while flows that leave a box cannot branch, but can be merged with flows exiting other boxes. This ensures compatibility with electronic hardware design, and more importantly, it simplifies the flow chart. </p>
+        <p>
+            <MadCap:keyword term="Cannibalism" />‘Cannibalism’ or zero-order flows can be shown as arrows originating from the top half of a box, and moving in an incomplete circle before entering the lower half. The flow chart routine of Ecopath will label all connecting arrows with their respective flows.
+</p>
+        <p style="font-style: normal;">EwE6 automatically builds a trophic flow diagram. Right click on the <i>Flow diagram</i> form and select <i>Settings</i> to set the color of the nodes, colors, width and types of lines, the shape of the nodes (square or circular) and whether the nodes are to be scaled or not.</p>
+        <p style="font-style: normal;">Hover your mouse over a node to see its connections. Trophic levels are shown in the background. <![CDATA[ ]]></p>
+        <p><span class="span_4"></span>
+        </p>
+        <p>&#160;</p>
         <p>
             <img src="../Resources/Images/0300007B.png" style="width: 647px;height: 468px;">
             </img>

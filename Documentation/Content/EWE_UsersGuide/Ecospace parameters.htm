@@ -5,20 +5,23 @@
     </head>
     <body>
         <h2><span class="span_4">10.2 </span>Ecospace parameters</h2>
-        <p style="text-decoration: none;">Use the <i>Ecospace parameters</i> form to set non-spatial parameters for the Ecospace scenario. See <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a> for details on setting up the spatial map.</p>
+        <p style="text-decoration: none;">
+            <MadCap:keyword term="Ecospace input parameters" />Use the <i>Ecospace parameters</i> form to set non-spatial parameters for the Ecospace scenario. See <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a> for details on setting up the spatial map.</p>
         <h3>Initialization</h3>
         <p>Users are given two options for initialising biomasses in Ecospace cells.</p>
         <h4><i style="font-style: normal;">Ecopath base biomasses</i>
         </h4>
-        <p>Assigns the Ecopath mean biomass for each pool to every spatial cell that has suitable habitat for that type of organism and lower biomass to every non-suitable cell.&#160; In this case the Ecosim estimates of predation parameters (vulnerabilities, predator search rates) are left unchanged.&#160; However, this option generally results in underestimates of biomass density in favourable habitats, especially for biomass types that actually have high biomass on just a few spatial sites or cells. </p>
+        <p>
+            <MadCap:keyword term="Ecopath base biomasses" />Assigns the Ecopath mean biomass for each pool to every spatial cell that has suitable habitat for that type of organism and lower biomass to every non-suitable cell.&#160; In this case the Ecosim estimates of predation parameters (vulnerabilities, predator search rates) are left unchanged.&#160; However, this option generally results in underestimates of biomass density in favourable habitats, especially for biomass types that actually have high biomass on just a few spatial sites or cells. </p>
         <h4><i style="font-style: normal;">Habitat-adjusted biomasses</i>
         </h4>
-        <p>Distributes the entire Ecopath mean biomass for each pool into just those cells that are suitable for the organism, i.e., concentrates the overall mean biomass into those map cells where the biomass is actually found. For example, a creature with overall Ecopath mean biomass of 10 t/km² would be assigned a biomass of 100 t/km² in suitable cells, if just 10% of the cells are assigned a habitat type suitable for it. In this second option, predation vulnerabilities, predator search rates, and primary producer P/B vs B parameters are adjusted to reflect the new, localized ‘mean’ biomasses expected in habitat types where animals actually are abundant.</p>
+        <p>
+            <MadCap:keyword term="Habitat-adjusted biomasses" />Distributes the entire Ecopath mean biomass for each pool into just those cells that are suitable for the organism, i.e., concentrates the overall mean biomass into those map cells where the biomass is actually found. For example, a creature with overall Ecopath mean biomass of 10 t/km² would be assigned a biomass of 100 t/km² in suitable cells, if just 10% of the cells are assigned a habitat type suitable for it. In this second option, predation vulnerabilities, predator search rates, and primary producer P/B vs B parameters are adjusted to reflect the new, localized ‘mean’ biomasses expected in habitat types where animals actually are abundant.</p>
         <p> See <a href="Assign habitats.htm">Assign habitats</a> for further details on setting suitable habitats.</p>
         <h2>Model</h2>
         <h4><span style="font-size: 14pt;">Model type</span>
         </h4>
-        <p>EwE6 represents a major overhaul of the functioning of Ecospace and there are now three approaches to running Ecospace simulations.       <![CDATA[ ]]></p>
+        <p>EwE6 represents a major overhaul of the functioning of Ecospace and there are now three approaches to running Ecospace simulations.        <![CDATA[ ]]></p>
         <p style="font-weight: bold;font-style: italic;color: #ff0000;"><i style="font-style: normal;"> EwE6 multi-stanza model</i>
         </p>
         <p style="font-weight: bold;font-style: italic;color: #ff0000;">&#160;</p>
@@ -42,7 +45,7 @@
         <p class="p_1"> See Walters and Martell (2004; Box 11.2) for more details about solving systems of differential equations that include spatial mixing effects.</p>
         <p class="p_1"><i style="font-style: normal;font-weight: bold;">Successive over-relaxation</i>
         </p>
-        <p class="p_1" style="color: #ff0000;">By solving for whole rows or columns at the same time, successive over-relaxation (SOR) can be used to improve the efficiency of the algorithm (Press et al. 1996). The default setting is 0.9.     <![CDATA[ ]]></p>
+        <p class="p_1" style="color: #ff0000;">By solving for whole rows or columns at the same time, successive over-relaxation (SOR) can be used to improve the efficiency of the algorithm (Press et al. 1996). The default setting is 0.9.      <![CDATA[ ]]></p>
         <h4 class="p_1">Predict effort</h4>
         <p class="p_1">Ecospace can be used to predict distribution of fishing effort over space for each of the fleets. Fishing effort is assigned to spatial cells through a ‘gravity model’, wherein effort is proportional to the net benefits gained from exploiting a given cell.
 </p>

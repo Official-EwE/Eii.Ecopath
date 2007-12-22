@@ -5,30 +5,33 @@
     </head>
     <body>
         <h2><span class="span_4">7.10 </span>Niche overlap</h2>
-        <p>Ecopath-predicted values for Prey overlap and Predator overlap are displayed in separate forms under the Niche overlap node (under Parameterization) in the Navigator window.</p>
+        <p>
+            <MadCap:keyword term="Niche overlap;Predator overlap;Prey overlap" />Ecopath-predicted values for<i style="font-style: normal;"> <![CDATA[ ]]><i>Prey overlap</i></i> and <i>Predator</i> overlap are displayed in separate forms under the <i>Niche overlap</i> node  in the <i>Navigator window</i>.</p>
         <p>Numerous overlap indices have been suggested for quantification of how species overlap. Hurlbert (1978) and Loman (1986) summarized different types of indices, and described their properties based on a number of hypothetical examples.</p>
         <p>Here a simple niche overlap index is adopted and it is shown how it can serve as a starting point for the development of a new (predator) niche overlap index incorporating predation. The procedure involved in deriving a predator niche overlap index (from a prey niche overlap index) should be generally applicable, i.e., not limited to the type of index presented below. </p>
-        <p>Pianka (1973) suggested the use of an overlap index derived from the competition coefficients of the Lotka-Volterra equations. This index, Ojk , which has been used for many descriptions of niche overlap, can be estimated, for two species/groups (j) and (k), from</p>
+        <p>
+            <MadCap:keyword term="Pianka overlap index" />Pianka (1973) suggested the use of an overlap index derived from the competition coefficients of the Lotka-Volterra equations. This index, <i>O<sub>jk</sub></i> , which has been used for many descriptions of niche overlap, can be estimated, for two species/groups <i>j</i> and <i>k</i>, from</p>
         <p>
             <img src="../Resources/Images/08000072.png" style="width: 195px;height: 44px;" />Eq. 29</p>
-        <p>where Pji and Pki are the proportions of the resource (i) used by species (j) and (k), respectively. The index is symmetrical and assumes values between 0 and 1. </p>
+        <p>where <i>P<sub>ji</sub></i> and <i>P<sub>ki</sub> <![CDATA[ ]]></i>are the proportions of the resource <i>i</i> used by species <i>j</i> and <i>k</i>, respectively. The index is symmetrical and assumes values between 0 and 1. </p>
         <p>A value of 0 suggests that the two species do not share resources, 1 indicates complete overlap, and intermediate values show partial overlap in resource utilization. </p>
-        <p>Closer examination of the Pianka overlap index shows it to have an unwanted characteristic, and it is therefore slightly modified here. If one of the groups (say j) only overlaps with one other group (k) then Pji will be zero for all values of (i) but (i) = (k), where it will reach a value of 1. In such a case, the denominator of Equation (1) will always be 1, and the overlap index will equal Pki, whereas a value between Pki and Pji would be more reasonable. This behavior is caused by the geometric mean implied in the denominator of (1), and can be circumvented by the use of an arithmetic mean. For this (1) is changed to</p>
+        <p>Closer examination of the Pianka overlap index shows it to have an unwanted characteristic, and it is therefore slightly modified here. If one of the groups (say <i>j</i>) only overlaps with one other group (<i>k</i>) then <i>P<sub>ji</sub></i> will be zero for all values of <i>i</i> but<i> i</i> = <i>k</i>, where it will reach a value of 1. In such a case, the denominator of Equation 29 will always be 1, and the overlap index will equal <i>P<sub>ki</sub>,</i> whereas a value between <i>P<sub>ki</sub></i><sub><![CDATA[ ]]></sub>and<i> P<sub>ji</sub></i> would be more reasonable. This behaviour is caused by the geometric mean implied in the denominator of Equation 29, and can be circumvented by the use of an arithmetic mean. For this Equation 29 is changed to</p>
         <p>
             <img src="../Resources/Images/08000073.png" style="width: 223px;height: 40px;" />Eq. 30</p>
         <p>where the index and all of its terms can be interpreted as above. This version of the Pianka overlap index is used in the subsequent calculations.</p>
-        <p>The niche overlap index can be used to describe various kinds of niche partitioning. Here attention will be focused on the trophic aspects. In this case, the Pki and Pji in (2) can be interpreted as the fraction prey (i) contributes to the diets of (j) and (k), respectively.</p>
-        <p>Using an approach similar to that above, it is possible to quantify the predation on all preys (m) and (n) by all predators (l), and to derive a ‘predator’ composition, estimated from</p>
+        <p>The niche overlap index can be used to describe various kinds of niche partitioning. Here attention will be focused on the trophic aspects. In this case, the <i>P<sub>ki</sub></i> and <i>P<sub>ji</sub></i> in Equation 30 can be interpreted as the fraction prey <i>i</i> contributes to the diets of <i>j</i> and <i>k</i>, respectively.</p>
+        <p>Using an approach similar to that above, it is possible to quantify the predation on all preys <i>m</i> and <i>n</i> by all predators <i>l</i>, and to derive a ‘predator’ composition, estimated from</p>
         <p>
             <img src="../Resources/Images/08000074.png" style="width: 157px;height: 40px;" />Eq. 31</p>
         <p>and</p>
         <p>
             <img src="../Resources/Images/08000075.png" style="width: 152px;height: 40px;" />Eq. 32</p>
-        <p>Here Xml can be interpreted as the fraction the predation by (l) contributes to the total predation on (m), while Ql is the total consumption for predator (l). The predator compositions given above correspond to what Augoustinovics (1970) defined, in the context of input-output analysis, as ‘technical coefficients’.</p>
-        <p>Based on the predator composition a ‘predator overlap index’ (P) can be derived as</p>
+        <p>Here <i>X<sub>ml</sub></i> can be interpreted as the fraction the predation by<i> l</i> contributes to the total predation on <i>m</i>, while <i>Q<sub>l</sub></i> is the total consumption for predator <i>l</i>. The predator compositions given above correspond to what Augoustinovics (1970) defined, in the context of input-output analysis, as ‘technical coefficients’.</p>
+        <p>
+            <MadCap:keyword term="Predator overlap index" />Based on the predator composition a ‘predator overlap index’ (<i>P</i>) can be derived as</p>
         <p>
             <img src="../Resources/Images/08000076.png" style="width: 228px;height: 40px;" />Eq. 33</p>
-        <p>the values of this predator overlap index range between 0 and 1 and can be interpreted in the same way as those of the prey overlap index, given in (2). </p>
+        <p>the values of this predator overlap index range between 0 and 1 and can be interpreted in the same way as those of the prey overlap index, given in Equation 30. </p>
         <p>In the present version, only one type of niche overlap index is incorporated, but both predator and prey niche overlap is given for this index. Given users' interest, more indices may be included in later versions of EwE.</p>
     </body>
 </html>

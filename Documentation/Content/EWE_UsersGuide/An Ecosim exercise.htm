@@ -10,19 +10,23 @@
             <MadCap:keyword term="Ecosim" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" />Below is a cursory check of Ecosim’s behavior, which it is advised that you check out.</p>
         <p>After loading an <a href="Ecosim menu.htm">Ecosim scenario</a>:</p>
         <ul class="ul_2">
-            <li class="li_1">Go straight to the<a href="Run ecosim.htm#_Biomass_1"> Run Ecosim</a> form. Click ‘Run’. Make sure everything is flat or changing according to the<a href="Other production.htm#_Other_production">Biomass Accumulation</a>you specified in Ecopath. Crazy cases: discard effects may cause troubles.</li>
+            <li class="li_1">Go straight to the<a href="Run ecosim.htm"> Run Ecosim</a> form. Click ‘Run’. Make sure everything is flat or changing according to the<a href="Other production.htm"> Biomass Accumulation</a>you specified in Ecopath. Crazy cases: discard effects may cause troubles.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next: Go to <a href="Ecosim parameters.htm#_Ecosim_input_data">Ecosim parameters</a>: set the Duration of simulation to 30-50 years. Make a small disturbance for the combined fishery using the sketch pad on the Biomass form. If everything is okay in the settings it should come back to the initial value eventually. Are all groups reacting at the speed you expect them to?</li>
+            <li class="li_1">Next: Go to <a href="Ecosim parameters.htm">Ecosim parameters</a>: set the Duration of simulation to 30-50 years. Make a small disturbance for the combined fishery using the sketch pad on the Biomass form. If everything is okay in the settings it should come back to the initial value eventually. Are all groups reacting at the speed you expect them to?</li>
+            <p>&#160;</p>
+            <li class="li_1">
+                <li class="li_1">Next, go to the <a href="Group info.htm">Group info</a> form</li>
+            </li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next take out<a href="Group info.htm#_Read_time_series"> feeding time dynamics</a>, set to zero.</li>
+            <li class="li_1">Next take out feeding time dynamics, set to zero.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Set the<a href="Group info.htm#_Read_time_series"> unexplained predation</a>to 0 throughout.</li>
+            <li class="li_1">Set the unexplained predation to 0 throughout.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Go to<a href="Vulnerabilities flow control.htm#_Vulnerabilities_(flow_control:"> Vulnerabilities</a> (the most important tab in Ecosim). Set to 100 (top down).</li>
+            <li class="li_1">Next, go to<a href="Vulnerabilities flow control.htm"> Vulnerabilities</a> (the most important tab in Ecosim). Set to 100 (top down control).</li>
         </ul>
         <ul class="ul_2">
             <li class="li_1">Reset F’s.</li>
@@ -34,7 +38,7 @@
             <li class="li_1">Create a small disturbance.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Run and you will get chaotic behavior, violent oscillations and groups dropping out completely. Typical Lotka-Volterra behavior</li>
+            <li class="li_1">Run and you will get chaotic behaviour, violent oscillations and groups dropping out completely. Typical Lotka-Volterra behavior</li>
         </ul>
         <ul class="ul_2">
             <li class="li_1">Put in flow control setting of 2 throughout. [Interpretation: curves go through 0, the Ecopath value and two times the base (Zmax/Zbase)] Run: it will generally run OK.</li>
@@ -52,7 +56,7 @@
             <li class="li_1">Turn the feeding time factor back on. This will change the feeding time, 1 can cause numerical instability. If this happens it will create violent oscillations and more groups may drop out. Try, e.g., 0.2 will change feeding behavior with some 20% per month. If groups are still dropping out the foraging behavior is slowing things down, so the the feeding time factor is not big enough. It tries to maintain the Q/B by changing foraging time.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Group info:<a href="Group info.htm#_Read_time_series"> predator effective feeding time</a>. The target feeding time is set according to predator abundance. Setting the value to 1 means a group is willing to give up feeding if predation risk is high. Zero means the group is ignoring predation risk but feeds independently. Top predators may be reducing feeding due to parasite risk (often ignored predators). Try an intermediate value, e.g., 0.5.</li>
+            <li class="li_1"><a href="Group info.htm">Group info</a>: <i>Predator effective feeding time</i>. The target feeding time is set according to predator abundance. Setting the value to 1 means a group is willing to give up feeding if predation risk is high. Zero means the group is ignoring predation risk but feeds independently. Top predators may be reducing feeding due to parasite risk (often ignored predators). Try an intermediate value, e.g., 0.5.</li>
         </ul>
         <ul class="ul_2">
             <li class="li_1">Initially you may not have any idea of what values to use, so play, try it out.</li>
@@ -61,13 +65,13 @@
             <li class="li_1">What we have been doing? Trying to maintain the mass interaction model by adding behavior to equation.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next, look at <a href="Edit multi stanza groups.htm#_Edit_multistanza_groups">multi-stanza groups</a>. Increase fishing heavily for 5-10 years, and then shut the fishery down. The juvenile groups should be hit hard.</li>
+            <li class="li_1">Next, look at <a href="Representation of multi stanza.htm">multi-stanza groups</a>. Increase fishing heavily for 5-10 years, and then shut the fishery down. The juvenile groups should be hit hard.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Open the <a href="Ecosim plot.htm#_Stock_recruitment_(S/R)">Stock-Recruitment plot</a>: There will often be erratic behavior for short to medium- lived groups, and Beverton-Holt (BH) curves for long lived ones. If you don’t see BH curves for long lived groups, something is likely to be wrong with your parameters.</li>
+            <li class="li_1">Open the <a href="Stock recruitment S R plot.htm">Stock-Recruitment plot</a>: There will often be erratic behavior for short to medium- lived groups, and Beverton-Holt (BH) curves for long lived ones. If you don’t see BH curves for long lived groups, something is likely to be wrong with your parameters.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next use the forcing functions. Here’s an experiment: change primary productivity over time using a forcing function and apply to phytoplankton (using <a href="Apply forcing function consumer.htm#_Egg_production">Apply FF (primary producer)</a>), and look at how it propagates up through the food web.</li>
+            <li class="li_1">Next use the forcing functions. Here’s an experiment: change primary productivity over time using a forcing function and apply to phytoplankton (using <a href="Apply forcing function primary.htm">Apply FF (primary producer)</a>), and look at how it propagates up through the food web.</li>
         </ul>
         <ul class="ul_2">
             <li class="li_1">Use <i>Overlay</i> on the <i>Run Ecosim</i> form for an easy (sensitivity) check of how parameter values impact the results.</li>
