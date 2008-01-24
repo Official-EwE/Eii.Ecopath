@@ -6,7 +6,8 @@
     <body>
         <h2><span class="span_4">10.6 </span>Dispersal</h2>
         <h3>Introduction</h3>
-        <p>The organisms (i) in an Ecopath model have an aggregated biomass (Bi), and are not assumed to move within the area covered by that Ecopath model. In Ecospace, a fraction (B’i) of the biomass of each cell is always on the move, wherein </p>
+        <p>
+            <MadCap:keyword term="Dispersal in Ecospace" />The organisms (i) in an Ecopath model have an aggregated biomass (Bi), and are not assumed to move within the area covered by that Ecopath model. In Ecospace, a fraction (B’i) of the biomass of each cell is always on the move, wherein </p>
         <p>B’ = <i>m</i> · Bi</p>
         <p>with <i>m</i> having the dimension of length / time (i.e., km / year) i.e., a velocity or ‘speed’.</p>
         <p>However, <i>m</i> is not a rate of directed migration, as occur seasonally in numerous fish populations. Rather, <i>m</i> should be regarded as dispersal and seen as the rate (km/year) the organisms of given ecosystem would disperse as a result of random movements.</p>
@@ -33,7 +34,7 @@
         <h3>North/south and East/west concentration</h3>
         <p>Larger organisms commonly have seasonal migration patterns that allow them to utilize favourable seasonal resource and environmental conditions over large spatial areas.&#160; Such movements can be represented in Ecospace in two ways.&#160; First is a simple “Lagrangian” approach that does not require explicit simulation of movement; the idea here is to simply think of the whole Ecospace map as moving in space so as to remain centred on the distribution of some dominant migratory specie(s).&#160; Second is a more complex “Eulerian” approach, which does involve explicitly modelling changes in instantaneous rates of biomass flow among the Ecospace spatial cells, in some way that approximates at least the changing centre of distribution of the migratory species.</p>
         <p>The Eulerian approach is implemented in Ecospace by allowing users to define a monthly sequence of “preferred” map cell positions and to define how spread out the migrating fish are likely to be around these preferred cells by setting north-south and east-west “concentration parameters”.</p>
-        <p>For more detail see <a href="Representing seasonal migration.htm#_Representing_seasonal_migration">Representing seasonal migration in Ecospace</a>.</p>
+        <p>For more detail see <a href="Representing seasonal migration.htm">Representing seasonal migration in Ecospace</a>.</p>
         <h3>Barrier avoidance weight</h3>
         <p>To prevent migrating fish getting stuck in complex habitat, Ecospace contains an algorithm to help fish move around obstacles.&#160;The Barrier avoidance weight is the weight placed on the path finding algorithm. Default is 0 (it does nothing). If fish are getting stuck, gradually increase the value up to 1.&#160; Increasing this weight tends to concentrate the fish more tightly. The EW/NS concentrations can be lowered if this is a problem.</p>
         <p>

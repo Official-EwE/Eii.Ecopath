@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc">
+    <head><title>Modeling switching behavior in Ecosim</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><span class="span_4">3.11 </span>Modelling switching behaviour in Ecosim</h2>
+        <p>
+            <MadCap:keyword term="Switching behaviour;Predator-prey relationships;Effective rate of search" />Predators are said to ‘switch’ from one prey to another when predator diet proportion of each type changes more rapidly than the relative abundance of that type in the environment.&#160; Eating more of something when it becomes abundant does NOT imply switching, but rather just more frequent encounters with that type; the predator is said to switch if it takes disproportionately more of the thing as it becomes more abundant.</p>
+        <p>Three mechanisms that can lead to switching patterns in diet composition and prey mortality are represented in Ecosim:</p>
+        <ol start="1" class="ol_3">
+            <li>Apparent switching away from prey that are declining in abundance, due to those prey seeing less intraspecific competition and hence spending less time at risk to predation; this effect occurs for any prey species (and impacts feeding on it by all of its predators) whenever Ecosim Feeding time adjustment is set &gt;0 in the <a href="Group info.htm">Group info</a> interface.</li>
+        </ol>
+        <ol start="2" class="ol_3">
+            <li>Apparent switching in Ecospace, caused by fitness-sensitive movement; when Ecospace parameters are set to cause increased (and/or directional) movement from cells where ‘fitness’ (per capita food intake minus instantaneous mortality rate) is lower, predators will appear (for the system as a whole) to switch to more abundant prey, and prey that are declining in abundance will see lower predation rates in the cells where they remain concentrated.</li>
+        </ol>
+        <ol start="3" class="ol_3">
+            <li>Explicit changes in Ecosim rates of effective search, representing fine-scale behavioural choices by predators to spend more or less foraging time in the arenas where specific prey are concentrated. In this case, the behavioural choice among arenas is predicted from Ideal Free Distribution (IFD) arguments that predators should allocate foraging time so as to minimize time needed to obtain normal food consumption rates.</li>
+        </ol>
+        <p>In the third of these approaches, the Ecosim rate of effective search aij for predator type j on prey type i is modified at each simulation time step in relation to changes in abundance of all prey types, using a ‘gravity model’ approximation for the IFD allocation of predator foraging time among prey-specific foraging arenas.&#160; The equation used for this modification is aij(t) = KijaijBi(t)Pj / Σi’ai’jBi ’(t)Pj  Eq. 55</p>
+        <p>Here, aij is the base rate of effective search calculated from Ecopath and vulnerability exchange parameters, Kij is a scaling constant that makes the time-specific aij(t) equal aij when all prey biomasses Bi are at Ecopath base values, and the ‘switching power parameter’ Pj is a user-supplied (empirical, to be estimated from field data or model fitting)&#160; power parameter representing how strongly the predator responds to changes in prey availability (switching power parameter on the Group info form).&#160; In particular:</p>
+        <p>Pj = 0,no switching </p>
+        <p>Pj &lt;&lt; 1,prey must become very rare before predator j stops searching for them</p>
+        <p>Pj &gt;&gt; 1, predator switches violently when any prey increases or decreases.</p>
+        <p>Pj is limited to the range [0,2]. While it is derived by pretending that predators must allocate time among mutually exclusive foraging arenas for each of their prey types (a typically unrealistic assumption), it can still be used (with Pj &lt;&lt;1 values) to represent more general ideas about why and how predators switch among prey, e.g. formation and loss of search images for finding them.</p>
+        <p>Impact of setting a positive switching power parameter can be exemplified based on migratory striped bass. In this example switching results in much more variable for the predator – which simulation is the more appropriate can only be determined from empirical information (Figure 3.11).</p>
+        <div>
+            <p>Without switching </p>
+            <img src="../Resources/Images/03000033.png" style="width: 228px;height: 198px;" />
+            <img src="../Resources/Images/03000034.png" style="width: 240px;height: 198px;" />
+            <img src="../Resources/Images/03000035.png" style="width: 75px;height: 113px;" />
+        </div>
+        <div>
+            <p>With switching (power parameter = 2)</p>
+            <img src="../Resources/Images/03000036.png" style="width: 240px;height: 207px;" />
+            <img src="../Resources/Images/03000037.png" style="width: 240px;height: 188px;" />
+            <img src="../Resources/Images/03000038.png" style="width: 82px;height: 125px;" />
+            <p>Figure  3.11. Effect of allowing switching for migratory striped bass (Chesapeake Bay model, Christensen et al., MS). </p>
+        </div>
+        <p>&#160;</p>
+    </body>
+</html>
