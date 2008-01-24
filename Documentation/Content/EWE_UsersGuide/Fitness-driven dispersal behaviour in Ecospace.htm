@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:sourceDocument="C:\Ecopath\Ecopath6\Documentation\EWE_UsersGuide.doc" class="">
+    <head><title>Fitness-driven dispersal behaviour in Ecospace</title>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2><span class="span_2">4.4 </span>Fitness-driven dispersal behaviour in Ecospace (by Bob Lessard)</h2>
+        <p>
+            <MadCap:keyword term="Dispersal" />The default assumption in Ecospace is that dispersal and migration rates for each biomass pool are stable over space and time, except for ‘hardwired’ seasonal migration patterns.&#160; This default setting ignores the possibility that movement rates (and possibly directions) are dependent on local ‘fitness’ conditions, as measured by food intake rates and predation risk.&#160; For at least some species, at least dispersal (emigration) rates may well depend on local resource conditions and/or predation, with creatures having having higher probabilities of leaving areas where fitness is lower.&#160; Such behaviours could have major implications for design of marine protected areas, since food resource densities (for predators) are likely to be lower in protected areas, and predation risks (for smaller species) are likely to be higher in protected areas.&#160; Thus for a variety of creatures, emigration rates from protected areas might be considerably higher than base rates measured under relatively low (pre-protection) conditions.</p>
+        <p>Ecospace allows you to explore two alternative hypotheses about fitness-driven dispersal rates:</p>
+        <ol start="1" class="ol_1">
+            <li>Total emigration rates are inversely proportional to fitness in each spatial cell, without these rates being spatially oriented or biased toward more more favourable cells (‘Type 1’ fitness response);</li>
+            <li>Emigration rates are proportional to the difference in fitness between each source cell and each cell around it, i.e. dispersal rates are higher across cell faces representing directions of higher fitness and are lower in directions toward cells or areas of lower fitness (‘Type 2’ fitness response).</li>
+        </ol>
+        <p>The first of these hypotheses represents the idea that organisms may only be able to detect local “comfort” conditions, while the second represents the possibility that organisms can detect local spatial gradients in fitness.&#160; For both hypotheses, fitness for each cell i,j for each time step is represented by the per-capita growth minus mortality rate index f = gqi j - Zij, where g is growth efficiency, qij is per capita food intake rate (Q/B) in cell ij, and Zij is total mortality rate in the cell.&#160; Note that qij can be a complex function of food resources in the cell, and Zij represents combined impact of all predators in the cell.&#160; Further, these fitness components may vary dramatically over both space and time.</p>
+        <p>To simulate fitness-driven dispersal in Ecospace, you must make three parameter settings:</p>
+        <ol start="1" class="ol_1">
+            <li>For each species/group that is to show the behaviour, set the ‘Migrating?’ cell to ‘True’ in the Ecospace <a href="Dispersal.htm">Dispersal</a> form (species is treated as migratory even if it does not have a particular seasonal migration pattern);</li>
+            <li> On the Ecospace Define Habitat form, set the text box for movement type of migratory species to 1 or 2, representing the two alternative movement hypotheses defined above (the movement type hypothesis is applied to all migratory species in any one Ecospace run);</li>
+            <li>On the Ecospace Define Habitat form, set the ‘inverse of emigration response to fitness’ text box to a scaling parameter for the severity of the movement response for low-fitness cells.&#160; High values of this parameter (e.g. 100) make the response very weak, while low values (e.g. 0.1) make the response very strong.</li>
+        </ol>
+        <p>The main thing that can go wrong with these settings is to use too low a value of the emigration response scaling parameter.&#160; Low values like 0.1 commonly result in spatial instability in the predicted biomass patterns (organisms overreacting to local conditions so as to successively over- and under- use adjacent cells), and can result in numerical instability in the predictions of overall biomass change (typically indicated by growing total biomass over time).</p>
+        <p>Note that seasonal migration and fitness response hypotheses can be combined to give more realistic simulations of migratory species.&#160; That is, the migration interface button (Ecospace dispersal tab) can be used to set up a ‘typical’ or normal seasonal migration pattern, and this pattern will then be modified from year to year in response to changes in spatial distributions of prey resources and/or predation risk.</p>
+    </body>
+</html>
