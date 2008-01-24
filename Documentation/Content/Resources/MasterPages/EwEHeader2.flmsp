@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Stylesheets/EWE_UsersGuide.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <MadCap:pageHeader class="OddPage">
+            <table style="width: 100%;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #000000;">
+                <col style="width: 195px;" />
+                <col style="width: 33%;" />
+                <col style="width: 33%;" />
+                <tbody>
+                    <tr style="height: ;">
+                        <th style="text-align: left;">
+                            <p style="font-size: 11pt;"><i>Please note:</i><span style="font-weight: normal;font-style: italic;"> All help topics are currently in draft format. </span>
+                            </p>
+                            <p style="font-size: 11pt;"><span style="font-weight: normal;font-style: italic;">Please send your comments to  the email address given at www.ecopath.org (About &gt;&gt; Contact us).</span>
+                            </p>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>&#160;
+    </MadCap:pageHeader>
+        <MadCap:bodyProxy />
+        <MadCap:pageFooter class="OddPage">
+            <table style="width: 100%;">
+                <col style="width: 288px;" />
+                <col style="width: 33%;" />
+                <col style="width: 33%;" />
+                <tbody>
+                    <tr>
+                        <td style="text-align: left;"><span style="font-weight: bold;font-size: 11pt;">© Lenfest Ocean Futures Project 2008</span>
+                        </td>
+                        <td>&#160;</td>
+                        <td class="" style="text-align: right;font-size: 11pt;">
+                            <MadCap:variable name="System.PageNumber" MadCap:conditions="Default.PrintOnly" />&#160;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:pageFooter>
+        <MadCap:pageFooter class="EvenPage">
+        </MadCap:pageFooter>
+    </body>
+</html>
