@@ -7,30 +7,30 @@
         <h2><span class="span_2">8.3 </span>Group info</h2>
         <p>
             <MadCap:keyword term="Group info;Entering Ecosim parameters;Ecosim parameters" />The <i>Group info</i> form (<i>Time dynamic (Ecosim) &gt; Input &gt; Group info</i>) enables entry of the Ecosim parameters listed below. You must already have an Ecosim scenario loaded (see <a href="Ecosim menu.htm">Ecosim menu</a>) before you can us this form. Each scenario can have its own set of Group info parameters.</p>
-        <h3>Maximum relative P/B</h3>
+        <h4>Maximum relative P/B</h4>
         <p>
             <MadCap:keyword term="Maximum relative P/B" />In Ecosim, the simulated biomass of some prey group may increase such that their predators, if not somehow constrained, would be able to consume huge amounts of prey, with their own biomass growing accordingly.</p>
         <p>To constrain this, the option is provided to limit, via a multiplier, the increase of P/B that results from abundant prey being available.</p>
-        <h3>Maximum relative feeding time</h3>
+        <h4>Maximum relative feeding time</h4>
         <p>
             <MadCap:keyword term="Maximum relative feeding time" />If prey becomes more scarce, (e.g., because predator abundance increases), their predators will have to spend more time feeding (and hence be at a greater risk to predation themselves). Use this variable to limit how much the feeding time may increase. The default is that the feeding time may at the most double, i.e., a value of 2.0. There is empirical evidence showing limits to how great a predation risk organisms are willing to take. Juveniles may for instance be found hiding at food-deprived shorelines even though suitable prey is more abundant in the pelagic zone close by. Going out to there for prey would however place the juveniles at a considerable risk of predation, and they may choose not to do so, or at least to lower the risk by limiting the time spent feeding. For more information see <a href="Foraging time and predation.htm">Foraging time and predation risk</a>.</p>
-        <h3>Feeding time adjustment rate (Range: [0,1])</h3>
+        <h4>Feeding time adjustment rate (Range: [0,1])</h4>
         <p>
             <MadCap:keyword term="Feeding time adjustment rate (;Compensatory recruitment" />This factor determines how fast organisms adjust feeding times so as to stabilize consumption rate per biomass (see <a href="Foraging time and predation.htm">Foraging time and predation risk</a>).&#160; Setting the value to 0.0 causes feeding time (and hence time exposed to predation risk) to remain constant, all changes in consumption per biomass then result in growth rate changes.&#160; Setting this parameter to zero also results in simulation of compensatory growth rate responses (see <a href="Compensatory growth.htm">Compensatory growth</a>). Setting it to 1.0 results in fast time response, which causes reduction in vulnerability to predation rather than increased growth rate when/if food density increases. See <a href="Using Ecosim to study compensation.htm">Compensatory recruitment</a> for recommendations for using this parameter to create the effects of compensation in recruitment in models with multi-stanza groups. See <a href="Compensatory natural mortality.htm">Compensatory natural mortality</a> for recommendations for using this parameter to create the effects of compensation in natural mortality.</p>
         <p>In general we recommend that you set the feeding time to 0 for all groups, apart from, e.g., marine mammals where a value of 0.5 often seems reasonable. Explore the consequences of changing this factor.</p>
-        <h3>Fraction of other mortality sensitive to changes in feeding time [0-1]</h3>
+        <h4>Fraction of other mortality sensitive to changes in feeding time [0-1]</h4>
         <p>
             <MadCap:keyword term="Fraction of other mortality sensitive to changes in feeding time" />This is the proportion of the unexplained natural mortality rate (M0, 1-EE x total mortality rate) that is assumed to be sensitive to changes in feeding time.&#160; Setting it to 0.0 causes M0 to remain constant. Setting it to a higher value causes that proportion of M0 to vary in proportion to relative time spent feeding (see feeding time factor above).&#160; Setting nonzero value along with nonzero feeding time factor generally results in density-dependent M: as density increases, feeding time usually has to increase to maintain food consumption rate, and this increased feeding time leads to higher mortality rate. See <a href="Using Ecosim to study compensation.htm">Compensatory recruitment</a> for recommendations for using this parameter to create the effects of compensation in recruitment in models with multi-stanza groups.</p>
-        <h3>Predator effect on feeding time [0-1]</h3>
+        <h4>Predator effect on feeding time [0-1]</h4>
         <p>
             <MadCap:keyword term="Predator effect on feeding time" />Setting a nonzero value for this parameter allows you to simulate direct response of feeding time and food consumption rate to changes in predator abundance, i.e. ‘risk sensitive foraging behaviour’.&#160; If the value is high, it is assumed that a high proportion of the food consumption rate per biomass is ‘discretionary’, i.e., the organism will reduce target food consumption rate (and hence time exposed to predation risk) by up to this fraction if predator abundance increases, and will correspondingly increase food consumption rate if predator abundance falls below the Ecopath baseline.&#160; Note that the feeding time adjustment rate (see above) has to be greater than zero in order to see effects from nonzero values of this parameter (effect is expressed in calculations as changes in time spent feeding with changes in predator abundance, and such changes are not implemented unless adjustment rate is greater than zero).</p>
-        <h3>Density-dependent catchability (&gt;=1)</h3>
+        <h4>Density-dependent catchability (&gt;=1)</h4>
         <p>
             <MadCap:keyword term="Density-dependent catchability" />See introductory material on <a href="Density dependent changes.htm">Density-dependent changes in catchability</a>, also in Chapter 3 of the User Guide.</p>
-        <h3>QBmax/QBo (handling time) [&gt;1]</h3>
+        <h4>QBmax/QBo (handling time) [&gt;1]</h4>
         <p>
             <MadCap:keyword term="QBmax/QBo (handling time)" />See introductory material on <a href="Predator satiation and handling.htm">Predator satiation and handling time effects</a>, also in Chapter 3 of the User Guide.</p>
-        <h3>Switching power parameter [0-2]</h3>
+        <h4>Switching power parameter [0-2]</h4>
         <p>
             <MadCap:keyword term="Switching power parameter" />Default 0 is no switching. See introductory material on <a href="Modelling switching behaviour.htm">Modelling switching behaviour</a>, also in Chapter 3 of the User Guide.</p>
     </body>

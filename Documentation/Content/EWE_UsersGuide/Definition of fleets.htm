@@ -7,7 +7,7 @@
         <h2><span class="span_4">6.11  </span>Definition of fleets</h2>
         <p>
             <MadCap:keyword term="Fleets;Fishery" />You must first define your fleets using the <a href="Edit fleets.htm">Edit fleets</a> form, accessible from the <i>Ecopath menu</i>. The <i>Definition of fleets</i> form can then be used to set the costs, profits and value for the fishing fleets in the model. Costs and values are used for calculations in Ecosim and Ecospace simulations.</p>
-        <h3>Fixed cost</h3>
+        <h4>Fixed cost</h4>
         <p>
             <MadCap:keyword term="Fixed cost" />Fixed cost is the cost of operating a fleet unit, independent of effort, in the unit time defined in Ecopath (typically on annual basis). The definition of ‘fixed’ costs depends on the actual situation being modelled. To illustrate this consider some examples:</p>
         <p>A new module of Ecospace, Ecoseed, allows for effort reduction to nil in connection with simulated increase in protected areas from 0 to 100% of total model area. As the last boats operating in a fleet cannot bear the total ‘fixed’ costs of the total fleet; they should only bear the ‘fixed’ costs that are independent of effort. For this type of application use the ‘fixed costs’ only for costs that are independent of effort at the fleet scale, for instance for the costs of management and monitoring, (and subsidies if there are fixed subsidies to the fleet). Costs that are capacity dependent in this situation should be considered effort-related variable costs instead.</p>
@@ -16,20 +16,20 @@
             <li class="li_1">If the changes are relatively small and intended to represent changes in effort with constant capacity, the fixed costs can be seen to represent all costs that are effort-independent at the boat-level. Examples are costs for management, monitoring, licenses, capitalization, and insurance. </li>
             <li class="li_1">If the changes are major, the procedure outline for Ecoseed above should be adopted instead. Hence, consider the fixed costs to be effort-independent at the fleet level.</li>
         </ul>
-        <h3>Effort related cost</h3>
+        <h4>Effort related cost</h4>
         <p>
             <MadCap:keyword term="Effort related cost" />Represents costs that are a function of effort. The examples above give some guidance to how these should be defined. Enter the costs as a percentage of the total value of the fishery in the given year. Simulation in Ecosim with changes in fishing effort are entered relative to the base effort, hence if the effort is increased with, e.g., 10% the variable costs are assumed to increase 10% as well, whereas the fixed costs are assumed unchanged. </p>
         <p><u>Ecosim</u>: use <i>Effort related costs</i> for all variable costs (e.g., fuel, gear costs and crew wages);</p>
         <p><u>Ecospace</u>: use <i>Effort related costs</i> for variable costs that depend on effort, e.g., for gear costs (which mainly depend on how many hours the gears is used), but not for costs that depend on spatial effort allocation, e.g., sailing costs. See next section.</p>
-        <h3>Sailing related cost</h3>
+        <h4>Sailing related cost</h4>
         <p>
             <MadCap:keyword term="Sailing related cost" />For Ecospace applications it is recommended to use two separate forms for variable costs: effort-related and spatially-related (i.e., sailing related). <u>Do not enter sailing related costs if you are only using Ecosim</u>, use Effort related costs for all variable costs.</p>
         <p>If you are using Ecospace, use <i>Effort related costs</i> for variable costs that depend on effort, e.g., for gear costs. Enter costs that depend directly on spatial effort allocation, e.g., fuel costs and crew wages as <i>Sailing related costs</i>.</p>
-        <h3>
-            <MadCap:keyword term="Profit" />Profit</h3>
+        <h4>
+            <MadCap:keyword term="Profit" />Profit</h4>
         <p>Profit is calculated as percentage of value, calculated from total value less all costs. It cannot be entered directly.</p>
-        <h3>
-            <MadCap:keyword term="Value" />Total value</h3>
+        <h4>
+            <MadCap:keyword term="Value" />Total value</h4>
         <p>The total value is the value of all landings (as entered on subsequent forms). It is displayed here only to indicate that the ‘100 %’ relates to value, not to total costs..</p>
     </body>
 </html>

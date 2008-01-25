@@ -4,35 +4,35 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><span class="span_2">6.2       <![CDATA[ ]]></span>Edit groups </h2>
+        <h2><span class="span_2">6.2         <![CDATA[ ]]></span>Edit groups </h2>
         <p>The first task in building an Ecopath model is to define the model’s functional groups (called Groups or Boxes). Groups are species or collections of species that share similar population dynamics and ecological function. See <a href="Defining the system.htm">Defining the system</a> for more on how to define groups.</p>
         <p>To add and edit functional groups to an Ecopath model, choose the <i>Edit groups...</i> option on the <a href="Ecopath menu.htm">Ecopath menu</a> on the <i>Menu bar</i>. This will open a form where you can add, delete, name and sort the functional groups in your model. </p>
         <p>To close the <i>Edit groups</i> form and implement changes, click the <i>OK </i>button. To exit without implementing any changes, click the <i>Cancel</i>  button.</p>
         <p>After adding model groups on the <i>Edit groups</i> form, you can proceed to the <i>Input data</i> forms to enter parameters for your groups (i.e., <a href="Basic input.htm">Basic input</a>, <a href="Diet composition.htm">Diet composition</a>, <a href="Detritus fate.htm">Detritus fate</a> and <a href="Other production.htm">Other production</a> forms, accessible in the <i>Navigator window</i> under the <i>Input data</i> node).&#160; </p>
-        <h3>Add/insert groups</h3>
+        <h4>Add/insert groups</h4>
         <p>
             <MadCap:keyword term="Adding groups" />Add groups using the<i> Insert</i> button. In a brand new model, groups will be inserted above the detritus group. In an existing model, select the row where you would like a new group inserted and click <i>Insert</i>. A new group will be added above the selected row. If no row is selected, new groups will be added above the first row. Note that when you add a new group, its status in the <i>Status</i> column will be given as “To create”. Clicking the <i>OK</i> button closes the <i>Edit groups</i> form and implements the group insertion.</p>
-        <h3>Group name</h3>
+        <h4>Group name</h4>
         <p>
             <MadCap:keyword term="Edit group names" />New groups are given the default name “New Group”. Edit group names by clicking once in the appropriate<i> Group name</i> cell. The box will be highlighted and you can start typing. To edit an existing group name, click on the name and the name will be highlighted. You can then edit the name.</p>
         <p><u>Important note</u>: Group names should be unique. If you have multi-stanza groups&#160; in your model (see section below), each stanza should have a unique group name (e.g., Small juvenile cod; Large juvenile cod; Adult cod). The name of the multi-stanza group as a whole (e.g., Cod) is entered under <i>Multi-stanza group name</i>. See section on multi-stanza groups below for more detail on defining multi-stanza groups.</p>
-        <h3>Define group type</h3>
-        <p>
+        <h4>Define group type</h4>
+        <p style="font-size: 10pt;">
             <MadCap:keyword term="Define group type" />You must define whether a functional group is a primary producer, consumer or detritus by checking the appropriate box.</p>
         <ul class="ul_1">
-            <li class="li_1">Primary producers (producers) obtain all of their energy from photosynthesis. By definition, their <a href="Trophic level decomposition.htm">trophic level</a> is 1. </li>
-            <li class="li_1">Consumers obtain their energy by consuming other organisms. They have trophic level &gt; 1. </li>
-            <li class="li_1">
+            <li class="li_1" style="font-size: 10pt;">Primary producers (producers) obtain all of their energy from photosynthesis. By definition, their <a href="Trophic level decomposition.htm">trophic level</a> is 1. </li>
+            <li class="li_1" style="font-size: 10pt;">Consumers obtain their energy by consuming other organisms. They have trophic level &gt; 1. </li>
+            <li class="li_1" style="font-size: 10pt;">
                 <MadCap:keyword term="Detritus" />Detritus groups are dead. Note that you must enter at least one detritus group and you can have as many detritus groups as you like. Note also that detritus groups must be placed after all living groups (i.e., they must have a higher group number than the last living group). You must also specify where the surplus detritus (left over after feeding by detritivores) will go using the <a href="Detritus fate.htm">Detritus fate</a> form.</li>
         </ul>
-        <h3>Sort groups</h3>
+        <h4>Sort groups</h4>
         <p>You can change the order of groups in the model using the <i>Up</i> and <i>Down</i> buttons. Clicking the OK button closes the<i> Edit groups</i> form and implements the new group numbers.</p>
-        <h3>Delete groups</h3>
+        <h4>Delete groups</h4>
         <p>
             <MadCap:keyword term="Deleting groups" />Groups can be deleted from the model using the <i>Delete </i>button. Models selected for deletion will be marked “To delete” in the <i>Status</i> column. Clicking the <i>OK</i> button closes the <i>Edit groups</i> form and implements the group deletion.</p>
         <p><u>Note</u>: if you change your mind about deleting the fleet before you close the form, click <i>Preserve</i> and the status will be returned to normal.</p>
         <p><u>WARNING</u>: Group deletion cannot be undone. When you click the <i>OK</i> button, you will receive a warning message for each group to be deleted. Click <i>Yes</i> to continue with group deletion or <i>No</i> if you do not wish to delete the group. The <i>Edit groups</i> form will close.</p>
-        <h3>Defining multi-stanza groups</h3>
+        <h4>Defining multi-stanza groups</h4>
         <p>
             <MadCap:keyword term="Adding multi-stanza groups" />The <i>Edit groups</i> form allows you to create groups representing life history stages or stanzas for species that have complex trophic ontogeny (see introductory material on <a href="Representation of multi stanza.htm">multi-stanza groups</a> (Chapter 2 of the EwE6 User Guide) for more information on how these groups are modelled in Ecopath, Ecosim and Ecospace). </p>
         <p><b>To define a multi-stanza group:</b>
@@ -41,8 +41,8 @@
         <p>Name the multi-stanza group as a whole (e.g., Cod) in the <i>Multi-stanza group name </i>column. Once you have created a multi-stanza group name, it is added to a pull-down menu in the <i>Multi-stanza group name</i> column.</p>
         <p>Enter the <u>start</u>-age of each stanza in months in the <i>Stanza age (in months)</i> column. Note that your youngest stanza must have a start-age of zero months. If you do not have an age-zero stanza, Ecopath will set the youngest stanza’s start age to zero (a message box will inform you of this).</p>
         <p>IMPORTANT. After defining a multi-stanza group(s), you must set the values of additional parameters for the group(s). See <a href="Edit multi stanza groups.htm">Edit multi-stanza groups</a> for details.</p>
-        <h3>
-            <MadCap:keyword term="Setting colors" />Colors</h3>
-        <p>Click <i>Color scale </i>to set a graded scale of colors for the model groups. Click <i>Colors alternating</i> for a set of alternating colors (light, dark and hue). You can change the colors for individual groups by clicking in the color square. You can then select from a palette of colors.</p>
+        <h4>
+            <MadCap:keyword term="Setting colors" />Colours</h4>
+        <p>Click <i>Colour scale </i>to set a graded scale of colours for the model groups. Click <i>Colours alternating</i> for a set of alternating colours (light, dark and hue). You can change the colours for individual groups by clicking in the colour square. You can then select from a palette of colours.</p>
     </body>
 </html>

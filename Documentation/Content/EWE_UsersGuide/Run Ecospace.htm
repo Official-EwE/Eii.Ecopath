@@ -9,33 +9,33 @@
             <MadCap:keyword term="Running Ecospace" />The business of Ecospace is predicting distributions. Its main outputs are distribution maps, one for each ecosystem component.&#160; Here, positive deviations (biomass increases) from the Ecopath baseline levels are shown in red, and negative deviation (decrease) in blue (see colour scale on right of panel representing map.&#160; </p>
         <p>Ecospace runs thus imply the display of a succession of maps, one per iteration and group. Usually, the features of these maps will be gradually converging toward some stable equilibrium distribution.&#160; Alternatively these maps may regularly ‘flip’ between two states, suggesting some sort of dynamic equilibrium.</p>
         <p>Which of these alternative occurs can be seen more clearly from the time plot (the small panel to the mid left of the Ecospace run window), which traces the progress of the run.</p>
-        <h3>Relative biomass</h3>
+        <h4>Relative biomass</h4>
         <p>Show relative biomasses on the plots.</p>
-        <h3>Fishing effort</h3>
+        <h4>Fishing effort</h4>
         <p>
             <MadCap:keyword term="Fishing effort in Ecospace" />Show distribution of fishing effort over space for each of the fleets. In Ecospace, fishing effort is assigned to spatial cells through a ‘gravity model’, wherein effort is proportional to the net benefits gained from exploiting a given cell.</p>
         <p>In the simple case that all exploited group have the same economic value (default = 1 monetary unit per tonne), and that all cells require the same sailing cost (default), fishing effort will be assigned to the (water) cells of the base map in proportion to their fishable biomass.</p>
         <p>Thus, for example, fishing effort will tend to concentrate at the edges of protected areas – one reason, incidentally, why these edges should be as short as possible.</p>
-        <h3>Show all</h3>
+        <h4>Show all</h4>
         <p>Show plots for all groups</p>
-        <h3>Show non-hidden</h3>
+        <h4>Show non-hidden</h4>
         <p>Show plots for groups which are not-hidden on the Show/hide dialogue box.</p>
-        <h3>Show only group below</h3>
+        <h4>Show only group below</h4>
         <p>Show plot for only the group that is selected in the drop-down list box below. You can change which group to display by selecting another group.</p>
-        <h3>Time plot</h3>
+        <h4>Time plot</h4>
         <p>Plot showing biomass over time relative to biomass in Ecopath base run for each group. The scale is logarithmic spanning from 0.1 over 1 (same biomass as in Ecopath) to 10.</p>
         <p>The time plot panel shows the (log) biomass of each group over time, from the start of the simulation, to its end.&#160; Usually, this will consist of a phase of rapid change, followed by a convergence of all groups toward their equilibrium states (flat lines). In other case, the lines representing the biomasses will oscillate more or less regularly (the preys usually displaying troughs when their predators show peaks, and vice versa), which will diagnose the dynamic equilibrium mentioned above.</p>
         <p>Finally, one or several of the lines representing the biomass of various groups may decrease or increase continuously, indicating that this (or these) group(s) cannot be accommodated in the system. Thus, a group may decrease because it cannot find sufficient food in its assigned habitats, or encounters too many predators when feeding, non-withstanding it being mass-balanced in the underlying Ecopath file.</p>
         <p>Alternatively, a group may increase due its ability to outgrow predatory control in its assigned habitats, or in another habitat, a feature sometimes due to an excessively high value of P/B, or to a diet composition that is too broad.</p>
-        <h3>Enlarge plot&#160;</h3>
+        <h4>Enlarge plot&#160;</h4>
         <p>Enlarge the time plot and show it in the main window. You can use the mouse pointer to see the group names linked to the lines.</p>
-        <h3>Run</h3>
+        <h4>Run</h4>
         <p>Start the run. Will change to ‘Stop’ once pressed, and to ‘Run’ again at the end of the run</p>
-        <h3>Pause</h3>
+        <h4>Pause</h4>
         <p>Pause the run, e.g., to set up a protected area on the basemap.</p>
-        <h3>Results</h3>
+        <h4>Results</h4>
         <p>Will display a summary of the results for the Start and End times set on the <a href="Ecospace parameters.htm">Ecospace parameters</a> form. Results are averaged in the start and end year, i.e., when Ecospace reaches the Start time it will average results over the next number of <i></i>timesteps (set<i></i> in <i>Summary timesteps</i> on the <i>Ecospace parameters</i> form)<i></i>. Similarly, when it reaches the End time it will average over the next same  number of timesteps.</p>
-        <h3>Overlay</h3>
+        <h4>Overlay</h4>
         <p>Check to overlay the time plots on the time plot. Use this to check for initialization errors, i.e. this feature is mainly used to ensure that successive runs give the same results.</p>
     </body>
 </html>

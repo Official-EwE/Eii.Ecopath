@@ -6,28 +6,34 @@
     <body>
         <h2><span class="span_2">8.2 </span>Ecosim parameters</h2>
         <p>
-            <MadCap:keyword term="Ecosim parameters;Ecosim" />The<i> Ecosim parameters</i> form (<i>Time dynamic (Ecosim) &gt;Input &gt; Ecosim parameters</i>) is designed to enter and store key information on the current Ecosim simulation.</p>
-        <h3>Duration of simulation (years)</h3>
+            <MadCap:keyword term="Ecosim parameters;Ecosim" />Enter and store key information on the current Ecosim simulation using the<i> Ecosim parameters</i> form (<i>Time dynamic (Ecosim) &gt;Input &gt; Ecosim parameters</i>). </p>
+        <h4 style="font-size: 14pt;">Scenario</h4>
+        <p>The top panel of the Ecosim parameters form provides fillable boxes where you can add a scenario <b>Description</b> and fill in <b>Author</b> and <b>Contact</b> details.  You can also change the <b>Name</b> of the scenario.</p>
+        <h4 style="font-size: 14pt;">Initialization</h4>
+        <h4>Duration of simulation (years)</h4>
         <p>
-            <MadCap:keyword term="Setting Ecosim run time" />Default is 20 years, while the maximum is 500 years. </p>
-        <h3>Base proportion of free nutrients</h3>
+            <MadCap:keyword term="Setting Ecosim run time" />Default is 50 years. </p>
+        <h4>Base proportion of free nutrients</h4>
         <p>
             <MadCap:keyword term="Base proportion of free nutrients" />The <i>Base proportion of free nutrients</i> parameter sets the base proportion of free nutrients in the algorithm used to represent nutrient cycling. You should read the section on <a href="Nutrient cycling and nutrient.htm">Nutrient cycling and nutrient limitation in Ecosim</a> before attempting to simulate nutrient forcing. </p>
         <p>The default free nutrient proportion is set at unity, which causes the free nutrient concentration to be virtually constant over time. Thus to “turn on” nutrient limitation effects, you must set a lower value for the base proportion of free nutrients parameter, (e.g., 0.3). You can also assign a forcing function to drive nutrient cycling (see below).</p>
-        <h3>Nutrient loading forcing function number</h3>
+        <h4>Nutrient loading forcing function number</h4>
         <p>
-            <MadCap:keyword term="Nutrient loading forcing function number;Nutrient loading" />Changes in nutrient loading can be simulated by assigning a time forcing function number to the annual total nutrient concentration on the Ecosim parameters form (the forcing time series can be read from a csv file, see <a href="Import time series.htm">Import time series</a>, or typed directly using the <a href="Time series.htm">Time series</a> form). In this case, total nutrient concentration NT is calculated as NT = ft NTo&#160; where NTo is the Ecopath base estimate of NT (at the start of each simulation) and ft is a time multiplier (ft&#160; = 1 implies Ecopath base value of NTo) supplied by the user the same as any other time forcing function. </p>
+            <MadCap:keyword term="Nutrient loading forcing function number;Nutrient loading" />Changes in nutrient loading can be simulated by assigning a time forcing function number to the annual total nutrient concentration on the Ecosim parameters form (the forcing time series can be read from a csv file, see <a href="Import time series.htm">Import time series</a>, or typed directly using the <a href="Time series.htm">Time series</a> form). In this case, total nutrient concentration <i>N</i><sub style="font-style: italic;">T</sub> is calculated as <i>N</i><sub style="font-style: italic;">T</sub> = <i>f</i><sub style="font-style: italic;">t</sub><i> N</i><sub style="font-style: italic;">T</sub><i>o</i><sub style="font-style: italic;"></sub>&#160; where <i>N</i><sub style="font-style: italic;">T</sub><i>o</i><sub></sub> is the Ecopath base estimate of <i>N</i><sub style="font-style: italic;">T</sub> (at the start of each simulation) and<i> f<sub>t</sub></i> is a time multiplier (<i>f</i><sub style="font-style: italic;">t</sub><i>&#160;</i> = 1 implies Ecopath base value of <i>N</i><sub style="font-style: italic;">T</sub><i>o</i><sub></sub>) supplied by the user the same as any other time forcing function. </p>
         <p>Before attempting to simulate nutrient forcing, you should read the section on <a href="Nutrient cycling and nutrient.htm">Nutrient cycling and nutrient limitation in Ecosim</a>.</p>
-        <h3>Fleet/effort dynamics&#160;</h3>
+        <h4>Fleet/effort dynamics&#160;</h4>
         <p>
             <MadCap:keyword term="Activating fleet/effort dynamics" />
             <MadCap:keyword term="Fleet dynamics" />Ecosim users can specify temporal changes in fishing fleet sizes and fishing effort in three ways: </p>
         <blockquote>
             <p>(1) by sketching temporal patterns of effort in the model run interface (<a href="Run Ecosim.htm">Run Ecosim</a>); </p>
-            <p>(2) by entering annual patterns via reference “csv” files along with historical ecological response data (see <a href="Time series.htm">Time series</a>); or </p>
+            <p>(2) by entering annual patterns via reference csv files along with historical ecological response data (see <a href="Time series.htm">Time series</a>); or </p>
             <p>(3) by treating dynamics of fleet sizes and resulting fishing effort as unregulated and subject to fisher investment and operating decisions. </p>
         </blockquote>
         <p>To invoke the fleet/effort dynamics model (Option (3) above), check the <i>fleet/effort dynamics</i> box on the <i>Ecosim parameters</i> form. When this box is checked, Ecosim erases all previously entered time patterns for fishing efforts and fishing rates, and replaces these with simulated values generated as each simulation proceeds. See <a href="Modelling effort dynamics.htm">Modelling effort dynamics</a> for detailed description of the effort dynamics model. Set the input parameters for this model, using the<a href="Fleet size dynamics.htm"> Fleet size dynamics</a> form.</p>
+        <h4>Contaminant tracing</h4>
+        <p>
+            <MadCap:keyword term="Ecotracer;Contaminants" />When the <i>Contaminant tracing</i> box is checked, Ecosim can be used to predict changes in concentrations (and per-biomass burdens) of chemicals like organic contaminants and isotope tracers that ‘flow’ passively along with the biomass flows. Set the parameters for contaminant tracing using the <a href="Ecotracer input.htm">Ecotrace input form</a>. This form also contains description of how contaminant tracing is handled in Ecosim.</p>
         <p>&#160;</p>
     </body>
 </html>

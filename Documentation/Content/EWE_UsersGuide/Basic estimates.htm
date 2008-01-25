@@ -10,31 +10,31 @@
         <p>Before attempting to balance your model, we recommend you read <a href="Notes on parameterizing an Ecopath model.htm">Notes on parameterizing an Ecopath model</a> and <a href="Balancing a model.htm">Balancing a model</a>.</p>
         <p>The parameter estimation program outputs a number of indices that may be of use for assessing the status of the overall ecosystem and of its constituent groups. These can be found in the current (<i>Basic estimates</i>) form as well as on the <a href="Key indices.htm">Key indices</a>, <a href="Mortalities.htm">Mortalities</a>, <a href="Consumption (Ecopath parameterization).htm">Consumption</a>, <a href="Respiration.htm">Respiration</a>, <a href="Niche overlap.htm">Niche overlap</a>, <a href="Electivity.htm">Electivity</a>, <a href="Search rates.htm">Search rates</a> and <a href="Fishery (Ecopath parameterization).htm">Fishery</a> forms.</p>
         <p>Notes on most of the parameters below have already been provided in the notes on <a href="Basic input.htm">Basic parameters</a>, but we repeat them here as a reminder.</p>
-        <h3>Trophic level</h3>
+        <h4>Trophic level</h4>
         <p>
             <MadCap:keyword term="Trophic level" />Lindeman (1942) introduced the concept of trophic levels. In Ecopath, the trophic levels are not necessarily integers (1, 2, 3...) as proposed by Lindeman, but can be fractional (e.g., 1.3, 2.7, etc.) as suggested by Odum and Heald (1975). A routine assigns definitional trophic levels (TL) of 1 to producers and detritus and a trophic level of 1 + [the weighted average of the preys' trophic level] to consumers.</p>
         <p>Following this approach, a consumer eating 40% plants (with TL = 1) and 60% herbivores (with TL = 2) will have a trophic level of 1 + [0.4 · 1 + 0.6 · 2] = 2.6. The fishery is assigned a trophic level corresponding to the average trophic level of the catch, i.e. without adding 1 as is done for ‘ordinary’ predators.</p>
         <p>The trophic level is a dimensionless index.</p>
-        <h3>Habitat area (fraction)</h3>
+        <h4>Habitat area (fraction)</h4>
         <p>
             <MadCap:keyword term="Habitat area" />The fraction of the total area in which the group occurs, that is, the fraction of the total area to which the biomass in habitat area pertains. Default is that the habitat area is 1, i.e. that the group occurs in the total area.</p>
-        <h3>Biomass in habitat area</h3>
+        <h4>Biomass in habitat area</h4>
         <p>
             <MadCap:keyword term="Biomass in habitat area" />The average biomass per unit area in the habitat area where the group occurs. It is assumed that an average value can be used to represent the biomass of each group. Appropriate units should be used, (e.g., t/km²) for the biomasses. Entry of biomasses is optional for living groups but biomass(es) should be entered for the detritus group(s). However, if biomasses are unknown for all living groups and there are no exports from any of the groups, it is necessary to enter at least one biomass estimate, preferably of a top predator.</p>
         <p>Biomasses should be entered relative to the habitat area where the group occurs. An example: assume a species for instance has a biomass of 1 t/km² in its habitat area, and the habitat area is 100 km², while the total area in your model is 1000 km². You should then enter a habitat area of 0.1 and a biomass in habitat area of 1 t/km² as the biomass for the group in your model.</p>
-        <h3>Biomass</h3>
+        <h4>Biomass</h4>
         <p>This is the Biomass in habitat area x Habitat area.</p>
-        <h3>Production/biomass</h3>
+        <h4>Production/biomass</h4>
         <p>
             <MadCap:keyword term="P/B" />Enter the Production/Biomass (P/B) ratio for each group using consistent units, e.g., per year. The P/B ratio is equivalent to the instantaneous rate of total mortality (Z) used by fisheries biologists (Allen 1971). Entry of P/B ratios is optional. </p>
         <p>Production includes fishery yield plus predation plus net migration plus biomass change plus other mortality; or </p>
         <p>P/B = Z = F + M2 + NM + BA + M0. </p>
         <p>For more details, see <a href="Production.htm">Production</a>.</p>
-        <h3>Consumption/biomass</h3>
+        <h4>Consumption/biomass</h4>
         <p>
             <MadCap:keyword term="Q/B" />Consumption/biomass (Q/B) ratios are entered using the same units as for P/B. Entry of consumption/biomass ratios is optional. For more details, see <a href="Consumption.htm">Consumption</a>. </p>
-        <p>The Q/B input box will be blocked (blue color) for primary producers. If your model unit is carbon, you can however, click the blue input box, and enter a Q/B value, which will be used to calculate respiration for the group.</p>
-        <h3>Ecotrophic efficiency</h3>
+        <p>The Q/B input box will be blocked (blue colour) for primary producers. If your model unit is carbon, you can however, click the blue input box, and enter a Q/B value, which will be used to calculate respiration for the group.</p>
+        <h4>Ecotrophic efficiency</h4>
         <p>
             <MadCap:keyword term="Ecotrophic efficiency" />The ecotrophic efficiency (EE) is the fraction of the production that is used in the system, i.e. either passed up the food web, used for biomass accumulation, migration or export. Ecotrophic efficiency is difficult to measure directly. It varies between 0 and 1 and can be expected to approach 1 for groups with considerable predation pressure. The part of the production that is not included in the EE is often called ‘<a href="Other mortality.htm">other mortality</a>’. EE is dimensionless, and the entry of EE values is optional.</p>
         <p>The ecotrophic efficiency of a detritus group is defined as the ratio between the flow out of a detritus box, and the flow into the same box. EE for detritus cannot be entered, it is always calculated.</p>

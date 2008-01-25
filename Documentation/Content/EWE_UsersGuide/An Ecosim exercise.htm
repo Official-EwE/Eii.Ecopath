@@ -6,74 +6,74 @@
     </head>
     <body>
         <h2><span class="span_2"><MadCap:keyword term="An Ecosim exercise" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" />9.1</span>An Ecosim exercise</h2>
-        <p>
+        <p style="font-size: 10pt;">
             <MadCap:keyword term="Ecosim" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" />Below is a cursory check of Ecosim’s behaviour, which it is advised that you check out.</p>
-        <p>After loading an <a href="Ecosim menu.htm">Ecosim scenario</a>:</p>
+        <p style="font-size: 10pt;">After loading an <a href="Ecosim menu.htm">Ecosim scenario</a>:</p>
         <ul class="ul_2">
-            <li class="li_1">Go straight to the<a href="Run ecosim.htm"> Run Ecosim</a> form. Click ‘Run’. Make sure everything is flat or changing according to the<a href="Other production.htm"> Biomass Accumulation</a>you specified in Ecopath. Crazy cases: discard effects may cause troubles.</li>
+            <li class="li_1" style="font-size: 10pt;">Go straight to the<a href="Run ecosim.htm"> Run Ecosim</a> form. Click ‘Run’. Make sure everything is flat or changing according to the<a href="Other production.htm"> Biomass Accumulation</a>you specified in Ecopath. Crazy cases: discard effects may cause troubles.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next: Go to <a href="Ecosim parameters.htm">Ecosim parameters</a>: set the Duration of simulation to 30-50 years. Make a small disturbance for the combined fishery using the sketch pad on the Biomass form. If everything is okay in the settings it should come back to the initial value eventually. Are all groups reacting at the speed you expect them to?</li>
+            <li class="li_1" style="font-size: 10pt;">Next: Go to <a href="Ecosim parameters.htm">Ecosim parameters</a>: set the Duration of simulation to 30-50 years. Make a small disturbance for the combined fishery using the sketch pad on the Biomass form. If everything is okay in the settings it should come back to the initial value eventually. Are all groups reacting at the speed you expect them to?</li>
             <p>
-                <li class="li_1">Next, go to the <a href="Group info.htm">Group info</a> form</li>
+                <li class="li_1" style="font-size: 10pt;">Next, go to the <a href="Group info.htm">Group info</a> form</li>
             </p>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next take out feeding time dynamics, set to zero.</li>
+            <li class="li_1" style="font-size: 10pt;">Next take out feeding time dynamics, set to zero.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Set the unexplained predation to 0 throughout.</li>
+            <li class="li_1" style="font-size: 10pt;">Set the unexplained predation to 0 throughout.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next, go to<a href="Vulnerabilities flow control.htm"> Vulnerabilities</a> (the most important tab in Ecosim). Set to 100 (top down control).</li>
+            <li class="li_1" style="font-size: 10pt;">Next, go to<a href="Vulnerabilities flow control.htm"> Vulnerabilities</a> (the most important tab in Ecosim). Set to 100 (top down control).</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Reset F’s.</li>
+            <li class="li_1" style="font-size: 10pt;">Reset F’s.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Run: seems okay?</li>
+            <li class="li_1" style="font-size: 10pt;">Run: seems okay?</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Create a small disturbance.</li>
+            <li class="li_1" style="font-size: 10pt;">Create a small disturbance.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Run and you will get chaotic behaviour, violent oscillations and groups dropping out completely. Typical Lotka-Volterra behaviour</li>
+            <li class="li_1" style="font-size: 10pt;">Run and you will get chaotic behaviour, violent oscillations and groups dropping out completely. Typical Lotka-Volterra behaviour</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Put in flow control setting of 2 throughout. [Interpretation: curves go through 0, the Ecopath value and two times the base (Zmax/Zbase)] Run: it will generally run OK.</li>
+            <li class="li_1" style="font-size: 10pt;">Put in flow control setting of 2 throughout. [Interpretation: curves go through 0, the Ecopath value and two times the base (Zmax/Zbase)] Run: it will generally run OK.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Try to increase vulnerability settings to 4, then 5 etc. See how far you can go and still get something sensible.</li>
+            <li class="li_1" style="font-size: 10pt;">Try to increase vulnerability settings to 4, then 5 etc. See how far you can go and still get something sensible.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Do you have a sensible model? What would happen if you had no fishery. Shut the fishing down and set the run duration to 60-70 years to see how it will work for slow group. Reasonable result: should in general maintain all the groups we see today.</li>
+            <li class="li_1" style="font-size: 10pt;">Do you have a sensible model? What would happen if you had no fishery. Shut the fishing down and set the run duration to 60-70 years to see how it will work for slow group. Reasonable result: should in general maintain all the groups we see today.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Now check how high you can go with the flow control vulnerability setting. It’s harder now because the fishing is gone, so there are more top predators. This will help you get more reliable vulnerability settings. You need to have reasonable vulnerability settings before you can proceed.</li>
+            <li class="li_1" style="font-size: 10pt;">Now check how high you can go with the flow control vulnerability setting. It’s harder now because the fishing is gone, so there are more top predators. This will help you get more reliable vulnerability settings. You need to have reasonable vulnerability settings before you can proceed.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Turn the feeding time factor back on. This will change the feeding time, 1 can cause numerical instability. If this happens it will create violent oscillations and more groups may drop out. Try, e.g., 0.2 will change feeding behaviour with some 20% per month. If groups are still dropping out the foraging behaviour is slowing things down, so the the feeding time factor is not big enough. It tries to maintain the Q/B by changing foraging time.</li>
+            <li class="li_1" style="font-size: 10pt;">Turn the feeding time factor back on. This will change the feeding time, 1 can cause numerical instability. If this happens it will create violent oscillations and more groups may drop out. Try, e.g., 0.2 will change feeding behaviour with some 20% per month. If groups are still dropping out the foraging behaviour is slowing things down, so the the feeding time factor is not big enough. It tries to maintain the Q/B by changing foraging time.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1"><a href="Group info.htm">Group info</a>: <i>Predator effective feeding time</i>. The target feeding time is set according to predator abundance. Setting the value to 1 means a group is willing to give up feeding if predation risk is high. Zero means the group is ignoring predation risk but feeds independently. Top predators may be reducing feeding due to parasite risk (often ignored predators). Try an intermediate value, e.g., 0.5.</li>
+            <li class="li_1" style="font-size: 10pt;"><a href="Group info.htm">Group info</a>: <i>Predator effective feeding time</i>. The target feeding time is set according to predator abundance. Setting the value to 1 means a group is willing to give up feeding if predation risk is high. Zero means the group is ignoring predation risk but feeds independently. Top predators may be reducing feeding due to parasite risk (often ignored predators). Try an intermediate value, e.g., 0.5.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Initially you may not have any idea of what values to use, so play, try it out.</li>
+            <li class="li_1" style="font-size: 10pt;">Initially you may not have any idea of what values to use, so play, try it out.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">What we have been doing? Trying to maintain the mass interaction model by adding behaviour to equation.</li>
+            <li class="li_1" style="font-size: 10pt;">What we have been doing? Trying to maintain the mass interaction model by adding behaviour to equation.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next, look at <a href="Representation of multi stanza.htm">multi-stanza groups</a>. Increase fishing heavily for 5-10 years, and then shut the fishery down. The juvenile groups should be hit hard.</li>
+            <li class="li_1" style="font-size: 10pt;">Next, look at <a href="Representation of multi stanza.htm">multi-stanza groups</a>. Increase fishing heavily for 5-10 years, and then shut the fishery down. The juvenile groups should be hit hard.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Open the <a href="Stock recruitment S R plot.htm">Stock-Recruitment plot</a>: There will often be erratic behaviour for short to medium- lived groups, and Beverton-Holt (BH) curves for long lived ones. If you don’t see BH curves for long lived groups, something is likely to be wrong with your parameters.</li>
+            <li class="li_1" style="font-size: 10pt;">Open the <a href="Stock recruitment S R plot.htm">Stock-Recruitment plot</a>: There will often be erratic behaviour for short to medium- lived groups, and Beverton-Holt (BH) curves for long lived ones. If you don’t see BH curves for long lived groups, something is likely to be wrong with your parameters.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Next use the forcing functions. Here’s an experiment: change primary productivity over time using a forcing function and apply to phytoplankton (using <a href="Apply forcing function primary.htm">Apply FF (primary producer)</a>), and look at how it propagates up through the food web.</li>
+            <li class="li_1" style="font-size: 10pt;">Next use the forcing functions. Here’s an experiment: change primary productivity over time using a forcing function and apply to phytoplankton (using <a href="Apply forcing function primary.htm">Apply FF (primary producer)</a>), and look at how it propagates up through the food web.</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Use <i>Overlay</i> on the <i>Run Ecosim</i> form for an easy (sensitivity) check of how parameter values impact the results.</li>
+            <li class="li_1" style="font-size: 10pt;">Use <i>Overlay</i> on the <i>Run Ecosim</i> form for an easy (sensitivity) check of how parameter values impact the results.</li>
         </ul>
     </body>
 </html>

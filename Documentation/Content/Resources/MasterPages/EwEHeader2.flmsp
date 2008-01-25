@@ -10,7 +10,7 @@
                 <col style="width: 33%;" />
                 <col style="width: 33%;" />
                 <tbody>
-                    <tr style="height: ;">
+                    <tr style="height: ;" MadCap:conditions="Default.ScreenOnly">
                         <th style="text-align: left;">
                             <p style="font-size: 11pt;"><i>Please note:</i><span style="font-weight: normal;font-style: italic;"> All help topics are currently in draft format. </span> <![CDATA[ ]]><span style="font-weight: normal;font-style: italic;">Please send your comments to  the email address given at www.ecopath.org (About &gt;&gt; Contact us).</span></p>
                         </th>

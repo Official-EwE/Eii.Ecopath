@@ -5,13 +5,13 @@
     </head>
     <body>
         <h2><span class="span_2">7.4 </span>Key indices</h2>
-        <h3>Biomass accumulation</h3>
+        <h4>Biomass accumulation</h4>
         <p>
             <MadCap:keyword term="Biomass accumulation" />Ecopath is not necessarily a steady-state model. If the biomass for a group is known, e.g., at the beginning of the year and at the beginning of the next year, the biomass accumulation (BA) can be calculated as the difference between these biomasses. BA is a production term that can be entered for all living groups (default is 0), but is calculated for detritus groups (see <a href="Detritus fate.htm">Detritus fate</a>). BA is a flow term, with a rate unit of, e.g., t / km² / year. The default value for BA is zero indicating no biomass accumulation. A negative value signifies biomass depletion (biomass decreased during period modelled).</p>
-        <h3>Biomass accumulation rate</h3>
+        <h4>Biomass accumulation rate</h4>
         <p>
             <MadCap:keyword term="Biomass accumulation rate" />Biomass accumulation can also be represented as a rate (i.e., proportion of the total biomass; unit is /year).</p>
-        <h3>Net migration</h3>
+        <h4>Net migration</h4>
         <p>
             <MadCap:keyword term="Net migration" />The net migration is calculated as immigration less emigration. This means that net migration will be negative if there is more coming into the system than leaving it. This may seem contradictory but it should be remembered that a negative mortality yields an increase in population. Fisheries biologists rarely consider migration, at least in biomass terms, and even more rarely quantify it. If the net migration is positive (immigration &gt; emigration), but not entered, the main effect will depend on the previous entries:</p>
         <ul class="ul_1">
@@ -19,7 +19,7 @@
             <li class="li_1">if production was to be estimated, this estimate will be underestimated. </li>
         </ul>
         <p>See <a href="Other production.htm">Other production</a> and <a href="Dealing with open system problems.htm">Dealing with open system problems</a> for important notes about migration in Ecopath.</p>
-        <h3>Flow to detritus</h3>
+        <h4>Flow to detritus</h4>
         <p>
             <MadCap:keyword term="Flow to detritus" />For each group, the flow to the detritus consists of what is egested (the non-assimilated food) and those elements of the group, which die of old age, diseases, etc., (i.e., of sources of ‘other mortality’, expressed by 1 - EE). The flow to the detritus, expressed, e.g., in t·km-2·year-1, should be positive for all groups.</p>
         <h3>
@@ -28,7 +28,7 @@
             <p><u><MadCap:keyword term="Problems with balancing" /><MadCap:keyword term="Problem of estimation of Q/B for detritivores" />Problem 4: Estimation of Q/B for detritivores</u>
             </p>
             <p>It is not possible to estimate the Q/B ratio for groups that feed exclusively on detritus. For detritus the production is not defined, and it will be necessary for such detritivores to input an estimate of Q/B (or P/B and an estimate for GE, gross food conversion efficiency).</p>
-            <h3>Net efficiency</h3>
+            <h4>Net efficiency</h4>
         </div>
         <p>
             <MadCap:keyword term="Net food conversion efficiency" />The net food conversion efficiency is calculated as the production divided by the assimilated part of the food, i.e.,</p>
@@ -37,7 +37,7 @@
         <p>The net efficiency can also be expressed</p>
         <p>Net efficiency = Production / (production + respiration)</p>
         <p>The net efficiency is a dimensionless fraction. It is positive and, in nearly all cases, less than 1, the exceptions being groups with intermediate trophic modes, e.g., groups with symbiotic algae. The net efficiency cannot be lower than the gross food conversion efficiency, GE.</p>
-        <h3>Omnivory index</h3>
+        <h4>Omnivory index</h4>
         <p>
             <MadCap:keyword term="Omnivory index" />The ‘omnivory index’ was introduced in 1987 (Pauly et al., 1993a) in the initial version of the Ecopath II software. This index (OI) is calculated as the variance of the trophic level of a consumer's prey groups. Thus</p>
         <p>

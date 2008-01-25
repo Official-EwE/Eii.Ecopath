@@ -7,7 +7,7 @@
         <h2><span class="span_4">10.2 </span>Ecospace parameters</h2>
         <p style="text-decoration: none;">
             <MadCap:keyword term="Ecospace input parameters" />Use the <i>Ecospace parameters</i> form to set non-spatial parameters for the Ecospace scenario. See <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a> for details on setting up the spatial map.</p>
-        <h3>Initialization</h3>
+        <h4>Initialization</h4>
         <p>Users are given two options for initialising biomasses in Ecospace cells.</p>
         <h4><i style="font-style: normal;">Ecopath base biomasses</i>
         </h4>
@@ -18,10 +18,10 @@
         <p>
             <MadCap:keyword term="Habitat-adjusted biomasses" />Distributes the entire Ecopath mean biomass for each pool into just those cells that are suitable for the organism, i.e., concentrates the overall mean biomass into those map cells where the biomass is actually found. For example, a creature with overall Ecopath mean biomass of 10 t/km² would be assigned a biomass of 100 t/km² in suitable cells, if just 10% of the cells are assigned a habitat type suitable for it. In this second option, predation vulnerabilities, predator search rates, and primary producer P/B vs B parameters are adjusted to reflect the new, localized ‘mean’ biomasses expected in habitat types where animals actually are abundant.</p>
         <p> See <a href="Assign habitats.htm">Assign habitats</a> for further details on setting suitable habitats.</p>
-        <h2>Model</h2>
+        <h4>Model</h4>
         <h4><span style="font-size: 14pt;">Model type</span>
         </h4>
-        <p>EwE6 represents a major overhaul of the functioning of Ecospace and there are now three approaches to running Ecospace simulations.         <![CDATA[ ]]></p>
+        <p>EwE6 represents a major overhaul of the functioning of Ecospace and there are now three approaches to running Ecospace simulations.          <![CDATA[ ]]></p>
         <p style="font-weight: bold;font-style: italic;color: #ff0000;"><i style="font-style: normal;"> EwE6 multi-stanza model</i>
         </p>
         <p style="font-weight: bold;font-style: italic;color: #ff0000;">&#160;</p>
@@ -30,22 +30,22 @@
         <p style="font-weight: bold;font-style: normal;color: #ff0000;">&#160;</p>
         <p style="font-weight: bold;font-style: normal;color: #ff0000;"><i>&#160;</i>E<i></i>wE5 a<i style="font-style: normal;">pproach</i></p>
         <p>&#160;</p>
-        <h3>Threading</h3>
+        <h4>Threading</h4>
         <p>Threading allows a program to split itself into multiple simultaneously running tasks. By default, Ecospace sets the number of threads to the number of processors available on your computer.</p>
         <p>The greater the number of threads, the more of your computer's processing power will be used (hence faster calculations). If you have limited processing power or wish to work on other applications while running Ecospace, set the number of threads lower (hence slower calculations).</p>
-        <h3>Run time</h3>
+        <h4>Run time</h4>
         <p>Set the <i style="font-style: normal;font-weight: bold;">Total run time</i> and the <i style="font-style: normal;font-weight: bold;">Number of time steps</i> per year (i.e., set this to 12 for monthly time steps). You should always check the effect of changing this parameter. If your model is unstable if is advisable to try to lower the number of time steps to see if this will change the behaviour.</p>
-        <p><i style="font-style: normal;font-weight: bold;">Max no. of iterations</i>
-        </p>
+        <h4><i style="font-style: normal;font-weight: bold;">Max no. of iterations</i>
+        </h4>
         <p>Ecospace uses an iterative method to solve the systems of differential equation it uses for prediction of flow of biomass among cells. In simple terms, the maximum number of iterations is the maximum number of iterations the algorithm is allowed to try until it finds a satisfactory (i.e., non-changing) solution to the system of equations. If the algorithm reaches the maximum number of iterations and the solution has not converged, the final value will be used anyway. The default for this parameter is 40. Setting the value higher may, in some cases, result in better convergence of solutions but will make the model run slower in these cases. In many cases, convergence will be achieved before the maximum number of iterations is reached.</p>
         <p> See Walters and Martell (2004; Box 11.2) for more details about solving systems of differential equations that include spatial mixing effects.</p>
-        <p><i style="font-style: normal;font-weight: bold;">Tolerance</i>
-        </p>
+        <h4><i style="font-style: normal;font-weight: bold;">Tolerance</i>
+        </h4>
         <p class="p_1">Tolerance sets how close the iterative solutions to the system of equations have to be before the algorithm is determined to have converged (and the solution accepted). <span style="color: #ff0000;">Default is 0.0001.</span> <![CDATA[ ]]></p>
         <p class="p_1"> See Walters and Martell (2004; Box 11.2) for more details about solving systems of differential equations that include spatial mixing effects.</p>
-        <p class="p_1"><i style="font-style: normal;font-weight: bold;">Successive over-relaxation</i>
-        </p>
-        <p class="p_1" style="color: #ff0000;">By solving for whole rows or columns at the same time, successive over-relaxation (SOR) can be used to improve the efficiency of the algorithm (Press et al. 1996). The default setting is 0.9.       <![CDATA[ ]]></p>
+        <h4 class="p_1"><i style="font-style: normal;font-weight: bold;">Successive over-relaxation</i>
+        </h4>
+        <p class="p_1" style="color: #ff0000;">By solving for whole rows or columns at the same time, successive over-relaxation (SOR) can be used to improve the efficiency of the algorithm (Press et al. 1996). The default setting is 0.9.        <![CDATA[ ]]></p>
         <h4 class="p_1">Predict effort</h4>
         <p class="p_1">Ecospace can be used to predict distribution of fishing effort over space for each of the fleets. Fishing effort is assigned to spatial cells through a ‘gravity model’, wherein effort is proportional to the net benefits gained from exploiting a given cell.
 </p>
@@ -56,7 +56,7 @@ Thus, for example, fishing effort will tend to concentrate at the edges of prote
         <h4 class="p_1"><span style="color: #ff0000;">Use exact calculations for migratory species</span>
         </h4>
         <p class="p_1">&#160;</p>
-        <h3>Summary</h3>
+        <h4>Summary</h4>
         <p>At the end of the Ecospace run (see <a href="Run Ecospace.htm">Run Ecospace</a>), you can view a summary of results, using the <i>Results</i> button.</p>
         <p><b>Start time</b> sets the start year for the summary.</p>
         <p><b>End time</b> sets the end year for the summary. </p>

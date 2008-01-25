@@ -8,49 +8,56 @@
         <p>
             <MadCap:keyword term="Time series;Fitting to time series;Loading time series;Adding time series;Importing time series;Applying time series;Creating time series;Seasonal time series;Long-term time series" />A critical step in development of credible models for policy analysis is to show that they can at least reproduce observed historical responses to disturbances such as fishing (see introductory material on <a href="Time series fitting in Ecosim.htm">Time series fitting in Ecosim</a>, <a href="Hints for fitting models to.htm">Hints for fitting models to time series reference data</a> as well as the help section on Ecosim’s <a href="Fit to time series.htm#_Fit_to_time">Time series fit search interface</a>, which searches for <a href="Vulnerabilities flow control.htm">Vulnerabilities</a> that can help improve the model’s fit).</p>
         <p>There are two main types of data that you can read in to Ecosim: historical comparison data and time forcing data. Historical comparison data enable comparison between historical observations and the model’s predictions. Time forcing data are used to force certain variables in the model (i.e., ‘drive’ the model). Fishing effort (by gear or by pool) and fishing mortality can be forced in Ecosim.</p>
-        <p>The Time series form (Time dynamic (Ecosim) &gt; Input &gt; Time series) provides an interface where users can read in, view and activate time series for use in Ecosim.</p>
-        <h3>Reading time series into Ecosim</h3>
-        <p>There are two ways to read time series data into Ecosim: (i) time series can be imported from a csv file (see Import… below); or (ii) time series can be typed or pasted in directly using the Time series form (see Values… below).</p>
-        <p>When you open the Time series form for the first time, there will be no time series displayed in the lower panel (Figure 8.4). To get started, use either the Import… or the Add… buttons on the lower panel of the form.</p>
-        <h3>Import…</h3>
-        <p>Opens the Import time series dialogue box. This allows you to import multiple time series simultaneously from a CSV (Comma Separated Values) format file and is the most commonly-used means of reading time series data into Ecosim. See&#160; <a href="Import time series.htm">Import time series</a> for instructions on using this form. Note that this form can also be accessed from the main Ecosim menu.</p>
-        <p>After importing time series, they must be activated using Apply (see below).</p>
-        <h3>Add…</h3>
-        <p>Opens the Add time series dialogue box for adding time series manually (Figure 8.5). To add a time series using the Add time series dialogue box:</p>
+        <p>The <i>Time series</i> form (<i>Time dynamic (Ecosim) &gt; Input &gt; Time series</i>) provides an interface where users can read in, view and activate time series for use in Ecosim.</p>
+        <h4>Reading time series into Ecosim</h4>
+        <p>There are two ways to read time series data into Ecosim: (i) time series can be imported from a csv file or your computer's clipboard (see <i>Import…</i> below); or (ii) time series can be typed or pasted in directly using the <i>Time series</i> form (see <i>Values… </i>below).</p>
+        <p>When you open the<i> Time series</i> form for the first time, there will be no time series displayed in the lower panel (Figure 8.4). To get started, use either the <i>Import…, Load...</i> or    <![CDATA[ ]]><i>Add…</i> buttons on the lower panel of the form.</p>
+        <p><u>Important note: After importing or loading time series,  they must be activated using </u><i style="text-decoration: underline;">Apply...</i><u> (see below). </u>
+        </p>
+        <h4>Import…</h4>
+        <p>Opens the <i>Import time series</i> dialogue box. This allows you to import multiple time series simultaneously from a csv (comma separated values) format file and is the most commonly-used means of reading time series data into Ecosim. See&#160; <a href="Import time series.htm">Import time series</a> for instructions on using this form. Note that this form can also be accessed from the main <a href="Ecosim menu.htm">Ecosim menu</a>.</p>
+        <p>After importing time series,  they must be activated using <i>Apply...</i> (see below).</p>
+        <h4>Load...</h4>
+        <p style="font-style: normal;"><i style="font-style: normal;">Opens the <i>Apply time series</i> dialogue box, where you can load previously imported time series using the check- boxes provided (Figure 8.5). After loading time series,  they must be activated using the <i>Apply</i> button at the top of the <i>Apply time series</i> dialogue box (see <i>Apply...</i>below).</i>
+        </p>
+        <h4>Add…</h4>
+        <p>Opens the <i>Add time serie</i>s dialogue box for adding time series manually (Figure 8.6). To add a time series using the <i>Add time series</i> dialogue box:</p>
         <p>1.Type or select the number of years for the time series.</p>
-        <p>2.Click the Set button.</p>
-        <p>3.Select the data type from the drop-down menu in the Type window. Available data types are Absolute biomass, Average weight (for multi-stanza groups only), Catch, Fishing mortality*, Fishing effort (by fleet)*, Relative biomass, Time forcing*† or Total mortality.</p>
+        <p>2.Click the<i> Set</i> button.</p>
+        <p>3.Select the data type from the drop-down menu in the <i>Type</i> window. Available data types are Absolute biomass, Average weight (for multi-stanza groups only), Catches, Fishing mortality*, Fleet/gear effort*, Force biomass*, Force catches*, Relative biomass or Total mortality.</p>
         <p>*Indicates forcing time series; </p>
-        <p>†Indicates a series used for physical forcing of nutrient concentrations (see <a href="Ecosim parameters.htm">Ecosim parameters</a> and links therein); hatchery production (see <a href="Hatchery populations in Ecosim.htm">Hatchery populations in Ecosim</a>); parameters that affect trophic interactions through abiotic factors (see <a href="Forcing function.htm">Forcing function</a> and <a href="Apply forcing function consumer.htm">Apply forcing function</a> (consumers)); or primary production (see <a href="Apply forcing function primary.htm">Apply forcing function</a> (primary producers)). </p>
-        <p>4.Select the Ecopath group to which the time series applies from the drop-down menu in the Group window.</p>
-        <p>5.Assign the data series a relative weight using the Weight window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</p>
-        <p>6.Type the Y-values of the time series in the right hand column. Monthly time-steps are automatically displayed in the left hand column.</p>
+        <p>4.Select the Ecopath group to which the time series applies from the drop-down <i>Group</i> menu.</p>
+        <p>5.Assign the data series a relative weight using the <i>Weight</i> window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</p>
+        <p>6.Type the <i>y</i>-values of the time series in the right hand column. Annual time-steps are automatically displayed in the left hand column.</p>
         <p>7.Click OK. The time series will be displayed in the main panel of the form and also as a thumbnail in the lower panel.</p>
-        <p>After adding a time series, it must be activated using Apply (see below).</p>
-        <h3>Duplicate</h3>
+        <p>After adding a time series, it must be activated using <i>Apply ... </i>(see below).</p>
+        <h4>Duplicate</h4>
         <p>Copies the currently-selected time series. </p>
-        <h3>Remove</h3>
+        <h4>Remove...</h4>
         <p>Removes the currently-selected time series.</p>
-        <h3>Apply</h3>
-        <p>All imported time series must be applied before they are available to Ecosim. To apply time series:</p>
-        <p>1. Click Apply in the bottom panel of the Time series form to open the Apply time series dialogue box (Figure 8.6). Select individual time series using the check boxes or select all available time series using the All button. If you have several datasets loaded, the datasets will be shown as nested menus. You can apply time series from different datasets simultaneously.</p>
-        <p>2. Click the Apply button on the dialogue box.</p>
+        <h4>Apply...</h4>
+        <p><u>All imported time series must be applied before they are available to Ecosim.</u>
+        </p>
+        <p>To apply time series:</p>
+        <p>1. Click <i>Apply...</i> in the bottom panel of the <i>Time series</i> form to open the <i>Apply time series</i> dialogue box (Figure 8.6). Select individual time series using the check boxes. If you have several datasets loaded, the datasets will be shown as nested menus. You can apply time series from different datasets simultaneously.</p>
+        <p>2. Click the <i>Apply</i> button on the dialogue box.</p>
         <p>Thumbnails of successfully applied time series will be shown with a check mark (Figure 8.7).</p>
-        <p>There are two additional buttons at the top of the Time series form. First select a time series from the thumbnails in the bottom panel, then:</p>
-        <p>Save</p>
-        <p>Opens a dialogue box prompting you to save the currently-selected time series to a bitmap file (.bmp). Use this dialogue box to name the file and browse for a location to save it.</p>
-        <p>Values</p>
+        <p>There are two additional buttons at the top of the <i>Time series</i> form. First select a time series from the thumbnails in the bottom panel, then:</p>
+        <h4>Weight</h4>
+        <p>Assign the data series a relative weight using the <i>Weight</i> window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</p>
+        <h4>Values</h4>
         <p>Displays information and values for the currently-selected time series. </p>
         <p>
             <img src="../Resources/Images/03000097.png" style="width: 432px;height: 314px;" />
         </p>
         <p>Figure 8.4.</p>
         <p>
-            <img src="../Resources/Images/03000098.png" style="width: 262px;height: 453px;" />
+            <img src="../Resources/Images/03000099.png" style="width: 338px;height: 333px;" />
         </p>
         <p>Figure 8.5. </p>
+        <p>&#160;</p>
         <p>
-            <img src="../Resources/Images/03000099.png" style="width: 338px;height: 333px;" />
+            <img src="../Resources/Images/03000098.png" style="width: 262px;height: 453px;" />
         </p>
         <p>Figure 8.6.</p>
         <p>

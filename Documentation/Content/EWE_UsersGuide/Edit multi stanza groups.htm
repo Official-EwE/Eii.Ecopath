@@ -4,7 +4,7 @@
         <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" />
     </head>
     <body>
-        <h2><span class="span_2">6.3          <![CDATA[ ]]></span>Edit multi-stanza groups</h2>
+        <h2><span class="span_2">6.3           <![CDATA[ ]]></span>Edit multi-stanza groups</h2>
         <p style="font-style: normal;">
             <MadCap:keyword term="Multi-stanza groups" />
             <MadCap:keyword term="Adding multi-stanza groups" />Multi-stanza groups are defined using the <a href="Edit groups.htm">Edit groups</a> form, accessible from the <i>Ecopath menu</i> on the <i>Menu bar</i>. Multi-stanza groups represent life history stages or stanzas for species that have complex trophic ontogeny. Mortality rates (M0, predation, fishing) and diet composition are assumed to be similar for individuals within each stanza (e.g., larvae having high mortality and feeding on zooplankton, juveniles having lower mortality and feeding on benthic insects, adults having still lower mortality and feeding on fish). For Ecosim and Ecospace it is advised to split top predators into multi-stanza groups as this makes their dynamics more realistic, provides insights on stock-recruitment relationships, and allows consideration of stanza-specific habitat use.  See the introductory material on <a href="Representation of multi stanza.htm">multi-stanza groups</a> and <a href="Using Ecosim to study compensation.htm">Using Ecosim to study compensation in recruitment relationships</a> (Chapters 2 and 3 of the EwE6 User Guide) for more information on how these groups are modelled in Ecopath, Ecosim and Ecospace.</p>
@@ -14,31 +14,31 @@
             <img src="../Resources/Images/03000054.png" style="width: 624px;height: 345px;" />
         </p>
         <p><b>Figure 6.1</b>. The Edit multi-stanza groups form</p>
-        <h3>Name of species/functional group</h3>
+        <h4>Name of species/functional group</h4>
         <p>Use the pull-down menu to select the multi-stanza goup to edit.</p>
-        <h3>Curvature parameter, K</h3>
+        <h4>Curvature parameter, K</h4>
         <p>Set the von Bertalanffy growth rate (von Bertalanffy 1938). Note that it is assumed that body growth for the species as a whole follows a von Bertalanffy growth curve with weight proportional to length-cubed.</p>
-        <h3>Recruitment power</h3>
+        <h4>Recruitment power</h4>
         <p>This parameter is used by Ecosim and sets the degree of density dependence in juvenile survival for juveniles outside the modelled area. Set a low value, (e.g., 0.1-0.5) for this parameter if the juveniles for a group spend some time ‘outside’ the system in a nursery area where they are subject to density-dependent juvenile mortality rate, (e.g., juvenile Pacific salmon abundance may be limited by freshwater nursery habitat, so that numbers recruiting to a coastal oceanic area can be practically independent of adult abundance in the oceanic area, especially if juvenile production is ‘enhanced’ by hatchery systems).</p>
         <p>Note that you should not need to change other basic parameters defining trophic ontogeny for split groups. When it is the very early juvenile stage that is spent in some rearing habitat outside your modelled area (e.g. a stream or coastal lagoon), you may model the effect of limiting factors within that rearing habitat just by adjusting the recruitment power parameter, without bothering to account factors such as&#160; ‘Import’ of food to the juvenile biomass while juveniles are in the rearing area (cumulative effect of such trophic development are automatically calculated when scaling the juvenile body sizes within Ecosim based on Ecopath juvenile pool biomass).&#160; You can also use a low recruitment power parameter to make juvenile recruitment ‘flat’ with respect to modelled adult biomass due to recruitment of juveniles from some adult population ‘egg source’ outside the modelled area.</p>
-        <h3>Relative biomass accumulation rate (BA/B)</h3>
+        <h4>Relative biomass accumulation rate (BA/B)</h4>
         <p>The BA/B term represents effect on the numbers at age of the population growth rate (e.g. the cohort born one year ago should be smaller by the factor <img src="../Resources/Images/0800001E.png" style="width: 37px;height: 32px;" /> than the cohort born “a” years ago (see <a href="Representation of multi stanza.htm">Multi-stanza groups</a>). See <a href="Other production.htm">Other production</a> for notes about estimating the relative biomass accumulation rate.</p>
-        <h3>Weight at maturity/W_infinity</h3>
+        <h4>Weight at maturity/W_infinity</h4>
         <p>Set the mean weight at maturity/w<span style="vertical-align: sub;">∞</span>. Note that it is assumed that body growth for the species as a whole follows a von Bertalanffy growth curve with weight proportional to length-cubed.</p>
-        <h3>Forcing function number for hatchery stocking</h3>
+        <h4>Forcing function number for hatchery stocking</h4>
         <p>Multi-stanza populations can be designated as hatchery populations (see <a href="Hatchery populations in Ecosim.htm">Hatchery populations in Ecosim</a>), and hatchery production can be varied over time in Ecosim using time forcing functions. To turn off natural reproduction select the hatchery forcing function from the pull-down menu in the <i>Forcing function number for hatchery stocking</i> box. </p>
         <p>Note, you must already have a forcing time series loaded in Ecosim (see <a href="Time series.htm">Time series</a> and  <a href="Forcing function.htm">Forcing function</a>). Note that forcing functions to represent historical changes in stocking rates can be entered via the same csv files as used to set up historical fishing and model fitting scenarios. Enter stocking rates as values relative to the stocking rate of 1.0 assumed for the Ecopath base year.</p>
         <p>At each simulation time step, the base recruitment for the population (calculated from Ecopath input parameters) will be multiplied by the current time value for the designated forcing function.</p>
         <p>Note also that if it is desired to simulate stocking of older fish (e.g., 18 months), the first stanza for the population should be set to have this duration, the mortality rate (Z or P/B) for the stanza should be set to .001, and the diet for the stanza should be set to 1.0 imported (i.e., do not have fish in the stanza feeding in the modelled ecosystem).</p>
-        <h3>Fixed fecundity</h3>
+        <h4>Fixed fecundity</h4>
         <p>Some types of organism (e.g., marine mammals or some sharks) may have a fixed number of young each year, regardless of adult body weight. Checking the Fixed fecundity check box sets the number of young.</p>
-        <h3>Age, start (months)</h3>
+        <h4>Age, start (months)</h4>
         <p>The start age of each stanza is set on the <i>Edit groups</i> form. Note that the youngest stanza must have a start age of zero months.</p>
-        <h3>Biomass</h3>
+        <h4>Biomass</h4>
         <p>You must enter estimated absolute biomass (in appropriate units) for one “leading” stanza (i.e., the oldest stanza).</p>
-        <h3>Z (Production/Biomass)</h3>
+        <h4>Z (Production/Biomass)</h4>
         <p>You must enter estimated total mortality rates for each stanza. A single-species age-structured model can be used to help estimate these parameters.</p>
-        <h3>Consumption/Biomass</h3>
+        <h4>Consumption/Biomass</h4>
         <p>You must enter estimated consumption/biomass (Q/B) for one “leading” stanza (i.e., the oldest stanza).</p>
         <p>A plot showing numbers at age, biomass age and weight at age is shown at the left of the form. This plot can be used to guide you in setting  parameters for the group. To update the plot after changing parameters, click the <i>Calculate</i> button. To close the form and implement changes, click the <i>OK</i> button. To exit without implementing any changes, click the <i>Cance</i>l  button.</p>
     </body>
