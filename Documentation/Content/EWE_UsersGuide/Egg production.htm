@@ -11,30 +11,34 @@
         <p>Moreover, by shifting the peak(s) of such forcing function relative to the peak(s) of a forcing function for seasonal production of phyto- and/or zooplankton, the match/mismatch hypothesis of Cushing (1975), and related hypotheses, can be tested in an ecosystem context: something previously not achievable.</p>
         <h4>Defining egg production shapes</h4>
         <p>To link a multi-stanza group with a seasonally oscillating or long-term forcing function, go to the Egg production form (<i>Time dynamic (Ecosim) &gt; Input &gt; Egg production</i>). Note you must have an <a href="Ecosim menu.htm">Ecosim scenario loaded</a> before you can open the <i>Egg production</i> form. You must also have multi-stanza groups defined in your Ecopath model to be able to use this form.</p>
-        <p>Important note: after you have defined the egg production shape(s) as described below you must continue to the <a href="Apply egg production.htm">Apply egg production</a> form to define the multi-stanza group(s) affected by the egg production function(s). This step is essential as your egg production functions cannot be applied without it.</p>
+        <p>Important note: after you have defined the egg production shape(s) as described below you must continue to the <a href="Apply egg production.htm">Apply egg production</a> form to define the multi-stanza group(s) affected by the egg production function(s). </p>
         <p>When you open the <i>Egg production</i> form for the first time, there will be no egg production shapes. </p>
-        <p>To define an egg production shape, click <i>Add...</i>. Use the <i>Shape type</i> menu at the top of the form to set whether the function is long-term (occurs over a number of years) or seasonal (repeating over a 12 month period). The X-axis of the yellow sketch pad will change accordingly.</p>
-        <p>You can then define egg production shapes in one of three ways:&#160; </p>
+        <p>To define an egg production shape, click <i>Add...</i>. Use the <i>Shape type</i> menu at the top of the form to set whether the function is long-term (occurs over a number of years) or seasonal (repeating over a 12 month period). The <i>x</i>-axis of the yellow sketch pad will change accordingly.</p>
+        <p>You can then define egg production shapes in one of two ways:&#160; </p>
         <ol start="1" class="ol_8">
-            <p>1. Shapes can be drawn freehand using the yellow sketch pad. If you have selected a Seasonal shape, the X-axis will appear as the months January to December and your sketch will be drawn in monthly blocks (Figure 8.20a). If you have selected a long-term shape, the X-axis will be shown as the annual time steps of the model. The sketch will be smooth (Figure 8.20b). You will see your sketched shape transferred to the selected shape in the bottom pane;</p>
-            <p>2. Alternatively, you can use standard mathematical shapes. Click<i> Options…</i> at the top of the <i>Egg production</i> form to open the <i>Options</i> dialogue box. Select <i>Shape</i> from the menu on the left of the dialogue box (Figure 8.21a) to see a list of standard shapes (e.g., linear, sigmoid, exponential, ...). You can tailor the shape to your specific requirements by setting the Y Zero, Y End, Y Base and Steepness parameters (as applicable) in the cells provided. Select <i>Options</i> from the menu on the left of the dialogue box for display settings (Figure 8.21b).</p>
-            <p>3. You can also type in values directly by clicking on <i>Values…</i> at the top of the <i>Egg production</i> form. This will open a dialogue box where you can type in the Y values of the egg production shape into the cells in the left-hand column of the form. Indices of the X values (months) are already given in the right-hand column of the form (Figure 8.22). </p>
+            <p>1. Shapes can be drawn freehand using the yellow sketch pad. If you have selected a Seasonal shape, the <i>x</i>-axis will appear as the months January to December and your sketch will be drawn in monthly blocks (Figure 8.20a). If you have selected a long-term shape, the <i>x</i>-axis will be shown as the annual time steps of the model. The sketch will be smooth (Figure 8.20b). You will see your sketched shape transferred to the selected shape in the bottom pane;</p>
+            <p>2. Alternatively, you can use standard mathematical shapes. Click <i>Change shape …</i> at the top of the <i></i>form to open the <i>Change shape</i> dialogue box. Select a shape type (e.g., linear, sigmoid, exponential) from the menu in the window. You can tailor the shape to your specific requirements by setting the <i>Y Zero</i>, <i>Y End, Y Base</i> and <i>Steepness</i> parameters (where appropriate) in the cells provided.</p>
         </ol>
-        <p>Note that if you have defined the egg production shape using methods 1 or 2 the <i>Values</i> dialogue box will act as an output and display these values.</p>
-        <h4>Reset</h4>
-        <p>Clicking the <i>Reset</i> button at the top of the <i>Egg production</i> form resets the current egg production shape&#160; to the default constant value of 1.0.</p>
-        <h4>Save</h4>
-        <p>Clicking the <i>Save…</i> button at the top of the <i>Egg production</i> form opens a dialogue box prompting you to save the current shape to a bitmap file (.bmp). Use this form to name the file and browse for a location to save it.</p>
-        <h4>Shape type</h4>
-        <p>Sets whether the selected shape is a seasonal or long-term forcing shape.</p>
-        <p>There are four additional menu items on the bottom pane of the <i>Egg production</i> form that allow you add, copy, rename and delete egg production shapes.</p>
+        <h4>Save as image …&#160;</h4>
+        <p>Clicking the<i> Save as image …</i> button at the top of the form opens a dialogue box prompting you to save the current trophic mediation shape to a bitmap file (.bmp). Use this dialogue box to name the file and browse for a location to save it.</p>
+        <h4>Shape type&#160;</h4>
+        <p>Select whether the selected shape is a seasonal or long-term egg production shape.</p>
+        <h4>Values ...</h4>
+        <p>Displays the values of the current egg production shape.</p>
+        <h4>Change shape ...</h4>
+        <p>See point 2 above.</p>
+        <h4>Reset&#160;</h4>
+        <p>Resets the current egg production or seasonal shape to the default constant value of 1.0.</p>
+        <h4>Options ...&#160;</h4>
+        <p>Opens the <i>Graph display options</i> dialogue box. Set the way the egg production shape is displayed in the main window of the <i>Egg production function</i> form.</p>
+        <p>There are four additional menu items on the bottom pane of the <i>Egg production function</i> form that allow you add, copy, rename and delete egg production or seasonal shapes.</p>
         <h4>Add…</h4>
-        <p>Adds an extra blank shape.</p>
+        <p>Adds an extra blank long-term egg production shape. If necessary, use <i>Shape type</i> to change the long-term egg production shape to a seasonal shape.</p>
         <h4>Duplicate</h4>
-        <p>Copies the currently-selected shape.</p>
-        <h4>Remove</h4>
-        <p>Removes the currently-selected shape.</p>
-        <h4>Rename</h4>
+        <p>Copies the currently-selected shape. </p>
+        <h4>Remove...</h4>
+        <p>Removes the currently-selected shape. A warning that shape-deletion cannot be undone will appear. Click <i>Yes</i> to remove the shape.</p>
+        <h4>Rename...</h4>
         <p>Rename the currently-selected shape by selecting <i>Rename</i>. You will then be able to type in a new name for the shape.</p>
         <p>
             <img src="../Resources/Images/030000A6.png" style="width: 372px;height: 279px;" />

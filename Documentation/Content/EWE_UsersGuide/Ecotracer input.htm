@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>10.10 Ecotracer input</h2>
+        <p>
+            <MadCap:keyword term="Ecotracer;Contaminants" />Ecosim predicts temporal changes in flows of biomass among living and detritus pools using nonlinear functional relationships between flow rates and abundances of the interacting species.  These flow rates (along with auxiliary information about factors such as isotope decay rate and physical exchange rates) can be used to predict changes in concentrations (and per-biomass burdens) of chemicals like organic contaminants and isotope tracers that ‘flow’ passively along with the biomass flows.  The dynamic equations for such passive flow (and accumulation, e.g., ‘bioamplification’) are not the same as the biomass flow rate equations, and in fact are generally linear dynamical equations with time-varying rate coefficients that depend on the biomass flow rates; these linear equations are relatively easy to solve in parallel with the Ecosim biomass dynamics equations.
+</p>
+        <p>In Ecosim we allow parallel simulation of one tracer or contaminant type while the biomass dynamics equations are being solved.  Tracer molecules are assumed to be either in the ‘environment’ or in the biota (in biomass and detritus pools) at any moment.  Molecules are assumed to flow between pools at instantaneous rates (i.e. to be sampled along with biomass during biomass flows at rates) equal to the probabilities of being ‘sampled’ as part of the biomass flow: instantaneous rate = (flow) / (biomass in prey pool). We also allow for direct flows from the environment into pools, representing direct uptake or absorption of the tracer material, and for differential decomposition/decay/export rates by pool and from the environmental pool.  Schematically, the flow of tracer molecules through any biomass pool is represented by the components shown below:
+</p>
+        <p>In the rate equation for time changes in contaminant concentration in pool i, these components are represented as follows:
+</p>
+        <blockquote>
+            <p>1)	Uptake from food: Cj • GCi • Qji / Bj where Cj = conc in food j, GCi = proportion of food assimilated by type i organisms; Qji = biomass flow rate from j to i (estimated in Ecopath as Bi • (Q/B)I • DCij) i, Bj=food j biomass;</p>
+            <p>2)	Direct uptake from environment: ui • Bi • Co, where ui=parameter representing uptake per biomass per time, per unit environmental concentration, Bi=biomass, Co=environmental concentration;
+</p>
+            <p>3)	Concentration in immigrating organisms: ci • Ii, where ci = parameter (tracer per unit biomass in immigrating biomass), Ii = biomass of pool i immigrants per time;
+</p>
+            <p>4)	Predation: Ci • Qij / Bi, where Ci=concentration in pool i, Qij = consumption rate of type i organisms by predator type j, Bi = biomass in pool i;
+</p>
+            <p>5)	Detritus: Ci • MOi + (1-GCi) • Sj • Cj • Qji / Bj), where MOi = non-predation death rate of type i (per year), GCi = fraction of food intake assimilated, Qji = intake rate if type j biomass by type i;
+6)	Emigration: ei • Ci, where ei = emigration rate (per year);
+</p>
+            <p>7)	Metabolism: di • Ci, where di = metabolism + decay rate for the material while in pool i.
+</p>
+        </blockquote>
+        <p>Hence, users must specify some parameters (using the <i>Ecotrace input</i> form) besides those needed for Ecopath/Ecosim mass balance and biomass dynamics calculations:
+</p>
+        <p>a.<b style="font-weight: normal;">	Initial pool concentrations</b> Ci, including environmental concentration Co;
+</p>
+        <p>b.	direct uptake rate parameters ui as rates per time per biomass per unit Co;
+</p>
+        <p>c.	concentrations per biomass ci in immigrating organisms;
+</p>
+        <p>d.	metabolism/decay rates di.
+</p>
+        <p>The other parameters (GCi, MOi) are already entered or calculated in Ecopath, and the Qij flows are calculated dynamically in Ecosim.  Ecotracer users can also enter inflow, outflow (dispersal/advection exchange to outside systems), and decay rates for the ‘environmental’ (abiotic) concentration Co.
+When the Ecotracer simulation component is enabled (check box on Ecotracer entry form), Ecosim integrates the rate components listed above to generate time concentration patterns Ci (i = 0 to number of biomass pools), and time patterns of concentration per biomass Ci / Bi for all Ecopath/Ecosim biomass pools.  These results can be compared to data on bioaccumulation or tracer movement.  Discrepancies between model and data may help identify weaknesses in the Ecopath/Ecosim trophic flow rate (Qij) estimates, and/or in the Ecotracer rate parameters (ui, ei, di).
+</p>
+    </body>
+</html>
