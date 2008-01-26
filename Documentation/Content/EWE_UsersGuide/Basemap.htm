@@ -43,7 +43,7 @@
         <p>Every water cell in the basemap needs to be assigned as a habitat. </p>
         <p>Typically, the features defining habitats are distance from the coast (inshore, offshore…), or depth (shallow, intermediate, deep…) and/or bottom type (rocky, sandy, muddy…).
 </p>
-        <p>Note that definition of habitat in Ecospace usually includes the entire water column, from the surface to the bottom. &#160; Thus, while ‘rockfishes’ will tend to be limited to hard bottoms, and burrowing bivalves to soft bottoms, small coastal pelagics, which occur higher up in the water column, may ‘prefer’ hard and soft bottom habitats, as long as both are coastal.Assign habitat preferences of the models's groups using the <a href="Assign habitats.htm">Assign habitats</a> form.         <![CDATA[ ]]></p>
+        <p>Note that definition of habitat in Ecospace usually includes the entire water column, from the surface to the bottom. &#160; Thus, while ‘rockfishes’ will tend to be limited to hard bottoms, and burrowing bivalves to soft bottoms, small coastal pelagics, which occur higher up in the water column, may ‘prefer’ hard and soft bottom habitats, as long as both are coastal.Assign habitat preferences of the models's groups using the <a href="Assign habitats.htm">Assign habitats</a> form.          <![CDATA[ ]]></p>
         <p>The basemap may include open borders, i.e., water areas not bounded by land.&#160; In such cases, the flow of organisms out of a border cell is compensated for by an equal flow of organisms into the cell, i.e., the system will not ‘leak’.</p>
         <h4>MPAs</h4>
         <p>MPAs are overlaid on top of habitats. MPAs can occupy as many or few cells as desired and can span different habitats. </p>
@@ -51,7 +51,8 @@
         <p>Assign which fleets can and cannot fish in MPAs using <a href="Ecospace fishery.htm">Ecospace fishery</a> form.</p>
         <h4>Regions</h4>
         <p>Regions also overlay habitats. Regions represent areas of management interest and may or may not have biological significance. Organisms cannot be assigned to regions, only habitats.</p>
-        <h4>Numerical layers </h4>
+        <h4><span style="font-size: 14pt;">Numerical layers </span>
+        </h4>
         <h4><i style="font-style: normal;">Primary production</i>
         </h4>
         <p>Primary production may vary in different areas of an ecosystem, e.g., due to terrigenous inflow of nutrients, or processes that lead to mixing or upwelling of water masses.
@@ -60,17 +61,16 @@
         <p>Mapping such areas is done in one of two ways. </p>
         <p>1. Sketching a multiplier of the baseline P/B for primary producers. This multiplier, which may range from 0.01 to 100, can thus be used to depict anything from areas with very low primary production rates to areas with very high rates compared to the underlying Ecopath model.The values entered are relative and the total primary production is scaled so that it will be the same as in the base Ecopath model.  
 Warning: Ecospace is sensitive to this setting. Even if the range is 0.01 to 100 such extremes should be used with great care only.</p>
-        <p style="font-style: normal;">To sketch in the multipliers, first select the <i>Relative PP</i> layer. Each cell will display 1 (i.e., every cell starts with the same amount of primary production as in the Ecopath base model). Next, set the new value of the multiplier in the <i>Value</i> box at the bottom right of the form. Finally, while holding down the left mouse button, sketch over the cells to be changed to the new value (see Figure 10.6b). Repeat the process as many times as needed.</p>
-        <p style="font-style: normal;">2. Reading in the data from an external source (e.g., Sea WiFS). This is done using the <a href="Edit layers.htm">Edit layers</a> dialogue box, <span style="color: #ff0000;">accessible by clicking on the </span><i style="color: #ff0000;">#</i><span style="color: #ff0000;"> symbol </span>under <b>Numerical layers</b> on the <i>Layers</i> menu.</p>
-        <p>&#160;<img src="../Resources/Images/Basemap.jpg"></img></p>
+        <p style="font-style: normal;color: #000000;">To sketch in the multipliers, first select the <i>Relative PP</i> layer. Each cell will display 1 (i.e., every cell starts with the same amount of primary production as in the Ecopath base model). Next, set the new value of the multiplier in the <i>Value</i> box at the bottom right of the form. Finally, while holding down the left mouse button, sketch over the cells to be changed to the new value (see Figure 10.6b). Repeat the process as many times as needed.</p>
+        <p style="font-style: normal;color: #000000;">2. Reading in the data from an external source (e.g., Sea WiFS). This is done using the <a href="Edit layers.htm">Edit layers</a> dialogue box, <span style="color: #ff0000;"><span style="color: #000000;">accessible by clicking on the </span></span><i style="color: #000000;">#</i><span style="color: #ff0000;"><span style="color: #000000;"> symbol </span></span><span style="color: #000000;">u</span>nder <b>Numerical layers</b> on the <i>Layers</i> menu.</p>
         <p>
-            <img src="../Resources/Images/Basemap2.jpg">
-            </img>
+            <img src="../Resources/Images/Basemap.bmp" />
         </p>
-        <p>10.6a basemap showing habitat layers</p>
-        <p>10.6b Basemap showing numerical (relative PP) layer</p>
-        <p>&#160;</p>
-        <h3>3. Considerations for building the basemap</h3>
+        <p>
+            <img src="../Resources/Images/BasemapPP.bmp" />
+        </p>
+        <p><b>Figure 10.6</b> Ecospace basemap showing a) habitat layers and b) a numerical (relative PP) layer</p>
+        <h4>3. Considerations for building the basemap</h4>
         <ul>
             <li>The cells are square units, but the maps not need be so, both square and rectangular maps can be accommodated. Rectangular maps should not be defined too ‘thin’, (i.e., their aspect ratio (AR = height/width) is recommended to remain in the range 5 <span class="span_3">£</span> AR <span class="span_3">£</span> 0.2).</li>
             <li><span style="color: #000000;">The number of cells in the basemap may range from 4 (for a square 2x2 map, used e.g. for verification or demonstration purposes) to 10,000, (e.g., for a square 100 x 100 map). We recommend, unless otherwise required, the intermediate 20 x 20 map provided as default, which represents a compromise between showing details and maintaining a high computing speed.&#160;</span>
@@ -81,7 +81,5 @@ Warning: Ecospace is sensitive to this setting. Even if the range is 0.01 to 100
             <li>
             </li>
         </ul>
-        <p>&#160;</p>
-        <p>&#160;</p>
     </body>
 </html>

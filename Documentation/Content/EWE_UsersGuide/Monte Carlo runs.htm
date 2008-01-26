@@ -13,10 +13,6 @@
         <p>Set the number of trials. Each trial represents an Ecosim run with a randomly-selected set of Ecopath parameters (B, P/B, EE, BA) for each group. Parameters are drawn from a uniform distribution centred on the base Ecopath value with coefficient of variation (c.v.) set by the user. </p>
         <h4>Show biomass trajectories on Ecosim plot</h4>
         <p>Displays Ecosim results on the <i>Biomass plot</i> tab in the lower panel of the form.</p>
-        <h4>Retain better fitting estimates (use trials to search)</h4>
-        <p>Retains …</p>
-        <h4>Retain current Ecosim fishing rate pattern</h4>
-        <p>Retains </p>
         <h4>Apply time series</h4>
         <p>Opens a dialogue box where you can apply time series that have been loaded into Ecosim (i.e., you do not have to return to the Time series form to apply time series). You can also remove time series from the analysis using this dialogue box. See <a href="Time series.htm#_Time_series">Time series</a> for more information about loading time series in Ecosim.</p>
         <h4>B, P/B, EE, BA</h4>
@@ -26,25 +22,23 @@
         <h4>Trial</h4>
         <p>Tracks the current trial number.</p>
         <h4>Ecopath runs</h4>
-        <p>Tracks the number of parameter-combinations tried until a balanced Ecopath model is achieved. Note that the maximum number of tries is 2000. If a trial reaches 2000 Ecopath runs then a balanced model could not be achieved with any parameter combinations and the simulation trial is run with an unbalanced model. This may indicate that the c.v.s have been set too large, reducing the likelihood of finding parameter values that combine to produce a balanced model.</p>
+        <p>Tracks the number of parameter-combinations tried until a balanced Ecopath model is achieved. Note that the maximum number of tries is 2000. If a trial reaches 2000 Ecopath runs then a balanced model could not be achieved with any parameter combinations and the simulation trial is run with an unbalanced model. This may indicate that the cv's have been set too large, reducing the likelihood of finding parameter values that combine to produce a balanced model.</p>
         <h4>SS measures</h4>
         <p>At the top right-hand side of the form, the original (i.e., before the simulation) weighted sum of squared deviations (SS) is shown. Current SS shows the value of SS achieved for the current trial. Best SS shows the lowest SS achieved for any of the runs.</p>
         <h4>Data from best fitting trial</h4>
         <p>After all trials have been completed, the parameter-values that resulted in the lowest SS are shown on the second-last tab in the lower panel of the form. When the trials are complete, the software automatically displays this tab.&#160; </p>
         <h4>Biomass plot</h4>
-        <p>If the Show biomass trajectories on Ecosim plot box is checked, biomass trajectories are displayed for each trial on the Biomass plot tab (Figure 9.7). This tab is automatically displayed when you click Run trials.</p>
-        <p>You can choose to overlay trajectories for each trial, switch from monthly to annual output and scale the results using check boxes. Show/hide groups, highlighting of trajectories for a single group and viewing of layers is also enabled, with the same functionality as for the <a href="Run ecosim.htm#_Biomass_1">Run Ecosim</a> form.</p>
+        <p>If the <i>Show biomass trajectories</i> on Ecosim plot box is checked, biomass trajectories are displayed for each trial on the <i>Biomass plot</i> tab (Figure 9.7). This tab is automatically displayed when you click <i>Run trials</i>.</p>
+        <p>You can choose to overlay trajectories for each trial, switch from monthly to annual output and scale the results using check boxes. <i>Show/hide groups</i>, highlighting of trajectories for a single group and viewing of layers is also enabled, with the same functionality as for the <a href="Run ecosim.htm#_Biomass_1">Run Ecosim</a> form.</p>
         <p>The <i>Apply best fits</i> button applies the parameter-values that resulted in the lowest SS (shown on the <i>Data from best fitting trial</i> tab) to your Ecopath model (i.e., overwrites the original values). </p>
         <p>Warning: it is a good idea to save a backup of your model using <i>Save as</i> on the <a href="File menu.htm">File menu</a> before you overwrite your original parameters using <i>Apply best fits</i>!</p>
         <h3>
-            <img src="../Resources/Images/030000AF.png" style="width: 647px;height: 486px;" />
+            <img src="../Resources/Images/MonteCarlo_sc.bmp" />
         </h3>
-        <p><b>Figure 9.6</b>
+        <p style="font-weight: normal;"><b>Figure 9.6 </b>The <i>Monte Carlo runs</i> form.</p>
+        <p style="font-weight: normal;">
+            <img src="../Resources/Images/MonteCarlo_plot_sc.bmp" />
         </p>
-        <p>
-            <img src="../Resources/Images/030000B0.png" style="width: 647px;height: 486px;" />
-        </p>
-        <p><b>Figure 9.7</b>
-        </p>
+        <p style="font-weight: normal;"><b>Figure 9.7 </b>If the <b style="font-weight: normal;font-style: italic;">Show biomass trajectories</b><i> on Ecosim plot</i> box is checked, biomass trajectories are displayed for each trial on the <i>Biomass plot</i> tab.<b></b></p>
     </body>
 </html>

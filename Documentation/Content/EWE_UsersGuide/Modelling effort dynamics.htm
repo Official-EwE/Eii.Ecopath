@@ -7,11 +7,11 @@
         <h2><span class="span_4">3.20 </span>Modelling effort dynamics</h2>
         <p>
             <MadCap:keyword term="Effort dynamics;Fleet dynamics;Fishing effort" />Ecosim users can specify temporal changes in fishing fleet sizes and fishing effort in three ways: </p>
-        <ol start="1" class="ol_7">
+        <blockquote>
             <p>By sketching temporal patterns of effort in the model run interface; </p>
             <p>By entering annual patterns via reference “csv” files along with historical ecological response data; and </p>
             <p>By treating dynamics of fleet sizes and resulting fishing effort as unregulated and subject to fisher investment and operating decisions (“bionomic” dynamics, fishers as dynamic predators).&#160; </p>
-        </ol>
+        </blockquote>
         <p>To facilitate exploration of alternative harvest regulation policies, the Ecosim default options are (1) or (2).&#160; However, users can invoke the fleet/effort dynamics model by checking the box on the Biomass form. Input parameters must be set on the <a href="Fleet size dynamics.htm">Fleet size dynamics</a> form.</p>
         <p>When the fleet/effort response option is invoked, using the checkbox on the Ecosim <a href="Run ecosim.htm">Run Ecosim</a> form, Ecosim erases all previously entered time patterns for fishing efforts and fishing rates, and replaces these with simulated values generated as each simulation proceeds. The fleet/effort dynamics simulation model uses the idea that there are two time scales of fisher response: </p>
         <p>1) A short time response of fishing effort to potential income from fishing, within the constraints imposed by current fleet size, and </p>
@@ -32,10 +32,10 @@
             <img src="../Resources/Images/0800003C.png" style="width: 120px;height: 53px;" />
         </p>
         <p>Here, Ihg and p are fleet-specific response parameters. Ihg is the income level needed for half maximum effort to be deployed and p is a “heterogeneity” parameter for fishers: high p values imply all fishers “see” income opportunity similarly, while low p values imply fishers “turn on” their effort over a wide range of mean incomes, as shown in Figure 3.12. </p>
-        <p>
+        <p style="text-align: left;">
             <img src="../Resources/Images/0300003D.png" style="width: 398px;height: 218px;" />
         </p>
-        <p>Figure 3.12. Effect of the ‘heterogeneity’ parameter, p, on effort/income function. </p>
+        <p><b>Figure 3.12</b> Effect of the ‘heterogeneity’ parameter, p, on effort/income function. </p>
         <h3>Slow time reponse model</h3>
         <p>For each fleet, slow effort responses are modelled as changes in fleet capacity (Kg,t), which is a function of the capital depreciation rate ρg, the capital growth rate rg,t and profit PRg,t. The capital growth rate is calculated via a growth factor gfg,t, i.e.,</p>
         <p>

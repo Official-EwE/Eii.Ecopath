@@ -19,7 +19,7 @@
         <p>After running Ecosim, use <a href="Ecosim plot.htm">Ecosim plot</a> <![CDATA[ ]]>and <a href="Ecosim results.htm">Ecosim results</a> to see detailed results in graphic and tabular form.</p>
         <h3 style="font-size: 12pt;"><i style="font-style: normal;font-size: 12pt;">Features of the lower (Fishing rate) panel</i>
         </h3>
-        <h4>Target         <![CDATA[ ]]></h4>
+        <h4>Target           <![CDATA[ ]]></h4>
         <p>Use this drop down list to select which fleets or groups you want to change fishing rate for. Note: if an Ecopath group is selected, then relative Fs sketched on the sketch pad will be applied across all fleets.</p>
         <h4>Set to 0</h4>
         <p>Set fishing for the fleet/group selected to zero.</p>
@@ -32,7 +32,8 @@
         <p>To set linear trend for change in fishing rates: if you first click the start point with the left mouse button, and then the end point with shift + the left mouse button, a line will be drawn between the two points. Use this to enter, e.g., a linear increase over time in relative fishing rates.</p>
         <h3><i style="font-style: normal;font-size: 12pt;">Features of the upper (Ecosim biomass output) panel</i>
         </h3>
-        <h4>Show groups</h4>
+        <h4>
+            <img src="../Resources/Images/Eye_open.PNG" />Show groups...</h4>
         <p>Opens a form for hiding/displaying groups on the biomass graph.</p>
         <h4>Autoscale&#160;</h4>
         <p style="font-style: normal;">Use the Autoscale button to tell Ecosim to automatically set the scale of the <i><i>y</i>-</i>axis.</p>
@@ -43,7 +44,7 @@
         <h4>Sum of squared deviations (SS)</h4>
         <p>This is an Ecosim output. When an Ecosim model is loaded, you can load time series ‘reference’ data on relative and absolute biomasses of various groups over a particular historical period, along with estimates of changes in fishing impacts over that period.&#160; After time series data have been loaded and applied (see <a href="Time series.htm">Time series</a>), a statistical measure of goodness of fit to these data is generated each time Ecosim is run.&#160; This goodness of fit measure is a weighted sum of squared deviations (SS) of log biomasses from log predicted biomasses, scaled in the case of relative abundance data by the maximum likelihood estimate of the relative abundance scaling factor <i>q</i> in the equation <i>y</i> = <i>qB</i> (<i>y</i> = relative abundance, <i>B</i> = absolute abundance).</p>
         <p>See <a href="Time series fitting in Ecosim.htm">Time series fitting in Ecosim</a> for more details about the sum of squared deviations measure.</p>
-        <h4>Main display panel            <![CDATA[ ]]></h4>
+        <h4>Main display panel              <![CDATA[ ]]></h4>
         <p>Displays Ecosim’s predicted time series of biomass for groups selected using the Show groups form. Biomasses are shown relative to their baseline Ecopath values. If time series have been loaded and applied, they will be displayed as coloured dots on the graph, while Ecosim’s predicted outputs will be displayed as coloured lines (Figure 9.1).</p>
         <p>Vertical red lines indicate when to start averaging results for before/after comparisons (displayed using the <a href="Ecosim results.htm">Ecosim results</a> form). Use a left mouse-click to drag the lines to their desired positions. </p>
         <h4>Group tab</h4>
@@ -51,10 +52,9 @@
         <h4>Layer tab</h4>
         <p>Behind the <i>Group</i> tab is the<i> Layer</i> tab. If the user has selected <i>Overlay</i> under <i>Graph options</i>, outputs of different runs will be displayed on different layers.</p>
         <h4>
-            <img src="../Resources/Images/030000AA.png" style="width: 647px;height: 468px;" />
+            <img src="../Resources/Images/RunEcosim_sc.bmp" />
         </h4>
-        <p><b>Figure 9.1. </b>
-        </p>
+        <p><b>Figure 9.1 </b>The <i>Run Ecosim</i> form showing predicted (coloured lines) and observed (coloured dots) biomass trajectories. The red fishing mortality sketch pad can be seen in the bottom panel. The longline fleet has been selected from the drop-down <i>Target</i> menu.<b></b></p>
         <h3>&#160;</h3>
     </body>
 </html>

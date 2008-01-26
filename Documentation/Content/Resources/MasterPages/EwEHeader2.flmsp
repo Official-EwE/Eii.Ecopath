@@ -1,28 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" conditions="">
     <head>
         <link href="../Stylesheets/EWE_UsersGuide.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <MadCap:pageHeader class="OddPage" style="text-align: left;">
-            <table style="width: 100%;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #000000;">
-                <col style="width: 195px;" />
-                <col style="width: 33%;" />
-                <col style="width: 33%;" />
-                <tbody>
-                    <tr style="height: ;" MadCap:conditions="Default.ScreenOnly">
-                        <th style="text-align: left;">
-                            <p style="font-size: 11pt;"><i>Please note:</i><span style="font-weight: normal;font-style: italic;"> All help topics are currently in draft format. </span> <![CDATA[ ]]><span style="font-weight: normal;font-style: italic;">Please send your comments to  the email address given at www.ecopath.org (About &gt;&gt; Contact us).</span></p>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>&#160;
-    </MadCap:pageHeader>
-        <MadCap:breadcrumbsProxy class="" MadCap:conditions="Default.ScreenOnly" />
+        <MadCap:pageHeader class="OddPage" style="text-align: left;text-decoration: none;" MadCap:conditions="Default.ScreenOnly"><i style="font-size: 10pt;">Please note:</i><span style="font-weight: normal;font-style: italic;"><span style="font-size: 10pt;"> All help topics are currently in draft format. </span></span><span style="font-size: 10pt;"> <![CDATA[ ]]></span><span style="font-weight: normal;font-style: italic;"><span style="font-size: 10pt;">Please send your comments to  the email address given at www.ecopath.org (About &gt;&gt; Contact us).</span></span>
+        </MadCap:pageHeader>
         <MadCap:bodyProxy />
         <MadCap:pageFooter class="OddPage">
             <table style="width: 100%;">
-                <col style="width: 288px;" />
+                <col style="width: 382px;" />
                 <col style="width: 33%;" />
                 <col style="width: 33%;" />
                 <tbody>
