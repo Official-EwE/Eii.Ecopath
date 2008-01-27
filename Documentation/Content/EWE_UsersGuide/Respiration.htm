@@ -10,20 +10,21 @@
         <h4>Respiration</h4>
         <p>Respiration includes all non-usable ‘model currency’ that leaves the box representing a group. </p>
         <p>When the currency is energy or carbon, the bulk of the assimilated food will end up as respiration. If, however, a nutrient (e.g. phosphorus or nitrogen) is used as currency, all nutrients that leave the box is re-utilized; in this case, respiration is nil.</p>
-        <p>Primary producers will not have respiration if the unit is energy based. Note, however, that for Carbon models you can enter a Q/B for producers (the input box will be coloured yellow, but click it and you can enter a Q/B value nevertheless), and respiration values will be calculated for the producers. </p>
+        <p>Primary producers will not have respiration if the unit is energy based. Note, however, that for Carbon models you can enter a <i>Q/B</i> for producers (the input box will be coloured yellow, but click it and you can enter a <i>Q/B</i> value nevertheless), and respiration values will be calculated for the producers. </p>
         <p>
             <MadCap:keyword term="Assimilated food" />Since assimilated food ends up as either production or respiration, only one of these two quantities needs to be estimated, as the other - here respiration - can be calculated as a difference. In Ecopath, this is calculated as the difference between the assimilated part of the consumption and that part of production that is not attributable to primary production (i.e., 1 - TM). Thus, for groups with intermediate values of TM, i.e., for mixed producers/consumers, only that part of the production that is not attributable to primary production is subtracted. For reasons of consistency, in Ecopath, detritus is assumed not to respire, although it would if bacteria were considered part of the detritus (which is one reason why it is better to create one or more separate groups for the detritus-feeding bacteria if this difficult group is to be included at all).</p>
-        <p>The respiration of any living group (i) can be expressed as,</p>
+        <p>The respiration of any living group (<i>i</i>) can be expressed as,</p>
         <p>
-            <img src="../Resources/Images/08000068.png" style="width: 228px;height: 22px;" />Eq. 23</p>
+            <img src="../Resources/Images/08000068.png" style="width: 228px;height: 22px;" /><b style="font-size: 12pt;"> Eq. 23</b>
+        </p>
         <p>where <i>Resp<sub>i</sub></i> is the respiration of group <i>i</i>, <i>GS<sub>i</sub></i> is the fraction of <i>i</i>'s consumption that is not assimilated, <i>Q<sub>i</sub></i> is the consumption of <i>i</i>, and <i>TM<sub>i</sub></i> is the proportion of the production that can be attributed to primary production. If the unit is a nutrient <i>TM<sub>i</sub></i> is equal to zero, irrespective of whether the group is an autotroph or not (nutrients are not ‘produced’), and, <i>P<sub>i</sub></i> is the total production of group <i>i</i>.</p>
         <p>Respiration is used, in Ecopath, only for balancing the flows between groups. Thus, it is not possible to enter respiration data. However, known respiration values (i.e., the metabolic rate) of a group can be compared with the output, and the input parameters adjusted to achieve the desired respiration. For an application of this approach, see Browder, 1993.</p>
         <p>Respiration is a non-negative flow expressed, e.g., in t/km<sup>2</sup>/year. If the currency is a nutrient, (e.g., nitrogen or phosphorus), respiration is zero: nutrients are not respired, but egested and recycled within systems.</p>
         <h4>Assimilation</h4>
         <p>
             <MadCap:keyword term="Assimilation" />The part of the food intake that is assimilated is computed for each consumer group from</p>
-        <p><i>Bi · Q/B<sub>i</sub> · </i>(<i>1 - GS<sub>i</sub></i>) Eq. 24</p>
-        <p style="font-style: normal;">where <i>B<sub>i</sub></i> is the biomass of group i; <i>Q/B<sub>i</sub></i> is the consumption / biomass ratio of group<i> i</i>; and <i>GS<sub>i</sub></i> is the part of the consumption that is not assimilated.</p>
+        <p><i>Bi · Q/B<sub>i</sub> · </i>(<i>1 - GS<sub>i</sub></i>) <span style="font-size: 12pt;font-weight: bold;"> Eq. 24</span></p>
+        <p style="font-style: normal;">where <i>B<sub>i</sub></i> is the biomass of group <i>i</i>; <i>Q/B<sub>i</sub></i> is the consumption / biomass ratio of group<i> i</i>; and <i>GS<sub>i</sub></i> is the part of the consumption that is not assimilated.</p>
         <p>The three values needed for the estimation are all input parameters. Assimilation is a flow expressed, e.g., in t/km<sup>2</sup>/year.</p>
         <h4>Respiration/Assimilation</h4>
         <p>
@@ -33,7 +34,7 @@
             <MadCap:keyword term="Production/Respiration" />The (dimensionless) ratio production / respiration express the fate of the assimilated food. Computationally, this ratio can take any positive value, though thermodynamic constraints limit the realized range of this ratio to values lower than 1.</p>
         <h4>Respiration/Biomass</h4>
         <p>
-            <MadCap:keyword term="Respiration/Biomass" />The R/B ratio can be seen as an expression of the activity of the group. The higher the activity-level is for a given group, the higher the ratio. The R/B ratio is strongly impacted by the assumed fraction of the food that is not assimilated, see the basic input form. If the ratio is too high, this may be due to GS being too low.</p>
+            <MadCap:keyword term="Respiration/Biomass" />The <i>R/B</i> ratio can be seen as an expression of the activity of the group. The higher the activity-level is for a given group, the higher the ratio. The <i>R/B </i>ratio is strongly impacted by the assumed fraction of the food that is not assimilated, see the basic input form. If the ratio is too high, this may be due to <i>GS</i> being too low.</p>
         <p>The ratio respiration / biomass can take any positive value, and has the dimension /year.</p>
     </body>
 </html>

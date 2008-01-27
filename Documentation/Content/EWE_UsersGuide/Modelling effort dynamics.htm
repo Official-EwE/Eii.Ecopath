@@ -8,40 +8,42 @@
         <p>
             <MadCap:keyword term="Effort dynamics;Fleet dynamics;Fishing effort" />Ecosim users can specify temporal changes in fishing fleet sizes and fishing effort in three ways: </p>
         <blockquote>
-            <p>By sketching temporal patterns of effort in the model run interface; </p>
-            <p>By entering annual patterns via reference “csv” files along with historical ecological response data; and </p>
-            <p>By treating dynamics of fleet sizes and resulting fishing effort as unregulated and subject to fisher investment and operating decisions (“bionomic” dynamics, fishers as dynamic predators).&#160; </p>
+            <ol>
+                <li>By sketching temporal patterns of effort in the model run interface; </li>
+                <li>By entering annual patterns via reference csv files along with historical ecological response data; and </li>
+                <li>By treating dynamics of fleet sizes and resulting fishing effort as unregulated and subject to fisher investment and operating decisions (“bionomic” dynamics, fishers as dynamic predators).&#160; </li>
+            </ol>
         </blockquote>
-        <p>To facilitate exploration of alternative harvest regulation policies, the Ecosim default options are (1) or (2).&#160; However, users can invoke the fleet/effort dynamics model by checking the box on the Biomass form. Input parameters must be set on the <a href="Fleet size dynamics.htm">Fleet size dynamics</a> form.</p>
+        <p>To facilitate exploration of alternative harvest regulation policies, the Ecosim default options are (1) or (2).&#160; However, users can invoke the fleet/effort dynamics model by checking the box on the <a href="Ecosim parameters.htm">Ecosim parameters</a> form. Input parameters must be set on the <a href="Fleet size dynamics.htm">Fleet size dynamics</a> form.</p>
         <p>When the fleet/effort response option is invoked, using the checkbox on the Ecosim <a href="Run ecosim.htm">Run Ecosim</a> form, Ecosim erases all previously entered time patterns for fishing efforts and fishing rates, and replaces these with simulated values generated as each simulation proceeds. The fleet/effort dynamics simulation model uses the idea that there are two time scales of fisher response: </p>
         <p>1) A short time response of fishing effort to potential income from fishing, within the constraints imposed by current fleet size, and </p>
         <p>2) A longer time investment/depreciation ‘population dynamics’ for capital capacity to fish (fleet size, vessel characteristics).&#160; </p>
-        <p>These response scales are represented in Ecosim by two ‘state variables’ for each gear type g.</p>
+        <p>These response scales are represented in Ecosim by two ‘state variables’ for each gear type <i>g</i>.</p>
         <h3>Fast time response model</h3>
         <p>Eg,t is the current amount of active, searching gear (scaled to 1.0 at the Ecopath base fishing mortality rates), and Kg,t is the fleet effort capacity (Eg,t&lt;Kg,t).&#160; </p>
-        <p>At each time step, a mean income per effort index Ig,t is calculated as</p>
+        <p>At each time step, a mean income per effort index <i>I<sub>g,t</sub></i> is calculated as</p>
         <p>
             <img src="../Resources/Images/0800003A.png" style="width: 121px;height: 36px;" />
         </p>
-        <p>where i = ecological species or biomass group, qg,i is the catchability coefficient (possibly dependent on Bi) for species i by gear g, and Pg,i is the market price obtained per biomass of i by gear g fishers.&#160; Also, mean fleet profit rates PRg,t for fishing are calculated thus:</p>
+        <p>where <i>i</i> = ecological species or biomass group, <i>q</i><i style="vertical-align: sub;">g,i</i> is the catchability coefficient (possibly dependent on Bi) for species<i> i</i> by gear <i>g</i>, and <i>P<sub>g,i</sub></i> is the market price obtained per biomass of<i> i</i> by gear g fishers.&#160; Also, mean fleet profit rates <i>PR<sub>g,t</sub></i><sub><![CDATA[ ]]></sub>for fishing are calculated thus:</p>
         <p>
             <img src="../Resources/Images/0800003B.png" style="width: 107px;height: 25px;" />
         </p>
-        <p>where cg is the cost of a unit of fishing effort for gear g (cost and price factors are entered via the <a href="Definition of fleets.htm">Definition of fleets</a> and <a href="Market price.htm">Market price</a> forms). For each time step, the “fast” effort response for the next (monthly) time step is predicted by a sigmoid function of income per effort and current fleet capacity:</p>
+        <p>where <i>c</i><sub style="font-style: italic;">g</sub> is the cost of a unit of fishing effort for gear g (cost and price factors are entered via the <a href="Definition of fleets.htm">Definition of fleets</a> and <a href="Market price.htm">Market price</a> forms). For each time step, the “fast” effort response for the next (monthly) time step is predicted by a sigmoid function of income per effort and current fleet capacity:</p>
         <p>
             <img src="../Resources/Images/0800003C.png" style="width: 120px;height: 53px;" />
         </p>
-        <p>Here, Ihg and p are fleet-specific response parameters. Ihg is the income level needed for half maximum effort to be deployed and p is a “heterogeneity” parameter for fishers: high p values imply all fishers “see” income opportunity similarly, while low p values imply fishers “turn on” their effort over a wide range of mean incomes, as shown in Figure 3.12. </p>
+        <p>Here, <i>I<sub>hg</sub></i> and <i>p</i> are fleet-specific response parameters. <i>I<sub>hg</sub></i> is the income level needed for half maximum effort to be deployed and <i>p</i> is a “heterogeneity” parameter for fishers: high <i>p</i> values imply all fishers “see” income opportunity similarly, while low p values imply fishers “turn on” their effort over a wide range of mean incomes, as shown in Figure 3.12. </p>
         <p style="text-align: left;">
             <img src="../Resources/Images/0300003D.png" style="width: 398px;height: 218px;" />
         </p>
-        <p><b>Figure 3.12</b> Effect of the ‘heterogeneity’ parameter, p, on effort/income function. </p>
+        <p><b>Figure 3.12</b> Effect of the ‘heterogeneity’ parameter, <i>p</i>, on effort/income function. </p>
         <h3>Slow time reponse model</h3>
-        <p>For each fleet, slow effort responses are modelled as changes in fleet capacity (Kg,t), which is a function of the capital depreciation rate ρg, the capital growth rate rg,t and profit PRg,t. The capital growth rate is calculated via a growth factor gfg,t, i.e.,</p>
+        <p>For each fleet, slow effort responses are modelled as changes in fleet capacity (<i>K</i><sub style="font-style: italic;">g,t</sub>), which is a function of the capital depreciation rate <i>ρ<sub>g</sub></i>, the capital growth rate <i>r</i><sub style="font-style: italic;">g,t</sub><i><![CDATA[ ]]></i>and profit <i>PR</i><sub style="font-style: italic;">g,t</sub>. The capital growth rate is calculated via a growth factor <i>gf</i><sub style="font-style: italic;">g</sub>,t, i.e.,</p>
         <p>
             <img src="../Resources/Images/0800003E.png" style="width: 152px;height: 49px;" />
         </p>
-        <p>where Kg,1, ρg and rg,1 are set by the user. The annual capacity Kg,t is then updated as</p>
+        <p>where <i>K</i><sub style="font-style: italic;">g,1</sub><i>, ρg</i> and <i>r</i><sub style="font-style: italic;">g,1</sub> are set by the user. The annual capacity <i>K</i><sub style="font-style: italic;">g,t</sub> is then updated as</p>
         <p>
             <img src="../Resources/Images/0800003F.png" style="width: 216px;height: 25px;" />.</p>
     </body>

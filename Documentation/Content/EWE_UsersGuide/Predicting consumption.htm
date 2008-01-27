@@ -6,19 +6,20 @@
     <body>
         <h2><span class="span_2">3.5 </span>Predicting consumption</h2>
         <p>
-            <MadCap:keyword term="Consumption in Ecosim;Foraging arena;Vulnerabilities" />Ecosim bases the crucial assumption for prediction of consumption rates on a simple Lotka-Volterra or ‘mass action’ assumption, modified to consider ‘foraging arena’ properties. Following this, prey can be states that are or are not vulnerable to predation, for instance by hiding, (e.g., in crevices of coral reefs or inside a school) when not feeding, and only being subject to predation when having left their shelter to feed, (see Figure 3.3 in <a href="Vulnerabilities in Ecosim.htm">Vulnerabilities in Ecosim</a>). In the original Ecosim formulations (Walters et al 1997, 2000) the consumption rate for a given predator i feeding on a prey j was thus predicted from,</p>
+            <MadCap:keyword term="Consumption in Ecosim;Foraging arena;Vulnerabilities" />Ecosim bases the crucial assumption for prediction of consumption rates on a simple Lotka-Volterra or ‘mass action’ assumption, modified to consider ‘foraging arena’ properties. Following this, prey can be states that are or are not vulnerable to predation, for instance by hiding, (e.g., in crevices of coral reefs or inside a school) when not feeding, and only being subject to predation when having left their shelter to feed, (see Figure 3.3 in <a href="Vulnerabilities in Ecosim.htm">Vulnerabilities in Ecosim</a>). In the original Ecosim formulations (Walters et al 1997, 2000) the consumption rate for a given predator <i>i</i> feeding on a prey <i>j</i> was thus predicted from,</p>
         <p>
-            <img src="../Resources/Images/08000026.png" style="width: 136px;height: 49px;" />Eq. 51</p>
-        <p>where, aij is the effective search rate for predator i feeding on a prey j, vij base vulnerability expressing the rate with which prey move between being vulnerable and not vulnerable, Bi prey biomass, Pj predator abundance (Nj for split pool groups discussed later, and Bj for other groups). </p>
-        <p>The model as implemented argues that ‘top-down vs. bottom-up’ control is in fact a continuum, where low v’s implies bottom-up and high v’s top-down control. </p>
+            <img src="../Resources/Images/08000026.png" style="width: 136px;height: 49px;" /><b style="font-size: 12pt;"> Eq. 51</b>
+        </p>
+        <p>where, <i>a</i><sub style="vertical-align: sub;font-style: italic;">ij</sub> is the effective search rate for predator <i>i</i> feeding on a prey <i>j</i>, <i>v</i><sub style="font-style: italic;">ij</sub> base vulnerability expressing the rate with which prey move between being vulnerable and not vulnerable, <i>B<sub>i</sub></i> prey biomass, <i>P<sub>j</sub></i> predator abundance (<i>N<sub>j</sub></i> for split pool groups discussed later, and <i>B<sub>j</sub></i> for other groups). </p>
+        <p>The model as implemented argues that ‘top-down vs. bottom-up’ control is in fact a continuum, where low <i>v</i>’s implies bottom-up and high v’s top-down control. </p>
         <p>Early experience with Ecosim has led to a more elaborate expression to describe the consumption: </p>
         <p>
-            <img src="../Resources/Images/08000027.png" style="width: 309px;height: 49px;">
-            </img>Eq. 52</p>
-        <p>where, Ti represents prey relative feeding time, Tj predator relative feeding time, Sij user-defined seasonal or long term forcing effects, Mij mediation forcing effects, and Dj represents effects of handling time as a limit to consumption rate, </p>
+            <img src="../Resources/Images/08000027.png" style="width: 309px;height: 49px;" /><span style="font-size: 12pt;font-weight: bold;"> Eq. 52</span>
+        </p>
+        <p>where, <i>T<sub>i</sub></i> represents prey relative feeding time, <i>T<sub>j</sub></i> predator relative feeding time, <i>S</i><sub style="font-style: italic;">ij</sub> user-defined seasonal or long term forcing effects, <i>M</i><sub style="font-style: italic;">ij</sub> mediation forcing effects, and<i> D<sub>j</sub></i> represents effects of handling time as a limit to consumption rate, </p>
         <p>
-            <img src="../Resources/Images/08000028.png" style="width: 192px;height: 51px;" />Eq. 53</p>
-        <p>where hj is the predator handling time. The feeding time factors are discussed further in <a href="Foraging time and predation.htm">Foraging time and predation risk</a> (see Equation 65). A vulnerability setting of 0 will result in consumption being estimated using bottom-up conditions only through</p>
+            <img src="../Resources/Images/08000028.png" style="width: 192px;height: 51px;" /> <![CDATA[ ]]><b style="font-size: 12pt;">Eq. 53</b></p>
+        <p>where <i>h<sub>j</sub></i> is the predator handling time. The feeding time factors are discussed further in <i>Foraging time and predation risk</i> (see <a href="Foraging time and predation.htm">Eq. 65</a>). A vulnerability setting of 1 will result in consumption being estimated using bottom-up conditions only through</p>
         <p>
             <img src="../Resources/Images/08000029.png" style="width: 127px;height: 25px;" />
         </p>

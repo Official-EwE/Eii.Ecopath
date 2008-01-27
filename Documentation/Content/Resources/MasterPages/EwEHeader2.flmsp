@@ -9,8 +9,8 @@
         <MadCap:bodyProxy />
         <MadCap:pageFooter class="OddPage">
             <table style="width: 100%;">
-                <col style="width: 382px;" />
-                <col style="width: 33%;" />
+                <col style="width: 568px;" />
+                <col style="width: 7px;" />
                 <col style="width: 33%;" />
                 <tbody>
                     <tr>

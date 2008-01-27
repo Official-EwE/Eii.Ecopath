@@ -7,16 +7,42 @@
         <h2><span class="span_2">4.3 </span>Advection in Ecospace</h2>
         <p>
             <MadCap:keyword term="Advection" />Advection processes are critical for productivity in most ocean areas. Currents deliver planktonic production to reef areas at much higher rates than would be predicted from simple turbulent mixing processes. Upwelling associated with movement of water away from coastlines delivers nutrients to surface waters, but the movement of nutrient rich water away from upwelling locations means that production and biomass may be highest well away from the actual upwelling locations. Convergence (down-welling) zones represent places where planktonic production from surrounding areas is concentrated, creating special opportunities for production of higher trophic levels.</p>
-        <p>Ecospace provides a user interface for sketching general current patterns or wind/geostrophic forcing patterns for surface currents (see <a href="Advection.htm">Advection</a> dialogue box, accessible from the <a href="Basemap.htm">Basemap</a> form). Based on these patterns Ecospace calculates equilibrium horizontal flow and upwelling/down-welling velocity fields that maintain continuity (water mass balance) and effects of Coriolis force. That is, the advection field is calculated by solving the linearized pressure field and velocity equations df / dt = 0, dvu / dt = 0, dvv / dt = 0 across the faces of each Ecospace grid (u,v) cell, where f is sea surface anomaly, the v’s are horizontal and velocity components (u, v directions) and the rate equations at each cell face satisfy (omitting grid size scaling factors for clarity):</p>
+        <p>Ecospace provides a user interface for sketching general current patterns or wind/geostrophic forcing patterns for surface currents (see <a href="Advection.htm">Advection</a> dialogue box, accessible from the <a href="Basemap.htm">Basemap</a> form). Based on these patterns Ecospace calculates equilibrium horizontal flow and upwelling/down-welling velocity fields that maintain continuity (water mass balance) and effects of Coriolis force. That is, the advection field is calculated by solving the linearized pressure field and velocity equations <i>df / dt</i> = 0, <i>dvu / dt</i> = 0, <i>dvv / dt</i> = 0 across the faces of each Ecospace grid (<i>u,v</i>) cell, where f is sea surface anomaly, the v’s are horizontal and velocity components (<i>u, v</i> directions) and the rate equations at each cell face satisfy (omitting grid size scaling factors for clarity):</p>
         <p>
-            <img src="../Resources/Images/08000042.png" style="width: 133px;height: 43px;" />Eq. 74</p>
+            <img src="../Resources/Images/08000042.png" style="width: 133px;height: 43px;" /><b style="font-size: 12pt;"> Eq. 74</b>
+        </p>
         <p>
-            <img src="../Resources/Images/08000043.png" style="width: 232px;height: 43px;" />Eq. 75</p>
+            <img src="../Resources/Images/08000043.png" style="width: 232px;height: 43px;" /><span style="font-size: 12pt;font-weight: bold;"> Eq. 75</span>
+        </p>
         <p>
-            <img src="../Resources/Images/08000044.png" style="width: 231px;height: 43px;" /> Eq. 76</p>
-        <p>Here, the W’s represent the user sketched forcing or general circulation field, h sea surface anomaly, k represents bottom friction force, f the Coriolis force, D represents downwelling/upwelling rate, and g acceleration due to sea surface slope. </p>
-        <p>Solving these equations for equilibrium is not meant to be a replacement for more elaborate advection models; generally the Wu and Wv need to be provided either by such models or by direct analysis of surface current data, so the Ecospace solution scheme is only used to assure mass balance and correct for ‘local’ features caused by bottom topography and Coriolis forces. That is, absent shoreline, bottom, and sea surface anomaly (h) effects, the equilibrium velocities are just vu = Wu, vv = Wv up to corrections for Coriolis force. We could just allow users to input the W fields and then calculate upwelling/downwelling rates needed to satisfy these, but solving the equations using general forcing sketches of W patterns allows us to internally correct for factors such as topographic steering of currents near shorelines, without demanding that the user enter W fields that precisely maintain mass balance (and/or correct upwelling/downwelling velocities) absent any correction scheme.</p>
-        <p>Once an advection pattern has been defined, the user can specify which biomass pools are subject to the advection velocities (vu,vv field) in addition to movement caused by swimming and/or turbulent mixing. This allows examination of whether some apparent ‘migration’ and concentration patterns of actively swimming organisms, (e.g., tuna aggregations at convergence zones) might in fact be due mainly to random swimming combined with advective drift.</p>
+            <img src="../Resources/Images/08000044.png" style="width: 231px;height: 43px;" /> <![CDATA[ ]]><span style="font-size: 12pt;font-weight: bold;"> Eq. 76</span></p>
+        <p>Here, the <i>W</i>’s represent the user sketched forcing or general circulation field, h sea surface anomaly, k represents bottom friction force, f the Coriolis force, <i>D</i> represents downwelling/upwelling rate, and <i>g</i> acceleration due to sea surface slope. </p>
+        <p>Solving these equations for equilibrium is not meant to be a replacement for more elaborate advection models; generally the <i>W<sub>u</sub></i> and <i>W<sub>v</sub> <![CDATA[ ]]></i>need to be provided either by such models or by direct analysis of surface current data, so the Ecospace solution scheme is only used to assure mass balance and correct for ‘local’ features caused by bottom topography and Coriolis forces. That is, absent shoreline, bottom, and sea surface anomaly (<i>h</i>) effects, the equilibrium velocities are just <i>v<sub>u</sub> = W<sub>u, </sub>v<sub>v</sub> = Wv</i> up to corrections for Coriolis force. We could just allow users to input the W fields and then calculate upwelling/downwelling rates needed to satisfy these, but solving the equations using general forcing sketches of <i>W</i> patterns allows us to internally correct for factors such as topographic steering of currents near shorelines, without demanding that the user enter <i>W</i> fields that precisely maintain mass balance (and/or correct upwelling/downwelling velocities) absent any correction scheme.</p>
+        <p>Once an advection pattern has been defined, the user can specify which biomass pools are subject to the advection velocities (<i>v<sub>u</sub>,v<sub>v</sub></i> field) in addition to movement caused by swimming and/or turbulent mixing. This allows examination of whether some apparent ‘migration’ and concentration patterns of actively swimming organisms, (e.g., tuna aggregations at convergence zones) might in fact be due mainly to random swimming combined with advective drift.</p>
+        <p><u></u>Advection fields can be read from text files. The procedure for this is as follows:
+</p>
+        <p>1. Create a .txt file, (e.g., in Notepad) with the following structure:
+</p>
+        <blockquote>
+            <p>Number of columns in Ecospace basemap (<i>nRow</i>); Number of columns in Ecospace basemap (<i>nCol</i>) 
+</p>
+            <p>Number of Months
+</p>
+        </blockquote>
+        <p>2. For each of the months specify the following:
+</p>
+        <blockquote>
+            <p>Month Number
+</p>
+        </blockquote>
+        <p>3. For this month specify for 0 to <i>nRow</i> + 1, and for 0 to<i> nCol</i>+1, unit: m/s</p>
+        <blockquote>
+            <p>Current <i>X</i>-velocity, Current <i>Y</i>-velocity
+</p>
+        </blockquote>
+        <p>4. Repeat this for all months</p>
+        <p>Currents for the Central Pacific may be obtained in a suitable format from http://www.oscar.noaa.gov/datadisplay/index.html) 
+</p>
         <p />
         <div style="height: 199.95pt;width: 468.85pt;" class="div_1">
             <p>&#160;</p>

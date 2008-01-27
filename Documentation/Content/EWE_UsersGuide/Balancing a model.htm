@@ -13,7 +13,7 @@
         <p>Problems in parameter estimation will be shown in the <i>Status panel</i>. Two types of message may be displayed in the <i>Status panel</i> while you are balancing your model: </p>
         <ul class="ul_1">
             <p class="p_1">Information messages [<img src="../Resources/Images/03000051.png" style="width: 15px;height: 15px;" />]. Information messages provide feedback on regular events in EwE. Information events are confirmations of things that went well.&#160; Examples are opening the model; successful edits; and successful balancing (i.e., parameterization) of the model.</p>
-            <p class="p_1">Warning messages [<img src="../Resources/Images/03000052.png" style="width: 19px;height: 19px;" />]. Warnings occur when EwE was not able to complete an action and requires the user to fix a problem, usually with the input data. For example, one of the most important of these is when parameterization fails (i..e., the model failed to balance). When this occurs, you will get the message “Your model is NOT balanced! Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s).”&#160; Clicking on the “+” icon next to this message expands the message to show which groups are causing the problem.</p>
+            <p class="p_1">Warning messages [<img src="../Resources/Images/03000052.png" style="width: 19px;height: 19px;" />]. Warnings occur when EwE was not able to complete an action and requires the user to fix a problem, usually with the input data. For example, one of the most important of these is when parameterization fails (i..e., the model failed to balance). When this occurs, you will get the message “Your model is NOT balanced! Computed Ecotrophic Efficiencies (<i>EE</i>) invalid for one or more group(s).”&#160; Clicking on the “+” icon next to this message expands the message to show which groups are causing the problem.</p>
         </ul>
         <p>An exhaustive set of guidelines for how a model should be balanced cannot be given. However, if it existed, such a set would include the following general guidelines:</p>
         <ul class="ul_2">
@@ -26,10 +26,10 @@
             <li class="li_1">Formulate assumptions and argumentation for changes: the ones easy to explain are likely to be the better assumptions;</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Start by looking at the estimated values. Are the EE values possible (less than 1)? Are the GE (= P/Q) values physiologically realistic (0.1-0.3 for most groups, perhaps lower for top predators and higher for very small organisms, (e.g., up to 0.5 for bacteria). If not decide from where the problem is the biggest if you want to balance your model starting from the bottom (producers) or from the top down;</li>
+            <li class="li_1">Start by looking at the estimated values. Are the <i>EE</i> values possible (less than 1)? Are the <i>GE</i> (= <i>P/Q</i>) values physiologically realistic (0.1-0.3 for most groups, perhaps lower for top predators and higher for very small organisms, (e.g., up to 0.5 for bacteria). If not decide from where the problem is the biggest if you want to balance your model starting from the bottom (producers) or from the top down;</li>
         </ul>
         <ul class="ul_2">
-            <li class="li_1">Search out one group with a bigger problem and try to solve this. Are the P/B, Q/B and B values appropriate for this group? What would happen to, e.g., the GE and the EE if you changed the parameters? If the problem is the consumption by predators, look at the <a href="Predation mortality.htm">Predation mortality</a> form, and identify the quantitatively most important predators. Check the diet compositions and B and Q/B values for these predators; </li>
+            <li class="li_1">Search out one group with a bigger problem and try to solve this. Are the <i>P/B, Q/B</i> and <i>B</i> values appropriate for this group? What would happen to, e.g., the <i>GE</i> and the <i>EE</i> if you changed the parameters? If the problem is the consumption by predators, look at the <a href="Predation mortality.htm">Predation mortality</a> form, and identify the quantitatively most important predators. Check the diet compositions and <i>B</i> and <i>Q/B</i> values for these predators; </li>
         </ul>
         <ul class="ul_2">
             <li class="li_1">Continue for as long as necessary, documenting carefully what changes are made. It may be a good idea to save the data file under a new name each time changes are made (e.g. starting with ‘Model_1’, on to ‘Model_2’ etc.);</li>
@@ -38,11 +38,11 @@
             <li class="li_1">You may get warnings that the ‘Respiration cannot be negative’. If this happens the second master equation of Ecopath has been violated. We have: </li>
         </ul>
         <p>Consumption = production + respiration + unassimilated food, </p>
-        <p>or Q = P + R + U. </p>
+        <p style="font-size: 12pt;">or <i>Q = P + R + U</i>. </p>
         <p>Expressing this relative to consumption we have: </p>
-        <p>P/Q + R/Q + U/Q = 1. </p>
+        <p><i style="font-size: 12pt;">P/Q + R/Q + U/Q = 1</i>. </p>
         <p>
-            <MadCap:keyword term="Gross food conversion efficiency" />Of these P/Q is entered as GE or the gross food conversion efficiency and U/Q us the proportion of food that is not assimilated. If GE + U/Q exceeds unity then R/Q and hence the respiration, R, has to be negative. You will need to reduce the production/consumption (GE) ratio by lowering the production/biomass (P/B) ratio or increasing the consumption/biomass (Q/B) ratio, and/or reduce the proportion of unassimilated food;</p>
+            <MadCap:keyword term="Gross food conversion efficiency" />Of these <i>P/Q</i> is entered as <i>GE</i> or the gross food conversion efficiency and <i>U/Q</i> us the proportion of food that is not assimilated. If <i>GE + U/Q</i> exceeds unity then <i>R/Q</i> and hence the respiration, <i>R</i>, has to be negative. You will need to reduce the production/consumption (<i>GE</i>) ratio by lowering the production/biomass (<i>P/B</i>) ratio or increasing the consumption/biomass (<i>Q/B</i>) ratio, and/or reduce the proportion of unassimilated food;</p>
         <ul class="ul_2">
             <li class="li_1">
                 <MadCap:keyword term="Respiration/Biomass" />Examine the respiration/biomass (R/B) ratios for each group. Generally this ratio reflects activity level. For fish it should as a rule be in the range 1-10 year-1, for copepods perhaps around 50-100. Please consult physiology handbooks for more information. If the ratio seems high it may be necessary to change the (assumed) proportion of the food that is not assimilated on the basic input form;</li>
@@ -64,7 +64,7 @@
                 <MadCap:keyword term="Problem loops" />In cases where P/B is to be estimated for groups that feed on each others (cycles) the program may first estimate a P/B for one groups based on the consumption by the other groups. Subsequently it may estimate the P/B for the second group based on the consumption by the first, and then it may continue with the P/B for the first again, and so on in a loop. The result may be completely unrealistic parameter estimates.</p>
             <p>It is necessary to break such loops, e.g., by entering the P/B for one of the groups. If all ecotrophic efficiencies are low it indicates that the trophic transfer efficiencies are low. This may be OK for a system with high production and low abundance of organisms. It may however also indicate that the estimates of the biomasses in the system are too low. </p>
             <p>
-                <img src="../Resources/Images/08000055.png" style="width: 300px;height: 134px;" />
+                <img src="../Resources/Images/08000055.png" style="width: 356px;height: 159px;" />
             </p>
         </p>
         <p>&#160;<p><MadCap:keyword term="Cannibalism" /><u style="text-decoration: none;font-weight: bold;">Problem 2: Cannibalism (0-order cycles)</u></p><p>Groups where 0-order cycles (cannibalism) are important should be broken into two or more groups. Such cases occur, for example, when a predatory fish feeds on fish of the same species or grouping. The prey fish will, however, be smaller fish, and often the P/B value for the group is based on the recruited part of the population only, and thus does not cover the dynamics of the juveniles, (which generally have much higher P/B values than the recruited part of the population). The solution may be to split the group in an adult and a juvenile fish group. This will also be an advantage for subsequent Ecosim simulations.</p><p>Remember that the gross food conversion efficiency or GE is the P/Q ratio. Typically this ratio is in the range of 10-30%. If the proportion of the 0-order cycle is in the same range there may not be any production left over for other purposes (predation and export). As a guideline if a 0-order cycle includes more than say 5% of the diet composition it is necessary to consider if it would be better to split the group in two.</p></p>

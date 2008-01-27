@@ -6,23 +6,25 @@
     <body>
         <h2><span class="span_2">2.6 </span>Production</h2>
         <p>
-            <MadCap:keyword term="Production;Mortality;Total mortality" />Production refers to the elaboration of tissue (whether it survives or not) by a group over the period considered, expressed in whatever currency has been selected. Total mortality, under the condition assumed for the construction of mass-balance models, equal to production over biomass (Allen, 1971). Therefore, one can use estimates of total mortality (Z) as input values for the production over biomass ratio (P/B) in Ecopath models. Some examples of how to obtain P/B values is given below.</p>
+            <MadCap:keyword term="Production;Mortality;Total mortality" />Production refers to the elaboration of tissue (whether it survives or not) by a group over the period considered, expressed in whatever currency has been selected. Total mortality, under the condition assumed for the construction of mass-balance models, equal to production over biomass (Allen, 1971). Therefore, one can use estimates of total mortality (<i>Z</i>) as input values for the production over biomass ratio (<i>P/B</i>) in Ecopath models. Some examples of how to obtain <i>P/B </i>values is given below.</p>
         <p>Even if the parameter is labelled ‘production/biomass’ in EwE, what should be entered is actually the mortality rate. An example, if you have a juvenile group and use a bioenergetic model to calculate the production, you should subtract the amount that is recruited to the adult group from the production in order to the actual mortality, which is what Ecosim needs to work with. Production over biomass is entered on the <a href="Basic input.htm">Basic input</a> form. See <a href="Mortality coefficients.htm">Mortality coefficients</a> and <a href="Predation mortality.htm">Predation mortality</a> for description of Ecopath’s estimates of different mortality components in the system.</p>
         <h3>Total mortality catch curves</h3>
         <p>Total mortalities can be estimated from catch curves, i.e., from catch composition data, either in terms of age-structured catch curves; (Robson and Chapman, 1961), or of length-converted catch curves (Pauly et al., 1995). The estimation can be carried out using appropriate software for analysis, such as the FiSAT package (Gayanilo et al., 1996).</p>
         <h3>Total mortality from sum of components</h3>
-        <p>Production rate is the sum of natural mortality (M = M0 + M2) and fishing mortality (F), i.e., Z = M + F. In the absence of catch-at-age data from an unexploited population, natural mortality for finfish can be estimated from an empirical relationship (Pauly, 1980) linking M, two parameters of the von Bertalanffy Growth Function (VBGF) and mean environmental temperature, i.e.,</p>
+        <p>Production rate is the sum of natural mortality (<i>M = M0</i> + <i>M2</i>) and fishing mortality (<i>F</i>), i.e., <i>Z</i> = <i>M</i> + <i>F</i>. In the absence of catch-at-age data from an unexploited population, natural mortality for finfish can be estimated from an empirical relationship (Pauly, 1980) linking <i>M</i>, two parameters of the von Bertalanffy Growth Function (VBGF) and mean environmental temperature, i.e.,</p>
         <p>
-            <img src="../Resources/Images/08000016.png" style="width: 156px;height: 24px;" />Eq. 16</p>
-        <p>where, M is the natural mortality (/year), K is the curvature parameter of the VBGF (/year), Loo is the asymptotic length (total length, cm), and Tc is the mean habitat (water) temperature, in °C .</p>
+            <img src="../Resources/Images/08000016.png" style="width: 162px;height: 24px;" /><b style="font-size: 12pt;"> Eq. 16</b>
+        </p>
+        <p>where, <i>M</i> is the natural mortality (/year), <i>K</i> is the curvature parameter of the VBGF (/year), <i>L</i><sub style="font-style: italic;">∞</sub> is the asymptotic length (total length, cm), and <i>Tc</i> is the mean habitat (water) temperature, in °C .</p>
         <p>In equilibrium situations, fishing mortality can be estimated directly from the catch (or more precisely from the ‘yield’, which expresses catches (including discards) in weight):</p>
-        <p>Fishing mortality = yield / biomass</p>
+        <p><span style="font-size: 12pt;">Fishing mortality = yield / biomass</span>
+        </p>
         <p>where the yield is a rate, (e.g., t/km²/year), the biomass lacks a time dimension, (i.e., is expressed as t/km²), and thus the fishing mortality is an instantaneous rate, (e.g., per year).</p>
         <h3>Total mortality from average length</h3>
         <p>Beverton and Holt (1957) showed that total mortality (Z = P/B), in fish population whose individuals grow according to the von Bertalanffy Growth Function (VBGF), can be expressed by:</p>
         <p>
             <img src="../Resources/Images/08000017.png" style="width: 156px;height: 47px;" />
         </p>
-        <p>where Loo is the asymptotic length, i.e., the mean size the individuals in the population would reach if they were to live and grow indefinitely, K is the VBGF curvature parameter (expressing the rate at which Loo is approached), <img src="../Resources/Images/08000018.png" style="width: 15px;height: 21px;" /> is the mean length in the population, computed from L’ upward. Here, L’ represents the mean length at entry into the fishery, assuming knife-edge selection. Note that <img src="../Resources/Images/08000018.png" style="width: 15px;height: 21px;" /> must be &gt; L’. </p>
+        <p>where <i>L<sub>∞</sub></i> is the asymptotic length, i.e., the mean size the individuals in the population would reach if they were to live and grow indefinitely, K is the VBGF curvature parameter (expressing the rate at which <i>L<sub>∞</sub></i> is approached), <img src="../Resources/Images/08000018.png" style="width: 15px;height: 21px;" /> is the mean length in the population, computed from L’ upward. Here, L’ represents the mean length at entry into the fishery, assuming knife-edge selection. Note that <img src="../Resources/Images/08000018.png" style="width: 15px;height: 21px;" /> must be &gt; L’. </p>
     </body>
 </html>

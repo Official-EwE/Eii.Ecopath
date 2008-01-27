@@ -5,12 +5,12 @@
     </head>
     <body>
         <h2><span class="span_2">3.2 </span>Ecosim basic </h2>
-        <p>The basics of Ecosim consist of biomass dynamics expressed through a series of coupled differential equations. The equations are derived from the Ecopath master equation (see <a href="Mortality for a prey is consumption for a predator.htm">Equation 1</a>), and take the form</p>
+        <p>The basics of Ecosim consist of biomass dynamics expressed through a series of coupled differential equations. The equations are derived from the Ecopath master equation (see Eq. 1 in <a href="Mortality for a prey is consumption for a predator.htm">Mortality for a prey is consumption for a predator</a>), and take the form</p>
         <p>
-            <img src="../Resources/Images/08000022.png" style="width: 319px;height: 37px;">
-            </img>Eq. 50</p>
-        <p>where dBi/dt represents the growth rate during the time interval dt of group (i) in terms of its biomass, Bi, gi is the net growth efficiency (production/consumption ratio), Mi the non-predation (‘other’) natural mortality rate, Fi is fishing mortality rate, ei is emigration rate, Ii is immigration rate, (and ei·Bi-Ii is the net migration rate). The two summations estimates consumption rates, the first expressing the total consumption by group (i), and the second the predation by all predators on the same group (i). The consumption rates, Qji, are calculated based on the ‘foraging arena’ concept, where Bi’s are divided into vulnerable and invulnerable components (Walters et al., 1997 Figure 1), and it is the transfer rate (vij) between these two components that determines if control is top-down (i.e., Lotka-Volterra), bottom-up (i.e., donor-driven), or of an intermediate type.</p>
+            <img src="../Resources/Images/08000022.png" style="width: 319px;height: 37px;" /><b style="font-size: 12pt;">Eq. 50</b>
+        </p>
+        <p>where dB<sub>i</sub>/dt represents the growth rate during the time interval dt of group (<i>i</i>) in terms of its biomass, Bi, gi is the net growth efficiency (production/consumption ratio), Mi the non-predation (‘other’) natural mortality rate, Fi is fishing mortality rate, ei is emigration rate, Ii is immigration rate, (and<i> e<sub>i</sub>·B<sub>i</sub>-I<sub>i</sub></i> is the net migration rate). The two summations estimates consumption rates, the first expressing the total consumption by group (i), and the second the predation by all predators on the same group (i). The consumption rates, <i>Q<sub>ji</sub></i>, are calculated based on the ‘foraging arena’ concept, where Bi’s are divided into vulnerable and invulnerable components (Walters et al., 1997 Figure 1), and it is the transfer rate (<i>v<sub>ij</sub></i>) between these two components that determines if control is top-down (i.e., Lotka-Volterra), bottom-up (i.e., donor-driven), or of an intermediate type.</p>
         <p>The set of differential equations is solved in Ecosim using (by default) an Adams-Bashford integration routine or (if selected) a Runge-Kutta 4th order routine.</p>
-        <p>Further reading: Walters et al. 1997; Walters et al. 2000)</p>
+        <p>Further reading: Walters et al. 1997; Walters et al. 2000</p>
     </body>
 </html>

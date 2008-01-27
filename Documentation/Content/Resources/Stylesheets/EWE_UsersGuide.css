@@ -75,6 +75,9 @@ img.img_1
 	mso-position-horizontal-relative: char;
 	mso-position-vertical-relative: line;
 	margin-left: 0;
+	text-align: left;
+	white-space: nowrap;
+	display: none;
 }
 
 img.img_2
@@ -179,13 +182,11 @@ li
 h3
 {
 	mc-heading-level: 0;
-	line-height: 3pt;
 }
 
 h4
 {
 	mc-heading-level: 0;
-	line-height: 3pt;
 }
 
 h5
@@ -216,6 +217,23 @@ p.TOC3
 h2
 {
 	vertical-align: 1px;
-	line-height: 14pt;
+}
+
+p.equation
+{
+	font-size: 12pt;
+	font-style: italic;
+	white-space: inherit;
+	word-spacing: 3pt;
+}
+
+img
+{
+	vertical-align: 3pt;
+}
+
+indexProxy
+{
+	mc-index-headings: false;
 }
 
