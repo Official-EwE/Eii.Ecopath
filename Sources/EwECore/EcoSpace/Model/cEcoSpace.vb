@@ -4357,13 +4357,16 @@ exitline:
 
         For j = 1 To m_refdata.NdatType
             If SpNObs(j) > 0 Then
-                If m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Then
+                If m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Then
                     m_refdata.DatSS(j) = SpSumZ2(j)
                     m_refdata.DatQ(j) = 0
 
-                ElseIf m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
-                         m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
-                         m_refdata.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
+                ElseIf m_refdata.DatType(j) = eTimeSeriesType.BiomassRel _
+                    Or m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
+                       m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
+                       m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
+                       m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+                       m_refdata.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
 
                     m_refdata.DatSS(j) = SpSumZ2(j) - SpSumZ(j) ^ 2 / SpNObs(j)
                     m_refdata.DatQ(j) = SpSumZ(j) / SpNObs(j)
@@ -4379,10 +4382,13 @@ exitline:
             iDyear = m_refdata.DatYear(i) - m_refdata.DatYear(1)
             For j = 1 To m_refdata.NdatType
                 If m_refdata.DatVal(i, j) > 0 And iDyear < m_Data.TotalTime + 1 And _
-                    (m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                    m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                    m_refdata.DatType(j) = eTimeSeriesType.Catches Or m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                    m_refdata.DatType(j) = eTimeSeriesType.AverageWeight) Then
+                    (m_refdata.DatType(j) = eTimeSeriesType.BiomassRel Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.BiomassAbs Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.FishingEffort Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.TotalMortality Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.Catches Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+                     m_refdata.DatType(j) = eTimeSeriesType.AverageWeight) Then
 
                     m_refdata.Iobs = m_refdata.Iobs + 1
                     Erpred(m_refdata.Iobs) = Erpred(m_refdata.Iobs) - m_refdata.DatQ(j)

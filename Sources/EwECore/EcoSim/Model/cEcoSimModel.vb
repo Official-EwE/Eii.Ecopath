@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.2  2008/09/26 20:28:59  villyc
+' ecosimmontecarlo stuff
+'
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -1819,13 +1822,19 @@ Public Property PluginManager() As cPluginManager
                 If iDyear = 0 Then Exit Sub 'no data for this year, don't need to proceed
                 '  System.Console.WriteLine("AccumulateDataInfo() year = " & iyear.ToString)
 
+                'VC Sep 2008 Fixing EcosimMonteCarlo:
+                m_RefData.Iobs = 0
+
                 'now accumulate z statistics for any observations available this year
                 For j = 1 To m_RefData.NdatType
                     'If Math.Abs(m_RefData.DatVal(iDyear, j)) > 0 And (m_RefData.DatType(j) = 0 Or m_RefData.DatType(j) = 1 Or m_RefData.DatType(j) = 5 Or Math.Abs(m_RefData.DatType(j)) = 6 Or m_RefData.DatType(j) = 7) Then
                     If m_RefData.DatVal(iDyear, j) > 0 And _
-                                    (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Or _
-                                     m_RefData.DatType(j) = eTimeSeriesType.Catches Or m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing) Then
+                                    (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
+                                     m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
+                                     m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
+                                     m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Or _
+                                     m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
+                                     m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing) Then
 
                         Zstat = 0
                         m_RefData.Iobs += 1
@@ -1847,7 +1856,7 @@ Public Property PluginManager() As cPluginManager
                                 Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / Zest)
                                 m_RefData.Yhat(m_RefData.Iobs) = Math.Log(Zest)
 
-                            Case eTimeSeriesType.Catches ',eTimeSeriesType.CatchesForcing 'jb forcing data not use for stats    '6, -6 Absolute Catch Data, Martell, Jan 02
+                            Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'jb forcing data not use for stats    '6, -6 Absolute Catch Data, Martell, Jan 02
 
                                 If m_Data.FishTime(m_RefData.DatPool(j)) > 0 Then
                                     Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / (BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))))
@@ -1996,6 +2005,7 @@ Public Property PluginManager() As cPluginManager
             Dim eat As Single, Bprey As Single
             Dim aeff() As Single, Veff() As Single
             ReDim aeff(m_Data.inlinks)
+            'Console.WriteLine(m_Data.inlinks.ToString)
             ReDim Veff(m_Data.inlinks)
             Dim Hdent() As Single
             ReDim Hdent(nGroups)
@@ -2288,12 +2298,13 @@ Public Property PluginManager() As cPluginManager
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
                 PredDen(j) = PredDen(j) + A(i, j) * B(i) ^ m_Data.SwitchPower(j)
+                m_Data.RelaSwitch(ii) = 1
             Next
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                If m_Data.SwitchPower(j) = 0.0# Then
-                    m_Data.RelaSwitch(ii) = 1
-                Else
+                If m_Data.SwitchPower(j) > 0 Then
+                    '    m_Data.RelaSwitch(ii) = 1
+                    'Else
                     m_Data.RelaSwitch(ii) = A(i, j) * B(i) ^ m_Data.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_Data.BaseTimeSwitch(ii)
                 End If
             Next
@@ -2837,9 +2848,12 @@ Public Property PluginManager() As cPluginManager
                 iYear = m_RefData.DatYear(i) - m_RefData.DatYear(1)
                 For j = 1 To m_RefData.NdatType
                     If m_RefData.DatVal(i, j) > 0 And iYear < m_Data.NumYears + 1 And _
-                            (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or m_RefData.DatType(j) = eTimeSeriesType.AverageWeight) Then
+                            (m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.AverageWeight) Then
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been

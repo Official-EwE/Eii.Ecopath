@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.2  2008/09/26 20:29:00  villyc
+' ecosimmontecarlo stuff
+'
 ' Revision 1.1  2008/09/26 07:30:34  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -475,8 +478,8 @@ Public Class cTimeSeriesDataStructures
                                 PoolForceZ(DatPool(j), i) = 0
                             End If
 
-                        Case -6, 6 'Catches no action, not used for SS (oh it is now!)
-                            If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fiting.
+                        Case -6, 6 'Catches, -6 is forced
+                            If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
                             If DatType(j) = -6 Then
                                 PoolForceCatch(DatPool(j), i) = DatVal(i, j)
                             Else
@@ -508,6 +511,7 @@ Public Class cTimeSeriesDataStructures
             End If
 
             If Iobs = 0 Then Iobs = HoldIobs
+
             ReDim Wt(Iobs)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

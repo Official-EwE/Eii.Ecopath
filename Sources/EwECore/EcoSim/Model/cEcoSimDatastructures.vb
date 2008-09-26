@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.2  2008/09/26 20:28:59  villyc
+' ecosimmontecarlo stuff
+'
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -545,7 +548,8 @@ Public Class cEcosimDatastructures
         'ReDim wk(nGroups)  'weight at recruitment to adult stage
         'ReDim WtGrow(nGroups)
 
-        ReDim ilink(nGroups * nGroups), jlink(nGroups * nGroups)
+        ReDim ilink(nGroups * nGroups)
+        ReDim jlink(nGroups * nGroups)
         ReDim SimDC(nGroups, nGroups)
 
 
@@ -1043,6 +1047,7 @@ Public Class cEcosimDatastructures
     Public ReadOnly Property NTimes() As Integer
         Get
             Return Me.NumYears * Me.NumStepsPerYear
+            If NumYears > 55 Then Stop
         End Get
     End Property
 

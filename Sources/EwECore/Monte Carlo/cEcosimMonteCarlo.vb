@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.2  2008/09/26 20:29:00  villyc
+' ecosimmontecarlo stuff
+'
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -366,7 +369,15 @@ Public Class cEcosimMonteCarlo
 
             'Ecosim was run in initForRun()
             'ss is the fit of the currently loaded reference data
-            SSBestFit = m_esdata.SS
+            m_ecosim.Run()
+
+            If m_esdata.SS > 0 Then
+                SSBestFit = m_esdata.SS
+            Else
+                SSBestFit = 10000000000000000
+            End If
+
+
 
             For itrial As Integer = 1 To Ntrials 'PerThread
 
@@ -442,7 +453,7 @@ Public Class cEcosimMonteCarlo
 
                 'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(itrial, iter)
-
+                Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
             Next itrial
 
             'set the parameters back to the original values
