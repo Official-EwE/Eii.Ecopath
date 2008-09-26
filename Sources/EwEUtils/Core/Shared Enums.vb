@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.2  2008/09/26 21:21:35  joeb
+' Added GameFleetFishingRates and GameGroupFishingRates
+'
 ' Revision 1.1  2008/09/26 07:31:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -982,7 +985,11 @@ Namespace Core
         ConfidenceInterval
 
         'Varnames added for Game Server
-        FishingRates
+        ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
+        GameFleetFishingRates
+        ''' <summary> User entered fishing rate modifiers/shapes for groups</summary>
+        GameGroupFishingRates
+
         ' EcosimResults
         GameSimulationTimeStep
         GameModel
@@ -993,7 +1000,7 @@ Namespace Core
         GameYield
 
         GameState
-        ''' <summary>Fleet name added for the Game data because EwE6 uses Name </summary>
+        ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
 
 
