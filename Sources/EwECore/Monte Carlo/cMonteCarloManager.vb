@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.2  2008/09/26 23:00:41  villyc
+' more ecosimmontecarlo fixing
+'
 ' Revision 1.1  2008/09/26 07:30:28  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -204,39 +207,44 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Run()
-        Dim thrdMC As Thread
+        Dim isThreading As Boolean = True
 
-        Try
-            If m_core.StateMonitor.HasEcosimLoaded Then
-                If m_core.m_TSData.NdatType > 0 Then
+        If isThreading Then
 
-                    Me.setWait()
+            Dim thrdMC As Thread
 
-                    Me.update()
+            Try
+                If m_core.StateMonitor.HasEcosimLoaded Then
+                    If m_core.m_TSData.NdatType > 0 Then
 
-                    thrdMC = New Thread(AddressOf m_mc.Run)
-                    thrdMC.Start()
+                        Me.setWait()
 
-                Else 'If m_core.m_TSData.NdatType > 0 Then
-                    'm_core.m_TSData.NdatType = 0
-                    'there must be at least one reference data set loaded
-                    m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                        Me.update()
+
+                        thrdMC = New Thread(AddressOf m_mc.Run)
+                        thrdMC.Start()
+
+                    Else 'If m_core.m_TSData.NdatType > 0 Then
+                        'm_core.m_TSData.NdatType = 0
+                        'there must be at least one reference data set loaded
+                        m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                    End If
+
+                Else 'If m_core.StateMonitor.HasEcosimLoaded Then
+
+                    'no ecosim scenario loaded
+                    m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+
                 End If
 
-            Else 'If m_core.StateMonitor.HasEcosimLoaded Then
+            Catch ex As Exception
+                cLog.Write(ex)
+                Me.ReleaseWait()
+                m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+            End Try
 
-                'no ecosim scenario loaded
-                m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
-
-            End If
-
-        Catch ex As Exception
-            cLog.Write(ex)
-            Me.ReleaseWait()
-            m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
-        End Try
-
-        m_core.Messages.sendAllMessages()
+            m_core.Messages.sendAllMessages()
+        End If
 
         Return
 
