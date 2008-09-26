@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BTN_CALCULATE" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="BTN_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="BTN_PLOT" xml:space="preserve">
+    <value>Plot</value>
+  </data>
+  <data name="BTN_SET_DEFAULT" xml:space="preserve">
+    <value>Set default</value>
+  </data>
+  <data name="CELL_ACCESS" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="CELL_ACCESS_TRP_LVL" xml:space="preserve">
+    <value>Accessibility / Trophic level</value>
+  </data>
+  <data name="CELL_CATCH_MTPLR" xml:space="preserve">
+    <value>Catch multiplier</value>
+  </data>
+  <data name="CELL_EFF_MTPLR_TRP_LVL" xml:space="preserve">
+    <value>Effort multiplier / Trophic level</value>
+  </data>
+  <data name="CELL_IDX_PP_TRP_LVL" xml:space="preserve">
+    <value>Index PP / Trophic level</value>
+  </data>
+  <data name="CELL_SIGMA" xml:space="preserve">
+    <value>Sigma</value>
+  </data>
+  <data name="CELL_SIGMA_TRP_LVL" xml:space="preserve">
+    <value>Sigma / Trophic level</value>
+  </data>
+  <data name="COL_HDR_ACCESS_BIOMASS" xml:space="preserve">
+    <value>Accessible Biomass (t/km²)</value>
+  </data>
+  <data name="COL_HDR_ACCESS_FISH_LOSS_RATE" xml:space="preserve">
+    <value>Accessible fishing loss rate (/TL)</value>
+  </data>
+  <data name="COL_HDR_ACCESS_FISH_MORTALITY" xml:space="preserve">
+    <value>Accessible fishing mortality (/year)</value>
+  </data>
+  <data name="COL_HDR_BIOMASS" xml:space="preserve">
+    <value>Biomass (t/km²)</value>
+  </data>
+  <data name="COL_HDR_CATCHES" xml:space="preserve">
+    <value>Catches (t/km²)</value>
+  </data>
+  <data name="COL_HDR_EFF_MTPLR_PARM" xml:space="preserve">
+    <value>Effort multiplier / Parameter</value>
+  </data>
+  <data name="COL_HDR_FISH_LOSS_RATE" xml:space="preserve">
+    <value>Fishing loss rate (/TL)</value>
+  </data>
+  <data name="COL_HDR_FISH_MORTALITY" xml:space="preserve">
+    <value>Fishing mortality (/year)</value>
+  </data>
+  <data name="COL_HDR_FORM_D" xml:space="preserve">
+    <value>Form D</value>
+  </data>
+  <data name="COL_HDR_GRP_NAMEPB" xml:space="preserve">
+    <value>Group name (P/B)</value>
+  </data>
+  <data name="COL_HDR_GRP_NAMETL" xml:space="preserve">
+    <value>Group name (TL)</value>
+  </data>
+  <data name="COL_HDR_GRP_NAMETL_TRP_LVL" xml:space="preserve">
+    <value>Group name (TL) / Trophic level</value>
+  </data>
+  <data name="COL_HDR_KINETIC" xml:space="preserve">
+    <value>Kinetic (TL/year)</value>
+  </data>
+  <data name="COL_HDR_KINETIC_RECAL" xml:space="preserve">
+    <value>Kinetic recalculated (TL/year)</value>
+  </data>
+  <data name="COL_HDR_NATURAL_LOSS_RATE" xml:space="preserve">
+    <value>Natural loss rate (/TL)</value>
+  </data>
+  <data name="COL_HDR_PARM" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="COL_HDR_PROD" xml:space="preserve">
+    <value>Production  (t.TL/km²/year)</value>
+  </data>
+  <data name="COL_HDR_SELECTIVITY" xml:space="preserve">
+    <value>Selectivity</value>
+  </data>
+  <data name="COL_HDR_TIME" xml:space="preserve">
+    <value>Time (year)</value>
+  </data>
+  <data name="COL_HDR_TOP_D" xml:space="preserve">
+    <value>Top D</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL" xml:space="preserve">
+    <value>Trophic level</value>
+  </data>
+  <data name="COL_HDR_TRP_LVLINSIGMA_TRP_LVLOUT" xml:space="preserve">
+    <value>Trophic level in (SigmaTL) / Trophic level out</value>
+  </data>
+  <data name="COL_HDR_VIRGIN_BIOMASS" xml:space="preserve">
+    <value>Virgin biomass (t/km²)</value>
+  </data>
+  <data name="COL_HDR_VIRGIN_KINETIC" xml:space="preserve">
+    <value>Virgin kinetic (TL/year)</value>
+  </data>
+  <data name="COL_HDR_VIRGIN_PROD" xml:space="preserve">
+    <value>Virgin production  (t.TL/km²/year)</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_ACCESS_FISH_MORTALITY_TTL" xml:space="preserve">
+    <value>Accessible fishing mortality at TTL</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_BIOM_TL1" xml:space="preserve">
+    <value>Biomass at TL=1</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_BIOM_TL2" xml:space="preserve">
+    <value>Biomass at TL=2</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_CTSA_BWD_CAL" xml:space="preserve">
+    <value>CTSA-Backward calculation</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_CTSA_FWD_CAL" xml:space="preserve">
+    <value>CTSA-Forward calculation</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_FISH_LOSS_RATE_TLL" xml:space="preserve">
+    <value>Fishing loss rate at TTL</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_PLS_SELECT" xml:space="preserve">
+    <value>Please select</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_PROD_TL1" xml:space="preserve">
+    <value>Production at TL=1</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_PROD_TL2" xml:space="preserve">
+    <value>Production at TL=2</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_TP_AUTO_SMOOTH" xml:space="preserve">
+    <value>Transpose-Automatic smooth</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_TP_OMNI_IDX" xml:space="preserve">
+    <value>Transpose-Omnivory index</value>
+  </data>
+  <data name="DROP_DWN_LST_ITM_TP_USER_DEF_SIGMA" xml:space="preserve">
+    <value>Transpose-User defined sigma</value>
+  </data>
+  <data name="ERR_MSG_ACCESS" xml:space="preserve">
+    <value>Accessibility value is invalid</value>
+  </data>
+  <data name="ERR_MSG_BWDCALPARAMETER" xml:space="preserve">
+    <value>Backward calculation parameter value is invalid</value>
+  </data>
+  <data name="ERR_MSG_CATCH_FILE" xml:space="preserve">
+    <value>Value in catch file is invalid</value>
+  </data>
+  <data name="ERR_MSG_CATCH_MTPLR" xml:space="preserve">
+    <value>Catch multiplier value is invalid</value>
+  </data>
+  <data name="ERR_MSG_CATCH_PAST_ANALYSIS_FILE" xml:space="preserve">
+    <value>Value in catch past analysis file is invalid</value>
+  </data>
+  <data name="ERR_MSG_CTSAPARAMETER" xml:space="preserve">
+    <value>CTSA parameter value is invalid</value>
+  </data>
+  <data name="ERR_MSG_DIAGNOSISPARAMETER" xml:space="preserve">
+    <value>Diagnosis parameter value is invalid</value>
+  </data>
+  <data name="ERR_MSG_DYNAMICSPARAMETER" xml:space="preserve">
+    <value>Dynamics parameter value is invalid</value>
+  </data>
+  <data name="ERR_MSG_EFF_MTPLR" xml:space="preserve">
+    <value>Effort multiplier value is invalid</value>
+  </data>
+  <data name="ERR_MSG_FORECASTYEAR" xml:space="preserve">
+    <value>Forecast year is invalid</value>
+  </data>
+  <data name="ERR_MSG_FWDCALPARAMETER" xml:space="preserve">
+    <value>Forward calculation parameter value is invalid</value>
+  </data>
+  <data name="ERR_MSG_IDX_PP" xml:space="preserve">
+    <value>Index PP value is invalid</value>
+  </data>
+  <data name="ERR_MSG_RUN_CTSA_BWD_CAL" xml:space="preserve">
+    <value>Please run CTSA-Backward calculation first</value>
+  </data>
+  <data name="ERR_MSG_RUN_CTSA_FWD_CAL" xml:space="preserve">
+    <value>Please run CTSA-Forward calculation first</value>
+  </data>
+  <data name="ERR_MSG_RUN_CTSA_PARAM" xml:space="preserve">
+    <value>Please run CTSA-Basic parameters first</value>
+  </data>
+  <data name="ERR_MSG_RUN_DIAGNOSIS_PARAM" xml:space="preserve">
+    <value>Please run Diagnosis-Basic parameters first</value>
+  </data>
+  <data name="ERR_MSG_RUN_DYNAMICS_PARAM" xml:space="preserve">
+    <value>Please run Dynamics-Basic parameters first</value>
+  </data>
+  <data name="ERR_MSG_RUN_TP_AUTO_EMPIR_FUNCT" xml:space="preserve">
+    <value>Please run Transpose-Automatic empirical function first</value>
+  </data>
+  <data name="ERR_MSG_RUN_TP_OMNI_IDX" xml:space="preserve">
+    <value>Please run Transpose-Omnivory index first</value>
+  </data>
+  <data name="ERR_MSG_RUN_TP_USER_DEF_SIGMA" xml:space="preserve">
+    <value>Please run Transpose-User defined sigma first</value>
+  </data>
+  <data name="ERR_MSG_SIGMA" xml:space="preserve">
+    <value>Sigma value is invalid</value>
+  </data>
+  <data name="ERR_MSG_SMOOTH_FACTOR" xml:space="preserve">
+    <value>Smooth factor must be between 0.03 and 1.0</value>
+  </data>
+  <data name="ERR_TITLE_INPUT" xml:space="preserve">
+    <value>Input error</value>
+  </data>
+  <data name="ERR_TITLE_RUN_SEQ" xml:space="preserve">
+    <value>Run sequence error</value>
+  </data>
+  <data name="GRP_XLBL_EFF_MTPLR" xml:space="preserve">
+    <value>Effort multiplier</value>
+  </data>
+  <data name="GRP_XLBL_TRP_LVL" xml:space="preserve">
+    <value>Trophic level</value>
+  </data>
+  <data name="GRP_XLBL_YEAR" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="INFO_MSG_CONTIN_ITER" xml:space="preserve">
+    <value>Do you want to continue iteration?</value>
+  </data>
+  <data name="INFO_MSG_KINETIC_CRITERIA" xml:space="preserve">
+    <value>Kinetic criteria: </value>
+  </data>
+  <data name="INFO_MSG_PROD_CRITERIA" xml:space="preserve">
+    <value>Production criteria: </value>
+  </data>
+  <data name="INFO_TITLE_ITER_NOT_CONVERGE" xml:space="preserve">
+    <value>Iteration does not converge</value>
+  </data>
+  <data name="LBL_ASYMPTOTE" xml:space="preserve">
+    <value>Asymptote:</value>
+  </data>
+  <data name="LBL_BETA" xml:space="preserve">
+    <value>Beta:</value>
+  </data>
+  <data name="LBL_CTSA_PRGR" xml:space="preserve">
+    <value>CTSA progress:</value>
+  </data>
+  <data name="LBL_DIAGNOSIS_PRGR" xml:space="preserve">
+    <value>Diagnosis progress:</value>
+  </data>
+  <data name="LBL_DYNAMICS_PRGR" xml:space="preserve">
+    <value>Dynamics progress:</value>
+  </data>
+  <data name="LBL_INIT" xml:space="preserve">
+    <value>Initialization:</value>
+  </data>
+  <data name="LBL_MAIN_FROM" xml:space="preserve">
+    <value>Main from:</value>
+  </data>
+  <data name="LBL_NUM_FORECAST_YEAR" xml:space="preserve">
+    <value>Number of forecast year:</value>
+  </data>
+  <data name="LBL_REF_YEAR" xml:space="preserve">
+    <value>Reference year:</value>
+  </data>
+  <data name="LBL_SHAPE_PARAM" xml:space="preserve">
+    <value>Form D:</value>
+  </data>
+  <data name="LBL_SLOPE" xml:space="preserve">
+    <value>Slope:</value>
+  </data>
+  <data name="LBL_SLOPE_SELECTIVITY_TTL" xml:space="preserve">
+    <value>Slope of selectivity at terminal trophic level:</value>
+  </data>
+  <data name="LBL_SMOOTH_FACTOR" xml:space="preserve">
+    <value>Smooth factor (0.03 to 1.0):</value>
+  </data>
+  <data name="LBL_TE_TL12" xml:space="preserve">
+    <value>TE (1&lt;TL&lt;2):</value>
+  </data>
+  <data name="LBL_TE_TL2" xml:space="preserve">
+    <value>TE (TL&gt;=2):</value>
+  </data>
+  <data name="LBL_TL50" xml:space="preserve">
+    <value>TL50:</value>
+  </data>
+  <data name="LBL_TOP_DOWN" xml:space="preserve">
+    <value>Top D:</value>
+  </data>
+  <data name="LBL_TRANSP_PRGR" xml:space="preserve">
+    <value>Transpose progress:</value>
+  </data>
+  <data name="LBL_TTL" xml:space="preserve">
+    <value>Terminal TL:</value>
+  </data>
+  <data name="LBL_WATER_TEMP" xml:space="preserve">
+    <value>Water temperature:</value>
+  </data>
+  <data name="ROW_HDR_ABS" xml:space="preserve">
+    <value>Absolute:</value>
+  </data>
+  <data name="ROW_HDR_ACCESS_BIOMASS" xml:space="preserve">
+    <value>Accessible biomass</value>
+  </data>
+  <data name="ROW_HDR_ACCESS_PROD" xml:space="preserve">
+    <value>Accessible production</value>
+  </data>
+  <data name="ROW_HDR_CATCH_MTPLR" xml:space="preserve">
+    <value>Catch multiplier</value>
+  </data>
+  <data name="ROW_HDR_EFF_MTPLR" xml:space="preserve">
+    <value>Effort multiplier</value>
+  </data>
+  <data name="ROW_HDR_IDX_PP" xml:space="preserve">
+    <value>Index PP</value>
+  </data>
+  <data name="ROW_HDR_PDR_BIOMASS" xml:space="preserve">
+    <value>Predator biomass</value>
+  </data>
+  <data name="ROW_HDR_PDR_CATCH" xml:space="preserve">
+    <value>Predator catch</value>
+  </data>
+  <data name="ROW_HDR_PDR_PROD" xml:space="preserve">
+    <value>Predator production</value>
+  </data>
+  <data name="ROW_HDR_REL" xml:space="preserve">
+    <value>Relative:</value>
+  </data>
+  <data name="ROW_HDR_TOT_BIOMASS" xml:space="preserve">
+    <value>Total biomass</value>
+  </data>
+  <data name="ROW_HDR_TOT_CATCH" xml:space="preserve">
+    <value>Total catch</value>
+  </data>
+  <data name="ROW_HDR_TOT_PROD" xml:space="preserve">
+    <value>Total production</value>
+  </data>
+  <data name="ROW_HDR_TRP_LVL" xml:space="preserve">
+    <value>Trophic level:</value>
+  </data>
+  <data name="TAB_ACCESS_BIOMASS" xml:space="preserve">
+    <value>Accessible biomass</value>
+  </data>
+  <data name="TAB_ACCESS_FISH_LOSS_RATE" xml:space="preserve">
+    <value>Accessible fishing loss rate</value>
+  </data>
+  <data name="TAB_ACCESS_PROD" xml:space="preserve">
+    <value>Accessible production</value>
+  </data>
+  <data name="TAB_BASIC_PARAM" xml:space="preserve">
+    <value>Basic parameters</value>
+  </data>
+  <data name="TAB_BIOMASS" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="TAB_CATCH" xml:space="preserve">
+    <value>Catch</value>
+  </data>
+  <data name="TAB_CATCHES" xml:space="preserve">
+    <value>Catches</value>
+  </data>
+  <data name="TAB_FISH_LOSS_RATE" xml:space="preserve">
+    <value>Fishing loss rate</value>
+  </data>
+  <data name="TAB_FISH_MORTALITY" xml:space="preserve">
+    <value>Fishing mortality</value>
+  </data>
+  <data name="TAB_INTRP_PARAM" xml:space="preserve">
+    <value>Interpolated parameters</value>
+  </data>
+  <data name="TAB_KINETIC" xml:space="preserve">
+    <value>Kinetic</value>
+  </data>
+  <data name="TAB_MAIN" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="TAB_PROD" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="TAB_PROPORT_STD" xml:space="preserve">
+    <value>Proportion STD</value>
+  </data>
+  <data name="TAB_SUMMARY" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="TAB_TRANSP_BIOMASS" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="TAB_UNEXPLOITED" xml:space="preserve">
+    <value>Unexploited</value>
+  </data>
+  <data name="TREE_NODE_AUTO_SMOOTH" xml:space="preserve">
+    <value>Automatic smooth</value>
+  </data>
+  <data name="TREE_NODE_BASIC_PARAM" xml:space="preserve">
+    <value>Basic parameters</value>
+  </data>
+  <data name="TREE_NODE_BWD_CAL" xml:space="preserve">
+    <value>Backward calculation</value>
+  </data>
+  <data name="TREE_NODE_CATCH_FORECAST" xml:space="preserve">
+    <value>Catch forecast</value>
+  </data>
+  <data name="TREE_NODE_CATCH_PAST_ANALYSIS" xml:space="preserve">
+    <value>Catch past analysis</value>
+  </data>
+  <data name="TREE_NODE_CTSA" xml:space="preserve">
+    <value>CTSA</value>
+  </data>
+  <data name="TREE_NODE_DIAGNOSIS" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="TREE_NODE_DYNAMICS" xml:space="preserve">
+    <value>Dynamics</value>
+  </data>
+  <data name="TREE_NODE_ECOTROPH_PLUGIN" xml:space="preserve">
+    <value>Ecotroph Plugin</value>
+  </data>
+  <data name="TREE_NODE_EVEN_EFF_MTPLR" xml:space="preserve">
+    <value>Evenly spaced effort multipliers</value>
+  </data>
+  <data name="TREE_NODE_FWD_CAL" xml:space="preserve">
+    <value>Forward calculation</value>
+  </data>
+  <data name="TREE_NODE_OMNI_IDX" xml:space="preserve">
+    <value>Omnivory index</value>
+  </data>
+  <data name="TREE_NODE_TRANSPOSE" xml:space="preserve">
+    <value>Transpose</value>
+  </data>
+  <data name="TREE_NODE_UNEVEN_EFF_MTPLR" xml:space="preserve">
+    <value>Unevenly spaced effort multipliers</value>
+  </data>
+  <data name="TREE_NODE_USER_DEF_EFF_MTPLR" xml:space="preserve">
+    <value>User defined effort multipliers</value>
+  </data>
+  <data name="TREE_NODE_USER_DEF_SIGMA" xml:space="preserve">
+    <value>User defined sigma</value>
+  </data>
+</root>

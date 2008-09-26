@@ -1,0 +1,598 @@
+'==============================================================================
+'
+' $Log: StatusPanel.vb,v $
+' Revision 1.1  2008/09/26 07:32:12  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.3  2008/09/24 00:53:58  jeroens
+' Fixed missing import
+'
+' Revision 1.2  2008/07/23 21:34:00  jeroens
+' Message suppression engine reset when model reloaded
+'
+' Revision 1.1  2008/07/23 21:13:34  jeroens
+' Moved, added message state handler support
+'
+' Revision 1.28  2008/07/22 20:45:44  jeroens
+' Added support for auto-replies
+'
+' Revision 1.27  2008/06/02 00:01:46  jeroens
+' Added ScientificInterfaceShared
+'
+' Revision 1.26  2008/04/07 02:31:21  jeroens
+' Cleaning up resources
+'
+' Revision 1.25  2008/01/27 16:48:29  jeroens
+' Simplified
+'
+' Revision 1.24  2008/01/23 16:20:59  jeroens
+' Child variable messages show up in message box too
+'
+' Revision 1.23  2007/10/16 14:57:23  jeroens
+' - Feedback messages no longer logged in panel
+' * Message handlers properly cleaned up when panel closes
+'
+' Revision 1.22  2007/07/13 22:17:35  jeroens
+' + Added debug pointer for handling cross-thread messages
+'
+' Revision 1.21  2007/07/08 18:22:20  jeroens
+' * Fixing todo's
+'
+' Revision 1.20  2007/06/27 23:41:15  jeroens
+' * Fixed sub-node selected icon index inconsistency
+'
+'==============================================================================
+
+#Region " Imports "
+
+Option Strict On
+Option Explicit On
+
+Imports System.Text
+Imports EwECore
+Imports ScientificInterfaceShared.Controls
+Imports WeifenLuo.WinFormsUI.Docking
+
+#End Region ' Imports
+
+''' -----------------------------------------------------------------------
+''' <summary>
+''' The status panel tracks core messages. Relevant messages are logged in
+''' the GUI. Feedback messages are handled by this class.
+''' </summary>
+''' -----------------------------------------------------------------------
+Public Class StatusPanel
+
+    Private m_msh As New cMessageStateHandler()
+    Private m_il As New ImageList
+
+    Public Sub New()
+
+        InitializeComponent()
+        ' Set tab label
+        Me.TabText = My.Resources.HEADER_STATUS
+        ' Prepare image list
+        m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
+        m_il.Images.Add(New Icon(SystemIcons.Warning, 40, 40))
+        m_il.Images.Add(New Icon(SystemIcons.Error, 40, 40))
+
+        ' Set image list
+        Me.tvStatus.ImageList = Me.m_il
+        Me.tvStatus.ImageIndex = -1
+        Me.tvStatus.SelectedImageIndex = -1
+        Me.tvStatus.SelectedImageKey = ""
+
+        ' Start listening to core messages
+        Me.ConfigMessageHandlers(True)
+    End Sub
+
+    Private Sub StatusPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        ' Stop listening to core messages
+        Me.ConfigMessageHandlers(False)
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear the list of messages, the list suppressed messages and the
+    ''' list of auto-replies.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Sub Clear()
+        Me.SetHighlights(Nothing)
+        Me.tvStatus.Nodes.Clear()
+        Me.m_msh.Clear(eMessageSource.Core)
+    End Sub
+
+#Region " Core message handling "
+
+    Dim m_dtMessageHanders As New Dictionary(Of eMessageSource, cMessageHandler)
+
+    Private Sub ConfigMessageHandler(ByVal src As eMessageSource, ByVal bSet As Boolean)
+
+        Dim mh As cMessageHandler = Nothing
+        Dim core As cCore = cCore.GetInstance()
+
+        If (src = eMessageSource.NotSet) Then Return
+
+        If bSet Then
+            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any)
+            Me.m_dtMessageHanders(src) = mh
+            core.Messages.AddMessageHandler(mh)
+        Else
+            mh = Me.m_dtMessageHanders(src)
+            Me.m_dtMessageHanders.Remove(src)
+            core.Messages.RemoveMessageHandler(mh)
+            mh = Nothing
+        End If
+
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Hook up to core messages
+    ''' </summary>
+    ''' <param name="bSet">True to set, False to clear.</param>
+    ''' -------------------------------------------------------------------
+    Private Sub ConfigMessageHandlers(ByVal bSet As Boolean)
+
+        ' Set up message handlers
+        For Each src As eMessageSource In [Enum].GetValues(GetType(eMessageSource))
+            Me.ConfigMessageHandler(src, bSet)
+        Next
+
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Universal messages listener
+    ''' </summary>
+    ''' <param name="msg">The message to listen to</param>
+    ''' -------------------------------------------------------------------
+    Public Sub AllMessagesHandler(ByRef msg As cMessage)
+
+        Dim bShow As Boolean = False
+        Dim bPopup As Boolean = False
+
+        '' Give message state handler a shot to refresh
+        'Me.m_msh.CheckState(msg)
+
+        If String.IsNullOrEmpty(msg.Message) Then Return
+
+        ' Requires feedback (overrules popup settings)
+        If (TypeOf msg Is cFeedbackMessage) Then
+            ' #Yes: handle it
+            Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
+            ' ..and run away
+            Return
+        End If
+
+        ' Check settings
+        Select Case msg.Importance
+            Case eMessageImportance.Critical
+                bShow = My.Settings.FeedbackCriticalStatusMessage
+                bPopup = My.Settings.FeedbackCriticalPopup
+            Case eMessageImportance.Warning
+                bShow = My.Settings.FeedbackWarningStatusMessage
+                bPopup = My.Settings.FeedbackWarningPopup
+            Case eMessageImportance.Information
+                bShow = My.Settings.FeedbackInformationStatusMessage
+                bPopup = My.Settings.FeedbackInformationPopup
+            Case eMessageImportance.Maintenance
+                bShow = False
+                bPopup = False
+            Case eMessageImportance.Progress
+                ' Progress messages are meant for dedicated GUIs
+                bShow = False
+                bPopup = False
+            Case Else
+                ' Default behaviour: log it but do not pop up
+                bShow = True
+                bPopup = False
+        End Select
+
+        ' Must show message?
+        If bShow Then
+            ' #Yes: add message
+
+            ' A message with one var and the same text for msg and var should not display a child node?
+            Dim bSuppressVarMessage As Boolean = False
+
+            ' Prepare treenode
+            Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(msg.Message))
+            ' Set image index
+            tnMessage.ImageIndex = CInt(msg.Importance) - 1
+            ' Set selected image to equal image index
+            tnMessage.SelectedImageIndex = tnMessage.ImageIndex
+            ' Add original message text to tooltip
+            tnMessage.ToolTipText = msg.Message
+
+            ' JS 07may07: Whoah, a hack... if a message comes in with only one variable AND the 
+            '             message for the variable equals the text of the main message THEN suppress 
+            '             the variable message...
+            If msg.Variables.Count = 1 Then
+                bSuppressVarMessage = String.Compare(msg.Variables(0).Message, msg.Message, True) = 0
+            End If
+
+            ' ***********************************************************************
+            ' ***                                                                 ***
+            ' *** If your code crashes below for an unexplained reason a message  ***
+            ' *** has probably been sent from a thread other than the GUI thread. ***
+            ' ***                                                                 ***
+            ' ***********************************************************************
+
+            If bSuppressVarMessage Then
+                tnMessage.Tag = msg.Variables(0)
+            Else
+
+                ' Add original message to the master node
+                tnMessage.Tag = msg
+
+                ' Create subnodes for each variable status entry in the message
+                For Each vs As cVariableStatus In msg.Variables
+                    ' Prepare child node
+                    Dim tnVariable As TreeNode = New TreeNode(Me.ToTreeNodeText(vs.Message))
+                    ' Set same image as parent node
+                    tnVariable.ImageIndex = tnMessage.ImageIndex
+                    tnVariable.SelectedImageIndex = tnMessage.ImageIndex
+                    tnVariable.ToolTipText = vs.Message
+
+                    '' Set selected image to equal image index
+                    'tnVariable.SelectedImageIndex = tnVariable.ImageIndex
+
+                    ' Add variable status to the tag of the node. This will be used to
+                    ' highlight cProperties at runtime whenever a user presses the mouse
+                    ' button on the treenode. The properties are not resolved here because
+                    ' this message came from the Core. The GUI might not have created the
+                    ' properties yet.
+                    tnVariable.Tag = vs
+                    ' Now add the variable child node to the message parent node
+                    tnMessage.Nodes.Add(tnVariable)
+                Next
+            End If
+
+            ' Add node(s) to the first position
+            Me.tvStatus.Nodes.Add(tnMessage)
+            tnMessage.EnsureVisible()
+
+        End If
+
+        ' Need to show a popup for this message?
+        If bPopup Then
+            ' #Yes: go ahead, Jimmy
+            Me.ShowMessageBox(msg)
+        End If
+
+        ' When the core sends out critical or warning message, status panel will dock it automatically 
+        ' if it is auto hidden..
+        If Me.VisibleState = DockState.DockBottomAutoHide Then
+
+            If msg.Importance = eMessageImportance.Critical Or _
+                    msg.Importance = eMessageImportance.Warning Then
+                Me.VisibleState = DockState.DockBottom
+                tmStatus.Enabled = True
+            End If
+
+        End If
+
+    End Sub
+
+#End Region ' Core message handling 
+
+#Region " Helper methods "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Return the list of <see cref="cProperty">Properties</see> for a given 
+    ''' <see cref="TreeNode">TreeNode</see>.
+    ''' </summary>
+    ''' <param name="tn">The <see cref="TreeNode">TreeNode</see> to extract the
+    ''' message from.</param>
+    ''' <returns>A list of cProperty objects. This list is empty if an 
+    ''' invalid node is provided.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function GetPropertylistFromNode(ByVal tn As TreeNode) As List(Of cProperty)
+
+        Dim lp As New List(Of cProperty)
+        Dim lpChild As List(Of cProperty)
+        Dim prop As cProperty = Nothing
+
+        ' If no node clicked then return an empty list
+        If Object.ReferenceEquals(tn, Nothing) Then Return lp
+
+        If TypeOf (tn.Tag) Is cVariableStatus Then
+            prop = cPropertyManager.GetInstance().ExtractProperty(DirectCast(tn.Tag, cVariableStatus))
+            If Not Object.ReferenceEquals(prop, Nothing) Then
+                lp.Add(prop)
+            End If
+        End If
+
+        For Each tnChild As TreeNode In tn.Nodes
+            lpChild = GetPropertylistFromNode(tnChild)
+            lp.InsertRange(lp.Count, lpChild)
+        Next
+
+        Return lp
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; reformats a piece of text to fit in a single-line
+    ''' tree node item.
+    ''' </summary>
+    ''' <param name="strText">The text to format.</param>
+    ''' <returns>The formatted text.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function ToTreeNodeText(ByVal strText As String) As String
+        If String.IsNullOrEmpty(strText) Then Return ""
+        Return strText.Replace(vbNewLine, " ")
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; handles a feedback message by presenting the user with
+    ''' a message box.
+    ''' </summary>
+    ''' <param name="msg">The <see cref="cFeedbackMessage">feedback message</see>
+    ''' to handle.</param>
+    ''' -------------------------------------------------------------------
+    Private Sub HandleFeedbackMessage(ByVal msg As cFeedbackMessage)
+
+        Dim mbs As MessageBoxButtons = MessageBoxButtons.YesNo
+        Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
+        Dim dlr As DialogResult = Windows.Forms.DialogResult.No
+
+        If (msg Is Nothing) Then Return
+
+        ' Translate feedback style into .NET MessageBox style
+        Select Case msg.ReplyStyle
+            Case cFeedbackMessage.eReplyStyle.OK_CANCEL
+                mbs = MessageBoxButtons.OKCancel
+            Case cFeedbackMessage.eReplyStyle.YES_NO
+                mbs = MessageBoxButtons.YesNo
+            Case cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
+                mbs = MessageBoxButtons.YesNoCancel
+        End Select
+
+        Select Case msg.Importance
+            Case eMessageImportance.Progress, eMessageImportance.Maintenance, eMessageImportance.Information
+                mbi = MessageBoxIcon.Question
+            Case eMessageImportance.Warning
+                mbi = MessageBoxIcon.Warning
+            Case eMessageImportance.Critical
+                mbi = MessageBoxIcon.Error
+        End Select
+
+        ' ToDo_JS: (LOW) Consider how to handle a list of choices in the message. This will require dynamic dialog construction, ouch!
+
+        ' Pop the question
+
+        ' Is message suppressable?
+        If msg.Suppressable Then
+
+            ' #Yes: handle autoreply
+
+            ' Sanity check
+            Debug.Assert(msg.Type <> eMessageType.NotSet, "Feedback message not propery configured for auto-reply: messagetype not set")
+
+            ' Get reply, if any
+            dlr = Me.m_msh.AutoReply(msg.Source, msg.Type)
+            ' Is 'none'?
+            If (dlr = Windows.Forms.DialogResult.None) Then
+                ' #Yes: prompt needed
+
+                ' Assume to repeat the question
+                Dim bChecked As Boolean = False
+                ' Show dialog
+                dlr = CheckedMessageBox.Show(msg.Message, AppLauncher.GetInstance().Text, mbs, mbi, _
+                    bChecked, My.Resources.GENERIC_PROMPT_USEANSWERAGAIN)
+                ' Auto-reply requested?
+                If bChecked Then
+                    ' #Yes: store auto-reply
+                    Me.m_msh.AutoReply(msg.Source, msg.Type) = dlr
+                End If
+            End If
+        Else
+            dlr = MessageBox.Show(msg.Message, AppLauncher.GetInstance().Text, mbs, mbi)
+        End If
+
+        ' Translate .NET MessageBox result into reply
+        Select Case dlr
+            Case DialogResult.Cancel
+                msg.Reply = cFeedbackMessage.eReply.CANCEL
+            Case DialogResult.OK
+                msg.Reply = cFeedbackMessage.eReply.OK
+            Case DialogResult.Yes
+                msg.Reply = cFeedbackMessage.eReply.YES
+            Case DialogResult.No
+                msg.Reply = cFeedbackMessage.eReply.NO
+            Case Else
+                Debug.Assert(False, String.Format("Message box result {0} not supported", dlr))
+        End Select
+
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; invokes a Windows Message Box for a EwE Core
+    ''' <see cref="cMessage">Message</see>.
+    ''' </summary>
+    ''' <param name="msg">The <see cref="cMessage">Message</see> to show a
+    ''' Message Box for.</param>
+    ''' -------------------------------------------------------------------
+    Private Sub ShowMessageBox(ByVal msg As cMessage)
+        Dim sb As New StringBuilder(msg.Message)
+        Dim mbb As MessageBoxButtons = MessageBoxButtons.OK
+        Dim mbi As MessageBoxIcon = MessageBoxIcon.Information
+        Dim strTmp As String = ""
+
+        ' Sanity check
+        If msg Is Nothing Then Return
+
+        ' Concatenate all child messages
+        For Each vs As cVariableStatus In msg.Variables
+            strTmp = vs.Message
+            If Not String.IsNullOrEmpty(strTmp) Then sb.AppendLine() : sb.Append(strTmp)
+        Next
+
+        ' Resolve what icon to show
+        Select Case msg.Importance
+            Case eMessageImportance.Critical
+                mbi = MessageBoxIcon.Error
+            Case eMessageImportance.Warning
+                mbi = MessageBoxIcon.Warning
+            Case eMessageImportance.Information
+                mbi = MessageBoxIcon.Information
+        End Select
+
+        ' == Show the message ==
+
+        ' Can the message be suppressed?
+        If msg.Suppressable Then
+
+            ' #Yes: check suppressed state
+
+            ' Sanity check
+            Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
+
+            If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
+                ' #No: Good, prepare to show message
+                ' Assume message will not be suppressed
+                Dim bSuppress As Boolean = False
+                ' Invoke the special message box
+                CheckedMessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, _
+                        bSuppress, My.Resources.GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN, _
+                        MessageBoxDefaultButton.Button1)
+                ' User wants to suppress the message?
+                If bSuppress Then
+                    '#Yes: suppress it during the rest of this session
+                    Me.m_msh.Suppress(msg.Source, msg.Type) = True
+                End If
+            End If
+        Else
+            ' #No: show the message
+            MessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+        End If
+    End Sub
+
+#End Region ' Helper methods
+
+#Region " Message highlighting "
+
+    ''' <summary>List of highlighted properties.</summary>
+    Private m_lpHighlighted As New List(Of cProperty)
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Sets the properties to highlight
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Sub SetHighlights(ByVal lp As List(Of cProperty))
+
+        ' Clear current highlights, if any
+        If m_lpHighlighted.Count > 0 Then
+            ' Clear current highlights
+            HighlightProperties(False)
+            ' Clear list of highlights
+            Me.m_lpHighlighted.Clear()
+        End If
+
+        If lp Is Nothing Then Return
+
+        ' Set new highlights, if any
+        If lp.Count > 0 Then
+            ' Update list of highlights
+            Me.m_lpHighlighted.InsertRange(0, lp)
+            ' Set the highlights
+            HighlightProperties(True)
+        End If
+
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; sets the highlight state for the properties for a given message
+    ''' </summary>
+    ''' <param name="bHighlight">Flag, stating the new highlight state for the proeprties for this cMessage</param>
+    ''' -------------------------------------------------------------------
+    Private Sub HighlightProperties(ByVal bHighlight As Boolean)
+
+        Dim bsm As cProperty.eBitSetMode = cProperty.eBitSetMode.BitwiseOn
+
+        ' Figure out if highlight bits need to be set or cleared
+        If bHighlight Then
+            ' Highlight bit needs to be set
+            bsm = cProperty.eBitSetMode.BitwiseOn
+        Else
+            ' Highlight bit needs to be cleared
+            bsm = cProperty.eBitSetMode.BitwiseOff
+        End If
+
+        ' Toggle highlight bit for each property
+        For Each p As cProperty In Me.m_lpHighlighted
+            p.SetStyle(StyleGuide.eStyleFlags.Highlight, TriState.UseDefault, bsm)
+        Next
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler; traps the mouse down event to initiate property highlighting for a given index
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub lbStatus_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvStatus.MouseDown
+        ' Get node that the user clicked on, if any
+        Dim tn As TreeNode = Me.tvStatus.GetNodeAt(e.Location)
+        ' Extract list op properties for this node and its child nodes
+        Dim lp As List(Of cProperty) = Me.GetPropertylistFromNode(tn)
+        ' Highlight these properties
+        SetHighlights(lp)
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler; traps the mouse up event to end property highlighting for a given index
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub lbStatus_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvStatus.MouseUp
+        ' Clear any highlights
+        SetHighlights(Nothing)
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler; traps the timer event to make the status pane switch
+    ''' its dock state.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub tmStatus_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmStatus.Tick
+        If Me.VisibleState = DockState.DockBottom Then
+            ' Hide panel
+            Me.VisibleState = DockState.DockBottomAutoHide
+            ' Stop timer
+            tmStatus.Enabled = False
+        End If
+    End Sub
+
+#End Region ' Message highlighting
+
+#Region " Context Menu "
+
+    Private Sub Item_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Item_Remove.Click
+        If Not Object.ReferenceEquals(Me.tvStatus.SelectedNode, Nothing) Then
+            Me.tvStatus.Nodes.Remove(Me.tvStatus.SelectedNode)
+        End If
+    End Sub
+
+    Private Sub Item_RemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Item_RemoveAll.Click
+        Me.Clear()
+    End Sub
+
+    Private Sub cmenuListBox_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmenuListBox.Opening
+        ' Update menu items state
+        Me.Item_Remove.Enabled = Not Object.ReferenceEquals(Me.tvStatus.SelectedNode, Nothing)
+        Me.Item_RemoveAll.Enabled = (Me.tvStatus.Nodes.Count > 0)
+    End Sub
+
+#End Region ' Context menu
+
+End Class
+

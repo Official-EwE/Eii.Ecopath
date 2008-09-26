@@ -1,0 +1,646 @@
+'==============================================================================
+'
+' $Log: cStanzaGroup.vb,v $
+' Revision 1.1  2008/09/26 07:30:28  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.20  2008/07/02 01:55:26  jeroens
+' Added option to force status flag total reset (fixes bug 503)
+'
+' Revision 1.19  2008/05/29 22:22:51  jeroens
+' Moved eVarNameFlags to EwEUtils
+'
+' Revision 1.18  2007/08/03 02:14:54  jeroens
+' * Localized
+'
+' Revision 1.17  2007/08/02 23:41:27  joeb
+' Added OkToCalculate
+' Added ResetStatusFlags
+'
+' Revision 1.16  2007/05/23 16:40:55  jeroens
+' * Nitty-gritty
+'
+' Revision 1.15  2007/05/22 13:24:26  jeroens
+' * Nitty-gritty
+'
+' Revision 1.14  2007/05/20 00:28:52  jeroens
+' * MessageSource EcoPath
+' * Apply() only sets core changed state when stanza configuration flagged as dirty
+' * Dirty flag only set when variables have changed
+'
+' Revision 1.13  2007/05/04 15:26:12  jeroens
+' + Added messagesource
+'
+' Revision 1.12  2007/04/17 23:05:22  joeb
+' Bug Fix for WmatWinf
+'
+' Revision 1.11  2007/04/12 15:54:02  joeb
+' Added minor comments
+'
+' Revision 1.10  2007/04/07 16:20:24  joeb
+' Added isDirty flag
+' Added Cancel method
+'
+' Revision 1.9  2007/04/06 17:26:51  joeb
+' Added isDirty Flag this still needs work
+'
+' Revision 1.8  2007/04/03 15:48:00  joeb
+' Minor changes to CalculateParameters() and Apply()
+'
+' Revision 1.7  2007/04/02 22:54:13  joeb
+' Stanza objects now handle calculating there own parameter
+' and updating underlying core data
+'
+' Revision 1.6  2007/04/02 17:43:28  joeb
+' Changed iGroup to use cValueArrayIndexed
+'
+' Revision 1.5  2007/04/01 18:30:35  joeb
+' Changed how Time variables work
+'
+' Revision 1.4  2007/03/30 19:15:05  joeb
+' Added Age variables
+'
+' Revision 1.3  2007/03/27 16:31:05  jeroens
+' * StartAge exposed as Integer
+'
+' Revision 1.2  2007/03/26 03:41:18  jeroens
+' + Exposed whack of new variables
+'
+' Revision 1.1  2007/03/26 02:12:46  jeroens
+' Moved
+'
+' Revision 1.10  2007/03/23 14:01:10  jeroens
+' + Adding variables
+'
+' Revision 1.9  2007/03/20 14:50:20  jeroens
+' + Added nMaxStanza core counter
+'
+' Revision 1.8  2006/11/05 15:37:16  jeroens
+' + Exposed new vars
+'
+' Revision 1.7  2006/10/26 17:24:52  jeroens
+' * Fixed comment error
+'
+' Revision 1.6  2006/10/10 15:18:04  jeroens
+' + DataType now correctly set
+'
+' Revision 1.5  2006/09/18 15:43:06  jeroens
+' * Converted to cCoreInputOutputBase
+'
+'==============================================================================
+
+Option Strict On
+
+Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
+
+''' <summary>
+''' Mulit stanza group
+''' </summary>
+''' <remarks>This class acts as a buffer for the data. The core data is updated expilcitly by a user not implicitly by the core.
+'''  The user of this class is responsible for calculating the stanza parameters and saving any changes.
+''' </remarks>
+Public Class cStanzaGroup
+    Inherits cCoreInputOutputBase
+
+    ''' <summary>Core Counter interface for MaxAge</summary>
+    Private m_CoreCounter As CoreIndexedCounterDelegate
+
+    Private m_isDirty As Boolean
+
+#Region "Constuction"
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="core"></param>
+    ''' <param name="DBID"></param>
+    ''' <param name="nStanzas"></param>
+    ''' <remarks></remarks>
+    Public Sub New(ByRef core As cCore, ByVal DBID As Integer, ByVal nStanzas As Integer, ByVal iStanza As Integer)
+        MyBase.New(core)
+
+        Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
+
+        Me.DBID = DBID
+        Me.Index = iStanza
+        m_core = core
+        m_DataType = eDataTypes.Stanza
+        m_messageSource = eMessageSource.EcoPath
+
+        'get the core counter interface for the MaxAge (max age) and NStanza (number of stanza) counters
+        m_CoreCounter = AddressOf m_core.GetCoreCounter
+
+        ' EwE5 variables mirrored here:
+        ' ReDim Bio(Stanza)             ' Biomass values for groups within a stanza cfg
+        ' ReDim Bat(Stanza) As Single   ' Output variable BaB * Bio(iStanza)
+        ' ReDim Z(Stanza)               ' Mortality
+        ' ReDim cb(Stanza)
+        ' ReDim FirstAge(Stanza)
+        ' ReDim SecondAge(Stanza) 'last month of age by spp, stanza (set in ecopath)
+        ' ReDim LocalName(Stanza)
+        ' LocalName(0) = StanzaName(CurrentStanza, 0)
+        ' ReDim Remark(Stanza)
+        ' ReDim EcopathGroup(Stanza)
+        ' vbgfK = vbK(GrpNo)
+
+        'vbgfK
+        val = New cValue(New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
+        'LeadingBiomass
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.LeadingBiomass, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        'LeadingQB
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.LeadingCB, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' RecruitmentPower
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' Relative biomass accumulation rate (BaB)
+        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' Weight maturity over Weight infancy (WmatWinf)
+        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.WmatWinf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' Forcing function for hatchery stocking
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.HatchCode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' Fixed fecundity
+        meta = New cVariableMetaData(False)
+        val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' === Array variables for groups within a stanza config ===
+
+        ' Bat
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Bat, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        ' Ages
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.StartAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
+        'number at age
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaNumberAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'weight at age
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaWeightAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'biomass at age
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomassAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'iGroup dimensioned by nStanza(iStanza)
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaGroup, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'Bio by nStanza(iStanza)
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomass, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'CB by nStanza(iStanza)
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaCB, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        'Z Mort by nStanza(iStanza)
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+    End Sub
+
+#End Region
+
+#Region "Public methods unique to this class for calculation of stanza parameters"
+
+    ''' <summary>
+    ''' Calculate the Stanza parameters for this stanza group
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>This does not save changes to the core data it only calculates the stanza parameters for this object. 
+    ''' Saving is handled by Apply().</remarks>
+    Public Function CalculateParameters() As Boolean
+
+        Try
+            Return m_core.CalculateStanza(Me)
+        Catch ex As Exception
+            cLog.Write(ex)
+            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message), _
+                    eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+            Return False
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Apply Stanza Calculation
+    ''' </summary>
+    ''' <remarks>If edits have been made then this will implicitly run the stanza calculations.</remarks>
+    Public Function Apply() As Boolean
+
+        Try
+            'If a user has changed a parameter then called CalculateParameters() before trying to save the data
+            'so that all the data is up to date
+            If isDirty Then
+                CalculateParameters()
+                m_core.onChanged(Me)
+                isDirty = False
+            End If
+            Return True
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message), _
+                    eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+            Return False
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Cancel edits made by a user by reloading the underlying Core data and re-calculating the stanza parameters.
+    ''' </summary>
+    Public Function Cancel() As Boolean
+
+        Try
+            m_core.LoadStanza(Me)
+            Return CalculateParameters()
+        Catch ex As Exception
+            cLog.Write(ex)
+            m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message), _
+                eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+            Return False
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Is it ok to run stanza calculation, cEcosim.CalculateStanzaParameters(), on this object.  Have the leading stanza parameters been set.
+    ''' </summary>
+    ''' <returns>True if it is Ok to calculate the stanza parameters on the Stanza Group</returns>
+    ''' <remarks>When a new stanza group is first created its leading parameters (oldest group) and z will be NULL_VALUE (-9999). 
+    ''' The leading B and CB and Mortality need to be set by the user before calculateParameter can be called. </remarks>
+    Public ReadOnly Property OkToCalculate() As Boolean
+
+        Get
+            'first Z mortality
+            For ist As Integer = 1 To Me.NStanzas
+                If Me.Mortality(ist) < 0 Then
+                    Return False
+                End If
+            Next
+
+            'leading b and cb
+            If Me.Biomass(Me.LeadingB) < 0 Or Me.CB(Me.LeadingCB) < 0 Then
+                Return False
+            End If
+
+            Return True
+        End Get
+
+    End Property
+
+
+    ''' <summary>
+    ''' Overloaded to set the isDirty flag
+    ''' </summary>
+    ''' <param name="VarName"></param>
+    ''' <param name="newValue"></param>
+    ''' <param name="iSecondaryIndex"></param>
+    ''' <returns></returns>
+    Public Overrides Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
+        Dim bSucces As Boolean = MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+        isDirty = isDirty Or bSucces
+        Return bSucces
+    End Function
+
+    Public Property isDirty() As Boolean
+        Get
+            Return m_isDirty
+        End Get
+        Friend Set(ByVal value As Boolean)
+            m_isDirty = value
+        End Set
+    End Property
+
+#End Region
+
+#Region "Variables by dot (.) operator"
+
+    Public Property VBGF() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaVBGF))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaVBGF, value)
+        End Set
+    End Property
+
+
+    Public Property LeadingB() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.LeadingBiomass))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.LeadingBiomass, value)
+        End Set
+    End Property
+
+    Public Property LeadingCB() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.LeadingCB))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.LeadingCB, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.RecPowerSplit">recruitment power</see>
+    ''' for this stanza configuration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property RecruitmentPower() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.RecPowerSplit))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.RecPowerSplit, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.BABsplit">relative biomass accumulation rate</see>
+    ''' for this stanza configuration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property BiomassAccumulationRate() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.BABsplit))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.BABsplit, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.WmatWinf">weight at maturity over weight at infancy ratio</see>
+    ''' for this stanza configuration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property WmatWinf() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.WmatWinf))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.WmatWinf, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.HatchCode">hatchery stocking forcing function number</see>
+    ''' for this stanza configuration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property HatchCode() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.HatchCode))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.HatchCode, value)
+        End Set
+    End Property
+
+    Public Property FixedFecundity() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.FixedFecundity))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.FixedFecundity, value)
+        End Set
+    End Property
+
+    '### ARRAY VARIABLES ###
+
+    Public Property StartAge(ByVal iStanzaGroup As Integer) As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.StartAge, iStanzaGroup))
+        End Get
+        Set(ByVal iValue As Integer)
+            Me.SetVariable(eVarNameFlags.StartAge, iValue, iStanzaGroup)
+        End Set
+    End Property
+
+#Region "Variable by Stanza iGroup & NStanza"
+
+    ''' <summary>
+    ''' Get/set the number of groups in this Multi Stanza grouping. 
+    ''' </summary>
+    Public Property NStanzas() As Integer
+        Get
+            Return m_CoreCounter(eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index)
+        End Get
+        Set(ByVal value As Integer)
+            'I don't see how this can work from here
+            'if the number of stanzas has changed all the data will need to be reloaded 
+            Debug.Assert(False, Me.ToString & ".NStanzas() What are you trying to do here!!!!!")
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="cCoreInputOutputBase.Index">Index</see> of a group 
+    ''' in this multi-stanza grouping. Groups are stored in a one-based array.
+    ''' </summary>
+    ''' <param name="iStanza">The one-based index of a group within this Stanza group
+    ''' to obtain the group index for.</param>
+    ''' <returns>Index of a group that belongs to this multi-stanza grouping.</returns>
+    ''' <remarks>
+    ''' <para>The returned index identifies the Indexes of group that belong
+    ''' to this multi-stanza grouping.</para>
+    ''' <code>
+    ''' Dim stanzaGrp As cStanzaGroup = Nothing
+    ''' Dim input As cEcoPathGroupInputs = Nothing
+    ''' 
+    ''' ' Get the first stanza group. StanzaGroups are zero based
+    ''' stanzaGrp = core.StanzaGroups(0)
+    ''' 
+    ''' ' Iterate over the groups in this stanza grouping using NStanzas and iGroup(i)
+    ''' For iStanza As Integer = 1 To stanzaGrp.NStanzas
+    '''    input = core.EcoPathGroupInputs(stanzaGrp.iGroup(iStanza))
+    ''' Next iStanza
+    ''' </code>
+    ''' </remarks>
+    Public Property iGroups(ByVal iStanza As Integer) As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.StanzaGroup, iStanza))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.StanzaGroup, value, iStanza)
+        End Set
+
+    End Property
+
+
+    Public Property Biomass(ByVal iStanza As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.StanzaBiomass, iStanza))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.StanzaBiomass, value, iStanza)
+        End Set
+
+    End Property
+
+
+    Public Property Mortality(ByVal iStanza As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.StanzaMortaility, iStanza))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.StanzaMortaility, value, iStanza)
+        End Set
+
+    End Property
+
+    Public Property CB(ByVal iStanza As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.StanzaCB, iStanza))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.StanzaCB, value, iStanza)
+        End Set
+
+    End Property
+
+
+
+#End Region
+
+#Region "Age arrayed variables"
+
+    Public ReadOnly Property MaxAge() As Integer
+
+        Get
+            Return m_CoreCounter(eCoreCounterTypes.nMaxStanzaAge, Me.Index)
+        End Get
+
+    End Property
+
+    Public Property NumberAtAge(ByVal iAge As Integer) As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaNumberAtAge, iAge))
+        End Get
+        Friend Set(ByVal Value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaNumberAtAge, Value, iAge)
+        End Set
+    End Property
+
+
+    Public Property WeightAtAge(ByVal iAge As Integer) As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaWeightAtAge, iAge))
+        End Get
+        Friend Set(ByVal Value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaWeightAtAge, Value, iAge)
+        End Set
+    End Property
+
+
+    Public Property BiomassAtAge(ByVal iAge As Integer) As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaBiomassAtAge, iAge))
+        End Get
+        Friend Set(ByVal Value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaBiomassAtAge, Value, iAge)
+        End Set
+    End Property
+
+#End Region
+
+#End Region 'Variables by dot (.) operator
+
+#Region "Status by dot (.) operator"
+
+#If 0 Then ' JS 24Mar07: probably do not need this
+
+    Public Property WmatWinfStatus() As eStatusFlags
+
+        Get
+            Return Me.GetStatus(eVarNameFlags.WmatWinf)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.WmatWinf, value)
+        End Set
+
+    End Property
+
+#End If
+
+    '### ARRAY VARIABLES ###
+
+#End Region 'Status by dot (.) operator
+
+
+    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        MyBase.ResetStatusFlags() 'for name and other default status flags
+
+        Dim i As Integer
+        Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
+        Dim value As cValue
+
+        Dim Status As eStatusFlags = eStatusFlags.Null
+        If Me.OkToCalculate Then
+            Status = eStatusFlags.OK
+        End If
+
+        For Each keyvalue In m_values
+            Try
+                value = keyvalue.Value
+
+                Select Case value.varType
+                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray
+                        For i = 0 To value.Length : value.Status(i) = Status : Next i
+                    Case eValueTypes.Sng
+                        value.Status = Status
+                End Select
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return False
+            End Try
+        Next keyvalue
+
+        Return True
+
+    End Function
+
+End Class

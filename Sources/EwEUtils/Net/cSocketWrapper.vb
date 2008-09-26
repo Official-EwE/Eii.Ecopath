@@ -1,0 +1,855 @@
+'==============================================================================
+'
+' $Log: cSocketWrapper.vb,v $
+' Revision 1.1  2008/09/26 07:31:12  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.31  2008/09/16 16:40:35  jeroens
+' Added send queue verbose bits
+'
+' Revision 1.30  2008/09/12 16:48:26  jeroens
+' Pruned history
+'
+' Revision 1.29  2008/09/12 16:47:01  jeroens
+' Verbose_level 1 will dump out major status updates and transmitted/received object IDs
+'
+' Revision 1.28  2008/09/11 21:41:29  jeroens
+' Console output contains name of socket (which is derived from IP)
+'
+' Revision 1.27  2008/09/09 18:55:53  jeroens
+' Streamlined ReceiveCallBack
+'
+' Revision 1.26  2008/09/09 16:51:45  jeroens
+' Fixed handshake vs. Client ID bug
+'
+' Revision 1.25  2008/09/05 14:30:30  jeroens
+' Handshake event sent outside synclock
+'
+' Revision 1.24  2008/09/04 14:57:41  joeb
+' Replace the Semaphore SendLock
+'
+' Revision 1.23  2008/09/03 18:30:18  joeb
+' Removed the Send Semaphore
+'
+' Revision 1.22  2008/09/03 14:38:35  jeroens
+' Added verbose levels
+'
+'==============================================================================
+
+#Region " Imports "
+
+Option Strict On
+
+Imports System.IO
+Imports System.Net
+Imports System.Net.Sockets
+Imports System.Threading
+Imports System.Runtime.Serialization.Formatters.Binary
+Imports System.Runtime.Serialization
+Imports System.Reflection
+
+#End Region ' Imports
+
+' Levels of feedback:
+'   0: no console feedback
+'   1: Main info, main failures
+'   2: Status updates
+'   3: Data details (for the hardcore debuggers)
+#Const VERBOSE_LEVEL = 0
+
+Namespace NetUtilities
+
+    ''' =======================================================================
+    ''' <summary>
+    ''' This class wraps the communication of data back and forth across a
+    ''' .NET Socket.
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>Every new chunk of data sent through the wrapped socket are 
+    ''' preceded by a 4-byte integer indicating the size of the data. Since
+    ''' data sent through a socket is split into packages, the receiving
+    ''' socket will keep combining packages until the original data is
+    ''' reassembled, which is then made available.</para>
+    ''' </remarks>
+    ''' =======================================================================
+    Public Class cSocketWrapper
+
+#Region " Private helper classes "
+
+        ''' ===================================================================
+        ''' <summary>
+        ''' Class used to help server and client recognize each other when
+        ''' setting up a connection.
+        ''' </summary>
+        ''' ===================================================================
+        <Serializable()> _
+        Private Class cHandShake
+            Inherits cSerializableObject
+
+            Private m_iHandshake As Int32 = 0
+            Private m_bRelayed As Boolean = False
+
+            Public Sub New(ByVal iHandshake As Int32)
+                MyBase.New()
+                Me.m_iHandshake = iHandshake
+            End Sub
+
+            Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+                MyBase.New(info, context)
+                Try
+                    Me.m_iHandshake = info.GetInt32("m_iHandshake")
+                    Me.m_bRelayed = info.GetBoolean("m_bRelayed")
+                Catch ex As Exception
+                    Debug.Assert(False, String.Format("Exception '{0}' while deserializing cHandShake", ex.Message))
+                End Try
+            End Sub
+
+            Protected Overrides Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext)
+                MyBase.GetObjectData(info, context)
+                info.AddValue("m_iHandshake", Me.m_iHandshake, GetType(Int32))
+                info.AddValue("m_bRelayed", Me.m_bRelayed, GetType(Boolean))
+            End Sub
+
+            Public Property Relayed() As Boolean
+                Get
+                    Return Me.m_bRelayed
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bRelayed = value
+                End Set
+            End Property
+
+            Public Function HandshakeID() As Int32
+                Return Me.m_iHandshake
+            End Function
+
+            Public Overrides ReadOnly Property ID() As String
+                Get
+                    Return String.Format("cHandshake_{0}", Me.m_iHandshake)
+                End Get
+            End Property
+
+        End Class
+
+#End Region ' Private helper classes
+
+#Region " Privates "
+
+        ''' <summary>
+        ''' Socket wrapper read states
+        ''' </summary>
+        Private Enum eReadStates
+            ''' <summary>Not reading.</summary>
+            NotReading
+            ''' <summary>Reading data size bytes.</summary>
+            ReadingSize
+            ''' <summary>Reading data bytes.</summary>
+            ReadingObject
+            ''' <summary>Data has been read.</summary>
+            ObjectRead
+        End Enum
+
+        ''' <summary>Size of buffer for receiving data.</summary>
+        Private Const cBUFFER_SIZE As Integer = 4096 
+        ''' <summary>The one buffer for receiving data.</summary>
+        Private m_abBuffer(cSocketWrapper.cBUFFER_SIZE) As Byte
+        ''' <summary>The wrapped socket.</summary>
+        Private m_socket As Socket = Nothing
+        ''' <summary>Size, in number of bytes, of the most recent data package.</summary>
+        Private m_iDataSize As Integer = 0
+        ''' <summary>Number of bytes read of the most recent data package.</summary>
+        Private m_iDataRead As Integer = 0
+        ''' <summary>States whether or not the socket connection is authorized for communication.</summary>
+        Private m_bAuthorized As Boolean = False
+        Private m_abReceived() As Byte
+
+        ''' <summary>Buffer for object size </summary>
+        Private m_abSizeBuff(4) As Byte
+
+        ''' <summary> Number of bytes in the size buffer m_abSizeBuff </summary>
+        Private m_iSizeRead As Integer
+        Private m_iQueue As Integer = 0
+
+        Private m_iID As Int32 = 0
+
+        '''' <summary>Semaphore to lock sending of data </summary>
+        ' Private m_SendLock As New System.Threading.Semaphore(1, 1, "SendLock")
+        Private m_readState As eReadStates = eReadStates.ReadingSize
+
+
+#End Region ' Privates
+
+#Region " Constructor "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new socket wrapper.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub New()
+            Me.New(0, New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Wrap an existing socket by a new socket wrapper.
+        ''' </summary>
+        ''' <param name="s">The <see cref="Socket">socket</see> to wrap.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal iID As Integer, ByVal s As Socket)
+
+            ' Sanity checks (googoogoojoob)
+            Debug.Assert(s IsNot Nothing, "Need valid socket")
+
+            Me.m_iID = iID
+            Me.m_socket = s
+
+            If Me.Connected Then
+                Me.StartListening()
+            End If
+
+        End Sub
+
+#End Region ' Constructor
+
+#Region " Events "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Status flags passed in the <see cref="OnStatus">OnStatus</see> event.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eStatusTypes As Byte
+            ''' <summary>The socket is disconnected.</summary>
+            Disconnected = 0
+            ''' <summary>The socket is connected.</summary>
+            Connected
+            ''' <summary>The socket is authorized.</summary>
+            Authorized
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public event reporting status changes in the socket.
+        ''' </summary>
+        ''' <param name="sw">The <see cref="cSocketWrapper">socket wrapper</see>
+        ''' instance that sent the event.</param>
+        ''' <param name="status">The <see cref="eStatusTypes">status</see>
+        ''' of the socket wrapper that sent the event.</param>
+        ''' <param name="strData">The data that accompanies the event.</param>
+        ''' -------------------------------------------------------------------
+        Public Event OnStatus(ByVal sw As cSocketWrapper, ByVal status As eStatusTypes, ByVal strData As String)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public event reporting that data has been received across the socket.
+        ''' </summary>
+        ''' <param name="sw">The <see cref="cSocketWrapper">socket wrapper</see>
+        ''' instance that received the data.</param>
+        ''' <param name="data">The <see cref="cSerializableObject">data</see>
+        ''' that was received.</param>
+        ''' -------------------------------------------------------------------
+        Public Event OnData(ByVal sw As cSocketWrapper, ByVal data As cSerializableObject)
+
+#End Region ' Events 
+
+#Region " Public access "
+
+#Region " Connection "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Attempt to connect the socket to an IP address, port combination.
+        ''' </summary>
+        ''' <param name="ip">The IP address to connect to.</param>
+        ''' <param name="iPort">The IP port to connect to.</param>
+        ''' <returns>True if connected succesfully.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Connect(ByVal ip As IPAddress, ByVal iPort As Integer) As Boolean
+
+            Try
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} attempting to connect", Me.ToString())
+#End If
+                ' Try to connect
+                Me.m_socket.Connect(ip, iPort)
+
+            Catch ex As SocketException
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} exception '{1}' while attempting to connect", Me.ToString(), ex.Message)
+#End If
+            End Try
+
+            ' No luck?
+            If Not Me.Connected Then
+                ' #Ouch! Raise event
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} connection failed", Me.ToString())
+#End If
+                RaiseEvent OnStatus(Me, eStatusTypes.Disconnected, String.Format("Failed to connect to server {0}:{1}", ip.ToString, iPort))
+                Return False
+            End If
+
+            ' Connected: raise event
+#If VERBOSE_LEVEL >= 1 Then
+            Console.WriteLine("sw {0} connected", Me.ToString())
+#End If
+            RaiseEvent OnStatus(Me, eStatusTypes.Connected, String.Format("Connected to server {0}:{1}", ip.ToString, iPort))
+            Me.StartListening()
+
+            Return True
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the socket is connected.
+        ''' </summary>
+        ''' <returns>True if connected.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Connected() As Boolean
+            Return Me.m_socket.Connected
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Disconnects the socket from a server.
+        ''' </summary>
+        ''' <returns>True if disconnected succesfully.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Disconnect() As Boolean
+            If Me.m_socket.Connected() Then
+                Me.m_socket.Disconnect(True)
+            End If
+            Return Not Me.m_socket.Connected()
+        End Function
+
+#End Region ' Connection
+
+#Region " Authorization "
+
+        Public ReadOnly Property ID() As Int32
+            Get
+                Return Me.m_iID
+            End Get
+        End Property
+
+        Public Sub Authorize()
+
+            Me.m_iHandshake = Me.m_iID
+            Me.Authorized = False
+
+            If (Me.m_iHandshake <> 0) Then
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} awaiting authorization", Me.ToString())
+#End If
+                ' Send handshake
+                Me.SendHandshake()
+            End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the socket is authorized to send data for its 
+        ''' intended purpose.
+        ''' </summary>
+        ''' <returns>True if authorized.</returns>
+        ''' -------------------------------------------------------------------
+        Public Property Authorized() As Boolean
+            Get
+                Return Me.m_bAuthorized
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bAuthorized = value
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} authorized {1}", Me.ToString(), CStr(value))
+#End If
+                If value = True Then
+                    ' No longer wait for authorization
+                    Me.m_iHandshake = 0
+                End If
+            End Set
+        End Property
+
+        Public Function WaitingForAutorization() As Boolean
+            Return (Me.m_iHandshake <> 0)
+        End Function
+
+#End Region ' Authorization
+
+#Region " Send "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Send <see cref="cSerializableObject">a serializable object</see> across the socket.
+        ''' </summary>
+        ''' <param name="obj">The object to send.</param>
+        ''' <param name="bRequiresAuthorization">Flag indicating whether the socket
+        ''' needs to be <see cref="Authorized">Authorized</see> to send this data.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Function Send(ByVal obj As cSerializableObject, Optional ByVal bRequiresAuthorization As Boolean = True) As Boolean
+
+            ' Sanity check(s)
+            If (obj Is Nothing) Then Return False
+
+            Dim bf As New BinaryFormatter()
+            Dim ms As New MemoryStream()
+            Dim bSucces As Boolean = False
+
+            'Block all other calls to Send until this Send has finished (SendCallback)
+            ' Me.m_SendLock.WaitOne()
+            bf.Serialize(ms, obj)
+            ' Reset position in stream
+            ms.Seek(0, 0)
+
+            Try
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} sending {1}", Me.ToString(), obj.ToString())
+#End If
+                bSucces = SendBinary(ms.GetBuffer(), bRequiresAuthorization)
+            Catch ex As Exception
+                'release the semaphore if there has been an error
+                'ths will prevent a deadlock if there has been an error
+                ' Me.m_SendLock.Release()
+                bSucces = False
+            End Try
+
+            ' Cleanup
+            ms.Close()
+            ms = Nothing
+            bf = Nothing
+            ' Me.m_SendLock.Release()
+
+            Return bSucces
+        End Function
+
+#End Region ' Send
+
+#End Region ' Public access
+
+#Region " Internals "
+
+#Region " Authorization "
+
+        Private m_iHandshake As Int32 = 0
+
+        Private Function IsHandshake(ByVal iHandshake As Int32) As Boolean
+            ' External handshake?
+            If (Me.m_iID = 0) Then Return True
+            Return (Me.m_iHandshake = iHandshake)
+        End Function
+
+        Private Function HandshakeID() As Int64
+            Return Me.m_iHandshake
+        End Function
+
+        Private Sub SendHandshake()
+
+            Dim hs As New cHandShake(Me.m_iHandshake)
+
+            If Me.Send(hs, False) Then
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} sent handshake {1}", Me.ToString(), hs.HandshakeID)
+#End If
+            Else
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} failed to send handshake {1}", Me.ToString(), hs.HandshakeID)
+#End If
+            End If
+
+        End Sub
+
+        ''' <summary>
+        ''' Send handshake message back to the sender
+        ''' </summary>
+        ''' <param name="hs"></param>
+        ''' <remarks>Messages can be relayed only once.</remarks>
+        Private Sub RelayHandshake(ByVal hs As cHandShake)
+
+            Try
+                If hs.Relayed = False Then
+                    hs.Relayed = True
+                    If Me.Send(hs, False) Then
+#If VERBOSE_LEVEL >= 3 Then
+                        Console.WriteLine("sw {0} handshake {1} relayed", Me.ToString(), hs.HandshakeID)
+#End If
+                    Else
+#If VERBOSE_LEVEL >= 3 Then
+                        Console.WriteLine("sw {0} handshake {1} failed to relay", Me.ToString(), hs.HandshakeID)
+#End If
+                    End If
+                Else
+#If VERBOSE_LEVEL >= 3 Then
+                    Console.WriteLine("sw {0} handshake {1} completed", Me.ToString(), hs.HandshakeID)
+#End If
+                End If
+            Catch ex As Exception
+#If VERBOSE_LEVEL >= 2 Then
+                Console.WriteLine("sw {0} exception {1} while relaying handshake {2}", Me.ToString(), ex.Message, hs.ID)
+#End If
+            End Try
+
+        End Sub
+
+#End Region ' Authorization
+
+#Region " READ "
+
+        Private Sub StartListening()
+            ' Start waiting for data
+            Me.m_socket.BeginReceive(Me.m_abBuffer, 0, cSocketWrapper.cBUFFER_SIZE, SocketFlags.None, AddressOf ReceiveCallBack, Me)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read the most recently received chunk of data from the local socket
+        ''' <see cref="m_abBuffer">buffer</see>.
+        ''' </summary>
+        ''' <param name="iNumBytes">The number of bytes that were received.</param>
+        ''' -------------------------------------------------------------------
+        Private Function ReadBuffer(ByVal iNumBytes As Integer) As cSerializableObject
+
+            Dim objData As cSerializableObject = Nothing
+            Dim bf As BinaryFormatter = Nothing
+            Dim ms As MemoryStream = Nothing
+            Dim iOffset As Integer = 0
+            Dim iChunkSize As Integer = 0
+            Dim nSizeCopy As Integer
+
+            Try
+
+#If VERBOSE_LEVEL >= 3 Then
+                Console.WriteLine("sw {0} read buffer {1} bytes ", Me.ToString(), iNumBytes)
+#End If
+
+                ' Has data?
+                While (iOffset < iNumBytes)
+                    ' Is this a new message?
+                    If Me.m_readState = eReadStates.ReadingSize Then
+                        ' #Yes: Start new message
+                        ' Extract new message length
+
+                        'how many byte should we read from the buffer
+                        nSizeCopy = Math.Min(4 - Me.m_iSizeRead, iNumBytes - iOffset)
+                        Array.Copy(Me.m_abBuffer, iOffset, Me.m_abSizeBuff, m_iSizeRead, nSizeCopy)
+
+                        m_iSizeRead += nSizeCopy
+                        iOffset += nSizeCopy
+
+#If VERBOSE_LEVEL >= 3 Then
+                        Console.WriteLine("sw {0} read size buffer {1} bytes total of {2}", Me.ToString(), nSizeCopy, m_iSizeRead)
+#End If
+
+                        'is the size buffer full
+                        If Me.m_iSizeRead = 4 Then
+                            'yes we have all the bytes for the size buffer
+
+                            'how big is this object
+                            Me.m_iDataSize = CInt(Me.m_abSizeBuff(0)) + CInt(Me.m_abSizeBuff(1) * 2 ^ 8) _
+                                + CInt(Me.m_abSizeBuff(2) * 2 ^ 16) + CInt(Me.m_abSizeBuff(3) * 2 ^ 24)
+
+                            ' Allocate size
+                            ReDim Me.m_abReceived(Me.m_iDataSize)
+
+                            'clear out the data size counters
+                            Me.m_iSizeRead = 0
+                            nSizeCopy = 0
+                            'change the read state
+                            Me.m_readState = eReadStates.ReadingObject
+
+                        End If ' If Me.m_nSizeRead = 4 Then
+                    End If ' If Me.m_readState = eReadStates.ReadingSize Then
+
+                    If Me.m_readState = eReadStates.ReadingObject Then
+                        ' Determine number of bytes to read from this block
+
+                        iChunkSize = Math.Min(Me.m_iDataSize - Me.m_iDataRead, iNumBytes - iOffset)
+                        ' Copy bytes
+                        Array.Copy(Me.m_abBuffer, iOffset, Me.m_abReceived, Me.m_iDataRead, iChunkSize)
+
+                        'the number of byte read for this object
+                        Me.m_iDataRead += iChunkSize
+                        ' Update offset
+                        iOffset += iChunkSize
+
+#If VERBOSE_LEVEL >= 3 Then
+                        Console.WriteLine("sw {0} read {1} bytes (buffer {2}, read {3} of {4})", Me.ToString(), iChunkSize, iNumBytes, Me.m_iDataRead, Me.m_iDataSize)
+#End If
+
+                        ' Have we read all the bytes for this object?
+                        If (Me.m_iDataSize = Me.m_iDataRead) Then
+                            ' #Yes: change the readstate
+                            Me.m_readState = eReadStates.ObjectRead
+                        End If
+
+                    End If 'If Me.m_readState = eReadStates.ReadingObject Then
+
+                    ' Is entire message read?
+                    If Me.m_readState = eReadStates.ObjectRead Then
+                        ' #Yes: extract transferred binary data
+                        bf = New BinaryFormatter()
+                        ms = New MemoryStream(Me.m_abReceived)
+
+#If VERBOSE_LEVEL >= 2 Then
+                        Console.WriteLine("sw {0} data read, deserializing object", Me.ToString())
+#End If
+
+                        Try
+                            ' Reconstruct data
+                            objData = CType(bf.Deserialize(ms), cSerializableObject)
+                        Catch ex As Exception
+                            Debug.Assert(False, ex.Message)
+                        End Try
+
+                        ms.Close()
+                        ms = Nothing
+                        bf = Nothing
+
+                        ' Reset read buffer
+                        Me.m_iDataSize = 0
+                        Me.m_iDataRead = 0
+                        Me.m_abReceived = Nothing
+                        ' Start reading the next bytes in the buffer, which are the size bytes
+                        Me.m_readState = eReadStates.ReadingSize
+                    End If
+
+                End While
+
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Throw New Exception("sw ReadBuffer() Error: " & ex.Message, ex)
+            End Try
+
+            Return objData
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback for asynchronous socket data reading.
+        ''' </summary>
+        ''' <param name="ar"></param>
+        ''' -----------------------------------------------------------------------
+        Private Sub ReceiveCallBack(ByVal ar As IAsyncResult)
+
+            ' Retrieve SocketData
+            Dim sw As cSocketWrapper = CType(ar.AsyncState, cSocketWrapper)
+            Dim iNumBytes As Integer = -1
+            Dim objRead As cSerializableObject = Nothing
+
+            ' Read incoming bytes
+            Try
+                'SyncLock sw
+                iNumBytes = sw.m_socket.EndReceive(ar)
+                'End SyncLock
+            Catch ex As SocketException
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} socket exception '{1}'", Me.ToString(), ex.Message)
+#End If
+                ' Screw this, I'm out of here
+                iNumBytes = 0
+            Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} exception '{1}'", Me.ToString(), ex.Message)
+#End If
+            End Try
+
+            ' Disconnected?
+            If iNumBytes = 0 Then
+                ' #Yes: pull the plug
+                sw.m_socket.Disconnect(False)
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("sw {0} disconnected", Me.ToString())
+#End If
+                Try
+                    RaiseEvent OnStatus(Me, eStatusTypes.Disconnected, "")
+                Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                    Console.WriteLine(">> sw {0} OnStatus(Disconnected) exception '{1}'", Me.ToString(), ex.Message)
+#End If
+                End Try
+                Return
+            End If
+
+            ' Not connected? Read the data
+            objRead = sw.ReadBuffer(iNumBytes)
+
+            ' All data read?
+            If (objRead IsNot Nothing) Then
+
+                ' Is handshake?
+                If (TypeOf objRead Is cHandShake) Then
+                    ' #Yes: process handshake
+                    Dim hs As cHandShake = DirectCast(objRead, cHandShake)
+                    ' Immediately forget object because it should not be sent out in the OnData event
+                    objRead = Nothing
+
+#If VERBOSE_LEVEL >= 2 Then
+                    Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), hs.ToString())
+#End If
+                    ' Is the socket wrapper not authorized?
+                    If (sw.Authorized = False) Then
+                        ' #Yes: is the incoming handshake designated for the socket wrapper?
+                        If sw.IsHandshake(hs.HandshakeID) Then
+                            ' #Yes: Authorized
+                            sw.Authorized = True
+#If VERBOSE_LEVEL >= 1 Then
+                            Console.WriteLine("sw {0} authorized", Me.ToString())
+#End If
+                            Try
+                                RaiseEvent OnStatus(Me, eStatusTypes.Authorized, "")
+                            Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                                Console.WriteLine(">> sw {0} OnStatus(Authorized) exception '{1}' ", Me.ToString(), ex.Message)
+#End If
+                            End Try
+                        Else
+#If VERBOSE_LEVEL >= 1 Then
+                            Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), hs.HandshakeID, sw.m_iHandshake)
+#End If
+                        End If
+                    Else
+#If VERBOSE_LEVEL >= 2 Then
+                        Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
+#End If
+                    End If
+                    sw.RelayHandshake(hs)
+
+                Else
+                    ' #No: not a handshake but a valid object, broadcast its arrival
+                    If sw.Authorized Then
+#If VERBOSE_LEVEL >= 1 Then
+                        Console.WriteLine("sw {0} received data '{1}'", Me.ToString(), objRead.ToString())
+#End If
+                    Else
+#If VERBOSE_LEVEL >= 1 Then
+                        Console.WriteLine("sw {0} not authorized to receive data", Me.ToString())
+#End If
+                    End If ' If sw.Authorized Then
+                End If ' If TypeOf objRead Is cHandShake Then
+            End If ' If sw.HasData Then
+
+            ' After all data is handled prepare for receiving next chunk
+            If iNumBytes > 1 Then
+                sw.m_socket.BeginReceive(sw.m_abBuffer, 0, cSocketWrapper.cBUFFER_SIZE, SocketFlags.None, AddressOf ReceiveCallBack, sw)
+            End If
+
+            ' Broadcast new data
+            If (objRead IsNot Nothing) Then
+                Try
+                    ' Send event
+                    RaiseEvent OnData(Me, objRead)
+                Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                    Console.WriteLine(">> sw {0} OnData() exception '{1}' ", Me.ToString(), ex.Message)
+#End If
+                End Try
+            End If
+        End Sub
+
+#End Region ' READ
+
+#Region " SEND "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Send a message through the socket. This call is blocking (for now)
+        ''' </summary>
+        ''' <param name="byMessage">The message bytes to send</param>
+        ''' <param name="bRequiresAuthorization">Flag indicating whether the socket
+        ''' needs to be <see cref="Authorized">Authorized</see> to send this data.</param>
+        ''' <remarks>
+        ''' This method will prepend the message with 4 bytes stating the
+        ''' length of the original message. This will allow the receiving
+        ''' end to deduct whether all packets for incoming data have arrived.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private Function SendBinary(ByVal byMessage As Byte(), _
+            Optional ByVal bRequiresAuthorization As Boolean = True) As Boolean
+
+            ' Sanity checks
+            If (Not Me.Connected) Then Return False
+            If (bRequiresAuthorization And Not Me.Authorized) Then Return False
+            If (byMessage Is Nothing) Then Return False
+
+            Dim byData() As Byte
+            Dim iLength As Integer = 0
+            iLength = byMessage.Length()
+
+            ReDim byData(4 + iLength - 1)
+            byData(0) = CByte(iLength And &HFF)
+            byData(1) = CByte((iLength >> 8) And &HFF)
+            byData(2) = CByte((iLength >> 16) And &HFF)
+            byData(3) = CByte((iLength >> 24) And &HFF)
+
+            Array.Copy(byMessage, 0, byData, 4, iLength)
+
+            Try
+#If VERBOSE_LEVEL >= 3 Then
+                me.m_iQueue += (iLength + 4)
+                Console.WriteLine("sw {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength+4), me.m_iQueue)
+#End If
+
+                Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
+
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        Private Sub SendCallback(ByVal ar As IAsyncResult)
+            ' Dim sw As cSocketWrapper = DirectCast(ar, Socket)
+            '
+            Dim s As Socket = CType(ar.AsyncState, Socket)
+            Dim nb As Integer
+
+            Try
+                ' Sanity checks
+                If s Is Nothing Then Return
+                If Not s.Connected Then Return
+                nb = s.EndSend(ar)
+
+#If VERBOSE_LEVEL >= 3 Then
+                me.m_iQueue -= (nb)
+                Console.WriteLine("sw {0} sent {1} bytes (queue size {2})", Me.ToString(), nb, me.m_iQueue)
+#End If
+            Catch ex As Exception
+                ' Woops!
+                Debug.Assert(False, ex.Message)
+            Finally
+                'release the semaphore
+                '  Me.m_SendLock.Release()
+            End Try
+
+            ' Me.m_SendLock.Release()
+
+        End Sub
+
+#End Region ' SEND
+
+#End Region ' Internals
+
+#Region " Overrides "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a string representation of a cSocketWrapper instance.
+        ''' </summary>
+        ''' <returns>
+        ''' A string representing the Remote End Point that the wrapped socket 
+        ''' is connected to.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function ToString() As String
+            If Me.m_socket.RemoteEndPoint Is Nothing Then Return "(not connected)"
+            Return Me.m_socket.RemoteEndPoint.ToString
+        End Function
+
+#End Region ' Overrides 
+
+    End Class
+
+End Namespace ' NetUtilities

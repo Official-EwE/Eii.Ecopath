@@ -1,0 +1,446 @@
+'==============================================================================
+'
+' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.1  2008/09/26 07:30:20  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.5  2008/08/12 22:15:17  jeroens
+' Layers can carry metadata to control what values are accepted into their data
+'
+' Revision 1.4  2008/08/11 18:36:29  jeroens
+' Map properties no longer cascaded to layers; they can come and get it if they need it
+' Fixed indexing problem on Importance layers
+'
+' Revision 1.3  2008/08/11 02:00:34  jeroens
+' Simplified class names
+'
+' Revision 1.2  2008/08/09 00:02:31  jeroens
+' Fixed header
+'
+'==============================================================================
+
+#Region " Imports directive "
+
+Option Strict On
+Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
+
+#End Region ' Imports directive
+
+''' ===========================================================================
+''' <summary>
+''' 
+''' </summary>
+''' ===========================================================================
+Public Class cEcospaceBasemap
+    Inherits cCoreInputOutputBase
+
+    ''' <summary>The layers maintained in a basemap.</summary>
+    Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
+    ''' <summary>Importance layers maintained in a basemap.</summary>
+    Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
+
+#Region " Constructor "
+
+    Sub New(ByRef theCore As cCore)
+
+        MyBase.New(theCore)
+
+        Dim data As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
+        Dim layer As cEcospaceLayer = Nothing
+        Dim lData As cEcospaceDataStructures.cLayerImportanceData = Nothing
+
+        Me.AllowValidation = False
+
+        Try
+            Me.DBID = DBID
+            m_DataType = eDataTypes.EcospaceBasemap
+            m_messageSource = eMessageSource.EcoSpace
+
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+
+            ' InRow
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' InCol
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' CellLength
+            meta = New cVariableMetaData(0, 360.0!, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' Latitude (top-left coord of layer)
+            meta = New cVariableMetaData(-90.0!, 90.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' Longitude (top-left coord of layer)
+            meta = New cVariableMetaData(-180.0!, 180.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' *************************************************************************************** '
+            ' Variables used to proved an achor point for tying remarks etc to derived basemap layers '
+            ' *************************************************************************************** '
+
+            ' LayerRelPP
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerRelPP, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerRelCin
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerRelCin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerDepth
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' MPASeed
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' ----------------
+            ' Init layers
+            ' ----------------
+
+            ' Depth layer
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerDepth, cCore.NULL_VALUE, meta)
+            Me.Layers(eVarNameFlags.LayerDepth) = layer
+
+            ' Habitat layer
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerHabitat, cCore.NULL_VALUE, meta)
+            Me.Layers(eVarNameFlags.LayerHabitat) = layer
+
+            ' MPA layer
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerMPA)
+            Me.Layers(eVarNameFlags.LayerMPA) = layer
+
+            ' Region layer
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nRegions), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerRegion)
+            Me.Layers(eVarNameFlags.LayerRegion) = layer
+
+            ' RelPP layer
+            layer = New cEcospaceSingleNxNLayer(theCore, Me, eVarNameFlags.LayerRelPP)
+            Me.Layers(eVarNameFlags.LayerRelPP) = layer
+
+            ' RelCin layer
+            layer = New cEcospaceSingleNxNLayer(theCore, Me, eVarNameFlags.LayerRelCin)
+            Me.Layers(eVarNameFlags.LayerRelCin) = layer
+
+            ' MPA Seed
+            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerMPASeed)
+            Me.Layers(eVarNameFlags.LayerMPASeed) = layer
+
+            ' Importance layers
+            For i As Integer = 0 To Me.m_core.nImportanceLayers - 1
+                lData = data.ImportanceLayers(i)
+                m_lstLayerImportance.Add(New cEcospaceLayerImportance(theCore, lData.DBID, Me, i))
+            Next
+
+            'set status flags to default values
+            ResetStatusFlags()
+
+            Me.AllowValidation = True
+
+        Catch ex As Exception
+            Debug.Assert(False, "Error creating new cEcospaceBasemap.")
+            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
+        End Try
+
+    End Sub
+
+#End Region ' Constructor
+
+#Region " Variables by dot (.) operator "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cEcospaceDataStructures.Inrow">InRow</see>
+    ''' value for this scenario
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property InRow() As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.InRow))
+        End Get
+        Friend Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.InRow, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cEcospaceDataStructures.Incol">InCol</see>
+    ''' value for this scenario
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property InCol() As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.InCol))
+        End Get
+        Friend Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.InCol, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
+    ''' value for this scenario
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CellLength() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.CellLength))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.CellLength, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the TopLeft latitude value for this layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Latitude() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.Latitude))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.Latitude, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the TopLeft longitude value for this layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Longitude() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.Longitude))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.Longitude, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the top left position for this layer, expressed in (lon, lat)
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Position() As Drawing.PointF
+
+        Get
+            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)), CSng(GetVariable(eVarNameFlags.Latitude)))
+        End Get
+
+        Set(ByVal value As Drawing.PointF)
+            SetVariable(eVarNameFlags.Longitude, value.X)
+            SetVariable(eVarNameFlags.Latitude, value.Y)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a LayerImportance
+    ''' </summary>
+    ''' <param name="index">Index from 1 to nLayerImportance</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerImportance(ByVal index As Integer) As cEcospaceLayerImportance
+        Get
+            Try
+                Return Me.m_lstLayerImportance(index - 1)
+            Catch ex As Exception
+                cLog.Write(Me.ToString & ".New(..) Unable to access LayerImportance of index:" & index & ". Error: " & ex.Message)
+                m_core.Messages.AddMessage(New cMessage("Unable to access LayerImportance of index", eMessageType.DataValidation, eMessageSource.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                Return Nothing
+            End Try
+        End Get
+    End Property
+#End Region ' Variables by dot (.) operator
+
+#Region " Layer interface "
+
+    Public Property Layers(ByVal varName As eVarNameFlags) As cEcospaceLayer
+        Get
+            If Me.m_dictLayers.ContainsKey(varName) Then
+                Return Me.m_dictLayers(varName)
+            End If
+            Return Nothing
+        End Get
+        Private Set(ByVal value As cEcospaceLayer)
+            If Me.m_dictLayers.ContainsKey(varName) Then
+                Debug.Assert(False, String.Format("Layer (0) already defined", varName))
+                Return
+            End If
+            Me.m_dictLayers(varName) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a copy of the layers maintained by this class.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Function LayerCollection() As List(Of cEcospaceLayer)
+        Dim l As New List(Of cEcospaceLayer)
+        For Each o As cEcospaceLayer In Me.m_dictLayers.Values
+            l.Add(o)
+        Next
+        Return l
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerDepth() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerDepth)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerHabitat() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerHabitat)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerMPA() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerMPA)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerRegion() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerRegion)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerRelPP() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerRelPP)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerRelCin() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerRelCin)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerMPASeed() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerMPASeed)
+        End Get
+    End Property
+
+    Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
+        Select Case varName
+            Case eVarNameFlags.LayerDepth
+                Return Me.m_core.m_EcoSpaceData.Depth
+            Case eVarNameFlags.LayerHabitat
+                Return Me.m_core.m_EcoSpaceData.HabType
+            Case eVarNameFlags.LayerMPA
+                Return Me.m_core.m_EcoSpaceData.MPA
+            Case eVarNameFlags.LayerRegion
+                Return Me.m_core.m_EcoSpaceData.Region
+            Case eVarNameFlags.LayerRelPP
+                Return Me.m_core.m_EcoSpaceData.RelPP
+            Case eVarNameFlags.LayerRelCin
+                Return Me.m_core.m_EcoSpaceData.RelCin
+            Case eVarNameFlags.LayerMPASeed
+                Return Me.m_core.MPAOptData.MPASeed
+            Case eVarNameFlags.LayerImportance
+                If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
+                    Debug.Assert(True, "cCore message: Index out of bounds error for ImportanceLayers")
+                    Return Nothing
+                End If
+                Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
+        End Select
+        Return Nothing
+    End Function
+
+#End Region ' Layer interface
+
+#Region " Layer change management "
+
+    ''' <summary>
+    ''' Called by a layer to tell the manager that it has changed data. 
+    ''' </summary>
+    ''' <remarks>Tell the core that a layer has changed.</remarks>
+    Friend Sub LayerChanged(ByRef layer As cEcospaceLayer)
+        m_core.onChanged(layer)
+    End Sub
+
+#End Region ' Layer change management
+
+End Class

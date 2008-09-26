@@ -1,0 +1,160 @@
+'==============================================================================
+'
+' $Log: cDBUpdate6_00_03_08.vb,v $
+' Revision 1.1  2008/09/26 07:30:15  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.6  2008/02/11 03:20:24  jeroens
+' Fixed CLS compliancy
+'
+' Revision 1.5  2008/01/21 14:53:27  jeroens
+' Removed staza work-around; this has become part of the datasource
+'
+' Revision 1.4  2008/01/20 14:47:40  jeroens
+' Removed empty stanza groups.
+'
+' Revision 1.3  2008/01/15 12:13:16  jeroens
+' Added Ecospace group defaults correction
+'
+' Revision 1.2  2008/01/11 09:57:45  jeroens
+' LastSaved date changed to Single to include time
+' Added Quotes table
+'
+' Revision 1.1  2008/01/08 23:21:19  jeroens
+' Initial version
+'
+'==============================================================================
+
+Option Strict On
+
+Imports EwEPlugin
+Imports EwEUtils.Database
+Imports System.Data
+
+''' --------------------------------------------------------------------------
+''' <summary>
+''' <para>Database update 6.0.3.8:</para>
+''' <para>
+''' <list type="bullet">
+''' <item><description>Added last saved date to model and scenarios.</description></item>
+''' <item><description>Added quotes table.</description></item>
+''' <item><description>Fixed Ecospace group defaults.</description></item>
+''' </list>
+''' </para>
+''' </summary>
+''' --------------------------------------------------------------------------
+Public Class cDBUpdate6_00_03_08
+    Implements IDatabaseUpdatePlugin
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' The actual update logic.
+    ''' </summary>
+    ''' <param name="db">Database to modify.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
+            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
+
+        Dim bSucces As Boolean = True
+
+        ' - All scenarios, model
+        bSucces = bSucces And db.Execute("ALTER TABLE EcopathModel ADD COLUMN LastSaved SINGLE")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenario ADD COLUMN LastSaved SINGLE")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN LastSaved SINGLE")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcotracerScenario ADD COLUMN LastSaved SINGLE")
+
+        ' - Quotes
+        bSucces = bSucces And db.Execute("CREATE TABLE Quotes (ID COUNTER CONSTRAINT PrimaryKey PRIMARY KEY, Quote MEMO, Source TEXT(255))")
+
+        ' - Fix Ecospace defaults
+        bSucces = bSucces And db.Execute("UPDATE EcospaceScenario SET Tolerance=0.01 WHERE Tolerance=0.0001")
+        bSucces = bSucces And db.Execute("UPDATE EcospaceScenarioGroup SET EatEffBad=0.5 WHERE EatEffBad=0.001")
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' This method provides the text that will be entered in the update log in
+    ''' the database.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
+        Get
+            Return "Adds last saved date to model and scenarios" + vbNewLine + "Adds quotes table" + vbNewLine + "Fixes Ecospace group defaults"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' This method provides the update version number that will be entered in
+    ''' the update log of the database. This version number is also used to check
+    ''' whether an update should run.
+    ''' </summary>
+    ''' <remarks>
+    ''' If <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> is provided, the
+    ''' update is ran regardless of version number.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property UpdateVersion() As Single Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateVersion
+        Get
+            Return 6.038!
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+        Get
+            Return Me.UpdateDescription
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+        ' Void
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "Database update " & Me.UpdateVersion
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:support@ecopath.org"
+        End Get
+    End Property
+
+End Class

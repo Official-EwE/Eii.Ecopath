@@ -1,0 +1,1184 @@
+﻿'==============================================================================
+'
+' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.1  2008/09/26 07:30:18  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.49  2008/09/17 01:23:52  jeroens
+' Currency units used correctly by Ecopath
+'
+' Revision 1.48  2008/08/04 16:07:02  jeroens
+' Fixed issue 528
+'
+' Revision 1.47  2008/07/21 14:11:52  jeroens
+' Added pedigree vars
+'
+' Revision 1.46  2008/05/02 19:51:37  villyc
+' EcopathDataStructures.vb: VC changed the SumDietToOne to being public
+'
+' Revision 1.45  2008/04/11 15:06:36  joeb
+' Replaced MessageBoxes with AddMessage
+'
+' Revision 1.44  2008/01/11 09:53:54  jeroens
+' LastSaved date changed to Single to include time
+'
+' Revision 1.43  2008/01/08 23:10:25  jeroens
+' Added LastSaved date to model and scenarios
+'
+' Revision 1.42  2007/11/25 00:44:43  jeroens
+' + Added support for Ecotracer scenarios
+'
+' Revision 1.41  2007/10/30 18:42:51  jeroens
+' + Added author, contact to model, sim and space
+'
+' Revision 1.40  2007/08/08 21:10:29  willw
+' added copyTo function
+'
+' Revision 1.39  2007/07/24 16:53:03  joeb
+' removed   Private m_isInputVar As Dictionary(Of String, Boolean)
+'
+' Revision 1.38  2007/06/28 16:55:12  joeb
+' Changes to allow the Monte Carlo to call Ecopath
+'
+' Revision 1.37  2007/06/26 22:25:05  joeb
+' Added comments
+'
+' Revision 1.36  2007/06/21 14:37:54  joeb
+' Minor comments
+'
+' Revision 1.35  2007/06/15 16:34:31  jeroens
+' * Disabled creation of default fleet
+'
+' Revision 1.34  2007/05/28 21:33:57  joeb
+' change det() from double to single
+'
+' Revision 1.33  2007/05/23 17:21:33  joeb
+' Added comments
+'
+' Revision 1.32  2007/05/20 00:52:09  jeroens
+' * Ok, that last fix made matters worse... fixed the fix
+'
+' Revision 1.31  2007/05/20 00:27:08  jeroens
+' * Fixed missing redim in RedimEcospaceScenarios
+'
+' Revision 1.30  2007/05/04 01:25:19  jeroens
+' + Ecosim and Ecospace scenario definitions moved to Ecopath data structures
+'
+' Revision 1.29  2007/04/12 20:23:14  jeroens
+' * PoolColor split in GroupColor, FleetColor
+'
+' Revision 1.28  2007/03/30 04:58:36  jeroens
+' + Added PoolColor for Ecopath group inputs
+'
+'==============================================================================
+
+Option Strict Off ' OUCH
+Imports EwEUtils.Core
+
+''' <summary>
+''' Wrapper for the underlying data structures of the EcoPath model. 
+''' Provides a way to wrap all the data from EcoPath into one place
+''' </summary>
+Public Class cEcopathDataStructures
+
+#Region "Public Variables"
+
+    Public bInitialized As Boolean = False
+
+    ' Public NGroups As Integer 
+    Public GroupName() As String ' was Specie()
+    'Database ID - uniquely identifies the group. Access restricted to the Core only.
+    Friend GroupDBID() As Integer
+
+    ''' <summary>Number of Ecosim scenarios available in a loaded model.</summary>
+    Public NumEcosimScenarios As Integer
+    ''' <summary>Array of Ecosim scenario names.</summary>
+    Public EcosimScenarioName() As String
+    ''' <summary>Array of Ecosim scenario database IDs.</summary>
+    Public EcosimScenarioDBID() As Integer
+    ''' <summary>Array of Ecosim scenario descriptions.</summary>
+    Public EcosimScenarioDescription() As String
+    ''' <summary>Array of Ecosim scenario authors.</summary>
+    Public EcosimScenarioAuthor() As String
+    ''' <summary>Array of Ecosim scenario contacts.</summary>
+    Public EcosimScenarioContact() As String
+    ''' <summary>Array of Ecosim scenario save dates (in julian day format).</summary>
+    Public EcosimScenarioLastSaved() As Single
+    ''' <summary>Index of active Ecosim scenario.</summary>
+    Public ActiveEcosimScenario As Integer = cCore.NULL_VALUE
+
+    ''' <summary>Number of Ecospace scenarios available in a loaded model.</summary>
+    Public NumEcospaceScenarios As Integer
+    ''' <summary>Array of Ecospace scenario names.</summary>
+    Public EcospaceScenarioName() As String
+    ''' <summary>Array of Ecospace scenario database IDs.</summary>
+    Public EcospaceScenarioDBID() As Integer
+    ''' <summary>Array of Ecospace scenario descriptions.</summary>
+    Public EcospaceScenarioDescription() As String
+    ''' <summary>Array of Ecospace scenario authors.</summary>
+    Public EcospaceScenarioAuthor() As String
+    ''' <summary>Array of Ecospace scenario contacts.</summary>
+    Public EcospaceScenarioContact() As String
+    ''' <summary>Array of Ecospace scenario save dates (in julian day format).</summary>
+    Public EcospaceScenarioLastSaved() As Single
+    ''' <summary>Index of active Ecospace scenario.</summary>
+    Public ActiveEcospaceScenario As Integer = cCore.NULL_VALUE
+
+    ''' <summary>Number of Ecotracer scenarios available in a loaded model.</summary>
+    Public NumEcotracerScenarios As Integer
+    ''' <summary>Array of Ecotracer scenario names.</summary>
+    Public EcotracerScenarioName() As String
+    ''' <summary>Array of Ecotracer scenario database IDs.</summary>
+    Public EcotracerScenarioDBID() As Integer
+    ''' <summary>Array of Ecotracer scenario descriptions.</summary>
+    Public EcotracerScenarioDescription() As String
+    ''' <summary>Array of Ecotracer scenario authors.</summary>
+    Public EcotracerScenarioAuthor() As String
+    ''' <summary>Array of Ecotracer scenario contacts.</summary>
+    Public EcotracerScenarioContact() As String
+    ''' <summary>Array of Ecotracer scenario save dates (in julian day format).</summary>
+    Public EcotracerScenarioLastSaved() As Single
+    ''' <summary>Index of active Ecotracer scenario.</summary>
+    Public ActiveEcotracerScenario As Integer = cCore.NULL_VALUE
+
+    ''' <summary>Biomass (computed)</summary>
+    Public B() As Single
+    ''' <summary>Biomass in habitat area (t/km²)</summary>
+    Public BH() As Single
+    ''' <summary>Biomass accumulation (t/km²/year)</summary>
+    Public BA() As Single
+    ''' <summary>Biomass accumulation / biomass</summary>
+    Public BaBi() As Single
+    ''' <summary>Production / biomass (/year)</summary>
+    Public PB() As Single
+    ''' <summary>Consumption / biomass (/year)</summary>
+    Public QB() As Single
+    ''' <summary>Ecotrophic efficiency (ratio)</summary>
+    Public EE() As Single
+    ''' <summary>Production / consumption (ratio)</summary>
+    ''' <remarks>Fraction of the production that is passed up in the food web.</remarks>
+    Public GE() As Single
+    ''' <summary>Unassimilation / consumption (ratio)</summary>
+    ''' <remarks>Fraction of the food that is not assimilated.</remarks>
+    Public GS() As Single
+
+    'Input Values are user entered values.
+    'Inputs are the values that can be edited by a user, get saved to the database and displayed as basic inputs
+    'each array will have a companion used for modeling that does not have 'input' i.e. EEinput() and EE() 
+    'the input values are copied into the modeling array whenever the ecopath model is run CopyInputToModelArrays(...) 
+    'these values are exposed via cEcoPathGroupOutputs
+
+    ''' <summary>Ecotrophic efficiency (ratio) - original user input value of <see cref="EE">EE</see>.</summary>
+    Public EEinput() As Single
+    ''' <summary>Production / biomass (/year) - original user input of <see cref="PB">PB</see>.</summary>
+    Public PBinput() As Single
+    ''' <summary>Consumption / biomass (/year) - original user input of <see cref="QB">QB</see>.</summary>
+    Public QBinput() As Single
+    ''' <summary>Production / consumption (ratio) - original user input of <see cref="GE">GE</see>.</summary>
+    Public GEinput() As Single
+
+    ''' <summary>Biomass (input value)- original user input of <see cref="B">B</see>.</summary>
+    Public Binput() As Single
+
+    ''' <summary>Biomass habitat area (input value)- original user input of <see cref="BH">BH</see>.</summary>
+    Public BHinput() As Single
+
+    Private min_B_QB As Single 'minimum B*QB
+
+    ''' <summary>Total number of groups (living and detritus)</summary>
+    Public NumGroups As Integer
+    ''' <summary>Total number of living groups.</summary>
+    Public NumLiving As Integer
+    ''' <summary>Total number of detritus groups.</summary>
+    Public NumDetrit As Integer
+    ''' <summary>Total number of fleets.</summary>
+    Public NumFleet As Integer
+    Public currUnitIndex As eUnitCurrencyType = eUnitCurrencyType.WetWeight
+    Public TimeUnitName As String
+    Public TimeUnitIndex As Integer
+    Public DietsModified As Boolean
+    Public PProd As Single
+
+    Public DietChanged(,) As Integer
+
+    Public Ex() As Single
+
+    ''' <summary>
+    ''' Sum of Landings + discards for this group
+    ''' </summary>
+    ''' <remarks>Computed in Catch_calculations()</remarks>
+    Public fCatch() As Single 'was called Catch but this causes a naming conflict with Try Catch blocks
+    ''' <summary>User input matrix for Diet composition(pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
+    ''' matrix of species consumption ratios.</summary>
+    Public DCInput(,) As Single
+    ''' <summary>Diet composition(pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
+    ''' matrix of species consumption ratios.</summary>
+    Public DC(,) As Single
+    ''' <summary>Detritus fate(<see cref="NumGroups">NumGroups</see>, <see cref="NumDetrit">NumDetrit</see>) (ratio)</summary>
+    ''' <remarks>Matrix describing where to direct surplus detritus.</remarks>
+    Public DF(,) As Single
+    ''' <summary>Area(<see cref="NumGroups">NumGroups</see>)</summary>
+    ''' <remarks>Fraction of the Area where a group occurs.</remarks>
+    Public Area() As Single
+    Public DCChanged(,) As Boolean         'Diet composition
+
+    Public BQB() As Single
+    ''' <summary>All non-usable 'model currency' that leaves the box represented by a group.</summary>
+    Public Resp() As Single
+    Public PP() As Single           'TM Trophic Mode
+    Public det(,) As Single '(50, 50)  
+    Public DCDet(,) As Single                 'Diet Composition of Detritus  for fishery
+    Public DetEaten() As Single                 ' For multiple detritus
+    Public DetPassedOn() As Single              ' For multiple detritus
+    Public DetPassedProp() As Single              ' For multiple detritus
+    Public FlowToDet() As Single
+    Public InputToDet() As Single
+    Public SumDC() As Single
+
+    Public Unit As String
+    ''' <summary>Migration into the area covered by the model (t/km²/year)</summary>
+    ''' <remarks>Note that migration is not the same as import, refer to the manual for details.</remarks>
+    Public Immig() As Single
+    ''' <summary>Emigration out of the area covered by the model (t/km²/year)</summary>
+    Public Emigration() As Single
+    ''' <summary>Emigration relative to biomass (ratio)</summary>
+    Public Emig() As Single    'relative to biomass, used in Ecosim
+    Public Shadow() As Single
+    ''' <summary>States which groups are fishes.</summary>
+    Public GroupIsFish() As Boolean
+    ''' <summary>States which groups are invertebrates.</summary>
+    Public GroupIsInvert() As Boolean
+    ' Public GrpsToShow() As Boolean
+    Public PropLanded(,) As Single
+    Public TTLX() As Single    'Trophic levels in Ecopath
+    'Public TLSim() As Single    'These TL's are recalculated for each time step in Ecosim
+    Public LHS(,) As Single
+    Public NumCatchCodes As Integer = 30
+    Public CatchCode(,) As Integer
+    Public CVpar(,) As Single
+    Public M0() As Single
+    Public M2() As Single
+    Public Path() As Integer
+    Public LastComp() As Integer
+    '  Public SpeciesCode(,) As Integer '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
+    ''' <summary>Detritus import (ratio)</summary>
+    Public DtImp() As Single
+    Public StanzaGroup() As Boolean 'Dim: numgroups, True if this is a group with stanza's
+
+    'fishing variables
+    Public NoGearData As Boolean
+    Public cost(,) As Single
+    Public CostPct(,) As Single
+    Public Discard(,) As Single
+    Public DiscardFate(,) As Single
+    Public FleetName() As String
+    Friend FleetDBID() As Integer
+    Public Landing(,) As Single
+    Public Market(,) As Single
+    Public PropDiscard(,) As Single
+
+    Public Epower() As Single
+    Public PcapBase() As Single
+    Public CapDepreciate() As Single
+    Public CapBaseGrowth() As Single
+
+
+    'summary stats
+    'populated after parameters have been estimated in EcoPath
+    'by the routines
+    'ComputeFisheriesStats()
+    'Compute_M2_Resp_and_Stats()
+    'ComputeMoreStats()
+
+    Public RTZ As Single 'sum of respiration
+    Public Consum As Single
+    Public SumBio As Single
+    Public CatchSum As Single 'sum of catch
+    Public GEff As Single 'gross efficiency
+    Public Totpp As Single
+    Public TLcatch As Single
+    Public Dt As Single 'total flow of detritus
+    Public SumEx As Single 'sum of exports
+    Public SumP As Single 'Sum of all production
+    Public Conn As Single 'Connectance Index
+    Public SysOm As Single
+
+    Public vbKInput() As Single 'VBGF curvature parameter K (/year)
+    Public vbK() As Single 'VBGF curvature parameter K (/year)
+    Public Hlap(,) As Single
+    Public Plap(,) As Single
+    Public GroupColor() As Integer
+    'Public FleetColor() As Integer
+    Public Host(,) As Single  'last is for fishery (combined only)
+
+    Public NumPedigreeLevels As Integer
+    Public PedigreeLevelDBID() As Integer
+    Public PedigreeLevelVarName() As eVarNameFlags
+    Public PedigreeLevelIndexValue() As Single
+    Public PedigreeLevelConfidence() As Single
+    Public PedigreeLevelDescription() As String
+
+    ''' <summary>
+    ''' Number of missing varaibles per groups
+    ''' </summary>
+    ''' <remarks>These are the variables that need to be computed be Ecopath</remarks>
+    Public mis() As Integer
+
+#End Region
+
+#Region " Borrowed from EcoRanger "
+
+    ' Borrowed from EcoRanger for Chesson calculation since this calculation is required
+    ' for generating Ecopath output data.
+    Public SumR() As Single
+    Public Alpha(,) As Single
+
+#End Region ' Borrowed from EcoRanger
+
+#Region "Redimensioning"
+
+    ''' <summary>
+    ''' Redim All variables that in EcoPath that have an NGroup dimension
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>This act as a central location to change the number of groups in the EcoPath data</remarks>
+    Public Function redimGroups() As Boolean
+
+        Try
+
+            redimGroupVariables() 'just ngroup variables
+            RedimFleetVariables(True) 'fleets clear out the values
+            Return True
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".redimGroups Error: " & ex.Message)
+        End Try
+
+
+    End Function
+
+    ''' <summary>
+    ''' redimension array variables 
+    ''' called when a new model is loaded
+    ''' </summary>
+    ''' <returns></returns>
+    ''' True if no error
+    ''' <remarks></remarks>
+    Public Function redimGroupVariables() As Boolean
+        Dim i As Integer, j As Integer
+        NumDetrit = NumGroups - NumLiving
+
+        ' EstimateWhat(NumGroups)
+
+        ReDim PB(NumGroups)
+        ReDim EE(NumGroups)
+        ReDim QB(NumGroups)
+        ReDim GE(NumGroups)
+        ReDim B(NumGroups)
+        ReDim BH(NumGroups)    'habitat biomass
+
+        ReDim GEinput(NumGroups)
+        ReDim PBinput(NumGroups)
+        ReDim EEinput(NumGroups)
+        ReDim QBinput(NumGroups)
+        ReDim Binput(NumGroups)
+        ReDim BHinput(NumGroups)
+
+        ReDim Ex(NumGroups)
+        ReDim fCatch(NumGroups)
+        ReDim Area(NumGroups)
+        For i = 1 To NumGroups
+            Area(i) = 1
+        Next
+        ReDim BA(NumGroups)
+        ReDim BaBi(NumGroups)
+        ReDim DCInput(NumGroups + 1, NumGroups + 1)
+        ReDim DC(NumGroups + 1, NumGroups + 1)
+        ReDim DCChanged(NumGroups + 1, NumGroups + 1) 'jb added to tell the core which diet comp values where changed
+        ReDim PP(NumGroups)
+        ReDim GroupName(NumGroups)
+        ReDim GroupDBID(NumGroups)
+        ReDim GS(NumGroups)
+        ReDim TTLX(NumGroups)     'Trophic levels in Ecopath
+        ReDim LHS(NumGroups, NumGroups)
+        ReDim SumDC(NumGroups)
+        ReDim BQB(NumGroups)
+
+        ReDim Resp(NumGroups)
+        ReDim DF(NumGroups, NumGroups - NumLiving)
+
+        ReDim DtImp(NumGroups)
+        ReDim DetEaten(NumGroups)
+        ReDim DetPassedOn(NumGroups)
+        ReDim DetPassedProp(NumGroups)
+        ReDim InputToDet(NumGroups)
+        ReDim M0(NumGroups)
+        ReDim M2(NumGroups)
+        ReDim Path(2 * NumGroups + 2)
+        ReDim LastComp(2 * NumGroups + 1)
+        ReDim Immig(NumGroups)
+        ReDim Emigration(NumGroups)
+        ReDim Emig(NumGroups)
+        ReDim Shadow(NumGroups)
+        ReDim GroupIsFish(NumGroups)
+        ReDim GroupIsInvert(NumGroups)
+        ReDim PropLanded(NumFleet, NumGroups)
+
+        ReDim Host(NumGroups, NumGroups)
+        ReDim Hlap(NumGroups, NumGroups)
+        ReDim Plap(NumGroups, NumGroups)
+        ReDim GroupColor(NumGroups)
+
+        ReDim SumR(NumGroups)
+        ReDim Alpha(NumGroups, NumGroups)
+        ReDim vbKInput(NumGroups)
+        ReDim vbK(NumGroups)
+
+        'ReDim GrpsToShow(NumGroups + NumFleet + 2)
+
+        'For i = 1 To NumGroups + NumFleet
+        '    GrpsToShow(i) = True
+        'Next
+
+        'For i = NumGroups + NumFleet + 1 To NumGroups + NumFleet + 2
+        '    GrpsToShow(i) = False
+        'Next
+
+        NumCatchCodes = 30
+        ReDim CatchCode(NumCatchCodes, NumGroups)
+        ReDim CVpar(5, NumGroups)
+
+        For i = 1 To NumGroups
+            For j = 0 To 4
+                CVpar(j, i) = 0.1
+            Next j
+            CVpar(5, i) = 0.05
+        Next i
+        'Stanzagroup  needed when importing eii files
+        ReDim StanzaGroup(NumGroups)
+
+        ReDim mis(NumGroups)
+
+        ' GearVariables(True)
+        '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
+
+        redimGroupVariables = True
+    End Function
+
+
+    ''' <summary>
+    ''' Redimension all fishing variables
+    ''' </summary>
+    ''' <param name="NoPreserve">
+    ''' A flag to keep the existing values in the arrays 
+    ''' True means do NOT keep the original values NO preserve.
+    ''' False to KEEP the values.
+    ''' </param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function RedimFleetVariables(ByVal NoPreserve As Boolean) As Boolean
+
+        Dim bNeedDefaultFleet As Boolean = False ' (NumFleet = 0)
+
+        ' Always need one fleet
+        If (bNeedDefaultFleet) Then
+            NumFleet = 1
+        End If
+
+        'det() is not saved to database
+        ReDim det(NumGroups + NumFleet, NumGroups + NumFleet)
+        If NoPreserve Then
+            ReDim DCDet(NumGroups - NumLiving, NumFleet)        'Diet composition of detritus
+            ReDim FlowToDet(NumGroups + NumFleet)
+        Else
+            ReDim Preserve DCDet(NumGroups - NumLiving, NumFleet)       'Diet composition of detritus
+            ReDim Preserve FlowToDet(NumGroups + NumFleet)
+        End If
+        'Next in Gear
+        ReDim cost(NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
+        ReDim CostPct(NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
+        ReDim FleetName(NumFleet + 1)
+        ReDim FleetDBID(NumFleet + 1)
+        'Next in Catch
+        ReDim Landing(NumFleet, NumGroups)
+        ReDim Discard(NumFleet, NumGroups)
+        ReDim DiscardFate(NumFleet, NumGroups - NumLiving)
+        ReDim PropLanded(NumFleet, NumGroups)
+        ReDim PropDiscard(NumFleet, NumGroups)
+        ReDim Market(NumFleet, NumGroups)
+
+        ReDim Epower(NumFleet)
+        ReDim PcapBase(NumFleet)
+        ReDim CapDepreciate(NumFleet)
+        ReDim CapBaseGrowth(NumFleet)
+        'ReDim FleetColor(NumFleet)
+
+        If (bNeedDefaultFleet) Then
+            ' Populate default fleet
+            FleetName(1) = My.Resources.CoreDefaults.CORE_DEFAULT_FLEET()
+            FleetDBID(1) = 1
+            CostPct(1, eCostIndex.Fixed) = 0
+            CostPct(1, eCostIndex.CUPE) = 100
+            CostPct(1, eCostIndex.Sail) = 0
+            For iGroup As Integer = 1 To NumLiving Step 1
+                ' Set default landing
+                Landing(1, iGroup) = fCatch(iGroup)
+                ' Set default price
+                Market(1, iGroup) = 1
+            Next
+            For nFleet As Integer = 1 To NumFleet
+                ' Set the last det col values to 1.0
+                DiscardFate(nFleet, NumDetrit) = 1
+            Next
+        Else
+            ' Set default market (off-vessel) prices
+            For iFleet As Integer = 1 To NumFleet
+                For iGroup As Integer = 1 To NumGroups
+                    Market(iFleet, iGroup) = 1.0!
+                Next iGroup
+            Next iFleet
+        End If
+
+        Return True
+
+    End Function
+
+    Public Sub RedimEcosimScenarios()
+
+        ReDim Me.EcosimScenarioName(Me.NumEcosimScenarios)
+        ReDim Me.EcosimScenarioDBID(Me.NumEcosimScenarios)
+        ReDim Me.EcosimScenarioDescription(Me.NumEcosimScenarios)
+        ReDim Me.EcosimScenarioAuthor(Me.NumEcosimScenarios)
+        ReDim Me.EcosimScenarioContact(Me.NumEcosimScenarios)
+        ReDim Me.EcosimScenarioLastSaved(Me.NumEcosimScenarios)
+
+        Me.ActiveEcosimScenario = cCore.NULL_VALUE
+
+    End Sub
+
+    Public Sub RedimEcospaceScenarios()
+
+        ReDim Me.EcospaceScenarioName(Me.NumEcospaceScenarios)
+        ReDim Me.EcospaceScenarioDBID(Me.NumEcospaceScenarios)
+        ReDim Me.EcospaceScenarioDescription(Me.NumEcospaceScenarios)
+        ReDim Me.EcospaceScenarioAuthor(Me.NumEcospaceScenarios)
+        ReDim Me.EcospaceScenarioContact(Me.NumEcospaceScenarios)
+        ReDim Me.EcospaceScenarioLastSaved(Me.NumEcospaceScenarios)
+
+        Me.ActiveEcospaceScenario = cCore.NULL_VALUE
+
+    End Sub
+
+    Public Sub RedimEcotracerScenarios()
+
+        ReDim Me.EcotracerScenarioName(Me.NumEcotracerScenarios)
+        ReDim Me.EcotracerScenarioDBID(Me.NumEcotracerScenarios)
+        ReDim Me.EcotracerScenarioDescription(Me.NumEcotracerScenarios)
+        ReDim Me.EcotracerScenarioAuthor(Me.NumEcotracerScenarios)
+        ReDim Me.EcotracerScenarioContact(Me.NumEcotracerScenarios)
+        ReDim Me.EcotracerScenarioLastSaved(Me.NumEcotracerScenarios)
+
+        Me.ActiveEcotracerScenario = cCore.NULL_VALUE
+
+    End Sub
+
+    Public Sub RedimPedigreeLevels()
+
+        ReDim Me.PedigreeLevelDBID(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelVarName(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
+        ReDim Me.PedigreeLevelDescription(Me.NumPedigreeLevels)
+
+    End Sub
+
+#End Region
+
+#Region "Computed Variables/Stats"
+
+
+    ''' <summary>
+    ''' Central handler for computing anything after an Ecopath model run.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function onPostEcopathRun() As Boolean
+
+        Try
+
+            UpdateBH()
+            Compute_M2_Resp_and_Stats()
+            ComputeFisheriesStats()
+            Compute_M2_Resp_and_Stats()
+            ComputeMoreStats()
+
+            Return True
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".PostEcopathUpdate() Error: " & ex.Message)
+            Return False
+        End Try
+
+    End Function
+
+
+    ''' <summary>
+    '''     Computes 
+    '''CatchSum: sum of catch.
+    '''GEff: Gross efficiency catch/net p.p..
+    '''TLcatch: Mean trophic level of the catch.
+    '''Run after the parameters have been estimated.
+    ''' </summary>
+    ''' <remarks>
+    ''' This code was originally at the bottom of ParamEstimate1.
+    ''' </remarks>
+    Private Sub ComputeFisheriesStats()
+        Dim Kount As Single, Total As Single, Mean As Single, IMPT As Single, Consu As Single, TruPut As Single
+        Dim prod As Single
+        Dim i As Integer, ii As Integer
+
+        'Kount = 0
+        'Total = 0
+        'Mean = 0
+        For i = 1 To NumGroups
+            If TTLX(i) <> 0 And B(i) <> 0 Then
+                Total = Total + BQB(i) * B(i)
+                Mean = Mean + TTLX(i) * B(i)
+                Kount = Kount + B(i)
+            End If
+        Next i
+
+        CatchSum = 0
+        IMPT = 0
+        Mean = 0
+        Consu = 0
+        TruPut = 0
+
+        For i = 1 To NumGroups
+            CatchSum = CatchSum + Landing(0, i) + Discard(0, i) 'Catch(i)
+            If PP(i) = 2 Then              'A detritus box
+                IMPT = IMPT + DtImp(i)
+            Else
+                IMPT = IMPT + DC(i, 0) * QB(i) * B(i)
+            End If
+            prod = 0
+            If QB(i) >= 0 Then
+                prod = B(i) * PB(i) * EE(i)
+                Consu = Consu + B(i) * QB(i)
+            End If
+            If PP(i) = 2 Then
+                Consu = Consu + Dt
+                For ii = 1 To NumGroups
+                    prod = prod + B(ii) * QB(ii) * DC(ii, NumGroups)
+                Next ii
+            End If
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            '            'MOD: VC/ELI 012397
+            '            If i > NumLiving And prod < 0 Then GoTo SkipTr
+            '            'END MOD
+            '            TruPut = TruPut + prod
+            '            If QB(i) = 0 Then Mean = Mean + B(i) * PB(i)
+            'SkipTr:
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            'jb Modified to not use the goto statment
+            'the original intent was to NOT sum "prod" for non living groups that had negative "prod"
+            'so 'TruPut' is the sum of all positive 'prod'
+            If (i > NumLiving And prod < 0) = False Then 'GoTo SkipTr
+                TruPut = TruPut + prod
+                If QB(i) = 0 Then Mean = Mean + B(i) * PB(i)
+            End If
+
+        Next i
+
+        'If NumGroups > NumLiving And EX(NumGroups) > 0 Then TruPut = TruPut + EX(NumGroups) '+ BA(NumGroups)
+        For i = NumLiving + 1 To NumGroups
+            TruPut = TruPut + Ex(i)
+        Next
+        If Totpp > 0 Then
+            GEff = CatchSum / Totpp
+        ElseIf PProd > 0 Then
+            GEff = CatchSum / PProd
+        Else
+            GEff = 0
+        End If
+
+        If GEff <> 0 Then
+            ' TLcatch gives trophic level of the fishery
+            Kount = 0 : Total = 0
+            For i = 1 To NumGroups
+                Kount = Kount + fCatch(i)
+                Total = Total + TTLX(i) * fCatch(i)
+            Next i
+            If Kount > 0 Then
+                TLcatch = Total / Kount
+            Else
+                TLcatch = 0
+            End If
+        End If
+
+    End Sub
+    '''<summary>
+    '''     Computes
+    '''M2(): Predator mortality for group i.
+    '''Resp(i): Respiration for group i.
+    '''RTZ: sum resp.  
+    '''ConSum: sum of consumption.
+    '''SumBio: sum of biomass.
+    '''min_B_QB: minimum B*QB.
+    ''' </summary>
+    ''' <remarks>
+    ''' Was Public Sub ParamEstimate2() in original code
+    ''' </remarks>
+    Private Sub Compute_M2_Resp_and_Stats()
+
+        Dim Prod As Single = 0
+        Dim M2Sum As Single = 0
+        Dim strMsg As String = ""
+        Dim i As Integer, j As Integer
+        Dim b_resp_below_zero As Boolean = False
+
+        'jb variable from v-5 not used here
+        'Dim pt As Integer, DetC As Integer
+
+        RTZ = 0
+        Consum = 0
+        SumBio = 0
+
+        For i = 1 To NumGroups
+            If i <= NumLiving Then
+                SumBio = SumBio + B(i)
+                For j = 1 To NumLiving
+                    If DC(j, i) > 0 And B(i) > 0 Then M2Sum = M2Sum + B(j) * QB(j) * DC(j, i) / B(i)
+                Next j
+            End If
+            M2(i) = M2Sum
+            M2Sum = 0
+
+            If i <= NumLiving Then
+                If QB(i) > 0 Then
+
+                    Consum = Consum + B(i) * QB(i)
+                    Prod = EE(i) * B(i) * PB(i) + FlowToDet(i)
+
+                    ' FlowToDet(i) is the total flow to Detritus
+                    If currUnitIndex = eUnitCurrencyType.Nitrogen Or currUnitIndex = eUnitCurrencyType.Phosporous Or currUnitIndex = eUnitCurrencyType.CustomNutrient Then
+                        Resp(i) = 0 'Nutrient       B(i) * QB(i) - prod
+                    ElseIf PP(i) < 1 Then
+                        Resp(i) = B(i) * QB(i) - (1 - PP(i)) * Prod
+                    Else
+                        Resp(i) = B(i) * QB(i) - Prod
+                    End If
+                Else
+                    'vc resp of pp OK  RESP(i) = 0
+                End If
+            Else
+                'vc resp of detritus OK RESP(i) = 0
+            End If
+
+            RTZ = RTZ + Resp(i)
+
+            If Resp(i) < 0 Then b_resp_below_zero = True 'pt = 2
+
+            'jb 7-dec-04 DetC never used
+            'If det(0, i) < 0 Then DetC = 1
+
+        Next i
+
+        'jb min_B_QB was called min
+        min_B_QB = 0
+        For i = 1 To NumGroups
+            If QB(i) > 0 Then
+                If min_B_QB = 0 Then min_B_QB = B(i) * QB(i)
+                If min_B_QB > B(i) * QB(i) Then min_B_QB = B(i) * QB(i)
+            End If
+        Next i
+
+        If b_resp_below_zero Then
+            'jb changed
+            'If pt > 0 Then
+            strMsg = "WARNING : Respiration cannot be negative. Summary statistics for the system"
+            strMsg = strMsg & " are suppressed. Please check parameters and rerun program."
+
+            cCore.GetInstance.Messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
+                                                    eMessageSource.EcoPath, eMessageImportance.Warning))
+            ' MsgBox(strMsg)
+            ''SetMousePtr 0
+        End If
+    End Sub
+    ''' <summary>
+    ''' Compute
+    ''' Conn: Connectance Index.
+    ''' SumEx: sum of export.
+    ''' SumP: Sum of all production.
+    ''' SysOm: System Omnivory Index.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub ComputeMoreStats()
+        Dim i As Integer, j As Integer, SysOmDen As Single
+
+        For i = 1 To NumLiving
+            For j = 1 To NumGroups
+                If DC(i, j) > 0 Then Conn = Conn + 1
+            Next j
+        Next i
+        Conn = Conn / (NumLiving) ^ 2  'with detritus
+
+        'system omnivory index
+        SysOm = 0
+        SysOmDen = 0
+        'jb min_B_QB was min 
+        'it is set in Compute_M2_Resp_and_Stats()
+        For i = 1 To NumLiving
+            If B(i) * QB(i) / min_B_QB > 0 Then    ' *** CONSUMERS ONLY
+                SysOm = SysOm + Math.Log(B(i) * QB(i) / min_B_QB) * BQB(i)
+                SysOmDen = SysOmDen + Math.Log(B(i) * QB(i) / min_B_QB)
+            End If
+        Next i
+
+        If SysOmDen > 0 Then SysOm = SysOm / SysOmDen
+
+        SumEx = 0
+        SumP = 0
+        For i = 1 To NumGroups
+            SumEx = SumEx + Ex(i)
+            If PB(i) > 0 And B(i) > 0 Then SumP = SumP + PB(i) * B(i)
+        Next i
+
+    End Sub
+
+    Public Sub DietWasChanged(ByVal pred As Integer, ByVal prey As Integer)
+        Dim j As Integer, K As Integer
+        Dim FoundPredPrey As Boolean
+
+        j = UBound(DietChanged, 2)
+        For K = 0 To j
+            If DietChanged(0, K) = pred And DietChanged(1, K) = prey Then
+                FoundPredPrey = True
+                Exit For
+            End If
+        Next
+
+        If FoundPredPrey = False Then
+            ReDim Preserve DietChanged(1, j + 1)
+            DietChanged(0, j + 1) = pred
+            DietChanged(1, j + 1) = prey
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Copy the Input arrays into the arrays that are used for modeling and model output.
+    ''' </summary>
+    ''' <returns>True if all the values were copied successfully.</returns>
+    ''' <remarks>This is call at the start of an Ecopath model run to copy the input data into the arrays that are used
+    ''' for model computations and output. I.e. copies EEinput(NumGroups) into EE(NumGroups). In EwE5 this is called MakeUnknownUnknown </remarks>
+    Public Function CopyInputToModelArrays() As Boolean
+
+        'Warning EwE5 also included input variables for BA, Immig, and Emigration 
+        'See modEcosSense.MakeUnknownUnknown
+        Try
+            Binput.CopyTo(B, 0)
+            BHinput.CopyTo(BH, 0)
+            EEinput.CopyTo(EE, 0)
+            PBinput.CopyTo(PB, 0)
+            QBinput.CopyTo(QB, 0)
+            GEinput.CopyTo(GE, 0)
+            vbKInput.CopyTo(vbK, 0)
+            ' copy dc
+            For i As Integer = 0 To Me.NumGroups
+                For j As Integer = 0 To Me.NumGroups
+                    DC(i, j) = DCInput(i, j)
+                Next
+            Next
+            Return True
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Compute missing <see cref="BH">BH</see> (Biomass/Area) values.
+    ''' </summary>
+    ''' <returns>True if successfully.</returns>
+    ''' <remarks>
+    ''' EwE5 performed differently here; BH() value was left at its NULL input value,
+    ''' and was computed in the interface for display. I hope this doesn't mess anything up.
+    ''' </remarks>
+    Private Function UpdateBH() As Boolean
+        For i As Integer = 1 To NumGroups
+            If BH(i) < 0 And B(i) > 0 And Area(i) > 0 Then
+                BH(i) = B(i) / Area(i)
+            End If
+        Next
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Sums a <see cref="DC">Diet Composition</see> matrix to one. 
+    ''' </summary>
+    ''' <param name="bSumDCInput">Flag, states which DC matrix should be corrected. If 
+    ''' True, the user input matrix <see cref="DCInput">DCInput</see> will be altered. 
+    ''' If False, the model matrix <see cref="DC">DC</see> will be altered.</param>
+    Public Sub SumDCToOne(Optional ByVal bSumDCInput As Boolean = False)
+
+        ' Pick matrix to alter
+        Dim asDCref(,) As Single = CType(IIf(bSumDCInput, Me.DCInput, Me.DC), Single(,))
+
+        ' For each potential predator
+        For iPred As Integer = 1 To NumLiving
+            ' Is a consumer?
+            If PP(iPred) < 1 Then
+                ' #Yes: calc sum
+                Dim sDCSum As Single = 0.0
+                ' For each of potential prey
+                ' ** NOTE THAT THE LOWER BOUND USED HERE IS 0 INSTEAD OF 1! This is to include
+                ' ** DC Impoprt in the calculations - which is stored at index 0.
+                For iPrey As Integer = 0 To Me.NumGroups
+                    ' Add consumption to sum
+                    sDCSum += asDCref(iPred, iPrey)
+                Next iPrey
+
+                ' Is there predation with a need to recalc?
+                If (sDCSum > 0) And (sDCSum <> 1.0) Then
+                    ' For each prey
+                    For iPrey As Integer = 1 To Me.NumGroups
+                        ' Rescale consumption
+                        asDCref(iPred, iPrey) = asDCref(iPred, iPrey) / sDCSum
+                    Next iPrey
+                End If
+            End If ' PP < 1
+        Next iPred
+    End Sub
+
+#End Region
+
+#Region "Debugging stuff"
+
+
+    ''' <summary>
+    ''' Dump the estimated parameters to a csv file.
+    ''' </summary>
+    ''' <param name="FileName">
+    ''' Name of the dump file.
+    ''' </param>
+    ''' <returns>
+    ''' True if no error Encountered.
+    ''' False if an error.
+    ''' </returns>
+    ''' <remarks></remarks>
+    Public Function DumpResults(ByVal FileName As String) As Boolean
+        Dim stream As System.IO.StreamWriter
+        Dim i As Integer, returnvalue As Boolean
+
+        Try
+            stream = New System.IO.StreamWriter(FileName)
+        Catch ex As Exception
+            DumpResults = False
+            cLog.Write(Me.ToString + ".DumpResults() failed to open file.")
+            Exit Function
+        End Try
+
+        Try
+            stream.WriteLine("GroupName,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")
+            For i = 1 To NumGroups
+                stream.Write(GroupName(i))
+                stream.Write(",")
+                stream.Write(B(i))
+                stream.Write(",")
+                stream.Write(PB(i))
+                stream.Write(",")
+                stream.Write(QB(i))
+                stream.Write(",")
+                stream.Write(EE(i))
+                stream.Write(",")
+                stream.Write(GE(i))
+
+                stream.Write(vbCrLf)
+            Next
+
+            stream.Close()
+
+        Catch ex As Exception
+            stream.Close()
+            returnvalue = False
+        End Try
+
+        returnvalue = True
+
+        DumpResults = returnvalue
+
+    End Function
+
+    ''' <summary>
+    ''' Run any post initialization validation
+    ''' </summary>
+    ''' <remarks>This should only be called from the datasouce once it has populated the Ecopath variables.
+    ''' It should not be called by the core in response to an edit because it can alter values in an unknown number of places. 
+    ''' The core would need to reload all it's Ecopath data after the call.
+    ''' If other logic is need that the core can have access to it should be put in a separate routine and called here. 
+    ''' The core can then access the logic via a different interface.
+    '''  </remarks>
+    Public Sub onPostInitialization()
+        'not much at this time
+
+        'GS = zero if group is Primary producer
+        For iGroup As Integer = 1 To NumGroups
+            If PP(iGroup) = 1 Then
+                GS(iGroup) = 0
+            End If
+        Next
+
+    End Sub
+
+#End Region
+
+    Friend Sub copyTo(ByRef dest As cEcopathDataStructures)
+        Try
+            'variables needed to redim
+            dest.NumGroups = NumGroups
+            dest.NumFleet = NumFleet
+            dest.NumDetrit = NumDetrit
+            dest.NumLiving = NumLiving
+
+            dest.redimGroups()
+
+            dest.bInitialized = bInitialized
+
+
+            GroupName.CopyTo(dest.GroupName, 0)    'was Specie()
+            GroupDBID.CopyTo(dest.GroupDBID, 0)        'Database ID - uniquely identifies the group. Access restricted to the Core only.
+
+            dest.NumEcosimScenarios = NumEcosimScenarios
+            'EcosimScenarioName.CopyTo(dest.EcosimScenarioName, 0)
+            'EcosimScenarioDBID.CopyTo(dest.EcosimScenarioDBID, 0)
+            'EcosimScenarioDescription.CopyTo(dest.EcosimScenarioDescription, 0)
+            dest.ActiveEcosimScenario = ActiveEcosimScenario
+
+            NumEcospaceScenarios = dest.NumEcospaceScenarios
+            'EcospaceScenarioName.CopyTo(dest.EcospaceScenarioName, 0)
+            'EcospaceScenarioDBID.CopyTo(dest.EcospaceScenarioDBID, 0)
+            'EcospaceScenarioDescription.CopyTo(dest.EcospaceScenarioDescription, 0)
+            'ActiveEcospaceScenario = cCore.NULL_VALUE
+
+            B.CopyTo(dest.B, 0)
+            BH.CopyTo(dest.BH, 0)
+            BA.CopyTo(dest.BA, 0)
+            BaBi.CopyTo(dest.BaBi, 0)
+            PB.CopyTo(dest.PB, 0)
+            QB.CopyTo(dest.QB, 0)
+            EE.CopyTo(dest.EE, 0)
+            GE.CopyTo(dest.GE, 0)
+            GS.CopyTo(dest.GS, 0)
+            EEinput.CopyTo(dest.EEinput, 0)
+            PBinput.CopyTo(dest.PBinput, 0)
+            QBinput.CopyTo(dest.QBinput, 0)
+            GEinput.CopyTo(dest.GEinput, 0)
+
+            Binput.CopyTo(dest.Binput, 0)
+
+            BHinput.CopyTo(dest.BHinput, 0)
+
+            'min_B_QB = dest.min_B_QB 'minimum B*QB
+
+
+            'dest.currUnitName = currUnitName
+            dest.currUnitIndex = currUnitIndex
+            dest.TimeUnitName = TimeUnitName
+            dest.TimeUnitIndex = TimeUnitIndex
+            dest.DietsModified = DietsModified
+            dest.PProd = PProd
+
+            ''''DietChanged.CopyTo(dest.DietChanged, 0)
+
+            Ex.CopyTo(dest.Ex, 0)
+
+            fCatch.CopyTo(dest.fCatch, 0) 'was called Catch but this causes a naming conflict with Try Catch blocks
+            Array.Copy(DCInput, dest.DCInput, DCInput.Length)
+            dest.DCInput = DCInput.Clone
+            dest.DC = DC.Clone
+            dest.DF = DF.Clone
+            Area.CopyTo(dest.Area, 0)
+            dest.DCChanged = DCChanged.Clone
+
+            BQB.CopyTo(dest.BQB, 0)
+            Resp.CopyTo(dest.Resp, 0)
+            PP.CopyTo(dest.PP, 0)           'TM Trophic Mode
+            dest.det = det.Clone
+            dest.DCDet = DCDet.Clone                 'Diet Composition of Detritus  for fishery            DetEaten.CopyTo(dest.DetEaten, 0)                 ' For multiple detritus
+            DetPassedOn.CopyTo(dest.DetPassedOn, 0)              ' For multiple detritus
+            DetPassedProp.CopyTo(dest.DetPassedProp, 0)              ' For multiple detritus
+            FlowToDet.CopyTo(dest.FlowToDet, 0)
+            InputToDet.CopyTo(dest.InputToDet, 0)
+            SumDC.CopyTo(dest.SumDC, 0)
+
+            dest.Unit = Unit
+            Immig.CopyTo(dest.Immig, 0)
+            Emigration.CopyTo(dest.Emigration, 0)
+            Emig.CopyTo(dest.Emig, 0)    'relative to biomass, used in Ecosim
+            Shadow.CopyTo(dest.Shadow, 0)
+            GroupIsFish.CopyTo(dest.GroupIsFish, 0)
+            GroupIsInvert.CopyTo(dest.GroupIsInvert, 0)
+
+            dest.NumCatchCodes = NumCatchCodes
+            dest.PropLanded = PropLanded.Clone
+            TTLX.CopyTo(dest.TTLX, 0)
+            dest.LHS = LHS.Clone
+            StanzaGroup.CopyTo(dest.StanzaGroup, 0)
+            dest.CatchCode = CatchCode.Clone
+            dest.CVpar = CVpar.Clone
+            M0.CopyTo(dest.M0, 0)
+            M2.CopyTo(dest.M2, 0)
+            dest.Path = Path.Clone
+            dest.LastComp = LastComp.Clone
+            DtImp.CopyTo(dest.DtImp, 0)
+
+            ''fishing(variables)
+            dest.NoGearData = NoGearData
+            dest.cost = cost.Clone
+            dest.CostPct = CostPct.Clone
+            dest.Discard = Discard.Clone
+            dest.DiscardFate = DiscardFate.Clone
+            FleetName.CopyTo(dest.FleetName, 0)
+            FleetDBID.CopyTo(dest.FleetDBID, 0)
+            dest.Landing = Landing.Clone
+            dest.Market = Market.Clone
+            dest.PropDiscard = PropDiscard.Clone
+
+            Epower.CopyTo(dest.Epower, 0)
+            PcapBase.CopyTo(dest.PcapBase, 0)
+            CapDepreciate.CopyTo(dest.CapDepreciate, 0)
+            CapBaseGrowth.CopyTo(dest.CapBaseGrowth, 0)
+
+
+            dest.RTZ = RTZ
+            dest.Consum = Consum
+            dest.SumBio = SumBio
+            dest.CatchSum = CatchSum
+            dest.GEff = GEff
+            dest.Totpp = Totpp
+            dest.TLcatch = TLcatch
+            dest.Dt = Dt
+            dest.SumEx = SumEx
+            dest.SumP = SumP
+            dest.Conn = Conn
+            dest.SysOm = SysOm
+
+            vbKInput.CopyTo(dest.vbKInput, 0)
+            vbK.CopyTo(dest.vbK, 0)
+            dest.Hlap = Hlap.Clone
+            dest.Plap = Plap.Clone
+            GroupColor.CopyTo(dest.GroupColor, 0)
+            'FleetColor.CopyTo(dest.FleetColor, 0)
+            dest.Host = Host.Clone
+            mis.CopyTo(dest.mis, 0)
+
+        Catch ex2 As Exception
+            Debug.Assert(False, ex2.Message)
+        End Try
+
+    End Sub
+
+End Class

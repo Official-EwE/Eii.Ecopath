@@ -1,0 +1,270 @@
+'==============================================================================
+'
+' $Log: IEcopathDataSource.vb,v $
+' Revision 1.1  2008/09/26 07:30:13  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.11  2008/07/21 14:04:43  jeroens
+' Added pedigree interfaces
+'
+' Revision 1.10  2008/02/22 21:44:04  jeroens
+' vbK tied to StanzaLifeStage
+'
+' Revision 1.9  2007/10/18 15:16:10  jeroens
+' * PP now created as Single
+'
+' Revision 1.8  2007/07/17 16:24:24  jeroens
+' + Added basis for copying across datasources
+' * Changed TS support
+'
+' Revision 1.7  2007/04/27 16:39:40  jeroens
+' + Mortality included when adding a stanza life stage to the database
+'
+' Revision 1.6  2007/04/22 16:23:10  jeroens
+' + Defined methods to modify stanza configurations
+'
+' Revision 1.5  2007/04/20 05:18:52  jeroens
+' * New stanza config initiated with a series of groups
+'
+' Revision 1.4  2007/03/08 11:48:20  jeroens
+' + Fleets can be added at a specific position
+' * Fleets can be moved in the fleet sequence
+'
+' Revision 1.3  2007/03/07 18:15:31  jeroens
+' + Added interfaces to query data changed state
+'
+' Revision 1.2  2006/12/18 05:35:14  jeroens
+' * New stanza configurations need a stanza group
+'
+' Revision 1.1  2006/12/03 18:55:21  jeroens
+' Initial version, separated from IEwEDataSource
+'
+'==============================================================================
+
+Option Strict On
+Imports EwEUtils.Core
+
+Namespace DataSources
+
+    Public Interface IEcopathDataSource
+        Inherits IEwEDataSource
+
+#Region " Generic "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Copies all current Ecopath data to a target datasource.
+        ''' </summary>
+        ''' <param name="ds">The datasource to copy data to.</param>
+        ''' <returns>True if sucessful.</returns>
+        ''' -------------------------------------------------------------------
+        Overloads Function CopyTo(ByVal ds As IEcopathDataSource) As Boolean
+
+#End Region ' Generic
+
+#Region " Diagnostics "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States if the datasource has unsaved changes for Ecopath.
+        ''' </summary>
+        ''' <returns>True if the datasource has pending changes for Ecopath.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsEcopathModified() As Boolean
+
+#End Region ' Diagnostics
+
+#Region " EwEModel "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initiates a full load of an EwE model.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function LoadModel() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Initiates a save of an EwE model
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function SaveModel() As Boolean
+
+#End Region ' EwEModel
+
+#Region " Groups "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a record for a new Ecopath group in the datasource.
+        ''' </summary>
+        ''' <param name="strGroupName">The name of the group to create.</param>
+        ''' <param name="sPP">The Type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+        ''' <param name="iPosition">The position of the new group in the group sequence.</param>
+        ''' <param name="iDBID">Database ID assigned to the new Group.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will not adjust the data arrays. Due to the complex organization of the
+        ''' core a full data reload is required after a group is created.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a group from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the group to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Note that this will not adjust the data arrays. Due to the complex organization of the
+        ''' core a full data reload is required after a group is removed.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Function RemoveGroup(ByVal iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecopath group to a different position in the group sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the group to move.</param>
+        ''' <param name="iPosition">The new position of the group in the group sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+
+#End Region ' Groups
+
+#Region " Fleets "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a fleet to the datasource.
+        ''' </summary>
+        ''' <param name="strFleetName">Name of the new fleet.</param>
+        ''' <param name="iPosition">Position of the new fleet in the fleet sequence.</param>
+        ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a fleet from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the fleet to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemoveFleet(ByVal iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecopath fleet to a different position in the fleet sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the fleet to move.</param>
+        ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+
+#End Region ' Fleets
+
+#Region " Stanza "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a stanza group to the datasource.
+        ''' </summary>
+        ''' <param name="strStanzaName">Name to assign to new stanza group.</param>
+        ''' <param name="iGroupID">Array of DBIDs of <see cref="cEcoPathGroupInput">Ecopath group</see>
+        ''' to assign to this mutli-stanza configuration.</param>
+        ''' <param name="iGroupAges">Array of start ages to assign to these groups.</param>
+        ''' <param name="iDBID">Database ID assigned to the new stanza group.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>The EwE core cannot handle a situation where a stanza configuration
+        ''' is defined without having any groups. To avoid this situation, this method
+        ''' requires a valid <paramref name="iGroupID">group ID</paramref>.</remarks>
+        ''' -------------------------------------------------------------------
+        Function AppendStanza(ByVal strStanzaName As String, ByVal iGroupID() As Integer, ByVal iGroupAges() As Integer, _
+                ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a stanza group from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemoveStanza(ByVal iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a life stage to an existing stanza configuration.
+        ''' </summary>
+        ''' <param name="iStanzaDBID">Database ID of the stanza group to add the life stage to.</param>
+        ''' <param name="iGroupDBID">Group to add as a life stage.</param>
+        ''' <param name="iStartAge">Start age of this life stage.</param>
+        ''' <param name="sMortality">Mortality for this life stage.</param>
+        ''' <param name="sVBK">vbK value for a life stage.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, ByVal iStartAge As Integer, ByVal sMortality As Single, ByVal sVBK As Single) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a life stage from an existing stanza configuration.
+        ''' </summary>
+        ''' <param name="iStanzaDBID">Database ID of the stanza group to remove the life stage from.</param>
+        ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean
+
+#End Region ' Stanza
+
+#Region " Pedigree "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds a pedigree level to the datasource.
+        ''' </summary>
+        ''' <param name="iPosition">The position of the new pedigree level in
+        ''' the level sequence.</param>
+        ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see> 
+        ''' this pedigree level pertains to</param>
+        ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
+        ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
+        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
+        ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal varName As eVarNameFlags, _
+                ByVal sIndexValue As Single, ByVal sConfidence As Single, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes a pedigree level from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the pedigree level to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move a pedigree level to a different position in the level sequence.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the pedigree level to move.</param>
+        ''' <param name="iPosition">The new position of the pedigree level in the 
+        ''' level sequence.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+
+#End Region ' Pedigree
+
+    End Interface
+
+End Namespace

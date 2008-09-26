@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CDECE065-503A-4562-A955-06777B2F909E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EwECore</RootNamespace>
+    <AssemblyName>EwECore</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>Off</OptionStrict>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>EwECore.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>EwECore.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109</NoWarn>
+    <DebugSymbols>false</DebugSymbols>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="EwECore" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Auxiliary\cAuxiliaryData.vb" />
+    <Compile Include="Auxiliary\cReference.vb" />
+    <Compile Include="Auxiliary\cVisualStyle.vb" />
+    <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />
+    <Compile Include="Database\cDatabaseUpdate.vb" />
+    <Compile Include="Database\cDatabaseUpdater.vb" />
+    <Compile Include="Database\cEwEAccessDatabase.vb" />
+    <Compile Include="Database\Import\cEwE6DatabaseImporter.vb" />
+    <Compile Include="Database\Updates\~sample~DB~Update~.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimFleetSummary.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimGroupSummary.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
+    <Compile Include="Search\cSearchDatastructures.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceStats.vb" />
+    <Compile Include="EcoSpace\Model\cGridSolver.vb" />
+    <Compile Include="EcoSpace\Model\cIBMSolver.vb" />
+    <Compile Include="EcoSpace\Model\cSpaceSolver.vb" />
+    <Compile Include="Fishing Policy\cFishingPolicySearchBlock.vb" />
+    <Compile Include="Fishing Policy\cFishingPolicyManager.vb" />
+    <Compile Include="Fishing Policy\cFishingPolicySearch.vb" />
+    <Compile Include="Fishing Policy\cFishingPolicyParameters.vb" />
+    <Compile Include="FitToTimeSeries\Input Output\cF2TSManager.vb" />
+    <Compile Include="FitToTimeSeries\Input Output\cF2TSResults.vb" />
+    <Compile Include="FitToTimeSeries\Model\cF2TSDataStructures.vb" />
+    <Compile Include="FitToTimeSeries\Model\cF2TSModel.vb" />
+    <Compile Include="HelperClasses\cXMLLogWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayer.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceFleet.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceFleetSummary.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceGroup.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceGroupOutput.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceGroupSummary.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceHabitat.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceModelParameters.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceMPA.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceRegion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EcoSpace\Input Output\cEcospaceRegionSummary.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
+    <Compile Include="Shapes\Forcing Functions\cPPIManager.vb" />
+    <Compile Include="Core\cCore.vb" />
+    <Compile Include="Core\cCoreStateMonitor.vb" />
+    <Compile Include="Core\cEwEModel.vb" />
+    <Compile Include="Core\cModelSyncManager.vb" />
+    <Compile Include="Core\cOperators.vb" />
+    <Compile Include="Core\CoreEnumerators.vb" />
+    <Compile Include="Monte Carlo\cEcosimMonteCarlo.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloGroup.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloManager.vb" />
+    <Compile Include="MultiStanza\cStanzaGroup.vb" />
+    <Compile Include="Core\cValue.vb" />
+    <Compile Include="Core\cValueID.vb" />
+    <Compile Include="Core\cVariableMetaData.vb" />
+    <Compile Include="Core\ICoreInputOutput.vb" />
+    <Compile Include="Core\MatrixCalc.vb" />
+    <Compile Include="Shapes\Forcing Functions\cPredPreyInteraction.vb" />
+    <Compile Include="DataSource\IEcosimDatasource.vb" />
+    <Compile Include="DataSource\IEcopathDataSource.vb" />
+    <Compile Include="DataSource\IEcospaceDatasource.vb" />
+    <Compile Include="EcoPath\cEcoPathGroupInput.vb" />
+    <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
+    <Compile Include="DataSource\Implementations\cDBDataSource.vb" />
+    <Compile Include="DataSource\IEwEDataSource.vb" />
+    <Compile Include="EcoPath\cEcopathDataStructures.vb" />
+    <Compile Include="EcoPath\cEcoPathGroupOutput.vb" />
+    <Compile Include="EcoPath\cEcoPathModel.vb" />
+    <Compile Include="EcoPath\cFleetInput.vb" />
+    <Compile Include="EcoPath\EcopathMassBalance.vb" />
+    <Compile Include="EcoSim\Model\cEcoSimDatastructures.vb" />
+    <Compile Include="EcoSim\Input Output\cEcoSimGroupInput.vb" />
+    <Compile Include="EcoSim\Model\cEcoSimModel.vb" />
+    <Compile Include="EcoSim\Input Output\cEcoSimModelParameters.vb" />
+    <Compile Include="EcoSim\Input Output\cEcoSimResults.vb" />
+    <Compile Include="EcoSim\Input Output\cEcoSimScenario.vb" />
+    <Compile Include="MultiStanza\cStanzaDatastructures.vb" />
+    <Compile Include="EcoSpace\Model\cEcoSpace.vb" />
+    <Compile Include="EcoSpace\Model\cEcoSpaceDataStructures.vb" />
+    <Compile Include="Shapes\cShapeData.vb" />
+    <Compile Include="Shapes\Forcing Functions\ShapeManagers.vb" />
+    <Compile Include="Shapes\Forcing Functions\Shapes.vb" />
+    <Compile Include="HelperClasses\cLog.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Publisher-Subscriber\cFeedbackMessage.vb" />
+    <Compile Include="Publisher-Subscriber\cMessage.vb" />
+    <Compile Include="Publisher-Subscriber\cMessageHandler.vb" />
+    <Compile Include="Publisher-Subscriber\cMessagePublisher.vb" />
+    <Compile Include="Publisher-Subscriber\cProgressMessage.vb" />
+    <Compile Include="Publisher-Subscriber\cVariableStatus.vb" />
+    <Compile Include="Resources\cCoreResources.vb" />
+    <Compile Include="Resources\CoreDefaults.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreDefaults.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\CoreMessages.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesDataStructures.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesReaderFactory.vb" />
+    <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
+    <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesCSVReader.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesTextReader.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
+    <Compile Include="Validators\cValidatorBase.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CoreMessages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreMessages.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Class Diagrams\Core Ecopath.cd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Class Diagrams\Core Input-Output.cd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Class Diagrams\Message Handlers.cd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Class Diagrams\Data Validators.cd" />
+    <Compile Include="Auxiliary\cPedigreeManager.vb" />
+    <Compile Include="Contaminant Tracer\Input Output\cEcotracerGroupInput.vb" />
+    <Compile Include="Contaminant Tracer\Input Output\cEcotracerModelParameters.vb" />
+    <Compile Include="Contaminant Tracer\Input Output\cEcotracerScenario.vb" />
+    <Compile Include="Contaminant Tracer\Input Output\cEcotracerGroupOutput.vb" />
+    <Compile Include="Contaminant Tracer\Input Output\cEcotracerRegionGroupOutput.vb" />
+    <Compile Include="Core\cEwEScenario.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_02.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_04.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_05.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_06.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_07.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_03_08.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_00.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_001.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_002.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_003.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_004.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_0042.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_005.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_02.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_021.vb" />
+    <Compile Include="DataSource\IEcotracerDatasource.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceNxNLayer.vb" />
+    <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
+    <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
+    <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />
+    <Compile Include="MPAOptimization\Model\cEcoSeed.vb" />
+    <Compile Include="MPAOptimization\Model\cMPAOptDataStructures.vb" />
+    <Compile Include="MPAOptimization\Model\cMPARandomSearch.vb" />
+    <Compile Include="Game Server\cGameServerInterface.vb" />
+    <Compile Include="MSE\Input Output\cMSEFleetInput.vb" />
+    <Compile Include="MSE\Input Output\cMSEGroupInput.vb" />
+    <Compile Include="MSE\Input Output\cMSEManager.vb" />
+    <Compile Include="MSE\Input Output\cMSEOutput.vb" />
+    <Compile Include="MSE\Input Output\cMSEParameters.vb" />
+    <Compile Include="MSE\Model\cMSE.vb" />
+    <Compile Include="MSE\Model\cMSEDataStructures.vb" />
+    <Compile Include="Search\SearchInputOutput.vb" />
+    <Compile Include="Search\SearchManager.vb" />
+    <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="Resources\EwE6.accdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
+      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CoreDefaults.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreDefaults.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EwE6.mdb">
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExternalData\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+</Project>

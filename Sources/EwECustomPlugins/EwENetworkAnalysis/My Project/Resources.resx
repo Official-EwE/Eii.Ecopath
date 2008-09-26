@@ -1,0 +1,592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="COL_HDR_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="TREE_NODE_CATCH_PYR" xml:space="preserve">
+    <value>Catch pyramid</value>
+  </data>
+  <data name="ROW_HDR_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD" xml:space="preserve">
+    <value>Overhead (t/km²/year * bits)</value>
+  </data>
+  <data name="COL_HDR_UNIT" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="ROW_HDR_INTN_FLOW" xml:space="preserve">
+    <value>Internal flow</value>
+  </data>
+  <data name="ROW_HDR_SUM" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_FLOWBIT" xml:space="preserve">
+    <value>Capacity (flowbits)</value>
+  </data>
+  <data name="TREE_NODE_BIOMASS_TRP_LVL" xml:space="preserve">
+    <value>Biomass by trophic level</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_W_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim network analysis (with PPR Est) progress:</value>
+  </data>
+  <data name="STR_NONE" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="COL_HDR_PATH" xml:space="preserve">
+    <value>Pathways from the specified group to all top predators</value>
+  </data>
+  <data name="COL_HDR_VALUE" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="SAMS_URL" xml:space="preserve">
+    <value>http://www.sams.ac.uk/</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL" xml:space="preserve">
+    <value>Trophic level</value>
+  </data>
+  <data name="TREE_NODE_CONSUM_TL1" xml:space="preserve">
+    <value>Consumer &lt;- TL1</value>
+  </data>
+  <data name="ROW_HDR_NOT_APP" xml:space="preserve">
+    <value>Not applicable</value>
+  </data>
+  <data name="COL_HDR_PATH_NUM" xml:space="preserve">
+    <value>Pathway number</value>
+  </data>
+  <data name="COL_HDR_CONSUM_PREDAT" xml:space="preserve">
+    <value>Consumption by predators</value>
+  </data>
+  <data name="COL_HDR_SOURCE_TRP_LVL" xml:space="preserve">
+    <value>Source / Trophic level</value>
+  </data>
+  <data name="MSG_BOX_CYC_ALL" xml:space="preserve">
+    <value>Cycles (all)? (very time consuming for bigger model)</value>
+  </data>
+  <data name="TREE_NODE_ABS_FLOWS" xml:space="preserve">
+    <value>Absolute flows</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL_FLOW" xml:space="preserve">
+    <value>Trophic level / Flow</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_PCT" xml:space="preserve">
+    <value>Capacity (%)</value>
+  </data>
+  <data name="LBL_FIB_INDX" xml:space="preserve">
+    <value>FIB index</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOWBIT" xml:space="preserve">
+    <value>Ascendency (flowbits)</value>
+  </data>
+  <data name="ROW_HDR_PCT" xml:space="preserve">
+    <value>(%)</value>
+  </data>
+  <data name="COL_HDR_SOURCE" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="TREE_NODE_CYC_ALL" xml:space="preserve">
+    <value>Cycles (all)</value>
+  </data>
+  <data name="ROW_HDR_PRED_CYC_INDX" xml:space="preserve">
+    <value>Predatory cycling index</value>
+  </data>
+  <data name="TREE_NODE_FLOW_PYR" xml:space="preserve">
+    <value>Flow pyramid</value>
+  </data>
+  <data name="TREE_NODE_BY_GRP" xml:space="preserve">
+    <value>By group</value>
+  </data>
+  <data name="STR_PROP_TOTAL_FLOW" xml:space="preserve">
+    <value>Proportion of total flow originating from detritus: </value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT" xml:space="preserve">
+    <value>Throughput</value>
+  </data>
+  <data name="STR_W_DET" xml:space="preserve">
+    <value>with detritus</value>
+  </data>
+  <data name="LBL_CYC_FIND_PRGR" xml:space="preserve">
+    <value>Cycle finding progress:</value>
+  </data>
+  <data name="ROW_HDR_NO_PATH_FOUND" xml:space="preserve">
+    <value>No pathways found</value>
+  </data>
+  <data name="COL_HDR_PPR_PP" xml:space="preserve">
+    <value>PPR (PP)</value>
+  </data>
+  <data name="LBL_PATH_TO" xml:space="preserve">
+    <value>Pathways &amp;leading to:</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>Total throughput</value>
+  </data>
+  <data name="ROW_HDR_FINN_MEAN_PATH_LEN" xml:space="preserve">
+    <value>Finn's mean path length</value>
+  </data>
+  <data name="COL_HDR_PATH_CONSUM" xml:space="preserve">
+    <value>Pathways from primary producer or detritus groups to a selected consumer</value>
+  </data>
+  <data name="COL_HDR_NONHIDDEN" xml:space="preserve">
+    <value>Non-hidden</value>
+  </data>
+  <data name="TREE_NODE_SHOW_HIDE_GRP" xml:space="preserve">
+    <value>Show/hide groups in mixed trophic impact plot</value>
+  </data>
+  <data name="ROW_HDR_PRODUCER" xml:space="preserve">
+    <value>Producer</value>
+  </data>
+  <data name="TREE_NODE_FOR_CONSUM_ALL_GRP" xml:space="preserve">
+    <value>For consumption of all groups</value>
+  </data>
+  <data name="STR_T_KM2_YR" xml:space="preserve">
+    <value>t/km²/year</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_WO_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim network analysis (without PPR Est) progress:</value>
+  </data>
+  <data name="ROW_HDR_DET" xml:space="preserve">
+    <value>Detritus</value>
+  </data>
+  <data name="TREE_NODE_SUM_PATH" xml:space="preserve">
+    <value>Summary of pathways</value>
+  </data>
+  <data name="COL_HDR_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="TREE_NODE_W_PPR_EST" xml:space="preserve">
+    <value>With primary production required estimate</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
+    <value>Total (t/km²/year)</value>
+  </data>
+  <data name="MSG_BOX_EWE_NA_PLUGIN" xml:space="preserve">
+    <value>EwE Network Analysis Plugin</value>
+  </data>
+  <data name="LBL_KEMPTONS_Q" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="COL_HDR_PPR_U_BIOMASS" xml:space="preserve">
+    <value>PPR/u. biom</value>
+  </data>
+  <data name="TREE_NODE_CYC_LIVING" xml:space="preserve">
+    <value>Cycles (living)</value>
+  </data>
+  <data name="STR_WO_DET" xml:space="preserve">
+    <value>without detritus</value>
+  </data>
+  <data name="ROW_HDR_ALL_FLOWS" xml:space="preserve">
+    <value>All flows</value>
+  </data>
+  <data name="STR_PCT_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>% of total throughput</value>
+  </data>
+  <data name="TREE_NODE_FOR_HARV_ALL_GRP" xml:space="preserve">
+    <value>For harvest of all groups</value>
+  </data>
+  <data name="LBL_TOTAL_CATCH" xml:space="preserve">
+    <value>Total catch</value>
+  </data>
+  <data name="TREE_NODE_CYC_PATH_LEN" xml:space="preserve">
+    <value>Cycling and path length</value>
+  </data>
+  <data name="LBL_TIME_STEP" xml:space="preserve">
+    <value>Time steps</value>
+  </data>
+  <data name="COL_HDR_INFO" xml:space="preserve">
+    <value>Information (bits)</value>
+  </data>
+  <data name="COL_HDR_PARAM" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="TREE_NODE_WO_PPR_EST" xml:space="preserve">
+    <value>Without primary production required estimate</value>
+  </data>
+  <data name="LBL_PATH_VIA" xml:space="preserve">
+    <value>&amp;via:</value>
+  </data>
+  <data name="COL_HDR_FLOW_DET" xml:space="preserve">
+    <value>Flow to detritus</value>
+  </data>
+  <data name="LBL_PPR_CAL_PRGR" xml:space="preserve">
+    <value>Primary production calculation progress:</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_TOTAL" xml:space="preserve">
+    <value>Throughput cycled (including detritus)</value>
+  </data>
+  <data name="COL_HDR_ASCEND_PCT" xml:space="preserve">
+    <value>Ascendency (%)</value>
+  </data>
+  <data name="ROW_HDR_EXTRACT_BREAK_CYC" xml:space="preserve">
+    <value>Extracted to break cycles</value>
+  </data>
+  <data name="TREE_NODE_REL_FLOWS" xml:space="preserve">
+    <value>Relative flows</value>
+  </data>
+  <data name="TREE_NODE_BIOMASS_PYR" xml:space="preserve">
+    <value>Biomass pyramid</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_PCT" xml:space="preserve">
+    <value>Overhead (%)</value>
+  </data>
+  <data name="COL_HDR_EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="LBL_TL_CATCH" xml:space="preserve">
+    <value>TL of catch</value>
+  </data>
+  <data name="COL_HDR_CONSUM" xml:space="preserve">
+    <value>Consumption</value>
+  </data>
+  <data name="COL_HDR_PATH_VIA_PREY" xml:space="preserve">
+    <value>Pathways from primary producer or detritus groups to a selected consumer via a specified prey</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME_TRP_LVL" xml:space="preserve">
+    <value>Group name / Trophic level</value>
+  </data>
+  <data name="MSG_BOX_DISPALY_ALL_HIDDEN" xml:space="preserve">
+    <value>Display all groups (yes) or hidden groups only (No)?</value>
+  </data>
+  <data name="TREE_NODE_PATH" xml:space="preserve">
+    <value>Pathway</value>
+  </data>
+  <data name="ROW_HDR_INPUT_TRP_LVL_II_PLUS" xml:space="preserve">
+    <value>Input TL II+ (not in throughput)</value>
+  </data>
+  <data name="COL_HDR_PPR_TOTAL_PP" xml:space="preserve">
+    <value>PPR/TotPP (%)</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_NUM_PATH" xml:space="preserve">
+    <value>Total number of pathways</value>
+  </data>
+  <data name="LBL_CATCH_PPR" xml:space="preserve">
+    <value>Catch PPR</value>
+  </data>
+  <data name="ROW_HDR_RESP" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="COL_HDR_PPR_U_CATCH" xml:space="preserve">
+    <value>PPR/u. catch</value>
+  </data>
+  <data name="TREE_NODE_FROM_DET" xml:space="preserve">
+    <value>From detritus</value>
+  </data>
+  <data name="TREE_NODE_FLOW_DET" xml:space="preserve">
+    <value>Flow from detritus</value>
+  </data>
+  <data name="COL_HDR_ASCEND" xml:space="preserve">
+    <value>Ascendency (t/km²/year * bits)</value>
+  </data>
+  <data name="COL_HDR_PPR_COMSUM" xml:space="preserve">
+    <value>PPR/consumption</value>
+  </data>
+  <data name="STR_FROM_PRIM_PRODUCER" xml:space="preserve">
+    <value>     From primary producers: </value>
+  </data>
+  <data name="STR_TRANSFER_EFF" xml:space="preserve">
+    <value>Transfer efficiencies (calculated as geometric mean for TL II-IV)</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2" xml:space="preserve">
+    <value>Total (t/km²)</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOWBIT" xml:space="preserve">
+    <value>Overhead (flowbits)</value>
+  </data>
+  <data name="LBL_NA_INDIC" xml:space="preserve">
+    <value>Network analysis indices</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_LIV" xml:space="preserve">
+    <value>Throughput cycled (excluding detritus)</value>
+  </data>
+  <data name="COL_HDR_PPR_DET" xml:space="preserve">
+    <value>PPR (Det)</value>
+  </data>
+  <data name="COL_HDR_PPR_CATCH" xml:space="preserve">
+    <value>PPR/catch</value>
+  </data>
+  <data name="COL_HDR_IMPACTING_IMPACTED" xml:space="preserve">
+    <value>Impacting / Impacted</value>
+  </data>
+  <data name="TREE_NODE_GRAPH_MTI" xml:space="preserve">
+    <value>Graph of mixed trophic impact</value>
+  </data>
+  <data name="STR_PCT_THROUGHPUT_LIV" xml:space="preserve">
+    <value>% of throughput without detritus</value>
+  </data>
+  <data name="ROW_HDR_FINN_CYC_INDX" xml:space="preserve">
+    <value>Finn's cycling index</value>
+  </data>
+  <data name="TREE_NODE_CONSUM_PREY_TL1" xml:space="preserve">
+    <value>Consumer &lt;- prey &lt;- TL1</value>
+  </data>
+  <data name="LBL_CATCH_DET_REQ" xml:space="preserve">
+    <value>Catch detritus required</value>
+  </data>
+  <data name="TREE_NODE_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="ROW_HDR_FINN_STR_THRU_PATH_LEN" xml:space="preserve">
+    <value>Finn's straight-through path length</value>
+  </data>
+  <data name="COL_HDR_RESP" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="ROW_HDR_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TREE_NODE_CATCH_TRP_LVL" xml:space="preserve">
+    <value>Catch by trophic level</value>
+  </data>
+  <data name="ROW_HDR_MEAN_PATH_LEN" xml:space="preserve">
+    <value>Mean length of pathways = Total number of arrows / Total number of pathways</value>
+  </data>
+  <data name="TREE_NODE_IMPACT_DATA" xml:space="preserve">
+    <value>Impact data</value>
+  </data>
+  <data name="COL_HDR_NUM_PATH" xml:space="preserve">
+    <value>No. of paths</value>
+  </data>
+  <data name="LBL_NA_PRGR" xml:space="preserve">
+    <value>Network analysis progress:</value>
+  </data>
+  <data name="COL_HDR_CYC" xml:space="preserve">
+    <value>Cycles are linked pathways, starting from a group and returning to it</value>
+  </data>
+  <data name="LBL_PATH_FROM" xml:space="preserve">
+    <value>Pathways &amp;from:</value>
+  </data>
+  <data name="ROW_HDR_EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="TREE_NODE_FROM_ALL_COMB" xml:space="preserve">
+    <value>From all combined</value>
+  </data>
+  <data name="TREE_NODE_TRANSFER_EFF" xml:space="preserve">
+    <value>Transfer efficiency</value>
+  </data>
+  <data name="STR_TOTAL" xml:space="preserve">
+    <value>     Total: </value>
+  </data>
+  <data name="TREE_NODE_PRED_PREY" xml:space="preserve">
+    <value>Top predator &lt;- prey</value>
+  </data>
+  <data name="COL_HDR_PPR" xml:space="preserve">
+    <value>PPR</value>
+  </data>
+  <data name="STR_FROM_DET" xml:space="preserve">
+    <value>     From detritus: </value>
+  </data>
+  <data name="COL_HDR_CAPACITY" xml:space="preserve">
+    <value>Capacity (t/km²/year * bits)</value>
+  </data>
+  <data name="COL_HDR_CATCH" xml:space="preserve">
+    <value>Catch</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT_UNIT" xml:space="preserve">
+    <value>Throughput (t/km²/year)</value>
+  </data>
+  <data name="TREE_NODE_FROM_PRIM_PRODUCER" xml:space="preserve">
+    <value>From primary producers</value>
+  </data>
+  <data name="MSG_BOX_EST_PPR" xml:space="preserve">
+    <value>Estimate primary production required? (very time consuming for bigger model)</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="N_Asponsors" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Other\N_Asponsors.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EwENetworkAnalysis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ewenetworkanalysis.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="COL_HDR_ASCEND_EXPORT" xml:space="preserve">
+    <value>Asc export</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOW" xml:space="preserve">
+    <value>Asc flow</value>
+  </data>
+  <data name="COL_HDR_ASCEND_IMPORT" xml:space="preserve">
+    <value>Asc import</value>
+  </data>
+  <data name="COL_HDR_ASCEND_RESP" xml:space="preserve">
+    <value>Asc resp</value>
+  </data>
+  <data name="COL_HDR_BIOMASS" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_ECOSIM" xml:space="preserve">
+    <value>Capacity</value>
+  </data>
+  <data name="COL_HDR_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_EXPORT" xml:space="preserve">
+    <value>Ovh export</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOW" xml:space="preserve">
+    <value>Ovh flow</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_IMPORT" xml:space="preserve">
+    <value>Ovh import</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_RESP" xml:space="preserve">
+    <value>Ovh resp</value>
+  </data>
+  <data name="COL_HDR_PATH_LEN" xml:space="preserve">
+    <value>Path length</value>
+  </data>
+  <data name="COL_HDR_PCI" xml:space="preserve">
+    <value>PCI</value>
+  </data>
+  <data name="COL_HDR_PRIM_PROD" xml:space="preserve">
+    <value>Prim prod</value>
+  </data>
+  <data name="COL_HDR_PROD" xml:space="preserve">
+    <value>Prod</value>
+  </data>
+  <data name="COL_HDR_PROP_FLOW_DET" xml:space="preserve">
+    <value>Prop flow det</value>
+  </data>
+  <data name="COL_HDR_CATCH_PPR" xml:space="preserve">
+    <value>Catch PPR</value>
+  </data>
+  <data name="COL_HDR_CATCH_DET_REQ" xml:space="preserve">
+    <value>Catch detritus req</value>
+  </data>
+  <data name="COL_HDR_RESP_ECOSIM" xml:space="preserve">
+    <value>Resp</value>
+  </data>
+  <data name="LBL_ASCEND_FLOW" xml:space="preserve">
+    <value>Ascendency on flow</value>
+  </data>
+  <data name="LBL_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="COL_HDR_AMI" xml:space="preserve">
+    <value>AMI</value>
+  </data>
+  <data name="COL_HDR_ASCEND_TOTAL" xml:space="preserve">
+    <value>Asc total</value>
+  </data>
+  <data name="COL_HDR_ENTROPY" xml:space="preserve">
+    <value>Entropy</value>
+  </data>
+</root>

@@ -1,0 +1,423 @@
+'==============================================================================
+'
+' $Log: Basemap.vb,v $
+' Revision 1.1  2008/09/26 07:31:55  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.45  2008/08/11 04:39:51  jeroens
+' Simplified  Ecospace core class names
+'
+' Revision 1.44  2008/07/21 20:56:52  jeroens
+' RelCin layer shown when tracer active for Space
+'
+' Revision 1.43  2008/06/02 00:01:22  jeroens
+' Added ScientificInterfaceShared
+'
+' Revision 1.42  2008/05/29 22:22:38  jeroens
+' Moved eVarNameFlags to EwEUtils
+'
+' Revision 1.41  2008/04/08 16:25:30  jeroens
+' Added RelCIN layer
+' BrushPicker synchronized with selected layer datatype
+'
+' Revision 1.40  2008/03/28 23:19:23  jeroens
+' Brush picker follows selected layer state
+'
+' Revision 1.39  2008/03/25 14:42:29  jeroens
+' Greatly simplified layer management via LayerFactory
+'
+' Revision 1.38  2008/03/25 01:59:13  jeroens
+' Added ToDo
+'
+' Revision 1.37  2008/03/25 00:59:53  jeroens
+' Fitted toolbar text
+'
+' Revision 1.36  2008/03/23 17:45:04  jeroens
+' Added MPASeed layer
+'
+' Revision 1.35  2008/03/23 14:25:39  jeroens
+' Uses simplified layer access
+'
+' Revision 1.34  2008/01/06 09:14:16  jeroens
+' + Added zoom capability
+'
+' Revision 1.33  2008/01/01 19:52:53  jeroens
+' * Fixed layer type description
+'
+'==============================================================================
+
+#Region "Imports Directive"
+
+Option Explicit On
+Option Strict On
+
+Imports System.IO
+Imports EwECore
+Imports SAUPUtil.SAUPData
+Imports SAUPUtil.SAUPData.Mapping
+Imports SAUPUtil.Misc.Colours
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+
+#End Region
+
+Namespace Ecospace
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' This is the master class organizing and combining the different
+    ''' basemap view components. In MVC terms, this class is the global
+    ''' controller for the ecospace basemap interface.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Class Basemap
+
+#Region " Private vars "
+
+        ''' <summary>The one and only reference to the core.</summary>
+        Private m_core As cCore = Nothing
+        Private m_basemapData As cEcospaceBasemap = Nothing
+        ''' <summary>The one and only administration of layers.</summary>
+        Private m_layers As New List(Of Layer)
+        ''' <summary>The one and only control that renders the basemap.</summary>
+        Private m_ucBasemap As ucBaseMap = Nothing
+        ''' <summary>The one and only control that provides the layers interface.</summary>
+        Private m_ucLayers As ucLayersControl = Nothing
+        ''' <summary>Contaminant tracing on/off property.</summary>
+        Private m_propContaminantTracing As cProperty = Nothing
+        Private m_layerRelCin As Layer = Nothing
+
+        Private m_cmdEditBasemap As Command = Nothing
+        Private m_cmdEditHabitats As Command = Nothing
+        Private m_cmdEditRegions As Command = Nothing
+        Private m_cmdEditMPAs As Command = Nothing
+
+#End Region ' Private vars
+
+#Region " Constructors "
+
+        Public Sub New()
+
+            ' This call is required by the Windows Form Designer.
+            Me.InitializeComponent()
+
+            ' Initialize the data
+            Me.m_core = cCore.GetInstance()
+            ' Initalize m_ucBasemap
+            Me.m_ucBasemap = plBasemap.Map()
+
+            ' Add LayersControl
+            Me.m_ucLayers = New ucLayersControl()
+            plLayers.Controls.Add(Me.m_ucLayers)
+
+            Me.Basemap = Me.m_core.EcospaceBasemap
+            Me.m_ucBasemap.Editable = True
+
+        End Sub
+
+        Public Sub New(ByVal text As String)
+
+            Me.New()
+
+            'Set tab text
+            Me.TabText = text
+            'Set window text
+            Me.Text = text
+
+        End Sub
+
+#End Region ' Constructors
+
+#Region " Public properties "
+
+        Private Property Basemap() As cEcospaceBasemap
+
+            Get
+                Return Me.m_basemapData
+            End Get
+
+            Set(ByVal value As cEcospaceBasemap)
+
+                ' Store ref
+                Me.m_basemapData = value
+                ' Initalize the m_ucBasemap
+                Me.m_ucBasemap.Basemap = value
+                ' Initialize layers from core data
+                Me.LoadCoreValuesToBasemap()
+
+            End Set
+
+        End Property
+
+#End Region ' Public properties
+
+#Region " Events "
+
+        Private Sub Basemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim source As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
+
+            Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")
+            If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+                Me.m_cmdEditBasemap.AddControl(Me.tsbEditBasemap)
+                AddHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                AddHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+            End If
+
+            Me.m_cmdEditHabitats = cmdh.GetCommand("EditHabitats")
+            If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
+                Me.m_cmdEditHabitats.AddControl(Me.tsbEditHabitats)
+                AddHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                AddHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+            End If
+
+            Me.m_cmdEditMPAs = cmdh.GetCommand("EditMPAs")
+            If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
+                Me.m_cmdEditMPAs.AddControl(Me.tsbEditMPA)
+                AddHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                AddHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+            End If
+
+            Me.m_cmdEditRegions = cmdh.GetCommand("EditRegions")
+            If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
+                Me.m_cmdEditRegions.AddControl(Me.tsbEditRegion)
+                AddHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+            End If
+
+            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+
+            Me.m_propContaminantTracing = pm.GetProperty(source, eVarNameFlags.ConSimOnEcoSpace)
+            AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
+            Me.OnContaminantTracingChanged(Me.m_propContaminantTracing, cProperty.eChangeFlags.Value)
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub Basemap_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+
+            RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
+
+            ' Detach from message sources
+            Me.MessageSources = Nothing
+            ' Clean up
+            Me.RemoveAllLayers()
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+
+            If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+                Me.m_cmdEditBasemap.RemoveControl(Me.tsbEditBasemap)
+                RemoveHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                RemoveHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+                Me.m_cmdEditBasemap = Nothing
+            End If
+
+            If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
+                Me.m_cmdEditHabitats.RemoveControl(Me.tsbEditHabitats)
+                RemoveHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                RemoveHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+                Me.m_cmdEditHabitats = Nothing
+            End If
+
+            If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
+                Me.m_cmdEditMPAs.RemoveControl(Me.tsbEditRegion)
+                RemoveHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                RemoveHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+                Me.m_cmdEditMPAs = Nothing
+            End If
+
+            If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
+                Me.m_cmdEditRegions.RemoveControl(Me.tsbEditRegion)
+                RemoveHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
+                RemoveHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
+                Me.m_cmdEditRegions = Nothing
+            End If
+
+            Me.m_propContaminantTracing = Nothing
+
+        End Sub
+
+        Private Sub ucBrushPicker_OnBrushPicked(ByVal iSize As Integer, ByVal sValue As Single) Handles ucBrushPicker.OnBrushPicked
+            Me.m_ucBasemap.BrushSize = iSize
+            Me.m_ucBasemap.BrushValue = sValue
+        End Sub
+
+        Private Sub OnPreIvokeEditcommand(ByVal cmd As Command)
+            Me.m_ucLayers.LockUpdates()
+        End Sub
+
+        Private Sub OnPostIvokeEditcommand(ByVal cmd As Command)
+            Me.m_ucLayers.UnlockUpdates()
+            ' Update map
+            Me.m_ucBasemap.Refresh()
+        End Sub
+
+        Private Sub OnLayerChanged(ByVal layer As Layer, ByVal changeFlag As Layer.eChangeFlags)
+            If ((changeFlag And layer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+        End Sub
+
+        Private Sub OnContaminantTracingChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
+            If ((cf And cProperty.eChangeFlags.Value) = cf) Then
+                If CBool(prop.GetValue()) Then
+                    If (Me.m_layerRelCin Is Nothing) Then
+                        Me.m_layerRelCin = LayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerRelCin)(0)
+                        Me.AddLayer(Me.m_layerRelCin, LayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
+                    End If
+                Else
+                    If (Me.m_layerRelCin IsNot Nothing) Then
+                        Me.RemoveLayer(m_layerRelCin)
+                        Me.m_layerRelCin = Nothing
+                    End If
+                End If
+            End If
+        End Sub
+
+#End Region ' Events
+
+#Region " Load Core Helpers "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load fixed core layers from the core basemap data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub LoadCoreValuesToBasemap()
+
+            Me.m_ucLayers.LockUpdates()
+
+            ' Clean-up
+            Me.RemoveAllLayers()
+
+            Me.AddData(eVarNameFlags.LayerRelPP)
+            'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when proeprty changes
+            Me.AddData(eVarNameFlags.LayerMPA)
+            Me.AddData(eVarNameFlags.LayerRegion)
+            Me.AddData(eVarNameFlags.LayerHabitat)
+            Me.AddData(eVarNameFlags.LayerDepth)
+
+            Me.m_ucLayers.UnlockUpdates()
+
+            ' Update map
+            Me.m_ucBasemap.Refresh()
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper function to create the layers.  
+        ''' </summary>
+        ''' <param name="varName">The core variable to load basemap data for.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub AddData(ByVal varName As eVarNameFlags)
+
+            Dim alayers As Layer() = LayerFactory.GetLayers(Me.m_core, varName)
+            Dim strGroup As String = LayerFactory.GetLayerGroup(varName)
+
+            ' Define group
+            Me.m_ucLayers.AddGroup(LayerFactory.GetLayerGroup(varName))
+
+            For iLayer As Integer = 0 To alayers.Length - 1
+                Me.AddLayer(alayers(iLayer), strGroup)
+            Next
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove all layers.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub RemoveAllLayers()
+            Dim alayers As Layer() = Me.m_layers.ToArray()
+            For Each layer As Layer In alayers
+                Me.RemoveLayer(layer)
+            Next
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a single layer.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub AddLayer(ByVal l As Layer, ByVal strGroup As String)
+            Me.m_layers.Add(l)
+            Me.m_ucBasemap.AddLayer(l)
+            Me.m_ucLayers.AddLayer(l, strGroup)
+
+            AddHandler l.LayerChanged, AddressOf OnLayerChanged
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a single layer.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub RemoveLayer(ByVal l As Layer)
+            Me.m_layers.Remove(l)
+            Me.m_ucBasemap.RemoveLayer(l)
+            Me.m_ucLayers.RemoveLayer(l)
+
+            RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
+        End Sub
+
+#End Region ' Load core helpers
+
+#Region " Internals "
+
+        Private Sub UpdateControls()
+
+            Dim layerSelected As Layer = Me.GetSelectedLayer()
+            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+            Dim propLayer As cProperty = Nothing
+            Dim md As cVariableMetaData = Nothing
+            Dim bEnable As Boolean = False
+            Dim bEnableValue As Boolean = False
+
+            If (layerSelected IsNot Nothing) Then
+                ' Examine property source for configuring value field
+                propLayer = pm.GetProperty(layerSelected.Source, layerSelected.VarName)
+                If (propLayer IsNot Nothing) Then
+                    If (TypeOf propLayer Is cSingleProperty) Or (TypeOf propLayer Is cIntegerProperty) Then
+                        md = propLayer.GetVariableMetadata()
+                        Me.ucBrushPicker.BrushMinValue = md.Min
+                        Me.ucBrushPicker.BrushMaxValue = md.Max
+                        Me.ucBrushPicker.ValueType = propLayer.GetValueType()
+                        bEnableValue = (layerSelected.ValueSet = cCore.NULL_VALUE)
+                    End If
+                End If
+                bEnable = layerSelected.Editable
+            End If
+
+            ' Update
+            Me.ucBrushPicker.Enabled = bEnable
+            Me.ucBrushPicker.EnabledValue = bEnableValue
+
+        End Sub
+
+        Private Function GetSelectedLayer() As Layer
+            For Each layer As Layer In Me.m_layers
+                If layer.Selected Then Return layer
+            Next
+            Return Nothing
+        End Function
+
+#End Region ' Internals
+
+#Region " Mandatory overrides "
+
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            ' Refresh basemap on ANY data added or removed message from Ecospace
+            If ((msg.Source = eMessageSource.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+                ' Refresh it all
+                Me.Basemap = Me.m_core.EcospaceBasemap
+            End If
+        End Sub
+
+#End Region ' Mandatory overrides
+
+    End Class
+
+End Namespace

@@ -1,0 +1,604 @@
+'==============================================================================
+'
+' $Log: CoreEnumerators.vb,v $
+' Revision 1.1  2008/09/26 07:30:11  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.173  2008/07/23 21:12:45  jeroens
+' Converting more messages
+'
+' Revision 1.172  2008/07/22 20:46:01  jeroens
+' Added more suppressable messages
+'
+' Revision 1.171  2008/07/22 20:32:59  jeroens
+' Preparing for suppressable messages
+'
+' Revision 1.170  2008/07/21 14:05:36  jeroens
+' Expanded enum indexer to index two-way
+'
+' Revision 1.169  2008/06/11 17:22:15  joeb
+' Change Ecoseed to MPAOptimization
+'
+' Revision 1.168  2008/06/09 21:57:35  jeroens
+' Moved core counters to EwEUtils
+'
+' Revision 1.167  2008/06/06 15:55:55  joeb
+' Moved eDataTypes to EwEUtils.Core
+'
+' Revision 1.166  2008/05/29 22:22:47  jeroens
+' Moved eVarNameFlags to EwEUtils
+'
+' Revision 1.165  2008/05/26 18:06:53  jeroens
+' Added TimeUnit, CurrencyUnit
+'
+' Revision 1.164  2008/05/20 15:40:01  joeb
+' Added Variables for MSE parameters
+'
+' Revision 1.163  2008/05/16 17:03:05  joeb
+' Added Datatypes for SearchObjectives
+' Split file into regions
+'
+' Revision 1.162  2008/05/12 18:54:16  joeb
+' Added varnames for new search varaibles
+'
+' Revision 1.161  2008/05/05 16:15:57  joeb
+' Added MSE output flags
+'
+' Revision 1.160  2008/05/01 20:39:06  joeb
+' Added MSE variables
+'
+' Revision 1.159  2008/04/15 21:22:23  joeb
+' Added enumerators for MSE
+'
+' Revision 1.158  2008/04/04 16:05:02  joeb
+' Added MSEManager datatype
+'
+' Revision 1.157  2008/03/26 21:01:38  joeb
+' Added CBEnvironment
+'
+' Revision 1.156  2008/03/25 14:39:50  jeroens
+' Basemap cell vars exposed as Layer*
+'
+' Revision 1.155  2008/03/23 17:44:48  jeroens
+' Added MPASeed variable
+'
+' Revision 1.154  2008/03/03 16:09:19  joeb
+' Started implemetation of Ecospace output in EcoTracer
+'
+' Revision 1.153  2008/02/28 20:31:56  joeb
+' Added Left and Right Salinity
+'
+' Revision 1.152  2008/02/27 19:28:38  joeb
+' Added FishPolicySearch message source
+'
+' Revision 1.151  2008/02/17 16:08:20  joeb
+' Added EcosimResultsEffort
+'
+' Revision 1.150  2008/02/12 16:22:49  jeroens
+' Added sim output datatypes
+'
+' Revision 1.149  2008/02/10 02:43:06  jeroens
+' Added msg source External
+' Added data type TimeSeriesDataset
+'
+' Revision 1.148  2008/01/24 16:39:48  joeb
+' Added enumerators for EcoSeed
+'
+' Revision 1.147  2008/01/23 15:56:17  joeb
+' Added DataTypes for EcoSeed
+'
+' Revision 1.146  2008/01/08 23:14:05  jeroens
+' Added LastSaved variable
+'
+'==============================================================================
+
+Option Strict On
+Imports EwEUtils.Core
+
+#Region "cCoreEnumNamesIndex"
+
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Helper class; creates and maintains quick lookup tables of string 
+''' representations of enumerated types defined in the Core.
+''' </summary>
+''' <remarks>
+''' The dotNET mechanism for converting enum values to a string representation is
+''' dreadfully slow. This class provides a redundant but bloody fast way to
+''' find this string representation by indexing all string representations once.
+''' </remarks>
+''' ---------------------------------------------------------------------------
+Public Class cCoreEnumNamesIndex
+
+    ''' <summary>Singleton instance</summary>
+    Private Shared __inst__ As cCoreEnumNamesIndex = New cCoreEnumNamesIndex()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the one and only instance of this class.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetInstance() As cCoreEnumNamesIndex
+        Return cCoreEnumNamesIndex.__inst__
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Private constructor to enforce singleton.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub New()
+        ' Make indexes
+        Me.IndexEnum(GetType(eVarNameFlags), Me.m_dictVarEnumToName, Me.m_dictVarNameToEnum)
+        Me.IndexEnum(GetType(eDataTypes), Me.m_dictDataTypeEnumToName, Me.m_dictVarNameToEnum)
+    End Sub
+
+    ''' <summary>Index of eVarNameFlags enum names, by enum value.</summary>
+    Private m_dictVarEnumToName As New Dictionary(Of Integer, String)
+    ''' <summary>Index of eVarNameFlags enum values, by name.</summary>
+    Private m_dictVarNameToEnum As New Dictionary(Of String, Integer)
+    ''' <summary>Index of eDataType enum names, by enum value.</summary>
+    Private m_dictDataTypeEnumToName As New Dictionary(Of Integer, String)
+    ''' <summary>Index of eDataType enum values, by name.</summary>
+    Private m_dictDataTypeNameToEnum As New Dictionary(Of String, Integer)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Make a name index of a given enumerated type.
+    ''' </summary>
+    ''' <param name="t">The enumerated type to generate the enum name index for.</param>
+    ''' <param name="dict1">A dictionary to store the value/name pairs in.</param>
+    ''' <param name="dict2">A dictionary to store the name/value pairs in.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub IndexEnum(ByVal t As Type, ByRef dict1 As Dictionary(Of Integer, String), ByRef dict2 As Dictionary(Of String, Integer))
+
+        Dim aEnum As Array = System.Enum.GetValues(t)
+        Dim strName As String = ""
+        Dim iValue As Integer = 0
+        ' Iterate through enum
+        For i As Integer = aEnum.GetLowerBound(0) To aEnum.GetUpperBound(0)
+            ' Acquire and store name for quick lookup
+            iValue = CInt(aEnum.GetValue(i))
+            strName = CStr(System.Enum.GetName(t, iValue))
+            dict1(iValue) = strName
+            dict2(strName) = iValue
+        Next i
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a eVarNameFlags enum name.
+    ''' </summary>
+    ''' <param name="e">The <see cref="eVarNameFlags">eVarNameFlags</see> 
+    ''' enumerated value to retrieve the name for.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function GetVarName(ByVal e As eVarNameFlags) As String
+        Return Me.m_dictVarEnumToName(e)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a eVarNameFlags enum value.
+    ''' </summary>
+    ''' <param name="strVarName">The string representation for a variable name.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function GetVarName(ByVal strVarName As String) As eVarNameFlags
+        If Me.m_dictVarNameToEnum.ContainsKey(strVarName) Then
+            Return DirectCast(Me.m_dictVarNameToEnum(strVarName), eVarNameFlags)
+        Else
+            Return eVarNameFlags.NotSet
+        End If
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a eDataTypes enum name.
+    ''' </summary>
+    ''' <param name="e">The <see cref="eDataTypes">eDataTypes</see> 
+    ''' enumerated value to retrieve the name for.</param>
+    ''' -----------------------------------------------------------------------
+    Public Function GetDataTypeName(ByVal e As eDataTypes) As String
+        Return Me.m_dictDataTypeEnumToName(e)
+    End Function
+
+End Class
+
+#End Region
+
+#Region "Message Type, Importance and Source"
+
+#Region "MessageType"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerated type, identifying types of messages being broadcasted by the Core.
+''' </summary>
+''' <remarks>
+''' <para>Used by <see cref="cMessage">cMessage</see> to identify the type of 
+''' message being passed out.</para>
+''' <para>Used by <see cref="cMessageHandler">cMessageHandler</see> to identify
+''' the type of message the handler can handle.</para>
+''' </remarks>
+''' ---------------------------------------------------------------------------
+Public Enum eMessageType
+    ''' <summary>Message type has not been set.</summary>
+    NotSet = 0
+    ''' <summary>This message could be of any message type.</summary>
+    ''' <remarks>This flag is used by <see cref="cMessageHandler">cMessageHandler</see>
+    ''' as the default message handler.</remarks>
+    Any
+    ''' <summary>Diet Comp out of range.</summary>
+    DietComp
+    ''' <summary>Diet Comp correct to 15 percent prompt.</summary>
+    DietComp_CorrectTo15Perc
+    ''' <summary>EE out of range.</summary>
+    EE
+    ''' <summary>Parameters could not be computed because of missing data in input parameters.</summary>
+    TooManyMissingParameters
+    ''' <summary>No Catch for a Fishing Fleet.</summary>
+    NoCatchForFleet
+    ''' <summary>Error encountered during model run.</summary>
+    ErrorEncountered
+    ''' <summary>Data validation message.</summary>
+    DataValidation
+    ''' <summary>Data from the source has been modified.</summary>
+    DataModified
+    ''' <summary>Data has been added to, or removed from, the source.</summary>
+    DataAddedOrRemoved
+    ''' <summary>Data import related issue.</summary>
+    DataImport
+
+    '''' <summary>Time step in Ecospace</summary>
+    '''' <remarks>This was added for testing and is not used at this time</remarks>
+    'EcospaceTimeStep
+
+    ''' <summary>Ecospace has completed a model run </summary>
+    EcospaceRunCompleted
+
+    ''' <summary>Sent by any message source when the State Monitor's state not met to run a method </summary>
+    StateNotMet
+
+    Progress
+
+    EcosimRunCompleted
+
+    EcosimNYearsChanged
+    MassBalance_InsufficientData
+    RespirationExceeedsDetritus
+    InvalidModel_PB0_Generic
+    InvalidModel_QB0_Generic
+    InvalidModel_B_Detritus
+
+End Enum
+
+#End Region
+
+#Region "Message Importance"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Flag indicating the relative importance/severity of a <see cref="cMessage">Message</see>.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Enum eMessageImportance
+    ''' <summary>Maintenance messages typically indicate a synchronization event
+    ''' in the EwE application.</summary>
+    Maintenance
+    ''' <summary>Information messages typically indicate an event that may be of
+    ''' interest to a human user of EwE.</summary>
+    Information
+    ''' <summary>Warning messages indicating that the system has run in a problem
+    ''' and could not complete an operation.</summary>
+    Warning
+    ''' <summary>Critical messages indicate the the system has run into an error
+    ''' that it could not recover from. This is the most severe type of message.</summary>
+    Critical
+    ''' <summary>Progress messages typically indicate incremental status
+    ''' information about a lengthy operation.</summary>
+    Progress
+End Enum
+
+#End Region
+
+#Region "Message Source"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerated type, identifying sources of messages being broadcasted by the Core.
+''' </summary>
+''' <remarks>
+''' Used by <see cref="cMessage">cMessage</see> and <see cref="cMessageHandler">cMessageHandler</see> 
+''' to indicate the EwE core comnponent that sent the message.
+''' </remarks>
+''' ---------------------------------------------------------------------------
+Public Enum eMessageSource
+    ''' <summary>The message source is not specified.</summary>
+    NotSet
+    ''' <summary>The message originated from the Ecopath module of EwE.</summary>
+    EcoPath
+    ''' <summary>The message originated from the Ecosim module of EwE.</summary>
+    EcoSim
+    ''' <summary>The message originated from the Ecospace module of EwE.</summary>
+    EcoSpace
+    ''' <summary>The message originated from the Forcing shapes manager(s) in EwE.</summary>
+    ShapesManager
+    ''' <summary>The message originated from a datasource.</summary>
+    DataSource
+    ''' <summary>The message originated from the core itself.</summary>
+    Core
+    ''' <summary>The message originated from a Plugin </summary>
+    Plugin
+    ''' <summary>The message originated from the Monte Carlo routines in Ecosim.</summary>
+    EcoSimMonteCarlo
+    ''' <summary>The message originated from the Fit to Time Series routines in Ecosim.</summary>
+    EcoSimFitToTimeSeries
+    ''' <summary>The message originated from a change in loaded Time Series.</summary>
+    TimeSeries
+    ''' <summary>The message originated from the pred/prey interaction.</summary>
+    PPIManager
+    ''' <summary>The message originated from Ecotracer.</summary>
+    Ecotracer
+    ''' <summary>The message originated from an external source (such as the user interface)</summary>
+    External
+    ''' <summary>The message source is one of the Search Objective classes</summary>
+    SearchObjective
+    ''' <summary>The message originated from Fishing Policy Search.</summary>
+    FishingPolicySearch
+    ''' <summary>Management Strategy Evaluation  </summary>
+    MSE
+    ''' <summary> EcoSeed </summary>
+    MPAOptimization
+
+End Enum
+
+#End Region
+
+#End Region
+
+#Region "Progress State"
+
+Public Enum eProgressState
+    ''' <summary>Process has just started this is the first call</summary>
+    Start
+    ''' <summary>Process is running </summary>
+    Running
+    ''' <summary>Process has finished </summary>
+    Finished
+End Enum
+
+#End Region
+
+#Region "Status Flags"
+
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Public enumerator stating the status of a variable used by cVariableStatus class to state the status of the parameter.
+''' Used by the data wrapper classes to state the status of a variable see cEcoPathGroupInputs.EEStatus
+''' </summary>
+''' <remarks>
+''' <para>Can be used in combination with eVarNameFlags to tell the <see cref="cVariableStatus.Status">status</see> of a parameter,
+''' I.e. cVariableStatus.Status = eStatusFlags.InvalidModelResult and cVariableStatus.VarType = eVarNameFlags.EE:
+''' the model computed an invalid result for EE.</para>
+''' <para>Mulitple eStatusFlags can be joined together using the bitwise OR operator to signify 
+''' multiple statuses for a variable.</para>
+''' </remarks>
+''' ---------------------------------------------------------------------------
+Public Enum eStatusFlags
+
+    ''' <summary>
+    ''' All is well.
+    ''' </summary>
+    OK = 1
+
+    ''' <summary>
+    ''' Failed data validation.
+    ''' </summary>
+    FailedValidation = 2
+
+    ''' <summary>
+    ''' Value is computed from other values.
+    ''' </summary>
+    ValueComputed = 4
+
+    ''' <summary>
+    ''' Model computed an invalid result.
+    ''' </summary>
+    InvalidModelResult = 8
+
+    ''' <summary>
+    ''' Value is not editable because other related variables imply their value.
+    ''' </summary>
+    ''' <remarks>
+    ''' This flag is also known as ReadOnly (Windows) or BlockedForInput (EwE5).
+    ''' </remarks>
+    NotEditable = 16
+
+    ''' <summary>
+    ''' Unknown error encountered.
+    ''' </summary>
+    ''' 
+    ErrorEncountered = 32
+
+    ''' <summary>
+    ''' Value should have been provided at the start of a model run.
+    ''' </summary>
+    ''' <remarks>
+    ''' This flag resembles <see cref="eStatusFlags.FailedValidation">FailedValidation</see>
+    ''' but the reason for the failure is specific to the flag.
+    ''' </remarks>
+    MissingParameter = 64
+
+    ''' <summary>
+    ''' Value should be highlighted as decreed by the core for whatever reason.
+    ''' </summary>
+    ''' <remarks>
+    ''' This can occur when the core determines that particular values have relevant
+    ''' links to other values. The core can only know this and can request any GUI
+    ''' to hightlight such values.
+    ''' </remarks>
+    CoreHighlight = 128
+
+    ''' <summary>
+    ''' Variable is null, its value has not been set.
+    ''' </summary>
+    Null = 256
+
+End Enum
+
+#End Region
+
+#Region "Forcing function Pred Prey Interation"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerator for forcing functions, describing to which Predator/Prey
+''' interaction a forcing function is applied.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Enum eForcingFunctionApplication
+    ProductionRate = 1
+    SearchRate = 1
+    Vulnerability = 2
+    ArenaArea = 3
+    VulAndArea = 4
+End Enum
+
+#End Region
+
+#Region "Ecopath Parameter Estimation type"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerated type that indicates for which purpose Ecopath parameters are being estimated.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Enum eEstimateParameterFor
+    ''' <summary>
+    ''' Indicates that parameters are being estimated for the 
+    ''' main parameter estimation routine.
+    ''' </summary>
+    ParameterEstimation
+
+    ''' <summary>
+    ''' Indicates that parameters are being estimated for the 
+    ''' sensitivity loop.
+    ''' </summary>
+    Sensitivity
+End Enum
+
+#End Region
+
+#Region "Operators for cOperatorBase"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerated type indicating logical operators.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Enum eOperators
+    ''' <summary>
+    ''' Logical 'less than' operator.
+    ''' </summary>
+    LessThan
+
+    ''' <summary>
+    ''' Logical 'less than or equal to' operator.
+    ''' </summary>
+    LessThanOrEqualTo
+
+    ''' <summary>
+    ''' Logical 'greater than' operator.
+    ''' </summary>
+    GreaterThan
+
+    ''' <summary>
+    ''' Logical 'greater than or equal to' operator.
+    ''' </summary>
+    GreaterThanOrEqualTo
+
+    ''' <summary>
+    ''' Logical 'equal to' operator.
+    ''' </summary>
+    EqualTo
+End Enum
+
+#End Region
+
+#Region "Primary Production Types"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerated type specifying Group Primary Production types
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Enum ePrimaryProductionTypes
+    Consumer = 0
+    Producer = 1
+    Detritus = 2
+End Enum
+
+#End Region
+
+#Region "Cost Index"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Enumerator for CostPct(nFleets, 3) array, 
+''' i.e. fleet.FixedCost = CostPct(1, eCostIndex.Fixed) is the fixed cost for 
+''' variable 'fleet' at index 1.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Friend Enum eCostIndex
+    Profit = 0
+    Fixed
+    CUPE
+    Sail
+End Enum
+
+#End Region
+
+#Region "Ecospace results index"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Index of results from Ecospace saved over time to SpaceTSData
+''' </summary>
+''' <remarks>This data will be exposed by the core so it needs to know the index that the data is stored in</remarks>
+''' ---------------------------------------------------------------------------
+Friend Enum eSpaceTSResults
+    Biomass
+    RelativeBiomass
+End Enum
+
+#End Region
+
+#Region "Time series types"
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' 
+''' </summary>
+''' <remarks>The enumerated values follow the original EwE5 scheme.</remarks>
+''' ---------------------------------------------------------------------------
+Public Enum eTimeSeriesType
+    BiomassRel = 0
+    BiomassAbs = 1
+    BiomassForcing = -1
+    TimeForcing = 2
+    FishingEffort = 3
+    FishingMortality = 4
+    TotalMortality = 5
+    ConstantTotalMortality = -5
+    Catches = 6
+    CatchesForcing = -6
+    AverageWeight = 7
+    EcotracerConcRel = 8
+    EcotracerConcAbs = 9
+    NotSet = cCore.NULL_VALUE
+End Enum
+
+#End Region
+

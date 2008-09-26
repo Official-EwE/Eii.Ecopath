@@ -1,0 +1,1444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ScientificInterface.My.MyApplication</StartupObject>
+    <RootNamespace>ScientificInterface</RootNamespace>
+    <AssemblyName>EwE6</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>http://localhost/ScientificInterface/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <OptionStrict>On</OptionStrict>
+    <ApplicationIcon>Resources\Ecopath.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>EwE6.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <RunFxCop>false</RunFxCop>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>EwE6.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <RunFxCop>false</RunFxCop>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <FxCopInputAssembly>bin\Debug\ScientificInterface.exe</FxCopInputAssembly>
+    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SAUPUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="ScientificInterface.Controls" />
+    <Import Include="ScientificInterfaceShared.Controls" />
+    <Import Include="ScientificInterfaceShared.Controls.EwEGrid" />
+    <Import Include="ScientificInterfaceShared.Definitions" />
+    <Import Include="ScientificInterfaceShared.Properties" />
+    <Import Include="ScientificInterfaceShared.Style" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppLauncher.Designer.vb">
+      <DependentUpon>AppLauncher.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AppLauncher.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppLauncher_helpers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditFleets.Designer.vb">
+      <DependentUpon>EditFleets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\EditFleets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditFleetsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Controls\FlowDiagram\Data\FlowDiagramData.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Data\INIFile.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\Draw.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\FlowDiagramType.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\FlowDiagramType\Tree.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Connector.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Node.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagram.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.Designer.vb">
+      <DependentUpon>FlowDiagramSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditGroups.Designer.vb">
+      <DependentUpon>EditGroups.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\EditGroups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditGroupsStanzaEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditMultiStanza.Designer.vb">
+      <DependentUpon>EditMultiStanza.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\EditMultiStanza.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\EditMultiStanzaEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\frmModelDescription.Designer.vb">
+      <DependentUpon>frmModelDescription.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\frmModelDescription.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\DietComp.Designer.vb">
+      <DependentUpon>DietComp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Input\DietComp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.Designer.vb">
+      <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.Designer.vb">
+      <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.Designer.vb">
+      <DependentUpon>ucBioPercent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucDefBioPercentGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\ucZoomBasemap.designer.vb">
+      <DependentUpon>ucZoomBasemap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\ucZoomBasemap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
+      <DependentUpon>frmMPAOptimizations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Tools\frmMPAOptimizations.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecotracer\Input\EcotracerInputGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\NichePropertyColourCell.vb" />
+    <Compile Include="Ecosim\Input\EggProduction\ApplyEP.Designer.vb">
+      <DependentUpon>ApplyEP.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\EggProduction\ApplyEP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\EggProduction\ApplyEPEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.Designer.vb">
+      <DependentUpon>frmEggProduction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FisheryInputFleetSizeDynamicsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingEffort\frmFishingRate.Designer.vb">
+      <DependentUpon>frmFishingRate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingEffort\frmFishingRate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.Designer.vb">
+      <DependentUpon>frmFishingMortality.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeImage.vb" />
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.Designer.vb">
+      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeGUIHandlers.vb" />
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.Designer.vb">
+      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.Designer.vb">
+      <DependentUpon>frmShapeValue.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\ShapeValueGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.Designer.vb">
+      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.Designer.vb">
+      <DependentUpon>frmTimeSeries.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.Designer.vb">
+      <DependentUpon>Vulnerabilities.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.Designer.vb">
+      <DependentUpon>dlgChangeYScale.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\CustomComboBoxFleetGroupTree.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.Designer.vb">
+      <DependentUpon>EcosimOutputLineGraph.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\MCRun.Designer.vb">
+      <DependentUpon>MCRun.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\MCRun.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\MCRunInputGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\MCRunOutputGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\dlgSelectTSPlots.Designer.vb">
+      <DependentUpon>dlgSelectTSPlots.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\dlgSelectTSPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.Designer.vb">
+      <DependentUpon>frmShowAllFits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\EcosimScenarioDlg.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\frmApplyShapeBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ApplyShapeEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.Designer.vb">
+      <DependentUpon>frmForcingFunction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\defBioPercent.Designer.vb">
+      <DependentUpon>defBioPercent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\defBioPercent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.Designer.vb">
+      <DependentUpon>dlgApplyShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.Designer.vb">
+      <DependentUpon>frmMediationFunction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.Designer.vb">
+      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputPlots.Designer.vb">
+      <DependentUpon>EcosimOutputPlots.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimResults.Designer.vb">
+      <DependentUpon>EcosimResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimResultsGridFleet.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimResultsGridGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Other\dlgDisplayGroups.Designer.vb">
+      <DependentUpon>dlgDisplayGroups.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\dlgDisplayGroups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\SRplot.Designer.vb">
+      <DependentUpon>SRplot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\SRplot.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\dlgSensitivityOfSStoV.Designer.vb">
+      <DependentUpon>dlgSensitivityOfSStoV.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\dlgSensitivityOfSStoV.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FitToTimeSeriesGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\IterResultFVGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\IterResultSOGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FishingPolicySearch.Designer.vb">
+      <DependentUpon>FishingPolicySearch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FishingPolicySearch.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FitToTimeSeries.Designer.vb">
+      <DependentUpon>FitToTimeSeries.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FitToTimeSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\FleetOptmParamGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\GroupOptmParamGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ParmBlockCodes.Designer.vb">
+      <DependentUpon>ParmBlockCodes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ParmBlockCodes.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\PolicyColorBlocks.Designer.vb">
+      <DependentUpon>PolicyColorBlocks.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\PolicyColorBlocks.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ucAnomalySearchSketchPad.Designer.vb">
+      <DependentUpon>ucAnomalySearchSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ucAnomalySearchSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ucVulnerabiltyBlocks.Designer.vb">
+      <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ucVulnerabiltyBlocks.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\ValueComponentGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.Designer.vb">
+      <DependentUpon>ucLayerGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\ucBaseMap.Designer.vb">
+      <DependentUpon>ucBaseMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\ucBaseMap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\EcospaceScenarioDlg.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap.Designer.vb">
+      <DependentUpon>Basemap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.Designer.vb">
+      <DependentUpon>dlgEditLayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Layer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\LayerRepresentation.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayer.Designer.vb">
+      <DependentUpon>ucLayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayersControl.Designer.vb">
+      <DependentUpon>ucLayersControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayersControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditBasemap.Designer.vb">
+      <DependentUpon>dlgEditBasemap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditBasemap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\EcospaceParameters.Designer.vb">
+      <DependentUpon>EcospaceParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\EcospaceParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\AssignHabitsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
+      <DependentUpon>BasemapFromGIS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\BasemapFromGIS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\EditHabitatsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\EditMPAsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\EditRegionsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\DispersalEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditHabitats.Designer.vb">
+      <DependentUpon>dlgEditHabitats.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditHabitats.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditMPAs.Designer.vb">
+      <DependentUpon>dlgEditMPAs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditMPAs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditRegions.Designer.vb">
+      <DependentUpon>dlgEditRegions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\FisheryEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\cMapDrawer.vb" />
+    <Compile Include="Ecospace\Output\EcospaceResultsGridRegion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\EcospaceResultsGridGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\EcospaceResults.Designer.vb">
+      <DependentUpon>EcospaceResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Output\EcospaceResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\RunEcospace.Designer.vb">
+      <DependentUpon>RunEcospace.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Output\RunEcospace.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecotracer\EcotracerScenarioDlg.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecotracer\Input\frmEcotracerInput.Designer.vb">
+      <DependentUpon>frmEcotracerInput.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecotracer\Input\frmEcotracerInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecotracer\Input\frmEcotracerParameters.Designer.vb">
+      <DependentUpon>frmEcotracerParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecotracer\Input\frmEcotracerParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecotracer\Output\frmEcotracerOutput.Designer.vb">
+      <DependentUpon>frmEcotracerOutput.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecotracer\Output\frmEcotracerOutput.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\Application.Designer.vb">
+      <DependentUpon>Application.myapp</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Other\AboutBox\AboutEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Other\ApplicationComponents.vb" />
+    <Compile Include="Other\ApplicationHelp.vb" />
+    <Compile Include="Other\BugReporter.vb" />
+    <Compile Include="Other\Forms\frmEwE.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other\Forms\frmEwEGrid.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPlugins.Designer.vb">
+      <DependentUpon>ucAppPlugins.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPlugins.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Options\dlgOptions.Designer.vb">
+      <DependentUpon>dlgOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\dlgOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppColors.Designer.vb">
+      <DependentUpon>ucAppColors.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppColors.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppGeneral.Designer.vb">
+      <DependentUpon>ucAppGeneral.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppGeneral.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\DetritusFateEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputDiscardFateEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputDiscardsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputFleetDefinitionEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputLandingsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputOffVesselPriceEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\FisheryInputNonMarketPriceEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\OtherProductionEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\BasicEstimatesEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\ConsumptionEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\ElectivityEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\FisheryOutputQuantityEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\FisheryOutputValueEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\KeyIndicesEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\MortalityCoefficientsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\MortalityPredationEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\NicheOverlapPredatorEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\NicheOverlapPreyEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\RespirationEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\SearchRatesEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.Designer.vb">
+      <DependentUpon>dlgChangeShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.Designer.vb">
+      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.Designer.vb">
+      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\GroupInfoEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.Designer.vb">
+      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\EcosimParameters.Designer.vb">
+      <DependentUpon>EcosimParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\EcosimParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.Designer.vb">
+      <DependentUpon>ucSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\Vulnerabilities\VulnerabilitiesEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\RunEcosim.Designer.vb">
+      <DependentUpon>RunEcosim.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\RunEcosim.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EwECoreController.vb" />
+    <Compile Include="Panels\RemarkPanel\RemarkPanel.Designer.vb">
+      <DependentUpon>RemarkPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RemarkPanel\RemarkPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\RemarkPanel\ValueExplorer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Panels\StatusPanel\StatusPanel.Designer.vb">
+      <DependentUpon>StatusPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\StatusPanel\StatusPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\BasicInputEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\DietCompositionEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\NavigationPanel\NavigationPanel.Designer.vb">
+      <DependentUpon>NavigationPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\NavigationPanel\NavigationPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="My Project\ApplicationEvents.vb" />
+    <Compile Include="EwEProgram.vb" />
+    <Compile Include="Other\AboutBox\frmAboutEwE.Designer.vb">
+      <DependentUpon>frmAboutEwE.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\AboutBox\frmAboutEwE.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Other\WebPages\WebBrowserDC.Designer.vb">
+      <DependentUpon>WebBrowserDC.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\WebPages\WebBrowserDC.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizard\DatabaseConversion\DatabaseConversionWizard.Designer.vb">
+      <DependentUpon>DatabaseConversionWizard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\DatabaseConversion\DatabaseConversionWizard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizard\EwEScenarioDlg.Designer.vb">
+      <DependentUpon>EwEScenarioDlg.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\EwEScenarioDlg.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizard\WizardFormBase.Designer.vb">
+      <DependentUpon>WizardFormBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardFormBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AppLauncher.resx">
+      <DependentUpon>AppLauncher.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\FlowDiagram.resx">
+      <DependentUpon>FlowDiagram.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.resx">
+      <DependentUpon>FlowDiagramSettings.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\EditGroups.resx">
+      <DependentUpon>EditGroups.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\EditMultiStanza.resx">
+      <DependentUpon>EditMultiStanza.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Input\DietComp.resx">
+      <DependentUpon>DietComp.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ForcingFunction\frmForcingFunction.resx">
+      <DependentUpon>frmForcingFunction.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\MediationFunction\defBioPercent.resx">
+      <DependentUpon>defBioPercent.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgApplyShape.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\MediationFunction\frmMediationFunction.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMediationFunction.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputPlots.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EcosimOutputPlots.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\EcosimResults.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EcosimResults.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\dlgDisplayGroups.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgDisplayGroups.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\SRplot.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SRplot.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\BasemapFromGIS.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BasemapFromGIS.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditHabitats.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgEditHabitats.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditMPAs.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgEditMPAs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditRegions.resx">
+      <DependentUpon>dlgEditRegions.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Output\EcospaceResults.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EcospaceResults.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Output\RunEcospace.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RunEcospace.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\Application\ucAppColors.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucAppColors.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\dlgOptions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\Application\ucAppGeneral.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucAppGeneral.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
+      <DependentUpon>dlgChangeShape.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.resx">
+      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.resx">
+      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.resx">
+      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\EcosimParameters.resx">
+      <DependentUpon>EcosimParameters.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.resx">
+      <DependentUpon>ucSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\RunEcosim.resx">
+      <DependentUpon>RunEcosim.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\StatusPanel\StatusPanel.resx">
+      <DependentUpon>StatusPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\NavigationPanel\NavigationPanel.resx">
+      <DependentUpon>NavigationPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\AboutBox\frmAboutEwE.resx">
+      <DependentUpon>frmAboutEwE.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\WebPages\WebBrowserDC.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WebBrowserDC.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizard\DatabaseConversion\DatabaseConversionWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DatabaseConversionWizard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizard\WizardFormBase.resx">
+      <DependentUpon>WizardFormBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <InProject>False</InProject>
+      <ProductName>.NET Framework 2.0 Beta</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\VisualStyleEditors\ucEditImage.resx">
+      <DependentUpon>ucEditImage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VisualStyleEditors\ucEditHatch.resx">
+      <DependentUpon>ucEditHatch.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VisualStyleEditors\ucHatch.resx">
+      <DependentUpon>ucHatch.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VisualStyleEditors\ucHatchSelect.resx">
+      <DependentUpon>ucHatchSelect.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\frmModelDescription.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmModelDescription.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.resx">
+      <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.resx">
+      <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucBioPercent.resx">
+      <DependentUpon>ucBioPercent.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditImportanceLayers.resx">
+      <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ecopath_logo.ico" />
+    <Compile Include="Controls\cEwEBrushProvider.vb" />
+    <Compile Include="Controls\gridResultsBase.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditImage.Designer.vb">
+      <DependentUpon>ucEditImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditImage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditVisualStyle.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditFont.Designer.vb">
+      <DependentUpon>ucEditFont.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditFont.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditHatch.Designer.vb">
+      <DependentUpon>ucEditHatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucEditHatch.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucHatch.Designer.vb">
+      <DependentUpon>ucHatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucHatch.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucHatchSelect.designer.vb">
+      <DependentUpon>ucHatchSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VisualStyleEditors\ucHatchSelect.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Definitions\UIEnums.vb" />
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
+      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.Designer.vb">
+      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
+      <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.Designer.vb">
+      <DependentUpon>ucBiomassPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.Designer.vb">
+      <DependentUpon>ucBiomassPlotzgc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmFunctionalResponse.Designer.vb">
+      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmFunctionalResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\gridLayerData.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\LayerFactory.vb" />
+    <Compile Include="Ecospace\Input\dlgEditImportanceLayers.Designer.vb">
+      <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgEditImportanceLayers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEditImportanceLayers.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Output\cPlotDrawer.vb" />
+    <Compile Include="Ecospace\Tools\gridMPAOptimizations.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPluginAssemblyDetails.Designer.vb">
+      <DependentUpon>ucAppPluginAssemblyDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPluginAssemblyDetails.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPluginDetails.Designer.vb">
+      <DependentUpon>ucAppPluginDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\Application\ucAppPluginDetails.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
+    <Compile Include="Settings.vb" />
+    <Content Include="Includes\SAUPUtil.dll" />
+    <Content Include="Includes\shapelib.dll" />
+    <Content Include="Includes\SourceGrid2.dll" />
+    <Content Include="Includes\SourceLibrary.dll" />
+    <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="Includes\ZedGraph.dll" />
+    <BaseApplicationManifest Include="My Project\app.manifest" />
+    <None Include="Resources\BreakpointHS.png" />
+    <None Include="Resources\compareversionsHS.png" />
+    <None Include="Resources\credits.rtf" />
+    <None Include="Resources\HomeHS.png" />
+    <None Include="Resources\OK.bmp" />
+    <None Include="Resources\Raster.png" />
+    <None Include="Resources\Regions.png" />
+    <None Include="Resources\Habitat.png" />
+    <None Include="Resources\MPA.png" />
+    <None Include="Resources\EditMultiStanza.png" />
+    <None Include="Resources\EditFleets.png" />
+    <None Include="Resources\EditGroup.png" />
+    <None Include="Resources\ecopath 256x256.bmp" />
+    <None Include="Resources\Expanded.png" />
+    <None Include="Resources\Collapsed.png" />
+    <None Include="Resources\glyph_seagrass_light.png" />
+    <None Include="Resources\glyph_muddy_brown.png" />
+    <None Include="Resources\glyph_muddy_bw.png" />
+    <None Include="Resources\glyph_seagrass_brown.png" />
+    <None Include="Resources\glyph_seagrass_bw.png" />
+    <None Include="Resources\glyph_seagrass_dark.png" />
+    <None Include="Resources\muddy_blue.png" />
+    <None Include="Resources\glyph_muddy_blue.png" />
+    <None Include="Resources\glyph_muddy_green.png" />
+    <None Include="Resources\glyph_seagrass_red.png" />
+    <None Include="Resources\glyph_rubble_bw.png" />
+    <None Include="Resources\glyph_sand.png" />
+    <None Include="Resources\glyph_deep_beige.png" />
+    <None Include="Resources\glyph_deep_blue.png" />
+    <None Include="Resources\glyph_deep_bw.png" />
+    <None Include="Resources\glyph_deep_green.png" />
+    <None Include="Resources\glyph_rubble_lightblue.png" />
+    <None Include="Resources\Ecotracer_32x32.png" />
+    <None Include="Resources\Ecotracer.ico" />
+    <None Include="Resources\Eye_open.PNG" />
+    <None Include="Resources\Eye_closed.PNG" />
+    <None Include="Resources\glyph_rubble_green.png" />
+    <None Include="Resources\glyph_deep_brown.png" />
+    <None Include="Resources\glyph_deep_lightblue.png" />
+    <None Include="Resources\glyph_rubble_blue.png" />
+    <None Include="Resources\glyph_rubble_brown.png" />
+    <None Include="Resources\glyph_squares_small.png" />
+    <None Include="Resources\glyph_arrows_down.png" />
+    <None Include="Resources\glyph_arrows_up.png" />
+    <None Include="Resources\glyph_blocks_large.png" />
+    <None Include="Resources\glyph_blocks_small.png" />
+    <None Include="Resources\glyph_circles_large.png" />
+    <None Include="Resources\glyph_circles_small.png" />
+    <None Include="Resources\glyph_dots_large.png" />
+    <None Include="Resources\glyph_dots_small.png" />
+    <None Include="Resources\glyph_squares_large.png" />
+    <None Include="Resources\CommentHS.png" />
+    <None Include="Resources\Editable.png" />
+    <Content Include="Resources\Ecopath_doc.ico" />
+    <Content Include="Resources\EU_50px.jpg" />
+    <None Include="Resources\Eye_intermediate.png" />
+    <Content Include="Resources\fimr_logo_50px.jpg" />
+    <None Include="Resources\glyph_blue10.PNG" />
+    <None Include="Resources\glyph_blue1.PNG" />
+    <None Include="Resources\glyph_blue2.PNG" />
+    <None Include="Resources\glyph_blue3.PNG" />
+    <None Include="Resources\glyph_blue4.PNG" />
+    <None Include="Resources\glyph_blue5.PNG" />
+    <None Include="Resources\glyph_blue6.PNG" />
+    <None Include="Resources\glyph_blue7.PNG" />
+    <None Include="Resources\glyph_blue8.PNG" />
+    <None Include="Resources\glyph_blue9.PNG" />
+    <Content Include="Resources\Lenfest Logo_50px.jpg" />
+    <None Include="Resources\NavForward.png" />
+    <None Include="Resources\NotEditable.png" />
+    <None Include="Resources\ProtectFormHS.png" />
+    <Content Include="Resources\sautxt_50px.jpg" />
+    <Content Include="Resources\Sponsors.jpg" />
+    <None Include="Resources\ZoomInHS.png" />
+    <None Include="Resources\ZoomOutHS.png" />
+    <None Include="Resources\vb6tovb7.bmp" />
+    <None Include="Resources\WarningHS.png" />
+    <None Include="Resources\ZoomHS.png" />
+    <None Include="Resources\modules.rtf" />
+    <None Include="Resources\Web.png" />
+    <None Include="Resources\CheckBoxHS.png" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Resources\DeleteHS.png" />
+    <None Include="UserGuide\EwE6_userguide.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Ecopath\EditFleets.resx">
+      <DependentUpon>EditFleets.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\EggProduction\ApplyEP.resx">
+      <DependentUpon>ApplyEP.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\EggProduction\frmEggProduction.resx">
+      <DependentUpon>frmEggProduction.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\FishingEffort\frmFishingRate.resx">
+      <DependentUpon>frmFishingRate.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\FishingMortality\frmFishingMortality.resx">
+      <DependentUpon>frmFishingMortality.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.resx">
+      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.resx">
+      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.resx">
+      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.resx">
+      <DependentUpon>frmShapeValue.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.resx">
+      <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.resx">
+      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\TimeSeries\frmTimeSeries.resx">
+      <DependentUpon>frmTimeSeries.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.resx">
+      <DependentUpon>Vulnerabilities.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.resx">
+      <DependentUpon>EcosimOutputLineGraph.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.resx">
+      <DependentUpon>ucBiomassPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.resx">
+      <DependentUpon>ucBiomassPlotzgc.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\frmFunctionalResponse.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\dlgSensitivityOfSStoV.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgSensitivityOfSStoV.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\FishingPolicySearch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FishingPolicySearch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\FitToTimeSeries.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FitToTimeSeries.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\ParmBlockCodes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ParmBlockCodes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\PolicyColorBlocks.resx">
+      <DependentUpon>PolicyColorBlocks.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\ucAnomalySearchSketchPad.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucAnomalySearchSketchPad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\ucVulnerabiltyBlocks.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.resx">
+      <DependentUpon>ucLayerGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\ucBaseMap.resx">
+      <DependentUpon>ucBaseMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap.resx">
+      <DependentUpon>Basemap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.resx">
+      <DependentUpon>dlgEditLayer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayer.resx">
+      <DependentUpon>ucLayer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayersControl.resx">
+      <DependentUpon>ucLayersControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\ucZoomBasemap.resx">
+      <DependentUpon>ucZoomBasemap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgEditBasemap.resx">
+      <DependentUpon>dlgEditBasemap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Tools\frmMPAOptimizations.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMPAOptimizations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecotracer\Input\frmEcotracerInput.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEcotracerInput.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecotracer\Input\frmEcotracerParameters.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEcotracerParameters.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecotracer\Output\frmEcotracerOutput.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEcotracerOutput.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\Application\ucAppPluginAssemblyDetails.resx">
+      <DependentUpon>ucAppPluginAssemblyDetails.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\Application\ucAppPluginDetails.resx">
+      <DependentUpon>ucAppPluginDetails.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\Application\ucAppPlugins.resx">
+      <DependentUpon>ucAppPlugins.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\RemarkPanel\RemarkPanel.resx">
+      <DependentUpon>RemarkPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ucFormSeparator.ico" />
+    <EmbeddedResource Include="Resources\Ecospace_32x32.png" />
+    <EmbeddedResource Include="Resources\Ecosim_32x32.png" />
+    <EmbeddedResource Include="Resources\Ecopath_32x32.png" />
+    <EmbeddedResource Include="Resources\Ecopath.ico" />
+    <EmbeddedResource Include="Resources\Ecosim3.ico" />
+    <EmbeddedResource Include="Resources\Ecospace3.ico" />
+    <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgChangeYScale.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\MCRun.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MCRun.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgSelectTSPlots.resx">
+      <DependentUpon>dlgSelectTSPlots.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\ShowAllFits\frmShowAllFits.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmShowAllFits.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\EcospaceParameters.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EcospaceParameters.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EwELogo.gif" />
+    <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
+    <EmbeddedResource Include="Resources\PublishPlanHS.png" />
+    <EmbeddedResource Include="Resources\OptionsHS.png" />
+    <EmbeddedResource Include="Resources\ImportXMLHS.png" />
+    <EmbeddedResource Include="Resources\saveHS.png" />
+    <EmbeddedResource Include="Resources\SaveAllHS.png" />
+    <EmbeddedResource Include="Resources\openHS.png" />
+    <EmbeddedResource Include="Resources\NewDocumentHS.png" />
+    <EmbeddedResource Include="Wizard\EwEScenarioDlg.resx">
+      <DependentUpon>EwEScenarioDlg.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EwECore\EwECore.vbproj">
+      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
+      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+</Project>

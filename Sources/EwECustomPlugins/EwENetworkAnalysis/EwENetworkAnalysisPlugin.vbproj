@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6385C388-96F0-40F5-90A6-2B4838E0610E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EwENetworkAnalysis</RootNamespace>
+    <AssemblyName>EwENetworkAnalysis</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>EwENetworkAnalysis.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>EwENetworkAnalysis.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScientificInterface\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScientificInterface\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Services\2.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3138.25805, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScientificInterface\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScientificInterface\Includes\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interface\Algorithm\cEcosimNetworkAnalysis.vb" />
+    <Compile Include="Interface\Algorithm\cFindPathwaysCyclesAll.vb" />
+    <Compile Include="Interface\Algorithm\cNetworkAnalysis.vb" />
+    <Compile Include="Interface\Algorithm\cRequiredPrimaryProduction.vb" />
+    <Compile Include="Interface\Ascendency\cByGroup.vb" />
+    <Compile Include="Interface\Ascendency\cTotal.vb" />
+    <Compile Include="Interface\cFlowFromDetritus.vb" />
+    <Compile Include="Interface\CyclesAndPathways\cCyclingAndPathLen.vb" />
+    <Compile Include="Interface\CyclesAndPathways\CyclesAll\cPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\CyclesAll\cSummaryPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\CyclesLiving\cPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\CyclesLiving\cSummaryPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\PreyToTopPredator\cPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\PreyToTopPredator\cSummaryPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\TL1ToConsumer\cPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\TL1ToConsumer\cSummaryPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\TL1ToPreyToConsumer\cPathways.vb" />
+    <Compile Include="Interface\CyclesAndPathways\TL1ToPreyToConsumer\cSummaryPathways.vb" />
+    <Compile Include="Interface\EcosimNetworkAnalysisIndices\cIndicesWithoutPPREst.vb" />
+    <Compile Include="Interface\EcosimNetworkAnalysisIndices\cIndicesWithPPREst.vb" />
+    <Compile Include="Interface\FlowsAndBiomasses\cFromAllCombined.vb" />
+    <Compile Include="Interface\FlowsAndBiomasses\cFromDetritus.vb" />
+    <Compile Include="Interface\FlowsAndBiomasses\cFromPrimaryProd.vb" />
+    <Compile Include="Interface\frmNetworkAnalysis.Designer.vb">
+      <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\frmNetworkAnalysis.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cHideGroups.vb" />
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.Designer.vb">
+      <DependentUpon>frmHideGroups.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\modUtility.vb" />
+    <Compile Include="Interface\PrimaryProdRequired\cForConsumpOfAllGp.vb" />
+    <Compile Include="Interface\PrimaryProdRequired\cForHarvestOfAllGp.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cBiomassByTrophicLevel.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cBiomassPyramid.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cCatchByTrophicLevel.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cCatchPyramid.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cFlowPyramid.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cTransferEfficiency.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\cAbsoluteFlows.vb" />
+    <Compile Include="Interface\TrophicLevelDecomp\cRelativeFlows.vb" />
+    <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
+    <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
+    <Compile Include="Plugin\cEwENetworkAnalysisPlugin.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.resx">
+      <DependentUpon>frmHideGroups.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
+      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj">
+      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EwENetworkAnalysis\FD.EXE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EwENetworkAnalysis\IMPACTS.EXE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EwENetworkAnalysis\PYRAMID.EXE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Other\N_Asponsors.jpg" />
+    <Content Include="Resources\EwENetworkAnalysis.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

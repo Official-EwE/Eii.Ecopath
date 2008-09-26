@@ -1,0 +1,814 @@
+'==============================================================================
+'
+' $Log: cValue.vb,v $
+' Revision 1.1  2008/09/26 07:30:12  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.40  2008/07/24 22:55:38  jeroens
+' Further restricted convertEmptyInputs to Integer and Single vars only
+'
+' Revision 1.39  2008/07/24 19:16:14  jeroens
+' ConvertEmptyInputs clears a numerical value when '0' is entered and the metadata does NOT allow 0
+'
+' Revision 1.38  2008/05/29 22:22:48  jeroens
+' Moved eVarNameFlags to EwEUtils
+'
+' Revision 1.37  2008/02/25 13:33:09  jeroens
+' Fixed Stored() issue for ValueArrays
+'
+' Revision 1.36  2008/02/22 17:24:27  jeroens
+' Added Stored() flag
+'
+' Revision 1.35  2008/01/15 13:42:19  jeroens
+' Core counter type exposed as read-only
+'
+' Revision 1.34  2008/01/10 11:01:06  jeroens
+' Validate will no longer set ValidationState to NULL, only OK or FailedValidation are allowed
+'
+' Revision 1.33  2007/07/06 22:15:53  jeroens
+' - Disabled *SLOW* debug assert for profiling; code still safe in try/catch
+'
+' Revision 1.32  2007/06/25 15:04:05  joeb
+' Changed MetaData DefaultValue() to NullValue()
+'
+' Revision 1.31  2007/06/20 00:55:27  jeroens
+' + Value now exposes its metadata
+'
+' Revision 1.30  2007/06/05 21:35:29  joeb
+' Fixed Typo
+'
+' Revision 1.29  2007/05/07 12:42:36  jeroens
+' * Fixed minor bug: reactivated validation for array variables
+'
+' Revision 1.28  2007/04/11 23:04:16  jeroens
+' * Fixed assertion message
+'
+' Revision 1.27  2007/04/02 17:40:33  joeb
+' Minor Edits
+'
+' Revision 1.26  2007/04/01 18:29:00  joeb
+' Added cValueArrayIndexed class
+'
+' Revision 1.25  2007/03/27 16:19:39  jeroens
+' - Removed type casting to Single when resetting variables
+'
+' Revision 1.24  2007/03/23 14:00:45  jeroens
+' + Uses IntArray
+'
+' Revision 1.23  2007/01/26 22:31:23  joeb
+' Removal of System.Write() to speed up loading
+'
+' Revision 1.22  2007/01/25 16:29:26  jeroens
+' * Allowed cValueArray of zero length
+'
+' Revision 1.21  2007/01/22 17:14:26  jeroens
+' * Added empty string check on values intended for non-string variables
+' * String-to-numeric conversion performed via Var()
+'
+' Revision 1.20  2007/01/19 18:28:35  joeb
+' Changes to handle array of Boolean
+'
+' Revision 1.19  2007/01/19 00:46:25  joeb
+' Changed cValueArray to handle array of objects
+'
+' Revision 1.18  2006/12/14 23:30:57  jeroens
+' * Fixed crash on array value validation in convertEmptyInputs
+' * convertEmptyInputs returns a new value rather than modifying the incoming parameter
+' * NullValue replaced by DefaultValue
+' + DefaultValue applied whenever value is emptied
+'
+' Revision 1.17  2006/07/20 14:07:02  joeb
+' Validation using MetaData and operator classes
+'
+' Revision 1.16  2006/07/13 19:10:04  joeb
+' ICoreInputOutputBase uses a reference to the core instead of a delegates to communicate with the core.
+'
+' Revision 1.15  2006/07/04 04:22:16  jeroens
+' * Changed iGroup references to iIndex; renamed iGroup property to Index
+'
+' Revision 1.14  2006/07/03 21:12:12  joeb
+' Added PB QB and GE data validation and Not Editable flags to core
+'
+' Revision 1.13  2006/06/30 18:46:35  joeb
+' cValueArray() redimensioning arrays
+'
+' Revision 1.12  2006/06/29 19:28:38  joeb
+' VulRate() Bug Fix
+'
+' Revision 1.11  2006/06/28 16:03:57  joeb
+' Start of cValueArray resize change
+'
+' Revision 1.10  2006/06/28 03:38:31  jeroens
+' Fixed var and fn name conventions
+'
+' Revision 1.9  2006/06/25 17:32:04  joeb
+' Total rework of how the core loads data and runs a model
+'
+' Revision 1.8  2006/06/21 03:00:13  jeroens
+' + Compiles with strict ON
+' * Fixed Property varName type error: was eValueTypes, should have been eVarNameFlags
+' * Fixed iGroup vs. iSecondayIndex bug in Status()
+'
+'==============================================================================
+
+Option Strict On
+Imports EwEUtils.Core
+
+Namespace ValueWrapper
+
+
+    Public Delegate Function CoreCounterDelegate(ByVal SizeType As eCoreCounterTypes) As Integer
+    Public Delegate Function CoreIndexedCounterDelegate(ByVal SizeType As eCoreCounterTypes, ByVal iArrayIndex As Integer) As Integer
+
+
+    ''' <summary>
+    ''' Classes used to wrap variables and there associated data used be the ICoreInputOuput objects
+    ''' </summary>
+    ''' <remarks>
+    ''' These classes are defined as Friend so that they are not exposed outside of the core
+    ''' </remarks>
+    ''' <history>
+    ''' <revision>jb 17/mar/06 Added Length of array size</revision>
+    ''' </history>
+
+#Region "Enumerators used by Value objects"
+
+    Public Enum eValueTypes
+        Int 'integer
+        Str 'string
+        Sng 'single
+        Bool 'boolean
+
+        SingleArray 'array of singles 
+        PointArray ' array of points
+        BoolArray 'array of boolean 
+        IntArray 'array of integers
+    End Enum
+
+#End Region
+
+#Region "cValue"
+
+
+    ''' <summary>
+    ''' Wraps the Value, Status, Name and Type of a variable used be an ICoreInputOuput object into one place.
+    ''' </summary>
+    ''' <remarks>
+    ''' cValue acts as the base class for other types of value object.
+    ''' ToDo:: the varType enumerator could be change to being a System.Type object.
+    ''' </remarks>
+    Public Class cValue
+
+        Private m_value As Object
+        Protected m_orgvalue As Object
+        Protected m_status As eStatusFlags
+        Protected m_orgStatus As eStatusFlags
+        Protected m_validationstatus As eStatusFlags
+
+        Protected m_varType As eValueTypes
+        Protected m_varName As eVarNameFlags
+        Protected m_message As String 'message associated with data validation
+
+        Protected m_iIndex As Integer
+        Protected m_bStored As Boolean
+
+        ''' <summary>
+        ''' Validator supplied in the constructor of the object.
+        ''' </summary>
+        ''' <remarks>This validator can be specific to the this variable type or it can be the default supplied by the ValidatorManger.</remarks>
+        Protected m_validator As cValidatorDefault
+
+        Protected m_metadata As cVariableMetaData
+
+        Protected m_bValidate As Boolean
+
+        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal VarType As eValueTypes)
+            m_value = Value
+            m_varType = VarType
+            m_varName = VarName
+            m_status = Status
+            m_metadata = Nothing
+
+            m_bValidate = False
+            m_validator = Nothing
+            m_bStored = True
+        End Sub
+
+        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal VarType As eValueTypes, ByRef MetaData As cVariableMetaData)
+            m_value = Value
+            m_varType = VarType
+            m_varName = VarName
+            m_status = Status
+            m_metadata = MetaData
+
+            m_bValidate = False
+            m_validator = Nothing
+            m_bStored = True
+        End Sub
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="Value"></param>
+        ''' <param name="VarName"></param>
+        ''' <param name="Status"></param>
+        ''' <param name="VarType"></param>
+        ''' <param name="MetaData"></param>
+        ''' <param name="Validator"></param>
+        ''' <remarks></remarks>
+        Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, _
+            ByVal VarType As eValueTypes, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
+
+            m_value = Value
+            m_varType = VarType
+            m_varName = VarName
+            m_status = Status
+            m_metadata = MetaData
+
+            'set the validator and its properties
+            m_bValidate = True
+            m_validator = Validator
+            m_bStored = True
+
+        End Sub
+
+        Sub New()
+            m_varName = eVarNameFlags.NotSet
+            m_status = eStatusFlags.Null
+            m_bStored = False
+        End Sub
+
+        Public Property Index() As Integer
+            Get
+                Return m_iIndex
+            End Get
+            Set(ByVal value As Integer)
+                m_iIndex = value
+            End Set
+        End Property
+
+
+        ''' <summary>
+        ''' Set the size of the array to the new value based on the CoreCounterDelegate passed in via the consturctor
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>This is for array value objects only.</remarks>
+        Public Overridable Function SetSize() As Boolean
+            Return False
+        End Function
+
+
+        Public Overridable Property Status(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As eStatusFlags
+            Get
+                Return m_status
+            End Get
+            Set(ByVal value As eStatusFlags)
+                m_status = value
+            End Set
+        End Property
+
+        Public Overridable Property ValidationStatus(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As eStatusFlags
+            Get
+                Return m_validationstatus
+            End Get
+            Set(ByVal value As eStatusFlags)
+                m_validationstatus = value
+            End Set
+        End Property
+
+        Public Overridable Property Value(Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Object
+            Get
+                Return m_value
+            End Get
+            Set(ByVal value As Object)
+                Validate(value)
+            End Set
+        End Property
+
+        Public Property varName() As eVarNameFlags
+            Get
+                Return m_varName
+            End Get
+            Set(ByVal value As eVarNameFlags)
+                m_varName = value
+            End Set
+        End Property
+
+        Public Property varType() As eValueTypes
+            Get
+                Return m_varType
+            End Get
+            Set(ByVal value As eValueTypes)
+                m_varType = value
+            End Set
+        End Property
+
+        Public Property ValidationMessage() As String
+            Get
+                Return m_message
+            End Get
+            Set(ByVal value As String)
+                m_message = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Flag stating whether a variable can be stored in the database.
+        ''' </summary>
+        Public Property Stored() As Boolean
+            Get
+                Return Me.m_bStored
+            End Get
+            Friend Set(ByVal value As Boolean)
+                Me.m_bStored = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Number of elements in the underlying array for an array object
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Overridable ReadOnly Property Length() As Integer
+            Get
+                Return 0
+            End Get
+        End Property
+
+        Public ReadOnly Property Metadata() As cVariableMetaData
+            Get
+                Return Me.m_metadata
+            End Get
+        End Property
+
+        Protected Overridable Function Validate(ByRef NewValue As Object, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+
+            'set the value of this object to the new value passed in 
+            'this allows the validator the access the new value via the public interface
+            m_orgvalue = m_value
+            'convert null or empty inputs into something that can be used
+            m_value = Me.convertEmptyInputs(NewValue)
+
+            'is it ok to run the validator?
+            If Not m_bValidate Then
+                'No Validation set the value without running the validator
+                m_validationstatus = eStatusFlags.OK
+                Return False 'validation was not run???
+            End If
+
+            'not every value object has a validator?
+            'outputs are validated by the core once it has run the model because only it knows the working of the models and what the model results mean
+            If m_validator Is Nothing Then
+                'set the value without running the validator
+                m_validationstatus = eStatusFlags.OK
+                System.Console.WriteLine(m_varName.ToString & " does not have a validator.")
+                Return False 'validation was not run???
+            End If
+
+            If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
+                If m_validationstatus = eStatusFlags.FailedValidation Then
+                    'if the new value failed validation then set the value back to it's original value
+                    m_value = m_orgvalue
+                End If
+
+                ' JS 10Jan08: disabled the following logic. Setting a validation status to NULL will 
+                '             obscure any failed validation attempts, which in turn prevents the user
+                '             from knowing what happened. As such, the Validation status flag can only be OK or Failed.
+                '             The Status status flag provides more further detailed information about a variable.
+
+                'If m_status = eStatusFlags.Null Then
+                '    m_validationstatus = eStatusFlags.Null
+                '    ' m_value = m_metadata.DefaultValue
+                'End If
+            Else 'If m_validator.Validate(Me, iSecondaryIndex) Then
+                'for some reason the validator returned False it could not validate the value
+                Debug.Assert(False, "Validator for " & m_varName.ToString & " failed.")
+                Return False
+            End If
+
+            Return True
+
+        End Function
+
+        ''' <summary>
+        ''' Run the validator to set the status flag without setting the value
+        ''' </summary>
+        ''' <param name="iSecondaryIndex"></param>
+        ''' <remarks>This is use be the cCoreInputOutputBase to set the status flags of all its values </remarks>
+        Public Overridable Sub setStatusFlag(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE)
+
+            If m_validator IsNot Nothing Then
+                m_validator.Validate(Me, m_metadata, iSecondaryIndex)
+            Else
+                ' System.Console.WriteLine("No validator definded for " & m_varType.ToString)
+            End If
+
+        End Sub
+
+        Public Property AllowValidation() As Boolean
+            Get
+                Return m_bValidate
+            End Get
+            Set(ByVal value As Boolean)
+                m_bValidate = value
+            End Set
+        End Property
+
+
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+        End Sub
+
+
+
+        ''' <summary>
+        ''' Convert from some kind of NULL/Empty into a value of some sort
+        ''' </summary>
+        ''' <param name="newValue"></param>
+        ''' <returns></returns>
+        ''' <remarks>This is because different types of controls pass empty values differently</remarks>
+        Protected Function convertEmptyInputs(ByVal newValue As Object) As Object
+
+            ' Test whether provided value is empty
+            Dim bNeedDefault As Boolean = (newValue Is Nothing) Or (TypeOf newValue Is System.DBNull)
+
+            ' Not an empty value?
+            If Not bNeedDefault Then
+                ' #Yes: is a numerical variable being set?
+                If (Me.varType <> eValueTypes.Str) Then
+                    ' #Yes: is a string provided for a numerical variable?
+                    If (TypeOf newValue Is String) Then
+                        ' #Yes: is the value string empty?
+                        If String.IsNullOrEmpty(newValue.ToString) Then
+                            ' #Yes: we'll need the default value here to ensure core data remains valid
+                            bNeedDefault = True
+                        End If
+                    Else
+                        ' #No: numerical value provided for a numerical variable
+
+                        ' Ok, here's a tricky bit. For SOME type of variables entering a '0' will clear it. This only
+                        ' applies to numerical variables whose metadata does not allow '0' values.
+
+                        ' Is a numerical var?
+                        Select Case Me.varType
+                            Case eValueTypes.Int, eValueTypes.Sng
+                                ' Is 0.0! entered and metadata available?
+                                If (CSng(Val(newValue)) = 0.0!) And (Me.Metadata IsNot Nothing) Then
+                                    ' #Yes: does metadata NOT allow 0.0?
+                                    If Not (Metadata.MinOperator.Compare(0.0!, Metadata.Min) And Metadata.MaxOperator.Compare(0.0!, Metadata.Max)) Then
+                                        ' #Yes: '0' clears the variable
+                                        bNeedDefault = True
+                                    End If
+                                End If
+                        End Select
+                    End If
+                End If
+            End If
+
+            If (bNeedDefault) Then
+                Select Case Me.varType
+                    Case eValueTypes.Str
+                        newValue = CStr(Me.m_metadata.NullValue)
+                    Case eValueTypes.Int, eValueTypes.IntArray
+                        newValue = CInt(Me.m_metadata.NullValue)
+                    Case eValueTypes.Sng, eValueTypes.SingleArray
+                        newValue = CSng(Me.m_metadata.NullValue)
+                    Case eValueTypes.PointArray
+                        newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
+                    Case eValueTypes.Bool, eValueTypes.BoolArray
+                        newValue = CBool(Me.m_metadata.NullValue)
+                    Case Else
+                        Status = eStatusFlags.ErrorEncountered
+                        Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
+                End Select
+            End If
+
+            'value that got passed in as a string but it is supposed to be something else
+            ' JS 070122: String-to-number implemented with blunt Var() since this method is the most
+            '            robust alternative by ignoring rubbish characters on a presumed number string.
+            '            For instance, this thing converts "4foo" to 4 and "plop8" to 0.
+            '            The calling logic will need to decide whether this is proper behaviour. This
+            '            method of conversion is simply selected to keep the core from exploding.
+            If TypeOf newValue Is System.String Then
+
+                Select Case Me.varType
+                    Case eValueTypes.Int, eValueTypes.IntArray
+                        newValue = CInt(Val(newValue))
+                    Case eValueTypes.Sng, eValueTypes.SingleArray
+                        newValue = CSng(Val(newValue))
+                    Case eValueTypes.PointArray
+                        ' ToDo_JS: parse string to create a proper point
+                        newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
+                    Case eValueTypes.Bool, eValueTypes.BoolArray
+                        newValue = CBool(Val(newValue))
+                        ' Case Else
+                        '    Status = eStatusFlags.ErrorEncountered
+                        '    Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
+                End Select
+            End If
+
+            Return newValue
+
+        End Function
+
+    End Class
+
+#End Region
+
+#Region "cValueArray"
+
+    ''' <summary>
+    ''' Provides an implemention of cValue that is used for Array values
+    ''' </summary>
+    ''' <remarks>At this time the internal array is weak typed as an object</remarks>
+    Public Class cValueArray
+        Inherits cValue
+
+        Protected m_statusarray() As eStatusFlags
+        Protected m_values() As Object
+        Protected m_nObjects As Integer = cCore.NULL_VALUE 'number of object in the array
+        Protected m_CounterDelegate As CoreCounterDelegate = Nothing
+        Protected m_Countertype As eCoreCounterTypes
+
+
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, _
+                ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
+
+            varType = theValueType
+            m_varName = VarName
+
+            m_metadata = MetaData
+            m_validator = Validator
+
+            m_CounterDelegate = CounterDelegate
+            m_Countertype = CounterType
+            Me.m_bStored = True
+
+            If SetSize() Then 'this will redim the arrays and set m_nObjects
+                For i As Integer = 0 To m_nObjects
+                    m_statusarray(i) = Status
+                Next
+            End If
+
+        End Sub
+
+        ''' <summary>
+        ''' Construct a value object of array data that does not do data validation
+        ''' </summary>
+        ''' <param name="VarName">eVarNameFlags of the data to hold</param>
+        ''' <param name="Status">Default status</param>
+        ''' <param name="CounterType">Type of core counter to use for dimensioning the array</param>
+        ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
+        ''' <remarks></remarks>
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, ByRef CounterDelegate As CoreCounterDelegate)
+            Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
+        End Sub
+
+        ''' <summary>
+        ''' Set the size of the array to the value in the cores data counter i.e. nGroups
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>This will only dimension the array data if the core counter is of a different size then the existing data.
+        '''  Once the data has been resized it will need to be repopulated.</remarks>
+        Public Overrides Function SetSize() As Boolean
+
+            If m_CounterDelegate IsNot Nothing Then
+
+                Dim newsize As Integer = m_CounterDelegate(m_Countertype)
+
+                'only redim of the size of the arrays has changed
+                If newsize <> m_nObjects Then
+                    m_nObjects = newsize
+                    ReDim m_values(m_nObjects)
+                    ReDim m_statusarray(m_nObjects)
+
+                    For i As Integer = 0 To m_nObjects
+                        m_statusarray(i) = eStatusFlags.Null
+                    Next
+                End If
+
+                Return True
+
+            Else
+                System.Console.WriteLine(Me.ToString & ".setSize() not implemented.")
+                Return False
+            End If
+
+        End Function
+
+        Public Overrides Property Status(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+            Get
+                If iSecondaryIndex <> cCore.NULL_VALUE Then
+                    Return m_statusarray(iSecondaryIndex)
+                Else
+                    'if iSecondaryIndex is NULL for an arrayed value then return NULL
+                    'we have no way of know what the user wanted
+                    Return eStatusFlags.Null
+                End If
+            End Get
+            Set(ByVal value As eStatusFlags)
+                If iSecondaryIndex <> cCore.NULL_VALUE Then
+                    m_statusarray(iSecondaryIndex) = value
+                Else
+                    'no index so set all status flags to the new value
+                    For i As Integer = 1 To m_nObjects
+                        m_statusarray(i) = value
+                    Next
+                End If
+            End Set
+        End Property
+
+        Public Overrides Property Value(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Object
+
+            Get
+                Try
+                    If iSecondaryIndex <> cCore.NULL_VALUE Then
+                        'Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, String.Format("{0}.Value({1}, {2}) secondary index out of bounds", Me.ToString(), Me.m_varName, iSecondaryIndex))
+                        Return m_values(iSecondaryIndex)
+                    Else
+                        Return m_values
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
+                    Return Nothing
+                End Try
+
+            End Get
+
+            Set(ByVal value As Object)
+
+                Try
+                    If TypeOf value Is System.Array Then
+                        'no data validation on arrays
+                        'Oh my..........
+                        Try
+                            System.Array.Copy(DirectCast(value, Array), m_values, m_values.Length)
+                        Catch ex As Exception
+                            Debug.Assert(False, Me.ToString & ".Value() Failed to convert value to array.")
+                            Me.Status = eStatusFlags.ErrorEncountered ' I think this will work???
+                        End Try
+
+                    Else
+                        Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, Me.ToString & ".Value() iGroup out of bounds.")
+                        Validate(value, iSecondaryIndex)
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
+                End Try
+
+            End Set
+
+        End Property
+
+        Public Overrides ReadOnly Property Length() As Integer
+            Get
+                Return m_nObjects
+            End Get
+        End Property
+
+        Public ReadOnly Property CoreCounterType() As eCoreCounterTypes
+            Get
+                Return Me.m_Countertype
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Validate an array value object
+        ''' </summary>
+        ''' <param name="NewValue"></param>
+        ''' <param name="iSecondaryIndex"></param>
+        ''' <returns></returns>
+        ''' <remarks>This can not be handled by the cValue base class because the underlying data is handled differently. Array values are stored in an array (duh...)</remarks>
+        Protected Overrides Function Validate(ByRef NewValue As Object, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+
+            'convert null or empty inputs into something that can be used
+            NewValue = Me.convertEmptyInputs(NewValue)
+
+            'set the value to the newvalue 
+            'keep the old value incase the newvalue fails validation
+            m_orgvalue = m_values(iSecondaryIndex)
+            m_values(iSecondaryIndex) = NewValue
+
+            If Not m_bValidate Then
+                m_validationstatus = eStatusFlags.OK
+                Return False ' validation not run
+            End If
+
+            'no validator so boot out of here
+            If m_validator Is Nothing Then
+                m_validationstatus = eStatusFlags.OK
+                ' System.Console.WriteLine("No Validator for " & m_varName.ToString)
+                Return False
+            End If
+
+            'Ok run the validator
+            If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
+
+                If m_validationstatus = eStatusFlags.FailedValidation Then
+                    'if the new value failed validation then set the value back to it's original value
+                    Try
+                        m_values(iSecondaryIndex) = m_orgvalue
+                    Catch ex As Exception
+                        Debug.Assert(False, "Failed to reset value")
+                    End Try
+                End If
+
+                If m_statusarray(iSecondaryIndex) = eStatusFlags.Null Then
+                    ' m_values(iSecondaryIndex) = m_metadata.NullValue
+                    Try
+                        m_values(iSecondaryIndex) = m_metadata.NullValue
+                    Catch ex As Exception
+                        Debug.Assert(False, "Failed to set default value")
+                    End Try
+                End If
+
+            End If
+
+            Return True ' validation run
+
+        End Function
+
+    End Class
+
+#End Region ' cValueArray
+
+
+#Region "cValueArrayIndexed"
+
+    Public Class cValueArrayIndexed
+        Inherits cValueArray
+
+        Protected m_dataType As eDataTypes
+        Protected m_iArrayIndex As Integer
+        Shadows m_CounterDelegate As CoreIndexedCounterDelegate
+
+        ''' <summary>
+        ''' Constructor with no validation object
+        ''' </summary>
+        ''' <param name="theValueType"></param>
+        ''' <param name="VarName"></param>
+        ''' <param name="Status"></param>
+        ''' <param name="CounterType"></param>
+        ''' <param name="CounterDelegate"></param>
+        ''' <remarks></remarks>
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, _
+                ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
+            MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
+
+            varType = theValueType
+            m_varName = VarName
+            m_dataType = DataType
+            m_iArrayIndex = iArrayIndex
+
+            m_CounterDelegate = CounterDelegate
+            m_Countertype = CounterType
+
+            If SetSize() Then 'this will redim the arrays and set m_nObjects
+                For i As Integer = 0 To m_nObjects
+                    m_statusarray(i) = Status
+                Next
+            Else
+                Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
+            End If
+
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Set the size of the array to the value in the cores data counter i.e. nGroups
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>This will only dimension the array data if the core counter is of a different size then the existing data.
+        '''  Once the data has been resized it will need to be repopulated.</remarks>
+        Public Overrides Function SetSize() As Boolean
+
+            If m_CounterDelegate IsNot Nothing Then
+
+                Dim newsize As Integer = m_CounterDelegate(m_Countertype, m_iArrayIndex)
+
+                'only redim of the size of the arrays has changed
+                If newsize <> m_nObjects Then
+                    m_nObjects = newsize
+                    ReDim m_values(m_nObjects)
+                    ReDim m_statusarray(m_nObjects)
+                End If
+
+                Return True
+
+            Else
+                'System.Console.WriteLine(Me.ToString & ".setSize() not implemented.")
+                'When a cValueArrayIndexed object in constructed it will call the base class constructor will a null m_CounterDelegate
+                'which in turn calls this method before cValueArrayIndexed has had a chance to set m_CounterDelegate
+                Return False
+            End If
+
+        End Function
+
+    End Class
+
+#End Region
+
+
+End Namespace

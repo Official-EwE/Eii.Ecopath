@@ -1,0 +1,85 @@
+'==============================================================================
+'
+' $Log: cHideGroups.vb,v $
+' Revision 1.1  2008/09/26 07:30:53  sherman
+' --== DELETED HISTORY ==--
+'
+' Revision 1.8  2008/06/25 01:53:41  joeh
+' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
+'
+' Revision 1.7  2008/06/24 00:52:27  joeh
+' Ecosim NA indice plots are no longer displayed in a pop up form, rather they are displayed in the same form where  we have the NA tree view
+'
+' Revision 1.6  2007/06/22 19:12:46  joeh
+' Modify GetInstance()
+'
+' Revision 1.5  2007/06/22 00:35:30  joeh
+' Add Option Strict On and Option Explicit On
+'
+' Revision 1.4  2007/06/21 23:49:35  joeh
+' Move hard coded strings into the resource file
+'
+' Revision 1.3  2007/06/20 18:13:58  joeh
+' add header to the top of the file so that CVS will log the file with every update
+'
+'
+'==============================================================================
+Option Strict On
+Option Explicit On
+
+Imports ZedGraph
+
+Public Class cHideGroups
+    Private Shared m_HideGroupsClassInstance As cHideGroups
+
+    'Private m_Panel As Windows.Forms.Panel
+    Private Shared m_Panel As Windows.Forms.Panel
+
+
+    Public Shared Function GetInstance(ByVal Panel As Windows.Forms.Panel) As cHideGroups
+        m_Panel = Panel
+
+        If m_HideGroupsClassInstance Is Nothing Then m_HideGroupsClassInstance = New cHideGroups(Panel)
+        Return m_HideGroupsClassInstance
+    End Function
+
+    Private Sub New()
+        '
+    End Sub
+
+    Private Sub New(ByVal Panel As Windows.Forms.Panel)
+        Me.New()
+        m_Panel = Panel
+    End Sub
+    Public Sub SetUpPanel()
+        RemoveToolStrip()
+
+        SetUpGrid()
+    End Sub
+
+    Private Sub SetUpGrid()
+        Dim DataGrid As Windows.Forms.DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim GraphPane As ZedGraphControl = _
+            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
+        Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
+            CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+
+        LogoPanel.Visible = False
+        DataGrid.Visible = False
+        GraphPane.Visible = False
+    End Sub
+
+    Private Sub RemoveToolStrip()
+        Dim ToolStrip As Windows.Forms.ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
+        Dim DataGrid As Windows.Forms.DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+
+        If Not ToolStrip Is Nothing Then
+            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
+            DataGrid.Dock = Windows.Forms.DockStyle.Fill
+        End If
+    End Sub
+
+End Class

@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="EwECore.cCore">
+    <Position X="7" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Core\cCore.vb</FileName>
+      <HashCode>gEI2qOpSwpCMqJCkSARJRCCcRDLw4HNtlICFgSljzWI=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_EcoPath" />
+      <Property Name="FleetInputs(System.Int32)" />
+      <Property Name="EcoPathGroupInputs(System.Int32)" />
+      <Property Name="EcoPathGroupOutputs(System.Int32)" />
+    </ShowAsAssociation>
+    <Members>
+      <Method Name="AddGroup" Hidden="true" />
+      <Method Name="AddShape" Hidden="true" />
+      <Method Name="checkBiomassForDetritus" Hidden="true" />
+      <Method Name="clearOutputFlags" Hidden="true" />
+      <Method Name="createErrorMessage" Hidden="true" />
+      <Method Name="DataChangedMessage" Hidden="true" />
+      <Method Name="EcoPathMessage_Handler" Hidden="true" />
+      <Method Name="Export" Hidden="true" />
+      <Method Name="getCoreCounter" Hidden="true" />
+      <Method Name="GetInstance" Hidden="true" />
+      <Method Name="getStanzaIDForGroup" Hidden="true" />
+      <Method Name="InitCore" Hidden="true" />
+      <Method Name="InitEcopath" Hidden="true" />
+      <Method Name="InitEcoPathGroups" Hidden="true" />
+      <Method Name="InitEcoSim" Hidden="true" />
+      <Method Name="InitEcosimGroups" Hidden="true" />
+      <Method Name="initEcoSimModelParameters" Hidden="true" />
+      <Method Name="InitEwEModel" Hidden="true" />
+      <Method Name="InitFleets" Hidden="true" />
+      <Method Name="InitStanzas" Hidden="true" />
+      <Method Name="isVariableEqual" Hidden="true" />
+      <Method Name="LoadEcopathInputs" Hidden="true" />
+      <Method Name="LoadEcopathOutputs" Hidden="true" />
+      <Method Name="LoadEcosimGroups" Hidden="true" />
+      <Method Name="LoadEcoSimModelParameters" Hidden="true" />
+      <Method Name="LoadEwEModel" Hidden="true" />
+      <Method Name="LoadFleetInput" Hidden="true" />
+      <Method Name="LoadScenario" Hidden="true" />
+      <Method Name="LoadShapeManagers" Hidden="true" />
+      <Method Name="LoadStanzas" Hidden="true" />
+      <Field Name="m_postEcoPathMessage" Hidden="true" />
+      <Field Name="m_publisher" Hidden="true" />
+      <Property Name="Messages" Hidden="true" />
+      <Field Name="nDetritusGroups" Hidden="true" />
+      <Method Name="New" Hidden="true" />
+      <Field Name="nFleets" Hidden="true" />
+      <Field Name="nGroups" Hidden="true" />
+      <Field Name="nLivingGroups" Hidden="true" />
+      <Method Name="OnValidated" Hidden="true" />
+      <Method Name="PostVariableValidation" Hidden="true" />
+      <Method Name="processMessageFromEcopath" Hidden="true" />
+      <Method Name="RemoveGroup" Hidden="true" />
+      <Method Name="RemoveShape" Hidden="true" />
+      <Method Name="RunEcoSim" Hidden="true" />
+      <Method Name="SaveModel" Hidden="true" />
+      <Method Name="set_PB_QB_GE_Flags" Hidden="true" />
+      <Method Name="setCoreCounters" Hidden="true" />
+      <Method Name="ShapeManagersLoad" Hidden="true" />
+      <Method Name="ShapeManagersUpdate" Hidden="true" />
+      <Method Name="StopEcoSim" Hidden="true" />
+      <Method Name="UpdateEcopathInput" Hidden="true" />
+      <Method Name="updateEcoSimGroupInfo" Hidden="true" />
+      <Method Name="UpdateEcoSimModelParameters" Hidden="true" />
+      <Method Name="UpdateEwEModel" Hidden="true" />
+      <Method Name="UpdateFleetInput" Hidden="true" />
+      <Method Name="UpdateShape" Hidden="true" />
+      <Method Name="UpdateTimeVariables" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="EwECore.cCore.EcoPathMessageDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\Core\cCore.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="EwECore.cCore.CoreMessageDelegate">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\Core\cCore.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="EwECore.cCore.CoreForcingFunctionUpdaterDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\cCore.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <AssociationLine Name="FleetInputs(System.Int32)" Type="EwECore.cFleetInput" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.625" Y="2.298" />
+        <Point X="7.625" Y="4.686" />
+        <Point X="5" Y="4.686" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="EcoPathGroupOutputs(System.Int32)" Type="EwECore.cEcoPathGroupOutput" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.312" Y="2.298" />
+        <Point X="7.312" Y="2.673" />
+        <Point X="5.5" Y="2.673" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="EwECore.cEcoPathGroupOutput">
+    <Position X="3.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>EcoPath\cEcoPathGroupOutput.vb</FileName>
+      <HashCode>ACIAKTgmBCKJJAAEQABkAgBSAAANANBBAEEKYSElIwE=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="EwECore.cCoreInputOutputBase" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="2.25" Y="4.422" />
+        <Point X="2.719" Y="4.422" />
+        <Point X="2.719" Y="2.936" />
+        <Point X="3.5" Y="2.936" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="EwECore.Ecopath.cEcoPathModel">
+    <Position X="8.25" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>EcoPath\cEcoPathModel.vb</FileName>
+      <HashCode>QIhgQAgAQJwQAAAIIIEACKAAIABAAEAggKARAAi5IAE=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Method Name="CalcBAofDetritus" Hidden="true" />
+      <Method Name="CalcDCofDetritus" Hidden="true" />
+      <Method Name="CalcDetEaten" Hidden="true" />
+      <Method Name="CalcEEforDetritus" Hidden="true" />
+      <Method Name="CalcExportOfDetritus" Hidden="true" />
+      <Method Name="CalcFateOfDetritus" Hidden="true" />
+      <Method Name="CalcGS_Det_FlowToDet" Hidden="true" />
+      <Method Name="CalcNewExportCatch" Hidden="true" />
+      <Method Name="CalcNichePiankaPred" Hidden="true" />
+      <Method Name="CalcNichePiankaPrey" Hidden="true" />
+      <Method Name="CalcTotalPrimProd" Hidden="true" />
+      <Method Name="Catch_calculations" Hidden="true" />
+      <Method Name="checkDietsSumToOne" Hidden="true" />
+      <Method Name="CheckIfEEsAreOK" Hidden="true" />
+      <Method Name="CheckIfEstimatesAreZero" Hidden="true" />
+      <Method Name="CheckQB" Hidden="true" />
+      <Method Name="Chesson" Hidden="true" />
+      <Field Name="Cons" Hidden="true" />
+      <Field Name="CycDC" Hidden="true" />
+      <Field Name="DCNoCyc" Hidden="true" />
+      <Method Name="DetritusCalculations" Hidden="true" />
+      <Method Name="DimVariables" Hidden="true" />
+      <Method Name="DumpResults" Hidden="true" />
+      <Method Name="EstimateTrophicLevels" Hidden="true" />
+      <Field Name="EstimateWhat" Hidden="true" />
+      <Method Name="EstimEEAgain" Hidden="true" />
+      <Method Name="FindCyclesWhenEstimatingBiomass" Hidden="true" />
+      <Method Name="FindMissing" Hidden="true" />
+      <Field Name="m_coreNotifier" Hidden="true" />
+      <Field Name="m_messages" Hidden="true" />
+      <Field Name="missing" Hidden="true" />
+      <Method Name="MissingParameterMessage" Hidden="true" />
+      <Method Name="notifyCore" Hidden="true" />
+      <Field Name="NumPath" Hidden="true" />
+      <Method Name="Omniv" Hidden="true" />
+      <Field Name="SumCycDC" Hidden="true" />
+      <Method Name="UpdateExportCatch" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="EwECore.cEcoPathGroupInput">
+    <Position X="3.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>EcoPath\cEcoPathGroupInput.vb</FileName>
+      <HashCode>ADQUAQAgACQEAAEAAUAEAgQhQMAhIIAhACAgMRAIA0A=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="EwECore.cCoreInputOutputBase" FixedFromPoint="true">
+      <Path>
+        <Point X="2.25" Y="4.114" />
+        <Point X="2.625" Y="4.114" />
+        <Point X="2.625" Y="1.186" />
+        <Point X="3.5" Y="1.186" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="EwECore.cCoreInputOutputBase">
+    <Position X="0.5" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Core\ICoreInputOutput.vb</FileName>
+      <HashCode>AIBAAQAIAAIQAAiAEQAAACQAiEkEBGAQAAEAAAEAAgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EwECore.cFleetInput">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EcoPath\cFleetInput.vb</FileName>
+      <HashCode>AAEAAEAARMCgAACEACGBIARAAEgBAAEQAIAgAgCASAw=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="EwECore.cCoreInputOutputBase" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.25" Y="4.688" />
+        <Point X="3.5" Y="4.688" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Interface Name="EwECore.ICoreInterface" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Core\ICoreInputOutput.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EwECore.ICoreInputOutput" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Core\ICoreInputOutput.vb</FileName>
+      <HashCode>AABAAQAAAAAAAAAAAAAAAAAAAAAEBEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EwECore.ICoreGroup" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Core\ICoreGroup.vb</FileName>
+      <HashCode>AAAAAAAACAAAAAAAEAAAAAQAAEAAAAAAAAEAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

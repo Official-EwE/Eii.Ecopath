@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AREA_RANGE" xml:space="preserve">
+    <value>Area must be greater then zero and less than or equal to one ( &gt; 0 and &lt;= 1).</value>
+  </data>
+  <data name="BIOACCUM_RANGE" xml:space="preserve">
+    <value>BioAccum must be greater than or equal to zero.</value>
+  </data>
+  <data name="BIOMASS_RANGE" xml:space="preserve">
+    <value>Biomass must be greater than or equal to zero.</value>
+  </data>
+  <data name="BIOMASSAREA_RANGE" xml:space="preserve">
+    <value>BiomassArea must be greater then zero.</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_GENERIC" xml:space="preserve">
+    <value>The EWE6 Core could not be initialized. The following critical error occurred: {0}</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_VALIDATORS" xml:space="preserve">
+    <value>The EWE6 Core could not be initialized. The following critical error occurred while creating validators: {0}</value>
+  </data>
+  <data name="DATA_INVALID" xml:space="preserve">
+    <value>Data validation for '{0}' was unsuccessful.</value>
+  </data>
+  <data name="DATA_VALID" xml:space="preserve">
+    <value>Data validation for '{0}' was successful.</value>
+  </data>
+  <data name="DATA_VALIDATION" xml:space="preserve">
+    <value>Data validation for '{0}'.</value>
+  </data>
+  <data name="DETIMP_RANGE" xml:space="preserve">
+    <value>Imported Detritus must be greater than or equal to zero.</value>
+  </data>
+  <data name="DIETCOMP_NOT_SUM_ONE" xml:space="preserve">
+    <value>Diet Comp does not sum to one.</value>
+  </data>
+  <data name="DIETCOMP_RANGE" xml:space="preserve">
+    <value>Diet Comp must be greater than or equal to zero.</value>
+  </data>
+  <data name="DIETCOMP_VALIDATION_ERROR" xml:space="preserve">
+    <value>Error during validation of 'DietComp'. 'DietComp' will not be valid.</value>
+  </data>
+  <data name="DLLFACTORY_FILENOTFOUND" xml:space="preserve">
+    <value>The DLL file '{0}' could not be found.</value>
+    <comment>DLL file not found at path</comment>
+  </data>
+  <data name="DLLFACTORY_LOAD_ERROR" xml:space="preserve">
+    <value>Error loading '{0}' from DLL '{1}'. Error: {2}</value>
+    <comment>Error in DLLFactory</comment>
+  </data>
+  <data name="DLLFACTORY_TYPE_NOT_FOUND" xml:space="preserve">
+    <value>The Class/Type '{0}' could not be found in the DLL '{1}'.</value>
+    <comment>DLL file not found at path</comment>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
+    <value>DC does not sum to one for group {0}.</value>
+    <comment>Sum(EE) != 1</comment>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC" xml:space="preserve">
+    <value>Diet composition (DC) does not sum to one for one or more groups.</value>
+    <comment>Sum(EE) != 1, generic</comment>
+  </data>
+  <data name="ECOPATH_ERROR_NOMODEL" xml:space="preserve">
+    <value>Failed to run EcoPath, a model has not yet been initialized.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE" xml:space="preserve">
+    <value>Computed EE invalid for group {0}</value>
+    <comment>Ecopath EE value computed incorrectly for group #</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
+    <value>Your model is NOT mass-balanced!
+Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s).</value>
+    <comment>Ecopath EE values computed incorrectly</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
+    <value>Estimated PB = 0 for group {0}.</value>
+    <comment>Ecopath estimated PB = 0 for group #</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
+    <value>The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please re-edit your data.
+
+Note that for unexploited top-predators it may not be possible to estimate P/B (no mortality, no production needed).</value>
+    <comment>Ecopath estimated PB = 0</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0" xml:space="preserve">
+    <value>Estimated QB = 0 for group {0}.</value>
+    <comment>Ecopath estimated QB = 0 for group #</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
+    <value>The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please re-edit your data.</value>
+    <comment>Ecopath estimated QB = 0</comment>
+  </data>
+  <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
+    <value>Ecopath model '{0}' failed to load. {1}</value>
+    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+  </data>
+  <data name="ECOPATH_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecopath model '{0}' loaded.</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_CATCH_GENERIC" xml:space="preserve">
+    <value>Catch information (Landing + Discard) is missing for one of more fleets.</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
+    <value>Discard information is missing for fleet {0}, group {1}.</value>
+    <comment>{0} = fleet name</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
+    <value>Estimated Biomass Accumulation (BA) is negative for group {0}, which may be related to the failure to estimate EE.</value>
+    <comment>BA&lt;0</comment>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_LANDING" xml:space="preserve">
+    <value>Landing information is missing for fleet {0}, group {1}.</value>
+    <comment>{0} = fleet name</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PB" xml:space="preserve">
+    <value>Production / biomass ratio (PB) could not be estimated for group {0}.</value>
+    <comment>PB&lt; 0</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_QB" xml:space="preserve">
+    <value>Consumption / biomass ratio (QB) could not be estimated for group {0}.</value>
+    <comment>QB&lt;0</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B" xml:space="preserve">
+    <value>Biomass could not be estimated for group {0}.</value>
+    <comment>Biomass &lt;= 0</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY" xml:space="preserve">
+    <value>Ecopath has estimated the biomass for group {0} ({1}) to be ({2}). This is because the fishery + migration + biomass accumulation is estimated to sum to a negative value. Please edit your data, allowing e.g. for biomass accumulation for this group.</value>
+    <comment>{0}= group number, {1}= group name, {2}=estimated value</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY" xml:space="preserve">
+    <value>Ecopath has estimated the biomass for group {0} ({1}) to be 0. This is because the fishery + migration + biomass accumulation is estimated to sum to 0. Please edit your data, allowing e.g. for biomass accumulation for this group.</value>
+    <comment>{0}= group number, {1}= group name</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE" xml:space="preserve">
+    <value>Ecotrophic Efficiencies (EE) could not be estimated for group {0}.</value>
+    <comment>EE&lt;0</comment>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC" xml:space="preserve">
+    <value>Ecopath failed to estimate one or more parameters.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PRODxEE" xml:space="preserve">
+    <value>Ecopath has estimated the production * EE for group {0} ({1}), to be {2}. This is less than the estimated 'cannibalism' for this group.</value>
+    <comment>{0}= group number, {1}= group name, {2}=estimated value</comment>
+  </data>
+  <data name="ECOPATH_RUN_ERROR" xml:space="preserve">
+    <value>Ecopath failed to run.</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR_EXCEPTION" xml:space="preserve">
+    <value>Ecopath failed to run.
+System Error: {0}</value>
+  </data>
+  <data name="ECOPATH_RUN_SUCCESS" xml:space="preserve">
+    <value>Ecopath run completed.</value>
+  </data>
+  <data name="ECOPATH_SAVE_FAILED" xml:space="preserve">
+    <value>Ecopath model '{0}' failed to save</value>
+    <comment>{0} = model name</comment>
+  </data>
+  <data name="ECOPATH_SAVE_PROMPT" xml:space="preserve">
+    <value>Save changes to this model?</value>
+  </data>
+  <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
+    <value>Ecopath model failed to save to '{0}'</value>
+    <comment>{0}=model destination</comment>
+  </data>
+  <data name="ECOPATH_SAVETO_SUCCESS" xml:space="preserve">
+    <value>Ecopath model succesfully saved to '{0}'</value>
+    <comment>{0}=model destination</comment>
+  </data>
+  <data name="ECOSIM_LOAD_FAILED" xml:space="preserve">
+    <value>Ecosim scenario '{0}' failed to load. {1}</value>
+    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+  </data>
+  <data name="ECOSIM_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecosim scenario '{0}' loaded.</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOSIM_SAVE_FAILED" xml:space="preserve">
+    <value>Ecosim scenario '{0}' failed to save. {1}</value>
+    <comment>{0}= scenario name, {1} is optional error</comment>
+  </data>
+  <data name="ECOSIM_SAVE_PROMPT" xml:space="preserve">
+    <value>Ecosim scenario '{0}' has changed. Do you wish to save these changes?</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim scenario '{0}' has been saved.</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOSPACE_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace scenario '{0}' failed to load. {1}</value>
+    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+  </data>
+  <data name="ECOSPACE_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecospace scenario '{0}' loaded.</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
+    <value>Ecospace scenario '{0}' failed to save. {1}</value>
+    <comment>{0} = scneario name, {1} = optional reason</comment>
+  </data>
+  <data name="ECOSPACE_SAVE_PROMPT" xml:space="preserve">
+    <value>Ecospace scenario '{0}'  has changed. Do you wish to save these changes?</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
+    <value>Ecospace scenario '{0}' has been saved.</value>
+  </data>
+  <data name="ECOTRACER_LOAD_FAILED" xml:space="preserve">
+    <value>Ecotracer scenario '{0}' failed to load. {1}</value>
+    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+  </data>
+  <data name="ECOTRACER_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecotracerscenario '{0}' loaded.</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOTRACER_SAVE_FAILED" xml:space="preserve">
+    <value>Ecotracer scenario '{0}' failed to save. {1}</value>
+    <comment>{0} = scneario name, {1} = optional reason</comment>
+  </data>
+  <data name="ECOTRACER_SAVE_PROMPT" xml:space="preserve">
+    <value>Ecotracer scenario '{0}'  has changed. Do you wish to save these changes?</value>
+    <comment>{0} = scenario name</comment>
+  </data>
+  <data name="ECOTRACER_SAVE_SUCCES" xml:space="preserve">
+    <value>Ecotracer scenario '{0}' has been saved.</value>
+  </data>
+  <data name="EE_CLEARED" xml:space="preserve">
+    <value>EE cleared.</value>
+  </data>
+  <data name="EE_RANGE" xml:space="preserve">
+    <value>EE must be between zero and one.</value>
+  </data>
+  <data name="FORCING_DATA_CHANGED" xml:space="preserve">
+    <value>Forcing shape data has changed.</value>
+  </data>
+  <data name="GE_CLEARED" xml:space="preserve">
+    <value>GE cleared.</value>
+  </data>
+  <data name="GE_RANGE" xml:space="preserve">
+    <value>GE must be greater than zero and less than or equal to 1.</value>
+  </data>
+  <data name="GENERIC_SAVE_RESOLUTION" xml:space="preserve">
+    <value>Try to save your model under a new name.</value>
+  </data>
+  <data name="GS_CLEARED" xml:space="preserve">
+    <value>GS cleared.</value>
+  </data>
+  <data name="GS_RANGE" xml:space="preserve">
+    <value>Unassimilated consumption must be between zero and one.</value>
+  </data>
+  <data name="ICORE_ADD_NULL" xml:space="preserve">
+    <value>Sorry, this Input or Output cannot be left empty.</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTACCESS" xml:space="preserve">
+    <value>Unable to access newly created database at location {0}</value>
+    <comment>{0} = database name</comment>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTCREATE" xml:space="preserve">
+    <value>Unable to create new database at location {0}</value>
+    <comment>{0} = database name</comment>
+  </data>
+  <data name="IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>Database {0} has version {1}, which is incompatible with this version. Use the latest version of Ecopath 5 to update the database first.</value>
+    <comment>{0} = database name, {1} = version</comment>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSIMGROUP" xml:space="preserve">
+    <value>Creating missing group {0} ({1}) for Ecosim scenario {2} with default values, please review.</value>
+    <comment>{0} = group ID, {1} = group name, {2} = scenarion name</comment>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEFLEET" xml:space="preserve">
+    <value>Creating missing fleet {0} ({1}) for Ecospace scenario {2} with default values, please review.</value>
+    <comment>{0} = fleet ID, {1} = fleet name, {2} = scenarion name</comment>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEGROUP" xml:space="preserve">
+    <value>Creating missing group {0} ({1}) for Ecospace scenario {2} with default values, please review.</value>
+    <comment>{0} = group ID, {1} = group name, {2} = scenarion name</comment>
+  </data>
+  <data name="IMPORT_FIX_CREATEFISHMORTSHAPE" xml:space="preserve">
+    <value>Creating missing fish mortality shape {0} for ecosim group {1}, ecosim scenario {2} with default values, please review.</value>
+    <comment>{0} = shape ID, {1} = group name, {2} = scenario name</comment>
+  </data>
+  <data name="IMPORT_FIX_GROUPAREA" xml:space="preserve">
+    <value>Group {0} area corrected to {1}</value>
+    <comment>{0} = group name, {1} = corrected Area value</comment>
+  </data>
+  <data name="IMPORT_FIX_GROUPUNASSIM" xml:space="preserve">
+    <value>Group {0} is a producer, Unassim corrected to {1}</value>
+    <comment>{0} = group name, {1} = corrected Unassim value</comment>
+  </data>
+  <data name="IMPORT_NO_DESCRIPTION" xml:space="preserve">
+    <value>No description available.</value>
+  </data>
+  <data name="IMPORT_POGRESS_DIETCOMP" xml:space="preserve">
+    <value>Importing Ecopath group diets</value>
+  </data>
+  <data name="IMPORT_PROGRESS_CATCH" xml:space="preserve">
+    <value>Importing Ecopath catches</value>
+  </data>
+  <data name="IMPORT_PROGRESS_COMPLETE" xml:space="preserve">
+    <value>Import complete</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOPATHGROUPS" xml:space="preserve">
+    <value>Importing Ecopath groups</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECORANGER" xml:space="preserve">
+    <value>Import Ecoranger</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS" xml:space="preserve">
+    <value>Importing Ecosim groups</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEBASEMAP" xml:space="preserve">
+    <value>Importing Ecospace basemap</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEFLEETS" xml:space="preserve">
+    <value>Importing Ecospace fleets</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEGROUPS" xml:space="preserve">
+    <value>Importing Ecospace groups</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEMPAS" xml:space="preserve">
+    <value>Importing Ecospace marine protected areas</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEREGIONS" xml:space="preserve">
+    <value>Importing Ecospace regions</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACESCENARIOS" xml:space="preserve">
+    <value>Importing Ecospace scenarios</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACER" xml:space="preserve">
+    <value>Importing Ecotracer scenarios</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACERGROUPS" xml:space="preserve">
+    <value>Importing Ecotracer groups</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FAILED" xml:space="preserve">
+    <value>Import of model {0} failed at {1}</value>
+    <comment>{0} = model name, {1} = date and time</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_FLEET" xml:space="preserve">
+    <value>Importing Ecopath fleets</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGAPPLICATIONS" xml:space="preserve">
+    <value>Importing Ecosim forcing and mediation applications</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGMEDIATION" xml:space="preserve">
+    <value>Importing Ecosim forcing and mediation shapes</value>
+  </data>
+  <data name="IMPORT_PROGRESS_MODEL" xml:space="preserve">
+    <value>Importing model {0}</value>
+    <comment>{0}=model name</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_SCENARIO" xml:space="preserve">
+    <value>Importing Ecosim scenarios</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STANZA" xml:space="preserve">
+    <value>Importing Multi-stanza configurations</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STARTED" xml:space="preserve">
+    <value>Import of model {0} started at {1}</value>
+    <comment>{0} = model name, {1} = date and time</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_SUCCES" xml:space="preserve">
+    <value>Import of model {0} completed succesfully at {1}</value>
+    <comment>{0} = model name, {1} = date and time</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_TIMESERIES" xml:space="preserve">
+    <value>Importing Ecosim time series</value>
+  </data>
+  <data name="IMPORT_PROPRESS_ECOSPACEHABITATS" xml:space="preserve">
+    <value>Importing Ecospace habitats</value>
+  </data>
+  <data name="IMPORT_WARNING_ECORANGER" xml:space="preserve">
+    <value>Ecoranger is no longer supported in EwE6. Existing Ecoranger data is not imported.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGDUPLICATE" xml:space="preserve">
+    <value>Forcing shape {0} failed to import as {1}; shape defined more than once due to an internal error.</value>
+    <comment>{0} = forcing seq. index, {1} = targeted type</comment>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS" xml:space="preserve">
+    <value>Forcing data {0} used to drive both egg production and another function. Imported only as {1}</value>
+    <comment>{0} = forcing seq. number, {1} = forcing application</comment>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGNOTIMPORTED" xml:space="preserve">
+    <value>Forcing data {0} failed to import as {1}</value>
+    <comment>{0} = forcing seq. index, {1} = targeted type</comment>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGTYPEMISSING" xml:space="preserve">
+    <value>Unable to determine type of forcing data {0}, data not imported</value>
+    <comment>{0}= forcing seq. index</comment>
+  </data>
+  <data name="IMPORT_WARNING_MULTISTANZASHAPE" xml:space="preserve">
+    <value>Unable to determine egg production and/or hatchery stocking data across Ecosim scenarios for stanza configuration {0}. You will need to select and re-assign this data in the EwE6 interface.</value>
+    <comment>{0} = stanza name</comment>
+  </data>
+  <data name="IMPORT_WARNING_PAIRDETAILS" xml:space="preserve">
+    <value>Pair {0} not converted: {1}, {2}</value>
+    <comment>{0} = pair seq. number, {1} = juvinile group name, {2} = adult group name</comment>
+  </data>
+  <data name="IMPORT_WARNING_PAIRSNOTSUPPORTED" xml:space="preserve">
+    <value>Ecosim pairs are no longer supported. You will need to translate one or more EwE5 pairs to an EwE6 multi-stanza configuration.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESFLEET" xml:space="preserve">
+    <value>Time Series {0} ({1}) imported without fleet link, fleet {2} could not be resolved</value>
+    <comment>{0} = time series name, {1} = dataset name, {2} = EwE5 fleet index</comment>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESTYPE" xml:space="preserve">
+    <value>Time Series {0} ({1}) is not imported because its type {2} is not supported.</value>
+    <comment>{0} = time series name, {1} = dataset name, {2} = time series type</comment>
+  </data>
+  <data name="IMPORT_WARNING_TIMESIERIESGROUP" xml:space="preserve">
+    <value>Time Series {0} ({1}) imported without group link, group {2} could not be resolved</value>
+    <comment>(0}: Time Series name, {1}: dataset name, {2}: EwE5 group index</comment>
+  </data>
+  <data name="LOAD_ERROR_MODEL" xml:space="preserve">
+    <value>Error '{0}' has occurred while loading Model</value>
+  </data>
+  <data name="OUTPUT_NOT_EDITABLE" xml:space="preserve">
+    <value>Sorry output variables are not editable.</value>
+    <comment>All outputs are not editable</comment>
+  </data>
+  <data name="PB_CLEARED" xml:space="preserve">
+    <value>PB cleared</value>
+  </data>
+  <data name="PB_RANGE" xml:space="preserve">
+    <value>PB must be greater than zero.</value>
+  </data>
+  <data name="QB_CLEARED" xml:space="preserve">
+    <value>QB cleared.</value>
+  </data>
+  <data name="QB_RANGE" xml:space="preserve">
+    <value>QB must be greater then zero.</value>
+  </data>
+  <data name="STANZA_APPLY_DATAERROR" xml:space="preserve">
+    <value>A critical data error has occurred while applying new stanza data: {0}</value>
+    <comment>{0}= exception text</comment>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_DATAERROR" xml:space="preserve">
+    <value>A critical data error has occurred while calculating stanza parameters: {0}</value>
+    <comment>{0}= exception text</comment>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_TOOMANYMISSING" xml:space="preserve">
+    <value>Missing parameters B, CB or Mortality for stanza group {0}. Stanza calculation can not be done.</value>
+    <comment>{0} = stanza config name</comment>
+  </data>
+  <data name="STANZA_CANCEL_DATAERROR" xml:space="preserve">
+    <value>A critical data error has occurred while rolling back stanza data: {0}</value>
+    <comment>{0}= exception text</comment>
+  </data>
+  <data name="TIMESERIES_ERROR_IDENTICALSEPARATORS" xml:space="preserve">
+    <value>Decimal and column separator cannot be the same.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDFLEET" xml:space="preserve">
+    <value>Invalid fleet number {0} in series '{1}'</value>
+    <comment>{0}=erroneous fleet number, {1} name of series</comment>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDGROUP" xml:space="preserve">
+    <value>Invalid group number {0} in series '{1}'</value>
+    <comment>{0}=erroneous group number, {1} name of series</comment>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLFORMAT" xml:space="preserve">
+    <value>One or more pool code values cannot be read</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLLINEMISSING" xml:space="preserve">
+    <value>Pool data expected</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLVALUEMISSING" xml:space="preserve">
+    <value>Pool code value missing</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEFORMAT" xml:space="preserve">
+    <value>One or more type code values cannot be read</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
+    <value>Type data expected</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">
+    <value>Type code value missing</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEFORMAT" xml:space="preserve">
+    <value>One or more values cannot be read</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUENEGATIVE" xml:space="preserve">
+    <value>Value cannot be negative</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
+    <value>One or more weight values cannot be read</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
+    <value>Weight value missing</value>
+  </data>
+  <data name="TIMESERIES_ERROR_YEARLINEMISSING" xml:space="preserve">
+    <value>Year data expected</value>
+  </data>
+  <data name="TIMESERIES_ERROR_YEARMISSING" xml:space="preserve">
+    <value>Data for year {0} missing</value>
+    <comment>{0}=year</comment>
+  </data>
+  <data name="TIMESERIES_ERROR_YEARVALUEMISSING" xml:space="preserve">
+    <value>Value for year {0} missing</value>
+    <comment>{0}=year</comment>
+  </data>
+  <data name="VARIABLE_NOT_FOUND" xml:space="preserve">
+    <value>Unable to find variable for '{0}'</value>
+    <comment>Unable to find indicated variable</comment>
+  </data>
+  <data name="VARIABLE_NOT_SET" xml:space="preserve">
+    <value>Unable to set variable '{0}', Error: {1}</value>
+    <comment>Unable to modify indicated variable</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
+    <value>Variable '{0}' cleared.</value>
+    <comment>{0}=variable name</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_ERROR" xml:space="preserve">
+    <value>Error during validation of variable.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
+    <value>Value '{1}' rejected for variable '{0}'.</value>
+    <comment>{0}=variable name, {1}=value</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
+    <value>Value '{1}' accepted for variable '{0}'.</value>
+    <comment>{0}=variable name, {1}=value</comment>
+  </data>
+  <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Time Series dataset '{0}' failed to load. {1}</value>
+    <comment>{0}=dataset name, {1}=error text</comment>
+  </data>
+  <data name="TIMESERIES_LOAD_SUCCESS" xml:space="preserve">
+    <value>Time Series dataset '{0}' loaded.</value>
+    <comment>{0}=dataset name</comment>
+  </data>
+  <data name="TIMESERIES_UNLOAD_FAILED" xml:space="preserve">
+    <value>Time Series failed to unload. {0}</value>
+    <comment>{0}=error text</comment>
+  </data>
+  <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
+    <value>Time Series unloaded successfully.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_PEDIGREE" xml:space="preserve">
+    <value>Importing pedigree</value>
+  </data>
+  <data name="IMPORT_PROGRESS_QUOTES" xml:space="preserve">
+    <value>Importing quotes</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_SUMTOONE" xml:space="preserve">
+    <value>Diet for one or more groups does not sum to 1. Do you want to normalize diets to 1 for ALL predator groups?</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_CORRECTTO15PERC" xml:space="preserve">
+    <value>Group '{0}' gets {1}% of it's diet from higher TL groups. Do you want to reduce it to 15%? (Doing so will not change your input data)</value>
+    <comment>{0} = group name, {1} = pecentage</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSING_B_QB" xml:space="preserve">
+    <value>Aborting, missing B and QB for group '{0}'. Please re-edit data.</value>
+    <comment>{0}= group name</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_INSUFFICIENTDATA" xml:space="preserve">
+    <value>Insufficient Data, please re-edit your model.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE" xml:space="preserve">
+    <value>Biomass, PB, QB and EE for '{0}' are entered. Do you want to estimate biomass accumulation?</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE" xml:space="preserve">
+    <value>Biomass, PB and EE for '{0}' are entered. Do you want to estimate biomass accumulation?</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING" xml:space="preserve">
+    <value>Enter Biomass for all detritus groups before proceeding to Ecosim.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_NETMIGRATION" xml:space="preserve">
+    <value>Do you want to estimate net migration for '{0}'?</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY" xml:space="preserve">
+    <value>Your model has {0} group(s) that have a diet with imports only. Such groups are not well defined, will have trophic levels of 1, and will not show any flow on trophic level decomposition interfaces.</value>
+    <comment>{0}=number of occurences</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP" xml:space="preserve">
+    <value>Group '{0}' has an import-only diet</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE" xml:space="preserve">
+    <value>Your model has {0} group(s) for which the Detritus fate (DF) sum to more than 1.You should go back to your input data, and make sure the DF's sum to max 1 only.</value>
+    <comment>{0}=occurrence count</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP" xml:space="preserve">
+    <value>Group '{0}' has Detritus Fate larger than one.</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE" xml:space="preserve">
+    <value>Your model has {0} gear(s) for which the Discard fate is not specified. You should go back to your input data and make sure to specify what happens to the discards. Discards must be directed to a detritus group, if this  is not the case in your case, you should perhaps treat  the discards from the given fleet as landings with zero value.</value>
+    <comment>{0}=occurrence count</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET" xml:space="preserve">
+    <value>Gear '{0}' is missing Discard Fate</value>
+    <comment>{0}=gear/fleet name</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
+    <value>Respiration exceeds input to detritus for one or more group(s).</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP" xml:space="preserve">
+    <value>Group '{0}' has a respiration value exceeding input to detritus.</value>
+    <comment>{0}=group name</comment>
+  </data>
+</root>
