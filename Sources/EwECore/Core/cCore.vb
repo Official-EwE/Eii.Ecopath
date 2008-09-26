@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.2  2008/09/26 15:25:09  joeb
+' OnValidated() was adding EcoSimNYears to the affected variables list twice
+'
 ' Revision 1.1  2008/09/26 07:30:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -9239,7 +9242,8 @@ Public Class cCore
                         set_ModelRunLength(CInt(value.Value))
                         'the length of the ecospace run will be changed as well
                         Me.LoadEcospaceModelParameters()
-                        msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcoSimNYears))
+                        'jb 26/09/2008 EcoSimNYears is already in the variables list adding it again causes loops over variables to execute twice
+                        ' msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcoSimNYears))
 
                     Case eVarNameFlags.ConSimOnEcoSim
                         'toggle contaminant tracing OFF is ecospace
