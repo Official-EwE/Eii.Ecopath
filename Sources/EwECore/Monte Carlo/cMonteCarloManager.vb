@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.3  2008/09/27 01:39:07  villyc
+' ecosim monte carlo running with vulnerability fitting
+'
 ' Revision 1.2  2008/09/26 23:00:41  villyc
 ' more ecosimmontecarlo fixing
 '
@@ -404,6 +407,7 @@ Public Class cMonteCarloManager
             m_core.RunEcoPath()
             'initialize ecosim with the new data
             m_core.m_EcoSim.Init(True)
+            m_core.RunEcoSim()
 
         Catch ex As Exception
             Debug.Assert(False)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.4  2008/09/27 01:39:07  villyc
+' ecosim monte carlo running with vulnerability fitting
+'
 ' Revision 1.3  2008/09/26 23:00:41  villyc
 ' more ecosimmontecarlo fixing
 '
@@ -197,12 +200,12 @@ Public Class cEcosimMonteCarlo
         Try
             redimVariables()
 
-            For iGrp As Integer = 1 To m_core.nGroups
+            For iPred As Integer = 1 To m_core.nGroups
                 Dim vul As Single = 0
                 For iPrey As Integer = 1 To m_core.nGroups
-                    If m_core.m_EcoSimData.VulMult(iGrp, iPrey) > 0 Then vul = m_core.m_EcoSimData.VulMult(iGrp, iPrey) : Exit For
+                    If m_core.m_EcoSimData.VulMult(iPrey, iPred) > 0 Then vul = m_core.m_EcoSimData.VulMult(iPrey, iPred) : Exit For
                 Next
-                m_core.m_EcoSimData.VulnerabilityPredator(iGrp) = vul
+                m_core.m_EcoSimData.VulnerabilityPredator(iPred) = vul
             Next
 
             CalculateUpperLowerLimits()
@@ -475,7 +478,7 @@ Public Class cEcosimMonteCarlo
                 'vc sep 2008: adding vulnerability to MC
                 m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
                 For iPrey As Integer = 1 To m_core.nGroups
-                    m_esdata.VulMult(i, iPrey) = startValues(eMCParams.Vulnerability, i)
+                    m_esdata.VulMult(iPrey, i) = startValues(eMCParams.Vulnerability, i)
                 Next
             Next
 
@@ -639,7 +642,8 @@ Public Class cEcosimMonteCarlo
             m_esdata.VulnerabilityPredator(i) = BestFit(eMCParams.Vulnerability, i)
             'Also transfer to vulmult
             For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(i, iPrey) = BestFit(eMCParams.Vulnerability, i)
+                m_esdata.VulMult(iPrey, i) = BestFit(eMCParams.Vulnerability, i)
+                m_core.EcoSimGroupInputs(i).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, i)
             Next
 
 
@@ -788,7 +792,9 @@ Public Class cEcosimMonteCarlo
                                                                      ParLimit(1, eMCParams.Vulnerability, iPred))
 
             For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(iPred, iPrey) = m_esdata.VulnerabilityPredator(iPred)
+                m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
+                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
+
             Next
         Next
 
