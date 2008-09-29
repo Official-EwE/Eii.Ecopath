@@ -1,106 +1,11 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.2  2008/09/29 23:02:19  jeroens
+' Fixed bug 544
+'
 ' Revision 1.1  2008/09/26 07:31:29  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.59  2008/08/11 16:13:56  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.58  2008/08/10 17:05:15  jeroens
-' Removed obsolete captions
-'
-' Revision 1.57  2008/08/02 21:14:16  jeroens
-' New Groups and Fleets auto-numbered
-'
-' Revision 1.56  2008/08/02 03:04:17  jeroens
-' Renamed resources
-'
-' Revision 1.55  2008/07/30 18:38:10  jeroens
-' Fixed issue 524
-'
-' Revision 1.54  2008/06/02 00:01:36  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.53  2008/05/29 22:22:55  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.52  2008/05/07 01:39:03  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.51  2008/05/06 20:19:50  jeroens
-' Fixed bug 458
-'
-' Revision 1.50  2008/05/05 22:15:40  jeroens
-' Group default colours are true defaults, and will be substituted with real colours whenever used
-'
-' Revision 1.49  2008/05/05 17:35:52  jeroens
-' Uses styleguide color/integer conversion
-'
-' Revision 1.48  2008/05/05 08:33:33  jeroens
-' Default -> Alternating
-' Uses Styleguide group colors instead of group PoolColorArgb
-'
-' Revision 1.47  2008/04/07 02:31:16  jeroens
-' Cleaning up resources
-'
-' Revision 1.46  2008/02/22 21:45:18  jeroens
-' vbK tied to StanzaLifeStage
-'
-' Revision 1.45  2008/02/02 01:33:29  jeroens
-' Fixed bug in deleting new stanza configs
-'
-' Revision 1.44  2008/01/18 01:40:00  jeroens
-' Simplified code lock usage
-'
-' Revision 1.43  2007/12/21 03:21:29  jeroens
-' * Restyled, added custom colour button
-'
-' Revision 1.42  2007/12/04 17:35:28  jeroens
-' * Fixed William's bug
-'
-' Revision 1.41  2007/11/21 17:39:11  jeroens
-' * StyleGuide notified when colours have changed
-'
-' Revision 1.40  2007/11/21 16:51:10  jeroens
-' * Colors saved back to group objects, argh
-'
-' Revision 1.39  2007/10/31 14:18:24  jeroens
-' * Simplified and neatified group color rendering
-'
-' Revision 1.38  2007/10/30 22:52:34  jeroens
-' + Group colors now managed here
-'
-' Revision 1.37  2007/10/30 18:43:26  jeroens
-' * Added empty stanza group paranoia
-'
-' Revision 1.36  2007/10/22 03:37:13  jeroens
-' * Fixed bug 321 (on load and for future occurences)
-'
-' Revision 1.35  2007/10/21 13:08:24  jeroens
-' * Core restructure batch lock can fail; now properly handled througout core and GUI
-'
-' Revision 1.34  2007/10/18 16:02:48  jeroens
-' + Added PP value
-'
-' Revision 1.33  2007/10/18 14:11:58  jeroens
-' * Localized
-'
-' Revision 1.32  2007/10/15 01:30:16  jeroens
-' * Added stanza age check (fixes bug 298)
-'
-' Revision 1.31  2007/10/04 14:18:41  jeroens
-' * Simplified
-'
-' Revision 1.30  2007/08/25 21:02:30  jeroens
-' * Replaced numeric up/down controls with text edit bug by numeric text edit   fields
-'
-' Revision 1.29  2007/08/19 22:31:39  jeroens
-' * Fixed bug by adding and removing life stages on an existing stanza config
-'
-' Revision 1.28  2007/08/19 18:40:59  jeroens
-' * Fixed stanza ID bug when adding new stanza
-' + Added status feedback
 '
 '==============================================================================
 
@@ -1877,6 +1782,8 @@ Imports EwEUtils.Drawing
 
     Public Function Apply() As Boolean
 
+        ' ToDo: globalize this method
+
         Dim strPrompt As String = ""
         Dim bConfigurationChanged As Boolean = False
         Dim bGroupsChanged As Boolean = False
@@ -1889,6 +1796,7 @@ Imports EwEUtils.Drawing
         Dim iStanza As Integer = 0
         Dim bSuccess As Boolean = True
         Dim stgd As StyleGuide = StyleGuide.GetInstance()
+        Dim sb As New System.Text.StringBuilder
 
         ' =================
         ' Validation
@@ -1976,7 +1884,8 @@ Imports EwEUtils.Drawing
             Dim iDBID As Integer = Nothing
 
             ' Add new groups
-            For iGroup = 0 To Me.m_lgiGroups.Count - 1
+            iGroup = 0
+            While (bSuccess = True) And (iGroup < Me.m_lgiGroups.Count)
                 gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
                 If (gi.IsNew()) Then
                     Dim igt As Integer = iGroup + 1
@@ -1986,38 +1895,52 @@ Imports EwEUtils.Drawing
                     htGroupID.Add(gi, iDBID)
                 Else
                     If ((iGroup + 1) <> gi.Group.Index) Then
-                        bSuccess = bSuccess And Me.m_core.MoveGroup(gi.Group.Index, iGroup + 1)
+                        If Not Me.m_core.MoveGroup(gi.Group.Index, iGroup + 1) Then
+                            sb.AppendLine("Failed to move group " & gi.Name)
+                            bSuccess = False
+                        End If
                     End If
                 End If
-            Next
+                iGroup += 1
+            End While
 
             ' Remove deleted (and confirmed) groups
             Dim agi() As GroupInfo = Me.m_lgiGroupsRemoved.ToArray()
-            For Each gi In agi
-                gi = DirectCast(Me.m_lgiGroupsRemoved(0), GroupInfo)
+            iGroup = 0
+            While (bSuccess = True) And (iGroup < agi.Length)
+                gi = agi(iGroup)
                 If (Not gi.IsNew()) And (gi.Confirmed = True) Then
                     If (Me.m_core.RemoveGroup(gi.Group.Index)) Then
                         Me.m_lgiGroups.Remove(gi)
                         Me.m_lgiGroupsRemoved.Remove(gi)
                     Else
+                        sb.AppendLine("Failed to delete group " & gi.Name)
                         bSuccess = False
                     End If
                 End If
-            Next
+                iGroup += 1
+            End While
 
-            ' First remove deleted stanza configurations
+            ' Remove deleted stanza configurations from internal admin
             Dim asiRemove() As StanzaInfo = Me.m_lsiStanzaRemoved.ToArray()
-            For Each si In asiRemove
+            iStanza = 0
+            While (bSuccess = True) And (iStanza < asiRemove.Length)
+                si = asiRemove(iStanza)
                 If (Not si.IsNew()) Then
                     If Me.m_core.RemoveStanza(si.StanzaGroup.Index) = True Then
                         Me.m_lsiStanza.Remove(si)
                         Me.m_lsiStanzaRemoved.Remove(si)
+                    Else
+                        sb.AppendLine("Failed to delete stanza configuration " & si.Name)
+                        bSuccess = False
                     End If
                 End If
-            Next
+                iStanza += 1
+            End While
 
             ' Add new stanza configurations
-            For iStanza = 0 To Me.m_lsiStanza.Count - 1
+            iStanza = 0
+            While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
                 si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
                 If (si.IsNew()) Then
                     Dim iStanzaID As Integer = -1
@@ -2039,12 +1962,17 @@ Imports EwEUtils.Drawing
                         aiGroupID(i) = iDBID
                         aiStartAge(i) = gi.StanzaAge
                     Next
-                    bSuccess = bSuccess And Me.m_core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID)
+                    If Not Me.m_core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
+                        sb.AppendLine("Failed to add stanza configuration " & si.Name)
+                        bSuccess = False
+                    End If
                 End If
-            Next
+                iStanza += 1
+            End While
 
             ' Update modified stanza configurations
-            For iStanza = 0 To Me.m_lsiStanza.Count - 1
+            iStanza = 0
+            While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
                 si = DirectCast(Me.m_lsiStanza(iStanza), StanzaInfo)
                 If (Not si.IsNew()) Then
                     If si.IsChanged Then
@@ -2052,7 +1980,9 @@ Imports EwEUtils.Drawing
                         ' Remove all current groups
                         For iLifestage As Integer = 1 To si.StanzaGroup.NStanzas
                             group = Me.m_core.EcoPathGroupInputs(sg.iGroups(iLifestage))
-                            Me.m_core.RemoveStanzaLifestage(sg.Index, CInt(group.GetVariable(eVarNameFlags.DBID)))
+                            If Not Me.m_core.RemoveStanzaLifestage(sg.Index, CInt(group.GetVariable(eVarNameFlags.DBID))) Then
+                                bSuccess = False
+                            End If
                         Next
                         ' Add newly assigned groups
                         For iLifestage As Integer = 0 To si.NumGroups - 1
@@ -2062,19 +1992,30 @@ Imports EwEUtils.Drawing
                             Else
                                 iDBID = htGroupID(gi)
                             End If
-                            Me.m_core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality, 0.3!)
+                            If Not Me.m_core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality, 0.3!) Then
+                                bSuccess = False
+                            End If
                         Next
+
+                        If bSuccess = False Then
+                            sb.AppendLine("Failed to update stanza '" & si.Name & "' life stages")
+                        End If
                     End If
                 End If
-            Next
+                iStanza += 1
+            End While
 
             ' The core will reload now
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
+            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
 
         End If
 
-        ' Update core objects
-        If (bGroupsChanged) Then
+        If Not bSuccess Then
+            MsgBox(sb.ToString, MsgBoxStyle.Exclamation And MsgBoxStyle.OkOnly)
+        End If
+
+        ' Update core objects when previous operations were succesful
+        If (bSuccess And bGroupsChanged) Then
             Dim bColorsChanged As Boolean = False
             For iGroup = 0 To Me.m_lgiGroups.Count - 1
                 gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
@@ -2103,12 +2044,6 @@ Imports EwEUtils.Drawing
             Next
             If bColorsChanged Then StyleGuide.GetInstance().ColorsChanged()
         End If
-
-        '' Make sure the screen is saved on 'OK'
-        'If (bGroupsChanged Or bStanzaChanged) Then
-        '    ' Apply all changes
-        '    Me.m_core.SaveModel()
-        'End If
 
         appl.SetStatusText("", TriState.False)
 
