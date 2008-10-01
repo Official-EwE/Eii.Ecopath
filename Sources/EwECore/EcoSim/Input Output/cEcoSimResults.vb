@@ -7,6 +7,7 @@ Public Class cEcoSimResults
     Public nGroups As Integer
     Public CurrentT As Long
     Public Biomass() As Single
+    Public absBiomass() As Single
     Public Yield() As Single
     ''' <summary>Catch {group x fleet}</summary>
     Public BCatch(,) As Single ' by group, by fleet
@@ -68,6 +69,8 @@ Public Class cEcoSimResults
         ReDim m_hasSRData(nStanza, nMaxLifeStages)
         ReDim BStock(nStanza, nMaxLifeStages)
         ReDim BRecruitment(nStanza, nMaxLifeStages)
+        ReDim absBiomass(nGroups)
+
 
     End Sub
 End Class
