@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcopathMassBalance.vb,v $
+' Revision 1.2  2008/10/01 17:08:57  jeroens
+' Reworked CountNoOfMissing to fix issue 543
+'
 ' Revision 1.1  2008/09/26 07:30:17  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -125,8 +128,7 @@ LoopCalc:
 
             EstimateGE()
 
-            CountNoOfMissing(m_data.mis, noMissing, EstimateFor)
-            If Exit_Sub_Missing_Par = 0 Then
+            If (CountNoOfMissing(m_data.mis, noMissing, EstimateFor) = False) Then
                 InParameterEstimation = 0
                 'jb 
                 cLog.Write("Too many missing parameters. Parameter Estimation not completed successfully.")
@@ -493,41 +495,37 @@ NextPivot:
 
     End Sub
 
-    Private Sub CountNoOfMissing(ByRef Mis() As Integer, ByRef NoMissing As Integer, ByVal From As eEstimateParameterFor)
+    Private Function CountNoOfMissing(ByRef Mis() As Integer, ByRef nNoMissing As Integer, ByVal From As eEstimateParameterFor) As Boolean
         'Private Sub CountNoOfMissing(ByRef Mis() As Integer, ByRef NoMissing As Integer, ByVal From As String, ByVal chk As Integer)
 
         'count the number of missing parameters for each group and store the values in the argument Mis()
         'this will have to change because the basic estimator and the Sensitivity loop count the number of missing parameters differently
-        Dim Miss As Integer
+        Dim iMissingForGroup As Integer
         Dim i As Integer
         Static done As Boolean
 
-        NoMissing = 0
+        nNoMissing = 0
 
         For i = 1 To m_data.NumLiving
-            Miss = 0
-            If m_data.B(i) <= 0 Then Miss = Miss + 1
-            If m_data.PB(i) < 0 Then Miss = Miss + 1
-            If m_data.EE(i) < 0 Then
-                Miss = Miss + 1
-            End If
-
+            iMissingForGroup = 0
+            If m_data.B(i) <= 0 Then iMissingForGroup += 1
+            If m_data.PB(i) < 0 Then iMissingForGroup += 1
+            If m_data.EE(i) < 0 Then iMissingForGroup += 1
 
             ' If Miss >= 2 And From = "ParameterEstimate" Then
-            If Miss >= 2 And From = eEstimateParameterFor.ParameterEstimation Then
+            If iMissingForGroup >= 2 And From = eEstimateParameterFor.ParameterEstimation Then
                 MsgManyMissingPar(i)
                 Exit_Sub_Missing_Par = 0
-                cLog.Write("'CountNoOfMissing(...)' Group " & i & " missing more then one parameter.")
-                Exit Sub
+                cLog.Write("'CountNoOfMissing(...)' Group " & i & " missing " & iMissingForGroup.ToString & " parameter(s).")
+                Return False
             End If
 
             If m_data.QB(i) < 0 And m_data.PP(i) < 1 Then
-                Miss = Miss + 1
+                iMissingForGroup = iMissingForGroup + 1
             End If
 
-
             '   If Miss >= 2 And From = "SensitivLoop" Then
-            If Miss >= 2 And From = eEstimateParameterFor.Sensitivity Then
+            If iMissingForGroup >= 2 And From = eEstimateParameterFor.Sensitivity Then
                 ' From Sensitivity routine
                 ' chk = 1
                 If done = False Then
@@ -537,13 +535,15 @@ NextPivot:
                 End If
 
                 Exit_Sub_Missing_Par = 0
+                Return False
             End If
-            'Debug.Assert(Miss = 0)
-            Mis(i) = Miss
-            ''DoEvents
-            NoMissing = NoMissing + Miss
+
+            Mis(i) = iMissingForGroup
+            nNoMissing += iMissingForGroup
         Next i
-    End Sub
+        Return True
+
+    End Function
 
 
     Private Sub EstimatePB(ByRef Pass As Integer)
@@ -1371,7 +1371,7 @@ ONE:
             strMsg = strMsg & "B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on "
             strMsg = strMsg & "these two groups have known B and QB."
             strMsg = strMsg & vbCrLf & vbCrLf
-            strMsg = strMsg & " Please re-edit the input parameters."
+            strMsg = strMsg & "Please re-edit the input parameters."
 
             msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eMessageSource.EcoPath, eMessageImportance.Warning)
             msg.Suppressable = False
