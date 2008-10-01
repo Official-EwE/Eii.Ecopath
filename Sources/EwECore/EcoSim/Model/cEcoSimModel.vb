@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.3  2008/10/01 16:50:28  villyc
+' Ecosim monte carlo updates, plus ecosim plot bug fix
+'
 ' Revision 1.2  2008/09/26 20:28:59  villyc
 ' ecosimmontecarlo stuff
 '
@@ -2821,8 +2824,8 @@ Public Property PluginManager() As cPluginManager
                     If m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
                        m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                        m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
+                        'm_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
@@ -2852,8 +2855,8 @@ Public Property PluginManager() As cPluginManager
                              m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
                              m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                              m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                             m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                              m_RefData.DatType(j) = eTimeSeriesType.AverageWeight) Then
+                        'm_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been

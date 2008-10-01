@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.4  2008/10/01 16:50:29  villyc
+' Ecosim monte carlo updates, plus ecosim plot bug fix
+'
 ' Revision 1.3  2008/09/27 01:39:07  villyc
 ' ecosim monte carlo running with vulnerability fitting
 '
@@ -663,7 +666,7 @@ Public Class cMonteCarloManager
 
         Try
             Me.update()
-            Me.m_mc.CalculateUpperLowerLimits()
+            Me.m_mc.CalculateUpperLowerLimits(False)
             Me.LoadGroups()
         Catch ex As Exception
             cLog.Write(ex)

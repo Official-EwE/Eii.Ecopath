@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.3  2008/10/01 16:50:28  villyc
+' Ecosim monte carlo updates, plus ecosim plot bug fix
+'
 ' Revision 1.2  2008/09/26 15:25:09  joeb
 ' OnValidated() was adding EcoSimNYears to the affected variables list twice
 '
@@ -9595,6 +9598,7 @@ Public Class cCore
                     Case eVarNameFlags.mcBAcv, eVarNameFlags.mcBcv, eVarNameFlags.mcEEcv, eVarNameFlags.mcPBcv, eVarNameFlags.mcVUcv
 
                         Me.m_MonteCarlo.CalculateUpperLowerLimits()
+
 
                         Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
                                                      eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.MonteCarlo))
