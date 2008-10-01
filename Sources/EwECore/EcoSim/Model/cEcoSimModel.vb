@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.4  2008/10/01 22:55:30  joeb
+' Add absBiomass to Ecosim results object
+'
 ' Revision 1.3  2008/10/01 16:50:28  villyc
 ' Ecosim monte carlo updates, plus ecosim plot bug fix
 '
@@ -1579,6 +1582,7 @@ Public Property PluginManager() As cPluginManager
                     'StartBiomass() is the input to EcoSim which is the output from EcoPath
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
                     m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / (m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp))
+                    m_Results.absBiomass(igrp) = BB(igrp)
 
                     'save results over time for output
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
