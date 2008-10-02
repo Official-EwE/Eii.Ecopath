@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.2  2008/10/02 22:53:53  joeb
+' Added Quota types
+'
 ' Revision 1.1  2008/09/26 07:30:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -601,4 +604,16 @@ Public Enum eTimeSeriesType
 End Enum
 
 #End Region
+
+#Region "Quota types"
+
+Public Enum eQuotaTypes
+    NotSet
+    Weakest
+    Strongest
+    Selective
+End Enum
+
+#End Region
+
 
