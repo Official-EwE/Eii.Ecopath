@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.3  2008/10/02 22:55:35  joeb
+' Added vars for regulated fisheries Quotas
+'
 ' Revision 1.2  2008/09/26 20:28:59  villyc
 ' ecosimmontecarlo stuff
 '
@@ -265,6 +268,18 @@ Public Class cEcosimDatastructures
     ''' </summary>
     ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
     Public FishRateGear(,) As Single
+
+    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort </summary>
+    Public MaxEffort() As Single 'gear
+
+    ''' <summary>Type of quota system in effect </summary>
+    Public QuotaType() As eQuotaTypes 'gear
+
+    ''' <summary>Fishing Quota for regulated fisheries </summary>
+    Public Quota(,) As Single 'gear group
+
+    ''' <summary>Biomass discarded because of regulation </summary>
+    Public RegDiscard(,) As Single ' gear group
 
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
@@ -581,6 +596,21 @@ Public Class cEcosimDatastructures
         ReDim FunctionNumber(nGroups, nGroups, MaxFunctions)
         ReDim IsMedFunction(nGroups, nGroups, MaxFunctions)
         ReDim FunctionType(nGroups, nGroups, MaxFunctions)
+
+        'for regulated fisheries
+        ReDim QuotaType(nGear)
+        ReDim RegDiscard(nGear, nGroups)
+
+
+        'ReDim MaxEffort(nGear) 'As Single
+        'ReDim QuotaType(nGear) ' As eQuotaTypes
+        'ReDim Quota(nGear, nGroups) ' As Single 'gear group
+        'ReDim RegDiscard(nGear, nGroups) ' gear group
+
+        'ReDim FlowType(nGroups, nGroups)
+        'ReDim Cbase(nGroups)
+        'ReDim FtimeMax(nGroups)
+        'ReDim FLimit(nGroups)
 
     End Sub
     ''' <summary>

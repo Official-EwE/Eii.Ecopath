@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.6  2008/10/02 22:55:35  joeb
+' Added vars for regulated fisheries Quotas
+'
 ' Revision 1.5  2008/10/02 17:05:25  villyc
 ' mc ecobio updates
 '
@@ -1585,7 +1588,8 @@ Public Property PluginManager() As cPluginManager
                     'StartBiomass() is the input to EcoSim which is the output from EcoPath
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
                     m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / (m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp))
-                    m_Results.absBiomass(igrp) = BB(igrp)
+                    'ToDo_jb Compute fish count
+                    m_Results.FishCount(igrp) = BB(igrp) '
 
                     'save results over time for output
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
@@ -2263,7 +2267,7 @@ Public Property PluginManager() As cPluginManager
                                 End If
                                 DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishMGear(K, i)
                             Else
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + m_Data.RegDiscard(K, i)
                             End If
                             ToDet = ToDet + DetFlowN
 
@@ -3550,8 +3554,6 @@ Public Property PluginManager() As cPluginManager
 
         End Sub
 
-
-
         ''' <summary>
         ''' Hardwire some default values for the EcoSim Model
         ''' </summary>
@@ -3574,19 +3576,19 @@ Public Property PluginManager() As cPluginManager
             'redim variables that need defaults before they are read from the database
             'this means these variables are not dimensioned with the other data during the database read
             ReDim m_Data.FlowType(nGroups, nGroups)
-            ReDim GearIncludeInEquil(m_EPData.NumFleet)
             ReDim m_Data.Cbase(nGroups)
             ReDim m_Data.FtimeMax(nGroups)
             ReDim m_Data.FLimit(nGroups)
+
+            ReDim m_Data.MaxEffort(m_Data.nGear)
+            ReDim m_Data.Quota(m_Data.nGear, nGroups)
 
             'default from frmOptF.Form_Load()
             For igrp As Integer = 1 To nGroups
                 m_Data.FLimit(igrp) = 1000
             Next
 
-            'ReDim SimQB(nGroups)
-
-
+            ReDim GearIncludeInEquil(m_EPData.NumFleet)
             'vc What if no fishery? If mEPData.NumGear < 1 Then mEPData.NumGear = 1
             For i = 1 To m_EPData.NumFleet
                 GearIncludeInEquil(i) = True
@@ -3607,6 +3609,13 @@ Public Property PluginManager() As cPluginManager
                     '    m_Data.VulMult(i, j) = m_Data.VulMultAll
                     'End If
 
+                Next
+            Next
+
+            For iflt As Integer = 1 To Me.m_Data.nGear
+                Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
+                For igrp As Integer = 1 To nGroups
+                    Me.m_Data.Quota(iflt, igrp) = m_EPData.B(igrp) * 10 '10 time the ecopath biomass
                 Next
             Next
 
@@ -3798,14 +3807,47 @@ Public Property PluginManager() As cPluginManager
         End Sub
 
         Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single)
-            Dim i As Integer, ig As Integer, Ft As Single
+            Dim i As Integer, ig As Integer, Ft As Single, Elim As Single, Emax As Single
+            Dim ci As Single
             ReDim Qmult(m_Data.nGroups)
 
             For i = 1 To m_Data.nGroups
-
                 Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
-                If m_Data.FisForced(i) = False Or m_Data.PredictSimEffort Then
+            Next
 
+            If m_Data.PredictSimEffort Then
+                'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
+                For ig = 1 To m_Data.nGear
+                    If m_Data.FishRateGear(ig, t) > m_Data.MaxEffort(ig) Then m_Data.FishRateGear(ig, t) = m_Data.MaxEffort(ig)
+                    Select Case m_Data.QuotaType(ig)
+                        Case eQuotaTypes.NotSet 'do nothing
+
+                        Case eQuotaTypes.Weakest 'limit effort to weakest stock
+                            For i = 1 To m_Data.nGroups
+                                Elim = m_Data.Quota(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, t) * BB(i))
+                                If m_Data.FishRateGear(ig, t) > Elim Then m_Data.FishRateGear(ig, t) = Elim
+                            Next
+
+                        Case eQuotaTypes.Strongest 'limit effort to strongest stock but discard overages on weaker stocks
+                            Emax = 0
+                            For i = 1 To m_Data.nGroups
+                                Elim = m_Data.Quota(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, t) * BB(i))
+                                If Elim > Emax Then Emax = Elim
+                            Next
+                            If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
+                            For i = 1 To m_Data.nGroups
+                                ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, t) * BB(i)
+                                If ci > m_Data.Quota(ig, i) Then m_Data.RegDiscard(ig, i) = ci - m_Data.Quota(ig, i) Else m_Data.RegDiscard(ig, i) = 0
+                            Next
+
+                        Case eQuotaTypes.Selective 'assume selective fishing on all groups to achieve quotas
+                            Debug.Assert(False, "Not implemented yet")
+                    End Select
+                Next ig
+            End If
+
+            For i = 1 To m_Data.nGroups
+                If m_Data.FisForced(i) = False Or m_Data.PredictSimEffort Then
                     Ft = 0
                     For ig = 1 To m_Data.nGear
                         Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t)
@@ -3813,8 +3855,7 @@ Public Property PluginManager() As cPluginManager
                     m_Data.FishRateNo(i, t) = Qmult(i) * Ft
                     m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
                 End If
-
-            Next
+            Next i
 
         End Sub
 
