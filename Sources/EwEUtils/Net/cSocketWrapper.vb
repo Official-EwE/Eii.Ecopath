@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.2  2008/10/02 06:24:27  jeroens
+' Added SyncSend capabilties to enforce outgoing data order
+' Fixed potential handshake relay / authorization order mix-up
+'
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -388,7 +392,9 @@ Namespace NetUtilities
         ''' needs to be <see cref="Authorized">Authorized</see> to send this data.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function Send(ByVal obj As cSerializableObject, Optional ByVal bRequiresAuthorization As Boolean = True) As Boolean
+        Public Function Send(ByVal obj As cSerializableObject, _
+            Optional ByVal bRequiresAuthorization As Boolean = True, _
+            Optional ByVal bSendImmediately As Boolean = False) As Boolean
 
             ' Sanity check(s)
             If (obj Is Nothing) Then Return False
@@ -407,7 +413,7 @@ Namespace NetUtilities
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("sw {0} sending {1}", Me.ToString(), obj.ToString())
 #End If
-                bSucces = SendBinary(ms.GetBuffer(), bRequiresAuthorization)
+                bSucces = SendBinary(ms.GetBuffer(), bRequiresAuthorization, bSendImmediately)
             Catch ex As Exception
                 'release the semaphore if there has been an error
                 'ths will prevent a deadlock if there has been an error
@@ -470,7 +476,7 @@ Namespace NetUtilities
             Try
                 If hs.Relayed = False Then
                     hs.Relayed = True
-                    If Me.Send(hs, False) Then
+                    If Me.Send(hs, False, True) Then
 #If VERBOSE_LEVEL >= 3 Then
                         Console.WriteLine("sw {0} handshake {1} relayed", Me.ToString(), hs.HandshakeID)
 #End If
@@ -637,12 +643,13 @@ Namespace NetUtilities
             Dim sw As cSocketWrapper = CType(ar.AsyncState, cSocketWrapper)
             Dim iNumBytes As Integer = -1
             Dim objRead As cSerializableObject = Nothing
+            Dim bSendAuthorization As Boolean = False
 
             ' Read incoming bytes
             Try
-                'SyncLock sw
+                ' Get block from socket
                 iNumBytes = sw.m_socket.EndReceive(ar)
-                'End SyncLock
+
             Catch ex As SocketException
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("sw {0} socket exception '{1}'", Me.ToString(), ex.Message)
@@ -694,16 +701,10 @@ Namespace NetUtilities
                         If sw.IsHandshake(hs.HandshakeID) Then
                             ' #Yes: Authorized
                             sw.Authorized = True
+                            bSendAuthorization = True
 #If VERBOSE_LEVEL >= 1 Then
                             Console.WriteLine("sw {0} authorized", Me.ToString())
 #End If
-                            Try
-                                RaiseEvent OnStatus(Me, eStatusTypes.Authorized, "")
-                            Catch ex As Exception
-#If VERBOSE_LEVEL >= 1 Then
-                                Console.WriteLine(">> sw {0} OnStatus(Authorized) exception '{1}' ", Me.ToString(), ex.Message)
-#End If
-                            End Try
                         Else
 #If VERBOSE_LEVEL >= 1 Then
                             Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), hs.HandshakeID, sw.m_iHandshake)
@@ -714,7 +715,18 @@ Namespace NetUtilities
                         Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
 #End If
                     End If
+                    ' First relay handshake
                     sw.RelayHandshake(hs)
+                    ' Then raise authorization event
+                    If bSendAuthorization Then
+                        Try
+                            RaiseEvent OnStatus(Me, eStatusTypes.Authorized, "")
+                        Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                            Console.WriteLine(">> sw {0} OnStatus(Authorized) exception '{1}' ", Me.ToString(), ex.Message)
+#End If
+                        End Try
+                    End If
 
                 Else
                     ' #No: not a handshake but a valid object, broadcast its arrival
@@ -766,7 +778,8 @@ Namespace NetUtilities
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Function SendBinary(ByVal byMessage As Byte(), _
-            Optional ByVal bRequiresAuthorization As Boolean = True) As Boolean
+            Optional ByVal bRequiresAuthorization As Boolean = True, _
+            Optional ByVal bSendImmedately As Boolean = False) As Boolean
 
             ' Sanity checks
             If (Not Me.Connected) Then Return False
@@ -787,11 +800,15 @@ Namespace NetUtilities
 
             Try
 #If VERBOSE_LEVEL >= 3 Then
-                me.m_iQueue += (iLength + 4)
-                Console.WriteLine("sw {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength+4), me.m_iQueue)
+                Me.m_iQueue += (iLength + 4)
+                Console.WriteLine("sw {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength + 4), Me.m_iQueue)
 #End If
 
-                Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
+                If bSendImmedately Then
+                    Me.m_socket.Send(byData, 0, byData.Length, SocketFlags.None)
+                Else
+                    Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
+                End If
 
             Catch ex As Exception
                 Return False
