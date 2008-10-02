@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.3  2008/10/02 21:27:25  jeroens
+' Socket able to connect to URI
+'
 ' Revision 1.2  2008/10/02 06:24:27  jeroens
 ' Added SyncSend capabilties to enforce outgoing data order
 ' Fixed potential handshake relay / authorization order mix-up
@@ -263,6 +266,33 @@ Namespace NetUtilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Attempt to connect the socket to a URI, port combination.
+        ''' </summary>
+        ''' <param name="strURI">The URI to connect to.</param>
+        ''' <param name="iPort">The IP port to connect to.</param>
+        ''' <returns>True if connected succesfully.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Connect(ByVal strURI As String, ByVal iPort As Integer) As Boolean
+            Dim aIP As IPAddress() = Nothing
+
+            Try
+                Dim ipEntry As IPHostEntry = Dns.GetHostEntry(strURI)
+                aIP = ipEntry.AddressList
+            Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                Console.Write("sw {0}: exception '{1}' occurred while attempting to connect to {2}:{3}", _
+                              Me.ToString(), ex.Message, strURI, iPort)
+#End If
+            End Try
+
+            If (aIP Is Nothing) Then Return False
+            If (aIP.Length = 0) Then Return False
+
+            Return Me.Connect(aIP(0), iPort)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Attempt to connect the socket to an IP address, port combination.
         ''' </summary>
         ''' <param name="ip">The IP address to connect to.</param>
@@ -273,14 +303,14 @@ Namespace NetUtilities
 
             Try
 #If VERBOSE_LEVEL >= 2 Then
-                Console.WriteLine("sw {0} attempting to connect", Me.ToString())
+                Console.WriteLine("sw {0} attempting to connect to {1}:{2}", Me.ToString(), ip.ToString(), iPort)
 #End If
                 ' Try to connect
                 Me.m_socket.Connect(ip, iPort)
 
             Catch ex As SocketException
 #If VERBOSE_LEVEL >= 1 Then
-                Console.WriteLine("sw {0} exception '{1}' while attempting to connect", Me.ToString(), ex.Message)
+                Console.WriteLine("sw {0} exception '{1}' while attempting to connect to {2}:{3}", Me.ToString(), ex.Message, ip.ToString(), iPort)
 #End If
             End Try
 
@@ -288,9 +318,9 @@ Namespace NetUtilities
             If Not Me.Connected Then
                 ' #Ouch! Raise event
 #If VERBOSE_LEVEL >= 2 Then
-                Console.WriteLine("sw {0} connection failed", Me.ToString())
+                Console.WriteLine("sw {0} failed to connect to {1}:{2}", Me.ToString(), ip.ToString(), iPort)
 #End If
-                RaiseEvent OnStatus(Me, eStatusTypes.Disconnected, String.Format("Failed to connect to server {0}:{1}", ip.ToString, iPort))
+                RaiseEvent OnStatus(Me, eStatusTypes.Disconnected, String.Format("Failed to connect to {0}:{1}", ip.ToString, iPort))
                 Return False
             End If
 
