@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.5  2008/10/02 17:05:25  villyc
+' mc ecobio updates
+'
 ' Revision 1.4  2008/10/01 22:55:30  joeb
 ' Add absBiomass to Ecosim results object
 '
@@ -2828,8 +2831,8 @@ Public Property PluginManager() As cPluginManager
                     If m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
                        m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                        m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
+                       m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
-                        'm_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
@@ -2859,8 +2862,8 @@ Public Property PluginManager() As cPluginManager
                              m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or _
                              m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                              m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
+                             m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                              m_RefData.DatType(j) = eTimeSeriesType.AverageWeight) Then
-                        'm_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been

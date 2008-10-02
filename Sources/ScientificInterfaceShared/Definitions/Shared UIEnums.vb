@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared UIEnums.vb,v $
+' Revision 1.2  2008/10/02 17:05:26  villyc
+' mc ecobio updates
+'
 ' Revision 1.1  2008/09/26 07:31:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -86,6 +89,7 @@ Namespace Definitions
         EE
         BA
         VU
+
     End Enum
 
 End Namespace

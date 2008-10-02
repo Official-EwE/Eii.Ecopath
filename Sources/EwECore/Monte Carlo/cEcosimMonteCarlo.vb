@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.6  2008/10/02 17:05:26  villyc
+' mc ecobio updates
+'
 ' Revision 1.5  2008/10/01 16:50:29  villyc
 ' Ecosim monte carlo updates, plus ecosim plot bug fix
 '
@@ -182,6 +185,7 @@ Public Class cEcosimMonteCarlo
     ''' Best fitting parameter to the last run Monte Carlo trials
     ''' </summary>
     Public BestFit(,) As Single
+    Dim RunsSinceLastWithLowerSS As Integer = 0
 
     ''' <summary>
     ''' Original Ecopath parameters before trials were run
@@ -384,6 +388,11 @@ Public Class cEcosimMonteCarlo
         Try
             initForRun()
 
+            Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
+                sw.WriteLine("Group, vulnerability")
+                sw.Close()
+            End Using
+
             'nThreads = System.Environment.ProcessorCount
             'nThreads = 1
             'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
@@ -411,6 +420,7 @@ Public Class cEcosimMonteCarlo
 
                 'number of ecopath interation to find new pararameters
                 iter = 0
+                RunsSinceLastWithLowerSS += 1
 
                 If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
                     'Ecopath failed to run stop the trials loop
@@ -455,8 +465,10 @@ Public Class cEcosimMonteCarlo
 
                     'For Each MCthread In MCthreadList
                     'If MCthread.ESdata.SS < SSBestFit Then
-                    If m_esdata.SS < 0.999999 * SSBestFit Then
+                    'Console.Write(m_esdata.SS.ToString & ", ")
 
+                    If m_esdata.SS < SSBestFit Then
+                        RunsSinceLastWithLowerSS = 0
                         'SSBestFit = MCthread.ESdata.SS
                         SSBestFit = m_esdata.SS
                         Console.WriteLine("Total trials: " & itrial.ToString & ", " & SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString & ", total: " & Itertot.ToString)
@@ -499,7 +511,7 @@ Public Class cEcosimMonteCarlo
                 'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(itrial, iter)
                 'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
-                'If itrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & itrial.ToString)
+                If RunsSinceLastWithLowerSS > 100 And itrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & itrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
                 If itrial Mod 10 = 0 Then EcopathIterationsProgress(itrial)
             Next itrial
 
@@ -578,7 +590,7 @@ Public Class cEcosimMonteCarlo
         Dim bEcopathNeedsBalancing As Boolean
 
         Try
-            Dim BBar As Single
+            'Dim BBar As Single
             AbortRun = True
             bEcopathNeedsBalancing = True
             Do While bEcopathNeedsBalancing
@@ -587,12 +599,12 @@ Public Class cEcosimMonteCarlo
 
                 For igrp = 1 To m_core.nLivingGroups                               ' Using default if not
                     If m_ecopath.missing(igrp, 1) = False Then                   ' Then B is an input par
-                        If isCrashed(igrp) Then
-                            BBar = 1.2 * ParCurVal(eMCParams.Biomass, igrp)
-                        Else
-                            BBar = ParCurVal(eMCParams.Biomass, igrp)
-                        End If
-                        m_epdata.B(igrp) = ChooseFeasiblePar(BBar, _
+                        'If isCrashed(igrp) Then
+                        '    BBar = 1.2 * ParCurVal(eMCParams.Biomass, igrp)
+                        'Else
+                        '    BBar = ParCurVal(eMCParams.Biomass, igrp)
+                        'End If
+                        m_epdata.B(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Biomass, igrp), _
                                                              CVpar(eMCParams.Biomass, igrp), _
                                                              ParLimit(0, eMCParams.Biomass, igrp), _
                                                              ParLimit(1, eMCParams.Biomass, igrp), _
@@ -812,13 +824,14 @@ Public Class cEcosimMonteCarlo
         '  Static Answer As Object
 
         'if the populatoin is crashed then double the cv:
-        Dim cvFactor As Double = 1 ' IIf(isCrashed, 2, 1)
+        'Dim cvFactor As Double = 0.02 ' 0.01 + 0.5 * Math.Log10(RunsSinceLastWithLowerSS) ' IIf(isCrashed, 2, 1)
 
 
         Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
-            X = xbar * (1 + cvFactor * CV * RandomNormal())
+            X = xbar * (1 + 0.02 * CV * RandomNormal())
+            'X = xbar * (1 + CV * RandomNormal())
             If X >= ParMin And X <= ParMax Then
                 ChooseFeasiblePar = X
                 Exit Function
@@ -866,20 +879,21 @@ Public Class cEcosimMonteCarlo
         'm_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, igrp), _
         '                              CVpar(6, igrp), ParLimit(0, eMCParams.Vulnerability, igrp), _
         '                             ParLimit(1, eMCParams.Vulnerability, igrp))
-
-        For iPred As Integer = 1 To m_core.nLivingGroups
-            m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
-                                                                     CVpar(6, iPred), _
-                                                                     ParLimit(0, eMCParams.Vulnerability, iPred), _
-                                                                     ParLimit(1, eMCParams.Vulnerability, iPred), _
-                                                                     False)
-
-            For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
-
+        Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
+            For iPred As Integer = 1 To m_core.nLivingGroups
+                m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
+                                                                         CVpar(6, iPred), _
+                                                                         ParLimit(0, eMCParams.Vulnerability, iPred), _
+                                                                         ParLimit(1, eMCParams.Vulnerability, iPred), _
+                                                                         False)
+                For iPrey As Integer = 1 To m_core.nGroups
+                    m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
+                    m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
+                Next
+                sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
             Next
-        Next
+            sw.Close()
+        End Using
 
     End Sub
 
