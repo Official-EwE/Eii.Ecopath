@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.2  2008/10/02 19:04:07  sherman
+' Modified Ecosim plot to start at 1 instead of 0
+'
 ' Revision 1.1  2008/09/26 07:31:50  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -135,7 +138,8 @@ Namespace Ecosim
             ' todo: change to groups that listed in group box
             For i As Integer = 1 To m_core.nGroups
                 list1 = New PointPairList
-                For t As Integer = 0 To m_core.nEcosimTimeSteps
+                list1.Add(0, 1) ' Brute force to make 0 TS 1
+                For t As Integer = 1 To m_core.nEcosimTimeSteps
                     If AnnualOutputToolStripMenuItem.Checked Then
                         If t Mod cCore.N_MONTHS = 0 Then
                             list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) / m_core.EcoPathGroupOutputs(i).Biomass()))
