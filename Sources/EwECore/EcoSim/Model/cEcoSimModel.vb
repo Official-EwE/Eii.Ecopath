@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.7  2008/10/02 23:35:35  joeb
+' Init RegDiscard at start of run to clear out values from last run
+'
 ' Revision 1.6  2008/10/02 22:55:35  joeb
 ' Added vars for regulated fisheries Quotas
 '
@@ -696,7 +699,7 @@ Public Property PluginManager() As cPluginManager
             ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
             ReDim BestTime(m_EPData.NumLiving)
             ReDim BrecYear(nGroups)
-
+            ReDim m_Data.RegDiscard(m_EPData.NumFleet, m_EPData.NumGroups)
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
@@ -894,8 +897,6 @@ Public Property PluginManager() As cPluginManager
                         ProcessTimeStep(itime, ipct)
                     End If
 
-                    ' Commented for now SL - JB needs to verify
-                    'If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStepStats(indic)
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
                 Next ipct 'Month
