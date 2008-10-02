@@ -74,6 +74,6 @@ Public Class cEcoSimResults
         ReDim BRecruitment(nStanza, nMaxLifeStages)
         ReDim FishCount(nGroups)
 
-
     End Sub
+
 End Class
