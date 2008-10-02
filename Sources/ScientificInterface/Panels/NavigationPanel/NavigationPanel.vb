@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.2  2008/10/02 18:49:10  jeroens
+' Added Fiseries regulation nodes
+'
 ' Revision 1.1  2008/09/26 07:32:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -200,6 +203,9 @@ Public Class NavigationPanel
         m_nodeController.Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
         m_nodeController.Add("ndFishingRate", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate))
         m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality))
+        m_nodeController.Add("ndQuotaOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaOptions))
+        m_nodeController.Add("ndQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas))
+        m_nodeController.Add("ndDiscardMortality", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridDiscardsMortality))
         m_nodeController.Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(FisheryInputFleetSizeDynamicsEwEGrid), "Fleet size dynamics.htm")
 
         ' Ecosim Output
