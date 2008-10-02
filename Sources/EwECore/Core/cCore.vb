@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.4  2008/10/02 20:42:11  jeroens
+' Added Villy's flag
+'
 ' Revision 1.3  2008/10/01 16:50:28  villyc
 ' Ecosim monte carlo updates, plus ecosim plot bug fix
 '
@@ -1032,6 +1035,23 @@ Public Class cCore
     End Function
 
 #End Region
+
+#Region " Villy's own "
+
+    ' ToDo: hide by compiler directive?
+
+    Private m_bVilly As Boolean = False
+
+    Public Property Villy() As Boolean
+        Get
+            Return m_bVilly
+        End Get
+        Set(ByVal value As Boolean)
+            m_bVilly = value
+        End Set
+    End Property
+
+#End Region ' Villy's own
 
 #End Region 'Public Core Interfaces
 
