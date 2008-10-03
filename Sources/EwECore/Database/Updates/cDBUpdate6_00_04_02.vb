@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_02.vb,v $
+' Revision 1.2  2008/10/03 18:12:55  jeroens
+' Reorganized
+'
 ' Revision 1.1  2008/09/26 07:30:16  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -34,20 +37,6 @@ Public Class cDBUpdate6_00_04_02
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' The actual update logic.
-    ''' </summary>
-    ''' <param name="db">Database to modify.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
-            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
-
-        Return Me.FixCurrencyUnits(db)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' This method provides the text that will be entered in the update log in
     ''' the database.
     ''' </summary>
@@ -74,6 +63,64 @@ Public Class cDBUpdate6_00_04_02
             Return 6.0402!
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' The actual update logic.
+    ''' </summary>
+    ''' <param name="db">Database to modify.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
+            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
+
+        Return Me.FixCurrencyUnits(db)
+
+    End Function
+
+    Private Function FixCurrencyUnits(ByVal db As cEwEDatabase) As Boolean
+
+        Dim bSucces As Boolean = True
+        Dim iCurrentValue As Integer = -1
+        Dim unit As eUnitCurrencyType = eUnitCurrencyType.NotSet
+
+        db.BeginTransaction()
+
+        Try
+            ' Try to get value, could be DBNull (which is OK)
+            iCurrentValue = CInt(db.GetValue("SELECT UnitCurrency FROM EcopathModel WHERE ModelID=1"))
+        Catch ex As Exception
+
+        End Try
+
+        Select Case iCurrentValue
+            Case 0 : unit = eUnitCurrencyType.CustomEnergy
+            Case 1 : unit = eUnitCurrencyType.WetWeight
+            Case 2 : unit = eUnitCurrencyType.Joules
+            Case 3 : unit = eUnitCurrencyType.Calorie
+            Case 4 : unit = eUnitCurrencyType.Carbon
+            Case 5 : unit = eUnitCurrencyType.DryWeight
+            Case 6 : unit = eUnitCurrencyType.Nitrogen
+            Case 7 : unit = eUnitCurrencyType.Phosporous
+            Case Else : unit = eUnitCurrencyType.WetWeight
+        End Select
+        Try
+            bSucces = db.Execute(String.Format("UPDATE EcopathModel SET UnitCurrency={0} WHERE ModelID=1", CInt(unit)))
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        If bSucces Then
+            bSucces = bSucces And db.CommitTransaction(True)
+        Else
+            db.RollbackTransaction()
+        End If
+
+        Return bSucces
+
+    End Function
+
+#Region " Standard bits "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -128,50 +175,6 @@ Public Class cDBUpdate6_00_04_02
         End Get
     End Property
 
-#Region " Internals "
-
-    Private Function FixCurrencyUnits(ByVal db As cEwEDatabase) As Boolean
-
-        Dim bSucces As Boolean = True
-        Dim iCurrentValue As Integer = -1
-        Dim unit As eUnitCurrencyType = eUnitCurrencyType.NotSet
-
-        db.BeginTransaction()
-
-        Try
-            ' Try to get value, could be DBNull (which is OK)
-            iCurrentValue = CInt(db.GetValue("SELECT UnitCurrency FROM EcopathModel WHERE ModelID=1"))
-        Catch ex As Exception
-
-        End Try
-
-        Select Case iCurrentValue
-            Case 0 : unit = eUnitCurrencyType.CustomEnergy
-            Case 1 : unit = eUnitCurrencyType.WetWeight
-            Case 2 : unit = eUnitCurrencyType.Joules
-            Case 3 : unit = eUnitCurrencyType.Calorie
-            Case 4 : unit = eUnitCurrencyType.Carbon
-            Case 5 : unit = eUnitCurrencyType.DryWeight
-            Case 6 : unit = eUnitCurrencyType.Nitrogen
-            Case 7 : unit = eUnitCurrencyType.Phosporous
-            Case Else : unit = eUnitCurrencyType.WetWeight
-        End Select
-        Try
-            bSucces = db.Execute(String.Format("UPDATE EcopathModel SET UnitCurrency={0} WHERE ModelID=1", CInt(unit)))
-        Catch ex As Exception
-            bSucces = False
-        End Try
-
-        If bSucces Then
-            bSucces = bSucces And db.CommitTransaction(True)
-        Else
-            db.RollbackTransaction()
-        End If
-
-        Return bSucces
-
-    End Function
-
-#End Region ' Internals
+#End Region ' Standard bits
 
 End Class

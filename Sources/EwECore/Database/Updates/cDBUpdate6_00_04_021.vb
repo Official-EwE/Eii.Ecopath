@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_021.vb,v $
-' Revision 1.1  2008/09/26 07:30:16  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/10/03 18:12:56  jeroens
+' Reorganized
 '
 ' Revision 1.1  2008/09/25 02:33:51  jeroens
 ' Initial version
@@ -31,32 +31,6 @@ Public Class cDBUpdate6_00_04_021
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' The actual update logic.
-    ''' </summary>
-    ''' <param name="db">Database to modify.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
-            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
-
-        Return Me.AddMaxFishingMortality(db) And Me.SplitSDSal(db)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' This method provides the text that will be entered in the update log in
-    ''' the database.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
-        Get
-            Return "Added Ecosim group max fishing mortality." & vbNewLine & "Split salinity fields."
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' This method provides the update version number that will be entered in
     ''' the update log of the database. This version number is also used to check
     ''' whether an update should run.
@@ -74,58 +48,31 @@ Public Class cDBUpdate6_00_04_021
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
+    ''' This method provides the text that will be entered in the update log in
+    ''' the database.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
         Get
-            Return Me.UpdateDescription
+            Return "Added Ecosim group max fishing mortality." & vbNewLine & "Split salinity fields."
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        ' Void
-    End Sub
+#Region " Apply "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
+    ''' The actual update logic.
     ''' </summary>
+    ''' <param name="db">Database to modify.</param>
+    ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "Database update " & Me.UpdateVersion
-        End Get
-    End Property
+    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
+            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
+        Return Me.AddMaxFishingMortality(db) And Me.SplitSDSal(db)
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:support@ecopath.org"
-        End Get
-    End Property
-
-#Region " Internals "
+    End Function
 
     Private Function AddMaxFishingMortality(ByVal db As cEwEDatabase) As Boolean
 
@@ -178,6 +125,63 @@ Public Class cDBUpdate6_00_04_021
 
     End Function
 
-#End Region ' Internals
+#End Region ' Apply
+
+#Region " Standard bits "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+        ' Void
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "Database update " & Me.UpdateVersion
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:support@ecopath.org"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+        Get
+            Return Me.UpdateDescription
+        End Get
+    End Property
+
+#End Region ' Standard bits
 
 End Class
