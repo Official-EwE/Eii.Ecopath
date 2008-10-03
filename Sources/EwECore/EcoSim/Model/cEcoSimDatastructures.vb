@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.5  2008/10/03 18:44:04  joeb
+' Added PropLandedTime()
+'
 ' Revision 1.4  2008/10/03 18:11:44  joeb
 ' Changes fro Regulatory Quotas
 '
@@ -612,8 +615,10 @@ Public Class cEcosimDatastructures
         ReDim MaxEffort(nGear)
         ReDim Quota(nGear, nGroups)
         ReDim propDiscardMort(nGear, nGroups)
+        ReDim PropLandedTime(nGear, nGroups)
 
     End Sub
+
     ''' <summary>
     ''' Set the FisForced() array to False of all groups
     ''' </summary>
@@ -624,8 +629,6 @@ Public Class cEcosimDatastructures
             FisForced(igrp) = False
         Next
     End Sub
-
-
 
     ''' <summary>
     ''' Initialize the forcing shapes to a value of one. This will overwrite  an existing values
