@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.3  2008/10/03 21:52:44  jeroens
+' Added Fisheries regulations varnames
+'
 ' Revision 1.2  2008/09/26 21:21:35  joeb
 ' Added GameFleetFishingRates and GameGroupFishingRates
 '
@@ -343,6 +346,16 @@ Namespace Core
         ''' <summary></summary>
         EcoSimNYears
 
+        'js Fisheries regulations added Oct 3 '08
+        ''' <summary>Maximum effort of a fleet</summary>
+        MaxEffort
+        ''' <summary>Quota type imposed on a fleet</summary>
+        QuotaType
+        ''' <summary>Quota set for a gear/group combination</summary>
+        Quota
+        ''' <summary>Proportion of discards that dies</summary>
+        DiscardMortality
+
         'jb Salinity values added Dec-07
         SalinityForceFunctionNumber
         SalinityOpt
@@ -461,24 +474,6 @@ Namespace Core
         ''' <summary>A multiplier to change the number of packets for the IBM model.</summary>
         ''' <remarks>..but what about Dell? Acer? Toshiba? This is simply not fair!</remarks>
         PacketsMultiplier
-
-#If 0 Then
-    ' ---------------------------------
-    ' References
-    ' ---------------------------------
-    ''' <summary>Author or comma-separated list of authors of a publication</summary>
-    Authors
-    ''' <summary>Year of a publication</summary>
-    Year
-    ''' <summary>Title of a publication</summary>
-    Title
-    ''' <summary>Source of a publication</summary>
-    Source
-    ''' <summary>Keywords of a publication</summary>
-    Keywords
-    ''' <summary>Quick ref of a publication</summary>
-    QuickRef
-#End If
 
         ''' <summary>Full path of the current datasource/database </summary>
         ModelFileName
@@ -1098,13 +1093,6 @@ Namespace Core
         ''' </summary>
         Stanza 'jb June-14-06 added for Stanza data types
 
-#If USE_REFERENCE Then
-    ''' <summary>
-    ''' Data belongs to an reference.
-    ''' </summary>
-    Reference
-#End If
-
         ''' <summary>
         ''' Data belongs to an Ecospace scenario.
         ''' </summary>
@@ -1259,6 +1247,9 @@ Namespace Core
 
         ''' <summary>Data types for the Game</summary>    
         GameData
+
+        ''' <summary>Data types for Ecosim fisheries regulation</summary>    
+        EcosimFisheriesRegulation
 
     End Enum
 
