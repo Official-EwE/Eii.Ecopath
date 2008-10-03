@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.5  2008/10/03 23:08:29  jeroens
+' Added cEcosimFisheriesRegulations
+'
 ' Revision 1.4  2008/10/02 20:42:11  jeroens
 ' Added Villy's flag
 '
@@ -3764,6 +3767,7 @@ Public Class cCore
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
     Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
+    Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
 
     Private m_EcosimStats As cEcosimStats
@@ -4126,11 +4130,9 @@ Public Class cCore
             m_PPIManager.Init()
             m_PPIManager.Load()
 
-            'moved to searchmanagers
-            ' m_FitToTimeSeries.Load()
-
             InitEcosimGroupOutput()
             InitEcosimSummaries()
+            InitEcosimFisheriesRegulations()
 
             InitAndLoadEcosimTimeSeriesDatasets()
             InitEcosimTimeSeries()
@@ -4312,7 +4314,7 @@ Public Class cCore
     End Function
 
     ''' <summary>
-    ''' Update the list of available scenarios
+    ''' Update the list of available ecosim input groups
     ''' </summary>
     Private Function InitEcosimGroups() As Boolean
 
@@ -4431,6 +4433,23 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property EcosimFisheriesRegulations(ByVal iFleet As Integer) As cEcosimFisheriesRegulation
+        Get
+
+            Try
+                If Me.m_EcosimFisheriesRegulations IsNot Nothing Then
+                    If Me.m_EcosimFisheriesRegulations.Count > 0 Then
+                        Return DirectCast(m_EcosimFisheriesRegulations(iFleet), cEcosimFisheriesRegulation)
+                    End If
+                End If
+                Return Nothing
+            Catch ex As Exception
+                cLog.Write(ex)
+                Return Nothing
+            End Try
+        End Get
+    End Property
+
     Private Sub InitEcosimSummaries()
         Try
 
@@ -4544,7 +4563,57 @@ Public Class cCore
 
     End Function
 
+    ''' <summary>
+    ''' Update the list of available ecosim input groups
+    ''' </summary>
+    Private Function InitEcosimFisheriesRegulations() As Boolean
 
+        m_EcosimFisheriesRegulations.Clear()
+
+        For i As Integer = 1 To nFleets
+            m_EcosimFisheriesRegulations.Add(New cEcosimFisheriesRegulation(Me, m_EcoPathData.FleetDBID(i)))
+        Next i
+
+        LoadEcosimFisheriesRegulations()
+
+    End Function
+
+    Private Function LoadEcosimFisheriesRegulations() As Boolean
+
+        Dim bSucces As Boolean = True
+
+        For Each reg As cEcosimFisheriesRegulation In m_EcosimFisheriesRegulations
+
+            'convert the Database ID into an iGroup
+            Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, reg.DBID)
+
+            reg.AllowValidation = False
+
+            reg.Index = iFleet
+
+            'get the group name from EcoPath not EcoSim
+            reg.Name = m_EcoPathData.FleetName(iFleet)
+            reg.MaxEffort = Me.m_EcoSimData.MaxEffort(iFleet)
+            reg.QuotaType = Me.m_EcoSimData.QuotaType(iFleet)
+
+            Try
+                For iGroup As Integer = 1 To nGroups
+                    reg.DiscardMortality(iGroup) = m_EcoSimData.propDiscardMort(iFleet, iGroup)
+                    reg.Quota(iGroup) = m_EcoSimData.Quota(iFleet, iGroup)
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                bSucces = False
+            End Try
+
+            reg.ResetStatusFlags()
+            reg.AllowValidation = True
+
+        Next
+        Return bSucces
+
+    End Function
 
     Private Function InitEcosimGroupOutput() As Boolean
 
@@ -4768,6 +4837,31 @@ Public Class cCore
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    Private Function UpdateEcosimFisheriesRegulation(ByVal iDBID As Integer) As Boolean
+
+        Dim iFleet As Integer = Array.IndexOf(Me.m_EcoPathData.FleetDBID, iDBID)
+        Dim reg As cEcosimFisheriesRegulation = Me.EcosimFisheriesRegulations(iFleet)
+
+        Try
+            Me.m_EcoSimData.MaxEffort(iFleet) = reg.MaxEffort
+            Me.m_EcoSimData.QuotaType(iFleet) = reg.QuotaType
+            For iGroup As Integer = 1 To nGroups
+                Me.m_EcoSimData.Quota(iFleet, iGroup) = reg.Quota(iGroup)
+                Me.m_EcoSimData.propDiscardMort(iFleet, iGroup) = reg.DiscardMortality(iGroup)
+            Next
+
+        Catch ex As Exception
+            cLog.Write(Me.ToString & ".UpdateEcoSimScenario() Error: " & ex.Message)
             Return False
         End Try
 
@@ -6876,21 +6970,21 @@ Public Class cCore
 
             Next objRgn
 
-                For Each objGrpOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
-                    objGrpOutput.Resize()
-                    objGrpOutput.ResetStatusFlags()
+            For Each objGrpOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
+                objGrpOutput.Resize()
+                objGrpOutput.ResetStatusFlags()
 
-                    objGrpOutput.Name = m_EcoPathData.GroupName(objGrpOutput.Index)
-                    For itime As Integer = 1 To nEcospaceTimeSteps
+                objGrpOutput.Name = m_EcoPathData.GroupName(objGrpOutput.Index)
+                For itime As Integer = 1 To nEcospaceTimeSteps
 
-                        'this could change to have the object take a reference to the underlying data
-                        'instead of buffering the data twice
-                        objGrpOutput.Biomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.Biomass, itime)
-                        objGrpOutput.RelativeBiomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.RelativeBiomass, itime)
-                    Next
+                    'this could change to have the object take a reference to the underlying data
+                    'instead of buffering the data twice
+                    objGrpOutput.Biomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.Biomass, itime)
+                    objGrpOutput.RelativeBiomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.RelativeBiomass, itime)
                 Next
+            Next
 
-                Me.m_EcospaceStats.SS = m_EcoSpaceData.SS
+            Me.m_EcospaceStats.SS = m_EcoSpaceData.SS
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & "LoadEcospaceResults() Error: " & ex.Message)
@@ -8917,6 +9011,9 @@ Public Class cCore
                      eDataTypes.FishMort
                     ' VERIFY_JS: This line of code is never hit?
                     msAffected = eMessageSource.ShapesManager
+
+                Case eDataTypes.EcosimFisheriesRegulation
+                    If bValidatedOk Then Me.UpdateEcosimFisheriesRegulation(idAffected)
 
                 Case eDataTypes.EcospaceBasemapLayer, eDataTypes.EcospaceBasemap
                     If bValidatedOk Then Me.UpdateEcospaceBasemap()

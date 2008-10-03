@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.3  2008/10/03 23:08:22  jeroens
+' Added cEcosimFisheriesRegulations
+'
 ' Revision 1.2  2008/10/03 19:40:32  jeroens
 ' Sim quota data loaded and saved
 '
@@ -461,6 +464,7 @@ Public Class cDBDataSource
         m_dictDataTypeComponents.Add(eDataTypes.FishMort, eMessageSource.EcoSim)
         m_dictDataTypeComponents.Add(eDataTypes.GroupTimeSeries, eMessageSource.EcoSim)
         m_dictDataTypeComponents.Add(eDataTypes.FleetTimeSeries, eMessageSource.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.EcosimFisheriesRegulation, eMessageSource.EcoSim)
 
         ' Configure Ecospace
         m_dictDataTypeComponents.Add(eDataTypes.EcospaceModelParameter, eMessageSource.EcoSpace)

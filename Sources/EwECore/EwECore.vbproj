@@ -236,6 +236,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimFisheriesRegulation.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceNxNLayer.vb" />
