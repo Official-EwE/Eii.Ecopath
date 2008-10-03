@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.4  2008/10/03 18:45:06  joeb
+' Renamed eQuotaTypes.NotSet to NotUsed
+'
 ' Revision 1.3  2008/10/03 18:11:44  joeb
 ' Changes fro Regulatory Quotas
 '
@@ -612,7 +615,7 @@ End Enum
 
 'enum values are hard coded so that they can be stored in the database 
 Public Enum eQuotaTypes
-    NotSet = 0
+    NotUsed = 0
     Weakest = 1
     Strongest = 2
     Selective = 3

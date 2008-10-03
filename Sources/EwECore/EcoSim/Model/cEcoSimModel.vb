@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.9  2008/10/03 18:45:06  joeb
+' Renamed eQuotaTypes.NotSet to NotUsed
+'
 ' Revision 1.8  2008/10/03 18:11:44  joeb
 ' Changes fro Regulatory Quotas
 '
@@ -850,7 +853,7 @@ Public Property PluginManager() As cPluginManager
                     If m_Data.PredictSimEffort Then
 
                         'Can only predict effort if Not in search mode
-                        Debug.Assert(Me.m_search.bInSearch, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
+                        Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
 
                         PredictCurrentEffort(itime)
                         FindCurrentProfit(BB, itime)
@@ -3835,7 +3838,7 @@ Public Property PluginManager() As cPluginManager
                 For ig = 1 To m_Data.nGear
                     If m_Data.FishRateGear(ig, t) > m_Data.MaxEffort(ig) Then m_Data.FishRateGear(ig, t) = m_Data.MaxEffort(ig)
                     Select Case m_Data.QuotaType(ig)
-                        Case eQuotaTypes.NotSet 'do nothing
+                        Case eQuotaTypes.NotUsed 'do nothing
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
                             For i = 1 To m_Data.nGroups
