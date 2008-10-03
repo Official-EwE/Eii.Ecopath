@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridFishingQuotas.vb,v $
+' Revision 1.2  2008/10/03 21:55:03  jeroens
+' Mock-up improved
+'
 ' Revision 1.1  2008/10/02 18:48:49  jeroens
 ' Initial version
 '
@@ -43,7 +46,9 @@ Namespace Ecosim
 
             For iFleet As Integer = 1 To core.nFleets
                 src = core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, eVarNameFlags.Name)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, _
+                    eVarNameFlags.Name, Nothing, _
+                    "{0} ({1})", StyleGuide.eUnitType.Currency)
             Next
 
             Me.FixedColumns = 2
