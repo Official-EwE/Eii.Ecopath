@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.3  2008/10/03 18:11:44  joeb
+' Changes fro Regulatory Quotas
+'
 ' Revision 1.2  2008/10/02 22:53:53  joeb
 ' Added Quota types
 '
@@ -607,11 +610,12 @@ End Enum
 
 #Region "Quota types"
 
+'enum values are hard coded so that they can be stored in the database 
 Public Enum eQuotaTypes
-    NotSet
-    Weakest
-    Strongest
-    Selective
+    NotSet = 0
+    Weakest = 1
+    Strongest = 2
+    Selective = 3
 End Enum
 
 #End Region

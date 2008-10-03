@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.4  2008/10/03 18:11:44  joeb
+' Changes fro Regulatory Quotas
+'
 ' Revision 1.3  2008/10/02 22:55:35  joeb
 ' Added vars for regulated fisheries Quotas
 '
@@ -269,17 +272,23 @@ Public Class cEcosimDatastructures
     ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
     Public FishRateGear(,) As Single
 
-    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort </summary>
+    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
     Public MaxEffort() As Single 'gear
 
-    ''' <summary>Type of quota system in effect </summary>
+    ''' <summary>Type of quota system in effect (by gear) </summary>
     Public QuotaType() As eQuotaTypes 'gear
 
-    ''' <summary>Fishing Quota for regulated fisheries </summary>
+    ''' <summary>Fishing Quota for regulated fisheries  (by gear group)</summary>
     Public Quota(,) As Single 'gear group
 
-    ''' <summary>Biomass discarded because of regulation </summary>
+    ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
     Public RegDiscard(,) As Single ' gear group
+
+    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
+    Public propDiscardMort(,) As Single ' gear group 0-1
+
+    ''' <summary>Proportion of regulated landings (by gear group)</summary>
+    Public PropLandedTime(,) As Single
 
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
@@ -600,17 +609,9 @@ Public Class cEcosimDatastructures
         'for regulated fisheries
         ReDim QuotaType(nGear)
         ReDim RegDiscard(nGear, nGroups)
-
-
-        'ReDim MaxEffort(nGear) 'As Single
-        'ReDim QuotaType(nGear) ' As eQuotaTypes
-        'ReDim Quota(nGear, nGroups) ' As Single 'gear group
-        'ReDim RegDiscard(nGear, nGroups) ' gear group
-
-        'ReDim FlowType(nGroups, nGroups)
-        'ReDim Cbase(nGroups)
-        'ReDim FtimeMax(nGroups)
-        'ReDim FLimit(nGroups)
+        ReDim MaxEffort(nGear)
+        ReDim Quota(nGear, nGroups)
+        ReDim propDiscardMort(nGear, nGroups)
 
     End Sub
     ''' <summary>

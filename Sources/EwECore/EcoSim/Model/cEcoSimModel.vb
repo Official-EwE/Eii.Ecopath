@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.8  2008/10/03 18:11:44  joeb
+' Changes fro Regulatory Quotas
+'
 ' Revision 1.7  2008/10/02 23:35:35  joeb
 ' Init RegDiscard at start of run to clear out values from last run
 '
@@ -612,6 +615,9 @@ Public Property PluginManager() As cPluginManager
 
                 CalculateAssimilationEfficiencies()
 
+                'default values for regulated fisheries
+                setDefaultRegValues()
+
                 Me.m_ConTracer = New cContaminantTracer
 
                 m_publisher.sendAllMessages()
@@ -649,6 +655,24 @@ Public Property PluginManager() As cPluginManager
 
         Public Sub InitMSE(ByRef MSEModel As MSE.cMSE)
             m_MSE = MSEModel
+        End Sub
+
+
+        ''' <summary>
+        ''' Set default values for regulated fisheries
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub setDefaultRegValues()
+
+            'If regulatory values have not been set (by the database) then set them to defaults
+            For iflt As Integer = 1 To Me.m_Data.nGear
+                If Me.m_Data.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
+                For igrp As Integer = 1 To nGroups
+                    If Me.m_Data.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.Quota(iflt, igrp) = m_EPData.B(igrp) * 10 '10 time the ecopath biomass
+                    If Me.m_Data.propDiscardMort(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.propDiscardMort(iflt, igrp) = 0.3
+                Next
+            Next
+
         End Sub
 
 
@@ -3580,10 +3604,6 @@ Public Property PluginManager() As cPluginManager
             ReDim m_Data.Cbase(nGroups)
             ReDim m_Data.FtimeMax(nGroups)
             ReDim m_Data.FLimit(nGroups)
-
-            ReDim m_Data.MaxEffort(m_Data.nGear)
-            ReDim m_Data.Quota(m_Data.nGear, nGroups)
-
             'default from frmOptF.Form_Load()
             For igrp As Integer = 1 To nGroups
                 m_Data.FLimit(igrp) = 1000
@@ -3613,13 +3633,7 @@ Public Property PluginManager() As cPluginManager
                 Next
             Next
 
-            For iflt As Integer = 1 To Me.m_Data.nGear
-                Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
-                For igrp As Integer = 1 To nGroups
-                    Me.m_Data.Quota(iflt, igrp) = m_EPData.B(igrp) * 10 '10 time the ecopath biomass
-                Next
-            Next
-
+            ' Loop for Groups
             For i = 1 To nGroups
                 If i <= m_EPData.NumLiving Then
                     'SimQB(i) = m_EPData.QB(i) 'SimQB() will be set again in RemoveImportFromEcosim
