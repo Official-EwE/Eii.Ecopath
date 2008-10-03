@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_022.vb,v $
+' Revision 1.2  2008/10/03 19:04:14  jeroens
+' Argh, slightly revised Quota table layout
+'
 ' Revision 1.1  2008/10/03 18:13:53  jeroens
 ' Initial version
 '
@@ -104,8 +107,9 @@ Public Class cDBUpdate6_00_04_022
 
         Try
 
-            bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioQuota (FleetID LONG, EcosimGroupID LONG, Quota SINGLE, PropDiscardMort SINGLE)")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD PRIMARY KEY (FleetID, EcosimGroupID)")
+            bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioQuota (ScenarioID LONG, FleetID LONG, EcosimGroupID LONG, Quota SINGLE, PropDiscardMort SINGLE)")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD PRIMARY KEY (ScenarioID, FleetID, EcosimGroupID)")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
             bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD FOREIGN KEY (FleetID) REFERENCES EcopathFleet(FleetID)")
             bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD FOREIGN KEY (EcosimGroupID) REFERENCES EcosimScenarioGroup(GroupID)")
 
