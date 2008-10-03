@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.2  2008/10/03 19:40:32  jeroens
+' Sim quota data loaded and saved
+'
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -2070,7 +2073,8 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iDBID))
+            bSucces = Me.RemoveEcosimGroup(iDBID)
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iDBID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing group {1}", ex.Message, iDBID))
             bSucces = False
@@ -2711,7 +2715,8 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iDBID))
+            bSucces = Me.RemoveEcosimFleet(iDBID)
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iDBID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iDBID))
             bSucces = False
@@ -2833,6 +2838,7 @@ Public Class cDBDataSource
 
         bSucces = bSucces And Me.LoadEcosimGroups(iDBID)
         bSucces = bSucces And Me.LoadEcosimFleets(iDBID)
+        bSucces = bSucces And Me.LoadEcosimQuota(iDBID)
         bSucces = bSucces And Me.LoadShapes()
         bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
@@ -2950,6 +2956,7 @@ Public Class cDBDataSource
 
         bSucces = bSucces And Me.SaveEcosimGroups(idm)
         bSucces = bSucces And Me.SaveEcosimFleets(idm)
+        bSucces = bSucces And Me.SaveEcosimQuota(idm)
         bSucces = bSucces And Me.SaveShapes(idm)
         bSucces = bSucces And Me.SaveTimeSeries(idm)
 
@@ -3058,6 +3065,8 @@ Public Class cDBDataSource
 #End Region ' Scenarios
 
 #Region " Groups, fleets "
+
+#Region " Modify "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -3210,6 +3219,52 @@ Public Class cDBDataSource
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <para>
+    ''' *Sigh*
+    ''' </para>
+    ''' <para>
+    ''' Due to the limited capabilities of Microzork Access SQL, database 
+    ''' update-generated foreign keys to fleets and groups cannot cacading 
+    ''' delete. Hence, we need to eradicate linked groups and fleets via code.
+    ''' </para> 
+    ''' </summary>
+    ''' <param name="iEcopathFleetID"></param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function RemoveEcosimFleet(ByVal iEcopathFleetID As Integer) As Boolean
+        Try
+            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioFleet WHERE FleetID={0}", iEcopathFleetID))
+        Catch ex As Exception
+        End Try
+        Return False
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <para>
+    ''' *Sigh*
+    ''' </para>
+    ''' <para>
+    ''' Due to the limited capabilities of Microzork Access SQL, database 
+    ''' update-generated foreign keys to fleets and groups cannot cacading 
+    ''' delete. Hence, we need to eradicate linked groups and fleets via code.
+    ''' </para> 
+    ''' </summary>
+    ''' <param name="iEcopathGroupID"></param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function RemoveEcosimGroup(ByVal iEcopathGroupID As Integer) As Boolean
+        Try
+            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
+        Catch ex As Exception
+        End Try
+        Return False
+    End Function
+
+#End Region ' Modify
+
 #Region " Load "
 
     Private Function LoadEcosimGroups(ByVal iScenarioID As Integer) As Boolean
@@ -3282,7 +3337,7 @@ Public Class cDBDataSource
             Try
                 ' Read shape for this fleet
                 iFleetID = ecopathDS.FleetDBID(iFleet)
-                reader = Me.m_db.GetReader(String.Format("SELECT FishRateShapeID FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
                 reader.Read()
                 iShapeID = CInt(Me.ReadSafe(reader, "FishRateShapeID", -1))
             Catch ex As Exception
@@ -3302,9 +3357,52 @@ Public Class cDBDataSource
                 End If
             End If
 
+            Try
+                ecosimDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
+                ecosimDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
             Me.m_db.ReleaseReader(reader)
 
         Next
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimQuota(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim reader As IDataReader = Nothing
+        Dim iFleetID As Integer = -1
+        Dim iFleet As Integer = -1
+        Dim iEcosimGroupID As Integer = -1
+        Dim iGroup As Integer = -1
+        Dim bSucces As Boolean = True
+
+        reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
+
+        Try
+            While reader.Read()
+                iFleetID = CInt(reader("FleetID"))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
+
+                iEcosimGroupID = CInt(reader("EcosimGroupID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iEcosimGroupID)
+
+                If (iFleet > 0) And (iGroup > 0) Then
+                    ecosimDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
+                    ecosimDS.propDiscardMort(iFleet, iGroup) = CSng(reader("PropDiscardMort"))
+                End If
+            End While
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Me.m_db.ReleaseReader(reader)
+
         Return bSucces
 
     End Function
@@ -3401,7 +3499,7 @@ Public Class cDBDataSource
             dt = writer.GetDataTable()
             For i As Integer = 1 To ecopathDS.NumFleet
 
-                objKeys(1) = ecopathDS.FleetDBID(i)
+                objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(i))
                 drow = dt.Rows.Find(objKeys)
                 ' Check wheter a new row or an existing row
                 bNewRow = Object.ReferenceEquals(drow, Nothing)
@@ -3418,7 +3516,9 @@ Public Class cDBDataSource
                 End If
 
                 ' Write dynamic bit
-                drow("FishRateShapeID") = ecosimDS.FishRateGearDBID(i)
+                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingRate, ecosimDS.FishRateGearDBID(i))
+                drow("MaxEffort") = ecosimDS.MaxEffort(i)
+                drow("QuotaType") = CInt(ecosimDS.QuotaType(i))
 
                 ' Wrap up: was this a new row?
                 If bNewRow Then
@@ -3429,6 +3529,47 @@ Public Class cDBDataSource
                     drow.EndEdit()
                 End If
             Next i
+            ' Done
+            Me.m_db.ReleaseWriter(writer)
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function SaveEcosimQuota(ByRef idm As cIDMappings) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim strSQL As String = ""
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim bSucces As Boolean = True
+
+        strSQL = String.Format("DELETE * FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
+        bSucces = Me.m_db.Execute(strSQL)
+
+        Try
+            writer = Me.m_db.GetWriter("EcosimScenarioQuota")
+            For iFleet As Integer = 1 To ecopathDS.NumFleet
+                For iGroup As Integer = 1 To ecopathDS.NumGroups
+                    ' Conjure row
+                    drow = writer.NewRow()
+                    ' Populate key
+                    drow("ScenarioID") = iScenarioID
+                    drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
+                    drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                    ' Write dynamic bit
+                    drow("Quota") = ecosimDS.Quota(iFleet, iGroup)
+                    drow("PropDiscardMort") = ecosimDS.propDiscardMort(iFleet, iGroup)
+                    ' Add new row to the writer
+                    writer.AddRow(drow)
+                Next iGroup
+            Next iFleet
             ' Done
             Me.m_db.ReleaseWriter(writer)
 
