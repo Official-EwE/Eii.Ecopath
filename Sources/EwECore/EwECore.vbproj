@@ -232,6 +232,9 @@
     <Compile Include="Database\Updates\cDBUpdate6_00_04_005.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_04_02.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_04_021.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_04_022.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
