@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimGroupInput.vb,v $
+' Revision 1.2  2008/10/03 22:00:23  jeroens
+' CType -> DirectCast
+'
 ' Revision 1.1  2008/09/26 07:30:19  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -242,7 +245,7 @@ Public Class cEcoSimGroupInput
 
     Public Property DenDepCatchability() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.DenDepCatchability), Single)
+            Return CSng(GetVariable(eVarNameFlags.DenDepCatchability))
         End Get
 
         Set(ByVal value As Single)
@@ -252,7 +255,7 @@ Public Class cEcoSimGroupInput
 
     Public Property FeedingTimeAdjustRate() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.FeedingTimeAdjRate), Single)
+            Return CSng(GetVariable(eVarNameFlags.FeedingTimeAdjRate))
         End Get
 
         Set(ByVal value As Single)
@@ -262,7 +265,7 @@ Public Class cEcoSimGroupInput
 
     Public Property MaxRelFeedingTime() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.MaxRelFeedingTime), Single)
+            Return CSng(GetVariable(eVarNameFlags.MaxRelFeedingTime))
         End Get
 
         Set(ByVal value As Single)
@@ -272,7 +275,7 @@ Public Class cEcoSimGroupInput
 
     Public Property MaxRelPB() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.MaxRelPB), Single)
+            Return CSng(GetVariable(eVarNameFlags.MaxRelPB))
         End Get
 
         Set(ByVal value As Single)
@@ -283,7 +286,7 @@ Public Class cEcoSimGroupInput
 
     Public Property OtherMortFeedingTime() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.OtherMortFeedingTime), Single)
+            Return CSng(GetVariable(eVarNameFlags.OtherMortFeedingTime))
         End Get
 
         Set(ByVal value As Single)
@@ -293,7 +296,7 @@ Public Class cEcoSimGroupInput
 
     Public Property PredEffectFeedingTime() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.PredEffectFeedingTime), Single)
+            Return CSng(GetVariable(eVarNameFlags.PredEffectFeedingTime))
         End Get
 
         Set(ByVal value As Single)
@@ -303,7 +306,7 @@ Public Class cEcoSimGroupInput
 
     Public Property QBMaxQBio() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.QBMaxQBio), Single)
+            Return CSng(GetVariable(eVarNameFlags.QBMaxQBio))
         End Get
 
         Set(ByVal value As Single)
@@ -313,7 +316,7 @@ Public Class cEcoSimGroupInput
 
     Public Property SwitchingPower() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.SwitchingPower), Single)
+            Return CSng(GetVariable(eVarNameFlags.SwitchingPower))
         End Get
 
         Set(ByVal value As Single)
@@ -324,7 +327,7 @@ Public Class cEcoSimGroupInput
 
     Public Property SalinityOpt() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.SalinityOpt), Single)
+            Return CSng(GetVariable(eVarNameFlags.SalinityOpt))
         End Get
 
         Set(ByVal value As Single)
@@ -334,7 +337,7 @@ Public Class cEcoSimGroupInput
 
     Public Property SalinitySpreadLeft() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.SalinitySpreadLeft), Single)
+            Return CSng(GetVariable(eVarNameFlags.SalinitySpreadLeft))
         End Get
 
         Set(ByVal value As Single)
@@ -345,7 +348,7 @@ Public Class cEcoSimGroupInput
 
     Public Property SalinitySpreadRight() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.SalinitySpreadRight), Single)
+            Return CSng(GetVariable(eVarNameFlags.SalinitySpreadRight))
         End Get
 
         Set(ByVal value As Single)
@@ -355,7 +358,7 @@ Public Class cEcoSimGroupInput
 
     Public Property MaxMortality() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.EcosimGroupMaxMort), Single)
+            Return CSng(GetVariable(eVarNameFlags.EcosimGroupMaxMort))
         End Get
 
         Set(ByVal value As Single)
@@ -375,13 +378,11 @@ Public Class cEcoSimGroupInput
     Public Property VulMult(ByVal iGroup As Integer) As Single
 
         Get
-            Return CType(getVariable(eVarNameFlags.VulMult, iGroup), Single)
+            Return CSng(GetVariable(eVarNameFlags.VulMult, iGroup))
         End Get
 
         Set(ByVal value As Single)
-
-            setVariable(eVarNameFlags.VulMult, value, iGroup)
-
+            SetVariable(eVarNameFlags.VulMult, value, iGroup)
         End Set
 
     End Property
@@ -394,9 +395,7 @@ Public Class cEcoSimGroupInput
     '    End Get
 
     '    Set(ByVal value As Single)
-
     '        setVariable(eVarNameFlags.VulRate, value, iGroup)
-
     '    End Set
 
     'End Property
@@ -409,9 +408,7 @@ Public Class cEcoSimGroupInput
     '    End Get
 
     '    Set(ByVal value As Integer)
-
     '        setVariable(eVarNameFlags.MedFunctNumber, value, iGroup)
-
     '    End Set
 
     'End Property
@@ -424,9 +421,7 @@ Public Class cEcoSimGroupInput
     '    End Get
 
     '    Set(ByVal value As Integer)
-
     '        setVariable(eVarNameFlags.ForcingFunctNumber, value, iGroup)
-
     '    End Set
 
     'End Property
@@ -438,13 +433,10 @@ Public Class cEcoSimGroupInput
     '    End Get
 
     '    Friend Set(ByVal value As Boolean)
-
     '        setVariable(eVarNameFlags.IsPredPrey, value, iGroup)
-
     '    End Set
 
     'End Property
-
 
 #End Region
 
