@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridQuotaOptions.vb,v $
+' Revision 1.3  2008/10/03 23:09:07  jeroens
+' Hooked up MaxEffort
+'
 ' Revision 1.2  2008/10/03 21:55:03  jeroens
 ' Mock-up improved
 '
@@ -67,25 +70,27 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim fleet As cCoreInputOutputBase = Nothing
+            Dim fleet As cFleetInput = Nothing
+            Dim reg As cEcosimFisheriesRegulation = Nothing
 
             ' For each fleet
-            For iRow As Integer = 1 To core.nFleets
+            For iFleet As Integer = 1 To core.nFleets
 
                 Me.AddRow()
 
                 'Get the fleet info
-                fleet = core.FleetInputs(iRow)
+                fleet = core.FleetInputs(iFleet)
+                reg = core.EcosimFisheriesRegulations(iFleet)
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(iRow)
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(fleet, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.MaxEffort) = New SourceGrid2.Cells.Real.Cell(42.0!, GetType(Single))
-                Me(iRow, eColumnTypes.OptionNone) = New SourceGrid2.Cells.Real.CheckBox(True)
-                Me(iRow, eColumnTypes.OptionWeakestStock) = New SourceGrid2.Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.OptionStrongsetStockPlusDiscards) = New SourceGrid2.Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.OptionAsumeSelectiveFishing) = New SourceGrid2.Cells.Real.CheckBox(False)
+                Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(iFleet)
+                Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(fleet, eVarNameFlags.Name)
+                Me(iFleet, eColumnTypes.MaxEffort) = New PropertyCell(reg, eVarNameFlags.MaxEffort)
+                Me(iFleet, eColumnTypes.OptionNone) = New SourceGrid2.Cells.Real.CheckBox(True)
+                Me(iFleet, eColumnTypes.OptionWeakestStock) = New SourceGrid2.Cells.Real.CheckBox(False)
+                Me(iFleet, eColumnTypes.OptionStrongsetStockPlusDiscards) = New SourceGrid2.Cells.Real.CheckBox(False)
+                Me(iFleet, eColumnTypes.OptionAsumeSelectiveFishing) = New SourceGrid2.Cells.Real.CheckBox(False)
 
-            Next iRow
+            Next iFleet
 
         End Sub
 
