@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.2  2008/10/03 21:54:22  jeroens
+' Try/Caught selection event
+'
 ' Revision 1.1  2008/09/26 07:31:15  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -458,7 +461,7 @@ Namespace Controls.EwEGrid
                 Return m_bFixedColumnWidths
             End Get
             Set(ByVal bFixedColumnWidths As Boolean)
-                If (m_bFixedColumnWidths = bFixedColumnWidths) Then Return
+                'If (m_bFixedColumnWidths = bFixedColumnWidths) Then Return
 
                 Me.m_bFixedColumnWidths = bFixedColumnWidths
                 If (Me.RowsCount > 0) And (Me.ColumnsCount > 0) Then
@@ -472,6 +475,7 @@ Namespace Controls.EwEGrid
                             Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                         Next
                         Me.Rows(0).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                        Me.AutoSizeAll()
                     End If
                 End If
                 Me.Invalidate()
@@ -744,7 +748,11 @@ Namespace Controls.EwEGrid
                 End If
             End If
 
-            RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+            Try
+                RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+            Catch ex As Exception
+                ' Woops
+            End Try
 
         End Sub
 
