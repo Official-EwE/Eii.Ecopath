@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.6  2008/10/04 21:27:23  villyc
+' mc seems to work now,
+'
 ' Revision 1.5  2008/10/03 23:08:29  jeroens
 ' Added cEcosimFisheriesRegulations
 '
@@ -4830,9 +4833,10 @@ Public Class cCore
             m_EcoSimData.SdSalRight(iGroup) = grp.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = grp.SalinityOpt
 
-            For i As Integer = 1 To nGroups
+
+            For iPrey As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
-                m_EcoSimData.VulMult(iGroup, i) = grp.VulMult(i)
+                m_EcoSimData.VulMult(iPrey, iGroup) = grp.VulMult(iGroup)
             Next
 
         Catch ex As Exception

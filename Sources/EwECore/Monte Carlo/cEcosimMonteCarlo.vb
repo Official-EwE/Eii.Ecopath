@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.8  2008/10/04 21:27:23  villyc
+' mc seems to work now,
+'
 ' Revision 1.7  2008/10/04 01:10:30  villyc
 ' mc stuff, SS after MC are not correct, so not loading all parameters
 '
@@ -519,9 +522,9 @@ Public Class cEcosimMonteCarlo
                     'TrialProgress(itrial * nThreads, iter)
                     TrialProgress(iTrial, iter)
                     'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
-                    If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
+                    'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
                     If iTrial Mod 10 = 0 Then EcopathIterationsProgress(iTrial)
-                    If RunsSinceLastWithLowerSS > 1000 Then Exit For
+                    If RunsSinceLastWithLowerSS > 2000 Then Exit For
                 Next iTrial
                 sw.WriteLine(itrial.tostring)
                 sw.Close()
@@ -723,26 +726,26 @@ Public Class cEcosimMonteCarlo
     Friend Sub ApplyBestFits()
 
         'user wants to keep the best fit parameters
-        For i As Integer = 1 To m_core.nGroups
-            If m_ecopath.missing(i, 1) = False Then
-                m_epdata.Binput(i) = BestFit(eMCParams.Biomass, i)
-                m_epdata.BHinput(i) = BestFit(eMCParams.Biomass, i) / m_epdata.Area(i)
+        For iPred As Integer = 1 To m_core.nGroups
+            If m_ecopath.missing(iPred, 1) = False Then
+                m_epdata.Binput(iPred) = BestFit(eMCParams.Biomass, iPred)
+                m_epdata.BHinput(iPred) = BestFit(eMCParams.Biomass, iPred) / m_epdata.Area(iPred)
             End If
-            If m_ecopath.missing(i, 2) = False Then
-                m_epdata.PBinput(i) = BestFit(eMCParams.PB, i)
+            If m_ecopath.missing(iPred, 2) = False Then
+                m_epdata.PBinput(iPred) = BestFit(eMCParams.PB, iPred)
             End If
-            If m_ecopath.missing(i, 4) = False Then
-                m_epdata.EEinput(i) = BestFit(eMCParams.EE, i)
+            If m_ecopath.missing(iPred, 4) = False Then
+                m_epdata.EEinput(iPred) = BestFit(eMCParams.EE, iPred)
             End If
 
 
-            m_epdata.BA(i) = BestFit(eMCParams.BA, i)
+            m_epdata.BA(iPred) = BestFit(eMCParams.BA, iPred)
             'vc sep 2008: adding vulnerability to MC
-            m_esdata.VulnerabilityPredator(i) = BestFit(eMCParams.Vulnerability, i)
+            m_esdata.VulnerabilityPredator(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             'Also transfer to vulmult
             For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(iPrey, i) = BestFit(eMCParams.Vulnerability, i)
-                m_core.EcoSimGroupInputs(i).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, i)
+                m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
+                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
             Next
 
 
@@ -781,7 +784,8 @@ Public Class cEcosimMonteCarlo
 
         Dim i As Integer
         Try
-            Dim factor As Integer = IIf(IsCrashEvaluated, 1000, 2)
+            Dim factor As Integer = 100 'IIf(IsCrashEvaluated, 1000, 2)
+            'We want a wide range for searching, cv will still limit the steps
             For i = 1 To m_core.nLivingGroups
                 'If IsCrashEvaluated Then factor = IIf(isCrashed(i), 4, 2)
                 'VC Sep 2008 changed it to use best fit for calculating limits:
