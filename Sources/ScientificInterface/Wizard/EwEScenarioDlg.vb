@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEScenarioDlg.vb,v $
+' Revision 1.2  2008/10/04 00:08:39  jeroens
+' Fixed potential crash
+'
 ' Revision 1.1  2008/09/26 07:32:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -456,7 +459,8 @@ Namespace Wizard
         Private Function CanDeleteScenario() As Boolean
             Dim bHasSelection As Boolean = (Me.Scenario IsNot Nothing)
             Dim bIsCorrectMode As Boolean = (Me.m_mode = eDialogModeType.DeleteScenario)
-            Dim bIsLoaded As Boolean = (Me.Scenario.IsLoaded)
+            Dim bIsLoaded As Boolean = False
+            If (Me.Scenario IsNot Nothing) Then bIsLoaded = Me.Scenario.IsLoaded
             Return bHasSelection And bIsCorrectMode And Not bIsLoaded
         End Function
 
