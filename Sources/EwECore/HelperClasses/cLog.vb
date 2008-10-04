@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLog.vb,v $
+' Revision 1.2  2008/10/04 01:10:30  villyc
+' mc stuff, SS after MC are not correct, so not loading all parameters
+'
 ' Revision 1.1  2008/09/26 07:30:25  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -194,33 +197,33 @@ Public Class cLog
     Public Shared Sub Write(ByVal msg As String)
         Dim xmlStrm As cXMLLogWriter
 
-        Try
-            m_lock.AcquireWriterLock(1000)
+        '    Try
+        '        m_lock.AcquireWriterLock(1000)
 
-            xmlStrm = getWriter()
+        '        xmlStrm = getWriter()
 
-            'append to the end of the stream
-            If xmlStrm.Open() Then
+        '        'append to the end of the stream
+        '        If xmlStrm.Open() Then
 
-                xmlStrm.WriteStartElement("Log_Message") '????
-                xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                xmlStrm.WriteElementString("Message", msg)
-                xmlStrm.WriteEndElement() 'Msg
-                xmlStrm.WriteEndDocument()
+        '            xmlStrm.WriteStartElement("Log_Message") '????
+        '            xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+        '            xmlStrm.WriteElementString("Message", msg)
+        '            xmlStrm.WriteEndElement() 'Msg
+        '            xmlStrm.WriteEndDocument()
 
-                xmlStrm.Close()
-            End If
+        '            xmlStrm.Close()
+        '        End If
 
-        Catch ex As Exception
-            m_lock.ReleaseWriterLock()
+        '    Catch ex As Exception
+        '        m_lock.ReleaseWriterLock()
 
-            Debug.Assert(False, ex.Message)
-            If Not xmlStrm Is Nothing Then
-                xmlStrm.Close()
-            End If
-        End Try
+        '        Debug.Assert(False, ex.Message)
+        '        If Not xmlStrm Is Nothing Then
+        '            xmlStrm.Close()
+        '        End If
+        '    End Try
 
-        m_lock.ReleaseWriterLock()
+        '    m_lock.ReleaseWriterLock()
 
     End Sub
 

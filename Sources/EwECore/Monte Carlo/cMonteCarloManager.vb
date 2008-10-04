@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.5  2008/10/04 01:10:30  villyc
+' mc stuff, SS after MC are not correct, so not loading all parameters
+'
 ' Revision 1.4  2008/10/01 16:50:29  villyc
 ' Ecosim monte carlo updates, plus ecosim plot bug fix
 '
@@ -410,6 +413,8 @@ Public Class cMonteCarloManager
             m_core.RunEcoPath()
             'initialize ecosim with the new data
             m_core.m_EcoSim.Init(True)
+            
+
             m_core.RunEcoSim()
 
         Catch ex As Exception
@@ -771,6 +776,7 @@ Public Class cMonteCarloManager
                 grp.QBbf = m_mc.BestFit(eMCParams.QB, grp.Index)
                 grp.BAbf = m_mc.BestFit(eMCParams.BA, grp.Index)
                 grp.EEbf = m_mc.BestFit(eMCParams.EE, grp.Index)
+                grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, grp.Index)
 
                 'ReDim CVpar(5, m_core.nGroups)
                 grp.Bcv = m_mc.CVpar(eMCParams.Biomass, grp.Index)
@@ -778,6 +784,7 @@ Public Class cMonteCarloManager
                 grp.QBcv = m_mc.CVpar(eMCParams.QB, grp.Index)
                 grp.BAcv = m_mc.CVpar(eMCParams.BA, grp.Index)
                 grp.EEcv = m_mc.CVpar(eMCParams.EE, grp.Index)
+                grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, grp.Index)
 
                 'ReDim ParLimit(1, 5, m_core.nGroups)
                 grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, grp.Index)
@@ -785,12 +792,14 @@ Public Class cMonteCarloManager
                 grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, grp.Index)
                 grp.BALower = m_mc.ParLimit(0, eMCParams.BA, grp.Index)
                 grp.EELower = m_mc.ParLimit(0, eMCParams.EE, grp.Index)
+                grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, grp.Index)
 
                 grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, grp.Index)
                 grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, grp.Index)
                 grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, grp.Index)
                 grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, grp.Index)
                 grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
+                grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
 
 
                 'validation for monte carlo groups should be handled by the manager

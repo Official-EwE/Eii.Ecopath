@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.10  2008/10/04 01:10:30  villyc
+' mc stuff, SS after MC are not correct, so not loading all parameters
+'
 ' Revision 1.9  2008/10/03 18:45:06  joeb
 ' Renamed eQuotaTypes.NotSet to NotUsed
 '
@@ -1048,7 +1051,7 @@ Public Property PluginManager() As cPluginManager
                     'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
 
                     'The next is easier, and gives almost the same answer:
-                    If m_Data.FishTime(iGrp) > m_Data.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_Data.FLimit(iGrp)
+                    If m_Data.FishTime(iGrp) > m_Data.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_Data.FLimit(iGrp) ' : Stop
                 Else
                     'Computed catch rates
                     m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
