@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridFishingQuotas.vb,v $
+' Revision 1.3  2008/10/04 00:49:09  jeroens
+' Connected v1
+'
 ' Revision 1.2  2008/10/03 21:55:03  jeroens
 ' Mock-up improved
 '
@@ -58,26 +61,26 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim fleet As cCoreInputOutputBase = Nothing
+            Dim reg As cEcosimFisheriesRegulation = Nothing
             Dim group As cCoreInputOutputBase = Nothing
             Dim cell As ICell = Nothing
 
             ' For each group
-            For iRow As Integer = 1 To core.nGroups
+            For iGroup As Integer = 1 To core.nGroups
 
                 Me.AddRow()
 
                 'Get the group info
-                group = core.EcoPathGroupInputs(iRow)
+                group = core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
-                Me(iRow, 0) = New EwERowHeaderCell(iRow)
-                Me(iRow, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To core.nFleets
-                    'assigned it to destined cell
-                    Me(iRow, 1 + iFleet) = New SourceGrid2.Cells.Real.Cell(1000.0!, GetType(Single))
+                    reg = core.EcosimFisheriesRegulations(iFleet)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(reg, eVarNameFlags.Quota, group)
                 Next
             Next
 
