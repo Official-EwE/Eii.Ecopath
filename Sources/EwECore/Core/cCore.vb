@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.7  2008/10/05 17:52:39  villyc
+' ecosim mc, removed the Villy public property
+'
 ' Revision 1.6  2008/10/04 21:27:23  villyc
 ' mc seems to work now,
 '
@@ -1042,22 +1045,22 @@ Public Class cCore
 
 #End Region
 
-#Region " Villy's own "
+    '#Region " Villy's own "
 
-    ' ToDo: hide by compiler directive?
+    '    ' ToDo: hide by compiler directive?
 
-    Private m_bVilly As Boolean = False
+    '    Private m_bVilly As Boolean = False
 
-    Public Property Villy() As Boolean
-        Get
-            Return m_bVilly
-        End Get
-        Set(ByVal value As Boolean)
-            m_bVilly = value
-        End Set
-    End Property
+    'Public Property Villy() As Boolean
+    '    Get
+    '        Return m_bVilly
+    '    End Get
+    '    Set(ByVal value As Boolean)
+    '        m_bVilly = value
+    '    End Set
+    'End Property
 
-#End Region ' Villy's own
+    '#End Region ' Villy's own
 
 #End Region 'Public Core Interfaces
 

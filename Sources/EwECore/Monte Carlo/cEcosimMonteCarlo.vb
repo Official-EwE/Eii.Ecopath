@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.9  2008/10/05 17:52:39  villyc
+' ecosim mc, removed the Villy public property
+'
 ' Revision 1.8  2008/10/04 21:27:23  villyc
 ' mc seems to work now,
 '
@@ -292,19 +295,19 @@ Public Class cEcosimMonteCarlo
 
             Dim FromEcobio As Boolean = True
             If FromEcobio Then
-                Using sw As StreamWriter = New StreamWriter("c:\LME\UpperLowerLimits.csv", True)  'true makes it append
-                    sw.WriteLine(m_core.m_EwEModelName & ", " & Date.Now.ToString)
-                    For i As Integer = 1 To m_core.nLivingGroups
-                        sw.WriteLine(i.ToString & "," & _
-                                     ParLimit(0, 1, i).ToString & "," & _
-                                     ParLimit(1, 1, i).ToString & _
-                                     "," & ParLimit(0, 4, i).ToString & _
-                                     "," & ParLimit(1, 4, i).ToString & _
-                                     "," & ParLimit(0, 6, i).ToString & "," _
-                                     & ParLimit(1, 6, i).ToString)
-                    Next
-                    sw.Close()
-                End Using
+                'Using sw As StreamWriter = New StreamWriter("c:\LME\UpperLowerLimits.csv", True)  'true makes it append
+                '    sw.WriteLine(m_core.m_EwEModelName & ", " & Date.Now.ToString)
+                For i As Integer = 1 To m_core.nLivingGroups
+                    'sw.WriteLine(i.ToString & "," & _
+                    '             ParLimit(0, 1, i).ToString & "," & _
+                    '             ParLimit(1, 1, i).ToString & _
+                    '             "," & ParLimit(0, 4, i).ToString & _
+                    '             "," & ParLimit(1, 4, i).ToString & _
+                    '             "," & ParLimit(0, 6, i).ToString & "," _
+                    '             & ParLimit(1, 6, i).ToString)
+                Next
+                'sw.Close()
+                'End Using
             End If
 
             SSorg = m_esdata.SS
@@ -396,139 +399,139 @@ Public Class cEcosimMonteCarlo
         Try
             initForRun()
 
-            Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
-                sw.WriteLine("Group,vulnerability")
-                sw.Close()
-            End Using
+            'Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
+            '    sw.WriteLine("Group,vulnerability")
+            '    sw.Close()
+            'End Using
 
-            Using sw As StreamWriter = New StreamWriter("c:\LME\MonteCarloSS.csv", True)  'true makes it append
-                sw.WriteLine(m_core.m_EwEModelName)
-                'nThreads = System.Environment.ProcessorCount
-                'nThreads = 1
-                'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
-                'initThreads(MCthreadList, nThreads)
+            'Using sw As StreamWriter = New StreamWriter("c:\LME\MonteCarloSS.csv", True)  'true makes it append
+            '    sw.WriteLine(m_core.m_EwEModelName)
+            'nThreads = System.Environment.ProcessorCount
+            'nThreads = 1
+            'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
+            'initThreads(MCthreadList, nThreads)
 
-                'tell ecopath to run in silent mode
-                'this does not turn off the core's messages just ecopath
-                m_ecopath.suppressMessages = True
+            'tell ecopath to run in silent mode
+            'this does not turn off the core's messages just ecopath
+            m_ecopath.suppressMessages = True
 
-                'Ecosim was run in initForRun()
-                'ss is the fit of the currently loaded reference data
-                m_ecosim.Run()
+            'Ecosim was run in initForRun()
+            'ss is the fit of the currently loaded reference data
+            m_ecosim.Run()
 
-                If m_esdata.SS > 0 Then
-                    SSBestFit = m_esdata.SS
-                Else
-                    SSBestFit = 10000000000000000
+            If m_esdata.SS > 0 Then
+                SSBestFit = m_esdata.SS
+            Else
+                SSBestFit = 10000000000000000
+            End If
+
+            Dim maxEcopathTries As Integer = 10000
+            For iTrial = 1 To Ntrials 'PerThread
+
+                If StopTrial = True Then Exit For
+
+                'number of ecopath interation to find new pararameters
+                iter = 0
+                RunsSinceLastWithLowerSS += 1
+
+                If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
+                    'Ecopath failed to run stop the trials loop
+                    Exit For
                 End If
 
-                Dim maxEcopathTries As Integer = 10000
-                For iTrial = 1 To Ntrials 'PerThread
+                Itertot = Itertot + iter
 
-                    If StopTrial = True Then Exit For
+                If iter < maxEcopathTries Then
 
-                    'number of ecopath interation to find new pararameters
-                    iter = 0
-                    RunsSinceLastWithLowerSS += 1
-
-                    If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
-                        'Ecopath failed to run stop the trials loop
-                        Exit For
-                    End If
-
-                    Itertot = Itertot + iter
-
-                    If iter < maxEcopathTries Then
-
-                        'VC Sep 2008 adding vulnerability to MC routine
-                        ' The Ecopath balancing above does not need to consider the vulnerabilities, so just set them now before returning:
-                        'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
-                        'while instead it should have increased the initial biomass, so letting it get started before 
-                        'changing vulnerabilities
-                        'If itrial > Ntrials / 10 Then 
-                        ChangeVulnerabilities(Pmean, CVpar)
+                    'VC Sep 2008 adding vulnerability to MC routine
+                    ' The Ecopath balancing above does not need to consider the vulnerabilities, so just set them now before returning:
+                    'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
+                    'while instead it should have increased the initial biomass, so letting it get started before 
+                    'changing vulnerabilities
+                    'If itrial > Ntrials / 10 Then 
+                    ChangeVulnerabilities(Pmean, CVpar)
 
 
 
-                        'For Each MCthread In MCthreadList
-                        '    Itertot = Itertot + iter
-                        '    Array.Copy(Pmean, MCthread.pmean, Pmean.Length)
-                        '    Array.Copy(CVpar, MCthread.CVpar, CVpar.Length)
-                        '    MCthread.iter = iter
-                        '    MCthread.signalState.Reset()
-                        '    ThreadPool.QueueUserWorkItem(AddressOf MCthread.run)
-                        'Next
+                    'For Each MCthread In MCthreadList
+                    '    Itertot = Itertot + iter
+                    '    Array.Copy(Pmean, MCthread.pmean, Pmean.Length)
+                    '    Array.Copy(CVpar, MCthread.CVpar, CVpar.Length)
+                    '    MCthread.iter = iter
+                    '    MCthread.signalState.Reset()
+                    '    ThreadPool.QueueUserWorkItem(AddressOf MCthread.run)
+                    'Next
 
-                        'VC Sep 2008: Change the vulmult at this point
-
-
-                        m_ecosim.Init(True) 'StartEcoSimAgain())
-
-                        'the ecosim time step delegate was set before the loop
-                        m_ecosim.Run()
-
-                        'For Each MCthread In MCthreadList
-                        '    MCthread.signalState.WaitOne()
-                        'Next
-                        'm_esdata = MCthread.ESdata
-                        'm_epdata = MCthread.EPdata
-
-                        'For Each MCthread In MCthreadList
-                        'If MCthread.ESdata.SS < SSBestFit Then
-                        'Console.Write(m_esdata.SS.ToString & ", ")
-
-                        If m_esdata.SS < SSBestFit Then
-                            RunsSinceLastWithLowerSS = 0
-                            'SSBestFit = MCthread.ESdata.SS
-                            SSBestFit = m_esdata.SS
-                            Console.WriteLine("Total trials: " & iTrial.ToString & ", " & SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString) '& ", total: " & Itertot.ToString)
-                            sw.WriteLine(iTrial.ToString & ", " & SSBestFit.ToString)
-
-                            'keep the best fits for applying later
-
-                            CheckWhoIsCrashed()
-                            For igrp As Integer = 1 To m_core.nGroups
-                                'If isCrashed(igrp) Then
-                                '    BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp) * 1.2
-                                'Else
-                                BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
-                                'End If
-                                BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
-                                BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
-                                BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
-                                'vc sep 2008: adding vulnerability to MC
-                                BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
-                                'BestFit(eMCParams.Biomass, igrp) = MCthread.EPdata.B(igrp)
-                                'BestFit(eMCParams.PB, igrp) = MCthread.EPdata.PB(igrp)
-                                'BestFit(eMCParams.EE, igrp) = MCthread.EPdata.EE(igrp)
-                                'BestFit(eMCParams.BA, igrp) = MCthread.EPdata.BA(igrp)
-                                ' BestFit(eMCParams.QB, igrp) = mcthread.epdata.QB(igrp)
-                            Next
-
-                            If bRetainBiomass Then
-                                Array.Copy(BestFit, Pmean, BestFit.Length)
-                                'VC 2008 don't want it to stop just as it found a better fit so:
-                                If iTrial > 0.9 * Ntrials Then iTrial = 0.9 * Ntrials
-
-                                'we also need to change the upper and lower limits, and will do this based on new parameters 
-                                'CheckWhoIsCrashed()
-                                'CalculateUpperLowerLimits()
-                            End If
+                    'VC Sep 2008: Change the vulmult at this point
 
 
+                    m_ecosim.Init(True) 'StartEcoSimAgain())
+
+                    'the ecosim time step delegate was set before the loop
+                    m_ecosim.Run()
+
+                    'For Each MCthread In MCthreadList
+                    '    MCthread.signalState.WaitOne()
+                    'Next
+                    'm_esdata = MCthread.ESdata
+                    'm_epdata = MCthread.EPdata
+
+                    'For Each MCthread In MCthreadList
+                    'If MCthread.ESdata.SS < SSBestFit Then
+                    'Console.Write(m_esdata.SS.ToString & ", ")
+
+                    If m_esdata.SS < SSBestFit Then
+                        RunsSinceLastWithLowerSS = 0
+                        'SSBestFit = MCthread.ESdata.SS
+                        SSBestFit = m_esdata.SS
+                        Console.WriteLine("Total trials: " & iTrial.ToString & ", " & SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString) '& ", total: " & Itertot.ToString)
+                        'sw.WriteLine(iTrial.ToString & ", " & SSBestFit.ToString)
+
+                        'keep the best fits for applying later
+
+                        CheckWhoIsCrashed()
+                        For igrp As Integer = 1 To m_core.nGroups
+                            'If isCrashed(igrp) Then
+                            '    BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp) * 1.2
+                            'Else
+                            BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
+                            'End If
+                            BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
+                            BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
+                            BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
+                            'vc sep 2008: adding vulnerability to MC
+                            BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
+                            'BestFit(eMCParams.Biomass, igrp) = MCthread.EPdata.B(igrp)
+                            'BestFit(eMCParams.PB, igrp) = MCthread.EPdata.PB(igrp)
+                            'BestFit(eMCParams.EE, igrp) = MCthread.EPdata.EE(igrp)
+                            'BestFit(eMCParams.BA, igrp) = MCthread.EPdata.BA(igrp)
+                            ' BestFit(eMCParams.QB, igrp) = mcthread.epdata.QB(igrp)
+                        Next
+
+                        If bRetainBiomass Then
+                            Array.Copy(BestFit, Pmean, BestFit.Length)
+                            'VC 2008 don't want it to stop just as it found a better fit so:
+                            If iTrial > 0.9 * Ntrials Then iTrial = 0.9 * Ntrials
+
+                            'we also need to change the upper and lower limits, and will do this based on new parameters 
+                            'CheckWhoIsCrashed()
+                            'CalculateUpperLowerLimits()
                         End If
-                        'Next
+
+
                     End If
-                    'TrialProgress(itrial * nThreads, iter)
-                    TrialProgress(iTrial, iter)
-                    'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
-                    'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
-                    If iTrial Mod 10 = 0 Then EcopathIterationsProgress(iTrial)
-                    If RunsSinceLastWithLowerSS > 2000 Then Exit For
-                Next iTrial
-                sw.WriteLine(itrial.tostring)
-                sw.Close()
-            End Using
+                    'Next
+                End If
+                'TrialProgress(itrial * nThreads, iter)
+                TrialProgress(iTrial, iter)
+                'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
+                'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
+                If iTrial Mod 10 = 0 Then EcopathIterationsProgress(iTrial)
+                If RunsSinceLastWithLowerSS > 2000 Then Exit For
+            Next iTrial
+            'sw.WriteLine(iTrial.ToString)
+            'sw.Close()
+            'End Using
 
             'set the parameters back to the original values
             'if the user wants to Apply the new parameter they will have to do that explicitly
@@ -913,21 +916,21 @@ Public Class cEcosimMonteCarlo
         'm_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, igrp), _
         '                              CVpar(6, igrp), ParLimit(0, eMCParams.Vulnerability, igrp), _
         '                             ParLimit(1, eMCParams.Vulnerability, igrp))
-        Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
-            For iPred As Integer = 1 To m_core.nLivingGroups
-                m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
-                                                                         CVpar(6, iPred), _
-                                                                         ParLimit(0, eMCParams.Vulnerability, iPred), _
-                                                                         ParLimit(1, eMCParams.Vulnerability, iPred), _
-                                                                         False)
-                For iPrey As Integer = 1 To m_core.nGroups
-                    m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-                    m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
-                Next
-                sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
+        '        Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
+        For iPred As Integer = 1 To m_core.nLivingGroups
+            m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
+                                                                     CVpar(6, iPred), _
+                                                                     ParLimit(0, eMCParams.Vulnerability, iPred), _
+                                                                     ParLimit(1, eMCParams.Vulnerability, iPred), _
+                                                                     False)
+            For iPrey As Integer = 1 To m_core.nGroups
+                m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
+                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
             Next
-            sw.Close()
-        End Using
+            '    sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
+        Next
+        'sw.Close()
+        'End Using
 
     End Sub
 
@@ -935,11 +938,11 @@ Public Class cEcosimMonteCarlo
         Dim EndTime As Integer = (m_core.EcoSimModelParameters.NumberYears - 1) * 12
         ReDim isCrashed(m_core.nGroups)
         ReDim isExploded(m_core.nGroups)
-        Dim sStr As String = "Crashed: "
+        'Dim sStr As String = "Crashed: "
         For iGrp As Integer = 1 To m_core.nLivingGroups
             If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
                 isCrashed(iGrp) = True
-                sStr += iGrp.ToString & ", "
+                'sStr += iGrp.ToString & ", "
             Else
                 isCrashed(iGrp) = False
             End If
@@ -949,12 +952,12 @@ Public Class cEcosimMonteCarlo
             '    isExploded(iGrp) = False
             'End If
         Next
-        If sStr <> "Crashed: " Then
-            Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
-                sw.WriteLine(iTrial.ToString & ", " & sStr)
-                sw.Close()
-            End Using
-            Console.WriteLine(sStr)
-        End If
+        'If sStr <> "Crashed: " Then
+        '    Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
+        '        sw.WriteLine(iTrial.ToString & ", " & sStr)
+        '        sw.Close()
+        '    End Using
+        '    Console.WriteLine(sStr)
+        'End If
     End Sub
 End Class
