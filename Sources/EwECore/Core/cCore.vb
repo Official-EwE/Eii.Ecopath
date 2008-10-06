@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.9  2008/10/06 21:11:53  jeroens
+' Added Fisheries Regulation data status flags
+'
 ' Revision 1.8  2008/10/06 16:33:12  jeroens
 ' Flipped Vulnerabilities matrix in database
 '
@@ -3614,6 +3617,30 @@ Public Class cCore
                 obj.SetStatusFlags(eVarNameFlags.OffVesselPrice, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
                 obj.ClearStatusFlags(eVarNameFlags.OffVesselPrice, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+            End If
+        Next
+
+        If bSendMessage Then
+            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
+                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
+        End If
+
+        obj.AllowValidation = True
+        Return True
+    End Function
+
+    Friend Function Set_Quota_Flags(ByVal obj As cEcosimFisheriesRegulation, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
+        obj.AllowValidation = False
+
+        Dim fleet As cFleetInput = Me.FleetInputs(obj.Index)
+        For iGroup As Integer = 1 To Me.nGroups
+            If fleet.Landings(iGroup) = 0.0! Then
+                obj.SetStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                obj.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+            Else
+                obj.ClearStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                obj.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             End If
         Next
 
@@ -9363,6 +9390,7 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
+                        Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
                 End Select
 
             Case eDataTypes.EcoSimModelParameter

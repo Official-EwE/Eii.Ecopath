@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimFisheriesRegulation.vb,v $
+' Revision 1.2  2008/10/06 21:11:54  jeroens
+' Added Fisheries Regulation data status flags
+'
 ' Revision 1.1  2008/10/03 23:07:43  jeroens
 ' Initial version
 '
@@ -64,6 +67,15 @@ Public Class cEcosimFisheriesRegulation
     End Sub
 
 #End Region
+
+#Region " Overrides "
+
+    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
+        Return Me.m_core.Set_Quota_Flags(Me, False)
+    End Function
+
+#End Region ' Overrides
 
 #Region "Variable via dot(.) operator"
 
