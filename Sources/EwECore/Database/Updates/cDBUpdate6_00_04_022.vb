@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_022.vb,v $
+' Revision 1.4  2008/10/06 17:21:54  jeroens
+' Fixed flip
+'
 ' Revision 1.3  2008/10/06 16:33:13  jeroens
 ' Flipped Vulnerabilities matrix in database
 '
@@ -25,6 +28,7 @@ Imports EwEUtils.Core
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added Ecosim fisheries regulation tables.</description></item>
+''' <item><description>Flipped vulnerabilities matrix.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -57,7 +61,7 @@ Public Class cDBUpdate6_00_04_022
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
         Get
-            Return "Added Ecosim fisheries quota."
+            Return "Added Ecosim fisheries quota." & vbNewLine & "Fixed Ecosim vulnerabilities matrix structure."
         End Get
     End Property
 
@@ -71,7 +75,7 @@ Public Class cDBUpdate6_00_04_022
     Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-        Return Me.UpdateEcosimFleets(db) And Me.AddQuotaTable(db)
+        Return Me.UpdateEcosimFleets(db) And Me.AddQuotaTable(db) And Me.FlipVulMult(db)
 
     End Function
 
@@ -124,15 +128,56 @@ Public Class cDBUpdate6_00_04_022
 
     End Function
 
+    Private Structure cVulRowRecord
+        Public m_iScenario As Integer
+        Public m_iPredator As Integer
+        Public m_iPrey As Integer
+        Public m_sVulnerability As Single
+    End Structure
+
     Private Function FlipVulMult(ByVal db As cEwEDatabase) As Boolean
 
+        Dim reader As IDataReader = Nothing
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim entry As cVulRowRecord = Nothing
+        Dim lEntries As New List(Of cVulRowRecord)
         Dim bSucces As Boolean = True
 
         Try
-            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix DROP COLUMN flowtype")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN PredID TO tmpGroup")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN PreyID TO PredID")
-            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN tmpGroup TO PreyID")
+            Try
+                reader = db.GetReader("SELECT * FROM EcosimScenarioForcingMatrix")
+                While reader.Read
+                    entry = New cVulRowRecord()
+                    entry.m_iScenario = CInt(reader("ScenarioID"))
+                    entry.m_iPredator = CInt(reader("PredID"))
+                    entry.m_iPrey = CInt(reader("PreyID"))
+                    entry.m_sVulnerability = CInt(reader("Vulnerability"))
+                    lEntries.Add(entry)
+                End While
+                db.ReleaseReader(reader)
+
+                db.Execute("DELETE * FROM EcosimScenarioForcingMatrix")
+
+                writer = db.GetWriter("EcoSimScenarioForcingMatrix")
+                For Each entry In lEntries
+                    drow = writer.NewRow()
+                    drow("ScenarioID") = entry.m_iScenario
+                    ' FLIP!
+                    drow("PredID") = entry.m_iPrey
+                    drow("PreyID") = entry.m_iPredator
+                    ' Copy vul
+                    drow("Vulnerability") = entry.m_sVulnerability
+                    writer.AddRow(drow)
+                Next
+                db.ReleaseWriter(writer)
+
+                bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix DROP COLUMN flowtype")
+
+            Catch ex As Exception
+                ' All good, no sim groups
+            End Try
+
         Catch ex As Exception
             bSucces = False
         End Try
