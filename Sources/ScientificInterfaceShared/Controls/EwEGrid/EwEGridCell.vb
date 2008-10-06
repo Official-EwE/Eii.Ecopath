@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.2  2008/10/06 21:12:16  jeroens
+' Status NULL cells are shown as blank
+'
 ' Revision 1.1  2008/09/26 07:31:15  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -231,6 +234,10 @@ Namespace Controls.EwEGrid
 
                 Dim objValue As Object = Me.Value
                 Dim tValue As Type = Me.DataModel.ValueType
+
+                If ((Me.Style And StyleGuide.eStyleFlags.Null) > 0) Then
+                    Return ""
+                End If
 
                 ' Is this a single?
                 If (tValue Is GetType(Single)) Then
