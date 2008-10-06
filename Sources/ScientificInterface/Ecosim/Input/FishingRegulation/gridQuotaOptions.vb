@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridQuotaOptions.vb,v $
+' Revision 1.5  2008/10/06 16:47:51  jeroens
+' NotSet -> NotUsed
+'
 ' Revision 1.4  2008/10/04 00:49:09  jeroens
 ' Connected v1
 '
@@ -142,7 +145,7 @@ Namespace Ecosim
             Me.AllowUpdates = False
 
             ' Set option checks
-            Me(iRow, eColumnTypes.OptionNotSet).Value = (reg.QuotaType = eQuotaTypes.NotSet)
+            Me(iRow, eColumnTypes.OptionNotSet).Value = (reg.QuotaType = eQuotaTypes.NotUsed)
             Me(iRow, eColumnTypes.OptionWeakest).Value = (reg.QuotaType = eQuotaTypes.Weakest)
             Me(iRow, eColumnTypes.OptionStrongest).Value = (reg.QuotaType = eQuotaTypes.Strongest)
             Me(iRow, eColumnTypes.OptionSelective).Value = (reg.QuotaType = eQuotaTypes.Selective)
@@ -179,7 +182,7 @@ Namespace Ecosim
             Select Case DirectCast(p.Column, eColumnTypes)
 
                 Case eColumnTypes.OptionNotSet
-                    reg.QuotaType = eQuotaTypes.NotSet
+                    reg.QuotaType = eQuotaTypes.NotUsed
                     Me.UpdateRow(p.Row)
 
                 Case eColumnTypes.OptionSelective
