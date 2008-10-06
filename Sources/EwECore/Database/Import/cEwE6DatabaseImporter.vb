@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.2  2008/10/06 16:33:13  jeroens
+' Flipped Vulnerabilities matrix in database
+'
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -2645,13 +2648,13 @@ Namespace Database
                 iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, CStr(reader("Scenario")))
                 ' Link scenario
                 drow("ScenarioID") = iScenarioID
-                ' Link predator (group)
-                drow("PredID") = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("groupName")), eDataTypes.EcoSimScenario, iScenarioID)
-                ' Link prey (group)
-                drow("PreyID") = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("groupColName")), eDataTypes.EcoSimScenario, iScenarioID)
 
-                ' Flowtype
-                drow("flowtype") = Me.FixValue(reader, "flowtype", 2.0)
+                ' JS 5oct08: vulmult indexed by (prey, pred). groupName referred to prey, groupColName to pred
+                ' Link prey (group)
+                drow("PreyID") = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("groupName")), eDataTypes.EcoSimScenario, iScenarioID)
+                ' Link predator (group)
+                drow("PredID") = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("groupColName")), eDataTypes.EcoSimScenario, iScenarioID)
+
                 ' Vulnerability
                 drow("vulnerability") = Me.FixValue(reader, "vulnerability", 2.0)
 

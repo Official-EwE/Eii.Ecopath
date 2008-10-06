@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.8  2008/10/06 16:33:12  jeroens
+' Flipped Vulnerabilities matrix in database
+'
 ' Revision 1.7  2008/10/05 17:52:39  villyc
 ' ecosim mc, removed the Villy public property
 '
@@ -4339,7 +4342,7 @@ Public Class cCore
 
     Private Function LoadEcosimGroups() As Boolean
         Dim iGroup As Integer
-        Dim i As Integer
+        Dim iPrey As Integer
 
         For Each group As cEcoSimGroupInput In m_EcoSimGroups
 
@@ -4372,17 +4375,19 @@ Public Class cCore
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
 
             Try
-                For i = 1 To nGroups
+                For iPrey = 1 To nGroups
+
+                    ' JS 5oct08: vulmult indexed by (prey, pred)
+                    group.VulMult(iPrey) = m_EcoSimData.VulMult(iPrey, iGroup)
 
                     'group.VulRate(i) = m_EcoSimData.vulrate(iGroup, i)
-                    group.VulMult(i) = m_EcoSimData.VulMult(iGroup, i)
 
-                    If m_EcoSimData.SimDC(i, iGroup) > 0 Or (iGroup = i And m_EcoPathData.PP(i) = 1) Then
-                        group.VulMultiStatus(i) = eStatusFlags.OK
-                        group.VulRateStatus(i) = eStatusFlags.OK
+                    If m_EcoSimData.SimDC(iPrey, iGroup) > 0 Or (iGroup = iPrey And m_EcoPathData.PP(iPrey) = 1) Then
+                        group.VulMultiStatus(iPrey) = eStatusFlags.OK
+                        group.VulRateStatus(iPrey) = eStatusFlags.OK
                     Else
-                        group.VulMultiStatus(i) = eStatusFlags.NotEditable Or eStatusFlags.Null
-                        group.VulRateStatus(i) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                        group.VulMultiStatus(iPrey) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                        group.VulRateStatus(iPrey) = eStatusFlags.NotEditable Or eStatusFlags.Null
                     End If
 
                 Next
@@ -4839,6 +4844,7 @@ Public Class cCore
 
             For iPrey As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
+                ' JS 5oct08: vulmult indexed by (prey, pred)
                 m_EcoSimData.VulMult(iPrey, iGroup) = grp.VulMult(iGroup)
             Next
 

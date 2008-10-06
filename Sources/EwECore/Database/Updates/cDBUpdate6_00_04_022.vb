@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_022.vb,v $
+' Revision 1.3  2008/10/06 16:33:13  jeroens
+' Flipped Vulnerabilities matrix in database
+'
 ' Revision 1.2  2008/10/03 19:04:14  jeroens
 ' Argh, slightly revised Quota table layout
 '
@@ -115,6 +118,23 @@ Public Class cDBUpdate6_00_04_022
 
         Catch ex As Exception
 
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function FlipVulMult(ByVal db As cEwEDatabase) As Boolean
+
+        Dim bSucces As Boolean = True
+
+        Try
+            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix DROP COLUMN flowtype")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN PredID TO tmpGroup")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN PreyID TO PredID")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix RENAME COLUMN tmpGroup TO PreyID")
+        Catch ex As Exception
+            bSucces = False
         End Try
 
         Return bSucces

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.4  2008/10/06 16:33:12  jeroens
+' Flipped Vulnerabilities matrix in database
+'
 ' Revision 1.3  2008/10/03 23:08:22  jeroens
 ' Added cEcosimFisheriesRegulations
 '
@@ -3864,9 +3867,7 @@ Public Class cDBDataSource
                 ' Find iPrey
                 iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
 
-                ecosimDS.VulMult(iPredator, iPrey) = CSng(reader("vulnerability"))
-                ' JS 060627: Removed from DB since FlowType is fixed to 2.0 in the model logic.
-                ' ecosimDS.FlowType(iPredator, iPrey) = CSng(2.0) 'Following CJW per 160700
+                ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
 
             End While
             Me.m_db.ReleaseReader(reader)
@@ -4449,8 +4450,7 @@ Public Class cDBDataSource
                     drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
                     drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
                     drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
-                    drow("vulnerability") = ecosimDS.VulMult(iPredator, iPrey)
-                    drow("flowtype") = ecosimDS.FlowType(iPredator, iPrey)
+                    drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
                     writer.AddRow(drow)
 
                 Next iPrey
