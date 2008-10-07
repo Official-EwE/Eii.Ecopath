@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Kernel32.vb,v $
+' Revision 1.2  2008/10/07 21:57:40  jeroens
+' More!
+'
 ' Revision 1.1  2008/09/26 07:31:13  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -34,6 +37,22 @@ Namespace Win32Api
 
         <DllImport("kernel32.dll", CharSet:=CharSet.Auto)> _
         Public Shared Function GetShortPathName(ByVal strLongPath As String, <MarshalAs(UnmanagedType.LPTStr)> ByVal strShortPath As String, <MarshalAs(UnmanagedType.U4)> ByVal bufferSize As Integer) As Integer
+        End Function
+
+        <DllImport("kernel32.dll", CharSet:=CharSet.Ansi, ExactSpelling:=True)> _
+        Public Shared Function GetProcAddress(ByVal hModule As Long, ByVal lpProcName As String) As Long
+        End Function
+
+        <DllImport("kernel32.dll", CharSet:=CharSet.Ansi)> _
+        Public Shared Function GetModuleHandle(ByVal lpModuleName As String) As Long
+        End Function
+
+        <DllImport("kernel32.dll")> _
+        Public Shared Function GetCurrentProcess() As Long
+        End Function
+
+        <DllImport("Kernel32.dll", SetLastError:=True, CallingConvention:=CallingConvention.Winapi)> _
+        Public Shared Function IsWow64Process(ByVal hProcess As Long, ByRef lpSystemInfo As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
     End Class
