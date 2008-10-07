@@ -56,12 +56,14 @@ Namespace Ecospace
             '
             'cbRegions
             '
+            Me.cbRegions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cbRegions.FormattingEnabled = True
             resources.ApplyResources(Me.cbRegions, "cbRegions")
             Me.cbRegions.Name = "cbRegions"
             '
             'cbGears
             '
+            Me.cbGears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cbGears.FormattingEnabled = True
             resources.ApplyResources(Me.cbGears, "cbGears")
             Me.cbGears.Name = "cbGears"
