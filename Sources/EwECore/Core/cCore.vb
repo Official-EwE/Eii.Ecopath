@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.10  2008/10/07 00:38:12  jeroens
+' Restored wrong EcosimGroup load/update fixes
+'
 ' Revision 1.9  2008/10/06 21:11:53  jeroens
 ' Added Fisheries Regulation data status flags
 '
@@ -4369,7 +4372,7 @@ Public Class cCore
 
     Private Function LoadEcosimGroups() As Boolean
         Dim iGroup As Integer
-        Dim iPrey As Integer
+        Dim iPred As Integer
 
         For Each group As cEcoSimGroupInput In m_EcoSimGroups
 
@@ -4402,19 +4405,16 @@ Public Class cCore
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
 
             Try
-                For iPrey = 1 To nGroups
+                For iPred = 1 To nGroups
 
-                    ' JS 5oct08: vulmult indexed by (prey, pred)
-                    group.VulMult(iPrey) = m_EcoSimData.VulMult(iPrey, iGroup)
+                    group.VulMult(iPred) = m_EcoSimData.VulMult(iGroup, iPred)
 
-                    'group.VulRate(i) = m_EcoSimData.vulrate(iGroup, i)
-
-                    If m_EcoSimData.SimDC(iPrey, iGroup) > 0 Or (iGroup = iPrey And m_EcoPathData.PP(iPrey) = 1) Then
-                        group.VulMultiStatus(iPrey) = eStatusFlags.OK
-                        group.VulRateStatus(iPrey) = eStatusFlags.OK
+                    If m_EcoSimData.SimDC(iPred, iGroup) > 0 Or (iGroup = iPred And m_EcoPathData.PP(iPred) = 1) Then
+                        group.VulMultiStatus(iPred) = eStatusFlags.OK
+                        group.VulRateStatus(iPred) = eStatusFlags.OK
                     Else
-                        group.VulMultiStatus(iPrey) = eStatusFlags.NotEditable Or eStatusFlags.Null
-                        group.VulRateStatus(iPrey) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                        group.VulMultiStatus(iPred) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                        group.VulRateStatus(iPred) = eStatusFlags.NotEditable Or eStatusFlags.Null
                     End If
 
                 Next
@@ -4868,11 +4868,9 @@ Public Class cCore
             m_EcoSimData.SdSalRight(iGroup) = grp.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = grp.SalinityOpt
 
-
-            For iPrey As Integer = 1 To nGroups
+            For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
-                ' JS 5oct08: vulmult indexed by (prey, pred)
-                m_EcoSimData.VulMult(iPrey, iGroup) = grp.VulMult(iGroup)
+                m_EcoSimData.VulMult(iGroup, iPred) = grp.VulMult(iPred)
             Next
 
         Catch ex As Exception
