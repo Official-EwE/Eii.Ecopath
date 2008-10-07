@@ -120,6 +120,9 @@
   <data name="CORE_ALL_HABITAT" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
+    <value>Combined fleets</value>
+  </data>
   <data name="CORE_DEFAULT_FISHMORTSHAPE" xml:space="preserve">
     <value>Fish Mortality Shape {0}</value>
   </data>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.11  2008/10/07 22:49:35  jeroens
+' Localized GUI string
+'
 ' Revision 1.10  2008/10/07 00:38:12  jeroens
 ' Restored wrong EcosimGroup load/update fixes
 '
@@ -6967,7 +6970,7 @@ Public Class cCore
                 If objFlt.Index <> 0 Then
                     objFlt.Name = m_EcoPathData.FleetName(objFlt.Index)
                 Else
-                    objFlt.Name = "Combined Fleets"
+                    objFlt.Name = My.Resources.CoreDefaults.CORE_DEFAULT_COMBINEDFLEETS
                 End If
                 objFlt.CatchStart = m_EcoSpaceData.SumCatchGear(0, objFlt.Index) / m_EcoSpaceData.nWaterCells
                 objFlt.CatchEnd = m_EcoSpaceData.SumCatchGear(1, objFlt.Index) / m_EcoSpaceData.nWaterCells
