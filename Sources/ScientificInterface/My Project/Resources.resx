@@ -2173,4 +2173,19 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="FILEFILTER_TEXT" xml:space="preserve">
     <value>Text files (*.txt)|*.txt</value>
   </data>
+  <data name="HEADER_MAXEFFORT" xml:space="preserve">
+    <value>Max effort</value>
+  </data>
+  <data name="HEADER_NONE" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="HEADER_SELECTIVEFISHING" xml:space="preserve">
+    <value>Assume selective fishing</value>
+  </data>
+  <data name="HEADER_STRONGESTSTOCK" xml:space="preserve">
+    <value>Strongest stock + discards</value>
+  </data>
+  <data name="HEADER_WEAKESTSTOCK" xml:space="preserve">
+    <value>Weakest stock</value>
+  </data>
 </root>

@@ -3078,6 +3078,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max effort.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MAXEFFORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAXEFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max rel. P/B.
         '''</summary>
         Friend ReadOnly Property HEADER_MAXRELPB() As String
@@ -3173,6 +3182,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_NO() As String
             Get
                 Return ResourceManager.GetString("HEADER_NO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to None.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NONE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NONE", resourceCulture)
             End Get
         End Property
         
@@ -3447,6 +3465,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Assume selective fishing.
+        '''</summary>
+        Friend ReadOnly Property HEADER_SELECTIVEFISHING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SELECTIVEFISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Shape.
         '''</summary>
         Friend ReadOnly Property HEADER_SHAPE() As String
@@ -3515,6 +3542,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_STATUS() As String
             Get
                 Return ResourceManager.GetString("HEADER_STATUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Strongest stock + discards.
+        '''</summary>
+        Friend ReadOnly Property HEADER_STRONGESTSTOCK() As String
+            Get
+                Return ResourceManager.GetString("HEADER_STRONGESTSTOCK", resourceCulture)
             End Get
         End Property
         
@@ -3731,6 +3767,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_VALUESTART() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUESTART", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Weakest stock.
+        '''</summary>
+        Friend ReadOnly Property HEADER_WEAKESTSTOCK() As String
+            Get
+                Return ResourceManager.GetString("HEADER_WEAKESTSTOCK", resourceCulture)
             End Get
         End Property
         
