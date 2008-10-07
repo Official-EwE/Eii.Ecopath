@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.2  2008/10/07 21:53:32  sherman
+' Set the max = 2 and min = 0 Y axis for Ecosim graph
+'
 ' Revision 1.1  2008/09/26 07:31:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -214,6 +217,8 @@ Namespace Controls
         Private Sub SetCorrectAxis()
             m_graphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
             m_graphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+            m_graphPane.YAxis.Scale.Min = 0
+            If m_graphPane.YAxis.Scale.Max < 2 Then m_graphPane.YAxis.Scale.Max = 2
         End Sub
 
         ''' -------------------------------------------------------------------
