@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.2  2008/10/07 00:36:34  jeroens
+' Fixed potential crash
+'
 ' Revision 1.1  2008/09/26 07:31:24  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -1831,8 +1834,8 @@ Public Class AppLauncher
         foc.Result = dlgLoad.ShowDialog()
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
+            Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgLoad.FileName)
         End If
-        Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgLoad.FileName)
 
     End Sub
 
