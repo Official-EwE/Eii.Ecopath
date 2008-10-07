@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SystemUtilities.vb,v $
+' Revision 1.2  2008/10/07 21:58:05  jeroens
+' Added Is64Bit
+'
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -31,12 +34,14 @@
 '
 '==============================================================================
 
-#Region "Imports"
+#Region " Imports "
+
 Option Strict On
 Imports System.Security.Principal
 Imports System.IO
-#End Region
+Imports EwEUtils.Win32Api
 
+#End Region ' Imports
 
 Public Class SystemUtilities
     ''' <summary>
@@ -121,13 +126,37 @@ Public Class SystemUtilities
         Return retVal
     End Function
 
-    Public Shared Function MakeTempFile(ByVal FileName As String) As String
-        ' TODO: Concat application file name after the file directory.
-        Dim OutputFile As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-        OutputFile = Path.Combine(OutputFile, FileName)
+    Public Shared Function MakeTempFile(ByVal strFileName As String) As String
 
+        ' TODO: Concat application file name after the file directory.
         ' TODO: Check if file is writeable!!!
 
-        Return OutputFile
+        Dim strOutputDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+        'Dim strOutputDir As String = System.IO.Path.GetTempPath
+
+        Return Path.Combine(strOutputDir, strFileName)
+
     End Function
+
+    Public Shared Function Is64Bit() As Boolean
+
+        Dim hFN As Long = 0L
+        Dim bIs64Bit As Boolean = False
+
+        ' Assume initially that this is not a Wow64 process
+        bIs64Bit = False
+
+        ' Now check to see if IsWow64Process function exists
+        hFN = Kernel32.GetProcAddress(Kernel32.GetModuleHandle("kernel32"), "IsWow64Process")
+
+        ' Does IsWow64Process function exist?
+        If (hFN > 0) Then
+            ' #Yes: Use the function to determine if running under Wow64
+            Kernel32.IsWow64Process(Kernel32.GetCurrentProcess(), bIs64Bit)
+        End If
+
+        Return bIs64Bit
+
+    End Function
+
 End Class
