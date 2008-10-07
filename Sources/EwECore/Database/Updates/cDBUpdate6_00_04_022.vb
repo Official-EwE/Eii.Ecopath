@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_022.vb,v $
+' Revision 1.6  2008/10/07 19:19:15  jeroens
+' Proportion of discards mortality is moved to Ecopath in preparation for pending change
+'
 ' Revision 1.5  2008/10/07 00:38:46  jeroens
 ' Ecosim prey/pred ff table flipped
 '
@@ -30,8 +33,9 @@ Imports EwEUtils.Core
 ''' <para>Database update 6.0.4.022:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added Ecosim fisheries regulation tables.</description></item>
-''' <item><description>Updated group x group index tables.</description></item>
+''' <item><description>Added Ecopath discard mortality.</description></item>
+''' <item><description>Added Ecosim fisheries regulation.</description></item>
+''' <item><description>Updated group x group indexes.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -64,22 +68,46 @@ Public Class cDBUpdate6_00_04_022
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
         Get
-            Return "Added Ecosim fisheries quota." & vbNewLine & "Fixed Ecosim vulnerabilities matrix structure."
+            Return "Added Ecopath discards mortality." & vbNewLine & _
+                   "Added Ecosim fisheries regulation." & vbNewLine & _
+                   "Updated group x group indexes."
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' The actual update logic.
-    ''' </summary>
-    ''' <param name="db">Database to modify.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
     Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-        Return Me.UpdateEcosimFleets(db) And Me.AddQuotaTable(db) And _
-            Me.FlipVulMult(db) And Me.FlipPredPreyShapes(db)
+        Return Me.AddDiscardMortality(db) And _
+               Me.UpdateEcosimFleets(db) And _
+               Me.AddQuotaTable(db) And _
+               Me.FlipVulMult(db) And _
+               Me.FlipPredPreyShapes(db)
+
+    End Function
+
+    Private Function AddDiscardMortality(ByVal db As cEwEDatabase) As Boolean
+
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim dt As DataTable = Nothing
+        Dim bSucces As Boolean = True
+
+        Try
+            If db.Execute("ALTER TABLE EcopathCatch ADD COLUMN DiscardMortality SINGLE") Then
+
+                writer = db.GetWriter("EcopathCatch")
+                dt = writer.GetDataTable()
+                For Each drow As DataRow In dt.Rows
+                    drow.BeginEdit()
+                    drow("DiscardMortality") = 1.0!
+                    drow.EndEdit()
+                Next
+                db.ReleaseWriter(writer)
+
+            End If
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        Return bSucces
 
     End Function
 
@@ -118,7 +146,7 @@ Public Class cDBUpdate6_00_04_022
 
         Try
 
-            bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioQuota (ScenarioID LONG, FleetID LONG, EcosimGroupID LONG, Quota SINGLE, PropDiscardMort SINGLE)")
+            bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioQuota (ScenarioID LONG, FleetID LONG, EcosimGroupID LONG, Quota SINGLE)")
             bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD PRIMARY KEY (ScenarioID, FleetID, EcosimGroupID)")
             bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
             bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioQuota ADD FOREIGN KEY (FleetID) REFERENCES EcopathFleet(FleetID)")

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.6  2008/10/07 19:19:14  jeroens
+' Proportion of discards mortality is moved to Ecopath in preparation for pending change
+'
 ' Revision 1.5  2008/10/07 00:38:45  jeroens
 ' Ecosim prey/pred ff table flipped
 '
@@ -3388,7 +3391,7 @@ Public Class cDBDataSource
         Dim reader As IDataReader = Nothing
         Dim iFleetID As Integer = -1
         Dim iFleet As Integer = -1
-        Dim iEcosimGroupID As Integer = -1
+        Dim iGroupID As Integer = -1
         Dim iGroup As Integer = -1
         Dim bSucces As Boolean = True
 
@@ -3399,18 +3402,36 @@ Public Class cDBDataSource
                 iFleetID = CInt(reader("FleetID"))
                 iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
 
-                iEcosimGroupID = CInt(reader("EcosimGroupID"))
-                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iEcosimGroupID)
+                iGroupID = CInt(reader("EcosimGroupID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                 If (iFleet > 0) And (iGroup > 0) Then
                     ecosimDS.Quota(iFleet, iGroup) = CSng(reader("Quota"))
-                    ecosimDS.propDiscardMort(iFleet, iGroup) = CSng(reader("PropDiscardMort"))
+                End If
+            End While
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        Me.m_db.ReleaseReader(reader)
+
+        reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch")
+        Try
+            While reader.Read()
+                iFleetID = CInt(reader("FleetID"))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
+
+                iGroupID = CInt(reader("GroupID"))
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, iGroupID)
+
+                If (iFleet > 0) And (iGroup > 0) Then
+                    ' ToDo: move this to the Ecopath database bits once the arrays have been transferred to Ecopath
+                    ecosimDS.propDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
                 End If
             End While
         Catch ex As Exception
             bSucces = False
         End Try
-
         Me.m_db.ReleaseReader(reader)
 
         Return bSucces
@@ -3575,9 +3596,31 @@ Public Class cDBDataSource
                     drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
                     ' Write dynamic bit
                     drow("Quota") = ecosimDS.Quota(iFleet, iGroup)
-                    drow("PropDiscardMort") = ecosimDS.propDiscardMort(iFleet, iGroup)
                     ' Add new row to the writer
                     writer.AddRow(drow)
+                Next iGroup
+            Next iFleet
+            ' Done
+            Me.m_db.ReleaseWriter(writer)
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Try
+            writer = Me.m_db.GetWriter("EcopathCatch")
+            Dim dt As DataTable = writer.GetDataTable()
+            Dim objKeys() As Object = {Nothing, Nothing}
+            For iFleet As Integer = 1 To ecopathDS.NumFleet
+                For iGroup As Integer = 1 To ecopathDS.NumGroups
+                    objKeys(0) = ecopathDS.GroupDBID(iGroup)
+                    objKeys(1) = ecopathDS.FleetDBID(iFleet)
+                    drow = dt.Rows.Find(objKeys)
+                    If drow IsNot Nothing Then
+                        drow.BeginEdit()
+                        drow("DiscardMortality") = ecosimDS.propDiscardMort(iFleet, iGroup)
+                        drow.EndEdit()
+                    End If
                 Next iGroup
             Next iFleet
             ' Done
