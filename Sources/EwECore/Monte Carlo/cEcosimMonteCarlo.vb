@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.10  2008/10/07 18:34:39  villyc
+' updating a vulmult pred-prey swap
+'
 ' Revision 1.9  2008/10/05 17:52:39  villyc
 ' ecosim mc, removed the Villy public property
 '
@@ -526,7 +529,7 @@ Public Class cEcosimMonteCarlo
                 TrialProgress(iTrial, iter)
                 'Console.WriteLine(itrial & ", " & " best: " & SSBestFit.ToString & ", " & m_esdata.SS.ToString)
                 'If RunsSinceLastWithLowerSS > 100 And iTrial Mod 100 = 0 Then Console.WriteLine("Total trials: " & iTrial.ToString & " since last: " & RunsSinceLastWithLowerSS.ToString)
-                If iTrial Mod 10 = 0 Then EcopathIterationsProgress(iTrial)
+                EcopathIterationsProgress(iTrial)
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial
             'sw.WriteLine(iTrial.ToString)
@@ -748,7 +751,7 @@ Public Class cEcosimMonteCarlo
             'Also transfer to vulmult
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
-                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
+                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
 
 
@@ -925,7 +928,7 @@ Public Class cEcosimMonteCarlo
                                                                      False)
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-                m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = BestFit(eMCParams.Vulnerability, iPred)
+                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
             '    sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
         Next

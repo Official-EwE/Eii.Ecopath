@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgSensitivityOfSStoV.vb,v $
+' Revision 1.2  2008/10/07 18:34:39  villyc
+' updating a vulmult pred-prey swap
+'
 ' Revision 1.1  2008/09/26 07:31:53  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -538,16 +541,16 @@ Public Class dlgSensitivityOfSStoV
         Dim groupPath As cEcoPathGroupInput = Nothing
         Dim groupSim As cEcoSimGroupInput = Nothing
 
-        For iPred As Integer = 1 To Me.m_core.nGroups
-            groupSim = Me.m_core.EcoSimGroupInputs(iPred)
-            For iPrey As Integer = 1 To Me.m_core.nGroups
+        For iPrey As Integer = 1 To Me.m_core.nGroups
+            groupSim = Me.m_core.EcoSimGroupInputs(iPrey)
+            For iPred As Integer = 1 To Me.m_core.nGroups
                 '  groupPath = Me.m_core.EcoPathGroupInputs(iPred)
                 'groupSim = Me.m_core.EcoSimGroupInputs(iPred)
                 '    If groupPath.DietComp(iPrey) > 0 Then
-                groupSim.VulMult(iPrey) = 2.0
+                groupSim.VulMult(iPred) = 2.0
                 '   End If
-            Next iPrey
-        Next iPred
+            Next iPred
+        Next iPrey
 
     End Function
 

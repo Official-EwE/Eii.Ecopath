@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.11  2008/10/07 18:34:38  villyc
+' updating a vulmult pred-prey swap
+'
 ' Revision 1.10  2008/10/04 01:10:30  villyc
 ' mc stuff, SS after MC are not correct, so not loading all parameters
 '
@@ -1620,7 +1623,7 @@ Public Property PluginManager() As cPluginManager
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
                     m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / (m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp))
                     'ToDo_jb Compute fish count
-                    m_Results.FishCount(igrp) = BB(igrp) '
+                    'm_Results.FishCount(igrp) = BB(igrp) '
 
                     'save results over time for output
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
