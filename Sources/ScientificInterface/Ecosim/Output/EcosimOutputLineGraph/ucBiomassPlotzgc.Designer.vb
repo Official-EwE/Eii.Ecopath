@@ -38,8 +38,8 @@ Namespace Ecosim
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsbAutoscale = New System.Windows.Forms.ToolStripButton
             Me.m_tsbCustomScale = New System.Windows.Forms.ToolStripButton
-            Me.m_tstbScaleMin = New System.Windows.Forms.ToolStripTextBox
             Me.m_tslMin = New System.Windows.Forms.ToolStripLabel
+            Me.m_tstbScaleMin = New System.Windows.Forms.ToolStripTextBox
             Me.m_tlsMax = New System.Windows.Forms.ToolStripLabel
             Me.m_tstbScaleMax = New System.Windows.Forms.ToolStripTextBox
             Me.gbAnonymous.SuspendLayout()
@@ -122,7 +122,7 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.ToolStripDropDownButton1, Me.ToolStripSeparator1, Me.m_tsbAutoscale, Me.m_tsbCustomScale, Me.m_tslMin, Me.m_tstbScaleMin, Me.m_tlsMax, Me.m_tstbScaleMax})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.ToolStripDropDownButton1, Me.ToolStripSeparator1, Me.m_tsbAutoscale, Me.m_tsbCustomScale, Me.m_tlsMax, Me.m_tstbScaleMax, Me.m_tslMin, Me.m_tstbScaleMin})
             Me.m_ts.Location = New System.Drawing.Point(3, 16)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.Size = New System.Drawing.Size(854, 25)
@@ -195,16 +195,16 @@ Namespace Ecosim
             Me.m_tsbCustomScale.Size = New System.Drawing.Size(74, 22)
             Me.m_tsbCustomScale.Text = "Custom scale"
             '
-            'm_tstbScaleMin
-            '
-            Me.m_tstbScaleMin.Name = "m_tstbScaleMin"
-            Me.m_tstbScaleMin.Size = New System.Drawing.Size(100, 25)
-            '
             'm_tslMin
             '
             Me.m_tslMin.Name = "m_tslMin"
             Me.m_tslMin.Size = New System.Drawing.Size(27, 22)
             Me.m_tslMin.Text = "Min:"
+            '
+            'm_tstbScaleMin
+            '
+            Me.m_tstbScaleMin.Name = "m_tstbScaleMin"
+            Me.m_tstbScaleMin.Size = New System.Drawing.Size(50, 25)
             '
             'm_tlsMax
             '
@@ -215,7 +215,7 @@ Namespace Ecosim
             'm_tstbScaleMax
             '
             Me.m_tstbScaleMax.Name = "m_tstbScaleMax"
-            Me.m_tstbScaleMax.Size = New System.Drawing.Size(100, 25)
+            Me.m_tstbScaleMax.Size = New System.Drawing.Size(50, 25)
             '
             'ucBiomassPlotzgc
             '
