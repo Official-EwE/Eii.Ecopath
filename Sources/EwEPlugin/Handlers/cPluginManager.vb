@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.2  2008/10/07 21:20:56  jeroens
+' Implemented data exchange plugin structure
+'
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -67,6 +70,7 @@ Imports EwEUtils.Database
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cPluginManager
+    Implements IDataBroadcaster
 
 #Region " Initialization "
 
@@ -220,8 +224,8 @@ Public Class cPluginManager
                 Me.m_dictAssemblies.Add(strFileName, plugAssem)
 
                 ' Connect to manager where applicable
-                For Each pi As IPlugin In plugAssem.Plugins(GetType(IDataExchangePlugin))
-                    DirectCast(pi, IDataExchangePlugin).Manager(Me)
+                For Each pi As IPlugin In plugAssem.Plugins(GetType(IDataProducerPlugin))
+                    DirectCast(pi, IDataProducerPlugin).Broadcaster(Me)
                 Next
 
                 ' Inform the world
@@ -634,7 +638,6 @@ Public Class cPluginManager
         Return False
 
     End Function
-
 
     Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object) As Boolean
 
@@ -1087,6 +1090,42 @@ Public Class cPluginManager
     End Sub
 
 #End Region ' Ecotracer Plugins
+
+#Region " Data Exchange Plugins "
+
+    ''' <summary>
+    ''' Exchange data from a <see cref="IDataProducerPlugin">data producer plug-in</see>
+    ''' to any interested <see cref="IDataConsumerPlugin">data consumer plug-in</see>.
+    ''' </summary>
+    ''' <param name="ds">The data to exchange.</param>
+    ''' <returns></returns>
+    Public Function BroadcastData(ByVal strDataName As String, ByVal ds As DataSet) As Boolean _
+            Implements IDataBroadcaster.BroadcastData
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataConsumerPlugin))
+        Dim bHandled As Boolean = False
+
+        Try
+
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    bHandled = bHandled Or DirectCast(ip, IDataConsumerPlugin).ReceiveData(strDataName, ds)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " BroadcastData() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return bHandled
+
+    End Function
+
+#End Region ' Data Exchange Plugins 
 
 #End Region ' Plugin invocation
 

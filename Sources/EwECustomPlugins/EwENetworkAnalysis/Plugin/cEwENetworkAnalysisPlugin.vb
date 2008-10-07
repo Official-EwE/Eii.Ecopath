@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.2  2008/10/07 21:20:56  jeroens
+' Implemented data exchange plugin structure
+'
 ' Revision 1.1  2008/09/26 07:31:00  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -88,7 +91,7 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IDataExchangePlugin
+    Implements EwEPlugin.IDataProducerPlugin
     'at this time we do not need these plugin points
     'Implements EwEPlugin.IEcosimRunCompletedPlugin
     'Implements EwEPlugin.IEcosimBeginTimestepPlugin
@@ -397,18 +400,17 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Data exchange "
 
-    Public Sub Manager(ByVal manager As EwEPlugin.cPluginManager) Implements EwEPlugin.IDataExchangePlugin.Manager
-        ' Do not need to consume data
+    Private m_broadcaster As IDataBroadcaster = Nothing
+
+    Public Sub Broadcaster(ByVal broadcaster As EwEPlugin.IDataBroadcaster) _
+        Implements EwEPlugin.IDataProducerPlugin.Broadcaster
+
+        Me.m_broadcaster = broadcaster
+
     End Sub
 
-    Public Function GetData(ByVal varname As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As Object _
-            Implements EwEPlugin.IDataExchangePlugin.GetData
-        Return Nothing
-    End Function
-
-    Public Function GetData(ByVal strVarName As String, Optional ByVal iIndex As Integer = -9999) As Object _
-            Implements EwEPlugin.IDataExchangePlugin.GetData
-        Dim objData As Object = Nothing
+    Public Function GetData(ByVal strDataName As String, ByRef objData As Object) As Boolean _
+            Implements EwEPlugin.IDataProducerPlugin.GetData
 
         ' Run network if needed
         If Not Me.m_NetworkManager.IsMainNetworkRun Then
@@ -416,7 +418,7 @@ Public Class cEwENetworkAnalysisPlugin
         End If
 
         Try
-            Select Case strVarName
+            Select Case strDataName
                 Case "AscendancyTotal"
                     Dim asData(6, 5) As Single
 
@@ -456,11 +458,13 @@ Public Class cEwENetworkAnalysisPlugin
                     asData(6, 5) = m_NetworkManager.CapacityTotalsPer
 
                     objData = asData
+                    Return True
             End Select
         Catch ex As Exception
             objData = Nothing
         End Try
-        Return objData
+
+        Return False
     End Function
 
 #End Region ' Data exchange
