@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.5  2008/10/07 00:38:45  jeroens
+' Ecosim prey/pred ff table flipped
+'
 ' Revision 1.4  2008/10/06 16:33:12  jeroens
 ' Flipped Vulnerabilities matrix in database
 '
@@ -3905,7 +3908,7 @@ Public Class cDBDataSource
                 ' Find iPrey
                 iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
                 ' Next shape
-                iFNo(iPredator, iPrey) += 1
+                iFNo(iPrey, iPredator) += 1
                 ' Resolve shape ID
                 iShapeID = CInt(reader("ShapeID"))
                 ' Determine shape type
@@ -3913,16 +3916,16 @@ Public Class cDBDataSource
                 ' Is a mediation shape?
                 If iShape <> -1 Then
                     ' #Yes: flag as mediation shape
-                    ecosimDS.IsMedFunction(iPredator, iPrey, iFNo(iPredator, iPrey)) = True
+                    ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
                 Else
                     ' #No: flag as other shape
-                    ecosimDS.IsMedFunction(iPredator, iPrey, iFNo(iPredator, iPrey)) = False
+                    ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
                     ' Obtain forcing index
                     iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
                 End If
                 ' Update sim fields
-                ecosimDS.FunctionNumber(iPredator, iPrey, iFNo(iPredator, iPrey)) = iShape
-                ecosimDS.FunctionType(iPredator, iPrey, iFNo(iPredator, iPrey)) = CType(reader("FunctionType"), eForcingFunctionApplication)
+                ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
+                ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
             End While
 
             Me.m_db.ReleaseReader(reader)
@@ -4487,7 +4490,7 @@ Public Class cDBDataSource
                         Try
 
                             ' Get shape assignment
-                            iShape = ecosimDS.FunctionNumber(iPredator, iPrey, iShapeNo)
+                            iShape = ecosimDS.FunctionNumber(iPrey, iPredator, iShapeNo)
                             ' Is an assignment?
                             If (iShape > 0) Then
                                 ' Save assignment
@@ -4500,11 +4503,11 @@ Public Class cDBDataSource
                                 Else
                                     drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
                                 End If
-                                drow("FunctionType") = ecosimDS.FunctionType(iPredator, iPrey, iShapeNo)
+                                drow("FunctionType") = ecosimDS.FunctionType(iPrey, iPredator, iShapeNo)
                                 writer.AddRow(drow)
                             End If
                         Catch ex As Exception
-                            Debug.Assert(False, String.Format("Index error on {0}, {1}, {2}", iPredator, iPrey, iShape))
+                            Debug.Assert(False, String.Format("Index error on pred {0}, prey {1}, shape {2}", iPredator, iPrey, iShape))
                         End Try
 
                     Next iShapeNo

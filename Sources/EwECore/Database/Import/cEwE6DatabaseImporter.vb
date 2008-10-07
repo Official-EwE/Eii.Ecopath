@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.3  2008/10/07 00:38:46  jeroens
+' Ecosim prey/pred ff table flipped
+'
 ' Revision 1.2  2008/10/06 16:33:13  jeroens
 ' Flipped Vulnerabilities matrix in database
 '
@@ -2785,8 +2788,8 @@ Namespace Database
                 Else
                     iShapeID = Me.HashKey(eDataTypes.Forcing, CStr(reader("FunctionNumber")), eDataTypes.EcoSimScenario, iScenarioID)
                 End If
-                iPredID = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("GroupName")), eDataTypes.EcoSimScenario, iScenarioID)
-                iPreyID = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("GroupColName")), eDataTypes.EcoSimScenario, iScenarioID)
+                iPreyID = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("GroupName")), eDataTypes.EcoSimScenario, iScenarioID)
+                iPredID = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("GroupColName")), eDataTypes.EcoSimScenario, iScenarioID)
 
                 ' MedFunction flag does not need importing since shape type can be looked up via iShapeID
 

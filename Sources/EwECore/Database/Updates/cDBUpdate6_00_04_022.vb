@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_022.vb,v $
+' Revision 1.5  2008/10/07 00:38:46  jeroens
+' Ecosim prey/pred ff table flipped
+'
 ' Revision 1.4  2008/10/06 17:21:54  jeroens
 ' Fixed flip
 '
@@ -28,7 +31,7 @@ Imports EwEUtils.Core
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added Ecosim fisheries regulation tables.</description></item>
-''' <item><description>Flipped vulnerabilities matrix.</description></item>
+''' <item><description>Updated group x group index tables.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -75,7 +78,8 @@ Public Class cDBUpdate6_00_04_022
     Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-        Return Me.UpdateEcosimFleets(db) And Me.AddQuotaTable(db) And Me.FlipVulMult(db)
+        Return Me.UpdateEcosimFleets(db) And Me.AddQuotaTable(db) And _
+            Me.FlipVulMult(db) And Me.FlipPredPreyShapes(db)
 
     End Function
 
@@ -173,6 +177,65 @@ Public Class cDBUpdate6_00_04_022
                 db.ReleaseWriter(writer)
 
                 bSucces = bSucces And db.Execute("ALTER TABLE EcoSimScenarioForcingMatrix DROP COLUMN flowtype")
+
+            Catch ex As Exception
+                ' All good, no sim groups
+            End Try
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Structure cPredPreyShapeRowRecord
+        Public m_iScenario As Integer
+        Public m_iPredator As Integer
+        Public m_iPrey As Integer
+        Public m_iShapeID As Integer
+        Public m_iFunctionType As eForcingFunctionApplication
+    End Structure
+
+    Private Function FlipPredPreyShapes(ByVal db As cEwEDatabase) As Boolean
+
+        Dim reader As IDataReader = Nothing
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim entry As cPredPreyShapeRowRecord = Nothing
+        Dim lEntries As New List(Of cPredPreyShapeRowRecord)
+        Dim bSucces As Boolean = True
+
+        Try
+            Try
+                reader = db.GetReader("SELECT * FROM EcosimScenarioPredPreyShape")
+                While reader.Read
+                    entry = New cPredPreyShapeRowRecord()
+                    entry.m_iScenario = CInt(reader("ScenarioID"))
+                    entry.m_iPredator = CInt(reader("PredID"))
+                    entry.m_iPrey = CInt(reader("PreyID"))
+                    entry.m_iShapeID = CInt(reader("ShapeID"))
+                    entry.m_iFunctionType = DirectCast(reader("FunctionType"), eForcingFunctionApplication)
+                    lEntries.Add(entry)
+                End While
+                db.ReleaseReader(reader)
+
+                db.Execute("DELETE * FROM EcosimScenarioPredPreyShape")
+
+                writer = db.GetWriter("EcosimScenarioPredPreyShape")
+                For Each entry In lEntries
+                    drow = writer.NewRow()
+                    drow("ScenarioID") = entry.m_iScenario
+                    ' FLIP!
+                    drow("PredID") = entry.m_iPrey
+                    drow("PreyID") = entry.m_iPredator
+                    ' Copy vul
+                    drow("ShapeID") = entry.m_iShapeID
+                    drow("FunctionType") = entry.m_iFunctionType
+                    writer.AddRow(drow)
+                Next
+                db.ReleaseWriter(writer)
 
             Catch ex As Exception
                 ' All good, no sim groups

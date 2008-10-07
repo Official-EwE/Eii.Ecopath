@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.2  2008/10/07 00:38:45  jeroens
+' Ecosim prey/pred ff table flipped
+'
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -833,12 +836,12 @@ Public Class cEIIDataSource
             For iPred As Integer = 1 To ecosimDS.nGroups
                 For iPrey As Integer = 1 To ecosimDS.nGroups
                     If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPred, iPrey, 1) = iForceShape
-                        ecosimDS.IsMedFunction(iPred, iPrey, 1) = False
+                        ecosimDS.FunctionNumber(iPrey, iPred, 1) = iForceShape
+                        ecosimDS.IsMedFunction(iPrey, iPred, 1) = False
                         If iPred = iPrey Then
-                            ecosimDS.FunctionType(iPred, iPrey, 1) = 2
+                            ecosimDS.FunctionType(iPrey, iPred, 1) = 2
                         Else
-                            ecosimDS.FunctionType(iPred, iPrey, 1) = 1
+                            ecosimDS.FunctionType(iPrey, iPred, 1) = 1
                         End If
                     End If
                 Next iPrey
@@ -885,9 +888,9 @@ Public Class cEIIDataSource
             For iPred As Integer = 1 To ecosimDS.nGroups
                 For iPrey As Integer = 1 To ecosimDS.nGroups
                     If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPred, iPrey, 2) = 1
-                        ecosimDS.IsMedFunction(iPred, iPrey, 2) = True
-                        ecosimDS.FunctionType(iPred, iPrey, 2) = 1
+                        ecosimDS.FunctionNumber(iPrey, iPred, 2) = 1
+                        ecosimDS.IsMedFunction(iPrey, iPred, 2) = True
+                        ecosimDS.FunctionType(iPrey, iPred, 2) = eForcingFunctionApplication.ProductionRate
                     End If
                 Next iPrey
             Next iPred
