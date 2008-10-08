@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.5  2008/10/08 20:32:11  joeb
+' Added CVBest and KalWt
+'
 ' Revision 1.4  2008/10/08 17:41:07  jeroens
 ' Added target fishing mortality policy vars
 '
@@ -371,6 +374,12 @@ Namespace Core
         BLim
         ''' <summary>Mortality/Fmsy for target fishing mortality policy.</summary>
         Fopt
+
+        ''' <summary>Coefficient of variation in estimated biomass for regulated fisheries .</summary>
+        RegCVBest
+
+        ''' <summary>Kalman weight for regulated fisheries ????</summary>
+        RegKalWt
 
         'jb Salinity values added Dec-07
         SalinityForceFunctionNumber

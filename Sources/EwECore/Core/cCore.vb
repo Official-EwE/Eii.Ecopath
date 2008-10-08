@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.14  2008/10/08 20:32:10  joeb
+' Added CVBest and KalWt
+'
 ' Revision 1.13  2008/10/08 17:53:53  jeroens
 ' Added target fishing mortality policy vars
 '
@@ -4436,9 +4439,12 @@ Public Class cCore
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
             'group.Quota = m_EcoSimData.???(iGroup)
+
             group.BBase = m_EcoSimData.Bbase(iGroup)
             group.BLim = m_EcoSimData.Blim(iGroup)
             group.FOpt = m_EcoSimData.Fopt(iGroup)
+            group.RegCVBest = m_EcoSimData.CVest(iGroup)
+            group.RegKalWt = m_EcoSimData.KalWt(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -4903,9 +4909,13 @@ Public Class cCore
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
             'm_EcoSimData.???(iGroup) = grp.Quota
+
+            'regulatory values
             m_EcoSimData.Bbase(iGroup) = group.BBase
             m_EcoSimData.Blim(iGroup) = group.BLim
             m_EcoSimData.Fopt(iGroup) = group.FOpt
+            m_EcoSimData.KalWt(iGroup) = group.RegCVBest
+            m_EcoSimData.CVest(iGroup) = group.RegKalWt
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)

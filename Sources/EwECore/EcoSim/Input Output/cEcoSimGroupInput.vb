@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimGroupInput.vb,v $
+' Revision 1.4  2008/10/08 20:32:11  joeb
+' Added CVBest and KalWt
+'
 ' Revision 1.3  2008/10/08 17:53:34  jeroens
 ' Added target fishing mortality policy vars
 '
@@ -239,6 +242,17 @@ Public Class cEcoSimGroupInput
             val = New cValue(New Single, eVarNameFlags.Fopt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Fopt))
             m_values.Add(val.varName, val)
 
+            'CVBest
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.RegCVBest, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RegCVBest))
+            m_values.Add(val.varName, val)
+
+            'Kalman Weight
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.RegKalWt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.RegKalWt))
+            m_values.Add(val.varName, val)
+
+
             ''arrayed values
             'VulRate
             meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -426,6 +440,31 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
+    Public Property RegCVBest() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.RegCVBest))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.RegCVBest, value)
+        End Set
+
+    End Property
+
+
+    Public Property RegKalWt() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.RegKalWt))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.RegKalWt, value)
+        End Set
+
+    End Property
+
+
 #Region "Indexed variables"
 
     ''' <summary>
@@ -447,6 +486,9 @@ Public Class cEcoSimGroupInput
 
     End Property
 
+
+
+   
     'jb remove Vulrate until it is needed
     'Public Property VulRate(ByVal iGroup As Integer) As Single
 

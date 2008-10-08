@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.15  2008/10/08 20:32:11  joeb
+' Added CVBest and KalWt
+'
 ' Revision 1.14  2008/10/08 17:47:00  joeb
 ' Regulatory Feedback Loop
 '
@@ -3717,6 +3720,8 @@ Public Property PluginManager() As cPluginManager
             Dim tQuota() As Single
             Dim fTarget() As Single
 
+            Debug.Assert(m_Data.DoClosedLoop, "UpdateQuotas() call when flag set to false.")
+
             ReDim tQuota(nGroups)
             ReDim fTarget(nGroups)
 
@@ -3750,7 +3755,7 @@ Public Property PluginManager() As cPluginManager
             ReDim totalQuota(ngear)
             For iFlt = 1 To ngear
                 For iGrp = 1 To nGroups
-                    If Me.m_EPData.Landing(iFlt, iGrp) > 0 Then
+                    If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
                         totalQuota(iFlt) = totalQuota(iFlt) + m_Data.Quota(iFlt, iGrp)
                     End If
                 Next
@@ -3758,7 +3763,7 @@ Public Property PluginManager() As cPluginManager
 
             For iFlt = 1 To ngear
                 For iGrp = 1 To nGroups
-                    If Me.m_EPData.Landing(iFlt, iGrp) > 0 Then
+                    If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
                         m_Data.QuotaTime(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp)
                         m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iFlt) + 0.0000000001)
                     End If
@@ -3949,9 +3954,6 @@ Public Property PluginManager() As cPluginManager
                 Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
             Next
 
-
-            'ToDo_jb change  If Me.m_EPData.Landing(ig, i) > 0 Then to FCatch()
-
             If PredEffort Then
 
                 'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
@@ -3961,11 +3963,10 @@ Public Property PluginManager() As cPluginManager
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
                             For i = 1 To m_Data.nGroups
-                                If Me.m_EPData.Landing(ig, i) > 0 Then
+                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
                                     Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
                                     If m_Data.FishRateGear(ig, t) > Elim Then
                                         m_Data.FishRateGear(ig, t) = Elim
-                                        'ToDo set PropLandedTime()
                                     End If
                                 End If
                             Next i
@@ -3974,33 +3975,34 @@ Public Property PluginManager() As cPluginManager
 
                             Emax = 0
                             For i = 1 To m_Data.nGroups
-
-                                If Me.m_EPData.Landing(ig, i) > 0 Then
+                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
                                     Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
                                     If Elim > Emax Then Emax = Elim
                                 End If
                             Next i
 
-                            'If t >= 240 Or Emax = 0 Then
-                            '    Stop
-                            'End If
-
                             If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
                             For i = 1 To m_Data.nGroups
-                                If Me.m_EPData.Landing(ig, i) > 0 Then
+                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
                                     ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, i) * BB(i)
+
                                     If ci > m_Data.QuotaTime(ig, i) Then
+                                        'ci > QuotaTime
                                         m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
                                         If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                            'QuotaType = Strongest
                                             m_Data.Propdiscardtime(ig, i) = (1 - m_Data.PropLandedTime(ig, i)) * m_Data.propDiscardMort(ig, i)
-                                        Else ' If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                        Else
+                                            'QuotaType = Selective
                                             m_Data.Propdiscardtime(ig, i) = 0
-                                        End If ' If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                        End If
 
-                                    Else 'If ci > m_Data.QuotaTime(ig, i) Then
+                                    Else
+                                        'ci < QuotaTime
                                         m_Data.PropLandedTime(ig, i) = m_EPData.PropLanded(ig, i)
                                         m_Data.Propdiscardtime(ig, i) = m_EPData.PropDiscard(ig, i)
-                                    End If 'If ci > m_Data.QuotaTime(ig, i) Then
+                                    End If
+
                                 End If
                             Next i
                     End Select
