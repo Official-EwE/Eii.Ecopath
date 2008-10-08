@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.2  2008/10/08 17:44:58  jeroens
+' Bells and whistles
+'
 ' Revision 1.1  2008/09/26 07:31:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -191,7 +194,7 @@ Namespace Controls
             ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
             ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
-            Optional ByVal iPane As Integer = 0) As GraphPane
+            Optional ByVal iPane As Integer = 1) As GraphPane
 
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
@@ -237,7 +240,7 @@ Namespace Controls
         Public Function ConfigurePane(ByVal strTitle As String, _
              ByVal strXAxisLabel As String, ByVal strYAxisLabel As String, _
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
-             Optional ByVal iPane As Integer = 0) As GraphPane
+             Optional ByVal iPane As Integer = 1) As GraphPane
 
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
@@ -269,23 +272,27 @@ Namespace Controls
         ''' </summary>
         ''' <param name="lines">The <see cref="LineItem">lines</see> to add.</param>
         ''' <param name="iPane">The panel to assign these lines to (optional).</param>
-        ''' <param name="bForceRedraw">Flag stating whether the graph needs to be
-        ''' rescaled and redrawn (optional).</param>
+        ''' <param name="bRescale">Flag stating whether the graph needs to be
+        ''' rescaled (optional).</param>
         ''' <remarks>Note that this method clears out all lines existing in the
         ''' indicated panel.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub PlotLines(ByVal lines As List(Of LineItem), Optional ByVal iPane As Integer = 1, Optional ByVal bForceRedraw As Boolean = True)
+        Public Sub PlotLines(ByVal lines As List(Of LineItem), _
+                             Optional ByVal iPane As Integer = 1, _
+                             Optional ByVal bRescale As Boolean = True)
             Try
 
                 With Me.GetPane(iPane)
 
                     .CurveList.Clear()
-                    For Each line As LineItem In lines
-                        .AddCurve(line.Label.Text, line.Points, line.Color, line.Symbol.Type)
-                    Next
+                    If lines IsNot Nothing Then
+                        For Each line As LineItem In lines
+                            .AddCurve(line.Label.Text, line.Points, line.Color, line.Symbol.Type)
+                        Next
+                    End If
                 End With
 
-                If bForceRedraw Then Me.RescaleAndRedraw()
+                If bRescale Then Me.RescaleAndRedraw() Else Me.Redraw()
 
             Catch ex As Exception
                 EwECore.cLog.Write(ex)
@@ -295,9 +302,22 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Redraw the wrapped ZedGraph.
+        ''' </summary>
+        ''' <param name="iPane">The pane to redraw, or -1 to redraw all panes 
+        ''' in the graph.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub Redraw(Optional ByVal iPane As Integer = -1)
+            Me.m_zgc.Invalidate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Totally redraw the wrapped ZedGraph by recalculating the axis and 
         ''' invalidating all panels.
         ''' </summary>
+        ''' <param name="iPane">The pane to rescale and redraw, or -1 to
+        ''' update all panes in the graph.</param>
         ''' <remarks>When using cursors please use this method to rescale the
         ''' graph axis.</remarks>
         ''' -------------------------------------------------------------------
@@ -320,12 +340,13 @@ Namespace Controls
 
             ' Recalc axis
             Me.m_zgc.AxisChange()
-            Me.m_zgc.Invalidate()
 
             ' Restore cursors
             For iPane = iMin To iMax
                 Me.ShowCursor(iPane) = abCursor(iPane)
             Next
+
+            Me.Redraw()
 
         End Sub
 
@@ -363,6 +384,30 @@ Namespace Controls
             Set(ByVal value As Double)
                 Me.GetPane(iPane).YAxis.Scale.Max = value
                 RescaleAndRedraw(iPane)
+            End Set
+        End Property
+
+        Public WriteOnly Property AllowZoom() As Boolean
+            Set(ByVal value As Boolean)
+                Me.m_zgc.IsZoomOnMouseCenter = value
+                Me.m_zgc.IsEnableVZoom = value
+                Me.m_zgc.IsEnableHZoom = value
+                Me.m_zgc.IsEnableWheelZoom = value
+                Me.m_zgc.IsEnableZoom = value
+            End Set
+        End Property
+
+        Public WriteOnly Property AllowPan() As Boolean
+            Set(ByVal value As Boolean)
+                Me.m_zgc.IsEnableVPan = value
+                Me.m_zgc.IsEnableHPan = value
+            End Set
+        End Property
+
+        Public WriteOnly Property AllowEdit() As Boolean
+            Set(ByVal value As Boolean)
+                Me.m_zgc.IsEnableHEdit = value
+                Me.m_zgc.IsEnableVEdit = value
             End Set
         End Property
 
