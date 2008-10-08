@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.3  2008/10/08 22:12:45  jeroens
+' Updated to EwEGrid interface
+'
 ' Revision 1.2  2008/09/29 23:02:19  jeroens
 ' Fixed bug 544
 '
@@ -815,7 +818,7 @@ Imports EwEUtils.Drawing
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnCellGotFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellGotFocus(e)
-        RaiseSelectionChangeEvent(Me.Selection.GetCells)
+        RaiseSelectionChangeEvent()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -826,7 +829,8 @@ Imports EwEUtils.Drawing
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnCellLostFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellLostFocus(e)
-        RaiseSelectionChangeEvent(Nothing)
+        Me.Selection.Clear()
+        Me.RaiseSelectionChangeEvent()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1612,7 +1616,7 @@ Imports EwEUtils.Drawing
         ' Make sure selected row is visible
         Me.ShowCell(New Position(iRow, 0))
 
-        Me.RaiseSelectionChangeEvent(Me.Selection.GetCells)
+        Me.RaiseSelectionChangeEvent()
 
     End Sub
 
