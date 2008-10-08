@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridTFMpolicy.vb,v $
+' Revision 1.4  2008/10/08 22:13:47  jeroens
+' Selection event sent when initializing to a group
+'
 ' Revision 1.3  2008/10/08 21:18:24  jeroens
 ' Globalized
 '
@@ -69,6 +72,7 @@ Namespace Ecosim
                 If value IsNot Nothing Then
                     Me.Selection.Add(New Position(value.Index, 0))
                 End If
+                Me.RaiseSelectionChangeEvent()
             End Set
         End Property
 
