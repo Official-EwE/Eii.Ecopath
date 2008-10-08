@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: frmTFMpolicy.vb,v $
+' Revision 1.3  2008/10/08 22:14:16  jeroens
+' Drag w SHIFT
+'
 ' Revision 1.2  2008/10/08 21:18:24  jeroens
 ' Globalized
 '
@@ -30,10 +33,19 @@ Namespace Ecosim
 
 #Region " Internals "
 
+        Private Enum eDragType As Integer
+            None = 0
+            BLim
+            BBaseFopt
+            Fopt
+        End Enum
+
         ''' <summary><see cref="ZedGraphHelper">Helper</see> to manipulate the graph.</summary>
         Private m_zgh As ZedGraphHelper = Nothing
         ''' <summary>Group selected in the form.</summary>
         Private m_group As cEcoSimGroupInput = Nothing
+        ''' <summary>Graph drag mode.</summary>
+        Private m_dragtype As eDragType = eDragType.None
 
 #End Region ' Internals
 
@@ -124,6 +136,7 @@ Namespace Ecosim
             If Me.m_zgh Is Nothing Then Return
 
             Dim lpts As New PointPairList
+            Dim line As LineItem = Nothing
             Dim lLines As New List(Of LineItem)
 
             If (Me.m_group IsNot Nothing) Then
@@ -146,7 +159,10 @@ Namespace Ecosim
                 'text.FontSpec.Border.IsVisible = false;
                 'myPane.GraphObjList.Add( text );
 
-                lLines.Add(New LineItem(Me.m_group.Name, lpts, Color.Azure, SymbolType.Circle))
+                line = New LineItem(Me.m_group.Name, lpts, Color.DarkOrange, SymbolType.Circle)
+                line.Line.Width = 2.0
+
+                lLines.Add(line)
                 ' Plot graph, but rescale ONLY when not dragging
                 Me.m_zgh.PlotLines(lLines, 1, (Me.m_dragtype = eDragType.None))
             Else
@@ -159,15 +175,23 @@ Namespace Ecosim
 
 #Region " Dragging "
 
-        Private Enum eDragType As Integer
-            None = 0
-            BLim
-            BBaseFmsy
-            FMsy
-        End Enum
+        Private Sub HandleGraphKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
+                Handles m_graph.KeyDown
 
-        Private m_dragtype As eDragType = eDragType.None
-        Private m_ptDrag As PointF = Nothing
+            If Control.ModifierKeys = Keys.Shift Then
+                Me.m_graph.Cursor = Cursors.Hand
+            End If
+
+        End Sub
+
+        Private Sub HandleGraphKeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
+                Handles m_graph.KeyUp
+
+            If Control.ModifierKeys = Keys.Shift Then
+                Me.m_graph.Cursor = Cursors.Default
+            End If
+
+        End Sub
 
         Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseDownEvent
@@ -184,11 +208,6 @@ Namespace Ecosim
                 If (pane.FindNearestPoint(pt, curve, iIndex) And (TypeOf curve.Points Is PointPairList)) Then
                     ' Set drag operation type
                     Me.m_dragtype = DirectCast(iIndex, eDragType)
-                    ' Dragging?
-                    If (Me.m_dragtype <> eDragType.None) Then
-                        ' Save the starting point information
-                        m_ptDrag = pt
-                    End If
                 End If
             End If
 
@@ -212,10 +231,10 @@ Namespace Ecosim
                 Select Case Me.m_dragtype
                     Case eDragType.BLim
                         Me.m_group.BLim = Math.Max(0, Math.Min(CSng(dX), Me.m_group.BBase))
-                    Case eDragType.BBaseFmsy
+                    Case eDragType.BBaseFopt
                         Me.m_group.BBase = Math.Max(Me.m_group.BLim, CSng(dX))
                         Me.m_group.FOpt = Math.Max(0, CSng(dy))
-                    Case eDragType.FMsy
+                    Case eDragType.Fopt
                         Me.m_group.FOpt = Math.Max(0, CSng(dy))
                 End Select
 
@@ -224,7 +243,10 @@ Namespace Ecosim
 
         Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseUpEvent
+
             Me.m_dragtype = eDragType.None
+            Me.m_zgh.RescaleAndRedraw()
+
         End Function
 
 #End Region ' Dragging
