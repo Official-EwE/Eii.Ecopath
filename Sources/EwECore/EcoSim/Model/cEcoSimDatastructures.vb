@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.7  2008/10/08 17:47:00  joeb
+' Regulatory Feedback Loop
+'
 ' Revision 1.6  2008/10/08 00:01:59  joeb
 ' Regulated Fisheries
 '
@@ -325,7 +328,7 @@ Public Class cEcosimDatastructures
 
 #Region "Regulated Fisheries arrays"
 
-    Public DoClosedLoop As Boolean = True
+    Public DoClosedLoop As Boolean
 
     ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
     Public MaxEffort() As Single 'gear

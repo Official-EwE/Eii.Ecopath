@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.14  2008/10/08 17:47:00  joeb
+' Regulatory Feedback Loop
+'
 ' Revision 1.13  2008/10/08 00:04:36  villyc
 ' something, maybe
 '
@@ -894,8 +897,8 @@ Public Property PluginManager() As cPluginManager
                         Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
 
                         PredictCurrentEffort(itime)
-                        FindCurrentProfit(BB, itime)
                         SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
+                        FindCurrentProfit(BB, itime)
                         PredictCapacityChange()
                         ''Debug.Print "cap", CapTime(1), CapTime(2), CapTime(3)
                     End If
@@ -3747,7 +3750,7 @@ Public Property PluginManager() As cPluginManager
             ReDim totalQuota(ngear)
             For iFlt = 1 To ngear
                 For iGrp = 1 To nGroups
-                    If Me.m_EPData.fCatch(iGrp) > 0 Then
+                    If Me.m_EPData.Landing(iFlt, iGrp) > 0 Then
                         totalQuota(iFlt) = totalQuota(iFlt) + m_Data.Quota(iFlt, iGrp)
                     End If
                 Next
@@ -3755,7 +3758,7 @@ Public Property PluginManager() As cPluginManager
 
             For iFlt = 1 To ngear
                 For iGrp = 1 To nGroups
-                    If Me.m_EPData.fCatch(iGrp) > 0 Then
+                    If Me.m_EPData.Landing(iFlt, iGrp) > 0 Then
                         m_Data.QuotaTime(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp)
                         m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iFlt) + 0.0000000001)
                     End If
@@ -3958,7 +3961,7 @@ Public Property PluginManager() As cPluginManager
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
                             For i = 1 To m_Data.nGroups
-                                If Me.m_EPData.fCatch(i) > 0 Then
+                                If Me.m_EPData.Landing(ig, i) > 0 Then
                                     Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
                                     If m_Data.FishRateGear(ig, t) > Elim Then
                                         m_Data.FishRateGear(ig, t) = Elim
@@ -3971,19 +3974,20 @@ Public Property PluginManager() As cPluginManager
 
                             Emax = 0
                             For i = 1 To m_Data.nGroups
-                                If Me.m_EPData.fCatch(i) > 0 Then
+
+                                If Me.m_EPData.Landing(ig, i) > 0 Then
                                     Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
                                     If Elim > Emax Then Emax = Elim
                                 End If
                             Next i
 
-                            If t = 214 Then
-                                Stop
-                            End If
+                            'If t >= 240 Or Emax = 0 Then
+                            '    Stop
+                            'End If
 
                             If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
                             For i = 1 To m_Data.nGroups
-                                If Me.m_EPData.fCatch(i) > 0 Then
+                                If Me.m_EPData.Landing(ig, i) > 0 Then
                                     ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, i) * BB(i)
                                     If ci > m_Data.QuotaTime(ig, i) Then
                                         m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
@@ -4194,6 +4198,8 @@ Public Property PluginManager() As cPluginManager
             For ig = 1 To m_Data.nGear
                 Ipower = CurrentIncome(ig) ^ m_EPData.Epower(ig)
                 m_Data.FishRateGear(ig, t) = CapTime(ig) * Ipower / (EscalePar(ig) + Ipower)
+                If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
+
             Next
         End Sub
 
@@ -4211,6 +4217,7 @@ Public Property PluginManager() As cPluginManager
                 Next
                 TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, 2) + m_EPData.cost(ig, 3))
                 CurrentProfit(ig) = TotIncome - TotCost
+                If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
                 If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0
                 CurrentIncome(ig) = TotIncome / (m_Data.FishRateGear(ig, t) + 1.0E-20)
             Next
@@ -4224,6 +4231,7 @@ Public Property PluginManager() As cPluginManager
             For ig = 1 To m_Data.nGear
                 Cg = CapGrowthFactor(ig) * CurrentProfit(ig) : If Cg < 0 Then Cg = 0
                 CapTime(ig) = CapTime(ig) * (1 - m_EPData.CapDepreciate(ig) / 12) + Cg / 12
+                If CapTime(ig) <> CapTime(ig) Or CapTime(ig) > 1000 Then Stop
             Next
         End Sub
 

@@ -140,6 +140,13 @@ Public Class cEcoSimModelParameters
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            'Regulatory FeedBack T/F
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.RegFeedBack, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.RegFeedBack))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+
 
             '  Me.AllowValidation = True
 
@@ -490,9 +497,17 @@ Public Class cEcoSimModelParameters
 
     End Property
 
+    Public Property RegFeedBack() As Boolean
 
+        Get
+            Return CType(GetVariable(eVarNameFlags.RegFeedBack), Boolean)
+        End Get
 
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.RegFeedBack, value)
+        End Set
 
+    End Property
 
 #End Region
 

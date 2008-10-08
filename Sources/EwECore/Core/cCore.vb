@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.12  2008/10/08 17:46:59  joeb
+' Regulatory Feedback Loop
+'
 ' Revision 1.11  2008/10/07 22:49:35  jeroens
 ' Localized GUI string
 '
@@ -5393,11 +5396,10 @@ Public Class cCore
 
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
             m_EcoSimRun.PredictEffort = m_EcoSim.m_Data.PredictSimEffort
-
+            m_EcoSimRun.RegFeedBack = m_EcoSim.m_Data.DoClosedLoop
             m_EcoSimRun.NumberSummaryTimeSteps = m_EcoSim.m_Data.NumStep
             m_EcoSimRun.StartSummaryTime = m_EcoSim.m_Data.SumStart(0)
             m_EcoSimRun.EndSummaryTime = m_EcoSim.m_Data.SumStart(1)
-
 
             m_EcoSimRun.AllowValidation = True
 
@@ -5435,6 +5437,7 @@ Public Class cCore
             m_EcoSim.m_Data.SalinityForceNo = m_EcoSimRun.SalinityForceFunctionNumber
 
             m_EcoSim.m_Data.PredictSimEffort = m_EcoSimRun.PredictEffort
+            m_EcoSim.m_Data.DoClosedLoop = m_EcoSimRun.RegFeedBack
 
             m_EcoSim.m_Data.NumStep = m_EcoSimRun.NumberSummaryTimeSteps
             m_EcoSim.m_Data.SumStart(0) = m_EcoSimRun.StartSummaryTime
