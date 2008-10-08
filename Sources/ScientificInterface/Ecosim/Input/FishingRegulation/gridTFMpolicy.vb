@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridTFMpolicy.vb,v $
+' Revision 1.2  2008/10/08 20:47:49  jeroens
+' Added CVBest, KalWT
+'
 ' Revision 1.1  2008/10/08 17:57:36  jeroens
 ' Initial version
 '
@@ -32,10 +35,11 @@ Namespace Ecosim
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            Quota
             BLim
             BBase
             FOpt
+            CVBest
+            Kalwt
         End Enum
 
 #End Region ' Internal defs
@@ -74,10 +78,11 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.Quota) = New EwEColumnHeaderCell("Quota")
-            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Base biomass")
+            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
             Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit")
-            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("Fmsy")
+            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F optimum")
+            Me(0, eColumnTypes.CVBest) = New EwEColumnHeaderCell("Biomass CV")
+            Me(0, eColumnTypes.Kalwt) = New EwEColumnHeaderCell("Kalman weight")
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
@@ -98,11 +103,13 @@ Namespace Ecosim
 
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
-                Me(iGroup, eColumnTypes.Quota) = New PropertyCell(group, eVarNameFlags.QuotaSpecies)
 
                 Me(iGroup, eColumnTypes.BBase) = New PropertyCell(group, eVarNameFlags.BBase)
                 Me(iGroup, eColumnTypes.BLim) = New PropertyCell(group, eVarNameFlags.BLim)
                 Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(group, eVarNameFlags.Fopt)
+
+                Me(iGroup, eColumnTypes.CVBest) = New PropertyCell(group, eVarNameFlags.RegCVBest)
+                Me(iGroup, eColumnTypes.Kalwt) = New PropertyCell(group, eVarNameFlags.RegKalWt)
 
                 Me.Rows(iGroup).Tag = group
 
