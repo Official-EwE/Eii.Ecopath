@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.6  2008/10/08 00:01:59  joeb
+' Regulated Fisheries
+'
 ' Revision 1.5  2008/10/03 18:44:04  joeb
 ' Added PropLandedTime()
 '
@@ -156,6 +159,8 @@ Public Class cEcosimDatastructures
     Public VulMultAll As Single
     Public VulMult(,) As Single
     Public vulrate(,) As Single
+
+    ''' <summary> Max vulnerability across all prey for this predator VulnerabilityPredator(pred) = max(VulMult(prey,pred))</summary>
     Public VulnerabilityPredator() As Single
 
     Public maxflow(,) As Single
@@ -275,23 +280,7 @@ Public Class cEcosimDatastructures
     ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
     Public FishRateGear(,) As Single
 
-    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
-    Public MaxEffort() As Single 'gear
 
-    ''' <summary>Type of quota system in effect (by gear) </summary>
-    Public QuotaType() As eQuotaTypes 'gear
-
-    ''' <summary>Fishing Quota for regulated fisheries  (by gear group)</summary>
-    Public Quota(,) As Single 'gear group
-
-    ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
-    Public RegDiscard(,) As Single ' gear group
-
-    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
-    Public propDiscardMort(,) As Single ' gear group 0-1
-
-    ''' <summary>Proportion of regulated landings (by gear group)</summary>
-    Public PropLandedTime(,) As Single
 
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
@@ -334,6 +323,42 @@ Public Class cEcosimDatastructures
     'jb April-06-2006 added to keep track of the type of a forcing shape (time or Egg)this does not include mediation shapes as they are stored seperately
     Public ForcingShapeType() As eDataTypes
 
+#Region "Regulated Fisheries arrays"
+
+    Public DoClosedLoop As Boolean = True
+
+    ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
+    Public MaxEffort() As Single 'gear
+
+    ''' <summary>Type of quota system in effect (by gear) </summary>
+    Public QuotaType() As eQuotaTypes 'gear
+
+    ''' <summary>Fishing Quota for regulated fisheries  (by gear group)</summary>
+    Public Quota(,) As Single 'gear group
+
+    ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
+    Public RegDiscard(,) As Single ' gear group
+
+    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
+    Public propDiscardMort(,) As Single ' gear group 0-1
+
+    ''' <summary>Proportion of regulated landings (by gear group)</summary>
+    Public PropLandedTime(,) As Single
+
+    ''' <summary>Proportion of regulated discards (by gear group)</summary>
+    Public Propdiscardtime(,) As Single
+
+    Public Bestimate() As Single
+    Public BestimateLast() As Single
+    Public Quotashare(,) As Single
+    Public QuotaTime(,) As Single
+    Public CVest() As Single
+    Public KalWt() As Single
+    Public Blim() As Single
+    Public Bbase() As Single
+    Public Fopt() As Single
+
+#End Region
 
     'jb April-07-2006 replaced Shapes() with ShapeParameters
     'Public Shapes() As Single
@@ -616,6 +641,36 @@ Public Class cEcosimDatastructures
         ReDim Quota(nGear, nGroups)
         ReDim propDiscardMort(nGear, nGroups)
         ReDim PropLandedTime(nGear, nGroups)
+        ReDim Propdiscardtime(nGear, nGroups)
+
+        ReDim Bestimate(nGroups)
+        ReDim BestimateLast(nGroups)
+        ReDim Quotashare(nGear, nGroups)
+        ReDim QuotaTime(nGear, nGroups)
+        ReDim CVest(nGroups)
+        ReDim KalWt(nGroups)
+        ReDim Blim(nGroups)
+        ReDim Bbase(nGroups)
+        ReDim Fopt(nGroups)
+
+        For i = 1 To nGroups
+            CVest(i) = cCore.NULL_VALUE
+            Blim(i) = cCore.NULL_VALUE
+            Bbase(i) = cCore.NULL_VALUE
+            KalWt(i) = cCore.NULL_VALUE
+            Fopt(i) = cCore.NULL_VALUE
+        Next
+
+        'Setting regulatory values to NULL will cause them to be set to a default value if the datavbase does not contain contain values
+        'see cEcosimModel.setDefaultValues
+        For iflt As Integer = 1 To nGear
+            MaxEffort(iflt) = cCore.NULL_VALUE
+
+            For igrp As Integer = 1 To nGroups
+                Quota(iflt, igrp) = cCore.NULL_VALUE
+                propDiscardMort(iflt, igrp) = cCore.NULL_VALUE
+            Next
+        Next
 
     End Sub
 

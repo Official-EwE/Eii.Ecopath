@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.12  2008/10/08 00:01:59  joeb
+' Regulated Fisheries
+'
 ' Revision 1.11  2008/10/07 18:34:38  villyc
 ' updating a vulmult pred-prey swap
 '
@@ -616,6 +619,12 @@ Public Property PluginManager() As cPluginManager
 
                 SetRelativeCatchabilities()
 
+                'default values for regulated fisheries before calling SetFFromGear() 
+                'SetFFromGear() uses default regulatory fisheries values
+                setDefaultRegValues()
+
+                InitAssessment()
+
                 If bFullInitialization Then
                     SetFFromGear()
                 End If
@@ -623,9 +632,6 @@ Public Property PluginManager() As cPluginManager
                 SetTimeSteps()
 
                 CalculateAssimilationEfficiencies()
-
-                'default values for regulated fisheries
-                setDefaultRegValues()
 
                 Me.m_ConTracer = New cContaminantTracer
 
@@ -677,13 +683,26 @@ Public Property PluginManager() As cPluginManager
             For iflt As Integer = 1 To Me.m_Data.nGear
                 If Me.m_Data.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
                 For igrp As Integer = 1 To nGroups
-                    If Me.m_Data.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.Quota(iflt, igrp) = m_EPData.B(igrp) * 10 '10 time the ecopath biomass
-                    If Me.m_Data.propDiscardMort(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.propDiscardMort(iflt, igrp) = 0.3
+                    If Me.m_Data.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.Quota(iflt, igrp) = m_Data.StartBiomass(igrp) * 10 '10 time the ecopath biomass
+                    If Me.m_Data.propDiscardMort(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.propDiscardMort(iflt, igrp) = 1
+
+                    'Needs default value????
+                    If m_Data.CVest(igrp) = cCore.NULL_VALUE Then m_Data.CVest(igrp) = 0.2
+                    If m_Data.Blim(igrp) = cCore.NULL_VALUE Then m_Data.Blim(igrp) = m_Data.StartBiomass(igrp) * 0.1
+                    If m_Data.Bbase(igrp) = cCore.NULL_VALUE Then m_Data.Bbase(igrp) = m_Data.StartBiomass(igrp)
+                    If m_Data.KalWt(igrp) = cCore.NULL_VALUE Then m_Data.KalWt(igrp) = 0.65
+                    If m_Data.Fopt(igrp) = cCore.NULL_VALUE Then m_Data.Fopt(igrp) = 0.9 * (m_EPData.PB(igrp) - m_Data.Fish1(igrp))
+
+                    m_Data.Bestimate(igrp) = m_Data.StartBiomass(igrp)
+
+                    'set the time variable proportion variables to initial ecopath values
+                    Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
+                    Me.m_Data.Propdiscardtime(iflt, igrp) = m_EPData.PropDiscard(iflt, igrp)
+
                 Next
             Next
 
         End Sub
-
 
 #End Region
 
@@ -858,12 +877,18 @@ Public Property PluginManager() As cPluginManager
 
                     If m_Data.PredictSimEffort Then
 
+                        If ipct = 1 And m_Data.doClosedLoop Then
+                            'set Bestimate() used in UpDateQuotas() only do this at the start of the year
+                            DoAssessment(BB)
+                            UpdateQuotas()
+                        End If
+
                         'Can only predict effort if Not in search mode
                         Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
 
                         PredictCurrentEffort(itime)
                         FindCurrentProfit(BB, itime)
-                        SetFtimeFromGear(BB, itime, m_Data.FishTime)
+                        SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
                         PredictCapacityChange()
                         ''Debug.Print "cap", CapTime(1), CapTime(2), CapTime(3)
                     End If
@@ -3657,6 +3682,81 @@ Public Property PluginManager() As cPluginManager
 
         End Sub
 
+        ''' <summary>
+        ''' Populates Bestimate() for regulated fisheries
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub DoAssessment(ByVal Biomass() As Single)
+
+            Dim Bobs() As Single
+            ReDim Bobs(nGroups)
+            For i As Integer = 1 To nGroups
+                m_Data.BestimateLast(i) = m_Data.Bestimate(i)
+                Bobs(i) = Biomass(i) * Math.Exp(m_Data.CVest(i) * RandomNormal())
+                m_Data.Bestimate(i) = m_Data.KalWt(i) * Bobs(i) + (1 - m_Data.KalWt(i)) * m_Data.BestimateLast(i)
+            Next i
+
+        End Sub
+
+        ''' <summary>
+        ''' Update fishing quotas for regulated fisheries
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub UpdateQuotas()
+            Dim iflt As Integer, igrp As Integer
+            Dim tQuota() As Single
+            Dim fTarget() As Single
+
+            ReDim tQuota(nGroups)
+            ReDim fTarget(nGroups)
+
+            For igrp = 1 To nGroups
+                'note here that Bbase has to be set larger than Blim
+                fTarget(igrp) = m_Data.Fopt(igrp) * (BB(igrp) - m_Data.Blim(igrp)) / (m_Data.Bbase(igrp) - m_Data.Blim(igrp))
+                If fTarget(igrp) < 0 Then fTarget(igrp) = 0
+                If fTarget(igrp) > m_Data.Fopt(igrp) Then fTarget(igrp) = m_Data.Fopt(igrp)
+                tQuota(igrp) = fTarget(igrp) * m_Data.Bestimate(igrp)
+            Next
+
+            For iflt = 1 To m_Data.nGear
+                For igrp = 1 To nGroups
+                    m_Data.QuotaTime(iflt, igrp) = tQuota(igrp) * m_Data.Quotashare(iflt, igrp)
+                Next
+            Next
+
+        End Sub
+
+
+        Private Sub InitAssessment()
+            Dim totalQuota() As Single
+            Dim iFlt As Integer, iGrp As Integer
+            Dim ngear As Integer = m_Data.nGear
+
+            For iGrp = 1 To nGroups
+                m_Data.Bestimate(iGrp) = m_Data.StartBiomass(iGrp) * Math.Exp(m_Data.CVest(iGrp) * RandomNormal())
+                m_Data.BestimateLast(iGrp) = m_Data.Bestimate(iGrp)
+            Next iGrp
+
+            ReDim totalQuota(ngear)
+            For iFlt = 1 To ngear
+                For iGrp = 1 To nGroups
+                    If Me.m_EPData.fCatch(iGrp) > 0 Then
+                        totalQuota(iFlt) = totalQuota(iFlt) + m_Data.Quota(iFlt, iGrp)
+                    End If
+                Next
+            Next
+
+            For iFlt = 1 To ngear
+                For iGrp = 1 To nGroups
+                    If Me.m_EPData.fCatch(iGrp) > 0 Then
+                        m_Data.QuotaTime(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp)
+                        m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iFlt) + 0.0000000001)
+                    End If
+                Next
+            Next
+
+        End Sub
+
 
 
         Private Sub DefaultDF()
@@ -3825,12 +3925,12 @@ Public Property PluginManager() As cPluginManager
             Dim t As Integer
 
             For t = 1 To m_Data.NTimes
-                SetFtimeFromGear(m_Data.StartBiomass, t, m_Data.FishTime)
+                SetFtimeFromGear(m_Data.StartBiomass, t, m_Data.FishTime, False)
             Next
 
         End Sub
 
-        Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single)
+        Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single, Elim As Single, Emax As Single
             Dim ci As Single
             ReDim Qmult(m_Data.nGroups)
@@ -3839,42 +3939,68 @@ Public Property PluginManager() As cPluginManager
                 Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
             Next
 
-            If m_Data.PredictSimEffort Then
+
+            'ToDo_jb change  If Me.m_EPData.Landing(ig, i) > 0 Then to FCatch()
+
+            If PredEffort Then
+
                 'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
                 For ig = 1 To m_Data.nGear
                     If m_Data.FishRateGear(ig, t) > m_Data.MaxEffort(ig) Then m_Data.FishRateGear(ig, t) = m_Data.MaxEffort(ig)
                     Select Case m_Data.QuotaType(ig)
-                        Case eQuotaTypes.NotUsed 'do nothing
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
                             For i = 1 To m_Data.nGroups
-                                Elim = m_Data.Quota(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, t) * BB(i))
-                                If m_Data.FishRateGear(ig, t) > Elim Then m_Data.FishRateGear(ig, t) = Elim
-                            Next
+                                If Me.m_EPData.fCatch(i) > 0 Then
+                                    Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
+                                    If m_Data.FishRateGear(ig, t) > Elim Then
+                                        m_Data.FishRateGear(ig, t) = Elim
+                                        'ToDo set PropLandedTime()
+                                    End If
+                                End If
+                            Next i
 
-                        Case eQuotaTypes.Strongest 'limit effort to strongest stock but discard overages on weaker stocks
+                        Case eQuotaTypes.Strongest, eQuotaTypes.Selective 'limit effort to strongest stock but discard overages on weaker stocks
+
                             Emax = 0
                             For i = 1 To m_Data.nGroups
-                                Elim = m_Data.Quota(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, t) * BB(i))
-                                If Elim > Emax Then Emax = Elim
-                            Next
+                                If Me.m_EPData.fCatch(i) > 0 Then
+                                    Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
+                                    If Elim > Emax Then Emax = Elim
+                                End If
+                            Next i
+
+                            If t = 214 Then
+                                Stop
+                            End If
+
                             If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
                             For i = 1 To m_Data.nGroups
-                                ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, t) * BB(i)
-                                If ci > m_Data.Quota(ig, i) Then m_Data.RegDiscard(ig, i) = ci - m_Data.Quota(ig, i) Else m_Data.RegDiscard(ig, i) = 0
-                            Next
+                                If Me.m_EPData.fCatch(i) > 0 Then
+                                    ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, i) * BB(i)
+                                    If ci > m_Data.QuotaTime(ig, i) Then
+                                        m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
+                                        If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                            m_Data.Propdiscardtime(ig, i) = (1 - m_Data.PropLandedTime(ig, i)) * m_Data.propDiscardMort(ig, i)
+                                        Else ' If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
+                                            m_Data.Propdiscardtime(ig, i) = 0
+                                        End If ' If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
 
-                        Case eQuotaTypes.Selective 'assume selective fishing on all groups to achieve quotas
-                            Debug.Assert(False, "Not implemented yet")
+                                    Else 'If ci > m_Data.QuotaTime(ig, i) Then
+                                        m_Data.PropLandedTime(ig, i) = m_EPData.PropLanded(ig, i)
+                                        m_Data.Propdiscardtime(ig, i) = m_EPData.PropDiscard(ig, i)
+                                    End If 'If ci > m_Data.QuotaTime(ig, i) Then
+                                End If
+                            Next i
                     End Select
                 Next ig
             End If
 
             For i = 1 To m_Data.nGroups
-                If m_Data.FisForced(i) = False Or m_Data.PredictSimEffort Then
+                If m_Data.FisForced(i) = False Or PredEffort Then
                     Ft = 0
                     For ig = 1 To m_Data.nGear
-                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t)
+                        Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (m_Data.PropLandedTime(ig, i) + m_Data.Propdiscardtime(ig, i))
                     Next
                     m_Data.FishRateNo(i, t) = Qmult(i) * Ft
                     m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
@@ -4072,7 +4198,9 @@ Public Property PluginManager() As cPluginManager
                 TotIncome = 0
                 For i = 1 To m_Data.nGroups
                     Fg = Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20)
-                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
+                    'jb use time varing proportion of landings
+                    ' TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
+                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_Data.PropLandedTime(ig, i)
                 Next
                 TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, 2) + m_EPData.cost(ig, 3))
                 CurrentProfit(ig) = TotIncome - TotCost
