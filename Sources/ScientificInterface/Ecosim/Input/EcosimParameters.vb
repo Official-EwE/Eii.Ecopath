@@ -1,107 +1,11 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.2  2008/10/08 19:27:21  jeroens
+' Added checkbox for sim RegulatoryFeedback flag
+'
 ' Revision 1.1  2008/09/26 07:31:34  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.29  2008/08/14 19:06:10  jeroens
-' Year and propertion boxes NumericUpDowns
-'
-' Revision 1.28  2008/08/10 01:43:07  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.27  2008/08/02 03:04:15  jeroens
-' Renamed resources
-'
-' Revision 1.26  2008/07/21 18:26:44  jeroens
-' Added Relaxation parameter
-'
-' Revision 1.25  2008/07/02 17:39:09  jeroens
-' Fixed tracer checkbox handling
-'
-' Revision 1.24  2008/06/02 00:01:33  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.23  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.22  2008/05/13 16:23:27  jeroens
-' Tracer enabled via generic command
-'
-' Revision 1.21  2008/05/08 17:51:33  jeroens
-' Fixed bug 467
-'
-' Revision 1.20  2008/04/07 02:31:14  jeroens
-' Cleaning up resources
-'
-' Revision 1.19  2008/03/03 16:06:40  joeb
-' Made ConSim flag specific to Ecosim and Ecospace
-'
-' Revision 1.18  2008/01/08 19:07:28  jeroens
-' Contracing flags now on all parameter pages
-'
-' Revision 1.17  2007/12/21 16:06:07  jeroens
-' * PropertyFormatProvider offers refresh trigger
-'
-' Revision 1.16  2007/12/05 03:48:11  jeroens
-' - Cleaned-up
-'
-' Revision 1.15  2007/12/04 02:21:47  jeroens
-' * Added salinity FF
-'
-' Revision 1.14  2007/10/30 18:44:18  jeroens
-' + Added Author, contact
-'
-' Revision 1.13  2007/10/19 15:29:24  jeroens
-' * Fixed bug 319
-'
-' Revision 1.12  2007/10/15 15:25:51  jeroens
-' * Filters incoming messages for appropriate source and type
-'
-' Revision 1.11  2007/10/12 16:06:15  jeroens
-' + Original message passed to OnCoreDataChanged
-'
-' Revision 1.10  2007/10/12 15:21:53  joeb
-' Changed N time to a property
-'
-' Revision 1.9  2007/10/10 19:31:53  jeroens
-' * Restyled
-' * FF number replaced by drop down combo
-' * Form responds to proper code DataAddedOrRemoved triggers
-'
-' Revision 1.8  2007/09/28 19:33:21  joeb
-' Number of years the model can run for
-'
-' Revision 1.7  2007/09/20 16:06:15  joeb
-' Moved Summary time period data to Ecosim results
-'
-' Revision 1.6  2007/09/19 22:14:49  joeb
-' Added Ecosim Summary time periods
-'
-' Revision 1.5  2007/09/17 21:08:06  joeb
-' Added Predict Effort
-'
-' Revision 1.4  2007/09/12 16:05:30  jeroens
-' + Added scenario name, description
-'
-' Revision 1.3  2007/07/30 17:40:37  jeroens
-' - Removed apply TS button
-' * Fixed layout, keyboard shortcuts
-'
-' Revision 1.2  2007/06/11 04:21:20  jeroens
-' * Uses renamed dlgApplyTimeSeries
-'
-' Revision 1.1  2007/06/06 01:42:43  jeroens
-' * Renamed Ecosim "Run info" to "Ecosim parameters"
-'
-' Revision 1.10  2007/05/16 19:52:54  joeb
-' Added Contaminant tracing On/Off check box
-'
-' Revision 1.9  2007/04/24 23:15:43  fgao
-' Add temporary Read Time Series button..
-'
-' Revision 1.8  2007/04/11 17:08:15  jeroens
-' * Replaced EwETextBox by EwEFormatProvider
 '
 '==============================================================================
 
@@ -130,9 +34,11 @@ Namespace Ecosim
         Private m_fpNutrientForceNumber As cEwEFormatProvider = Nothing
         Private m_fpSalinityForceNumber As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
+        Private m_fpRegulatoryFeedback As cEwEFormatProvider = Nothing
         Private m_fpRelaxation As cEwEFormatProvider = Nothing
 
         Private m_propConTracing As cBooleanProperty = Nothing
+        Private m_propPredictEffort As cBooleanProperty = Nothing
 
         Public Sub New()
             InitializeComponent()
@@ -164,10 +70,14 @@ Namespace Ecosim
             Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
             Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
+            Me.m_fpRegulatoryFeedback = New cPropertyFormatProvider(Me.chkRegulatoryFeedbackLoop, ecosimModelParams, eVarNameFlags.RegFeedback)
             Me.m_fpRelaxation = New cPropertyFormatProvider(Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
 
             Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
+
+            Me.m_propPredictEffort = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+            AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
             Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager, eMessageSource.EcoSim}
@@ -186,6 +96,9 @@ Namespace Ecosim
             RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
             Me.m_propConTracing = Nothing
 
+            RemoveHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
+            Me.m_propPredictEffort = Nothing
+
             Me.m_fpScenarioName = Nothing
             Me.m_fpScenarioDescription = Nothing
             Me.m_fpAuthor = Nothing
@@ -200,7 +113,7 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click
+        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, chkRegulatoryFeedbackLoop.Click
 
             If m_bInUpdate = True Then Return
 
@@ -228,6 +141,11 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnConTracingChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnPredictEffortChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+            Me.m_fpRegulatoryFeedback.Value = Me.m_fpPredictEffort.Value
             Me.UpdateControls()
         End Sub
 
@@ -271,7 +189,13 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateControls()
+
+            If (Me.m_propConTracing Is Nothing) Then Return
             Me.chkConTracing.Checked = CBool(Me.m_propConTracing.GetValue())
+
+            If (Me.m_fpPredictEffort Is Nothing) Or (Me.m_fpRegulatoryFeedback Is Nothing) Then Return
+            Me.m_fpRegulatoryFeedback.Enabled = CBool(Me.m_fpPredictEffort.Value)
+
         End Sub
 
 #End Region ' Internals

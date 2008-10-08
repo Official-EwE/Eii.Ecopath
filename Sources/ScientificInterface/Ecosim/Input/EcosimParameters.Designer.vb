@@ -25,6 +25,8 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimParameters))
             Me.gpbBasicParams = New System.Windows.Forms.GroupBox
+            Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
             Me.m_nudRelaxation = New System.Windows.Forms.NumericUpDown
             Me.cmbSalinityForcing = New System.Windows.Forms.ComboBox
             Me.cmbNutForcing = New System.Windows.Forms.ComboBox
@@ -46,13 +48,12 @@ Namespace Ecosim
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.lblDescription = New System.Windows.Forms.Label
             Me.lbScenarioName = New System.Windows.Forms.Label
-            Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
-            Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
+            Me.chkRegulatoryFeedbackLoop = New System.Windows.Forms.CheckBox
             Me.gpbBasicParams.SuspendLayout()
+            CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.gbDetails.SuspendLayout()
-            CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'gpbBasicParams
@@ -64,6 +65,7 @@ Namespace Ecosim
             Me.gpbBasicParams.Controls.Add(Me.cmbSalinityForcing)
             Me.gpbBasicParams.Controls.Add(Me.cmbNutForcing)
             Me.gpbBasicParams.Controls.Add(Me.chkPredictEffort)
+            Me.gpbBasicParams.Controls.Add(Me.chkRegulatoryFeedbackLoop)
             Me.gpbBasicParams.Controls.Add(Me.chkConTracing)
             Me.gpbBasicParams.Controls.Add(Me.m_lblRelaxation)
             Me.gpbBasicParams.Controls.Add(Me.Label2)
@@ -72,6 +74,16 @@ Namespace Ecosim
             Me.gpbBasicParams.Controls.Add(Me.Label1)
             Me.gpbBasicParams.Name = "gpbBasicParams"
             Me.gpbBasicParams.TabStop = False
+            '
+            'm_nudNutBaseFreeProp
+            '
+            resources.ApplyResources(Me.m_nudNutBaseFreeProp, "m_nudNutBaseFreeProp")
+            Me.m_nudNutBaseFreeProp.Name = "m_nudNutBaseFreeProp"
+            '
+            'm_nudNumberYears
+            '
+            resources.ApplyResources(Me.m_nudNumberYears, "m_nudNumberYears")
+            Me.m_nudNumberYears.Name = "m_nudNumberYears"
             '
             'm_nudRelaxation
             '
@@ -197,15 +209,11 @@ Namespace Ecosim
             resources.ApplyResources(Me.lbScenarioName, "lbScenarioName")
             Me.lbScenarioName.Name = "lbScenarioName"
             '
-            'm_nudNumberYears
+            'chkRegulatoryFeedbackLoop
             '
-            resources.ApplyResources(Me.m_nudNumberYears, "m_nudNumberYears")
-            Me.m_nudNumberYears.Name = "m_nudNumberYears"
-            '
-            'm_nudNutBaseFreeProp
-            '
-            resources.ApplyResources(Me.m_nudNutBaseFreeProp, "m_nudNutBaseFreeProp")
-            Me.m_nudNutBaseFreeProp.Name = "m_nudNutBaseFreeProp"
+            resources.ApplyResources(Me.chkRegulatoryFeedbackLoop, "chkRegulatoryFeedbackLoop")
+            Me.chkRegulatoryFeedbackLoop.Name = "chkRegulatoryFeedbackLoop"
+            Me.chkRegulatoryFeedbackLoop.UseVisualStyleBackColor = True
             '
             'EcosimParameters
             '
@@ -218,11 +226,11 @@ Namespace Ecosim
             Me.Name = "EcosimParameters"
             Me.gpbBasicParams.ResumeLayout(False)
             Me.gpbBasicParams.PerformLayout()
+            CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).EndInit()
             Me.gbDetails.ResumeLayout(False)
             Me.gbDetails.PerformLayout()
-            CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -250,6 +258,7 @@ Namespace Ecosim
         Friend WithEvents m_lblRelaxation As System.Windows.Forms.Label
         Friend WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
+        Private WithEvents chkRegulatoryFeedbackLoop As System.Windows.Forms.CheckBox
 
     End Class
 End Namespace

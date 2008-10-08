@@ -255,17 +255,47 @@
   <data name="&gt;&gt;chkPredictEffort.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="chkRegulatoryFeedbackLoop.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkRegulatoryFeedbackLoop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkRegulatoryFeedbackLoop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>47, 174</value>
+  </data>
+  <data name="chkRegulatoryFeedbackLoop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 17</value>
+  </data>
+  <data name="chkRegulatoryFeedbackLoop.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="chkRegulatoryFeedbackLoop.Text" xml:space="preserve">
+    <value>&amp;Regulatory feedback loop</value>
+  </data>
+  <data name="&gt;&gt;chkRegulatoryFeedbackLoop.Name" xml:space="preserve">
+    <value>chkRegulatoryFeedbackLoop</value>
+  </data>
+  <data name="&gt;&gt;chkRegulatoryFeedbackLoop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkRegulatoryFeedbackLoop.Parent" xml:space="preserve">
+    <value>gpbBasicParams</value>
+  </data>
+  <data name="&gt;&gt;chkRegulatoryFeedbackLoop.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="chkConTracing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="chkConTracing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 174</value>
+    <value>26, 197</value>
   </data>
   <data name="chkConTracing.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 17</value>
   </data>
   <data name="chkConTracing.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="chkConTracing.Text" xml:space="preserve">
     <value>&amp;Contaminant tracing</value>
@@ -280,7 +310,7 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;chkConTracing.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_lblRelaxation.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -310,7 +340,7 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;m_lblRelaxation.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +370,7 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +397,7 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -394,7 +424,7 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -421,13 +451,13 @@
     <value>gpbBasicParams</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="gpbBasicParams.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 329</value>
   </data>
   <data name="gpbBasicParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>773, 203</value>
+    <value>773, 233</value>
   </data>
   <data name="gpbBasicParams.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -781,12 +811,12 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>797, 552</value>
+    <value>797, 618</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>EcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.3.22, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.1, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
