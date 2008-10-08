@@ -995,6 +995,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmModelDescription.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.resx">
+      <DependentUpon>frmTFMpolicy.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.resx">
       <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1050,6 +1054,15 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Definitions\UIEnums.vb" />
+    <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.Designer.vb">
+      <DependentUpon>frmTFMpolicy.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridFishingQuotas.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1057,6 +1070,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridQuotaOptions.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
