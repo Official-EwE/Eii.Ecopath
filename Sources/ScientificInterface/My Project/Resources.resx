@@ -2188,4 +2188,23 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_WEAKESTSTOCK" xml:space="preserve">
     <value>Weakest stock</value>
   </data>
+  <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
+    <value>Biomass base</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
+    <value>Biomass limit</value>
+  </data>
+  <data name="HEADER_CVBEST" xml:space="preserve">
+    <value>Biomass CV</value>
+  </data>
+  <data name="HEADER_FOPT" xml:space="preserve">
+    <value>F optimum</value>
+  </data>
+  <data name="HEADER_KALWT" xml:space="preserve">
+    <value>Kalman weight</value>
+  </data>
+  <data name="HEADER_TFM" xml:space="preserve">
+    <value>Target fishing mortality</value>
+    <comment>Target fishing mortality</comment>
+  </data>
 </root>
