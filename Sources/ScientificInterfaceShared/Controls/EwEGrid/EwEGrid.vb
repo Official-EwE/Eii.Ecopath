@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.3  2008/10/08 22:13:17  jeroens
+' Simplified selection interface
+'
 ' Revision 1.2  2008/10/03 21:54:22  jeroens
 ' Try/Caught selection event
 '
@@ -352,8 +355,8 @@ Namespace Controls.EwEGrid
 
         Public Event OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
 
-        Protected Sub RaiseSelectionChangeEvent(ByVal selection As SourceGrid2.CellVirtualCollection)
-            RaiseEvent OnSelectionChanged(selection)
+        Protected Sub RaiseSelectionChangeEvent()
+            RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
         End Sub
 
 #End Region ' EwE events
@@ -749,7 +752,7 @@ Namespace Controls.EwEGrid
             End If
 
             Try
-                RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+                Me.RaiseSelectionChangeEvent()
             Catch ex As Exception
                 ' Woops
             End Try
