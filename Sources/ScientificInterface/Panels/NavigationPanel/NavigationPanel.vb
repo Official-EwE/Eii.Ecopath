@@ -1,104 +1,15 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.3  2008/10/08 17:56:16  jeroens
+' Added target fishing mortality policy nodes
+' Discard Mortality about to be moved to Ecopath
+'
 ' Revision 1.2  2008/10/02 18:49:10  jeroens
 ' Added Fiseries regulation nodes
 '
 ' Revision 1.1  2008/09/26 07:32:11  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.102  2008/08/11 22:15:18  jeroens
-' Die! Die! Die! *froth*
-'
-' Revision 1.101  2008/08/02 03:04:20  jeroens
-' Renamed resources
-'
-' Revision 1.100  2008/07/11 01:00:39  jeroens
-' Fixed issue 509
-'
-' Revision 1.99  2008/06/25 00:26:23  sherman
-' Moved Ecospace Results into Node... still has refresh issues
-'
-' Revision 1.98  2008/06/04 15:33:40  jeroens
-' Renamed Ecoseed to MPAOptimizations
-'
-' Revision 1.97  2008/06/02 00:01:43  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.96  2008/05/23 15:55:47  jeroens
-' Added ApplyMed PP form
-'
-' Revision 1.95  2008/05/07 00:52:50  jeroens
-' Renamed market price grid
-'
-' Revision 1.94  2008/03/24 02:24:20  jeroens
-' Renamed Ecoseed to frmEcoseed
-'
-' Revision 1.93  2008/01/27 16:59:17  jeroens
-' Updated help links
-'
-' Revision 1.92  2008/01/25 03:01:00  jeroens
-' Fixed sim output form core states
-'
-' Revision 1.91  2008/01/23 18:17:10  sherman
-' Added Ecoseed Node
-'
-' Revision 1.90  2008/01/22 16:28:30  jeroens
-' Subclassed applyFF forms
-'
-' Revision 1.89  2008/01/08 11:26:11  jeroens
-' Merged tracer input parms and group grid in one screen
-'
-' Revision 1.88  2007/12/21 15:31:50  jeroens
-' * Fixed tracer grid nav link
-'
-' Revision 1.87  2007/12/18 21:29:21  sherman
-' Added Ecotracer Output
-'
-' Revision 1.86  2007/12/10 02:30:15  sherman
-' Re-organized Ecosim Plots and Ecosim Results.  Moved monte carlo run to tools.
-'
-' Revision 1.85  2007/12/05 03:45:32  jeroens
-' * Disabled ecotracer outputs until outputs are available
-'
-' Revision 1.84  2007/11/28 23:52:07  sherman
-' Fixed Tracer Navigation bugs
-'
-' Revision 1.83  2007/11/28 23:27:04  sherman
-' Added EcoTracer Treenode
-'
-' Revision 1.82  2007/11/06 03:14:47  jeroens
-' + Added Sim > tools > tracer
-'
-' Revision 1.81  2007/10/30 22:52:06  jeroens
-' + Added Ecopath model description
-'
-' Revision 1.80  2007/10/30 02:43:45  jeroens
-' + Added fishing effort shape pages
-'
-' Revision 1.79  2007/10/29 14:14:51  jeroens
-' Reworked shape controls
-'
-' Revision 1.78  2007/10/13 23:27:24  jeroens
-' * Partially solved bug 159
-'
-' Revision 1.77  2007/10/10 04:24:03  jeroens
-' * Node 'Biomass' renamed to 'Run Ecosim'
-'
-' Revision 1.76  2007/09/11 18:56:37  jeroens
-' - Removed basemap controller
-'
-' Revision 1.75  2007/09/05 21:29:51  fgao
-' Update ApplyFF nav node
-'
-' Revision 1.74  2007/08/14 19:37:51  joeh
-' Add FitToTimeSeries form
-'
-' Revision 1.73  2007/08/09 02:16:14  jeroens
-' * Fixed potential crash in SelectedNodeName
-'
-' Revision 1.72  2007/08/02 02:56:33  jeroens
-' + Linked to available help pages
 '
 '==============================================================================
 
@@ -169,6 +80,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndLandings", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputLandingsEwEGrid), "Landings.htm")
         m_nodeController.Add("ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardsEwEGrid), "Discards.htm")
         m_nodeController.Add("ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardFateEwEGrid), "Discard fate.htm")
+        m_nodeController.Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardMortGrid), "") ' ToDo: connect to help
         m_nodeController.Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputOffVesselPriceEwEGrid), "Market price.htm")
         m_nodeController.Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputNonMarketPriceEwEGrid), "Non market price.htm")
 
@@ -201,11 +113,12 @@ Public Class NavigationPanel
         m_nodeController.Add("ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyFFPrimaryProducer), "Apply forcing function primary.htm")
         m_nodeController.Add("ndEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEggProduction), "Egg production.htm")
         m_nodeController.Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
-        m_nodeController.Add("ndFishingRate", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate))
-        m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality))
-        m_nodeController.Add("ndQuotaOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaOptions))
-        m_nodeController.Add("ndQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas))
-        m_nodeController.Add("ndDiscardMortality", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridDiscardsMortality))
+        m_nodeController.Add("ndFishingRate", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate)) ' ToDo: connect to help
+        m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
+        m_nodeController.Add("ndQuotaOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaOptions)) ' ToDo: connect to help
+        m_nodeController.Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas)) ' ToDo: connect to help
+        m_nodeController.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
+        m_nodeController.Add("ndDiscardMortality", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridDiscardsMortality)) ' ToDo: connect to help
         m_nodeController.Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(FisheryInputFleetSizeDynamicsEwEGrid), "Fleet size dynamics.htm")
 
         ' Ecosim Output
@@ -216,25 +129,25 @@ Public Class NavigationPanel
         m_nodeController.Add("ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFunctionalResponse), "")
 
         ' Ecosim Tools
-        m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm")
+        m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
         m_nodeController.Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.FishingPolicySearch), "Fishing policy search.htm")
         m_nodeController.Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.FitToTimeSeries), "Fit to time series.htm")
 
         ' Ecospace
         m_nodeController.Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.DispersalEwEGrid), "Dispersal.htm")
         m_nodeController.Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
-        m_nodeController.Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap), "Basemap.htm")
+        m_nodeController.Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap), "Basemap.htm") ' ToDo: connect to help
         m_nodeController.Add("ndAssignHabitats", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.AssignHabitsEwEGrid), "Assign habitats.htm")
         m_nodeController.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.FisheryEwEGrid), "Ecospace Fishery.htm")
-        m_nodeController.Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceScenarioDlg))
-        m_nodeController.Add("ndEcospaceResults", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceResults), "")
+        m_nodeController.Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceScenarioDlg)) ' ToDo: connect to help
+        m_nodeController.Add("ndEcospaceResults", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceResults), "") ' ToDo: connect to help
         m_nodeController.Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
         m_nodeController.Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")
 
         ' ToDo_JS: Link to yet-to-be-written help text
-        m_nodeController.Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "")
-        m_nodeController.Add("ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), "")
-        m_nodeController.Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "")
+        m_nodeController.Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help
+        m_nodeController.Add("ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), "") ' ToDo: connect to help
+        m_nodeController.Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
 
     End Sub
 
