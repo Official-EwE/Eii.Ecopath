@@ -1,82 +1,11 @@
 '==============================================================================
 '
 ' $Log: EwEGridVisualizers.vb,v $
+' Revision 1.2  2008/10/08 23:57:25  jeroens
+' Fixed borderstyle on column header cells
+'
 ' Revision 1.1  2008/09/26 07:31:15  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/18 19:29:25  jeroens
-' Removed obsolete CLSCompliancy warnings
-'
-' Revision 1.2  2008/06/02 05:36:53  jeroens
-' Renamed HIGHLIGHT style
-'
-' Revision 1.1  2008/06/01 23:45:08  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.15  2008/05/07 01:39:04  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.14  2007/10/14 22:01:08  jeroens
-' * Updated to styleguide changes
-'
-' Revision 1.13  2007/06/21 22:23:37  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.12  2007/06/13 22:04:54  fgao
-' Fixed Bug 67: Relating to Grid cell alignment.
-'
-' Revision 1.11  2007/06/05 15:11:53  jeroens
-' + Highlight color obtained from StyleGuide
-'
-' Revision 1.10  2007/05/31 13:11:22  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.9  2007/03/13 00:12:15  jeroens
-' Extracted RemarksIndicator
-'
-' Revision 1.8  2006/11/05 15:47:45  jeroens
-' * Fixed eeeow into ughh
-'
-' Revision 1.7  2006/10/25 23:37:32  fgao
-' Add group index align right visualizer
-'
-' Revision 1.6  2006/10/18 15:51:52  jeroens
-' + Added text indentation support
-'
-' Revision 1.5  2006/08/21 02:15:32  jeroens
-' + Fixed erroneous comments
-'
-' Revision 1.4  2006/07/24 14:57:07  jeroens
-' * Fixed base class bug in drawing routines
-'
-' Revision 1.3  2006/07/24 03:38:42  jeroens
-' + Simplified and cleaned-up
-'
-' Revision 1.2  2006/06/16 04:06:50  cvsuser
-' * JS: Fixed spelling error in High(t)lightBorderColor
-'
-' Revision 1.1  2006/04/12 16:49:18  cvsuser
-' Geez
-'
-' Revision 1.6  2006/04/10 15:41:17  cvsuser
-' + Officialized ;)
-'
-' Revision 1.5  2006/04/05 13:57:45  cvsuser
-' + Added remarks feedback
-'
-' Revision 1.4  2006/03/27 04:08:30  cvsuser
-' + Added EwEStaticVisualizer to allow for non-property driven EwE colour feedback
-' + Added EwERowHeaderVisualizer
-'
-' Revision 1.3  2006/03/24 05:41:36  cvsuser
-' * Neatified
-'
-' Revision 1.2  2006/03/23 01:37:44  cvsuser
-' * Uses one shared instance of a visualizer
-' - Visualizer no longer needs to be updated cosntantly. Instead, it asesses colours when it needs to render
-'
-' Revision 1.1  2006/03/21 03:22:46  cvsuser
-' + Initial version
 '
 '==============================================================================
 
@@ -362,10 +291,32 @@ Namespace Controls.EwEGrid
         : Inherits SourceGrid2.VisualModels.Header
 
         Public Sub New()
-            MyBase.new(False)
+            MyBase.New(False)
             Me.TextAlignment = ContentAlignment.MiddleCenter
             Me.WordWrap = True
             Me.AlignTextToImage = True
+        End Sub
+
+        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
+
+            Dim border As RectangleBorder = Me.Border
+            Dim rc As Rectangle = p_ClientRectangle
+            Dim l_BackColor As Color = Me.BackColor
+
+            If (p_Status = DrawCellStatus.Focus) Then
+                l_BackColor = FocusBackColor
+            ElseIf (p_Status = DrawCellStatus.Selected) Then
+                l_BackColor = SelectionBackColor
+                l_BackColor = BackColor
+            End If
+
+            ' Draw the border
+            ControlPaint.DrawBorder(e.Graphics, rc, _
+                SystemColors.ButtonHighlight, 1, ButtonBorderStyle.Solid, _
+                Color.Transparent, 0, ButtonBorderStyle.Solid, _
+                SystemColors.ButtonShadow, 1, ButtonBorderStyle.Solid, _
+                SystemColors.ButtonShadow, 1, ButtonBorderStyle.Solid)
+
         End Sub
 
     End Class
