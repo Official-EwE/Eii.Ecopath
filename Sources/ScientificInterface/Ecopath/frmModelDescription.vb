@@ -1,44 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmModelDescription.vb,v $
+' Revision 1.2  2008/10/08 19:31:17  jeroens
+' Cleared history
+'
 ' Revision 1.1  2008/09/26 07:31:30  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2008/09/17 01:41:31  jeroens
-' no message
-'
-' Revision 1.11  2008/09/17 01:25:27  jeroens
-' Fixed currency unit enum values in accordance to EwE5
-'
-' Revision 1.10  2008/08/10 01:43:08  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.9  2008/07/18 19:32:41  jeroens
-' Added monetary units
-'
-' Revision 1.8  2008/07/10 18:30:24  jeroens
-' Fixed units to properly behave
-'
-' Revision 1.7  2008/06/02 00:01:39  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.6  2008/05/29 22:23:00  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.5  2008/05/27 17:41:58  jeroens
-' Time and currency unit no longer obtained from settings
-'
-' Revision 1.4  2008/05/26 21:07:16  jeroens
-' Added model time unit, currency unit
-'
-' Revision 1.3  2008/03/11 00:29:08  jeroens
-' Added area
-'
-' Revision 1.2  2007/12/13 18:32:25  jeroens
-' + Added file name
-'
-' Revision 1.1  2007/10/30 19:23:25  jeroens
-' Initial version
 '
 '==============================================================================
 
