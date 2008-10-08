@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFleetInput.vb,v $
+' Revision 1.2  2008/10/08 17:55:06  jeroens
+' DiscardMortality about to be removed from Ecosim
+'
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -178,6 +181,11 @@ Public Class cFleetInput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardFate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        'DiscardMortality
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.DiscardMortality))
+        m_values.Add(val.varName, val)
+
     End Sub
 
 #End Region
@@ -186,7 +194,7 @@ Public Class cFleetInput
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
-        Return Me.m_core.Set_MarketPrice_Flags(Me, False)
+        Return Me.m_core.Set_MarketPrice_Flags(Me, False) And Me.m_core.Set_DiscardMort_Flags(Me, False)
     End Function
 
 #End Region ' Overrides
@@ -358,8 +366,6 @@ Public Class cFleetInput
 
 #Region "Indexed Variables"
 
-
-
     Public Property OffVesselPrice(ByVal iGroup As Integer) As Single
 
         Get
@@ -416,6 +422,16 @@ Public Class cFleetInput
             setVariable(eVarNameFlags.DiscardFate, value, iGroup)
         End Set
 
+    End Property
+
+    Public Property DiscardMortality(ByVal iGroup As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.DiscardMortality, iGroup))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.DiscardMortality, value, iGroup)
+        End Set
     End Property
 
 #End Region
@@ -559,6 +575,16 @@ Public Class cFleetInput
             SetStatus(eVarNameFlags.SailCost, value)
         End Set
 
+    End Property
+
+    Public Property DiscardMortalityStatus(ByVal iGroup As Integer) As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.DiscardMortality, iGroup)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.DiscardMortality, value, iGroup)
+        End Set
     End Property
 
 #End Region
