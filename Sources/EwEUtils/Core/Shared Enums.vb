@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.4  2008/10/08 17:41:07  jeroens
+' Added target fishing mortality policy vars
+'
 ' Revision 1.3  2008/10/03 21:52:44  jeroens
 ' Added Fisheries regulations varnames
 '
@@ -355,6 +358,19 @@ Namespace Core
         Quota
         ''' <summary>Proportion of discards that dies</summary>
         DiscardMortality
+
+        ''' <summary>Flag stating whether to use regulatory feedback.</summary>
+        RegFeedback
+
+        ' Target fishing mortality policy vars
+        ''' <summary>Quota for a species.</summary>
+        QuotaSpecies
+        ''' <summary>BBase for target fishing mortality policy.</summary>
+        BBase
+        ''' <summary>BLimit for target fishing mortality policy.</summary>
+        BLim
+        ''' <summary>Mortality/Fmsy for target fishing mortality policy.</summary>
+        Fopt
 
         'jb Salinity values added Dec-07
         SalinityForceFunctionNumber
