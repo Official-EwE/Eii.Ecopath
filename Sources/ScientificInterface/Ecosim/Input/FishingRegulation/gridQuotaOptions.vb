@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridQuotaOptions.vb,v $
+' Revision 1.7  2008/10/08 22:33:56  jeroens
+' Localizing
+'
 ' Revision 1.6  2008/10/07 21:28:48  jeroens
 ' Localized
 '
@@ -77,10 +80,10 @@ Namespace Ecosim
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
             Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXEFFORT, StyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.OptionNotSet) = New EwEColumnHeaderCell(My.Resources.HEADER_NONE)
-            Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(My.Resources.HEADER_WEAKESTSTOCK)
-            Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(My.Resources.HEADER_STRONGESTSTOCK)
-            Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(My.Resources.HEADER_SELECTIVEFISHING)
+            Me(0, eColumnTypes.OptionNotSet) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_EFFORT)
+            Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_WEAKESTSTOCK)
+            Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_STRONGESTSTOCK)
+            Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_SELECTIVEFISHING)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True

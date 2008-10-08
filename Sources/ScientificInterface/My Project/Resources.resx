@@ -2179,14 +2179,14 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_NONE" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="HEADER_SELECTIVEFISHING" xml:space="preserve">
-    <value>Assume selective fishing</value>
+  <data name="HEADER_QUOTA_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selective fishing quota</value>
   </data>
-  <data name="HEADER_STRONGESTSTOCK" xml:space="preserve">
-    <value>Strongest stock + discards</value>
+  <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
+    <value>Strongest stock + discards quota</value>
   </data>
-  <data name="HEADER_WEAKESTSTOCK" xml:space="preserve">
-    <value>Weakest stock</value>
+  <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
+    <value>Weakest stock quota</value>
   </data>
   <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
     <value>Biomass base</value>
@@ -2206,5 +2206,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_TFM" xml:space="preserve">
     <value>Target fishing mortality</value>
     <comment>Target fishing mortality</comment>
+  </data>
+  <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
+    <value>Effort</value>
   </data>
 </root>
