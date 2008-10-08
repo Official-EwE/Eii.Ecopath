@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.13  2008/10/08 00:04:36  villyc
+' something, maybe
+'
 ' Revision 1.12  2008/10/08 00:01:59  joeb
 ' Regulated Fisheries
 '
@@ -607,6 +610,10 @@ Public Property PluginManager() As cPluginManager
                 CalcStartEatenOfBy()
 
                 SetupSimVariables() 'sets vulrate()
+
+#If Villy = 1 Then
+
+#End If
                 InitialState() 'uses vulrate() to set A()
 
                 DefaultMigrationAndToDetritus()

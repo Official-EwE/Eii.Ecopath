@@ -1432,6 +1432,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEcost\EwEcost.vbproj">
+      <Project>{7740FD30-2025-4FB8-9DA9-3664992D6611}</Project>
+      <Name>EwEcost</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
