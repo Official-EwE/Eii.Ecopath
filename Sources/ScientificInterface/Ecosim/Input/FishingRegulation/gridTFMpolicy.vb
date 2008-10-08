@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridTFMpolicy.vb,v $
+' Revision 1.3  2008/10/08 21:18:24  jeroens
+' Globalized
+'
 ' Revision 1.2  2008/10/08 20:47:49  jeroens
 ' Added CVBest, KalWT
 '
@@ -27,7 +30,7 @@ Namespace Ecosim
     ''' </summary>
     ''' ===========================================================================
     <CLSCompliant(False)> _
-    Public Class gridSpeciesQuota
+    Public Class gridTargetFishingMortalityPolicy
         Inherits EwEGrid
 
 #Region " Internal defs "
@@ -54,13 +57,19 @@ Namespace Ecosim
 
 #Region " Public interfaces "
 
-        Public ReadOnly Property SelectedGroup() As cEcoSimGroupInput
+        Public Property Group() As cEcoSimGroupInput
             Get
                 If Me.Selection.SelectedRows.Length = 1 Then
                     Return DirectCast(Me.Selection.SelectedRows(0).Tag, cEcoSimGroupInput)
                 End If
                 Return Nothing
             End Get
+            Set(ByVal value As cEcoSimGroupInput)
+                Me.Selection.Clear()
+                If value IsNot Nothing Then
+                    Me.Selection.Add(New Position(value.Index, 0))
+                End If
+            End Set
         End Property
 
 #End Region ' Public interfaces
@@ -78,11 +87,11 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
-            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit")
-            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F optimum")
-            Me(0, eColumnTypes.CVBest) = New EwEColumnHeaderCell("Biomass CV")
-            Me(0, eColumnTypes.Kalwt) = New EwEColumnHeaderCell("Kalman weight")
+            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_BASE)
+            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_LIMIT)
+            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell(My.Resources.HEADER_FOPT)
+            Me(0, eColumnTypes.CVBest) = New EwEColumnHeaderCell(My.Resources.HEADER_CVBEST)
+            Me(0, eColumnTypes.Kalwt) = New EwEColumnHeaderCell(My.Resources.HEADER_KALWT)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False

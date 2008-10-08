@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: frmTFMpolicy.vb,v $
+' Revision 1.2  2008/10/08 21:18:24  jeroens
+' Globalized
+'
 ' Revision 1.1  2008/10/08 17:57:35  jeroens
 ' Initial version
 '
@@ -37,13 +40,20 @@ Namespace Ecosim
 #Region " Events "
 
         Private Sub HandleLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+            Dim core As cCore = cCore.GetInstance()
+
             Me.m_zgh = New ZedGraphHelper(Me.m_graph, 1)
-            ' ToDo_JS: globalize this
-            Me.m_zgh.ConfigurePane("", "Biomass", "Target fishing mortality", True)
+            Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_TFM, True)
 
             Me.m_zgh.AllowZoom = False
             Me.m_zgh.AllowPan = False
             Me.m_zgh.AllowEdit = True
+
+            ' Hahaha
+            If (core.nGroups > 0) Then
+                Me.m_grid.Group = cCore.GetInstance().EcoSimGroupInputs(1)
+            End If
 
         End Sub
 
@@ -56,7 +66,7 @@ Namespace Ecosim
         Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
                 Handles m_grid.OnSelectionChanged
             ' Update group selection according to user actions in the grid
-            Me.Group = Me.m_grid.SelectedGroup
+            Me.Group = Me.m_grid.Group
         End Sub
 
         Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
@@ -136,9 +146,7 @@ Namespace Ecosim
                 'text.FontSpec.Border.IsVisible = false;
                 'myPane.GraphObjList.Add( text );
 
-                ' ToDo_JS: globalize this
-                lLines.Add(New LineItem(String.Format("Quota curve for {0}", Me.m_group.Name), _
-                                          lpts, Color.DarkBlue, SymbolType.Circle))
+                lLines.Add(New LineItem(Me.m_group.Name, lpts, Color.Azure, SymbolType.Circle))
                 ' Plot graph, but rescale ONLY when not dragging
                 Me.m_zgh.PlotLines(lLines, 1, (Me.m_dragtype = eDragType.None))
             Else
@@ -169,20 +177,20 @@ Namespace Ecosim
             Dim curve As CurveItem = Nothing
             Dim iIndex As Integer = 0
 
-            ' Point-dragging is activated by an 'Alt' key and mousedown combination
-            'If (Control.ModifierKeys = Keys.Alt) Then
+            ' Point-dragging is activated by an 'Shift' key and mousedown combination
+            If (Control.ModifierKeys = Keys.Shift) Then
 
-            ' Find the point that was clicked, and make sure the point list is editable
-            If (pane.FindNearestPoint(pt, curve, iIndex) And (TypeOf curve.Points Is PointPairList)) Then
-                ' Set drag operation type
-                Me.m_dragtype = DirectCast(iIndex, eDragType)
-                ' Dragging?
-                If (Me.m_dragtype <> eDragType.None) Then
-                    ' Save the starting point information
-                    m_ptDrag = pt
+                ' Find the point that was clicked, and make sure the point list is editable
+                If (pane.FindNearestPoint(pt, curve, iIndex) And (TypeOf curve.Points Is PointPairList)) Then
+                    ' Set drag operation type
+                    Me.m_dragtype = DirectCast(iIndex, eDragType)
+                    ' Dragging?
+                    If (Me.m_dragtype <> eDragType.None) Then
+                        ' Save the starting point information
+                        m_ptDrag = pt
+                    End If
                 End If
             End If
-            'End If
 
             Return (Me.m_dragtype <> eDragType.None)
 

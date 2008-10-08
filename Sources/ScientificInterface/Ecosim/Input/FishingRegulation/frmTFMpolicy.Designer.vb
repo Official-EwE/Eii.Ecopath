@@ -26,7 +26,7 @@
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_grid = New ScientificInterface.Ecosim.gridSpeciesQuota
+            Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -113,7 +113,7 @@
 
         End Sub
 
-        Private WithEvents m_grid As Ecosim.gridSpeciesQuota
+        Private WithEvents m_grid As Ecosim.gridTargetFishingMortalityPolicy
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
 
