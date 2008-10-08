@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.13  2008/10/08 17:53:53  jeroens
+' Added target fishing mortality policy vars
+'
 ' Revision 1.12  2008/10/08 17:46:59  joeb
 ' Regulatory Feedback Loop
 '
@@ -3644,12 +3647,35 @@ Public Class cCore
 
         Dim fleet As cFleetInput = Me.FleetInputs(obj.Index)
         For iGroup As Integer = 1 To Me.nGroups
-            If fleet.Landings(iGroup) = 0.0! Then
+            If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
                 obj.SetStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                ' ToDo: remove this once the discard mort array is moved to Ecopath
                 obj.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
                 obj.ClearStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+                ' ToDo: remove this once the discard mort array is moved to Ecopath
                 obj.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+            End If
+        Next
+
+        If bSendMessage Then
+            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
+                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation))
+        End If
+
+        obj.AllowValidation = True
+        Return True
+    End Function
+
+    Friend Function Set_DiscardMort_Flags(ByVal fleet As cFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
+        fleet.AllowValidation = False
+
+        For iGroup As Integer = 1 To Me.nGroups
+            If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
+                fleet.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
+            Else
+                fleet.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             End If
         Next
 
@@ -3658,7 +3684,7 @@ Public Class cCore
                     eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
         End If
 
-        obj.AllowValidation = True
+        fleet.AllowValidation = True
         Return True
     End Function
 
@@ -4409,6 +4435,10 @@ Public Class cCore
             group.SalinityOpt = m_EcoSimData.SalOpt(iGroup)
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
+            'group.Quota = m_EcoSimData.???(iGroup)
+            group.BBase = m_EcoSimData.Bbase(iGroup)
+            group.BLim = m_EcoSimData.Blim(iGroup)
+            group.FOpt = m_EcoSimData.Fopt(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -4854,29 +4884,32 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function UpdateEcoSimGroupInfo(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcoSimGroup(ByVal iDBID As Integer) As Boolean
 
-        'good enough for testing
         Dim iGroup As Integer = Array.IndexOf(m_EcoSimData.GroupDBID, iDBID)
-        Dim grp As cEcoSimGroupInput = Me.EcoSimGroupInputs(iGroup)
+        Dim group As cEcoSimGroupInput = Me.EcoSimGroupInputs(iGroup)
 
         Try
-            m_EcoSimData.QmQo(iGroup) = grp.DenDepCatchability
-            m_EcoSimData.FtimeAdjust(iGroup) = grp.FeedingTimeAdjustRate
-            m_EcoSimData.FtimeMax(iGroup) = grp.MaxRelFeedingTime
-            m_EcoSimData.PBmaxs(iGroup) = grp.MaxRelPB
-            m_EcoSimData.MoPred(iGroup) = grp.OtherMortFeedingTime
-            m_EcoSimData.RiskTime(iGroup) = grp.PredEffectFeedingTime
-            m_EcoSimData.CmCo(iGroup) = grp.QBMaxQBio
-            m_EcoSimData.SwitchPower(iGroup) = grp.SwitchingPower
-            m_EcoSimData.FLimit(iGroup) = grp.MaxMortality
-            m_EcoSimData.SdSalLeft(iGroup) = grp.SalinitySpreadLeft
-            m_EcoSimData.SdSalRight(iGroup) = grp.SalinitySpreadRight
-            m_EcoSimData.SalOpt(iGroup) = grp.SalinityOpt
+            m_EcoSimData.QmQo(iGroup) = group.DenDepCatchability
+            m_EcoSimData.FtimeAdjust(iGroup) = group.FeedingTimeAdjustRate
+            m_EcoSimData.FtimeMax(iGroup) = group.MaxRelFeedingTime
+            m_EcoSimData.PBmaxs(iGroup) = group.MaxRelPB
+            m_EcoSimData.MoPred(iGroup) = group.OtherMortFeedingTime
+            m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
+            m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
+            m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
+            m_EcoSimData.FLimit(iGroup) = group.MaxMortality
+            m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
+            m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
+            m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
+            'm_EcoSimData.???(iGroup) = grp.Quota
+            m_EcoSimData.Bbase(iGroup) = group.BBase
+            m_EcoSimData.Blim(iGroup) = group.BLim
+            m_EcoSimData.Fopt(iGroup) = group.FOpt
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
-                m_EcoSimData.VulMult(iGroup, iPred) = grp.VulMult(iPred)
+                m_EcoSimData.VulMult(iGroup, iPred) = group.VulMult(iPred)
             Next
 
         Catch ex As Exception
@@ -9031,7 +9064,7 @@ Public Class cCore
                     If bValidatedOk Then Me.UpdateStanza(idAffected)
 
                 Case eDataTypes.EcoSimGroupInput
-                    If bValidatedOk Then Me.UpdateEcoSimGroupInfo(idAffected)
+                    If bValidatedOk Then Me.UpdateEcoSimGroup(idAffected)
 
                 Case eDataTypes.EcoSimModelParameter
                     If bValidatedOk Then Me.UpdateEcoSimModelParameters()
@@ -9394,6 +9427,7 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
+                        Set_DiscardMort_Flags(flt, True)
                         Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
                 End Select
 

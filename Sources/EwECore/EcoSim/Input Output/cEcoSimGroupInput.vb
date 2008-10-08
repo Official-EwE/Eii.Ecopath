@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimGroupInput.vb,v $
+' Revision 1.3  2008/10/08 17:53:34  jeroens
+' Added target fishing mortality policy vars
+'
 ' Revision 1.2  2008/10/03 22:00:23  jeroens
 ' CType -> DirectCast
 '
@@ -219,6 +222,23 @@ Public Class cEcoSimGroupInput
             val = New cValue(New Single, eVarNameFlags.EcosimGroupMaxMort, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimGroupMaxMort))
             m_values.Add(val.varName, val)
 
+            'Quota per species
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
+            m_values.Add(val.varName, val)
+            'bBase
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.BBase, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.BBase))
+            m_values.Add(val.varName, val)
+            'bLim
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.BLim, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.BLim))
+            m_values.Add(val.varName, val)
+            'FOpt
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.Fopt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Fopt))
+            m_values.Add(val.varName, val)
+
             ''arrayed values
             'VulRate
             meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -366,6 +386,46 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
+    Public Property Quota() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.QuotaSpecies))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.QuotaSpecies, value)
+        End Set
+    End Property
+
+    Public Property BLim() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.BLim))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.BLim, value)
+        End Set
+    End Property
+
+    Public Property BBase() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.BBase))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.BBase, value)
+        End Set
+    End Property
+
+    Public Property FOpt() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.Fopt))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.Fopt, value)
+        End Set
+    End Property
+
 #Region "Indexed variables"
 
     ''' <summary>
@@ -373,8 +433,8 @@ Public Class cEcoSimGroupInput
     ''' </summary>
     ''' <param name="iGroup"></param>
     ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
     Public Property VulMult(ByVal iGroup As Integer) As Single
 
         Get
