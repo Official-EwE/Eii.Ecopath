@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.2  2008/10/08 19:39:01  villyc
+' mti feature: discards no longer have a positive impact on the fleet that catches them
+'
 ' Revision 1.1  2008/09/26 07:30:59  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -437,6 +440,7 @@ Public Class cEcoNetwork
 
             ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
             CatchSum = 0
+
 
             For i = 1 To m_epdata.NumLiving
                 CatchSum = CatchSum + m_epdata.Landing(0, i) + m_epdata.Discard(0, i) 'Catch(i%)
@@ -1546,6 +1550,8 @@ EmergyRun:
             End If
         Next i
         'WITH FISHERY
+
+
         For i = 1 To m_epdata.NumGroups               'FOR HOST-MATRIX FOR IMPACT
             If NoRespC(i) > 0 Then
                 For j = 1 To m_epdata.NumLiving  'Groups + m_epdata.NumFleet         'EXCL RESP
@@ -1818,18 +1824,29 @@ sinverr:
 
         Try
 
+            'Mantis issue 551
+            'From ecopath.org user:Alberto Barausse
+            'This is not precisely a "bug" according to the standard meaning, but in the MTI analysis discarded groups 
+            'are positively impacting the fleet that discards them, i.e. I believe they are treated as landings making '
+            'up the fleet diet matrix. If I am right (this is what clearly appears from my model) '
+            'I think the routine should be corrected.
+
+            'VC Oct 2008, fixed the above by excluding discards from DCCnoDiscard while it is still included in the FC
+            'DCC is now used for calculation of beneficial predation only
             ReDim DCC(m_epdata.NumFleet, m_epdata.NumGroups)
             Dim i As Integer, j As Integer, ErrCode As Integer
             Dim CatchByGear As Single
+            Dim DCCnoDiscard(m_epdata.NumFleet, m_epdata.NumGroups) As Single
 
             For i = 1 To m_epdata.NumFleet
                 CatchByGear = 0       'catch by gear
                 For j = 1 To m_epdata.NumGroups
-                    CatchByGear = CatchByGear + m_epdata.Landing(i, j) + m_epdata.Discard(i, j)
+                    CatchByGear = CatchByGear + m_epdata.Landing(i, j) '+ m_epdata.Discard(i, j)
                 Next j
                 For j = 1 To m_epdata.NumGroups
                     If CatchByGear > 0 Then   'DCC is "Diet Composition of Catch" by gear
                         DCC(i, j) = (m_epdata.Landing(i, j) + m_epdata.Discard(i, j)) / CatchByGear
+                        DCCnoDiscard(i, j) = m_epdata.Landing(i, j) / CatchByGear
                     End If
                 Next j
             Next
@@ -1865,7 +1882,8 @@ sinverr:
                 'First do impact of groups on fishery
                 For i = 1 To m_epdata.NumGroups ' + m_epdata.NumFleet
                     For j = 1 To m_epdata.NumFleet
-                        MTI(i, m_epdata.NumGroups + j) = -(DCC(j, i) - 0) '-(m_epdata.dcC(j, i) - FC(m_epdata.NumGroups + j, i))
+                        MTI(i, m_epdata.NumGroups + j) = -(DCCnoDiscard(j, i) - 0)
+                        '-(m_epdata.dcC(j, i) - FC(m_epdata.NumGroups + j, i))
                         '= How much fishery takes of group i - how much the groups takes from the fishery (0)
                     Next
                 Next i

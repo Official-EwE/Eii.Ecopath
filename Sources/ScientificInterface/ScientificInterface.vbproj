@@ -1456,6 +1456,10 @@
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
+      <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
+      <Name>EwENetworkAnalysisPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
       <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
