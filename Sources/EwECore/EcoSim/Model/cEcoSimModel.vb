@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
-' Revision 1.15  2008/10/08 20:32:11  joeb
-' Added CVBest and KalWt
+' Revision 1.16  2008/10/09 00:13:02  joeb
+' *** empty log message ***
 '
 ' Revision 1.14  2008/10/08 17:47:00  joeb
 ' Regulatory Feedback Loop
@@ -3705,7 +3705,7 @@ Public Property PluginManager() As cPluginManager
             ReDim Bobs(nGroups)
             For i As Integer = 1 To nGroups
                 m_Data.BestimateLast(i) = m_Data.Bestimate(i)
-                Bobs(i) = Biomass(i) * Math.Exp(m_Data.CVest(i) * RandomNormal())
+                Bobs(i) = Biomass(i) * Math.Exp(m_Data.CVest(i) * RandomNormal() - 0.5 * m_Data.CVest(i) ^ 2)
                 m_Data.Bestimate(i) = m_Data.KalWt(i) * Bobs(i) + (1 - m_Data.KalWt(i)) * m_Data.BestimateLast(i)
             Next i
 
@@ -3752,11 +3752,11 @@ Public Property PluginManager() As cPluginManager
                 m_Data.BestimateLast(iGrp) = m_Data.Bestimate(iGrp)
             Next iGrp
 
-            ReDim totalQuota(ngear)
+            ReDim totalQuota(nGroups)
             For iFlt = 1 To ngear
                 For iGrp = 1 To nGroups
                     If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
-                        totalQuota(iFlt) = totalQuota(iFlt) + m_Data.Quota(iFlt, iGrp)
+                        totalQuota(iGrp) = totalQuota(iGrp) + m_Data.Quota(iFlt, iGrp)
                     End If
                 Next
             Next
@@ -3765,7 +3765,7 @@ Public Property PluginManager() As cPluginManager
                 For iGrp = 1 To nGroups
                     If (m_EPData.Landing(iFlt, iGrp) + m_EPData.Discard(iFlt, iGrp)) > 0 Then
                         m_Data.QuotaTime(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp)
-                        m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iFlt) + 0.0000000001)
+                        m_Data.Quotashare(iFlt, iGrp) = m_Data.Quota(iFlt, iGrp) / (totalQuota(iGrp) + 0.0000000001)
                     End If
                 Next
             Next
@@ -3952,6 +3952,7 @@ Public Property PluginManager() As cPluginManager
 
             For i = 1 To m_Data.nGroups
                 Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
+                'Qmult(i) = 1
             Next
 
             If PredEffort Then
@@ -3975,19 +3976,20 @@ Public Property PluginManager() As cPluginManager
 
                             Emax = 0
                             For i = 1 To m_Data.nGroups
-                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
+                                If (m_EPData.Landing(ig, i)) > 0 Then
                                     Elim = m_Data.QuotaTime(ig, i) / (1.0E-20 + Qmult(i) * m_Data.FishMGear(ig, i) * BB(i))
                                     If Elim > Emax Then Emax = Elim
                                 End If
                             Next i
 
                             If Emax < m_Data.FishRateGear(ig, t) Then m_Data.FishRateGear(ig, t) = Emax
+                            '  If Emax < 1 Then Stop
                             For i = 1 To m_Data.nGroups
-                                If (m_EPData.Landing(ig, i) + m_EPData.Discard(ig, i)) > 0 Then
+                                If (m_EPData.Landing(ig, i)) > 0 Then
                                     ci = m_Data.FishRateGear(ig, t) * Qmult(i) * m_Data.FishMGear(ig, i) * BB(i)
 
                                     If ci > m_Data.QuotaTime(ig, i) Then
-                                        'ci > QuotaTime
+                                        'fishing mortality exceeds quota
                                         m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
                                         If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
                                             'QuotaType = Strongest
@@ -4015,6 +4017,8 @@ Public Property PluginManager() As cPluginManager
                     For ig = 1 To m_Data.nGear
                         Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (m_Data.PropLandedTime(ig, i) + m_Data.Propdiscardtime(ig, i))
                     Next
+                    Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
+
                     m_Data.FishRateNo(i, t) = Qmult(i) * Ft
                     m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
                 End If

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.15  2008/10/09 00:13:02  joeb
+' *** empty log message ***
+'
 ' Revision 1.14  2008/10/08 20:32:10  joeb
 ' Added CVBest and KalWt
 '
@@ -4914,8 +4917,8 @@ Public Class cCore
             m_EcoSimData.Bbase(iGroup) = group.BBase
             m_EcoSimData.Blim(iGroup) = group.BLim
             m_EcoSimData.Fopt(iGroup) = group.FOpt
-            m_EcoSimData.KalWt(iGroup) = group.RegCVBest
-            m_EcoSimData.CVest(iGroup) = group.RegKalWt
+            m_EcoSimData.KalWt(iGroup) = group.RegKalWt
+            m_EcoSimData.CVest(iGroup) = group.RegCVBest
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
