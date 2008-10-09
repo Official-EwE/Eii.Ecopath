@@ -1069,7 +1069,7 @@
     <Compile Include="Ecosim\Input\FishingRegulation\gridDiscardsMortality.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\gridQuotaOptions.vb">
+    <Compile Include="Ecosim\Input\FishingRegulation\gridRegulatoryOptions.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
