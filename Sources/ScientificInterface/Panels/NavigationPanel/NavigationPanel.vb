@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.4  2008/10/09 17:18:26  jeroens
+' Moved discard mort grid to Ecopath
+'
 ' Revision 1.3  2008/10/08 17:56:16  jeroens
 ' Added target fishing mortality policy nodes
 ' Discard Mortality about to be moved to Ecopath
@@ -115,10 +118,9 @@ Public Class NavigationPanel
         m_nodeController.Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
         m_nodeController.Add("ndFishingRate", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate)) ' ToDo: connect to help
         m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
-        m_nodeController.Add("ndQuotaOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaOptions)) ' ToDo: connect to help
+        m_nodeController.Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridRegulatoryOptions)) ' ToDo: connect to help
         m_nodeController.Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas)) ' ToDo: connect to help
         m_nodeController.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
-        m_nodeController.Add("ndDiscardMortality", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridDiscardsMortality)) ' ToDo: connect to help
         m_nodeController.Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(FisheryInputFleetSizeDynamicsEwEGrid), "Fleet size dynamics.htm")
 
         ' Ecosim Output
