@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.2  2008/10/09 17:21:03  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -276,6 +279,8 @@ Public Class cEcopathDataStructures
     Public Landing(,) As Single
     Public Market(,) As Single
     Public PropDiscard(,) As Single
+    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
+    Public PropDiscardMort(,) As Single ' gear group 0-1
 
     Public Epower() As Single
     Public PcapBase() As Single
@@ -454,6 +459,7 @@ Public Class cEcopathDataStructures
             Next j
             CVpar(5, i) = 0.05
         Next i
+
         'Stanzagroup  needed when importing eii files
         ReDim StanzaGroup(NumGroups)
 
@@ -462,7 +468,7 @@ Public Class cEcopathDataStructures
         ' GearVariables(True)
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
 
-        redimGroupVariables = True
+        Return True
     End Function
 
 
@@ -505,6 +511,7 @@ Public Class cEcopathDataStructures
         ReDim DiscardFate(NumFleet, NumGroups - NumLiving)
         ReDim PropLanded(NumFleet, NumGroups)
         ReDim PropDiscard(NumFleet, NumGroups)
+        ReDim PropDiscardMort(NumFleet, NumGroups)
         ReDim Market(NumFleet, NumGroups)
 
         ReDim Epower(NumFleet)
@@ -520,7 +527,7 @@ Public Class cEcopathDataStructures
             CostPct(1, eCostIndex.Fixed) = 0
             CostPct(1, eCostIndex.CUPE) = 100
             CostPct(1, eCostIndex.Sail) = 0
-            For iGroup As Integer = 1 To NumLiving Step 1
+            For iGroup As Integer = 1 To NumLiving
                 ' Set default landing
                 Landing(1, iGroup) = fCatch(iGroup)
                 ' Set default price
@@ -535,6 +542,7 @@ Public Class cEcopathDataStructures
             For iFleet As Integer = 1 To NumFleet
                 For iGroup As Integer = 1 To NumGroups
                     Market(iFleet, iGroup) = 1.0!
+                    PropDiscardMort(iFleet, iGroup) = 1.0!
                 Next iGroup
             Next iFleet
         End If

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.16  2008/10/09 17:21:02  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.15  2008/10/09 00:13:02  joeb
 ' *** empty log message ***
 '
@@ -2802,22 +2805,23 @@ Public Class cCore
 
             Debug.Assert(iFleet > 0 And iFleet <= m_EcoPathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID)
 
-            m_EcoPathData.FleetName(iFleet) = fleet.Name
-            m_EcoPathData.Epower(iFleet) = fleet.EPower
+            Me.m_EcoPathData.FleetName(iFleet) = fleet.Name
+            Me.m_EcoPathData.Epower(iFleet) = fleet.EPower
 
-            m_EcoPathData.CostPct(iFleet, eCostIndex.Fixed) = fleet.FixedCost
-            m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE) = fleet.CPUECost
-            m_EcoPathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
+            Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Fixed) = fleet.FixedCost
+            Me.m_EcoPathData.CostPct(iFleet, eCostIndex.CUPE) = fleet.CPUECost
+            Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
 
-            For i As Integer = 1 To m_EcoPathData.NumLiving
-                m_EcoPathData.Landing(iFleet, i) = fleet.Landings(i)
-                m_EcoPathData.Market(iFleet, i) = fleet.OffVesselPrice(i)
-                m_EcoPathData.Discard(iFleet, i) = fleet.Discards(i)
+            For iGroup As Integer = 1 To m_EcoPathData.NumLiving
+                Me.m_EcoPathData.Landing(iFleet, iGroup) = fleet.Landings(iGroup)
+                Me.m_EcoPathData.Market(iFleet, iGroup) = fleet.OffVesselPrice(iGroup)
+                Me.m_EcoPathData.Discard(iFleet, iGroup) = fleet.Discards(iGroup)
+                Me.m_EcoPathData.PropDiscardMort(iFleet, iGroup) = fleet.DiscardMortality(iGroup)
             Next
 
-            For i As Integer = 1 To nDetritusGroups
-                m_EcoPathData.DiscardFate(iFleet, i) = fleet.DiscardFate(i)
-            Next i
+            For iGroup As Integer = 1 To nDetritusGroups
+                Me.m_EcoPathData.DiscardFate(iFleet, iGroup) = fleet.DiscardFate(iGroup)
+            Next iGroup
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateFleets() Error: " & ex.Message)
@@ -2830,7 +2834,7 @@ Public Class cCore
 
     Private Function LoadFleetInput() As Boolean
         Dim iFleet As Integer
-        Dim i As Integer
+        Dim iGroup As Integer
 
         Try
 
@@ -2858,24 +2862,16 @@ Public Class cCore
                 fleet.CapBaseGrowth = m_EcoPathData.CapBaseGrowth(iFleet)
                 'fleet.PoolColor = m_EcoPathData.FleetColor(iFleet)
 
-                Dim l_landings() As Single, l_market() As Single, l_discards() As Single
-                ReDim l_landings(nGroups)
-                ReDim l_market(nGroups)
-                ReDim l_discards(nGroups)
-
-                For i = 1 To m_EcoPathData.NumGroups
-                    l_landings(i) = CSng(m_EcoPathData.Landing(iFleet, i))
-                    l_market(i) = m_EcoPathData.Market(iFleet, i)
-                    l_discards(i) = CSng(m_EcoPathData.Discard(iFleet, i))
+                For iGroup = 1 To m_EcoPathData.NumGroups
+                    fleet.Landings(iGroup) = CSng(m_EcoPathData.Landing(iFleet, iGroup))
+                    fleet.OffVesselPrice(iGroup) = m_EcoPathData.Market(iFleet, iGroup)
+                    fleet.Discards(iGroup) = CSng(m_EcoPathData.Discard(iFleet, iGroup))
+                    fleet.DiscardMortality(iGroup) = m_EcoPathData.PropDiscardMort(iFleet, iGroup)
                 Next
 
-                fleet.Landings = l_landings
-                fleet.OffVesselPrice = l_market
-                fleet.Discards = l_discards
-
-                For i = 1 To nDetritusGroups
-                    fleet.DiscardFate(i) = m_EcoPathData.DiscardFate(iFleet, i)
-                Next i
+                For iGroup = 1 To nDetritusGroups
+                    fleet.DiscardFate(iGroup) = m_EcoPathData.DiscardFate(iFleet, iGroup)
+                Next iGroup
 
                 fleet.ResetStatusFlags()
                 fleet.AllowValidation = True
@@ -3655,12 +3651,8 @@ Public Class cCore
         For iGroup As Integer = 1 To Me.nGroups
             If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
                 obj.SetStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
-                ' ToDo: remove this once the discard mort array is moved to Ecopath
-                obj.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
                 obj.ClearStatusFlags(eVarNameFlags.Quota, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
-                ' ToDo: remove this once the discard mort array is moved to Ecopath
-                obj.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             End If
         Next
 
@@ -4681,7 +4673,6 @@ Public Class cCore
 
             Try
                 For iGroup As Integer = 1 To nGroups
-                    reg.DiscardMortality(iGroup) = m_EcoSimData.propDiscardMort(iFleet, iGroup)
                     reg.Quota(iGroup) = m_EcoSimData.Quota(iFleet, iGroup)
                 Next
 
@@ -4947,7 +4938,6 @@ Public Class cCore
             Me.m_EcoSimData.QuotaType(iFleet) = reg.QuotaType
             For iGroup As Integer = 1 To nGroups
                 Me.m_EcoSimData.Quota(iFleet, iGroup) = reg.Quota(iGroup)
-                Me.m_EcoSimData.propDiscardMort(iFleet, iGroup) = reg.DiscardMortality(iGroup)
             Next
 
         Catch ex As Exception

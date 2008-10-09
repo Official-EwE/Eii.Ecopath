@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.7  2008/10/09 17:21:03  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.6  2008/10/07 19:19:14  jeroens
 ' Proportion of discards mortality is moved to Ecopath in preparation for pending change
 '
@@ -2423,6 +2426,7 @@ Public Class cDBDataSource
                     ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
                     ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
                     ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
+                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
                 Else
                     Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False
@@ -2582,7 +2586,8 @@ Public Class cDBDataSource
                     ' JS 04aug08: only save rows with data
                     If (ecopathDS.Landing(iFleet, iGroup) > 0.0!) Or _
                        (ecopathDS.Discard(iFleet, iGroup) > 0.0!) Or _
-                       ((ecopathDS.Market(iFleet, iGroup) > 0.0!) And (ecopathDS.Market(iFleet, iGroup) < 1.0!)) Then
+                       ((ecopathDS.Market(iFleet, iGroup) > 0.0!) And (ecopathDS.Market(iFleet, iGroup) < 1.0!)) Or _
+                       (ecopathDS.PropDiscardMort(iFleet, iGroup) > 0.0!) Then
 
                         drow = writer.NewRow()
                         drow("FleetID") = ecopathDS.FleetDBID(iFleet)
@@ -2590,6 +2595,7 @@ Public Class cDBDataSource
                         drow("Landing") = ecopathDS.Landing(iFleet, iGroup)
                         drow("Discards") = ecopathDS.Discard(iFleet, iGroup)
                         drow("Price") = ecopathDS.Market(iFleet, iGroup)
+                        drow("DiscardMortality") = ecopathDS.PropDiscardMort(iFleet, iGroup)
                         writer.AddRow(drow)
 
                     End If
@@ -3415,25 +3421,6 @@ Public Class cDBDataSource
         End Try
         Me.m_db.ReleaseReader(reader)
 
-        reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch")
-        Try
-            While reader.Read()
-                iFleetID = CInt(reader("FleetID"))
-                iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
-
-                iGroupID = CInt(reader("GroupID"))
-                iGroup = Array.IndexOf(ecopathDS.GroupDBID, iGroupID)
-
-                If (iFleet > 0) And (iGroup > 0) Then
-                    ' ToDo: move this to the Ecopath database bits once the arrays have been transferred to Ecopath
-                    ecosimDS.propDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
-                End If
-            End While
-        Catch ex As Exception
-            bSucces = False
-        End Try
-        Me.m_db.ReleaseReader(reader)
-
         Return bSucces
 
     End Function
@@ -3598,29 +3585,6 @@ Public Class cDBDataSource
                     drow("Quota") = ecosimDS.Quota(iFleet, iGroup)
                     ' Add new row to the writer
                     writer.AddRow(drow)
-                Next iGroup
-            Next iFleet
-            ' Done
-            Me.m_db.ReleaseWriter(writer)
-
-        Catch ex As Exception
-            bSucces = False
-        End Try
-
-        Try
-            writer = Me.m_db.GetWriter("EcopathCatch")
-            Dim dt As DataTable = writer.GetDataTable()
-            Dim objKeys() As Object = {Nothing, Nothing}
-            For iFleet As Integer = 1 To ecopathDS.NumFleet
-                For iGroup As Integer = 1 To ecopathDS.NumGroups
-                    objKeys(0) = ecopathDS.GroupDBID(iGroup)
-                    objKeys(1) = ecopathDS.FleetDBID(iFleet)
-                    drow = dt.Rows.Find(objKeys)
-                    If drow IsNot Nothing Then
-                        drow.BeginEdit()
-                        drow("DiscardMortality") = ecosimDS.propDiscardMort(iFleet, iGroup)
-                        drow.EndEdit()
-                    End If
                 Next iGroup
             Next iFleet
             ' Done

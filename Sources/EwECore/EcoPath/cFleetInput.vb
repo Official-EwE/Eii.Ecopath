@@ -1,83 +1,14 @@
 '==============================================================================
 '
 ' $Log: cFleetInput.vb,v $
+' Revision 1.3  2008/10/09 17:21:04  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.2  2008/10/08 17:55:06  jeroens
 ' DiscardMortality about to be removed from Ecosim
 '
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.24  2008/08/04 02:27:44  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
-'
-' Revision 1.23  2008/07/21 14:13:48  jeroens
-' Disabled pool color
-'
-' Revision 1.22  2008/07/02 01:55:24  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.21  2008/05/29 22:22:43  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.20  2007/08/23 14:50:50  jeroens
-' * Moved NonMarketValue from fleet to groupinput
-'
-' Revision 1.19  2007/06/15 00:03:22  jeroens
-' + Uses Set_MarketPrice_Flags
-'
-' Revision 1.18  2007/05/22 13:24:26  jeroens
-' * Nitty-gritty
-'
-' Revision 1.17  2007/04/12 20:26:23  jeroens
-' + Added PoolColor
-'
-' Revision 1.16  2007/03/28 01:16:32  jeroens
-' * Changed all status modification access from Public to Friend
-'
-' Revision 1.15  2007/03/08 03:24:58  jeroens
-' * Dropped iFleet property, replaced its use by generic Index property
-'
-' Revision 1.14  2007/01/19 18:31:08  joeb
-' Changes to cValueArray constructor
-'
-' Revision 1.13  2007/01/19 00:49:53  joeb
-' Changes to cValueArray Constructor
-'
-' Revision 1.12  2006/12/14 23:32:59  jeroens
-' * Updated variable definitions to metadata default value
-'
-' Revision 1.11  2006/09/19 00:08:52  jeroens
-' * Fixed spelling error in operator constant
-'
-' Revision 1.10  2006/09/08 21:22:21  joeb
-' Comments
-'
-' Revision 1.9  2006/08/22 19:25:04  joeb
-' Rename cFleetInputs to cFleetInput
-'
-' Revision 1.8  2006/08/22 19:00:10  joeb
-' Renamed cFleetInputs to cFleetInput
-'
-' Revision 1.7  2006/08/18 15:11:44  joeb
-' Renamed ICoreInputOutput.CurrentStatus to ValidationStatus
-'
-' Revision 1.6  2006/07/20 14:08:30  joeb
-' Validation using MetaData and Operator classes
-'
-' Revision 1.5  2006/07/13 19:10:32  joeb
-' ICoreInputOutputBase uses a reference to the core instead of a delegates to communicate with the core.
-'
-' Revision 1.4  2006/07/12 16:10:11  jeroens
-' - Reverted silly enum bit, sorry guys!
-'
-' Revision 1.3  2006/07/11 00:30:08  jeroens
-' * Activated all present variables
-'
-' Revision 1.2  2006/07/10 18:44:46  jeroens
-' + Added sec. indexes
-'
-' Revision 1.1  2006/07/07 11:32:16  jeroens
-' * Renamed from cFleet
 '
 '==============================================================================
 

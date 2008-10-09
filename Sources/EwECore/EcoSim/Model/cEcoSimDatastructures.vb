@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.8  2008/10/09 17:21:04  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.7  2008/10/08 17:47:00  joeb
 ' Regulatory Feedback Loop
 '
@@ -21,30 +24,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.42  2008/09/26 00:22:49  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.41  2008/09/25 02:30:59  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.40  2008/09/16 00:35:30  jeroens
-' Uses cCore.N_MONTHS
-'
-' Revision 1.39  2008/09/01 11:53:31  villyc
-' Adding spatial fields (temp, salinity, ...) to Ecosim and Ecospace
-'
-' Revision 1.38  2008/06/20 19:43:04  joeb
-' Added SSGroup to EcosimStats
-'
-' Revision 1.37  2008/06/06 15:56:01  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.36  2008/04/28 17:57:18  joeb
-' Fixed some incorrect comments
-'
-' Revision 1.35  2008/02/28 20:32:09  joeb
-' Added Left and Right Salinity
 '
 '==============================================================================
 
@@ -341,9 +320,6 @@ Public Class cEcosimDatastructures
 
     ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
     Public RegDiscard(,) As Single ' gear group
-
-    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
-    Public propDiscardMort(,) As Single ' gear group 0-1
 
     ''' <summary>Proportion of regulated landings (by gear group)</summary>
     Public PropLandedTime(,) As Single
@@ -642,7 +618,6 @@ Public Class cEcosimDatastructures
         ReDim RegDiscard(nGear, nGroups)
         ReDim MaxEffort(nGear)
         ReDim Quota(nGear, nGroups)
-        ReDim propDiscardMort(nGear, nGroups)
         ReDim PropLandedTime(nGear, nGroups)
         ReDim Propdiscardtime(nGear, nGroups)
 
@@ -671,7 +646,6 @@ Public Class cEcosimDatastructures
 
             For igrp As Integer = 1 To nGroups
                 Quota(iflt, igrp) = cCore.NULL_VALUE
-                propDiscardMort(iflt, igrp) = cCore.NULL_VALUE
             Next
         Next
 

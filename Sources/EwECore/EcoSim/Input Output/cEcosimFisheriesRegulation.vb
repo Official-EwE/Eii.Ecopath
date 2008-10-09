@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimFisheriesRegulation.vb,v $
+' Revision 1.4  2008/10/09 17:21:04  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.3  2008/10/08 17:54:22  jeroens
 ' DiscardMortality about to be moved to Ecopath, removed from this class
 '
@@ -55,12 +58,6 @@ Public Class cEcosimFisheriesRegulation
             val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Quota, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Quota))
             m_values.Add(val.varName, val)
 
-            ' TODO: REMOVE FROM THIS CLASS
-            'DiscardMortality
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.DiscardMortality))
-            m_values.Add(val.varName, val)
-
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -113,17 +110,6 @@ Public Class cEcosimFisheriesRegulation
         End Set
     End Property
 
-    ' TODO: REMOVE FROM THIS CLASS
-    Public Property DiscardMortality(ByVal iGroup As Integer) As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.DiscardMortality, iGroup))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DiscardMortality, value, iGroup)
-        End Set
-    End Property
-
 #End Region
 
 #Region "Status Flags via dot(.) operator"
@@ -155,17 +141,6 @@ Public Class cEcosimFisheriesRegulation
 
         Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.Quota, value, iGroup)
-        End Set
-    End Property
-
-    ' TODO: REMOVE FROM THIS CLASS
-    Public Property DiscardMortalityStatus(ByVal iGroup As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.DiscardMortality, iGroup)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DiscardMortality, value, iGroup)
         End Set
     End Property
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.17  2008/10/09 17:21:04  jeroens
+' Moved discard mort data from Ecosim to Ecopath
+'
 ' Revision 1.16  2008/10/09 00:13:02  joeb
 ' *** empty log message ***
 '
@@ -45,140 +48,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.108  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.107  2008/09/25 02:31:00  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.106  2008/09/24 17:57:51  villyc
-' include forced catches in SS calculation
-'
-' Revision 1.105  2008/09/24 00:11:03  villyc
-' f limits and others
-'
-' Revision 1.104  2008/09/23 17:25:11  jeroens
-' Uses search bUseFishingMortalityPenality
-'
-' Revision 1.103  2008/09/23 00:33:08  villyc
-' optional max f for SS
-'
-' Revision 1.102  2008/09/03 08:02:25  villyc
-' Adding distribution envelopes to ecospace
-'
-' Revision 1.101  2008/09/01 11:53:33  villyc
-' Adding spatial fields (temp, salinity, ...) to Ecosim and Ecospace
-'
-' Revision 1.100  2008/08/19 17:05:58  joeb
-' Debug stuff
-'
-' Revision 1.99  2008/08/12 16:23:52  joeb
-' Replaced PlotOn with SearchMode = MSE
-'
-' Revision 1.98  2008/08/11 21:07:53  joeb
-' Changes for Bug Fix 459 Loading of Timeseries forcing data
-'
-' Revision 1.97  2008/06/28 15:16:31  joeb
-' Removed some dead code
-'
-' Revision 1.96  2008/06/25 17:37:40  joeb
-' Fix bug 491 Initialization of Ecosim overwriting fishing mort with default
-'
-' Revision 1.95  2008/06/20 20:41:43  villyc
-' cleared SSgroup in PlotInfo
-'
-' Revision 1.94  2008/06/20 19:43:06  joeb
-' Added SSGroup to EcosimStats
-'
-' Revision 1.93  2008/06/20 19:08:06  villyc
-' Adding SS by group to ecosim
-'
-' Revision 1.92  2008/06/06 15:56:02  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.91  2008/05/29 02:03:59  villyc
-' Fixing policy search, think it works now, but LTV not included
-'
-' Revision 1.90  2008/05/27 01:28:56  villyc
-' *** empty log message ***
-'
-' Revision 1.89  2008/05/05 16:19:52  joeb
-' Changed Run() so that it did not turn off the Search data. This way other routines can run Ecosim via the Run() method instead of RunModelValue() and turn the search data On or Off
-'
-' Revision 1.88  2008/04/29 19:28:42  joeb
-' Changes to the structure of SearchData
-'
-' Revision 1.87  2008/04/28 17:58:50  joeb
-' Fixed some incorrect array dimensions for the MSE
-'
-' Revision 1.86  2008/04/23 17:33:06  joeb
-' Moved cEcosimIndicies variables into cSearchDataStructures
-'
-' Revision 1.85  2008/04/17 20:16:05  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.84  2008/04/17 19:09:19  joeb
-' Changes for MSE
-'
-' Revision 1.83  2008/04/11 15:57:15  joeb
-' Replaced messageboxes
-'
-' Revision 1.82  2008/04/11 15:07:22  joeb
-' Bug fix for Fishing Policy Search
-'
-' Revision 1.81  2008/03/13 19:41:26  joeb
-' Changes for the MSE
-'
-' Revision 1.80  2008/03/11 18:44:11  joeb
-' Comments
-'
-' Revision 1.79  2008/03/06 02:38:14  jeroens
-' Added BCatch
-'
-' Revision 1.78  2008/02/28 20:32:10  joeb
-' Added Left and Right Salinity
-'
-' Revision 1.77  2008/01/30 22:48:38  joeb
-' Bug found by Steve Mackinson
-' aeff(ii) was getting set twice
-'
-' Revision 1.76  2008/01/24 16:35:28  joeb
-' Made redimTimeVariables Friend
-'
-' Revision 1.75  2008/01/08 20:17:39  jeroens
-' Purged history
-'
-' Revision 1.74  2007/12/18 23:03:51  joeb
-' Moved Search data summary into cSearchDatastructures
-'
-' Revision 1.73  2007/12/13 15:41:13  joeb
-' Moved all Search optimization results to cSearchDataStructures
-'
-' Revision 1.72  2007/12/11 18:11:12  joeb
-' Changes for Contaminant tracer
-' Started moving search summary data into search object
-'
-' Revision 1.71  2007/12/07 20:13:06  joeb
-' Changed ContaminantTracer's life span to be managed by the core
-'
-' Revision 1.70  2007/12/03 18:51:03  joeb
-' Added Salinity variables
-'
-' Revision 1.69  2007/11/29 18:40:13  joeb
-' Stuff for debugging
-'
-' Revision 1.68  2007/11/23 19:10:48  joeb
-' Added RedimForSearchRun
-'
-' Revision 1.67  2007/11/21 19:25:24  joeb
-' Made some initialization routine friend so the Fit to time series can initialize ecosim
-'
-' Revision 1.66  2007/11/14 17:19:39  joeb
-' Changes for Contaminant tracer
-'
-' Revision 1.65  2007/11/02 19:15:22  joeb
-' Fixed bug in Summary catch
 '
 '==============================================================================
 
@@ -697,7 +566,6 @@ Public Property PluginManager() As cPluginManager
                 If Me.m_Data.MaxEffort(iflt) = cCore.NULL_VALUE Then Me.m_Data.MaxEffort(iflt) = 10 '10 times the ecopath base effort
                 For igrp As Integer = 1 To nGroups
                     If Me.m_Data.Quota(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.Quota(iflt, igrp) = m_Data.StartBiomass(igrp) * 10 '10 time the ecopath biomass
-                    If Me.m_Data.propDiscardMort(iflt, igrp) = cCore.NULL_VALUE Then Me.m_Data.propDiscardMort(iflt, igrp) = 1
 
                     'Needs default value????
                     If m_Data.CVest(igrp) = cCore.NULL_VALUE Then m_Data.CVest(igrp) = 0.2
@@ -3993,7 +3861,7 @@ Public Property PluginManager() As cPluginManager
                                         m_Data.PropLandedTime(ig, i) = m_Data.QuotaTime(ig, i) / (ci + 1.0E-20)
                                         If m_Data.QuotaType(ig) = eQuotaTypes.Strongest Then
                                             'QuotaType = Strongest
-                                            m_Data.Propdiscardtime(ig, i) = (1 - m_Data.PropLandedTime(ig, i)) * m_Data.propDiscardMort(ig, i)
+                                            m_Data.Propdiscardtime(ig, i) = (1 - m_Data.PropLandedTime(ig, i)) * m_EPData.PropDiscardMort(ig, i)
                                         Else
                                             'QuotaType = Selective
                                             m_Data.Propdiscardtime(ig, i) = 0
