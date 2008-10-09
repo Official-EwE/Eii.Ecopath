@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
-' $Log: gridQuotaOptions.vb,v $
+' $Log: gridRegulatoryOptions.vb,v $
+' Revision 1.1  2008/10/09 00:09:38  jeroens
+' Renamed
+'
 ' Revision 1.7  2008/10/08 22:33:56  jeroens
 ' Localizing
 '
@@ -42,7 +45,7 @@ Namespace Ecosim
     ''' </summary>
     ''' ===========================================================================
     <CLSCompliant(False)> _
-    Public Class gridQuotaOptions
+    Public Class gridRegulatoryOptions
         Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer
