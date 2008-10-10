@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.8  2008/10/10 23:22:20  villyc
+' *** empty log message ***
+'
 ' Revision 1.7  2008/10/09 17:21:03  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -2426,7 +2429,7 @@ Public Class cDBDataSource
                     ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
                     ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
                     ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
-                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
+                    '       ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
                 Else
                     Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.6  2008/10/10 23:22:20  villyc
+' *** empty log message ***
+'
 ' Revision 1.5  2008/10/04 01:10:30  villyc
 ' mc stuff, SS after MC are not correct, so not loading all parameters
 '
@@ -416,6 +419,7 @@ Public Class cMonteCarloManager
             
 
             m_core.RunEcoSim()
+            ' Dim ss As Single = m_core.EcosimStats.SS
 
         Catch ex As Exception
             Debug.Assert(False)
