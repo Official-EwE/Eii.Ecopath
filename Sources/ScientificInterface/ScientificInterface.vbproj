@@ -469,10 +469,10 @@
     <Compile Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Layer.vb">
+    <Compile Include="Ecospace\Input\Basemap\Layers\cLayer.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\LayerRepresentation.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerRenderer.vb" />
     <Compile Include="Ecospace\Input\Basemap\Layers\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
     </Compile>
@@ -1066,9 +1066,6 @@
     <Compile Include="Ecosim\Input\FishingRegulation\gridFishingQuotas.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingRegulation\gridDiscardsMortality.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\gridRegulatoryOptions.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1118,7 +1115,8 @@
     <Compile Include="Ecospace\Input\Basemap\Layers\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\LayerFactory.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerEditor.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerFactory.vb" />
     <Compile Include="Ecospace\Input\dlgEditImportanceLayers.Designer.vb">
       <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
     </Compile>

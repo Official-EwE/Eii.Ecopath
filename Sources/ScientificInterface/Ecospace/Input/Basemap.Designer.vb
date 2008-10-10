@@ -1,6 +1,6 @@
 Imports WeifenLuo.WinFormsUI.Docking
 
-Namespace Ecospace
+Namespace Ecospace.Basemap
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class Basemap

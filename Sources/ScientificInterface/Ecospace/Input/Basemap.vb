@@ -1,52 +1,15 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.2  2008/10/10 18:04:02  jeroens
+' Updated to renamed layers classes
+'
 ' Revision 1.1  2008/09/26 07:31:55  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.45  2008/08/11 04:39:51  jeroens
-' Simplified  Ecospace core class names
-'
-' Revision 1.44  2008/07/21 20:56:52  jeroens
-' RelCin layer shown when tracer active for Space
-'
-' Revision 1.43  2008/06/02 00:01:22  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.42  2008/05/29 22:22:38  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.41  2008/04/08 16:25:30  jeroens
-' Added RelCIN layer
-' BrushPicker synchronized with selected layer datatype
-'
-' Revision 1.40  2008/03/28 23:19:23  jeroens
-' Brush picker follows selected layer state
-'
-' Revision 1.39  2008/03/25 14:42:29  jeroens
-' Greatly simplified layer management via LayerFactory
-'
-' Revision 1.38  2008/03/25 01:59:13  jeroens
-' Added ToDo
-'
-' Revision 1.37  2008/03/25 00:59:53  jeroens
-' Fitted toolbar text
-'
-' Revision 1.36  2008/03/23 17:45:04  jeroens
-' Added MPASeed layer
-'
-' Revision 1.35  2008/03/23 14:25:39  jeroens
-' Uses simplified layer access
-'
-' Revision 1.34  2008/01/06 09:14:16  jeroens
-' + Added zoom capability
-'
-' Revision 1.33  2008/01/01 19:52:53  jeroens
-' * Fixed layer type description
-'
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -58,10 +21,11 @@ Imports SAUPUtil.SAUPData.Mapping
 Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports ScientificInterface.Ecospace.Basemap.Layers
 
-#End Region
+#End Region ' Imports
 
-Namespace Ecospace
+Namespace Ecospace.Basemap
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -78,14 +42,14 @@ Namespace Ecospace
         Private m_core As cCore = Nothing
         Private m_basemapData As cEcospaceBasemap = Nothing
         ''' <summary>The one and only administration of layers.</summary>
-        Private m_layers As New List(Of Layer)
+        Private m_layers As New List(Of cLayer)
         ''' <summary>The one and only control that renders the basemap.</summary>
         Private m_ucBasemap As ucBaseMap = Nothing
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
         ''' <summary>Contaminant tracing on/off property.</summary>
         Private m_propContaminantTracing As cProperty = Nothing
-        Private m_layerRelCin As Layer = Nothing
+        Private m_layerRelCin As cLayer = Nothing
 
         Private m_cmdEditBasemap As Command = Nothing
         Private m_cmdEditHabitats As Command = Nothing
@@ -255,16 +219,16 @@ Namespace Ecospace
             Me.m_ucBasemap.Refresh()
         End Sub
 
-        Private Sub OnLayerChanged(ByVal layer As Layer, ByVal changeFlag As Layer.eChangeFlags)
-            If ((changeFlag And layer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+        Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal changeFlag As cLayer.eChangeFlags)
+            If ((changeFlag And cLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
         End Sub
 
         Private Sub OnContaminantTracingChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
             If ((cf And cProperty.eChangeFlags.Value) = cf) Then
                 If CBool(prop.GetValue()) Then
                     If (Me.m_layerRelCin Is Nothing) Then
-                        Me.m_layerRelCin = LayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerRelCin)(0)
-                        Me.AddLayer(Me.m_layerRelCin, LayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
+                        Me.m_layerRelCin = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerRelCin)(0)
+                        Me.AddLayer(Me.m_layerRelCin, cLayerFactory.GetLayerGroup(eVarNameFlags.LayerRelCin))
                     End If
                 Else
                     If (Me.m_layerRelCin IsNot Nothing) Then
@@ -313,11 +277,11 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Sub AddData(ByVal varName As eVarNameFlags)
 
-            Dim alayers As Layer() = LayerFactory.GetLayers(Me.m_core, varName)
-            Dim strGroup As String = LayerFactory.GetLayerGroup(varName)
+            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.m_core, varName)
+            Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
 
             ' Define group
-            Me.m_ucLayers.AddGroup(LayerFactory.GetLayerGroup(varName))
+            Me.m_ucLayers.AddGroup(cLayerFactory.GetLayerGroup(varName))
 
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.AddLayer(alayers(iLayer), strGroup)
@@ -331,8 +295,8 @@ Namespace Ecospace
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub RemoveAllLayers()
-            Dim alayers As Layer() = Me.m_layers.ToArray()
-            For Each layer As Layer In alayers
+            Dim alayers As cLayer() = Me.m_layers.ToArray()
+            For Each layer As cLayer In alayers
                 Me.RemoveLayer(layer)
             Next
         End Sub
@@ -342,7 +306,7 @@ Namespace Ecospace
         ''' Add a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As Layer, ByVal strGroup As String)
+        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String)
             Me.m_layers.Add(l)
             Me.m_ucBasemap.AddLayer(l)
             Me.m_ucLayers.AddLayer(l, strGroup)
@@ -355,7 +319,7 @@ Namespace Ecospace
         ''' Remove a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveLayer(ByVal l As Layer)
+        Private Sub RemoveLayer(ByVal l As cLayer)
             Me.m_layers.Remove(l)
             Me.m_ucBasemap.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
@@ -369,7 +333,7 @@ Namespace Ecospace
 
         Private Sub UpdateControls()
 
-            Dim layerSelected As Layer = Me.GetSelectedLayer()
+            Dim layerSelected As cLayer = Me.GetSelectedLayer()
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim propLayer As cProperty = Nothing
             Dim md As cVariableMetaData = Nothing
@@ -388,7 +352,7 @@ Namespace Ecospace
                         bEnableValue = (layerSelected.ValueSet = cCore.NULL_VALUE)
                     End If
                 End If
-                bEnable = layerSelected.Editable
+                bEnable = layerSelected.Editor.IsEditable
             End If
 
             ' Update
@@ -397,9 +361,9 @@ Namespace Ecospace
 
         End Sub
 
-        Private Function GetSelectedLayer() As Layer
-            For Each layer As Layer In Me.m_layers
-                If layer.Selected Then Return layer
+        Private Function GetSelectedLayer() As cLayer
+            For Each layer As cLayer In Me.m_layers
+                If layer.IsSelected Then Return layer
             Next
             Return Nothing
         End Function
