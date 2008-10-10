@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: ucSlider.vb,v $
-' Revision 1.1  2008/09/26 07:31:19  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/10/10 20:01:12  jeroens
+' Fixed drawing bug on non-zero min values
 '
 ' Revision 1.1  2008/06/01 23:45:10  jeroens
 ' Separated from Scientific Interface
@@ -121,7 +121,7 @@ Namespace Controls
 
         Private Sub ucSlider_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
 
-            Dim iX0 As Integer = CInt(Me.m_iValue / Me.RenderScale()) + Me.Margin.Left
+            Dim iX0 As Integer = CInt((Me.m_iValue - Me.m_iValueMin) / Me.RenderScale()) + Me.Margin.Left
             Dim aptKnobOutline(5) As Point
 
             '    2
