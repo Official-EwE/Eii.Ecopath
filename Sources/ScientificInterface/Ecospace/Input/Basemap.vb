@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.3  2008/10/10 20:09:54  jeroens
+' Added layer editor GUI, initial attempt
+'
 ' Revision 1.2  2008/10/10 18:04:02  jeroens
 ' Updated to renamed layers classes
 '
@@ -157,7 +160,7 @@ Namespace Ecospace.Basemap
             AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
             Me.OnContaminantTracingChanged(Me.m_propContaminantTracing, cProperty.eChangeFlags.Value)
 
-            Me.UpdateControls()
+            'Me.UpdateControls()
 
         End Sub
 
@@ -204,11 +207,6 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub ucBrushPicker_OnBrushPicked(ByVal iSize As Integer, ByVal sValue As Single) Handles ucBrushPicker.OnBrushPicked
-            Me.m_ucBasemap.BrushSize = iSize
-            Me.m_ucBasemap.BrushValue = sValue
-        End Sub
-
         Private Sub OnPreIvokeEditcommand(ByVal cmd As Command)
             Me.m_ucLayers.LockUpdates()
         End Sub
@@ -220,7 +218,21 @@ Namespace Ecospace.Basemap
         End Sub
 
         Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal changeFlag As cLayer.eChangeFlags)
-            If ((changeFlag And cLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+            Dim layerSelect As cLayer = Nothing
+            ' Is selection change?
+            If ((changeFlag And cLayer.eChangeFlags.Selected) > 0) Then
+                ' #Yes: Find newly selected layer
+                For Each layerTemp As cLayer In Me.m_layers
+                    ' Got it?
+                    If layerTemp.IsSelected Then
+                        ' #Yes: remember this
+                        layerSelect = layerTemp
+                        Exit For
+                    End If
+                Next
+                ' Set selection
+                Me.SelectedLayer = layerSelect
+            End If
         End Sub
 
         Private Sub OnContaminantTracingChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
@@ -256,7 +268,7 @@ Namespace Ecospace.Basemap
             Me.RemoveAllLayers()
 
             Me.AddData(eVarNameFlags.LayerRelPP)
-            'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when proeprty changes
+            'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when property changes
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerHabitat)
@@ -331,42 +343,70 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        Private Sub UpdateControls()
+        Private m_layerSelected As cLayer = Nothing
 
-            Dim layerSelected As cLayer = Me.GetSelectedLayer()
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-            Dim propLayer As cProperty = Nothing
-            Dim md As cVariableMetaData = Nothing
-            Dim bEnable As Boolean = False
-            Dim bEnableValue As Boolean = False
+        Private Property SelectedLayer() As cLayer
+            Get
+                Return Me.m_layerSelected
+            End Get
+            Set(ByVal layer As cLayer)
 
-            If (layerSelected IsNot Nothing) Then
-                ' Examine property source for configuring value field
-                propLayer = pm.GetProperty(layerSelected.Source, layerSelected.VarName)
-                If (propLayer IsNot Nothing) Then
-                    If (TypeOf propLayer Is cSingleProperty) Or (TypeOf propLayer Is cIntegerProperty) Then
-                        md = propLayer.GetVariableMetadata()
-                        Me.ucBrushPicker.BrushMinValue = md.Min
-                        Me.ucBrushPicker.BrushMaxValue = md.Max
-                        Me.ucBrushPicker.ValueType = propLayer.GetValueType()
-                        bEnableValue = (layerSelected.ValueSet = cCore.NULL_VALUE)
+                If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
+
+                Me.SuspendLayout()
+
+                If (Me.m_layerSelected IsNot Nothing) Then
+                    ' Remove layer editor GUI
+                    Me.m_plEditor.Controls.Clear()
+                    Me.m_plEditor.Visible = False
+                End If
+
+                Me.m_layerSelected = layer
+
+                If (Me.m_layerSelected IsNot Nothing) Then
+                    ' Add layer editor GUI
+                    Dim ctrl As Control = Me.m_layerSelected.Editor.EditorControl(Me.m_layerSelected)
+                    If (ctrl IsNot Nothing) Then
+                        Me.m_plEditor.Controls.Add(ctrl)
+                        Me.m_plEditor.Height = ctrl.Height
+                        Me.m_plEditor.Visible = True
                     End If
                 End If
-                bEnable = layerSelected.Editor.IsEditable
-            End If
 
-            ' Update
-            Me.ucBrushPicker.Enabled = bEnable
-            Me.ucBrushPicker.EnabledValue = bEnableValue
+                Me.ResumeLayout()
 
-        End Sub
+            End Set
+        End Property
 
-        Private Function GetSelectedLayer() As cLayer
-            For Each layer As cLayer In Me.m_layers
-                If layer.IsSelected Then Return layer
-            Next
-            Return Nothing
-        End Function
+        'Private Sub UpdateControls()
+
+        '    Dim layerSelected As cLayer = Me.GetSelectedLayer()
+        '    Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+        '    Dim propLayer As cProperty = Nothing
+        '    Dim md As cVariableMetaData = Nothing
+        '    Dim bEnable As Boolean = False
+        '    Dim bEnableValue As Boolean = False
+
+        '    If (layerSelected IsNot Nothing) Then
+        '        ' Examine property source for configuring value field
+        '        propLayer = pm.GetProperty(layerSelected.Source, layerSelected.VarName)
+        '        If (propLayer IsNot Nothing) Then
+        '            If (TypeOf propLayer Is cSingleProperty) Or (TypeOf propLayer Is cIntegerProperty) Then
+        '                md = propLayer.GetVariableMetadata()
+        '                Me.ucBrushPicker.BrushMinValue = md.Min
+        '                Me.ucBrushPicker.BrushMaxValue = md.Max
+        '                Me.ucBrushPicker.ValueType = propLayer.GetValueType()
+        '                bEnableValue = (layerSelected.ValueSet = cCore.NULL_VALUE)
+        '            End If
+        '        End If
+        '        bEnable = layerSelected.Editor.IsEditable
+        '    End If
+
+        '    ' Update
+        '    Me.ucBrushPicker.Enabled = bEnable
+        '    Me.ucBrushPicker.EnabledValue = bEnableValue
+
+        'End Sub
 
 #End Region ' Internals
 

@@ -28,14 +28,13 @@ Partial Class Basemap
             Me.plLayers = New System.Windows.Forms.Panel
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.ucBrushPicker = New ScientificInterfaceShared.ucBrushPicker
             Me.lblLayers = New System.Windows.Forms.Label
-            Me.lblBrush = New System.Windows.Forms.Label
             Me.tsEditBasemapThingies = New System.Windows.Forms.ToolStrip
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton
             Me.tsbEditHabitats = New System.Windows.Forms.ToolStripButton
             Me.tsbEditMPA = New System.Windows.Forms.ToolStripButton
             Me.tsbEditRegion = New System.Windows.Forms.ToolStripButton
+            Me.m_plEditor = New System.Windows.Forms.Panel
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -72,25 +71,11 @@ Partial Class Basemap
             'TableLayoutPanel1
             '
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.ucBrushPicker, 0, 4)
             Me.TableLayoutPanel1.Controls.Add(Me.plLayers, 0, 2)
             Me.TableLayoutPanel1.Controls.Add(Me.lblLayers, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.lblBrush, 0, 3)
             Me.TableLayoutPanel1.Controls.Add(Me.tsEditBasemapThingies, 0, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plEditor, 0, 3)
             Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
-            'ucBrushPicker
-            '
-            resources.ApplyResources(Me.ucBrushPicker, "ucBrushPicker")
-            Me.ucBrushPicker.BackColor = System.Drawing.SystemColors.Control
-            Me.ucBrushPicker.BrushMaxSize = 5
-            Me.ucBrushPicker.BrushMaxValue = 100.0!
-            Me.ucBrushPicker.BrushMinSize = 1
-            Me.ucBrushPicker.BrushMinValue = 0.0!
-            Me.ucBrushPicker.BrushSize = 1
-            Me.ucBrushPicker.BrushValue = 0.0!
-            Me.ucBrushPicker.ForeColor = System.Drawing.SystemColors.ControlText
-            Me.ucBrushPicker.Name = "ucBrushPicker"
             '
             'lblLayers
             '
@@ -98,13 +83,6 @@ Partial Class Basemap
             Me.lblLayers.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.lblLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblLayers.Name = "lblLayers"
-            '
-            'lblBrush
-            '
-            resources.ApplyResources(Me.lblBrush, "lblBrush")
-            Me.lblBrush.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.lblBrush.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblBrush.Name = "lblBrush"
             '
             'tsEditBasemapThingies
             '
@@ -136,6 +114,11 @@ Partial Class Basemap
             resources.ApplyResources(Me.tsbEditRegion, "tsbEditRegion")
             Me.tsbEditRegion.Name = "tsbEditRegion"
             '
+            'm_plEditor
+            '
+            resources.ApplyResources(Me.m_plEditor, "m_plEditor")
+            Me.m_plEditor.Name = "m_plEditor"
+            '
             'Basemap
             '
             resources.ApplyResources(Me, "$this")
@@ -159,13 +142,12 @@ Partial Class Basemap
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents lblLayers As System.Windows.Forms.Label
-        Friend WithEvents lblBrush As System.Windows.Forms.Label
-        Friend WithEvents ucBrushPicker As ScientificInterfaceShared.ucBrushPicker
         Friend WithEvents tsEditBasemapThingies As System.Windows.Forms.ToolStrip
         Friend WithEvents tsbEditBasemap As System.Windows.Forms.ToolStripButton
         Friend WithEvents tsbEditHabitats As System.Windows.Forms.ToolStripButton
         Friend WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
         Friend WithEvents tsbEditMPA As System.Windows.Forms.ToolStripButton
+        Friend WithEvents m_plEditor As System.Windows.Forms.Panel
 
     End Class
 
