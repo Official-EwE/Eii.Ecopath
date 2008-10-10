@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: ucBrushPicker.vb,v $
-' Revision 1.1  2008/09/26 07:31:14  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/10/10 20:00:55  jeroens
+' Revamped slider
 '
 ' Revision 1.1  2008/06/01 23:45:06  jeroens
 ' Separated from Scientific Interface
@@ -202,7 +202,7 @@ Public Class ucBrushPicker
     ''' Event handler; responds to brush value changes by raising a brush picked event.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub tbBrush_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbValue.ValueChanged
+    Private Sub tbBrush_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.FireBrushPickedEvent()
     End Sub
 

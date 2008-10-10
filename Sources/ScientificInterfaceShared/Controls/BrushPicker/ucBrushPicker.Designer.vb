@@ -24,9 +24,8 @@ Partial Class ucBrushPicker
     Private Sub InitializeComponent()
         Me.lbSize = New System.Windows.Forms.Label
         Me.lbValue = New System.Windows.Forms.Label
-        Me.tbValue = New System.Windows.Forms.TrackBar
         Me.nudValue = New System.Windows.Forms.NumericUpDown
-        CType(Me.tbValue, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.UcSlider1 = New ScientificInterfaceShared.Controls.ucSlider
         CType(Me.nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -48,20 +47,6 @@ Partial Class ucBrushPicker
         Me.lbValue.TabIndex = 2
         Me.lbValue.Text = "&Value:"
         '
-        'tbValue
-        '
-        Me.tbValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tbValue.LargeChange = 1
-        Me.tbValue.Location = New System.Drawing.Point(36, -2)
-        Me.tbValue.Maximum = 5
-        Me.tbValue.Minimum = 1
-        Me.tbValue.Name = "tbValue"
-        Me.tbValue.Size = New System.Drawing.Size(118, 42)
-        Me.tbValue.TabIndex = 1
-        Me.tbValue.TickStyle = System.Windows.Forms.TickStyle.TopLeft
-        Me.tbValue.Value = 1
-        '
         'nudValue
         '
         Me.nudValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -72,17 +57,27 @@ Partial Class ucBrushPicker
         Me.nudValue.Size = New System.Drawing.Size(104, 20)
         Me.nudValue.TabIndex = 3
         '
+        'UcSlider1
+        '
+        Me.UcSlider1.Location = New System.Drawing.Point(43, 3)
+        Me.UcSlider1.Margin = New System.Windows.Forms.Padding(0)
+        Me.UcSlider1.Maximum = 100
+        Me.UcSlider1.Minimum = 0
+        Me.UcSlider1.Name = "UcSlider1"
+        Me.UcSlider1.Size = New System.Drawing.Size(104, 20)
+        Me.UcSlider1.TabIndex = 4
+        Me.UcSlider1.Value = 50
+        '
         'ucBrushPicker
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.UcSlider1)
         Me.Controls.Add(Me.nudValue)
         Me.Controls.Add(Me.lbValue)
         Me.Controls.Add(Me.lbSize)
-        Me.Controls.Add(Me.tbValue)
         Me.Name = "ucBrushPicker"
         Me.Size = New System.Drawing.Size(150, 62)
-        CType(Me.tbValue, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudValue, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -90,7 +85,7 @@ Partial Class ucBrushPicker
     End Sub
     Friend WithEvents lbSize As System.Windows.Forms.Label
     Friend WithEvents lbValue As System.Windows.Forms.Label
-    Friend WithEvents tbValue As System.Windows.Forms.TrackBar
     Friend WithEvents nudValue As System.Windows.Forms.NumericUpDown
+    Friend WithEvents UcSlider1 As ScientificInterfaceShared.Controls.ucSlider
 
 End Class
