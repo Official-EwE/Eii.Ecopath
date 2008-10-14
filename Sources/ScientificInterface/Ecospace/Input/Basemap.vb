@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.4  2008/10/14 20:23:32  jeroens
+' Forged basis for separate editors
+'
 ' Revision 1.3  2008/10/10 20:09:54  jeroens
 ' Added layer editor GUI, initial attempt
 '
@@ -160,7 +163,7 @@ Namespace Ecospace.Basemap
             AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
             Me.OnContaminantTracingChanged(Me.m_propContaminantTracing, cProperty.eChangeFlags.Value)
 
-            'Me.UpdateControls()
+            Me.m_plEditor.Visible = False
 
         End Sub
 
@@ -344,6 +347,7 @@ Namespace Ecospace.Basemap
 #Region " Internals "
 
         Private m_layerSelected As cLayer = Nothing
+        Private m_editorSelected As ucLayerEditorGUI = Nothing
 
         Private Property SelectedLayer() As cLayer
             Get
@@ -356,20 +360,27 @@ Namespace Ecospace.Basemap
                 Me.SuspendLayout()
 
                 If (Me.m_layerSelected IsNot Nothing) Then
-                    ' Remove layer editor GUI
-                    Me.m_plEditor.Controls.Clear()
-                    Me.m_plEditor.Visible = False
+                    ' Has editor GUI?
+                    If (Me.m_editorSelected IsNot Nothing) Then
+                        ' #Yes: remove layer editor GUI
+                        RemoveHandler Me.m_editorSelected.OnChanged, AddressOf OnLayerEditorChanged
+                        Me.m_plEditor.Controls.Remove(Me.m_editorSelected)
+                        Me.m_plEditor.Visible = False
+                        Me.m_editorSelected = Nothing
+                    End If
                 End If
 
                 Me.m_layerSelected = layer
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Add layer editor GUI
-                    Dim ctrl As Control = Me.m_layerSelected.Editor.EditorControl(Me.m_layerSelected)
-                    If (ctrl IsNot Nothing) Then
-                        Me.m_plEditor.Controls.Add(ctrl)
-                        Me.m_plEditor.Height = ctrl.Height
+                    Me.m_editorSelected = Me.m_layerSelected.Editor.EditorGUI()
+                    If (Me.m_editorSelected IsNot Nothing) Then
+                        Me.m_plEditor.Height = Me.m_editorSelected.Height
+                        Me.m_editorSelected.Dock = DockStyle.Fill
+                        Me.m_plEditor.Controls.Add(Me.m_editorSelected)
                         Me.m_plEditor.Visible = True
+                        AddHandler Me.m_editorSelected.OnChanged, AddressOf OnLayerEditorChanged
                     End If
                 End If
 
@@ -378,35 +389,9 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        'Private Sub UpdateControls()
-
-        '    Dim layerSelected As cLayer = Me.GetSelectedLayer()
-        '    Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-        '    Dim propLayer As cProperty = Nothing
-        '    Dim md As cVariableMetaData = Nothing
-        '    Dim bEnable As Boolean = False
-        '    Dim bEnableValue As Boolean = False
-
-        '    If (layerSelected IsNot Nothing) Then
-        '        ' Examine property source for configuring value field
-        '        propLayer = pm.GetProperty(layerSelected.Source, layerSelected.VarName)
-        '        If (propLayer IsNot Nothing) Then
-        '            If (TypeOf propLayer Is cSingleProperty) Or (TypeOf propLayer Is cIntegerProperty) Then
-        '                md = propLayer.GetVariableMetadata()
-        '                Me.ucBrushPicker.BrushMinValue = md.Min
-        '                Me.ucBrushPicker.BrushMaxValue = md.Max
-        '                Me.ucBrushPicker.ValueType = propLayer.GetValueType()
-        '                bEnableValue = (layerSelected.ValueSet = cCore.NULL_VALUE)
-        '            End If
-        '        End If
-        '        bEnable = layerSelected.Editor.IsEditable
-        '    End If
-
-        '    ' Update
-        '    Me.ucBrushPicker.Enabled = bEnable
-        '    Me.ucBrushPicker.EnabledValue = bEnableValue
-
-        'End Sub
+        Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditorGUI)
+            Me.m_ucBasemap.UpdateInteraction()
+        End Sub
 
 #End Region ' Internals
 

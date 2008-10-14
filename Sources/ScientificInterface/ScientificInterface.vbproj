@@ -1011,8 +1011,12 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucEditorDefault.resx">
-      <DependentUpon>ucEditorDefault.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.resx">
+      <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.resx">
+      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditImportanceLayers.resx">
@@ -1116,22 +1120,33 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorAdvection.Designer.vb">
+      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorAdvection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.Designer.vb">
+      <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Basemap\Layers\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Basemap\Layers\cLayerEditor.vb" />
     <Compile Include="Ecospace\Input\Basemap\Layers\cLayerFactory.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\ILayerEditorGUI.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucEditorDefault.Designer.vb">
-      <DependentUpon>ucEditorDefault.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.Designer.vb">
+      <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucEditorDefault.vb">
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucEditorRange.Designer.vb">
-      <DependentUpon>ucEditorRange.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.Designer.vb">
+      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucEditorRange.vb">
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditImportanceLayers.Designer.vb">
