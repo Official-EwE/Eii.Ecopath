@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.3  2008/10/15 06:06:20  jeroens
+' No longer close Console.Out; rather restore to its original state in DumpResultsToStream
+'
 ' Revision 1.2  2008/10/08 19:39:01  villyc
 ' mti feature: discards no longer have a positive impact on the fleet that catches them
 '
@@ -548,6 +551,8 @@ Public Class cEcoNetwork
     ''' <remarks>This can write to the console or a file stream</remarks>
     Public Sub DumpResultsToStream(Optional ByRef textStream As System.IO.TextWriter = Nothing)
 
+        Dim textStreamOrg As System.IO.TextWriter = System.Console.Out
+
         If textStream IsNot Nothing Then
             System.Console.SetOut(textStream)
         End If
@@ -572,7 +577,10 @@ Public Class cEcoNetwork
             System.Console.Write(vbNewLine)
         Next
 
-        System.Console.Out.Close()
+        ' Restore original text stream
+        If (textStream IsNot Nothing) Then
+            System.Console.SetOut(textStreamOrg)
+        End If
 
     End Sub
 
