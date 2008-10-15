@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.6  2008/10/15 23:53:28  jeroens
+' more basemap definitions
+'
 ' Revision 1.5  2008/10/08 20:32:11  joeb
 ' Added CVBest and KalWt
 '
@@ -558,6 +561,10 @@ Namespace Core
         LayerRelCin
         ''' <summary>Ecospace cell region assignments</summary>
         LayerRegion
+        ''' <summary>Ecospace cell migration assignments</summary>
+        LayerMigration
+        ''' <summary>Ecospace cell advection assignments</summary>
+        LayerAdvection
         ''' <summary>Ecospace/MPA importance.</summary>
         LayerImportance
         ''' <summary>Ecospace/MPA importance weight of the LayerImportance Variable.</summary>
@@ -956,6 +963,8 @@ Namespace Core
 
         ''' <summary>Ecospace cell MPA seed assignments</summary>
         LayerMPASeed
+        LayerMPASeedCurrent
+        LayerMPASeedBest
         ''' <summary>Ecospace cell MPA Random assignments</summary>
         LayerMPARandom
         ''' <summary>MSE coefficient of variation for biomass</summary>
