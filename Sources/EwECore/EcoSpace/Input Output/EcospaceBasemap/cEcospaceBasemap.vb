@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.2  2008/10/15 23:59:46  jeroens
+' Added migration layer
+'
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -110,6 +113,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' LayerMigration
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' MPASeed
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -156,6 +164,10 @@ Public Class cEcospaceBasemap
                 lData = data.ImportanceLayers(i)
                 m_lstLayerImportance.Add(New cEcospaceLayerImportance(theCore, lData.DBID, Me, i))
             Next
+
+            ' Migration
+            layer = New cEcospaceMigrationLayer(theCore, Me, eVarNameFlags.LayerMigration)
+            Me.Layers(eVarNameFlags.LayerMigration) = layer
 
             'set status flags to default values
             ResetStatusFlags()
@@ -386,6 +398,17 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerMigration() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerMigration)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRelCin() As cEcospaceLayer
         Get
             Return Me.m_dictLayers(eVarNameFlags.LayerRelCin)
@@ -419,6 +442,10 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.RelCin
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
+            Case eVarNameFlags.LayerMigration
+                Return New Single()() {Me.m_core.m_EcoSpaceData.MigConcCol, Me.m_core.m_EcoSpaceData.MigConcRow}
+            Case eVarNameFlags.LayerAdvection
+                'Return New Single()() {Me.m_core.m_EcoSpaceData.AdvectSpeed}
             Case eVarNameFlags.LayerImportance
                 If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
                     Debug.Assert(True, "cCore message: Index out of bounds error for ImportanceLayers")
