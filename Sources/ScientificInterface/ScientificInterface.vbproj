@@ -72,6 +72,27 @@
     <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <DocumentationFile>EwE6.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <DocumentationFile>EwE6.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SAUPUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
@@ -1011,8 +1032,16 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.resx">
+      <DependentUpon>ucLayerEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.resx">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.resx">
+      <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.resx">
@@ -1120,6 +1149,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.Designer.vb">
+      <DependentUpon>ucLayerEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorAdvection.Designer.vb">
       <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
     </Compile>
