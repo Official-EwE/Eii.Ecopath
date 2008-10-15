@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.11  2008/10/15 20:25:34  joeb
+' Added MonteCarlo handler to onChanged()
+'
 ' Revision 1.10  2008/10/07 18:34:39  villyc
 ' updating a vulmult pred-prey swap
 '
@@ -751,7 +754,8 @@ Public Class cEcosimMonteCarlo
             'Also transfer to vulmult
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
-                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
+                'jb this is done by the manager in ApplyBestFits core.onChanged() 
+                '  m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
 
 
@@ -928,7 +932,8 @@ Public Class cEcosimMonteCarlo
                                                                      False)
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
+                'jb this is done by the manager in ApplyBestFits core.onChanged() 
+                ' m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
             '    sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
         Next

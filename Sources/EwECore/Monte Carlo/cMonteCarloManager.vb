@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.7  2008/10/15 20:25:37  joeb
+' Added MonteCarlo handler to onChanged()
+'
 ' Revision 1.6  2008/10/10 23:22:20  villyc
 ' *** empty log message ***
 '
@@ -407,16 +410,14 @@ Public Class cMonteCarloManager
             m_mc.ApplyBestFits()
             Me.LoadBestFitsToGroups()
 
-            'tell the core that the monte carlo manager has changed the ecopath data
+            'tell the core that the monte carlo manager has changed the ecopath and ecosim data
+            'this loads modeling data into core input/output objects
             m_core.onChanged(Me, eMessageType.DataModified)
 
-            'load the new input parameters into the interface objects
-            m_core.LoadEcopathInputs()
             'run ecopath with the new parameters
             m_core.RunEcoPath()
             'initialize ecosim with the new data
             m_core.m_EcoSim.Init(True)
-            
 
             m_core.RunEcoSim()
             ' Dim ss As Single = m_core.EcosimStats.SS
