@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.8  2008/10/15 21:15:26  villyc
+' mc fixes
+'
 ' Revision 1.7  2008/10/15 20:25:37  joeb
 ' Added MonteCarlo handler to onChanged()
 '
@@ -420,7 +423,7 @@ Public Class cMonteCarloManager
             m_core.m_EcoSim.Init(True)
 
             m_core.RunEcoSim()
-            ' Dim ss As Single = m_core.EcosimStats.SS
+            Dim ss As Single = m_core.EcosimStats.SS
 
         Catch ex As Exception
             Debug.Assert(False)

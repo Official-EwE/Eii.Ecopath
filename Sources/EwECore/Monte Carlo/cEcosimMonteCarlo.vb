@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.12  2008/10/15 21:15:26  villyc
+' mc fixes
+'
 ' Revision 1.11  2008/10/15 20:25:34  joeb
 ' Added MonteCarlo handler to onChanged()
 '
@@ -425,6 +428,8 @@ Public Class cEcosimMonteCarlo
             'ss is the fit of the currently loaded reference data
             m_ecosim.Run()
 
+            Dim OrigSS As Single = m_core.EcosimStats.SS
+
             If m_esdata.SS > 0 Then
                 SSBestFit = m_esdata.SS
             Else
@@ -523,7 +528,7 @@ Public Class cEcosimMonteCarlo
                             'CheckWhoIsCrashed()
                             'CalculateUpperLowerLimits()
                         End If
-
+                        'm_core.Save()
 
                     End If
                     'Next
