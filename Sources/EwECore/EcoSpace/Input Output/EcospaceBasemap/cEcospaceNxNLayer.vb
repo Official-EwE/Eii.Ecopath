@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceNxNLayer.vb,v $
+' Revision 1.2  2008/10/15 23:54:11  jeroens
+' Added cEcospaceMigrationLayer to uniquely wrap the migration data
+'
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -53,7 +56,7 @@ Public Class cEcospaceIntegerNxNLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for an NxN layer that derives its data and identity from 
+    ''' Constructor for a migration layer that derives its data and identity from 
     ''' a manager.
     ''' </summary>
     ''' <param name="theCore"></param>
@@ -293,3 +296,104 @@ Public Class cEcospaceSingleNxNLayer
 
 End Class
 
+
+''' ===========================================================================
+''' <summary>
+''' Layer for the Ecospace basemap, providing cell-based access to a 2 dimensional
+''' array of migration values.
+''' </summary>
+''' ===========================================================================
+Public Class cEcospaceMigrationLayer
+    Inherits cEcospaceLayer
+
+    Private m_iMinValue As Integer = 1
+    Private m_iMaxValue As Integer = cCore.N_MONTHS
+
+#Region " Construction "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor for an NxN layer that derives its data and identity from 
+    ''' a manager.
+    ''' </summary>
+    ''' <param name="theCore"></param>
+    ''' <param name="manager"></param>
+    ''' <param name="varName"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, _
+            ByVal varName As eVarNameFlags)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, cCore.NULL_VALUE, Nothing)
+    End Sub
+
+#End Region ' Construction
+
+#Region " Cell interaction "
+
+    Private m_asData As Single(,)
+
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single
+        Get
+            If Me.m_asData Is Nothing Then
+                Me.Refresh()
+            End If
+            Return Me.m_asData(iRow, iCol)
+        End Get
+        Set(ByVal value As Single)
+            Debug.Assert(value >= Me.m_iMinValue)
+            Debug.Assert(value <= Me.m_iMaxValue)
+
+            Me.MigRow(CInt(value)) = iRow
+            Me.MigCol(CInt(value)) = iCol
+            Me.Invalidate()
+        End Set
+    End Property
+
+    Public Overrides Sub Invalidate()
+        Me.m_asData = Nothing
+    End Sub
+
+    Public Overrides ReadOnly Property MaxValue() As Single
+        Get
+            Return Me.m_iMaxValue
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property MinValue() As Single
+        Get
+            Return Me.m_iMinValue
+        End Get
+    End Property
+
+#End Region ' Cell interaction
+
+#Region " Private bits "
+
+    Private Function MigRow() As Single()
+        Dim d As Object = Me.Data
+        Return DirectCast(d, Single()())(0)
+    End Function
+
+    Private Function MigCol() As Single()
+        Dim d As Object = Me.Data
+        Return DirectCast(d, Single()())(1)
+    End Function
+
+    Private Sub Refresh()
+        Dim asMigRow As Single() = Me.MigRow
+        Dim asMigCol As Single() = Me.MigCol
+        ReDim m_asData(Me.InRow, Me.InCol)
+
+        For iRowTest As Integer = 1 To Me.InRow
+            For iColTest As Integer = 1 To Me.InCol
+                Me.m_asData(iRowTest, iColTest) = cCore.NULL_VALUE
+            Next
+        Next
+
+        For iMonth As Integer = Me.m_iMinValue To Me.m_iMaxValue
+            Me.m_asData(CInt(asMigRow(iMonth)), CInt(asMigCol(iMonth))) = iMonth
+        Next
+    End Sub
+
+#End Region ' Private bits
+
+End Class
