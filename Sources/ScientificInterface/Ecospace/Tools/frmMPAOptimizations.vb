@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.3  2008/10/15 23:58:10  jeroens
+' All layers added by varname, no longer by string
+'
 ' Revision 1.2  2008/10/10 18:04:03  jeroens
 ' Updated to renamed layers classes
 '
@@ -855,7 +858,7 @@ Namespace Ecospace
 
                                 strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
                                 ' Create current cell layer(s)
-                                alayers = cLayerFactory.GetLayers(Me.m_core, cLayerFactory.sLAYER_MPASEEDCURRENT, layWrapped)
+                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, layWrapped)
                                 For iLayer As Integer = 0 To alayers.Length - 1
                                     l = alayers(iLayer)
                                     l.Editor.IsReadOnly = True
@@ -864,7 +867,7 @@ Namespace Ecospace
                                 lRunStateLayers.AddRange(alayers)
 
                                 ' Create best cell layer
-                                alayers = cLayerFactory.GetLayers(Me.m_core, cLayerFactory.sLAYER_MPASEEDBEST, layWrapped)
+                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedBest, layWrapped)
                                 For iLayer As Integer = 0 To alayers.Length - 1
                                     l = alayers(iLayer)
                                     l.Editor.IsReadOnly = True
@@ -906,7 +909,7 @@ Namespace Ecospace
                                 strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
 
                                 ' Create current cell layer(s)
-                                alayers = cLayerFactory.GetLayers(Me.m_core, cLayerFactory.sLAYER_MPARANDOM_RESULT, layWrapped)
+                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPARandom, layWrapped)
                                 For iLayer As Integer = 0 To alayers.Length - 1
                                     l = alayers(iLayer)
                                     l.Editor.IsReadOnly = True
