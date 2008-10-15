@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.17  2008/10/15 20:25:17  joeb
+' Added MontCarlo handler to onChanged()
+'
 ' Revision 1.16  2008/10/09 17:21:02  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -9948,6 +9951,9 @@ Public Class cCore
 
                     ' Me.m_PedigreeManagers
 
+                Case eDataTypes.MonteCarlo
+                    Me.LoadEcopathInputs()
+                    Me.LoadEcosimGroups()
             End Select
 
             ' JS 31aug07: DataAddedOrRemoved messages are initialized by the db, thus the db should not get flagged as dirty
