@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.5  2008/10/15 17:05:16  jeroens
+' Rerouted editor gui baseclass
+'
 ' Revision 1.4  2008/10/14 20:23:32  jeroens
 ' Forged basis for separate editors
 '
@@ -347,7 +350,7 @@ Namespace Ecospace.Basemap
 #Region " Internals "
 
         Private m_layerSelected As cLayer = Nothing
-        Private m_editorSelected As ucLayerEditorGUI = Nothing
+        Private m_editorSelected As ucLayerEditor = Nothing
 
         Private Property SelectedLayer() As cLayer
             Get
@@ -368,13 +371,14 @@ Namespace Ecospace.Basemap
                         Me.m_plEditor.Visible = False
                         Me.m_editorSelected = Nothing
                     End If
+                    Me.m_layerSelected.Editor.ReleaseEditorControl()
                 End If
 
                 Me.m_layerSelected = layer
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Add layer editor GUI
-                    Me.m_editorSelected = Me.m_layerSelected.Editor.EditorGUI()
+                    Me.m_editorSelected = Me.m_layerSelected.Editor.GetEditorControl()
                     If (Me.m_editorSelected IsNot Nothing) Then
                         Me.m_plEditor.Height = Me.m_editorSelected.Height
                         Me.m_editorSelected.Dock = DockStyle.Fill
@@ -389,7 +393,7 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditorGUI)
+        Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditor)
             Me.m_ucBasemap.UpdateInteraction()
         End Sub
 
