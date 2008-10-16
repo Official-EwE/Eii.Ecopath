@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.6  2008/10/16 00:00:28  jeroens
+' Added migration layer
+' MPA layer moved on top
+'
 ' Revision 1.5  2008/10/15 17:05:16  jeroens
 ' Rerouted editor gui baseclass
 '
@@ -273,9 +277,10 @@ Namespace Ecospace.Basemap
             ' Clean-up
             Me.RemoveAllLayers()
 
+            Me.AddData(eVarNameFlags.LayerMPA)
+            Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP)
             'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when property changes
-            Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerHabitat)
             Me.AddData(eVarNameFlags.LayerDepth)
