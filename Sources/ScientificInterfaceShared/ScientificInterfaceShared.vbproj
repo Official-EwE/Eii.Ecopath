@@ -90,12 +90,6 @@
     </Compile>
     <Compile Include="Controls\FileDialog\cEwEFileDialogHelper.vb" />
     <Compile Include="Controls\Indicator renderers\cArrowIndicator.vb" />
-    <Compile Include="Controls\BrushPicker\ucBrushPicker.Designer.vb">
-      <DependentUpon>ucBrushPicker.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BrushPicker\ucBrushPicker.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\ComboBox\CustomComboBox.Designer.vb">
       <DependentUpon>CustomComboBox.vb</DependentUpon>
     </Compile>
@@ -189,10 +183,6 @@
     <Compile Include="Definitions\Shared UIEnums.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\BrushPicker\ucBrushPicker.resx">
-      <DependentUpon>ucBrushPicker.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.resx">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>
       <SubType>Designer</SubType>
