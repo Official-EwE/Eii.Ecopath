@@ -1,58 +1,11 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.2  2008/10/20 23:35:58  jeroens
+' CW egg
+'
 ' Revision 1.1  2008/09/26 07:30:17  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2008/07/25 14:21:10  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.15  2008/07/25 03:00:45  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.14  2008/07/25 01:39:10  joeh
-' Modify to cater the generic datasource engine in the core
-'
-' Revision 1.13  2008/07/25 00:05:27  jeroens
-' Uses proper supporting class to detect type of conection to use
-'
-' Revision 1.12  2008/07/09 14:37:02  jeroens
-' Added accdb generation
-'
-' Revision 1.11  2008/07/09 13:28:30  jeroens
-' Added accdb format support
-'
-' Revision 1.10  2008/03/14 01:52:52  jeroens
-' Fixed CLS compliancy warning
-'
-' Revision 1.9  2008/02/13 03:54:38  jeroens
-' New model name and author are set
-'
-' Revision 1.8  2007/12/13 17:15:27  jeroens
-' * Changed SaveModelAs / Database replication structure
-'
-' Revision 1.7  2007/09/17 02:45:27  jeroens
-' * Database created with a model name
-'
-' Revision 1.6  2007/09/05 14:15:00  jeroens
-' * Disabled autonum correction logic since EwE no longer uses autonum values
-'
-' Revision 1.5  2007/08/27 17:38:14  jeroens
-' + Added Property FileName
-'
-' Revision 1.4  2007/07/25 03:08:38  jeroens
-' * Moved cEwEDatabase to EwEUtils
-'
-' Revision 1.3  2007/02/27 04:02:31  jeroens
-' + Added mustoverride property Name
-'
-' Revision 1.2  2006/07/03 04:28:24  jeroens
-' - Removed CreateDBCommand
-' * GetAdapter extents base class implementation
-'
-' Revision 1.1  2006/07/01 04:23:49  jeroens
-' + Initial version, split off from cEwEDatabase containing all MDB/OleDb specific logic
 '
 '==============================================================================
 
@@ -61,6 +14,7 @@ Option Strict On
 Imports System.Data.OleDb
 Imports EwECore.DataSources
 Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 
 Namespace Database
 
@@ -119,6 +73,11 @@ Namespace Database
                         datResult = db.Open(strDatabase)
                         If (datResult = eAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, EwEUtils.SystemUtilities.GetUserName()))
+                            ' Egg - over-easy but slightly obfuscated ;)
+                            If strModelName.Contains(StringUtils.Shift("Dbsm!Xbmufst")) Then
+                                db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", StringUtils.Shift("Dijdlfo!tiju")))
+                                db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", StringUtils.Shift("Tfbm!cbtifst")))
+                            End If
                             db.Close()
                         End If
                         db = Nothing
