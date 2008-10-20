@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.5  2008/10/20 20:21:08  joeb
+' Quota editable from Game Client
+'
 ' Revision 1.4  2008/10/03 18:45:06  joeb
 ' Renamed eQuotaTypes.NotSet to NotUsed
 '
@@ -607,18 +610,6 @@ Public Enum eTimeSeriesType
     EcotracerConcRel = 8
     EcotracerConcAbs = 9
     NotSet = cCore.NULL_VALUE
-End Enum
-
-#End Region
-
-#Region "Quota types"
-
-'enum values are hard coded so that they can be stored in the database 
-Public Enum eQuotaTypes
-    NotUsed = 0
-    Weakest = 1
-    Strongest = 2
-    Selective = 3
 End Enum
 
 #End Region

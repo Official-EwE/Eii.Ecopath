@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.18  2008/10/20 20:21:09  joeb
+' Quota editable from Game Client
+'
 ' Revision 1.17  2008/10/15 20:25:17  joeb
 ' Added MontCarlo handler to onChanged()
 '
@@ -3833,7 +3836,7 @@ Public Class cCore
     Friend m_SearchData As cSearchDatastructures
 
     Private m_EcoSimRun As cEcoSimModelParameters 'private copy of EcoSim model parameters. Public access will through a reference to this object
-    Friend m_EcoSimGroups As New cCoreInputOutputList(Of cEcoSimGroupInput)(eDataTypes.EcoSimGroupInput, 1)
+    Friend m_EcoSimGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupInput, 1)
     '   Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cEcosimGroupOutput)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
@@ -4481,7 +4484,7 @@ Public Class cCore
                 Return Nothing
             End If
             ' JS 06Jul07: list will take care of scenario index/item index offset
-            Return m_EcoSimGroups(iGroup)
+            Return DirectCast(m_EcoSimGroups(iGroup), cEcoSimGroupInput)
         End Get
     End Property
 
