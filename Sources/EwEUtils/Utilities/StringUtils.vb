@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StringUtils.vb,v $
+' Revision 1.2  2008/10/20 23:35:39  jeroens
+' Added shift
+'
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -189,6 +192,13 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function Shift(ByVal strIn As String) As String
+            Dim strOut As String = ""
+            For Each c As Char In strIn.ToCharArray
+                strOut += ChrW(AscW(c) - 1)
+            Next
+            Return strOut
+        End Function
     End Class
 
 End Namespace ' Utilities
