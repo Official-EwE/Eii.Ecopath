@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.7  2008/10/20 20:22:06  joeb
+' Moved eQuotaTypes here
+'
 ' Revision 1.6  2008/10/15 23:53:28  jeroens
 ' more basemap definitions
 '
@@ -1552,5 +1555,17 @@ Namespace Core
     End Enum
 
 #End Region ' System units
+
+#Region "Quota types"
+
+    'enum values are hard coded so that they can be stored in the database 
+    Public Enum eQuotaTypes
+        NotUsed = 0
+        Weakest = 1
+        Strongest = 2
+        Selective = 3
+    End Enum
+
+#End Region
 
 End Namespace ' Core
