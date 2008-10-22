@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimFisheriesRegulation.vb,v $
+' Revision 1.5  2008/10/22 15:54:41  joeb
+' ResetStatusFlags handled by the core
+'
 ' Revision 1.4  2008/10/09 17:21:04  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -72,7 +75,7 @@ Public Class cEcosimFisheriesRegulation
 #Region " Overrides "
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
-        If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
+        '   If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
         Return Me.m_core.Set_Quota_Flags(Me, False)
     End Function
 
