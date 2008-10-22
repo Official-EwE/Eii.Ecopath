@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.8  2008/10/22 17:00:11  joeb
+' Added NRow and NCols
+'
 ' Revision 1.7  2008/10/20 20:22:06  joeb
 ' Moved eQuotaTypes here
 '
@@ -1359,6 +1362,11 @@ Namespace Core
         nGameSimTimeSteps
         ''' <summary>Number of timesteps per year.</summary>
         nGameSimTimeStepsPerYear
+
+        ''' <summary>Number of rows in the Ecospace basemap.</summary>
+        nRows
+        ''' <summary>Number of columns in the Ecospace basemap.</summary>
+        nCols
 
 
     End Enum
