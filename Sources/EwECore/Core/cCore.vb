@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.19  2008/10/22 15:53:51  joeb
+' Added NRows and NCols dimensions for map
+' Added OnValidated code for fisheries regulation objects
+'
 ' Revision 1.18  2008/10/20 20:21:09  joeb
 ' Quota editable from Game Client
 '
@@ -331,6 +335,21 @@ Public Class cCore
                     Return Me.nImportanceLayers
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
+
+                Case eCoreCounterTypes.nRows
+                    If m_EcospaceBasemap IsNot Nothing Then
+                        Return Me.m_EcospaceBasemap.InRow
+                    Else
+                        Return 0
+                    End If
+
+                Case eCoreCounterTypes.nCols
+                    If m_EcospaceBasemap IsNot Nothing Then
+                        Return Me.m_EcospaceBasemap.InCol
+                    Else
+                        Return 0
+                    End If
+
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -9699,7 +9718,6 @@ Public Class cCore
                                             eMessageSource.SearchObjective, eMessageImportance.Maintenance, eDataTypes.SearchObjectiveManager)
                             Me.m_publisher.AddMessage(msg)
 
-
                         End If
 
                     Case eVarNameFlags.GS
@@ -9766,7 +9784,6 @@ Public Class cCore
 
                         Me.m_publisher.AddMessage(msg)
 
-
                 End Select
 
             Case eDataTypes.EcoSimGroupInput
@@ -9803,13 +9820,17 @@ Public Class cCore
                     Case eVarNameFlags.mcBAcv, eVarNameFlags.mcBcv, eVarNameFlags.mcEEcv, eVarNameFlags.mcPBcv, eVarNameFlags.mcVUcv
 
                         Me.m_MonteCarlo.CalculateUpperLowerLimits()
-
-
                         Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
                                                      eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.MonteCarlo))
 
 
                 End Select
+
+            Case eDataTypes.EcosimFisheriesRegulation
+
+                'jb if the game client has edited the fisheries quotas make sure the status flags are reset 
+                'the client may have edited values that are not editable
+                obj.ResetStatusFlags()
 
         End Select
 
