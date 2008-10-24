@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.3  2008/10/24 19:36:47  joeh
+' Implement cumulative biomass plot - Take one
+'
 ' Revision 1.2  2008/10/02 19:04:07  sherman
 ' Modified Ecosim plot to start at 1 instead of 0
 '
@@ -117,7 +120,7 @@ Namespace Ecosim
             m_ZGHelper = New ZedGraphHelper(m_zgc)
 
             ' 0.5) Call new graph
-            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Biomass", "Year", "Relative biomass")
+            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Biomass", "Year", "Culmulative biomass")
 
             m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
@@ -131,27 +134,83 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Sub EcosimCompleteDelegate()
             Dim list1 As New PointPairList()
+            Dim listSum As New PointPairList
 
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
 
-            ' todo: change to groups that listed in group box
-            For i As Integer = 1 To m_core.nGroups
-                list1 = New PointPairList
-                list1.Add(0, 1) ' Brute force to make 0 TS 1
+            If CulmulativeToolStripMenuItem.Checked = True Then
+                m_ZGPlotter.YaxisTitle = "Culmulative biomass"
+
+                'Initialize listSum.Y=0
+                listSum.Add(0, 0)
                 For t As Integer = 1 To m_core.nEcosimTimeSteps
                     If AnnualOutputToolStripMenuItem.Checked Then
                         If t Mod cCore.N_MONTHS = 0 Then
-                            list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) / m_core.EcoPathGroupOutputs(i).Biomass()))
+                            listSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
                         End If
                     Else
                         ' 2) Add a single point to temp list
-                        list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) / m_core.EcoPathGroupOutputs(i).Biomass()))
+                        listSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
                     End If
                 Next t
-                ' 3) Store the line
-                m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.Biomass, list1)
-            Next i
+
+                ' todo: change to groups that listed in group box
+                For i As Integer = 1 To m_core.nGroups
+
+                    list1 = New PointPairList
+                    list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
+                    For t As Integer = 1 To m_core.nEcosimTimeSteps
+                        If AnnualOutputToolStripMenuItem.Checked Then
+                            If t Mod cCore.N_MONTHS = 0 Then
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t))) '+ listSum(t).Y) '/ m_core.EcoPathGroupOutputs(i).Biomass()))
+                            End If
+                        Else
+                            ' 2) Add a single point to temp list
+                            list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t))) '+ listSum(t).Y) '/ m_core.EcoPathGroupOutputs(i).Biomass()))
+                        End If
+                    Next t
+
+                    'listSum=listSum+list1
+                    For j As Integer = 0 To listSum.Count - 1
+                        listSum(j).Y = listSum(j).Y + list1(j).Y
+                    Next
+
+                    For j As Integer = 0 To listSum.Count - 1
+                        list1(j).Y = listSum(j).Y
+                    Next
+
+                    ' 3) Store the line
+                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.Biomass, list1)
+
+                Next i
+            End If
+
+            If RelativeToolStripMenuItem.Checked = True Then
+                m_ZGPlotter.YaxisTitle = "Relative biomass"
+
+                ' todo: change to groups that listed in group box
+                For i As Integer = 1 To m_core.nGroups
+
+                    list1 = New PointPairList
+                    list1.Add(0, 1) ' Brute force to make 0 TS 1
+                    For t As Integer = 1 To m_core.nEcosimTimeSteps
+                        If AnnualOutputToolStripMenuItem.Checked Then
+                            If t Mod cCore.N_MONTHS = 0 Then
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                            End If
+                        Else
+                            ' 2) Add a single point to temp list
+                            list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                        End If
+                    Next t
+
+                    ' 3) Store the line
+                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.Biomass, list1)
+
+                Next i
+            End If
+
 
             ' 4) Tell the plotter it's finished
             Me.m_ZGPlotter.StoreDataset()
@@ -349,6 +408,19 @@ Namespace Ecosim
             Me.m_tstbScaleMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CulmulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CulmulativeToolStripMenuItem.Click
+            RelativeToolStripMenuItem.Checked = Not CulmulativeToolStripMenuItem.Checked
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click
+            CulmulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+        End Sub
     End Class
     
 End Namespace

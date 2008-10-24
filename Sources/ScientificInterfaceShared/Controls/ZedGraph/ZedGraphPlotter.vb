@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.3  2008/10/24 19:36:47  joeh
+' Implement cumulative biomass plot - Take one
+'
 ' Revision 1.2  2008/10/07 21:53:32  sherman
 ' Set the max = 2 and min = 0 Y axis for Ecosim graph
 '
@@ -204,6 +207,15 @@ Namespace Controls
             End Get
             Set(ByVal value As Boolean)
                 m_graphPane.Legend.IsVisible = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>Sets the Y axis title property</summary>
+        ''' -------------------------------------------------------------------
+        Public WriteOnly Property YaxisTitle() As String
+            Set(ByVal value As String)
+                m_graphPane.YAxis.Title.Text = value
             End Set
         End Property
 
