@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cValue.vb,v $
+' Revision 1.2  2008/10/25 19:03:22  joeb
+' Changed array handling to use a hard typed array instead of an Object
+'
 ' Revision 1.1  2008/09/26 07:30:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -526,7 +529,7 @@ Namespace ValueWrapper
         Inherits cValue
 
         Protected m_statusarray() As eStatusFlags
-        Protected m_values() As Object
+        Protected m_values As Object
         Protected m_nObjects As Integer = cCore.NULL_VALUE 'number of object in the array
         Protected m_CounterDelegate As CoreCounterDelegate = Nothing
         Protected m_Countertype As eCoreCounterTypes
@@ -577,10 +580,29 @@ Namespace ValueWrapper
 
                 Dim newsize As Integer = m_CounterDelegate(m_Countertype)
 
-                'only redim of the size of the arrays has changed
+                'only resize the data if it is different
                 If newsize <> m_nObjects Then
                     m_nObjects = newsize
-                    ReDim m_values(m_nObjects)
+
+                    Select Case Me.varType
+                        Case eValueTypes.BoolArray
+                            Dim s() As Boolean
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.IntArray
+                            Dim s() As Integer
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.PointArray
+                            Dim s() As Drawing.Point
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.SingleArray
+                            Dim s() As Single
+                            ReDim s(m_nObjects)
+                            m_values = s
+                    End Select
+
                     ReDim m_statusarray(m_nObjects)
 
                     For i As Integer = 0 To m_nObjects
@@ -625,7 +647,7 @@ Namespace ValueWrapper
                 Try
                     If iSecondaryIndex <> cCore.NULL_VALUE Then
                         'Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, String.Format("{0}.Value({1}, {2}) secondary index out of bounds", Me.ToString(), Me.m_varName, iSecondaryIndex))
-                        Return m_values(iSecondaryIndex)
+                        Return DirectCast(m_values, Array).GetValue(iSecondaryIndex)
                     Else
                         Return m_values
                     End If
@@ -643,7 +665,7 @@ Namespace ValueWrapper
                         'no data validation on arrays
                         'Oh my..........
                         Try
-                            System.Array.Copy(DirectCast(value, Array), m_values, m_values.Length)
+                            System.Array.Copy(DirectCast(value, Array), DirectCast(m_values, Array), DirectCast(m_values, Array).Length)
                         Catch ex As Exception
                             Debug.Assert(False, Me.ToString & ".Value() Failed to convert value to array.")
                             Me.Status = eStatusFlags.ErrorEncountered ' I think this will work???
@@ -687,8 +709,8 @@ Namespace ValueWrapper
 
             'set the value to the newvalue 
             'keep the old value incase the newvalue fails validation
-            m_orgvalue = m_values(iSecondaryIndex)
-            m_values(iSecondaryIndex) = NewValue
+            m_orgvalue = DirectCast(m_values, Array).GetValue(iSecondaryIndex)
+            DirectCast(m_values, Array).SetValue(NewValue, iSecondaryIndex)
 
             If Not m_bValidate Then
                 m_validationstatus = eStatusFlags.OK
@@ -708,7 +730,8 @@ Namespace ValueWrapper
                 If m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to it's original value
                     Try
-                        m_values(iSecondaryIndex) = m_orgvalue
+                        DirectCast(m_values, Array).SetValue(m_orgvalue, iSecondaryIndex)
+                        '    m_values(iSecondaryIndex) = m_orgvalue
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to reset value")
                     End Try
@@ -717,7 +740,8 @@ Namespace ValueWrapper
                 If m_statusarray(iSecondaryIndex) = eStatusFlags.Null Then
                     ' m_values(iSecondaryIndex) = m_metadata.NullValue
                     Try
-                        m_values(iSecondaryIndex) = m_metadata.NullValue
+                        DirectCast(m_values, Array).SetValue(m_metadata.NullValue, iSecondaryIndex)
+                        '     m_values(iSecondaryIndex) = m_metadata.NullValue
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to set default value")
                     End Try
@@ -788,11 +812,30 @@ Namespace ValueWrapper
 
                 Dim newsize As Integer = m_CounterDelegate(m_Countertype, m_iArrayIndex)
 
-                'only redim of the size of the arrays has changed
+                'only resize the data if it is different
                 If newsize <> m_nObjects Then
                     m_nObjects = newsize
-                    ReDim m_values(m_nObjects)
+                    Select Case Me.varType
+                        Case eValueTypes.BoolArray
+                            Dim s() As Boolean
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.IntArray
+                            Dim s() As Integer
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.PointArray
+                            Dim s() As Drawing.Point
+                            ReDim s(m_nObjects)
+                            m_values = s
+                        Case eValueTypes.SingleArray
+                            Dim s() As Single
+                            ReDim s(m_nObjects)
+                            m_values = s
+                    End Select
+
                     ReDim m_statusarray(m_nObjects)
+
                 End If
 
                 Return True
