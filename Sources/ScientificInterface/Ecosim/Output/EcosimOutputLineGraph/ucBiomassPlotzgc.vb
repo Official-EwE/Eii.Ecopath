@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.4  2008/10/25 00:37:05  joeh
+' Implement cumulative biomass plot - Take two
+'
 ' Revision 1.3  2008/10/24 19:36:47  joeh
 ' Implement cumulative biomass plot - Take one
 '
@@ -181,7 +184,7 @@ Namespace Ecosim
                     Next
 
                     ' 3) Store the line
-                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.Biomass, list1)
+                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
 
                 Next i
             End If
@@ -206,7 +209,7 @@ Namespace Ecosim
                     Next t
 
                     ' 3) Store the line
-                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.Biomass, list1)
+                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeBiomass, list1)
 
                 Next i
             End If

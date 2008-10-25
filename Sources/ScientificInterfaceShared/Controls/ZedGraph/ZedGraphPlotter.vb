@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.4  2008/10/25 00:37:05  joeh
+' Implement cumulative biomass plot - Take two
+'
 ' Revision 1.3  2008/10/24 19:36:47  joeh
 ' Implement cumulative biomass plot - Take one
 '
@@ -51,7 +54,8 @@ Namespace Controls
         End Class
 
         Public Enum eLineType
-            Biomass
+            RelativeBiomass
+            CumulativeBiomass
             TimeSeries
         End Enum
 
@@ -98,7 +102,14 @@ Namespace Controls
             Dim crvType As CurveType = New CurveType(name, index, m_Overlays.Count - 1, lineType)
 
             Select Case crvType.LineType
-                Case eLineType.Biomass
+                Case eLineType.CumulativeBiomass
+                    'crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
+                    crv = m_graphPane.AddCurve(name, list, Color.Black, SymbolType.None)
+                    crv.Symbol.Type = SymbolType.None
+                    crv.Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, index))
+                    m_CurrentOverlay.Add(crv)
+                    crv.Tag = crvType
+                Case eLineType.RelativeBiomass
                     crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     m_CurrentOverlay.Add(crv)
