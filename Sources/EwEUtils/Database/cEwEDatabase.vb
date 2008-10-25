@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.2  2008/10/25 16:11:06  jeroens
+' Added Compact
+'
 ' Revision 1.1  2008/09/26 07:31:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -594,6 +597,14 @@ Namespace Database
                 Optional ByVal bOverwrite As Boolean = False) As eAccessType
 
 #End Region ' Open and close
+
+#Region " Maintenance "
+
+        Public Overridable Function Compact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
+            Return False
+        End Function
+
+#End Region ' Maintenance
 
 #Region " Connection "
 

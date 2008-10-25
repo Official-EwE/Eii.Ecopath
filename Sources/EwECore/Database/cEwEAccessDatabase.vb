@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.3  2008/10/25 16:11:06  jeroens
+' Added Compact
+'
 ' Revision 1.2  2008/10/20 23:35:58  jeroens
 ' CW egg
 '
@@ -9,12 +12,17 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 
+Imports System.IO
 Imports System.Data.OleDb
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 Namespace Database
 
@@ -284,6 +292,80 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConnection() As IDbConnection
             Return Me.m_conn
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Compact the current M$ Access database.
+        ''' </summary>
+        ''' <param name="strDBFrom">Source database to compact.</param>
+        ''' <param name="strDBTo">Target database to compact to. Can be left blank.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' Only MDB databases can be compacted for now. Note that the database
+        ''' cannot be <see cref="IsConnected">connected</see> when compacting.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overloads Function Compact(ByVal strDBFrom As String, Optional ByVal strDBTo As String = "") As Boolean
+
+            ' Fix params
+            If String.IsNullOrEmpty(strDBTo) Then strDBTo = strDBFrom
+
+            Dim strConnection As String = ""
+            Dim bCompactToOriginal As Boolean = (String.Compare(strDBFrom, strDBTo, True) = 0)
+
+            Select Case cDataSourceFactory.GetSupportedType(strDBFrom)
+                Case cDataSourceFactory.eDataSourceTypes.MDB
+                    strConnection = Me.m_strConnectionMDB
+                Case cDataSourceFactory.eDataSourceTypes.ACCDB
+                    ' Accdb needs different compaction engine, no idea how to do that for now
+                    'strConnection = Me.m_strConnectionACCDB
+                Case Else
+                    ' Not supported
+                    strConnection = ""
+            End Select
+
+            ' No connection string for compacting this type of database?
+            If String.IsNullOrEmpty(strConnection) Then Return False
+            ' Cannot compact when connected
+            If Me.IsConnected Then Return False
+
+            Try
+                Dim jro As New JRO.JetEngine()
+                ' Able to get JET engine?
+                If jro IsNot Nothing Then
+                    ' #Yes: try to compact
+                    Dim strDBToOrg As String = strDBTo
+                    ' Identical database specified for in and out?
+                    If (bCompactToOriginal) Then
+                        ' #Yes: compact DB to temp location
+                        strDBTo = System.IO.Path.GetTempFileName()
+                    End If
+
+                    ' Try to compact
+                    jro.CompactDatabase(String.Format(strConnection, strDBFrom), String.Format(strConnection, strDBTo))
+
+                    ' Is succesfully compacted?
+                    If File.Exists(strDBTo) Then
+                        ' #Yes: Need to copy from temp location?
+                        If (bCompactToOriginal) Then
+                            ' #Yes: Overwrite original db with compacted db
+                            File.Copy(strDBTo, strDBToOrg, True)
+                            ' Delete temp location compacted database
+                            File.Delete(strDBTo)
+                        End If
+                    End If
+                    Return True
+                Else
+                    ' Unable to find JET engine COM object - woops, nothing we can do!
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+            Return False
+
         End Function
 
 #End Region ' Overrides
