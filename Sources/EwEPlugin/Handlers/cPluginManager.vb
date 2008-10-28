@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.3  2008/10/28 02:46:08  jeroens
+' Added space layer exchange plugin
+'
 ' Revision 1.2  2008/10/07 21:20:56  jeroens
 ' Implemented data exchange plugin structure
 '
@@ -920,7 +923,6 @@ Public Class cPluginManager
         End Try
 
     End Function
-
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the SaveEcospaceScenario plug-in point on any available and responsive 
@@ -943,7 +945,6 @@ Public Class cPluginManager
 
     End Sub
 
-
     Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceBeginTimestepPlugin))
@@ -965,7 +966,6 @@ Public Class cPluginManager
         End Try
 
     End Function
-
 
     Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
@@ -1000,6 +1000,94 @@ Public Class cPluginManager
                     DirectCast(ip, IEcospaceEndTimestepPlugin).EcospaceEndTimeStep(EcospaceDatastructures, iTimeStep)
                 Catch ex As Exception
                     Debug.Assert(False, ip.Name & " EcospaceEndTimeStep() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function EcospaceLayerExchangeStartRun(ByVal layer As Object) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceStartRun(layer)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceLayerExchangeStartRun() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function EcospaceLayerExchangeBeginTimeStep(ByVal layer As Object, ByVal iTimeStep As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceBeginTimeStep(layer, iTimeStep)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceBeginTimeStep() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function EcospaceLayerExchangeEndTimeStep(ByVal layer As Object, ByVal iTimeStep As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceEndTimeStep(layer, iTimeStep)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStep() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function EcospaceLayerExchangeEndRun(ByVal layer As Object) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceEndRun(layer)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceEndRun() Error: " & ex.Message)
                     'tell the world
                     RaiseEvent PluginException(ex)
                 End Try

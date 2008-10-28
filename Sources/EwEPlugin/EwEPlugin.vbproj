@@ -84,6 +84,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceLayerExchangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPlugin.vb" />
