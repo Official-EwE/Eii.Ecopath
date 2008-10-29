@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.9  2008/10/29 17:14:31  jeroens
+' Fixed bug 564
+'
 ' Revision 1.8  2008/10/10 23:22:20  villyc
 ' *** empty log message ***
 '
@@ -3354,6 +3357,8 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
         Dim asDummy(ecosimDS.NTimes) As Single
 
+        For iPt As Integer = 0 To ecosimDS.NTimes : asDummy(iPt) = 1.0 : Next
+
         ' For each fleet
         For iFleet As Integer = 1 To ecosimDS.nGear
             Try
@@ -4075,7 +4080,7 @@ Public Class cDBDataSource
             astrMemoBits = strMemo.Trim.Split(CChar(" "))
             For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
                 If String.IsNullOrEmpty(astrMemoBits(j - 1)) Then
-                    ecosimDS.FishRateGear(iFishingRateShape, j) = 0
+                    ecosimDS.FishRateGear(iFishingRateShape, j) = 1
                 Else
                     ecosimDS.FishRateGear(iFishingRateShape, j) = Single.Parse(astrMemoBits(j - 1))
                 End If
@@ -4760,6 +4765,21 @@ Public Class cDBDataSource
 
     End Function
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Append a shape to the database, internal implementation.
+    ''' </summary>
+    ''' <param name="strShapeName"></param>
+    ''' <param name="shapeType"></param>
+    ''' <param name="iDBID"></param>
+    ''' <param name="asData"></param>
+    ''' <param name="sYZero"></param>
+    ''' <param name="sYBase"></param>
+    ''' <param name="sYend"></param>
+    ''' <param name="sSteep"></param>
+    ''' <param name="functionType"></param>
+    ''' <returns></returns>
+    ''' -------------------------------------------------------------------
     Private Function AppendShapeImpl(ByVal strShapeName As String, ByVal shapeType As eDataTypes, ByRef iDBID As Integer, _
             ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As eShapeFunctionType) As Boolean
 
