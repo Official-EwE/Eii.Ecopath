@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.2  2008/10/29 19:51:02  joeb
+' Bug Fix When doing multiple runs the interface was not getting a chance to update before the next set of iterations started. Made RunCompleted delegate synchronous
+'
 ' Revision 1.1  2008/09/26 07:30:23  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -576,7 +579,7 @@ Namespace FishingPolicy
 
                 If m_RunCompletedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_RunCompletedDelegate, Nothing)
+                    m_syncObject.Invoke(Me.m_RunCompletedDelegate, Nothing)
                 End If
 
             Catch ex As Exception
