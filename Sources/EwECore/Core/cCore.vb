@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.20  2008/10/29 15:49:25  jeroens
+' Pruned history
+'
 ' Revision 1.19  2008/10/22 15:53:51  joeb
 ' Added NRows and NCols dimensions for map
 ' Added OnValidated code for fisheries regulation objects
@@ -58,98 +61,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:11  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.635  2008/09/26 00:22:49  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.634  2008/09/25 19:31:33  joeb
-' Editing PB updates BGoalValue searchObjective.StructRelWeight
-'
-' Revision 1.633  2008/09/25 02:30:54  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.632  2008/09/24 17:00:39  jeroens
-' Added FitToTS validation auto-updates
-'
-' Revision 1.631  2008/09/23 18:27:56  joeb
-' cF2TSManager Implements ISearchObjective
-'
-' Revision 1.630  2008/09/23 16:35:34  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.629  2008/09/23 16:06:25  joeb
-' Fixed bug 432 I hope...
-'
-' Revision 1.628  2008/09/23 14:58:14  joeb
-' Fixed bug that was causing a crash when changing the number of ecospace years
-'
-' Revision 1.627  2008/09/17 22:27:55  joeb
-' Added FleetName to GameServer data
-'
-' Revision 1.626  2008/09/17 01:23:49  jeroens
-' Currency units used correctly by Ecopath
-'
-' Revision 1.625  2008/09/15 16:58:18  joeb
-' Added more Ecospace output for Game Server
-'
-' Revision 1.624  2008/09/12 18:30:11  joeb
-' Added BiomassByRegion to Ecospace output
-'
-' Revision 1.623  2008/09/06 18:47:42  jeroens
-' Pruned history log
-'
-' Revision 1.622  2008/09/06 18:46:52  jeroens
-' Added DataValidated plugin point
-'
-' Revision 1.621  2008/09/02 17:58:12  joeb
-' Changed getCounters to return NULL_VALUE if no counter type was found. This is so the Gameserver can tell if the core contains the counter.
-'
-' Revision 1.620  2008/08/29 20:24:14  jeroens
-' Fixed issue 540
-'
-' Revision 1.619  2008/08/19 17:08:26  joeb
-' Added check to running of Ecospace for Habitats
-'
-' Revision 1.618  2008/08/14 18:07:00  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.617  2008/08/14 04:58:52  jeroens
-' Unnamed visual styles cannot be stored
-'
-' Revision 1.616  2008/08/12 22:03:25  jeroens
-' Importance layer index set on Load
-'
-' Revision 1.615  2008/08/12 18:14:31  jeroens
-' Added save changes check prior to loading ecospace scenario
-'
-' Revision 1.614  2008/08/11 16:01:14  jeroens
-' Fixed compiler warnings
-'
-' Revision 1.613  2008/08/11 02:02:14  jeroens
-' Uses renamed basemap cLayerImportanceData data
-'
-' Revision 1.612  2008/08/10 17:06:33  jeroens
-' Fixed misformatted message
-'
-' Revision 1.611  2008/08/09 01:30:49  jeroens
-' Completed importance layer loading / updating
-' Added interfaces to create / destroy importance layers
-' Connected importance layer updating to variable validation
-'
-' Revision 1.610  2008/08/08 23:20:29  jeroens
-' Uses new scenario save as interfaces
-'
-' Revision 1.609  2008/08/08 22:13:16  sherman
-' Hooked up the Weights
-'
-' Revision 1.608  2008/08/07 18:25:56  sherman
-' Fixed my boo boo...
-'
-' Revision 1.607  2008/08/07 18:17:33  sherman
-' Added Importance Layer to Ecospace Datastructures
-'
-' Revision 1.606  2008/08/04 02:27:42  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
 '
 '==============================================================================
 

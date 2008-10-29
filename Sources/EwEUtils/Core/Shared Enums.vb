@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.9  2008/10/29 15:49:46  jeroens
+' Pruned history
+'
 ' Revision 1.8  2008/10/22 17:00:11  joeb
 ' Added NRow and NCols
 '
@@ -24,124 +27,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:10  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.46  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.45  2008/09/25 02:31:49  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.44  2008/09/23 19:16:47  jeroens
-' Added SearchFishingMortalityPenalty
-'
-' Revision 1.43  2008/09/19 19:33:44  joeb
-' Added GameBiomassByRegion
-'
-' Revision 1.42  2008/09/17 22:27:59  joeb
-' Added FleetName to GameServer data
-'
-' Revision 1.41  2008/09/17 01:24:58  jeroens
-' Fixed currency unit enum values in accordance to EwE5
-'
-' Revision 1.40  2008/09/16 14:57:04  joeb
-' Added nGameSimTimeStepsPerYear to Counters number of timesteps per year
-'
-' Revision 1.39  2008/09/15 16:58:21  joeb
-' Added more Ecospace output for Game Server
-'
-' Revision 1.38  2008/09/06 15:43:22  joeb
-' Renamed GameTimestep to GameData
-'
-' Revision 1.37  2008/09/05 19:12:42  joeb
-' Added GameState varname
-'
-' Revision 1.36  2008/09/04 15:49:52  joeb
-' Added GameYield varname
-'
-' Revision 1.35  2008/09/04 14:56:56  joeb
-' Rename SimulationTimeStep to GameSimulationTimeStep
-'
-' Revision 1.34  2008/09/04 00:32:36  joeb
-' Added GameBiomass
-'
-' Revision 1.33  2008/09/02 19:33:50  joeb
-' Added GameModell as Varname and GameData as datatype
-'
-' Revision 1.32  2008/09/02 17:55:28  joeb
-' Added GameCounters
-'
-' Revision 1.31  2008/08/25 18:11:48  joeb
-' Added TimeStep as an eInputOutput type
-'
-' Revision 1.30  2008/08/15 18:35:22  joeb
-' Added TotalValue and PercentageClosed to cMPAOptOutPut
-'
-' Revision 1.29  2008/08/14 18:07:06  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.28  2008/08/13 17:33:34  jeroens
-' Renamed LayerImportanceWeight to ImportanceWeight
-'
-' Revision 1.27  2008/08/12 16:10:29  joeb
-' Added varnames for Game Server
-'
-' Revision 1.26  2008/08/08 02:54:01  jeroens
-' Added varname for new layer type
-'
-' Revision 1.25  2008/08/07 19:41:24  sherman
-' Exposed LayerImportance from the Core
-'
-' Revision 1.24  2008/08/07 18:19:57  sherman
-' Added Importance Layers to EcospaceDatastructures
-'
-' Revision 1.23  2008/08/04 02:27:45  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
-'
-' Revision 1.22  2008/07/21 14:05:11  jeroens
-' Added pedigree vars
-'
-' Revision 1.21  2008/07/17 18:14:59  jeroens
-' Added eUnitMonetaryType
-' Added vars for monetary units
-'
-' Revision 1.20  2008/07/16 13:27:15  jeroens
-' Fixed comment
-'
-' Revision 1.19  2008/07/10 18:19:10  jeroens
-' Added unit enums
-'
-' Revision 1.18  2008/06/27 02:32:59  jeroens
-' Added LayerMPARandom
-'
-' Revision 1.17  2008/06/24 21:56:09  joeb
-' Added bUseCellWeight
-'
-' Revision 1.16  2008/06/20 19:43:39  joeb
-' Added SSGroup to EcosimStats
-'
-' Revision 1.15  2008/06/18 18:21:01  joeb
-' Added iMPAOptToUse
-'
-' Revision 1.14  2008/06/17 19:58:57  joeb
-' Added EcosimResults varname
-'
-' Revision 1.13  2008/06/16 20:28:36  joeb
-' Added FishingRate varname
-'
-' Revision 1.12  2008/06/11 17:26:12  joeb
-' Added Varnames for MPAOpt
-'
-' Revision 1.11  2008/06/11 15:55:23  joeb
-' Changed EcoSeed to MPAOpt
-'
-' Revision 1.10  2008/06/10 22:05:36  joeb
-' Changes for new MPA optimization
-'
-' Revision 1.9  2008/06/09 22:00:28  jeroens
-' Added core counter NotSet
-'
-' Revision 1.8  2008/06/09 21:57:11  jeroens
-' Added core counters
 '
 '==============================================================================
 
