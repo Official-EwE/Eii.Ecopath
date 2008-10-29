@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.2  2008/10/29 15:56:00  joeb
+' Change catch_calculation() missing catch message from Imformation to Warning
+'
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -1050,7 +1053,7 @@ Namespace Ecopath
                         If msg Is Nothing Then
                             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_CATCH_GENERIC, _
                                     eMessageType.NoCatchForFleet, eMessageSource.EcoPath, _
-                                    eMessageImportance.Information, eDataTypes.FleetInput)
+                                    eMessageImportance.Warning, eDataTypes.FleetInput)
                             msg.Suppressable = True
                         End If
 
