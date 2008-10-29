@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.21  2008/10/29 19:44:55  joeb
+' Set_Quota_Flags() Boot out is null argument
+'
 ' Revision 1.20  2008/10/29 15:49:25  jeroens
 ' Pruned history
 '
@@ -3580,6 +3583,12 @@ Public Class cCore
     End Function
 
     Friend Function Set_Quota_Flags(ByVal obj As cEcosimFisheriesRegulation, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
+        If obj Is Nothing Then
+            'If Ecosim has not been loaded then the cEcosimFisheriesRegulation objects will be Nothing
+            'boot out of here in that case
+            Return False
+        End If
 
         obj.AllowValidation = False
 
