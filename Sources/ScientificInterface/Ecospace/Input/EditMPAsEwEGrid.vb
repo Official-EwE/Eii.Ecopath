@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditMPAsEwEGrid.vb,v $
+' Revision 1.2  2008/10/29 15:45:49  jeroens
+' Fixed issue 562
+'
 ' Revision 1.1  2008/09/26 07:31:56  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -364,9 +367,6 @@ Namespace Ecospace
 
             ' JS 15Apr07: there will be no context menu item until we have a better idea
             Me.ContextMenu = Nothing
-
-            ' Hide focus cell when selection is modified
-            Me.FocusStyle = SourceGrid2.FocusStyle.RemoveFocusCellOnLeave
 
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)

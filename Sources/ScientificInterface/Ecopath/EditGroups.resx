@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.EditGroupsStanzaEwEGrid, EwE6, Version=6.0.3.19, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.EditGroupsStanzaEwEGrid, EwE6, Version=6.0.4.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>

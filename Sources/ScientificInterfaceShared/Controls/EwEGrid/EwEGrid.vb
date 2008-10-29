@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.4  2008/10/29 15:48:08  jeroens
+' Fixed issue 562
+'
 ' Revision 1.3  2008/10/08 22:13:17  jeroens
 ' Simplified selection interface
 '
@@ -437,6 +440,12 @@ Namespace Controls.EwEGrid
             Next
 
             Me.FixedColumnWidths = Me.m_bFixedColumnWidths
+
+            ' Sanity checks
+            If (Me.FocusStyle <> SourceGrid2.FocusStyle.None) Then
+                Console.WriteLine("Warning: grid {0} ({1}) focus style may cause problems", Me.Name, Me.GetType().FullName)
+            End If
+
         End Sub
 
         Protected Overridable Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
