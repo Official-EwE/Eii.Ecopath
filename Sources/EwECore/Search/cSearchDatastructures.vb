@@ -178,7 +178,7 @@ Public Class cSearchDatastructures
     ''' Semaphor provides single thread access to calcEcospaceMonthlyCatch()
     ''' </summary>
     ''' <remarks></remarks>
-    Private m_SearchCatchSemaphor As System.Threading.Semaphore
+    Private m_SearchCatchSemaphor As System.Threading.Semaphore = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
 
 #End Region
 
@@ -532,10 +532,10 @@ Public Class cSearchDatastructures
 
 
     Public Sub setRandomFRates()
+        Dim rd As New Random
 
-        Randomize()
         For i As Integer = 1 To nBlocks
-            Frates(i) = -1 + 2 * Rnd()
+            Frates(i) = -1 + 2 * rd.NextDouble
         Next
 
     End Sub
@@ -719,8 +719,6 @@ Public Class cSearchDatastructures
         totval = 0
         Employ = 0
         manvalue = 0
-
-        Me.m_SearchCatchSemaphor = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
 
     End Sub
 
