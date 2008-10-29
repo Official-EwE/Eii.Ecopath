@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.5  2008/10/29 00:15:13  joeh
+' Implement cumulative biomass plot - Take three
+'
 ' Revision 1.4  2008/10/25 00:37:05  joeh
 ' Implement cumulative biomass plot - Take two
 '
@@ -154,7 +157,21 @@ Namespace Controls
 
                 For iOver As Integer = 0 To m_Overlays.Count - 1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(index - 1)
-                    SetLine(crv, True, True)
+                    'If relative plot then plot line of selected group with highlight
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Then
+                        SetLine(crv, True, True)
+                    End If
+
+                    'If cumulative plot then plot line of selected group without highlight
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then
+                        SetLine(crv, True, False)
+                        'If needed, plot line of the group of next lower index
+                        If index >= 2 Then
+                            crv = m_Overlays.Item(iOver).Item(index - 2)
+                            SetLine(crv, True, False, True)
+                        End If
+                    End If
+                    SetSomeToColors(index - 3, False)
                 Next iOver
 
                 ' Need to set all of the keys individually for all the groups.
@@ -250,7 +267,8 @@ Namespace Controls
         Private Sub SetAllToColors(Optional ByVal UseOriginalColor As Boolean = True)
             ' Set the lines
             For iOver As Integer = 0 To m_Overlays.Count - 1
-                For iIndex As Integer = 0 To m_Overlays.Item(iOver).Count - 1
+                'For iIndex As Integer = 0 To m_Overlays.Item(iOver).Count - 1
+                For iIndex As Integer = m_Overlays.Item(iOver).Count - 1 To 0 Step -1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(iIndex)
                     If UseOriginalColor Then
                         SetLine(crv, True, False)
@@ -272,24 +290,56 @@ Namespace Controls
             Next
         End Sub
 
+        Private Sub SetSomeToColors(ByVal startIndex As Integer, Optional ByVal UseOriginalColor As Boolean = True)
+            ' Set the lines
+            For iOver As Integer = 0 To m_Overlays.Count - 1
+                For iIndex As Integer = startIndex To 0 Step -1
+                    Dim crv As CurveItem = m_Overlays.Item(iOver).Item(iIndex)
+                    'If UseOriginalColor Then
+                    SetLine(crv, True, False, True)
+                    'Else
+                    'SetLine(crv, False, False)
+                    'End If
+                Next iIndex
+            Next iOver
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary> 
         ''' Change the properties of the line to colored or thicker
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub SetLine(ByVal crv As CurveItem, Optional ByVal bColorLine As Boolean = True, Optional ByVal bHighlightLine As Boolean = False)
+        Private Sub SetLine(ByVal crv As CurveItem, Optional ByVal bColorLine As Boolean = True, Optional ByVal bHighlightLine As Boolean = False, _
+          Optional ByVal bWhiteFillColor As Boolean = False)
             Dim p_line As LineItem = DirectCast(crv, LineItem)
+
             If TypeOf crv.Tag Is CurveType Then
+                'If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then DirectCast(crv, LineItem).Line.Fill = New Fill(Color.Transparent)
 
                 ' Remove the curve
                 Me.m_graphPane.CurveList.Remove(crv)
 
                 ' Change the color
                 If bColorLine Then
-                    crv.Color = Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index)
+                    'If relative plot then
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Then
+                        crv.Color = Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index)
+                    End If
+
+                    'If cumulative plot then
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then
+                        crv.Color = Color.Black
+                        If bWhiteFillColor = False Then _
+                          DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
+                        If bWhiteFillColor = True Then _
+                          DirectCast(crv, LineItem).Line.Fill = New Fill(Color.White)
+                    End If
                     Me.m_graphPane.CurveList.Insert(0, p_line)
                 Else
                     crv.Color = Drawing.Color.LightSlateGray
+                    'If culmulative plot then 
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then _
+                      DirectCast(crv, LineItem).Line.Fill = New Fill(Color.Transparent)
                     Me.m_graphPane.CurveList.Add(crv)
                 End If
 

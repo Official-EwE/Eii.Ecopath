@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.5  2008/10/29 00:15:13  joeh
+' Implement cumulative biomass plot - Take three
+'
 ' Revision 1.4  2008/10/25 00:37:05  joeh
 ' Implement cumulative biomass plot - Take two
 '
@@ -123,7 +126,7 @@ Namespace Ecosim
             m_ZGHelper = New ZedGraphHelper(m_zgc)
 
             ' 0.5) Call new graph
-            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Biomass", "Year", "Culmulative biomass")
+            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Biomass", "Year", "Cumulative biomass")
 
             m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
