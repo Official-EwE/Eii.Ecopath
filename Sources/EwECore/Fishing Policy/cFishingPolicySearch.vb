@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.2  2008/10/29 19:47:08  joeb
+' Added Search InitForRun()
+'
 ' Revision 1.1  2008/09/26 07:30:24  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -305,6 +308,7 @@ Namespace FishingPolicy
 
                 m_searchData = m_core.m_SearchData
                 m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
+                m_searchData.initForRun(m_core.m_EcoPathData, m_core.m_EcoSimData)
 
                 TotalTime = m_core.nEcosimYears
 
@@ -378,9 +382,6 @@ Namespace FishingPolicy
                 If EmployBase < 0 Then EmployBase = -EmployBase
                 If ManValueBase = 0 Then ManValueBase = 1
                 If EcoValueBase = 0 Then EcoValueBase = 1
-
-
-
 
                 For Iter As Integer = 1 To m_searchData.nRuns
                     If SearchFailed Or StopEstimation Then
