@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.5  2008/10/29 19:04:45  jeroens
+' Cleaned up a tiny bit
+'
 ' Revision 1.4  2008/10/29 15:45:50  jeroens
 ' Fixed issue 562
 '
@@ -695,8 +698,6 @@ Imports EwEUtils.Drawing
     Protected Overrides Sub InitStyle()
 
         MyBase.InitStyle()
-
-        Me.Dock = DockStyle.None
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
