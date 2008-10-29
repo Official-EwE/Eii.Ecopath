@@ -1,109 +1,14 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.3  2008/10/29 15:43:27  jeroens
+' Pruned history
+'
 ' Revision 1.2  2008/10/07 00:36:34  jeroens
 ' Fixed potential crash
 '
 ' Revision 1.1  2008/09/26 07:31:24  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.200  2008/09/23 16:15:15  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.199  2008/09/15 18:00:54  jeroens
-' Fixed model controls update trigger
-'
-' Revision 1.198  2008/09/09 14:44:45  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.197  2008/09/06 16:26:03  jeroens
-' Uses plugin form dockstate
-'
-' Revision 1.196  2008/09/05 16:14:08  jeroens
-' Auto-launches capable plug-ins
-'
-' Revision 1.195  2008/08/14 01:51:59  jeroens
-' Removed main form settings
-' Uses cFormSettings class
-'
-' Revision 1.194  2008/08/10 17:01:34  jeroens
-' Added EditImportanceLayers command
-'
-' Revision 1.193  2008/08/08 02:53:44  jeroens
-' no message
-'
-' Revision 1.192  2008/08/07 15:28:40  jeroens
-' Caption standardized
-' Model label name now clickable
-' Removed main tooltip
-'
-' Revision 1.191  2008/08/02 03:04:07  jeroens
-' Renamed resources
-'
-' Revision 1.190  2008/07/31 16:45:35  jeroens
-' Fixed default nodfe bahaviour after closing model and reopening
-'
-' Revision 1.189  2008/07/30 20:03:31  jeroens
-' Start page kept open on model close
-' Dropdown buttons properly updated
-'
-' Revision 1.188  2008/07/30 17:51:52  jeroens
-' Disabled TS export
-' Fixed issue 499
-'
-' Revision 1.187  2008/07/29 23:29:58  jeroens
-' Used settings to restore plug-in enabled state at start-up
-'
-' Revision 1.186  2008/07/28 13:02:48  jeroens
-' Restricted SaveModelAs behaviour:
-' - Only save to another DB of same type: core does not support saving from one type to another
-' - Only allow Save As command to be enabled for MDB and ACCDB types
-' This will have to change one day
-'
-' Revision 1.185  2008/07/25 14:21:06  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.184  2008/07/25 03:00:36  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.183  2008/07/25 01:39:09  joeh
-' Modify to cater the generic datasource engine in the core
-'
-' Revision 1.182  2008/07/24 23:59:24  jeroens
-' Fixed database update check using proper supporting class
-'
-' Revision 1.181  2008/07/24 19:30:40  jeroens
-' DB updates apply to any type of opened file
-' Command line opening no longer quiet
-' Uses FileUtilities to assemble a correct file name
-'
-' Revision 1.180  2008/07/23 18:25:51  jeroens
-' Removed SaveModelAs dialog refs
-'
-' Revision 1.179  2008/07/17 19:32:05  jeroens
-' Fixed assertion on tracer load
-'
-' Revision 1.178  2008/07/16 20:23:36  jeroens
-' Added sanity check when loading plugins
-'
-' Revision 1.177  2008/07/15 18:27:23  jeroens
-' Uses new TS dialog
-'
-' Revision 1.176  2008/07/11 01:00:38  jeroens
-' Fixed issue 509
-'
-' Revision 1.175  2008/07/09 14:32:49  jeroens
-' Added accdb format support
-'
-' Revision 1.174  2008/07/03 11:55:02  jeroens
-' Relaxed contraints on loading tracer scenarios:
-' + Enabled when model is loaded
-' + LoadEcotracerScenario will first attempt to load Ecosim (which is a core prerequesite)
-' + Fixed crash on enabling tracer for sim in EnableEcotracer command handler
-'
-' Revision 1.173  2008/07/02 21:00:58  jeroens
-' Fixed tracer activation bug
 '
 '==============================================================================
 
