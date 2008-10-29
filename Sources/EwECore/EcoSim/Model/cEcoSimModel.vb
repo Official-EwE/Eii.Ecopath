@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.18  2008/10/29 15:05:33  joeb
+' Fixed bug in Ecosim DWE set to 1 not 0.5
+'
 ' Revision 1.17  2008/10/09 17:21:04  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -1983,7 +1986,7 @@ Public Property PluginManager() As cPluginManager
                 ReDim m_Data.Consumpt(nGroups, nGroups)
 
                 Dim Dwe As Single
-                Dwe = 1 ' 0.5
+                Dwe = 0.5
 
                 'set free nutrient concentration
                 m_Data.NutBiom = 0
@@ -2047,7 +2050,7 @@ Public Property PluginManager() As cPluginManager
                 Next
 
                 For j = 1 To nGroups
-                    m_Data.Hden(j) = (1 - Dwe) * (1 + m_Data.Htime(j) * Hdent(j)) + Dwe * m_Data.Hden(j)
+                    m_Data.Hden(j) = (1 - Dwe) * CSng((1 + m_Data.Htime(j) * Hdent(j))) + Dwe * m_Data.Hden(j)
                     'm_data.Hden(j) = 1
                     ' sumHden = sumHden + m_Data.Hden(j)
                 Next
