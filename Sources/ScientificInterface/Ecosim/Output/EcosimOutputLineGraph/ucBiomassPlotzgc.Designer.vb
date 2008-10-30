@@ -26,10 +26,15 @@ Namespace Ecosim
             Me.gbAnonymous = New System.Windows.Forms.GroupBox
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.lbOverlay = New System.Windows.Forms.ListBox
+            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
             Me.tsblbSS = New System.Windows.Forms.ToolStripLabel
+            Me.m_tsdrpdnbtnBiomassCatch = New System.Windows.Forms.ToolStripDropDownButton
+            Me.BiomassToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.CatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsdrpdnbtnPlotType = New System.Windows.Forms.ToolStripDropDownButton
             Me.CumulativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RelativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -47,16 +52,11 @@ Namespace Ecosim
             Me.m_tstbScaleMin = New System.Windows.Forms.ToolStripTextBox
             Me.m_tssplbtnScaleOptions = New System.Windows.Forms.ToolStripSplitButton
             Me.AutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
             Me.SetMaxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox
             Me.SetMinToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripTextBox2 = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsdrpdnbtnBiomassCatch = New System.Windows.Forms.ToolStripDropDownButton
-            Me.BiomassToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.CatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.gbAnonymous.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
@@ -107,6 +107,18 @@ Namespace Ecosim
             Me.lbOverlay.Size = New System.Drawing.Size(119, 141)
             Me.lbOverlay.TabIndex = 0
             '
+            'lbGroups
+            '
+            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.lbGroups.FormattingEnabled = True
+            Me.lbGroups.IntegralHeight = False
+            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
+            Me.lbGroups.Name = "lbGroups"
+            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+            Me.lbGroups.Size = New System.Drawing.Size(119, 265)
+            Me.lbGroups.TabIndex = 1
+            '
             'm_zgc
             '
             Me.m_zgc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -146,6 +158,36 @@ Namespace Ecosim
             Me.tsblbSS.Name = "tsblbSS"
             Me.tsblbSS.Size = New System.Drawing.Size(86, 22)
             Me.tsblbSS.Text = "Sum of Squares:"
+            '
+            'm_tsdrpdnbtnBiomassCatch
+            '
+            Me.m_tsdrpdnbtnBiomassCatch.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BiomassToolStripMenuItem, Me.CatchToolStripMenuItem})
+            Me.m_tsdrpdnbtnBiomassCatch.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsdrpdnbtnBiomassCatch.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsdrpdnbtnBiomassCatch.Name = "m_tsdrpdnbtnBiomassCatch"
+            Me.m_tsdrpdnbtnBiomassCatch.Size = New System.Drawing.Size(116, 22)
+            Me.m_tsdrpdnbtnBiomassCatch.Text = "&Biomass or catch"
+            '
+            'BiomassToolStripMenuItem
+            '
+            Me.BiomassToolStripMenuItem.Checked = True
+            Me.BiomassToolStripMenuItem.CheckOnClick = True
+            Me.BiomassToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.BiomassToolStripMenuItem.Name = "BiomassToolStripMenuItem"
+            Me.BiomassToolStripMenuItem.Size = New System.Drawing.Size(123, 22)
+            Me.BiomassToolStripMenuItem.Text = "&Biomass"
+            '
+            'CatchToolStripMenuItem
+            '
+            Me.CatchToolStripMenuItem.CheckOnClick = True
+            Me.CatchToolStripMenuItem.Name = "CatchToolStripMenuItem"
+            Me.CatchToolStripMenuItem.Size = New System.Drawing.Size(123, 22)
+            Me.CatchToolStripMenuItem.Text = "&Catch"
+            '
+            'ToolStripSeparator3
+            '
+            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
             '
             'm_tsdrpdnbtnPlotType
             '
@@ -266,81 +308,39 @@ Namespace Ecosim
             Me.AutoScaleToolStripMenuItem.CheckOnClick = True
             Me.AutoScaleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.AutoScaleToolStripMenuItem.Name = "AutoScaleToolStripMenuItem"
-            Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
+            Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.AutoScaleToolStripMenuItem.Text = "&Auto scale"
+            '
+            'ToolStripSeparator4
+            '
+            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+            Me.ToolStripSeparator4.Size = New System.Drawing.Size(149, 6)
             '
             'SetMaxToolStripMenuItem
             '
             Me.SetMaxToolStripMenuItem.Name = "SetMaxToolStripMenuItem"
-            Me.SetMaxToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
+            Me.SetMaxToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.SetMaxToolStripMenuItem.Text = "Set m&ax:"
             '
             'ToolStripTextBox1
             '
             Me.ToolStripTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.ToolStripTextBox1.Margin = New System.Windows.Forms.Padding(20, 1, 1, 1)
+            Me.ToolStripTextBox1.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
             Me.ToolStripTextBox1.Size = New System.Drawing.Size(50, 21)
             '
             'SetMinToolStripMenuItem
             '
             Me.SetMinToolStripMenuItem.Name = "SetMinToolStripMenuItem"
-            Me.SetMinToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
+            Me.SetMinToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.SetMinToolStripMenuItem.Text = "Set m&in:"
             '
             'ToolStripTextBox2
             '
             Me.ToolStripTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.ToolStripTextBox2.Margin = New System.Windows.Forms.Padding(20, 1, 1, 1)
+            Me.ToolStripTextBox2.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             Me.ToolStripTextBox2.Name = "ToolStripTextBox2"
             Me.ToolStripTextBox2.Size = New System.Drawing.Size(50, 21)
-            '
-            'ToolStripSeparator4
-            '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            Me.ToolStripSeparator4.Size = New System.Drawing.Size(132, 6)
-            '
-            'm_tsdrpdnbtnBiomassCatch
-            '
-            Me.m_tsdrpdnbtnBiomassCatch.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BiomassToolStripMenuItem, Me.CatchToolStripMenuItem})
-            Me.m_tsdrpdnbtnBiomassCatch.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-            Me.m_tsdrpdnbtnBiomassCatch.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsdrpdnbtnBiomassCatch.Name = "m_tsdrpdnbtnBiomassCatch"
-            Me.m_tsdrpdnbtnBiomassCatch.Size = New System.Drawing.Size(116, 22)
-            Me.m_tsdrpdnbtnBiomassCatch.Text = "&Biomass or catch"
-            '
-            'BiomassToolStripMenuItem
-            '
-            Me.BiomassToolStripMenuItem.Checked = True
-            Me.BiomassToolStripMenuItem.CheckOnClick = True
-            Me.BiomassToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.BiomassToolStripMenuItem.Name = "BiomassToolStripMenuItem"
-            Me.BiomassToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-            Me.BiomassToolStripMenuItem.Text = "&Biomass"
-            '
-            'CatchToolStripMenuItem
-            '
-            Me.CatchToolStripMenuItem.CheckOnClick = True
-            Me.CatchToolStripMenuItem.Name = "CatchToolStripMenuItem"
-            Me.CatchToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-            Me.CatchToolStripMenuItem.Text = "&Catch"
-            '
-            'ToolStripSeparator3
-            '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
-            '
-            'lbGroups
-            '
-            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbGroups.FormattingEnabled = True
-            Me.lbGroups.IntegralHeight = False
-            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
-            Me.lbGroups.Name = "lbGroups"
-            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-            Me.lbGroups.Size = New System.Drawing.Size(119, 265)
-            Me.lbGroups.TabIndex = 1
             '
             'ucBiomassPlotzgc
             '
