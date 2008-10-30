@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.6  2008/10/30 00:01:38  joeh
+' Implement cumulative catch plot
+'
 ' Revision 1.5  2008/10/29 00:15:13  joeh
 ' Implement cumulative biomass plot - Take three
 '
@@ -247,6 +250,15 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>Sets the title property</summary>
+        ''' -------------------------------------------------------------------
+        Public WriteOnly Property Title() As String
+            Set(ByVal value As String)
+                m_graphPane.Title.Text = value
+            End Set
+        End Property
+
 #End Region ' Public Properties
 
 #Region " Private Helpers "
@@ -337,7 +349,7 @@ Namespace Controls
                     Me.m_graphPane.CurveList.Insert(0, p_line)
                 Else
                     crv.Color = Drawing.Color.LightSlateGray
-                    'If culmulative plot then 
+                    'If cumulative plot then 
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then _
                       DirectCast(crv, LineItem).Line.Fill = New Fill(Color.Transparent)
                     Me.m_graphPane.CurveList.Add(crv)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.6  2008/10/30 00:01:38  joeh
+' Implement cumulative catch plot
+'
 ' Revision 1.5  2008/10/29 00:15:13  joeh
 ' Implement cumulative biomass plot - Take three
 '
@@ -145,8 +148,14 @@ Namespace Ecosim
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
 
-            If CulmulativeToolStripMenuItem.Checked = True Then
-                m_ZGPlotter.YaxisTitle = "Culmulative biomass"
+            If CumulativeToolStripMenuItem.Checked = True Then
+                If BiomassToolStripMenuItem.Checked Then
+                    m_ZGPlotter.Title = "Biomass"
+                    m_ZGPlotter.YaxisTitle = "Cumulative biomass"
+                Else 'catch
+                    m_ZGPlotter.Title = "Catch"
+                    m_ZGPlotter.YaxisTitle = "Cumulative catch"
+                End If
 
                 'Initialize listSum.Y=0
                 listSum.Add(0, 0)
@@ -165,15 +174,27 @@ Namespace Ecosim
                 For i As Integer = 1 To m_core.nGroups
 
                     list1 = New PointPairList
-                    list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
+                    If BiomassToolStripMenuItem.Checked Then
+                        list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
+                    Else 'catch
+                        list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())
+                    End If
                     For t As Integer = 1 To m_core.nEcosimTimeSteps
                         If AnnualOutputToolStripMenuItem.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
-                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t))) '+ listSum(t).Y) '/ m_core.EcoPathGroupOutputs(i).Biomass()))
+                                If BiomassToolStripMenuItem.Checked Then
+                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
+                                Else
+                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * m_core.EcoSimGroupOutputs(i).FishMort(t)))
+                                End If
                             End If
                         Else
                             ' 2) Add a single point to temp list
-                            list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t))) '+ listSum(t).Y) '/ m_core.EcoPathGroupOutputs(i).Biomass()))
+                            If BiomassToolStripMenuItem.Checked Then
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
+                            Else 'catch
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * m_core.EcoSimGroupOutputs(i).FishMort(t)))
+                            End If
                         End If
                     Next t
 
@@ -417,15 +438,29 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
-        Private Sub CulmulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CulmulativeToolStripMenuItem.Click
-            RelativeToolStripMenuItem.Checked = Not CulmulativeToolStripMenuItem.Checked
+        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click
+            RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
         Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click
-            CulmulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+            CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BiomassToolStripMenuItem.Click
+            CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
+            BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
         End Sub
     End Class
     
