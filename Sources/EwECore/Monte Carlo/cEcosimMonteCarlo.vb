@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.13  2008/10/31 00:35:38  villyc
+' monte carlo stuff
+'
 ' Revision 1.12  2008/10/15 21:15:26  villyc
 ' mc fixes
 '
@@ -760,7 +763,7 @@ Public Class cEcosimMonteCarlo
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
                 'jb this is done by the manager in ApplyBestFits core.onChanged() 
-                '  m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
+                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             Next
 
 
