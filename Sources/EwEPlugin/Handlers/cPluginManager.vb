@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.4  2008/10/31 16:48:14  jeroens
+' Added MPA opt plugin invocation
+'
 ' Revision 1.3  2008/10/28 02:46:08  jeroens
 ' Added space layer exchange plugin
 '
@@ -9,53 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.37  2008/09/06 18:46:31  jeroens
-' Added DataValidated plugin point
-'
-' Revision 1.36  2008/09/04 06:42:47  sherman
-' Added IEcospacePostFishingEffortModTimestepPlugin
-'
-' Revision 1.35  2008/07/23 18:25:13  jeroens
-' Replaces vbNewLine in update descriptions by something more manageable
-'
-' Revision 1.34  2008/07/17 19:30:48  jeroens
-' Slight optimization
-'
-' Revision 1.33  2008/07/07 02:23:38  jeroens
-' no message
-'
-' Revision 1.32  2008/07/06 17:26:21  jeroens
-' Added IDataExchangePlugin
-'
-' Revision 1.31  2008/06/02 00:08:35  jeroens
-' Added Generic invocation
-'
-' Revision 1.30  2008/04/23 17:48:29  joeb
-' Removed IEcosimEndTimestepStatsPlugin
-'
-' Revision 1.29  2007/11/25 19:46:18  jeroens
-' + Added basic support for Ecotracer plugins
-'
-' Revision 1.28  2007/11/24 18:42:25  jeroens
-' * Changed source for version info
-'
-' Revision 1.27  2007/10/31 14:20:06  jeroens
-' * Console output on failing plug-in - needs to become a message
-'
-' Revision 1.26  2007/10/10 16:51:53  jeroens
-' * Fixed plugin sort bug
-' + Added explicit defaults to new vars
-' + Added PluginAssemblyNames
-'
-' Revision 1.25  2007/10/07 03:20:19  jeroens
-' + Added HasDatabaseUpdates
-'
-' Revision 1.24  2007/07/26 18:05:59  jeroens
-' * Plugin version -9999 will always run
-'
-' Revision 1.23  2007/07/26 12:23:13  jeroens
-' + Added version checking to database update logic
 '
 '==============================================================================
 
@@ -923,6 +879,7 @@ Public Class cPluginManager
         End Try
 
     End Function
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the SaveEcospaceScenario plug-in point on any available and responsive 
@@ -1011,6 +968,9 @@ Public Class cPluginManager
 
     End Function
 
+#If 0 Then
+    ' JS: disabled, exchanging layer data is NOT trivial and needs to be thought out very well
+
     Public Function EcospaceLayerExchangeStartRun(ByVal layer As Object) As Boolean
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
@@ -1098,6 +1058,8 @@ Public Class cPluginManager
         End Try
 
     End Function
+
+#End If
 
 #End Region ' Ecospace Plugins
 
@@ -1214,6 +1176,128 @@ Public Class cPluginManager
     End Function
 
 #End Region ' Data Exchange Plugins 
+
+#Region " MPAOptimization plugins "
+
+    Public Function MPAOptimizationsSearchInitialized(ByVal searchModel As Object, ByVal searchType As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IMPAOptimizationPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IMPAOptimizationPlugin).SearchInitialized(searchModel, searchType)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " MPAOptimizationsSearchInitialized() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function MPAOptimizationsSearchStart(ByVal searchModel As Object, ByVal searchType As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IMPAOptimizationPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IMPAOptimizationPlugin).SearchStart(searchModel, searchType)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " MPAOptimizationsSearchStart() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function MPAOptimizationsSearchNewBestResultFound(ByVal searchModel As Object, ByVal searchType As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IMPAOptimizationPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IMPAOptimizationPlugin).SearchNewBestResultFound(searchModel, searchType)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " MPAOptimizationsSearchNewBestResultFound() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function MPAOptimizationsSearchEnd(ByVal searchModel As Object, ByVal searchType As Integer) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IMPAOptimizationPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IMPAOptimizationPlugin).SearchEnd(searchModel, searchType)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " MPAOptimizationsSearchEnd() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+#Region " Ecoseed "
+
+    Public Function EcoseedNewCellSelected(ByVal searchModel As Object) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcoseedPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcoseedPlugin).SearchNewCellSelected(searchModel)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcoseedNewCellSelected() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+#End Region ' Ecoseed
+
+#Region " Random search "
+
+#End Region ' Random search
+
+#End Region ' MPAOptimization plugins
 
 #End Region ' Plugin invocation
 
