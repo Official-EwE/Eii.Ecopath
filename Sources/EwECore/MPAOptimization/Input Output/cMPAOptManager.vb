@@ -1,145 +1,11 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.2  2008/10/31 17:25:46  jeroens
+' Uses MPA opt plugins
+'
 ' Revision 1.1  2008/09/26 07:30:25  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.25  2008/08/29 20:24:17  jeroens
-' Fixed issue 540
-'
-' Revision 1.24  2008/08/18 17:49:37  joeb
-' Added WeightedTotal to Search data
-'
-' Revision 1.23  2008/08/17 16:55:20  joeb
-' MPA Optimization default data directory
-'
-' Revision 1.22  2008/08/15 22:07:05  joeb
-' Percentage in Results()
-'
-' Revision 1.21  2008/08/15 21:11:15  joeb
-' Changed RunStates to Initializing and Searching
-'
-' Revision 1.20  2008/08/15 18:35:20  joeb
-' Added TotalValue and PercentageClosed to cMPAOptOutPut
-'
-' Revision 1.19  2008/08/15 16:47:41  joeb
-' Fixed Random not selecting cells if not importance layer(s)
-'
-' Revision 1.18  2008/08/14 18:07:04  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.17  2008/08/13 17:18:43  joeb
-' Added OutputFileName
-' Renamed CellMap to CellSelectedMap and added NumberOfResults to arguments
-'
-' Revision 1.16  2008/08/11 21:10:39  joeb
-' Changes for Bug Fix 459 Added Search Modes
-'
-' Revision 1.15  2008/06/26 15:55:37  joeb
-' CellMap
-'
-' Revision 1.14  2008/06/26 14:06:57  joeb
-' Added nIterationsCompleted
-'
-' Revision 1.13  2008/06/26 05:56:51  villyc
-' Adding cost of sailing calculation, not tested yet
-'
-' Revision 1.12  2008/06/25 20:25:37  joeb
-' Added CellMap
-'
-' Revision 1.11  2008/06/25 19:01:31  joeb
-' Added CompareTo() to cObjectiveResults
-'
-' Revision 1.10  2008/06/24 21:56:51  joeb
-' *** empty log message ***
-'
-' Revision 1.9  2008/06/21 15:00:04  joeb
-' Removed BestCells from Ouput object until it has been sorted out how to do this
-'
-' Revision 1.8  2008/06/20 21:26:27  joeb
-' Changing output for both Ecoseed and Random Search
-'
-' Revision 1.7  2008/06/19 16:53:05  joeb
-' File output
-'
-' Revision 1.6  2008/06/18 18:27:44  joeb
-' Changes for Villy
-'
-' Revision 1.5  2008/06/16 17:08:33  joeb
-' Fixed missing MPAOptParameter values in interface
-'
-' Revision 1.4  2008/06/15 15:17:14  joeb
-' Removed Assert from Update
-'
-' Revision 1.3  2008/06/15 12:48:44  jeroens
-' Elaborated Assert
-'
-' Revision 1.2  2008/06/14 16:51:50  joeb
-' Added eRunStates.NewCellSelected
-'
-' Revision 1.1  2008/06/13 15:48:25  joeb
-' Added MPAOptimization folder
-'
-' Revision 1.5  2008/06/12 19:13:49  joeb
-' More changes to run random search
-'
-' Revision 1.4  2008/06/11 22:19:10  joeb
-' Changes for random search
-'
-' Revision 1.3  2008/06/11 20:01:38  joeb
-' Rename cCore.m_seedData to MPAOptData
-'
-' Revision 1.2  2008/06/11 17:25:06  joeb
-' Added Parameters object
-'
-' Revision 1.1  2008/06/11 15:51:33  joeb
-' Change names of Seed Files to MPAOpt
-'
-' Revision 1.15  2008/06/10 21:53:44  joeb
-' Changes for new MPA optimization
-'
-' Revision 1.14  2008/06/06 15:56:01  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.13  2008/05/12 18:56:43  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.12  2008/05/06 20:05:02  joeb
-' Minor changes to cThreadedManagerBase
-'
-' Revision 1.11  2008/04/24 20:01:45  joeb
-' Now inherits from cThreadedManagerBase
-'
-' Revision 1.10  2008/04/04 02:01:03  jeroens
-' Exposed a few user-configurable values
-'
-' Revision 1.9  2008/03/26 17:45:56  joeb
-' Added RunStateCallback to Ecoseed
-'
-' Revision 1.8  2008/03/25 16:50:14  jeroens
-' Exposed clear/set mpa & seed methods
-'
-' Revision 1.7  2008/03/25 16:07:57  joeb
-' More Initialization code
-'
-' Revision 1.6  2008/03/20 16:43:34  joeb
-' Added some comments
-'
-' Revision 1.5  2008/01/24 16:30:02  joeb
-' Added EcoSeedoutput
-'
-' Revision 1.4  2008/01/23 20:13:10  joeb
-' Removed ecoseed debug form
-'
-' Revision 1.3  2008/01/23 17:49:26  joeb
-' *** empty log message ***
-'
-' Revision 1.2  2008/01/23 17:31:02  joeb
-' *** empty log message ***
-'
-' Revision 1.1  2008/01/23 15:57:04  joeb
-' Added Manager to CVS
-'
 '
 '===================================================
 
@@ -149,7 +15,7 @@ Imports EwECore.EcoSeed
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
-
+Imports EwEPlugin
 
 #Region "Enums"
 
@@ -374,8 +240,7 @@ Public Class cMPAOptManager
 
         Try
 
-            Dim objs(0) As Object
-            objs(0) = RunState
+            Dim dlgt As New InvokePluginPointDelegate(AddressOf InvokePluginPoint)
 
             If RunState = eRunStates.NewBestResultFound Then
                 m_curRowCol.Init(m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
@@ -387,14 +252,17 @@ Public Class cMPAOptManager
             End If
 
             If m_bConnected Then
-                ' m_syncObject.BeginInvoke(Me.m_SeedRunStateCallback, objs)
+
                 'Invoke will wait for the function to return 
                 'this lets the interface gather data before it has changed is response to a new best cell selected
-                m_syncObject.Invoke(Me.m_SeedRunStateCallback, objs)
+                Me.m_syncObject.Invoke(Me.m_SeedRunStateCallback, New Object() {RunState})
+
+                ' Invoke plugins
+                Me.m_syncObject.Invoke(dlgt, New Object() {RunState})
+
             Else
                 System.Console.WriteLine("EcoSeedManager not connected to an interface.")
             End If
-
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -402,8 +270,35 @@ Public Class cMPAOptManager
 
     End Sub
 
-
     Private Sub OnSendMessage(ByVal Message As EwECore.cMessage)
+
+    End Sub
+
+    Private Delegate Sub InvokePluginPointDelegate(ByVal RunState As eRunStates)
+
+    Private Sub InvokePluginPoint(ByVal RunState As eRunStates)
+
+        Dim pm As cPluginManager = Me.m_core.PluginManager
+
+        If (pm IsNot Nothing) Then
+
+            Select Case RunState
+
+                Case eRunStates.Initializing
+                    pm.MPAOptimizationsSearchInitialized(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
+                Case eRunStates.Searching
+                    pm.MPAOptimizationsSearchStart(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
+                Case eRunStates.Completed
+                    pm.MPAOptimizationsSearchEnd(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
+                Case eRunStates.NewBestResultFound
+                    pm.MPAOptimizationsSearchNewBestResultFound(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
+                Case eRunStates.NewCellSelected
+                    Debug.Assert(Me.m_core.m_MPAOptData.SearchType = eMPAOptimizationModels.EcoSeed)
+                    pm.EcoseedNewCellSelected(Me.m_MPASearch)
+
+            End Select
+
+        End If
 
     End Sub
 
