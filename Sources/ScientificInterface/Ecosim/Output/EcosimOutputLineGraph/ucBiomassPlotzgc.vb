@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.8  2008/10/31 19:57:03  joeh
+' Implement relative catch
+'
 ' Revision 1.7  2008/10/30 22:46:59  joeh
 ' Implement cumulative catch plot - Take two
 '
@@ -151,12 +154,15 @@ Namespace Ecosim
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
 
+            'Cumulative plot
             If CumulativeToolStripMenuItem.Checked = True Then
                 If BiomassToolStripMenuItem.Checked Then
-                    m_ZGPlotter.Title = "Biomass"
+                    'Biomass
+                    m_ZGPlotter.Title = "Cumulative biomass"
                     m_ZGPlotter.YaxisTitle = "Cumulative biomass"
-                Else 'catch
-                    m_ZGPlotter.Title = "Catch"
+                Else
+                    'Catch
+                    m_ZGPlotter.Title = "Cumulative catch"
                     m_ZGPlotter.YaxisTitle = "Cumulative catch"
                 End If
 
@@ -175,38 +181,47 @@ Namespace Ecosim
 
                 ' todo: change to groups that listed in group box
                 For i As Integer = 1 To m_core.nGroups
-                    'find the sum of discard and landing of the group
+                    'Catch
                     If CatchToolStripMenuItem.Checked Then
+                        'Find the sum of discard and landing of the group
                         Dim dblSumDiscardsLandings As Double = 0.0
                         For f As Integer = 1 To m_core.nFleets
                             dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
                         Next f
+                        'If sum=0 then skip this group
                         If Not dblSumDiscardsLandings > 0 Then Continue For
                     End If
 
 
                     list1 = New PointPairList
                     If BiomassToolStripMenuItem.Checked Then
+                        'Biomass
                         list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
-                    Else 'catch
+                    Else
+                        'Catch
                         list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())
                     End If
                     For t As Integer = 1 To m_core.nEcosimTimeSteps
                         If AnnualOutputToolStripMenuItem.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
                                 If BiomassToolStripMenuItem.Checked Then
+                                    'Biomass
                                     list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
-                                Else 'catch
-                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * m_core.EcoSimGroupOutputs(i).FishMort(t)))
+                                Else
+                                    'Catch
+                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
                                 End If
                             End If
                         Else
                             ' 2) Add a single point to temp list
                             If BiomassToolStripMenuItem.Checked Then
+                                'Biomass
                                 list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
-                            Else 'catch
-                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * m_core.EcoSimGroupOutputs(i).FishMort(t)))
-                                'list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Yield(t)))
+                            Else
+                                'Catch
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
                             End If
                         End If
                     Next t
@@ -221,32 +236,77 @@ Namespace Ecosim
                     Next
 
                     ' 3) Store the line
-                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
+                    If BiomassToolStripMenuItem.Checked Then
+                        'Biomass
+                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
+                    Else
+                        'Catch
+                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeCatch, list1)
+                    End If
 
                 Next i
             End If
 
+            'Relative plot
             If RelativeToolStripMenuItem.Checked = True Then
-                m_ZGPlotter.YaxisTitle = "Relative biomass"
+                If BiomassToolStripMenuItem.Checked Then
+                    'Biomass
+                    m_ZGPlotter.Title = "Relative biomass"
+                    m_ZGPlotter.YaxisTitle = "Relative biomass"
+                Else
+                    'Catch
+                    m_ZGPlotter.Title = "Relative catch"
+                    m_ZGPlotter.YaxisTitle = "Relative catch"
+                End If
 
                 ' todo: change to groups that listed in group box
                 For i As Integer = 1 To m_core.nGroups
+                    'Catch
+                    If CatchToolStripMenuItem.Checked Then
+                        'Find the sum of discard and landing of the group
+                        Dim dblSumDiscardsLandings As Double = 0.0
+                        For f As Integer = 1 To m_core.nFleets
+                            dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
+                        Next f
+                        'If sum=0 then skip this group
+                        If Not dblSumDiscardsLandings > 0 Then Continue For
+                    End If
 
                     list1 = New PointPairList
                     list1.Add(0, 1) ' Brute force to make 0 TS 1
                     For t As Integer = 1 To m_core.nEcosimTimeSteps
                         If AnnualOutputToolStripMenuItem.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
-                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                                If BiomassToolStripMenuItem.Checked Then
+                                    'Biomass
+                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                                Else
+                                    'Catch
+                                    list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate()))
+                                End If
                             End If
                         Else
                             ' 2) Add a single point to temp list
-                            list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                            If BiomassToolStripMenuItem.Checked Then
+                                'Biomass
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                            Else
+                                'Catch
+                                list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate()))
+                            End If
                         End If
                     Next t
 
                     ' 3) Store the line
-                    m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeBiomass, list1)
+                    If BiomassToolStripMenuItem.Checked Then
+                        'Biomass
+                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeBiomass, list1)
+                    Else
+                        'Catch
+                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeCatch, list1)
+                    End If
 
                 Next i
             End If

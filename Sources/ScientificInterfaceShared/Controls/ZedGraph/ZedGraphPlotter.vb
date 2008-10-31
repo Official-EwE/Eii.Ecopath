@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.7  2008/10/31 19:57:03  joeh
+' Implement relative catch
+'
 ' Revision 1.6  2008/10/30 00:01:38  joeh
 ' Implement cumulative catch plot
 '
@@ -60,8 +63,10 @@ Namespace Controls
         End Class
 
         Public Enum eLineType
-            RelativeBiomass
             CumulativeBiomass
+            RelativeBiomass
+            CumulativeCatch
+            RelativeCatch
             TimeSeries
         End Enum
 
@@ -108,14 +113,14 @@ Namespace Controls
             Dim crvType As CurveType = New CurveType(name, index, m_Overlays.Count - 1, lineType)
 
             Select Case crvType.LineType
-                Case eLineType.CumulativeBiomass
+                Case eLineType.CumulativeBiomass, eLineType.CumulativeCatch
                     'crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
                     crv = m_graphPane.AddCurve(name, list, Color.Black, SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     crv.Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, index))
                     m_CurrentOverlay.Add(crv)
                     crv.Tag = crvType
-                Case eLineType.RelativeBiomass
+                Case eLineType.RelativeBiomass, eLineType.RelativeCatch
                     crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     m_CurrentOverlay.Add(crv)
@@ -161,20 +166,26 @@ Namespace Controls
                 For iOver As Integer = 0 To m_Overlays.Count - 1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(index - 1)
                     'If relative plot then plot line of selected group with highlight
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Then
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeCatch Then
                         SetLine(crv, True, True)
                     End If
 
                     'If cumulative plot then plot line of selected group without highlight
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
                         SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index
                         If index >= 2 Then
                             crv = m_Overlays.Item(iOver).Item(index - 2)
                             SetLine(crv, True, False, True)
                         End If
+                        'If needed, plot lines of the remaining groups
+                        If index >= 3 Then
+                            SetSomeToColors(index - 3, False)
+                        End If
                     End If
-                    SetSomeToColors(index - 3, False)
+                    'SetSomeToColors(index - 3, False)
                 Next iOver
 
                 ' Need to set all of the keys individually for all the groups.
@@ -333,25 +344,32 @@ Namespace Controls
 
                 ' Change the color
                 If bColorLine Then
-                    'If relative plot then
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Then
+                    'Relative plot
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeCatch Then
                         crv.Color = Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index)
                     End If
 
-                    'If cumulative plot then
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then
-                        crv.Color = Color.Black
-                        If bWhiteFillColor = False Then _
-                          DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
-                        If bWhiteFillColor = True Then _
-                          DirectCast(crv, LineItem).Line.Fill = New Fill(Color.White)
+                    'Cumulative plot
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
+                        crv.Color = Drawing.Color.Black
+                        'If bWhiteFillColor = False Then _
+                        '  DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
+                        If bWhiteFillColor = True Then
+                            DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.White)
+                        Else
+                            DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
+                        End If
                     End If
                     Me.m_graphPane.CurveList.Insert(0, p_line)
                 Else
                     crv.Color = Drawing.Color.LightSlateGray
-                    'If cumulative plot then 
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then _
-                      DirectCast(crv, LineItem).Line.Fill = New Fill(Color.Transparent)
+                    'Cumulative plot
+                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
+                        DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.Transparent)
+                    End If
                     Me.m_graphPane.CurveList.Add(crv)
                 End If
 
