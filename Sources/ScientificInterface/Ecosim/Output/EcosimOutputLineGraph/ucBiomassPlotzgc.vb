@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.9  2008/11/01 00:13:25  joeh
+' Implement Scale option
+'
 ' Revision 1.8  2008/10/31 19:57:03  joeh
 ' Implement relative catch
 '
@@ -283,7 +286,7 @@ Namespace Ecosim
                                 Else
                                     'Catch
                                     list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate()))
+                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
                                 End If
                             End If
                         Else
@@ -293,8 +296,9 @@ Namespace Ecosim
                                 list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
                             Else
                                 'Catch
+                                'Console.WriteLine(m_core.EcoPathGroupInputs(i).Name)
                                 list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate()))
+                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
                             End If
                         End If
                     Next t
@@ -324,6 +328,7 @@ Namespace Ecosim
             ' Calculate the Axis Scale Ranges
             Me.m_ZGHelper.RescaleAndRedraw()
             Me.UpdateControls()
+            Me.newUpdateControls()
 
         End Sub
 
@@ -483,6 +488,16 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub m_tstbxSetMin_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+            Handles m_tstbxSetMin.Validating
+            Try
+                Dim dTest As Double
+                Double.TryParse(Me.m_tstbxSetMin.Text, dTest)
+            Catch ex As Exception
+                e.Cancel = True
+            End Try
+        End Sub
+
         Private Sub OnScaleMaxValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
             Handles m_tstbScaleMin.Validating
 
@@ -495,6 +510,16 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub m_tstbxSetMax_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+            Handles m_tstbxSetMax.Validating
+            Try
+                Dim dTest As Double
+                Double.TryParse(Me.m_tstbxSetMax.Text, dTest)
+            Catch ex As Exception
+                e.Cancel = True
+            End Try
+        End Sub
+
         Private Sub OnScaleMinValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tstbScaleMin.Validated
 
@@ -502,6 +527,13 @@ Namespace Ecosim
             Me.m_ZGHelper.AutoscalePane = False
             Me.UpdateControls()
 
+        End Sub
+
+        Private Sub m_tstbxSetMin_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tstbxSetMin.Validated
+            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_ZGHelper.YScaleMin)
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.newUpdateControls()
         End Sub
 
         Private Sub OnScaleMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -513,11 +545,25 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub m_tstbxSetMax_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tstbxSetMax.Validated
+            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_ZGHelper.YScaleMax)
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.newUpdateControls()
+        End Sub
+
         Private Sub UpdateControls()
             Me.m_tsbAutoscale.Checked = Me.m_ZGHelper.AutoscalePane
             Me.m_tsbCustomScale.Checked = Not Me.m_ZGHelper.AutoscalePane
             Me.m_tstbScaleMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
             Me.m_tstbScaleMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
+        End Sub
+
+        Private Sub newUpdateControls()
+            AutoScaleToolStripMenuItem.Checked = Me.m_ZGHelper.AutoscalePane
+            CustomScaleToolStripMenuItem.Checked = Not AutoScaleToolStripMenuItem.Checked
+            Me.m_tstbxSetMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
+            Me.m_tstbxSetMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -547,6 +593,51 @@ Namespace Ecosim
         Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
             BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AutoScaleToolStripMenuItem.Click
+            Me.m_ZGHelper.AutoscalePane = True
+            Me.newUpdateControls()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CustomScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomScaleToolStripMenuItem.Click
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.newUpdateControls()
+        End Sub
+
+        '''' -------------------------------------------------------------------
+        '''' <summary> Upon toggleing of menu item </summary>
+        '''' -------------------------------------------------------------------
+        'Private Sub SetMaxToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetMaxToolStripMenuItem.Click
+        '    AutoScaleToolStripMenuItem.Checked = Not SetMaxToolStripMenuItem.Checked
+        'End Sub
+
+        '''' -------------------------------------------------------------------
+        '''' <summary> Upon toggleing of menu item </summary>
+        '''' -------------------------------------------------------------------
+        'Private Sub SetMinToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetMinToolStripMenuItem.Click
+        '    SetMaxToolStripMenuItem.Checked = True
+        '    AutoScaleToolStripMenuItem.Checked = Not SetMaxToolStripMenuItem.Checked
+        'End Sub
+
+        '''' -------------------------------------------------------------------
+        '''' <summary> Upon toggleing of menu item </summary>
+        '''' -------------------------------------------------------------------
+        'Private Sub m_tstbxSetMax_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.TextChanged
+        '    AutoScaleToolStripMenuItem.Checked = Not SetMaxToolStripMenuItem.Checked
+        'End Sub
+
+        '''' -------------------------------------------------------------------
+        '''' <summary> Upon toggleing of menu item </summary>
+        '''' -------------------------------------------------------------------
+        'Private Sub m_tstbxSetMin_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.TextChanged
+        '    AutoScaleToolStripMenuItem.Checked = Not SetMaxToolStripMenuItem.Checked
+        'End Sub
     End Class
     
 End Namespace
