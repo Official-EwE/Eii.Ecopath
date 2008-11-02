@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.10  2008/11/02 02:10:00  jeroens
+' Pruned history
+'
 ' Revision 1.9  2008/10/29 17:14:31  jeroens
 ' Fixed bug 564
 '
@@ -27,141 +30,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.242  2008/09/25 02:30:57  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.241  2008/09/22 14:01:20  jeroens
-' Fixed issue 466
-'
-' Revision 1.240  2008/08/27 14:03:43  jeroens
-' Fixed issue 428
-'
-' Revision 1.239  2008/08/15 03:44:16  jeroens
-' MPAaaaaargh
-'
-' Revision 1.238  2008/08/14 18:11:56  jeroens
-' Fixed duplicating issue when saving weight layers
-'
-' Revision 1.237  2008/08/14 04:54:50  jeroens
-' Fixed bad bug in determining no. of importance layers
-'
-' Revision 1.236  2008/08/13 19:51:45  jeroens
-' Fixed possible Ecospace scenario save crash
-' Increased ability to repair DB
-'
-' Revision 1.235  2008/08/11 22:14:07  jeroens
-' Importance layer cells stored and written
-'
-' Revision 1.234  2008/08/11 02:02:21  jeroens
-' Uses renamed basemap cLayerImportanceData data
-'
-' Revision 1.233  2008/08/10 17:07:41  jeroens
-' Debugged Importance layer craetion/deletion
-'
-' Revision 1.232  2008/08/08 23:17:23  jeroens
-' Properly implemented SaveScenarioAs
-' Added ImportanceLayers support
-'
-' Revision 1.231  2008/08/07 13:39:41  jeroens
-' Enough of this MPA stuff!!!! Now it works
-'
-' Revision 1.230  2008/08/07 03:58:29  jeroens
-' Fixed MPA closed/open confusion
-'
-' Revision 1.229  2008/08/04 16:07:00  jeroens
-' Fixed issue 528
-'
-' Revision 1.228  2008/07/29 13:05:53  jeroens
-' Fixed bug in reading monetary units
-'
-' Revision 1.227  2008/07/25 03:00:40  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.226  2008/07/23 18:01:49  jeroens
-' Custom monetary units not supported yet
-'
-' Revision 1.225  2008/07/21 18:44:56  jeroens
-' Woops
-'
-' Revision 1.224  2008/07/21 14:07:30  jeroens
-' Added pedigree interfaces
-'
-' Revision 1.223  2008/07/17 19:22:50  jeroens
-' Added MonetaryUnit to EwEModel
-'
-' Revision 1.222  2008/07/16 21:34:33  jeroens
-' Slowly getting paranoid...
-'
-' Revision 1.221  2008/07/16 21:16:49  jeroens
-' Fixed issue 500
-'
-' Revision 1.220  2008/07/14 17:07:55  jeroens
-' Fixed dataset delete bug
-'
-' Revision 1.219  2008/07/10 19:16:24  jeroens
-' Cleared default "year" for Time units
-'
-' Revision 1.218  2008/07/10 18:29:52  jeroens
-' Fixed units to properly behave
-'
-' Revision 1.217  2008/07/03 20:12:43  jeroens
-' New Ecospace scenarios will receive RelPP cells of 1 (fixes bug 410)
-'
-' Revision 1.216  2008/07/02 20:43:56  jeroens
-' Default Ecospace model type set to 'Multi-stanza'
-'
-' Revision 1.215  2008/06/06 15:55:57  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.214  2008/05/26 20:32:56  jeroens
-' Added model time unit, currency unit
-'
-' Revision 1.213  2008/05/20 13:41:31  jeroens
-' Increased robustness when reading TS
-'
-' Revision 1.212  2008/04/08 20:34:40  jeroens
-' Even invalid database IDs will flag the datasource dirty
-'
-' Revision 1.211  2008/04/07 21:46:56  jeroens
-' Added default detritus fate to new groups
-'
-' Revision 1.210  2008/04/07 17:00:48  jeroens
-' Transactions committed properly
-'
-' Revision 1.209  2008/04/06 03:49:48  jeroens
-' Prevented 0 length time steps in space
-'
-' Revision 1.208  2008/04/02 18:52:51  jeroens
-' Missing fishing rate shapes are created quietly when loading
-'
-' Revision 1.207  2008/04/02 00:39:35  jeroens
-' DiscardFate errors bypassed, no longer stop the model from loading
-'
-' Revision 1.206  2008/03/07 18:19:59  jeroens
-' Added Ecopath Area
-'
-' Revision 1.205  2008/02/28 20:33:18  joeb
-' Added Left and Right Salinity
-'
-' Revision 1.204  2008/02/28 16:04:12  jeroens
-' Fixed hang bug in LoadEcospaceFleetMap
-'
-' Revision 1.203  2008/02/25 18:44:36  jeroens
-' AppendTimeSeries made public
-'
-' Revision 1.202  2008/02/25 13:57:24  jeroens
-' Added crash test on AppendTimeSeries
-'
-' Revision 1.201  2008/02/25 13:48:21  jeroens
-' Fixed Time series save issue
-'
-' Revision 1.200  2008/02/22 21:44:01  jeroens
-' vbK tied to StanzaLifeStage
-'
-' Revision 1.199  2008/02/22 18:31:25  jeroens
-' Fixed bug 373
 '
 '==============================================================================
 
