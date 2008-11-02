@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginNavTreeHandler.vb,v $
+' Revision 1.2  2008/11/02 00:53:42  jeroens
+' Fixed missing selected item index
+'
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -145,6 +148,7 @@ Public Class cPluginNavTreeHandler
                     ' Attach an image, if any
                     If ip.ControlImage IsNot Nothing Then
                         tn.ImageIndex = Me.m_tv.ImageList.Images.Count
+                        tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
                         Me.m_tv.ImageList.Images.Add(ip.ControlImage)
                     End If
                     ' Regular font
