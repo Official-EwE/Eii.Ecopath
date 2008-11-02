@@ -71,6 +71,7 @@ Namespace Ecospace
             Me.m_graphProgress = New ZedGraph.ZedGraphControl
             Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations
             Me.m_tpResults = New System.Windows.Forms.TabPage
+            Me.m_lblBestPercentile = New System.Windows.Forms.Label
             Me.m_gridResults = New ScientificInterface.gridMPAOptimizations
             Me.m_graphResults = New ZedGraph.ZedGraphControl
             Me.m_btnResetMPAs = New System.Windows.Forms.Button
@@ -78,7 +79,6 @@ Namespace Ecospace
             Me.m_btnNewSearch = New System.Windows.Forms.Button
             Me.m_nudBestPercentile = New System.Windows.Forms.NumericUpDown
             Me.m_lblOutput = New System.Windows.Forms.Label
-            Me.m_lblBestPercentile = New System.Windows.Forms.Label
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -705,6 +705,15 @@ Namespace Ecospace
             Me.m_tpResults.Text = "Results"
             Me.m_tpResults.UseVisualStyleBackColor = True
             '
+            'm_lblBestPercentile
+            '
+            Me.m_lblBestPercentile.AutoSize = True
+            Me.m_lblBestPercentile.Location = New System.Drawing.Point(-1, 8)
+            Me.m_lblBestPercentile.Name = "m_lblBestPercentile"
+            Me.m_lblBestPercentile.Size = New System.Drawing.Size(42, 13)
+            Me.m_lblBestPercentile.TabIndex = 0
+            Me.m_lblBestPercentile.Text = "&Best %:"
+            '
             'm_gridResults
             '
             Me.m_gridResults.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -756,7 +765,7 @@ Namespace Ecospace
             '
             'm_btnResetMPAs
             '
-            Me.m_btnResetMPAs.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnResetMPAs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnResetMPAs.Location = New System.Drawing.Point(608, 3)
             Me.m_btnResetMPAs.Name = "m_btnResetMPAs"
             Me.m_btnResetMPAs.Size = New System.Drawing.Size(128, 23)
@@ -766,7 +775,7 @@ Namespace Ecospace
             '
             'm_btnConvertToMpa
             '
-            Me.m_btnConvertToMpa.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnConvertToMpa.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnConvertToMpa.Location = New System.Drawing.Point(497, 3)
             Me.m_btnConvertToMpa.Name = "m_btnConvertToMpa"
             Me.m_btnConvertToMpa.Size = New System.Drawing.Size(105, 23)
@@ -776,7 +785,7 @@ Namespace Ecospace
             '
             'm_btnNewSearch
             '
-            Me.m_btnNewSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnNewSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnNewSearch.Location = New System.Drawing.Point(742, 3)
             Me.m_btnNewSearch.Name = "m_btnNewSearch"
             Me.m_btnNewSearch.Size = New System.Drawing.Size(128, 23)
@@ -805,15 +814,6 @@ Namespace Ecospace
             Me.m_lblOutput.TabIndex = 0
             Me.m_lblOutput.Text = "Output"
             Me.m_lblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_lblBestPercentile
-            '
-            Me.m_lblBestPercentile.AutoSize = True
-            Me.m_lblBestPercentile.Location = New System.Drawing.Point(-1, 8)
-            Me.m_lblBestPercentile.Name = "m_lblBestPercentile"
-            Me.m_lblBestPercentile.Size = New System.Drawing.Size(42, 13)
-            Me.m_lblBestPercentile.TabIndex = 0
-            Me.m_lblBestPercentile.Text = "&Best %:"
             '
             'frmMPAOptimizations
             '
