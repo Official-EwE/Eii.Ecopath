@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.4  2008/11/03 01:14:44  jeroens
+' Fixed potential crash on import bit
+'
 ' Revision 1.3  2008/10/29 15:43:27  jeroens
 ' Pruned history
 '
@@ -1758,8 +1761,8 @@ Public Class AppLauncher
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
+            Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgSave.FileName)
         End If
-        Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgSave.FileName)
 
     End Sub
 
