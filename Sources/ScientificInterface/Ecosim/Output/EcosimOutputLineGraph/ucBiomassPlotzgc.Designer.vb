@@ -262,6 +262,7 @@ Namespace Ecosim
             Me.m_tsbAutoscale.Name = "m_tsbAutoscale"
             Me.m_tsbAutoscale.Size = New System.Drawing.Size(62, 22)
             Me.m_tsbAutoscale.Text = "Auto-scale"
+            Me.m_tsbAutoscale.Visible = False
             '
             'm_tsbCustomScale
             '
@@ -271,28 +272,33 @@ Namespace Ecosim
             Me.m_tsbCustomScale.Name = "m_tsbCustomScale"
             Me.m_tsbCustomScale.Size = New System.Drawing.Size(74, 22)
             Me.m_tsbCustomScale.Text = "Custom scale"
+            Me.m_tsbCustomScale.Visible = False
             '
             'm_tlsMax
             '
             Me.m_tlsMax.Name = "m_tlsMax"
             Me.m_tlsMax.Size = New System.Drawing.Size(31, 22)
             Me.m_tlsMax.Text = "Max:"
+            Me.m_tlsMax.Visible = False
             '
             'm_tstbScaleMax
             '
             Me.m_tstbScaleMax.Name = "m_tstbScaleMax"
             Me.m_tstbScaleMax.Size = New System.Drawing.Size(50, 25)
+            Me.m_tstbScaleMax.Visible = False
             '
             'm_tslMin
             '
             Me.m_tslMin.Name = "m_tslMin"
             Me.m_tslMin.Size = New System.Drawing.Size(27, 22)
             Me.m_tslMin.Text = "Min:"
+            Me.m_tslMin.Visible = False
             '
             'm_tstbScaleMin
             '
             Me.m_tstbScaleMin.Name = "m_tstbScaleMin"
             Me.m_tstbScaleMin.Size = New System.Drawing.Size(50, 25)
+            Me.m_tstbScaleMin.Visible = False
             '
             'm_tssplbtnScaleOptions
             '
