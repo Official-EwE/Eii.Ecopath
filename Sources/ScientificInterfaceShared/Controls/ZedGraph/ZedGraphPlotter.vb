@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.9  2008/11/03 18:40:00  joeh
+' Implement multiple selects for cumulative plot
+'
 ' Revision 1.8  2008/11/03 06:35:42  joeh
 ' Implement multiple selects for relative plot
 '
@@ -152,7 +155,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>Highlight the dataset if required.</summary>
         ''' -------------------------------------------------------------------
-        Public Sub SetHighlight(ByVal i As Integer, ByVal index As Integer, ByVal overlay As Integer)
+        Public Sub SetHighlight(ByVal i As Integer, ByVal count As Integer, ByVal index As Integer, ByVal overlay As Integer)
             ' This is a tricky situation
             ' Overlay is one less than overlay thus
             ' the need to overlay is <= 0
@@ -164,8 +167,8 @@ Namespace Controls
             ElseIf index > 0 And overlay < 0 Then
                 ' Set only group for all overlays
 
-                'If highlight the first curve
-                If i = 0 Then SetAllToColors(False)
+                'If highlighting the last curve (curve with the highest index in the collection)
+                If i = count - 1 Then SetAllToColors(False)
 
                 For iOver As Integer = 0 To m_Overlays.Count - 1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(index - 1)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.12  2008/11/03 18:40:00  joeh
+' Implement multiple selects for cumulative plot
+'
 ' Revision 1.11  2008/11/03 06:35:41  joeh
 ' Implement multiple selects for relative plot
 '
@@ -416,8 +419,8 @@ Namespace Ecosim
                 End If
             Next
 
-            For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
-                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+            For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
+                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
             Next
             Me.m_zgc.Invalidate()
         End Sub
