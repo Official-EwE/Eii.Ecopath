@@ -313,26 +313,26 @@ Namespace Ecosim
             '
             Me.AutoScaleToolStripMenuItem.CheckOnClick = True
             Me.AutoScaleToolStripMenuItem.Name = "AutoScaleToolStripMenuItem"
-            Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
             Me.AutoScaleToolStripMenuItem.Text = "&Auto scale"
             '
             'ToolStripSeparator4
             '
             Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            Me.ToolStripSeparator4.Size = New System.Drawing.Size(149, 6)
+            Me.ToolStripSeparator4.Size = New System.Drawing.Size(145, 6)
             '
             'CustomScaleToolStripMenuItem
             '
             Me.CustomScaleToolStripMenuItem.CheckOnClick = True
             Me.CustomScaleToolStripMenuItem.Name = "CustomScaleToolStripMenuItem"
-            Me.CustomScaleToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.CustomScaleToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
             Me.CustomScaleToolStripMenuItem.Text = "&Custom scale"
             '
             'SetMaxToolStripMenuItem
             '
             Me.SetMaxToolStripMenuItem.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
             Me.SetMaxToolStripMenuItem.Name = "SetMaxToolStripMenuItem"
-            Me.SetMaxToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.SetMaxToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
             Me.SetMaxToolStripMenuItem.Text = "M&ax:"
             '
             'm_tstbxSetMax
@@ -346,7 +346,7 @@ Namespace Ecosim
             '
             Me.SetMinToolStripMenuItem.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
             Me.SetMinToolStripMenuItem.Name = "SetMinToolStripMenuItem"
-            Me.SetMinToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.SetMinToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
             Me.SetMinToolStripMenuItem.Text = "M&in:"
             '
             'm_tstbxSetMin

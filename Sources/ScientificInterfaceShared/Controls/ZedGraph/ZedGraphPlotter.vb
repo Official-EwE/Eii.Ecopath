@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.8  2008/11/03 06:35:42  joeh
+' Implement multiple selects for relative plot
+'
 ' Revision 1.7  2008/10/31 19:57:03  joeh
 ' Implement relative catch
 '
@@ -149,7 +152,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>Highlight the dataset if required.</summary>
         ''' -------------------------------------------------------------------
-        Public Sub SetHighlight(ByVal index As Integer, ByVal overlay As Integer)
+        Public Sub SetHighlight(ByVal i As Integer, ByVal index As Integer, ByVal overlay As Integer)
             ' This is a tricky situation
             ' Overlay is one less than overlay thus
             ' the need to overlay is <= 0
@@ -161,7 +164,8 @@ Namespace Controls
             ElseIf index > 0 And overlay < 0 Then
                 ' Set only group for all overlays
 
-                SetAllToColors(False)
+                'If highlight the first curve
+                If i = 0 Then SetAllToColors(False)
 
                 For iOver As Integer = 0 To m_Overlays.Count - 1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(index - 1)
@@ -171,11 +175,11 @@ Namespace Controls
                         SetLine(crv, True, True)
                     End If
 
-                    'If cumulative plot then plot line of selected group without highlight
+                    'If cumulative plot then plot line of selected group without highlight but with color fill
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
                         SetLine(crv, True, False)
-                        'If needed, plot line of the group of next lower index
+                        'If needed, plot line of the group of next lower index without highlight but with white fill
                         If index >= 2 Then
                             crv = m_Overlays.Item(iOver).Item(index - 2)
                             SetLine(crv, True, False, True)

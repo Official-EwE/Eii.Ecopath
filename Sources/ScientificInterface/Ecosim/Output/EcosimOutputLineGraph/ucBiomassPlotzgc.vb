@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.11  2008/11/03 06:35:41  joeh
+' Implement multiple selects for relative plot
+'
 ' Revision 1.10  2008/11/03 00:58:21  joeh
 ' Implement Scale option - Take two
 '
@@ -402,7 +405,20 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbOverlay.SelectedIndexChanged, lbGroups.SelectedIndexChanged
             ' The plotter will set the highlight for this item.
-            m_ZGPlotter.SetHighlight(lbGroups.SelectedIndex, lbOverlay.SelectedIndex - 1)
+            'm_ZGPlotter.SetHighlight(lbGroups.SelectedIndex, lbOverlay.SelectedIndex - 1)
+            'Check the SelectedIndices collection
+            For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
+                'If "All" is in the SelectedIndices and it is not the only selected index
+                If lbGroups.SelectedIndices(i) = 0 And lbGroups.SelectedIndices.Count > 1 Then
+                    'Make sure it cannot be selected
+                    lbGroups.SetSelected(i, False)
+                    Exit For
+                End If
+            Next
+
+            For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
+                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+            Next
             Me.m_zgc.Invalidate()
         End Sub
 
