@@ -1401,7 +1401,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Pool data expected.
+        '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;pool&apos;, &apos;group&apos; or &apos;fleet&apos;.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_POOLLINEMISSING() As String
             Get
@@ -1428,7 +1428,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Type data expected.
+        '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;type&apos;.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_TYPELINEMISSING() As String
             Get

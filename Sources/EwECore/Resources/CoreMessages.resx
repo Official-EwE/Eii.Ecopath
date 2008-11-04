@@ -580,7 +580,8 @@ System Error: {0}</value>
     <value>One or more pool code values cannot be read</value>
   </data>
   <data name="TIMESERIES_ERROR_POOLLINEMISSING" xml:space="preserve">
-    <value>Pool data expected</value>
+    <value>Header '{0}' not recognized, expected 'pool', 'group' or 'fleet'</value>
+    <comment>{0}=unrecognized header name</comment>
   </data>
   <data name="TIMESERIES_ERROR_POOLVALUEMISSING" xml:space="preserve">
     <value>Pool code value missing</value>
@@ -589,7 +590,8 @@ System Error: {0}</value>
     <value>One or more type code values cannot be read</value>
   </data>
   <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
-    <value>Type data expected</value>
+    <value>Header '{0}' not recognized, expected 'type'</value>
+    <comment>{0}=unrecognized header name</comment>
   </data>
   <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">
     <value>Type code value missing</value>
