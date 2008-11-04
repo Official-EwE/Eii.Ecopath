@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.13  2008/11/04 02:13:34  joeh
+' Implement multiple selects for cumulative plot - Take two
+'
 ' Revision 1.12  2008/11/03 18:40:00  joeh
 ' Implement multiple selects for cumulative plot
 '
@@ -147,7 +150,7 @@ Namespace Ecosim
             m_ZGHelper = New ZedGraphHelper(m_zgc)
 
             ' 0.5) Call new graph
-            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Biomass", "Year", "Cumulative biomass")
+            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Cumulative biomass", "Year", "Cumulative biomass")
 
             m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
@@ -167,7 +170,7 @@ Namespace Ecosim
             m_ZGPlotter.PrepareDataset()
 
             'Cumulative plot
-            If CumulativeToolStripMenuItem.Checked = True Then
+            If CumulativeToolStripMenuItem.Checked Or CumulativeSelectedToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
                     m_ZGPlotter.Title = "Cumulative biomass"
@@ -250,7 +253,13 @@ Namespace Ecosim
                     ' 3) Store the line
                     If BiomassToolStripMenuItem.Checked Then
                         'Biomass
-                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
+                        If CumulativeToolStripMenuItem.Checked Then
+                            'Cumulative highlight
+                            m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
+                        Else
+                            'Cumulative selected
+                            m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeSelectedBiomass, list1)
+                        End If
                     Else
                         'Catch
                         m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeCatch, list1)
@@ -260,7 +269,7 @@ Namespace Ecosim
             End If
 
             'Relative plot
-            If RelativeToolStripMenuItem.Checked = True Then
+            If RelativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
                     m_ZGPlotter.Title = "Relative biomass"
@@ -419,9 +428,15 @@ Namespace Ecosim
                 End If
             Next
 
-            For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
-                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
-            Next
+            If CumulativeSelectedToolStripMenuItem.Checked Then
+                For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
+                    m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+                Next
+            Else
+                For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
+                    m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+                Next
+            End If
             Me.m_zgc.Invalidate()
         End Sub
 
@@ -442,7 +457,7 @@ Namespace Ecosim
             lbGroups.Items.Clear()
             lbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nGroups
-                If CatchToolStripMenuItem.Checked Then
+                If CatchToolStripMenuItem.Checked And Not CumulativeSelectedToolStripMenuItem.Checked Then
                     Dim dblSumDiscardsLandings As Double = 0.0
                     For f As Integer = 1 To m_core.nFleets
                         dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
@@ -558,7 +573,16 @@ Namespace Ecosim
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
         Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click
+            CumulativeSelectedToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
             RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CumulativeSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeSelectedToolStripMenuItem.Click
+            CumulativeToolStripMenuItem.Checked = Not CumulativeSelectedToolStripMenuItem.Checked
+            RelativeToolStripMenuItem.Checked = Not CumulativeSelectedToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -566,6 +590,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click
             CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+            CumulativeSelectedToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -599,7 +624,6 @@ Namespace Ecosim
             Me.m_ZGHelper.AutoscalePane = False
             Me.UpdateControls()
         End Sub
-
     End Class
     
 End Namespace

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.10  2008/11/04 02:13:34  joeh
+' Implement multiple selects for cumulative plot - Take two
+'
 ' Revision 1.9  2008/11/03 18:40:00  joeh
 ' Implement multiple selects for cumulative plot
 '
@@ -53,6 +56,8 @@ Namespace Controls
         Private m_Overlays As New List(Of CurveList)
         Private m_CurrentOverlay As New CurveList
         Private m_dicTimeSeriesGroup As New Dictionary(Of Integer, CurveItem)
+        Private m_listSum As New PointPairList
+
 
         Public Class CurveType
             Public Name As String
@@ -70,8 +75,10 @@ Namespace Controls
 
         Public Enum eLineType
             CumulativeBiomass
+            CumulativeSelectedBiomass
             RelativeBiomass
             CumulativeCatch
+            CumulativeSelectedCatch
             RelativeCatch
             TimeSeries
         End Enum
@@ -93,6 +100,7 @@ Namespace Controls
             m_graphPane.Legend.IsVisible = False
 
             m_graphPane.AxisChange()
+
         End Sub
 
 #End Region
@@ -119,7 +127,8 @@ Namespace Controls
             Dim crvType As CurveType = New CurveType(name, index, m_Overlays.Count - 1, lineType)
 
             Select Case crvType.LineType
-                Case eLineType.CumulativeBiomass, eLineType.CumulativeCatch
+                Case eLineType.CumulativeBiomass, eLineType.CumulativeSelectedBiomass, _
+                  eLineType.CumulativeCatch, eLineType.CumulativeSelectedCatch
                     'crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
                     crv = m_graphPane.AddCurve(name, list, Color.Black, SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
@@ -180,7 +189,33 @@ Namespace Controls
 
                     'If cumulative plot then plot line of selected group without highlight but with color fill
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
+                        'If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Then
+                        '    If index >= 2 Then
+                        '        Dim crvTmp As CurveItem = m_Overlays.Item(iOver).Item(index - 2)
+                        '        For p As Integer = 0 To crv.NPts - 1
+                        '            crv.Item(p).Y = crv.Item(p).Y - crvTmp.Item(p).Y
+                        '        Next
+
+                        '        If i = 0 Then
+                        '            m_listSum.Clear()
+                        '            For t As Integer = 0 To m_core.nEcosimTimeSteps
+                        '                m_listSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
+                        '            Next
+                        '        End If
+
+                        '        For p As Integer = 0 To crv.NPts - 1
+                        '            m_listSum(p).Y = m_listSum(p).Y + crv.Item(p).Y
+                        '        Next
+                        '        For p As Integer = 0 To crv.NPts - 1
+                        '            crv.Item(p).Y = m_listSum(p).Y
+                        '        Next
+                        '    Else
+
+                        '    End If
+                        'End If
+
                         SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
                         If index >= 2 Then
@@ -359,10 +394,9 @@ Namespace Controls
 
                     'Cumulative plot
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
                         crv.Color = Drawing.Color.Black
-                        'If bWhiteFillColor = False Then _
-                        '  DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
                         If bWhiteFillColor = True Then
                             DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.White)
                         Else
@@ -374,6 +408,7 @@ Namespace Controls
                     crv.Color = Drawing.Color.LightSlateGray
                     'Cumulative plot
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
+                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
                         DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.Transparent)
                     End If

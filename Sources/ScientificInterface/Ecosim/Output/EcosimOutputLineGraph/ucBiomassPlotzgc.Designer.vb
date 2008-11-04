@@ -26,7 +26,6 @@ Namespace Ecosim
             Me.gbAnonymous = New System.Windows.Forms.GroupBox
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.lbOverlay = New System.Windows.Forms.ListBox
-            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
@@ -38,6 +37,7 @@ Namespace Ecosim
             Me.m_tsdrpdnbtnPlotType = New System.Windows.Forms.ToolStripDropDownButton
             Me.CumulativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RelativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.CumulativeSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsdrpdnbtnGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
             Me.AnnualOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -58,6 +58,7 @@ Namespace Ecosim
             Me.m_tstbxSetMax = New System.Windows.Forms.ToolStripTextBox
             Me.SetMinToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tstbxSetMin = New System.Windows.Forms.ToolStripTextBox
+            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.gbAnonymous.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
@@ -107,18 +108,6 @@ Namespace Ecosim
             Me.lbOverlay.Name = "lbOverlay"
             Me.lbOverlay.Size = New System.Drawing.Size(119, 141)
             Me.lbOverlay.TabIndex = 0
-            '
-            'lbGroups
-            '
-            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbGroups.FormattingEnabled = True
-            Me.lbGroups.IntegralHeight = False
-            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
-            Me.lbGroups.Name = "lbGroups"
-            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-            Me.lbGroups.Size = New System.Drawing.Size(119, 265)
-            Me.lbGroups.TabIndex = 1
             '
             'm_zgc
             '
@@ -192,7 +181,7 @@ Namespace Ecosim
             '
             'm_tsdrpdnbtnPlotType
             '
-            Me.m_tsdrpdnbtnPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CumulativeToolStripMenuItem, Me.RelativeToolStripMenuItem})
+            Me.m_tsdrpdnbtnPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CumulativeToolStripMenuItem, Me.RelativeToolStripMenuItem, Me.CumulativeSelectedToolStripMenuItem})
             Me.m_tsdrpdnbtnPlotType.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.m_tsdrpdnbtnPlotType.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsdrpdnbtnPlotType.Name = "m_tsdrpdnbtnPlotType"
@@ -205,15 +194,23 @@ Namespace Ecosim
             Me.CumulativeToolStripMenuItem.CheckOnClick = True
             Me.CumulativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
             Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
             '
             'RelativeToolStripMenuItem
             '
             Me.RelativeToolStripMenuItem.CheckOnClick = True
             Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
             Me.RelativeToolStripMenuItem.Text = "&Relative"
+            '
+            'CumulativeSelectedToolStripMenuItem
+            '
+            Me.CumulativeSelectedToolStripMenuItem.CheckOnClick = True
+            Me.CumulativeSelectedToolStripMenuItem.Name = "CumulativeSelectedToolStripMenuItem"
+            Me.CumulativeSelectedToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
+            Me.CumulativeSelectedToolStripMenuItem.Text = "Cumulative (Selected)"
+            Me.CumulativeSelectedToolStripMenuItem.Visible = False
             '
             'ToolStripSeparator2
             '
@@ -356,6 +353,18 @@ Namespace Ecosim
             Me.m_tstbxSetMin.Name = "m_tstbxSetMin"
             Me.m_tstbxSetMin.Size = New System.Drawing.Size(50, 21)
             '
+            'lbGroups
+            '
+            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.lbGroups.FormattingEnabled = True
+            Me.lbGroups.IntegralHeight = False
+            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
+            Me.lbGroups.Name = "lbGroups"
+            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+            Me.lbGroups.Size = New System.Drawing.Size(119, 265)
+            Me.lbGroups.TabIndex = 1
+            '
             'ucBiomassPlotzgc
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -409,6 +418,7 @@ Namespace Ecosim
         Friend WithEvents CatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents CustomScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents CumulativeSelectedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 
