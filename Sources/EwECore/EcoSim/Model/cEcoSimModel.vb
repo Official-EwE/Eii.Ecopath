@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.19  2008/11/04 21:03:21  joeb
+' Removed some dead code
+'
 ' Revision 1.18  2008/10/29 15:05:33  joeb
 ' Fixed bug in Ecosim DWE set to 1 not 0.5
 '
@@ -835,6 +838,9 @@ Public Property PluginManager() As cPluginManager
                         m_MSE.AccessBioRisk(BB)
                     End If 'If m_search.PlotOn = True Then
 
+                    'jb For optimization of Searches results and timestep data are not computed when in a Search
+                    'This could be changed so that a plugin could access the timestep and results data
+                    'by using a boolean flag to process the timestep results which could be set by a plugin
                     If Not m_search.bInSearch Then
                         ProcessTimeStep(itime, ipct)
                     End If
@@ -1120,8 +1126,6 @@ Public Property PluginManager() As cPluginManager
             If m_Data.EvolveIsOn = False Then
                 For i = 1 To nGroups 'N
 
-                    'jb set the feeding time for all non pair groups
-                    'see eguation 6 Representing Density Dependent Consequences of Life History Strategies in Aquatic Ecosystems: EcoSim(II)
                     If CBlast(i) > 0 And (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
                         m_Data.Ftime(i) = 0.1 + 0.9 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / CBlast(i))
                     End If
@@ -1957,16 +1961,13 @@ Public Property PluginManager() As cPluginManager
             'emig is emigration rate (estimated at base biomass as immig/biomass
             'immig is biomass immigration rate (amount per time, NOT amount per biomass
             'fish is instantaneous fishing rate
-            'On Local Error Resume Next
-            Dim i As Integer, j As Integer, ii As Integer ', K As Integer
+            Dim i As Integer, j As Integer, ii As Integer
             Dim eat As Single, Bprey As Single
             Dim aeff() As Single, Veff() As Single
             ReDim aeff(m_Data.inlinks)
-            'Console.WriteLine(m_Data.inlinks.ToString)
             ReDim Veff(m_Data.inlinks)
             Dim Hdent() As Single
             ReDim Hdent(nGroups)
-            'Dim Vprey As Single
 
             Dim Pmult As Single
             Dim ia As Integer, Vbiom() As Single, Vdenom() As Single
@@ -1977,9 +1978,6 @@ Public Property PluginManager() As cPluginManager
                 If m_Data.MedIsUsed(0) Then SetMedFunctions(Biomass)
 
                 setpred(Biomass)
-                'Erase Eatenof
-                'Erase Eatenby
-                'Erase Consumpt
 
                 ReDim m_Data.Eatenof(nGroups)
                 ReDim m_Data.Eatenby(nGroups)
@@ -2003,8 +2001,6 @@ Public Property PluginManager() As cPluginManager
 
                 For j = m_EPData.NumLiving + 1 To nGroups
                     m_Data.ToDetritus(j - m_EPData.NumLiving) = 0
-                    'jb DetPassedOn() is never used in this module I think it could be deleted
-                    'DetPassedOn(j) = 0
                 Next j
 
                 'get switching parameters
@@ -2051,8 +2047,6 @@ Public Property PluginManager() As cPluginManager
 
                 For j = 1 To nGroups
                     m_Data.Hden(j) = (1 - Dwe) * CSng((1 + m_Data.Htime(j) * Hdent(j))) + Dwe * m_Data.Hden(j)
-                    'm_data.Hden(j) = 1
-                    ' sumHden = sumHden + m_Data.Hden(j)
                 Next
 
                 ReDim Vbiom(m_Data.Narena), Vdenom(m_Data.Narena)
@@ -2099,11 +2093,10 @@ Public Property PluginManager() As cPluginManager
                         Case Else
                             eat = 0
                     End Select
+
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + eat
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + eat
                     m_Data.Consumpt(i, j) = eat   'VILLY WHAT IS THIS USED FOR?  WRONG FOR COMPLEX ARENA CASES!
-
-                    '  If DoingEiiSaving2Round Or m_Data.IndicesOn Then m_Data.DCMean(j, i) = eat 'DCmean just used for convenience to store the sim diets
 
                     'ADDED CODE FOR CONTAMINANT ACCOUNTING
                     If m_TracerData.EcoSimConSimOn = True Then
@@ -2137,7 +2130,6 @@ Public Property PluginManager() As cPluginManager
                         'pbm is 0 for consumers
                         Pmult = 1.0#
                         ApplyAVmodifiers(Pmult, Veff(1), i, i, True)
-                        'Debug.Assert(Pmult = 1)
                         pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
                         If m_RefData.PoolForceZ(i, 0) > 0 Then 'constant Z for this group, saved in array 0 for convenience
@@ -2180,8 +2172,6 @@ Public Property PluginManager() As cPluginManager
                 Debug.Assert(False, ex.StackTrace)
                 Throw New ApplicationException("Derivt() Error.", ex)
             End Try
-
-
             ' cLog.WriteArrayToFile("Deriv EwE6.csv", deriv, t.ToString)
         End Sub
 
