@@ -1,107 +1,16 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesTextReader.vb,v $
+' Revision 1.2  2008/11/04 18:52:23  jeroens
+' Provided more thorough error feedback on unexpected headers
+' Resolved parsing problems on typical clear values
+'
 ' Revision 1.1  2008/09/26 07:30:34  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.19  2008/07/01 19:13:09  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.18  2008/07/01 13:58:24  jeroens
-' Fixed issue 498
-'
-' Revision 1.17  2008/06/09 21:57:45  jeroens
-' Moved core counters to EwEUtils
-'
-' Revision 1.16  2008/04/22 08:26:32  jeroens
-' Row checking more lenient
-'
-' Revision 1.15  2008/04/01 18:20:56  jeroens
-' Spaces are trimmed from split strings
-' Fixed case inconsistency bug on reading Weight information
-'
-' Revision 1.14  2008/02/11 03:34:26  jeroens
-' Datasets are separate entities now, no longer just defined by name in Time Series
-'
-' Revision 1.13  2008/02/05 03:56:13  jeroens
-' Fixed bug 389
-'
-' Revision 1.12  2008/02/05 01:11:24  jeroens
-' - Removed use of MessageBox in core classes (eew! repent!)
-' + Missing column values are presumed '0', a warning is no longer thrown (solves bug 388)
-'
-' Revision 1.11  2007/10/02 18:55:30  jeroens
-' * Fixed major TS mis-allocation category issue
-'
-' Revision 1.10  2007/09/30 20:14:16  jeroens
-' * Localized
-' + Row errors maintained with string builders
-'
-' Revision 1.9  2007/09/27 20:47:02  jeroens
-' * Fixed offset bug
-'
-' Revision 1.8  2007/09/27 16:14:37  jeroens
-' * Fixed index offset problem when importing TS
-'
-' Revision 1.7  2007/08/30 02:25:20  jeroens
-' + Added link to TS dataset
-'
-' Revision 1.6  2007/08/28 04:23:23  jeroens
-' + Validated pool code values
-'
-' Revision 1.5  2007/08/01 14:54:52  jeroens
-' * Fixed bug in allocating TS buffer size
-' * Fixed one-based index issue in year import
-'
-' Revision 1.4  2007/07/17 02:15:39  jeroens
-' * cTimeSeries now inherited from cShapeData
-'
-' Revision 1.3  2007/07/12 16:29:25  jeroens
-' + Moved
-'
-' Revision 1.1  2007/07/12 15:50:02  jeroens
-' * Moved
-'
-' Revision 1.11  2007/07/08 18:22:30  jeroens
-' * Fixing globalization todo's
-'
-' Revision 1.10  2007/06/12 15:28:04  jeroens
-' + Added negative value check
-'
-' Revision 1.9  2007/06/11 02:59:01  jeroens
-' * Uses renamed cTimeSeriesImport
-'
-' Revision 1.8  2007/06/07 12:45:09  jeroens
-' + Uses cTimeSeriesFactory
-'
-' Revision 1.7  2007/06/07 11:56:22  jeroens
-' * TS type -6 is also Fleet-related
-'
-' Revision 1.6  2007/05/17 03:01:23  jeroens
-' * Commented
-'
-' Revision 1.5  2007/05/16 17:14:10  jeroens
-' + Fixed number interpretation bug with any decimal separator
-' + Uses cTimeSeries subclasses
-' + Added comments
-'
-' Revision 1.4  2007/05/16 05:20:56  jeroens
-' + Documented, done except for text format description
-' * Cleaned up
-' * Uses StringUtil.SplitQualified to protect qualifier-encapsulated texts
-'
-' Revision 1.3  2007/05/15 17:15:11  jeroens
-' * Separators strings instead of chars
-' + Preview implemented as separate class
-' * Fixed bunch of bugs
-'
-' Revision 1.2  2007/05/14 15:05:58  jeroens
-' Getting there
-'
-' Revision 1.1  2007/05/14 03:15:03  jeroens
-' Initial version
-'
 '==============================================================================
+
+#Region " Imports "
 
 Option Strict On
 
@@ -111,6 +20,8 @@ Imports EwEUtils.Utilities
 Imports System.IO
 Imports System.Globalization
 Imports System.Text
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -403,8 +314,8 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
 
             ' Pool code
-            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group"}) Then
-                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, iLineNumber)
+            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet"}) Then
+                Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
             If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
@@ -420,8 +331,8 @@ Public MustInherit Class cTimeSeriesTextReader
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
             ' Dat type
-            If (String.Compare(astrCols(0), "type", True) <> 0) Then
-                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, iLineNumber)
+            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code"}) Then
+                Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
 
@@ -545,22 +456,31 @@ Public MustInherit Class cTimeSeriesTextReader
 
         ' Read type from columns
         Try
+
             For i As Integer = 1 To iNumSeries
                 aiType(i - 1) = CType(Integer.Parse(astrCols(i), ni), eTimeSeriesType)
 
-                ' Validate if pool code and type match
+                ' Validate if encountered pool code fits the corresponding core counter
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(aiType(i - 1), eTimeSeriesType))
+
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
+                        ' Group index cannot exceed core nGroups
                         If aiDatPool(i - 1) >= Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups) Then
                             Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1), astrNames(i - 1)), iLineNumber - 1)
                         End If
+
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                        'Fleet index cannot exceed core nFleets
                         If aiDatPool(i - 1) >= Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets) Then
                             Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1), astrNames(i - 1)), iLineNumber - 1)
                         End If
+
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                        ' All good
+
                 End Select
             Next i
+
         Catch ex As Exception
             Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
         End Try
@@ -597,7 +517,8 @@ Public MustInherit Class cTimeSeriesTextReader
                     ' #Yes: is not an empty string?
                     If (Not String.IsNullOrEmpty(astrCols(iColumn))) Then
                         ' #Yes: get the value
-                        strValue = astrCols(iColumn)
+                        strValue = Me.FixKnownInvalidValue(astrCols(iColumn))
+
                         Try
                             ' Try to parse the value
                             sValue = Single.Parse(strValue, ni)
@@ -721,6 +642,14 @@ Public MustInherit Class cTimeSeriesTextReader
         End If
 
     End Sub
+
+    Private Function FixKnownInvalidValue(ByVal strValue As String) As String
+        Select Case strValue.Trim
+            Case "-", "_", ""
+                strValue = "0"
+        End Select
+        Return strValue
+    End Function
 
 #End Region ' Helper methods
 
