@@ -1,84 +1,14 @@
 '==============================================================================
 '
-' $Log: EditHabitatsEwEGrid.vb,v $
-' Revision 1.2  2008/10/29 15:45:48  jeroens
+' $Log: gridEditMPAs.vb,v $
+' Revision 1.1  2008/11/04 04:58:44  jeroens
+' Renamed
+'
+' Revision 1.2  2008/10/29 15:45:49  jeroens
 ' Fixed issue 562
 '
 ' Revision 1.1  2008/09/26 07:31:56  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.18  2008/08/11 16:13:57  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.17  2008/08/11 04:37:58  jeroens
-' Removed obsolete local vars
-'
-' Revision 1.16  2008/08/10 17:05:15  jeroens
-' Removed obsolete captions
-'
-' Revision 1.15  2008/08/09 02:54:22  jeroens
-' Cleaned up
-'
-' Revision 1.14  2008/08/02 03:04:09  jeroens
-' Renamed resources
-'
-' Revision 1.13  2008/06/02 00:01:24  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.12  2008/05/17 17:42:55  jeroens
-' Fixed bug 455
-'
-' Revision 1.11  2008/04/07 02:31:11  jeroens
-' Cleaning up resources
-'
-' Revision 1.10  2008/02/27 18:56:45  jeroens
-' Localized
-'
-' Revision 1.9  2008/02/27 18:50:43  jeroens
-' Localized
-'
-' Revision 1.8  2008/01/18 01:40:01  jeroens
-' Simplified code lock usage
-'
-' Revision 1.7  2008/01/06 09:17:21  jeroens
-' * Smartened-up deletion confirmation logic
-'
-' Revision 1.6  2007/12/11 15:01:44  jeroens
-' * Fixed-up resource names
-'
-' Revision 1.5  2007/12/08 18:23:20  jeroens
-' * Incorporated new StringUtils capability to autonumber strings
-'
-' Revision 1.4  2007/12/03 20:46:01  jeroens
-' - Simplified
-'
-' Revision 1.3  2007/12/03 15:13:57  jeroens
-' * Globalized (or localized, if you will...)
-' * Fixed apply changes issue: changed objects looked up by core ID
-'
-' Revision 1.2  2007/10/21 13:08:25  jeroens
-' * Core restructure batch lock can fail; now properly handled througout core and GUI
-'
-' Revision 1.1  2007/09/18 14:38:15  jeroens
-' * Renamed
-'
-' Revision 1.20  2007/09/15 13:43:03  jeroens
-' - Ecospace no longer saved when user makes changes
-'
-' Revision 1.19  2007/09/14 15:53:43  jeroens
-' * Fixed batch unlock scope issue
-'
-' Revision 1.18  2007/09/10 21:03:03  jeroens
-' * Changed the way habitats are maintained
-'
-' Revision 1.17  2007/06/21 22:23:35  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.16  2007/05/31 16:34:40  jeroens
-' * Uses exposed Habitat Area Proportion
-'
-' Revision 1.15  2007/04/12 01:01:37  jeroens
-' * Fixed habitat 0-based index issues
 '
 '==============================================================================
 
@@ -96,79 +26,94 @@ Imports SourceGrid2
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridEditHabitats
+    Public Class gridEditMPA
         : Inherits EwEGrid
 
-        ''' <summary>A number representing the row that contains the first Habitat</summary>
-        Private Const iFIRSTHABITATROW As Integer = 1
+        ''' <summary>A number representing the row that contains the first MPA</summary>
+        Private Const iFIRSTMPAROW As Integer = 1
 
         ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
         Private m_core As cCore = Nothing
-        ''' <summary>List of active Habitats.</summary>
-        Private m_alHabitats As New List(Of HabitatInfo)
-        ''' <summary>List of removed Habitats.</summary>
-        Private m_alHabitatsRemoved As New List(Of HabitatInfo)
+        ''' <summary>List of active MPAs.</summary>
+        Private m_alMPAs As New List(Of MPAInfo)
+        ''' <summary>List of removed MPAs.</summary>
+        Private m_alMPAsRemoved As New List(Of MPAInfo)
         ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
         ''' to trap cell edit events locally in this grid. These events are essential
-        ''' for keeping the local Habitat administration up to date.</summary>
+        ''' for keeping the local MPA administration up to date.</summary>
         Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
         Private m_iUpdateLock As Integer = 0
 
-        ''' <summary>Visual model to display original Habitats.</summary>
+        ''' <summary>Visual model to display original MPAs.</summary>
         Private m_vmOriginal As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display newly created Habitats.</summary>
+        ''' <summary>Visual model to display newly created MPAs.</summary>
         Private m_vmAdded As VisualModels.Common = New VisualModels.Common(False)
-        ''' <summary>Visual model to display Habitats that are about be deleted.</summary>
+        ''' <summary>Visual model to display MPAs that are about be deleted.</summary>
         Private m_vmRemoved As VisualModels.Common = New VisualModels.Common(False)
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
-            HabitatIndex = 0
-            HabitatName
-            HabitatStatus
+            MPAIndex = 0
+            MPAName
+            MPAAll
+            MPAJan
+            MPAFeb
+            MPAMar
+            MPAApr
+            MPAMay
+            MPAJun
+            MPAJul
+            MPAAug
+            MPASep
+            MPAOct
+            MPANov
+            MPADec
+            MPAStatus
         End Enum
 
 #Region " Helper classes "
 
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Administrative unit representing a <see cref="cEcospaceHabitat">Habitat</see>
+        ''' Administrative unit representing a <see cref="cEcospaceMPA">MPA</see>
         ''' in the EwE model.
         ''' </summary>
         ''' <remarks>
-        ''' This class can represent existing and new Habitats. If this class has its
-        ''' <see cref="HabitatInfo.Habitat">Habitat</see> parameter set, a real live
-        ''' Habitat is represented. If this parameter is not set, a new Habitat is
+        ''' This class can represent existing and new MPAs. If this class has its
+        ''' <see cref="MPAInfo.MPA">MPA</see> parameter set, a real live
+        ''' MPA is represented. If this parameter is not set, a new MPA is
         ''' represented.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Class HabitatInfo
+        Private Class MPAInfo
 
-            ''' <summary><see cref="cEcospaceHabitat">cEcospaceHabitat</see> associated with this Habitat, if any.</summary>
-            Private m_Habitat As cEcospaceHabitat = Nothing
-            ''' <summary>Name for this Habitat.</summary>
+            ''' <summary><see cref="cEcospaceMPA">cEcospaceMPA</see> associated with this MPA, if any.</summary>
+            Private m_MPA As cEcospaceMPA = Nothing
+            ''' <summary>Name for this MPA.</summary>
             Private m_strName As String = ""
-            ''' <summary>Flag stating whether a user action is confirmed</summary>
-            Private m_bConfirmed As Boolean = True
-            ''' <summary>The status of a Habitat in the interface.</summary>
+            ''' <summary>Months this MPA is closed.</summary>
+            Private m_bOpenMonths(cCore.N_MONTHS) As Boolean
+            ''' <summary>The status of a MPA in the interface.</summary>
             Private m_status As AddRemoveItemStatus = AddRemoveItemStatus.Original
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
             ''' </summary>
-            ''' <param name="Habitat">The <see cref="cEcospaceHabitat">cEcospaceHabitat</see> to
+            ''' <param name="MPA">The <see cref="cEcospaceMPA">cEcospaceMPA</see> to
             ''' initialize this instance from. If set, this instance represents a
-            ''' Habitat currently active in the EwE model.</param>
+            ''' MPA currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Habitat As cEcospaceHabitat)
-                Debug.Assert(Habitat IsNot Nothing)
-                Me.m_Habitat = Habitat
-                Me.m_strName = Habitat.Name
+            Public Sub New(ByVal MPA As cEcospaceMPA)
+                Debug.Assert(MPA IsNot Nothing)
+                Me.m_MPA = MPA
+                Me.m_strName = MPA.Name
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me.m_bOpenMonths(iMonth) = MPA.MPAMonth(iMonth)
+                Next
                 Me.m_status = AddRemoveItemStatus.Original
             End Sub
 
@@ -179,8 +124,11 @@ Namespace Ecospace
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String)
-                Me.m_Habitat = Nothing
+                Me.m_MPA = Nothing
                 Me.m_strName = strName
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me.m_bOpenMonths(iMonth) = False
+                Next
                 Me.m_status = AddRemoveItemStatus.Added
             End Sub
 
@@ -200,20 +148,45 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="cEcospaceHabitat">EwE Habitat</see> associated
+            ''' Get the <see cref="cEcospaceMPA">EwE MPA</see> associated
             ''' with this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Habitat() As cEcospaceHabitat
+            Public ReadOnly Property MPA() As cEcospaceMPA
                 Get
-                    Return Me.m_Habitat
+                    Return Me.m_MPA
                 End Get
             End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
+            ''' Get the months that an MPA is open for fishing.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property MPAMonths() As Boolean()
+                Get
+                    Return Me.m_bOpenMonths
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set open months in this administrative unit.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property IsOpen(ByVal iMonth As Integer) As Boolean
+                Get
+                    Return Me.m_bOpenMonths(iMonth)
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bOpenMonths(iMonth) = value
+                End Set
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
             ''' Get the <see cref="AddRemoveItemStatus">add/remove item status</see>
-            ''' for the habitat object.
+            ''' for the MPA object.
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property Status() As AddRemoveItemStatus
@@ -222,48 +195,31 @@ Namespace Ecospace
                 End Get
             End Property
 
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get/set whether the user has confirmed an action on this object.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Confirmed() As Boolean
-                Get
-                    Return Me.m_bConfirmed
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bConfirmed = value
-                End Set
-            End Property
+            Public Function IsNew() As Boolean
+                Return (Me.m_MPA Is Nothing)
+            End Function
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' States whether the Habitat has changed.
+            ''' States whether the MPA has changed.
             ''' </summary>
             ''' <returns>
-            ''' True when Habitat <see cref="Name">Name</see> value has changed.
+            ''' True when MPA <see cref="Name">Name</see> value has changed.
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsChanged() As Boolean
-                If (Me.IsNew()) Then Return False
-                Return (Me.m_Habitat.Name <> Me.m_strName)
+                Dim bChanged As Boolean = False
+                If Me.m_MPA Is Nothing Then Return False
+                bChanged = (Me.m_MPA.Name <> Me.m_strName)
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    bChanged = bChanged Or (Me.m_bOpenMonths(iMonth) <> Me.m_MPA.MPAMonth(iMonth))
+                Next
+                Return bChanged
             End Function
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' States whether the Habitat is to be created.
-            ''' </summary>
-            ''' <returns>
-            ''' True when Habitat <see cref="Name">Name</see> value has changed.
-            ''' </returns>
-            ''' -------------------------------------------------------------------
-            Public Function IsNew() As Boolean
-                Return (Me.m_Habitat Is Nothing)
-            End Function
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get/set whether this habitat is flagged for deletion. Toggling this flag
+            ''' Get/set whether this MPA is flagged for deletion. Toggling this flag
             ''' will update the <see cref="Status">Status</see> of the item.
             ''' </summary>
             ''' -------------------------------------------------------------------
@@ -272,7 +228,7 @@ Namespace Ecospace
                     Return Me.m_status = AddRemoveItemStatus.Removed
                 End Get
                 Set(ByVal bDelete As Boolean)
-                    If Me.m_Habitat IsNot Nothing Then
+                    If Me.m_MPA IsNot Nothing Then
                         If bDelete Then
                             Me.m_status = AddRemoveItemStatus.Removed
                         Else
@@ -301,8 +257,9 @@ Namespace Ecospace
 
             MyBase.New()
             Me.m_core = cCore.GetInstance()
+            Me.FixedColumnWidths = False
 
-            ' Set up visual models for reflecting Habitat modification status
+            ' Set up visual models for reflecting MPA modification status
             With Me.m_vmOriginal
                 .ForeColor = Color.FromArgb(255, 0, 0, 0)
                 .TextAlignment = ContentAlignment.MiddleCenter
@@ -343,15 +300,29 @@ Namespace Ecospace
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            ' Habitat index cell
-            Me(0, eColumnTypes.HabitatIndex) = New EwEColumnHeaderCell()
-            ' Habitat name cell, editable this time
-            Me(0, eColumnTypes.HabitatName) = New EwEColumnHeaderCell(My.Resources.HEADER_HABITAT)
+            ' MPA index cell
+            Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
+            ' MPA name cell, editable this time
+            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(My.Resources.HEADER_MPA)
+            Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell("Closed")
+            'Define column header Jan - Dec
+            Me(0, eColumnTypes.MPAJan) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JANUARY)
+            Me(0, eColumnTypes.MPAFeb) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_FEBRUARY)
+            Me(0, eColumnTypes.MPAMar) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_MARCH)
+            Me(0, eColumnTypes.MPAApr) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_APRIL)
+            Me(0, eColumnTypes.MPAMay) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_MAY)
+            Me(0, eColumnTypes.MPAJun) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JUNE)
+            Me(0, eColumnTypes.MPAJul) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JULY)
+            Me(0, eColumnTypes.MPAAug) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_AUGUST)
+            Me(0, eColumnTypes.MPASep) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_SEPTEMBER)
+            Me(0, eColumnTypes.MPAOct) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_OCTOBER)
+            Me(0, eColumnTypes.MPANov) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_NOVEMBER)
+            Me(0, eColumnTypes.MPADec) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_DECEMBER)
 
-            ' Habitat index cell
-            Me(0, eColumnTypes.HabitatStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+            ' MPA index cell
+            Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
 
-            ' Fix index column only; Habitat name column cannot be fixed because it must be editable
+            ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
         End Sub
@@ -362,7 +333,7 @@ Namespace Ecospace
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to first create a snapshot of the Habitat/stanza configuration
+        ''' Overridden to first create a snapshot of the MPA/stanza configuration
         ''' in the current EwE model. The grid will be populated from this local
         ''' administration.
         ''' </summary>
@@ -370,21 +341,39 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             ' Get the core reference
-            Dim Habitat As cEcospaceHabitat = Nothing
-            Dim hi As HabitatInfo = Nothing
+            Dim core As cCore = cCore.GetInstance()
+            Dim MPA As cEcospaceMPA = Nothing
+            Dim mi As MPAInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
-            ' Make snapshot of Habitat configuration
-            ' SKIP ALL HABITAT HERE!
-            For iHabitat As Integer = 1 To Me.m_core.nHabitats - 1
-                Habitat = Me.m_core.EcospaceHabitats(iHabitat)
-                hi = New HabitatInfo(Habitat)
-                Me.m_alHabitats.Add(hi)
+            ' Make snapshot of MPA configuration 
+            For iMPA As Integer = 1 To core.nMPAs
+                MPA = core.EcospaceMPAs(iMPA)
+                mi = New MPAInfo(MPA)
+                Me.m_alMPAs.Add(mi)
             Next
 
             ' Brute-force update grid
             UpdateGrid()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Finish the style
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+
+            Me.Columns(eColumnTypes.MPAIndex).Width = 20
+            Me.Columns(eColumnTypes.MPAName).Width = 80
+            Me.Columns(eColumnTypes.MPAAll).Width = 60
+            For col As eColumnTypes = eColumnTypes.MPAJan To eColumnTypes.MPADec
+                Me.Columns(col).Width = 40
+            Next
+            Me.Columns(eColumnTypes.MPAStatus).Width = 80
 
         End Sub
 
@@ -396,7 +385,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub UpdateGrid()
 
-            Dim hi As HabitatInfo = Nothing
+            Dim mi As MPAInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -404,35 +393,43 @@ Namespace Ecospace
             Dim ewec As EwECell = Nothing
 
             ' Create missing rows
-            For iRow As Integer = Me.Rows.Count To Me.m_alHabitats.Count
+            For iRow As Integer = Me.Rows.Count To Me.m_alMPAs.Count
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
-                Me(iRow, eColumnTypes.HabitatIndex) = ewec
+                Me(iRow, eColumnTypes.MPAIndex) = ewec
 
-                Me(iRow, eColumnTypes.HabitatName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.HabitatName).Behaviors.Add(m_bm)
+                Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))
+                Me(iRow, eColumnTypes.MPAName).Behaviors.Add(m_bm)
+
+                Me(iRow, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.MPAAll).Behaviors.Add(m_bm)
+
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
+                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(m_bm)
+                Next iMonth
 
                 ' Status
                 vm = New VisualModels.Common()
                 vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.HabitatStatus) = New Cells.Real.Cell()
+                Me(iRow, eColumnTypes.MPAStatus) = New Cells.Real.Cell()
                 Dim dm As New DataModels.DataModelBase(GetType(String))
                 dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.HabitatStatus).DataModel = dm
+                Me(iRow, eColumnTypes.MPAStatus).DataModel = dm
             Next
 
             ' Delete obsolete rows
-            While Me.Rows.Count > Me.m_alHabitats.Count + 1
-                Me.Rows.Remove(Me.Rows.Count - iFIRSTHABITATROW)
+            While Me.Rows.Count > Me.m_alMPAs.Count + 1
+                Me.Rows.Remove(Me.Rows.Count - iFIRSTMPAROW)
             End While
 
-            ' Sanity check whether grid can accomodate all Habitats + header
-            Debug.Assert(Me.Rows.Count = Me.m_alHabitats.Count + 1)
+            ' Sanity check whether grid can accomodate all MPAs + header
+            Debug.Assert(Me.Rows.Count = Me.m_alMPAs.Count + 1)
 
             ' Populate rows
-            For iRow As Integer = 1 To Me.m_alHabitats.Count
+            For iRow As Integer = 1 To Me.m_alMPAs.Count
                 UpdateRow(iRow)
             Next iRow
 
@@ -446,28 +443,42 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim hi As HabitatInfo = Nothing
+            Dim mi As MPAInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
             Dim vm As VisualModels.Common = Nothing
             Dim strText As String = ""
+            Dim iNumOpen As Integer = 0
 
             Me.AllowUpdates = False
 
-            hi = DirectCast(Me.m_alHabitats(iRow - iFIRSTHABITATROW), HabitatInfo)
+            mi = DirectCast(Me.m_alMPAs(iRow - iFIRSTMPAROW), MPAInfo)
             ri = Me.Rows(iRow)
 
-            ri.Tag = hi
+            ri.Tag = mi
             aCells = ri.GetCells()
 
-            pos = New Position(iRow, eColumnTypes.HabitatIndex)
-            aCells(eColumnTypes.HabitatIndex).SetValue(pos, CInt(iRow))
+            ' Set index
+            pos = New Position(iRow, eColumnTypes.MPAIndex)
+            aCells(eColumnTypes.MPAIndex).SetValue(pos, CInt(iRow))
 
-            pos = New Position(iRow, eColumnTypes.HabitatName)
-            aCells(eColumnTypes.HabitatName).SetValue(pos, CStr(hi.Name))
+            ' Set name
+            pos = New Position(iRow, eColumnTypes.MPAName)
+            aCells(eColumnTypes.MPAName).SetValue(pos, CStr(mi.Name))
 
-            Select Case hi.Status
+            ' Set montly states
+            For iMonth As Integer = 1 To cCore.N_MONTHS
+                pos = New Position(iRow, eColumnTypes.MPAJan - 1 + iMonth)
+                ' Display a check when the MPA is NOT open for fishing
+                aCells(eColumnTypes.MPAJan - 1 + iMonth).SetValue(pos, Not mi.IsOpen(iMonth))
+                If mi.IsOpen(iMonth) Then iNumOpen += 1
+            Next
+
+            ' Display a check when the MPA is NOT open for fishing
+            aCells(eColumnTypes.MPAAll).SetValue(pos, (iNumOpen = 0))
+
+            Select Case mi.Status
                 Case AddRemoveItemStatus.Original
                     vm = Me.m_vmOriginal
                     strText = My.Resources.GENERIC_ITEMSTATUS_ORIGINAL
@@ -479,9 +490,10 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
-            pos = New Position(iRow, eColumnTypes.HabitatStatus)
-            aCells(eColumnTypes.HabitatStatus).VisualModel = vm
-            aCells(eColumnTypes.HabitatStatus).SetValue(pos, strText)
+            ' Set modification status
+            pos = New Position(iRow, eColumnTypes.MPAStatus)
+            aCells(eColumnTypes.MPAStatus).VisualModel = vm
+            aCells(eColumnTypes.MPAStatus).SetValue(pos, strText)
 
             Me.AllowUpdates = True
 
@@ -506,13 +518,23 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim hi As HabitatInfo = DirectCast(Me.m_alHabitats(p.Row - 1), HabitatInfo)
+            Dim mi As MPAInfo = DirectCast(Me.m_alMPAs(p.Row - 1), MPAInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.HabitatName
+                Case eColumnTypes.MPAName
                     ' JS: Handled in OnCellEdited()
-                    ' hi.Name = CStr(cell.GetValue(p))
+                    ' mi.Name = CStr(cell.GetValue(p))
+
+                Case eColumnTypes.MPAAll
+                    For i As Integer = 1 To cCore.N_MONTHS
+                        mi.IsOpen(i) = Not CBool(cell.GetValue(p))
+                    Next
+                    Me.UpdateRow(p.Row)
+
+                Case eColumnTypes.MPAJan To eColumnTypes.MPADec
+                    mi.IsOpen(p.Column + 1 - CInt(eColumnTypes.MPAJan)) = Not CBool(cell.GetValue(p))
+                    Me.UpdateRow(p.Row)
 
             End Select
 
@@ -538,19 +560,19 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim hi As HabitatInfo = DirectCast(Me.m_alHabitats(p.Row - 1), HabitatInfo)
+            Dim mi As MPAInfo = DirectCast(Me.m_alMPAs(p.Row - 1), MPAInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
-                Case eColumnTypes.HabitatIndex
+                Case eColumnTypes.MPAIndex
                     ' Not possible
 
-                Case eColumnTypes.HabitatName
+                Case eColumnTypes.MPAName
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
-                    For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
-                        Dim giTemp As HabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
+                        Dim giTemp As MPAInfo = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not Object.ReferenceEquals(giTemp, mi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -558,7 +580,7 @@ Namespace Ecospace
                         End If
                     Next
                     ' Allow name change
-                    hi.Name = strName
+                    mi.Name = strName
 
             End Select
 
@@ -592,35 +614,34 @@ Namespace Ecospace
 
             If iRow = -1 Then iRow = Me.SelectedRow
 
-            Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
-            Dim hi As HabitatInfo = Nothing
-            Dim strPrompt As String = ""
+            Dim iMPA As Integer = iRow - iFIRSTMPAROW
+            Dim mi As MPAInfo = Nothing
 
             ' Validate
-            If iHabitat < 0 Then Return
+            If iMPA < 0 Then Return
 
-            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+            mi = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
             ' Toggle 'flagged for deletion' flag
-            hi.FlaggedForDeletion = Not hi.FlaggedForDeletion
+            mi.FlaggedForDeletion = Not mi.FlaggedForDeletion
 
-            ' Check to see what is to happen to the Habitat now
-            Select Case hi.Status
+            ' Check to see what is to happen to the MPA now
+            Select Case mi.Status
 
                 Case AddRemoveItemStatus.Original
-                    ' Clear removed status of the Habitat
-                    Me.m_alHabitatsRemoved.Remove(Me.m_alHabitats(iHabitat))
+                    ' Clear removed status of the MPA
+                    Me.m_alMPAsRemoved.Remove(Me.m_alMPAs(iMPA))
 
                 Case AddRemoveItemStatus.Added
-                    ' Clear removed status of the Habitat
-                    Me.m_alHabitatsRemoved.Remove(Me.m_alHabitats(iHabitat))
+                    ' Clear removed status of the MPA
+                    Me.m_alMPAsRemoved.Remove(Me.m_alMPAs(iMPA))
 
                 Case AddRemoveItemStatus.Removed
                     ' Set removed status
-                    Me.m_alHabitatsRemoved.Add(Me.m_alHabitats(iHabitat))
+                    Me.m_alMPAsRemoved.Add(Me.m_alMPAs(iMPA))
 
                 Case AddRemoveItemStatus.Invalid
                     ' Set removed status
-                    Me.m_alHabitats.RemoveAt(iHabitat)
+                    Me.m_alMPAs.RemoveAt(iMPA)
 
             End Select
 
@@ -629,66 +650,63 @@ Namespace Ecospace
         End Sub
 
         ''' <summary>
-        ''' States whether a row holds a habitat.
+        ''' States whether a row holds a MPA.
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsHabitatRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsMPARow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            Return (iRow >= iFIRSTHABITATROW) And (iRow < Me.RowsCount)
+            Return (iRow >= iFIRSTMPAROW) And (iRow < Me.RowsCount)
         End Function
 
         ''' <summary>
-        ''' States whether the habitat on a row is flagged for deletion.
+        ''' States whether the MPA on a row is flagged for deletion.
         ''' </summary>
         Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsHabitatRow(iRow) Then Return False
+            If Not IsMPARow(iRow) Then Return False
 
-            Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
-            Dim hi As HabitatInfo = Nothing
-            Dim strPrompt As String = ""
+            Dim iMPA As Integer = iRow - iFIRSTMPAROW
+            Dim mi As MPAInfo = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
 
-            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
-            Return hi.FlaggedForDeletion
+            Return mi.FlaggedForDeletion
         End Function
 
         ''' <summary>
-        ''' Add a row by creating a new habitat.
+        ''' Add a row by creating a new MPA.
         ''' </summary>
         Public Sub InsertRow()
             If Not Me.CanAddRow() Then Return
-            Me.CreateHabitat()
+            Me.CreateMPA()
         End Sub
 
         ''' <summary>
-        ''' Create a new habitat.
+        ''' Create a new MPA.
         ''' </summary>
-        Private Sub CreateHabitat()
+        Private Sub CreateMPA()
             Dim iRow As Integer = -1
-            Dim iHabitat As Integer = -1
-            Dim hi As HabitatInfo = Nothing
-            Dim lstrHabitats As New List(Of String)
+            Dim iMPA As Integer = -1
+            Dim mi As MPAInfo = Nothing
+            Dim lstrMPAs As New List(Of String)
 
             ' Make fit
-            iRow = Math.Max(iFIRSTHABITATROW, Me.RowsCount)
-            iHabitat = iRow - iFIRSTHABITATROW
+            iRow = Math.Max(iFIRSTMPAROW, Me.RowsCount)
+            iMPA = iRow - iFIRSTMPAROW
 
             ' Validate
-            If iHabitat < 0 Then Return
+            If iMPA < 0 Then Return
 
-            ' Collect all current habitat names
-            For Each hi In Me.m_alHabitats
-                lstrHabitats.Add(hi.Name)
+            ' Collect all current MPA names
+            For Each mi In Me.m_alMPAs
+                lstrMPAs.Add(mi.Name)
             Next
 
-            ' Format new hab with an autonumber value based on existing names
-            hi = New HabitatInfo(String.Format(My.Resources.DEFAULT_NEWHABITAT_NUM, _
-                    StringUtils.GetNextNumber(lstrHabitats.ToArray(), My.Resources.DEFAULT_NEWHABITAT_NUM)))
-            Me.m_alHabitats.Insert(iHabitat, hi)
+            mi = New MPAInfo(String.Format(My.Resources.DEFAULT_NEWMPA_NUM, _
+                    StringUtils.GetNextNumber(lstrMPAs.ToArray(), My.Resources.DEFAULT_NEWMPA_NUM)))
+            Me.m_alMPAs.Insert(iMPA, mi)
 
             Me.UpdateGrid()
-            Me.SelectRow(hi)
+            Me.SelectRow(mi)
         End Sub
 
         ''' <summary>
@@ -758,10 +776,10 @@ Namespace Ecospace
             Me.ShowCell(New Position(iRow, 0))
         End Sub
 
-        Private Sub SelectRow(ByVal hi As HabitatInfo)
-            For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
-                If Object.ReferenceEquals(Me.m_alHabitats(iHabitat), hi) Then
-                    Me.SelectRow(iHabitat + iFIRSTHABITATROW)
+        Private Sub SelectRow(ByVal mi As MPAInfo)
+            For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
+                If Object.ReferenceEquals(Me.m_alMPAs(iMPA), mi) Then
+                    Me.SelectRow(iMPA + iFIRSTMPAROW)
                 End If
             Next
         End Sub
@@ -777,15 +795,15 @@ Namespace Ecospace
         ''' Helper method; validates the content of the grid.
         ''' </summary>
         ''' <returns>True when the content of the grid depicts a valid
-        ''' Habitat configuration for a model.</returns>
+        ''' MPA configuration for a model.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ValidateContent() As Boolean
 
             '' Check if the user is about to delete all fleets - one should remain
-            'If Me.m_alHabitatsRemoved.Count = Me.m_alHabitats.Count Then
-            '    MsgBox(My.Resources.ECOPATH_EDITHABITAT_PROMPT_CANNOTDELETEALL, _
+            'If Me.m_alMPAsRemoved.Count = Me.m_alMPAs.Count Then
+            '    MsgBox(My.Resources.ECOPATH_EDITMPA_PROMPT_CANNOTDELETEALL, _
             '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
-            '            My.Resources.ECOPATH_EDITHABITAT_CONFIRMDELETE_CAPTION)
+            '            My.Resources.ECOPATH_EDITMPA_CONFIRMDELETE_CAPTION)
             '    Return False
             'End If
 
@@ -801,71 +819,53 @@ Namespace Ecospace
 
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
-            Dim bHabitatsChanged As Boolean = False
-            Dim hi As HabitatInfo = Nothing
+            Dim bMPAsChanged As Boolean = False
+            Dim mi As MPAInfo = Nothing
             Dim iDBID As Integer = Nothing
-            Dim Habitat As cEcospaceHabitat = Nothing
-            Dim iHabitat As Integer = 0
+            Dim MPA As cEcospaceMPA = Nothing
+            Dim iMPA As Integer = 0
+            Dim iDeleteCount As Integer = 0
             Dim bSuccess As Boolean = True
             Dim appl As AppLauncher = AppLauncher.GetInstance()
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
 
-            ' Assess Habitat changes
-            For iHabitat = 0 To Me.m_alHabitats.Count - 1
-                hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
-                ' Check if this habitat is newly added
-                bConfigurationChanged = bConfigurationChanged Or hi.IsNew()
-                ' Check if this habitat has been modified
-                bHabitatsChanged = bHabitatsChanged Or hi.IsChanged()
-            Next iHabitat
+            ' Assess MPA changes
+            For iMPA = 0 To Me.m_alMPAs.Count - 1
+                mi = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
+                ' Check if this MPA is newly added
+                bConfigurationChanged = bConfigurationChanged Or mi.IsNew()
+                ' Check if this MPA has been changed
+                bMPAsChanged = bMPAsChanged Or mi.IsChanged()
+            Next iMPA
 
-            If Me.m_alHabitatsRemoved.Count > 5 Then
+            ' Assess MPAs to remove
+            iDeleteCount = 0
+            For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
+                mi = DirectCast(Me.m_alMPAsRemoved(iMPA), MPAInfo)
+                If (Not mi.IsNew()) Then iDeleteCount += 1
+            Next iMPA
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
+            If (iDeleteCount > 0) Then
+
+                strPrompt = String.Format(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Cancel
                         ' Abort Apply process
                         Return False
+                    Case MsgBoxResult.No
+                        ' Do not delete MPAs
+                        iDeleteCount = 0
                     Case MsgBoxResult.Yes
-                        ' Confirm all regions
-                        For Each hi In Me.m_alHabitatsRemoved
-                            hi.Confirmed = True
-                        Next
+                        ' Delete MPAs
                         bConfigurationChanged = True
                     Case Else
                         ' Unexpected anwer: assert
                         Debug.Assert(False)
                 End Select
 
-            Else
-                ' Assess Habitats to remove
-                For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
-                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitat), HabitatInfo)
-                    If (Not hi.IsNew()) Then
-
-                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
-
-                        Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                            Case MsgBoxResult.Cancel
-                                ' Abort Apply process
-                                Return False
-                            Case MsgBoxResult.No
-                                ' Do not delete this Habitat
-                                hi.Confirmed = False
-                            Case MsgBoxResult.Yes
-                                ' Delete this Habitat
-                                hi.Confirmed = True
-                                bConfigurationChanged = True
-                            Case Else
-                                ' Unexpected anwer: assert
-                                Debug.Assert(False)
-                        End Select
-
-                    End If
-                Next iHabitat
             End If
 
             ' Handle added and removed items
@@ -875,81 +875,84 @@ Namespace Ecospace
 
                 appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
-                ' Add new Habitats
-                For iHabitat = 0 To Me.m_alHabitats.Count - 1
-                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
-                    If (hi.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_core.AddEcospaceHabitat(hi.Name, iDBID)
+                ' Add new MPAs
+                For iMPA = 0 To Me.m_alMPAs.Count - 1
+                    mi = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
+                    If (mi.IsNew()) Then
+                        bSuccess = bSuccess And Me.m_core.AddEcospaceMPA(mi.Name, mi.MPAMonths, iDBID)
                     End If
                 Next
 
-                ' Remove deleted (and confirmed) Habitats
-                Dim iHabitatRemove As Integer = 0
-                For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
-                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitatRemove), HabitatInfo)
-
-                    ' Sanity check
-                    Debug.Assert(Not hi.IsNew())
-
-                    If (hi.Confirmed()) Then
-                        If (Me.m_core.RemoveEcospaceHabitat(hi.Habitat)) Then
-                            Me.m_alHabitats.Remove(hi)
-                            Me.m_alHabitatsRemoved.Remove(hi)
-                        Else
-                            bSuccess = False
-                            iHabitatRemove += 1
+                ' Remove MPAs
+                If iDeleteCount > 0 Then
+                    For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
+                        mi = DirectCast(Me.m_alMPAsRemoved(iMPA), MPAInfo)
+                        If (Not mi.IsNew()) Then
+                            If (Me.m_core.RemoveEcospaceMPA(mi.MPA)) Then
+                                Me.m_alMPAs.Remove(mi)
+                            Else
+                                bSuccess = False
+                            End If
                         End If
-                    End If
-                Next
+                    Next iMPA
+                    If bSuccess Then Me.m_alMPAsRemoved.Clear()
+                End If
 
                 ' The core will reload now
-                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                If bSuccess Then
+                    bSuccess = Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
+                    ' Test whether new MPAs were loaded correctly
+                    Debug.Assert(Me.m_alMPAs.Count = Me.m_core.nMPAs, ">> Internal panic: Dialog and core out of sync on MPAs")
+                Else
+                    Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                End If
                 appl.SetStatusText("", TriState.False)
-
-                ' Test whether new Habitats were loaded correctly 
-                ' !! taking into account that this dialog does NOT contain the All habitat, hence the '-1'
-                Debug.Assert(Me.m_alHabitats.Count = (Me.m_core.nHabitats - 1), ">> Internal panic: Dialog and core out of sync on Habitats")
             End If
 
-            ' Update core objects
-            If (bHabitatsChanged) Then
-                ' For each local habitat admin unit
-                For iHabitat = 0 To Me.m_alHabitats.Count - 1
+                ' Update core objects
+            If (bMPAsChanged) Then
+                ' For each local MPA admin unit
+                For iMPA = 0 To Me.m_alMPAs.Count - 1
                     ' Get local admin unit
-                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    mi = DirectCast(Me.m_alMPAs(iMPA), MPAInfo)
                     ' Has it changed?
-                    If (hi.IsChanged()) Then
-                        ' Find core habitat with same BDID (cannot use cached cEcospaceHabitat instances since the core has reloaded)
+                    If mi.IsChanged() Then
+                        ' Find core MPA with same BDID (cannot use cached cEcospaceMPA instances since the core has reloaded)
                         Dim bFound As Boolean = False
-                        ' For every core habitat instance
-                        For iHabTest As Integer = 1 To Me.m_core.nHabitats - 1
-                            ' Get core habitat instance
-                            Dim habTest As cEcospaceHabitat = Me.m_core.EcospaceHabitats(iHabTest)
+                        ' For every core MPA instance
+                        For iMPATest As Integer = 1 To Me.m_core.nMPAs
+                            ' Get core MPA instance
+                            Dim MPATest As cEcospaceMPA = Me.m_core.EcospaceMPAs(iMPATest)
                             ' Has matching ID?
-                            If (habTest.getID = hi.Habitat.getID) Then
+                            If (MPATest.getID = mi.MPA.getID) Then
                                 ' #Yes: Update
-                                habTest.Name = hi.Name
-                                ' Are we relieved or what!
+                                MPATest.Name = mi.Name
+                                For iMonth As Integer = 1 To cCore.N_MONTHS
+                                    MPATest.MPAMonth(iMonth) = mi.IsOpen(iMonth)
+                                Next
+                                ' Happy, happy, happy
                                 bFound = True
                             End If
                         Next
                         ' All went well?
                         If Not bFound Then
                             ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to habitat id " & hi.Habitat.getID)
+                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to MPA id " & mi.MPA.getID)
                         End If
                     End If
                 Next
+
+                '' Apply all changes
+                'Me.m_core.SaveEcospaceScenario()
             End If
 
             Return bSuccess
 
         End Function
 
+
 #End Region ' Apply changes
 
     End Class
 
 End Namespace
-
-

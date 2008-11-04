@@ -1,50 +1,11 @@
 '==============================================================================
 '
-' $Log: FisheryEwEGrid.vb,v $
+' $Log: gridFishery.vb,v $
+' Revision 1.1  2008/11/04 04:58:44  jeroens
+' Renamed
+'
 ' Revision 1.1  2008/09/26 07:31:56  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.18  2008/08/02 03:04:10  jeroens
-' Renamed resources
-'
-' Revision 1.17  2008/07/29 13:06:42  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.16  2008/06/02 00:01:25  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.15  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.14  2008/02/13 16:44:29  jeroens
-' Renamed resources
-'
-' Revision 1.13  2007/10/10 02:59:11  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.12  2007/07/03 07:08:45  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.11  2007/06/22 20:59:34  fgao
-' Grid look makeup..
-'
-' Revision 1.10  2007/06/21 22:23:35  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.9  2007/06/05 02:45:28  jeroens
-' * Added SEmult column
-'
-' Revision 1.8  2007/06/05 01:15:01  jeroens
-' * Uses core habitatfishery validation
-'
-' Revision 1.7  2007/06/04 21:57:25  fgao
-' Finish 99% implementation of Fishery grid..
-'
-' Revision 1.6  2007/06/02 16:27:13  jeroens
-' * Fixed habitat iteration bug
-'
-' Revision 1.5  2007/04/29 03:45:13  jeroens
-' * Connected to EwEGridRefresh
 '
 '==============================================================================
 
@@ -62,7 +23,7 @@ Imports SourceGrid2
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class FisheryEwEGrid
+    Public Class gridFishery
         : Inherits EwEGrid
 
         'Core reference

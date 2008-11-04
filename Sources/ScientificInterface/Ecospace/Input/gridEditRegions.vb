@@ -1,102 +1,14 @@
 '==============================================================================
 '
-' $Log: EditRegionsEwEGrid.vb,v $
+' $Log: gridEditRegions.vb,v $
+' Revision 1.1  2008/11/04 04:58:44  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/10/29 15:45:49  jeroens
 ' Fixed issue 562
 '
 ' Revision 1.1  2008/09/26 07:31:56  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.23  2008/08/11 16:13:57  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.22  2008/08/11 04:38:29  jeroens
-' Simplified  Ecospace core class names
-'
-' Revision 1.21  2008/08/10 17:05:16  jeroens
-' Removed obsolete captions
-'
-' Revision 1.20  2008/08/09 02:54:23  jeroens
-' Cleaned up
-'
-' Revision 1.19  2008/08/02 03:04:10  jeroens
-' Renamed resources
-'
-' Revision 1.18  2008/06/02 00:01:25  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.17  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.16  2008/05/17 17:42:56  jeroens
-' Fixed bug 455
-'
-' Revision 1.15  2008/04/07 02:31:13  jeroens
-' Cleaning up resources
-'
-' Revision 1.14  2008/03/25 14:41:50  jeroens
-' Basemap cell vars exposed as Layer*
-'
-' Revision 1.13  2008/02/27 18:56:46  jeroens
-' Localized
-'
-' Revision 1.12  2008/01/18 01:40:02  jeroens
-' Simplified code lock usage
-'
-' Revision 1.11  2008/01/06 09:17:22  jeroens
-' * Smartened-up deletion confirmation logic
-'
-' Revision 1.10  2007/12/19 18:30:27  jeroens
-' * Implementing hab -> region, cell -> region
-'
-' Revision 1.9  2007/12/11 15:01:45  jeroens
-' * Fixed-up resource names
-'
-' Revision 1.8  2007/12/09 03:04:01  jeroens
-' Hmm, not again!
-'
-' Revision 1.7  2007/12/09 03:03:21  jeroens
-' ! Woops
-'
-' Revision 1.6  2007/12/08 18:23:21  jeroens
-' * Incorporated new StringUtils capability to autonumber strings
-'
-' Revision 1.5  2007/12/03 20:46:02  jeroens
-' - Simplified
-'
-' Revision 1.4  2007/12/03 15:13:57  jeroens
-' * Globalized (or localized, if you will...)
-' * Fixed apply changes issue: changed objects looked up by core ID
-'
-' Revision 1.3  2007/10/21 13:08:25  jeroens
-' * Core restructure batch lock can fail; now properly handled througout core and GUI
-'
-' Revision 1.2  2007/09/20 14:46:35  jeroens
-' * Ecospace regions can be added and removed succesfully
-'
-' Revision 1.1  2007/09/18 14:38:16  jeroens
-' * Renamed
-'
-' Revision 1.8  2007/06/21 22:23:35  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.7  2007/04/02 23:26:41  fgao
-' Fixed a textbox update bug and GridRowChanged message behavior..
-'
-' Revision 1.6  2007/03/30 21:58:09  fgao
-' Finish prototype for Ecospace defining series..Now testing..and bug hunting.
-' and add several event handlers..
-'
-' Revision 1.5  2007/03/29 22:12:20  fgao
-' Finished prototype for defining regions UI
-'
-' Revision 1.4  2007/03/05 02:43:04  jeroens
-' * Fixed crash on missing rows
-' + UpdateGrid correctly updates
-'
-' Revision 1.3  2007/03/04 23:19:21  jeroens
-' * Fixed crash on populating grid when no regions present
-'   !! REGION BASE INDEX WILL HAVE TO BE REVIEWED !!
 '
 '==============================================================================
 

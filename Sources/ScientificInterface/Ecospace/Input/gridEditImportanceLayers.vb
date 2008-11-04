@@ -1,28 +1,15 @@
 '==============================================================================
 '
 ' $Log: gridEditImportanceLayers.vb,v $
+' Revision 1.3  2008/11/04 04:58:44  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/10/29 17:07:09  jeroens
 ' Fixed issue 562
 '
 ' Revision 1.1  2008/09/26 07:31:58  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.5  2008/08/13 19:55:30  jeroens
-' Pretty!
-'
-' Revision 1.4  2008/08/11 22:15:57  jeroens
-' Fixed indexing issue
-'
-' Revision 1.3  2008/08/11 16:13:58  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.2  2008/08/11 04:41:06  jeroens
-' Styled
-' Fixed 0-based offset issue when showing aquiring available layers
-'
-' Revision 1.1  2008/08/10 17:04:41  jeroens
-' Initial version
-''
 '==============================================================================
 
 #Region "Imports Directive"
