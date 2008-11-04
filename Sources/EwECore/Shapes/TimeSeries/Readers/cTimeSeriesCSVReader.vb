@@ -1,41 +1,11 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesCSVReader.vb,v $
+' Revision 1.2  2008/11/04 18:51:17  jeroens
+' Pruned history
+'
 ' Revision 1.1  2008/09/26 07:30:33  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2007/10/02 18:55:30  jeroens
-' * Fixed major TS mis-allocation category issue
-'
-' Revision 1.3  2007/07/12 16:29:39  jeroens
-' + Moved
-'
-' Revision 1.1  2007/07/12 15:49:38  jeroens
-' * Moved
-'
-' Revision 1.5  2007/07/08 18:22:30  jeroens
-' * Fixing globalization todo's
-'
-' Revision 1.4  2007/05/17 03:02:07  jeroens
-' * Commented
-' * DataSet description contains cvs file name without path info
-'
-' Revision 1.3  2007/05/16 17:12:23  jeroens
-' + Added core ref to constructor, Dataset implementation
-'
-' Revision 1.2  2007/05/15 17:15:11  jeroens
-' * Separators strings instead of chars
-' + Preview implemented as separate class
-' * Fixed bunch of bugs
-'
-' Revision 1.1  2007/05/14 15:28:37  jeroens
-' Again?
-'
-' Revision 1.3  2007/05/14 15:06:11  jeroens
-' Getting there
-'
-' Revision 1.2  2007/05/14 03:15:23  jeroens
-' Implemented (to be tested)
 '
 '==============================================================================
 
