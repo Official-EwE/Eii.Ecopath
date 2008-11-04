@@ -1,24 +1,14 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.3  2008/11/04 05:42:06  jeroens
+' Fixed migration data
+'
 ' Revision 1.2  2008/10/15 23:59:46  jeroens
 ' Added migration layer
 '
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/08/12 22:15:17  jeroens
-' Layers can carry metadata to control what values are accepted into their data
-'
-' Revision 1.4  2008/08/11 18:36:29  jeroens
-' Map properties no longer cascaded to layers; they can come and get it if they need it
-' Fixed indexing problem on Importance layers
-'
-' Revision 1.3  2008/08/11 02:00:34  jeroens
-' Simplified class names
-'
-' Revision 1.2  2008/08/09 00:02:31  jeroens
-' Fixed header
 '
 '==============================================================================
 
@@ -166,7 +156,7 @@ Public Class cEcospaceBasemap
             Next
 
             ' Migration
-            layer = New cEcospaceMigrationLayer(theCore, Me, eVarNameFlags.LayerMigration)
+            layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
             Me.Layers(eVarNameFlags.LayerMigration) = layer
 
             'set status flags to default values
@@ -443,7 +433,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerMigration
-                Return New Single()() {Me.m_core.m_EcoSpaceData.MigConcCol, Me.m_core.m_EcoSpaceData.MigConcRow}
+                Return New Integer()(,) {Me.m_core.m_EcoSpaceData.Prefcol, Me.m_core.m_EcoSpaceData.PrefRow}
             Case eVarNameFlags.LayerAdvection
                 'Return New Single()() {Me.m_core.m_EcoSpaceData.AdvectSpeed}
             Case eVarNameFlags.LayerImportance
