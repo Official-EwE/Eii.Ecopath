@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.4  2008/11/04 20:01:50  jeroens
+' Vul < 1.0 set to 2.0
+'
 ' Revision 1.3  2008/10/07 00:38:46  jeroens
 ' Ecosim prey/pred ff table flipped
 '
@@ -2633,7 +2636,8 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim sDBVersion As Single = 0.0
+            Dim sVul As Single = 0.0!
+            Dim sDBVersion As Single = 0.0!
             Dim iScenarioID As Integer = 0
             Dim drow As DataRow = Nothing
 
@@ -2659,7 +2663,9 @@ Namespace Database
                 drow("PredID") = Me.HashKey(eDataTypes.EcoSimGroupInput, CStr(reader("groupColName")), eDataTypes.EcoSimScenario, iScenarioID)
 
                 ' Vulnerability
-                drow("vulnerability") = Me.FixValue(reader, "vulnerability", 2.0)
+                sVul = CSng(Me.FixValue(reader, "vulnerability", 2.0))
+                If sVul < 1.0! Then sVul = 2.0!
+                drow("vulnerability") = sVul
 
 #If 0 Then ' Discontinued in 1.71, now allocated from [Ecosim NxN Forcing]
                 ' Link to forcing shape
