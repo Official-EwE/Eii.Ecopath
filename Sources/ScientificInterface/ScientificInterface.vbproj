@@ -94,7 +94,7 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAUPUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
     <Reference Include="System" />
@@ -205,10 +205,10 @@
     <Compile Include="Ecosim\Input\MediationFunction\ucDefBioPercentGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\ucZoomBasemap.designer.vb">
+    <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.designer.vb">
       <DependentUpon>ucZoomBasemap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\ucZoomBasemap.vb">
+    <Compile Include="Ecospace\Assets\Basemap\ucZoomBasemap.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
@@ -463,16 +463,16 @@
     <Compile Include="Ecosim\Tools\ValueComponentGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.Designer.vb">
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.Designer.vb">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.vb">
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\ucBaseMap.Designer.vb">
+    <Compile Include="Ecospace\Assets\Basemap\ucBaseMap.Designer.vb">
       <DependentUpon>ucBaseMap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\ucBaseMap.vb">
+    <Compile Include="Ecospace\Assets\Basemap\ucBaseMap.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\EcospaceScenarioDlg.vb">
@@ -484,26 +484,26 @@
     <Compile Include="Ecospace\Input\Basemap.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.Designer.vb">
+    <Compile Include="Ecospace\Input\dlgEditLayer.Designer.vb">
       <DependentUpon>dlgEditLayer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.vb">
+    <Compile Include="Ecospace\Input\dlgEditLayer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\cLayer.vb">
+    <Compile Include="Ecospace\Assets\Layers\cLayer.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerRenderer.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayer.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRenderer.vb" />
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayer.vb">
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayersControl.Designer.vb">
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.Designer.vb">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\ucLayersControl.vb">
+    <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditBasemap.Designer.vb">
@@ -518,25 +518,25 @@
     <Compile Include="Ecospace\Input\EcospaceParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\AssignHabitsEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridAssignHabits.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.Designer.vb">
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\BasemapFromGIS.vb">
+    <Compile Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\EditHabitatsEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridEditHabitats.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\EditMPAsEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridEditMPAs.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\EditRegionsEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridEditRegions.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\DispersalEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridDispersal.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditHabitats.Designer.vb">
@@ -557,7 +557,7 @@
     <Compile Include="Ecospace\Input\dlgEditRegions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\FisheryEwEGrid.vb">
+    <Compile Include="Ecospace\Input\gridFishery.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cMapDrawer.vb" />
@@ -899,7 +899,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>SRplot.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\BasemapFromGIS.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </EmbeddedResource>
@@ -1032,19 +1032,23 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditor.resx">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorAdvection.resx">
+      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDefault.resx">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorMigration.resx">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.resx">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1149,41 +1153,52 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorAdvection.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditor.Designer.vb">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditor.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditor.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorAdvection.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorAdvection.Designer.vb">
       <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorAdvection.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorAdvection.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorMigration.Designer.vb">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorMigration.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorMigration.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\gridLayerData.vb">
+    <Compile Include="Ecospace\Input\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerEditor.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\cLayerFactory.vb" />
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditor.vb" />
+    <Compile Include="Ecospace\Assets\Layers\cLayerFactory.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDefault.Designer.vb">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorDefault.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.Designer.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.Designer.vb">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Basemap\Layers\Editors\ucLayerEditorRange.vb">
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMigration.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorRange.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorTwoState.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererArrow.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererBitmap.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererGradient.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererHatched.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererSymbol.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererText.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererValue.vb" />
     <Compile Include="Ecospace\Input\dlgEditImportanceLayers.Designer.vb">
       <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
     </Compile>
@@ -1217,7 +1232,6 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
-    <BaseApplicationManifest Include="My Project\app.manifest" />
     <None Include="Resources\BreakpointHS.png" />
     <None Include="Resources\compareversionsHS.png" />
     <None Include="Resources\credits.rtf" />
@@ -1307,6 +1321,7 @@
     <None Include="UserGuide\EwE6_userguide.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="_Designs_\Ecospace basemap layers.cd" />
     <EmbeddedResource Include="Ecopath\EditFleets.resx">
       <DependentUpon>EditFleets.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1407,11 +1422,11 @@
       <SubType>Designer</SubType>
       <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayerGroup.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.resx">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\ucBaseMap.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Basemap\ucBaseMap.resx">
       <DependentUpon>ucBaseMap.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1419,19 +1434,19 @@
       <DependentUpon>Basemap.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\dlgEditLayer.resx">
+    <EmbeddedResource Include="Ecospace\Input\dlgEditLayer.resx">
       <DependentUpon>dlgEditLayer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayer.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayer.resx">
       <DependentUpon>ucLayer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\Layers\ucLayersControl.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Basemap\Layer Controls\ucLayersControl.resx">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Basemap\ucZoomBasemap.resx">
+    <EmbeddedResource Include="Ecospace\Assets\Basemap\ucZoomBasemap.resx">
       <DependentUpon>ucZoomBasemap.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1513,17 +1528,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEcost\EwEcost.vbproj">
-      <Project>{7740FD30-2025-4FB8-9DA9-3664992D6611}</Project>
-      <Name>EwEcost</Name>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEMarxan\EwEMarxan.vbproj">
+      <Project>{C999748D-8BA5-4D13-B711-486D0B12D03A}</Project>
+      <Name>EwEMarxan %28EwE custom plugins\EwEMarxan\EwEMarxan%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
-      <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
-      <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
