@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.7  2008/11/04 04:49:00  jeroens
+' Renamed key member vars
+'
 ' Revision 1.6  2008/10/16 00:00:28  jeroens
 ' Added migration layer
 ' MPA layer moved on top
@@ -304,7 +307,7 @@ Namespace Ecospace.Basemap
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
 
             ' Define group
-            Me.m_ucLayers.AddGroup(cLayerFactory.GetLayerGroup(varName))
+            Me.m_ucLayers.AddGroup(strGroup)
 
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.AddLayer(alayers(iLayer), strGroup)
@@ -354,8 +357,10 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
+        ''' <summary>The layer currently selected by the user.</summary>
         Private m_layerSelected As cLayer = Nothing
-        Private m_editorSelected As ucLayerEditor = Nothing
+        ''' <summary>The editor belonging to the selected layer, if any.</summary>
+        Private m_editorGUISelected As ucLayerEditor = Nothing
 
         Private Property SelectedLayer() As cLayer
             Get
@@ -369,12 +374,12 @@ Namespace Ecospace.Basemap
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Has editor GUI?
-                    If (Me.m_editorSelected IsNot Nothing) Then
+                    If (Me.m_editorGUISelected IsNot Nothing) Then
                         ' #Yes: remove layer editor GUI
-                        RemoveHandler Me.m_editorSelected.OnChanged, AddressOf OnLayerEditorChanged
-                        Me.m_plEditor.Controls.Remove(Me.m_editorSelected)
+                        RemoveHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
+                        Me.m_plEditor.Controls.Remove(Me.m_editorGUISelected)
                         Me.m_plEditor.Visible = False
-                        Me.m_editorSelected = Nothing
+                        Me.m_editorGUISelected = Nothing
                     End If
                     Me.m_layerSelected.Editor.ReleaseEditorControl()
                 End If
@@ -383,13 +388,13 @@ Namespace Ecospace.Basemap
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Add layer editor GUI
-                    Me.m_editorSelected = Me.m_layerSelected.Editor.GetEditorControl()
-                    If (Me.m_editorSelected IsNot Nothing) Then
-                        Me.m_plEditor.Height = Me.m_editorSelected.Height
-                        Me.m_editorSelected.Dock = DockStyle.Fill
-                        Me.m_plEditor.Controls.Add(Me.m_editorSelected)
+                    Me.m_editorGUISelected = Me.m_layerSelected.Editor.GetEditorControl()
+                    If (Me.m_editorGUISelected IsNot Nothing) Then
+                        Me.m_plEditor.Height = Me.m_editorGUISelected.Height
+                        Me.m_editorGUISelected.Dock = DockStyle.Fill
+                        Me.m_plEditor.Controls.Add(Me.m_editorGUISelected)
                         Me.m_plEditor.Visible = True
-                        AddHandler Me.m_editorSelected.OnChanged, AddressOf OnLayerEditorChanged
+                        AddHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
                     End If
                 End If
 
