@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.6  2008/11/04 05:40:39  jeroens
+' Renamed Ecospace grids
+'
 ' Revision 1.5  2008/10/10 18:06:49  jeroens
 ' Updated to renamed layers classes
 '
@@ -143,8 +146,8 @@ Public Class NavigationPanel
         m_nodeController.Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.DispersalEwEGrid), "Dispersal.htm")
         m_nodeController.Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
         m_nodeController.Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.Basemap), "Basemap.htm") ' ToDo: connect to help
-        m_nodeController.Add("ndAssignHabitats", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.AssignHabitsEwEGrid), "Assign habitats.htm")
-        m_nodeController.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.FisheryEwEGrid), "Ecospace Fishery.htm")
+        m_nodeController.Add("ndAssignHabitats", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridAssignHabits), "Assign habitats.htm")
+        m_nodeController.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridFishery), "Ecospace Fishery.htm")
         m_nodeController.Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceScenarioDlg)) ' ToDo: connect to help
         m_nodeController.Add("ndEcospaceResults", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceResults), "") ' ToDo: connect to help
         m_nodeController.Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
