@@ -521,10 +521,10 @@
     <Compile Include="Ecospace\Input\gridAssignHabits.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.Designer.vb">
+    <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.vb">
+    <Compile Include="Ecospace\Input\BasemapFromGIS.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditHabitats.vb">
@@ -899,7 +899,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>SRplot.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Layers\Rendering\BasemapFromGIS.resx">
+    <EmbeddedResource Include="Ecospace\Input\BasemapFromGIS.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </EmbeddedResource>
