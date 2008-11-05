@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucLayer.vb,v $
+' Revision 1.2  2008/11/05 01:16:04  jeroens
+' Pruned log
+'
 ' Revision 1.1  2008/11/04 04:39:35  jeroens
 ' Moved
 '
@@ -9,148 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:59  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.27  2008/08/14 13:02:38  jeroens
-' Double-click opens edit layer
-' Uses different modes
-'
-' Revision 1.26  2008/08/11 04:35:28  jeroens
-' Added safety check
-'
-' Revision 1.25  2008/08/10 01:44:04  jeroens
-' Uses shared singleton tooltip
-'
-' Revision 1.24  2008/08/09 02:36:47  jeroens
-' Displays tooltip for Remarks
-'
-' Revision 1.23  2008/08/08 23:16:43  jeroens
-' Disabled console traces
-'
-' Revision 1.22  2008/07/31 16:36:30  jeroens
-' Fixed closed eye
-'
-' Revision 1.21  2008/07/30 21:16:48  jeroens
-' Improved performance on rendering images
-' Improved performance on generic rendering
-' Improved disposal logic
-' Bundled click notifications
-'
-' Revision 1.20  2008/06/02 00:01:31  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.19  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.18  2008/03/28 23:48:28  jeroens
-' Click() will first select layer, then process hit area to make sure selected state properly propogates to using code
-' Click() will send out combined Selected + Map update (which is a hack)
-'
-' Revision 1.17  2008/03/28 23:26:42  jeroens
-' Renamed layer change flags const
-'
-' Revision 1.16  2008/03/26 02:54:32  jeroens
-' Removed tooltip
-'
-' Revision 1.15  2008/03/25 14:47:05  jeroens
-' Added ToolTip support
-'
-' Revision 1.14  2008/03/25 00:48:22  jeroens
-' Made rendering more smooth: button borders only drawn when hovering
-' Editable flag can be toggled
-' Editable button only shown when hovering or selected
-'
-' Revision 1.13  2008/03/24 02:23:51  jeroens
-' Fixed potential windows handles problem by simulating child controls rather than embedding real controls
-'
-' Revision 1.12  2008/02/02 02:51:07  jeroens
-' CLS compliant
-'
-' Revision 1.11  2007/12/11 15:06:01  jeroens
-' * Simplified
-'
-' Revision 1.10  2007/12/09 15:36:51  jeroens
-' * Improved layer update handling to enhance performance
-' * Made look much better
-'
-' Revision 1.9  2007/12/03 21:12:46  jeroens
-' * Moved name property monitoring into Layer class
-'
-' Revision 1.8  2007/11/30 21:30:21  jeroens
-' * Made group-aware
-' * Slightly changed layout
-'
-' Revision 1.7  2007/11/28 16:43:53  jeroens
-' * Label now clickable
-'
-' Revision 1.6  2007/09/26 03:35:24  jeroens
-' * Layer representations will render the preview area
-' + Uses layer updateType flags
-'
-' Revision 1.5  2007/09/24 21:22:57  jeroens
-' * Uses cVisualStyle
-'
-' Revision 1.4  2007/09/18 14:23:40  jeroens
-' * OnLayerChanged will refresh property manually. This will have to change; the core will have to take care of this in the near future
-'
-' Revision 1.3  2007/09/14 13:46:15  jeroens
-' + Added remark indicator
-'
-' Revision 1.2  2007/09/13 02:58:52  jeroens
-' + Got drawing and selective updating to work, on to erasing
-'
-' Revision 1.1  2007/09/12 01:58:19  jeroens
-' * Trying to prevent bad CVS stuff from happening....
-'
-' Revision 1.1  2007/09/12 00:59:18  jeroens
-' Moved
-'
-' Revision 1.18  2007/09/11 22:00:25  jeroens
-' * Renamed class to ucLayer
-' + Activated basis for layer highlighting
-' + Set proper cursors
-'
-' Revision 1.17  2007/09/11 19:04:31  jeroens
-' * Revamping
-'
-' Revision 1.16  2007/07/13 22:16:49  jeroens
-' * Did you know that WithEvents vars will keep object instances referenced?
-'
-' Revision 1.15  2007/06/05 00:45:57  sherman
-' Finishing up tweaks... need more work with layer ordering
-'
-' Revision 1.14  2007/05/16 22:04:47  sherman
-' Adding more features...
-'
-' Revision 1.13  2007/05/15 21:34:53  sherman
-' Changed Basemap Functionality to Events
-'
-' Revision 1.12  2007/05/11 00:36:21  sherman
-' Major Functionality updates for SAUPBasemap.
-'
-' Revision 1.11  2007/04/18 16:19:49  sherman
-' Corrected for full size drawing - version before mouse inputs.
-'
-' Revision 1.10  2007/04/14 23:07:32  sherman
-' - Included Pattern/Brushes capabilities to basemap
-' - seperated MPA to individual raster
-'
-' Revision 1.9  2007/03/07 22:07:25  sherman
-' Modified layers dialogue to work properly
-'
-' Revision 1.8  2007/03/06 08:10:54  sherman
-' Linked BasemapController functionality to GUI
-'
-' Revision 1.7  2007/03/03 00:02:58  sherman
-' + Added more functionality and bug fixes
-'
-' Revision 1.6  2007/03/01 22:38:32  sherman
-' Changed some layout issues
-'
-' Revision 1.5  2007/03/01 01:53:48  sherman
-' Modified manner you Edit Layers
-'
-' Revision 1.4  2007/02/27 02:58:07  jeroens
-' * Fixed CLS complicancy compiler warnings
 '
 '==============================================================================
 
