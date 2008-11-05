@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.11  2008/11/05 22:41:06  joeh
+' Use gray lines in cumulative plot
+'
 ' Revision 1.10  2008/11/04 02:13:34  joeh
 ' Implement multiple selects for cumulative plot - Take two
 '
@@ -130,7 +133,7 @@ Namespace Controls
                 Case eLineType.CumulativeBiomass, eLineType.CumulativeSelectedBiomass, _
                   eLineType.CumulativeCatch, eLineType.CumulativeSelectedCatch
                     'crv = m_graphPane.AddCurve(name, list, Me.m_styGuide.GroupColor(m_core, index), SymbolType.None)
-                    crv = m_graphPane.AddCurve(name, list, Color.Black, SymbolType.None)
+                    crv = m_graphPane.AddCurve(name, list, Drawing.Color.LightSlateGray, SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     crv.Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, index))
                     m_CurrentOverlay.Add(crv)
@@ -396,7 +399,7 @@ Namespace Controls
                     If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
                        DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
-                        crv.Color = Drawing.Color.Black
+                        crv.Color = Drawing.Color.LightSlateGray 'Black
                         If bWhiteFillColor = True Then
                             DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.White)
                         Else

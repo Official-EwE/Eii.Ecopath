@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.14  2008/11/05 22:41:05  joeh
+' Use gray lines in cumulative plot
+'
 ' Revision 1.13  2008/11/04 02:13:34  joeh
 ' Implement multiple selects for cumulative plot - Take two
 '
@@ -624,6 +627,7 @@ Namespace Ecosim
             Me.m_ZGHelper.AutoscalePane = False
             Me.UpdateControls()
         End Sub
+
     End Class
     
 End Namespace
