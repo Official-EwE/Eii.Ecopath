@@ -42,6 +42,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,6 +100,9 @@
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, processorArchitecture=MSIL" />
@@ -120,6 +124,7 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -1048,10 +1053,6 @@
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.resx">
-      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditImportanceLayers.resx">
       <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1172,6 +1173,12 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorMigration.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.Designer.vb">
+      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1181,12 +1188,6 @@
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDefault.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.Designer.vb">
-      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMigration.vb" />
@@ -1528,13 +1529,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEMarxan\EwEMarxan.vbproj">
-      <Project>{C999748D-8BA5-4D13-B711-486D0B12D03A}</Project>
-      <Name>EwEMarxan %28EwE custom plugins\EwEMarxan\EwEMarxan%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
+      <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
+      <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
