@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.21  2008/11/05 21:08:55  joeb
+' Added some comments
+'
 ' Revision 1.20  2008/11/05 18:14:48  joeb
 ' Fixed Bug that caused discards not to be include in Fishing mortality shapes FishRateNo() by moving caculation of PropDiscards() to Ecopath with calculation of PropLandings()
 '
@@ -723,7 +726,7 @@ Public Property PluginManager() As cPluginManager
                     m_search.calcYearlySummaryValues(BB)
 
                     If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
-                        'calculate catchrate if in Fishing policy or MSE
+                        'calculate fishing mortality if in Fishing policy or MSE
                         'used to overwrite FishRateNo() inside the month time loop
                         For iFlt As Integer = 1 To m_EPData.NumFleet
                             For j = 1 To m_EPData.NumGroups
@@ -752,12 +755,13 @@ Public Property PluginManager() As cPluginManager
 
                     If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)
 
-                    'set FishTime
+                    'set FishTime() 
                     If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
                         'in Fishing Polcy or MSE search
+                        'sets FishRateNo to FishYear() computed above then computes FishTime() with FishRateNo
                         Me.setFishTimeForFPSMSE(itime)
                     Else
-                        'all other modes use forced catches and mortality data if loaded
+                        'Sets FishTime() to forcing data if loaded otherwise computes it
                         Me.setFishTime(itime, iyr)
                     End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
 
@@ -948,7 +952,7 @@ Public Property PluginManager() As cPluginManager
         ''' <remarks></remarks>
         Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
 
-            Debug.Assert(Me.m_search.SearchMode <> eSearchModes.FishingPolicy Or Me.m_search.SearchMode <> eSearchModes.MSE, Me.ToString & ".setFishTimeForFPSMSE incorrect search mode.")
+            Debug.Assert(Me.m_search.SearchMode <> eSearchModes.FishingPolicy Or Me.m_search.SearchMode <> eSearchModes.MSE, Me.ToString & ".setFishTime() incorrect search mode.")
 
             For iGrp As Integer = 1 To nvar
 
@@ -971,7 +975,7 @@ Public Property PluginManager() As cPluginManager
                     'The next is easier, and gives almost the same answer:
                     If m_Data.FishTime(iGrp) > m_Data.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_Data.FLimit(iGrp) ' : Stop
                 Else
-                    'Computed catch rates
+                    'Computed fishing mortality
                     m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
                 End If
 
@@ -993,6 +997,16 @@ Public Property PluginManager() As cPluginManager
             Next
         End Sub
 
+
+        ''' <summary>
+        ''' Set fishing effort to a value supplied by a search routine or FishRateGear()
+        ''' </summary>
+        ''' <param name="Fgear">Fishing Effort</param>
+        ''' <param name="RelFopt"></param>
+        ''' <param name="iYear"></param>
+        ''' <param name="NumberOfYears"></param>
+        ''' <remarks>At the start of a year Fgear(nFleets)(fishing effort) is set to a user entered value FishRateGear(nFleets,nTime) or effort set by a search. 
+        ''' If in a search Fgear() is then used to compute FishYear() which is used to set FishRateNo() and compute FishTime(). FishTime() is what is used by Derivt() Confused yet???? </remarks>
         Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
             'set Fgear() to either 
             'RelFopt() Effort set by the Fishing Policy search
@@ -3793,9 +3807,8 @@ Public Property PluginManager() As cPluginManager
 
 
         Public Sub SetFFromGear()
-            'calculates Ffishrateno by group from fishing efforts except for groups flagged
+            'calculates Fishrateno by group from fishing efforts except for groups flagged
             'to be forced by group F over time using csv file (fisforced(i)=true if i is forced in csv)
-            'Dim i As Integer, ig As Integer, t As Integer, Ft As Single
             Dim t As Integer
 
             For t = 1 To m_Data.NTimes
@@ -3872,7 +3885,7 @@ Public Property PluginManager() As cPluginManager
 
             For i = 1 To m_Data.nGroups
                 If m_Data.FisForced(i) = False Or PredEffort Then
-                    ' Debug.Assert(i <> 3)
+
                     Ft = 0
                     For ig = 1 To m_Data.nGear
                         Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (m_Data.PropLandedTime(ig, i) + m_Data.Propdiscardtime(ig, i))
