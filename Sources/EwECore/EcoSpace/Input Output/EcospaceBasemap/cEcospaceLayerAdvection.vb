@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcospaceLayerAdvection.vb,v $
+' Revision 1.2  2008/11/05 16:54:36  jeroens
+' At least it compiles
+'
 ' Revision 1.1  2008/11/04 05:42:58  jeroens
 ' New
 '
@@ -21,7 +24,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ===========================================================================
 Public Class cEcospaceLayerAdvection
-    Inherits cEcospaceLayer
+    Inherits cEcospaceSingleNxNLayer
 
 #Region " Construction "
 
@@ -43,17 +46,20 @@ Public Class cEcospaceLayerAdvection
 
 #Region " Cell interaction "
 
-    Private m_asData As Single(,)
+    Private m_asData As Single()(,)
     Private m_iGroup As Integer = 1
 
-    Public Overloads Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Public Overloads Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Single()
         Get
             If Me.m_asData Is Nothing Then
                 Me.Refresh()
             End If
-            Return Me.m_asData(iRow, iCol)
+            Return New Single() {Me.m_asData(0)(iRow, iCol), Me.m_asData(1)(iRow, iCol)}
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Single())
+            Debug.Assert(TypeOf value Is Single())
+            Me.m_asData(0)(iRow, iCol) = value(0)
+            Me.m_asData(1)(iRow, iCol) = value(1)
             Me.Invalidate()
         End Set
     End Property
@@ -66,31 +72,31 @@ Public Class cEcospaceLayerAdvection
 
 #Region " Private bits "
 
-    Private Function PrefRow() As Integer(,)
-        Dim d As Object = Me.Data
-        Return DirectCast(d, Integer()(,))(0)
-    End Function
+    'Private Function PrefRow() As Integer(,)
+    '    Dim d As Object = Me.Data
+    '    Return DirectCast(d, Integer()(,))(0)
+    'End Function
 
-    Private Function PrefCol() As Integer(,)
-        Dim d As Object = Me.Data
-        Return DirectCast(d, Integer()(,))(1)
-    End Function
+    'Private Function PrefCol() As Integer(,)
+    '    Dim d As Object = Me.Data
+    '    Return DirectCast(d, Integer()(,))(1)
+    'End Function
 
     Private Sub Refresh()
-        Dim aiPrefRow As Integer(,) = Me.PrefRow
-        Dim aiPrefCol As Integer(,) = Me.PrefCol
+        '    Dim aiPrefRow As Integer(,) = Me.PrefRow
+        '    Dim aiPrefCol As Integer(,) = Me.PrefCol
 
-        ReDim m_asData(Me.InRow, Me.InCol)
+        '    ReDim m_asData(Me.InRow, Me.InCol)
 
-        For iRowTest As Integer = 1 To Me.InRow
-            For iColTest As Integer = 1 To Me.InCol
-                Me.m_asData(iRowTest, iColTest) = cCore.NULL_VALUE
-            Next
-        Next
+        '    For iRowTest As Integer = 1 To Me.InRow
+        '        For iColTest As Integer = 1 To Me.InCol
+        '            Me.m_asData(iRowTest, iColTest) = cCore.NULL_VALUE
+        '        Next
+        '    Next
 
-        For iMonth As Integer = Me.m_iMinValue To Me.m_iMaxValue
-            Me.m_asData(CInt(aiPrefRow(Me.m_iGroup, iMonth)), CInt(aiPrefCol(Me.m_iGroup, iMonth))) = iMonth
-        Next
+        '    For iMonth As Integer = Me.m_iMinValue To Me.m_iMaxValue
+        '        Me.m_asData(CInt(aiPrefRow(Me.m_iGroup, iMonth)), CInt(aiPrefCol(Me.m_iGroup, iMonth))) = iMonth
+        '    Next
     End Sub
 
 #End Region ' Private bits
