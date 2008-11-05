@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.2  2008/11/05 01:15:16  jeroens
+' Do not share editors between layers!
+'
 ' Revision 1.1  2008/11/04 04:39:53  jeroens
 ' Moved
 '
@@ -56,7 +59,7 @@ Namespace Ecospace.Basemap.Layers
             Dim strID As String = ""
             Dim layer As cLayer = Nothing
             Dim renderer As cLayerRenderer = Nothing
-            Dim editor As cLayerEditor = New cLayerEditorTwoState()
+            Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
             Dim lLayers As New List(Of cLayer)
 
@@ -76,6 +79,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent depth as a solid colour
                     renderer = New cLayerRendererGradient(vs)
+                    editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
                     layer = New cLayer(layerData, renderer, editor, 0, 1, bmd, eVarNameFlags.LayerDepth)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_LAND
@@ -99,6 +103,7 @@ Namespace Ecospace.Basemap.Layers
 
                         ' Create layer
                         renderer = New cLayerRendererBitmap(vs)
+                        editor = New cLayerEditorTwoState()
                         If layerData Is Nothing Then layerData = bmd.LayerHabitat
                         layer = New cLayer(layerData, renderer, editor, iHabitat, 0, hab, eVarNameFlags.Name)
                         lLayers.Add(layer)
@@ -151,6 +156,7 @@ Namespace Ecospace.Basemap.Layers
 
                             ' Create layer
                             renderer = New cLayerRendererGradient(vs)
+                            editor = New cLayerEditorTwoState()
                             If layerData Is Nothing Then layerData = bmd.LayerRegion
                             layer = New cLayer(layerData, renderer, editor, iRegion, 0, reg, eVarNameFlags.Name)
                             lLayers.Add(layer)
@@ -176,6 +182,7 @@ Namespace Ecospace.Basemap.Layers
 
                         ' Create layer
                         renderer = New cLayerRendererHatch(vs)
+                        editor = New cLayerEditorTwoState()
                         If layerData Is Nothing Then layerData = bmd.LayerMPA
                         layer = New cLayer(layerData, renderer, editor, iMPA, 0, mpa, eVarNameFlags.Name)
 
@@ -216,6 +223,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent depth as a solid colour
                     renderer = New cLayerRendererValue(vs)
+                    editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
                     layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELCIN
@@ -229,6 +237,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
                     layer = New cLayer(layerData, renderer, editor, 1, 0, bmd, eVarNameFlags.LayerMPASeed)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MPASEED
@@ -242,6 +251,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
                     layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = "Current cells"
@@ -257,6 +267,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
+                    editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
                     layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = "Best cells"
@@ -272,6 +283,7 @@ Namespace Ecospace.Basemap.Layers
                         vs.BackColour = Color.Blue
 
                         renderer = New cLayerRendererValue(vs)
+                        editor = New cLayerEditorTwoState()
                         DirectCast(renderer, cLayerRendererValue).DrawAlways = True
                         layer = New cLayer(layerData, renderer, editor)
                         layer.Name = "Best count"
@@ -301,6 +313,23 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerAdvection
 
+                    ' Get or create Visual Style
+                    strID = cValueID.GenerateAbstract(eDataTypes.EcospaceBasemap, CInt(bmd.GetVariable(eVarNameFlags.DBID)), eVarNameFlags.LayerAdvection)
+                    vs = core.VisualStyle(strID)
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        core.VisualStyle(strID) = vs
+                    End If
+
+                    renderer = New cLayerRendererArrow(vs)
+                    editor = New cLayerEditorAdvection()
+                    If layerData Is Nothing Then layerData = bmd.LayerMigration
+                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MIGRATION
+
+                    lLayers.Add(layer)
+
                 Case eVarNameFlags.LayerImportance
 
                     For iLayer As Integer = 1 To core.nImportanceLayers
@@ -318,6 +347,7 @@ Namespace Ecospace.Basemap.Layers
 
                         ' Create layer
                         renderer = New cLayerRendererValue(vs)
+                        editor = New cLayerEditorTwoState()
                         layer = New cLayer(bmd.LayerImportance(iLayer), renderer, editor, src, eVarNameFlags.Name)
 
                         lLayers.Add(layer)
