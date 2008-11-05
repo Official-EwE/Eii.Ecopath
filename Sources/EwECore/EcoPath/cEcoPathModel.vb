@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.3  2008/11/05 18:16:08  joeb
+' Fixed Bug that caused discards not to be include in Fishing mortality shapes FishRateNo() by moving caculation of PropDiscards() to Ecopath with calculation of PropLandings()
+'
 ' Revision 1.2  2008/10/29 15:56:00  joeb
 ' Change catch_calculation() missing catch message from Imformation to Warning
 '
@@ -1014,11 +1017,8 @@ Namespace Ecopath
         End Sub
 
         Private Sub Catch_calculations()
-            '  Static HaveHeardSo As Boolean
-            'On Local Error Resume Next
             Dim tcost As Single
             Dim value As Single
-            '  Dim Answer As Object
             Dim i As Integer
             Dim j As Integer
             Dim K As Integer
@@ -1090,10 +1090,16 @@ Namespace Ecopath
                 m_Data.Market(0, j) = 0
                 value = 0
                 For i = 1 To m_Data.NumFleet
-                    If m_Data.Landing(i, j) > 0 Then value = CSng(value + m_Data.Landing(i, j) * m_Data.Market(i, j))
-                    If m_Data.Landing(i, j) + m_Data.Discard(i, j) > 0 Then m_Data.PropLanded(i, j) = CSng(m_Data.Landing(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
 
-                Next
+                    If m_Data.Landing(i, j) > 0 Then value = CSng(value + m_Data.Landing(i, j) * m_Data.Market(i, j))
+                    m_Data.PropLanded(i, j) = 0
+                    m_Data.PropDiscard(i, j) = 0
+                    If m_Data.Landing(i, j) + m_Data.Discard(i, j) > 0 Then
+                        m_Data.PropLanded(i, j) = CSng(m_Data.Landing(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
+                        m_Data.PropDiscard(i, j) = CSng(m_Data.Discard(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
+                    End If
+
+                Next i
                 If value > 0 And m_Data.Landing(0, j) > 0 Then m_Data.Market(0, j) = CSng(value / m_Data.Landing(0, j))
                 'Calculate proportion mData.Discarded by group
             Next

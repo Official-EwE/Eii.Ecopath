@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.20  2008/11/05 18:14:48  joeb
+' Fixed Bug that caused discards not to be include in Fishing mortality shapes FishRateNo() by moving caculation of PropDiscards() to Ecopath with calculation of PropLandings()
+'
 ' Revision 1.19  2008/11/04 21:03:21  joeb
 ' Removed some dead code
 '
@@ -492,9 +495,6 @@ Public Property PluginManager() As cPluginManager
 
                 SetupSimVariables() 'sets vulrate()
 
-#If Villy = 1 Then
-
-#End If
                 InitialState() 'uses vulrate() to set A()
 
                 DefaultMigrationAndToDetritus()
@@ -584,7 +584,7 @@ Public Property PluginManager() As cPluginManager
 
                     'set the time variable proportion variables to initial ecopath values
                     Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
-                    Me.m_Data.Propdiscardtime(iflt, igrp) = m_EPData.PropDiscard(iflt, igrp)
+                    Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp)
 
                 Next
             Next
@@ -1913,6 +1913,8 @@ Public Property PluginManager() As cPluginManager
             Dim i As Integer
             Dim rrate As Single
 
+            m_Data.FirstTime = True
+
             'set values need for Derivt()
             SetFishTimetoFish1()
             For i = 0 To nGroups
@@ -2193,11 +2195,6 @@ Public Property PluginManager() As cPluginManager
                     If m_EPData.NumFleet > 0 Then     'Only if there is fishery
                         For K = 1 To m_EPData.NumFleet
                             If m_Data.FirstTime = True Then
-                                If (m_EPData.Landing(K, i) + m_EPData.Discard(K, i)) > 0 Then
-                                    m_EPData.PropDiscard(K, i) = m_EPData.Discard(K, i) / (m_EPData.Discard(K, i) + m_EPData.Landing(K, i))
-                                Else
-                                    m_EPData.PropDiscard(K, i) = 0
-                                End If
                                 DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishMGear(K, i)
                             Else
                                 DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + m_Data.RegDiscard(K, i)
@@ -3028,6 +3025,7 @@ Public Property PluginManager() As cPluginManager
             For i = 1 To m_EPData.NumFleet
                 For j = 1 To m_EPData.NumGroups
                     m_Data.FishMGear(i, j) = 0
+                    ' Debug.Assert(j <> 3)
                     If m_EPData.fCatch(j) > 0 Then
                         m_Data.FishMGear(i, j) = m_Data.Fish1(j) * (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_EPData.fCatch(j)
                     End If
@@ -3874,6 +3872,7 @@ Public Property PluginManager() As cPluginManager
 
             For i = 1 To m_Data.nGroups
                 If m_Data.FisForced(i) = False Or PredEffort Then
+                    ' Debug.Assert(i <> 3)
                     Ft = 0
                     For ig = 1 To m_Data.nGear
                         Ft = Ft + m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (m_Data.PropLandedTime(ig, i) + m_Data.Propdiscardtime(ig, i))
