@@ -590,7 +590,7 @@ System Error: {0}</value>
     <value>One or more type code values cannot be read</value>
   </data>
   <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
-    <value>Header '{0}' not recognized, expected 'type'</value>
+    <value>Header '{0}' not recognized, expected 'type', 'code' or 'dat type'</value>
     <comment>{0}=unrecognized header name</comment>
   </data>
   <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">

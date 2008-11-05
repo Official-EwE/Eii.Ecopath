@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesTextReader.vb,v $
+' Revision 1.3  2008/11/05 05:07:13  jeroens
+' More leniency
+'
 ' Revision 1.2  2008/11/04 18:52:23  jeroens
 ' Provided more thorough error feedback on unexpected headers
 ' Resolved parsing problems on typical clear values
@@ -331,7 +334,7 @@ Public MustInherit Class cTimeSeriesTextReader
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
             ' Dat type
-            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code"}) Then
+            If Not StringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code", "dat"}) Then
                 Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If

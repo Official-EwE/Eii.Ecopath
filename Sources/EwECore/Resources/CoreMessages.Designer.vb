@@ -1428,7 +1428,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;type&apos;.
+        '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;type&apos;, &apos;code&apos; or &apos;dat type&apos;.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_TYPELINEMISSING() As String
             Get
