@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucLayersControl.vb,v $
+' Revision 1.2  2008/11/05 01:14:22  jeroens
+' Optionally clear new layer groups
+'
 ' Revision 1.1  2008/11/04 04:39:35  jeroens
 ' Moved
 '
@@ -93,25 +96,31 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="strGroup">Name of the group to add.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGroup(ByVal strGroup As String, Optional ByVal bVisible As Boolean = True)
+        Public Sub AddGroup(ByVal strGroup As String, _
+                            Optional ByVal bVisible As Boolean = True, _
+                            Optional ByVal bClearGroup As Boolean = True)
             Dim ucg As ucLayerGroup = Nothing
 
             ' Group already exists?
             If Me.m_dtGroups.ContainsKey(strGroup) Then
-                ' #Yes: get layer control
+                ' #Yes: get group layer control
                 ucg = Me.FindGroup(strGroup)
-                ' JS 03Nov08: do not clear the group; only append to it
-                '' ..and clear it
-                'ucg.RemoveAllLayers()
-                Return
+                ' Must clear?
+                If bClearGroup Then
+                    ' #Yes: clear it
+                    ucg.RemoveAllLayers()
+                End If
+            Else
+                ' #No: create new group layer control
+                ucg = New ucLayerGroup(strGroup)
+                Me.fpItems.Controls.Add(ucg)
+                Me.m_dtGroups(strGroup) = ucg
             End If
 
-            ucg = New ucLayerGroup(strGroup)
+            ' Configure group layer control
             ucg.ShowAllLayers(bVisible)
             ucg.SetCollapsed(Not bVisible)
-            Me.fpItems.Controls.Add(ucg)
 
-            Me.m_dtGroups(strGroup) = ucg
         End Sub
 
         ''' -------------------------------------------------------------------

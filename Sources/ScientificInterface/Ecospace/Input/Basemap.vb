@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.8  2008/11/05 01:16:51  jeroens
+' Optionally clear new layer groups
+'
 ' Revision 1.7  2008/11/04 04:49:00  jeroens
 ' Renamed key member vars
 '
@@ -282,7 +285,7 @@ Namespace Ecospace.Basemap
 
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerMigration)
-            Me.AddData(eVarNameFlags.LayerRelPP)
+            Me.AddData(eVarNameFlags.LayerRelPP, False)
             'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when property changes
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerHabitat)
@@ -301,13 +304,13 @@ Namespace Ecospace.Basemap
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddData(ByVal varName As eVarNameFlags)
+        Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
 
             Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.m_core, varName)
             Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
 
             ' Define group
-            Me.m_ucLayers.AddGroup(strGroup)
+            Me.m_ucLayers.AddGroup(strGroup, True, bClearGroup)
 
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.AddLayer(alayers(iLayer), strGroup)

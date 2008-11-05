@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBaseMap.vb,v $
+' Revision 1.2  2008/11/05 01:15:42  jeroens
+' Optionally clear new layer groups
+'
 ' Revision 1.1  2008/11/04 04:39:21  jeroens
 ' Moved
 '
@@ -506,7 +509,8 @@ Namespace Ecospace
         ''' <param name="layer">The layer to add.</param>
         ''' <param name="layerPosition">The layer to add the layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cLayer, Optional ByVal layerPosition As cLayer = Nothing)
+        Public Sub AddLayer(ByVal layer As cLayer, _
+                            Optional ByVal layerPosition As cLayer = Nothing)
 
             ' Sanity check
             If layer Is Nothing Then Debug.Assert(False, "Need valid layer")
