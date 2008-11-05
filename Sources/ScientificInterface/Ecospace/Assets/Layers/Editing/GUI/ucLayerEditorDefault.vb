@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucLayerEditorDefault.vb,v $
+' Revision 1.2  2008/11/05 01:13:20  jeroens
+' Fixed crash
+'
 ' Revision 1.1  2008/11/04 04:40:34  jeroens
 ' Split into separate files, moved
 '
@@ -46,6 +49,9 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_ucSlider.ValueChanged
+
+            If Me.Editor Is Nothing Then Return
+
             Me.Editor.CursorSize = CInt(Me.m_ucSlider.Value)
             Me.RaiseChangedEvent()
         End Sub
