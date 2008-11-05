@@ -11,14 +11,14 @@
         <p>The <i>Time series</i> form (<i>Time dynamic (Ecosim) &gt; Input &gt; Time series</i>) provides an interface where users can read in, view and activate time series for use in Ecosim.</p>
         <h4>Reading time series into Ecosim</h4>
         <p>There are two ways to read time series data into Ecosim: (i) time series can be imported from a csv file or your computer's clipboard (see <i>Import…</i> below); or (ii) time series can be typed or pasted in directly using the <i>Time series</i> form (see <i>Values… </i>below).</p>
-        <p>When you open the<i> Time series</i> form for the first time, there will be no time series displayed in the lower panel (Figure 8.4). To get started, use either the <i>Import…, Load...</i> or     <![CDATA[ ]]><i>Add…</i> buttons on the lower panel of the form.</p>
-        <p><u>Important note: After importing or loading time series,  they must be activated using </u><i style="text-decoration: underline;">Apply...</i><u> (see below). </u>
+        <p>When you open the<i> Time series</i> form for the first time, there will be no time series displayed in the lower panel (Figure 8.4). To get started, use either the <i>Import…, Load...</i> or <i>Add…</i> buttons on the lower panel of the form.</p>
+        <p><u>Important note: After importing or loading time series,  they must be activated using </u><i style="text-decoration: underline;">Weight...</i><u> (see below). </u>
         </p>
         <h4>Import…</h4>
         <p>Opens the <i>Import time series</i> dialogue box. This allows you to import multiple time series simultaneously from a csv (comma separated values) format file and is the most commonly-used means of reading time series data into Ecosim. See&#160; <a href="Import time series.htm">Import time series</a> for instructions on using this form. Note that this form can also be accessed from the main <a href="Ecosim menu.htm">Ecosim menu</a>.</p>
-        <p>After importing time series,  they must be activated using <i>Apply...</i> (see below).</p>
+        <p>After importing time series, they must be weighted using <i>Weight...</i> (see below).</p>
         <h4>Load...</h4>
-        <p style="font-style: normal;"><i style="font-style: normal;">Opens the <i>Apply time series</i> dialogue box, where you can load previously imported time series using the check- boxes provided (Figure 8.5). After loading time series,  they must be activated using the <i>Apply</i> button at the top of the <i>Apply time series</i> dialogue box (see <i>Apply...</i>below).</i>
+        <p style="font-style: normal;"><i style="font-style: normal;">Opens the <i>Load time series</i> dialogue box, where you can load previously imported time series using the check-boxes provided (Figure 8.5). After loading time series, they must be weighted using the <i>Weight</i> button at the top of the <i>Weight time series</i> dialogue box (see <i>Weight...</i>below).</i>
         </p>
         <h4>Add…</h4>
         <p>Opens the <i>Add time serie</i>s dialogue box for adding time series manually (Figure 8.6). To add a time series using the <i>Add time series</i> dialogue box:</p>
@@ -30,21 +30,20 @@
         <p>5.Assign the data series a relative weight using the <i>Weight</i> window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</p>
         <p>6.Type the <i>y</i>-values of the time series in the right hand column. Annual time-steps are automatically displayed in the left hand column.</p>
         <p>7.Click OK. The time series will be displayed in the main panel of the form and also as a thumbnail in the lower panel.</p>
-        <p>After adding a time series, it must be activated using <i>Apply ... </i>(see below).</p>
+        <p>After adding a time series, it must be activated using <i>Weight... </i>(see below).</p>
         <h4>Duplicate</h4>
         <p>Copies the currently-selected time series. </p>
         <h4>Remove...</h4>
         <p>Removes the currently-selected time series.</p>
-        <h4>Apply...</h4>
-        <p><u>All imported time series must be applied before they are available to Ecosim.</u>
+        <h4>Weight...</h4>
+        <p><u>Assign the data series a relative weight using the <i>Weight</i> window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</u>
         </p>
-        <p>To apply time series:</p>
-        <p>1. Click <i>Apply...</i> in the bottom panel of the <i>Time series</i> form to open the <i>Apply time series</i> dialogue box (Figure 8.6). Select individual time series using the check boxes. If you have several datasets loaded, the datasets will be shown as nested menus. You can apply time series from different datasets simultaneously.</p>
+        <p>To weight time series:</p>
+        <p>1. Click <i>Weight...</i> in the bottom panel of the <i>Time series</i> form to open the <i>Weight time series</i> dialogue box (Figure 8.6) and alter the weights for individual time series.</p>
         <p>2. Click the <i>Apply</i> button on the dialogue box.</p>
-        <p>Thumbnails of successfully applied time series will be shown with a check mark (Figure 8.7).</p>
+		<p>Note that this dialogue box offers the option to enable or disable time series for use in Ecosim. Clearing the enabled flag on a time series has the same effect as setting the series' weight to 0. However, the enabled flag allows a user to exclude a time series from use in Ecosim without having to alter the relative weight value.</p>
+        <p>Thumbnails of enabled time series with a positive weight will be shown with a check mark (Figure 8.7).</p>
         <p>There are two additional buttons at the top of the <i>Time series</i> form. First select a time series from the thumbnails in the bottom panel, then:</p>
-        <h4>Weight</h4>
-        <p>Assign the data series a relative weight using the <i>Weight</i> window. This represents a prior assessment by the user about relatively how variable or reliable that type of data is compared to the other reference time series (low weights imply relatively high variance or unreliable data; higher weights imply low variance or reliable data).</p>
         <h4>Values</h4>
         <p>Displays information and values for the currently-selected time series. </p>
         <p>
@@ -62,7 +61,7 @@
         <p>
             <img src="../Resources/Images/TimeSeriesForm_applied_sc.bmp" />
         </p>
-        <p><b>Figure 8.7</b> Thumbnails of successfully applied time series will be shown with a check mark</p>
+        <p><b>Figure 8.7</b> Thumbnails of enabled time series will be shown with a check mark</p>
         <p>&#160;</p>
     </body>
 </html>
