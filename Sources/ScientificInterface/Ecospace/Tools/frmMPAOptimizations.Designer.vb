@@ -795,7 +795,6 @@ Namespace Ecospace
             '
             'm_nudBestPercentile
             '
-            Me.m_nudBestPercentile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_nudBestPercentile.Location = New System.Drawing.Point(51, 6)
             Me.m_nudBestPercentile.Name = "m_nudBestPercentile"
             Me.m_nudBestPercentile.Size = New System.Drawing.Size(94, 20)
@@ -904,15 +903,15 @@ Namespace Ecospace
         Friend WithEvents m_tcFleet As System.Windows.Forms.TabPage
         Friend WithEvents m_tcGroup As System.Windows.Forms.TabPage
         Friend WithEvents m_tsbEditLayers As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_nudBestPercentile As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_gridProgress As ScientificInterface.gridMPAOptimizations
         Friend WithEvents m_tpResults As System.Windows.Forms.TabPage
         Friend WithEvents m_graphProgress As ZedGraph.ZedGraphControl
-        Friend WithEvents m_btnConvertToMpa As System.Windows.Forms.Button
         Friend WithEvents m_btnNewSearch As System.Windows.Forms.Button
-        Friend WithEvents m_btnResetMPAs As System.Windows.Forms.Button
-        Friend WithEvents m_graphResults As ZedGraph.ZedGraphControl
-        Friend WithEvents m_gridResults As ScientificInterface.gridMPAOptimizations
-        Friend WithEvents m_lblBestPercentile As System.Windows.Forms.Label
+        Private WithEvents m_nudBestPercentile As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_btnConvertToMpa As System.Windows.Forms.Button
+        Private WithEvents m_btnResetMPAs As System.Windows.Forms.Button
+        Private WithEvents m_lblBestPercentile As System.Windows.Forms.Label
+        Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
+        Private WithEvents m_gridResults As ScientificInterface.gridMPAOptimizations
     End Class
 End Namespace
