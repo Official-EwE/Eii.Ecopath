@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.15  2008/11/05 23:11:31  joeh
+' Move Scale options into Graph options
+'
 ' Revision 1.14  2008/11/05 22:41:05  joeh
 ' Use gray lines in cumulative plot
 '
@@ -628,6 +631,15 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
+        Private Sub m_tstbxSetMax_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.Click
+            AutoScaleToolStripMenuItem.Checked = False
+            CustomScaleToolStripMenuItem.Checked = False
+        End Sub
+
+        Private Sub m_tstbxSetMin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click
+            AutoScaleToolStripMenuItem.Checked = False
+            CustomScaleToolStripMenuItem.Checked = False
+        End Sub
     End Class
     
 End Namespace
