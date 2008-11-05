@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucLayerEditor.vb,v $
+' Revision 1.2  2008/11/05 01:13:57  jeroens
+' Update! Update!
+'
 ' Revision 1.1  2008/11/04 04:40:33  jeroens
 ' Split into separate files, moved
 '
@@ -122,6 +125,7 @@ Namespace Ecospace.Basemap.Layers
             End Get
             Set(ByVal editor As cLayerEditor)
                 Me.m_editor = editor
+                Me.UpdateControls()
             End Set
         End Property
 
