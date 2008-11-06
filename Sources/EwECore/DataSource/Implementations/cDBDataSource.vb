@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.11  2008/11/06 01:07:05  jeroens
+' Fixed bug on deleting Ecosim fleets
+'
 ' Revision 1.10  2008/11/02 02:10:00  jeroens
 ' Pruned history
 '
@@ -743,7 +746,7 @@ Public Class cDBDataSource
 
         ' Crash prevention check
         If Object.ReferenceEquals(reader, Nothing) Then
-            Debug.Assert(False, "Failed to access table EopathModel")
+            Debug.Assert(False, "Failed to access table EcopathModel")
             Return False
         End If
 
@@ -3128,7 +3131,7 @@ Public Class cDBDataSource
     ''' -----------------------------------------------------------------------
     Private Function RemoveEcosimFleet(ByVal iEcopathFleetID As Integer) As Boolean
         Try
-            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioFleet WHERE FleetID={0}", iEcopathFleetID))
+            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
         Catch ex As Exception
         End Try
         Return False
