@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucLayerEditorMigration.vb,v $
+' Revision 1.2  2008/11/06 01:21:25  jeroens
+' UpdateControls made 'safe'
+'
 ' Revision 1.1  2008/11/04 04:40:34  jeroens
 ' Split into separate files, moved
 '
@@ -72,8 +75,12 @@ Namespace Ecospace.Basemap.Layers
             If (Me.m_cmbMonth Is Nothing) Then Return
             If (Me.m_chkAutoRotate Is Nothing) Then Return
 
-            Me.m_cmbMonth.SelectedIndex = CInt(Me.Editor.CellValue) - 1
-            Me.m_cmbGroup.SelectedIndex = CInt(Me.Editor.Group) - 1
+            Try
+                Me.m_cmbMonth.SelectedIndex = CInt(Me.Editor.CellValue) - 1
+                Me.m_cmbGroup.SelectedIndex = CInt(Me.Editor.Group) - 1
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
