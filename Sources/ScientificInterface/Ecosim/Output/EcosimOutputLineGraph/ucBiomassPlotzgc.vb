@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.16  2008/11/06 18:53:20  joeh
+' Display Overlay list box only when Overly is selected
+'
 ' Revision 1.15  2008/11/05 23:11:31  joeh
 ' Move Scale options into Graph options
 '
@@ -151,6 +154,7 @@ Namespace Ecosim
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
+            SplitContainer1.Panel1Collapsed = True
 
             ' Santa's little helper :)
             m_ZGHelper = New ZedGraphHelper(m_zgc)
@@ -491,6 +495,7 @@ Namespace Ecosim
             m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Checked
             PopulateGroupBoxes()
             m_ZGHelper.RescaleAndRedraw()
+            SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
