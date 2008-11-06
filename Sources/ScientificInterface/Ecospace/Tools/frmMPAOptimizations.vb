@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.4  2008/11/06 23:57:49  jeroens
+' Pretty
+'
 ' Revision 1.3  2008/10/15 23:58:10  jeroens
 ' All layers added by varname, no longer by string
 '
@@ -112,7 +115,7 @@ Namespace Ecospace
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
         ''' <summary>Grid that allows configuration of objective weights (shared with Ecosim FPS)</summary>
-        Private m_ucObjectiveWeightGrid As ValueComponentGrid = Nothing
+        Private m_ucWeightOPGrid As ValueComponentGrid = Nothing
         ''' <summary>Grid that allows configuration of fleet opt params (shared with Ecosim FPS)</summary>
         Private m_ucFleetOPGrid As FleetOptmParamGrid = Nothing
         ''' <summary>Grid that allows configuration of group opt params (shared with Ecosim FPS)</summary>
@@ -152,20 +155,20 @@ Namespace Ecospace
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl()
-            plLayers.Controls.Add(Me.m_ucLayers)
+            m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Add objective grids
-            Me.m_ucObjectiveWeightGrid = New ValueComponentGrid(Me.m_MPAOptManager)
-            Me.m_ucObjectiveWeightGrid.FixedColumnWidths = False
-            Me.m_tcWeights.Controls.Add(Me.m_ucObjectiveWeightGrid)
+            Me.m_ucWeightOPGrid = New ValueComponentGrid(Me.m_MPAOptManager)
+            Me.m_ucWeightOPGrid.FixedColumnWidths = False
+            Me.m_plWeights.Controls.Add(Me.m_ucWeightOPGrid)
 
             Me.m_ucFleetOPGrid = New FleetOptmParamGrid(Me.m_MPAOptManager)
             Me.m_ucFleetOPGrid.FixedColumnWidths = False
-            Me.m_tcFleet.Controls.Add(Me.m_ucFleetOPGrid)
+            Me.m_plFleet.Controls.Add(Me.m_ucFleetOPGrid)
 
             Me.m_ucGroupOPGrid = New GroupOptmParamGrid(Me.m_MPAOptManager)
             Me.m_ucGroupOPGrid.FixedColumnWidths = False
-            Me.m_tcGroup.Controls.Add(Me.m_ucGroupOPGrid)
+            Me.m_plGroup.Controls.Add(Me.m_ucGroupOPGrid)
 
             ' Configure graphs
             Me.InitProgressGraph()
@@ -1197,7 +1200,9 @@ Namespace Ecospace
             Me.m_lblIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_nudBoundaryWeight.Enabled = (bIsPreparing)
             Me.m_lblBoundaryWeight.Enabled = (bIsPreparing)
-            Me.m_tcObjectives.Enabled = (bIsPreparing)
+            Me.m_ucWeightOPGrid.Enabled = (bIsPreparing)
+            Me.m_ucFleetOPGrid.Enabled = (bIsPreparing)
+            Me.m_ucGroupOPGrid.Enabled = (bIsPreparing)
             Me.m_rbEcoseed.Enabled = (bIsPreparing)
             Me.m_rbRandom.Enabled = (bIsPreparing)
             Me.m_lbMPA.Enabled = (bIsPreparing)
