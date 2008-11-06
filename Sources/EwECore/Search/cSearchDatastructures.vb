@@ -754,18 +754,31 @@ Public Class cSearchDatastructures
 
     End Sub
 
+    ''' <summary>
+    ''' Set Fishing Effort for a search 
+    ''' </summary>
+    ''' <param name="Fgear"></param>
+    ''' <param name="RelFopt"></param>
+    ''' <param name="iYear"></param>
+    ''' <param name="NumberOfYears"></param>
+    ''' <remarks></remarks>
     Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
 
         Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
 
         If Me.SearchMode = eSearchModes.FishingPolicy Then
 
+            'in the Fishing policy search
+            'If the search has set an effort then use that value to populate Fgear()
             For iFlt As Integer = 1 To m_ecopathData.NumFleet
 
-                'in this case the bInSearch refers to the Fishing Policy Optimization 
                 If FblockCode(iFlt, iyf) > 0 Then  'And bBaseYearSet?
+                    'Fishing policy search has set an effort 
+                    'copy that value into Fgear(nfleets)
                     Fgear(iFlt) = RelFopt(ParNumber(FblockCode(iFlt, iyf)))
                 Else
+                    'No effort has been set by the Fishing policy search
+                    'use the effort in FishRateGear()
                     Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
                 End If
 
@@ -773,6 +786,8 @@ Public Class cSearchDatastructures
 
         Else
 
+            'not in a search
+            'use fishing effort in FishRateGear()
             For iFlt As Integer = 1 To m_ecopathData.NumFleet
                 Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
             Next iFlt
