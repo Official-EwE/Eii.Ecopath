@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cFormPositionSetting.vb,v $
-' Revision 1.1  2008/09/26 07:31:22  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/06 04:44:56  jeroens
+' Fixed bug 554
 '
 ' Revision 1.1  2008/08/14 01:50:21  jeroens
 ' Initial version
@@ -15,6 +15,7 @@ Option Strict On
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Collections.Specialized
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports directive
 
@@ -62,17 +63,36 @@ Public Class cFormPositionSettings
         ''' <param name="frm">The form to position.</param>
         ''' -------------------------------------------------------------------
         Public Sub Apply(ByVal frm As Form)
+
             frm.SuspendLayout()
+
             If frm.Parent Is Nothing Then
-                frm.DesktopBounds = New Rectangle(Me.m_iPosX, Me.m_iPosY, Me.m_iWidth, Me.m_iHeight)
+
+                Dim ptTL As New Point(Me.m_iPosX, Me.m_iPosY)
+                Dim ptBR As New Point(Me.m_iPosX + Me.m_iWidth, Me.m_iPosY + Me.m_iHeight)
+                Dim scTL As Screen = Nothing
+                Dim scBR As Screen = Nothing
+
+                For Each sc As Screen In Screen.AllScreens
+                    If sc.WorkingArea.Contains(ptTL) Then scTL = sc
+                    If sc.WorkingArea.Contains(ptBR) Then scBR = sc
+                Next sc
+
+                ' Position window ONLY when both screens are valid
+                If scTL IsNot Nothing And scBR IsNot Nothing Then
+                    frm.DesktopBounds = New Rectangle(Me.m_iPosX, Me.m_iPosY, Me.m_iWidth, Me.m_iHeight)
+                End If
             Else
                 frm.Location = New Point(Me.m_iPosX, Me.m_iPosY)
                 frm.Width = Me.m_iWidth
                 frm.Height = Me.m_iHeight
             End If
+
             frm.Dock = Me.m_dockState
             frm.WindowState = Me.m_formState
+
             frm.ResumeLayout()
+
         End Sub
 
         ''' -------------------------------------------------------------------
