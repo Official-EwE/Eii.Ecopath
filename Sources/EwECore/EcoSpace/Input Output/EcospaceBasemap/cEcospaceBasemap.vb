@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.4  2008/11/06 01:09:47  jeroens
+' deppaws loc dna loc reyal noitargiM
+'
 ' Revision 1.3  2008/11/04 05:42:06  jeroens
 ' Fixed migration data
 '
@@ -330,7 +333,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the Ecospace Depth layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerDepth() As cEcospaceLayer
@@ -341,8 +344,13 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the Ecospace Habitat layer.
     ''' </summary>
+    ''' <remarks>
+    ''' This layer provides access to the one and only array that holds all
+    ''' Habitats in Ecospace. At the moment (Nov '08), Habitats cannot overlap
+    ''' and are stored in one two-dimensional array.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitat() As cEcospaceLayer
         Get
@@ -352,8 +360,13 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the Ecospace MPA layer.
     ''' </summary>
+    ''' <remarks>
+    ''' This layer provides access to the one and only array that holds all
+    ''' MPAs in Ecospace. At the moment (Nov '08), MPAs cannot overlap
+    ''' and are stored in one two-dimensional array.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerMPA() As cEcospaceLayer
         Get
@@ -363,8 +376,13 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the Ecospace Region layer.
     ''' </summary>
+    ''' <remarks>
+    ''' This layer provides access to the one and only array that holds all
+    ''' Regions in Ecospace. At the moment (Nov '08), Regions cannot overlap
+    ''' and are stored in one two-dimensional array.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRegion() As cEcospaceLayer
         Get
@@ -374,12 +392,28 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the Relative Primary Production layer in Ecospace.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRelPP() As cEcospaceLayer
         Get
             Return Me.m_dictLayers(eVarNameFlags.LayerRelPP)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Advection layer in Ecospace.
+    ''' </summary>
+    ''' <remarks>
+    ''' This layer is a tricky one since it provides uniform access to
+    ''' both advection directional as well as velocity information. See the
+    ''' actual layer for details.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerAdvection() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerAdvection)
         End Get
     End Property
 
@@ -433,7 +467,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerMigration
-                Return New Integer()(,) {Me.m_core.m_EcoSpaceData.Prefcol, Me.m_core.m_EcoSpaceData.PrefRow}
+                Return New Integer()(,) {Me.m_core.m_EcoSpaceData.PrefRow, Me.m_core.m_EcoSpaceData.Prefcol}
             Case eVarNameFlags.LayerAdvection
                 'Return New Single()() {Me.m_core.m_EcoSpaceData.AdvectSpeed}
             Case eVarNameFlags.LayerImportance
