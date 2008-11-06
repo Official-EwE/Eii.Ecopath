@@ -21,17 +21,14 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditHabitats))
             Me.m_grid = New ScientificInterface.Ecospace.gridEditHabitats
-            Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
             Me.m_btnAddHabitat = New System.Windows.Forms.Button
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnPreserve = New System.Windows.Forms.Button
-            CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -59,10 +56,6 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            '
-            'epNumHabitats
-            '
-            Me.epNumHabitats.ContainerControl = Me
             '
             'm_btnAddHabitat
             '
@@ -116,13 +109,11 @@ Namespace Ecospace
             Me.Name = "dlgEditHabitats"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_grid As gridEditHabitats
-        Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
         Private WithEvents m_btnAddHabitat As System.Windows.Forms.Button
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel

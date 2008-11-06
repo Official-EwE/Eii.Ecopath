@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditImportanceLayers, Ecopath with Ecosim 6, Version=6.0.3.19, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.gridEditImportanceLayers, EwE6, Version=6.0.4.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -238,7 +238,7 @@
     <value>3</value>
   </data>
   <data name="m_btnPreserve.Text" xml:space="preserve">
-    <value>&amp;Preserve</value>
+    <value>Preserve</value>
   </data>
   <data name="m_btnPreserve.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -307,7 +307,7 @@
     <value>2</value>
   </data>
   <data name="m_btnRemoveHabitat.Text" xml:space="preserve">
-    <value>&amp;Remove</value>
+    <value>Remove</value>
   </data>
   <data name="&gt;&gt;m_btnRemoveHabitat.Name" xml:space="preserve">
     <value>m_btnRemoveHabitat</value>
@@ -337,7 +337,7 @@
     <value>1</value>
   </data>
   <data name="m_btnAddHabitat.Text" xml:space="preserve">
-    <value>&amp;Add</value>
+    <value>Add</value>
   </data>
   <data name="&gt;&gt;m_btnAddHabitat.Name" xml:space="preserve">
     <value>m_btnAddHabitat</value>

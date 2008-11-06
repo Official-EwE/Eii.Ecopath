@@ -250,7 +250,7 @@
     <value>4</value>
   </data>
   <data name="m_btnPreserve.Text" xml:space="preserve">
-    <value>&amp;Preserve</value>
+    <value>Preserve</value>
   </data>
   <data name="m_btnPreserve.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -286,7 +286,7 @@
     <value>3</value>
   </data>
   <data name="m_btnDelete.Text" xml:space="preserve">
-    <value>D&amp;elete</value>
+    <value>Delete</value>
   </data>
   <data name="m_btnDelete.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -322,7 +322,7 @@
     <value>7</value>
   </data>
   <data name="m_btnMoveDown.Text" xml:space="preserve">
-    <value>Move &amp;Down</value>
+    <value>Move down</value>
   </data>
   <data name="m_btnMoveDown.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -358,7 +358,7 @@
     <value>6</value>
   </data>
   <data name="m_btnMoveUp.Text" xml:space="preserve">
-    <value>Move &amp;Up</value>
+    <value>Move up</value>
   </data>
   <data name="m_btnMoveUp.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -394,7 +394,7 @@
     <value>2</value>
   </data>
   <data name="m_btnInsert.Text" xml:space="preserve">
-    <value>&amp;Insert</value>
+    <value>Insert</value>
   </data>
   <data name="m_btnInsert.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>

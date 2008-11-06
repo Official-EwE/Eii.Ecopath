@@ -21,28 +21,41 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMPAs))
-            Me.m_grid = New gridEditMPA
-            Me.epNumMPAs = New System.Windows.Forms.ErrorProvider(Me.components)
+            Me.m_grid = New ScientificInterface.Ecospace.gridEditMPA
             Me.m_btnAddMPA = New System.Windows.Forms.Button
             Me.m_btnRemoveMPA = New System.Windows.Forms.Button
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnPreserve = New System.Windows.Forms.Button
-            CType(Me.epNumMPAs, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_grid
             '
             resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
             Me.m_grid.Name = "m_grid"
-            '
-            'epNumMPAs
-            '
-            Me.epNumMPAs.ContainerControl = Me
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             '
             'm_btnAddMPA
             '
@@ -96,13 +109,11 @@ Namespace Ecospace
             Me.Name = "dlgEditMPAs"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            CType(Me.epNumMPAs, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_grid As gridEditMPA
-        Private WithEvents epNumMPAs As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveMPA As System.Windows.Forms.Button
         Private WithEvents m_btnAddMPA As System.Windows.Forms.Button
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel

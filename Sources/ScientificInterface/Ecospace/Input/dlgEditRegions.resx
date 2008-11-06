@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.3.19, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.gridEditRegions, EwE6, Version=6.0.4.4, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -160,7 +160,7 @@
     <value>1</value>
   </data>
   <data name="m_btnAddRegion.Text" xml:space="preserve">
-    <value>&amp;Add</value>
+    <value>Add</value>
   </data>
   <data name="&gt;&gt;m_btnAddRegion.Name" xml:space="preserve">
     <value>m_btnAddRegion</value>
@@ -193,7 +193,7 @@
     <value>2</value>
   </data>
   <data name="m_btnRemoveRegion.Text" xml:space="preserve">
-    <value>&amp;Remove</value>
+    <value>Remove</value>
   </data>
   <data name="&gt;&gt;m_btnRemoveRegion.Name" xml:space="preserve">
     <value>m_btnRemoveRegion</value>
@@ -322,7 +322,7 @@
     <value>3</value>
   </data>
   <data name="m_btnPreserve.Text" xml:space="preserve">
-    <value>&amp;Preserve</value>
+    <value>Preserve</value>
   </data>
   <data name="m_btnPreserve.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -355,7 +355,7 @@
     <value>spHorz</value>
   </data>
   <data name="&gt;&gt;spHorz.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=1.0.4.2, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;spHorz.Parent" xml:space="preserve">
     <value>$this</value>
@@ -382,7 +382,7 @@
     <value>5</value>
   </data>
   <data name="btnHabToRegion.Text" xml:space="preserve">
-    <value>From &amp;habitats</value>
+    <value>From habitats</value>
   </data>
   <data name="&gt;&gt;btnHabToRegion.Name" xml:space="preserve">
     <value>btnHabToRegion</value>
@@ -415,7 +415,7 @@
     <value>6</value>
   </data>
   <data name="btnFromCells.Text" xml:space="preserve">
-    <value>From &amp;cells</value>
+    <value>From cells</value>
   </data>
   <data name="&gt;&gt;btnFromCells.Name" xml:space="preserve">
     <value>btnFromCells</value>

@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: dlgEditImportanceLayers.vb,v $
-' Revision 1.1  2008/09/26 07:31:57  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/06 05:59:56  jeroens
+' Bypassed bug 530
 '
 ' Revision 1.1  2008/08/10 17:04:41  jeroens
 ' Initial version
