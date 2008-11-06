@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: BugReporter.vb,v $
-' Revision 1.1  2008/09/26 07:32:08  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/06 04:57:00  jeroens
+' Fixed bug 557
 '
 ' Revision 1.1  2007/10/23 23:15:29  sherman
 ' Seperated BugReporter Class from AppLauncher
@@ -27,6 +27,12 @@ Public Class BugReporter
         sbBody.AppendLine("---------------------------------------------------")
         ub.QueryString("body") = sbBody.ToString()
 
-        System.Diagnostics.Process.Start(ub.ToString())
+        Try
+            System.Diagnostics.Process.Start(ub.ToString())
+        Catch ex As Exception
+            ' Wow, no mail client installed? 
+        End Try
+
     End Sub
+
 End Class
