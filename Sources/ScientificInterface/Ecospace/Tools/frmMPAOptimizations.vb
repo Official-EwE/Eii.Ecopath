@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.5  2008/11/07 23:51:28  jeroens
+' Looking prettier
+'
 ' Revision 1.4  2008/11/06 23:57:49  jeroens
 ' Pretty
 '
@@ -133,13 +136,16 @@ Namespace Ecospace
 
 #End Region ' Private vars
 
+#Region " Constructor "
+
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-            m_core = cCore.GetInstance
+            Me.InitializeComponent()
+            Me.m_core = cCore.GetInstance
 
         End Sub
+
+#End Region ' Constructor
 
 #Region " Events "
 
@@ -275,6 +281,7 @@ Namespace Ecospace
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = cmdh.GetCommand("EditImportanceLayers")
             If cmd IsNot Nothing Then cmd.Invoke()
+
         End Sub
 
         Private Sub OnModeEcoseed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -337,6 +344,11 @@ Namespace Ecospace
                 Me.SetLayer(Me.m_dataRunState, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
                 Me.m_ucZoom.Map.Refresh()
             End If
+        End Sub
+
+        Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnExport.Click
+
         End Sub
 
 #End Region ' Controls
