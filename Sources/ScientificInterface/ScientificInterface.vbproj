@@ -782,7 +782,6 @@
       <DependentUpon>NavigationPanel.vb</DependentUpon>
     </Compile>
     <Compile Include="Panels\NavigationPanel\NavigationPanel.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
@@ -1057,6 +1056,10 @@
       <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgReadLayers.resx">
+      <DependentUpon>dlgReadLayers.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ecopath_logo.ico" />
     <Compile Include="Controls\cEwEBrushProvider.vb" />
     <Compile Include="Controls\gridResultsBase.vb">
@@ -1179,6 +1182,9 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\dlgReadLayers.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1207,6 +1213,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEditImportanceLayers.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridReadLayers.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cPlotDrawer.vb" />
