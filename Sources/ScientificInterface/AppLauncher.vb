@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.6  2008/11/07 17:23:12  jeroens
+' Fixed build
+'
 ' Revision 1.5  2008/11/07 08:01:50  jeroens
 ' Added Ecospace read layer command
 '
@@ -2211,7 +2214,7 @@ Public Class AppLauncher
         Handles m_cmdReadLayers.OnInvoke
         Dim dlg As New dlgReadLayers()
         If TypeOf cmd.Tag Is Ecospace.Basemap.Layers.cLayer Then
-            dlg.Layers = New cLayer() {DirectCast(cmd.Tag, Ecospace.Basemap.Layers.cLayer)}
+            dlg.Layers = New Ecospace.Basemap.Layers.cLayer() {DirectCast(cmd.Tag, Ecospace.Basemap.Layers.cLayer)}
         End If
         dlg.ShowDialog()
     End Sub
