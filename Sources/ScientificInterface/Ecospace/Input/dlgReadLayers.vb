@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgReadLayers.vb,v $
+' Revision 1.2  2008/11/07 23:52:52  jeroens
+' Functional v1 - still quite blunt
+'
 ' Revision 1.1  2008/11/07 08:15:18  jeroens
 ' Initial version
 '
@@ -47,6 +50,7 @@ Namespace Ecospace
         Private m_core As cCore = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_lData As New List(Of SpatialData)
+        Private m_bDataValid As Boolean = False
 
 #End Region ' Private vars
 
@@ -83,7 +87,7 @@ Namespace Ecospace
 
             Me.m_core = cCore.GetInstance()
 
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.ImportanceWeight))
+            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerImportance))
             Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerDepth))
             Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerHabitat))
             Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerMPA))
@@ -133,13 +137,6 @@ Namespace Ecospace
                         MsgBox("The selected shape file did not contain any data.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
                         Return
 
-                    Case eSpatialFileCompatibility.IncompatibleDimensions
-                        If MsgBox("The selected shape file is not compatible with the current Ecospace basemap dimensions." & _
-                                  "Read shape file anyway?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
-                            Return
-                        End If
-                        Me.ReadShapeFile(Me.m_tbInput.Text, True)
-
                 End Select
 
                 Me.UpdateControls()
@@ -149,13 +146,29 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles OK_Button.Click
+            Handles m_bntOK.Click
 
             If Not Me.LoadMappedLayers() Then Return
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
 
+        End Sub
+
+        Private Sub OnRowColAttributeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbRow.SelectedIndexChanged, m_cmbCol.SelectedIndexChanged
+
+            Select Case Me.ValidateData()
+
+                Case eSpatialFileCompatibility.Compatible
+                    Me.m_bDataValid = True
+
+                Case eSpatialFileCompatibility.IncompatibleDimensions
+                    Me.m_bDataValid = (MsgBox("The selected shape file is not compatible with the current Ecospace basemap dimensions." & _
+                              "Use shape file anyway?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes)
+            End Select
+
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Events
@@ -168,47 +181,57 @@ Namespace Ecospace
         ''' </summary>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Private Function ReadShapeFile(ByVal strFile As String, Optional ByVal bIgnoreIncompatibleDimensions As Boolean = False) As eSpatialFileCompatibility
+        Private Function ReadShapeFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim sfio As New ShapeFileIO()
-            Dim sd As SpatialData = Nothing
 
             Dim lstrAttributes As New List(Of String)
-            Dim iInRow As Integer = 0
-            Dim iInCol As Integer = 0
 
             m_lData.Clear()
 
             If Not sfio.Read(strFile, Me.m_lData) Then Return eSpatialFileCompatibility.Unreadable
             If (Me.m_lData.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
 
+            For Each strAttribute As String In sfio.AttributeDefintions.Keys
+                lstrAttributes.Add(strAttribute)
+            Next strAttribute
+            lstrAttributes.Sort()
+
+            Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray())
+            Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray())
+
+            lstrAttributes.Insert(0, " ")
+            Me.m_grid.Attributes = lstrAttributes.ToArray()
+
+            Return eSpatialFileCompatibility.Compatible
+
+        End Function
+
+        Private Function ValidateData() As eSpatialFileCompatibility
+
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim sd As SpatialData = Nothing
+            Dim iInRow As Integer = 0
+            Dim iInCol As Integer = 0
+
+            If String.IsNullOrEmpty(Me.RowAttribute) Then Return eSpatialFileCompatibility.Unreadable
+            If String.IsNullOrEmpty(Me.ColAttribute) Then Return eSpatialFileCompatibility.Unreadable
+
             Try
                 ' Validate shapefile dimensions
                 For Each sd In Me.m_lData
-                    iInRow = Math.Max(CInt(sd.GetAttribute("row")), iInRow)
-                    iInCol = Math.Max(CInt(sd.GetAttribute("column_")), iInCol)
+                    iInRow = Math.Max(CInt(sd.GetAttribute(Me.RowAttribute)), iInRow)
+                    iInCol = Math.Max(CInt(sd.GetAttribute(Me.ColAttribute)), iInCol)
                 Next
             Catch ex As Exception
                 Return eSpatialFileCompatibility.IncompatibleFormat
             End Try
 
-            If Not bIgnoreIncompatibleDimensions Then
+            ' Validate dimensions
+            If iInRow = 0 Or iInCol = 0 Then Return eSpatialFileCompatibility.IncompatibleFormat
 
-                ' Validate dimensions
-                If iInRow = 0 Or iInCol = 0 Then Return eSpatialFileCompatibility.IncompatibleFormat
-
-                If (bm.InRow <> iInRow) Then Return eSpatialFileCompatibility.IncompatibleDimensions
-                If (bm.InCol <> iInCol) Then Return eSpatialFileCompatibility.IncompatibleDimensions
-            End If
-
-            For Each strAttribute As String In sfio.AttributeDefintions.Keys
-                lstrAttributes.Add(strAttribute)
-            Next strAttribute
-            lstrAttributes.Sort()
-            lstrAttributes.Insert(0, " ")
-
-            Me.m_grid.Attributes = lstrAttributes.ToArray()
+            If (bm.InRow <> iInRow) Then Return eSpatialFileCompatibility.IncompatibleDimensions
+            If (bm.InCol <> iInCol) Then Return eSpatialFileCompatibility.IncompatibleDimensions
 
             Return eSpatialFileCompatibility.Compatible
 
@@ -220,7 +243,6 @@ Namespace Ecospace
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
             Dim layer As cLayer = Nothing
             Dim strAttribute As String = ""
-            Dim iCell As Integer = Nothing
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim sValue As Single = 0.0!
@@ -239,9 +261,9 @@ Namespace Ecospace
 
                     ' For each shape
                     For Each sd As SpatialData In Me.m_lData
-                        iCell = CInt(sd.GetAttribute("objectid"))
-                        iRow = CInt(Math.Floor((iCell - 1) / bm.InRow)) + 1
-                        iCol = CInt((iCell - 1) Mod bm.InRow) + 1
+
+                        iRow = CInt(sd.GetAttribute(Me.RowAttribute))
+                        iCol = CInt(sd.GetAttribute(Me.ColAttribute))
 
                         Try
                             sValue = CSng(Val(sd.GetAttribute(strAttribute)))
@@ -258,9 +280,31 @@ Namespace Ecospace
 
         End Function
 
+        Private Property RowAttribute() As String
+            Get
+                Return Me.m_cmbRow.Text
+            End Get
+            Set(ByVal value As String)
+                Me.m_cmbRow.Text = value
+            End Set
+        End Property
+
+        Private Property ColAttribute() As String
+            Get
+                Return Me.m_cmbCol.Text
+            End Get
+            Set(ByVal value As String)
+                Me.m_cmbCol.Text = value
+            End Set
+        End Property
+
         Private Sub UpdateControls()
 
-            Me.m_grid.Enabled = (Me.m_lData.Count > 0)
+            Me.m_cmbRow.Enabled = (Me.m_cmbRow.Items.Count > 0)
+            Me.m_cmbCol.Enabled = (Me.m_cmbCol.Items.Count > 0)
+
+            Me.m_grid.Enabled = Me.m_bDataValid
+            Me.m_bntOK.Enabled = Me.m_bDataValid
 
         End Sub
 
@@ -290,10 +334,14 @@ Namespace Ecospace
             Me.m_tbInput = New System.Windows.Forms.TextBox
             Me.m_btnBrowseInput = New System.Windows.Forms.Button
             Me.m_lblMappings = New System.Windows.Forms.Label
-            Me.m_grid = New ScientificInterface.Ecospace.gridReadLayers
             Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
+            Me.m_bntOK = New System.Windows.Forms.Button
+            Me.m_btnCancel = New System.Windows.Forms.Button
+            Me.m_grid = New ScientificInterface.Ecospace.gridReadLayers
+            Me.m_lblRow = New System.Windows.Forms.Label
+            Me.m_cmbRow = New System.Windows.Forms.ComboBox
+            Me.m_cmbCol = New System.Windows.Forms.ComboBox
+            Me.m_lblCol = New System.Windows.Forms.Label
             Me.m_tlpOkCancel.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -319,6 +367,24 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_lblMappings, "m_lblMappings")
             Me.m_lblMappings.Name = "m_lblMappings"
+            '
+            'm_tlpOkCancel
+            '
+            resources.ApplyResources(Me.m_tlpOkCancel, "m_tlpOkCancel")
+            Me.m_tlpOkCancel.Controls.Add(Me.m_bntOK, 0, 0)
+            Me.m_tlpOkCancel.Controls.Add(Me.m_btnCancel, 1, 0)
+            Me.m_tlpOkCancel.Name = "m_tlpOkCancel"
+            '
+            'm_bntOK
+            '
+            resources.ApplyResources(Me.m_bntOK, "m_bntOK")
+            Me.m_bntOK.Name = "m_bntOK"
+            '
+            'm_btnCancel
+            '
+            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_btnCancel.Name = "m_btnCancel"
             '
             'm_grid
             '
@@ -349,30 +415,40 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             '
-            'm_tlpOkCancel
+            'm_lblRow
             '
-            resources.ApplyResources(Me.m_tlpOkCancel, "m_tlpOkCancel")
-            Me.m_tlpOkCancel.Controls.Add(Me.OK_Button, 0, 0)
-            Me.m_tlpOkCancel.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.m_tlpOkCancel.Name = "m_tlpOkCancel"
+            resources.ApplyResources(Me.m_lblRow, "m_lblRow")
+            Me.m_lblRow.Name = "m_lblRow"
             '
-            'OK_Button
+            'm_cmbRow
             '
-            resources.ApplyResources(Me.OK_Button, "OK_Button")
-            Me.OK_Button.Name = "OK_Button"
+            Me.m_cmbRow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbRow.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbRow, "m_cmbRow")
+            Me.m_cmbRow.Name = "m_cmbRow"
             '
-            'Cancel_Button
+            'm_cmbCol
             '
-            resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
-            Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Cancel_Button.Name = "Cancel_Button"
+            Me.m_cmbCol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbCol.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbCol, "m_cmbCol")
+            Me.m_cmbCol.Name = "m_cmbCol"
+            '
+            'm_lblCol
+            '
+            resources.ApplyResources(Me.m_lblCol, "m_lblCol")
+            Me.m_lblCol.Name = "m_lblCol"
             '
             'dlgReadLayers
             '
-            Me.AcceptButton = Me.OK_Button
-            Me.CancelButton = Me.Cancel_Button
+            Me.AcceptButton = Me.m_bntOK
+            Me.CancelButton = Me.m_btnCancel
             resources.ApplyResources(Me, "$this")
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cmbCol)
+            Me.Controls.Add(Me.m_cmbRow)
+            Me.Controls.Add(Me.m_lblCol)
+            Me.Controls.Add(Me.m_lblRow)
             Me.Controls.Add(Me.m_tlpOkCancel)
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_lblMappings)
@@ -395,8 +471,12 @@ Namespace Ecospace
         Private WithEvents m_lblMappings As System.Windows.Forms.Label
         Private WithEvents m_grid As gridReadLayers
         Private WithEvents m_tlpOkCancel As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents OK_Button As System.Windows.Forms.Button
-        Private WithEvents Cancel_Button As System.Windows.Forms.Button
+        Private WithEvents m_bntOK As System.Windows.Forms.Button
+        Private WithEvents m_btnCancel As System.Windows.Forms.Button
+        Private WithEvents m_lblRow As System.Windows.Forms.Label
+        Private WithEvents m_cmbRow As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbCol As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblCol As System.Windows.Forms.Label
 
 #End Region ' DevStudio generated surprises
 

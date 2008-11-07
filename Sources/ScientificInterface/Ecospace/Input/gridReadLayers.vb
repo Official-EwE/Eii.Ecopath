@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridReadLayers.vb,v $
+' Revision 1.2  2008/11/07 23:53:13  jeroens
+' Functional v1 - still quite blunt
+'
 ' Revision 1.1  2008/11/07 08:15:18  jeroens
 ' Initial version
 '
@@ -22,12 +25,16 @@ Namespace Ecospace
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Grid showing layer to spatial attribute mappings.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class gridReadLayers
         Inherits EwEGrid
+
+        ' ToDo: Sort and display layers by group
+        ' ToDo: Accept Attributes as delivered by SAUPUtil so datatype can be verified
+        ' ToDo: Do not allow incompatible data types to be linked
 
 #Region " Private vars "
 
@@ -45,6 +52,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             ColumnLayer = 0
             ColumnAttribute
+            ' Show datatype columns?
         End Enum
 
 #End Region ' Private vars

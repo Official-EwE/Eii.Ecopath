@@ -121,6 +121,10 @@
   <data name="m_lblSource.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lblSource.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblSource.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 15</value>
@@ -144,9 +148,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblSource.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>9</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -154,7 +157,7 @@
     <value>73, 12</value>
   </data>
   <data name="m_tbInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 20</value>
+    <value>403, 20</value>
   </data>
   <data name="m_tbInput.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -169,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbInput.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="m_btnBrowseInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -177,8 +180,11 @@
   <data name="m_btnBrowseInput.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
+  <data name="m_btnBrowseInput.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnBrowseInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 10</value>
+    <value>482, 10</value>
   </data>
   <data name="m_btnBrowseInput.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -196,22 +202,25 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnBrowseInput.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="m_lblMappings.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblMappings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblMappings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 44</value>
+    <value>12, 93</value>
   </data>
   <data name="m_lblMappings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
+    <value>56, 13</value>
   </data>
   <data name="m_lblMappings.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
   <data name="m_lblMappings.Text" xml:space="preserve">
-    <value>Mappings</value>
+    <value>Mappings:</value>
   </data>
   <data name="&gt;&gt;m_lblMappings.Name" xml:space="preserve">
     <value>m_lblMappings</value>
@@ -223,31 +232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMappings.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>73, 38</value>
-  </data>
-  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>315, 291</value>
-  </data>
-  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridReadLayers, EwE6, Version=6.0.4.5, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="m_tlpOkCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -255,68 +240,68 @@
   <data name="m_tlpOkCancel.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_bntOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="OK_Button.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_bntOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_bntOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_bntOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
   </data>
-  <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_bntOK.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="OK_Button.Text" xml:space="preserve">
+  <data name="m_bntOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
+  <data name="&gt;&gt;m_bntOK.Name" xml:space="preserve">
+    <value>m_bntOK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_bntOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_bntOK.Parent" xml:space="preserve">
     <value>m_tlpOkCancel</value>
   </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_bntOK.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="Cancel_Button.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>76, 3</value>
   </data>
-  <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
   </data>
-  <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="Cancel_Button.Text" xml:space="preserve">
+  <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
+  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
+    <value>m_btnCancel</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
     <value>m_tlpOkCancel</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpOkCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 340</value>
+    <value>359, 340</value>
   </data>
   <data name="m_tlpOkCancel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -337,16 +322,139 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpOkCancel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="m_tlpOkCancel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_bntOK" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCancel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 93</value>
+  </data>
+  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 236</value>
+  </data>
+  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
+    <value>m_grid</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecospace.gridReadLayers, EwE6, Version=6.0.4.5, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_lblRow.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblRow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>70, 41</value>
+  </data>
+  <data name="m_lblRow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 13</value>
+  </data>
+  <data name="m_lblRow.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblRow.Text" xml:space="preserve">
+    <value>Cell &amp;row identifier:</value>
+  </data>
+  <data name="&gt;&gt;m_lblRow.Name" xml:space="preserve">
+    <value>m_lblRow</value>
+  </data>
+  <data name="&gt;&gt;m_lblRow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblRow.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblRow.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_cmbRow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>185, 38</value>
+  </data>
+  <data name="m_cmbRow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 21</value>
+  </data>
+  <data name="m_cmbRow.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_cmbRow.Name" xml:space="preserve">
+    <value>m_cmbRow</value>
+  </data>
+  <data name="&gt;&gt;m_cmbRow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbRow.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbRow.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cmbCol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>185, 66</value>
+  </data>
+  <data name="m_cmbCol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 21</value>
+  </data>
+  <data name="m_cmbCol.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCol.Name" xml:space="preserve">
+    <value>m_cmbCol</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCol.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCol.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblCol.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblCol.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblCol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>70, 69</value>
+  </data>
+  <data name="m_lblCol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 13</value>
+  </data>
+  <data name="m_lblCol.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblCol.Text" xml:space="preserve">
+    <value>Cell &amp;column identifier:</value>
+  </data>
+  <data name="&gt;&gt;m_lblCol.Name" xml:space="preserve">
+    <value>m_lblCol</value>
+  </data>
+  <data name="&gt;&gt;m_lblCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblCol.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblCol.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>400, 381</value>
+    <value>517, 381</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
