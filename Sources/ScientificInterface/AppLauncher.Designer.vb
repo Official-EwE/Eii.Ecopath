@@ -109,6 +109,8 @@
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripSeparator17 = New System.Windows.Forms.ToolStripSeparator
+        Me.ReadLayersFromShapeFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         m_tss = New System.Windows.Forms.ToolStripSeparator
         Me.m_ssMain.SuspendLayout()
         Me.m_menuMain.SuspendLayout()
@@ -465,7 +467,7 @@
         '
         'EcospaceToolStripMenuItem
         '
-        Me.EcospaceToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewEcospaceScenarioToolStripMenuItem, Me.LoadEcospaceScenarioToolStripMenuItem, Me.ToolStripSeparator7, Me.SaveEcospaceScenarioToolStripMenuItem, Me.SaveEcospaceScenarioAsToolStripMenuItem, Me.ToolStripSeparator11, Me.EditBasemapToolStripMenuItem, Me.EditHabitatsToolStripMenuItem, Me.EditMPAsToolStripMenuItem, Me.EditRegionsToolStripMenuItem, Me.ToolStripSeparator16, Me.EditImportanceLayersToolStripMenuItem})
+        Me.EcospaceToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewEcospaceScenarioToolStripMenuItem, Me.LoadEcospaceScenarioToolStripMenuItem, Me.ToolStripSeparator7, Me.SaveEcospaceScenarioToolStripMenuItem, Me.SaveEcospaceScenarioAsToolStripMenuItem, Me.ToolStripSeparator11, Me.EditBasemapToolStripMenuItem, Me.EditHabitatsToolStripMenuItem, Me.EditMPAsToolStripMenuItem, Me.EditRegionsToolStripMenuItem, Me.ToolStripSeparator16, Me.EditImportanceLayersToolStripMenuItem, Me.ToolStripSeparator17, Me.ReadLayersFromShapeFileToolStripMenuItem})
         Me.EcospaceToolStripMenuItem.Name = "EcospaceToolStripMenuItem"
         resources.ApplyResources(Me.EcospaceToolStripMenuItem, "EcospaceToolStripMenuItem")
         '
@@ -628,6 +630,16 @@
         resources.ApplyResources(Me.m_tsbModel, "m_tsbModel")
         Me.m_tsbModel.Name = "m_tsbModel"
         '
+        'ToolStripSeparator17
+        '
+        Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
+        resources.ApplyResources(Me.ToolStripSeparator17, "ToolStripSeparator17")
+        '
+        'ReadLayersFromShapeFileToolStripMenuItem
+        '
+        Me.ReadLayersFromShapeFileToolStripMenuItem.Name = "ReadLayersFromShapeFileToolStripMenuItem"
+        resources.ApplyResources(Me.ReadLayersFromShapeFileToolStripMenuItem, "ReadLayersFromShapeFileToolStripMenuItem")
+        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
@@ -737,8 +749,10 @@
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsbEcospace As System.Windows.Forms.ToolStripSplitButton
     Friend WithEvents ToolStripSeparator16 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents EditImportanceLayersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents WeightTimeSeriesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator17 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents ReadLayersFromShapeFileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents EditImportanceLayersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

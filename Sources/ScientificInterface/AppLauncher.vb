@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.5  2008/11/07 08:01:50  jeroens
+' Added Ecospace read layer command
+'
 ' Revision 1.4  2008/11/03 01:14:44  jeroens
 ' Fixed potential crash on import bit
 '
@@ -114,6 +117,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditRegions As Command = Nothing
     Private WithEvents m_cmdEditMPAs As Command = Nothing
     Private WithEvents m_cmdEditImportanceLayers As Command = Nothing
+    Private WithEvents m_cmdReadLayers As Command = Nothing
     Private WithEvents m_cmdImportTimeSeries As Command = Nothing
     Private WithEvents m_cmdLoadTimeSeries As Command = Nothing
     Private WithEvents m_cmdWeightTimeSeries As Command = Nothing
@@ -667,6 +671,10 @@ Public Class AppLauncher
         Me.m_cmdEditImportanceLayers = New Command("EditImportanceLayers")
         Me.m_cmdEditImportanceLayers.AddControl(Me.EditImportanceLayersToolStripMenuItem)
         cmdh.Add(Me.m_cmdEditImportanceLayers)
+
+        Me.m_cmdReadLayers = New Command("ReadLayers")
+        Me.m_cmdReadLayers.AddControl(Me.ReadLayersFromShapeFileToolStripMenuItem)
+        cmdh.Add(Me.m_cmdReadLayers)
 
         'Create and configure ImportTimeSeries command
         Me.m_cmdImportTimeSeries = New Command("ImportTimeSeries")
@@ -2194,6 +2202,26 @@ Public Class AppLauncher
     Private Sub m_cmdLoadApplyTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdReloadTimeSeries.OnUpdate
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the read layers dialog.
+    ''' </summary>
+    Private Sub m_cmdReadLayers_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) _
+        Handles m_cmdReadLayers.OnInvoke
+        Dim dlg As New dlgReadLayers()
+        If TypeOf cmd.Tag Is Ecospace.Basemap.Layers.cLayer Then
+            dlg.Layers = New cLayer() {DirectCast(cmd.Tag, Ecospace.Basemap.Layers.cLayer)}
+        End If
+        dlg.ShowDialog()
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdReadLayers">read layers command</see>.
+    ''' </summary>
+    Private Sub m_cmdReadLayers_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) _
+        Handles m_cmdReadLayers.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
     Private Sub RecentMDBToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RecentMDBToolStripMenuItem.DropDownOpening
