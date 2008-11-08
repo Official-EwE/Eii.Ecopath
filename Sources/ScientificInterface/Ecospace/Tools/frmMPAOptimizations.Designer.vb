@@ -52,6 +52,7 @@ Namespace Ecospace
             Me.m_graphProgress = New ZedGraph.ZedGraphControl
             Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations
             Me.m_tpResults = New System.Windows.Forms.TabPage
+            Me.m_btnExport = New System.Windows.Forms.Button
             Me.m_lblBestPercentile = New System.Windows.Forms.Label
             Me.m_gridResults = New ScientificInterface.gridMPAOptimizations
             Me.m_graphResults = New ZedGraph.ZedGraphControl
@@ -83,7 +84,6 @@ Namespace Ecospace
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_lblMap = New System.Windows.Forms.Label
-            Me.m_btnExport = New System.Windows.Forms.Button
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -450,6 +450,16 @@ Namespace Ecospace
             Me.m_tpResults.Text = "Results"
             Me.m_tpResults.UseVisualStyleBackColor = True
             '
+            'm_btnExport
+            '
+            Me.m_btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnExport.Location = New System.Drawing.Point(345, 3)
+            Me.m_btnExport.Name = "m_btnExport"
+            Me.m_btnExport.Size = New System.Drawing.Size(99, 23)
+            Me.m_btnExport.TabIndex = 7
+            Me.m_btnExport.Text = "&Export"
+            Me.m_btnExport.UseVisualStyleBackColor = True
+            '
             'm_lblBestPercentile
             '
             Me.m_lblBestPercentile.AutoSize = True
@@ -694,6 +704,9 @@ Namespace Ecospace
             '
             'm_scMap
             '
+            Me.m_scMap.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_scMap.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
             Me.m_scMap.Location = New System.Drawing.Point(3, 19)
             Me.m_scMap.Name = "m_scMap"
@@ -861,16 +874,6 @@ Namespace Ecospace
             Me.m_lblMap.TabIndex = 0
             Me.m_lblMap.Text = "Map input"
             Me.m_lblMap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_btnExport
-            '
-            Me.m_btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.m_btnExport.Location = New System.Drawing.Point(345, 3)
-            Me.m_btnExport.Name = "m_btnExport"
-            Me.m_btnExport.Size = New System.Drawing.Size(99, 23)
-            Me.m_btnExport.TabIndex = 7
-            Me.m_btnExport.Text = "&Export"
-            Me.m_btnExport.UseVisualStyleBackColor = True
             '
             'frmMPAOptimizations
             '

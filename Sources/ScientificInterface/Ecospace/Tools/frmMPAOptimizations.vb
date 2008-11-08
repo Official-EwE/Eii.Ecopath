@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.6  2008/11/08 23:57:29  jeroens
+' Built basis for export
+'
 ' Revision 1.5  2008/11/07 23:51:28  jeroens
 ' Looking prettier
 '
@@ -27,6 +30,8 @@ Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports SAUPUtil.SAUPData
+Imports SAUPUtil.SAUPFile
 
 #End Region ' Import
 
@@ -349,6 +354,21 @@ Namespace Ecospace
         Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnExport.Click
 
+            Dim cmdFS As cFileSaveCommand = cFileSaveCommand.GetInstance()
+            Dim scn As cEwEScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+            Dim strFileName As String = String.Format("RandomMPA_{0}", scn.Name)
+            Dim sfio As ASCIIFileIO = Nothing
+            Dim iNumResults As Integer = 0
+            Dim aiCells(,) As Integer = Nothing
+
+            cmdFS.Invoke(strFileName, ".\", My.Resources.FILEFILTER_ASCFILE)
+            If (cmdFS.Result = DialogResult.OK) Then
+                ' Save!
+                aiCells = Me.m_MPAOptManager.CellSelectedMap(CInt(Me.m_nudBestPercentile.Value), iNumResults)
+                Dim rs As New Raster()
+                'rs.
+
+            End If
         End Sub
 
 #End Region ' Controls
@@ -1227,6 +1247,7 @@ Namespace Ecospace
             ' Run buttons
             Me.m_btnNewSearch.Enabled = bIsResults
             Me.m_btnConvertToMpa.Enabled = bIsResults
+            Me.m_btnExport.Enabled = (bIsResults And bIsRandom)
 
             ' Update run control buttons
             Me.m_btnRun.Enabled = (Not bIsRunning)
