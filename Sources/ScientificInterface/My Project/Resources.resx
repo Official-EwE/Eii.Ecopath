@@ -2210,4 +2210,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
     <value>Effort</value>
   </data>
+  <data name="FILEFILTER_ASCFILE" xml:space="preserve">
+    <value>ESRI Asc files (*.asc)|*.asc</value>
+  </data>
+  <data name="FILEFILTER_SHAPEFILE" xml:space="preserve">
+    <value>ESRI shape files (*.shp)|*.shp</value>
+  </data>
 </root>

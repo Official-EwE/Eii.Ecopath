@@ -1337,6 +1337,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to ESRI Asc files (*.asc)|*.asc.
+        '''</summary>
+        Friend ReadOnly Property FILEFILTER_ASCFILE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_ASCFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to CSV files (*.csv)|*.csv.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_CSV() As String
@@ -1396,6 +1405,15 @@ Namespace My.Resources
         Friend ReadOnly Property FILEFILTER_SAVE_MDB() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_SAVE_MDB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ESRI shape files (*.shp)|*.shp.
+        '''</summary>
+        Friend ReadOnly Property FILEFILTER_SHAPEFILE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SHAPEFILE", resourceCulture)
             End Get
         End Property
         
