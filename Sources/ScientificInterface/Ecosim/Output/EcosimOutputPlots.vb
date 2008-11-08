@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.2  2008/11/08 23:53:28  jeroens
+' Renamed file commands
+'
 ' Revision 1.1  2008/09/26 07:31:46  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -764,7 +767,7 @@ Namespace Ecosim
                     Return
                 ElseIf bValid = Windows.Forms.DialogResult.No Then
                     Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-                    Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+                    Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
                     cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
                     If cmdFS.Result = Windows.Forms.DialogResult.OK Then

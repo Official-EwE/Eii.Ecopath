@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucZoomBasemap.vb,v $
+' Revision 1.2  2008/11/08 23:50:42  jeroens
+' Renamed file commands
+'
 ' Revision 1.1  2008/11/04 04:39:21  jeroens
 ' Moved
 '
@@ -174,7 +177,7 @@ Namespace Ecospace
             Dim model As cEwEModel = core.EwEModel
             Dim scenario As cEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_CSV)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then

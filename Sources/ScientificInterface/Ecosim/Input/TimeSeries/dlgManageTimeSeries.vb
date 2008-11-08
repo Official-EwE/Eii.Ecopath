@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.2  2008/11/08 23:53:16  jeroens
+' Renamed file commands
+'
 ' Revision 1.1  2008/09/26 07:31:44  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -208,7 +211,7 @@ Public Class dlgManageTimeSeries
             Handles m_btnImportBrowse.Click
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_TEXT)
 

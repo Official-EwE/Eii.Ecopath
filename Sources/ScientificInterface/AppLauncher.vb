@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.7  2008/11/08 23:54:35  jeroens
+' Renamed file commands
+'
 ' Revision 1.6  2008/11/07 17:23:12  jeroens
 ' Fixed build
 '
@@ -36,6 +39,7 @@ Imports EwECore.Database
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
+Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Other
@@ -84,8 +88,8 @@ Public Class AppLauncher
     'Private m_coreEcosimMessageHandler As cMessageHandler = Nothing
     'Private m_coreEcospaceMessageHandler As cMessageHandler = Nothing
 
-    Private WithEvents m_cmdFileOpen As FileOpenCommand = Nothing
-    Private WithEvents m_cmdFileSave As FileSaveCommand = Nothing
+    Private WithEvents m_cmdFileOpen As cFileOpenCommand = Nothing
+    Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdNewModel As Command = Nothing
     Private WithEvents m_cmdLoadModel As Command = Nothing
     Private WithEvents m_cmdSave As Command = Nothing
@@ -502,11 +506,11 @@ Public Class AppLauncher
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
 
         ' Create and configure File Open command
-        Me.m_cmdFileOpen = FileOpenCommand.GetInstance()
+        Me.m_cmdFileOpen = cFileOpenCommand.GetInstance()
         cmdh.Add(Me.m_cmdFileOpen)
 
         ' Create and configure File Save command
-        Me.m_cmdFileSave = FileSaveCommand.GetInstance()
+        Me.m_cmdFileSave = cFileSaveCommand.GetInstance()
         cmdh.Add(Me.m_cmdFileSave)
 
         ' Create and configure new command
@@ -1743,14 +1747,16 @@ Public Class AppLauncher
     Private Sub OnFileOpen(ByVal cmd As Command) Handles m_cmdFileOpen.OnInvoke
 
         Dim dlgLoad As New OpenFileDialog()
-        Dim foc As FileOpenCommand = DirectCast(cmd, FileOpenCommand)
+        Dim foc As cFileOpenCommand = DirectCast(cmd, cFileOpenCommand)
         Dim strPath As String = foc.Directory
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgLoad, foc.FileName, foc.Filters, foc.DefaultFilter, strPath)
+        cEwEFileDialogHelper.Configure(dlgLoad, foc.FileName, foc.Filters, foc.FilterIndex, strPath)
 
         foc.Result = dlgLoad.ShowDialog()
+        foc.FilterIndex = dlgLoad.FilterIndex
+
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
             Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgLoad.FileName)
@@ -1761,7 +1767,7 @@ Public Class AppLauncher
     Private Sub OnFileSave(ByVal cmd As Command) Handles m_cmdFileSave.OnInvoke
 
         Dim dlgSave As New SaveFileDialog()
-        Dim fsc As FileSaveCommand = DirectCast(cmd, FileSaveCommand)
+        Dim fsc As cFileSaveCommand = DirectCast(cmd, cFileSaveCommand)
         Dim strPath As String = fsc.Directory
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
@@ -1788,7 +1794,7 @@ Public Class AppLauncher
 
         Dim db As cEwEDatabase = Nothing
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
 
@@ -1816,7 +1822,7 @@ Public Class AppLauncher
     Private Sub OnLoadModel(ByVal cmd As Command) Handles m_cmdLoadModel.OnInvoke
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         If cmd.Tag IsNot Nothing Then
             cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), My.Resources.FILEFILTER_MODEL_OPEN, 1)
@@ -1964,7 +1970,7 @@ Public Class AppLauncher
     Private Sub OnSaveModelAs(ByVal cmd As Command) Handles m_cmdSaveModelAs.OnInvoke
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         Dim strFileFilter As String = ""
 
@@ -3183,7 +3189,7 @@ Public Class AppLauncher
     Private Sub ExportBiomassToFileToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportBiomassToFileToolStripMenuItem.Click
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
 

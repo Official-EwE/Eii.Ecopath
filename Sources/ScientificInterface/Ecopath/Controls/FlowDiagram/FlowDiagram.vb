@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.2  2008/11/08 23:52:37  jeroens
+' Renamed file commands
+'
 ' Revision 1.1  2008/09/26 07:31:28  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -207,7 +210,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim ifData As INIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 2)
 
@@ -230,7 +233,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim ifData As INIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 2)
 
@@ -258,7 +261,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
 

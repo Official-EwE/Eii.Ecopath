@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.2  2008/11/08 23:53:05  jeroens
+' Renamed file commands
+'
 ' Revision 1.1  2008/11/04 04:48:35  jeroens
 ' Renamed
 '
@@ -264,7 +267,7 @@ Namespace Ecospace.Basemap.Layers
         Private Sub ImportData()
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_CSV)
 
@@ -277,7 +280,7 @@ Namespace Ecospace.Basemap.Layers
         Private Sub ExportData()
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
