@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLayerEditor.vb,v $
+' Revision 1.2  2008/11/08 23:53:56  jeroens
+' Made cell interface more intuitive
+'
 ' Revision 1.1  2008/11/04 04:40:16  jeroens
 ' Split into separate files, moved
 '
@@ -215,7 +218,7 @@ Namespace Ecospace.Basemap.Layers
         Protected Overridable Sub SetCellValue(ByVal layer As cLayer, _
                                            ByVal ptSet As Point, _
                                            ByVal ptClick As Point)
-            layer.Value(ptSet) = Me.CellValue
+            layer.Value(ptSet.Y, ptSet.X) = Me.CellValue
         End Sub
 
 #End Region ' Editing

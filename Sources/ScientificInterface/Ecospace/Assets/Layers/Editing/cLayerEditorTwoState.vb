@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLayerEditorTwoState.vb,v $
+' Revision 1.2  2008/11/08 23:53:43  jeroens
+' Made cell interface more intuitive
+'
 ' Revision 1.1  2008/11/04 04:40:16  jeroens
 ' Split into separate files, moved
 '
@@ -35,7 +38,7 @@ Namespace Ecospace.Basemap.Layers
 
             If Me.GUI IsNot Nothing Then
                 ' Clicked on data cell?
-                If Object.Equals(Layer.Value(ptClick), Layer.ValueSet) Then
+                If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then
                     ' #Yes: start clearing values
                     Me.CellValue = Layer.ValueClear
                 Else

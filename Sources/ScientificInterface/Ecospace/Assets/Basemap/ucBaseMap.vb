@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBaseMap.vb,v $
+' Revision 1.3  2008/11/08 23:50:13  jeroens
+' Made cell interface more intuitive
+'
 ' Revision 1.2  2008/11/05 01:15:42  jeroens
 ' Optionally clear new layer groups
 '
@@ -401,13 +404,13 @@ Namespace Ecospace
                         bIsDepthLayer = Object.ReferenceEquals(l.Data, ldDepth)
 
                         If l.Renderer.IsVisible And (bIsWater Or bIsDepthLayer) Then
-                            If l.HasValue(ptCell) Then
+                            If l.HasValue(ptCell.Y, ptCell.X) Then
                                 ' Build style flags
                                 If l.IsSelected Then
                                     style = (style Or StyleGuide.eStyleFlags.Highlight)
                                 End If
                                 ' Render cell
-                                l.Renderer.RenderCell(g, rcScreen, l.Value(ptCell), style)
+                                l.Renderer.RenderCell(g, rcScreen, l.Value(ptCell.Y, ptCell.X), style)
                             End If
                         End If
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayer.vb,v $
+' Revision 1.2  2008/11/08 23:54:10  jeroens
+' Made cell interface more intuitive
+'
 ' Revision 1.1  2008/11/04 04:39:53  jeroens
 ' Moved
 '
@@ -375,14 +378,15 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Get whether a given cell position has a value.
         ''' </summary>
-        ''' <param name="ptCell"></param>
+        ''' <param name="iRow"></param>
+        ''' <param name="iCol"></param>
         ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property HasValue(ByVal ptCell As Point) As Boolean
+        Public ReadOnly Property HasValue(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
             Get
                 If Object.ReferenceEquals(Me.m_valueSet, Nothing) Then Return False
 
                 ' ToDo_JS: Build smartness to detect dimension of layer type
-                Dim cellValue As Single = CSng(Me.Value(ptCell))
+                Dim cellValue As Single = CSng(Me.Value(iRow, iCol))
 
                 If Me.m_valueSet.Equals(cCore.NULL_VALUE) Then
                     If Me.m_valueClear.Equals(cCore.NULL_VALUE) Then
@@ -399,14 +403,15 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Get/set the value in the underlying data layer.
         ''' </summary>
-        ''' <param name="ptCell"></param>
+        ''' <param name="iRow"></param>
+        ''' <param name="iCol"></param>
         ''' -----------------------------------------------------------------------
-        Public Property Value(ByVal ptCell As Point) As Object
+        Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
-                Return Me.m_data.Cell(ptCell.Y, ptCell.X)
+                Return Me.m_data.Cell(iRow, iCol)
             End Get
             Set(ByVal value As Object)
-                Me.m_data.Cell(ptCell.Y, ptCell.X) = CSng(value)
+                Me.m_data.Cell(iRow, iCol) = CSng(value)
             End Set
         End Property
 
