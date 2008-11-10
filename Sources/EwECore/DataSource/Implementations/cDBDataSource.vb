@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.12  2008/11/10 19:28:54  jeroens
+' Fixed MAJOR bug on identifying Ecospace scenario IDs
+'
 ' Revision 1.11  2008/11/06 01:07:05  jeroens
 ' Fixed bug on deleting Ecosim fleets
 '
@@ -6754,7 +6757,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim sbTemp As New StringBuilder
         Dim drow As DataRow = Nothing
         Dim iGroup As Integer = 0
@@ -6826,7 +6829,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
-        Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario))
+        Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
         Dim iGroupID As Integer = 0
         Dim iGroup As Integer = 0
         Dim iHabitatID As Integer = 0
@@ -7117,7 +7120,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim drow As DataRow = Nothing
         Dim iFleet As Integer = 0
         Dim iFleetID As Integer = 0
@@ -7172,7 +7175,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim iFleet As Integer = 0
         Dim iRow As Integer = 0
         Dim iCol As Integer = 0
@@ -7230,7 +7233,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim iFleet As Integer = 0
         Dim iHabitat As Integer = 0
         Dim bSucces As Boolean = True
@@ -7273,7 +7276,7 @@ Public Class cDBDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim iFleet As Integer = 0
         Dim iMPA As Integer = 0
         Dim bSucces As Boolean = True
@@ -7531,7 +7534,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
         Return Me.AddEcospaceMPA(strMPAName, iScenarioID, bMPAMonths, iDBID)
 
@@ -7587,7 +7590,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim bSucces As Boolean = True
 
         Try
@@ -7819,7 +7822,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
         Return Me.AddEcospaceImportanceLayer(strName, iScenarioID, strDescription, sWeight, iDBID)
 
@@ -7877,7 +7880,7 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, ecopathDS.ActiveEcospaceScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
         Dim bSucces As Boolean = True
 
         Try
@@ -8129,7 +8132,7 @@ Public Class cDBDataSource
         Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
-        Dim iScenarioID As Integer = Array.IndexOf(ecopathDS.EcotracerScenarioDBID, ecopathDS.ActiveEcotracerScenario)
+        Dim iScenarioID As Integer = ecopathDS.EcotracerScenarioDBID(ecopathDS.ActiveEcotracerScenario)
         Dim drow As DataRow = Nothing
         Dim iGroup As Integer = 0
         Dim objKeys() As Object = {Nothing, Nothing} ' Composite key to find group per scenario
