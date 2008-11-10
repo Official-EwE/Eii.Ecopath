@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.3  2008/11/10 23:12:26  jeroens
+' Uses status feedback
+'
 ' Revision 1.2  2008/11/10 18:25:43  jeroens
 ' Integrated grid
 '
@@ -215,14 +218,14 @@ Public Class gridMapLayerToAttribute
             End Sub
 
             Private Function LayerAtRow(ByVal iRow As Integer) As cLayer
-                If iRow > 0 And iRow < Me.RowsCount - 1 Then
+                If iRow > 0 And iRow < Me.RowsCount Then
                     Return DirectCast(Me.Rows(iRow).Tag, cLayer)
                 End If
                 Return Nothing
             End Function
 
             Private Function AttributeAtRow(ByVal iRow As Integer) As String
-                If iRow > 0 And iRow < Me.RowsCount - 1 Then
+                If iRow > 0 And iRow < Me.RowsCount Then
                     Return CStr(Me(iRow, eColumnTypes.ColumnAttribute).Value)
                 End If
                 Return ""
@@ -567,6 +570,8 @@ Public Class gridMapLayerToAttribute
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
+            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+
             ' For each mapped attribute
             For Each layer In dtMappings.Keys
                 strAttribute = dtMappings(layer)
@@ -598,6 +603,8 @@ Public Class gridMapLayerToAttribute
 
                 End If
             Next layer
+
+            AppLauncher.GetInstance().SetStatusText("", TriState.False)
 
             Return True
 
