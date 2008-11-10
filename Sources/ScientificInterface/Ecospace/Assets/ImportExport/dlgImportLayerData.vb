@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.2  2008/11/10 18:25:43  jeroens
+' Integrated grid
+'
 ' Revision 1.1  2008/11/10 02:25:52  jeroens
 ' Renamed
 '
@@ -16,13 +19,14 @@
 
 Option Strict On
 
+Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports System.IO
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -38,88 +42,200 @@ Namespace Ecospace.Basemap
 
 #Region " Private classes "
 
-        Private Class cBuffer
+        <CLSCompliant(False)> _
+Public Class gridMapLayerToAttribute
+            Inherits EwEGrid
 
-            Private m_nRows As Integer = 0
-            Private m_nCols As Integer = 0
-            Private m_data As New Dictionary(Of String, Single())
-            Private m_astrAttributes As String() = Nothing
-            Private m_bRowColImplicit As Boolean = False
+            ' ToDo: Sort and display layers by group
+            ' ToDo: Accept Attributes as delivered by SAUPUtil so datatype can be verified
+            ' ToDo: Do not allow incompatible data types to be linked
 
-            Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer, _
-                           Optional ByVal astrAttributes() As String = Nothing)
-                Me.m_nRows = nRows
-                Me.m_nCols = nCols
-                Me.Attributes = astrAttributes
+#Region " Private vars "
+
+            Private Const cVALUE_NONE As String = " "
+
+            ''' <summary>Custom <see cref="BehaviorModels.IBehaviorModel">behaviour model</see>
+            ''' to trap cell edit events locally in this grid.</summary>
+            Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
+
+            ''' <summary>The layers to map upon.</summary>
+            Private m_aLayers As cLayer()
+            ''' <summary>The attribute names to map upon.</summary>
+            Private m_astrAttributes As String()
+            ''' <summary>Mappings. MAPPINGS!</summary>
+            Private m_dtLayerMapping As New Dictionary(Of cLayer, String)
+
+            Private Enum eColumnTypes As Integer
+                ColumnLayer = 0
+                ColumnAttribute
+                ' Show datatype columns?
+            End Enum
+
+#End Region ' Private vars
+
+#Region " Construction "
+
+            Public Sub New()
+
             End Sub
+
+#End Region ' Construction
+
+#Region " Public interfaces "
+
+            Public Property Layers() As cLayer()
+                Get
+                    Return Nothing
+                End Get
+                Set(ByVal value As cLayer())
+                    Me.m_aLayers = value
+                    Me.RefreshContent()
+                End Set
+            End Property
 
             Public Property Attributes() As String()
                 Get
                     Return Me.m_astrAttributes
                 End Get
                 Set(ByVal value As String())
-
-                    If value Is Nothing Then
-                        Me.m_bRowColImplicit = True
-                    Else
-                        Me.m_bRowColImplicit = (value.Count = 0)
-                    End If
-
-                    If (Me.m_bRowColImplicit) Then
-                        Me.m_astrAttributes = New String() {dlgImportLayerData.cMAPPING_IMPLICIT}
-                    Else
-                        Me.m_astrAttributes = value
-                    End If
-
-                    ' Clear
-                    Me.m_data.Clear()
-
-                    ' Create storage
-                    For Each strAttribute As String In Me.Attributes
-                        Dim asCells(Me.NumCells) As Single
-                        Me.m_data.Add(strAttribute, asCells)
-                    Next
-
+                    Dim lstr As New List(Of String)
+                    If (value IsNot Nothing) Then lstr.AddRange(value)
+                    If lstr.IndexOf(cVALUE_NONE) = -1 Then lstr.Insert(0, cVALUE_NONE)
+                    Me.m_astrAttributes = lstr.ToArray()
+                    Me.RefreshContent()
                 End Set
             End Property
 
-            Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, _
-                                  Optional ByVal strAttribute As String = "") As Single
-                Get
-                    Return Me.Value(Me.Cell(iRow, iCol), strAttribute)
-                End Get
-                Set(ByVal value As Single)
-                    Me.Value(Me.Cell(iRow, iCol), strAttribute) = value
-                End Set
-            End Property
-
-            Public Property Value(ByVal iCell As Integer, _
-                                  Optional ByVal strAttribute As String = "") As Single
-                Get
-                    If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = dlgImportLayerData.cMAPPING_IMPLICIT
-                    End If
-                    Return Me.m_data(strAttribute)(iCell)
-                End Get
-                Set(ByVal value As Single)
-                    If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = dlgImportLayerData.cMAPPING_IMPLICIT
-                    End If
-                    Me.m_data(strAttribute)(iCell) = value
-                End Set
-            End Property
-
-            Public Function Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Integer
-                Return iRow * Me.m_nCols + iCol
+            Public Function Mappings() As Dictionary(Of cLayer, String)
+                Return Me.m_dtLayerMapping
             End Function
 
-            Public Function NumCells() As Integer
-                Return Me.m_nCols * Me.m_nRows
+#End Region ' Public interfaces
+
+#Region " Overrides "
+
+            Protected Overrides Sub InitStyle()
+                MyBase.InitStyle()
+
+                If Not Me.HasData() Then Return
+
+                Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
+
+                ' ToDo_JS: Globalize this
+                Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell("Layer")
+                Me(0, eColumnTypes.ColumnAttribute) = New EwEColumnHeaderCell("Attribute")
+
+                Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+                Me.AutoStretchColumnsToFitWidth = True
+                Me.FixedColumns = 1
+
+            End Sub
+
+            Protected Overrides Sub FillData()
+
+                If Not Me.HasData Then Return
+
+                Me.RowsCount = 1
+
+                Dim layer As cLayer = Nothing
+                Dim ewec As EwECell = Nothing
+                Dim cmb As Cells.Real.ComboBox = Nothing
+
+                For iLayer As Integer = 0 To Me.m_aLayers.Length - 1
+
+                    Me.AddRow()
+                    layer = Me.m_aLayers(iLayer)
+
+                    ewec = New EwECell(layer.Name, GetType(String))
+                    ewec.Style = (StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable)
+                    Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
+
+                    cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrAttributes, True)
+                    cmb.EditableMode = EditableMode.SingleClick
+                    Me(iLayer + 1, eColumnTypes.ColumnAttribute) = cmb
+                    Me(iLayer + 1, eColumnTypes.ColumnAttribute).Behaviors.Add(m_bm)
+
+                    Me.Rows(iLayer + 1).Tag = layer
+
+                Next iLayer
+
+                Me.UpdateMappingsColumn()
+
+            End Sub
+
+            Protected Overrides Sub FinishStyle()
+                MyBase.FinishStyle()
+                Me.FixedColumnWidths = False
+            End Sub
+
+            Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
+                Return Windows.Forms.DockStyle.None
             End Function
 
-            Public Function IsRowColImplicit() As Boolean
-                Return Me.m_bRowColImplicit
+            Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+                Dim strAttribute As String = Me.AttributeAtRow(p.Row)
+                Dim layer As cLayer = Me.LayerAtRow(p.Row)
+
+                Try
+                    ' ToDo: Clear existing mappings to this attribute?
+                    Me.m_dtLayerMapping(layer) = strAttribute
+                    Me.UpdateMappingsColumn()
+                Catch ex As Exception
+                End Try
+
+                Return True
+
             End Function
+
+            Private Sub UpdateMappingsColumn()
+
+                Dim layer As cLayer = Nothing
+                Dim strAttribute As String = ""
+                Dim cmb As Cells.Real.ComboBox = Nothing
+                Dim dm As DataModels.EditorComboBox = Nothing
+
+                For iRow As Integer = 1 To Me.RowsCount - 1
+
+                    layer = Me.LayerAtRow(iRow)
+
+                    cmb = DirectCast(Me(iRow, eColumnTypes.ColumnAttribute), Cells.Real.ComboBox)
+                    dm = DirectCast(cmb.DataModel, DataModels.EditorComboBox)
+                    dm.DefaultValue = cVALUE_NONE
+
+                    Try
+                        cmb.Value = Me.m_dtLayerMapping(layer)
+                    Catch ex As Exception
+                        cmb.Value = cVALUE_NONE
+                    End Try
+
+                Next iRow
+
+            End Sub
+
+            Private Function LayerAtRow(ByVal iRow As Integer) As cLayer
+                If iRow > 0 And iRow < Me.RowsCount - 1 Then
+                    Return DirectCast(Me.Rows(iRow).Tag, cLayer)
+                End If
+                Return Nothing
+            End Function
+
+            Private Function AttributeAtRow(ByVal iRow As Integer) As String
+                If iRow > 0 And iRow < Me.RowsCount - 1 Then
+                    Return CStr(Me(iRow, eColumnTypes.ColumnAttribute).Value)
+                End If
+                Return ""
+            End Function
+
+            Private Function HasData() As Boolean
+                If Me.m_aLayers Is Nothing Then Return False
+                If Me.m_astrAttributes Is Nothing Then Return False
+                If Me.m_astrAttributes.Length <= 1 Then Return False
+                Return True
+            End Function
+
+#End Region ' Overrides
 
         End Class
 
@@ -143,15 +259,9 @@ Namespace Ecospace.Basemap
         Private m_core As cCore = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_bDataValid As Boolean = False
-        Private m_data As cBuffer = Nothing
+        Private m_data As cImportExportData = Nothing
 
 #End Region ' Private vars
-
-#Region " Shared definitions "
-
-        Public Shared cMAPPING_IMPLICIT As String = "(file content)"
-
-#End Region ' Shared definitions
 
 #Region " Constructor "
 
@@ -318,7 +428,7 @@ Namespace Ecospace.Basemap
                 astrAttributes(i) = astrAttributes(i).Trim
             Next
 
-            Me.m_data = New cBuffer(bm.InRow, bm.InCol, astrAttributes)
+            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, astrAttributes)
 
             iCell = 0
             While (tr.Peek() <> -1) And (iCell < Me.m_data.NumCells)
@@ -373,7 +483,7 @@ Namespace Ecospace.Basemap
             Next strAttribute
             lstrAttributes.Sort()
 
-            Me.m_data = New cBuffer(bm.InRow, bm.InCol, lstrAttributes.ToArray())
+            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
 
             For iShape As Integer = 0 To lsd.Count - 1
                 sd = lsd(iShape)
@@ -417,17 +527,17 @@ Namespace Ecospace.Basemap
             End If
 
             ' Create data without attributes, row and col pos are implicit
-            Me.m_data = New cBuffer(bm.InRow, bm.InCol)
+            Me.m_data = New cImportExportData(bm.InRow, bm.InCol)
 
             For iRow As Integer = 1 To bm.InRow
                 For icol As Integer = 1 To bm.InCol
-                    Me.m_data.Value(iRow - 1, icol - 1, dlgImportLayerData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
+                    Me.m_data.Value(iRow - 1, icol - 1, cImportExportData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
                 Next
             Next
 
             Me.m_cmbRow.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
             Me.m_cmbCol.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
-            Me.m_grid.Attributes = New String() {dlgImportLayerData.cMAPPING_IMPLICIT}
+            Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
 
             Return eSpatialFileCompatibility.Compatible
 
@@ -550,7 +660,7 @@ Namespace Ecospace.Basemap
             Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel
             Me.m_bntOK = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_grid = New ScientificInterface.Ecospace.gridMapLayerToAttribute
+            Me.m_grid = New gridMapLayerToAttribute
             Me.m_lblRow = New System.Windows.Forms.Label
             Me.m_cmbRow = New System.Windows.Forms.ComboBox
             Me.m_cmbCol = New System.Windows.Forms.ComboBox
