@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridReadLayers.vb,v $
+' Revision 1.2  2008/11/10 01:47:22  jeroens
+' Made crash-proof
+'
 ' Revision 1.1  2008/11/08 23:44:48  jeroens
 ' Supports CSV and SHP
 '
@@ -82,7 +85,7 @@ Namespace Ecospace
             End Get
             Set(ByVal value As String())
                 Dim lstr As New List(Of String)
-                lstr.AddRange(value)
+                If (value IsNot Nothing) Then lstr.AddRange(value)
                 If lstr.IndexOf(cVALUE_NONE) = -1 Then lstr.Insert(0, cVALUE_NONE)
                 Me.m_astrAttributes = lstr.ToArray()
                 Me.RefreshContent()
