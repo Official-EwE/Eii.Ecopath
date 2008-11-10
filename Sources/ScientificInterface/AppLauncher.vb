@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.12  2008/11/10 22:12:25  jeroens
+' no message
+'
 ' Revision 1.11  2008/11/10 18:26:47  jeroens
 ' Added layer export command
 '
@@ -2241,7 +2244,7 @@ Public Class AppLauncher
             Try
                 dlg.Layers = DirectCast(cmd.Tag, cLayer())
             Catch ex As Exception
-                Debug.Assert(False, "expected array of cLayer")
+                Debug.Assert(False, "Expected array of cLayer")
             End Try
         End If
         dlg.ShowDialog()
@@ -2261,12 +2264,12 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) _
         Handles m_cmdExportLayerData.OnInvoke
-        Dim dlg As New dlgImportLayerData()
+        Dim dlg As New dlgExportLayerData()
         If cmd.Tag IsNot Nothing Then
             Try
                 dlg.Layers = DirectCast(cmd.Tag, cLayer())
             Catch ex As Exception
-                Debug.Assert(False, "expected array of cLayer")
+                Debug.Assert(False, "Expected array of cLayer")
             End Try
         End If
         dlg.ShowDialog()
