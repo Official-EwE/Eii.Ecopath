@@ -2164,7 +2164,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Weighted total</value>
   </data>
   <data name="FILEFILTER_CSV" xml:space="preserve">
-    <value>CSV files (*.csv)|*.csv</value>
+    <value>Comma-separated text files (*.csv)|*.csv</value>
   </data>
   <data name="FILEFILTER_IMAGE" xml:space="preserve">
     <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
@@ -2213,7 +2213,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="FILEFILTER_ASCFILE" xml:space="preserve">
     <value>ESRI Asc files (*.asc)|*.asc</value>
   </data>
-  <data name="FILEFILTER_SHAPEFILE" xml:space="preserve">
-    <value>ESRI shape files (*.shp)|*.shp</value>
+  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
+    <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|Spatial raster files (*.asc, *.csv)|*.asc;*.csv</value>
+  </data>
+  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
+    <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp</value>
   </data>
 </root>

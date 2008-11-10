@@ -1346,7 +1346,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CSV files (*.csv)|*.csv.
+        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_CSV() As String
             Get
@@ -1369,6 +1369,15 @@ Namespace My.Resources
         Friend ReadOnly Property FILEFILTER_IMAGE() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_IMAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp.
+        '''</summary>
+        Friend ReadOnly Property FILEFILTER_LOAD_RASTER() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_LOAD_RASTER", resourceCulture)
             End Get
         End Property
         
@@ -1409,11 +1418,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ESRI shape files (*.shp)|*.shp.
+        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|Spatial raster files (*.asc, *.csv)|*.asc;*.csv.
         '''</summary>
-        Friend ReadOnly Property FILEFILTER_SHAPEFILE() As String
+        Friend ReadOnly Property FILEFILTER_SAVE_RASTER() As String
             Get
-                Return ResourceManager.GetString("FILEFILTER_SHAPEFILE", resourceCulture)
+                Return ResourceManager.GetString("FILEFILTER_SAVE_RASTER", resourceCulture)
             End Get
         End Property
         
