@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.3  2008/11/10 01:49:57  jeroens
+' Renamed resources
+'
 ' Revision 1.2  2008/11/08 23:53:05  jeroens
 ' Renamed file commands
 '
@@ -269,7 +272,7 @@ Namespace Ecospace.Basemap.Layers
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(My.Resources.FILEFILTER_CSV)
+            cmdFO.Invoke(My.Resources.FILEFILTER_LOAD_RASTER)
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Me.ReadCSVFile(cmdFO.FileName)
@@ -282,7 +285,7 @@ Namespace Ecospace.Basemap.Layers
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
+            cmdFS.Invoke(My.Resources.FILEFILTER_LOAD_RASTER)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Me.SaveCSVFile(cmdFS.FileName)
             End If

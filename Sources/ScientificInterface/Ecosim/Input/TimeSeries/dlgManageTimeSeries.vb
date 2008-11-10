@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.3  2008/11/10 01:50:53  jeroens
+' Renamed resources
+'
 ' Revision 1.2  2008/11/08 23:53:16  jeroens
 ' Renamed file commands
 '
@@ -213,7 +216,7 @@ Public Class dlgManageTimeSeries
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-        cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_TEXT)
+        cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_LOAD_RASTER & "|" & My.Resources.FILEFILTER_TEXT)
 
         If (cmdFO.Result = DialogResult.OK) Then
             Me.m_strImportFileName = cmdFO.FileName
