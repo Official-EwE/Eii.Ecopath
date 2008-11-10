@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.2  2008/11/10 06:30:30  jeroens
+' No need to assert
+'
 ' Revision 1.1  2008/09/26 07:31:00  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -249,7 +252,7 @@ Public Class cNetworkManager
                 cLog.Write(ex)
                 Dim msg As String = Me.unravelExceptionMessage(ex)
                 m_publisher.SendMessage(New cMessage(Me.ToString & ".RunMainNetwork() Error " & msg, eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
-                Debug.Assert(False, msg)
+                'Debug.Assert(False, msg)
                 breturn = False
             End Try
         Else
