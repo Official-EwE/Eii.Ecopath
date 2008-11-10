@@ -409,16 +409,16 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDataImport.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+    <value>Flat</value>
   </data>
   <data name="m_btnDataImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnDataImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 30</value>
+    <value>721, 27</value>
   </data>
   <data name="m_btnDataImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 23</value>
+    <value>109, 23</value>
   </data>
   <data name="m_btnDataImport.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -442,13 +442,13 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDataExport.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+    <value>Flat</value>
   </data>
   <data name="m_btnDataExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>725, 30</value>
+    <value>721, 56</value>
   </data>
   <data name="m_btnDataExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 23</value>
+    <value>109, 23</value>
   </data>
   <data name="m_btnDataExport.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -601,7 +601,10 @@
     <value>6</value>
   </data>
   <data name="m_nudWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 29</value>
+    <value>69, 29</value>
+  </data>
+  <data name="m_nudWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 3</value>
   </data>
   <data name="m_nudWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 20</value>
@@ -757,10 +760,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblStaticData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 6</value>
+    <value>721, 3</value>
   </data>
   <data name="m_lblStaticData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 18</value>
+    <value>109, 18</value>
   </data>
   <data name="m_lblStaticData.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -790,7 +793,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>605, 515</value>
+    <value>712, 515</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -799,7 +802,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridLayerData, Ecopath with Ecosim 6, Version=6.0.3.19, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.gridLayerData, EwE6, Version=6.0.4.5, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -877,7 +880,7 @@
     <value>Edit layer</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>DataLayerDialog</value>
+    <value>dlgEditLayer</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

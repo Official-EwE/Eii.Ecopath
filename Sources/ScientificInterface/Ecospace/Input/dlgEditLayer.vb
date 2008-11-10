@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.4  2008/11/10 02:25:15  jeroens
+' Uses external command to import data
+'
 ' Revision 1.3  2008/11/10 01:49:57  jeroens
 ' Renamed resources
 '
@@ -270,12 +273,11 @@ Namespace Ecospace.Basemap.Layers
         Private Sub ImportData()
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            Dim cmd As Command = cmdh.GetCommand("ImportLayerData")
 
-            cmdFO.Invoke(My.Resources.FILEFILTER_LOAD_RASTER)
-
-            If (cmdFO.Result = DialogResult.OK) Then
-                Me.ReadCSVFile(cmdFO.FileName)
+            If cmd IsNot Nothing Then
+                cmd.Tag = Me.m_layerWork
+                cmd.Invoke()
             End If
 
         End Sub
@@ -285,64 +287,12 @@ Namespace Ecospace.Basemap.Layers
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_LOAD_RASTER)
+            cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Me.SaveCSVFile(cmdFS.FileName)
             End If
 
         End Sub
-
-        Private Function ReadCSVFile(ByVal strFile As String) As Boolean
-
-            Dim tr As TextReader = New StreamReader(strFile)
-            Dim strLine As String = ""
-            Dim astrValues As String() = Nothing
-            Dim irow, icol As Integer
-            Dim data As cEcospaceLayer = Me.m_layerWork.Data
-            Dim sValue As Single = 0.0!
-            Dim bValid As Boolean = True
-            Dim iValuesOutOfBound As Integer = 0
-
-            irow = 1
-            While (tr.Peek() <> -1) And (irow < data.InRow)
-                strLine = tr.ReadLine()
-                astrValues = strLine.Split(","c)
-                For icol = 1 To Math.Min(astrValues.Length, data.InCol)
-
-                    sValue = CSng(Val(astrValues(icol - 1)))
-
-                    ' Minimal protection, this should be integrated in layer metadata
-                    Select Case Me.m_layerWork.Source.DataType
-                        Case eDataTypes.EcospaceHabitat
-                            bValid = (sValue >= 0) And (sValue <= Me.m_core.nHabitats)
-                        Case eDataTypes.EcospaceMPA
-                            bValid = (sValue >= 1) And (sValue <= Me.m_core.nMPAs)
-                        Case eDataTypes.EcospaceRegion
-                            bValid = (sValue >= 0) And (sValue <= Me.m_core.nRegions)
-                        Case Else
-                            bValid = True
-                    End Select
-
-                    If Not bValid Then sValue = 0 : iValuesOutOfBound += 1
-                    data.Cell(irow, icol) = sValue
-
-                Next
-                irow += 1
-            End While
-
-            tr.Close()
-            Me.m_layerWork.Update(cLayer.eChangeFlags.Map)
-
-            If (iValuesOutOfBound > 0) Then
-                ' ToDo_JS: Globalize this
-                MsgBox(String.Format("{0} {1} value(s) were out of bounds.", iValuesOutOfBound, Me.m_layerWork.Name), _
-                        MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, _
-                        "Import warning")
-            End If
-
-            Return True
-
-        End Function
 
         Private Function SaveCSVFile(ByVal strFile As String) As Boolean
 

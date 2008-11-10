@@ -230,7 +230,7 @@ Partial Class dlgEditLayer
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             '
-            'DataLayerDialog
+            'dlgEditLayer
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
@@ -240,7 +240,7 @@ Partial Class dlgEditLayer
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "DataLayerDialog"
+            Me.Name = "dlgEditLayer"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
