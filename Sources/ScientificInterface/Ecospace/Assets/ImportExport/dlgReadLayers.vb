@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgReadLayers.vb,v $
+' Revision 1.2  2008/11/10 01:51:52  jeroens
+' Added .asc support
+'
 ' Revision 1.1  2008/11/08 23:44:48  jeroens
 ' Supports CSV and SHP
 '
@@ -37,11 +40,11 @@ Namespace Ecospace.Basemap
             Private m_nRows As Integer = 0
             Private m_nCols As Integer = 0
             Private m_data As New Dictionary(Of String, Single())
-            Private m_astrAttributes As String()
+            Private m_astrAttributes As String() = Nothing
+            Private m_bRowColImplicit As Boolean = False
 
-            Private Const m_strAttribNone As String = "?"
-
-            Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer, ByVal astrAttributes() As String)
+            Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer, _
+                           Optional ByVal astrAttributes() As String = Nothing)
                 Me.m_nRows = nRows
                 Me.m_nCols = nCols
                 Me.Attributes = astrAttributes
@@ -52,18 +55,33 @@ Namespace Ecospace.Basemap
                     Return Me.m_astrAttributes
                 End Get
                 Set(ByVal value As String())
-                    If value Is Nothing Then value = New String() {m_strAttribNone}
-                    Me.m_astrAttributes = value
 
+                    If value Is Nothing Then
+                        Me.m_bRowColImplicit = True
+                    Else
+                        Me.m_bRowColImplicit = (value.Count = 0)
+                    End If
+
+                    If (Me.m_bRowColImplicit) Then
+                        Me.m_astrAttributes = New String() {dlgReadLayers.cMAPPING_IMPLICIT}
+                    Else
+                        Me.m_astrAttributes = value
+                    End If
+
+                    ' Clear
                     Me.m_data.Clear()
+
+                    ' Create storage
                     For Each strAttribute As String In Me.Attributes
                         Dim asCells(Me.NumCells) As Single
                         Me.m_data.Add(strAttribute, asCells)
                     Next
+
                 End Set
             End Property
 
-            Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, ByVal strAttribute As String) As Single
+            Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, _
+                                  Optional ByVal strAttribute As String = "") As Single
                 Get
                     Return Me.Value(Me.Cell(iRow, iCol), strAttribute)
                 End Get
@@ -72,16 +90,17 @@ Namespace Ecospace.Basemap
                 End Set
             End Property
 
-            Public Property Value(ByVal iCell As Integer, ByVal strAttribute As String) As Single
+            Public Property Value(ByVal iCell As Integer, _
+                                  Optional ByVal strAttribute As String = "") As Single
                 Get
                     If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = m_strAttribNone
+                        strAttribute = dlgReadLayers.cMAPPING_IMPLICIT
                     End If
                     Return Me.m_data(strAttribute)(iCell)
                 End Get
                 Set(ByVal value As Single)
                     If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = m_strAttribNone
+                        strAttribute = dlgReadLayers.cMAPPING_IMPLICIT
                     End If
                     Me.m_data(strAttribute)(iCell) = value
                 End Set
@@ -93,6 +112,10 @@ Namespace Ecospace.Basemap
 
             Public Function NumCells() As Integer
                 Return Me.m_nCols * Me.m_nRows
+            End Function
+
+            Public Function IsRowColImplicit() As Boolean
+                Return Me.m_bRowColImplicit
             End Function
 
         End Class
@@ -120,6 +143,12 @@ Namespace Ecospace.Basemap
         Private m_data As cBuffer = Nothing
 
 #End Region ' Private vars
+
+#Region " Shared definitions "
+
+        Public Shared cMAPPING_IMPLICIT As String = "(file content)"
+
+#End Region ' Shared definitions
 
 #Region " Constructor "
 
@@ -169,12 +198,10 @@ Namespace Ecospace.Basemap
         Private Sub OnBrowseInput(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnBrowseInput.Click
 
-            ' ToDo_JS: Globalize this
-
             ' Browse via EwE6 open file dialog 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim foc As cFileOpenCommand = TryCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-            Dim strFileFilter As String = My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_SHAPEFILE
+            Dim strFileFilter As String = My.Resources.FILEFILTER_LOAD_RASTER
             Dim sfc As eSpatialFileCompatibility = eSpatialFileCompatibility.Unreadable
 
             ' Sanity check
@@ -187,30 +214,40 @@ Namespace Ecospace.Basemap
             End If
 
             If (foc.Result = Windows.Forms.DialogResult.OK) Then
+
                 Me.m_tbInput.Text = foc.FileName
+                Me.m_cmbRow.Items.Clear()
+                Me.m_cmbRow.Items.Clear()
+                Me.m_grid.Attributes = Nothing
 
                 Select Case Path.GetExtension(foc.FileName).ToLower
+                    Case ".asc"
+                        sfc = Me.ReadAscFile(Me.m_tbInput.Text)
                     Case ".csv" ' csv
                         sfc = Me.ReadCSVFile(Me.m_tbInput.Text)
                     Case ".shp" ' shp
                         sfc = Me.ReadShapeFile(Me.m_tbInput.Text)
                 End Select
 
+                Me.UpdateControls()
+
                 Select Case sfc
                     Case eSpatialFileCompatibility.Compatible
                         ' NOP
 
                     Case eSpatialFileCompatibility.Unreadable
+                        ' ToDo_JS: Globalize this
                         MsgBox("The selected file could not be read.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
-                        Return
 
                     Case eSpatialFileCompatibility.IncompatibleEmpty
+                        ' ToDo_JS: Globalize this
                         MsgBox("The selected file did not contain any data.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
-                        Return
+
+                    Case eSpatialFileCompatibility.IncompatibleDimensions
+                        ' ToDo_JS: Globalize this
+                        MsgBox("The content in the selected file is not compatible with the cell size of the current map.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
 
                 End Select
-
-                Me.UpdateControls()
 
             End If
 
@@ -235,6 +272,7 @@ Namespace Ecospace.Basemap
                     Me.m_bDataValid = True
 
                 Case eSpatialFileCompatibility.IncompatibleDimensions
+                    ' ToDo_JS: Globalize this
                     Me.m_bDataValid = (MsgBox("The selected shape file is not compatible with the current Ecospace basemap dimensions." & _
                               "Use shape file anyway?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes)
             End Select
@@ -288,8 +326,9 @@ Namespace Ecospace.Basemap
             tr.Close()
 
             Array.Sort(astrAttributes)
-            Me.m_cmbRow.Items.AddRange(astrAttributes)
-            Me.m_cmbCol.Items.AddRange(astrAttributes)
+
+            Me.m_cmbRow.Items.AddRange(astrAttributes) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
+            Me.m_cmbCol.Items.AddRange(astrAttributes) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
             Me.m_grid.Attributes = astrAttributes
 
             Return result
@@ -312,7 +351,12 @@ Namespace Ecospace.Basemap
 
             Dim lstrAttributes As New List(Of String)
 
-            If Not sfio.Read(strFile, lsd) Then Return eSpatialFileCompatibility.Unreadable
+            If Not sfio.Read(strFile, lsd) Then
+                sfio.Close()
+                Return eSpatialFileCompatibility.Unreadable
+            End If
+            sfio.Close()
+
             If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
 
             For Each strAttribute As String In sfio.AttributeDefintions.Keys
@@ -330,9 +374,51 @@ Namespace Ecospace.Basemap
                 Next strAttribute
             Next iShape
 
-            Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray())
-            Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray())
+            Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
+            Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
             Me.m_grid.Attributes = lstrAttributes.ToArray()
+
+            Return eSpatialFileCompatibility.Compatible
+
+        End Function
+
+        Private Function ReadAscFile(ByVal strFile As String) As eSpatialFileCompatibility
+
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim sfio As New ASCIIFileIO()
+            Dim rs As New Raster()
+            Dim sd As SpatialData = Nothing
+            Dim sValue As Single = 0.0!
+
+            If Not sfio.Read(strFile, rs) Then
+                sfio.Close()
+                Return eSpatialFileCompatibility.Unreadable
+            End If
+
+            sfio.Close()
+
+            If False Then
+                ' Ask VC: ignore spatial extent?
+                rs = rs.Project(New SpatialData.Extent(bm.Longitude, bm.Latitude, _
+                                                  bm.Longitude + bm.CellLength * bm.InCol, _
+                                                  bm.Latitude + bm.CellLength * bm.InRow))
+
+                If (rs Is Nothing) Then Return eSpatialFileCompatibility.IncompatibleFormat
+                If (rs.CellSize <> bm.CellLength) Then Return eSpatialFileCompatibility.IncompatibleDimensions
+            End If
+
+            ' Create data without attributes, row and col pos are implicit
+            Me.m_data = New cBuffer(bm.InRow, bm.InCol)
+
+            For iRow As Integer = 1 To bm.InRow
+                For icol As Integer = 1 To bm.InCol
+                    Me.m_data.Value(iRow - 1, icol - 1, dlgReadLayers.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
+                Next
+            Next
+
+            Me.m_cmbRow.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
+            Me.m_cmbCol.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
+            Me.m_grid.Attributes = New String() {dlgReadLayers.cMAPPING_IMPLICIT}
 
             Return eSpatialFileCompatibility.Compatible
 
@@ -354,14 +440,13 @@ Namespace Ecospace.Basemap
 
         Private Function LoadMappedLayers() As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim layer As cLayer = Nothing
             Dim strAttribute As String = ""
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
-            Dim sValue As Single = 0.0!
 
             ' For each mapped attribute
             For Each layer In dtMappings.Keys
@@ -377,26 +462,19 @@ Namespace Ecospace.Basemap
 
                     ' Load layer
                     For iCell = 0 To Me.m_data.NumCells
-                        'layer.Value(iRow, iCol) = 0.0!
-                        iRow = CInt(Me.m_data.Value(iCell, Me.RowAttribute()))
-                        iCol = CInt(Me.m_data.Value(iCell, Me.ColAttribute()))
+                        If Me.m_data.IsRowColImplicit Then
+                            ' Calculate row, col from cell index
+                            iRow = CInt(Math.Floor(iCell / bm.InCol)) + 1
+                            iCol = CInt(iCell Mod bm.InCol) + 1
+                        Else
+                            ' Obtain row, col attribute values from data
+                            iRow = CInt(Me.m_data.Value(iCell, Me.RowAttribute()))
+                            iCol = CInt(Me.m_data.Value(iCell, Me.ColAttribute()))
+                        End If
                         layer.Value(iRow, iCol) = Me.m_data.Value(iCell, strAttribute)
                     Next
 
-                    '' For each shape
-                    'For Each sd As SpatialData In Me.m_lData
-
-                    '    iRow = CInt(sd.GetAttribute(Me.RowAttribute))
-                    '    iCol = CInt(sd.GetAttribute(Me.ColAttribute))
-
-                    '    Try
-                    '        sValue = CSng(Val(sd.GetAttribute(strAttribute)))
-                    '        layer.Value(New Point(iRow, iCol)) = sValue
-                    '    Catch ex As Exception
-
-                    '    End Try
-
-                    'Next sd
+                    layer.IsModified = True
                     layer.Update(cLayer.eChangeFlags.Map)
 
                 End If
