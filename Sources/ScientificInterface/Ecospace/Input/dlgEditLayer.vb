@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.5  2008/11/10 22:12:02  jeroens
+' Uses import and export dialogs
+'
 ' Revision 1.4  2008/11/10 02:25:15  jeroens
 ' Uses external command to import data
 '
@@ -119,40 +122,72 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Local events "
 
-        Private Sub DataLayerDialog_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub DataLayerDialog_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
+
             RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             Me.m_fpName = Nothing
             Me.m_fpWeight = Nothing
             Me.m_fpDescription = Nothing
+
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
+
             If Not Me.ApplyChanges() Then Return
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
+
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles Cancel_Button.Click
+
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
+
         End Sub
 
-        Private Sub Apply_Button_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Apply_Button.Click
+        Private Sub Apply_Button_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Apply_Button.Click
+
             Me.ApplyChanges()
+
         End Sub
 
         Private Sub OnVisualStyleChanged(ByVal sender As Controls.ucEditVisualStyle)
+
             ' Update work layer Visual Style
             Me.m_ucEditVisualStyle.Apply(Me.m_layerWork.Renderer.VisualStyle)
             Me.m_layerWork.Update(cLayer.eChangeFlags.VisualStyle)
+
         End Sub
 
-        Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDataImport.Click
-            Me.ImportData()
+        Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDataImport.Click
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("ImportLayerData")
+
+            If cmd IsNot Nothing Then
+                cmd.Tag = New cLayer() {Me.m_layerWork}
+                cmd.Invoke()
+            End If
+
         End Sub
 
-        Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDataExport.Click
-            Me.ExportData()
+        Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDataExport.Click
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+
+            If cmd IsNot Nothing Then
+                cmd.Tag = New cLayer() {Me.m_layerWork}
+                cmd.Invoke()
+            End If
+
         End Sub
 
 #End Region ' Local events
@@ -267,57 +302,6 @@ Namespace Ecospace.Basemap.Layers
         End Function
 
 #End Region ' Internal implementation
-
-#Region " Data handling - To be elaborated "
-
-        Private Sub ImportData()
-
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ImportLayerData")
-
-            If cmd IsNot Nothing Then
-                cmd.Tag = Me.m_layerWork
-                cmd.Invoke()
-            End If
-
-        End Sub
-
-        Private Sub ExportData()
-
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-
-            cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-                Me.SaveCSVFile(cmdFS.FileName)
-            End If
-
-        End Sub
-
-        Private Function SaveCSVFile(ByVal strFile As String) As Boolean
-
-            Dim tw As TextWriter = New StreamWriter(strFile)
-            Dim strLine As String = ""
-            Dim sb As New StringBuilder
-            Dim irow, icol As Integer
-            Dim data As cEcospaceLayer = Me.m_layerWork.Data
-
-            irow = 1
-            For irow = 1 To data.InRow
-                For icol = 1 To data.InCol
-                    If icol > 1 Then sb.Append(", ")
-                    sb.Append(data.Cell(irow, icol))
-                Next icol
-                sb.AppendLine()
-            Next irow
-
-            tw.Write(sb.ToString())
-            tw.Close()
-            Return True
-
-        End Function
-
-#End Region ' Data handling - To be elaborated
 
     End Class
 
