@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.22  2008/11/10 06:29:40  jeroens
+' RunEcopath has option to produce outputs, even if param estimation failed
+'
 ' Revision 1.21  2008/10/29 19:44:55  joeb
 ' Set_Quota_Flags() Boot out is null argument
 '
@@ -2978,7 +2981,7 @@ Public Class cCore
     ''' <remarks>
     ''' InitEcoPath() must be called before this can be called
     ''' </remarks>
-    Public Overridable Function RunEcoPath() As Boolean
+    Public Function RunEcoPath(Optional ByVal bAllowErrors As Boolean = False) As Boolean
         Dim bsuccess As Boolean = True
         Dim msg As cMessage
 
@@ -3006,7 +3009,7 @@ Public Class cCore
             m_EcoPathData.CopyInputToModelArrays()
 
             'call EcoPath to estimate the missing parameters
-            If m_EcoPath.EstimateParameters() Then
+            If (m_EcoPath.EstimateParameters() = True) Or (bAllowErrors = True) Then
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
