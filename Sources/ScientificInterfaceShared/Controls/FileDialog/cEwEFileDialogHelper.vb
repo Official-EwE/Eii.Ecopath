@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cEwEFileDialogHelper.vb,v $
-' Revision 1.1  2008/09/26 07:31:16  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/10 22:11:36  jeroens
+' Updated file dlg config
 '
 ' Revision 1.1  2008/09/09 14:57:08  jeroens
 ' Initial version
@@ -54,6 +54,7 @@ Namespace Controls
             dlg.Filter = strFilters
             dlg.FilterIndex = iDefaultFilter
             dlg.CheckPathExists = True
+            dlg.CheckFileExists = False
             dlg.OverwritePrompt = bOverwritePrompt
             dlg.RestoreDirectory = True
             dlg.SupportMultiDottedExtensions = true
