@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.2  2008/11/10 05:34:54  jeroens
+' Renamed file command
+'
 ' Revision 1.1  2008/09/26 07:30:51  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -135,7 +138,7 @@ Public Class cIndicesWithPPREst
     Public Sub ExtractToCSV()
         Dim myStream As StreamWriter
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
 

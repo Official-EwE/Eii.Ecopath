@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.3  2008/11/10 05:34:37  jeroens
+' Renamed file command
+'
 ' Revision 1.2  2008/10/08 17:44:58  jeroens
 ' Bells and whistles
 '
@@ -532,7 +535,7 @@ Namespace Controls
         Public Function ExtractDataToCSV() As Boolean
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdFS As FileSaveCommand = DirectCast(cmdh.GetCommand(FileSaveCommand.COMMAND_NAME), FileSaveCommand)
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
 
             cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt", 0)
