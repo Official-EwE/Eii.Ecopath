@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: FileSaveCommand.vb,v $
-' Revision 1.1  2008/09/26 07:31:10  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/10 05:33:32  jeroens
+' Renamed
 '
 ' Revision 1.1  2008/09/09 14:42:28  jeroens
 ' Initial version
@@ -24,7 +24,7 @@ Namespace Commands
     ''' Generic command to launch an interface to select a 'save file' location.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class FileSaveCommand
+    Public Class cFileSaveCommand
         Inherits Command
 
 #Region " Privates "
@@ -44,11 +44,11 @@ Namespace Commands
 
 #Region " Singleton "
 
-        Private Shared __inst__ As FileSaveCommand = Nothing
+        Private Shared __inst__ As cFileSaveCommand = Nothing
 
-        Public Shared Function GetInstance() As FileSaveCommand
-            If FileSaveCommand.__inst__ Is Nothing Then
-                FileSaveCommand.__inst__ = New FileSaveCommand()
+        Public Shared Function GetInstance() As cFileSaveCommand
+            If cFileSaveCommand.__inst__ Is Nothing Then
+                cFileSaveCommand.__inst__ = New cFileSaveCommand()
             End If
             Return __inst__
         End Function

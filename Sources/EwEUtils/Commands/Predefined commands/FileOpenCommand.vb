@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: FileOpenCommand.vb,v $
-' Revision 1.1  2008/09/26 07:31:09  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/10 05:33:32  jeroens
+' Renamed
 '
 ' Revision 1.1  2008/09/09 14:42:27  jeroens
 ' Initial version
@@ -24,7 +24,7 @@ Namespace Commands
     ''' Generic command to launch an interface to select an 'open file' location.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class FileOpenCommand
+    Public Class cFileOpenCommand
         Inherits Command
 
 #Region " Privates "
@@ -44,11 +44,11 @@ Namespace Commands
 
 #Region " Singleton "
 
-        Private Shared __inst__ As FileOpenCommand = Nothing
+        Private Shared __inst__ As cFileOpenCommand = Nothing
 
-        Public Shared Function GetInstance() As FileOpenCommand
-            If FileOpenCommand.__inst__ Is Nothing Then
-                FileOpenCommand.__inst__ = New FileOpenCommand()
+        Public Shared Function GetInstance() As cFileOpenCommand
+            If cFileOpenCommand.__inst__ Is Nothing Then
+                cFileOpenCommand.__inst__ = New cFileOpenCommand()
             End If
             Return __inst__
         End Function
@@ -169,10 +169,13 @@ Namespace Commands
         ''' Get the file filter index that the dialog was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DefaultFilter() As Integer
+        Public Property FilterIndex() As Integer
             Get
                 Return Me.m_iFilter
             End Get
+            Set(ByVal value As Integer)
+                Me.m_iFilter = value
+            End Set
         End Property
 
     End Class
