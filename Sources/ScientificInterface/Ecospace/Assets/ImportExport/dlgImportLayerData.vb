@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
-' $Log: dlgReadLayers.vb,v $
+' $Log: dlgImportLayerData.vb,v $
+' Revision 1.1  2008/11/10 02:25:52  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/11/10 01:51:52  jeroens
 ' Added .asc support
 '
@@ -30,7 +33,7 @@ Namespace Ecospace.Basemap
     ''' 
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class dlgReadLayers
+    Public Class dlgImportLayerData
         Inherits Form
 
 #Region " Private classes "
@@ -63,7 +66,7 @@ Namespace Ecospace.Basemap
                     End If
 
                     If (Me.m_bRowColImplicit) Then
-                        Me.m_astrAttributes = New String() {dlgReadLayers.cMAPPING_IMPLICIT}
+                        Me.m_astrAttributes = New String() {dlgImportLayerData.cMAPPING_IMPLICIT}
                     Else
                         Me.m_astrAttributes = value
                     End If
@@ -94,13 +97,13 @@ Namespace Ecospace.Basemap
                                   Optional ByVal strAttribute As String = "") As Single
                 Get
                     If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = dlgReadLayers.cMAPPING_IMPLICIT
+                        strAttribute = dlgImportLayerData.cMAPPING_IMPLICIT
                     End If
                     Return Me.m_data(strAttribute)(iCell)
                 End Get
                 Set(ByVal value As Single)
                     If String.IsNullOrEmpty(strAttribute) Then
-                        strAttribute = dlgReadLayers.cMAPPING_IMPLICIT
+                        strAttribute = dlgImportLayerData.cMAPPING_IMPLICIT
                     End If
                     Me.m_data(strAttribute)(iCell) = value
                 End Set
@@ -183,12 +186,18 @@ Namespace Ecospace.Basemap
 
             Me.m_core = cCore.GetInstance()
 
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerImportance))
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerDepth))
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerMPA))
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-            Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+            If (Me.m_lLayers.Count = 0) Then
+
+                ' Add default layers
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerImportance))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerDepth))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerMPA))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_core, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+
+            End If
+
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
 
             Me.UpdateControls()
@@ -412,13 +421,13 @@ Namespace Ecospace.Basemap
 
             For iRow As Integer = 1 To bm.InRow
                 For icol As Integer = 1 To bm.InCol
-                    Me.m_data.Value(iRow - 1, icol - 1, dlgReadLayers.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
+                    Me.m_data.Value(iRow - 1, icol - 1, dlgImportLayerData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
                 Next
             Next
 
             Me.m_cmbRow.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
             Me.m_cmbCol.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
-            Me.m_grid.Attributes = New String() {dlgReadLayers.cMAPPING_IMPLICIT}
+            Me.m_grid.Attributes = New String() {dlgImportLayerData.cMAPPING_IMPLICIT}
 
             Return eSpatialFileCompatibility.Compatible
 
@@ -533,7 +542,7 @@ Namespace Ecospace.Basemap
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgReadLayers))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportLayerData))
             Me.m_lblSource = New System.Windows.Forms.Label
             Me.m_tbInput = New System.Windows.Forms.TextBox
             Me.m_btnBrowseInput = New System.Windows.Forms.Button
@@ -541,7 +550,7 @@ Namespace Ecospace.Basemap
             Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel
             Me.m_bntOK = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_grid = New ScientificInterface.Ecospace.gridReadLayers
+            Me.m_grid = New ScientificInterface.Ecospace.gridMapLayerToAttribute
             Me.m_lblRow = New System.Windows.Forms.Label
             Me.m_cmbRow = New System.Windows.Forms.ComboBox
             Me.m_cmbCol = New System.Windows.Forms.ComboBox
@@ -643,7 +652,7 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_lblCol, "m_lblCol")
             Me.m_lblCol.Name = "m_lblCol"
             '
-            'dlgReadLayers
+            'dlgImportLayerData
             '
             Me.AcceptButton = Me.m_bntOK
             Me.CancelButton = Me.m_btnCancel
@@ -660,7 +669,7 @@ Namespace Ecospace.Basemap
             Me.Controls.Add(Me.m_btnBrowseInput)
             Me.Controls.Add(Me.m_lblSource)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-            Me.Name = "dlgReadLayers"
+            Me.Name = "dlgImportLayerData"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.m_tlpOkCancel.ResumeLayout(False)
@@ -673,7 +682,7 @@ Namespace Ecospace.Basemap
         Private WithEvents m_tbInput As System.Windows.Forms.TextBox
         Private WithEvents m_btnBrowseInput As System.Windows.Forms.Button
         Private WithEvents m_lblMappings As System.Windows.Forms.Label
-        Private WithEvents m_grid As gridReadLayers
+        Private WithEvents m_grid As gridMapLayerToAttribute
         Private WithEvents m_tlpOkCancel As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_bntOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button

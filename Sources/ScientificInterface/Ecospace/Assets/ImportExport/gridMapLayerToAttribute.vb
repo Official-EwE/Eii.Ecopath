@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
-' $Log: gridReadLayers.vb,v $
+' $Log: gridMapLayerToAttribute.vb,v $
+' Revision 1.1  2008/11/10 02:25:52  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/11/10 01:47:22  jeroens
 ' Made crash-proof
 '
@@ -29,7 +32,7 @@ Namespace Ecospace
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class gridReadLayers
+    Public Class gridMapLayerToAttribute
         Inherits EwEGrid
 
         ' ToDo: Sort and display layers by group
