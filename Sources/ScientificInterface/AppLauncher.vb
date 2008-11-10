@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.10  2008/11/10 02:24:50  jeroens
+' Renamed read layers command
+'
 ' Revision 1.9  2008/11/10 01:56:02  jeroens
 ' Oops
 '
@@ -130,7 +133,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditRegions As Command = Nothing
     Private WithEvents m_cmdEditMPAs As Command = Nothing
     Private WithEvents m_cmdEditImportanceLayers As Command = Nothing
-    Private WithEvents m_cmdReadLayers As Command = Nothing
+    Private WithEvents m_cmdImportLayerData As Command = Nothing
     Private WithEvents m_cmdImportTimeSeries As Command = Nothing
     Private WithEvents m_cmdLoadTimeSeries As Command = Nothing
     Private WithEvents m_cmdWeightTimeSeries As Command = Nothing
@@ -685,9 +688,9 @@ Public Class AppLauncher
         Me.m_cmdEditImportanceLayers.AddControl(Me.EditImportanceLayersToolStripMenuItem)
         cmdh.Add(Me.m_cmdEditImportanceLayers)
 
-        Me.m_cmdReadLayers = New Command("ReadLayers")
-        Me.m_cmdReadLayers.AddControl(Me.ReadLayersFromShapeFileToolStripMenuItem)
-        cmdh.Add(Me.m_cmdReadLayers)
+        Me.m_cmdImportLayerData = New Command("ImportLayerData")
+        Me.m_cmdImportLayerData.AddControl(Me.ImportLayerDataToolStripMenuItem)
+        cmdh.Add(Me.m_cmdImportLayerData)
 
         'Create and configure ImportTimeSeries command
         Me.m_cmdImportTimeSeries = New Command("ImportTimeSeries")
@@ -2223,8 +2226,8 @@ Public Class AppLauncher
     ''' Command handler; invokes the read layers dialog.
     ''' </summary>
     Private Sub m_cmdReadLayers_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) _
-        Handles m_cmdReadLayers.OnInvoke
-        Dim dlg As New dlgReadLayers()
+        Handles m_cmdImportLayerData.OnInvoke
+        Dim dlg As New dlgImportLayerData()
         If TypeOf cmd.Tag Is Ecospace.Basemap.Layers.cLayer Then
             dlg.Layers = New Ecospace.Basemap.Layers.cLayer() {DirectCast(cmd.Tag, Ecospace.Basemap.Layers.cLayer)}
         End If
@@ -2232,10 +2235,10 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdReadLayers">read layers command</see>.
+    ''' Command update handler; enables and disables the <see cref="m_cmdImportLayerData">read layers command</see>.
     ''' </summary>
-    Private Sub m_cmdReadLayers_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) _
-        Handles m_cmdReadLayers.OnUpdate
+    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) _
+        Handles m_cmdImportLayerData.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
     End Sub
 

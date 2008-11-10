@@ -419,7 +419,7 @@
     <value>&amp;File</value>
   </data>
   <metadata name="m_menuMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>0, 0</value>
   </metadata>
   <data name="StartPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 22</value>
@@ -625,11 +625,11 @@
   <data name="ToolStripSeparator17.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 6</value>
   </data>
-  <data name="ReadLayersFromShapeFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ImportLayerDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
   </data>
-  <data name="ReadLayersFromShapeFileToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Read layer data...</value>
+  <data name="ImportLayerDataToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Import layer data...</value>
   </data>
   <data name="EcospaceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 20</value>
@@ -6202,10 +6202,10 @@
   <data name="&gt;&gt;ToolStripSeparator17.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ReadLayersFromShapeFileToolStripMenuItem.Name" xml:space="preserve">
-    <value>ReadLayersFromShapeFileToolStripMenuItem</value>
+  <data name="&gt;&gt;ImportLayerDataToolStripMenuItem.Name" xml:space="preserve">
+    <value>ImportLayerDataToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;ReadLayersFromShapeFileToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;ImportLayerDataToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolsMenu.Name" xml:space="preserve">
