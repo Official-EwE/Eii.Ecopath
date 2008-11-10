@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.9  2008/11/10 01:56:02  jeroens
+' Oops
+'
 ' Revision 1.8  2008/11/10 01:48:56  jeroens
 ' Renamed resources
 '
@@ -3194,7 +3197,7 @@ Public Class AppLauncher
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_LOAD_RASTER, 1)
+        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
 
         If cmdFS.Result = DialogResult.OK Then
             ' Save the Ecosim model result to .csv files
