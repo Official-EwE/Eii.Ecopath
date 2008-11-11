@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditImportanceLayers.vb,v $
+' Revision 1.4  2008/11/11 07:37:28  jeroens
+' New layers have a weight of 1
+'
 ' Revision 1.3  2008/11/04 04:58:44  jeroens
 ' Renamed
 '
@@ -686,7 +689,7 @@ Namespace Ecospace
             Dim iNextNum As Integer = StringUtils.GetNextNumber(lstrLayers.ToArray(), My.Resources.DEFAULT_NEWLAYER_NUM)
             Dim strName As String = String.Format(My.Resources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
-            li = New LayerInfo(strName, "", 0.0!)
+            li = New LayerInfo(strName, "", 1.0!)
             Me.m_alLayers.Insert(iLayer, li)
 
             Me.UpdateGrid()
