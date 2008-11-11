@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.2  2008/11/11 23:02:26  villyc
+' Scaling of importance layers to unity average before summing up. Not sure what change in scientificinterface is.
+'
 ' Revision 1.1  2008/09/26 07:30:26  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -142,7 +145,7 @@ Public Class cMPARandomSearch
     '''' <summary>Best results of the current run</summary>
     'Private m_bestResults As cObjectiveResult
 
-    Private CumulativeCellWeight() As Single
+    Private CumulativeCellWeight() As Double
     Private CellCount As Integer
     Private m_nIters As Integer 'number of iteration completed
 
@@ -800,7 +803,7 @@ Public Class cMPARandomSearch
             CellCount = inRow * inCol
 
             ReDim CumulativeCellWeight(CellCount)
-            Dim CellWeight(inRow, inCol) As Single
+            Dim CellWeight(inRow, inCol) As Double
 
             'If on the GUI the "Group weighting" is checked then calculate cellweight, otherwise, set to 1
             'use guidance function
@@ -840,21 +843,40 @@ Public Class cMPARandomSearch
             'iC = 0
 
             Debug.Assert(Me.m_SpaceData.nImportanceLayers = Me.m_SpaceData.ImportanceLayers.Count, "Number of Importance Layers does not match the list of layers in the core")
-            Dim data(,) As Single, weight As Single
+            Dim data(,) As Single, weight As Double
+
+            Dim AverageLayer(Me.m_SpaceData.nImportanceLayers - 1) As Double
+
+            'VC2008Nov11, scaling each of the importance layers to have average 1
+            For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
+                data = Me.m_SpaceData.ImportanceLayers(iL).Data
+                'weight = Me.m_SpaceData.ImportanceLayers(iL).sWeight
+                Dim Count As Integer = 0
+                For i As Integer = 1 To inRow
+                    For j As Integer = 1 To inCol
+                        If data(i, j) > 0 Then
+                            Count += 1
+                            AverageLayer(iL) += data(i, j)
+                        End If
+                    Next j
+                Next i
+                If Count > 0 Then AverageLayer(iL) /= Count
+            Next iL
+
 
             For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
                 data = Me.m_SpaceData.ImportanceLayers(iL).Data
                 weight = Me.m_SpaceData.ImportanceLayers(iL).sWeight
                 For i As Integer = 1 To inRow
                     For j As Integer = 1 To inCol
-                        CellWeight(i, j) += weight * data(i, j)
+                        CellWeight(i, j) += weight * data(i, j) / AverageLayer(iL)
                     Next j
                 Next i
             Next iL
 
             'Now calculate cumulative weighted importance over all cells:
             iC = 0
-            Dim Sum As Single = 0
+            Dim Sum As Double = 0
             For i As Integer = 1 To inRow
                 For j As Integer = 1 To inCol
                     iC += 1
@@ -867,7 +889,7 @@ Public Class cMPARandomSearch
             'Finally scalse the cellweights so that they sum to 1
             If Sum > 0 Then
                 For i As Integer = 1 To CellCount
-                    CumulativeCellWeight(i) = CumulativeCellWeight(i) / Sum
+                    CumulativeCellWeight(i) /= Sum
                 Next
             Else
                 'if there are no values in any of the importance layer
