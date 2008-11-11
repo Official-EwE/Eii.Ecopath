@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.10  2008/11/11 17:08:25  joeb
+' Added GameViewSetting
+'
 ' Revision 1.9  2008/10/29 15:49:46  jeroens
 ' Pruned history
 '
@@ -922,6 +925,9 @@ Namespace Core
         GameState
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
+
+        ''' <summary>View settings for the Client set by the Server (visible groups...)</summary>
+        GameViewSetting
 
 
     End Enum
