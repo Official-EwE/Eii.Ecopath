@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditImportanceLayers.vb,v $
+' Revision 1.3  2008/11/11 07:36:52  jeroens
+' Added comments
+'
 ' Revision 1.2  2008/11/06 05:59:56  jeroens
 ' Bypassed bug 530
 '
@@ -22,30 +25,32 @@ Namespace Ecospace
 
     Public Class dlgEditImportanceLayers
 
-#Region "Private variables"
+#Region " Private variables "
 
-        Private m_Core As cCore
+        Private m_core As cCore = Nothing
 
-#End Region
+#End Region ' Private variables
 
-#Region "Constructors"
+#Region " Constructors "
+
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
-            ' Add any initialization after the InitializeComponent() call.
-            m_Core = cCore.GetInstance()
+            Me.m_core = cCore.GetInstance()
 
         End Sub
-#End Region
 
-#Region "Event handlers "
+#End Region ' Constructors
 
-        Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+#Region " Events "
+
+        Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
 
             ' Try to apply grid changes
             If Me.m_grid.Apply() = False Then
@@ -59,27 +64,32 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddHabitat.Click
+        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAddHabitat.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveHabitat.Click
+        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRemoveHabitat.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPreserve.Click
+        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnPreserve.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_HabitatGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub m_HabitatGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+            Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 
