@@ -38,7 +38,6 @@ Namespace Ecosim
             Me.m_tsdrpdnbtnPlotType = New System.Windows.Forms.ToolStripDropDownButton
             Me.CumulativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RelativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.CumulativeSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsdrpdnbtnGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
             Me.AutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -192,7 +191,7 @@ Namespace Ecosim
             '
             'm_tsdrpdnbtnPlotType
             '
-            Me.m_tsdrpdnbtnPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CumulativeToolStripMenuItem, Me.RelativeToolStripMenuItem, Me.CumulativeSelectedToolStripMenuItem})
+            Me.m_tsdrpdnbtnPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CumulativeToolStripMenuItem, Me.RelativeToolStripMenuItem})
             Me.m_tsdrpdnbtnPlotType.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.m_tsdrpdnbtnPlotType.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsdrpdnbtnPlotType.Name = "m_tsdrpdnbtnPlotType"
@@ -201,27 +200,19 @@ Namespace Ecosim
             '
             'CumulativeToolStripMenuItem
             '
-            Me.CumulativeToolStripMenuItem.Checked = True
             Me.CumulativeToolStripMenuItem.CheckOnClick = True
-            Me.CumulativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
+            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
             '
             'RelativeToolStripMenuItem
             '
+            Me.RelativeToolStripMenuItem.Checked = True
             Me.RelativeToolStripMenuItem.CheckOnClick = True
+            Me.RelativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
+            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.RelativeToolStripMenuItem.Text = "&Relative"
-            '
-            'CumulativeSelectedToolStripMenuItem
-            '
-            Me.CumulativeSelectedToolStripMenuItem.CheckOnClick = True
-            Me.CumulativeSelectedToolStripMenuItem.Name = "CumulativeSelectedToolStripMenuItem"
-            Me.CumulativeSelectedToolStripMenuItem.Size = New System.Drawing.Size(190, 22)
-            Me.CumulativeSelectedToolStripMenuItem.Text = "Cumulative (Selected)"
-            Me.CumulativeSelectedToolStripMenuItem.Visible = False
             '
             'ToolStripSeparator2
             '
@@ -239,7 +230,9 @@ Namespace Ecosim
             '
             'AutoScaleToolStripMenuItem
             '
+            Me.AutoScaleToolStripMenuItem.Checked = True
             Me.AutoScaleToolStripMenuItem.CheckOnClick = True
+            Me.AutoScaleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.AutoScaleToolStripMenuItem.Name = "AutoScaleToolStripMenuItem"
             Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
             Me.AutoScaleToolStripMenuItem.Text = "&Auto scale"
@@ -400,7 +393,6 @@ Namespace Ecosim
         Friend WithEvents BiomassToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents CatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents CumulativeSelectedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents AutoScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents CustomScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents m_tstbxSetMax As System.Windows.Forms.ToolStripTextBox

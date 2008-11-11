@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.4  2008/11/11 00:52:24  joeh
+' Set plot type default to relative and scale default to auto
+'
 ' Revision 1.3  2008/11/10 05:34:37  jeroens
 ' Renamed file command
 '
@@ -361,11 +364,11 @@ Namespace Controls
             End Get
             Set(ByVal bAutoscale As Boolean)
                 With Me.GetPane(iPane).YAxis.Scale
-                    If bAutoscale <> .MinAuto And bAutoscale <> .MaxAuto Then
-                        .MinAuto = bAutoscale
-                        .MaxAuto = bAutoscale
-                        RescaleAndRedraw(iPane)
-                    End If
+                    'If bAutoscale <> .MinAuto And bAutoscale <> .MaxAuto Then
+                    .MinAuto = bAutoscale
+                    .MaxAuto = bAutoscale
+                    RescaleAndRedraw(iPane)
+                    'End If
                 End With
             End Set
         End Property

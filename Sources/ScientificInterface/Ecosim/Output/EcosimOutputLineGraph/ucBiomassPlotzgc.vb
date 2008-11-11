@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.17  2008/11/11 00:52:23  joeh
+' Set plot type default to relative and scale default to auto
+'
 ' Revision 1.16  2008/11/06 18:53:20  joeh
 ' Display Overlay list box only when Overly is selected
 '
@@ -160,7 +163,7 @@ Namespace Ecosim
             m_ZGHelper = New ZedGraphHelper(m_zgc)
 
             ' 0.5) Call new graph
-            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Cumulative biomass", "Year", "Cumulative biomass")
+            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Relative biomass", "Year", "Relative biomass")
 
             m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
@@ -180,7 +183,7 @@ Namespace Ecosim
             m_ZGPlotter.PrepareDataset()
 
             'Cumulative plot
-            If CumulativeToolStripMenuItem.Checked Or CumulativeSelectedToolStripMenuItem.Checked Then
+            If CumulativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
                     m_ZGPlotter.Title = "Cumulative biomass"
@@ -353,9 +356,12 @@ Namespace Ecosim
             ' Make sure the group boxes say the correct items.
             PopulateGroupBoxes()
 
+            'Set default scaling to auto
+            Me.m_ZGHelper.AutoscalePane = True
+
             ' Calculate the Axis Scale Ranges
             Me.m_ZGHelper.RescaleAndRedraw()
-            Me.oldUpdateControls()
+            'Me.oldUpdateControls()
             Me.UpdateControls()
 
         End Sub
@@ -438,15 +444,10 @@ Namespace Ecosim
                 End If
             Next
 
-            If CumulativeSelectedToolStripMenuItem.Checked Then
-                For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
-                    m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
-                Next
-            Else
-                For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
-                    m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
-                Next
-            End If
+            
+            For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
+                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+            Next
             Me.m_zgc.Invalidate()
         End Sub
 
@@ -467,7 +468,7 @@ Namespace Ecosim
             lbGroups.Items.Clear()
             lbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nGroups
-                If CatchToolStripMenuItem.Checked And Not CumulativeSelectedToolStripMenuItem.Checked Then
+                If CatchToolStripMenuItem.Checked Then
                     Dim dblSumDiscardsLandings As Double = 0.0
                     For f As Integer = 1 To m_core.nFleets
                         dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
@@ -583,25 +584,15 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
-        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click
-            CumulativeSelectedToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
+        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
             RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
-        Private Sub CumulativeSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeSelectedToolStripMenuItem.Click
-            CumulativeToolStripMenuItem.Checked = Not CumulativeSelectedToolStripMenuItem.Checked
-            RelativeToolStripMenuItem.Checked = Not CumulativeSelectedToolStripMenuItem.Checked
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click
+        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
             CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
-            CumulativeSelectedToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -609,6 +600,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BiomassToolStripMenuItem.Click
             CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
+            'Set default plot type to relative
+            RelativeToolStripMenuItem.Checked = True
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -616,6 +609,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
             BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
+            'Set default plot type to relative
+            RelativeToolStripMenuItem.Checked = True
         End Sub
 
         ''' -------------------------------------------------------------------
