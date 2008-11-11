@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AssemblyInfo.vb,v $
+' Revision 1.4  2008/11/11 07:35:14  jeroens
+' Updated copyright info
+'
 ' Revision 1.3  2008/11/05 18:29:59  sherman
 ' Build 6.0.4.5
 '
@@ -84,7 +87,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Ecopath With Ecosim Scientific Interface")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwE6SFGUI")> 
-<Assembly: AssemblyCopyright("Copyright © 1991-2007")> 
+<Assembly: AssemblyCopyright("Copyright © 1991-2008")> 
 
 <Assembly: CLSCompliant(True)> 
 
