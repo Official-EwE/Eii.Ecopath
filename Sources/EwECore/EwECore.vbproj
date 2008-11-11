@@ -52,7 +52,7 @@
     </WarningsAsErrors>
     <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
@@ -263,6 +263,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
+    <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFisheriesRegulation.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />

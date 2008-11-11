@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.23  2008/11/11 21:33:00  joeb
+' Added cEcoFunction
+'
 ' Revision 1.22  2008/11/10 06:29:40  jeroens
 ' RunEcopath has option to produce outputs, even if param estimation failed
 '
@@ -180,6 +183,12 @@ Public Class cCore
 
     ''' <summary>Manager to access interface specific to the "Game" interface </summary>
     Private m_gameManger As cGameServerInterface
+
+    ''' <summary>
+    ''' Class to wrap stand alone functions for internal and external access
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private m_Functions As cEcoFunctions
 
 
 #Region "Private Initialization Flags"
@@ -1055,6 +1064,7 @@ Public Class cCore
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
         m_gameManger = New cGameServerInterface(Me)
+        m_Functions = New cEcoFunctions
 
         If bsuccess Then
             m_bCoreIsInit = True
@@ -2175,6 +2185,8 @@ Public Class cCore
                 Me.InitSearchManagers()
 
                 Me.m_gameManger.Init()
+
+                Me.initEcoFunctions()
 
                 If Not bsuccess Then
                     'this assumes that if there was a problem above then a message will have been posted already?????
@@ -10170,6 +10182,31 @@ Public Class cCore
             Return m_gameManger
         End Get
     End Property
+#End Region
+
+#Region "Eco Functions"
+
+    Private Sub initEcoFunctions()
+        Try
+            Me.m_Functions.Init(Me)
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Public access to stand alone functions wrapped in cEcoFunctions
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property EcoFunction() As cEcoFunctions
+        Get
+            Return Me.m_Functions
+        End Get
+    End Property
+
 #End Region
 
 End Class
