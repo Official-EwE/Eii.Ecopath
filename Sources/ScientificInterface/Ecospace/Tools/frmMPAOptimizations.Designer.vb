@@ -452,6 +452,7 @@ Namespace Ecospace
             '
             'm_btnExport
             '
+            Me.m_btnExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
             Me.m_btnExport.Location = New System.Drawing.Point(345, 3)
             Me.m_btnExport.Name = "m_btnExport"

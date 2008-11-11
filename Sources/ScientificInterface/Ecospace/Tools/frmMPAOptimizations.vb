@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.7  2008/11/11 07:31:31  jeroens
+' Implemented export
+'
 ' Revision 1.6  2008/11/08 23:57:29  jeroens
 ' Built basis for export
 '
@@ -343,32 +346,35 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnConvertToMpa.Click
+            Handles m_btnConvertToMpa.Click
+
             ' Sanity check
             If (Me.SearchType = eMPAOptimizationModels.RandomSearch) And (Me.m_alayerFeedback.Length = 1) Then
                 Me.SetLayer(Me.m_dataRunState, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
                 Me.m_ucZoom.Map.Refresh()
             End If
+
         End Sub
 
         Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnExport.Click
+            Handles m_btnExport.Click
 
-            Dim cmdFS As cFileSaveCommand = cFileSaveCommand.GetInstance()
-            Dim scn As cEwEScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
-            Dim strFileName As String = String.Format("RandomMPA_{0}", scn.Name)
-            Dim sfio As ASCIIFileIO = Nothing
-            Dim iNumResults As Integer = 0
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+            Dim lyrExport As cLayer = Nothing
             Dim aiCells(,) As Integer = Nothing
+            Dim iNumResults As Integer = 0
 
-            cmdFS.Invoke(strFileName, ".\", My.Resources.FILEFILTER_ASCFILE)
-            If (cmdFS.Result = DialogResult.OK) Then
-                ' Save!
-                aiCells = Me.m_MPAOptManager.CellSelectedMap(CInt(Me.m_nudBestPercentile.Value), iNumResults)
-                Dim rs As New Raster()
-                'rs.
+            If cmd Is Nothing Then Return
 
-            End If
+            ' Copy layer
+            lyrExport = New cLayer(Me.m_alayerFeedback(0))
+            aiCells = Me.m_MPAOptManager.CellSelectedMap(CInt(Me.m_nudBestPercentile.Value), iNumResults)
+            lyrExport.Name = "HitCount"
+            Me.SetLayer(aiCells, lyrExport.Data)
+
+            cmd.Tag = New cLayer() {lyrExport}
+            cmd.Invoke()
         End Sub
 
 #End Region ' Controls
