@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.3  2008/11/11 21:35:20  joeb
+' Moved FunctionKemptonsQ to cCore.EcoFunctions.KemptonsQ so it would be accessible for the Seach functions
+'
 ' Revision 1.2  2008/11/10 06:30:30  jeroens
 ' No need to assert
 '
@@ -171,11 +174,10 @@ Public Class cNetworkManager
 
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
-        m_EcoNetwork = New cEcoNetwork(Me)
-
         m_core = theCore
         CoreStateMonitor = m_core.StateMonitor
         m_publisher = theCore.Messages
+        m_EcoNetwork = New cEcoNetwork(Me)
         Return True
 
     End Function
@@ -696,6 +698,13 @@ Public Class cNetworkManager
         Set(ByVal value As Boolean)
             Me.m_EcoNetwork.PPRon = value
         End Set
+    End Property
+
+
+    Public ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
     End Property
 
 #End Region
