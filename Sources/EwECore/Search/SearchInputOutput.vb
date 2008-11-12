@@ -1,6 +1,18 @@
+'==============================================================================
+'
+' $Log: SearchInputOutput.vb,v $
+' Revision 1.2  2008/11/12 18:02:34  jeroens
+' Added Biomass Diversity search weight input + output
+'
+'==============================================================================
+
+#Region " Imports "
+
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Namespace SearchObjectives
 
@@ -14,8 +26,8 @@ Namespace SearchObjectives
         MandatedRebuilding = 3
         ExistenceValue = 3
         EcoStructure = 4
+        BiomassDiversity = 5
     End Enum
-
 
 #Region "Fleets "
 
@@ -114,6 +126,11 @@ Namespace SearchObjectives
             val = New cValue(New Single, eVarNameFlags.FPSSocialWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSSocialWeight))
             m_values.Add(val.varName, val)
 
+            'FPSBiomassDiversityWeight()
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.FPSBiomassDiversityWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSBiomassDiversityWeight))
+            m_values.Add(val.varName, val)
+
             'FPSMandatedRebuildingWeight()
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.FPSMandatedRebuildingWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSMandatedRebuildingWeight))
@@ -134,13 +151,10 @@ Namespace SearchObjectives
             val = New cValue(New Single, eVarNameFlags.FPSExistenceValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSExistenceValue))
             m_values.Add(val.varName, val)
 
-
-
             ResetStatusFlags()
             Me.AllowValidation = True
 
         End Sub
-
 
         Public Property EconomicWeight() As Single
             Get
@@ -159,6 +173,16 @@ Namespace SearchObjectives
 
             Set(ByVal value As Single)
                 SetVariable(eVarNameFlags.FPSSocialWeight, value)
+            End Set
+        End Property
+
+        Public Property BiomassDiversityWeight() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.FPSBiomassDiversityWeight), Single)
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.FPSBiomassDiversityWeight, value)
             End Set
         End Property
 
@@ -201,9 +225,6 @@ Namespace SearchObjectives
                 SetVariable(eVarNameFlags.FPSExistenceValue, value)
             End Set
         End Property
-
-
-
 
     End Class
 
@@ -295,7 +316,6 @@ Namespace SearchObjectives
 
     Public Class cSearchObjectiveParameters
         Inherits cCoreInputOutputBase
-
 
         Public Sub New(ByRef theCore As cCore)
             MyBase.New(theCore)

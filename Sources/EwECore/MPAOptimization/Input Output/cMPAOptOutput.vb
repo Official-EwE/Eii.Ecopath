@@ -1,3 +1,11 @@
+'==============================================================================
+'
+' $Log: cMPAOptOutput.vb,v $
+' Revision 1.2  2008/11/12 18:02:34  jeroens
+' Added Biomass Diversity search weight input + output
+'
+'==============================================================================
+
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -38,7 +46,6 @@ Public Class cMPAOptOutput
         val = New cValue(New Integer, eVarNameFlags.MPAOptCurCol, eStatusFlags.NotEditable, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-
         val = New cValue(New Single, eVarNameFlags.MPAOptEconomicValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
@@ -48,18 +55,17 @@ Public Class cMPAOptOutput
         val = New cValue(New Single, eVarNameFlags.MPAOptMandatedValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-
         val = New cValue(New Single, eVarNameFlags.MPAOptSocialValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-
 
         val = New cValue(New Single, eVarNameFlags.MPAOptTotalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-
         val = New cValue(New Single, eVarNameFlags.MPAOptPercentageClosed, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
+        val = New cValue(New Single, eVarNameFlags.MPAOptBiomassDiversityValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
 
     End Sub
 
@@ -76,6 +82,8 @@ Public Class cMPAOptOutput
         Me.MandatedValue = EcoSeedData.objFuncMandatedValue
         Me.SocialValue = EcoSeedData.objFuncSocialValue
         Me.TotalValue = EcoSeedData.objFuncTotal
+        ' ToDo_JB: Hook this up
+        'Me.BiomassDiversityValue = EcoSeedData.objBiomassDiversityValue
 
         Dim nTotCells As Integer = SpaceData.nWaterCells
         Dim nMPACells As Integer
@@ -215,6 +223,19 @@ Public Class cMPAOptOutput
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.MPAOptSocialValue, newValue)
+            End If
+        End Set
+
+    End Property
+
+    Public Property BiomassDiversityValue() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.FPSBiomassDiversityWeight))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.FPSBiomassDiversityWeight, newValue)
             End If
         End Set
 

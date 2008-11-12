@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.11  2008/11/12 18:02:35  jeroens
+' Added Biomass Diversity search weight input + output
+'
 ' Revision 1.10  2008/11/11 17:08:25  joeb
 ' Added GameViewSetting
 '
@@ -789,6 +792,7 @@ Namespace Core
         FPSSocialWeight
         FPSMandatedRebuildingWeight
         FPSEcoSystemWeight
+        FPSBiomassDiversityWeight
 
         FPSMaxPortUtil
         SearchPrevCostEarning
@@ -834,6 +838,7 @@ Namespace Core
         MPAOptSocialValue
         MPAOptMandatedValue
         MPAOptEcologicalValue
+        MPAOptBiomassDiversityValue
         MPAOptBestRow
         MPAOptBestCol
         MPAOptCurRow
