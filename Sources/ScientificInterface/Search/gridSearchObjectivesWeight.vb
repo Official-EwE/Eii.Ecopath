@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.2  2008/11/12 22:33:39  jeroens
+' BoundWeight not exposed by proper object
+'
 ' Revision 1.1  2008/11/12 21:37:33  jeroens
 ' Renamed, moved
 '
@@ -130,8 +133,9 @@ Namespace Ecosim
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
                 iRow += 1
 
+                ' HACK
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.MPAOptBoundaryWeight)
+                Me(iRow, 1) = New PropertyCell(Me.m_core.MPAOptimizationManager.MPAOptimizationParamters, eVarNameFlags.MPAOptBoundaryWeight)
                 iRow += 1
             Else
 
