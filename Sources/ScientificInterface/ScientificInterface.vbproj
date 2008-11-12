@@ -435,10 +435,10 @@
     <Compile Include="Ecosim\Tools\FitToTimeSeries.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\FleetOptmParamGrid.vb">
+    <Compile Include="Search\gridSearchObjectivesFleet.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\GroupOptmParamGrid.vb">
+    <Compile Include="Search\gridSearchObjectivesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\ParmBlockCodes.Designer.vb">
@@ -465,7 +465,7 @@
     <Compile Include="Ecosim\Tools\ucVulnerabiltyBlocks.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\ValueComponentGrid.vb">
+    <Compile Include="Search\gridSearchObjectivesWeight.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Basemap\Layer Controls\ucLayerGroup.Designer.vb">
