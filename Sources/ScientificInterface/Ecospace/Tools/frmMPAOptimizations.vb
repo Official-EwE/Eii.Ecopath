@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.11  2008/11/12 22:34:00  jeroens
+' Debugging
+'
 ' Revision 1.10  2008/11/12 21:41:54  jeroens
 ' Reworking
 '
@@ -168,10 +171,12 @@ Namespace Ecospace
         Private Sub Ecoseed_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             Dim SpaceOpt As cCoreInputOutputBase = Me.m_core.EcospaceModelParameters
-            Dim MPAOpt As cMPAOptParameters = Me.m_core.MPAOptimizationManager.MPAOptimizationParamters
+            Dim MPAOpt As cMPAOptParameters = Nothing
 
             Me.m_manager = m_core.MPAOptimizationManager
             Me.m_manager.Connect(Me, AddressOf Me.OnSeedCellCallback, AddressOf OnSeedRunStateCallback)
+
+            MPAOpt = Me.m_manager.MPAOptimizationParamters
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl()
@@ -801,6 +806,8 @@ Namespace Ecospace
                         output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
                         output.TotalValue, output.PercentageClosed)
 
+                    Me.LogAreaClosedPercentage(output.PercentageClosed)
+
             End Select
 
         End Sub
@@ -877,10 +884,9 @@ Namespace Ecospace
 
                 Case eMPAOptimizationModels.RandomSearch
 
-                    Me.LogProgressGraph(output.EconomicValue, output.SocialValue, _
-                                        output.MandatedValue, output.EcologicalValue, _
-                                        output.BiomassDiversityValue)
-                    Me.LogAreaClosedPercentage(output.PercentageClosed)
+                    'Me.LogProgressGraph(output.EconomicValue, output.SocialValue, _
+                    '                    output.MandatedValue, output.EcologicalValue, _
+                    '                    output.BiomassDiversityValue)
 
             End Select
 
