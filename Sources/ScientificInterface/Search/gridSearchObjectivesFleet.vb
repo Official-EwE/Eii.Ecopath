@@ -1,20 +1,8 @@
 '==============================================================================
 '
-' $Log: FleetOptmParamGrid.vb,v $
-' Revision 1.1  2008/09/26 07:31:52  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.9  2008/08/02 03:04:18  jeroens
-' Renamed resources
-'
-' Revision 1.8  2008/06/25 16:02:49  jeroens
-' ByRef -> ByVal
-'
-' Revision 1.7  2008/06/02 00:01:40  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.6  2008/05/29 22:23:01  jeroens
-' Moved eVarNameFlags to EwEUtils
+' $Log: gridSearchObjectivesFleet.vb,v $
+' Revision 1.1  2008/11/12 21:37:32  jeroens
+' Renamed, moved
 '
 '==============================================================================
 
@@ -32,7 +20,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class FleetOptmParamGrid
+    Public Class gridSearchObjectivesFleet
         : Inherits EwEGrid
 
         Private m_Core As cCore

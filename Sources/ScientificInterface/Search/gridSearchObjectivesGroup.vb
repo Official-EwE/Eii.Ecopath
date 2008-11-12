@@ -1,20 +1,8 @@
 '==============================================================================
 '
-' $Log: GroupOptmParamGrid.vb,v $
-' Revision 1.1  2008/09/26 07:31:52  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.13  2008/09/25 02:31:48  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.12  2008/09/23 16:14:31  jeroens
-' Added different usage modes
-'
-' Revision 1.11  2008/08/02 03:04:18  jeroens
-' Renamed resources
-'
-' Revision 1.10  2008/06/25 16:15:47  jeroens
-' Added header
+' $Log: gridSearchObjectivesGroup.vb,v $
+' Revision 1.1  2008/11/12 21:37:32  jeroens
+' Renamed, moved
 '
 '==============================================================================
 
@@ -32,7 +20,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class GroupOptmParamGrid
+    Public Class gridSearchObjectivesGroup
         : Inherits EwEGrid
 
         Private m_core As cCore
@@ -56,7 +44,7 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.FPS_GROUP_MANRB)
+            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.SEARCH_LABEL_MANDATEDRELBIOMASS)
             Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(My.Resources.HEADER_STRUCTURERELATIVEWEIGHT)
 
             'Me(0, iColumn) = New EwEColumnHeaderCell(My.Resources.FPS_GROUP_MAX_FM)
