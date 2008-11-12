@@ -26,12 +26,10 @@ Public Class cEcoFunctions
         Dim upper As Single
         Dim NumGr As Integer
 
-        Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
-
         Try
 
-
             Debug.Assert(m_core IsNot Nothing, Me.ToString & " not initialized properly!")
+            Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
 
             'We now know the current biomasses for each group = bb(i) the biomass for each group at the end of the simulation
             'Find the min and max biomass, only look at theliving groups
