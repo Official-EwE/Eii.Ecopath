@@ -53,11 +53,13 @@ Namespace Ecospace
             Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations
             Me.m_tpResults = New System.Windows.Forms.TabPage
             Me.m_btnExport = New System.Windows.Forms.Button
+            Me.m_lblAreaClosed = New System.Windows.Forms.Label
             Me.m_lblBestPercentile = New System.Windows.Forms.Label
             Me.m_gridResults = New ScientificInterface.gridMPAOptimizations
             Me.m_graphResults = New ZedGraph.ZedGraphControl
             Me.m_btnResetMPAs = New System.Windows.Forms.Button
             Me.m_btnConvertToMpa = New System.Windows.Forms.Button
+            Me.m_nudAreaClosed = New System.Windows.Forms.NumericUpDown
             Me.m_nudBestPercentile = New System.Windows.Forms.NumericUpDown
             Me.m_btnNewSearch = New System.Windows.Forms.Button
             Me.m_lblOutput = New System.Windows.Forms.Label
@@ -84,8 +86,6 @@ Namespace Ecospace
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_lblMap = New System.Windows.Forms.Label
-            Me.m_lblAreaClosed = New System.Windows.Forms.Label
-            Me.m_nudAreaClosed = New System.Windows.Forms.NumericUpDown
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -95,6 +95,7 @@ Namespace Ecospace
             Me.m_tcResults.SuspendLayout()
             Me.m_tpProgress.SuspendLayout()
             Me.m_tpResults.SuspendLayout()
+            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudBestPercentile, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlbParameters.SuspendLayout()
             CType(Me.m_nudMinArea, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -107,7 +108,6 @@ Namespace Ecospace
             Me.m_tabParameters.SuspendLayout()
             Me.m_tlpObjectives.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
-            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -219,7 +219,7 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.help
+            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
             Me.m_tsbSeed.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSeed.Name = "m_tsbSeed"
             Me.m_tsbSeed.Size = New System.Drawing.Size(44, 33)
@@ -242,7 +242,7 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.WarningHS
+            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
             Me.m_tsbEditLayers.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             Me.m_tsbEditLayers.Size = New System.Drawing.Size(66, 33)
@@ -466,6 +466,15 @@ Namespace Ecospace
             Me.m_btnExport.Text = "&Export"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
+            'm_lblAreaClosed
+            '
+            Me.m_lblAreaClosed.AutoSize = True
+            Me.m_lblAreaClosed.Location = New System.Drawing.Point(3, 8)
+            Me.m_lblAreaClosed.Name = "m_lblAreaClosed"
+            Me.m_lblAreaClosed.Size = New System.Drawing.Size(86, 13)
+            Me.m_lblAreaClosed.TabIndex = 0
+            Me.m_lblAreaClosed.Text = "&Area closed  (%):"
+            '
             'm_lblBestPercentile
             '
             Me.m_lblBestPercentile.AutoSize = True
@@ -545,6 +554,14 @@ Namespace Ecospace
             Me.m_btnConvertToMpa.TabIndex = 5
             Me.m_btnConvertToMpa.Text = "&Convert to MPA"
             Me.m_btnConvertToMpa.UseVisualStyleBackColor = True
+            '
+            'm_nudAreaClosed
+            '
+            Me.m_nudAreaClosed.Location = New System.Drawing.Point(95, 6)
+            Me.m_nudAreaClosed.Name = "m_nudAreaClosed"
+            Me.m_nudAreaClosed.Size = New System.Drawing.Size(54, 20)
+            Me.m_nudAreaClosed.TabIndex = 1
+            Me.m_nudAreaClosed.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_nudBestPercentile
             '
@@ -882,23 +899,6 @@ Namespace Ecospace
             Me.m_lblMap.Text = "Map input"
             Me.m_lblMap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_lblAreaClosed
-            '
-            Me.m_lblAreaClosed.AutoSize = True
-            Me.m_lblAreaClosed.Location = New System.Drawing.Point(3, 8)
-            Me.m_lblAreaClosed.Name = "m_lblAreaClosed"
-            Me.m_lblAreaClosed.Size = New System.Drawing.Size(86, 13)
-            Me.m_lblAreaClosed.TabIndex = 0
-            Me.m_lblAreaClosed.Text = "&Area closed  (%):"
-            '
-            'm_nudAreaClosed
-            '
-            Me.m_nudAreaClosed.Location = New System.Drawing.Point(95, 6)
-            Me.m_nudAreaClosed.Name = "m_nudAreaClosed"
-            Me.m_nudAreaClosed.Size = New System.Drawing.Size(54, 20)
-            Me.m_nudAreaClosed.TabIndex = 1
-            Me.m_nudAreaClosed.Value = New Decimal(New Integer() {10, 0, 0, 0})
-            '
             'frmMPAOptimizations
             '
             Me.AcceptButton = Me.m_btnRun
@@ -933,6 +933,7 @@ Namespace Ecospace
             Me.m_tpProgress.ResumeLayout(False)
             Me.m_tpResults.ResumeLayout(False)
             Me.m_tpResults.PerformLayout()
+            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudBestPercentile, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlbParameters.ResumeLayout(False)
             Me.m_tlbParameters.PerformLayout()
@@ -947,7 +948,6 @@ Namespace Ecospace
             Me.m_tlpObjectives.ResumeLayout(False)
             Me.m_tlpObjectives.PerformLayout()
             Me.m_tabMap.ResumeLayout(False)
-            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

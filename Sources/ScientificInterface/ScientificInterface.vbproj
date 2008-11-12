@@ -1315,12 +1315,14 @@
     <None Include="Resources\glyph_blue7.PNG" />
     <None Include="Resources\glyph_blue8.PNG" />
     <None Include="Resources\glyph_blue9.PNG" />
+    <None Include="Resources\Importance.png" />
     <Content Include="Resources\Lenfest Logo_50px.jpg" />
     <None Include="Resources\NavForward.png" />
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\ProtectFormHS.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <Content Include="Resources\Sponsors.jpg" />
+    <None Include="Resources\WarningHS1.png" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\ZoomOutHS.png" />
     <None Include="Resources\vb6tovb7.bmp" />
