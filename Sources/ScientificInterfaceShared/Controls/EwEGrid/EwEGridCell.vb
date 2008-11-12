@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.3  2008/11/12 22:47:16  sherman
+' Set resize to only widths
+'
 ' Revision 1.2  2008/10/06 21:12:16  jeroens
 ' Status NULL cells are shown as blank
 '
@@ -109,7 +112,7 @@ Namespace Controls.EwEGrid
             ' Configure data model
             Me.DataModel.AllowNull = True
             Me.Behaviors.Add(New CatchEnterPressBehaviour())
-            Me.Behaviors.Add(New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Both))
+            Me.Behaviors.Add(New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width))
         End Sub
 
 #End Region ' Construction
