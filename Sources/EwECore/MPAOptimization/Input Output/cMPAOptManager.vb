@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.4  2008/11/12 20:20:57  joeb
+' added BiomassDiversity to MPA stuff
+'
 ' Revision 1.3  2008/11/12 19:14:14  joeb
 ' CellSelectedMap now contains  PercentAreaClosedFilter
 '
@@ -666,6 +669,8 @@ Public Class cObjectiveResult
     Public objFuncSocialValue As Single
     Public objFuncEcologicalValue As Single
     Public objFuncAreaBorder As Single
+    Public objBiomassDiversity As Single
+
 
     ''' <summary>
     ''' Includes weights
@@ -687,7 +692,10 @@ Public Class cObjectiveResult
         objFuncMandatedValue = MPAData.objFuncMandatedValue
         objFuncSocialValue = MPAData.objFuncSocialValue
         objFuncEcologicalValue = MPAData.objFuncEcologicalValue
+        objBiomassDiversity = MPAData.objBiomassDiversity
+
         objFuncAreaBorder = MPAData.objFuncAreaBorder
+
         objFuncTotal = MPAData.objFuncTotal
 
         SearchType = MPAData.SearchType
@@ -708,6 +716,7 @@ Public Class cObjectiveResult
             objFuncSocialValue = MPAData.objFuncSocialValue
             objFuncEcologicalValue = MPAData.objFuncEcologicalValue
             objFuncAreaBorder = MPAData.objFuncAreaBorder
+            objBiomassDiversity = MPAData.objBiomassDiversity
             objFuncTotal = MPAData.objFuncTotal
 
             Select Case MPAData.SearchType

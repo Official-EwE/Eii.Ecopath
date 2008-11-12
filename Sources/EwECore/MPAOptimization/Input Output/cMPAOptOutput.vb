@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptOutput.vb,v $
+' Revision 1.3  2008/11/12 20:20:57  joeb
+' added BiomassDiversity to MPA stuff
+'
 ' Revision 1.2  2008/11/12 18:02:34  jeroens
 ' Added Biomass Diversity search weight input + output
 '
@@ -61,7 +64,7 @@ Public Class cMPAOptOutput
         val = New cValue(New Single, eVarNameFlags.MPAOptTotalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptPercentageClosed, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Integer, eVarNameFlags.MPAOptPercentageClosed, eStatusFlags.NotEditable, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         val = New cValue(New Single, eVarNameFlags.MPAOptBiomassDiversityValue, eStatusFlags.NotEditable, eValueTypes.Sng)
@@ -70,26 +73,26 @@ Public Class cMPAOptOutput
     End Sub
 
 
-    Friend Sub Init(ByRef EcoSeedData As cMPAOptDataStructures, ByVal SpaceData As cEcospaceDataStructures)
+    Friend Sub Init(ByRef mpaData As cMPAOptDataStructures, ByVal SpaceData As cEcospaceDataStructures)
 
-        Me.BestRow = EcoSeedData.bestrow
-        Me.BestCol = EcoSeedData.bestcol
-        Me.CurRow = EcoSeedData.CurRow
-        Me.CurCol = EcoSeedData.CurCol
+        Me.BestRow = mpaData.bestrow
+        Me.BestCol = mpaData.bestcol
+        Me.CurRow = mpaData.CurRow
+        Me.CurCol = mpaData.CurCol
 
-        Me.EcologicalValue = EcoSeedData.objFuncEcologicalValue
-        Me.EconomicValue = EcoSeedData.objFuncEconomicValue
-        Me.MandatedValue = EcoSeedData.objFuncMandatedValue
-        Me.SocialValue = EcoSeedData.objFuncSocialValue
-        Me.TotalValue = EcoSeedData.objFuncTotal
+        Me.EcologicalValue = mpaData.objFuncEcologicalValue
+        Me.EconomicValue = mpaData.objFuncEconomicValue
+        Me.MandatedValue = mpaData.objFuncMandatedValue
+        Me.SocialValue = mpaData.objFuncSocialValue
+        Me.TotalValue = mpaData.objFuncTotal
         ' ToDo_JB: Hook this up
-        'Me.BiomassDiversityValue = EcoSeedData.objBiomassDiversityValue
+        Me.BiomassDiversityValue = mpaData.objBiomassDiversity
 
         Dim nTotCells As Integer = SpaceData.nWaterCells
         Dim nMPACells As Integer
         For ir As Integer = 1 To SpaceData.Inrow
             For ic As Integer = 1 To SpaceData.InCol
-                If SpaceData.MPA(ir, ic) = EcoSeedData.iMPAtoUse Then
+                If SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse Then
                     nMPACells += 1
                 End If
             Next
@@ -254,30 +257,17 @@ Public Class cMPAOptOutput
 
     End Property
 
-    Public Property PercentageClosed() As Single
+    Public Property PercentageClosed() As Integer
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptPercentageClosed))
+            Return CInt(GetVariable(eVarNameFlags.MPAOptPercentageClosed))
         End Get
 
-        Set(ByVal newValue As Single)
+        Set(ByVal newValue As Integer)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.MPAOptPercentageClosed, newValue)
             End If
         End Set
 
     End Property
-
-    '''' <summary>
-    '''' Best cells, up to this point, from the Random search.
-    '''' </summary>
-    '''' <value></value>
-    '''' <returns></returns>
-    '''' <remarks>The objective function values of the best cells are not avalible at this time we need to figure out how to do this</remarks>
-    'Public ReadOnly Property BestCells() As List(Of cMPACell)
-    '    Get
-    '        Return Me.m_cells
-    '    End Get
-
-    'End Property
 
 End Class

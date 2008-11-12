@@ -112,6 +112,8 @@ Namespace SearchObjectives
                 m_valWeights.MandatedRebuildingWeight = coreData.ValWeight(eValueWeightTypes.MandatedRebuilding)
                 m_valWeights.SocialWeight = coreData.ValWeight(eValueWeightTypes.SocialValue)
 
+                m_valWeights.BiomassDiversityWeight = coreData.ValWeight(eValueWeightTypes.BiomassDiversity)
+
                 m_valWeights.PredictionVariance = coreData.ValWeight(eValueWeightTypes.PredictionVariance)
                 m_valWeights.ExistenceValue = coreData.ValWeight(eValueWeightTypes.ExistenceValue)
 
@@ -211,6 +213,8 @@ Namespace SearchObjectives
                     'Value Weights
                     coreData.ValWeight(eValueWeightTypes.NetEcomValue) = m_valWeights.EconomicWeight
                     coreData.ValWeight(eValueWeightTypes.EcoStructure) = m_valWeights.EcoSystemWeight
+
+                    coreData.ValWeight(eValueWeightTypes.BiomassDiversity) = m_valWeights.BiomassDiversityWeight
 
                     'ValWeight() shares indexes for different values based on the search.PortFolio flag
                     'SocialValue = 2

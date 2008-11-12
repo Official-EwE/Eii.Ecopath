@@ -91,7 +91,7 @@ Public Class cSearchDatastructures
     Public ParNumber() As Integer
     Public BlockNumber() As Integer 'Number of a FblockCode() see setFletchPars()
     Public FcodeIsSet As Boolean, LastTotalTime As Integer
-    Public ValWeight(4) As Single, Jobs() As Single
+    Public ValWeight(5) As Single, Jobs() As Single
 
     ''' <summary>Structure rel weight </summary>
     Public BGoalValue() As Single
@@ -727,6 +727,7 @@ Public Class cSearchDatastructures
         totval = 0
         Employ = 0
         manvalue = 0
+        KemptonQ = 0
 
     End Sub
 
@@ -1018,6 +1019,8 @@ Public Class cSearchDatastructures
         totval = 0
         Employ = 0
 
+        KemptonQ = KemptonQ / ModelRunLengthPostBaseYear ' why ModelRunLengthPostBaseYear???
+
         ' calculate last year incomes and costs by gear
         For i = 1 To m_ecopathData.NumFleet
             'If BaseYearCost(i) > 0 Then
@@ -1108,6 +1111,8 @@ Public Class cSearchDatastructures
         Employ = 0
 
         ExistValue = ExistValue / (m_ecopathData.NumLiving * ModelRunLength)
+
+        KemptonQ = KemptonQ / ModelRunLength
 
         If DiscountFactor > 0 Then
             'LTV = DF / DiscountFactor

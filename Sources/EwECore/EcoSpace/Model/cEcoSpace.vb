@@ -720,8 +720,6 @@ Public Class cEcoSpace
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_ESData, m_Data.TimeNow)
 
-
-
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
 

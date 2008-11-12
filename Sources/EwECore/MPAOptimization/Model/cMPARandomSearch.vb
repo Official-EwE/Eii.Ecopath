@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.4  2008/11/12 20:20:58  joeb
+' added BiomassDiversity to MPA stuff
+'
 ' Revision 1.3  2008/11/12 19:14:15  joeb
 ' CellSelectedMap now contains  PercentAreaClosedFilter
 '
@@ -165,7 +168,7 @@ Public Class cMPARandomSearch
     Public StoreBtimeForEcoSeed() As Single
 
     Private TotWeightedValueBase As Single
-    Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single
+    Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, KemptonsBase As Single
     Private TargetSumMax As Single
 
 #End Region
@@ -549,7 +552,8 @@ Public Class cMPARandomSearch
             curSum = m_search.ValWeight(1) * m_search.totval / TotValBase + _
                      m_search.ValWeight(2) * m_search.Employ / EmployBase + _
                      m_search.ValWeight(3) * m_search.manvalue / ManValueBase + _
-                     m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase
+                     m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase + _
+                      m_search.ValWeight(5) * m_search.KemptonQ / KemptonsBase
 
 
             'Calculate boundary length/area ratio
@@ -559,12 +563,13 @@ Public Class cMPARandomSearch
             'End If
             m_data.objFuncTotal = (m_search.WeightedTotal + AreaBorder) / Me.TotWeightedValueBase
 
-            'copy the results into the MPAOptDataStructures 
+            'calculate the relative values in to data structures 
             'so they can be use to populate the Input/Output object for the interface
             m_data.objFuncEcologicalValue = m_search.ecovalue / EcoValueBase
             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
             m_data.objFuncSocialValue = m_search.Employ / EmployBase
             m_data.objFuncEconomicValue = m_search.totval / TotValBase
+            m_data.objBiomassDiversity = m_search.KemptonQ / KemptonsBase
             m_data.objFuncAreaBorder = AreaBorder
 
             If curSum > TargetSumMax Then
@@ -778,6 +783,7 @@ Public Class cMPARandomSearch
         TotValBase = m_search.totval
         ManValueBase = m_search.manvalue
         EcoValueBase = m_search.ecovalue
+        KemptonsBase = m_search.KemptonQ
 
         If TotValBase = 0 Then TotValBase = 1
         If TotValBase < 0 Then TotValBase = -TotValBase
@@ -787,7 +793,7 @@ Public Class cMPARandomSearch
         If EcoValueBase = 0 Then EcoValueBase = 1
 
         TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                        m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase
+                        m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + m_search.ValWeight(5) * KemptonsBase
 
         TotWeightedValueBase += CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
 

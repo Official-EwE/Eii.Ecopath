@@ -24,6 +24,9 @@ Public Class cMPAOptDataStructures
     Public objFuncSocialValue As Single
     Public objFuncEcologicalValue As Single
     Public objFuncAreaBorder As Single
+
+    Public objBiomassDiversity As Single
+
     Public objFuncTotal As Single
 
     Public SearchType As eMPAOptimizationModels
@@ -70,6 +73,7 @@ Public Class cMPAOptDataStructures
         objFuncSocialValue = 0
         objFuncEcologicalValue = 0
         objFuncAreaBorder = 0
+        objBiomassDiversity = 0
         objFuncTotal = 0
 
     End Sub
