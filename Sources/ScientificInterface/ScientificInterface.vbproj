@@ -1321,6 +1321,7 @@
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\ProtectFormHS.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
+    <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
     <None Include="Resources\WarningHS1.png" />
     <None Include="Resources\ZoomInHS.png" />
