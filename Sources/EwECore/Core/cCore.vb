@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.24  2008/11/12 19:15:14  joeb
+' Added Ecofunctions to Search datastructures
+'
 ' Revision 1.23  2008/11/11 21:33:00  joeb
 ' Added cEcoFunction
 '
@@ -10056,7 +10059,7 @@ Public Class cCore
     Private Sub InitSearchManagers()
 
         Dim SearchManager As ISearchObjective
-        Me.m_SearchData = New cSearchDatastructures(Me.m_EcoPathData)
+        Me.m_SearchData = New cSearchDatastructures(Me.m_Functions, Me.m_EcoPathData)
 
         ' Sanity check
 
