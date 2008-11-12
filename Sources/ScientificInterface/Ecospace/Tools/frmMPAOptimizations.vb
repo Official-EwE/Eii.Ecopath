@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.9  2008/11/12 19:18:34  sherman
+' Included Axis Change on graph
+'
 ' Revision 1.8  2008/11/12 00:41:14  jeroens
 ' Fixed crash on init
 '
@@ -989,6 +992,7 @@ Namespace Ecospace
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
                 Me.m_graphResults.GraphPane.YAxis.Scale.MaxAuto = True
                 Me.m_zghResults.CursorPos = 0.0
+                Me.m_graphResults.AxisChange()
                 Me.m_graphResults.Invalidate()
 
             Catch ex As Exception
@@ -1063,6 +1067,7 @@ Namespace Ecospace
             Next
 
             Me.m_graphProgress.GraphPane.XAxis.Scale.Max = iXMax
+            Me.m_graphProgress.AxisChange()
             Me.m_graphProgress.Invalidate()
 
         End Sub
