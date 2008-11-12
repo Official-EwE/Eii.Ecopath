@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.3  2008/11/12 19:14:15  joeb
+' CellSelectedMap now contains  PercentAreaClosedFilter
+'
 ' Revision 1.2  2008/11/11 23:02:26  villyc
 ' Scaling of importance layers to unity average before summing up. Not sure what change in scientificinterface is.
 '
@@ -573,7 +576,7 @@ Public Class cMPARandomSearch
             End If
 
             'keep the results of every search
-            Me.m_lstObjectiveResults.Add(New cObjectiveResult(m_data))
+            Me.m_lstObjectiveResults.Add(New cObjectiveResult(m_data, Me.m_SpaceData))
 
             'Memory management for results
             If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.2  2008/11/12 19:14:15  joeb
+' CellSelectedMap now contains  PercentAreaClosedFilter
+'
 ' Revision 1.1  2008/09/26 07:30:26  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -1047,7 +1050,7 @@ Namespace EcoSeed
                 WriteOutputData()
 
                 'keep the results in memory
-                m_lstObjectiveResults.Add(New cObjectiveResult(m_data))
+                m_lstObjectiveResults.Add(New cObjectiveResult(m_data, m_SpaceData))
 
                 'Memory management for results
                 If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then

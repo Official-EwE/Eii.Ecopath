@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.3  2008/11/12 19:14:14  joeb
+' CellSelectedMap now contains  PercentAreaClosedFilter
+'
 ' Revision 1.2  2008/10/31 17:25:46  jeroens
 ' Uses MPA opt plugins
 '
@@ -370,7 +373,7 @@ Public Class cMPAOptManager
     ''' <param name="NumberOfResults">Number of results in the top percentile</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CellSelectedMap(ByVal TopPercentile As Integer, ByRef NumberOfResults As Integer) As Integer(,)
+    Public Function CellSelectedMap(ByVal TopPercentile As Integer, ByRef NumberOfResults As Integer, ByVal PercentAreaClosedFilter As Integer) As Integer(,)
         Dim map(,) As Integer
         Dim nResults As Integer
         Dim obj As cObjectiveResult
@@ -392,15 +395,18 @@ Public Class cMPAOptManager
             If nResults > Me.m_MPASearch.Results.Count Then nResults = Me.m_MPASearch.Results.Count
 
             Debug.Assert(nResults <= Me.m_MPASearch.Results.Count, Me.ToString & ".CellMap() Error computing number of results to use for map.")
-            NumberOfResults = nResults
 
             For ires As Integer = 0 To nResults - 1
 
                 obj = Me.m_MPASearch.Results.Item(ires)
-                'count the number of hits to each cell in the map
-                For Each cell As cMPACell In obj.Cells
-                    map(cell.Row, cell.Col) += 1
-                Next cell
+
+                If obj.PercentageClosed = PercentAreaClosedFilter Then
+                    NumberOfResults += 1
+                    'count the number of hits to each cell in the map
+                    For Each cell As cMPACell In obj.Cells
+                        map(cell.Row, cell.Col) += 1
+                    Next cell
+                End If
             Next ires
 
             Return map
@@ -669,10 +675,10 @@ Public Class cObjectiveResult
 
     Public SearchType As eMPAOptimizationModels
     Public Cells As List(Of cMPACell)
-    Public PercentageClosed As Single
+    Public PercentageClosed As Integer
 
 
-    Public Sub New(ByVal MPAData As cMPAOptDataStructures)
+    Public Sub New(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
 
         Row = MPAData.bestrow
         Col = MPAData.bestcol
@@ -689,9 +695,11 @@ Public Class cObjectiveResult
         'copy the list of cells into a new list 
         Cells = New List(Of cMPACell)(MPAData.Cells)
 
+        calcPercentageClosed(MPAData, SpaceData)
+
     End Sub
 
-    Public Sub Init(ByRef MPAData As cMPAOptDataStructures, Optional ByRef SpaceData As cEcospaceDataStructures = Nothing)
+    Public Sub Init(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
 
 
         Try
@@ -701,7 +709,6 @@ Public Class cObjectiveResult
             objFuncEcologicalValue = MPAData.objFuncEcologicalValue
             objFuncAreaBorder = MPAData.objFuncAreaBorder
             objFuncTotal = MPAData.objFuncTotal
-
 
             Select Case MPAData.SearchType
 
@@ -722,24 +729,28 @@ Public Class cObjectiveResult
 
             End Select
 
-            'what percentage of the area is closed
-            Dim nTotCells As Integer = SpaceData.Inrow * SpaceData.InCol
-            Dim nMPACells As Integer
-            For ir As Integer = 1 To SpaceData.Inrow
-                For ic As Integer = 1 To SpaceData.InCol
-                    If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
-                        nMPACells += 1
-                    End If
-                Next
-            Next
-            Me.PercentageClosed = CSng(nMPACells / nTotCells * 100)
-
+            calcPercentageClosed(MPAData, SpaceData)
 
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException(Me.ToString & ".Init() Error: " & ex.Message, ex)
         End Try
 
+    End Sub
+
+
+    Private Sub calcPercentageClosed(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
+        'what percentage of the area is closed
+        Dim nTotCells As Integer = SpaceData.nWaterCells
+        Dim nMPACells As Integer
+        For ir As Integer = 1 To SpaceData.Inrow
+            For ic As Integer = 1 To SpaceData.InCol
+                If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
+                    nMPACells += 1
+                End If
+            Next
+        Next
+        Me.PercentageClosed = CInt(nMPACells / nTotCells * 100)
     End Sub
 
     Public Overrides Function ToString() As String
