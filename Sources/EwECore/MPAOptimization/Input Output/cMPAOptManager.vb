@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.8  2008/11/12 23:21:37  joeb
+' Changed argument order of CellSelectedMap
+'
 ' Revision 1.7  2008/11/12 22:28:36  jeroens
 ' Opppssssss
 '
@@ -392,7 +395,7 @@ Public Class cMPAOptManager
     ''' <param name="NumberOfResults">Number of results in the top percentile</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CellSelectedMap(ByVal TopPercentile As Integer, ByRef NumberOfResults As Integer, ByVal PercentAreaClosedFilter As Integer) As Integer(,)
+    Public Function CellSelectedMap(ByVal TopPercentile As Integer, ByVal PercentAreaClosedFilter As Integer, ByRef NumberOfResults As Integer) As Integer(,)
         Dim map(,) As Integer
         Dim nResults As Integer
         Dim obj As cObjectiveResult
