@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.12  2008/11/12 23:34:33  jeroens
+' Debugged conrtrol enabled states
+' Result output selective
+'
 ' Revision 1.11  2008/11/12 22:34:00  jeroens
 ' Debugging
 '
@@ -249,7 +253,7 @@ Namespace Ecospace
 #Region " Controls "
 
         Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnRun.Click, m_bntNewSearch.Click
+                Handles m_btnRun.Click
 
             ' Abort if not all inputs valid
             If Not Me.ValidateInputs Then Return
@@ -259,6 +263,7 @@ Namespace Ecospace
 
         Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnStop.Click
+
             Me.m_manager.StopRun()
             ' Ho!
             Me.RunMode = eFormModeTypes.Stopping
@@ -385,8 +390,8 @@ Namespace Ecospace
 
             ' Copy layer
             lyrExport = New cLayer(Me.m_alayerFeedback(0))
-            aiCells = Me.m_manager.CellSelectedMap(Me.SelectedPercentageClosed, _
-                                                   Me.SelectedBestPercentile, _
+            aiCells = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
+                                                   Me.SelectedClosedPercentage, _
                                                    iNumResults)
             lyrExport.Name = "HitCount"
             Me.SetLayer(aiCells, lyrExport.Data)
@@ -519,8 +524,6 @@ Namespace Ecospace
 
         Private Sub InitOutputGraph()
 
-            Dim zgcr As New ZedGraph.ColorSymbolRotator
-
             Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
@@ -535,17 +538,11 @@ Namespace Ecospace
             Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
             Me.m_lptsResults(0) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve("Total weighted", Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsResults(2) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsResults(3) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsResults(4) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsResults(5) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
         End Sub
 
@@ -620,7 +617,7 @@ Namespace Ecospace
             End Set
         End Property
 
-        Private Property SelectedPercentageClosed() As Integer
+        Private Property SelectedClosedPercentage() As Integer
             Get
                 Return CInt(Val(Me.m_cmbAreaClosed.Text))
             End Get
@@ -653,6 +650,8 @@ Namespace Ecospace
                 Case eFormModeTypes.Searching
                     ' Set running status text
                     AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1)
+                    ' Init results
+                    Me.InitResults()
 
                 Case eFormModeTypes.Stopping
                     ' Set running status text
@@ -795,6 +794,7 @@ Namespace Ecospace
                         output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
+
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
@@ -1114,7 +1114,7 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.EcoSeed
                     lResults = Me.m_manager.Results
                 Case eMPAOptimizationModels.RandomSearch
-                    lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedPercentageClosed)
+                    lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage)
             End Select
 
             Try
@@ -1152,7 +1152,7 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.EcoSeed
                     lResults = Me.m_manager.Results()
                 Case eMPAOptimizationModels.RandomSearch
-                    lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedPercentageClosed())
+                    lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage())
             End Select
 
             res = lResults(CInt(Math.Round(Me.m_zghResults.CursorPos)))
@@ -1176,8 +1176,8 @@ Namespace Ecospace
             If (Me.SearchType = eMPAOptimizationModels.RandomSearch) And (Me.m_alayerFeedback.Length = 1) Then
                 ' Update map
                 Dim iNumResults As Integer = 0
-                Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedPercentageClosed, _
-                                                                         Me.SelectedBestPercentile, _
+                Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
+                                                                         Me.SelectedClosedPercentage, _
                                                                          iNumResults)
 
                 Me.SetLayer(aiCells, Me.m_alayerFeedback(0).Data)
@@ -1331,6 +1331,8 @@ Namespace Ecospace
             Me.m_lblStartYear.Enabled = bIsPreparing
             Me.m_nudEndYear.Enabled = bIsPreparing
             Me.m_lblEndYear.Enabled = bIsPreparing
+            Me.m_nudBaseYear.Enabled = bIsPreparing
+            Me.m_lblBaseYear.Enabled = bIsPreparing
             Me.m_nudMinArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblMinArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_nudMaxArea.Enabled = (bIsPreparing And bIsRandom)
@@ -1348,6 +1350,7 @@ Namespace Ecospace
             Me.m_rbRandom.Enabled = (bIsPreparing)
             Me.m_lbMPA.Enabled = (bIsPreparing)
             Me.m_cmbMPA.Enabled = (bIsPreparing)
+
             ' Results
             Me.m_graphResults.Enabled = bIsResults
             Me.m_lblAreaClosed.Enabled = (bIsResults And bIsRandom)
@@ -1363,6 +1366,7 @@ Namespace Ecospace
             ' Update run control buttons
             Me.m_btnRun.Enabled = (Not bIsRunning)
             Me.m_btnStop.Enabled = bIsRunning
+            Me.m_bntNewSearch.Enabled = bIsResults
 
             ' Toggle toolbar controls
             Me.m_tsbMPA.Enabled = bIsPreparing And bMPALayerSelected
@@ -1408,22 +1412,41 @@ Namespace Ecospace
                 End If
             End If
 
-            '' At least one objective weight should exceed 0
-            'If CSng(source.GetVariable(eVarNameFlags.FPSEconomicWeight)) = 0.0 And _
-            '   CSng(source.GetVariable(eVarNameFlags.FPSSocialWeight)) = 0.0 And _
-            '   CSng(source.GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight)) = 0.0 And _
-            '   CSng(source.GetVariable(eVarNameFlags.FPSEcoSystemWeight)) = 0.0 Then
-            '    ' ToDo_JS: Globalize this
-            '    Me.m_core.Messages.SendMessage(New cMessage("All objective weights are 0, there is nothing to search.", eMessageType.Any, eMessageSource.MPAOptimization, eMessageImportance.Warning))
-            '    Return False
-            'End If
-
             Return True
+
         End Function
 
         Private Function GetSelectedMPA() As Integer
             Return CInt(Me.m_fpMPA.Value())
         End Function
+
+        Public Sub InitResults()
+
+            Dim zgcr As New ZedGraph.ColorSymbolRotator
+
+            Me.m_graphResults.GraphPane.AddCurve("Total weighted", Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            If Me.m_manager.ValueWeights.EconomicWeight > 0 Then
+                Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End If
+
+            If Me.m_manager.ValueWeights.SocialWeight > 0 Then
+                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End If
+
+            If Me.m_manager.ValueWeights.MandatedRebuildingWeight > 0 Then
+                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End If
+
+            If Me.m_manager.ValueWeights.EcoSystemWeight > 0 Then
+                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End If
+
+            If Me.m_manager.ValueWeights.BiomassDiversityWeight > 0 Then
+                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+            End If
+
+        End Sub
 
         Private Sub ClearResults()
             For Each rp As ResultPoints In Me.m_lptsProgress
@@ -1433,7 +1456,10 @@ Namespace Ecospace
                 rp.Clear()
             Next
             Me.m_graphProgress.Refresh()
+
+            Me.m_graphResults.GraphPane.CurveList.Clear()
             Me.m_graphResults.Refresh()
+
             Me.m_cmbAreaClosed.Items.Clear()
         End Sub
 
