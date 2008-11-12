@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucZoomBasemap.vb,v $
+' Revision 1.3  2008/11/12 00:44:13  jeroens
+' Fixed 'save as' file filter
+'
 ' Revision 1.2  2008/11/08 23:50:42  jeroens
 ' Renamed file commands
 '
@@ -179,7 +182,7 @@ Namespace Ecospace
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_CSV)
+            cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
