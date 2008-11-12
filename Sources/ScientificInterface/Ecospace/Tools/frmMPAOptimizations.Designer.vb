@@ -84,6 +84,8 @@ Namespace Ecospace
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_lblMap = New System.Windows.Forms.Label
+            Me.m_lblAreaClosed = New System.Windows.Forms.Label
+            Me.m_nudAreaClosed = New System.Windows.Forms.NumericUpDown
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -105,6 +107,7 @@ Namespace Ecospace
             Me.m_tabParameters.SuspendLayout()
             Me.m_tlpObjectives.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
+            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -372,7 +375,7 @@ Namespace Ecospace
             Me.m_tcResults.Name = "m_tcResults"
             Me.m_tcResults.SelectedIndex = 0
             Me.m_tcResults.Size = New System.Drawing.Size(665, 218)
-            Me.m_tcResults.TabIndex = 10
+            Me.m_tcResults.TabIndex = 9
             '
             'm_tpProgress
             '
@@ -437,11 +440,13 @@ Namespace Ecospace
             'm_tpResults
             '
             Me.m_tpResults.Controls.Add(Me.m_btnExport)
+            Me.m_tpResults.Controls.Add(Me.m_lblAreaClosed)
             Me.m_tpResults.Controls.Add(Me.m_lblBestPercentile)
             Me.m_tpResults.Controls.Add(Me.m_gridResults)
             Me.m_tpResults.Controls.Add(Me.m_graphResults)
             Me.m_tpResults.Controls.Add(Me.m_btnResetMPAs)
             Me.m_tpResults.Controls.Add(Me.m_btnConvertToMpa)
+            Me.m_tpResults.Controls.Add(Me.m_nudAreaClosed)
             Me.m_tpResults.Controls.Add(Me.m_nudBestPercentile)
             Me.m_tpResults.Location = New System.Drawing.Point(4, 22)
             Me.m_tpResults.Name = "m_tpResults"
@@ -457,18 +462,18 @@ Namespace Ecospace
             Me.m_btnExport.Location = New System.Drawing.Point(345, 3)
             Me.m_btnExport.Name = "m_btnExport"
             Me.m_btnExport.Size = New System.Drawing.Size(99, 23)
-            Me.m_btnExport.TabIndex = 7
+            Me.m_btnExport.TabIndex = 4
             Me.m_btnExport.Text = "&Export"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
             'm_lblBestPercentile
             '
             Me.m_lblBestPercentile.AutoSize = True
-            Me.m_lblBestPercentile.Location = New System.Drawing.Point(-1, 8)
+            Me.m_lblBestPercentile.Location = New System.Drawing.Point(170, 8)
             Me.m_lblBestPercentile.Name = "m_lblBestPercentile"
-            Me.m_lblBestPercentile.Size = New System.Drawing.Size(42, 13)
-            Me.m_lblBestPercentile.TabIndex = 0
-            Me.m_lblBestPercentile.Text = "&Best %:"
+            Me.m_lblBestPercentile.Size = New System.Drawing.Size(48, 13)
+            Me.m_lblBestPercentile.TabIndex = 2
+            Me.m_lblBestPercentile.Text = "&Best (%):"
             '
             'm_gridResults
             '
@@ -499,7 +504,7 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridResults.TabIndex = 6
+            Me.m_gridResults.TabIndex = 8
             '
             'm_graphResults
             '
@@ -517,7 +522,7 @@ Namespace Ecospace
             Me.m_graphResults.ScrollMinY = 0
             Me.m_graphResults.ScrollMinY2 = 0
             Me.m_graphResults.Size = New System.Drawing.Size(444, 160)
-            Me.m_graphResults.TabIndex = 5
+            Me.m_graphResults.TabIndex = 7
             '
             'm_btnResetMPAs
             '
@@ -526,7 +531,7 @@ Namespace Ecospace
             Me.m_btnResetMPAs.Location = New System.Drawing.Point(561, 3)
             Me.m_btnResetMPAs.Name = "m_btnResetMPAs"
             Me.m_btnResetMPAs.Size = New System.Drawing.Size(96, 23)
-            Me.m_btnResetMPAs.TabIndex = 3
+            Me.m_btnResetMPAs.TabIndex = 6
             Me.m_btnResetMPAs.Text = "&Reset MPAs"
             Me.m_btnResetMPAs.UseVisualStyleBackColor = True
             '
@@ -537,16 +542,17 @@ Namespace Ecospace
             Me.m_btnConvertToMpa.Location = New System.Drawing.Point(450, 3)
             Me.m_btnConvertToMpa.Name = "m_btnConvertToMpa"
             Me.m_btnConvertToMpa.Size = New System.Drawing.Size(105, 23)
-            Me.m_btnConvertToMpa.TabIndex = 2
+            Me.m_btnConvertToMpa.TabIndex = 5
             Me.m_btnConvertToMpa.Text = "&Convert to MPA"
             Me.m_btnConvertToMpa.UseVisualStyleBackColor = True
             '
             'm_nudBestPercentile
             '
-            Me.m_nudBestPercentile.Location = New System.Drawing.Point(51, 6)
+            Me.m_nudBestPercentile.Location = New System.Drawing.Point(224, 6)
             Me.m_nudBestPercentile.Name = "m_nudBestPercentile"
-            Me.m_nudBestPercentile.Size = New System.Drawing.Size(94, 20)
-            Me.m_nudBestPercentile.TabIndex = 1
+            Me.m_nudBestPercentile.Size = New System.Drawing.Size(51, 20)
+            Me.m_nudBestPercentile.TabIndex = 3
+            Me.m_nudBestPercentile.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_btnNewSearch
             '
@@ -569,7 +575,7 @@ Namespace Ecospace
             Me.m_lblOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblOutput.Name = "m_lblOutput"
             Me.m_lblOutput.Size = New System.Drawing.Size(664, 18)
-            Me.m_lblOutput.TabIndex = 9
+            Me.m_lblOutput.TabIndex = 8
             Me.m_lblOutput.Text = "Output"
             Me.m_lblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
@@ -734,7 +740,7 @@ Namespace Ecospace
             Me.m_tcConfiguration.Name = "m_tcConfiguration"
             Me.m_tcConfiguration.SelectedIndex = 0
             Me.m_tcConfiguration.Size = New System.Drawing.Size(661, 498)
-            Me.m_tcConfiguration.TabIndex = 8
+            Me.m_tcConfiguration.TabIndex = 7
             '
             'm_tabParameters
             '
@@ -876,6 +882,23 @@ Namespace Ecospace
             Me.m_lblMap.Text = "Map input"
             Me.m_lblMap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
+            'm_lblAreaClosed
+            '
+            Me.m_lblAreaClosed.AutoSize = True
+            Me.m_lblAreaClosed.Location = New System.Drawing.Point(3, 8)
+            Me.m_lblAreaClosed.Name = "m_lblAreaClosed"
+            Me.m_lblAreaClosed.Size = New System.Drawing.Size(86, 13)
+            Me.m_lblAreaClosed.TabIndex = 0
+            Me.m_lblAreaClosed.Text = "&Area closed  (%):"
+            '
+            'm_nudAreaClosed
+            '
+            Me.m_nudAreaClosed.Location = New System.Drawing.Point(95, 6)
+            Me.m_nudAreaClosed.Name = "m_nudAreaClosed"
+            Me.m_nudAreaClosed.Size = New System.Drawing.Size(54, 20)
+            Me.m_nudAreaClosed.TabIndex = 1
+            Me.m_nudAreaClosed.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
             'frmMPAOptimizations
             '
             Me.AcceptButton = Me.m_btnRun
@@ -924,6 +947,7 @@ Namespace Ecospace
             Me.m_tlpObjectives.ResumeLayout(False)
             Me.m_tlpObjectives.PerformLayout()
             Me.m_tabMap.ResumeLayout(False)
+            CType(Me.m_nudAreaClosed, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -990,5 +1014,7 @@ Namespace Ecospace
         Private WithEvents lblParam As System.Windows.Forms.Label
         Private WithEvents m_lblMap As System.Windows.Forms.Label
         Friend WithEvents m_btnExport As System.Windows.Forms.Button
+        Private WithEvents m_lblAreaClosed As System.Windows.Forms.Label
+        Private WithEvents m_nudAreaClosed As System.Windows.Forms.NumericUpDown
     End Class
 End Namespace

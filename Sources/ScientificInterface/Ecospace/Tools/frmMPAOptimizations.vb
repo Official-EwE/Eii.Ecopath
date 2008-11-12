@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.8  2008/11/12 00:41:14  jeroens
+' Fixed crash on init
+'
 ' Revision 1.7  2008/11/11 07:31:31  jeroens
 ' Implemented export
 '
@@ -184,9 +187,8 @@ Namespace Ecospace
             Me.m_ucGroupOPGrid.FixedColumnWidths = False
             Me.m_plGroup.Controls.Add(Me.m_ucGroupOPGrid)
 
-            ' Configure graphs
-            Me.InitProgressGraph()
-            Me.InitOutputGraph()
+            Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
+            AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
 
             ' Connect to controls
             Me.m_fpStartYear = New cPropertyFormatProvider(Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
@@ -195,9 +197,6 @@ Namespace Ecospace
             Me.m_fpEndYear.Value = Math.Max(CSng(Me.m_fpEndYear.Value), 5)
             Me.m_fpBoundaryWeight = New cPropertyFormatProvider(Me.m_nudBoundaryWeight, MPAOpt, eVarNameFlags.MPAOptBoundaryWeight)
 
-            Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
-            AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
-
             Me.m_fpMinArea = New cPropertyFormatProvider(Me.m_nudMinArea, MPAOpt, eVarNameFlags.MPAOptMinArea)
             Me.m_fpMaxArea = New cPropertyFormatProvider(Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
             Me.m_fpStepSize = New cPropertyFormatProvider(Me.m_nudStep, MPAOpt, eVarNameFlags.MPAOptStepSize)
@@ -205,6 +204,10 @@ Namespace Ecospace
             Me.m_fpBestPercentile = New cEwEFormatProvider(Me.m_nudBestPercentile, GetType(Integer))
 
             Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+
+            ' Configure graphs
+            Me.InitProgressGraph()
+            Me.InitOutputGraph()
 
             ' Kick off
             Me.Reload()
@@ -335,7 +338,11 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnUpdateBestPercentile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_nudBestPercentile.ValueChanged
+                Handles m_nudBestPercentile.ValueChanged, m_nudAreaClosed.ValueChanged
+            ' G'dammit, stupid designer! Assigning a default value to a control will
+            ' cause events to be sent out during construction phase.
+            If (Me.m_propSearchType Is Nothing) Then Return
+
             Me.ShowBestPercentage()
         End Sub
 
