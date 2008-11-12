@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.4  2008/11/12 23:42:16  jeroens
+' Bravo, Sherm
+'
 ' Revision 1.3  2008/11/12 22:47:16  sherman
 ' Set resize to only widths
 '
@@ -9,58 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:15  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.10  2008/09/16 00:05:44  jeroens
-' Header cells always ineditable
-'
-' Revision 1.9  2008/08/27 01:31:43  jeroens
-' Fixed bug 502
-'
-' Revision 1.8  2008/08/12 15:11:13  jeroens
-' Safety checked
-'
-' Revision 1.7  2008/08/11 16:13:24  jeroens
-' Formatting determined via the type registered to the cell, no longer by examining the type of the cell value
-'
-' Revision 1.6  2008/07/29 13:05:01  jeroens
-' Generalized header cells to use units
-' Property-based header cells able to display units
-'
-' Revision 1.5  2008/07/21 23:49:11  jeroens
-' Simplified cell construction
-'
-' Revision 1.4  2008/07/18 19:30:01  jeroens
-' Row headers can use Units too
-'
-' Revision 1.3  2008/07/10 18:23:17  jeroens
-' Fixed units to properly behave
-'
-' Revision 1.2  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.1.2.2  2008/07/01 18:36:27  sherman
-' Merged Fix_Ecopat_EcosimUpdate...
-'
-' Revision 1.1  2008/06/01 23:45:07  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.39  2008/05/29 22:23:00  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.38  2008/05/27 17:41:06  jeroens
-' Simplified
-'
-' Revision 1.37  2008/05/04 12:51:37  jeroens
-' Hmm, cached remark was a good idea after all to detect updates
-'
-' Revision 1.36  2008/05/04 01:48:17  jeroens
-' Simplified cProperty remark interface
-'
-' Revision 1.35  2008/01/27 02:51:38  jeroens
-' [Enter] key advances to the next row, wraps around in the grid
-'
-' Revision 1.34  2008/01/22 01:18:52  jeroens
-' Added tooltip on non-name header cells
 '
 '==============================================================================
 
@@ -87,7 +38,6 @@ Namespace Controls.EwEGrid
         Inherits Cell
 
         ' JS 26Jan08: experimental new behaviour for EwECells: trap enter key
-
         Class CatchEnterPressBehaviour
             Inherits BehaviorModels.Common
 
@@ -111,7 +61,9 @@ Namespace Controls.EwEGrid
             Me.VisualModel = g_visualizer
             ' Configure data model
             Me.DataModel.AllowNull = True
+            ' Catch ENTER presses
             Me.Behaviors.Add(New CatchEnterPressBehaviour())
+            ' Only resize width, not height of cells
             Me.Behaviors.Add(New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width))
         End Sub
 
