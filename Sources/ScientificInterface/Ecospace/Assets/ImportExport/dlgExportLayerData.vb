@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgExportLayerData.vb,v $
+' Revision 1.2  2008/11/12 00:40:21  jeroens
+' Built initial mappings
+'
 ' Revision 1.1  2008/11/10 23:12:52  jeroens
 ' Initial version
 '
@@ -71,7 +74,16 @@ Public Class gridExportMappings
                     Return Nothing
                 End Get
                 Set(ByVal value As cLayer())
+
                     Me.m_aLayers = value
+                    Me.m_dtLayerMapping.Clear()
+
+                    If value IsNot Nothing Then
+                        For Each l As cLayer In value
+                            Me.m_dtLayerMapping(l) = l.Name.Trim().Replace(" ", "")
+                        Next
+                    End If
+
                     Me.RefreshContent()
                 End Set
             End Property
