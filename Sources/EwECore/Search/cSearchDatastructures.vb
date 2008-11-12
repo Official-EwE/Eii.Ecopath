@@ -93,8 +93,9 @@ Public Class cSearchDatastructures
     Public FcodeIsSet As Boolean, LastTotalTime As Integer
     Public ValWeight(4) As Single, Jobs() As Single
 
-    'Public EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single
+    ''' <summary>Structure rel weight </summary>
     Public BGoalValue() As Single
+    ''' <summary>Mandated rebuilding </summary>
     Public MGoalValue() As Single
 
     'Public LastYearCost() As Single
@@ -179,6 +180,11 @@ Public Class cSearchDatastructures
     ''' </summary>
     ''' <remarks></remarks>
     Private m_SearchCatchSemaphor As System.Threading.Semaphore = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+
+    Public KemptonQ As Single
+
+    'needed for KemptonsQ
+    Private m_EcoFunctions As cEcoFunctions
 
 #End Region
 
@@ -510,7 +516,9 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub New(ByRef EPData As cEcopathDataStructures)
+    Public Sub New(ByVal EcoFunctions As cEcoFunctions, ByRef EPData As cEcopathDataStructures)
+
+        m_EcoFunctions = EcoFunctions
 
         'copy data counters from the Ecopath data
         NumGroups = EPData.NumGroups
@@ -864,13 +872,7 @@ Public Class cSearchDatastructures
             LogB = CSng(Math.Log(Biomass(i) / m_ecosimData.StartBiomass(i)))
             EcoDistTime = CSng(EcoDistTime + LogB ^ 2)
             ExistValue = ExistValue + LogB * BGoalValue(i)
-        Next i
 
-        EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
-        Ecodistance = Ecodistance + DF * EcoDistTime
-
-        For i = 1 To m_ecopathData.NumLiving
-            'Ecovalue = Ecovalue - BGoalValue(i) * (bb(i) / m_data.StartBiomass(i) - BGoal(i)) ^ 2
             If MGoalValue(i) > 0 Then
                 If Biomass(i) / m_ecosimData.StartBiomass(i) < MGoalValue(i) Then 'not yet reached the mandated threshold
                     manvalue = manvalue + Biomass(i) / m_ecosimData.StartBiomass(i)
@@ -878,7 +880,24 @@ Public Class cSearchDatastructures
                     manvalue = manvalue + MGoalValue(i)
                 End If
             End If
+
         Next i
+
+        kemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Biomass, 0.25)
+
+        EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
+        Ecodistance = Ecodistance + DF * EcoDistTime
+
+        'For i = 1 To m_ecopathData.NumLiving
+        '    'Ecovalue = Ecovalue - BGoalValue(i) * (bb(i) / m_data.StartBiomass(i) - BGoal(i)) ^ 2
+        '    If MGoalValue(i) > 0 Then
+        '        If Biomass(i) / m_ecosimData.StartBiomass(i) < MGoalValue(i) Then 'not yet reached the mandated threshold
+        '            manvalue = manvalue + Biomass(i) / m_ecosimData.StartBiomass(i)
+        '        Else
+        '            manvalue = manvalue + MGoalValue(i)
+        '        End If
+        '    End If
+        'Next i
 
     End Sub
 
