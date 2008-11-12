@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.3  2008/11/12 23:24:52  jeroens
+' BiomassDiversity used for all searches
+'
 ' Revision 1.2  2008/11/12 22:33:39  jeroens
 ' BoundWeight not exposed by proper object
 '
@@ -128,11 +131,11 @@ Namespace Ecosim
                 iRow += 1
             End If
 
-            If Me.m_bShowRandomSearchParams Then
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY)
-                Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
-                iRow += 1
+            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY)
+            Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
+            iRow += 1
 
+            If Me.m_bShowRandomSearchParams Then
                 ' HACK
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT)
                 Me(iRow, 1) = New PropertyCell(Me.m_core.MPAOptimizationManager.MPAOptimizationParamters, eVarNameFlags.MPAOptBoundaryWeight)
@@ -168,8 +171,8 @@ Namespace Ecosim
 
         Private Function NumRows() As Integer
 
-            ' Fixed rows: Header + NetEconValue
-            Dim iNumRows As Integer = 2
+            ' Fixed rows: Header, NetEconValue, BiomassDiversity
+            Dim iNumRows As Integer = 3
 
             ' MaxPortUtil?
             If Me.m_bShowMaxPortUtil Then
@@ -182,8 +185,8 @@ Namespace Ecosim
 
             ' MPAOpt?
             If Me.m_bShowRandomSearchParams Then
-                ' #Yes: add BiomassDiversity, BoundaryWeight
-                iNumRows += 2
+                ' #Yes: add BoundaryWeight
+                iNumRows += 1
             Else
                 ' #No: NOP
             End If
