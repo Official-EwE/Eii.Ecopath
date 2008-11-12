@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptOutput.vb,v $
+' Revision 1.4  2008/11/12 20:22:21  joeb
+' Oppsss
+'
 ' Revision 1.3  2008/11/12 20:20:57  joeb
 ' added BiomassDiversity to MPA stuff
 '
@@ -98,7 +101,7 @@ Public Class cMPAOptOutput
             Next
         Next
 
-        Me.PercentageClosed = CSng(nMPACells / nTotCells * 100)
+        Me.PercentageClosed = CInt(nMPACells / nTotCells * 100)
 
     End Sub
 
