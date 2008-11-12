@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridMPAOptimizations.vb,v $
+' Revision 1.2  2008/11/12 21:39:05  jeroens
+' Revamping
+'
 ' Revision 1.1  2008/09/26 07:32:03  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -72,7 +75,7 @@ Public Class gridMPAOptimizations
 
         Me.FixedColumnWidths = False
 
-        Me.Redim(7, [Enum].GetValues(GetType(eColumnTypes)).Length)
+        Me.Redim(8, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
         Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Value) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
@@ -82,30 +85,41 @@ Public Class gridMPAOptimizations
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(1, eColumnTypes.Value) = c
 
-        Me(2, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.FPS_VC_NET_SOCIAL_VALUE)
+        Me(2, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_SOCIAL_VALUE)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(2, eColumnTypes.Value) = c
 
-        Me(3, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.FPS_VC_NET_MANDATED_REBUILDING)
+        Me(3, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(3, eColumnTypes.Value) = c
 
-        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.FPS_VC_NET_ECOSYSTEM_STRUCTURE)
+        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(4, eColumnTypes.Value) = c
 
-        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_TOTAL)
+        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE)
+        c = New EwECell(0.0!, GetType(Single))
+        c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
+        Me(4, eColumnTypes.Value) = c
+
+        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(5, eColumnTypes.Value) = c
 
-        Me(6, eColumnTypes.Variable) = New EwERowHeaderCell("% Area closed")
+        Me(6, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_TOTAL)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(6, eColumnTypes.Value) = c
+
+        ' ToDo: globalize this
+        Me(7, eColumnTypes.Variable) = New EwERowHeaderCell("Area closed (%)")
+        c = New EwECell(0.0!, GetType(Single))
+        c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
+        Me(7, eColumnTypes.Value) = c
 
     End Sub
 
@@ -119,14 +133,16 @@ Public Class gridMPAOptimizations
 
     Public Sub LogResult(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
         ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
+        ByVal sBiomassDiversityValue As Single, _
         ByVal sTotalWeighted As Single, ByVal sPercClosed As Single)
 
         Me(1, eColumnTypes.Value).Value = sEconomicValue
         Me(2, eColumnTypes.Value).Value = sSocialValue
         Me(3, eColumnTypes.Value).Value = sMandatedValue
         Me(4, eColumnTypes.Value).Value = sEcologicalValue
-        Me(5, eColumnTypes.Value).Value = sTotalWeighted
-        Me(6, eColumnTypes.Value).Value = sPercClosed
+        Me(5, eColumnTypes.Value).Value = sBiomassDiversityValue
+        Me(6, eColumnTypes.Value).Value = sTotalWeighted
+        Me(7, eColumnTypes.Value).Value = sPercClosed
 
         Me.InvalidateCells()
 
