@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.3  2008/11/12 22:21:45  joeb
+' Bug fixes from adding BiomassDiversity
+'
 ' Revision 1.2  2008/11/12 19:14:15  joeb
 ' CellSelectedMap now contains  PercentAreaClosedFilter
 '
@@ -120,21 +123,15 @@ Imports EwECore.cEcoSpace
 
 Namespace EcoSeed
 
-
-
     'ToDo_jb EcoSeed YearTimeStep() sets iYear to TotalTime
     'ToDo_jb m_data.SeedBlockSize2 EwE5 m_data.SeedBlockSize2 is set by the user to 1,4,9,16 or 25 
     '   SideStep = Sqr(m_data.SeedBlockSize2) then in EvaluateSeedCell m_data.SeedBlockSize2 is set to 9 and SideStep is not reset
     ' it looks like the only value that maters here is SideStep as long as SideStep is set before m_data.SeedBlockSize2 is hardwired at 9
     'this is happening in a temp way in at the start of run
 
-    'ToDo_jb Sort out PredictEffort flag PredictEffortDistributionSeed() PredictEffortDistribution() in EwE5 this is a mess 
-    'the PredictEffort flag seems to be set to 1 at all times so is always True
-    'PredictEffortDistributionSeed() is only called from FindSpatialEqulilibrium() never from RunSpaceValue() RunEcoSeed calls RunSpaceValue() so PredictEffortDistributionSeed() is not called from Seed???
-    'What is going on here? What is the intent of all this code?
-
     Public Class cEcoSeed
         Implements IMPASearchModel
+
 
 #Region "Private data"
 
@@ -192,11 +189,9 @@ Namespace EcoSeed
         Private TotalSearchMax As Single
         Private SeedSumMax As Single
 
-
-        Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single
+        Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, BioDiversityBase As Single
         Private TotWeightedValueBase As Single
         Private SideStep As Integer
-
 
 #End Region
 
@@ -355,6 +350,35 @@ Namespace EcoSeed
             End Set
         End Property
 
+
+        Public ReadOnly Property OKtoRun() As Boolean Implements IMPASearchModel.OKtoRun
+            Get
+                '
+                ' Check seeds
+                For ir As Integer = 1 To Me.m_SpaceData.Inrow
+                    For ic As Integer = 1 To Me.m_SpaceData.InCol
+                        If m_data.MPASeed(ir, ic) > 0 Then
+                            Return True
+                        End If
+                    Next ic
+                Next ir
+
+                ' Check MPAs
+                ' Check within MPAs
+                For ir As Integer = 1 To Me.m_SpaceData.Inrow
+                    For ic As Integer = 1 To Me.m_SpaceData.InCol
+
+                        If m_SpaceData.MPA(ir, ic) > 0 Then
+                            Return True
+                        End If
+                    Next ic
+                Next ir
+
+                Return False
+
+            End Get
+        End Property
+
 #End Region
 
 #Region "Running the model"
@@ -471,7 +495,8 @@ Namespace EcoSeed
                             CurSum = 0 + m_search.ValWeight(1) * m_search.totval / TotValBase + _
                             m_search.ValWeight(2) * m_search.Employ / EmployBase + _
                             m_search.ValWeight(3) * m_search.manvalue / ManValueBase + _
-                            m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase
+                            m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase + _
+                             m_search.ValWeight(5) * m_search.KemptonQ / BioDiversityBase
 
                             'Calculate boundary length/area ratio
                             AreaBorder = CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
@@ -481,6 +506,8 @@ Namespace EcoSeed
                             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
                             m_data.objFuncSocialValue = m_search.Employ / EmployBase
                             m_data.objFuncEconomicValue = m_search.totval / TotValBase
+                            m_data.objFuncEconomicValue = m_search.totval / TotValBase
+                            m_data.objBiomassDiversity = m_search.KemptonQ / BioDiversityBase
                             m_data.objFuncAreaBorder = AreaBorder
                             m_data.objFuncTotal = (m_search.WeightedTotal + AreaBorder) / Me.TotWeightedValueBase
 
@@ -1017,6 +1044,7 @@ Namespace EcoSeed
             TotValBase = m_search.totval
             ManValueBase = m_search.manvalue
             EcoValueBase = m_search.ecovalue
+            BioDiversityBase = m_search.KemptonQ
 
             If TotValBase = 0 Then TotValBase = 1
             If TotValBase < 0 Then TotValBase = -TotValBase
@@ -1024,9 +1052,10 @@ Namespace EcoSeed
             If EmployBase < 0 Then EmployBase = -EmployBase
             If ManValueBase = 0 Then ManValueBase = 1
             If EcoValueBase = 0 Then EcoValueBase = 1
+            If BioDiversityBase = 0 Then BioDiversityBase = 1
 
             TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                                    m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase
+                                    m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + m_search.ValWeight(5) * BioDiversityBase
 
             TotWeightedValueBase += CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
 
@@ -1176,8 +1205,6 @@ Namespace EcoSeed
             'ReDim GearRentStore(NumGear, m_esData.Inrow * m_esData.InCol + 1)
         End Sub
 #End Region
-
-   
 
     End Class
 

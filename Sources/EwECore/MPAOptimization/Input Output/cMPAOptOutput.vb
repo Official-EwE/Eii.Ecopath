@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptOutput.vb,v $
+' Revision 1.5  2008/11/12 22:21:45  joeb
+' Bug fixes from adding BiomassDiversity
+'
 ' Revision 1.4  2008/11/12 20:22:21  joeb
 ' Oppsss
 '
@@ -236,12 +239,12 @@ Public Class cMPAOptOutput
 
     Public Property BiomassDiversityValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.FPSBiomassDiversityWeight))
+            Return CSng(GetVariable(eVarNameFlags.MPAOptBiomassDiversityValue))
         End Get
 
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.FPSBiomassDiversityWeight, newValue)
+                SetVariable(eVarNameFlags.MPAOptBiomassDiversityValue, newValue)
             End If
         End Set
 

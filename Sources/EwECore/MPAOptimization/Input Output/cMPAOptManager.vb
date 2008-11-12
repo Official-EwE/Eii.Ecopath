@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.6  2008/11/12 22:21:44  joeb
+' Bug fixes from adding BiomassDiversity
+'
 ' Revision 1.5  2008/11/12 20:39:45  sherman
 ' Added Ecoseed null seed/mpa test.
 '
@@ -313,40 +316,6 @@ Public Class cMPAOptManager
 
 #End Region
 
-#Region "Internal methods"
-    ''' <summary>Checks if Seeds cells exist or MPA's, only if Ecoseed is running.</summary>
-    ''' <returns>True if any of the above exists.</returns>
-    Private Function CheckForSeedsAndMPA() As Boolean
-        Dim val As Boolean = False
-
-        ' Check if it Ecoseed enabled
-        If Me.m_parameters.SearchType <> eMPAOptimizationModels.EcoSeed Then
-            Return True
-        End If
-
-        ' Check seeds
-        For ir As Integer = 1 To Me.m_core.m_EcoSpaceData.Inrow
-            For ic As Integer = 1 To Me.m_core.m_EcoSpaceData.InCol
-                'Me.m_core.m_EcoSpaceData.s(ir, ic) = 0
-            Next ic
-        Next ir
-
-
-        ' Check MPAs
-        ' Check within MPAs
-        For ir As Integer = 1 To Me.m_core.m_EcoSpaceData.Inrow
-            For ic As Integer = 1 To Me.m_core.m_EcoSpaceData.InCol
-                'Me.m_core.m_EcoSpaceData.MPA(ir, ic) = 0
-            Next ic
-        Next ir
-
-        ' Just make it work for now.
-        val = True
-
-        Return val
-    End Function
-#End Region ' Internal Methods
-
 #End Region
 
 #Region "Public methods"
@@ -363,7 +332,7 @@ Public Class cMPAOptManager
             End If
 
             ' Test if no seed cells nor MPA
-            If Me.CheckForSeedsAndMPA() Then
+            If Not Me.m_MPASearch.OKtoRun Then
                 Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eMessageSource.MPAOptimization, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.OK_CANCEL, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.CANCEL)
                 If msg.Reply = cFeedbackMessage.eReply.CANCEL Or msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
@@ -675,6 +644,8 @@ End Class
 Public Interface IMPASearchModel
 
     Sub Run()
+    ReadOnly Property OKtoRun() As Boolean
+
 
     Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef MPAOptData As cMPAOptDataStructures) As Boolean
 

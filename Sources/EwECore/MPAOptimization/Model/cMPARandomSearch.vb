@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.5  2008/11/12 22:21:46  joeb
+' Bug fixes from adding BiomassDiversity
+'
 ' Revision 1.4  2008/11/12 20:20:58  joeb
 ' added BiomassDiversity to MPA stuff
 '
@@ -114,7 +117,6 @@ Imports System.Math
 
 Public Class cMPARandomSearch
     Implements IMPASearchModel
-
 
 #Region "Private data"
 
@@ -326,6 +328,15 @@ Public Class cMPARandomSearch
         Set(ByVal value As String)
             Me.m_filename = value
         End Set
+    End Property
+
+
+    Public ReadOnly Property OKtoRun() As Boolean Implements IMPASearchModel.OKtoRun
+        Get
+            'the random search can always run 
+            'thats quite a statment...
+            Return True
+        End Get
     End Property
 
 #End Region
