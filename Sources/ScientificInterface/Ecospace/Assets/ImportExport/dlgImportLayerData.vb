@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.4  2008/11/12 00:38:14  jeroens
+' no message
+'
 ' Revision 1.3  2008/11/10 23:12:26  jeroens
 ' Uses status feedback
 '
@@ -474,10 +477,8 @@ Public Class gridMapLayerToAttribute
             Dim lstrAttributes As New List(Of String)
 
             If Not sfio.Read(strFile, lsd) Then
-                sfio.Close()
                 Return eSpatialFileCompatibility.Unreadable
             End If
-            sfio.Close()
 
             If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
 
