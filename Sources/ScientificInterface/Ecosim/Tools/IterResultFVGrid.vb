@@ -32,7 +32,7 @@ Namespace Ecosim
             Me.Redim(m_Core.nFleets + 1, m_Core.nFleets + 3)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_INCOME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL2)
+            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_PROFIT)
 
             For i As Integer = 1 To m_Core.nFleets
                 Dim fltName As String = m_Core.FleetInputs(i).Name

@@ -145,8 +145,8 @@
   <data name="HEADER_COSTES" xml:space="preserve">
     <value>Cost (E/S)</value>
   </data>
-  <data name="FPS_VC_STEPSIZE" xml:space="preserve">
-    <value>Stepsize</value>
+  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
+    <value>Step size</value>
   </data>
   <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
     <value>Loading model...</value>
@@ -269,9 +269,6 @@
     <value>May</value>
     <comment>Short for May (how much shorter can you get?)</comment>
   </data>
-  <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
-    <value>Biomass</value>
-  </data>
   <data name="HEADER_PBZ" xml:space="preserve">
     <value>Prod./biom (=Z)</value>
   </data>
@@ -321,7 +318,7 @@
   <data name="ECOSPACE_DISPERSAL_RELFEEDRATE" xml:space="preserve">
     <value>Rel. feed. rate in bad habitat</value>
   </data>
-  <data name="FPS_GROUP_MAX_FM" xml:space="preserve">
+  <data name="GENERIC_LABEL_MAXFISHINGMORTAILITY" xml:space="preserve">
     <value>Max fish mortality</value>
   </data>
   <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
@@ -656,7 +653,7 @@
   <data name="HEADER_SHAPE" xml:space="preserve">
     <value>Shape</value>
   </data>
-  <data name="FPS_VC_NET_MANDATED_REBUILDING" xml:space="preserve">
+  <data name="SEARCH_LABEL_MANDATED_REBUILDING" xml:space="preserve">
     <value>Mandated rebuilding</value>
   </data>
   <data name="LABEL_GROUP" xml:space="preserve">
@@ -848,7 +845,7 @@
     <value>{0} rows x {1} cols</value>
     <comment>{0}:# of rows, {1}:# of cols</comment>
   </data>
-  <data name="FPS_FV_RESULT_COL2" xml:space="preserve">
+  <data name="GENERIC_LABEL_PROFIT" xml:space="preserve">
     <value>Profit</value>
   </data>
   <data name="STATUS_ECOSPACE_LOADING" xml:space="preserve">
@@ -859,7 +856,7 @@
     <value>Saving Ecosim scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="FPS_GROUP_MANRB" xml:space="preserve">
+  <data name="SEARCH_LABEL_MANDATEDRELBIOMASS" xml:space="preserve">
     <value>Mandated rel. biom</value>
   </data>
   <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
@@ -1054,7 +1051,7 @@
   <data name="EwELogo_caption" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewelogo_caption.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="FPS_VC_NET_EXISTENCE_VALUE" xml:space="preserve">
+  <data name="SEARCH_LABEL_EXISTENCE_VALUE" xml:space="preserve">
     <value>Existence value</value>
   </data>
   <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
@@ -1115,7 +1112,7 @@
   <data name="HEADER_IMPORT" xml:space="preserve">
     <value>Import</value>
   </data>
-  <data name="FPS_VC_NET_SOCIAL_VALUE" xml:space="preserve">
+  <data name="SEARCH_LABEL_SOCIAL_VALUE" xml:space="preserve">
     <value>Social value (employment)</value>
   </data>
   <data name="PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND" xml:space="preserve">
@@ -1330,7 +1327,7 @@
   <data name="HEADER_TOTALMORTALITY" xml:space="preserve">
     <value>Z (Total mortality)</value>
   </data>
-  <data name="FPS_VALUE_COMPONENT" xml:space="preserve">
+  <data name="SEARCH_LABEL_VALUE_COMPONENT" xml:space="preserve">
     <value>Value component</value>
   </data>
   <data name="HEADER_EMIGRATION_UNIT" xml:space="preserve">
@@ -1595,7 +1592,7 @@
   <data name="MCRUN_HEADER_CV" xml:space="preserve">
     <value>c.v.</value>
   </data>
-  <data name="FPS_VC_NET_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+  <data name="SEARCH_LABEL_ECOSYSTEM_STRUCTURE" xml:space="preserve">
     <value>Ecosystem structure</value>
   </data>
   <data name="HEADER_PB_ABBR" xml:space="preserve">
@@ -2109,11 +2106,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
   </data>
-  <data name="FPS_STATUS_COMPLETED" xml:space="preserve">
-    <value>Fishing policy search completed</value>
+  <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
+    <value>Search completed</value>
   </data>
-  <data name="FPS_STATUS_STARTED" xml:space="preserve">
-    <value>Fishing policy search started</value>
+  <data name="SEARCH_STATUS_STARTED" xml:space="preserve">
+    <value>Search started</value>
   </data>
   <data name="STATUS_SEARCH_SEARCHING" xml:space="preserve">
     <value>Searching...</value>
@@ -2218,6 +2215,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
     <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp</value>
+  </data>
+  <data name="SEARCH_LABEL_BIOMASSDIVERSITY" xml:space="preserve">
+    <value>Biomass diversity</value>
+  </data>
+  <data name="SEARCH_LABEL_BOUNDARYWEIGHT" xml:space="preserve">
+    <value>Boundary weight</value>
   </data>
   <data name="Importance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Importance.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

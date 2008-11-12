@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FishingPolicySearch.vb,v $
+' Revision 1.2  2008/11/12 21:36:19  jeroens
+' Resources!
+'
 ' Revision 1.1  2008/09/26 07:31:51  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -85,9 +88,9 @@ Namespace Ecosim
         Private m_FPManager As cFishingPolicyManager
         Private m_FPParams As cFishingPolicyParameters
 
-        Private m_VCGrid As ValueComponentGrid
-        Private m_FleetOPGrid As FleetOptmParamGrid
-        Private m_GroupOPGrid As GroupOptmParamGrid
+        Private m_VCGrid As gridSearchObjectivesWeight
+        Private m_FleetOPGrid As gridSearchObjectivesFleet
+        Private m_GroupOPGrid As gridSearchObjectivesGroup
         Private m_IterResultSOGrid As IterResultSOGrid
         Private m_IterResultMultiRunSOGrid As IterResultSOGrid
         Private m_IterResultFVGrid As IterResultFVGrid
@@ -134,9 +137,9 @@ Namespace Ecosim
 
 
             m_PolicyClrBlocks = New PolicyColorBlocks
-            m_VCGrid = New ValueComponentGrid(m_Core.FishingPolicyManager)
-            m_FleetOPGrid = New FleetOptmParamGrid(m_Core.FishingPolicyManager)
-            m_GroupOPGrid = New GroupOptmParamGrid(m_Core.FishingPolicyManager)
+            m_VCGrid = New gridSearchObjectivesWeight(m_Core.FishingPolicyManager)
+            m_FleetOPGrid = New gridSearchObjectivesFleet(m_Core.FishingPolicyManager)
+            m_GroupOPGrid = New gridSearchObjectivesGroup(m_Core.FishingPolicyManager)
             m_IterResultSOGrid = New IterResultSOGrid
             m_IterResultMultiRunSOGrid = New IterResultSOGrid
             m_IterResultFVGrid = New IterResultFVGrid
@@ -388,7 +391,7 @@ Namespace Ecosim
 
                 AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault)
 
-                Me.m_Core.Messages.SendMessage(New cMessage(My.Resources.FPS_STATUS_COMPLETED, _
+                Me.m_Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
                         eMessageType.NotSet, eMessageSource.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -403,7 +406,7 @@ Namespace Ecosim
             Try
                 Me.m_IterResultSOGrid.ClearData()
 
-                Me.m_Core.Messages.SendMessage(New cMessage(My.Resources.FPS_STATUS_STARTED, _
+                Me.m_Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
                         eMessageType.NotSet, eMessageSource.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
@@ -463,7 +466,7 @@ Namespace Ecosim
         Private Sub cbMaxPortUl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMaxPortUl.CheckedChanged
             If Not m_FPParams Is Nothing Then
                 m_FPParams.MaxPortUtil = cbMaxPortUl.Checked
-                m_VCGrid.IsMaxPortUtil = cbMaxPortUl.Checked
+                m_VCGrid.ShowMaxPortUtil = cbMaxPortUl.Checked
             End If
         End Sub
 

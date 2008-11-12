@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupInfoEwEGrid.vb,v $
+' Revision 1.2  2008/11/12 21:35:31  jeroens
+' Resources!
+'
 ' Revision 1.1  2008/09/26 07:31:35  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -102,7 +105,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.OtherMortFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
             Me(0, eColumnTypes.PredatorFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PREDATORFEEDINGTIME)
             Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.FPS_GROUP_MAX_FM)
+            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(My.Resources.HEADER_SWITCHINGPOWER_VALRANGE)
             Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTSALINITY)
