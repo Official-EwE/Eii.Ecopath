@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.4  2008/11/13 00:42:12  jeroens
+' Boundary weight shown for mpa/random search
+'
 ' Revision 1.3  2008/11/12 23:24:52  jeroens
 ' BiomassDiversity used for all searches
 '
@@ -33,7 +36,7 @@ Namespace Ecosim
         Private m_manager As ISearchObjective = Nothing
         Private m_bIsBatchRun As Boolean = False
         Private m_bShowMaxPortUtil As Boolean = False
-        Private m_bShowRandomSearchParams As Boolean = False
+        Private m_bShowMPAOptParams As Boolean = False
 
         Public Sub New(ByVal theManager As ISearchObjective)
             MyBase.New()
@@ -63,12 +66,12 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Property ShowRandomSearchParams() As Boolean
+        Public Property ShowMPAOptParams() As Boolean
             Get
-                Return Me.m_bShowRandomSearchParams
+                Return Me.m_bShowMPAOptParams
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bShowRandomSearchParams = value
+                Me.m_bShowMPAOptParams = value
                 Me.RefreshContent()
             End Set
         End Property
@@ -135,7 +138,7 @@ Namespace Ecosim
             Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
             iRow += 1
 
-            If Me.m_bShowRandomSearchParams Then
+            If Me.m_bShowMPAOptParams Then
                 ' HACK
                 Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT)
                 Me(iRow, 1) = New PropertyCell(Me.m_core.MPAOptimizationManager.MPAOptimizationParamters, eVarNameFlags.MPAOptBoundaryWeight)
@@ -184,7 +187,7 @@ Namespace Ecosim
             End If
 
             ' MPAOpt?
-            If Me.m_bShowRandomSearchParams Then
+            If Me.m_bShowMPAOptParams Then
                 ' #Yes: add BoundaryWeight
                 iNumRows += 1
             Else
