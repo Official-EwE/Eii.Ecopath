@@ -143,7 +143,7 @@ Namespace Ecospace
             Me.m_ucZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_ucZoom.Name = "m_ucZoom"
             Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
-            Me.m_ucZoom.Size = New System.Drawing.Size(487, 450)
+            Me.m_ucZoom.Size = New System.Drawing.Size(487, 466)
             Me.m_ucZoom.TabIndex = 0
             '
             'm_tlbLayers
@@ -160,17 +160,17 @@ Namespace Ecospace
             Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle)
             Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
             Me.m_tlbLayers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlbLayers.Size = New System.Drawing.Size(161, 450)
+            Me.m_tlbLayers.Size = New System.Drawing.Size(161, 466)
             Me.m_tlbLayers.TabIndex = 2
             '
             'm_plLayers
             '
             Me.m_plLayers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plLayers.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plLayers.Location = New System.Drawing.Point(0, 23)
+            Me.m_plLayers.Location = New System.Drawing.Point(0, 59)
             Me.m_plLayers.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
             Me.m_plLayers.Name = "m_plLayers"
-            Me.m_plLayers.Size = New System.Drawing.Size(161, 427)
+            Me.m_plLayers.Size = New System.Drawing.Size(161, 407)
             Me.m_plLayers.TabIndex = 2
             '
             'm_lblLayers
@@ -181,7 +181,7 @@ Namespace Ecospace
             Me.m_lblLayers.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
             Me.m_lblLayers.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblLayers.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblLayers.Location = New System.Drawing.Point(0, 0)
+            Me.m_lblLayers.Location = New System.Drawing.Point(0, 36)
             Me.m_lblLayers.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblLayers.Name = "m_lblLayers"
             Me.m_lblLayers.Size = New System.Drawing.Size(161, 20)
@@ -191,6 +191,8 @@ Namespace Ecospace
             '
             'm_tsMap
             '
+            Me.m_tsMap.AutoSize = False
+            Me.m_tsMap.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbMPA, Me.m_tsbSeed, Me.m_tsbEditLayers})
             Me.m_tsMap.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMap.Name = "m_tsMap"
@@ -382,7 +384,7 @@ Namespace Ecospace
             Me.m_tcResults.Location = New System.Drawing.Point(0, 24)
             Me.m_tcResults.Name = "m_tcResults"
             Me.m_tcResults.SelectedIndex = 0
-            Me.m_tcResults.Size = New System.Drawing.Size(664, 244)
+            Me.m_tcResults.Size = New System.Drawing.Size(664, 245)
             Me.m_tcResults.TabIndex = 9
             '
             'm_tpProgress
@@ -392,7 +394,7 @@ Namespace Ecospace
             Me.m_tpProgress.Location = New System.Drawing.Point(4, 22)
             Me.m_tpProgress.Name = "m_tpProgress"
             Me.m_tpProgress.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpProgress.Size = New System.Drawing.Size(656, 218)
+            Me.m_tpProgress.Size = New System.Drawing.Size(656, 219)
             Me.m_tpProgress.TabIndex = 0
             Me.m_tpProgress.Text = "Progress"
             Me.m_tpProgress.UseVisualStyleBackColor = True
@@ -459,7 +461,7 @@ Namespace Ecospace
             Me.m_tpResults.Controls.Add(Me.m_nudBestPercentile)
             Me.m_tpResults.Location = New System.Drawing.Point(4, 22)
             Me.m_tpResults.Name = "m_tpResults"
-            Me.m_tpResults.Size = New System.Drawing.Size(656, 210)
+            Me.m_tpResults.Size = New System.Drawing.Size(656, 219)
             Me.m_tpResults.TabIndex = 2
             Me.m_tpResults.Text = "Results"
             Me.m_tpResults.UseVisualStyleBackColor = True
@@ -765,7 +767,7 @@ Namespace Ecospace
             'm_scMap.Panel2
             '
             Me.m_scMap.Panel2.Controls.Add(Me.m_tlbLayers)
-            Me.m_scMap.Size = New System.Drawing.Size(652, 450)
+            Me.m_scMap.Size = New System.Drawing.Size(652, 466)
             Me.m_scMap.SplitterDistance = 487
             Me.m_scMap.TabIndex = 6
             '
@@ -778,7 +780,7 @@ Namespace Ecospace
             Me.m_tcConfiguration.Multiline = True
             Me.m_tcConfiguration.Name = "m_tcConfiguration"
             Me.m_tcConfiguration.SelectedIndex = 0
-            Me.m_tcConfiguration.Size = New System.Drawing.Size(666, 510)
+            Me.m_tcConfiguration.Size = New System.Drawing.Size(666, 509)
             Me.m_tcConfiguration.TabIndex = 7
             '
             'm_tabParameters
@@ -789,7 +791,7 @@ Namespace Ecospace
             Me.m_tabParameters.Location = New System.Drawing.Point(4, 22)
             Me.m_tabParameters.Name = "m_tabParameters"
             Me.m_tabParameters.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabParameters.Size = New System.Drawing.Size(658, 484)
+            Me.m_tabParameters.Size = New System.Drawing.Size(658, 483)
             Me.m_tabParameters.TabIndex = 0
             Me.m_tabParameters.Text = "Configuration"
             Me.m_tabParameters.UseVisualStyleBackColor = True
@@ -831,7 +833,7 @@ Namespace Ecospace
             Me.m_tlpObjectives.RowCount = 2
             Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18.0!))
             Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpObjectives.Size = New System.Drawing.Size(658, 383)
+            Me.m_tlpObjectives.Size = New System.Drawing.Size(658, 382)
             Me.m_tlpObjectives.TabIndex = 6
             '
             'm_lblObjectives
@@ -851,7 +853,7 @@ Namespace Ecospace
             Me.m_plGroup.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plGroup.Location = New System.Drawing.Point(383, 21)
             Me.m_plGroup.Name = "m_plGroup"
-            Me.m_plGroup.Size = New System.Drawing.Size(272, 359)
+            Me.m_plGroup.Size = New System.Drawing.Size(272, 358)
             Me.m_plGroup.TabIndex = 5
             '
             'm_plFleet
@@ -859,7 +861,7 @@ Namespace Ecospace
             Me.m_plFleet.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plFleet.Location = New System.Drawing.Point(193, 21)
             Me.m_plFleet.Name = "m_plFleet"
-            Me.m_plFleet.Size = New System.Drawing.Size(178, 359)
+            Me.m_plFleet.Size = New System.Drawing.Size(178, 358)
             Me.m_plFleet.TabIndex = 4
             '
             'm_plObjectives
@@ -867,7 +869,7 @@ Namespace Ecospace
             Me.m_plObjectives.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plObjectives.Location = New System.Drawing.Point(3, 21)
             Me.m_plObjectives.Name = "m_plObjectives"
-            Me.m_plObjectives.Size = New System.Drawing.Size(178, 359)
+            Me.m_plObjectives.Size = New System.Drawing.Size(178, 358)
             Me.m_plObjectives.TabIndex = 3
             '
             'm_lbFleet
@@ -901,7 +903,7 @@ Namespace Ecospace
             Me.m_tabMap.Location = New System.Drawing.Point(4, 22)
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabMap.Size = New System.Drawing.Size(658, 468)
+            Me.m_tabMap.Size = New System.Drawing.Size(658, 483)
             Me.m_tabMap.TabIndex = 1
             Me.m_tabMap.Text = "Map Input"
             Me.m_tabMap.UseVisualStyleBackColor = True
@@ -940,7 +942,7 @@ Namespace Ecospace
             Me.m_scContent.Panel2.Controls.Add(Me.m_lblOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
             Me.m_scContent.Size = New System.Drawing.Size(666, 782)
-            Me.m_scContent.SplitterDistance = 510
+            Me.m_scContent.SplitterDistance = 509
             Me.m_scContent.TabIndex = 10
             '
             'm_bntNewSearch
