@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.15  2008/11/13 02:00:49  jeroens
+' Fixed autoscale
+' Icons desaturated
+'
 ' Revision 1.14  2008/11/13 01:33:52  jeroens
 ' Layer maintenance
 ' Cursor logic made crash-safe
@@ -410,7 +414,7 @@ Namespace Ecospace
         Private Sub OnSelectAreaClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
-            Me.LoadResultsGraph()
+            Me.UpdateResultsGraph()
         End Sub
 
 #End Region ' Controls
@@ -527,6 +531,8 @@ Namespace Ecospace
             Me.m_lptsProgress(3) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
 
+            Me.m_zghProgress.AutoscalePane = True
+
         End Sub
 
         Private Sub InitOutputGraph()
@@ -535,6 +541,7 @@ Namespace Ecospace
 
             Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
+
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
 
             Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
@@ -564,7 +571,7 @@ Namespace Ecospace
             Me.m_lptsResults(5) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_zghResults.Redraw()
+            Me.m_zghResults.AutoscalePane = True
 
         End Sub
 
@@ -632,7 +639,8 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.RandomSearch
                         Me.m_graphProgress.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_RANDOMSEARCH
                 End Select
-                Me.m_graphProgress.Invalidate()
+
+                Me.m_zghProgress.RescaleAndRedraw()
 
             End Set
         End Property
@@ -1045,7 +1053,7 @@ Namespace Ecospace
                     End Select
             End Select
 
-            Me.LoadResultsGraph()
+            Me.UpdateResultsGraph()
 
             Return True
 
@@ -1113,7 +1121,7 @@ Namespace Ecospace
             Next
 
             Me.m_graphProgress.GraphPane.XAxis.Scale.Max = iXMax
-            Me.m_graphProgress.Invalidate()
+            Me.m_zghProgress.RescaleAndRedraw()
 
         End Sub
 
@@ -1128,7 +1136,7 @@ Namespace Ecospace
 
 #Region " Results "
 
-        Private Sub LoadResultsGraph()
+        Private Sub UpdateResultsGraph()
 
             Dim lResults As List(Of cObjectiveResult) = Nothing
 
@@ -1151,9 +1159,9 @@ Namespace Ecospace
                     Me.m_lptsResults(5).AddItem(result.objBiomassDiversity)
                 Next
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
-                'Me.m_graphResults.GraphPane.YAxis.Scale.MaxAuto = True
+
                 Me.m_zghResults.CursorPos = 0.0
-                Me.m_graphResults.Invalidate()
+                Me.m_zghResults.RescaleAndRedraw()
 
             Catch ex As Exception
 

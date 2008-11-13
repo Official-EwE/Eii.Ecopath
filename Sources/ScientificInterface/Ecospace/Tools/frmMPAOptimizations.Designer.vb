@@ -227,7 +227,7 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.help
+            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
             Me.m_tsbSeed.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSeed.Name = "m_tsbSeed"
             Me.m_tsbSeed.Size = New System.Drawing.Size(44, 33)
@@ -250,7 +250,7 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.WarningHS
+            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
             Me.m_tsbEditLayers.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             Me.m_tsbEditLayers.Size = New System.Drawing.Size(66, 33)
@@ -965,9 +965,9 @@ Namespace Ecospace
             Me.CancelButton = Me.m_btnStop
             Me.ClientSize = New System.Drawing.Size(665, 830)
             Me.Controls.Add(Me.m_bntNewSearch)
-            Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
+            Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_rbRandom)
             Me.Controls.Add(Me.m_lblParameters)
             Me.Controls.Add(Me.m_lblSearchType)
