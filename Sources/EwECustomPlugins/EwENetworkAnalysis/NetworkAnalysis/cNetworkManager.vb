@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.4  2008/11/13 19:34:14  joeh
+' Fix the error in the calculation of total ascendency
+'
 ' Revision 1.3  2008/11/11 21:35:20  joeb
 ' Moved FunctionKemptonsQ to cCore.EcoFunctions.KemptonsQ so it would be accessible for the Seach functions
 '
@@ -1934,7 +1937,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property AscendTotalEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AscendTotal
+            Return Me.m_EcoNetwork.Ascendency
         End Get
     End Property
 

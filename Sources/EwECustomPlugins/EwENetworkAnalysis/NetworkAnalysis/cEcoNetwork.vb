@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.5  2008/11/13 19:34:14  joeh
+' Fix the error in the calculation of total ascendency
+'
 ' Revision 1.4  2008/11/11 21:35:18  joeb
 ' Moved FunctionKemptonsQ to cCore.EcoFunctions.KemptonsQ so it would be accessible for the Seach functions
 '
@@ -343,7 +346,7 @@ Public Class cEcoNetwork
     Public PropFlowDet() As Single
     Public RaiseToPPEcosim() As Single
     Public RaiseToDetEcosim() As Single
-    Public AscendTotal() As Single
+    Public Ascendency() As Single
     Public AMI() As Single
     Public Entropy() As Single
 
@@ -2834,7 +2837,9 @@ NextPivot:
 
                     Path(pivot - 1) = pivot    ' Path's limits are Pivot-1 to Level
                     Pass = 0
+                    'Dim count As Integer = 0
                     For Level = pivot To 2 * m_epdata.NumGroups
+                        'count = count + 1 'If count = 111135 Then MsgBox("ready to debug")
                         Pass = Pass + 1
                         If Pass > 10 ^ 7 Then GoTo NextPivot 'MsgBox "Too many pathways, results incomplete": Exit For
                         If Path(Level - 1) > 0 Then
@@ -4106,6 +4111,7 @@ NextPivot:
                 'g_num_ppr_gr2 = 0
                 ' AbortRun = False
                 'EstimateHostMatrixWithNoCycles
+                'If Round = 258 Then MsgBox("ready to debug")
                 FindPaths(NumOfPaths, SimB, SimPB, SimQB, SimEE, SDiet, SimCatch)
                 ' DoEvents()
                 '  If AbortRun = True Then Exit Sub
@@ -4148,7 +4154,7 @@ NextPivot:
             ReDim Preserve Biomass(Round)
             ReDim Preserve CatchEcosim(Round)
             ReDim Preserve PropFlowDet(Round)
-            ReDim Preserve AscendTotal(Round)
+            ReDim Preserve Ascendency(Round)
             ReDim Preserve AMI(Round)
             ReDim Preserve Entropy(Round)
             Throughput(Round) = TruPut
@@ -4171,8 +4177,8 @@ NextPivot:
             Biomass(Round) = Biom
             CatchEcosim(Round) = fCatch
             PropFlowDet(Round) = DetIndex
-            AscendTotal(Round) = AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)
-            AMI(Round) = AscendTotal(Round) / Throughput(Round)
+            Ascendency(Round) = (AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
+            AMI(Round) = Ascendency(Round) / Throughput(Round)
             Entropy(Round) = CapacityEcosim(Round) / Throughput(Round)
 
             'If PPRon Then Write #FF, RaiseToPP(0), RaiseToDet(0) Else Write #FF,

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.22  2008/11/13 19:34:14  joeh
+' Fix the error in the calculation of total ascendency
+'
 ' Revision 1.21  2008/11/05 21:08:55  joeb
 ' Added some comments
 '
@@ -703,7 +706,6 @@ Public Property PluginManager() As cPluginManager
             ' START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
-
                 iyf = IIf(iyr <= NumberOfYears, iyr, NumberOfYears)
 
                 m_search.InitForYear()
@@ -750,7 +752,6 @@ Public Property PluginManager() As cPluginManager
                 For ipct = 1 To 12
 
                     itime = itime + 1
-
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
                     If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)

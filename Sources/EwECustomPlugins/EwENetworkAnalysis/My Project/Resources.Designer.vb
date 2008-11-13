@@ -133,7 +133,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Asc total.
+        '''  Looks up a localized string similar to Ascendency.
         '''</summary>
         Friend ReadOnly Property COL_HDR_ASCEND_TOTAL() As String
             Get
