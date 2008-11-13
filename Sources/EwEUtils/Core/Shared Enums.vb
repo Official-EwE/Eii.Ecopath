@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.12  2008/11/13 19:01:17  joeb
+' Addeed MPAOptAreaBoundary
+'
 ' Revision 1.11  2008/11/12 18:02:35  jeroens
 ' Added Biomass Diversity search weight input + output
 '
@@ -859,6 +862,7 @@ Namespace Core
 
         MPAOptPercentageClosed
         MPAOptTotalValue
+        MPAOptAreaBoundary
 
         ''' <summary>Ecospace cell MPA seed assignments</summary>
         LayerMPASeed
