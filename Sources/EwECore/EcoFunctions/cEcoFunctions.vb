@@ -44,6 +44,16 @@ Public Class cEcoFunctions
                     NumGr = NumGr + 1
                 End If
             Next
+
+            'if there are very few groups we better include all
+            'VC Nov 2008
+            If NumGr < 10 Then
+                NumGr = 0
+                ReDim Used(epdata.NumLiving)
+                For i = 1 To epdata.NumLiving
+                    NumGr += 1
+                Next
+            End If
             For i = 1 To NumGr
                 minB = 1000000
                 Smallest = 0
