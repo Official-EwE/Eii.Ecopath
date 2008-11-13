@@ -199,7 +199,6 @@ Namespace Ecospace
             Me.m_tsMap.Size = New System.Drawing.Size(161, 36)
             Me.m_tsMap.TabIndex = 0
             Me.m_tsMap.Text = "m_tsLayers"
-            Me.m_tsMap.Visible = False
             '
             'm_tsbMPA
             '
