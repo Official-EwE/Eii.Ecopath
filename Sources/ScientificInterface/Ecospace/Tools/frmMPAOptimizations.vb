@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.13  2008/11/13 00:42:25  jeroens
+' Tweaking UI
+'
 ' Revision 1.12  2008/11/12 23:34:33  jeroens
 ' Debugged conrtrol enabled states
 ' Result output selective
@@ -139,7 +142,7 @@ Namespace Ecospace
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
         ''' <summary>Grid that allows configuration of objective weights (shared with Ecosim FPS)</summary>
-        Private m_gridSOWeight As gridSearchObjectivesWeight = Nothing
+        Private m_gridSOObjectives As gridSearchObjectivesWeight = Nothing
         ''' <summary>Grid that allows configuration of fleet opt params (shared with Ecosim FPS)</summary>
         Private m_gridSOFleet As gridSearchObjectivesFleet = Nothing
         ''' <summary>Grid that allows configuration of group opt params (shared with Ecosim FPS)</summary>
@@ -187,9 +190,10 @@ Namespace Ecospace
             m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Add objective grids
-            Me.m_gridSOWeight = New gridSearchObjectivesWeight(Me.m_manager)
-            Me.m_gridSOWeight.FixedColumnWidths = False
-            Me.m_plWeights.Controls.Add(Me.m_gridSOWeight)
+            Me.m_gridSOObjectives = New gridSearchObjectivesWeight(Me.m_manager)
+            Me.m_gridSOObjectives.FixedColumnWidths = False
+            Me.m_gridSOObjectives.ShowMPAOptParams = True
+            Me.m_plObjectives.Controls.Add(Me.m_gridSOObjectives)
 
             Me.m_gridSOFleet = New gridSearchObjectivesFleet(Me.m_manager)
             Me.m_gridSOFleet.FixedColumnWidths = False
@@ -537,12 +541,9 @@ Namespace Ecospace
             Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
             Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
-            Me.m_lptsResults(0) = New ResultPoints()
-            Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_lptsResults(2) = New ResultPoints()
-            Me.m_lptsResults(3) = New ResultPoints()
-            Me.m_lptsResults(4) = New ResultPoints()
-            Me.m_lptsResults(5) = New ResultPoints()
+            For iResult As Integer = 0 To 5
+                Me.m_lptsResults(iResult) = New ResultPoints()
+            Next
 
         End Sub
 
@@ -612,8 +613,6 @@ Namespace Ecospace
                 End Select
                 Me.m_graphProgress.Invalidate()
 
-                ' Update objective weights
-                Me.m_gridSOWeight.ShowRandomSearchParams = (SearchType = eMPAOptimizationModels.RandomSearch)
             End Set
         End Property
 
@@ -790,7 +789,7 @@ Namespace Ecospace
                     End Try
 
                     Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                        output.MandatedValue, output.EcologicalValue, 0, _
+                        output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
                         output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
@@ -837,7 +836,7 @@ Namespace Ecospace
 
                     ' Always update the progress grid
                     Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                        output.MandatedValue, output.EcologicalValue, 0, _
+                        output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
                         output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
@@ -1343,7 +1342,7 @@ Namespace Ecospace
             Me.m_lblIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_nudBoundaryWeight.Enabled = (bIsPreparing)
             Me.m_lblBoundaryWeight.Enabled = (bIsPreparing)
-            Me.m_gridSOWeight.Enabled = (bIsPreparing)
+            Me.m_gridSOObjectives.Enabled = (bIsPreparing)
             Me.m_gridSOFleet.Enabled = (bIsPreparing)
             Me.m_gridSOGroup.Enabled = (bIsPreparing)
             Me.m_rbEcoseed.Enabled = (bIsPreparing)
@@ -1445,6 +1444,8 @@ Namespace Ecospace
             If Me.m_manager.ValueWeights.BiomassDiversityWeight > 0 Then
                 Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
             End If
+
+            Me.m_zghResults.Redraw()
 
         End Sub
 
