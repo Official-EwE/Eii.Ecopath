@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.14  2008/11/13 01:33:52  jeroens
+' Layer maintenance
+' Cursor logic made crash-safe
+' When search done, results page will try to show data
+'
 ' Revision 1.13  2008/11/13 00:42:25  jeroens
 ' Tweaking UI
 '
@@ -365,8 +370,6 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            ' Sanity checks
-            If (sPos < 0 Or sPos > Me.m_manager.Results.Count - 1) Then Return
             Me.ShowIteration()
         End Sub
 
@@ -512,8 +515,8 @@ Namespace Ecospace
             ' Only show major ticks
             Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
             Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
-            Me.m_graphProgress.GraphPane.YAxis.Scale.MaxAuto = True
-            Me.m_graphProgress.GraphPane.YAxis.Scale.MinAuto = True
+            'Me.m_graphProgress.GraphPane.YAxis.Scale.MaxAuto = True
+            'Me.m_graphProgress.GraphPane.YAxis.Scale.MinAuto = True
 
             Me.m_lptsProgress(0) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
@@ -528,6 +531,8 @@ Namespace Ecospace
 
         Private Sub InitOutputGraph()
 
+            Dim zgcr As New ZedGraph.ColorSymbolRotator
+
             Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
@@ -541,9 +546,25 @@ Namespace Ecospace
             Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
             Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
-            For iResult As Integer = 0 To 5
-                Me.m_lptsResults(iResult) = New ResultPoints()
-            Next
+            Me.m_lptsResults(0) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve("Total weighted", Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(1) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(2) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(3) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(4) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(5) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_zghResults.Redraw()
 
         End Sub
 
@@ -649,16 +670,18 @@ Namespace Ecospace
                 Case eFormModeTypes.Searching
                     ' Set running status text
                     AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1)
-                    ' Init results
-                    Me.InitResults()
 
                 Case eFormModeTypes.Stopping
                     ' Set running status text
                     AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_STOPPING, TriState.UseDefault, -1)
 
                 Case eFormModeTypes.Results
-                    ' Switch to 'Apply' page
+                    ' Switch to 'Results' page
                     Me.m_tcResults.SelectedIndex = 1
+                    ' Show results if possible
+                    If Me.m_cmbAreaClosed.Items.Count > 0 Then
+                        Me.m_cmbAreaClosed.SelectedIndex = 0
+                    End If
 
             End Select
 
@@ -713,9 +736,9 @@ Namespace Ecospace
             Me.m_ucZoom.Map.Clear()
 
             Me.m_alayerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)
-            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
-            Me.AddBaseLayers(eVarNameFlags.LayerImportance)
+            'Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
             Me.AddBaseLayers(eVarNameFlags.LayerMPA)
+            Me.AddBaseLayers(eVarNameFlags.LayerImportance)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
             Me.AddBaseLayers(eVarNameFlags.LayerDepth)
             ' Hide habitat layers but show group at startup
@@ -1128,7 +1151,7 @@ Namespace Ecospace
                     Me.m_lptsResults(5).AddItem(result.objBiomassDiversity)
                 Next
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
-                Me.m_graphResults.GraphPane.YAxis.Scale.MaxAuto = True
+                'Me.m_graphResults.GraphPane.YAxis.Scale.MaxAuto = True
                 Me.m_zghResults.CursorPos = 0.0
                 Me.m_graphResults.Invalidate()
 
@@ -1143,6 +1166,7 @@ Namespace Ecospace
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
             Dim aiCells(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
+            Dim iCursorPos As Integer = 0
 
             ' Update map
             ReDim aiCells(Me.m_basemap.InRow, Me.m_basemap.InCol)
@@ -1154,7 +1178,13 @@ Namespace Ecospace
                     lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage())
             End Select
 
-            res = lResults(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+            iCursorPos = CInt(Math.Round(Me.m_zghResults.CursorPos))
+            iCursorPos = Math.Max(0, Math.Min(lResults.Count - 1, iCursorPos))
+
+            If iCursorPos = -1 Then Return
+
+            res = lResults(iCursorPos)
+
             For iCell As Integer = 0 To res.Cells.Count - 1
                 Dim cell As cMPACell = res.Cells(iCell)
                 aiCells(cell.Row, cell.Col) = cell.iMPA
@@ -1419,36 +1449,6 @@ Namespace Ecospace
             Return CInt(Me.m_fpMPA.Value())
         End Function
 
-        Public Sub InitResults()
-
-            Dim zgcr As New ZedGraph.ColorSymbolRotator
-
-            Me.m_graphResults.GraphPane.AddCurve("Total weighted", Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
-
-            If Me.m_manager.ValueWeights.EconomicWeight > 0 Then
-                Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
-            End If
-
-            If Me.m_manager.ValueWeights.SocialWeight > 0 Then
-                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
-            End If
-
-            If Me.m_manager.ValueWeights.MandatedRebuildingWeight > 0 Then
-                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-            End If
-
-            If Me.m_manager.ValueWeights.EcoSystemWeight > 0 Then
-                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-            End If
-
-            If Me.m_manager.ValueWeights.BiomassDiversityWeight > 0 Then
-                Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
-            End If
-
-            Me.m_zghResults.Redraw()
-
-        End Sub
-
         Private Sub ClearResults()
             For Each rp As ResultPoints In Me.m_lptsProgress
                 rp.Clear()
@@ -1457,8 +1457,6 @@ Namespace Ecospace
                 rp.Clear()
             Next
             Me.m_graphProgress.Refresh()
-
-            Me.m_graphResults.GraphPane.CurveList.Clear()
             Me.m_graphResults.Refresh()
 
             Me.m_cmbAreaClosed.Items.Clear()

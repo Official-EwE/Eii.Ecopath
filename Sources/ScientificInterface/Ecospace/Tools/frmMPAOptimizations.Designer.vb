@@ -467,6 +467,7 @@ Namespace Ecospace
             '
             'm_cmbAreaClosed
             '
+            Me.m_cmbAreaClosed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbAreaClosed.FormattingEnabled = True
             Me.m_cmbAreaClosed.Location = New System.Drawing.Point(95, 5)
             Me.m_cmbAreaClosed.Name = "m_cmbAreaClosed"
