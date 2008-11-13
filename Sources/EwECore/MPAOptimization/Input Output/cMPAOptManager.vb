@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.10  2008/11/13 18:53:12  jeroens
+' Results not sorted by manager
+'
 ' Revision 1.9  2008/11/13 18:40:05  joeb
 ' Added AreaBoundary
 '
@@ -486,8 +489,11 @@ Public Class cMPAOptManager
 
     Public ReadOnly Property Results() As List(Of cObjectiveResult)
         Get
-            'make sure the results are sorted
-            Me.m_MPASearch.Results.Sort()
+            ' VC 13Nov08: Only sort for MPA, not for Ecoseed. 
+            ' JS 13Nov08: The GUI will take care of sorting
+
+            ''make sure the results are sorted
+            'Me.m_MPASearch.Results.Sort()
             Return Me.m_MPASearch.Results
         End Get
     End Property
