@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.8  2008/11/13 19:54:07  joeb
+' Added Biomass Diversity to output file
+'
 ' Revision 1.7  2008/11/13 19:24:34  joeb
 ' removed memory managment
 '
@@ -981,21 +984,21 @@ Public Class cMPARandomSearch
         sb.AppendLine("MPA Optimization output")
         sb.AppendLine("Date = " & Date.Today.ToLongDateString)
         sb.AppendLine("<Objective weights for run>")
-        sb.AppendLine("Economic, Social, Mandated, Ecosystem, Area/Border")
+        sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")
 
         sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
-                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_data.BoundaryWeight))
+                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_search.ValWeight(5), m_data.BoundaryWeight))
 
         sb.AppendLine("<Base Values>")
-        sb.AppendLine("Economic, Social, Mandated, Ecosystem")
-        sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}", _
-                TotValBase, EmployBase, ManValueBase, EcoValueBase))
+        sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")
+        sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
+                TotValBase, EmployBase, ManValueBase, EcoValueBase, KemptonsBase, AreaBoundBase))
 
         sb.AppendLine("<Data Format>")
 
         sb.AppendLine("Number of Rows and Columns")
         sb.AppendLine("Row, Column, MPAIndex")
-        sb.AppendLine("Economic, Social, Mandated, Ecosystem, Area/Border")
+        sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
 
         'this will create a new file each time
         cLog.WriteTextToFile(Me.m_filename, sb, False)
@@ -1026,8 +1029,8 @@ Public Class cMPARandomSearch
             Next
             sb.Append(ControlChars.NewLine)
 
-            sb.AppendLine(String.Format("{0:r}, {1:r}, {2:r}, {3:r}, {4:r}", _
-                             m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncAreaBorder))
+            sb.AppendLine(String.Format("{0:r}, {1:r}, {2:r}, {3:r}, {4:r},{5:r}", _
+                             m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncBiomassDiv, m_data.objFuncAreaBorder))
 
             cLog.WriteTextToFile(Me.m_filename, sb, True)
 

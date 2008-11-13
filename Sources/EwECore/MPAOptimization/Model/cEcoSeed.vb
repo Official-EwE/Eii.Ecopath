@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.6  2008/11/13 19:54:06  joeb
+' Added Biomass Diversity to output file
+'
 ' Revision 1.5  2008/11/13 19:24:33  joeb
 ' removed memory managment
 '
@@ -1119,9 +1122,26 @@ Namespace EcoSeed
             'Write #fnum, "", "", ValWeight(1), ValWeight(2), ValWeight(3), ValWeight(4), BoundaryWeight
 
             Dim sb As New Text.StringBuilder
-            sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Area/Border")
-            sb.AppendLine(" , , " & String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
-                            m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_data.BoundaryWeight))
+            'sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Area/Border")
+            'sb.AppendLine(" , , " & String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
+            '                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_data.BoundaryWeight))
+            sb.AppendLine("EcoSeed Optimization output")
+            sb.AppendLine("Date = " & Date.Today.ToLongDateString)
+            sb.AppendLine("<Objective weights for run>")
+            sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
+
+            sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
+                    m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_search.ValWeight(5), m_data.BoundaryWeight))
+
+            sb.AppendLine("<Base Values>")
+            sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
+            sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
+                    TotValBase, EmployBase, ManValueBase, EcoValueBase, BioDiversityBase, areaBoundBase))
+
+
+            sb.AppendLine("<Data Format>")
+            sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
+
 
             'this will create a new file each time
             cLog.WriteTextToFile(Me.m_filename, sb, False)
@@ -1144,8 +1164,8 @@ Namespace EcoSeed
                 'Write #fnum, bestrow, bestcol, ObjF(0), ObjF(1), ObjF(2), ObjF(3), ObjF(4)
 
                 Dim sb As New Text.StringBuilder
-                sb.Append(String.Format("{0:N}, {1:N}, {2:F}, {3:N}, {4:N}, {5:N}, {6:N}", _
-                                m_data.bestrow, m_data.bestcol, m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncAreaBorder))
+                sb.Append(String.Format("{0:N}, {1:N}, {2:F}, {3:N}, {4:N}, {5:N}, {6:N}, {7:N}", _
+                                m_data.bestrow, m_data.bestcol, m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncBiomassDiv, m_data.objFuncAreaBorder))
 
                 cLog.WriteTextToFile(Me.m_filename, sb, True)
 
