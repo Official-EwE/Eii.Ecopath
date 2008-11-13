@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.5  2008/11/13 19:24:33  joeb
+' removed memory managment
+'
 ' Revision 1.4  2008/11/13 18:40:07  joeb
 ' Added AreaBoundary
 '
@@ -1084,13 +1087,13 @@ Namespace EcoSeed
                 'keep the results in memory
                 m_lstObjectiveResults.Add(New cObjectiveResult(m_data, m_SpaceData))
 
-                'Memory management for results
-                If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
-                    'sorts in decending order (biggest objFuncTotal first)
-                    Me.m_lstObjectiveResults.Sort()
-                    'remove lowest results from the end of the list
-                    Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
-                End If
+                ''Memory management for results
+                'If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
+                '    'sorts in decending order (biggest objFuncTotal first)
+                '    Me.m_lstObjectiveResults.Sort()
+                '    'remove lowest results from the end of the list
+                '    Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
+                'End If
 
             Catch ex As Exception
                 Debug.Assert(False, "Ecoseed Error in StoreObjectiveFunctionResults(). " & ex.Message)

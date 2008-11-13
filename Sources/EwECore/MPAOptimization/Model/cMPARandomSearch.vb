@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.7  2008/11/13 19:24:34  joeb
+' removed memory managment
+'
 ' Revision 1.6  2008/11/13 18:40:07  joeb
 ' Added AreaBoundary
 '
@@ -486,7 +489,7 @@ Public Class cMPARandomSearch
                 nStep += 1
             Next
 
-            Me.m_lstObjectiveResults.Sort()
+            '  Me.m_lstObjectiveResults.Sort()
 
             cleanUp()
 
@@ -597,13 +600,13 @@ Public Class cMPARandomSearch
             'keep the results of every search
             Me.m_lstObjectiveResults.Add(New cObjectiveResult(m_data, Me.m_SpaceData))
 
-            'Memory management for results
-            If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
-                'sorts in decending order (biggest objFuncTotal first)
-                Me.m_lstObjectiveResults.Sort()
-                'remove lowest results from the end of the list
-                Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
-            End If
+            ''Memory management for results
+            'If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
+            '    'sorts in decending order (biggest objFuncTotal first)
+            '    Me.m_lstObjectiveResults.Sort()
+            '    'remove lowest results from the end of the list
+            '    Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
+            'End If
 
             Return curSum
 
