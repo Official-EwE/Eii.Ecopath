@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.6  2008/11/13 23:01:11  joeh
+' Fix integer overflow problem for variable NoArrows
+'
 ' Revision 1.5  2008/11/13 19:34:14  joeh
 ' Fix the error in the calculation of total ascendency
 '
@@ -289,7 +292,7 @@ Public Class cEcoNetwork
 
 #Region "Public Cycles and Pathways variables"
     Public lstPathways As New List(Of String)
-    Public NoArrows As Integer 'This declared NoArrows is used only in PathPrintReqPP()  joeh
+    Public NoArrows As Long 'This declared NoArrows is used only in PathPrintReqPP()  joeh
     ' The NoArrows in FindCycles(), PrintPath(), PrintCycle() and PreyProd()
     ' is NOT the NoArrows above but a variable passed from its caller.  The NoArrows in 
     ' FindCycles() is exposed as NumberArrows below
@@ -2839,7 +2842,8 @@ NextPivot:
                     Pass = 0
                     'Dim count As Integer = 0
                     For Level = pivot To 2 * m_epdata.NumGroups
-                        'count = count + 1 'If count = 111135 Then MsgBox("ready to debug")
+                        'count = count + 1
+                        'If count = 111135 Then MsgBox("ready to debug")
                         Pass = Pass + 1
                         If Pass > 10 ^ 7 Then GoTo NextPivot 'MsgBox "Too many pathways, results incomplete": Exit For
                         If Path(Level - 1) > 0 Then
