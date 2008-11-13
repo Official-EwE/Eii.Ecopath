@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.4  2008/11/13 18:40:07  joeb
+' Added AreaBoundary
+'
 ' Revision 1.3  2008/11/12 22:21:45  joeb
 ' Bug fixes from adding BiomassDiversity
 '
@@ -189,7 +192,7 @@ Namespace EcoSeed
         Private TotalSearchMax As Single
         Private SeedSumMax As Single
 
-        Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, BioDiversityBase As Single
+        Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, BioDiversityBase As Single, areaBoundBase As Single
         Private TotWeightedValueBase As Single
         Private SideStep As Integer
 
@@ -427,7 +430,7 @@ Namespace EcoSeed
 
         Friend Sub runSeed()
             Dim NotAllCellsAreMPAs As Boolean
-            Dim AreaBorder As Single
+            Dim AreaBordary As Single
             'Dim bExitRun As Boolean
 
             'total objective sum of the current search 
@@ -499,17 +502,16 @@ Namespace EcoSeed
                              m_search.ValWeight(5) * m_search.KemptonQ / BioDiversityBase
 
                             'Calculate boundary length/area ratio
-                            AreaBorder = CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
-                            CurSum = CurSum + AreaBorder
+                            AreaBordary = CalculateAreaOverBondaryLength()
+                            CurSum = CurSum + AreaBordary * m_data.BoundaryWeight
 
                             m_data.objFuncEcologicalValue = m_search.ecovalue / EcoValueBase
                             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
                             m_data.objFuncSocialValue = m_search.Employ / EmployBase
                             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objBiomassDiversity = m_search.KemptonQ / BioDiversityBase
-                            m_data.objFuncAreaBorder = AreaBorder
-                            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBorder) / Me.TotWeightedValueBase
+                            m_data.objFuncBiomassDiv = m_search.KemptonQ / BioDiversityBase
+                            m_data.objFuncAreaBorder = AreaBordary / areaBoundBase
+                            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBordary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
                             If CurSum > SeedSumMax Then
 
@@ -1046,6 +1048,8 @@ Namespace EcoSeed
             EcoValueBase = m_search.ecovalue
             BioDiversityBase = m_search.KemptonQ
 
+            areaBoundBase = CalculateAreaOverBondaryLength()
+
             If TotValBase = 0 Then TotValBase = 1
             If TotValBase < 0 Then TotValBase = -TotValBase
             If EmployBase = 0 Then EmployBase = 1
@@ -1055,9 +1059,8 @@ Namespace EcoSeed
             If BioDiversityBase = 0 Then BioDiversityBase = 1
 
             TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                                    m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + m_search.ValWeight(5) * BioDiversityBase
-
-            TotWeightedValueBase += CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
+                                    m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
+                                    m_search.ValWeight(5) * BioDiversityBase + m_data.BoundaryWeight * areaBoundBase
 
             '   System.Console.WriteLine("EcoSeed weighted base value = " & TotWeightedValueBase.ToString)
 

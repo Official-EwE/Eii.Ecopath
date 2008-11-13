@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.9  2008/11/13 18:40:05  joeb
+' Added AreaBoundary
+'
 ' Revision 1.8  2008/11/12 23:21:37  joeb
 ' Changed argument order of CellSelectedMap
 '
@@ -713,7 +716,7 @@ Public Class cObjectiveResult
         objFuncMandatedValue = MPAData.objFuncMandatedValue
         objFuncSocialValue = MPAData.objFuncSocialValue
         objFuncEcologicalValue = MPAData.objFuncEcologicalValue
-        objBiomassDiversity = MPAData.objBiomassDiversity
+        objBiomassDiversity = MPAData.objFuncBiomassDiv
 
         objFuncAreaBorder = MPAData.objFuncAreaBorder
 
@@ -737,7 +740,7 @@ Public Class cObjectiveResult
             objFuncSocialValue = MPAData.objFuncSocialValue
             objFuncEcologicalValue = MPAData.objFuncEcologicalValue
             objFuncAreaBorder = MPAData.objFuncAreaBorder
-            objBiomassDiversity = MPAData.objBiomassDiversity
+            objBiomassDiversity = MPAData.objFuncBiomassDiv
             objFuncTotal = MPAData.objFuncTotal
 
             Select Case MPAData.SearchType

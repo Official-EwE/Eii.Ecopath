@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.6  2008/11/13 18:40:07  joeb
+' Added AreaBoundary
+'
 ' Revision 1.5  2008/11/12 22:21:46  joeb
 ' Bug fixes from adding BiomassDiversity
 '
@@ -170,8 +173,11 @@ Public Class cMPARandomSearch
     Public StoreBtimeForEcoSeed() As Single
 
     Private TotWeightedValueBase As Single
-    Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, KemptonsBase As Single
+    Private EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, KemptonsBase As Single, AreaBoundBase As Single
     Private TargetSumMax As Single
+
+    Private AreaBoundary As Single
+
 
 #End Region
 
@@ -556,7 +562,6 @@ Public Class cMPARandomSearch
 
     Private Function EvaluateRun() As Single
         Dim curSum As Single 'results of the search run
-        Dim AreaBorder As Single
 
         Try
 
@@ -564,15 +569,13 @@ Public Class cMPARandomSearch
                      m_search.ValWeight(2) * m_search.Employ / EmployBase + _
                      m_search.ValWeight(3) * m_search.manvalue / ManValueBase + _
                      m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase + _
-                      m_search.ValWeight(5) * m_search.KemptonQ / KemptonsBase
+                     m_search.ValWeight(5) * m_search.KemptonQ / KemptonsBase
 
 
             'Calculate boundary length/area ratio
-            'If m_data.BoundaryWeight > 0 Then
-            AreaBorder = CalculateAreaOverBondaryLength()
-            curSum = curSum + AreaBorder * m_data.BoundaryWeight
-            'End If
-            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBorder) / Me.TotWeightedValueBase
+            AreaBoundary = CalculateAreaOverBondaryLength()
+            curSum = curSum + AreaBoundary * m_data.BoundaryWeight
+            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBoundary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
             'calculate the relative values in to data structures 
             'so they can be use to populate the Input/Output object for the interface
@@ -580,8 +583,8 @@ Public Class cMPARandomSearch
             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
             m_data.objFuncSocialValue = m_search.Employ / EmployBase
             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-            m_data.objBiomassDiversity = m_search.KemptonQ / KemptonsBase
-            m_data.objFuncAreaBorder = AreaBorder
+            m_data.objFuncBiomassDiv = m_search.KemptonQ / KemptonsBase
+            m_data.objFuncAreaBorder = AreaBoundary / AreaBoundBase
 
             If curSum > TargetSumMax Then
                 'save the best results 
@@ -795,6 +798,7 @@ Public Class cMPARandomSearch
         ManValueBase = m_search.manvalue
         EcoValueBase = m_search.ecovalue
         KemptonsBase = m_search.KemptonQ
+        AreaBoundBase = CalculateAreaOverBondaryLength()
 
         If TotValBase = 0 Then TotValBase = 1
         If TotValBase < 0 Then TotValBase = -TotValBase
@@ -802,13 +806,14 @@ Public Class cMPARandomSearch
         If EmployBase < 0 Then EmployBase = -EmployBase
         If ManValueBase = 0 Then ManValueBase = 1
         If EcoValueBase = 0 Then EcoValueBase = 1
+        If AreaBoundBase = 0 Then AreaBoundBase = 1
+        If KemptonsBase = 0 Then KemptonsBase = 1
 
         TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                        m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + m_search.ValWeight(5) * KemptonsBase
+                        m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
+                        m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * areaboundBase
 
-        TotWeightedValueBase += CalculateAreaOverBondaryLength() * m_data.BoundaryWeight
-
-        System.Console.WriteLine("Random weighted base value = " & TotWeightedValueBase.ToString)
+        '     System.Console.WriteLine("Random weighted base value = " & TotWeightedValueBase.ToString)
 
     End Sub
 

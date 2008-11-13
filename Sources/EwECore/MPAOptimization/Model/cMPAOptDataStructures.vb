@@ -25,7 +25,7 @@ Public Class cMPAOptDataStructures
     Public objFuncEcologicalValue As Single
     Public objFuncAreaBorder As Single
 
-    Public objBiomassDiversity As Single
+    Public objFuncBiomassDiv As Single
 
     Public objFuncTotal As Single
 
@@ -73,7 +73,7 @@ Public Class cMPAOptDataStructures
         objFuncSocialValue = 0
         objFuncEcologicalValue = 0
         objFuncAreaBorder = 0
-        objBiomassDiversity = 0
+        objFuncBiomassDiv = 0
         objFuncTotal = 0
 
     End Sub

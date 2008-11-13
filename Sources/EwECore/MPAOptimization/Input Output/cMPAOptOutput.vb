@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptOutput.vb,v $
+' Revision 1.6  2008/11/13 18:40:06  joeb
+' Added AreaBoundary
+'
 ' Revision 1.5  2008/11/12 22:21:45  joeb
 ' Bug fixes from adding BiomassDiversity
 '
@@ -76,6 +79,11 @@ Public Class cMPAOptOutput
         val = New cValue(New Single, eVarNameFlags.MPAOptBiomassDiversityValue, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
+        val = New cValue(New Single, eVarNameFlags.MPAOptAreaBoundary, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
+
+
     End Sub
 
 
@@ -91,8 +99,8 @@ Public Class cMPAOptOutput
         Me.MandatedValue = mpaData.objFuncMandatedValue
         Me.SocialValue = mpaData.objFuncSocialValue
         Me.TotalValue = mpaData.objFuncTotal
-        ' ToDo_JB: Hook this up
-        Me.BiomassDiversityValue = mpaData.objBiomassDiversity
+        Me.BiomassDiversityValue = mpaData.objFuncBiomassDiv
+        Me.AreaBoundaryValue = mpaData.objFuncAreaBorder
 
         Dim nTotCells As Integer = SpaceData.nWaterCells
         Dim nMPACells As Integer
@@ -258,6 +266,20 @@ Public Class cMPAOptOutput
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.MPAOptTotalValue, newValue)
+            End If
+        End Set
+
+    End Property
+
+
+    Public Property AreaBoundaryValue() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.MPAOptAreaBoundary))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.MPAOptAreaBoundary, newValue)
             End If
         End Set
 
