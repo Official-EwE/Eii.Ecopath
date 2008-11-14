@@ -293,7 +293,8 @@ Public Class cSearchDatastructures
             tot = Me.ValWeight(1) * Me.totval + _
                 Me.ValWeight(2) * Me.Employ + _
                 Me.ValWeight(3) * Me.manvalue + _
-                Me.ValWeight(4) * Me.ecovalue
+                Me.ValWeight(4) * Me.ecovalue + _
+                Me.ValWeight(5) * Me.KemptonQ
             Return tot
         End Get
     End Property
@@ -368,9 +369,7 @@ Public Class cSearchDatastructures
 
             ReDim ValCatch(NumFleets, NumGroups)
             ReDim NetCost(NumFleets)
-            ReDim NetCost(NumFleets)
             ReDim ValCatchGear(NumFleets)
-
 
         Catch ex As Exception
 
@@ -752,7 +751,6 @@ Public Class cSearchDatastructures
 
         DF = calcDiscountFactor(iYear - BaseYear)
 
-
         For iFlt As Integer = 1 To m_ecopathData.NumFleet
 
             If BaseYearCost(iFlt) > 0 Then
@@ -812,7 +810,7 @@ Public Class cSearchDatastructures
     End Sub
 
     ''' <summary>
-    ''' Calculates DF (Discount factor), Fgear(), Qyear(), NetCost() and FishYear() for Ecospace
+    ''' Calculates DF (Discount factor), Fgear(), Qyear(),  and FishYear() for Ecospace
     ''' </summary>
     ''' <param name="iYear"></param>
     ''' <param name="RelFopt"></param>
@@ -831,7 +829,6 @@ Public Class cSearchDatastructures
                 'DF = 1 / DF
                 'VC inversed the discount factor because it grew bigger and bigger over time
 
-
                 For i As Integer = 1 To m_ecopathData.NumFleet
 
                     If FblockCode(i, iYear) > 0 Then
@@ -839,8 +836,6 @@ Public Class cSearchDatastructures
                     Else
                         Fgear(i) = m_ecosimData.FishRateGear(i, 12 * iYear - 11)
                     End If
-
-                    NetCost(i) = NetCost(i) + Fgear(i) * nWaterCells * (m_ecopathData.cost(i, 2) + m_ecopathData.cost(i, 3)) * DF
 
                     For j As Integer = 1 To m_ecopathData.NumGroups
                         FishYear(j) = FishYear(j) + Fgear(i) * m_ecosimData.relQ(i, j)
@@ -939,7 +934,7 @@ Public Class cSearchDatastructures
     Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
         Dim iFlt As Integer
-        Dim Cloc As Single 'CV As Single, 
+        Dim Cloc As Single
 
         'Only one thread can use this code at a time
         'block all others
@@ -953,10 +948,10 @@ Public Class cSearchDatastructures
 
                     'ValCatch() is summed across all time steps
                     'If pastbaseyear Then
-                    ValCatch(iFlt, iGrp) = ValCatch(iFlt, iGrp) + Cloc * DF
+                    ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
                     'endif
                     'CatchYear() is the sum for this year it is cleared out at the start of each year
-                    CatchYear(iFlt, iGrp) = CatchYear(iFlt, iGrp) + Cloc
+                    CatchYear(iFlt, iGrp) += Cloc
 
                 End If
             Next iFlt
@@ -1063,8 +1058,12 @@ Public Class cSearchDatastructures
 
                 totval = totval + Vlocal
                 ValCatchGear(i) = ValCatchGear(i) + Vlocal
+
+                System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
+
                 'employ = employ + Vlocal * Jobs(i)
             Next
+            System.Console.WriteLine()
         Next
 
         For i = 1 To m_ecopathData.NumFleet
@@ -1073,9 +1072,6 @@ Public Class cSearchDatastructures
             'totval includes the same accounting
             If BaseYearCost(i) > 0 And BaseYearEffort(i) > 0 Then
                 NetCost(i) += Fgear(i) * BaseYearCost(i) / BaseYearEffort(i) * LTV
-                'Else
-                'below is wrong
-                '    NetCost(i) = NetCost(i) + Fgear(i) * (m_ecopathData.cost(i, 2) + m_ecopathData.cost(i, 3)) * LTV
             End If
 
             CostPenalty = 0
@@ -1103,7 +1099,7 @@ Public Class cSearchDatastructures
 
     Public Sub EcoSpaceSummarizeIndicators(ByVal Fgear() As Single, ByVal ModelRunLength As Single, ByVal nWaterCells As Integer)
         Dim LTV As Single 'Long term value
-        Dim i As Integer, j As Integer
+        Dim iflt As Integer, igrp As Integer
 
         Dim CostPenaltyConstant As Integer = 1
 
@@ -1112,6 +1108,7 @@ Public Class cSearchDatastructures
 
         ExistValue = ExistValue / (m_ecopathData.NumLiving * ModelRunLength)
 
+        'KemptonQ is the sum of KemptonQ across all time steps
         KemptonQ = KemptonQ / ModelRunLength
 
         If DiscountFactor > 0 Then
@@ -1121,45 +1118,56 @@ Public Class cSearchDatastructures
             If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLength - Dalpha * Dgen ^ ModelRunLength / (1 - Dgen))
         End If
 
-        For i = 1 To m_ecopathData.NumFleet
-            For j = 1 To m_ecopathData.NumLiving
-                ValCatch(i, j) = ValCatch(i, j) / nWaterCells
+        'ignore Long term value 
+        LTV = 0
+
+        For iflt = 1 To m_ecopathData.NumFleet
+            For igrp = 1 To m_ecopathData.NumLiving
+                ValCatch(iflt, igrp) = ValCatch(iflt, igrp) / nWaterCells
                 'Was done using end biomass:
                 'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
                 'In connection with including discounting during run changed the long term
                 'addition to be based on equilibrium biomass
                 'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
-                Dim Vlocal As Single = ValCatch(i, j) + CatchYear(i, j) * LTV * m_ecopathData.Market(i, j)
+                Dim Vlocal As Single = ValCatch(iflt, igrp) + CatchYear(iflt, igrp) * LTV * m_ecopathData.Market(iflt, igrp)
 
                 totval = totval + Vlocal
-                ValCatchGear(i) = ValCatchGear(i) + Vlocal
+                ValCatchGear(iflt) = ValCatchGear(iflt) + Vlocal
+
+                System.Console.Write(CSng(ValCatch(iflt, igrp) / ModelRunLength).ToString & ", ")
                 'employ = employ + Vlocal * Jobs(i)
             Next
+            System.Console.WriteLine()
         Next
 
         Dim CostPenalty As Single, TotalFishingCost As Single
         ReDim CostRatio(m_ecopathData.NumFleet)
-        For i = 1 To m_ecopathData.NumFleet
+        For iflt = 1 To m_ecopathData.NumFleet
+
+            If BaseYearCost(iflt) > 0 And BaseYearEffort(iflt) > 0 Then
+                NetCost(iflt) += Fgear(iflt) * BaseYearCost(iflt) / BaseYearEffort(iflt) * LTV
+            End If
+
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
             'totval includes the same accounting
-            NetCost(i) = NetCost(i) + Fgear(i) * nWaterCells * (m_ecopathData.cost(i, 2) + m_ecopathData.cost(i, 3)) * LTV
-            TotalFishingCost = TotalFishingCost + NetCost(i)
+            '  NetCost(iflt) = NetCost(iflt) + Fgear(iflt) * nWaterCells * (m_ecopathData.cost(iflt, 2) + m_ecopathData.cost(iflt, 3)) * LTV
+            ' TotalFishingCost = TotalFishingCost + NetCost(iflt)
 
             CostPenalty = 0
-            If ValCatchGear(i) > 0 And UseCostPenalty Then
-                CostRatio(i) = NetCost(i) / ValCatchGear(i)
-                If CostRatio(i) < 3.0# Then
-                    CostPenalty = CSng(CostPenaltyConstant * CostRatio(i) ^ 50)
+            If ValCatchGear(iflt) > 0 And UseCostPenalty Then
+                CostRatio(iflt) = NetCost(iflt) / ValCatchGear(iflt)
+                If CostRatio(iflt) < 3.0# Then
+                    CostPenalty = CSng(CostPenaltyConstant * CostRatio(iflt) ^ 50)
                 Else
-                    CostPenalty = CSng(CostPenaltyConstant * 3.0! ^ 50.0! + 1000.0! * (CostRatio(i) - 3.0!))
+                    CostPenalty = CSng(CostPenaltyConstant * 3.0! ^ 50.0! + 1000.0! * (CostRatio(iflt) - 3.0!))
                 End If
             End If
 
-            totval = totval - NetCost(i) - CostPenalty
+            totval = totval - NetCost(iflt) - CostPenalty
 
-            Employ = Employ + (ValCatchGear(i) - CostPenalty) * Jobs(i)
-            ValCatchGear(i) = ValCatchGear(i) - NetCost(i) - CostPenalty
+            Employ = Employ + (ValCatchGear(iflt) - CostPenalty) * Jobs(iflt)
+            ValCatchGear(iflt) = ValCatchGear(iflt) - NetCost(iflt) - CostPenalty
         Next
 
     End Sub
