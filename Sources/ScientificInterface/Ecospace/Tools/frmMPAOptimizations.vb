@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.16  2008/11/14 00:29:42  jeroens
+' Fixed bugs
+' Area closed, best % functional
+'
 ' Revision 1.15  2008/11/13 02:00:49  jeroens
 ' Fixed autoscale
 ' Icons desaturated
@@ -120,33 +124,35 @@ Namespace Ecospace
             Results
         End Enum
 
-        ' The three stooges
+        ' == Data ==
+
         Private m_core As cCore = Nothing
         Private m_manager As cMPAOptManager = Nothing
         Private m_basemap As cEcospaceBasemap = Nothing
 
-        ' Layer cache
-        ' - All layers in the basemap
-        Private m_lLayers As New List(Of cLayer)
-        ' - Collections of layers that reflect the run states
-        Private m_alayerFeedback() As cLayer = Nothing
-        ' - Collections of layers that reflect the ecoseed bits
-        Private m_alayerSeed() As cLayer = Nothing
-        ' - Temp data structure to feed the run state basemap layer
-        Private m_dataRunState As Integer(,)
+        ' == Layer cache ==
 
-        ' Parameter IO
+        ''' <summary>All layers in the basemap.</summary>
+        Private m_lLayers As New List(Of cLayer)
+        ''' <summary>All layers that reflect search progress.</summary>
+        ''' <remarks>The data for these layers orginates from the core.</remarks>
+        Private m_alayerFeedback() As cLayer = Nothing
+        ''' <summary>Data structure to update with feedback data.</summary>
+        Private m_aiFeedback As Integer(,) = Nothing
+
+        ' == Parameter IO ==
+
         Private m_fpStartYear As cEwEFormatProvider = Nothing
         Private m_fpEndYear As cEwEFormatProvider = Nothing
-        'Private m_fpBoundaryWeight As cEwEFormatProvider = Nothing
         Private m_fpMinArea As cEwEFormatProvider = Nothing
         Private m_fpMaxArea As cEwEFormatProvider = Nothing
         Private m_fpStepSize As cEwEFormatProvider = Nothing
         Private m_fpIterations As cEwEFormatProvider = Nothing
         Private m_fpBestPercentile As cEwEFormatProvider = Nothing
         Private m_fpMPA As cEwEFormatProvider = Nothing
-
         Private m_propSearchType As cIntegerProperty = Nothing
+
+        ' == UI components ==
 
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
@@ -157,14 +163,17 @@ Namespace Ecospace
         ''' <summary>Grid that allows configuration of group opt params (shared with Ecosim FPS)</summary>
         Private m_gridSOGroup As gridSearchObjectivesGroup = Nothing
 
-        ' Graph helper
+        ''' <summary>Progress graph helper.</summary>
         Private m_zghProgress As ZedGraphHelper = Nothing
-        Private m_lptsProgress(3) As ResultPoints
+        ''' <summary>Progress graph data.</summary>
+        Private m_lptsProgress(5) As ResultPoints
 
+        ''' <summary>Results graph helper.</summary>
         Private m_zghResults As ZedGraphHelper = Nothing
-        Private m_lptsResults(5) As ResultPoints
+        ''' <summary>Results graph data.</summary>
+        Private m_lptsResults(6) As ResultPoints
 
-        ' The mode this form is in
+        ''' <summary>The mode that this form is in.</summary>
         Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
 
 #End Region ' Private vars
@@ -361,60 +370,64 @@ Namespace Ecospace
 
         Private Sub OnNewSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_bntNewSearch.Click
+
             Me.RunMode = eFormModeTypes.Prepare
-        End Sub
 
-        Private Sub OnUpdateBestPercentile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_nudBestPercentile.ValueChanged
-            ' G'dammit, stupid designer! Assigning a default value to a control will
-            ' cause events to be sent out during construction phase.
-            If (Me.m_propSearchType Is Nothing) Then Return
-
-            Me.ShowBestPercentage()
-        End Sub
-
-        Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            Me.ShowIteration()
-        End Sub
-
-        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnConvertToMpa.Click
-
-            ' Sanity check
-            If (Me.SearchType = eMPAOptimizationModels.RandomSearch) And (Me.m_alayerFeedback.Length = 1) Then
-                Me.SetLayer(Me.m_dataRunState, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
-                Me.m_ucZoom.Map.Refresh()
-            End If
-
-        End Sub
-
-        Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnExport.Click
-
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
-            Dim lyrExport As cLayer = Nothing
-            Dim aiCells(,) As Integer = Nothing
-            Dim iNumResults As Integer = 0
-
-            If cmd Is Nothing Then Return
-
-            ' Copy layer
-            lyrExport = New cLayer(Me.m_alayerFeedback(0))
-            aiCells = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
-                                                   Me.SelectedClosedPercentage, _
-                                                   iNumResults)
-            lyrExport.Name = "HitCount"
-            Me.SetLayer(aiCells, lyrExport.Data)
-
-            cmd.Tag = New cLayer() {lyrExport}
-            cmd.Invoke()
         End Sub
 
         Private Sub OnSelectAreaClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
+            If (Me.m_propSearchType Is Nothing) Then Return
+
+            Me.UpdateBestCountMap()
             Me.UpdateResultsGraph()
+
+        End Sub
+
+        Private Sub OnBestPercentileChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_nudBestPercentile.ValueChanged
+
+            If (Me.m_propSearchType Is Nothing) Then Return
+
+            Me.ShowBestPercentage()
+            Me.UpdateResultsGraph()
+
+        End Sub
+
+        Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+            Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+        End Sub
+
+        Private Sub OnConvertToMPA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnConvertToMpa.Click
+
+            Select Case Me.SearchType
+
+                Case eMPAOptimizationModels.EcoSeed
+                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+
+                Case eMPAOptimizationModels.RandomSearch
+                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+
+            End Select
+
+            ' Redraw
+            Me.m_ucZoom.Map.Refresh()
+
+        End Sub
+
+        Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSave.Click
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+
+            If cmd Is Nothing Then Return
+
+            cmd.Tag = New cLayer() {Me.m_alayerFeedback(0)}
+            cmd.Invoke()
+
         End Sub
 
 #End Region ' Controls
@@ -519,17 +532,19 @@ Namespace Ecospace
             ' Only show major ticks
             Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
             Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
-            'Me.m_graphProgress.GraphPane.YAxis.Scale.MaxAuto = True
-            'Me.m_graphProgress.GraphPane.YAxis.Scale.MinAuto = True
 
             Me.m_lptsProgress(0) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_NETECONOMICVALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(1) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(2) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(3) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_lptsProgress(4) = New ResultPoints()
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_lptsProgress(5) = New ResultPoints()
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT, Me.m_lptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_zghProgress.AutoscalePane = True
 
@@ -546,18 +561,16 @@ Namespace Ecospace
 
             Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
             Me.m_graphResults.GraphPane.Title.IsVisible = False
-            Me.m_graphResults.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_BESTITERATIONS
-            Me.m_graphResults.GraphPane.YAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_OBJECTIVEVALUE
+            Me.m_graphResults.GraphPane.XAxis.Title.Text = "" ' Config with form mode
+            Me.m_graphResults.GraphPane.YAxis.Title.Text = "" ' Config with form mode
 
             ' Only show major ticks
             Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
             Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
-            Me.m_lptsResults(0) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve("Total weighted", Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(2) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
@@ -570,6 +583,12 @@ Namespace Ecospace
 
             Me.m_lptsResults(5) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(6) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT, Me.m_lptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(0) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_zghResults.AutoscalePane = True
 
@@ -622,7 +641,7 @@ Namespace Ecospace
                 If (Me.m_propSearchType IsNot Nothing) Then Me.m_propSearchType.SetValue(value)
 
                 ' Polute again
-                Me.SetMapFeedback()
+                Me.InitMapFeedback()
 
                 ' Update visible state of existing layers
                 Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
@@ -636,8 +655,10 @@ Namespace Ecospace
                 Select Case SearchType
                     Case eMPAOptimizationModels.EcoSeed
                         Me.m_graphProgress.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_ECOSEED
+                        Me.m_graphResults.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_ECOSEED
                     Case eMPAOptimizationModels.RandomSearch
                         Me.m_graphProgress.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_RANDOMSEARCH
+                        Me.m_graphResults.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_BESTITERATIONS
                 End Select
 
                 Me.m_zghProgress.RescaleAndRedraw()
@@ -693,8 +714,6 @@ Namespace Ecospace
 
             End Select
 
-            ' Create run state layers
-            Me.SetMapFeedback()
             Me.UpdateControls()
 
         End Sub
@@ -722,9 +741,6 @@ Namespace Ecospace
 
             End Select
 
-            ' Remove run state layers
-            Me.ClearMapFeedback()
-
         End Sub
 
         Private Sub Reload()
@@ -743,8 +759,8 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
-            Me.m_alayerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)
-            'Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
+            Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)
+            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
             Me.AddBaseLayers(eVarNameFlags.LayerMPA)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
@@ -802,15 +818,15 @@ Namespace Ecospace
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_dataRunState(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
+                                Me.m_aiFeedback(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_dataRunState(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_dataRunState(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
+                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
                         End If
 
                         ' Make the map redraw itself
@@ -821,22 +837,17 @@ Namespace Ecospace
 
                     Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
                         output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
-                        output.TotalValue, output.PercentageClosed)
+                        0, output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
 
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
-                    Me.LogProgressGraph(output.EconomicValue, output.SocialValue, _
+                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
                                         output.MandatedValue, output.EcologicalValue, _
-                                        output.BiomassDiversityValue)
-
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                        output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
-                        output.TotalValue, output.PercentageClosed)
-
-                    Me.LogAreaClosedPercentage(output.PercentageClosed)
+                                        output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                                        output.TotalValue, output.PercentageClosed)
 
             End Select
 
@@ -854,26 +865,28 @@ Namespace Ecospace
 
             Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
-            Select Case Me.SearchType
+            Try
 
-                Case eMPAOptimizationModels.EcoSeed
-                    ' A new MPA cell has been selected out of the seed cells
-                    ' Redraw MPA map
-                    Me.m_ucZoom.Map.Refresh()
-                    ' Show this in the graph
-                    Me.LogProgressGraph(output.EconomicValue, output.SocialValue, _
-                                        output.MandatedValue, output.EcologicalValue, _
-                                        output.BiomassDiversityValue)
+                Select Case Me.SearchType
 
-                    ' Always update the progress grid
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                        output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
-                        output.TotalValue, output.PercentageClosed)
+                    Case eMPAOptimizationModels.EcoSeed
+                        ' A new MPA cell has been selected out of the seed cells
+                        ' Redraw MPA map
+                        Me.m_ucZoom.Map.Refresh()
+                        ' Show this in the graph
+                        Me.LogProgress(output.EconomicValue, output.SocialValue, _
+                                            output.MandatedValue, output.EcologicalValue, _
+                                            output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                                            output.TotalValue, output.PercentageClosed)
 
-                Case eMPAOptimizationModels.RandomSearch
-                    ' Does not apply to Random search
+                    Case eMPAOptimizationModels.RandomSearch
+                        ' Does not apply to Random search
 
-            End Select
+                End Select
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
@@ -884,41 +897,39 @@ Namespace Ecospace
             ' Sanity check
             Debug.Assert(Me.m_manager.isRunning())
 
-            Select Case Me.SearchType
+            Try
 
-                Case eMPAOptimizationModels.EcoSeed
-                    Try
+                Select Case Me.SearchType
+
+                    Case eMPAOptimizationModels.EcoSeed
 
                         ' Ecoseed: the seed cell configuration has changed. 
                         ' The seed cell map has to be updated, which is done in the GUI
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_dataRunState(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
+                                Me.m_aiFeedback(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_dataRunState(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_dataRunState(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
+                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
                         End If
 
                         ' Make the map redraw itself
                         Me.m_ucZoom.Map.Refresh()
 
-                    Catch ex As Exception
+                    Case eMPAOptimizationModels.RandomSearch
+                        ' NOP
 
-                    End Try
+                End Select
 
-                Case eMPAOptimizationModels.RandomSearch
+            Catch ex As Exception
 
-                    'Me.LogProgressGraph(output.EconomicValue, output.SocialValue, _
-                    '                    output.MandatedValue, output.EcologicalValue, _
-                    '                    output.BiomassDiversityValue)
-
-            End Select
+            End Try
 
         End Sub
 
@@ -957,152 +968,123 @@ Namespace Ecospace
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function SetMapFeedback() As Boolean
+        Private Sub InitMapFeedback()
 
-            Select Case Me.SearchType
+            Dim strGroup As String = ""
+            Dim datalayerTemp As cEcospaceIntegerNxNLayer = Nothing
+            Dim l As cLayer = Nothing
+            Dim alayers As cLayer() = Nothing
+            Dim lRunStateLayers As New List(Of cLayer)
 
-                Case eMPAOptimizationModels.EcoSeed
+            Me.m_ucLayers.LockUpdates()
 
-                    Select Case Me.RunMode
-                        Case eFormModeTypes.Prepare, eFormModeTypes.Searching, eFormModeTypes.Initializing
-                            Try
+            Try
 
-                                Dim strGroup As String = ""
-                                Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-                                Dim layWrapped As cEcospaceIntegerNxNLayer
-                                Dim l As cLayer = Nothing
-                                Dim alayers As cLayer() = Nothing
-                                Dim lRunStateLayers As New List(Of cLayer)
+                ' Redim data
+                ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
+                ' Create layer to use for showing the data
+                datalayerTemp = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_aiFeedback, _
+                                        Me.m_basemap.InRow, Me.m_basemap.InCol, Me.m_basemap.CellLength, _
+                                        Me.m_basemap.Latitude, Me.m_basemap.Longitude)
 
-                                Me.m_ucLayers.LockUpdates()
+                Select Case Me.SearchType
 
-                                ' Redim data
-                                ReDim Me.m_dataRunState(Me.m_basemap.InRow, Me.m_basemap.InCol)
+                    Case eMPAOptimizationModels.EcoSeed
 
-                                ' AFTER redimming create a temp wrapper layer
-                                layWrapped = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_dataRunState, bm.InRow, bm.InCol, bm.CellLength, bm.Latitude, bm.Longitude)
+                        ' Get group
+                        strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
 
-                                strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
-                                ' Create current cell layer(s)
-                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, layWrapped)
-                                For iLayer As Integer = 0 To alayers.Length - 1
-                                    l = alayers(iLayer)
-                                    l.Editor.IsReadOnly = True
-                                    Me.AddLayer(l, strGroup, Me.m_alayerSeed(0))
-                                Next
-                                lRunStateLayers.AddRange(alayers)
-
-                                ' Create best cell layer
-                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedBest, layWrapped)
-                                For iLayer As Integer = 0 To alayers.Length - 1
-                                    l = alayers(iLayer)
-                                    l.Editor.IsReadOnly = True
-                                    Me.AddLayer(l, strGroup, Me.m_alayerSeed(0))
-                                Next
-                                lRunStateLayers.AddRange(alayers)
-                                Me.m_alayerFeedback = lRunStateLayers.ToArray()
-                                Me.m_ucLayers.UnlockUpdates()
-
-                            Catch ex As Exception
-
-                            End Try
-
-                        Case eFormModeTypes.Results
-                    End Select
-
-                Case eMPAOptimizationModels.RandomSearch
-
-                    Select Case Me.RunMode
-
-                        Case eFormModeTypes.Results
-                            Try
-                                ' Create random output layer
-                                Dim strGroup As String = ""
-                                Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-                                Dim layWrapped As cEcospaceIntegerNxNLayer
-                                Dim l As cLayer = Nothing
-                                Dim alayers As cLayer() = Nothing
-                                Dim lRunStateLayers As New List(Of cLayer)
-
-                                Me.m_ucLayers.LockUpdates()
-
-                                ' Redim data
-                                ReDim Me.m_dataRunState(Me.m_basemap.InRow, Me.m_basemap.InCol)
-
-                                ' AFTER redimming create a temp wrapper layer
-                                layWrapped = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_dataRunState, bm.InRow, bm.InCol, bm.CellLength, bm.Latitude, bm.Longitude)
-
-                                strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
-
-                                ' Create current cell layer(s)
-                                alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPARandom, layWrapped)
-                                For iLayer As Integer = 0 To alayers.Length - 1
-                                    l = alayers(iLayer)
-                                    l.Editor.IsReadOnly = True
-                                    Me.AddLayer(l, strGroup)
-                                Next
-                                lRunStateLayers.AddRange(alayers)
-
-                                Me.m_alayerFeedback = lRunStateLayers.ToArray()
-                                Me.m_ucLayers.UnlockUpdates()
-
-                            Catch ex As Exception
-
-                            End Try
-
-                    End Select
-            End Select
-
-            Me.UpdateResultsGraph()
-
-            Return True
-
-        End Function
-
-        Private Function ClearMapFeedback() As Boolean
-
-            Select Case Me.SearchType
-
-                Case eMPAOptimizationModels.EcoSeed
-                    If Me.m_alayerFeedback IsNot Nothing Then
-                        For Each l As cLayer In Me.m_alayerFeedback
-                            Me.RemoveLayer(l)
+                        ' Create current cell layer(s)
+                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
+                        For iLayer As Integer = 0 To alayers.Length - 1
+                            l = alayers(iLayer)
+                            l.Editor.IsReadOnly = True
+                            Me.AddLayer(l, strGroup)
                         Next
+                        lRunStateLayers.AddRange(alayers)
 
-                        Me.m_alayerFeedback = Nothing
-                    End If
-                    Me.m_dataRunState = Nothing
+                        ' Create best cell layer
+                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
+                        For iLayer As Integer = 0 To alayers.Length - 1
+                            l = alayers(iLayer)
+                            l.Editor.IsReadOnly = True
+                            Me.AddLayer(l, strGroup)
+                        Next
+                        lRunStateLayers.AddRange(alayers)
+
+                    Case eMPAOptimizationModels.RandomSearch
+
+                        ' Create random output layer
+                        strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
+
+                        ' Create current cell layer(s)
+                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPARandom, datalayerTemp)
+                        For iLayer As Integer = 0 To alayers.Length - 1
+                            l = alayers(iLayer)
+                            l.Editor.IsReadOnly = True
+                            Me.AddLayer(l, strGroup)
+                        Next
+                        lRunStateLayers.AddRange(alayers)
+
+                End Select
+
+                Me.m_alayerFeedback = lRunStateLayers.ToArray()
+
+            Catch ex As Exception
+
+            End Try
+
+            Me.m_ucLayers.UnlockUpdates()
+
+        End Sub
+
+        Private Sub ClearMapFeedback()
+            If Me.m_alayerFeedback IsNot Nothing Then
+                For Each l As cLayer In Me.m_alayerFeedback
+                    Me.RemoveLayer(l)
+                Next
+                Me.m_alayerFeedback = Nothing
+            End If
+            Me.m_aiFeedback = Nothing
+        End Sub
+
+        Private Sub UpdateBestCountMap()
+
+            Select Case Me.SearchType
+
+                Case eMPAOptimizationModels.EcoSeed
 
                 Case eMPAOptimizationModels.RandomSearch
 
-                    Select Case Me.RunMode
-                        Case eFormModeTypes.Results
-                            If Me.m_alayerFeedback IsNot Nothing Then
-                                For Each l As cLayer In Me.m_alayerFeedback
-                                    Me.RemoveLayer(l)
-                                Next
+                    Dim iNumResults As Integer = 0
+                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
+                                                                             Me.SelectedClosedPercentage, _
+                                                                             iNumResults)
 
-                                Me.m_alayerFeedback = Nothing
-                            End If
-                            Me.m_dataRunState = Nothing
+                    For iRow As Integer = 1 To Me.m_basemap.InRow
+                        For iCol As Integer = 1 To Me.m_basemap.InCol
+                            Me.m_aiFeedback(iRow, iCol) = aiCells(iRow, iCol)
+                        Next
+                    Next
 
-                    End Select
+                    ' In Random MPA, layer(0) is the only feedback layer
+                    Me.m_alayerFeedback(0).Update(cLayer.eChangeFlags.Map)
 
             End Select
 
-            Return True
-
-        End Function
+        End Sub
 
 #End Region ' Map updating
 
 #Region " Progress "
 
-        Private Sub LogProgressGraph(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
+        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
                                      ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
-                                     ByVal sBiomassDiversityValue As Single)
+                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _
+                                     ByVal sTotalValue As Single, ByVal sAreaPercentageClosed As Single)
 
             ' Show this in the graph
+            Dim strPerc As String = CStr(Math.Round(sAreaPercentageClosed))
             Dim iXMax As Integer = 0
 
             ' All 0: do not log
@@ -1116,6 +1098,7 @@ Namespace Ecospace
                     Case 2 : rp.AddItem(sMandatedValue)
                     Case 3 : rp.AddItem(sEcologicalValue)
                     Case 4 : rp.AddItem(sBiomassDiversityValue)
+                    Case 5 : rp.AddItem(sBoundaryWeightValue)
                 End Select
                 iXMax = Math.Max(iXMax, rp.Count)
             Next
@@ -1123,13 +1106,14 @@ Namespace Ecospace
             Me.m_graphProgress.GraphPane.XAxis.Scale.Max = iXMax
             Me.m_zghProgress.RescaleAndRedraw()
 
-        End Sub
+            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
+                        sMandatedValue, sEcologicalValue, sBiomassDiversityValue, _
+                        0, sTotalValue, sAreaPercentageClosed)
 
-        Private Sub LogAreaClosedPercentage(ByVal sPerc As Single)
-            Dim strPerc As String = CStr(Math.Round(sPerc))
             If (Me.m_cmbAreaClosed.FindStringExact(strPerc) = -1) Then
                 Me.m_cmbAreaClosed.Items.Add(strPerc)
             End If
+
         End Sub
 
 #End Region ' Progress
@@ -1142,9 +1126,20 @@ Namespace Ecospace
 
             Select Case SearchType
                 Case eMPAOptimizationModels.EcoSeed
+                    ' Get all results
                     lResults = Me.m_manager.Results
                 Case eMPAOptimizationModels.RandomSearch
+                    ' Get results, filtered by selected percentage area closed
                     lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage)
+                    ' Sort the results
+                    lResults.Sort()
+                    ' Only show top percentile
+                    If lResults.Count > 0 Then
+                        ' Strip off anything past top x %
+                        Dim iIndex As Integer = CInt(Math.Ceiling(lResults.Count * Me.SelectedBestPercentile / 100.0!))
+                        lResults.RemoveRange(iIndex, lResults.Count - iIndex)
+                    End If
+
             End Select
 
             Try
@@ -1157,6 +1152,7 @@ Namespace Ecospace
                     Me.m_lptsResults(3).AddItem(result.objFuncMandatedValue)
                     Me.m_lptsResults(4).AddItem(result.objFuncEcologicalValue)
                     Me.m_lptsResults(5).AddItem(result.objBiomassDiversity)
+                    Me.m_lptsResults(6).AddItem(result.objFuncAreaBorder)
                 Next
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
 
@@ -1169,58 +1165,50 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ShowIteration()
+        Private Sub ShowIteration(ByVal iIteration As Integer)
 
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
-            Dim aiCells(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
-            Dim iCursorPos As Integer = 0
+            Dim cell As cMPACell = Nothing
+            Dim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
 
             ' Update map
-            ReDim aiCells(Me.m_basemap.InRow, Me.m_basemap.InCol)
+            ReDim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol)
 
             Select Case Me.SearchType
+
                 Case eMPAOptimizationModels.EcoSeed
                     lResults = Me.m_manager.Results()
+
                 Case eMPAOptimizationModels.RandomSearch
                     lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage())
+
             End Select
 
-            iCursorPos = CInt(Math.Round(Me.m_zghResults.CursorPos))
-            iCursorPos = Math.Max(0, Math.Min(lResults.Count - 1, iCursorPos))
+            iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
 
-            If iCursorPos = -1 Then Return
+            If iIteration = -1 Then Return
 
-            res = lResults(iCursorPos)
-
+            res = lResults(iIteration)
             For iCell As Integer = 0 To res.Cells.Count - 1
-                Dim cell As cMPACell = res.Cells(iCell)
-                aiCells(cell.Row, cell.Col) = cell.iMPA
+                cell = res.Cells(iCell)
+                aiCellMPA(cell.Row, cell.Col) = cell.iMPA
             Next iCell
+
+            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
 
             ' Update indicators
             Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
                                        res.objFuncMandatedValue, res.objFuncEcologicalValue, _
-                                       res.objBiomassDiversity, _
+                                       res.objBiomassDiversity, res.objFuncAreaBorder, _
                                        res.objFuncTotal, res.PercentageClosed)
-            Me.SetLayer(aiCells, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+
             Me.m_ucZoom.Map.Refresh()
 
         End Sub
 
         Private Sub ShowBestPercentage()
-
-            If (Me.SearchType = eMPAOptimizationModels.RandomSearch) And (Me.m_alayerFeedback.Length = 1) Then
-                ' Update map
-                Dim iNumResults As Integer = 0
-                Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
-                                                                         Me.SelectedClosedPercentage, _
-                                                                         iNumResults)
-
-                Me.SetLayer(aiCells, Me.m_alayerFeedback(0).Data)
-                Me.m_alayerFeedback(0).Update(cLayer.eChangeFlags.Map)
-            End If
-
+            Me.UpdateBestCountMap()
         End Sub
 
         Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult), _
@@ -1396,14 +1384,13 @@ Namespace Ecospace
             Me.m_lblBestPercentile.Enabled = (bIsResults And bIsRandom)
             Me.m_btnResetMPAs.Enabled = bIsResults
 
-            ' Run buttons
-            Me.m_btnConvertToMpa.Enabled = bIsResults
-            Me.m_btnExport.Enabled = (bIsResults And bIsRandom)
 
             ' Update run control buttons
-            Me.m_btnRun.Enabled = (Not bIsRunning)
+            Me.m_btnRun.Enabled = bIsPreparing
             Me.m_btnStop.Enabled = bIsRunning
             Me.m_bntNewSearch.Enabled = bIsResults
+            Me.m_btnConvertToMpa.Enabled = bIsResults
+            Me.m_btnSave.Enabled = (bIsResults And bIsRandom)
 
             ' Toggle toolbar controls
             Me.m_tsbMPA.Enabled = bIsPreparing And bMPALayerSelected
@@ -1458,12 +1445,14 @@ Namespace Ecospace
         End Function
 
         Private Sub ClearResults()
+
             For Each rp As ResultPoints In Me.m_lptsProgress
-                rp.Clear()
+                If rp IsNot Nothing Then rp.Clear()
             Next
             For Each rp As ResultPoints In Me.m_lptsResults
-                rp.Clear()
+                If rp IsNot Nothing Then rp.Clear()
             Next
+
             Me.m_graphProgress.Refresh()
             Me.m_graphResults.Refresh()
 

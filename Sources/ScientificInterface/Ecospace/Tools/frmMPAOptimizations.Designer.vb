@@ -53,7 +53,7 @@ Namespace Ecospace
             Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations
             Me.m_tpResults = New System.Windows.Forms.TabPage
             Me.m_cmbAreaClosed = New System.Windows.Forms.ComboBox
-            Me.m_btnExport = New System.Windows.Forms.Button
+            Me.m_btnSave = New System.Windows.Forms.Button
             Me.m_lblAreaClosed = New System.Windows.Forms.Label
             Me.m_lblBestPercentile = New System.Windows.Forms.Label
             Me.m_gridResults = New ScientificInterface.gridMPAOptimizations
@@ -68,9 +68,7 @@ Namespace Ecospace
             Me.m_lblMaxArea = New System.Windows.Forms.Label
             Me.m_nudMinArea = New System.Windows.Forms.NumericUpDown
             Me.m_nudMaxArea = New System.Windows.Forms.NumericUpDown
-            Me.m_lblBoundaryWeight = New System.Windows.Forms.Label
             Me.m_lblStep = New System.Windows.Forms.Label
-            Me.m_nudBoundaryWeight = New System.Windows.Forms.NumericUpDown
             Me.m_lblIterations = New System.Windows.Forms.Label
             Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
             Me.m_lblBaseYear = New System.Windows.Forms.Label
@@ -102,7 +100,6 @@ Namespace Ecospace
             Me.m_tlbParameters.SuspendLayout()
             CType(Me.m_nudMinArea, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxArea, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudBoundaryWeight, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMap.Panel1.SuspendLayout()
             Me.m_scMap.Panel2.SuspendLayout()
@@ -263,9 +260,9 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbMPA.FormattingEnabled = True
-            Me.m_cmbMPA.Location = New System.Drawing.Point(552, 29)
+            Me.m_cmbMPA.Location = New System.Drawing.Point(553, 29)
             Me.m_cmbMPA.Name = "m_cmbMPA"
-            Me.m_cmbMPA.Size = New System.Drawing.Size(103, 21)
+            Me.m_cmbMPA.Size = New System.Drawing.Size(102, 21)
             Me.m_cmbMPA.TabIndex = 13
             '
             'm_rbRandom
@@ -307,9 +304,9 @@ Namespace Ecospace
             '
             Me.m_lbMPA.AutoSize = True
             Me.m_lbMPA.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbMPA.Location = New System.Drawing.Point(457, 26)
+            Me.m_lbMPA.Location = New System.Drawing.Point(494, 26)
             Me.m_lbMPA.Name = "m_lbMPA"
-            Me.m_lbMPA.Size = New System.Drawing.Size(89, 27)
+            Me.m_lbMPA.Size = New System.Drawing.Size(53, 27)
             Me.m_lbMPA.TabIndex = 12
             Me.m_lbMPA.Text = "&MPA:"
             Me.m_lbMPA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -329,16 +326,16 @@ Namespace Ecospace
             '
             Me.m_nudIterations.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudIterations.Location = New System.Drawing.Point(552, 3)
+            Me.m_nudIterations.Location = New System.Drawing.Point(553, 3)
             Me.m_nudIterations.Name = "m_nudIterations"
-            Me.m_nudIterations.Size = New System.Drawing.Size(103, 20)
+            Me.m_nudIterations.Size = New System.Drawing.Size(102, 20)
             Me.m_nudIterations.TabIndex = 5
             '
             'm_nudStep
             '
             Me.m_nudStep.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudStep.Location = New System.Drawing.Point(300, 56)
+            Me.m_nudStep.Location = New System.Drawing.Point(337, 56)
             Me.m_nudStep.Name = "m_nudStep"
             Me.m_nudStep.Size = New System.Drawing.Size(99, 20)
             Me.m_nudStep.TabIndex = 11
@@ -450,7 +447,7 @@ Namespace Ecospace
             'm_tpResults
             '
             Me.m_tpResults.Controls.Add(Me.m_cmbAreaClosed)
-            Me.m_tpResults.Controls.Add(Me.m_btnExport)
+            Me.m_tpResults.Controls.Add(Me.m_btnSave)
             Me.m_tpResults.Controls.Add(Me.m_lblAreaClosed)
             Me.m_tpResults.Controls.Add(Me.m_lblBestPercentile)
             Me.m_tpResults.Controls.Add(Me.m_gridResults)
@@ -474,16 +471,16 @@ Namespace Ecospace
             Me.m_cmbAreaClosed.Size = New System.Drawing.Size(80, 21)
             Me.m_cmbAreaClosed.TabIndex = 1
             '
-            'm_btnExport
+            'm_btnSave
             '
-            Me.m_btnExport.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.m_btnExport.Location = New System.Drawing.Point(344, 3)
-            Me.m_btnExport.Name = "m_btnExport"
-            Me.m_btnExport.Size = New System.Drawing.Size(99, 23)
-            Me.m_btnExport.TabIndex = 4
-            Me.m_btnExport.Text = "&Export"
-            Me.m_btnExport.UseVisualStyleBackColor = True
+            Me.m_btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.m_btnSave.Location = New System.Drawing.Point(344, 3)
+            Me.m_btnSave.Name = "m_btnSave"
+            Me.m_btnSave.Size = New System.Drawing.Size(99, 23)
+            Me.m_btnSave.TabIndex = 4
+            Me.m_btnSave.Text = "&Save..."
+            Me.m_btnSave.UseVisualStyleBackColor = True
             '
             'm_lblAreaClosed
             '
@@ -628,10 +625,8 @@ Namespace Ecospace
             Me.m_tlbParameters.Controls.Add(Me.m_lblMaxArea, 3, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_nudMinArea, 4, 0)
             Me.m_tlbParameters.Controls.Add(Me.m_nudMaxArea, 4, 1)
-            Me.m_tlbParameters.Controls.Add(Me.m_lblBoundaryWeight, 6, 2)
             Me.m_tlbParameters.Controls.Add(Me.m_lblStep, 3, 2)
             Me.m_tlbParameters.Controls.Add(Me.m_nudStep, 4, 2)
-            Me.m_tlbParameters.Controls.Add(Me.m_nudBoundaryWeight, 7, 2)
             Me.m_tlbParameters.Controls.Add(Me.m_cmbMPA, 7, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_lbMPA, 6, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_nudIterations, 7, 0)
@@ -653,9 +648,9 @@ Namespace Ecospace
             Me.m_lblMinArea.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_lblMinArea.Location = New System.Drawing.Point(223, 0)
             Me.m_lblMinArea.Name = "m_lblMinArea"
-            Me.m_lblMinArea.Size = New System.Drawing.Size(71, 26)
+            Me.m_lblMinArea.Size = New System.Drawing.Size(108, 26)
             Me.m_lblMinArea.TabIndex = 6
-            Me.m_lblMinArea.Text = "Mi&n area (%):"
+            Me.m_lblMinArea.Text = "Area closed (m&in, %):"
             Me.m_lblMinArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_lblMaxArea
@@ -664,16 +659,16 @@ Namespace Ecospace
             Me.m_lblMaxArea.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_lblMaxArea.Location = New System.Drawing.Point(223, 26)
             Me.m_lblMaxArea.Name = "m_lblMaxArea"
-            Me.m_lblMaxArea.Size = New System.Drawing.Size(71, 27)
+            Me.m_lblMaxArea.Size = New System.Drawing.Size(108, 27)
             Me.m_lblMaxArea.TabIndex = 8
-            Me.m_lblMaxArea.Text = "Ma&x area (%):"
+            Me.m_lblMaxArea.Text = "Area closed (m&ax, %):"
             Me.m_lblMaxArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudMinArea
             '
             Me.m_nudMinArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMinArea.Location = New System.Drawing.Point(300, 3)
+            Me.m_nudMinArea.Location = New System.Drawing.Point(337, 3)
             Me.m_nudMinArea.Name = "m_nudMinArea"
             Me.m_nudMinArea.Size = New System.Drawing.Size(99, 20)
             Me.m_nudMinArea.TabIndex = 7
@@ -682,22 +677,10 @@ Namespace Ecospace
             '
             Me.m_nudMaxArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMaxArea.Location = New System.Drawing.Point(300, 29)
+            Me.m_nudMaxArea.Location = New System.Drawing.Point(337, 29)
             Me.m_nudMaxArea.Name = "m_nudMaxArea"
             Me.m_nudMaxArea.Size = New System.Drawing.Size(99, 20)
             Me.m_nudMaxArea.TabIndex = 9
-            '
-            'm_lblBoundaryWeight
-            '
-            Me.m_lblBoundaryWeight.AutoSize = True
-            Me.m_lblBoundaryWeight.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblBoundaryWeight.Location = New System.Drawing.Point(457, 53)
-            Me.m_lblBoundaryWeight.Name = "m_lblBoundaryWeight"
-            Me.m_lblBoundaryWeight.Size = New System.Drawing.Size(89, 26)
-            Me.m_lblBoundaryWeight.TabIndex = 14
-            Me.m_lblBoundaryWeight.Text = "&Boundary weight:"
-            Me.m_lblBoundaryWeight.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            Me.m_lblBoundaryWeight.Visible = False
             '
             'm_lblStep
             '
@@ -705,28 +688,18 @@ Namespace Ecospace
             Me.m_lblStep.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_lblStep.Location = New System.Drawing.Point(223, 53)
             Me.m_lblStep.Name = "m_lblStep"
-            Me.m_lblStep.Size = New System.Drawing.Size(71, 26)
+            Me.m_lblStep.Size = New System.Drawing.Size(108, 26)
             Me.m_lblStep.TabIndex = 10
             Me.m_lblStep.Text = "S&tep (%):"
             Me.m_lblStep.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_nudBoundaryWeight
-            '
-            Me.m_nudBoundaryWeight.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudBoundaryWeight.Location = New System.Drawing.Point(552, 56)
-            Me.m_nudBoundaryWeight.Name = "m_nudBoundaryWeight"
-            Me.m_nudBoundaryWeight.Size = New System.Drawing.Size(103, 20)
-            Me.m_nudBoundaryWeight.TabIndex = 15
-            Me.m_nudBoundaryWeight.Visible = False
             '
             'm_lblIterations
             '
             Me.m_lblIterations.AutoSize = True
             Me.m_lblIterations.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblIterations.Location = New System.Drawing.Point(457, 0)
+            Me.m_lblIterations.Location = New System.Drawing.Point(494, 0)
             Me.m_lblIterations.Name = "m_lblIterations"
-            Me.m_lblIterations.Size = New System.Drawing.Size(89, 26)
+            Me.m_lblIterations.Size = New System.Drawing.Size(53, 26)
             Me.m_lblIterations.TabIndex = 4
             Me.m_lblIterations.Text = "&Iterations:"
             Me.m_lblIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -993,7 +966,6 @@ Namespace Ecospace
             Me.m_tlbParameters.PerformLayout()
             CType(Me.m_nudMinArea, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMaxArea, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudBoundaryWeight, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMap.Panel1.ResumeLayout(False)
             Me.m_scMap.Panel2.ResumeLayout(False)
@@ -1060,8 +1032,6 @@ Namespace Ecospace
         Private WithEvents m_nudMaxArea As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblStep As System.Windows.Forms.Label
         Private WithEvents m_lblIterations As System.Windows.Forms.Label
-        Private WithEvents m_lblBoundaryWeight As System.Windows.Forms.Label
-        Private WithEvents m_nudBoundaryWeight As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tlpObjectives As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblObjectives As System.Windows.Forms.Label
         Private WithEvents m_lbFleet As System.Windows.Forms.Label
@@ -1069,7 +1039,7 @@ Namespace Ecospace
         Private WithEvents m_plFleet As System.Windows.Forms.Panel
         Private WithEvents m_plObjectives As System.Windows.Forms.Panel
         Private WithEvents lblParam As System.Windows.Forms.Label
-        Friend WithEvents m_btnExport As System.Windows.Forms.Button
+        Friend WithEvents m_btnSave As System.Windows.Forms.Button
         Private WithEvents m_lblAreaClosed As System.Windows.Forms.Label
         Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
