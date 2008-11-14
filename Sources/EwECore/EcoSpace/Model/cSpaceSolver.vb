@@ -203,15 +203,9 @@ Public Class cSpaceSolver
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
 
-        'Dim i As Integer
-        'Dim j As Integer
-
         If m_TracerData.EcoSpaceConSimOn Then
             ReDim Derivcon(m_EPData.NumGroups), Cintotal(m_EPData.NumGroups), Closs(m_EPData.NumGroups)
         End If
-
-        'this is now redimmed outside the thread for robustness
-        'ReDim BtimeLocal(m_Data.NGroups)
 
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
@@ -229,14 +223,7 @@ Public Class cSpaceSolver
                 'j = (iGrp - 1) Mod m_Data.InCol + 1
 
                 'now do the computations
-                'If m_Data.Depth(i, j) > 0 Then
                 SolveCell(m_Data.iWaterCellIndex(iGrp), m_Data.jWaterCellIndex(iGrp))
-                'Else
-                '    For ip As Integer = 1 To m_Data.NGroups
-                '        m_Data.Bcell(i, j, ip) = 1.0E-30
-                '        AMm(i, j, ip) = -1.0E+30
-                '    Next
-                'End If
 
             Next iGrp
 
@@ -273,8 +260,6 @@ Public Class cSpaceSolver
         Dim ip As Integer
 
         Try
-            'this will throw a / 0 error it is for testing the error handling
-            ' ip = 1 / ip
 
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actuall different, it's a multiplier
             TimeStep2 = m_Data.TimeStep * 0.66667
@@ -368,7 +353,7 @@ Public Class cSpaceSolver
 
             Next ip
 
-            m_EcospaceModel.summarizeCatchData(Tn, itt, BB, i, j)
+            m_EcospaceModel.accumCatchData(Tn, itt, BB, i, j)
 
             For isc = 1 To m_Data.Nvarsplit
                 ieco = Ecode(isc)
