@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.20  2008/11/14 23:31:32  jeroens
+' ConvertToMPA also takes BestPercentile into account
+' Documented ConvertToPMA
+' Added ConvertToPMA todo
+'
 ' Revision 1.19  2008/11/14 19:19:34  jeroens
 ' Implemented ConvertToMPA
 '
@@ -421,7 +426,8 @@ Namespace Ecospace
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
-                    aiMap = Me.m_manager.CellSelectedMap(100, Me.SelectedClosedPercentage, iNumResults)
+                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(), _
+                                                         Me.SelectedClosedPercentage(), iNumResults)
                     ' Convert to MPA
                     Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
 
@@ -1372,9 +1378,10 @@ Namespace Ecospace
         ''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
         ''' </summary>
         ''' <param name="aiMap">The best count map to convert.</param>
-        ''' <param name="iAreaPercentToClose"></param>
-        ''' <param name="iMPA"></param>
-        ''' <returns></returns>
+        ''' <param name="iAreaPercentToClose">Percent of water cells 
+        ''' to close in addition to the current MPAs.</param>
+        ''' <param name="iMPA">The MPA to assign new cells to.</param>
+        ''' <returns>True if succesful.</returns>
         ''' <remarks>
         ''' Cells are selected from the best count map, aiMap, by descending
         ''' value until either the requested percentage is met or there are no 
@@ -1466,6 +1473,8 @@ Namespace Ecospace
             While (iNumCellsToClose > 0)
 
                 ' Convert a random cell from this list
+                ' VC, JS 14nov08: Instead of randomizing cells when hit counts are identical,
+                '                 cells could be selected based on total weighted score
                 iIndex = (rnd.Next(lPoints.Count * 13) Mod lPoints.Count)
                 layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = iMPA
                 lPoints.RemoveAt(iIndex)
