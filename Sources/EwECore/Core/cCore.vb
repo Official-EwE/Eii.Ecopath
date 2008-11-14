@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.26  2008/11/14 18:51:46  joeb
+' Fixed an opps from the last commit
+'
 ' Revision 1.25  2008/11/14 18:50:37  joeb
 ' Changed Ecospace biomass output
 '
@@ -6971,7 +6974,6 @@ Public Class cCore
                 Next
             Next
 
-            Dim costRes As Single, epCost As Single, sEff As Single, sCost As Single
             'Fleet summarized output
             For Each objFlt As cEcospaceFleetSummary In m_EcospaceFleetSummaries
                 If objFlt.Index <> 0 Then
