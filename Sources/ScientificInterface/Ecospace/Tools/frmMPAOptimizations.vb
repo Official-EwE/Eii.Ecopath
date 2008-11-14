@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.19  2008/11/14 19:19:34  jeroens
+' Implemented ConvertToMPA
+'
 ' Revision 1.18  2008/11/14 01:20:57  jeroens
 ' Implemented best count data export
 '
@@ -313,14 +316,14 @@ Namespace Ecospace
 
         Private Sub OnSetAllSeedCells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_tsmSetAllSeed.Click
-            Me.m_manager.setAllCellsToSeed(Me.GetSelectedMPA())
+            Me.m_manager.setAllCellsToSeed(Me.SelectedMPA())
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
 
         Private Sub OnSetAllMPACells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_tsmSetAllMPA.Click
-            Me.m_manager.setAllCellsToMPA(Me.GetSelectedMPA())
+            Me.m_manager.setAllCellsToMPA(Me.SelectedMPA())
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
@@ -408,13 +411,19 @@ Namespace Ecospace
         Private Sub OnConvertToMPA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnConvertToMpa.Click
 
+            Dim aiMap As Integer(,) = Nothing
+            Dim iNumResults As Integer = 0
+
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA, Me.SelectedMPA())
 
                 Case eMPAOptimizationModels.RandomSearch
-                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+                    ' Get cell map at 100% best cells
+                    aiMap = Me.m_manager.CellSelectedMap(100, Me.SelectedClosedPercentage, iNumResults)
+                    ' Convert to MPA
+                    Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
 
             End Select
 
@@ -696,23 +705,17 @@ Namespace Ecospace
             End Set
         End Property
 
-        Private Property SelectedClosedPercentage() As Integer
-            Get
-                Return CInt(Val(Me.m_cmbAreaClosed.Text))
-            End Get
-            Set(ByVal value As Integer)
-                ' Haha
-            End Set
-        End Property
+        Private Function SelectedClosedPercentage() As Integer
+            Return CInt(Val(Me.m_cmbAreaClosed.Text))
+        End Function
 
-        Private Property SelectedBestPercentile() As Integer
-            Get
-                Return CInt(Me.m_nudBestPercentile.Value)
-            End Get
-            Set(ByVal value As Integer)
-                ' Haha
-            End Set
-        End Property
+        Private Function SelectedBestPercentile() As Integer
+            Return CInt(Me.m_nudBestPercentile.Value)
+        End Function
+
+        Private Function SelectedMPA() As Integer
+            Return CInt(Me.m_fpMPA.Value())
+        End Function
 
         Private Sub EnterMode()
 
@@ -1225,7 +1228,7 @@ Namespace Ecospace
                 aiCellMPA(cell.Row, cell.Col) = cell.iMPA
             Next iCell
 
-            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA, Me.GetSelectedMPA())
+            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA, Me.SelectedMPA())
 
             ' Update indicators
             Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
@@ -1364,6 +1367,124 @@ Namespace Ecospace
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
+        ''' </summary>
+        ''' <param name="aiMap">The best count map to convert.</param>
+        ''' <param name="iAreaPercentToClose"></param>
+        ''' <param name="iMPA"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' Cells are selected from the best count map, aiMap, by descending
+        ''' value until either the requested percentage is met or there are no 
+        ''' convertable cells left.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private Function ConvertToMPA(ByVal aiMap As Integer(,), _
+                                      ByVal iAreaPercentToClose As Integer, _
+                                      ByVal iMPA As Integer) As Boolean
+
+            ' Ecospace MPA layer
+            Dim layerMPA As cEcospaceLayer = Me.m_basemap.LayerMPA
+            ' Ecospace depth layer
+            Dim layerDepth As cEcospaceLayer = Me.m_basemap.LayerDepth
+            ' Dictionary with list of points, sorted by hit count
+            Dim dtMapSorted As New Dictionary(Of Integer, List(Of Point))
+            ' List of hit count values, keys to the dictionary
+            Dim lKeys As New List(Of Integer)
+            ' Helper var to reference lists in the dictionary
+            Dim lPoints As List(Of Point) = Nothing
+            ' Number of cells that can be converted
+            Dim iNumConvertableCells As Integer = 0
+            ' Number of water cells
+            Dim iNumWaterCells As Integer = 0
+            ' Number of cells to close
+            Dim iNumCellsToClose As Integer = 0
+            ' Row, col iterators
+            Dim iRow, iCol As Integer
+            ' Always handy
+            Dim iIndex As Integer = 0
+            ' Randomizer
+            Dim rnd As New Random()
+
+            ' Gather conversion info
+            For iRow = 1 To Me.m_basemap.InRow
+                For iCol = 1 To Me.m_basemap.InCol
+
+                    ' Only consider water cells
+                    If (layerDepth.Cell(iRow, iCol) <> 0) Then
+
+                        ' Only consider cells that can be converted to MPA:
+                        ' when MPA=0 (not currently part of an mpa)
+                        If (layerMPA.Cell(iRow, iCol) = 0) Then
+                            ' Get hit count value for this cell
+                            iIndex = aiMap(iRow, iCol)
+
+                            ' Add it to the dictionary
+                            If Not dtMapSorted.ContainsKey(iIndex) Then
+                                ' #Yes: create point list and add it to dictionary
+                                lPoints = New List(Of Point)
+                                dtMapSorted(iIndex) = lPoints
+                                lKeys.Add(iIndex)
+                            Else
+                                ' #No: get point list
+                                lPoints = dtMapSorted(iIndex)
+                            End If
+                            ' Add point as candidate cell
+                            lPoints.Add(New Point(iRow, iCol))
+
+                            ' Count candidate cell
+                            iNumConvertableCells += 1
+
+                        End If ' Is not assigned to MPA yet
+
+                        ' Count water cells
+                        iNumWaterCells += 1
+
+                    End If ' Is water cell
+                Next iCol
+            Next iRow
+
+            ' Calculate #cells to close
+            iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
+            ' Cap to the max amount of available #water cells
+            iNumCellsToClose = Math.Min(iNumCellsToClose, iNumConvertableCells)
+
+            ' Need to bail out?
+            If (lKeys.Count = 0) Then Return True
+
+            ' Sort keys in reverse order (highest hit count value first)
+            lKeys.Sort()
+            lKeys.Reverse()
+
+            ' Get first cell list to iterate over
+            lPoints = dtMapSorted(lKeys(0))
+            lKeys.RemoveAt(0)
+
+            ' Can we go home now?
+            While (iNumCellsToClose > 0)
+
+                ' Convert a random cell from this list
+                iIndex = (rnd.Next(lPoints.Count * 13) Mod lPoints.Count)
+                layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = iMPA
+                lPoints.RemoveAt(iIndex)
+
+                ' One less to close
+                iNumCellsToClose -= 1
+
+                ' Handle empty list
+                If lPoints.Count = 0 Then
+                    lPoints = dtMapSorted(lKeys(0))
+                    lKeys.RemoveAt(0)
+                End If
+
+            End While
+
+            Return True
+
+        End Function
+
 #End Region ' Map
 
 #Region " Generic "
@@ -1379,7 +1500,7 @@ Namespace Ecospace
             Dim bIsResults As Boolean = (Me.RunMode = eFormModeTypes.Results)
             Dim bIsEcoseed As Boolean = (Me.SearchType = eMPAOptimizationModels.EcoSeed)
             Dim bIsRandom As Boolean = (Me.SearchType = eMPAOptimizationModels.RandomSearch)
-            Dim bMPALayerSelected As Boolean = (Me.GetSelectedMPA() > 0)
+            Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
 
             ' Update input controls
             Me.m_nudStartYear.Enabled = bIsPreparing
@@ -1466,10 +1587,6 @@ Namespace Ecospace
 
             Return True
 
-        End Function
-
-        Private Function GetSelectedMPA() As Integer
-            Return CInt(Me.m_fpMPA.Value())
         End Function
 
         Private Sub ClearResults()
