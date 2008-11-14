@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcospaceLayerMigration.vb,v $
+' Revision 1.2  2008/11/14 21:43:29  jeroens
+' Fixed  crash on migration data outside range of the basemap
+'
 ' Revision 1.1  2008/11/04 05:42:58  jeroens
 ' New
 '
@@ -126,7 +129,11 @@ Public Class cEcospaceLayerMigration
         Next
 
         For iMonth As Integer = Me.m_iMinValue To Me.m_iMaxValue
-            Me.m_asData(CInt(aiPrefRow(Me.m_iGroup, iMonth)), CInt(aiPrefCol(Me.m_iGroup, iMonth))) = iMonth
+            Dim iRow As Integer = CInt(aiPrefRow(Me.m_iGroup, iMonth))
+            Dim iCol As Integer = CInt(aiPrefCol(Me.m_iGroup, iMonth))
+            If Me.ValidateCellPosition(iRow, iCol) Then
+                Me.m_asData(iRow, iCol) = iMonth
+            End If
         Next
     End Sub
 
