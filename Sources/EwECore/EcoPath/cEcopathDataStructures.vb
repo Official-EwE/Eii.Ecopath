@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.3  2008/11/14 00:21:09  joeb
+' Added comment to cost(,)
+'
 ' Revision 1.2  2008/10/09 17:21:03  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -270,6 +273,7 @@ Public Class cEcopathDataStructures
 
     'fishing variables
     Public NoGearData As Boolean
+    ''' <summary> cost(nFleets,3) '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost </summary>
     Public cost(,) As Single
     Public CostPct(,) As Single
     Public Discard(,) As Single
