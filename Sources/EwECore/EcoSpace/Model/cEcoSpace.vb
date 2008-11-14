@@ -879,7 +879,7 @@ Public Class cEcoSpace
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            ScaleAfterNumStep()
+            summarizeOutputData()
             computeCombinedFleetsSummary()
 
             If m_search.bInSearch Then
@@ -1446,9 +1446,9 @@ Public Class cEcoSpace
             'VC Hobart Sep 2008 next is for reading of distribution envelopes, 
             ReDim m_Data.DistributionEnvelope(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)  'dimensioning detritus as well
 
-            For iRo As Integer = 1 To m_Data.Inrow
-                For iCo As Integer = 1 To m_Data.InCol
-                    For iGr As Integer = 1 To m_Data.nLiving
+            For iRo As Integer = 0 To m_Data.Inrow + 1
+                For iCo As Integer = 0 To m_Data.InCol + 1
+                    For iGr As Integer = 1 To m_Data.NGroups
                         m_Data.DistributionEnvelope(iRo, iCo, iGr) = True
                     Next
                 Next
@@ -1638,7 +1638,7 @@ Public Class cEcoSpace
             ReDim m_Data.jEndCol(m_Data.Inrow)
 
 
-             'this finds the start and end rows and columns so that solvegrid doesn't go through every one
+            'this finds the start and end rows and columns so that solvegrid doesn't go through every one
             For j = 1 To m_Data.InCol
                 foundRow = False
                 m_Data.iStartRow(j) = m_Data.Inrow + 1
@@ -3338,7 +3338,7 @@ exitline:
 
 
     ''' <summary>
-    ''' Summarize the fisheries data (catch) for a single group for this map cell. 
+    ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
     ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
     ''' </summary>
     ''' <param name="iSumIndex">Index of the summary time period -1 if this time step is not part of the summary period</param>
@@ -3346,7 +3346,7 @@ exitline:
     ''' <param name="iRow">Map row</param>
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
-    Public Sub summarizeCatchData(ByVal iSumIndex As Integer, ByVal iCumTime As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    Public Sub accumCatchData(ByVal iSumIndex As Integer, ByVal iCumTime As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim sum As Single, iFlt As Integer
 
         'Only one thread can use this code at a time
@@ -3501,7 +3501,7 @@ exitline:
                 For irgn = 0 To m_Data.NoRegions
 
                     Dim nInRgn As Integer = m_Data.nCellsInRegion(irgn)
-                    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero area this avoids a /0 
+                    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
 
                     For igrp = 0 To m_Data.NGroups
                         m_tracerData.TracerConcByRegion(irgn, igrp, iTimeStep) = m_tracerData.TracerConcByRegion(irgn, igrp, iTimeStep) / nInRgn
@@ -3629,12 +3629,9 @@ exitline:
     End Sub
 
 
-    Public Sub ScaleAfterNumStep()
-        Dim i As Integer, j As Integer, ii As Integer
-        'This routine is to make sure that the Sum's calculated in RunModel and in _
-        ' FindSpatialEquilibrium are divided by the actual number of time steps averages over _
-        'especially important for Ecospace where the actual m_Data.NumStep1 can easily be lower than _
-        ' the defined numstep as the time steps are bigger
+    Public Sub summarizeOutputData()
+        Dim i As Integer, iFlt As Integer, ii As Integer
+
         For i = 1 To m_Data.NGroups
 
             m_Data.SumBiomass(0, i) = m_Data.SumBiomass(0, i) / m_Data.NumStep0
@@ -3648,33 +3645,45 @@ exitline:
             m_Data.SumCatch(0, i) = m_Data.SumCatch(0, i) / m_Data.NumStep0
             m_Data.SumCatch(1, i) = m_Data.SumCatch(1, i) / m_Data.NumStep1
 
-            For j = 1 To m_EPdata.NumFleet     'Discarded fish has no value
-                m_Data.CatchGearGroup(0, j, i) = m_Data.CatchGearGroup(0, j, i) / m_Data.NumStep0
-                m_Data.CatchGearGroup(1, j, i) = m_Data.CatchGearGroup(1, j, i) / m_Data.NumStep1
-                m_Data.ValueGearGroup(0, j, i) = m_Data.ValueGearGroup(0, j, i) / m_Data.NumStep0
-                m_Data.ValueGearGroup(1, j, i) = m_Data.ValueGearGroup(1, j, i) / m_Data.NumStep1
+            For iFlt = 1 To m_EPdata.NumFleet     'Discarded fish has no value
+                m_Data.CatchGearGroup(0, iFlt, i) = m_Data.CatchGearGroup(0, iFlt, i) / m_Data.NumStep0
+                m_Data.CatchGearGroup(1, iFlt, i) = m_Data.CatchGearGroup(1, iFlt, i) / m_Data.NumStep1
+                m_Data.ValueGearGroup(0, iFlt, i) = m_Data.ValueGearGroup(0, iFlt, i) / m_Data.NumStep0
+                m_Data.ValueGearGroup(1, iFlt, i) = m_Data.ValueGearGroup(1, iFlt, i) / m_Data.NumStep1
                 For ii = 1 To m_Data.NoRegions
-                    m_Data.CatchGearGroupRegion(0, j, i, ii) = m_Data.CatchGearGroupRegion(0, j, i, ii) / m_Data.NumStep0
-                    m_Data.CatchGearGroupRegion(1, j, i, ii) = m_Data.CatchGearGroupRegion(1, j, i, ii) / m_Data.NumStep1
+                    m_Data.CatchGearGroupRegion(0, iFlt, i, ii) = m_Data.CatchGearGroupRegion(0, iFlt, i, ii) / m_Data.NumStep0
+                    m_Data.CatchGearGroupRegion(1, iFlt, i, ii) = m_Data.CatchGearGroupRegion(1, iFlt, i, ii) / m_Data.NumStep1
                 Next
             Next
         Next
 
         'the zero index include the combined fleets index
-        For j = 0 To m_EPdata.NumFleet    'Discarded fish has no value
-            m_Data.SumEffort(0, j) = m_Data.SumEffort(0, j) / m_Data.NumStep0
-            m_Data.SumEffort(1, j) = m_Data.SumEffort(1, j) / m_Data.NumStep1
-            m_Data.SumCatchGear(0, j) = m_Data.SumCatchGear(0, j) / m_Data.NumStep0
-            m_Data.SumCatchGear(1, j) = m_Data.SumCatchGear(1, j) / m_Data.NumStep1
-            m_Data.SumValueGear(0, j) = m_Data.SumValueGear(0, j) / m_Data.NumStep0
-            m_Data.SumValueGear(1, j) = m_Data.SumValueGear(1, j) / m_Data.NumStep1
+        For iFlt = 0 To m_EPdata.NumFleet    'Discarded fish has no value
+            m_Data.SumEffort(0, iFlt) = m_Data.SumEffort(0, iFlt) / m_Data.NumStep0
+            m_Data.SumEffort(1, iFlt) = m_Data.SumEffort(1, iFlt) / m_Data.NumStep1
+
+            m_Data.SumCost(0, iFlt) = m_Data.SumCost(0, iFlt) / m_Data.NumStep0
+            m_Data.SumCost(1, iFlt) = m_Data.SumCost(1, iFlt) / m_Data.NumStep1
+
+            m_Data.SumCatchGear(0, iFlt) = m_Data.SumCatchGear(0, iFlt) / m_Data.NumStep0
+            m_Data.SumCatchGear(1, iFlt) = m_Data.SumCatchGear(1, iFlt) / m_Data.NumStep1
+            m_Data.SumValueGear(0, iFlt) = m_Data.SumValueGear(0, iFlt) / m_Data.NumStep0
+            m_Data.SumValueGear(1, iFlt) = m_Data.SumValueGear(1, iFlt) / m_Data.NumStep1
+
+            For isum As Integer = 0 To 1
+                'EwE5 CalulateSimSpaceResults()
+                ' Sum = cost(i, 1) + (SumEffort(0, i) * cost(i, 2) + SumCost(0, i) * cost(i, 3)) 
+                m_Data.SumCost(isum, iFlt) = m_EPdata.cost(iFlt, 1) + (m_Data.SumEffort(isum, iFlt) * m_EPdata.cost(iFlt, 2) + m_Data.SumCost(isum, iFlt) * m_EPdata.cost(iFlt, 3))
+            Next
+
+
         Next
     End Sub
 
     ''' <summary>
     ''' Compute the combined fleets summary
     ''' </summary>
-    ''' <remarks>This must be done at the end of the run but before the data has been averaged by ScaleAfterNumStep()</remarks>
+    ''' <remarks></remarks>
     Private Sub computeCombinedFleetsSummary()
         Dim iflt As Integer
         Dim igrp As Integer
