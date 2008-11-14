@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.17  2008/11/14 00:32:44  jeroens
+' Wieps
+'
 ' Revision 1.16  2008/11/14 00:29:42  jeroens
 ' Fixed bugs
 ' Area closed, best % functional
@@ -1366,8 +1369,6 @@ Namespace Ecospace
             Me.m_lblStep.Enabled = (bIsPreparing And bIsRandom)
             Me.m_nudIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblIterations.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_nudBoundaryWeight.Enabled = (bIsPreparing)
-            Me.m_lblBoundaryWeight.Enabled = (bIsPreparing)
             Me.m_gridSOObjectives.Enabled = (bIsPreparing)
             Me.m_gridSOFleet.Enabled = (bIsPreparing)
             Me.m_gridSOGroup.Enabled = (bIsPreparing)
