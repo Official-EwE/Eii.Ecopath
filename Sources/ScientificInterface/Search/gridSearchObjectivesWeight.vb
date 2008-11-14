@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.5  2008/11/14 00:27:33  jeroens
+' Fixed resource
+'
 ' Revision 1.4  2008/11/13 00:42:12  jeroens
 ' Boundary weight shown for mpa/random search
 '
@@ -107,7 +110,7 @@ Namespace Ecosim
             ' JS 12Nov08: this code does not account for Batch run columns yet
 
             ' Standard rows
-            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_NETECONOMICVALUE)
+            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_NETECONOMICVALUE)
             Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSEconomicWeight)
             iRow += 1
 
