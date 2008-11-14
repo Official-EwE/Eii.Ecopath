@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.25  2008/11/14 18:50:37  joeb
+' Changed Ecospace biomass output
+'
 ' Revision 1.24  2008/11/12 19:15:14  joeb
 ' Added Ecofunctions to Search datastructures
 '
@@ -6955,8 +6958,9 @@ Public Class cCore
             'average values over all the map cells with water
             For Each objGrp As cEcospaceGroupSummary In m_EcospaceGroupSummaries
                 objGrp.Name = m_EcoPathData.GroupName(objGrp.Index)
-                objGrp.BiomassStart = m_EcoSpaceData.SumBiomass(0, objGrp.Index) / m_EcoSpaceData.nWaterCells
-                objGrp.BiomassEnd = m_EcoSpaceData.SumBiomass(1, objGrp.Index) / m_EcoSpaceData.nWaterCells
+                'biomass has already been averaged in Ecospace
+                objGrp.BiomassStart = m_EcoSpaceData.SumBiomass(0, objGrp.Index)
+                objGrp.BiomassEnd = m_EcoSpaceData.SumBiomass(1, objGrp.Index)
 
                 For iflt = 0 To nFleets
                     objGrp.CatchStart(iflt) = m_EcoSpaceData.CatchGearGroup(0, iflt, objGrp.Index) / m_EcoSpaceData.nWaterCells
@@ -6967,6 +6971,7 @@ Public Class cCore
                 Next
             Next
 
+            Dim costRes As Single, epCost As Single, sEff As Single, sCost As Single
             'Fleet summarized output
             For Each objFlt As cEcospaceFleetSummary In m_EcospaceFleetSummaries
                 If objFlt.Index <> 0 Then
