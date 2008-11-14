@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayer.vb,v $
+' Revision 1.3  2008/11/14 01:19:12  jeroens
+' Editor and renderer can be NULL
+'
 ' Revision 1.2  2008/11/08 23:54:10  jeroens
 ' Made cell interface more intuitive
 '
@@ -220,8 +223,6 @@ Namespace Ecospace.Basemap.Layers
 
             ' Sanity checks
             Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
-            Debug.Assert(Not Object.ReferenceEquals(renderer, Nothing))
-            Debug.Assert(Not Object.ReferenceEquals(editor, Nothing))
 
             Me.m_strName = ""
             Me.m_source = source
@@ -238,10 +239,15 @@ Namespace Ecospace.Basemap.Layers
                 AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
-            ' Update editor
-            Me.m_editor.Initialize(Me)
-            ' Update representation
-            Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
+            If Me.m_editor IsNot Nothing Then
+                ' Update editor
+                Me.m_editor.Initialize(Me)
+            End If
+
+            If Me.m_renderer IsNot Nothing Then
+                ' Update renderer
+                Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
+            End If
 
         End Sub
 
