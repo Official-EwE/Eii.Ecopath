@@ -2988,6 +2988,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Indicator.
+        '''</summary>
+        Friend ReadOnly Property HEADER_INDICATOR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_INDICATOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Individual weight.
         '''</summary>
         Friend ReadOnly Property HEADER_INDIVIDUAL_WEIGHT() As String
@@ -3128,15 +3137,6 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_NAME() As String
             Get
                 Return ResourceManager.GetString("HEADER_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Net economic value.
-        '''</summary>
-        Friend ReadOnly Property HEADER_NETECONOMICVALUE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_NETECONOMICVALUE", resourceCulture)
             End Get
         End Property
         
@@ -4560,6 +4560,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Area closed (%).
+        '''</summary>
+        Friend ReadOnly Property SEARCH_LABEL_AREA_CLOSED() As String
+            Get
+                Return ResourceManager.GetString("SEARCH_LABEL_AREA_CLOSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass diversity.
         '''</summary>
         Friend ReadOnly Property SEARCH_LABEL_BIOMASSDIVERSITY() As String
@@ -4614,11 +4623,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Net economic value.
+        '''</summary>
+        Friend ReadOnly Property SEARCH_LABEL_NETECONOMICVALUE() As String
+            Get
+                Return ResourceManager.GetString("SEARCH_LABEL_NETECONOMICVALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Social value (employment).
         '''</summary>
         Friend ReadOnly Property SEARCH_LABEL_SOCIAL_VALUE() As String
             Get
                 Return ResourceManager.GetString("SEARCH_LABEL_SOCIAL_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total (weighted).
+        '''</summary>
+        Friend ReadOnly Property SEARCH_LABEL_TOTAL_WEIGHTED() As String
+            Get
+                Return ResourceManager.GetString("SEARCH_LABEL_TOTAL_WEIGHTED", resourceCulture)
             End Get
         End Property
         
