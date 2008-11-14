@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.18  2008/11/14 01:20:57  jeroens
+' Implemented best count data export
+'
 ' Revision 1.17  2008/11/14 00:32:44  jeroens
 ' Wieps
 '
@@ -420,15 +423,39 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnExport(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSave.Click
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+            Dim lLayers As New List(Of cLayer)
+            Dim layerTmp As cLayer = Nothing
+            Dim ldataTmp As cEcospaceIntegerNxNLayer = Nothing
+            Dim iAreaClosed As Integer = 0
+            Dim iNumResults As Integer = 0
 
             If cmd Is Nothing Then Return
 
-            cmd.Tag = New cLayer() {Me.m_alayerFeedback(0)}
+            ' Conjure a best 100% layer for every AreaPercClosed level
+            For iLevel As Integer = 0 To Me.m_cmbAreaClosed.Items.Count - 1
+
+                ' Get area closed
+                iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
+                ' Wrap this in a core map layer to handle projections
+                ldataTmp = New cEcospaceIntegerNxNLayer(Me.m_core, _
+                                    Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
+                                    Me.m_basemap.InRow, Me.m_basemap.InCol, Me.m_basemap.CellLength, _
+                                    Me.m_basemap.Latitude, Me.m_basemap.Longitude)
+                ' Wrap THIS in turn in a GUI layer, required by the exporter
+                layerTmp = New cLayer(ldataTmp, Nothing, Nothing)
+                ' Give the layer a savvy name
+                layerTmp.Name = String.Format("BestCount_{0}", iAreaClosed)
+                ' Add the layer to the stash to save
+                lLayers.Add(layerTmp)
+
+            Next iLevel
+
+            cmd.Tag = lLayers.ToArray()
             cmd.Invoke()
 
         End Sub
