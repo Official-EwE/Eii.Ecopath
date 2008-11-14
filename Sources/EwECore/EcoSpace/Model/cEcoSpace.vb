@@ -220,8 +220,8 @@ Public Class cEcoSpace
 
     Private m_SpaceCatchSemaphor As Semaphore
 
-    Private m_FleetSums As New List(Of cSpaceFleetSummary)
-    Private m_FleetSum As cSpaceFleetSummary
+    'Private m_FleetSums As New List(Of cSpaceFleetSummary)
+    'Private m_FleetSum As cSpaceFleetSummary
 
 #End Region
 
@@ -575,6 +575,7 @@ Public Class cEcoSpace
 
             If m_search.bInSearch Then
                 m_search.initForRun(Me.m_EPdata, Me.m_ESData)
+                m_search.setBaseYearEffort(Me.m_ESData)
             End If
 
             Dim StartTime As Single = 0
@@ -861,6 +862,10 @@ Public Class cEcoSpace
 
                 summarizeTimeStepData(itt, imonth, Tn)
 
+                If m_search.bInSearch And iYear = m_search.BaseYear Then
+                    m_search.calcBaseYearCost(iYear)
+                End If
+
                 Dim slvET3 As Single = Microsoft.VisualBasic.Timer
 
                 'post notification that a time step has been completed
@@ -938,14 +943,16 @@ Public Class cEcoSpace
                 'if we are in the first month then this is a new year
                 If m_search.bInSearch Then
                     'YearTimeStepEcoSpace() will compute DF, Fgear(), NetCost(), and FishYear() for this year step
+                    m_search.calcNetCost(Fgear, iYear)
+
                     m_search.YearTimeStepEcoSpace(BiomassCellAvg, Fgear, iYear, m_Data.nWaterCells, relfopt)
                     m_search.calcYearlySummaryValues(BiomassCellAvg)
                 End If
 
-                Me.m_FleetSum.Average()
-                Me.m_FleetSums.Add(Me.m_FleetSum)
+                'Me.m_FleetSum.Average()
+                'Me.m_FleetSums.Add(Me.m_FleetSum)
 
-                Me.m_FleetSum = New cSpaceFleetSummary(Me.m_Data, iYear)
+                'Me.m_FleetSum = New cSpaceFleetSummary(Me.m_Data, iYear)
 
                 'tell all the space solver threads that a new year has started
                 InitSolversForYear(iYear)
@@ -1820,7 +1827,7 @@ Public Class cEcoSpace
             m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
 
 
-            Me.m_FleetSum = New cSpaceFleetSummary(Me.m_Data, 0)
+            'Me.m_FleetSum = New cSpaceFleetSummary(Me.m_Data, 0)
 
 
             'waterCtr = 0
@@ -3348,7 +3355,7 @@ exitline:
 
         Try
 
-            Me.m_FleetSum.Add(Biomass, iRow, iCol)
+            'Me.m_FleetSum.Add(Biomass, iRow, iCol)
 
             'summarize the data if this timestep is part of the start or end time period
             'iSumIndex will = -1 if this timestep is not being summarized
@@ -5212,49 +5219,49 @@ exitline:
 End Class
 
 
-Public Class cSpaceFleetSummary
+'Public Class cSpaceFleetSummary
 
-    Public iYear As Integer
+'    Public iYear As Integer
 
-    Public SumEffort() As Single
-    Public SumCatch() As Single
+'    Public SumEffort() As Single
+'    Public SumCatch() As Single
 
-    Private m_spaceData As cEcospaceDataStructures
+'    Private m_spaceData As cEcospaceDataStructures
 
-    Public Sub New(ByRef SpaceData As cEcospaceDataStructures, ByVal Year As Integer)
-        iYear = Year
-        m_spaceData = SpaceData
-        ReDim SumEffort(m_spaceData.nFleets)
-        ReDim SumCatch(m_spaceData.NGroups)
-    End Sub
+'    Public Sub New(ByRef SpaceData As cEcospaceDataStructures, ByVal Year As Integer)
+'        iYear = Year
+'        m_spaceData = SpaceData
+'        ReDim SumEffort(m_spaceData.nFleets)
+'        ReDim SumCatch(m_spaceData.NGroups)
+'    End Sub
 
-    Public Sub Add(ByRef b() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+'    Public Sub Add(ByRef b() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
 
-        For iflt As Integer = 1 To m_spaceData.nFleets
-            SumEffort(iflt) = SumEffort(iflt) + m_spaceData.EffortSpace(iflt, iRow, iCol)
-        Next
+'        For iflt As Integer = 1 To m_spaceData.nFleets
+'            SumEffort(iflt) = SumEffort(iflt) + m_spaceData.EffortSpace(iflt, iRow, iCol)
+'        Next
 
-        For igrp As Integer = 1 To m_spaceData.NGroups
-            '    SumCatch(igrp) = SumCatch(igrp) + b(igrp) * m_ESData.FishTime(igrp)
-        Next
+'        For igrp As Integer = 1 To m_spaceData.NGroups
+'            '    SumCatch(igrp) = SumCatch(igrp) + b(igrp) * m_ESData.FishTime(igrp)
+'        Next
 
-    End Sub
+'    End Sub
 
-    Public Sub Average()
+'    Public Sub Average()
 
-        Try
-            Dim avg As Single = m_spaceData.TimeStep / m_spaceData.TotalTime / m_spaceData.nWaterCells
+'        Try
+'            Dim avg As Single = m_spaceData.TimeStep / m_spaceData.TotalTime / m_spaceData.nWaterCells
 
-            For iflt As Integer = 1 To m_spaceData.nFleets
-                SumEffort(iflt) = SumEffort(iflt) / avg
-            Next
+'            For iflt As Integer = 1 To m_spaceData.nFleets
+'                SumEffort(iflt) = SumEffort(iflt) / avg
+'            Next
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
+'        Catch ex As Exception
+'            cLog.Write(ex)
+'            Debug.Assert(False)
+'        End Try
 
-    End Sub
+'    End Sub
 
 
-End Class
+'End Class
