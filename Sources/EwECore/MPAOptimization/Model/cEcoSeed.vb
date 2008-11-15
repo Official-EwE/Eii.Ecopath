@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.7  2008/11/15 02:21:57  villyc
+' Ecoseed: Setting baseyear =1 when 0 to avoid error in setbaseyeareffort  where (12*baseyear-11) was negative
+'
 ' Revision 1.6  2008/11/13 19:54:06  joeb
 ' Added Biomass Diversity to output file
 '
@@ -739,7 +742,12 @@ Namespace EcoSeed
                     End If
                 Next
             Next
-            If Border > 0 Then Return Area / Border
+            If Border > 0 Then
+                Return Area / Border
+            Else
+                'baserun no mpa, so return 1?
+                Return 0.25
+            End If
         End Function
 
         ''' <summary>

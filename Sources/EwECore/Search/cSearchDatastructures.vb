@@ -549,7 +549,8 @@ Public Class cSearchDatastructures
 
 
     Public Sub setBaseYearEffort(ByRef EcosimData As cEcosimDatastructures)
-
+        If BaseYear = 0 Then BaseYear = 1
+        'BaseYear = 15
         For iflt As Integer = 1 To NumFleets
             BaseYearEffort(iflt) = EcosimData.FishRateGear(iflt, 12 * BaseYear - 11)
             If BaseYearEffort(iflt) = 0 Then BaseYearEffort(iflt) = 1
