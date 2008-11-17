@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.8  2008/11/17 16:23:36  jeroens
+' Fixed VC issue: only set water cells to seed or mpa
+'
 ' Revision 1.7  2008/11/15 02:21:57  villyc
 ' Ecoseed: Setting baseyear =1 when 0 to avoid error in setbaseyeareffort  where (12*baseyear-11) was negative
 '
@@ -21,110 +24,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:26  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.18  2008/09/24 00:11:04  villyc
-' f limits and others
-'
-' Revision 1.17  2008/08/19 19:23:43  joeb
-' Quiting a search is quicker
-'
-' Revision 1.16  2008/08/19 17:07:36  joeb
-' Changed TotWeightedValueBase
-'
-' Revision 1.15  2008/08/18 17:49:39  joeb
-' Added WeightedTotal to Search data
-'
-' Revision 1.14  2008/08/17 16:55:22  joeb
-' MPA Optimization default data directory
-'
-' Revision 1.13  2008/08/15 22:07:06  joeb
-' Percentage in Results()
-'
-' Revision 1.12  2008/08/15 21:11:17  joeb
-' Changed RunStates to Initializing and Searching
-'
-' Revision 1.11  2008/08/15 18:35:22  joeb
-' Added TotalValue and PercentageClosed to cMPAOptOutPut
-'
-' Revision 1.10  2008/08/15 16:47:42  joeb
-' Fixed Random not selecting cells if not importance layer(s)
-'
-' Revision 1.9  2008/08/14 18:07:04  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.8  2008/08/11 21:10:19  joeb
-' *** empty log message ***
-'
-' Revision 1.7  2008/06/26 14:07:13  joeb
-' *** empty log message ***
-'
-' Revision 1.6  2008/06/25 20:25:23  joeb
-' Added results list
-'
-' Revision 1.5  2008/06/20 21:27:11  joeb
-' Changing output for both Ecoseed and Random search
-'
-' Revision 1.4  2008/06/19 16:52:31  joeb
-' File output
-' Added Cells(List of cMPACell)
-'
-' Revision 1.3  2008/06/18 18:19:48  joeb
-' Changes for Random search file output
-'
-' Revision 1.2  2008/06/14 16:39:13  joeb
-' Fixed a bug and Added NewCellSelected runstate
-'
-' Revision 1.1  2008/06/13 15:48:27  joeb
-' Added MPAOptimization folder
-'
-' Revision 1.21  2008/06/12 19:13:32  joeb
-' More changes to run random search
-'
-' Revision 1.20  2008/06/11 15:52:29  joeb
-' Change names of Seed Files to MPAOpt
-'
-' Revision 1.19  2008/06/10 21:53:39  joeb
-' Changes for new MPA optimization
-'
-' Revision 1.18  2008/05/01 15:13:26  joeb
-'   m_search.setDefaultsForEcoseed() renamed to   m_search.setMinSearchBlocks()
-'
-' Revision 1.17  2008/04/24 20:02:22  joeb
-' Removed some dead code
-'
-' Revision 1.16  2008/04/23 17:31:01  joeb
-' Minor tweeks to SearchData
-'
-' Revision 1.15  2008/04/17 20:15:27  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.14  2008/04/04 02:00:07  jeroens
-' Replacing stubbed test values with real user-configured values
-'
-' Revision 1.13  2008/03/29 00:12:32  jeroens
-' Running state updated correctly
-'
-' Revision 1.12  2008/03/26 17:46:21  joeb
-' Added RunStateCallback to Ecoseed
-'
-' Revision 1.11  2008/03/26 15:13:43  joeb
-' Changed initForRun() set the EcospaceTimestepDelegate to Nothing this stops Ecospace from sending out Timestep messages
-'
-' Revision 1.10  2008/03/20 16:43:59  joeb
-' Added some comments
-'
-' Revision 1.9  2008/02/26 19:12:21  joeb
-' Fixed bug 432 Ecospace run stop before last time step
-'
-' Revision 1.8  2008/01/23 20:13:11  joeb
-' Removed ecoseed debug form
-'
-' Revision 1.7  2008/01/23 17:30:43  joeb
-' bunch of stuff
-'
-' Revision 1.6  2008/01/23 15:57:30  joeb
-' Added Log header
-'
 '
 '===================================================
 
@@ -313,7 +212,9 @@ Namespace EcoSeed
             If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
                 For ir As Integer = 1 To m_SpaceData.Inrow
                     For ic As Integer = 1 To m_SpaceData.InCol
-                        m_SpaceData.MPA(ir, ic) = iMPA
+                        If (m_SpaceData.Depth(ir, ic) > 0) Then
+                            m_SpaceData.MPA(ir, ic) = iMPA
+                        End If
                     Next ic
                 Next ir
                 Return True
@@ -330,7 +231,9 @@ Namespace EcoSeed
             If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
                 For ir As Integer = 1 To m_SpaceData.Inrow
                     For ic As Integer = 1 To m_SpaceData.InCol
-                        m_data.MPASeed(ir, ic) = iMPA
+                        If (m_SpaceData.Depth(ir, ic) > 0) Then
+                            m_data.MPASeed(ir, ic) = iMPA
+                        End If
                     Next ic
                 Next ir
                 Return True
