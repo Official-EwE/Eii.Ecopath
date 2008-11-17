@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.3  2008/11/17 17:26:53  jeroens
+' Changed MPA cell result layer render style
+'
 ' Revision 1.2  2008/11/05 01:15:16  jeroens
 ' Do not share editors between layers!
 '
@@ -283,11 +286,10 @@ Namespace Ecospace.Basemap.Layers
                         vs.BackColour = Color.Blue
 
                         renderer = New cLayerRendererValue(vs)
-                        editor = New cLayerEditorTwoState()
-                        DirectCast(renderer, cLayerRendererValue).DrawAlways = True
+                        editor = New cLayerEditorRange()
+                        layer.Editor.IsReadOnly = True
                         layer = New cLayer(layerData, renderer, editor)
                         layer.Name = "Best count"
-                        layer.Editor.IsReadOnly = True
 
                         lLayers.Add(layer)
                     End If
