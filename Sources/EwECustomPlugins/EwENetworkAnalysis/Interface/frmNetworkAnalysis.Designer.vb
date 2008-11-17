@@ -68,7 +68,7 @@ Partial Class frmNetworkAnalysis
         Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Without primary production required estimate", 1, 1)
         Dim TreeNode45 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("With primary production required estimate", 1, 1)
         Dim TreeNode46 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis indices ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode44, TreeNode45})
-        Dim TreeNode47 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Network analysis plug-in", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode22, TreeNode25, TreeNode26, TreeNode43, TreeNode46})
+        Dim TreeNode47 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Network analysis plug-in", 5, 5)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
@@ -115,7 +115,7 @@ Partial Class frmNetworkAnalysis
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.dgvNetworkAnalysis)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.tlpNetworkAnalysis)
         Me.scNetworkAnalysis.Size = New System.Drawing.Size(895, 467)
-        Me.scNetworkAnalysis.SplitterDistance = 285
+        Me.scNetworkAnalysis.SplitterDistance = 270
         Me.scNetworkAnalysis.TabIndex = 3
         '
         'tvNetworkAnalysis
@@ -314,9 +314,9 @@ Partial Class frmNetworkAnalysis
         TreeNode47.Name = "ndEwENetworkAnalysisPlugin"
         TreeNode47.SelectedImageIndex = 5
         TreeNode47.Text = "Network analysis plug-in"
-        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode47})
+        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode22, TreeNode25, TreeNode26, TreeNode43, TreeNode46, TreeNode47})
         Me.tvNetworkAnalysis.SelectedImageIndex = 0
-        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(285, 467)
+        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(270, 467)
         Me.tvNetworkAnalysis.TabIndex = 2
         '
         'imglstNetworkAnalysis
@@ -355,7 +355,7 @@ Partial Class frmNetworkAnalysis
         Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV})
         Me.tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
         Me.tsNetworkAnalysis.Name = "tsNetworkAnalysis"
-        Me.tsNetworkAnalysis.Size = New System.Drawing.Size(606, 25)
+        Me.tsNetworkAnalysis.Size = New System.Drawing.Size(621, 25)
         Me.tsNetworkAnalysis.TabIndex = 4
         Me.tsNetworkAnalysis.Text = "ToolStrip1"
         '
@@ -400,7 +400,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnCancel.Image = CType(resources.GetObject("tsbtnCancel.Image"), System.Drawing.Image)
         Me.tsbtnCancel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnCancel.Name = "tsbtnCancel"
-        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 17)
+        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 22)
         Me.tsbtnCancel.Text = "Cancel"
         '
         'tsbtnOutputIndicesCSV
@@ -422,7 +422,7 @@ Partial Class frmNetworkAnalysis
         Me.dgvNetworkAnalysis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvNetworkAnalysis.Location = New System.Drawing.Point(0, 28)
         Me.dgvNetworkAnalysis.Name = "dgvNetworkAnalysis"
-        Me.dgvNetworkAnalysis.Size = New System.Drawing.Size(606, 439)
+        Me.dgvNetworkAnalysis.Size = New System.Drawing.Size(565, 439)
         Me.dgvNetworkAnalysis.TabIndex = 3
         '
         'tlpNetworkAnalysis
@@ -439,14 +439,14 @@ Partial Class frmNetworkAnalysis
         Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400.0!))
         Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpNetworkAnalysis.Size = New System.Drawing.Size(606, 467)
+        Me.tlpNetworkAnalysis.Size = New System.Drawing.Size(621, 467)
         Me.tlpNetworkAnalysis.TabIndex = 5
         '
         'PictureBox1
         '
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
-        Me.PictureBox1.Location = New System.Drawing.Point(201, 36)
+        Me.PictureBox1.Location = New System.Drawing.Point(208, 36)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(204, 394)
         Me.PictureBox1.TabIndex = 0
