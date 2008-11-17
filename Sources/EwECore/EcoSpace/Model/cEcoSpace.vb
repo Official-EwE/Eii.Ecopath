@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.8  2008/11/17 15:38:05  joeb
+' Dimensioned Fgear by fleets instead of groups
+'
 ' Revision 1.7  2008/11/17 15:30:12  joeb
 ' Added CVS Log header
 '
@@ -561,7 +564,7 @@ Public Class cEcoSpace
 
         Try
 
-            ReDim Fgear(m_EPdata.NumGroups)
+            ReDim Fgear(m_EPdata.NumFleet)
             ReDim RelFopt(1)
             'stanza counters
             'nvar2 is an index that counts from the end of the groups up to cEcoSpaceDataStructures.nvartot = nGroups + NSplit(nvartot = [total number of groups] + [sum of all split groups])
@@ -5246,50 +5249,3 @@ exitline:
 
 End Class
 
-
-'Public Class cSpaceFleetSummary
-
-'    Public iYear As Integer
-
-'    Public SumEffort() As Single
-'    Public SumCatch() As Single
-
-'    Private m_spaceData As cEcospaceDataStructures
-
-'    Public Sub New(ByRef SpaceData As cEcospaceDataStructures, ByVal Year As Integer)
-'        iYear = Year
-'        m_spaceData = SpaceData
-'        ReDim SumEffort(m_spaceData.nFleets)
-'        ReDim SumCatch(m_spaceData.NGroups)
-'    End Sub
-
-'    Public Sub Add(ByRef b() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-
-'        For iflt As Integer = 1 To m_spaceData.nFleets
-'            SumEffort(iflt) = SumEffort(iflt) + m_spaceData.EffortSpace(iflt, iRow, iCol)
-'        Next
-
-'        For igrp As Integer = 1 To m_spaceData.NGroups
-'            '    SumCatch(igrp) = SumCatch(igrp) + b(igrp) * m_ESData.FishTime(igrp)
-'        Next
-
-'    End Sub
-
-'    Public Sub Average()
-
-'        Try
-'            Dim avg As Single = m_spaceData.TimeStep / m_spaceData.TotalTime / m_spaceData.nWaterCells
-
-'            For iflt As Integer = 1 To m_spaceData.nFleets
-'                SumEffort(iflt) = SumEffort(iflt) / avg
-'            Next
-
-'        Catch ex As Exception
-'            cLog.Write(ex)
-'            Debug.Assert(False)
-'        End Try
-
-'    End Sub
-
-
-'End Class
