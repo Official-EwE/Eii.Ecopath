@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.23  2008/11/17 05:11:33  villyc
+' Spatial optim. main changes relate to discounting, and are not finsihed
+'
 ' Revision 1.22  2008/11/13 19:34:14  joeh
 ' Fix the error in the calculation of total ascendency
 '
@@ -889,7 +892,7 @@ Public Property PluginManager() As cPluginManager
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
-                m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears + ExtraTime - m_search.BaseYear)
+                m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears, NumberOfYears + ExtraTime - m_search.BaseYear)
 
                 totval = m_search.totval
                 Employ = m_search.Employ

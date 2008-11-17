@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.9  2008/11/17 05:11:34  villyc
+' Spatial optim. main changes relate to discounting, and are not finsihed
+'
 ' Revision 1.8  2008/11/13 19:54:07  joeb
 ' Added Biomass Diversity to output file
 '
@@ -876,7 +879,7 @@ Public Class cMPARandomSearch
             Debug.Assert(Me.m_SpaceData.nImportanceLayers = Me.m_SpaceData.ImportanceLayers.Count, "Number of Importance Layers does not match the list of layers in the core")
             Dim data(,) As Single, weight As Double
 
-            Dim AverageLayer(Me.m_SpaceData.nImportanceLayers - 1) As Double
+            Dim LayerSum(Me.m_SpaceData.nImportanceLayers - 1) As Double
 
             'VC2008Nov11, scaling each of the importance layers to have average 1
             For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
@@ -887,11 +890,15 @@ Public Class cMPARandomSearch
                     For j As Integer = 1 To inCol
                         If data(i, j) > 0 Then
                             Count += 1
-                            AverageLayer(iL) += data(i, j)
+                            LayerSum(iL) += data(i, j)
                         End If
                     Next j
                 Next i
-                If Count > 0 Then AverageLayer(iL) /= Count
+                'This will make the average for each layer 1, but then a layer that only has values 
+                'in a few cells will count much less, than one with values in many cells
+                'If Count > 0 Then AverageLayer(iL) /= Count
+                'So insteat making the layers SUM to 1
+                If LayerSum(iL) = 0 Then LayerSum(iL) = 1 'just to avoid division with 0, if a layer is empty
             Next iL
 
 
@@ -900,7 +907,7 @@ Public Class cMPARandomSearch
                 weight = Me.m_SpaceData.ImportanceLayers(iL).sWeight
                 For i As Integer = 1 To inRow
                     For j As Integer = 1 To inCol
-                        CellWeight(i, j) += weight * data(i, j) / AverageLayer(iL)
+                        CellWeight(i, j) += weight * data(i, j) / LayerSum(iL)
                     Next j
                 Next i
             Next iL

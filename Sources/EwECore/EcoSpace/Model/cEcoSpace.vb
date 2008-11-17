@@ -548,6 +548,8 @@ Public Class cEcoSpace
 
         Dim FtimeTotal(m_Data.NGroups) As Single
 
+        Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
+
         Try
 
             ReDim Fgear(m_EPdata.NumGroups)
@@ -883,7 +885,8 @@ Public Class cEcoSpace
             computeCombinedFleetsSummary()
 
             If m_search.bInSearch Then
-                m_search.EcoSpaceSummarizeIndicators(Fgear, m_Data.TimeNow, m_Data.nWaterCells)
+
+                m_search.EcoSpaceSummarizeIndicators(Fgear, m_Data.TimeNow, m_Data.TimeNow - m_search.BaseYear, m_Data.nWaterCells)
             End If
 
             Dim SpaceSS As Single

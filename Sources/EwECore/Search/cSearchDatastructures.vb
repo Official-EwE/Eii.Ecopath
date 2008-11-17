@@ -550,7 +550,7 @@ Public Class cSearchDatastructures
 
     Public Sub setBaseYearEffort(ByRef EcosimData As cEcosimDatastructures)
         If BaseYear = 0 Then BaseYear = 1
-        'BaseYear = 15
+        BaseYear = 15
         For iflt As Integer = 1 To NumFleets
             BaseYearEffort(iflt) = EcosimData.FishRateGear(iflt, 12 * BaseYear - 11)
             If BaseYearEffort(iflt) = 0 Then BaseYearEffort(iflt) = 1
@@ -750,8 +750,13 @@ Public Class cSearchDatastructures
         'Should we be dividing with DF in the calc's below?
         'I'm making the DF its inverse 
 
-        DF = calcDiscountFactor(iYear - BaseYear)
-
+        If iYear > BaseYear Then
+            DF = calcDiscountFactor(iYear - BaseYear)
+        Else
+            DF = 1
+        End If
+        'DF = 1 / DF
+        DF = 1
         For iFlt As Integer = 1 To m_ecopathData.NumFleet
 
             If BaseYearCost(iFlt) > 0 Then
@@ -826,7 +831,12 @@ Public Class cSearchDatastructures
                 'in some search mode so collect the summary data
 
                 'calculate discount factor DF
-                DF = calcDiscountFactor(iYear - BaseYear)
+                If iYear > BaseYear Then
+                    DF = calcDiscountFactor(iYear - BaseYear)
+                Else
+                    DF = 1
+                End If
+                DF = 1
                 'DF = 1 / DF
                 'VC inversed the discount factor because it grew bigger and bigger over time
 
@@ -1003,7 +1013,9 @@ Public Class cSearchDatastructures
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     End Sub
 
-    Public Sub EcosimSummarizeIndicators(ByVal Biomass() As Single, ByVal Fgear() As Single, ByVal ModelRunLengthPostBaseYear As Single)
+    Public Sub EcosimSummarizeIndicators(ByVal Biomass() As Single, ByVal Fgear() As Single, _
+                                         ByVal ModelRunLength As Integer, _
+                                         ByVal ModelRunLengthPostBaseYear As Integer)
         Dim LTV As Single 'Long term value
         Dim CV As Single
         Dim i As Integer, j As Integer
@@ -1015,7 +1027,7 @@ Public Class cSearchDatastructures
         totval = 0
         Employ = 0
 
-        KemptonQ = KemptonQ / ModelRunLengthPostBaseYear ' why ModelRunLengthPostBaseYear???
+        KemptonQ = KemptonQ / ModelRunLength  'PostBaseYear ' why ModelRunLengthPostBaseYear???
 
         ' calculate last year incomes and costs by gear
         For i = 1 To m_ecopathData.NumFleet
@@ -1027,8 +1039,10 @@ Public Class cSearchDatastructures
 
             CV = 0
             For j = 1 To m_ecopathData.NumLiving
-                LastYearIncomeSpecies(i, j) = CatchYear(i, j) * m_ecopathData.Market(i, j) * m_ecopathData.PropLanded(i, j)
-                CV = CV + LastYearIncomeSpecies(i, j)
+                If CatchYear(i, j) > 0 Then
+                    LastYearIncomeSpecies(i, j) = CatchYear(i, j) * m_ecopathData.Market(i, j) * m_ecopathData.PropLanded(i, j)
+                    CV = CV + LastYearIncomeSpecies(i, j)
+                End If
             Next
             LastYearIncome(i) = CV
         Next
@@ -1041,7 +1055,7 @@ Public Class cSearchDatastructures
             If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLengthPostBaseYear - Dalpha * Dgen ^ ModelRunLengthPostBaseYear / (1 - Dgen))
         End If
 
-        'vc080523 TEMP IGNORING LONG TERM VALUE
+        'vc080523 TEMP IGNORING LONG TERM VALUE also in ecospace below!
 
         LTV = 0
 
@@ -1049,20 +1063,21 @@ Public Class cSearchDatastructures
 
         For i = 1 To m_ecopathData.NumFleet
             For j = 1 To m_ecopathData.NumLiving
-                'Was done using end biomass:
-                'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
-                'In connection with including discounting during run changed the long term
-                'addition to be based on equilibrium biomass
-                'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
-                Dim Vlocal As Single = ValCatch(i, j) + (m_ecopathData.PropLanded(i, j) * Biomass(j) _
-                            * Fgear(i) * m_ecosimData.relQ(i, j) * LTV) * m_ecopathData.Market(i, j)
+                If ValCatch(i, j) > 0 Then
+                    'Was done using end biomass:
+                    'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
+                    'In connection with including discounting during run changed the long term
+                    'addition to be based on equilibrium biomass
+                    'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
+                    Dim Vlocal As Single = ValCatch(i, j) + (m_ecopathData.PropLanded(i, j) * Biomass(j) _
+                                * Fgear(i) * m_ecosimData.relQ(i, j) * LTV) * m_ecopathData.Market(i, j)
 
-                totval = totval + Vlocal
-                ValCatchGear(i) = ValCatchGear(i) + Vlocal
+                    totval = totval + Vlocal
+                    ValCatchGear(i) = ValCatchGear(i) + Vlocal
 
-                System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
-
-                'employ = employ + Vlocal * Jobs(i)
+                    System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
+                    'employ = employ + Vlocal * Jobs(i)
+                End If
             Next
             System.Console.WriteLine()
         Next
@@ -1098,7 +1113,9 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub EcoSpaceSummarizeIndicators(ByVal Fgear() As Single, ByVal ModelRunLength As Single, ByVal nWaterCells As Integer)
+    Public Sub EcoSpaceSummarizeIndicators(ByVal Fgear() As Single, ByVal ModelRunLength As Integer, _
+                                           ByVal ModelRunLengthPostBaseYear As Integer, _
+                                           ByVal nWaterCells As Integer)
         Dim LTV As Single 'Long term value
         Dim iflt As Integer, igrp As Integer
 
@@ -1114,34 +1131,36 @@ Public Class cSearchDatastructures
 
         If DiscountFactor > 0 Then
             'LTV = DF / DiscountFactor
-            LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ ModelRunLength - Dalpha * (Dgen) ^ ModelRunLength / (1 - Dgen))
+            LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ ModelRunLengthPostBaseYear - Dalpha * (Dgen) ^ ModelRunLengthPostBaseYear / (1 - Dgen))
         Else
-            If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLength - Dalpha * Dgen ^ ModelRunLength / (1 - Dgen))
+            If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLengthPostBaseYear - Dalpha * Dgen ^ ModelRunLengthPostBaseYear / (1 - Dgen))
         End If
 
-        'ignore Long term value 
+        'ignore Long term value -- this needs to be discussed with carl, 
         LTV = 0
-
         For iflt = 1 To m_ecopathData.NumFleet
             For igrp = 1 To m_ecopathData.NumLiving
-                ValCatch(iflt, igrp) = ValCatch(iflt, igrp) / nWaterCells
-                'Was done using end biomass:
-                'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
-                'In connection with including discounting during run changed the long term
-                'addition to be based on equilibrium biomass
-                'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
-                Dim Vlocal As Single = ValCatch(iflt, igrp) + CatchYear(iflt, igrp) * LTV * m_ecopathData.Market(iflt, igrp)
+                If ValCatch(iflt, igrp) > 0 Then
+                    ValCatch(iflt, igrp) = ValCatch(iflt, igrp) / nWaterCells
+                    'Was done using end biomass:
+                    'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
+                    'In connection with including discounting during run changed the long term
+                    'addition to be based on equilibrium biomass
+                    'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
 
-                totval = totval + Vlocal
-                ValCatchGear(iflt) = ValCatchGear(iflt) + Vlocal
+                    Dim Vlocal As Single = ValCatch(iflt, igrp) + CatchYear(iflt, igrp) / nWaterCells * LTV * m_ecopathData.Market(iflt, igrp)
 
-                System.Console.Write(CSng(ValCatch(iflt, igrp) / ModelRunLength).ToString & ", ")
+                    totval = totval + Vlocal
+                    ValCatchGear(iflt) = ValCatchGear(iflt) + Vlocal
+
+                    System.Console.Write(CSng(ValCatch(iflt, igrp) / ModelRunLengthPostBaseYear).ToString & ", ")
+                End If
                 'employ = employ + Vlocal * Jobs(i)
             Next
             System.Console.WriteLine()
         Next
 
-        Dim CostPenalty As Single, TotalFishingCost As Single
+        Dim CostPenalty As Single ', TotalFishingCost As Single
         ReDim CostRatio(m_ecopathData.NumFleet)
         For iflt = 1 To m_ecopathData.NumFleet
 
