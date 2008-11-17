@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.9  2008/11/17 21:09:44  joeb
+' Fixed bug where calculation of BaseCostYear happened at the start of the base year not the end
+'
 ' Revision 1.8  2008/11/17 15:38:05  joeb
 ' Dimensioned Fgear by fleets instead of groups
 '
@@ -876,8 +879,8 @@ Public Class cEcoSpace
 
                 summarizeTimeStepData(itt, imonth, Tn)
 
-                If m_search.bInSearch And iYear = m_search.BaseYear Then
-                    m_search.calcBaseYearCost(iYear)
+                If m_search.bInSearch And iYear = m_search.BaseYear And imonth = 12 Then
+                    m_search.calcBaseYearCost(iYear, m_Data.nWaterCells)
                 End If
 
                 Dim slvET3 As Single = Microsoft.VisualBasic.Timer
@@ -958,16 +961,12 @@ Public Class cEcoSpace
                 'if we are in the first month then this is a new year
                 If m_search.bInSearch Then
                     'YearTimeStepEcoSpace() will compute DF, Fgear(), NetCost(), and FishYear() for this year step
-                    m_search.calcNetCost(Fgear, iYear)
 
                     m_search.YearTimeStepEcoSpace(BiomassCellAvg, Fgear, iYear, m_Data.nWaterCells, relfopt)
+                    m_search.calcNetCost(Fgear, iYear)
                     m_search.calcYearlySummaryValues(BiomassCellAvg)
+
                 End If
-
-                'Me.m_FleetSum.Average()
-                'Me.m_FleetSums.Add(Me.m_FleetSum)
-
-                'Me.m_FleetSum = New cSpaceFleetSummary(Me.m_Data, iYear)
 
                 'tell all the space solver threads that a new year has started
                 InitSolversForYear(iYear)
