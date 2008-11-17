@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.24  2008/11/17 21:12:48  joeb
+' Added NSpatialCells (number of spatial cells) to calcBaseYearCost
+'
 ' Revision 1.23  2008/11/17 05:11:33  villyc
 ' Spatial optim. main changes relate to discounting, and are not finsihed
 '
@@ -868,7 +871,8 @@ Public Property PluginManager() As cPluginManager
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                 '*
                 If m_search.bInSearch And iyr = m_search.BaseYear Then
-                    m_search.calcBaseYearCost(iyr)
+                    'Ecosim has one spatial cell
+                    m_search.calcBaseYearCost(iyr, 1)
                 End If
                 '*
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
