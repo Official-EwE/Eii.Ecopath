@@ -144,8 +144,8 @@ Public Class cSearchDatastructures
 
     ''' <summary>Value of catch gear</summary>
     ''' <remarks>
-    ''' Valcatch(i,j) = ( ValCatch(i, j) + m_EPData.PropLanded(i, j) * biomeq(j) _
-    '''                  * Fgear(i) * m_Data.relQ(i, j) * LTV) * m_EPData.Market(i, j)</remarks>
+    ''' Valcatch(fleet) = ( ValCatch(fleet, j) + m_EPData.PropLanded(fleet, j) * biomeq(j) _
+    '''                  * Fgear(fleet) * m_Data.relQ(fleet, j) * LTV) * m_EPData.Market(fleet, j)</remarks>
     Public ValCatchGear() As Single
 
     ''' <summary>Discount Factor</summary>
@@ -550,7 +550,6 @@ Public Class cSearchDatastructures
 
     Public Sub setBaseYearEffort(ByRef EcosimData As cEcosimDatastructures)
         If BaseYear = 0 Then BaseYear = 1
-        BaseYear = 15
         For iflt As Integer = 1 To NumFleets
             BaseYearEffort(iflt) = EcosimData.FishRateGear(iflt, 12 * BaseYear - 11)
             If BaseYearEffort(iflt) = 0 Then BaseYearEffort(iflt) = 1
@@ -942,7 +941,7 @@ Public Class cSearchDatastructures
     ''' <param name="iRow"></param>
     ''' <param name="iCol"></param>
     ''' <remarks>This is call from the multithreaded code in Ecospace by the worker threads so it is protected via a Semaphor</remarks>
-    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer) ', ByVal PastBaseYear As Boolean
         'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
         Dim iFlt As Integer
         Dim Cloc As Single
@@ -957,10 +956,10 @@ Public Class cSearchDatastructures
                 If m_ecopathData.Landing(iFlt, iGrp) + m_ecopathData.Discard(iFlt, iGrp) > 0 Then
                     Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) / 12.0F
 
-                    'ValCatch() is summed across all time steps
-                    'If pastbaseyear Then
-                    ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
-                    'endif
+                    'ValCatch() is summed across all time steps, but only after base year has been reached
+                    If BaseYearCost(iFlt) > 0 Then
+                        ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
+                    End If
                     'CatchYear() is the sum for this year it is cleared out at the start of each year
                     CatchYear(iFlt, iGrp) += Cloc
 
@@ -978,7 +977,7 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub calcBaseYearCost(ByVal iYear As Integer)
+    Public Sub calcBaseYearCost(ByVal iYear As Integer, ByVal nSpatialCells As Integer)
 
         Dim CV As Single
 
@@ -992,7 +991,7 @@ Public Class cSearchDatastructures
 
                 CV = 0
                 For j As Integer = 1 To m_ecopathData.NumLiving
-                    CV = CV + CatchYear(i, j) * m_ecopathData.Market(i, j) '* m_ecopathData.PropLanded(i, j)
+                    CV = CV + CatchYear(i, j) / nSpatialCells * m_ecopathData.Market(i, j) '* m_ecopathData.PropLanded(i, j)
                 Next
                 '   m_search.BaseYearIncome(i) = CV
                 BaseYearCost(i) = CV * (m_ecopathData.CostPct(i, 2) + m_ecopathData.CostPct(i, 3)) / 100
