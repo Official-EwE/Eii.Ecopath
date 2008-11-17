@@ -1,68 +1,14 @@
 '==============================================================================
 '
 ' $Log: FishingPolicySearch.vb,v $
+' Revision 1.3  2008/11/17 18:27:03  jeroens
+' Hooked up discount rates, base year
+'
 ' Revision 1.2  2008/11/12 21:36:19  jeroens
 ' Resources!
 '
 ' Revision 1.1  2008/09/26 07:31:51  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.36  2008/09/25 02:31:47  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.35  2008/09/23 16:16:11  jeroens
-' Added different usage modes for GroupOptGrid
-'
-' Revision 1.34  2008/08/15 21:04:29  jeroens
-' Fixing search status resources
-'
-' Revision 1.33  2008/08/10 01:43:08  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.32  2008/08/05 17:44:14  jeroens
-' Uses AppLauncher status bar for feedback
-'
-' Revision 1.31  2008/08/04 17:55:54  jeroens
-' Fixed issue 454
-'
-' Revision 1.30  2008/07/29 21:40:20  joeh
-' Add a marquee style progress bar to indicate search progress
-'
-' Revision 1.29  2008/07/04 19:59:43  jeroens
-' Fixed issue 332
-'
-' Revision 1.28  2008/06/04 15:42:31  jeroens
-' Wow, intense!
-'
-' Revision 1.27  2008/05/29 22:23:01  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.26  2008/05/16 17:06:09  joeb
-' Added SearchObjective to message source
-'
-' Revision 1.25  2008/05/12 19:03:43  joeb
-' Changes to search objects to support ISearchObjective interface
-'
-' Revision 1.24  2008/04/15 15:24:29  joeb
-' Moved handling of core messages to PolicyColorBlocks
-'
-' Revision 1.23  2008/04/11 15:10:15  joeb
-' Added Connect method to FishingPolicyManager
-'
-' Revision 1.22  2008/02/27 19:31:01  joeb
-' Set Base Year
-'
-' Revision 1.21  2008/02/27 15:30:33  joeb
-' Changed the default number of blocks to the number of fleets to make it easier to see the difference between parameter block is the selected blocks grid see bug 395
-'
-' Revision 1.20  2008/02/06 16:42:27  jeroens
-' Fixed issue 405
-'
-' Revision 1.19  2007/11/21 14:39:32  jeroens
-' * Fixed enums
-'
-' Revision 1.18  2007/11/21 01:13:41  jeroens
-' * Cleaned up
 '
 '==============================================================================
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.21  2008/11/17 18:27:03  jeroens
+' Hooked up discount rates, base year
+'
 ' Revision 1.20  2008/11/14 23:31:32  jeroens
 ' ConvertToMPA also takes BestPercentile into account
 ' Documented ConvertToPMA
@@ -165,6 +168,9 @@ Namespace Ecospace
         Private m_fpBestPercentile As cEwEFormatProvider = Nothing
         Private m_fpMPA As cEwEFormatProvider = Nothing
         Private m_propSearchType As cIntegerProperty = Nothing
+        Private m_fpDiscRate As cPropertyFormatProvider = Nothing
+        Private m_fpGenDiscRate As cPropertyFormatProvider = Nothing
+        Private m_fpBaseYear As cPropertyFormatProvider = Nothing
 
         ' == UI components ==
 
@@ -241,15 +247,17 @@ Namespace Ecospace
             ' Connect to controls
             Me.m_fpStartYear = New cPropertyFormatProvider(Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
             Me.m_fpEndYear = New cPropertyFormatProvider(Me.m_nudEndYear, MPAOpt, eVarNameFlags.MPAOptEndYear)
+            Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_nudBaseYear, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             Me.m_fpStartYear.Value = Math.Max(CSng(Me.m_fpStartYear.Value), 3)
             Me.m_fpEndYear.Value = Math.Max(CSng(Me.m_fpEndYear.Value), 5)
-            'Me.m_fpBoundaryWeight = New cPropertyFormatProvider(Me.m_nudBoundaryWeight, MPAOpt, eVarNameFlags.MPAOptBoundaryWeight)
 
             Me.m_fpMinArea = New cPropertyFormatProvider(Me.m_nudMinArea, MPAOpt, eVarNameFlags.MPAOptMinArea)
             Me.m_fpMaxArea = New cPropertyFormatProvider(Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
             Me.m_fpStepSize = New cPropertyFormatProvider(Me.m_nudStep, MPAOpt, eVarNameFlags.MPAOptStepSize)
             Me.m_fpIterations = New cPropertyFormatProvider(Me.m_nudIterations, MPAOpt, eVarNameFlags.MPAOptIterations)
             Me.m_fpBestPercentile = New cEwEFormatProvider(Me.m_nudBestPercentile, GetType(Integer))
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
             Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
 
@@ -1512,19 +1520,23 @@ Namespace Ecospace
             Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
 
             ' Update input controls
-            Me.m_nudStartYear.Enabled = bIsPreparing
+            Me.m_fpStartYear.Enabled = bIsPreparing
             Me.m_lblStartYear.Enabled = bIsPreparing
-            Me.m_nudEndYear.Enabled = bIsPreparing
+            Me.m_fpEndYear.Enabled = bIsPreparing
             Me.m_lblEndYear.Enabled = bIsPreparing
             Me.m_nudBaseYear.Enabled = bIsPreparing
             Me.m_lblBaseYear.Enabled = bIsPreparing
-            Me.m_nudMinArea.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpMinArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblMinArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_nudMaxArea.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpMaxArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblMaxArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_nudStep.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpStepSize.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblStep.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_nudIterations.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpDiscRate.Enabled = bIsPreparing
+            Me.m_lblDiscRate.Enabled = bIsPreparing
+            Me.m_fpGenDiscRate.Enabled = bIsPreparing
+            Me.m_lblGenDiscRate.Enabled = bIsPreparing
+            Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_lblIterations.Enabled = (bIsPreparing And bIsRandom)
             Me.m_gridSOObjectives.Enabled = (bIsPreparing)
             Me.m_gridSOFleet.Enabled = (bIsPreparing)
