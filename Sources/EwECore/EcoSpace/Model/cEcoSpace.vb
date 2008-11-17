@@ -1,3 +1,12 @@
+'==============================================================================
+'
+' $Log: cEcoSpace.vb,v $
+' Revision 1.7  2008/11/17 15:30:12  joeb
+' Added CVS Log header
+'
+'
+'=========================================================
+
 Imports System
 Imports System.Threading
 Imports EwEPlugin
@@ -1802,6 +1811,13 @@ Public Class cEcoSpace
             '        ReadNutrientMaps()
 
             m_Ecosim.InitializeDataInfo()
+
+            If m_search.bInSearch Then
+                'NEEDS TO RECALCULATE BASECOST ETC
+                m_search.redimForRun()
+                m_search.bBaseYearSet = False
+            End If
+
 
             'TotalTime = m_ESData.NumYears
             'jb maxtime is set by the size of the time step in Ecosim one month max time steps per year
