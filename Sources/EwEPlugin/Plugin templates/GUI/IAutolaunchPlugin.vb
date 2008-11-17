@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: IAutolaunchPlugin.vb,v $
-' Revision 1.1  2008/09/26 07:31:08  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/11/17 13:06:00  jeroens
+' Fixed auto-launch behaviour
 '
 ' Revision 1.1  2008/09/05 16:08:36  jeroens
 ' Initial version
@@ -25,10 +25,10 @@ Public Interface IAutolaunchPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Plug-in point to auto-launch the plug-in.
+    ''' Plug-in point to state whether auto-launch is active.
     ''' </summary>
-    ''' <param name="frmPlugin">The form produced by the plug-in.</param>
+    ''' <remarks>True if active.</remarks>
     ''' -----------------------------------------------------------------------
-    Function Autolaunch(ByRef frmPlugin As Windows.Forms.Form) As Boolean
+    Function Autolaunch() As Boolean
 
 End Interface
