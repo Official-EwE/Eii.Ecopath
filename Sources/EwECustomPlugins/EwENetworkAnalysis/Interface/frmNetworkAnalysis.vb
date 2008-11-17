@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.2  2008/11/17 13:08:31  jeroens
+' Removed obsolete root node
+'
 ' Revision 1.1  2008/09/26 07:30:57  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -135,12 +138,7 @@ Public Class frmNetworkAnalysis
             dgvNetworkAnalysis.Visible = False
             zgcNetworkAnalysis.Visible = False
             tlpNetworkAnalysis.Visible = True
-            'tvNetworkAnalysis.Nodes("ndEwENetworkAnalysisPlugin").Expand()
         End If
-    End Sub
-
-    Private Sub frmNetworkAnalysis_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
-        tvNetworkAnalysis.Nodes("ndEwENetworkAnalysisPlugin").Expand()
     End Sub
 
     Private Function FindNode(ByVal root As Windows.Forms.TreeNodeCollection, ByVal strText As String) As Windows.Forms.TreeNode
