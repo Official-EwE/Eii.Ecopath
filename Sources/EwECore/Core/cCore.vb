@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.27  2008/11/18 16:32:40  joeb
+' Added a ToDo to RunEcoSpace()
+'
 ' Revision 1.26  2008/11/14 18:51:46  joeb
 ' Fixed an opps from the last commit
 '
@@ -5673,6 +5676,8 @@ Public Class cCore
             Dim t As Double = Timer
             System.Console.WriteLine("----------cCore.RunEcospace() Start------------")
 
+            'ToDo_jb RunEcoSpace() Ecospace needs to check the statemonitor to see if there have been any changes to Ecopath or Ecosim variables
+            'then run anything it needs to in response
             If Me.m_StateMonitor.HasEcospaceLoaded Then
 
                 If checkHabitats() Then
