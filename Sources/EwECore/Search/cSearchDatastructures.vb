@@ -414,8 +414,8 @@ Public Class cSearchDatastructures
     ''' <remarks>from frmOptF.Load_Form() </remarks>
     Public Sub setDefaultOptimizationValues()
 
-        If DiscountFactor = 0 Then DiscountFactor = 0.04
-        If GenDiscountFactor = 0 Then GenDiscountFactor = 0.1
+        'If DiscountFactor = 0 Then DiscountFactor = 0.04
+        'If GenDiscountFactor = 0 Then GenDiscountFactor = 0.1
         'If BaseYear = 0 Then BaseYear = 1
 
         setDefaultFRates()
@@ -531,7 +531,7 @@ Public Class cSearchDatastructures
 
         'set some default values
         DiscountFactor = 0.04
-        GenDiscountFactor = 0.1
+        'GenDiscountFactor = 0.1
         nRuns = 1
         nInterations = 2000
 
@@ -714,11 +714,13 @@ Public Class cSearchDatastructures
         m_ecosimData = EcosimData
 
         Din = 1 - DiscountFactor 'jb DiscountFactor was set to a default of 0.01 in setDefaultParamaters
-        Dgen = 1 - GenDiscountFactor / 20
-        If Din <> 0 Then Dratio = Dgen / Din Else Dratio = CSng(Dgen / 0.01)
-        If Dratio = 1 Then Dratio = 0.9999
-        If Dgen <= 0 Then Dgen = 0.01
-        Dalpha = Dratio / (20 * (1 - Dratio))
+        If GenDiscountFactor > 0 Then
+            Dgen = 1 - GenDiscountFactor / 20
+            If Din <> 0 Then Dratio = Dgen / Din Else Dratio = CSng(Dgen / 0.01)
+            If Dratio = 1 Then Dratio = 0.9999
+            If Dgen <= 0 Then Dgen = 0.01
+            Dalpha = Dratio / (20 * (1 - Dratio))
+        End If
 
         Ecodistance = 0
         ExistValue = 0
@@ -754,8 +756,8 @@ Public Class cSearchDatastructures
         Else
             DF = 1
         End If
-        'DF = 1 / DF
-        DF = 1
+        'DF = 1
+
         For iFlt As Integer = 1 To m_ecopathData.NumFleet
 
             If BaseYearCost(iFlt) > 0 Then
@@ -835,9 +837,7 @@ Public Class cSearchDatastructures
                 Else
                     DF = 1
                 End If
-                DF = 1
-                'DF = 1 / DF
-                'VC inversed the discount factor because it grew bigger and bigger over time
+                'DF = 1
 
                 For i As Integer = 1 To m_ecopathData.NumFleet
 
@@ -1047,17 +1047,11 @@ Public Class cSearchDatastructures
         Next
 
         ExistValue = ExistValue / (m_ecopathData.NumLiving * ModelRunLengthPostBaseYear)
-        If DiscountFactor > 0 Then
-            'LTV = DF / DiscountFactor
-            LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ ModelRunLengthPostBaseYear - Dalpha * (Dgen) ^ ModelRunLengthPostBaseYear / (1 - Dgen))
-        Else
-            If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLengthPostBaseYear - Dalpha * Dgen ^ ModelRunLengthPostBaseYear / (1 - Dgen))
-        End If
+
+        LTV = CalcLTV(ModelRunLengthPostBaseYear)
 
         'vc080523 TEMP IGNORING LONG TERM VALUE also in ecospace below!
-
-        LTV = 0
-
+        'LTV = 0
         'vc080523 TEMP IGNORING LONG TERM VALUE
 
         For i = 1 To m_ecopathData.NumFleet
@@ -1128,15 +1122,12 @@ Public Class cSearchDatastructures
         'KemptonQ is the sum of KemptonQ across all time steps
         KemptonQ = KemptonQ / ModelRunLength
 
-        If DiscountFactor > 0 Then
-            'LTV = DF / DiscountFactor
-            LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ ModelRunLengthPostBaseYear - Dalpha * (Dgen) ^ ModelRunLengthPostBaseYear / (1 - Dgen))
-        Else
-            If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ ModelRunLengthPostBaseYear - Dalpha * Dgen ^ ModelRunLengthPostBaseYear / (1 - Dgen))
-        End If
+        LTV = CalcLTV(ModelRunLengthPostBaseYear)
 
-        'ignore Long term value -- this needs to be discussed with carl, 
-        LTV = 0
+        'vc080523 TEMP IGNORING LONG TERM VALUE also in ecospace below!
+        'LTV = 0
+        'vc080523 TEMP IGNORING LONG TERM VALUE
+
         For iflt = 1 To m_ecopathData.NumFleet
             For igrp = 1 To m_ecopathData.NumLiving
                 If ValCatch(iflt, igrp) > 0 Then
@@ -1191,15 +1182,54 @@ Public Class cSearchDatastructures
 
     End Sub
 
-    Private Function calcDiscountFactor(ByVal iYear As Integer) As Single
-
-        If Dgen = Din Then
-            Return CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
+    ''' <summary>
+    ''' Calculate long term value, based on either generational or standard discounting
+    ''' </summary>
+    ''' <param name="YearPastBaseYear"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function CalcLTV(ByVal YearPastBaseYear As Integer) As Single
+        Dim LTV As Double
+        If GenDiscountFactor > 0 Then
+            If DiscountFactor > 0 Then
+                'LTV = DF / DiscountFactor
+                LTV = (1 + Dalpha) / DiscountFactor * Din ^ YearPastBaseYear - Dalpha * (Dgen) ^ YearPastBaseYear / (1 - Dgen)
+            Else
+                If Dgen <> 1 Then LTV = (1 + Dalpha) / 0.01 * Din ^ YearPastBaseYear - Dalpha * Dgen ^ YearPastBaseYear / (1 - Dgen)
+            End If
         Else
-            Return CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
-        End If
+            'using standard discounting, take last years catch and discount it for 20 years, multiplying it with this factor:
+            LTV = 0
+            For i As Integer = 0 To 19
+                LTV += (1 + DiscountFactor) ^ -i
+            Next
 
+        End If
+        Return CSng(LTV)
     End Function
+
+
+    ''' <summary>
+    ''' Calculates discount factor based on either generational (if GenDiscountFactor>0) or standard discounting. 
+    ''' For some reason carl has made this a calculation of future value not of present. 
+    '''     ''' if Dgenfactor = 0 then uses Traditional discount factor calculating present value of future cost and revenue
+    ''' Enter here if GenDiscountFactor = 0 
+    ''' </summary>
+    ''' <param name="iYear"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function calcDiscountFactor(ByVal iYear As Integer) As Single
+        If GenDiscountFactor > 0 Then
+            If Dgen = Din Then
+                Return CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
+            Else
+                Return CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
+            End If
+        Else    'traditional discounting
+            Return CSng(1 ^ -(iYear - 1))
+        End If
+    End Function
+
 
 #End Region
 
