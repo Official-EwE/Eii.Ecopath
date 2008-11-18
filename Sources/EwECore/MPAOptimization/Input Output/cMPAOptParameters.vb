@@ -72,21 +72,6 @@ Public Class cMPAOptParameters
             val = New cValue(New Integer, eVarNameFlags.MPAOptEndYear, status, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MPAOptEndYear))
             m_values.Add(val.varName, val)
 
-            'SearchDiscountRate
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SearchDiscountRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchDiscountRate))
-            m_values.Add(val.varName, val)
-
-            'SearchGenDiscRate
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SearchGenDiscRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchGenDiscRate))
-            m_values.Add(val.varName, val)
-
-            'SearchBaseYear
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.SearchBaseYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchBaseYear))
-            m_values.Add(val.varName, val)
-
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -342,35 +327,6 @@ Public Class cMPAOptParameters
             End If
         End Set
 
-    End Property
-
-    Public Property DiscountRate() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.SearchDiscountRate))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SearchDiscountRate, value)
-        End Set
-    End Property
-
-    Public Property GenDiscRate() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.SearchGenDiscRate))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SearchGenDiscRate, value)
-        End Set
-    End Property
-
-    Public Property BaseYear() As Integer
-        Get
-            Return CInt(GetVariable(eVarNameFlags.SearchBaseYear))
-        End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.SearchBaseYear, value)
-        End Set
     End Property
 
 End Class

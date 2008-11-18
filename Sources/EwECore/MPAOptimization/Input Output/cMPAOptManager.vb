@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.12  2008/11/18 15:44:31  jeroens
+' Removed base year, disc factor over-exposure
+'
 ' Revision 1.11  2008/11/17 18:27:02  jeroens
 ' Hooked up discount rates, base year
 '
@@ -583,7 +586,6 @@ Public Class cMPAOptManager
 
         Try
             Dim coreData As cMPAOptDataStructures = Me.m_core.MPAOptData
-            Dim searchData As cSearchDatastructures = Me.m_core.m_SearchData
 
             Me.m_parameters.AllowValidation = False
             Me.m_parameters.SearchType = coreData.SearchType
@@ -597,9 +599,6 @@ Public Class cMPAOptManager
 
             Me.m_parameters.StartYear = coreData.EcoSpaceStartYear
             Me.m_parameters.EndYear = coreData.EcoSpaceEndYear
-            Me.m_parameters.DiscountRate = searchData.DiscountFactor
-            Me.m_parameters.GenDiscRate = searchData.GenDiscountFactor
-            Me.m_parameters.BaseYear = searchData.BaseYear
 
             Me.m_parameters.AllowValidation = True
 
@@ -621,7 +620,6 @@ Public Class cMPAOptManager
         Try
 
             Dim coreData As cMPAOptDataStructures = Me.m_core.MPAOptData
-            Dim searchData As cSearchDatastructures = Me.m_core.m_SearchData
 
             coreData.stepSize = Me.m_parameters.StepSize
             coreData.BoundaryWeight = Me.m_parameters.BoundaryWeight
@@ -633,9 +631,6 @@ Public Class cMPAOptManager
 
             coreData.EcoSpaceStartYear = Me.m_parameters.StartYear
             coreData.EcoSpaceEndYear = Me.m_parameters.EndYear
-            searchData.DiscountFactor = Me.m_parameters.DiscountRate
-            searchData.GenDiscountFactor = Me.m_parameters.GenDiscRate
-            searchData.BaseYear = Me.m_parameters.BaseYear
 
             Me.setActiveSearch(Me.m_parameters.SearchType, False)
 

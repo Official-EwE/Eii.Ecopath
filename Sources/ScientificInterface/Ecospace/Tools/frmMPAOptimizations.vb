@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.23  2008/11/18 15:44:31  jeroens
+' Removed base year, disc factor over-exposure
+'
 ' Revision 1.22  2008/11/18 03:36:47  jeroens
 ' MPA layer on top
 ' Best cell layer rescaled when finished to make it show up
@@ -253,8 +256,8 @@ Namespace Ecospace
             Me.m_fpStartYear = New cPropertyFormatProvider(Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
             Me.m_fpEndYear = New cPropertyFormatProvider(Me.m_nudEndYear, MPAOpt, eVarNameFlags.MPAOptEndYear)
             Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_nudBaseYear, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
-            Me.m_fpStartYear.Value = Math.Max(CSng(Me.m_fpStartYear.Value), 3)
-            Me.m_fpEndYear.Value = Math.Max(CSng(Me.m_fpEndYear.Value), 5)
+            'Me.m_fpStartYear.Value = Math.Max(CSng(Me.m_fpStartYear.Value), 3)
+            'Me.m_fpEndYear.Value = Math.Max(CSng(Me.m_fpEndYear.Value), 5)
 
             Me.m_fpMinArea = New cPropertyFormatProvider(Me.m_nudMinArea, MPAOpt, eVarNameFlags.MPAOptMinArea)
             Me.m_fpMaxArea = New cPropertyFormatProvider(Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
