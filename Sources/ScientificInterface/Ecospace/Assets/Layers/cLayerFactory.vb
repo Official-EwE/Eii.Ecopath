@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.4  2008/11/18 03:35:59  jeroens
+' Fixed exception on best cell layer creation
+'
 ' Revision 1.3  2008/11/17 17:26:53  jeroens
 ' Changed MPA cell result layer render style
 '
@@ -265,13 +268,12 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPASeedBest
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.DarkGreen
-                    vs.BackColour = Color.Transparent
+                    vs.ForeColour = Color.Black
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
+
                     layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = "Best cells"
                     layer.Editor.IsReadOnly = True
@@ -287,9 +289,9 @@ Namespace Ecospace.Basemap.Layers
 
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
-                        layer.Editor.IsReadOnly = True
                         layer = New cLayer(layerData, renderer, editor)
                         layer.Name = "Best count"
+                        layer.Editor.IsReadOnly = True
 
                         lLayers.Add(layer)
                     End If
