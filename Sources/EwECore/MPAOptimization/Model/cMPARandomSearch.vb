@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.10  2008/11/18 19:39:59  joeb
+' MPA Optm. Baseyear economic values set at the start of a search
+'
 ' Revision 1.9  2008/11/17 05:11:34  villyc
 ' Spatial optim. main changes relate to discounting, and are not finsihed
 '
@@ -199,12 +202,13 @@ Public Class cMPARandomSearch
         Try
 
             m_EcoSpace = EcoSpaceModel
+            m_data = MPAOptData
+
+            m_SpaceData = m_EcoSpace.EcoSpaceParameters
+            m_search = m_EcoSpace.SearchData
 
             'set EcoSpace to use this MPA optimization model
             m_EcoSpace.MPAOptimization = Me
-
-            m_SpaceData = m_EcoSpace.EcoSpaceParameters
-            m_data = MPAOptData
 
             'the seed array can be needed before the model is run
             ReDim m_data.MPASeed(m_SpaceData.Inrow + 1, m_SpaceData.InCol + 1)
@@ -378,7 +382,6 @@ Public Class cMPARandomSearch
             'Clear out any values from a previous ecoseed run
             m_data.Clear()
 
-            m_search = m_EcoSpace.SearchData
             RedimSeedVariables()
 
         Catch ex As Exception
@@ -790,16 +793,20 @@ Public Class cMPARandomSearch
 
     Private Sub getBaseValues()
 
+        m_search.redimForRun()
+
         'on the first call to ecospace ecoseed makes a copy of Biomass(), FTime()... See KeepOrReloadCellValues() at the user defined start time-step
-        'then on subsequient call it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
+        'then on subsequient calls it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
         TimesCalled = 1
+        'Get economic values for the base year BaseYearCost and BaseYearEffort
+        Me.m_search.bBaseYearSet = False
         m_EcoSpace.Run()
 
         If Me.m_data.StopRun Then Exit Sub
 
-        'this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
-        TimesCalled = 2
-        m_EcoSpace.Run()
+        ''this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
+        'TimesCalled = 2
+        'm_EcoSpace.Run()
 
         'values were set in the search object by EcoSpace.Run()
         EmployBase = m_search.Employ
@@ -820,7 +827,11 @@ Public Class cMPARandomSearch
 
         TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
                         m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
-                        m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * areaboundBase
+                        m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * AreaBoundBase
+
+
+        TimesCalled = 2
+
 
         '     System.Console.WriteLine("Random weighted base value = " & TotWeightedValueBase.ToString)
 

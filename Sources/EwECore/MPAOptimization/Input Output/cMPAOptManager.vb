@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.13  2008/11/18 19:39:57  joeb
+' MPA Optm. Baseyear economic values set at the start of a search
+'
 ' Revision 1.12  2008/11/18 15:44:31  jeroens
 ' Removed base year, disc factor over-exposure
 '
@@ -279,6 +282,7 @@ Public Class cMPAOptManager
             If RunState = eRunStates.Completed Then
                 'the run has completed release any waiting threads
                 Me.ReleaseWait()
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
 
             If m_bConnected Then
@@ -362,11 +366,14 @@ Public Class cMPAOptManager
             ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.Inrow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)
             Array.Copy(Me.m_core.m_EcoSpaceData.MPA, m_orgMPAConfig, Me.m_core.m_EcoSpaceData.MPA.Length)
 
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.SpatialOpt
+
             m_thrSeed = New Threading.Thread(AddressOf m_MPASearch.Run)
             m_thrSeed.Start()
 
         Catch ex As Exception
             cLog.Write(ex)
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             Me.m_core.Messages.SendMessage(New cMessage("Ecoseed Error: " & ex.Message, eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
             Me.ReleaseWait()
             Return False

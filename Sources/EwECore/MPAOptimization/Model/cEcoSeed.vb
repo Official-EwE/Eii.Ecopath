@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.9  2008/11/18 19:39:58  joeb
+' MPA Optm. Baseyear economic values set at the start of a search
+'
 ' Revision 1.8  2008/11/17 16:23:36  jeroens
 ' Fixed VC issue: only set water cells to seed or mpa
 '
@@ -948,15 +951,20 @@ Namespace EcoSeed
 
         Private Sub getBaseValues()
 
+            m_search.redimForRun()
+
             'on the first call to ecospace ecoseed makes a copy of Biomass(), FTime()... See KeepOrReloadCellValues() at the user defined start time-step
-            'then on subsequient call it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
+            'then on subsequient calls it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
             TimesCalled = 1
+            'Get economic values for the base year BaseYearCost and BaseYearEffort
+            Me.m_search.bBaseYearSet = False
             m_EcoSpace.Run()
 
             If Me.m_data.StopRun Then Exit Sub
-            'this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
-            TimesCalled = 2
-            m_EcoSpace.Run()
+
+            ''this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
+            'TimesCalled = 2
+            'm_EcoSpace.Run()
 
             'values were set in the search object by EcoSpace.Run()
             EmployBase = m_search.Employ

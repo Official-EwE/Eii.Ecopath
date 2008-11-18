@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.25  2008/11/18 19:39:55  joeb
+' MPA Optm. Baseyear economic values set at the start of a search
+'
 ' Revision 1.24  2008/11/17 21:12:48  joeb
 ' Added NSpatialCells (number of spatial cells) to calcBaseYearCost
 '
@@ -1529,7 +1532,7 @@ Public Property PluginManager() As cPluginManager
         Public Sub setSearchOff()
             m_search.SearchMode = eSearchModes.NotInSearch 'turn off the fishing policy search
             m_search.setMinSearchBlocks()
-            m_search.clearBaseYear() 'sets baseyear to zero
+            '  m_search.clearBaseYear() 'sets baseyear to zero
         End Sub
 
         ''' <summary>
