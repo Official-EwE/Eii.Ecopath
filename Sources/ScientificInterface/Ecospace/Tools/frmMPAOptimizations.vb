@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.22  2008/11/18 03:36:47  jeroens
+' MPA layer on top
+' Best cell layer rescaled when finished to make it show up
+' Fixed format provider feedback
+'
 ' Revision 1.21  2008/11/17 18:27:03  jeroens
 ' Hooked up discount rates, base year
 '
@@ -669,6 +674,8 @@ Namespace Ecospace
                     Me.m_mode = value
                     ' Enter new mode
                     Me.EnterMode()
+                    ' Reflect changes
+                    Me.UpdateControls()
                 End If
             End Set
         End Property
@@ -761,8 +768,6 @@ Namespace Ecospace
 
             End Select
 
-            Me.UpdateControls()
-
         End Sub
 
         Private Sub ExitMode()
@@ -806,13 +811,13 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
+            Me.AddBaseLayers(eVarNameFlags.LayerMPA)
             Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)
             Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
-            Me.AddBaseLayers(eVarNameFlags.LayerMPA)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
             Me.AddBaseLayers(eVarNameFlags.LayerDepth)
-            ' Hide habitat layers but show group at startup
+            ' Hide habitat layers at startup
             Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerHabitat), False, True)
 
             Me.m_ucLayers.UnlockUpdates()
@@ -1115,6 +1120,9 @@ Namespace Ecospace
                     Next
 
                     ' In Random MPA, layer(0) is the only feedback layer
+                    ' Invalidate to recalc min, max
+                    Me.m_alayerFeedback(0).IsModified = True
+                    ' Trigger redraw
                     Me.m_alayerFeedback(0).Update(cLayer.eChangeFlags.Map)
 
             End Select
@@ -1520,40 +1528,28 @@ Namespace Ecospace
             Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
 
             ' Update input controls
+            Me.m_rbEcoseed.Enabled = (bIsPreparing)
+            Me.m_rbRandom.Enabled = (bIsPreparing)
             Me.m_fpStartYear.Enabled = bIsPreparing
-            Me.m_lblStartYear.Enabled = bIsPreparing
             Me.m_fpEndYear.Enabled = bIsPreparing
-            Me.m_lblEndYear.Enabled = bIsPreparing
-            Me.m_nudBaseYear.Enabled = bIsPreparing
-            Me.m_lblBaseYear.Enabled = bIsPreparing
+            Me.m_fpBaseYear.Enabled = bIsPreparing
             Me.m_fpMinArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_lblMinArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_fpMaxArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_lblMaxArea.Enabled = (bIsPreparing And bIsRandom)
             Me.m_fpStepSize.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_lblStep.Enabled = (bIsPreparing And bIsRandom)
             Me.m_fpDiscRate.Enabled = bIsPreparing
-            Me.m_lblDiscRate.Enabled = bIsPreparing
             Me.m_fpGenDiscRate.Enabled = bIsPreparing
-            Me.m_lblGenDiscRate.Enabled = bIsPreparing
             Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_lblIterations.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpMPA.Enabled = bIsPreparing
+
             Me.m_gridSOObjectives.Enabled = (bIsPreparing)
             Me.m_gridSOFleet.Enabled = (bIsPreparing)
             Me.m_gridSOGroup.Enabled = (bIsPreparing)
-            Me.m_rbEcoseed.Enabled = (bIsPreparing)
-            Me.m_rbRandom.Enabled = (bIsPreparing)
-            Me.m_lbMPA.Enabled = (bIsPreparing)
-            Me.m_cmbMPA.Enabled = (bIsPreparing)
 
             ' Results
             Me.m_graphResults.Enabled = bIsResults
-            Me.m_lblAreaClosed.Enabled = (bIsResults And bIsRandom)
             Me.m_cmbAreaClosed.Enabled = (bIsResults And bIsRandom)
             Me.m_nudBestPercentile.Enabled = (bIsResults And bIsRandom)
-            Me.m_lblBestPercentile.Enabled = (bIsResults And bIsRandom)
             Me.m_btnResetMPAs.Enabled = bIsResults
-
 
             ' Update run control buttons
             Me.m_btnRun.Enabled = bIsPreparing
