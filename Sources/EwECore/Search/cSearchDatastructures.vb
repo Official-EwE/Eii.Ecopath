@@ -557,14 +557,14 @@ Public Class cSearchDatastructures
 
     End Sub
 
-    ''' <summary>
-    ''' Clear the BaseYearCost() array. This will stop the BaseYear from being used for computation of economic values.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub clearBaseYear()
-        BaseYear = 0
-        Array.Clear(Me.BaseYearCost, 0, Me.BaseYearCost.Length)
-    End Sub
+    '''' <summary>
+    '''' Clear the BaseYearCost() array. This will stop the BaseYear from being used for computation of economic values.
+    '''' </summary>
+    '''' <remarks></remarks>
+    'Public Sub clearBaseYear()
+    '    BaseYear = 0
+    '    Array.Clear(Me.BaseYearCost, 0, Me.BaseYearCost.Length)
+    'End Sub
 
     'Public Sub setFRateToBaseYearEffort()
     '    'setBaseYearEffort Must be called before this to set BaseYearEffort() to FishRateGear() for the BaseYear
@@ -941,7 +941,7 @@ Public Class cSearchDatastructures
     ''' <param name="iRow"></param>
     ''' <param name="iCol"></param>
     ''' <remarks>This is call from the multithreaded code in Ecospace by the worker threads so it is protected via a Semaphor</remarks>
-    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer) ', ByVal PastBaseYear As Boolean
+    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer, ByVal iYear As Integer) ', ByVal PastBaseYear As Boolean
         'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
         Dim iFlt As Integer
         Dim Cloc As Single
@@ -957,7 +957,7 @@ Public Class cSearchDatastructures
                     Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) / 12.0F
 
                     'ValCatch() is summed across all time steps, but only after base year has been reached
-                    If BaseYearCost(iFlt) > 0 Then
+                    If iYear > Me.BaseYear Then
                         ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
                     End If
                     'CatchYear() is the sum for this year it is cleared out at the start of each year
