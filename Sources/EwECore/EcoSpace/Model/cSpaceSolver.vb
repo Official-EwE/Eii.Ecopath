@@ -14,6 +14,8 @@ Public Class cSpaceSolver
 
     Private m_ConTracer As cContaminantTracer
 
+    Public iYear As Integer ' current year
+
     ''' <summary>
     ''' Delegate for posting error messages.
     ''' </summary>
@@ -347,7 +349,7 @@ Public Class cSpaceSolver
                 End If
 
                 If Search.bInSearch Then
-                    Search.calcEcoSpaceMonthlyCatch(ip, BB, m_Data.EffortSpace, i, j)
+                    Search.calcEcoSpaceMonthlyCatch(ip, BB, m_Data.EffortSpace, i, j, iYear)
                 End If
                 ' m_EcospaceModel.summarizeCatchData(Tn, itt, ip, BB, i, j)
 

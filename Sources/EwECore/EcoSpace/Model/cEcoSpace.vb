@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.10  2008/11/18 19:37:27  joeb
+' Added Year to Solver Threads
+'
 ' Revision 1.9  2008/11/17 21:09:44  joeb
 ' Fixed bug where calculation of BaseCostYear happened at the start of the base year not the end
 '
@@ -492,8 +495,6 @@ Public Class cEcoSpace
 
 #Region "Public methods"
 
-
-
     Public Function Run() As Boolean
         Dim bsuccess As Boolean
         Try
@@ -523,8 +524,6 @@ Public Class cEcoSpace
         Return bsuccess
 
     End Function
-
-
 
 #End Region
 
@@ -694,42 +693,6 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                'jb this still needs to be implemented 
-                'it should be moved out of here
-                '            'Check if we've reached the next recorded changes
-                '            If NoHabChanges > 0 And chkReplayHabitatChanges And TimeNow >= NextHabitatTime Then
-                '                Do While TimeNow >= NextHabitatTime
-                '                    'Habchanges(0, NoHabChanges) = TimeNow
-                '                    i = HabChange(0, NextHabitatRecord)
-                '                    j = HabChange(1, NextHabitatRecord)
-                '                    Select Case HabChange(2, NextHabitatRecord) '= DrawMod
-                '                        Case 0  'depth
-                '                            m_data.Depth(i, j) = HabChange(3, NextHabitatRecord)
-                '                        Case 1  'MPA
-                '                            MPA(i, j) = HabChange(3, NextHabitatRecord)
-                '                        Case 2  'habType
-                '                             m_data.HabType(i, j) = HabChange(3, NextHabitatRecord)
-                '                        Case 3  'RelPP
-                '                            RelPP(i, j) = HabChange(3, NextHabitatRecord)
-                '                        Case 5  'RelCin
-                '                            RelCin(i, j) = HabChange(3, NextHabitatRecord)
-                '                    End Select
-                '                    NextHabitatRecord = NextHabitatRecord + 1
-                '                    If NextHabitatRecord > NoHabChanges Then
-                '                        NextHabitatTime = TotalTime + 1 'need this to avoid an error when reading the last record
-                '                        'big number that won't be reached, so won't get back in (all changes have been read now).
-                '                    Else
-                '                        NextHabitatTime = HabTime(NextHabitatRecord)
-                '                    End If
-                '                Loop
-                '                'Note that whenever the user pauses an ecospace run, continuation of the run
-                '                'then triggers call to routines that recalculate movement fields
-                '                ' i.e. we now assume that the user may have made habitat type changes during the pause
-                '                SetHabGrad()
-                '                SetMovementParameters()
-                '            End If
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'jb Ecoseed code 
                 'TN is a pointer being used to decide which sum to work with
 
                 SetSummaryTimeStep(Tn)
@@ -744,7 +707,7 @@ Public Class cEcoSpace
                 '*************
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
                 '*************
-                UpdateSpaceSolverThreads()
+                UpdateSpaceSolverThreads(iYear)
 
                 slvET2 = Microsoft.VisualBasic.Timer
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -759,14 +722,6 @@ Public Class cEcoSpace
                 runGridSolverThreads()
                 slvrTimer = slvrTimer + (Microsoft.VisualBasic.Timer - slvET)
 
-                'ReDim FtimeTotal(m_Data.NGroups)
-                'For ip = 1 To m_Data.NGroups
-                '    For i = 1 To m_Data.Inrow
-                '        For j = 1 To m_Data.InCol
-                '            FtimeTotal(ip) = FtimeTotal(ip) + FtimeCell(i, j, ip)
-                '        Next j
-                '    Next i
-                'Next
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
@@ -900,7 +855,6 @@ Public Class cEcoSpace
             computeCombinedFleetsSummary()
 
             If m_search.bInSearch Then
-
                 m_search.EcoSpaceSummarizeIndicators(Fgear, m_Data.TimeNow, m_Data.TimeNow - m_search.BaseYear, m_Data.nWaterCells)
             End If
 
@@ -1814,11 +1768,11 @@ Public Class cEcoSpace
 
             m_Ecosim.InitializeDataInfo()
 
-            If m_search.bInSearch Then
-                'NEEDS TO RECALCULATE BASECOST ETC
-                m_search.redimForRun()
-                m_search.bBaseYearSet = False
-            End If
+            'If m_search.bInSearch Then
+            '    'NEEDS TO RECALCULATE BASECOST ETC
+            '    m_search.redimForRun()
+            '    m_search.bBaseYearSet = False
+            'End If
 
 
             'TotalTime = m_ESData.NumYears
@@ -4115,7 +4069,7 @@ exitline:
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function UpdateSpaceSolverThreads() As Boolean
+    Private Function UpdateSpaceSolverThreads(ByVal Year As Integer) As Boolean
 
         Dim solver As cSpaceSolver
         Try
@@ -4128,6 +4082,7 @@ exitline:
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
                 solver.Btime = Btime
+                solver.iYear = Year
             Next
 
             Return True
