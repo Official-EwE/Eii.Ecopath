@@ -1,59 +1,11 @@
 '==============================================================================
 '
 ' $Log: EwECoreController.vb,v $
+' Revision 1.2  2008/11/18 16:35:35  jeroens
+' Left ToDo
+'
 ' Revision 1.1  2008/09/26 07:31:24  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.16  2007/12/09 22:15:50  jeroens
-' * Renamed IsStateSuperceded
-'
-' Revision 1.15  2007/12/05 03:46:45  jeroens
-' + Added Ecotracer support
-'
-' Revision 1.14  2007/06/14 23:07:25  fgao
-' Fixed bug 31: load scenario automatically if layout option is turned on.
-'
-' Revision 1.13  2007/05/24 15:47:25  jeroens
-' + Uses reload option when loading ecosim and ecospace scenarios
-'
-' Revision 1.12  2007/03/15 14:13:00  jeroens
-' * Moved eCoreExecutionsState from Core to EwEUtils
-'
-' Revision 1.11  2007/03/07 23:29:17  jeroens
-' Ecospace can load when Ecosim loaded; Ecosim does no longer need to run first
-'
-' Revision 1.10  2007/02/16 17:39:46  jeroens
-' * Changed load/GUI responsibilities
-'
-' Revision 1.9  2007/02/15 15:56:23  jeroens
-' + Adding application status feedback framework
-'
-' Revision 1.8  2007/02/15 00:11:10  fgao
-' Implicit run Ecosim is added..
-'
-' Revision 1.7  2007/02/13 00:08:04  fgao
-' Add loadEcospace scenario
-'
-' Revision 1.6  2007/01/25 16:30:20  jeroens
-' + Properly named core monitor states
-'
-' Revision 1.5  2007/01/14 21:12:51  jeroens
-' + Prepared for interacting with Ecospace
-'
-' Revision 1.4  2006/12/06 02:25:57  jeroens
-' * Fixed involuntary AppLauncer duplication bug in TryLoadEcosimScenarioFromName
-'
-' Revision 1.3  2006/12/04 23:50:09  fgao
-' Add code to load and persist scenario information.
-'
-' Revision 1.2  2006/10/05 02:23:15  jeroens
-' + LoadEcosimScenario will always invoke the scenario selection dialog
-'
-' Revision 1.1  2006/09/15 16:46:27  jeroens
-' * Moved
-'
-' Revision 1.1  2006/09/10 03:05:10  jeroens
-' Rewrite of short-lived EwECoreSTUFF
 '
 '==============================================================================
 
@@ -199,6 +151,9 @@ Public Class EwECoreController
 #End Region ' Public access
 
 #Region " Private members "
+
+    ' TODO_JS: nov18o8 Use core mechanism to auto-update to desired run state. Do not run core models from this class, because plug-ins will need this too
+    ' TODO_JB: nov18o8 Buid core mechanism to auto-update to desired run state
 
     ''' <summary>The core, the core.</summary>
     Private m_Core As cCore = Nothing
