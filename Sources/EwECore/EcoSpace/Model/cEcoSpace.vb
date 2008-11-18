@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.11  2008/11/18 23:10:31  joeb
+' Fixed bug in calculation of model run time for EcoSpaceSummarizeIndicators
+'
 ' Revision 1.10  2008/11/18 19:37:27  joeb
 ' Added Year to Solver Threads
 '
@@ -855,7 +858,10 @@ Public Class cEcoSpace
             computeCombinedFleetsSummary()
 
             If m_search.bInSearch Then
-                m_search.EcoSpaceSummarizeIndicators(Fgear, m_Data.TimeNow, m_Data.TimeNow - m_search.BaseYear, m_Data.nWaterCells)
+                Dim runTime As Integer = CInt(itt * m_Data.TimeStep)
+                Dim RuntimePB As Integer = runTime
+                If m_search.BaseYear > m_OptMPA.EcospaceStartTime Then RuntimePB = m_OptMPA.MPAOptData.EcoSpaceEndYear - m_search.BaseYear
+                m_search.EcoSpaceSummarizeIndicators(Fgear, runTime, RuntimePB, m_Data.nWaterCells)
             End If
 
             Dim SpaceSS As Single
