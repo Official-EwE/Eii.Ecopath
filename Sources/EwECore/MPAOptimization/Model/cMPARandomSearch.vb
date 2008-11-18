@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.12  2008/11/18 23:11:31  joeb
+' Removed some dead code
+'
 ' Revision 1.11  2008/11/18 21:23:14  villyc
 ' spatial optim seems to be working now, just a few interface troubles left
 '
@@ -832,12 +835,6 @@ Public Class cMPARandomSearch
                         m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
                         m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * AreaBoundBase
 
-
-        'TimesCalled = 2
-
-
-        '     System.Console.WriteLine("Random weighted base value = " & TotWeightedValueBase.ToString)
-
     End Sub
 
     Private Sub CalculateCellWeightings()
@@ -1332,4 +1329,5 @@ errCalDistance:
 
 #End Region
 
+  
 End Class
