@@ -36,7 +36,6 @@ Public Class cSearchDatastructures
     Public PortFolio As Boolean
     ' Public LimitFPenalty As Single
 
-
     Public NumFleets As Integer
     Public NumGroups As Integer
     Public NumLiving As Integer
@@ -985,6 +984,7 @@ Public Class cSearchDatastructures
         'jb removed BaseYearIncome() because it was not used for anything other than testing if it had been calculated
         'and would cause a crash if NumFleet = 0 in BaseYearIncome(1) = 0 BaseYearIncome() was dimmed by NumFleet
         'Here it is replaced with bBaseYearSet to set the base year only once at the start of a run
+
         If iYear = BaseYear And Not bBaseYearSet Then
             bBaseYearSet = True
             For i As Integer = 1 To m_ecopathData.NumFleet

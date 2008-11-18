@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.11  2008/11/18 21:23:14  villyc
+' spatial optim seems to be working now, just a few interface troubles left
+'
 ' Revision 1.10  2008/11/18 19:39:59  joeb
 ' MPA Optm. Baseyear economic values set at the start of a search
 '
@@ -805,8 +808,8 @@ Public Class cMPARandomSearch
         If Me.m_data.StopRun Then Exit Sub
 
         ''this will start ecospace at the user defined timestep and copy the values from the first call into this timestep
-        'TimesCalled = 2
-        'm_EcoSpace.Run()
+        TimesCalled = 2
+        m_EcoSpace.Run()
 
         'values were set in the search object by EcoSpace.Run()
         EmployBase = m_search.Employ
@@ -830,7 +833,7 @@ Public Class cMPARandomSearch
                         m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * AreaBoundBase
 
 
-        TimesCalled = 2
+        'TimesCalled = 2
 
 
         '     System.Console.WriteLine("Random weighted base value = " & TotWeightedValueBase.ToString)
