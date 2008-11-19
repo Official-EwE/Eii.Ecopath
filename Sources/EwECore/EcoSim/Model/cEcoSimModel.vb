@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.26  2008/11/19 18:01:07  joeb
+' Added an overloaded RunModelValue to not include search results. Search value are now obtained from the SearchDatastructures once RunModelValue has returned. The original RunModelValue is still there to allow existing code to still function!
+'
 ' Revision 1.25  2008/11/18 19:39:55  joeb
 ' MPA Optm. Baseyear economic values set at the start of a search
 '
@@ -608,12 +611,33 @@ Public Property PluginManager() As cPluginManager
 
 #End Region
 
+        ''' <summary>
+        ''' Overloaded RunModelValue() provided so that older search code will run without a major over haul
+        ''' </summary>
+        ''' <param name="NumberOfYears"></param>
+        ''' <param name="totval"></param>
+        ''' <param name="Employ"></param>
+        ''' <param name="manvalue"></param>
+        ''' <param name="ecovalue"></param>
+        ''' <param name="frateopt"></param>
+        ''' <param name="nopt"></param>
+        ''' <remarks>Hopefully this is temporary once all the exixting code is changed to use RunModelValue(NumberOfYears,frateopt(),nopt) this can be removed</remarks>
         Friend Sub RunModelValue(ByVal NumberOfYears As Integer, ByRef totval As Double, ByRef Employ As Double, _
-                                    ByRef manvalue As Double, ByRef ecovalue As Double, ByRef frateopt() As Double, ByVal nopt As Integer)
+                       ByRef manvalue As Double, ByRef ecovalue As Double, ByRef frateopt() As Double, ByVal nopt As Integer)
 
+            RunModelValue(NumberOfYears, frateopt, nopt)
+
+            totval = m_search.totval
+            Employ = m_search.Employ
+            manvalue = m_search.manvalue
+            ecovalue = m_search.ecovalue
+
+        End Sub
+
+        Friend Sub RunModelValue(ByVal NumberOfYears As Integer, ByRef frateopt() As Double, ByVal nopt As Integer)
             'jb Differences between EwE5 and EwE6:
             'Removal of all npairs code. Adult/Juvenile pairs has been replaced with multi stanza life stages.
-            'Removal of Imethod flag. EwE6 only uses the rk4 routine for numeric intergration AdamsBasforth()integrator has been removed.
+            'Removal of Imethod flag. EwE6 only uses the rk4 routine for numeric intergration AdamsBasforth()integration has been removed.
             'Removal of StepsPerMonth. EwE6 the user could set the number of time steps in a month this has been discontinued.
             'Removal of Integrate flag. All integration is handled by the rk4. Integration of individual groups is handled by the NoIntergrate(ngroups) flag only
             'All Search optimization calculations have been moved to the cSearchDataStructures e.g. totval, Employ.....
@@ -698,9 +722,6 @@ Public Property PluginManager() As cPluginManager
             SetBBtoStartBiomass(nvar)
 
             t = 0
-            Employ = 0
-            ecovalue = 0
-            manvalue = 0
             itime = 0
             m_search.Ecodistance = 0
             m_search.ExistValue = 0
@@ -778,7 +799,7 @@ Public Property PluginManager() As cPluginManager
 
                     If m_Data.PredictSimEffort Then
 
-                        If ipct = 1 And m_Data.doClosedLoop Then
+                        If ipct = 1 And m_Data.DoClosedLoop Then
                             'set Bestimate() used in UpDateQuotas() only do this at the start of the year
                             DoAssessment(BB)
                             UpdateQuotas()
@@ -900,11 +921,6 @@ Public Property PluginManager() As cPluginManager
             '*
             If m_search.bInSearch Then
                 m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears, NumberOfYears + ExtraTime - m_search.BaseYear)
-
-                totval = m_search.totval
-                Employ = m_search.Employ
-                manvalue = m_search.manvalue
-                ecovalue = m_search.ecovalue
             End If
             '*
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
@@ -1485,7 +1501,6 @@ Public Property PluginManager() As cPluginManager
         ''' The EcoSim model must be Initialized before this is call.
         ''' </remarks>
         Public Function Run() As Boolean
-            Dim TotVal As Double, Employ As Double, ManValue As Double, EcoValue As Double
             Dim bsuccess As Boolean
 
             Try
@@ -1508,7 +1523,7 @@ Public Property PluginManager() As cPluginManager
                 'this postpones the memory allocation until it is actually needed
                 m_Data.dimResults()
 
-                RunModelValue(m_Data.NumYears, TotVal, Employ, ManValue, EcoValue, m_search.Frates, m_search.nBlocks)
+                RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
 
                 bsuccess = True
 
@@ -2782,7 +2797,7 @@ Public Property PluginManager() As cPluginManager
             For j = 1 To m_RefData.NdatType
                 If DatNobs(j) > 0 Then
 
-                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs  Then
+                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Then
                         m_RefData.DatSS(j) = DatSumZ2(j)
                         m_RefData.DatQ(j) = 0
                     End If
