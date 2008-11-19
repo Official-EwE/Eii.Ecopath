@@ -1026,7 +1026,7 @@ Public Class cSearchDatastructures
         totval = 0
         Employ = 0
 
-        KemptonQ = KemptonQ / ModelRunLength  'PostBaseYear ' why ModelRunLengthPostBaseYear???
+        KemptonQ = KemptonQ / ModelRunLength
 
         ' calculate last year incomes and costs by gear
         For i = 1 To m_ecopathData.NumFleet
@@ -1050,10 +1050,6 @@ Public Class cSearchDatastructures
 
         LTV = CalcLTV(ModelRunLengthPostBaseYear)
 
-        'vc080523 TEMP IGNORING LONG TERM VALUE also in ecospace below!
-        'LTV = 0
-        'vc080523 TEMP IGNORING LONG TERM VALUE
-
         For i = 1 To m_ecopathData.NumFleet
             For j = 1 To m_ecopathData.NumLiving
                 If ValCatch(i, j) > 0 Then
@@ -1068,7 +1064,7 @@ Public Class cSearchDatastructures
                     totval = totval + Vlocal
                     ValCatchGear(i) = ValCatchGear(i) + Vlocal
 
-                    System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
+                    ' System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
                     'employ = employ + Vlocal * Jobs(i)
                 End If
             Next
@@ -1123,10 +1119,6 @@ Public Class cSearchDatastructures
         KemptonQ = KemptonQ / ModelRunLength
 
         LTV = CalcLTV(ModelRunLengthPostBaseYear)
-
-        'vc080523 TEMP IGNORING LONG TERM VALUE also in ecospace below!
-        'LTV = 0
-        'vc080523 TEMP IGNORING LONG TERM VALUE
 
         For iflt = 1 To m_ecopathData.NumFleet
             For igrp = 1 To m_ecopathData.NumLiving
