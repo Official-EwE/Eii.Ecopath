@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.3  2008/11/19 18:02:28  joeb
+' Added Biomass diversity and updated calls to RunModelValue() to use new signature
+'
 ' Revision 1.2  2008/10/29 19:47:08  joeb
 ' Added Search InitForRun()
 '
@@ -180,6 +183,8 @@ Namespace FishingPolicy
         'ToDo_jb cFishingPolicySearch This code should be reorginized to have each search method as a seperate class. 
         'Then a factory could create a searchmethod object that ran the search
 
+        Public Const N_CRIT_RESULTS As Integer = 5
+
 #Region "Public variables"
 
         Public SearchCompletedCallBack As SearchCompletedDelegate
@@ -201,8 +206,8 @@ Namespace FishingPolicy
         Public EmployBase As Double
         Public ManValueBase As Double
         Public EcoValueBase As Double
-        '  Public ValWeight(4) As Single
         Public ExistValue As Single
+        Public BioDivBase As Single
 
         ''' <summary>
         ''' Force a running search to exit
@@ -220,7 +225,7 @@ Namespace FishingPolicy
 
 
         Private Resline As Integer
-        Private CritValue(4) As Single
+        Private CritValue(N_CRIT_RESULTS) As Single
         'Dim X() As Double
         Private G() As Double, Xm() As Double ', Nam$(Nmax)
         Private H() As Single, W() As Double    'was 1000 when nmax was 100
@@ -373,15 +378,8 @@ Namespace FishingPolicy
                     m_searchData.Frates(i) = baseFrate
                 Next
 
-                'get the base values used by FUNC to tell the change between the current run and the base run
-                m_ecosim.RunModelValue(TotalTime, TotValBase, EmployBase, ManValueBase, EcoValueBase, m_searchData.Frates, nBlocksUsed)
-
-                If TotValBase = 0 Then TotValBase = 1
-                If TotValBase < 0 Then TotValBase = -TotValBase
-                If EmployBase = 0 Then EmployBase = 1
-                If EmployBase < 0 Then EmployBase = -EmployBase
-                If ManValueBase = 0 Then ManValueBase = 1
-                If EcoValueBase = 0 Then EcoValueBase = 1
+                'get the base values for the objective function by running ecosim 
+                getBaseValues(nBlocksUsed)
 
                 For Iter As Integer = 1 To m_searchData.nRuns
                     If SearchFailed Or StopEstimation Then
@@ -413,6 +411,28 @@ Namespace FishingPolicy
 
         End Sub
 
+
+
+        Private Sub getBaseValues(ByVal nBlocksUsed As Integer)
+
+            'get the base values used by FUNC to tell the change between the current run and the base run
+            m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
+
+            TotValBase = m_searchData.totval
+            EmployBase = m_searchData.Employ
+            ManValueBase = m_searchData.manvalue
+            EcoValueBase = m_searchData.ecovalue
+            BioDivBase = m_searchData.KemptonQ
+
+            If TotValBase = 0 Then TotValBase = 1
+            If TotValBase < 0 Then TotValBase = -TotValBase
+            If EmployBase = 0 Then EmployBase = 1
+            If EmployBase < 0 Then EmployBase = -EmployBase
+            If ManValueBase = 0 Then ManValueBase = 1
+            If EcoValueBase = 0 Then EcoValueBase = 1
+            If BioDivBase = 0 Then BioDivBase = 1
+
+        End Sub
 
         Private Sub SearchStarted(ByVal iIteration As Integer)
 
@@ -488,7 +508,7 @@ Namespace FishingPolicy
 
                 Results.Totals = (-F + VlocalPenalty) / WeightCorrection
 
-                For icrit As Integer = 1 To 4
+                For icrit As Integer = 1 To N_CRIT_RESULTS
                     Results.CriteriaValues(icrit) = CritValue(icrit)
                 Next
 
@@ -499,7 +519,7 @@ Namespace FishingPolicy
 #If DEBUG Then
                 'debuging output
                 System.Console.WriteLine("FPS iterations: " & Results.nCalls.ToString)
-                For icr As Integer = 1 To 4
+                For icr As Integer = 1 To 5
                     System.Console.Write(Results.CriteriaValues(icr).ToString & ", ")
                 Next
 
@@ -587,13 +607,13 @@ Namespace FishingPolicy
 
 
         Private Sub checkUseCostPenalty(ByVal nSearchBlocks As Integer)
-            Dim TempTotVal As Double, TempEmploy As Double, TempManVal As Double, TempEcoVal As Double
+            '  Dim TempTotVal As Double, TempEmploy As Double, TempManVal As Double, TempEcoVal As Double
 
             'jb Logic copied from EwE5 I'm not sure what the point of this 
             'it tells the user it is resetting the InitOption to Ecopath F's but it never resets InitOption flag
             If m_searchData.InitOption <> eInitOption.EcopathBaseF Then
 
-                m_ecosim.RunModelValue(TotalTime, TempTotVal, TempEmploy, TempManVal, TempEcoVal, m_searchData.Frates, nSearchBlocks)
+                m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nSearchBlocks)
 
                 For iflt As Integer = 1 To m_searchData.NumFleets
                     If m_searchData.CostRatio(iflt) > 1.15 And m_searchData.UseCostPenalty = True Then
@@ -1163,8 +1183,8 @@ endline:    '
 
         Function FUNC(ByVal X() As Double, ByVal n As Integer) As Double
             Dim i As Integer
-            Dim totval As Double, Employ As Double
-            Dim ecovalue As Double, manvalue As Double, LogUtil As Double
+            'Dim totval As Double, Employ As Double,ecovalue As Double, manvalue As Double,
+            Dim LogUtil As Double
             Dim returnvalue As Double
             'dimension any variables needed by your calculations but not shared here 
 
@@ -1180,21 +1200,24 @@ endline:    '
 
             Try
 
-                m_ecosim.RunModelValue(TotalTime, totval, Employ, manvalue, ecovalue, X, n)
+                m_ecosim.RunModelValue(TotalTime, X, n)
 
                 VlocalPenalty = 0
                 For i = 1 To n
                     VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(1) = totval / TotValBase
-                If EmployBase <> 0 Then CritValue(2) = Employ / EmployBase
-                If ManValueBase <> 0 Then CritValue(3) = manvalue / ManValueBase
-                If EcoValueBase <> 0 Then CritValue(4) = ecovalue / EcoValueBase
-                returnvalue = VlocalPenalty - m_searchData.ValWeight(1) * totval / TotValBase - _
-                        m_searchData.ValWeight(2) * Employ / EmployBase - _
-                        m_searchData.ValWeight(3) * manvalue / ManValueBase - _
-                        m_searchData.ValWeight(4) * ecovalue / EcoValueBase
+                If TotValBase <> 0 Then CritValue(1) = m_searchData.totval / TotValBase
+                If EmployBase <> 0 Then CritValue(2) = m_searchData.Employ / EmployBase
+                If ManValueBase <> 0 Then CritValue(3) = m_searchData.manvalue / ManValueBase
+                If EcoValueBase <> 0 Then CritValue(4) = m_searchData.ecovalue / EcoValueBase
+                If BioDivBase <> 0 Then CritValue(5) = m_searchData.KemptonQ / BioDivBase
+
+                returnvalue = VlocalPenalty - m_searchData.ValWeight(1) * m_searchData.totval / TotValBase - _
+                        m_searchData.ValWeight(2) * m_searchData.Employ / EmployBase - _
+                        m_searchData.ValWeight(3) * m_searchData.manvalue / ManValueBase - _
+                        m_searchData.ValWeight(4) * m_searchData.ecovalue / EcoValueBase - _
+                        m_searchData.ValWeight(5) * m_searchData.KemptonQ / BioDivBase
 
                 If m_searchData.MinimizeEffortChange Then
                     If returnvalue < 0 Then
@@ -1542,7 +1565,7 @@ endline:    '
 
 
         Sub SearchForBaseProfitability(ByVal X() As Double, ByVal n As Integer)
-            Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
+            ' Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
             Dim BaseIncome() As Single, Temp As Single
             Dim CostToI() As Single, GainToJ(,) As Single, iter As Integer
             Dim PaidToJ() As Single
@@ -1553,7 +1576,6 @@ endline:    '
             Dim Delp() As Single, LastX As Single, DelX() As Single, LastP() As Single, DpDx() As Single
             Dim i As Integer, j As Integer, K As Integer, SpGaintoJ
             Dim gro As Single, SumGro As Double
-            'Dim BaseEffort() As Single
 
             Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
 
@@ -1562,8 +1584,6 @@ endline:    '
             RelaxWt = 0.5
             GroMax = 0.3
             PropToPlaintiff = 0.0
-
-            '     frmShowFleetCosts.Show() : DoEvents()
 
             Dim BaseIncomeSpecies(,) As Single
             ReDim BaseIncome(m_searchData.NumFleets), BaseIncomeSpecies(m_searchData.NumFleets, m_searchData.NumGroups) ', BaseEffort(m_searchData.NumFleets)
@@ -1574,11 +1594,6 @@ endline:    '
 
             'varies fishing efforts so as to try and achieve baseprofitability for each fleet, while accounting
             'for transfer costs from fleets that cause reduced income to the fleets impacted by such reductions
-
-            ''jb BaseEffort() is declare locally and never used
-            'For i = 1 To m_searchData.NumFleets
-            '    BaseEffort(i) = Math.Exp(X(i))
-            'Next
 
             Do
                 iter = iter + 1
@@ -1600,7 +1615,7 @@ endline:    '
                     Temp = X(i)
                     'turn off gear i temporarily and make a run
                     X(i) = -5
-                    m_ecosim.RunModelValue(TotalTime, totval, Employ, manvalue, ecovalue, X, n)
+                    m_ecosim.RunModelValue(TotalTime, X, n)
                     CostToI(i) = 0
                     For j = 1 To m_searchData.NumFleets
                         GainToJ(i, j) = m_searchData.LastYearIncome(j) - BaseIncome(j)
@@ -1815,7 +1830,7 @@ Next
         Public BlockResults() As Single
         Public BlockNumber() As Integer
 
-        Public CriteriaValues(4) As Single
+        Public CriteriaValues(5) As Single
         Public Totals As Single
         Public nCalls As Integer
 
