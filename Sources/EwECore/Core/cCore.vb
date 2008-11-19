@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.28  2008/11/19 22:11:30  joeb
+' Added EcoSim.Init to RunEcoSpace to bring any edited data up to date
+'
 ' Revision 1.27  2008/11/18 16:32:40  joeb
 ' Added a ToDo to RunEcoSpace()
 '
@@ -4143,14 +4146,9 @@ Public Class cCore
             ds = DirectCast(DataSource, IEcosimDatasource)
             If Not ds.LoadEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
                 Debug.Assert(False, "LoadEcosimScenario() Failed to load scenario from data source.")
-                'ToDo_jb LoadEcosimScenario() hack let it keep running if LoadScenario() fails
                 Me.SendEcosimLoadStateMessage(strScenarioName, "Failed to read the database")
                 Return False
             End If
-
-            ''sync dietcomp between Ecopath and Ecosim 
-            ''this does not change between scenarios but this is where the ecosim data gets reloaded so it has to happen here
-            'Me.m_SyncManager.DietComp()
 
             m_SearchData.redimByTime(Me.nEcosimYears)
             m_EcoSim.SearchData = m_SearchData
@@ -5672,6 +5670,8 @@ Public Class cCore
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
 
+        ' If Not m_StateMonitor.HasEcosimRan Then
+
         Try
             Dim t As Double = Timer
             System.Console.WriteLine("----------cCore.RunEcospace() Start------------")
@@ -5679,6 +5679,11 @@ Public Class cCore
             'ToDo_jb RunEcoSpace() Ecospace needs to check the statemonitor to see if there have been any changes to Ecopath or Ecosim variables
             'then run anything it needs to in response
             If Me.m_StateMonitor.HasEcospaceLoaded Then
+
+                'Ecosim only needs to be initialized if data has been edited
+                'If this happen the interface will have tried to bring the core up to date which it can not do 
+                'this will override the statemonitor and the edit state will be lost!!
+                m_EcoSim.Init(True)
 
                 If checkHabitats() Then
 
