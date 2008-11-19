@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridMPAOptimizations.vb,v $
+' Revision 1.4  2008/11/19 14:35:29  jeroens
+' Resources!
+'
 ' Revision 1.3  2008/11/14 00:29:11  jeroens
 ' Added more indicators
 '
@@ -45,32 +48,32 @@ Public Class gridMPAOptimizations
         Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell(My.Resources.HEADER_INDICATOR)
         Me(0, eColumnTypes.Value) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
 
-        Me(1, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_NETECONOMICVALUE)
+        Me(1, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(1, eColumnTypes.Value) = c
 
-        Me(2, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_SOCIAL_VALUE)
+        Me(2, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(2, eColumnTypes.Value) = c
 
-        Me(3, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING)
+        Me(3, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_MANDATED_REBUILDING)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(3, eColumnTypes.Value) = c
 
-        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE)
+        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(4, eColumnTypes.Value) = c
 
-        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY)
+        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(5, eColumnTypes.Value) = c
 
-        Me(6, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT)
+        Me(6, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_BOUNDARYWEIGHT)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(6, eColumnTypes.Value) = c
@@ -81,7 +84,7 @@ Public Class gridMPAOptimizations
         Me(7, eColumnTypes.Value) = c
 
         ' ToDo: globalize this
-        Me(8, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_AREA_CLOSED)
+        Me(8, eColumnTypes.Variable) = New EwERowHeaderCell(My.Resources.HEADER_AREA_CLOSED)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable
         Me(8, eColumnTypes.Value) = c
