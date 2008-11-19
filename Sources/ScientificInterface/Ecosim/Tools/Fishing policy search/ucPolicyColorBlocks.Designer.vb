@@ -1,7 +1,7 @@
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class PolicyColorBlocks
+    Partial Class ucPolicyColorBlocks
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -31,7 +31,7 @@ Namespace Ecosim
             Me.lblStartYear = New System.Windows.Forms.Label
             Me.nupYearBlockNum = New System.Windows.Forms.NumericUpDown
             Me.btnSetEveryGear = New System.Windows.Forms.Button
-            Me.m_blockCodes = New ScientificInterface.Ecosim.ParmBlockCodes
+            Me.m_blockCodes = New ScientificInterface.Ecosim.ucParmBlockCodes
             CType(Me.pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.nupSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.nupSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -194,7 +194,7 @@ Namespace Ecosim
 
         End Sub
         Friend WithEvents pbFishingBlocks As System.Windows.Forms.PictureBox
-        Friend WithEvents m_blockCodes As ParmBlockCodes
+        Friend WithEvents m_blockCodes As ucParmBlockCodes
         Friend WithEvents nupYearBlockNum As System.Windows.Forms.NumericUpDown
         Friend WithEvents btnSetEveryGear As System.Windows.Forms.Button
         Friend WithEvents nupSeqEndYear As System.Windows.Forms.NumericUpDown

@@ -1,55 +1,11 @@
 '==============================================================================
 '
-' $Log: PolicyColorBlocks.vb,v $
+' $Log: ucPolicyColorBlocks.vb,v $
+' Revision 1.1  2008/11/19 14:40:35  jeroens
+' Moved and renamed
+'
 ' Revision 1.1  2008/09/26 07:31:53  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.35  2008/06/02 00:01:40  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.34  2008/05/30 19:03:05  jeroens
-' Fixed property confusion
-'
-' Revision 1.33  2008/05/29 22:23:01  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.32  2008/05/16 17:06:53  joeb
-' Changes for new search objective datatypes
-'
-' Revision 1.31  2008/05/15 18:59:39  joeb
-' Added BatchEdit to SearchBlocks
-'
-' Revision 1.30  2008/05/14 20:36:26  joeb
-' SetGear now clears all years less than the base year
-'
-' Revision 1.29  2008/05/12 19:03:44  joeb
-' Changes to search objects to support ISearchObjective interface
-'
-' Revision 1.28  2008/04/15 15:25:39  joeb
-' How uses Property objects to handle core updates/messages
-'
-' Revision 1.27  2008/03/03 23:52:25  jeroens
-' Prettinized
-'
-' Revision 1.26  2008/02/27 19:31:02  joeb
-' Set Base Year
-'
-' Revision 1.25  2008/02/05 03:29:53  jeroens
-' Fixed block redraw issue when resizing window
-'
-' Revision 1.24  2008/02/04 00:49:41  jeroens
-' SetGear starts at year 2
-' Sequential start year set to 2 by default
-'
-' Revision 1.23  2008/02/04 00:30:35  jeroens
-' Yippee
-'
-' Revision 1.22  2008/02/03 03:55:51  jeroens
-' Chasing down block bug, commenting code as I go
-'
-' Revision 1.21  2007/11/21 01:12:03  jeroens
-' * Fixed bug 333
-' - Removed local cache of fleet names
 '
 '==============================================================================
 
@@ -65,7 +21,7 @@ Imports EwEUtils.Core
 #End Region
 
 Namespace Ecosim
-    Public Class PolicyColorBlocks
+    Public Class ucPolicyColorBlocks
 
         Private m_core As cCore
         Private m_FPManager As cFishingPolicyManager
@@ -140,7 +96,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public ReadOnly Property ParmBlockCodes() As ParmBlockCodes
+        Public ReadOnly Property ParmBlockCodes() As ucParmBlockCodes
             Get
                 Return m_blockCodes
             End Get

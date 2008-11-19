@@ -2,7 +2,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecosim
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class FishingPolicySearch
+    Partial Class frmFishingPolicySearch
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.

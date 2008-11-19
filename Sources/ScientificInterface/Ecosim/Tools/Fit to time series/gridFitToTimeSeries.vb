@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: FitToTimeSeriesGrid.vb,v $
+' $Log: gridFitToTimeSeries.vb,v $
+' Revision 1.1  2008/11/19 14:40:55  jeroens
+' Moved and renamed
+'
 ' Revision 1.1  2008/09/26 07:31:52  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -40,7 +43,7 @@ Imports SourceGrid2
 #End Region
 
 <CLSCompliant(False)> _
-Public Class FitToTimeSeriesGrid
+Public Class gridFitToTimeSeries
     : Inherits EwEGrid
 
     Private Enum eColumnTypes

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAnomalySearchSketchPad.vb,v $
+' Revision 1.1  2008/11/19 14:42:22  jeroens
+' Moved and renamed
+'
 ' Revision 1.1  2008/09/26 07:31:54  sherman
 ' --== DELETED HISTORY ==--
 '

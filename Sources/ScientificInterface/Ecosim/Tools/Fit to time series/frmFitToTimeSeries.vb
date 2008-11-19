@@ -1,127 +1,11 @@
 '==============================================================================
 '
-' $Log: FitToTimeSeries.vb,v $
+' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.1  2008/11/19 14:40:55  jeroens
+' Moved and renamed
+'
 ' Revision 1.1  2008/09/26 07:31:51  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.93  2008/09/25 02:31:47  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.92  2008/09/24 15:15:02  jeroens
-' Uses FitToTS search manager to populate GroupOptmParamGrid
-'
-' Revision 1.91  2008/09/23 19:16:15  jeroens
-' UseFishingMortalityPenality flag connected
-'
-' Revision 1.90  2008/09/23 16:52:25  jeroens
-' Temporary disabled logic to fix build
-'
-' Revision 1.89  2008/09/23 16:15:52  jeroens
-' Adding Villy's mortality penalty
-'
-' Revision 1.88  2008/08/05 15:39:35  jeroens
-' TS year limit grayed out
-'
-' Revision 1.87  2008/07/29 16:15:49  jeroens
-' Fixed run stopped string formatting error
-'
-' Revision 1.86  2008/07/02 22:08:11  jeroens
-' Prevented crashes
-'
-' Revision 1.85  2008/06/06 16:01:39  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.84  2008/03/23 17:45:41  jeroens
-' Loads TS dialog when necessary
-'
-' Revision 1.83  2008/03/21 15:24:56  joeb
-' Sensitivity search form updates the Fit to time series form with the number of blocks set by the user
-'
-' Revision 1.82  2008/03/20 18:38:19  joeb
-' Fixed bug Detritus not being included in fit when set from interface
-'
-' Revision 1.81  2007/11/30 16:47:15  joeb
-' Fixed cast bug in OnRunStarted()
-'
-' Revision 1.80  2007/11/29 18:43:46  joeb
-' Moved updown box max to UpdateControls
-'
-' Revision 1.79  2007/11/29 18:11:35  jeroens
-' * Fixed crash when no TS loaded
-'
-' Revision 1.78  2007/11/23 19:08:30  joeb
-' Minor interface tweaks
-'
-' Revision 1.77  2007/11/22 19:26:21  joeb
-' Minor interface tweeks
-'
-' Revision 1.76  2007/11/21 19:19:48  joeb
-' set the Anomaly start and end years to match the time series data
-'
-' Revision 1.75  2007/11/14 14:24:37  jeroens
-' * Localized
-' * Shape updated during Anomaly search
-'
-' Revision 1.74  2007/11/13 23:46:49  jeroens
-' * OMG, is there an end to this?!
-'
-' Revision 1.73  2007/11/12 15:36:11  jeroens
-' * Implemented progress log interface
-'
-' Revision 1.72  2007/11/11 19:54:57  jeroens
-' + Responds to apply TS commands
-' * Fixed bug in shape toolbox layout
-' - Removed SS var, SS label
-'
-' Revision 1.71  2007/11/11 16:55:24  jeroens
-' * Anomaly sketchpad includes years, no. spline pts
-'
-' Revision 1.70  2007/11/08 21:57:25  jeroens
-' * Implemented UpdateControls
-' * Min/Max year boxes set based on changing shape selections
-'
-' Revision 1.69  2007/11/08 18:18:32  jeroens
-' * Shape refreshed on run steps
-'
-' Revision 1.68  2007/11/08 08:02:57  jeroens
-' * Getting there
-'
-' Revision 1.67  2007/11/08 01:55:30  jeroens
-' - Cleaned-up
-'
-' Revision 1.66  2007/11/08 00:08:44  jeroens
-' * Fixed sync object screw-up
-' * Dialog controlled and kept up to date by form
-'
-' Revision 1.65  2007/11/06 20:32:35  jeroens
-' ~ To appease the masses
-'
-' Revision 1.64  2007/11/04 02:11:01  jeroens
-' * Still working on it...
-'
-' Revision 1.63  2007/11/04 00:41:35  jeroens
-' * In transition. Vulblocks reconnected to manager
-'
-' Revision 1.61  2007/11/02 13:47:55  jeroens
-' * In redesign
-'
-' Revision 1.60  2007/11/01 18:10:53  joeb
-' Added AnomalySearch to manager
-'
-' Revision 1.59  2007/11/01 16:14:04  jeroens
-' + Started dissection
-'
-' Revision 1.58  2007/11/01 15:58:49  joeb
-' Added RunModelDelegate() to the model
-'
-' Revision 1.57  2007/10/31 21:07:47  joeb
-' Run anomaly search from run search button (sort of)
-'
-' Revision 1.56  2007/10/30 22:55:59  joeb
-' Clear output window when new search started
-'
-' Revision 1.55  2007/10/27 03:15:22  jeroens
-' * Uses grid.Apply to store and apply entered TS weights
 '
 '==============================================================================
 
@@ -140,7 +24,7 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
-    Public Class FitToTimeSeries
+    Public Class frmFitToTimeSeries
 
 #Region " Private variables "
 
@@ -425,12 +309,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As ParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
+        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As ucParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlockNum
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As ParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
+        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As ucParmBlockCodes) Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
             Me.m_vulnerabilityBlockMatrix.BlockColors = sender.BlockColors
             Me.UpdateControls()
         End Sub

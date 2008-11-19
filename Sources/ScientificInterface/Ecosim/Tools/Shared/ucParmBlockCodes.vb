@@ -1,89 +1,11 @@
 '==============================================================================
 '
-' $Log: ParmBlockCodes.vb,v $
+' $Log: ucParmBlockCodes.vb,v $
+' Revision 1.1  2008/11/19 14:42:23  jeroens
+' Moved and renamed
+'
 ' Revision 1.1  2008/09/26 07:31:52  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.26  2008/07/22 22:04:16  joeh
-' Fix bug 441 - Fit to time series number of blocks from sensitivity search not the same as set by user
-'
-' Revision 1.25  2008/02/04 18:55:30  jeroens
-' Fixed colour ramp usage
-'
-' Revision 1.24  2008/02/03 03:52:30  jeroens
-' Rendered to client rectangle size, not control rectangle size to take borders into consideration
-'
-' Revision 1.23  2007/11/11 16:52:19  jeroens
-' * Codes -> Colours
-'
-' Revision 1.22  2007/11/06 19:24:45  jeroens
-' * Broadcasts events
-'
-' Revision 1.21  2007/11/03 18:02:26  jeroens
-' * ParmBlockCodes exposes selected block code
-'
-' Revision 1.20  2007/11/02 14:32:06  jeroens
-' + Uses ucSlider
-'
-' Revision 1.19  2007/11/01 13:45:51  jeroens
-' * Fixed init issue
-'
-' Revision 1.18  2007/10/15 15:59:21  jeroens
-' + Added trackbar, selected indicator
-'
-' Revision 1.17  2007/10/15 00:42:39  jeroens
-' * Fixed blue selection border rendering feature
-' - Cleaned-up
-'
-' Revision 1.16  2007/10/14 23:19:04  jeroens
-' * Fixed bug 304
-'
-' Revision 1.15  2007/10/14 22:02:14  jeroens
-' * Updated to styleguide changes
-'
-' Revision 1.14  2007/10/03 01:54:30  jeroens
-' * Reworked styleguide, colormanager
-'
-' Revision 1.13  2007/09/28 01:15:00  joeh
-' Add resize event
-'
-' Revision 1.12  2007/09/10 23:46:36  fgao
-' Expose two more properties for FPS use..
-'
-' Revision 1.11  2007/08/31 00:35:24  joeh
-' Draw border around the selected block code during paint event
-'
-' Revision 1.10  2007/08/30 19:21:59  joeh
-' Make the spin wheel editable
-'
-' Revision 1.9  2007/08/30 18:19:40  joeh
-' Change graphics object from modular to local level
-' Change user control dock style from Bottom to Fill
-'
-' Revision 1.8  2007/08/23 01:05:46  joeh
-' Set m_Colors(0).ForeColor  to black
-'
-' Revision 1.7  2007/08/22 21:20:26  joeh
-' Change the nBlockCodes property from ReadOnly to both Read and Set
-'
-' Revision 1.6  2007/08/21 00:32:43  joeh
-' Move some local variables to modular level
-'
-' Revision 1.5  2007/08/18 03:25:22  joeh
-' no message
-'
-' Revision 1.4  2007/08/16 23:25:47  joeh
-' Put a border around the selected block code
-'
-' Revision 1.3  2007/08/16 00:26:25  joeh
-' Use color scheme used in Ecospace and create the public interface
-'
-' Revision 1.2  2007/08/15 00:25:52  joeh
-' Initial implementation
-'
-' Revision 1.1  2007/08/14 19:37:15  joeh
-' Add ParmBlockCodes user control
-'
 '
 '==============================================================================
 
@@ -98,7 +20,7 @@ Imports ScientificInterface.Other
 
 Namespace Ecosim
 
-    Public Class ParmBlockCodes
+    Public Class ucParmBlockCodes
 
 #Region "Private variables"
         'Color Ramp array
@@ -201,8 +123,8 @@ Namespace Ecosim
 
 #Region " Public events "
 
-        Public Event OnNumBlocksChanged(ByVal sender As ParmBlockCodes)
-        Public Event OnBlockSelected(ByVal sender As ParmBlockCodes)
+        Public Event OnNumBlocksChanged(ByVal sender As ucParmBlockCodes)
+        Public Event OnBlockSelected(ByVal sender As ucParmBlockCodes)
 
 #End Region
 

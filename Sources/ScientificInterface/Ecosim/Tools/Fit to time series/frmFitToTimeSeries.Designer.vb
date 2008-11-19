@@ -3,7 +3,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
-    Partial Class FitToTimeSeries
+    Partial Class frmFitToTimeSeries
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -45,7 +45,7 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
             Me.m_tsVulSearchTools = New System.Windows.Forms.ToolStrip
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
-            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ParmBlockCodes
+            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
             Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
             Me.tpAnomalySearch = New System.Windows.Forms.TabPage
             Me.m_nudLastYear = New System.Windows.Forms.NumericUpDown
@@ -600,7 +600,7 @@ Namespace Ecosim
         Private WithEvents m_lblVarianceVulnerability As System.Windows.Forms.Label
         Private WithEvents m_cbVulnerabilitySearch As System.Windows.Forms.CheckBox
         Private WithEvents m_vulnerabilityBlockMatrix As ucVulnerabiltyBlocks
-        Private WithEvents m_vulnerabilityBlockCodeSelector As ParmBlockCodes
+        Private WithEvents m_vulnerabilityBlockCodeSelector As ucParmBlockCodes
         Private WithEvents m_splitSearch As System.Windows.Forms.SplitContainer
         Private WithEvents m_tbResults As System.Windows.Forms.TextBox
         Private WithEvents m_btnStop As System.Windows.Forms.Button
