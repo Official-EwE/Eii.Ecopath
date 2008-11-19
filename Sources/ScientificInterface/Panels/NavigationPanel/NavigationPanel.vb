@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.7  2008/11/19 14:42:55  jeroens
+' Moved and renamed sim tools
+'
 ' Revision 1.6  2008/11/04 05:40:39  jeroens
 ' Renamed Ecospace grids
 '
@@ -139,8 +142,8 @@ Public Class NavigationPanel
 
         ' Ecosim Tools
         m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
-        m_nodeController.Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.FishingPolicySearch), "Fishing policy search.htm")
-        m_nodeController.Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.FitToTimeSeries), "Fit to time series.htm")
+        m_nodeController.Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFishingPolicySearch), "Fishing policy search.htm")
+        m_nodeController.Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFitToTimeSeries), "Fit to time series.htm")
 
         ' Ecospace
         m_nodeController.Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.DispersalEwEGrid), "Dispersal.htm")

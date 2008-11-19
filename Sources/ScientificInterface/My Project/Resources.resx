@@ -653,7 +653,7 @@
   <data name="HEADER_SHAPE" xml:space="preserve">
     <value>Shape</value>
   </data>
-  <data name="SEARCH_LABEL_MANDATED_REBUILDING" xml:space="preserve">
+  <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
     <value>Mandated rebuilding</value>
   </data>
   <data name="LABEL_GROUP" xml:space="preserve">
@@ -832,7 +832,7 @@
   <data name="REGION_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete the selected region? </value>
   </data>
-  <data name="SEARCH_LABEL_NETECONOMICVALUE" xml:space="preserve">
+  <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
     <value>Net economic value</value>
   </data>
   <data name="HEADER_BIOMASS" xml:space="preserve">
@@ -845,7 +845,7 @@
     <value>{0} rows x {1} cols</value>
     <comment>{0}:# of rows, {1}:# of cols</comment>
   </data>
-  <data name="GENERIC_LABEL_PROFIT" xml:space="preserve">
+  <data name="HEADER_PROFIT" xml:space="preserve">
     <value>Profit</value>
   </data>
   <data name="STATUS_ECOSPACE_LOADING" xml:space="preserve">
@@ -856,7 +856,7 @@
     <value>Saving Ecosim scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="SEARCH_LABEL_MANDATEDRELBIOMASS" xml:space="preserve">
+  <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
     <value>Mandated rel. biom</value>
   </data>
   <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
@@ -1051,7 +1051,7 @@
   <data name="EwELogo_caption" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewelogo_caption.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SEARCH_LABEL_EXISTENCE_VALUE" xml:space="preserve">
+  <data name="HEADER_EXISTENCE_VALUE" xml:space="preserve">
     <value>Existence value</value>
   </data>
   <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
@@ -1112,7 +1112,7 @@
   <data name="HEADER_IMPORT" xml:space="preserve">
     <value>Import</value>
   </data>
-  <data name="SEARCH_LABEL_SOCIAL_VALUE" xml:space="preserve">
+  <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
     <value>Social value (employment)</value>
   </data>
   <data name="PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND" xml:space="preserve">
@@ -1255,8 +1255,8 @@
   <data name="HEADER_CB" xml:space="preserve">
     <value>Cons/biom</value>
   </data>
-  <data name="FPS_ITER_RESULT_SO_ECOL" xml:space="preserve">
-    <value>Ecol.</value>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
+    <value>Ecosys.</value>
   </data>
   <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
     <value>Normalized value</value>
@@ -1327,7 +1327,7 @@
   <data name="HEADER_TOTALMORTALITY" xml:space="preserve">
     <value>Z (Total mortality)</value>
   </data>
-  <data name="SEARCH_LABEL_VALUE_COMPONENT" xml:space="preserve">
+  <data name="HEADER_VALUE_COMPONENT" xml:space="preserve">
     <value>Value component</value>
   </data>
   <data name="HEADER_EMIGRATION_UNIT" xml:space="preserve">
@@ -1399,7 +1399,7 @@
     <value>Select the directory that you want to save your layout files as the default</value>
   </data>
   <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
-    <value>&amp;Save</value>
+    <value>Save</value>
     <comment>Generic 'Save' button text</comment>
   </data>
   <data name="RENAME_FORCING_ERROR_MSG3" xml:space="preserve">
@@ -1428,8 +1428,8 @@
   <data name="HEADER_CAPITALDEPRECIATION" xml:space="preserve">
     <value>Capital depreciation rate</value>
   </data>
-  <data name="FPS_ITER_RESULT_SO_ECON" xml:space="preserve">
-    <value>Econ.</value>
+  <data name="HEADER_BIOMASS_DIVERSITY_ABBR" xml:space="preserve">
+    <value>Divers.</value>
   </data>
   <data name="LABEL_LAYER_NUMBERED" xml:space="preserve">
     <value>Layer {0}</value>
@@ -1592,7 +1592,7 @@
   <data name="MCRUN_HEADER_CV" xml:space="preserve">
     <value>c.v.</value>
   </data>
-  <data name="SEARCH_LABEL_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+  <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
     <value>Ecosystem structure</value>
   </data>
   <data name="HEADER_PB_ABBR" xml:space="preserve">
@@ -2216,10 +2216,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
     <value>Comma-separated text files (*.csv)|*.csv|ESRI ascii file (*.asc)|*.asc|ESRI shape file (*.shp)|*.shp|Spatial raster files (*.asc, *.csv, *.shp)|*.asc;*.csv;*.shp</value>
   </data>
-  <data name="SEARCH_LABEL_BIOMASSDIVERSITY" xml:space="preserve">
+  <data name="HEADER_BIOMASS_DIVERSITY" xml:space="preserve">
     <value>Biomass diversity</value>
   </data>
-  <data name="SEARCH_LABEL_BOUNDARYWEIGHT" xml:space="preserve">
+  <data name="HEADER_BOUNDARYWEIGHT" xml:space="preserve">
     <value>Boundary weight</value>
   </data>
   <data name="Importance" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -2231,10 +2231,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_INDICATOR" xml:space="preserve">
     <value>Indicator</value>
   </data>
-  <data name="SEARCH_LABEL_AREA_CLOSED" xml:space="preserve">
+  <data name="HEADER_AREA_CLOSED" xml:space="preserve">
     <value>Area closed (%)</value>
   </data>
   <data name="SEARCH_LABEL_TOTAL_WEIGHTED" xml:space="preserve">
     <value>Total (weighted)</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
+    <value>Econ.</value>
   </data>
 </root>

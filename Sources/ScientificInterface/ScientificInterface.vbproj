@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -408,31 +408,31 @@
     <Compile Include="Ecosim\Output\SRplot.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\dlgSensitivityOfSStoV.Designer.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.Designer.vb">
       <DependentUpon>dlgSensitivityOfSStoV.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\dlgSensitivityOfSStoV.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\FitToTimeSeriesGrid.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeries.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\IterResultFVGrid.vb">
+    <Compile Include="Ecosim\Tools\Fishing policy search\gridFPSResultFleetValue.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\IterResultSOGrid.vb">
+    <Compile Include="Ecosim\Tools\Fishing policy search\gridFPSResultSystemObjectives.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\FishingPolicySearch.Designer.vb">
-      <DependentUpon>FishingPolicySearch.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.Designer.vb">
+      <DependentUpon>frmFishingPolicySearch.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\FishingPolicySearch.vb">
+    <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\FitToTimeSeries.Designer.vb">
-      <DependentUpon>FitToTimeSeries.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.Designer.vb">
+      <DependentUpon>frmFitToTimeSeries.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\FitToTimeSeries.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Search\gridSearchObjectivesFleet.vb">
@@ -441,28 +441,28 @@
     <Compile Include="Search\gridSearchObjectivesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\ParmBlockCodes.Designer.vb">
-      <DependentUpon>ParmBlockCodes.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\Shared\ucParmBlockCodes.Designer.vb">
+      <DependentUpon>ucParmBlockCodes.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\ParmBlockCodes.vb">
+    <Compile Include="Ecosim\Tools\Shared\ucParmBlockCodes.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\PolicyColorBlocks.Designer.vb">
-      <DependentUpon>PolicyColorBlocks.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.Designer.vb">
+      <DependentUpon>ucPolicyColorBlocks.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\PolicyColorBlocks.vb">
+    <Compile Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\ucAnomalySearchSketchPad.Designer.vb">
+    <Compile Include="Ecosim\Tools\Shared\ucAnomalySearchSketchPad.Designer.vb">
       <DependentUpon>ucAnomalySearchSketchPad.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\ucAnomalySearchSketchPad.vb">
+    <Compile Include="Ecosim\Tools\Shared\ucAnomalySearchSketchPad.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\ucVulnerabiltyBlocks.Designer.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\ucVulnerabiltyBlocks.Designer.vb">
       <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\ucVulnerabiltyBlocks.vb">
+    <Compile Include="Ecosim\Tools\Fit to time series\ucVulnerabiltyBlocks.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Search\gridSearchObjectivesWeight.vb">
@@ -1413,31 +1413,31 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\dlgSensitivityOfSStoV.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.resx">
       <SubType>Designer</SubType>
       <DependentUpon>dlgSensitivityOfSStoV.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\FishingPolicySearch.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>FishingPolicySearch.vb</DependentUpon>
+      <DependentUpon>frmFishingPolicySearch.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\FitToTimeSeries.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>FitToTimeSeries.vb</DependentUpon>
+      <DependentUpon>frmFitToTimeSeries.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\ParmBlockCodes.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Shared\ucParmBlockCodes.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>ParmBlockCodes.vb</DependentUpon>
+      <DependentUpon>ucParmBlockCodes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\PolicyColorBlocks.resx">
-      <DependentUpon>PolicyColorBlocks.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Tools\Fishing policy search\ucPolicyColorBlocks.resx">
+      <DependentUpon>ucPolicyColorBlocks.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\ucAnomalySearchSketchPad.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Shared\ucAnomalySearchSketchPad.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ucAnomalySearchSketchPad.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\ucVulnerabiltyBlocks.resx">
+    <EmbeddedResource Include="Ecosim\Tools\Fit to time series\ucVulnerabiltyBlocks.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ucVulnerabiltyBlocks.vb</DependentUpon>
     </EmbeddedResource>

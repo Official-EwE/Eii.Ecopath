@@ -1558,24 +1558,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecol..
-        '''</summary>
-        Friend ReadOnly Property FPS_ITER_RESULT_SO_ECOL() As String
-            Get
-                Return ResourceManager.GetString("FPS_ITER_RESULT_SO_ECOL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Econ..
-        '''</summary>
-        Friend ReadOnly Property FPS_ITER_RESULT_SO_ECON() As String
-            Get
-                Return ResourceManager.GetString("FPS_ITER_RESULT_SO_ECON", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Ecopath with Ecosim 6.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION() As String
@@ -1720,15 +1702,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Profit.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_PROFIT() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_PROFIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Remove.
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_REMOVE() As String
@@ -1738,7 +1711,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Save.
+        '''  Looks up a localized string similar to Save.
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_SAVE() As String
             Get
@@ -2394,6 +2367,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Area closed (%).
+        '''</summary>
+        Friend ReadOnly Property HEADER_AREA_CLOSED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_AREA_CLOSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Assimilation ({0}/{1}).
         '''</summary>
         Friend ReadOnly Property HEADER_ASSIMILATION_UNIT() As String
@@ -2475,6 +2457,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass diversity.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_DIVERSITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_DIVERSITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Divers..
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_DIVERSITY_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_DIVERSITY_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass limit.
         '''</summary>
         Friend ReadOnly Property HEADER_BIOMASS_LIMIT() As String
@@ -2525,6 +2525,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_BIOMASSSTART() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASSSTART", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Boundary weight.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BOUNDARYWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BOUNDARYWEIGHT", resourceCulture)
             End Get
         End Property
         
@@ -2700,6 +2709,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecosystem structure.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOSYSTEM_STRUCTURE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSYSTEM_STRUCTURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosys..
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOSYSTEM_STRUCTURE_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSYSTEM_STRUCTURE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecotrophic efficiency.
         '''</summary>
         Friend ReadOnly Property HEADER_EE() As String
@@ -2795,6 +2822,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_ENVIRONMENT() As String
             Get
                 Return ResourceManager.GetString("HEADER_ENVIRONMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Existence value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_EXISTENCE_VALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EXISTENCE_VALUE", resourceCulture)
             End Get
         End Property
         
@@ -3078,6 +3114,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Mandated rel. biom.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MANDATED_BIOMASS_RELATIVE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MANDATED_BIOMASS_RELATIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mandated rebuilding.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MANDATED_REBUILDING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MANDATED_REBUILDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max effort.
         '''</summary>
         Friend ReadOnly Property HEADER_MAXEFFORT() As String
@@ -3137,6 +3191,24 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_NAME() As String
             Get
                 Return ResourceManager.GetString("HEADER_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Net economic value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NET_ECONOMIC_VALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NET_ECONOMIC_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Econ..
+        '''</summary>
+        Friend ReadOnly Property HEADER_NET_ECONOMIC_VALUE_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NET_ECONOMIC_VALUE_ABBR", resourceCulture)
             End Get
         End Property
         
@@ -3339,6 +3411,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Profit.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PROFIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROFIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Profit (%).
         '''</summary>
         Friend ReadOnly Property HEADER_PROFIT_PERC() As String
@@ -3515,6 +3596,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_SOCIAL() As String
             Get
                 Return ResourceManager.GetString("HEADER_SOCIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Social value (employment).
+        '''</summary>
+        Friend ReadOnly Property HEADER_SOCIAL_VALUE_EMPLOYMENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SOCIAL_VALUE_EMPLOYMENT", resourceCulture)
             End Get
         End Property
         
@@ -3740,6 +3830,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value component.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VALUE_COMPONENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE_COMPONENT", resourceCulture)
             End Get
         End Property
         
@@ -4560,101 +4659,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Area closed (%).
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_AREA_CLOSED() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_AREA_CLOSED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biomass diversity.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_BIOMASSDIVERSITY() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_BIOMASSDIVERSITY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Boundary weight.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_BOUNDARYWEIGHT() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_BOUNDARYWEIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecosystem structure.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_ECOSYSTEM_STRUCTURE() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_ECOSYSTEM_STRUCTURE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Existence value.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_EXISTENCE_VALUE() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_EXISTENCE_VALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mandated rebuilding.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_MANDATED_REBUILDING() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_MANDATED_REBUILDING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mandated rel. biom.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_MANDATEDRELBIOMASS() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_MANDATEDRELBIOMASS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Net economic value.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_NETECONOMICVALUE() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_NETECONOMICVALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Social value (employment).
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_SOCIAL_VALUE() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_SOCIAL_VALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Total (weighted).
         '''</summary>
         Friend ReadOnly Property SEARCH_LABEL_TOTAL_WEIGHTED() As String
             Get
                 Return ResourceManager.GetString("SEARCH_LABEL_TOTAL_WEIGHTED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Value component.
-        '''</summary>
-        Friend ReadOnly Property SEARCH_LABEL_VALUE_COMPONENT() As String
-            Get
-                Return ResourceManager.GetString("SEARCH_LABEL_VALUE_COMPONENT", resourceCulture)
             End Get
         End Property
         
