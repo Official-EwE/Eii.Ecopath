@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.2  2008/11/19 18:03:08  joeb
+' Update calls to RunModelValue to use new signature
+'
 ' Revision 1.1  2008/09/26 07:30:25  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -366,7 +369,7 @@ Namespace FitToTimeSeries
 
             Dim Vo As Single
             Dim Ssen() As Single
-            Dim tmpval, tempEmp, timeMan, tempEco As Double
+            'Dim tmpval, tempEmp, timeMan, tempEco As Double
             Dim Smax As Single, SSBase As Single, sss As Single
 
             Dim esData As cEcosimDatastructures = m_core.m_EcoSimData
@@ -387,7 +390,7 @@ Namespace FitToTimeSeries
 
                 Me.m_runstartedHandler(Me.m_runType, esData.Narena)
 
-                ecosim.RunModelValue(esData.NumYears, tmpval, tempEmp, timeMan, tempEco, Nothing, 0)
+                ecosim.RunModelValue(esData.NumYears, Nothing, 0)
                 SSBase = esData.SS
 
                 senResults.BaseSS = SSBase
@@ -399,7 +402,7 @@ Namespace FitToTimeSeries
                     Vo = esData.VulMult(i, j)
 
                     esData.VulMult(i, j) = esData.VulMult(i, j) * VUL_MULT
-                    ecosim.RunModelValue(esData.NumYears, tmpval, tempEmp, timeMan, tempEco, Nothing, 0)
+                    ecosim.RunModelValue(esData.NumYears, Nothing, 0)
 
                     sss = Math.Abs(esData.SS - SSBase)
                     Ssen(ii) = sss
@@ -456,7 +459,6 @@ Namespace FitToTimeSeries
             Dim results As cF2TSResults = Nothing
             Dim nSteps As Integer = 1 + 24
 
-            Dim tmpval, tempEmp, timeMan, tempEco As Double
             Dim Smax As Single, SSBase As Single, sss As Single
             Dim ipred As Integer, iprey As Integer
 
@@ -489,7 +491,7 @@ Namespace FitToTimeSeries
 
                 initEcosimForSearchIteration()
 
-                ecosim.RunModelValue(esData.NumYears, tmpval, tempEmp, timeMan, tempEco, Nothing, 0)
+                ecosim.RunModelValue(esData.NumYears, Nothing, 0)
                 SSBase = esData.SS
                 senResults.BaseSS = esData.SS
                 senResults.iPrey = 0 'prey index not used it is all the prey for a given pred
@@ -502,7 +504,7 @@ Namespace FitToTimeSeries
                             If epData.DC(ipred, iprey) > 0 Then esData.VulMult(iprey, ipred) = esData.VulMult(iprey, ipred) * VUL_MULT
                         Next
 
-                        ecosim.RunModelValue(esData.NumYears, tmpval, tempEmp, timeMan, tempEco, Nothing, 0)
+                        ecosim.RunModelValue(esData.NumYears, Nothing, 0)
                         sss = Math.Abs(esData.SS - SSBase)
                         If sss > Smax Then Smax = sss 'the max sensitivity
 
@@ -795,8 +797,7 @@ Namespace FitToTimeSeries
                 SetVblock(m_esdata)
 
                 'get Base SS from ecosim 
-                Dim tv, emp, manval, eocval As Double
-                m_ecosim.RunModelValue(TotalTime, tv, emp, manval, eocval, Nothing, 0)
+                m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
                 'set the baseSS in the results object that was calculated above by ecosim
                 DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
@@ -1286,11 +1287,10 @@ Namespace FitToTimeSeries
             '  SS = 0: For i = 1 To 3: SS = SS + er(i) * er(i): Next
             '  Nobs = 3
 
-            Dim tmptotval, tmpEmp, tmpman, tmpecoval As Double
             '******set model parameters from current P estimation vector
             '**** put model to predict yhat's, er's, and add up SS here
             SetParsFromP(P)
-            m_ecosim.RunModelValue(TotalTime, tmptotval, tmpEmp, tmpman, tmpecoval, Nothing, 0)
+            m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
             Ss = m_esdata.SS
 
