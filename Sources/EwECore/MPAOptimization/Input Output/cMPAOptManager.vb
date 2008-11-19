@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.14  2008/11/19 23:28:55  joeb
+' Renamed onEcoSeedRunStateChanged to OnRunStateChanged
+'
 ' Revision 1.13  2008/11/18 19:39:57  joeb
 ' MPA Optm. Baseyear economic values set at the start of a search
 '
@@ -269,7 +272,7 @@ Public Class cMPAOptManager
     End Sub
 
 
-    Private Sub OnEcoSeedRunStateChanged(ByVal RunState As eRunStates)
+    Private Sub OnRunStateChanged(ByVal RunState As eRunStates)
 
         Try
 
@@ -346,7 +349,7 @@ Public Class cMPAOptManager
 
         Try
 
-            m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnEcoSeedRunStateChanged, AddressOf Me.OnSendMessage)
+            m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
             If Me.isRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage("Optimization is already running. Only one evaluation can be run at a time.", eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
