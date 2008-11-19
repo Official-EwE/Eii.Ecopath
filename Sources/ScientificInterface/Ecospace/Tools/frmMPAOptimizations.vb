@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.25  2008/11/19 18:53:56  jeroens
+' All grid outputs are there
+'
 ' Revision 1.24  2008/11/19 14:39:38  jeroens
 ' Resources!
 ' Fixed seed cell rendering order screw-up
@@ -895,22 +898,17 @@ Namespace Ecospace
 
                     End Try
 
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                        output.MandatedValue, output.EcologicalValue, output.BiomassDiversityValue, _
-                        0, output.TotalValue, output.PercentageClosed)
-
                 Case eMPAOptimizationModels.RandomSearch
 
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
-                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
+            End Select
+
+            Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
                                         output.MandatedValue, output.EcologicalValue, _
                                         output.BiomassDiversityValue, output.AreaBoundaryValue, _
                                         output.TotalValue, output.PercentageClosed)
-
-            End Select
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1175,8 +1173,9 @@ Namespace Ecospace
             Me.m_zghProgress.RescaleAndRedraw()
 
             Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
-                        sMandatedValue, sEcologicalValue, sBiomassDiversityValue, _
-                        0, sTotalValue, sAreaPercentageClosed)
+                                        sMandatedValue, sEcologicalValue, _
+                                        sBiomassDiversityValue, sBoundaryWeightValue, _
+                                        sTotalValue, sAreaPercentageClosed)
 
             If (Me.m_cmbAreaClosed.FindStringExact(strPerc) = -1) Then
                 Me.m_cmbAreaClosed.Items.Add(strPerc)
