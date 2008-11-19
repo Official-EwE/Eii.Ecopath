@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.24  2008/11/19 14:39:38  jeroens
+' Resources!
+' Fixed seed cell rendering order screw-up
+'
 ' Revision 1.23  2008/11/18 15:44:31  jeroens
 ' Removed base year, disc factor over-exposure
 '
@@ -162,6 +166,7 @@ Namespace Ecospace
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
         Private m_alayerFeedback() As cLayer = Nothing
+        Private m_layerSeed As cLayer = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
         Private m_aiFeedback As Integer(,) = Nothing
 
@@ -595,17 +600,17 @@ Namespace Ecospace
             Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
 
             Me.m_lptsProgress(0) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_NETECONOMICVALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(1) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(2) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(3) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(4) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
             Me.m_lptsProgress(5) = New ResultPoints()
-            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT, Me.m_lptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_lptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_zghProgress.AutoscalePane = True
 
@@ -631,22 +636,22 @@ Namespace Ecospace
 
 
             Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_NETECONOMICVALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(2) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_SOCIAL_VALUE, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(3) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(4) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(5) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(6) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT, Me.m_lptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BOUNDARYWEIGHT, Me.m_lptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(0) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_lptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
@@ -815,7 +820,7 @@ Namespace Ecospace
             Me.m_ucZoom.Map.Clear()
 
             Me.AddBaseLayers(eVarNameFlags.LayerMPA)
-            Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)
+            Me.m_layerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)(0)
             Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
@@ -1049,22 +1054,27 @@ Namespace Ecospace
                         ' Get group
                         strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
 
-                        ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
-                        For iLayer As Integer = 0 To alayers.Length - 1
-                            l = alayers(iLayer)
-                            l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup)
-                        Next
-                        lRunStateLayers.AddRange(alayers)
+                        ' DO NOT CHANGE THE ORDER OF LAYERS HERE TO ENSURE THAT THE 
+                        ' SEED PROGRESS INDICATORS SHOW UP ON TOP OF THE RUNNING SEED CELLS,
+                        ' AND THAT THE BEST CELL SHOWS UP ON THE CURRENT CELL
 
                         ' Create best cell layer
                         alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup)
+                            Me.AddLayer(l, strGroup, Me.m_layerSeed)
                         Next
+                        lRunStateLayers.AddRange(alayers)
+
+                        ' Create current cell layer(s)
+                        alayers = cLayerFactory.GetLayers(Me.m_core, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
+                        For iLayer As Integer = 0 To alayers.Length - 1
+                            l = alayers(iLayer)
+                            l.Editor.IsReadOnly = True
+                            Me.AddLayer(l, strGroup, Me.m_layerSeed)
+                        Next
+
                         lRunStateLayers.AddRange(alayers)
 
                     Case eMPAOptimizationModels.RandomSearch
