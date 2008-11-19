@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.5  2008/11/19 14:35:09  jeroens
+' Fixed seed cell colour screw-up
+'
 ' Revision 1.4  2008/11/18 03:35:59  jeroens
 ' Fixed exception on best cell layer creation
 '
@@ -239,7 +242,7 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPASeed
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.FromArgb(255, 0, 128, 255)
+                    vs.ForeColour = Color.CornflowerBlue
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
@@ -253,7 +256,7 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPASeedCurrent
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.FromArgb(255, 100, 230, 10)
+                    vs.ForeColour = Color.LightGreen
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
@@ -268,7 +271,8 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPASeedBest
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.Black
+                    vs.ForeColour = Color.DarkGreen
+                    vs.BackColour = Color.Transparent
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
