@@ -940,7 +940,7 @@ Public Class cSearchDatastructures
     ''' <param name="iRow"></param>
     ''' <param name="iCol"></param>
     ''' <remarks>This is call from the multithreaded code in Ecospace by the worker threads so it is protected via a Semaphor</remarks>
-    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer, ByVal iYear As Integer) ', ByVal PastBaseYear As Boolean
+    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer, ByVal iYear As Integer, ByVal timestep As Single) ', ByVal PastBaseYear As Boolean
         'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
         Dim iFlt As Integer
         Dim Cloc As Single
@@ -953,7 +953,7 @@ Public Class cSearchDatastructures
 
             For iFlt = 1 To m_ecopathData.NumFleet
                 If m_ecopathData.Landing(iFlt, iGrp) + m_ecopathData.Discard(iFlt, iGrp) > 0 Then
-                    Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) / 12.0F
+                    Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) * timestep
 
                     'ValCatch() is summed across all time steps, but only after base year has been reached
                     If iYear > Me.BaseYear Then
