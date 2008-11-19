@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesGroup.vb,v $
+' Revision 1.2  2008/11/19 14:46:10  jeroens
+' Renamed a few resources
+'
 ' Revision 1.1  2008/11/12 21:37:32  jeroens
 ' Renamed, moved
 '
@@ -44,7 +47,7 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.SEARCH_LABEL_MANDATEDRELBIOMASS)
+            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_BIOMASS_RELATIVE)
             Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(My.Resources.HEADER_STRUCTURERELATIVEWEIGHT)
 
             'Me(0, iColumn) = New EwEColumnHeaderCell(My.Resources.FPS_GROUP_MAX_FM)

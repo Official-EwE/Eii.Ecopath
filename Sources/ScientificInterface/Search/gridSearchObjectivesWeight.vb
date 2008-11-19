@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.6  2008/11/19 14:46:10  jeroens
+' Renamed a few resources
+'
 ' Revision 1.5  2008/11/14 00:27:33  jeroens
 ' Fixed resource
 '
@@ -89,7 +92,7 @@ Namespace Ecosim
             ' == Add columns (for details refer to NumCols) ==
 
             ' Standard cols
-            Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.SEARCH_LABEL_VALUE_COMPONENT) : iCol += 1
+            Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE_COMPONENT) : iCol += 1
             ' Batch run specific cols
             If Me.m_bIsBatchRun Then
                 Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MINWEIGHT) : iCol += 1
@@ -110,7 +113,7 @@ Namespace Ecosim
             ' JS 12Nov08: this code does not account for Batch run columns yet
 
             ' Standard rows
-            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_NETECONOMICVALUE)
+            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE)
             Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSEconomicWeight)
             iRow += 1
 
@@ -120,30 +123,30 @@ Namespace Ecosim
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSPredictionVariance)
                 iRow += 1
 
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_EXISTENCE_VALUE)
+                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_EXISTENCE_VALUE)
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSExistenceValue)
                 iRow += 1
             Else
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_SOCIAL_VALUE)
+                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSSocialWeight)
                 iRow += 1
 
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_MANDATED_REBUILDING)
+                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_MANDATED_REBUILDING)
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSMandatedRebuildingWeight)
                 iRow += 1
 
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_ECOSYSTEM_STRUCTURE)
+                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE)
                 Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSEcoSystemWeight)
                 iRow += 1
             End If
 
-            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BIOMASSDIVERSITY)
+            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY)
             Me(iRow, 1) = New PropertyCell(source, eVarNameFlags.FPSBiomassDiversityWeight)
             iRow += 1
 
             If Me.m_bShowMPAOptParams Then
                 ' HACK
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.SEARCH_LABEL_BOUNDARYWEIGHT)
+                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BOUNDARYWEIGHT)
                 Me(iRow, 1) = New PropertyCell(Me.m_core.MPAOptimizationManager.MPAOptimizationParamters, eVarNameFlags.MPAOptBoundaryWeight)
                 iRow += 1
             Else
