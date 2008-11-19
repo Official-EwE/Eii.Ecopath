@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.13  2008/11/19 03:57:30  villyc
+' Random MPA: made sure all cells have a weighting attached (or they can't be selected, when wanting 100% coverage)
+'
 ' Revision 1.12  2008/11/18 23:11:31  joeb
 ' Removed some dead code
 '
@@ -912,16 +915,27 @@ Public Class cMPARandomSearch
                 If LayerSum(iL) = 0 Then LayerSum(iL) = 1 'just to avoid division with 0, if a layer is empty
             Next iL
 
-
+            Dim minCellWeight As Double = 1000000000000000
             For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
                 data = Me.m_SpaceData.ImportanceLayers(iL).Data
                 weight = Me.m_SpaceData.ImportanceLayers(iL).sWeight
                 For i As Integer = 1 To inRow
                     For j As Integer = 1 To inCol
                         CellWeight(i, j) += weight * data(i, j) / LayerSum(iL)
+                        If CellWeight(i, j) < minCellWeight And CellWeight(i, j) > 0 Then minCellWeight = CellWeight(i, j)
                     Next j
                 Next i
             Next iL
+
+            'now make sure all cells can be selected:
+            For i As Integer = 1 To inRow
+                For j As Integer = 1 To inCol
+                    If CellWeight(i, j) = 0 Then 'give it a value
+                        CellWeight(i, j) = 0.001 * minCellWeight
+                    End If
+                Next j
+            Next i
+
 
             'Now calculate cumulative weighted importance over all cells:
             iC = 0
