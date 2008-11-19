@@ -66,6 +66,7 @@ Namespace Ecosim
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.FixedColumns = 1
+            Me.FixedColumnWidths = False
         End Sub
 
     End Class

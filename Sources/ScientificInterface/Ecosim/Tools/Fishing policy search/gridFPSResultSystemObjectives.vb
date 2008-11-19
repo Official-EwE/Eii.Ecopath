@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFPSResultSystemObjectives.vb,v $
+' Revision 1.2  2008/11/19 19:21:34  jeroens
+' Fixed crash
+'
 ' Revision 1.1  2008/11/19 14:40:35  jeroens
 ' Moved and renamed
 '
@@ -48,7 +51,7 @@ Namespace Ecosim
             MyBase.InitStyle()
 
             ' Add dynamic cols manually
-            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length - 1)
+            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Iteration) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMCALLS)
             Me(0, eColumnTypes.Total) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTAL)
@@ -117,6 +120,7 @@ Namespace Ecosim
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
             Me.FixedColumns = 1
+            Me.FixedColumnWidths = False
         End Sub
 
     End Class
