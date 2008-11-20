@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.13  2008/11/20 18:42:16  jeroens
+' CoreController uses cCoreStateManager
+'
 ' Revision 1.12  2008/11/10 22:12:25  jeroens
 ' no message
 '
@@ -792,7 +795,7 @@ Public Class AppLauncher
         Me.LoadPlugins()
 
         ' Initialize core controller
-        Me.m_coreController = New EwECoreController(Me.m_core, AppLauncher.GetInstance())
+        Me.m_coreController = New EwECoreController(Me.m_core.StateMonitor, Me.m_core.StateManager)
         ' Initialize style guide updated
         Me.m_sgu = New StyleGuideUpdater(m_core, StyleGuide.GetInstance())
 
