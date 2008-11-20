@@ -12,12 +12,29 @@ Public Class cCoreStateManager
     End Sub
 
 
-    Public Sub LoadState(ByVal ExecutionState As EwEUtils.Core.eCoreExecutionState)
+    Public Function LoadState(ByVal ExecutionState As EwEUtils.Core.eCoreExecutionState) As Boolean
         Try
 
-        Catch ex As Exception
+            'Try to bring to core up to the requested execution state
+            Select Case ExecutionState
 
+                Case EwEUtils.Core.eCoreExecutionState.EcopathCompleted
+                    Return m_core.RunEcoPath()
+
+                    ' Case EwEUtils.Core.eCoreExecutionState.EcoSimInitialized
+                    'Return m_core.m_EcoSim.Init()
+
+                Case EwEUtils.Core.eCoreExecutionState.EcosimCompleted
+                    Return m_core.RunEcoSim()
+
+            End Select
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".LoadState(" & ExecutionState.ToString & ") Error: " & ex.Message)
+            Return False
         End Try
-    End Sub
+
+    End Function
 
 End Class
