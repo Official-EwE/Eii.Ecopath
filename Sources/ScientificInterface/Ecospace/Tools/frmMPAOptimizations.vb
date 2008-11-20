@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.27  2008/11/20 04:20:25  jeroens
+' Graphs figure out axis scaling automatically
+'
 ' Revision 1.26  2008/11/20 04:15:48  jeroens
 ' Fixed screw-up, sorry guys
 '
@@ -601,9 +604,10 @@ Namespace Ecospace
             Me.m_graphProgress.GraphPane.XAxis.Title.Text = "" ' Config with form mode
             Me.m_graphProgress.GraphPane.YAxis.Title.Text = "" ' Config with form mode
 
-            ' Only show major ticks
-            Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
-            Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
+            ' JS 19nov08: let graph figure out the ticks
+            '' Only show major ticks
+            'Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
+            'Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
 
             Me.m_lptsProgress(0) = New ResultPoints()
             Me.m_graphProgress.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
@@ -636,9 +640,10 @@ Namespace Ecospace
             Me.m_graphResults.GraphPane.XAxis.Title.Text = "" ' Config with form mode
             Me.m_graphResults.GraphPane.YAxis.Title.Text = "" ' Config with form mode
 
-            ' Only show major ticks
-            Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
-            Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
+            ' JS 19nov08: let graph figure out the ticks
+            '' Only show major ticks
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
 
 
             Me.m_lptsResults(1) = New ResultPoints()
