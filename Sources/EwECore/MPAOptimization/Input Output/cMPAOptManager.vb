@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.15  2008/11/20 04:23:39  jeroens
+' CellSelectMap accepts TopPercentile as Single
+'
 ' Revision 1.14  2008/11/19 23:28:55  joeb
 ' Renamed onEcoSeedRunStateChanged to OnRunStateChanged
 '
@@ -417,7 +420,7 @@ Public Class cMPAOptManager
     ''' <param name="NumberOfResults">Number of results in the top percentile</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CellSelectedMap(ByVal TopPercentile As Integer, ByVal PercentAreaClosedFilter As Integer, ByRef NumberOfResults As Integer) As Integer(,)
+    Public Function CellSelectedMap(ByVal TopPercentile As Single, ByVal PercentAreaClosedFilter As Integer, ByRef NumberOfResults As Integer) As Integer(,)
         Dim map(,) As Integer
         Dim nResults As Integer
         Dim obj As cObjectiveResult
@@ -432,7 +435,7 @@ Public Class cMPAOptManager
             TopPercentile = Math.Min(100, Math.Max(1, TopPercentile))
 
             'turn the TopPercentile into the number of results
-            nResults = CInt(Math.Ceiling(Me.m_MPASearch.nInterationsCompleted * TopPercentile \ 100))
+            nResults = CInt(Math.Ceiling(Me.m_MPASearch.nInterationsCompleted * TopPercentile / 100.0!))
 
             'bound nResults
             If nResults < 1 Then nResults = 1
