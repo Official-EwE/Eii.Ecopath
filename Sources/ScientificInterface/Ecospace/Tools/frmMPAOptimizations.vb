@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.26  2008/11/20 04:15:48  jeroens
+' Fixed screw-up, sorry guys
+'
 ' Revision 1.25  2008/11/19 18:53:56  jeroens
 ' All grid outputs are there
 '
@@ -898,17 +901,23 @@ Namespace Ecospace
 
                     End Try
 
+                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
+                                                output.MandatedValue, output.EcologicalValue, _
+                                                output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                                                output.TotalValue, output.PercentageClosed)
+
                 Case eMPAOptimizationModels.RandomSearch
 
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
+                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
+                                   output.MandatedValue, output.EcologicalValue, _
+                                   output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                                   output.TotalValue, output.PercentageClosed)
+
             End Select
 
-            Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                                        output.MandatedValue, output.EcologicalValue, _
-                                        output.BiomassDiversityValue, output.AreaBoundaryValue, _
-                                        output.TotalValue, output.PercentageClosed)
         End Sub
 
         ''' -------------------------------------------------------------------
