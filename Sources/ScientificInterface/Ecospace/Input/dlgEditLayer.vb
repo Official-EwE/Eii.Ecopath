@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.6  2008/11/20 15:18:29  jeroens
+' Layer ReadOnly state properly handled
+'
 ' Revision 1.5  2008/11/10 22:12:02  jeroens
 ' Uses import and export dialogs
 '
@@ -259,9 +262,15 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Private Sub UpdateControls()
-            'Dim bHasName As Boolean = Not String.IsNullOrEmpty(Me.txtName.Text)
-            'Me.OK_Button.Enabled = bHasName
-            'Me.Apply_Button.Enabled = bHasName
+
+            Dim bEditable As Boolean = True
+
+            If (Me.m_layerOriginal.Editor IsNot Nothing) Then
+                bEditable = (Me.m_layerOriginal.Editor.IsReadOnly = False)
+            End If
+
+            Me.m_btnDataImport.Enabled = bEditable
+
         End Sub
 
         Private Function ApplyChanges() As Boolean

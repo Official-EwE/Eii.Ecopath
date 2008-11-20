@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridLayerData.vb,v $
+' Revision 1.2  2008/11/20 15:18:29  jeroens
+' Layer ReadOnly state properly handled
+'
 ' Revision 1.1  2008/11/04 04:58:44  jeroens
 ' Renamed
 '
@@ -271,6 +274,10 @@ Public Class gridLayerData
 
         Me.FixedColumns = 1
 
+        If Me.m_layer.Editor IsNot Nothing Then
+            Me.Enabled = (Me.Layer.Editor.IsReadOnly() = False)
+        End If
+
     End Sub
 
     Protected Overrides Sub FillData()
@@ -354,6 +361,12 @@ Public Class gridLayerData
         Dim sOrg As Single = 0.0!
         Dim data As cEcospaceLayer = Nothing
         Dim bChanged As Boolean = False
+
+        If Me.m_layer.Editor IsNot Nothing Then
+            If (Me.m_layer.Editor.IsReadOnly() = True) Then
+                Return False
+            End If
+        End If
 
         If (layTarget Is Nothing) Then layTarget = Me.m_layer
         If (layTarget Is Nothing) Then Return False
