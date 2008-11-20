@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.30  2008/11/20 17:10:17  joeb
+' Added cCoreStateManager
+'
 ' Revision 1.29  2008/11/20 15:15:00  jeroens
 ' Ecospace acrtive scenario ID preserved when save fails
 '
@@ -174,27 +177,30 @@ Public Class cCore
     ''' Path for EwE core processes to write output information to.
     ''' </summary>
     Private m_strOutputPath As String = ""
-    Friend m_validators As cValidatorManager = Nothing
+    Friend m_validators As cValidatorManager
 
     ''' <summary>
     ''' Manage synchronization between models.
     ''' </summary>
-    Private m_SyncManager As cModelSyncManager = Nothing
-    Friend m_Stanza As cStanzaDatastructures = Nothing
+    Private m_SyncManager As cModelSyncManager
+    Friend m_Stanza As cStanzaDatastructures
 
     ''' <summary>Core state monitor</summary>
-    Private WithEvents m_StateMonitor As cCoreStateMonitor = Nothing
+    Private WithEvents m_StateMonitor As cCoreStateMonitor
+    ''' <summary>Core state manager</summary>
+    ''' <remarks>performs actions to bring core state up-to-date</remarks>
+    Private m_StateManager As cCoreStateManager
 
-    Friend m_TSData As cTimeSeriesDataStructures = Nothing
+
+    Friend m_TSData As cTimeSeriesDataStructures
     Private m_timeSeriesDatasets As New cCoreInputOutputList(Of cTimeSeriesDataset)(eDataTypes.TimeSeriesDataset, 1)
 
     Private m_timeSeriesGroup As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.GroupTimeSeries, 1)
     Private m_timeSeriesFleet As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.FleetTimeSeries, 1)
     Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures
 
-    Private m_MonteCarlo As cMonteCarloManager = Nothing
-    'Private m_FitToTimeSeries As cF2TSManager = Nothing
-    Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
+    Private m_MonteCarlo As cMonteCarloManager
+    Friend m_FitToTimeSeriesData As cF2TSDataStructures
 
     Friend m_tracerData As cContaminantTracerDataStructures
     Private m_ConTracer As cContaminantTracer
@@ -602,8 +608,9 @@ Public Class cCore
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
 
-        ' Create core state monitor
+        ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
+        Me.m_StateManager = New cCoreStateManager(Me)
 
         ' Create a semaphore object to protect EcoSim from running in multiple instances at the same time
         Me.m_EcoSimSemaphor = New System.Threading.Semaphore(1, 1, "EcoSim")
@@ -621,6 +628,19 @@ Public Class cCore
             Return Me.m_StateMonitor
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the <see cref="cCoreStateManager">state manager</see> that
+    ''' provides methods to bring the core execution state up-to-date.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property StateManager() As cCoreStateMonitor
+        Get
+            Return Me.m_StateMonitor
+        End Get
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
