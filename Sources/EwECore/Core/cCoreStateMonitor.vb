@@ -1,116 +1,14 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.3  2008/11/20 17:32:56  jeroens
+' Fixed Has**Initialized diagnostics
+'
 ' Revision 1.2  2008/11/20 17:30:54  jeroens
 ' Uses initialized core exec states
 '
 ' Revision 1.1  2008/09/26 07:30:12  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.34  2008/07/10 18:20:57  jeroens
-' Fixed forceupdate bug which caused unneccesary notifications
-'
-' Revision 1.33  2008/07/01 19:13:09  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.32.2.2  2008/07/01 18:36:25  sherman
-' Merged Fix_Ecopat_EcosimUpdate...
-'
-' Revision 1.32  2008/06/28 03:21:02  jeroens
-' State monitor maintains simple modifaction registry that allows the core to determine to what level Sim and Space need to be reinitialized
-'
-' Revision 1.31  2008/04/24 08:33:40  jeroens
-' Core execution state recalculated when data state changes, REGARDLESS whether data state changed!
-'
-' Revision 1.30  2008/03/04 23:59:47  jeroens
-' Core state monitor now handles run state updates; this is no longer handled by the core (who screwed up at it)
-'
-' Revision 1.29  2008/02/28 16:31:54  joeb
-' Fixed bug in HasEcospaceRan
-'
-' Revision 1.28  2008/02/28 16:23:36  jeroens
-' Fixed ecospace state config copy/paste bugs
-'
-' Revision 1.27  2008/02/27 17:02:04  jeroens
-' Fixed diagnosis bug of EcotracerLoaded state
-'
-' Revision 1.26  2008/02/22 15:13:43  jeroens
-' no message
-'
-' Revision 1.24  2008/01/29 15:55:49  jeroens
-' Made CLS compliant
-'
-' Revision 1.23  2008/01/06 17:01:21  jeroens
-' * Fixed bug 371
-'
-' Revision 1.22  2007/12/09 22:11:45  jeroens
-' + Added new data entity Datasource for storing generic data
-'
-' Revision 1.21  2007/12/05 03:34:39  jeroens
-' + Added ecotracer support
-'
-' Revision 1.20  2007/09/04 01:24:04  jeroens
-' * Core state monitor suppressed data change notifications while core is under a batch lock
-'
-' Revision 1.19  2007/08/27 17:37:38  jeroens
-' + Added ability to force updates on DataState changes
-'
-' Revision 1.18  2007/06/03 15:27:39  jeroens
-' + Added Ecopath, Ecosim and Ecospace state change events
-'
-' Revision 1.17  2007/06/03 02:39:10  jeroens
-' + Added Is**Running diagnostics
-'
-' Revision 1.16  2007/05/30 16:39:15  jeroens
-' + Added option to force update events to be broadcasted
-'
-' Revision 1.15  2007/03/21 16:26:24  jeroens
-' * Fixed state change detection bug in CalcCoreExecutionState
-' + Only unloading a model/scenario will void higher states
-'
-' Revision 1.14  2007/03/15 14:10:54  jeroens
-' * Moved eCoreExecutionsState to EwEUtils
-'
-' Revision 1.13  2007/03/08 17:02:37  jeroens
-' - Removed discontinued data state config methods
-' * Simplified CalcExecutionState to prevent Ecosim state does not aversely affect Ecospace state
-'
-' Revision 1.12  2007/03/07 18:24:16  jeroens
-' * Data changed state obtained from Datasource
-' * Ecopath can load when Ecosim loaded; Ecosim does no longer need to run first
-'
-' Revision 1.11  2007/01/30 16:59:29  jeroens
-' * Fixed XML comment warning
-'
-' Revision 1.10  2007/01/25 16:28:41  jeroens
-' + EcospaceLoaded state set correctly
-'
-' Revision 1.9  2007/01/25 15:38:33  jeroens
-' + Properly named core monitor states
-'
-' Revision 1.8  2007/01/14 21:10:38  jeroens
-' no message
-'
-' Revision 1.7  2007/01/12 14:51:58  jeroens
-' + Added Ecospace support
-'
-' Revision 1.6  2006/10/10 15:20:09  jeroens
-' * xxxLoaded states properly clear data changed states
-'
-' Revision 1.5  2006/10/06 15:55:42  jeroens
-' + Added VoidExecutionState
-'
-' Revision 1.4  2006/09/27 23:38:06  jeroens
-' * Fixed bug in SetEcopathModified
-'
-' Revision 1.3  2006/09/14 02:29:56  jeroens
-' + Fixed data state update bug
-'
-' Revision 1.2  2006/09/10 12:57:07  jeroens
-' + Added usage code example
-'
-' Revision 1.1  2006/09/10 03:03:55  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -649,7 +547,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function HasEcopathInitialized() As Boolean
-        Return Me.m_iEcopathState = eCoreExecutionState.EcopathInitialized
+        Return Me.m_iEcopathState >= eCoreExecutionState.EcopathInitialized
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -685,7 +583,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function HasEcosimInitialized() As Boolean
-        Return Me.m_iEcosimState = eCoreExecutionState.EcosimInitialized
+        Return Me.m_iEcosimState >= eCoreExecutionState.EcosimInitialized
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -721,7 +619,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function HasEcospaceInitialized() As Boolean
-        Return Me.m_iEcospaceState = eCoreExecutionState.EcospaceInitialized
+        Return Me.m_iEcospaceState >= eCoreExecutionState.EcospaceInitialized
     End Function
 
     ''' -----------------------------------------------------------------------
