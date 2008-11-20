@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.8  2008/11/20 15:21:04  jeroens
+' Ecospace outputs properly respond to core state
+'
 ' Revision 1.7  2008/11/19 14:42:55  jeroens
 ' Moved and renamed sim tools
 '
@@ -152,9 +155,11 @@ Public Class NavigationPanel
         m_nodeController.Add("ndAssignHabitats", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridAssignHabits), "Assign habitats.htm")
         m_nodeController.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridFishery), "Ecospace Fishery.htm")
         m_nodeController.Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceScenarioDlg)) ' ToDo: connect to help
-        m_nodeController.Add("ndEcospaceResults", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceResults), "") ' ToDo: connect to help
         m_nodeController.Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
         m_nodeController.Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")
+
+        ' Ecospace output
+        m_nodeController.Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.cFormEcospaceResults), "") ' ToDo: connect to help
 
         ' ToDo_JS: Link to yet-to-be-written help text
         m_nodeController.Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help
