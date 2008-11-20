@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.13  2008/11/20 17:17:18  jeroens
+' Added Initialized core exec states
+'
 ' Revision 1.12  2008/11/13 19:01:17  joeb
 ' Addeed MPAOptAreaBoundary
 '
@@ -55,12 +58,16 @@ Namespace Core
         Idle
         ''' <summary>Ecopath model data has been loaded.</summary>
         EcopathLoaded
-        ''' <summary>Ecopath model is running.</summary>
+        ''' <summary>Ecopath model data has been initialized.</summary>
+        EcopathInitialized = EcopathLoaded
+        ''' <summary>Ecopath scenario is ready to run.</summary>
         EcopathRunning
         ''' <summary>Ecopath model run is completed.</summary>
         EcopathCompleted
         ''' <summary>Ecosim scenario data has been loaded.</summary>
         EcosimLoaded
+        ''' <summary>Ecosim scenario has been initialized.</summary>
+        EcosimInitialized
         ''' <summary>Ecotracer scenario data has been loaded.</summary>
         EcotracerLoaded
         ''' <summary>Ecosim scenario is running.</summary>
@@ -69,6 +76,8 @@ Namespace Core
         EcosimCompleted
         ''' <summary>Ecospace scenario data has been loaded.</summary>
         EcospaceLoaded
+        ''' <summary>Ecospace scenario has been initialized.</summary>
+        EcospaceInitialized = EcospaceLoaded
         ''' <summary>Ecospace scenario is running.</summary>
         EcospaceRunning
         ''' <summary>Ecospace scenario run is completed.</summary>
