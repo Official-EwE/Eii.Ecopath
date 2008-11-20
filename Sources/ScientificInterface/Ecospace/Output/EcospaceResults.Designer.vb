@@ -1,7 +1,7 @@
 Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class EcospaceResults
+    Partial Class cFormEcospaceResults
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -21,7 +21,7 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcospaceResults))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cFormEcospaceResults))
             Me.plResultsGrid = New System.Windows.Forms.Panel
             Me.gpbOption = New System.Windows.Forms.GroupBox
             Me.cbRegions = New System.Windows.Forms.ComboBox

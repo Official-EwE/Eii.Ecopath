@@ -10,7 +10,7 @@ Imports EwECore
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class EcospaceResultsGridRegion
+    Public Class cGridEcospaceResultsRegion
         : Inherits gridResultsBase
 
         Private m_SelRegionIndex As Integer

@@ -11,7 +11,7 @@ Imports SourceGrid2.Cells.Real
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class EcospaceResultsGridGroup
+    Public Class cGridEcospaceResultsGroup
         : Inherits gridResultsBase
 
         Private m_SelFleetIndex As Integer

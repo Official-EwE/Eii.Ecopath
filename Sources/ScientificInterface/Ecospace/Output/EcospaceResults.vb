@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.2  2008/11/20 15:19:24  jeroens
+' Renamed classes
+'
 ' Revision 1.1  2008/09/26 07:32:01  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -20,15 +23,15 @@ Imports EwECore
 
 Namespace Ecospace
 
-    Public Class EcospaceResults
+    Public Class cFormEcospaceResults
 
         ' The core reference
-        Private m_Core As cCore
+        Private m_Core As cCore = Nothing
 
         ' Results grid
-        Private m_GridGear As EcospaceResultsGridGear
-        Private m_GridGroup As EcospaceResultsGridGroup
-        Private m_GridRegion As EcospaceResultsGridRegion
+        Private m_GridGear As cGridEcospaceResultsGear = Nothing
+        Private m_GridGroup As cGridEcospaceResultsGroup = Nothing
+        Private m_GridRegion As cGridEcospaceResultsRegion = Nothing
 
         Public Sub New()
 
@@ -40,9 +43,9 @@ Namespace Ecospace
             m_Core = cCore.GetInstance()
 
             'Initialize the results grid
-            m_GridGear = New EcospaceResultsGridGear
-            m_GridGroup = New EcospaceResultsGridGroup
-            m_GridRegion = New EcospaceResultsGridRegion
+            m_GridGear = New cGridEcospaceResultsGear
+            m_GridGroup = New cGridEcospaceResultsGroup
+            m_GridRegion = New cGridEcospaceResultsRegion
 
             ' Add the result grids. 
             plResultsGrid.Controls.Add(m_GridGear)
@@ -52,14 +55,16 @@ Namespace Ecospace
         End Sub
 
         Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-            PopulateVariables()
-
+            PopulateResults()
+            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
         End Sub
 
+        Private Sub frmEcospaceResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+            Me.MessageSources = Nothing
+        End Sub
 
         ''' <summary> Repopulates the variables on demand. </summary>
-        Private Sub PopulateVariables()
+        Private Sub PopulateResults()
             rbGear.Checked = True
 
             txbBegin.Text = CStr(m_Core.EcospaceModelParameters.StartSummaryTime)

@@ -11,7 +11,7 @@ Imports SourceGrid2.Cells.Real
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class EcospaceResultsGridGear
+    Public Class cGridEcospaceResultsGear
         : Inherits gridResultsBase
 
         Protected Overrides Sub InitStyle()
