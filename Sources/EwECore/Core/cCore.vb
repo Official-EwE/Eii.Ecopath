@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.31  2008/11/20 17:13:38  joeb
+' More cCoreStateManager stuff
+'
 ' Revision 1.30  2008/11/20 17:10:17  joeb
 ' Added cCoreStateManager
 '
@@ -635,9 +638,9 @@ Public Class cCore
     ''' provides methods to bring the core execution state up-to-date.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property StateManager() As cCoreStateMonitor
+    Public ReadOnly Property StateManager() As cCoreStateManager
         Get
-            Return Me.m_StateMonitor
+            Return Me.m_StateManager
         End Get
     End Property
 
