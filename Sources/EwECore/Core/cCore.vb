@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.32  2008/11/20 17:45:40  joeb
+' Moved updateDietComp from SyncManager to StateManager
+'
 ' Revision 1.31  2008/11/20 17:13:38  joeb
 ' More cCoreStateManager stuff
 '
@@ -9718,7 +9721,7 @@ Public Class cCore
                     Case eVarNameFlags.DietComp
                         'DietComp has been changed by the user
                         'this needs to update the Ecosim dietcomp and refresh the shape functions AppliesTo datastructures 
-                        Me.m_SyncManager.DietComp()
+                        Me.m_StateManager.updateDietComp()
                         ' Sync the ecosim groups
                         LoadEcosimGroups()
 
