@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.29  2008/11/20 15:30:42  jeroens
+' Fixed result graph and grid sync
+'
 ' Revision 1.28  2008/11/20 04:23:58  jeroens
 ' TopPercentile made Single
 '
@@ -105,6 +108,7 @@ Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
+Imports System.Collections.Generic
 
 #End Region ' Import
 
@@ -1204,6 +1208,28 @@ Namespace Ecospace
 
 #Region " Results "
 
+        Private Class cObjectiveResultComparer
+            Implements IComparer(Of cObjectiveResult)
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Sorts objective results in DESCENDING order!
+            ''' </summary>
+            ''' <param name="x"></param>
+            ''' <param name="y"></param>
+            ''' <returns></returns>
+            ''' ---------------------------------------------------------------
+            Public Function Compare(ByVal x As EwECore.cObjectiveResult, _
+                                    ByVal y As EwECore.cObjectiveResult) As Integer _
+                                    Implements IComparer(Of EwECore.cObjectiveResult).Compare
+                ' DESCENDING ORDER! < 1, = 0, > -1 (instead of customary ascending order < -1, = 0, > 1)
+                If x.objFuncTotal > y.objFuncTotal Then Return -1
+                If x.objFuncTotal < y.objFuncTotal Then Return 1
+                Return 0
+            End Function
+
+        End Class
+
         Private Sub UpdateResultsGraph()
 
             Dim lResults As List(Of cObjectiveResult) = Nothing
@@ -1216,7 +1242,7 @@ Namespace Ecospace
                     ' Get results, filtered by selected percentage area closed
                     lResults = Me.FilteredResults(Me.m_manager.Results, Me.SelectedClosedPercentage)
                     ' Sort the results
-                    lResults.Sort()
+                    lResults.Sort(New cObjectiveResultComparer())
                     ' Only show top percentile
                     If lResults.Count > 0 Then
                         ' Strip off anything past top x %
@@ -1306,6 +1332,9 @@ Namespace Ecospace
                     lOut.Add(lIn(iResult))
                 End If
             Next
+
+            lOut.Sort(New cObjectiveResultComparer)
+
             Return lOut
         End Function
 
@@ -1498,13 +1527,13 @@ Namespace Ecospace
                 Next iCol
             Next iRow
 
+            ' Need to bail out?
+            If (lKeys.Count = 0) Then Return True
+
             ' Calculate #cells to close
             iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
             ' Cap to the max amount of available #water cells
             iNumCellsToClose = Math.Min(iNumCellsToClose, iNumConvertableCells)
-
-            ' Need to bail out?
-            If (lKeys.Count = 0) Then Return True
 
             ' Sort keys in reverse order (highest hit count value first)
             lKeys.Sort()

@@ -579,7 +579,7 @@ Namespace Ecospace
             '
             Me.m_nudBestPercentile.Location = New System.Drawing.Point(235, 6)
             Me.m_nudBestPercentile.Name = "m_nudBestPercentile"
-            Me.m_nudBestPercentile.Size = New System.Drawing.Size(51, 20)
+            Me.m_nudBestPercentile.Size = New System.Drawing.Size(65, 20)
             Me.m_nudBestPercentile.TabIndex = 3
             Me.m_nudBestPercentile.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
