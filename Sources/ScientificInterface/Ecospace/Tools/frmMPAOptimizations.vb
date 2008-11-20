@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.28  2008/11/20 04:23:58  jeroens
+' TopPercentile made Single
+'
 ' Revision 1.27  2008/11/20 04:20:25  jeroens
 ' Graphs figure out axis scaling automatically
 '
@@ -277,7 +280,7 @@ Namespace Ecospace
             Me.m_fpMaxArea = New cPropertyFormatProvider(Me.m_nudMaxArea, MPAOpt, eVarNameFlags.MPAOptMaxArea)
             Me.m_fpStepSize = New cPropertyFormatProvider(Me.m_nudStep, MPAOpt, eVarNameFlags.MPAOptStepSize)
             Me.m_fpIterations = New cPropertyFormatProvider(Me.m_nudIterations, MPAOpt, eVarNameFlags.MPAOptIterations)
-            Me.m_fpBestPercentile = New cEwEFormatProvider(Me.m_nudBestPercentile, GetType(Integer))
+            Me.m_fpBestPercentile = New cEwEFormatProvider(Me.m_nudBestPercentile, GetType(Single))
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
@@ -749,8 +752,8 @@ Namespace Ecospace
             Return CInt(Val(Me.m_cmbAreaClosed.Text))
         End Function
 
-        Private Function SelectedBestPercentile() As Integer
-            Return CInt(Me.m_nudBestPercentile.Value)
+        Private Function SelectedBestPercentile() As Single
+            Return CSng(Me.m_nudBestPercentile.Value)
         End Function
 
         Private Function SelectedMPA() As Integer
