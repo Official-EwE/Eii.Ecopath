@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.2  2008/11/20 17:30:54  jeroens
+' Uses initialized core exec states
+'
 ' Revision 1.1  2008/09/26 07:30:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -382,6 +385,8 @@ Public Class cCoreStateMonitor
 
 #Region " State configuration "
 
+#Region " Ecopath "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' State change entry point; to be called when an Ecopath model is loaded
@@ -402,6 +407,21 @@ Public Class cCoreStateMonitor
         Else
             Me.CalcExecutionState(eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, bForceUpdate)
         End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' State change entry point; to be called when an Ecopath model is initialized.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetEcopathInitialized()
+        ' Check for invalid state transitions
+        If (Me.m_iEcopathState = eCoreExecutionState.Idle) Then Return
+        ' Update execution state
+        Me.CalcExecutionState(eCoreExecutionState.EcopathInitialized, _
+            DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
+            DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+            DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -435,6 +455,10 @@ Public Class cCoreStateMonitor
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
+#End Region ' Ecopath
+
+#Region " Ecosim "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' State change entry point; to be called when an Ecosim scenario is loaded
@@ -456,6 +480,21 @@ Public Class cCoreStateMonitor
         End If
         ' Clear scenario changed flags
         Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, False, False, Me.m_bEcotracerModified)
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' State change entry point; to be called when an Ecosim scenario is initialized.
+    ''' or unloaded.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetEcoSimInitialized()
+        ' Check for invalid state transitions
+        If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
+        ' Update execution state
+        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimInitialized, _
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -490,6 +529,10 @@ Public Class cCoreStateMonitor
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
+#End Region ' Ecosim
+
+#Region " Ecospace "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' State change entry point; to be called when an Ecospace scenario is loaded
@@ -510,6 +553,19 @@ Public Class cCoreStateMonitor
         End If
         ' Clear scenario changed flags
         Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, False, Me.m_bEcotracerModified)
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' State change entry point; to be called when an Ecospace scenario is initialized.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetEcospaceInitialized()
+        ' Check for invalid state transitions
+        If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
+        ' Update execution state
+        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceInitialized, _
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -539,6 +595,10 @@ Public Class cCoreStateMonitor
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
+#End Region ' Ecospace
+
+#Region " Ecotracer "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' State change entry point; to be called when an Ecotracer scenario is loaded
@@ -557,6 +617,8 @@ Public Class cCoreStateMonitor
         ' Clear scenario changed flags
         Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, Me.m_bEcospaceModified, False)
     End Sub
+
+#End Region ' Ecotracer
 
 #End Region ' State configuration
 
@@ -579,6 +641,15 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcopathLoaded() As Boolean
         Return Me.m_iEcopathState <> eCoreExecutionState.Idle
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether an Ecopath model has been initialized.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcopathInitialized() As Boolean
+        Return Me.m_iEcopathState = eCoreExecutionState.EcopathInitialized
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -610,12 +681,22 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Returns whether an Ecosim scenario has been initialized.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcosimInitialized() As Boolean
+        Return Me.m_iEcosimState = eCoreExecutionState.EcosimInitialized
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns whether an Ecosim scenario is running.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function IsEcosimRunning() As Boolean
         Return Me.m_iEcosimState = eCoreExecutionState.EcosimRunning
     End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns whether an Ecosim scenario has completed its timesteps succesfully.
@@ -632,6 +713,15 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcospaceLoaded() As Boolean
         Return Me.m_iEcospaceState <> eCoreExecutionState.Idle
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether an Ecospace scenario has been initialized.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcospaceInitialized() As Boolean
+        Return Me.m_iEcospaceState = eCoreExecutionState.EcospaceInitialized
     End Function
 
     ''' -----------------------------------------------------------------------
