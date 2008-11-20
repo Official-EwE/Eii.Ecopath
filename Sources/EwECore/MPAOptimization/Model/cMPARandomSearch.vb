@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.15  2008/11/20 18:39:57  joeb
+' Removed Xdist from CalDistance
+'
 ' Revision 1.14  2008/11/20 05:28:39  villyc
 ' saving randommpa results to csv file, "vc hack"
 '
@@ -1378,7 +1381,6 @@ Public Class cMPARandomSearch
         Dim AngDisDeg As Double
         Dim DistNM As Double
         Dim Ydist As Double
-        Dim Xdist As Double
         Dim Dist As Double
 
         Dim TwoPie As Double = 3.14159265359 * 2.0#
@@ -1416,13 +1418,15 @@ Public Class cMPARandomSearch
         End If
 
         Return CSng(Dist)
-        Xdist = Sqrt(Dist ^ 2 - Ydist ^ 2) * Sign(Lon1 - Lon2)
-        Exit Function
 
-errCalDistance:
-        Xdist = -1
-        CalDistance = 0 '-1 vc changed this from -1 to 0
-        Exit Function
+        'This code can not be reached
+        '        Xdist = Sqrt(Dist ^ 2 - Ydist ^ 2) * Sign(Lon1 - Lon2)
+        '        Exit Function
+
+        'errCalDistance:
+        '        Xdist = -1
+        '        CalDistance = 0 '-1 vc changed this from -1 to 0
+        '        Exit Function
 
     End Function
 
