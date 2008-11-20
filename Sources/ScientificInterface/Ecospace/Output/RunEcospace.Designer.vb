@@ -26,7 +26,6 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcospace))
             Me.m_btnRun = New System.Windows.Forms.Button
-            Me.m_btnViewResults = New System.Windows.Forms.Button
             Me.m_gpbDisplayOptions = New System.Windows.Forms.GroupBox
             Me.m_cbDisplayGroup = New System.Windows.Forms.ComboBox
             Me.m_rbShowSingle = New System.Windows.Forms.RadioButton
@@ -73,12 +72,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_btnRun, "m_btnRun")
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.UseVisualStyleBackColor = True
-            '
-            'm_btnViewResults
-            '
-            resources.ApplyResources(Me.m_btnViewResults, "m_btnViewResults")
-            Me.m_btnViewResults.Name = "m_btnViewResults"
-            Me.m_btnViewResults.UseVisualStyleBackColor = True
             '
             'm_gpbDisplayOptions
             '
@@ -235,7 +228,6 @@ Namespace Ecospace
             'm_scMain.Panel1
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_btnViewResults)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblPoolName)
             Me.m_scMain.Panel1.Controls.Add(Me.m_gpbDisplayOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbOverlay)
@@ -307,7 +299,6 @@ Namespace Ecospace
 
         End Sub
         Friend WithEvents m_btnRun As System.Windows.Forms.Button
-        Friend WithEvents m_btnViewResults As System.Windows.Forms.Button
         Friend WithEvents m_gpbDisplayOptions As System.Windows.Forms.GroupBox
         Friend WithEvents m_cbDisplayGroup As System.Windows.Forms.ComboBox
         Friend WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton

@@ -1,112 +1,14 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.3  2008/11/20 15:28:08  jeroens
+' Resust form no longer invoked as a dialog
+'
 ' Revision 1.2  2008/11/08 23:51:19  jeroens
 ' Renamed file commands
 '
 ' Revision 1.1  2008/09/26 07:32:02  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.68  2008/09/09 14:44:54  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.67  2008/08/22 00:20:26  joeh
-' Fix graph overlay. Overlay is possible now.
-'
-' Revision 1.66  2008/08/13 18:58:36  joeb
-' Change Effort map legend
-'
-' Revision 1.65  2008/08/11 04:36:22  jeroens
-' Simplified  Ecospace core class names
-'
-' Revision 1.64  2008/08/08 01:10:27  jeroens
-' Simplifying
-'
-' Revision 1.63  2008/07/02 18:50:42  jeroens
-' Plot responds to group show selections
-'
-' Revision 1.62  2008/06/18 18:28:50  joeb
-' Changes setting of Ecospace call back
-'
-' Revision 1.61  2008/06/02 00:01:34  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.60  2008/05/29 22:23:03  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.59  2008/05/14 01:49:35  jeroens
-' Stripped out obsolete bitmaps
-'
-' Revision 1.58  2008/05/13 18:01:15  jeroens
-' Fixed bug 468
-'
-' Revision 1.57  2008/05/13 17:43:55  jeroens
-' Added Conc / B
-'
-' Revision 1.56  2008/05/13 17:20:09  jeroens
-' Revamping for showing contaminants
-'
-' Revision 1.55  2008/05/07 01:39:06  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.54  2008/03/25 14:43:01  jeroens
-' Basemap cell vars exposed as Layer*
-'
-' Revision 1.53  2008/02/29 17:18:40  jeroens
-' Single map also drawn by cMapDrawer (removed dual implementation)
-'
-' Revision 1.52  2008/02/26 19:10:47  joeb
-' Removed Ecoseed debug button
-'
-' Revision 1.51  2008/02/26 18:49:47  joeb
-' Fixed bug 380 Ecospace crashes if map resized
-'
-' Revision 1.50  2008/01/23 17:38:29  joeb
-' debugging for seed
-'
-' Revision 1.49  2008/01/08 20:12:11  joeb
-' Added Button for EcoSeed
-'
-' Revision 1.48  2007/10/18 22:08:59  joeb
-' Inherit from EwEForm
-'
-' Revision 1.47  2007/10/15 20:03:14  joeb
-' Removed Core message handler
-' Added EwEForm as baseclass
-'
-' Revision 1.46  2007/10/14 22:02:34  jeroens
-' * Updated to styleguide changes
-'
-' Revision 1.45  2007/10/03 01:54:28  jeroens
-' * Reworked styleguide, colormanager
-'
-' Revision 1.44  2007/09/30 20:52:40  jeroens
-' * Renamed resource(s)
-'
-' Revision 1.43  2007/07/23 17:37:34  jeroens
-' - Reverted
-'
-' Revision 1.41  2007/06/29 23:14:58  jeroens
-' + Added overlay checkbox
-' * Enlarge plot temporarily changed to big button
-'
-' Revision 1.40  2007/06/28 23:06:19  willw
-' changed some variable names
-'
-' Revision 1.39  2007/06/28 22:06:04  willw
-' added boolean flag to not clear the biomass plots, for an overlay function (needs to come out to interface)
-'
-' Revision 1.38  2007/06/24 01:36:11  jeroens
-' + Localizing
-'
-' Revision 1.37  2007/06/22 16:55:13  joeb
-' Added SS output
-'
-' Revision 1.36  2007/06/21 18:30:11  willw
-' no message
-'
-' Revision 1.35  2007/06/20 17:47:35  sherman
-' Put CVS header
 '
 '==============================================================================
 
@@ -249,8 +151,6 @@ Namespace Ecospace
 
             'Plot speed 1-slowest 10-fastest
             Me.m_iPlotStepSize = 1
-
-            Me.m_btnViewResults.Enabled = False
 
             Me.m_lbPlotTime.Text = String.Format(My.Resources.ECOSPACE_RUN_PROGRESS, 0, Me.m_core.nEcospaceYears)
 
@@ -732,8 +632,8 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub btnResults_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnViewResults.Click
-            Dim results As New EcospaceResults
+        Private Sub btnResults_Click(ByVal sender As Object, ByVal e As EventArgs)
+            Dim results As New cFormEcospaceResults
             results.ShowDialog()
         End Sub
 
@@ -910,8 +810,6 @@ Namespace Ecospace
             ' Enable run and stop buttons based on Ecospace run state
             Me.m_btnRun.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = False)
             Me.m_btnStop.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = True)
-            ' Enable results button based on Ecospace run state
-            Me.m_btnViewResults.Enabled = (csm.HasEcospaceLoaded = True) And (csm.HasEcospaceRan = True)
             ' Enable display options for non-fleet maps
             Me.m_gpbDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
 
