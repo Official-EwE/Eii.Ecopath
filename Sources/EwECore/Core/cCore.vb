@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.36  2008/11/20 19:18:19  jeroens
+' Hmm, EcosimLoaded state is still required!
+'
 ' Revision 1.35  2008/11/20 18:48:21  joeb
 ' Removed Ecosim.Init from RunEcospace
 '
@@ -4226,10 +4229,13 @@ Public Class cCore
             Me.SendEcosimLoadStateMessage(strScenarioName)
 
             ' Invoke plugin point
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.LoadEcosimScenario(ds)
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcosimInitialized(m_EcoSimData)
+            If (Me.PluginManager IsNot Nothing) Then
+                Me.PluginManager.LoadEcosimScenario(ds)
+                Me.PluginManager.EcosimInitialized(m_EcoSimData)
+            End If
 
             ' Update core state
+            Me.m_StateMonitor.SetEcoSimLoaded(True)
             Me.m_StateMonitor.SetEcoSimInitialized()
 
             Return True
