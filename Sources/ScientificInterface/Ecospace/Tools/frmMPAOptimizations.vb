@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.30  2008/11/20 18:56:42  jeroens
+' ConvertToMPA clears out existing target MPA cells
+'
 ' Revision 1.29  2008/11/20 15:30:42  jeroens
 ' Fixed result graph and grid sync
 '
@@ -1495,6 +1498,11 @@ Namespace Ecospace
 
                     ' Only consider water cells
                     If (layerDepth.Cell(iRow, iCol) <> 0) Then
+
+                        ' Clear existing target MPA cells
+                        If (layerMPA.Cell(iRow, iCol) = iMPA) Then
+                            layerMPA.Cell(iRow, iCol) = 0
+                        End If
 
                         ' Only consider cells that can be converted to MPA:
                         ' when MPA=0 (not currently part of an mpa)
