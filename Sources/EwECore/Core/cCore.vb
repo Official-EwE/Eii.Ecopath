@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.33  2008/11/20 18:29:27  joeb
+' Fixed oppsss
+'
 ' Revision 1.32  2008/11/20 17:45:40  joeb
 ' Moved updateDietComp from SyncManager to StateManager
 '
@@ -185,11 +188,7 @@ Public Class cCore
     Private m_strOutputPath As String = ""
     Friend m_validators As cValidatorManager
 
-    ''' <summary>
-    ''' Manage synchronization between models.
-    ''' </summary>
-    Private m_SyncManager As cModelSyncManager
-    Friend m_Stanza As cStanzaDatastructures
+     Friend m_Stanza As cStanzaDatastructures
 
     ''' <summary>Core state monitor</summary>
     Private WithEvents m_StateMonitor As cCoreStateMonitor
@@ -609,7 +608,6 @@ Public Class cCore
         Me.m_EcoSimData = New cEcosimDatastructures
         Me.m_EcoSpaceData = New cEcospaceDataStructures
         Me.m_Stanza = New cStanzaDatastructures
-        Me.m_SyncManager = New cModelSyncManager(Me)
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
