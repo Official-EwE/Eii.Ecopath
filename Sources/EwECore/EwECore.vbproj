@@ -141,7 +141,6 @@
     <Compile Include="Core\cCore.vb" />
     <Compile Include="Core\cCoreStateMonitor.vb" />
     <Compile Include="Core\cEwEModel.vb" />
-    <Compile Include="Core\cModelSyncManager.vb" />
     <Compile Include="Core\cOperators.vb" />
     <Compile Include="Core\CoreEnumerators.vb" />
     <Compile Include="Monte Carlo\cEcosimMonteCarlo.vb" />
