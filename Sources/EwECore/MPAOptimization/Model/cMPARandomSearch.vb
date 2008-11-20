@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.14  2008/11/20 05:28:39  villyc
+' saving randommpa results to csv file, "vc hack"
+'
 ' Revision 1.13  2008/11/19 03:57:30  villyc
 ' Random MPA: made sure all cells have a weighting attached (or they can't be selected, when wanting 100% coverage)
 '
@@ -138,6 +141,9 @@
 
 Option Strict On
 Imports System.Math
+'VC hack:
+Imports System.IO
+
 
 Public Class cMPARandomSearch
     Implements IMPASearchModel
@@ -152,6 +158,10 @@ Public Class cMPARandomSearch
     Private Lat2 As Single   'Long
     Private Lon1 As Single   'Long
     Private Lon2 As Single   'Long
+
+    Private LayerSumInMPA() As Single
+    Private MaxLayerSumByLayerAndPctMPA(,) As Single
+    Private LayerInclusion(,,) As Single
 
     Const N_MAX_RESULTS As Integer = 500
     Const RESULTS_TO_KEEP As Integer = N_MAX_RESULTS \ 2
@@ -430,6 +440,7 @@ Public Class cMPARandomSearch
         Dim StoreOptimalPct As Single = 1 'from GUI
         Dim MinimalEvaluationValue As Single = 0
 
+
         Try
             Debug.Assert(m_data IsNot Nothing, "Ecoseed: data not initialized")
             Debug.Assert(m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
@@ -465,6 +476,15 @@ Public Class cMPARandomSearch
                 Next
             Next
 
+            'Get the layer weights by percentage MPA coverage
+            sortLayersByCellWeight(CellCount)
+            'vc hack:
+            Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", False)  'true makes it append
+                sw.WriteLine("Protected, obj.function, layers1, layer 2, etc")
+                sw.Close()
+            End Using
+
+
             Dim StoreNo As Integer = CInt(StoreOptimalPct * m_data.nIterations / 100)
 
             'Step from Min area(%) (= integer) to Max area(%) (= integer) stepsize = Step (%) (=integer)
@@ -477,6 +497,10 @@ Public Class cMPARandomSearch
             Me.setRunState(eRunStates.Searching)
 
             m_nIters = 0
+
+            'Dim NoRuns As Integer = CInt((m_data.MaxArea - m_data.MinArea) / m_data.stepSize * m_data.nIterations)
+            'ReDim LayerInclusion (me.m_SpaceData.nImportanceLayers,  
+
             For iPropMPA As Integer = m_data.MinArea To m_data.MaxArea Step m_data.stepSize
                 'keep track of how may times we've stepped: 
                 'calculate how many cells that should be closed:
@@ -497,6 +521,22 @@ Public Class cMPARandomSearch
 
                     'Evaluate the current MPA cell selection
                     Me.EvaluateRun()
+
+
+                    'Store LayerSumInMPA
+                    calcImportanceLayersCoverageInRun()
+                    'vc hack
+                    Dim sLayer As String = iPropMPA.ToString & "," & m_data.objFuncTotal.ToString & ","
+                    For iL As Integer = 0 To m_SpaceData.nImportanceLayers - 1
+                        If MaxLayerSumByLayerAndPctMPA(iL, iPropMPA) > 0 Then
+                            sLayer += (LayerSumInMPA(iL) / MaxLayerSumByLayerAndPctMPA(iL, iPropMPA)).ToString & ","
+                        End If
+                    Next
+                    'vc hack:
+                    Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", True)  'true makes it append
+                        sw.WriteLine(sLayer)
+                        sw.Close()
+                    End Using
 
                     'Save to csv file
                     Me.WriteOutputData()
@@ -798,8 +838,6 @@ Public Class cMPARandomSearch
         If Border > 0 Then Return Area / Border
     End Function
 
-
-
     Private Sub getBaseValues()
 
         m_search.redimForRun()
@@ -970,6 +1008,53 @@ Public Class cMPARandomSearch
         End Try
 
     End Sub
+
+    Private Sub sortLayersByCellWeight(ByVal CellCount As Integer)
+        Dim NoCells As Integer = m_SpaceData.Inrow * m_SpaceData.InCol
+        ReDim MaxLayerSumByLayerAndPctMPA(m_SpaceData.nImportanceLayers, 100)
+
+        For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
+            Dim Cnt As Integer = 0
+            Dim ArrayVal(NoCells) As Single
+
+            For i As Integer = 1 To m_SpaceData.Inrow
+                For j As Integer = 1 To m_SpaceData.InCol
+                    Cnt = Cnt + 1
+                    'Make a copy of the data
+                    ArrayVal(Cnt) = m_SpaceData.ImportanceLayers(iL).Data(i, j)
+                Next j
+            Next i
+            'now we have all the layer values in ArrayVal, so sort them:
+            System.Array.Sort(ArrayVal)
+            System.Array.Reverse(ArrayVal)
+            'We can now store the layerweight for each percentage coverage:
+            For iMPA As Integer = 1 To 100
+                'we want to store this for 100 levels (%) of protection
+                For iC As Integer = 0 To CInt(CellCount * iMPA / 100) - 1
+                    MaxLayerSumByLayerAndPctMPA(iL, iMPA) += ArrayVal(iC)
+                Next
+            Next
+        Next iL
+    End Sub
+
+
+    Private Sub calcImportanceLayersCoverageInRun()
+        Dim Data(,) As Single
+        ReDim LayerSumInMPA(Me.m_SpaceData.nImportanceLayers)
+
+        For iL As Integer = 0 To Me.m_SpaceData.nImportanceLayers - 1
+            Data = Me.m_SpaceData.ImportanceLayers(iL).Data
+            For iR As Integer = 1 To m_SpaceData.Inrow
+                For iC As Integer = 1 To m_SpaceData.InCol
+                    If m_SpaceData.MPA(iR, iC) = m_data.iMPAtoUse Then 'this is a protected cell, so check what 
+                        LayerSumInMPA(iL) += Data(iR, iC)
+                    End If
+                Next iC
+            Next iR
+        Next iL
+    End Sub
+
+
 
 #End Region
 
@@ -1343,5 +1428,5 @@ errCalDistance:
 
 #End Region
 
-  
+
 End Class
