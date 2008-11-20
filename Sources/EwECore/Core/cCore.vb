@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.34  2008/11/20 18:36:40  jeroens
+' Ecosim initialized set in Sim scenario load
+'
 ' Revision 1.33  2008/11/20 18:29:27  joeb
 ' Fixed oppsss
 '
@@ -4222,8 +4225,9 @@ Public Class cCore
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.LoadEcosimScenario(ds)
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcosimInitialized(m_EcoSimData)
+
             ' Update core state
-            Me.m_StateMonitor.SetEcoSimLoaded(True)
+            Me.m_StateMonitor.SetEcoSimInitialized()
 
             Return True
 
