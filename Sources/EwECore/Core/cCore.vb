@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.29  2008/11/20 15:15:00  jeroens
+' Ecospace acrtive scenario ID preserved when save fails
+'
 ' Revision 1.28  2008/11/19 22:11:30  joeb
 ' Added EcoSim.Init to RunEcoSpace to bring any edited data up to date
 '
@@ -6358,8 +6361,10 @@ Public Class cCore
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveEcospaceScenario() As Boolean
+
         Dim iScenarioID As Integer = 0
         Dim ds As IEcospaceDatasource = Nothing
+        Dim bSucces As Boolean = False
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
@@ -6373,10 +6378,12 @@ Public Class cCore
         ' Save ok?
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If (ds.SaveEcospaceScenario(iScenarioID)) Then
+
             ' #Yes: reload ecospace scenario defs
             Me.InitEcospaceScenarios()
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
+
             ' Invoke plugin point
             If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
             ' Force update
@@ -6386,6 +6393,9 @@ Public Class cCore
             ' Report succes
             SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex))
             Return True
+        Else
+            ' Restore active scenario ID
+            Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
         End If
 
         ' Report failure
@@ -6438,6 +6448,9 @@ Public Class cCore
             Me.m_StateMonitor.UpdateDataState(DataSource)
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eMessageSource.EcoSpace, eDataTypes.EcoSpaceScenario)
             Return True
+        Else
+            ' Restore active scenario
+            Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
         End If
 
         ' Report failure
