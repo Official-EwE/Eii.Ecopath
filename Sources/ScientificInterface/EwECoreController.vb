@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwECoreController.vb,v $
+' Revision 1.4  2008/11/20 19:15:15  jeroens
+' Added handling of *Initialized states
+'
 ' Revision 1.3  2008/11/20 18:42:17  jeroens
 ' CoreController uses cCoreStateManager
 '
@@ -75,7 +78,8 @@ Public Class EwECoreController
 
         Select Case iState
 
-            Case eCoreExecutionState.EcopathLoaded
+            Case eCoreExecutionState.EcopathLoaded, _
+                 eCoreExecutionState.EcopathInitialized
                 Return TryLoadEcopathModel()
 
             Case eCoreExecutionState.EcopathCompleted
@@ -84,13 +88,17 @@ Public Class EwECoreController
             Case eCoreExecutionState.EcosimLoaded
                 Return TryLoadEcosimScenario(False)
 
+            Case eCoreExecutionState.EcosimInitialized
+                Return TryInitializeEcosim()
+
             Case eCoreExecutionState.EcosimCompleted
                 Return TryCompleteEcosim()
 
             Case eCoreExecutionState.EcotracerLoaded
                 Return TryLoadEcotracerScenario(False)
 
-            Case eCoreExecutionState.EcospaceLoaded
+            Case eCoreExecutionState.EcospaceLoaded, _
+                 eCoreExecutionState.EcospaceInitialized
                 Return TryLoadEcospaceScenario(False)
 
         End Select
