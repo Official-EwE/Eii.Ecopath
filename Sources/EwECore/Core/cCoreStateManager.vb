@@ -36,8 +36,12 @@ Public Class cCoreStateManager
                 Case EwEUtils.Core.eCoreExecutionState.EcopathCompleted
                     Return m_core.RunEcoPath()
 
-                    ' Case EwEUtils.Core.eCoreExecutionState.EcoSimInitialized
-                    'Return m_core.m_EcoSim.Init()
+                Case EwEUtils.Core.eCoreExecutionState.EcosimInitialized
+                    If m_core.m_EcoSim.Init(False) Then
+                        m_core.StateMonitor.SetEcoSimInitialized()
+                        Return True
+                    End If
+                    Return False
 
                 Case EwEUtils.Core.eCoreExecutionState.EcosimCompleted
                     Return m_core.RunEcoSim()
