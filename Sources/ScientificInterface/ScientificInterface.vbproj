@@ -1065,6 +1065,10 @@
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Panels\PedigreePanel\PedigreePanel.resx">
+      <DependentUpon>PedigreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ecopath_logo.ico" />
     <Compile Include="Controls\cEwEBrushProvider.vb" />
     <Compile Include="Controls\gridResultsBase.vb">
@@ -1240,6 +1244,12 @@
     <Compile Include="Other\Options\Application\ucAppPluginDetails.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Panels\PedigreePanel\PedigreePanel.Designer.vb">
+      <DependentUpon>PedigreePanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\PedigreePanel\PedigreePanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
     <Compile Include="Settings.vb" />
     <Content Include="Includes\SAUPUtil.dll" />
@@ -1304,6 +1314,7 @@
     <Content Include="Resources\Ecopath_doc.ico" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\Eye_intermediate.png" />
+    <None Include="Resources\EwEPedigree.png" />
     <Content Include="Resources\fimr_logo_50px.jpg" />
     <None Include="Resources\glyph_blue10.PNG" />
     <None Include="Resources\glyph_blue1.PNG" />
