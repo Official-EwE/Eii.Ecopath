@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.35  2008/11/20 18:48:21  joeb
+' Removed Ecosim.Init from RunEcospace
+'
 ' Revision 1.34  2008/11/20 18:36:40  jeroens
 ' Ecosim initialized set in Sim scenario load
 '
@@ -5710,11 +5713,6 @@ Public Class cCore
             'ToDo_jb RunEcoSpace() Ecospace needs to check the statemonitor to see if there have been any changes to Ecopath or Ecosim variables
             'then run anything it needs to in response
             If Me.m_StateMonitor.HasEcospaceLoaded Then
-
-                'Ecosim only needs to be initialized if data has been edited
-                'If this happen the interface will have tried to bring the core up to date which it can not do 
-                'this will override the statemonitor and the edit state will be lost!!
-                m_EcoSim.Init(True)
 
                 If checkHabitats() Then
 
