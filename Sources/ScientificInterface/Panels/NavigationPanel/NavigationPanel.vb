@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.9  2008/11/21 21:33:57  jeroens
+' Removed functional response, will move to Network Analysis
+'
 ' Revision 1.8  2008/11/20 15:21:04  jeroens
 ' Ecospace outputs properly respond to core state
 '
@@ -140,8 +143,6 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimOutputPlots), "Ecosim plot.htm")
         m_nodeController.Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
         m_nodeController.Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SRplot), "Stock recruitment S R plot.htm")
-        ' ToDo: Activate this once Ecosim Electivity is exposed from the Core
-        m_nodeController.Add("ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFunctionalResponse), "")
 
         ' Ecosim Tools
         m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help

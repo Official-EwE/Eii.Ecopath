@@ -1159,12 +1159,6 @@
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\frmFunctionalResponse.Designer.vb">
-      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\frmFunctionalResponse.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\cImportExportData.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.vb">
@@ -1419,10 +1413,6 @@
     <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.resx">
       <DependentUpon>ucBiomassPlotzgc.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\frmFunctionalResponse.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.resx">
       <SubType>Designer</SubType>
