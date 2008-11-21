@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.13  2008/11/21 16:21:59  jeroens
+' Fixed bug 544
+'
 ' Revision 1.12  2008/11/10 19:28:54  jeroens
 ' Fixed MAJOR bug on identifying Ecospace scenario IDs
 '
@@ -1930,7 +1933,7 @@ Public Class cDBDataSource
         ' Create this group for each ecosim scenario
         bSucces = bSucces And Me.AddEcosimGroupToAllScenarios(iDBID)
         ' Create this group for each ecospace scenario
-        bSucces = bSucces And Me.AddEcospaceGroupToAllScenarios(iDBID)
+        bSucces = bSucces And Me.AddEcospaceGroupToAllScenarios(iDBID, (sPP = 2.0))
         ' Create this group for each ecotracer scenario
         bSucces = bSucces And Me.AddEcotracerGroupToAllScenarios(iDBID)
 
@@ -5688,7 +5691,7 @@ Public Class cDBDataSource
         ' First duplicate all Ecospace 'objects'
         For i As Integer = 1 To ecopathDS.NumGroups
             ' Add group to the new scenario
-            bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, iIDtmp)
+            bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, (ecopathDS.PP(i) = 2.0), iIDtmp)
             idm.Add(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(i), iIDtmp)
         Next
 
@@ -5918,7 +5921,8 @@ Public Class cDBDataSource
             ' First duplicate all Ecospace 'objects'
             For i As Integer = 1 To ecopathDS.NumGroups
                 ' Add group to the new scenario
-                bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, iIDtmp)
+                bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, _
+                                                          (ecopathDS.PP(i) = 2.0), iIDtmp)
             Next
 
             For i As Integer = 1 To ecopathDS.NumFleet
@@ -6879,7 +6883,7 @@ Public Class cDBDataSource
     ''' Create a group for each ecospace scenario
     ''' </summary>
     ''' <param name="iEcopathGroupID">Ecopath Group DBID</param>
-    Private Function AddEcospaceGroupToAllScenarios(ByVal iEcopathGroupID As Integer) As Boolean
+    Private Function AddEcospaceGroupToAllScenarios(ByVal iEcopathGroupID As Integer, ByVal bIsDetritus As Boolean) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim iID As Integer = 0
@@ -6888,7 +6892,7 @@ Public Class cDBDataSource
         Try
             reader = Me.m_db.GetReader(String.Format("SELECT ScenarioID FROM EcoSpaceScenario"))
             While reader.Read()
-                bSucces = bSucces And AddEcospaceGroup(iEcopathGroupID, CInt(reader("ScenarioID")), iID)
+                bSucces = bSucces And AddEcospaceGroup(iEcopathGroupID, CInt(reader("ScenarioID")), bIsDetritus, iID)
             End While
             Me.m_db.ReleaseReader(reader)
 
@@ -6906,11 +6910,11 @@ Public Class cDBDataSource
     ''' <param name="iEcopathGroupID"><see cref="cEcoPathGroupInput.DBID">Ecopath ID</see> of this group</param>
     ''' <param name="iScenarioID"><see cref="cEcospaceScenario.DBID">Ecospace scenario ID</see> of the scenario to add the group to.</param>
     ''' <returns>True if succesful.</returns>
-    Private Function AddEcospaceGroup(ByVal iEcopathGroupID As Integer, ByVal iScenarioID As Integer, ByRef iGroupID As Integer) As Boolean
+    Private Function AddEcospaceGroup(ByVal iEcopathGroupID As Integer, ByVal iScenarioID As Integer, _
+                                      ByVal bIsDetritus As Boolean, ByRef iGroupID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim iGroup As Integer = 0
-        Dim bDetritus As Boolean = False
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
@@ -6924,7 +6928,6 @@ Public Class cDBDataSource
         Try
             ' Is this a detritus group?
             iGroup = Array.IndexOf(ecopathDS.GroupDBID, iEcopathGroupID)
-            bDetritus = (ecopathDS.PP(iGroup) = 2.0)
 
             ' Add group
             writer = Me.m_db.GetWriter("EcospaceScenarioGroup")
@@ -6934,7 +6937,7 @@ Public Class cDBDataSource
             drow("EcopathGroupID") = iEcopathGroupID
             drow("GroupID") = iGroupID
             ' Detritus default of 10, non-detritus 300
-            drow("MVel") = CSng(IIf(bDetritus, 10, 300))
+            drow("MVel") = CSng(IIf(bIsDetritus, 10, 300))
             writer.AddRow(drow)
 
             Me.m_db.ReleaseWriter(writer)
