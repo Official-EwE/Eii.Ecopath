@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.31  2008/11/21 01:27:29  jeroens
+' MPA commits are rendered globally now
+'
 ' Revision 1.30  2008/11/20 18:56:42  jeroens
 ' ConvertToMPA clears out existing target MPA cells
 '
@@ -186,6 +189,7 @@ Namespace Ecospace
         ''' <remarks>The data for these layers orginates from the core.</remarks>
         Private m_alayerFeedback() As cLayer = Nothing
         Private m_layerSeed As cLayer = Nothing
+        Private m_alayerMPA() As cLayer = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
         Private m_aiFeedback As Integer(,) = Nothing
 
@@ -413,8 +417,11 @@ Namespace Ecospace
 
                 ' Set the layer
                 Me.SetLayer(Me.m_manager.OrgMPA, Me.m_basemap.LayerMPA)
-                Me.m_ucZoom.Map.Refresh()
-
+                ' Update MPAs
+                For Each l As cLayer In Me.m_alayerMPA
+                    l.Update(cLayer.eChangeFlags.Map)
+                Next
+                ' Yo
                 Me.m_ucZoom.ResumeLayout()
 
             Catch ex As Exception
@@ -473,8 +480,12 @@ Namespace Ecospace
 
             End Select
 
-            ' Redraw
-            Me.m_ucZoom.Map.Refresh()
+            ' Refresh the MPA layer that has been affected
+            For Each l As cLayer In Me.m_alayerMPA
+                'If l.Data.Index = Me.SelectedMPA Then
+                l.Update(cLayer.eChangeFlags.Map)
+                ' End If
+            Next
 
         End Sub
 
@@ -840,7 +851,7 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
-            Me.AddBaseLayers(eVarNameFlags.LayerMPA)
+            Me.m_alayerMPA = Me.AddBaseLayers(eVarNameFlags.LayerMPA)
             Me.m_layerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)(0)
             Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance)
