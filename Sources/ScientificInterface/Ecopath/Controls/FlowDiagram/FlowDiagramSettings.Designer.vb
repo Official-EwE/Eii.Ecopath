@@ -38,11 +38,13 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             'FlowDiagramSettings
             '
+            Me.AcceptButton = Me.btnOk
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.btnOk)
             Me.Controls.Add(Me.FDPropertyGrid)
             Me.Name = "FlowDiagramSettings"
+            Me.TopMost = True
             Me.ResumeLayout(False)
 
         End Sub

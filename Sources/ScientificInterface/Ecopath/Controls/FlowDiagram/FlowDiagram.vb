@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.3  2008/11/21 23:06:15  sherman
+' Fixed bugs: 550
+' - Added listeners to properties, changed text names, made scaling more rhobust.
+'
 ' Revision 1.2  2008/11/08 23:52:37  jeroens
 ' Renamed file commands
 '
@@ -56,8 +60,8 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Dim FDSettingsForm As FlowDiagramSettings
 
+#Region " Constructor/Destructor "
         Public Sub New()
-
             ' This call is required by the Component Designer.
             InitializeComponent()
 
@@ -76,6 +80,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             'Initialize Draw
             m_FDDraw = New Draw(m_FDData, Me.Height, Me.Width)
+            AddHandler m_FDDraw.ForceRedraw, AddressOf RasiseForceRedraw
 
         End Sub
 
@@ -86,6 +91,14 @@ Namespace Ecopath.Controls.FlowDiagram
             ' Set the windows text
             Me.Text = text
         End Sub
+
+
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+
+            RemoveHandler m_FDDraw.ForceRedraw, AddressOf RasiseForceRedraw
+        End Sub
+#End Region ' Constructor/Destructor 
 
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
@@ -151,12 +164,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
+#Region " Raise events "
+        Private Sub RasiseForceRedraw()
+            Invalidate()
+        End Sub
+#End Region ' Raise events
+
 #Region "Drawing Routines"
-
-        'Protected Overrides Sub OnPaintBackground(ByVal pevent As System.Windows.Forms.PaintEventArgs)
-        '    MyBase.OnPaintBackground(pevent)
-        'End Sub
-
         Private Sub FlowDiagram_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
 
             m_bmpOffScreen = New Bitmap(FDPictBox.Width, FDPictBox.Height)
@@ -173,13 +187,10 @@ Namespace Ecopath.Controls.FlowDiagram
 
         '' Overrides the paint routine so it elimates the flicker
         Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
-        End Sub 'OnPaintBackground
-
+        End Sub
 #End Region
 
 #Region "Mouse Events"
-
-
         Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles FDPictBox.MouseDown
             m_FDDraw.setHighlightNodeLock = True
         End Sub
@@ -193,7 +204,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Invalidate()
         End Sub
-
 #End Region
 
         Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
