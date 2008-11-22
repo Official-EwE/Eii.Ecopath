@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.16  2008/11/22 02:42:38  villyc
+' boundary length calc in random updated, baseline wasn't calculated properly
+'
 ' Revision 1.15  2008/11/20 18:39:57  joeb
 ' Removed Xdist from CalDistance
 '
@@ -838,7 +841,12 @@ Public Class cMPARandomSearch
                 End If
             Next
         Next
-        If Border > 0 Then Return Area / Border
+        If Border > 0 Then
+            Return Area / Border
+        Else
+            'baserun no mpa, so return 1?
+            Return 0.25
+        End If
     End Function
 
     Private Sub getBaseValues()
