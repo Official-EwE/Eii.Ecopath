@@ -22,6 +22,7 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
             Me.m_ucZoom = New ScientificInterface.Ecospace.ucZoomBaseMap
@@ -69,9 +70,13 @@ Namespace Ecospace
             Me.m_nudMinArea = New System.Windows.Forms.NumericUpDown
             Me.m_nudMaxArea = New System.Windows.Forms.NumericUpDown
             Me.m_lblStep = New System.Windows.Forms.Label
-            Me.m_lblIterations = New System.Windows.Forms.Label
             Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
             Me.m_lblBaseYear = New System.Windows.Forms.Label
+            Me.m_lblIterations = New System.Windows.Forms.Label
+            Me.m_lblDiscRate = New System.Windows.Forms.Label
+            Me.m_nudDiscRate = New System.Windows.Forms.NumericUpDown
+            Me.m_nudGenDiscRate = New System.Windows.Forms.NumericUpDown
+            Me.m_lblGenDiscRate = New System.Windows.Forms.Label
             Me.m_scMap = New System.Windows.Forms.SplitContainer
             Me.m_tcConfiguration = New System.Windows.Forms.TabControl
             Me.m_tabParameters = New System.Windows.Forms.TabPage
@@ -87,10 +92,8 @@ Namespace Ecospace
             Me.m_lblMap = New System.Windows.Forms.Label
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.m_bntNewSearch = New System.Windows.Forms.Button
-            Me.m_lblDiscRate = New System.Windows.Forms.Label
-            Me.m_nudDiscRate = New System.Windows.Forms.NumericUpDown
-            Me.m_nudGenDiscRate = New System.Windows.Forms.NumericUpDown
-            Me.m_lblGenDiscRate = New System.Windows.Forms.Label
+            Me.PictureBox1 = New System.Windows.Forms.PictureBox
+            Me.PictureBox2 = New System.Windows.Forms.PictureBox
             Me.m_tlbLayers.SuspendLayout()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -105,6 +108,8 @@ Namespace Ecospace
             CType(Me.m_nudMinArea, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxArea, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudDiscRate, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudGenDiscRate, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMap.Panel1.SuspendLayout()
             Me.m_scMap.Panel2.SuspendLayout()
             Me.m_scMap.SuspendLayout()
@@ -115,14 +120,14 @@ Namespace Ecospace
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
-            CType(Me.m_nudDiscRate, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudGenDiscRate, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnRun
             '
             Me.m_btnRun.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnRun.Location = New System.Drawing.Point(359, 23)
+            Me.m_btnRun.Location = New System.Drawing.Point(521, 23)
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.Size = New System.Drawing.Size(96, 23)
             Me.m_btnRun.TabIndex = 3
@@ -133,7 +138,7 @@ Namespace Ecospace
             '
             Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.m_btnStop.Location = New System.Drawing.Point(461, 23)
+            Me.m_btnStop.Location = New System.Drawing.Point(623, 23)
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.Size = New System.Drawing.Size(96, 23)
             Me.m_btnStop.TabIndex = 4
@@ -146,7 +151,7 @@ Namespace Ecospace
             Me.m_ucZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_ucZoom.Name = "m_ucZoom"
             Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucZoomBaseMap.ePositionModeTypes.Center
-            Me.m_ucZoom.Size = New System.Drawing.Size(487, 466)
+            Me.m_ucZoom.Size = New System.Drawing.Size(649, 466)
             Me.m_ucZoom.TabIndex = 0
             '
             'm_tlbLayers
@@ -267,7 +272,7 @@ Namespace Ecospace
             Me.m_cmbMPA.FormattingEnabled = True
             Me.m_cmbMPA.Location = New System.Drawing.Point(66, 81)
             Me.m_cmbMPA.Name = "m_cmbMPA"
-            Me.m_cmbMPA.Size = New System.Drawing.Size(93, 21)
+            Me.m_cmbMPA.Size = New System.Drawing.Size(133, 21)
             Me.m_cmbMPA.TabIndex = 7
             '
             'm_rbRandom
@@ -300,7 +305,7 @@ Namespace Ecospace
             Me.m_lblParameters.Location = New System.Drawing.Point(0, 0)
             Me.m_lblParameters.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblParameters.Name = "m_lblParameters"
-            Me.m_lblParameters.Size = New System.Drawing.Size(666, 18)
+            Me.m_lblParameters.Size = New System.Drawing.Size(828, 18)
             Me.m_lblParameters.TabIndex = 0
             Me.m_lblParameters.Text = "Search types"
             Me.m_lblParameters.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -330,18 +335,18 @@ Namespace Ecospace
             'm_nudIterations
             '
             Me.m_nudIterations.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudIterations.Location = New System.Drawing.Point(328, 81)
+            Me.m_nudIterations.Location = New System.Drawing.Point(388, 81)
             Me.m_nudIterations.Name = "m_nudIterations"
-            Me.m_nudIterations.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudIterations.Size = New System.Drawing.Size(133, 20)
             Me.m_nudIterations.TabIndex = 15
             '
             'm_nudStep
             '
             Me.m_nudStep.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudStep.Location = New System.Drawing.Point(328, 55)
+            Me.m_nudStep.Location = New System.Drawing.Point(388, 55)
             Me.m_nudStep.Name = "m_nudStep"
-            Me.m_nudStep.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudStep.Size = New System.Drawing.Size(133, 20)
             Me.m_nudStep.TabIndex = 13
             Me.m_nudStep.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
@@ -351,7 +356,7 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudEndYear.Location = New System.Drawing.Point(66, 29)
             Me.m_nudEndYear.Name = "m_nudEndYear"
-            Me.m_nudEndYear.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudEndYear.Size = New System.Drawing.Size(133, 20)
             Me.m_nudEndYear.TabIndex = 3
             '
             'm_lblStartYear
@@ -371,7 +376,7 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudStartYear.Location = New System.Drawing.Point(66, 3)
             Me.m_nudStartYear.Name = "m_nudStartYear"
-            Me.m_nudStartYear.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudStartYear.Size = New System.Drawing.Size(133, 20)
             Me.m_nudStartYear.TabIndex = 1
             '
             'm_tcResults
@@ -384,7 +389,7 @@ Namespace Ecospace
             Me.m_tcResults.Location = New System.Drawing.Point(0, 24)
             Me.m_tcResults.Name = "m_tcResults"
             Me.m_tcResults.SelectedIndex = 0
-            Me.m_tcResults.Size = New System.Drawing.Size(664, 245)
+            Me.m_tcResults.Size = New System.Drawing.Size(826, 245)
             Me.m_tcResults.TabIndex = 1
             '
             'm_tpProgress
@@ -394,7 +399,7 @@ Namespace Ecospace
             Me.m_tpProgress.Location = New System.Drawing.Point(4, 22)
             Me.m_tpProgress.Name = "m_tpProgress"
             Me.m_tpProgress.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpProgress.Size = New System.Drawing.Size(656, 219)
+            Me.m_tpProgress.Size = New System.Drawing.Size(818, 219)
             Me.m_tpProgress.TabIndex = 0
             Me.m_tpProgress.Text = "Progress"
             Me.m_tpProgress.UseVisualStyleBackColor = True
@@ -414,7 +419,7 @@ Namespace Ecospace
             Me.m_graphProgress.ScrollMinX = 0
             Me.m_graphProgress.ScrollMinY = 0
             Me.m_graphProgress.ScrollMinY2 = 0
-            Me.m_graphProgress.Size = New System.Drawing.Size(400, 200)
+            Me.m_graphProgress.Size = New System.Drawing.Size(562, 200)
             Me.m_graphProgress.TabIndex = 1
             '
             'm_gridProgress
@@ -461,7 +466,7 @@ Namespace Ecospace
             Me.m_tpResults.Controls.Add(Me.m_nudBestPercentile)
             Me.m_tpResults.Location = New System.Drawing.Point(4, 22)
             Me.m_tpResults.Name = "m_tpResults"
-            Me.m_tpResults.Size = New System.Drawing.Size(656, 219)
+            Me.m_tpResults.Size = New System.Drawing.Size(818, 219)
             Me.m_tpResults.TabIndex = 2
             Me.m_tpResults.Text = "Results"
             Me.m_tpResults.UseVisualStyleBackColor = True
@@ -593,7 +598,7 @@ Namespace Ecospace
             Me.m_lblOutput.Location = New System.Drawing.Point(0, 0)
             Me.m_lblOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblOutput.Name = "m_lblOutput"
-            Me.m_lblOutput.Size = New System.Drawing.Size(664, 18)
+            Me.m_lblOutput.Size = New System.Drawing.Size(826, 18)
             Me.m_lblOutput.TabIndex = 0
             Me.m_lblOutput.Text = "Output"
             Me.m_lblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -648,14 +653,14 @@ Namespace Ecospace
             Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle)
             Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle)
             Me.m_tlbParameters.RowStyles.Add(New System.Windows.Forms.RowStyle)
-            Me.m_tlbParameters.Size = New System.Drawing.Size(658, 104)
+            Me.m_tlbParameters.Size = New System.Drawing.Size(820, 104)
             Me.m_tlbParameters.TabIndex = 0
             '
             'm_lblMinArea
             '
             Me.m_lblMinArea.AutoSize = True
             Me.m_lblMinArea.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblMinArea.Location = New System.Drawing.Point(214, 0)
+            Me.m_lblMinArea.Location = New System.Drawing.Point(274, 0)
             Me.m_lblMinArea.Name = "m_lblMinArea"
             Me.m_lblMinArea.Size = New System.Drawing.Size(108, 26)
             Me.m_lblMinArea.TabIndex = 8
@@ -666,7 +671,7 @@ Namespace Ecospace
             '
             Me.m_lblMaxArea.AutoSize = True
             Me.m_lblMaxArea.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblMaxArea.Location = New System.Drawing.Point(214, 26)
+            Me.m_lblMaxArea.Location = New System.Drawing.Point(274, 26)
             Me.m_lblMaxArea.Name = "m_lblMaxArea"
             Me.m_lblMaxArea.Size = New System.Drawing.Size(108, 26)
             Me.m_lblMaxArea.TabIndex = 10
@@ -677,41 +682,30 @@ Namespace Ecospace
             '
             Me.m_nudMinArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMinArea.Location = New System.Drawing.Point(328, 3)
+            Me.m_nudMinArea.Location = New System.Drawing.Point(388, 3)
             Me.m_nudMinArea.Name = "m_nudMinArea"
-            Me.m_nudMinArea.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudMinArea.Size = New System.Drawing.Size(133, 20)
             Me.m_nudMinArea.TabIndex = 9
             '
             'm_nudMaxArea
             '
             Me.m_nudMaxArea.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudMaxArea.Location = New System.Drawing.Point(328, 29)
+            Me.m_nudMaxArea.Location = New System.Drawing.Point(388, 29)
             Me.m_nudMaxArea.Name = "m_nudMaxArea"
-            Me.m_nudMaxArea.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudMaxArea.Size = New System.Drawing.Size(133, 20)
             Me.m_nudMaxArea.TabIndex = 11
             '
             'm_lblStep
             '
             Me.m_lblStep.AutoSize = True
             Me.m_lblStep.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblStep.Location = New System.Drawing.Point(214, 52)
+            Me.m_lblStep.Location = New System.Drawing.Point(274, 52)
             Me.m_lblStep.Name = "m_lblStep"
             Me.m_lblStep.Size = New System.Drawing.Size(108, 26)
             Me.m_lblStep.TabIndex = 12
             Me.m_lblStep.Text = "S&tep (%):"
             Me.m_lblStep.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_lblIterations
-            '
-            Me.m_lblIterations.AutoSize = True
-            Me.m_lblIterations.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblIterations.Location = New System.Drawing.Point(214, 78)
-            Me.m_lblIterations.Name = "m_lblIterations"
-            Me.m_lblIterations.Size = New System.Drawing.Size(108, 27)
-            Me.m_lblIterations.TabIndex = 14
-            Me.m_lblIterations.Text = "&Iterations:"
-            Me.m_lblIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudBaseYear
             '
@@ -719,7 +713,7 @@ Namespace Ecospace
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudBaseYear.Location = New System.Drawing.Point(66, 55)
             Me.m_nudBaseYear.Name = "m_nudBaseYear"
-            Me.m_nudBaseYear.Size = New System.Drawing.Size(93, 20)
+            Me.m_nudBaseYear.Size = New System.Drawing.Size(133, 20)
             Me.m_nudBaseYear.TabIndex = 5
             '
             'm_lblBaseYear
@@ -732,6 +726,55 @@ Namespace Ecospace
             Me.m_lblBaseYear.TabIndex = 4
             Me.m_lblBaseYear.Text = "&Base year:"
             Me.m_lblBaseYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_lblIterations
+            '
+            Me.m_lblIterations.AutoSize = True
+            Me.m_lblIterations.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lblIterations.Location = New System.Drawing.Point(274, 78)
+            Me.m_lblIterations.Name = "m_lblIterations"
+            Me.m_lblIterations.Size = New System.Drawing.Size(108, 27)
+            Me.m_lblIterations.TabIndex = 14
+            Me.m_lblIterations.Text = "&Iterations:"
+            Me.m_lblIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_lblDiscRate
+            '
+            Me.m_lblDiscRate.AutoSize = True
+            Me.m_lblDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lblDiscRate.Location = New System.Drawing.Point(596, 0)
+            Me.m_lblDiscRate.Name = "m_lblDiscRate"
+            Me.m_lblDiscRate.Size = New System.Drawing.Size(79, 26)
+            Me.m_lblDiscRate.TabIndex = 16
+            Me.m_lblDiscRate.Text = "&Discount rate:"
+            Me.m_lblDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_nudDiscRate
+            '
+            Me.m_nudDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_nudDiscRate.Location = New System.Drawing.Point(681, 3)
+            Me.m_nudDiscRate.Name = "m_nudDiscRate"
+            Me.m_nudDiscRate.Size = New System.Drawing.Size(136, 20)
+            Me.m_nudDiscRate.TabIndex = 17
+            '
+            'm_nudGenDiscRate
+            '
+            Me.m_nudGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_nudGenDiscRate.Location = New System.Drawing.Point(681, 29)
+            Me.m_nudGenDiscRate.Name = "m_nudGenDiscRate"
+            Me.m_nudGenDiscRate.Size = New System.Drawing.Size(136, 20)
+            Me.m_nudGenDiscRate.TabIndex = 19
+            '
+            'm_lblGenDiscRate
+            '
+            Me.m_lblGenDiscRate.AutoSize = True
+            Me.m_lblGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lblGenDiscRate.Location = New System.Drawing.Point(596, 26)
+            Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
+            Me.m_lblGenDiscRate.Size = New System.Drawing.Size(79, 26)
+            Me.m_lblGenDiscRate.TabIndex = 18
+            Me.m_lblGenDiscRate.Text = "&Gen. disc. rate:"
+            Me.m_lblGenDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_scMap
             '
@@ -749,8 +792,8 @@ Namespace Ecospace
             'm_scMap.Panel2
             '
             Me.m_scMap.Panel2.Controls.Add(Me.m_tlbLayers)
-            Me.m_scMap.Size = New System.Drawing.Size(652, 466)
-            Me.m_scMap.SplitterDistance = 487
+            Me.m_scMap.Size = New System.Drawing.Size(814, 466)
+            Me.m_scMap.SplitterDistance = 649
             Me.m_scMap.TabIndex = 6
             '
             'm_tcConfiguration
@@ -762,7 +805,7 @@ Namespace Ecospace
             Me.m_tcConfiguration.Multiline = True
             Me.m_tcConfiguration.Name = "m_tcConfiguration"
             Me.m_tcConfiguration.SelectedIndex = 0
-            Me.m_tcConfiguration.Size = New System.Drawing.Size(666, 509)
+            Me.m_tcConfiguration.Size = New System.Drawing.Size(828, 509)
             Me.m_tcConfiguration.TabIndex = 0
             '
             'm_tabParameters
@@ -773,7 +816,7 @@ Namespace Ecospace
             Me.m_tabParameters.Location = New System.Drawing.Point(4, 22)
             Me.m_tabParameters.Name = "m_tabParameters"
             Me.m_tabParameters.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabParameters.Size = New System.Drawing.Size(658, 483)
+            Me.m_tabParameters.Size = New System.Drawing.Size(820, 483)
             Me.m_tabParameters.TabIndex = 0
             Me.m_tabParameters.Text = "Configuration"
             Me.m_tabParameters.UseVisualStyleBackColor = True
@@ -788,7 +831,7 @@ Namespace Ecospace
             Me.lblParam.Location = New System.Drawing.Point(0, 0)
             Me.lblParam.Margin = New System.Windows.Forms.Padding(0)
             Me.lblParam.Name = "lblParam"
-            Me.lblParam.Size = New System.Drawing.Size(658, 18)
+            Me.lblParam.Size = New System.Drawing.Size(820, 18)
             Me.lblParam.TabIndex = 0
             Me.lblParam.Text = "Configuration"
             Me.lblParam.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -815,7 +858,7 @@ Namespace Ecospace
             Me.m_tlpObjectives.RowCount = 2
             Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18.0!))
             Me.m_tlpObjectives.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpObjectives.Size = New System.Drawing.Size(658, 356)
+            Me.m_tlpObjectives.Size = New System.Drawing.Size(820, 356)
             Me.m_tlpObjectives.TabIndex = 6
             '
             'm_lblObjectives
@@ -825,7 +868,7 @@ Namespace Ecospace
             Me.m_lblObjectives.Location = New System.Drawing.Point(0, 0)
             Me.m_lblObjectives.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblObjectives.Name = "m_lblObjectives"
-            Me.m_lblObjectives.Size = New System.Drawing.Size(184, 18)
+            Me.m_lblObjectives.Size = New System.Drawing.Size(230, 18)
             Me.m_lblObjectives.TabIndex = 0
             Me.m_lblObjectives.Text = "Objectives"
             Me.m_lblObjectives.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -833,17 +876,17 @@ Namespace Ecospace
             'm_plGroup
             '
             Me.m_plGroup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plGroup.Location = New System.Drawing.Point(383, 21)
+            Me.m_plGroup.Location = New System.Drawing.Point(475, 21)
             Me.m_plGroup.Name = "m_plGroup"
-            Me.m_plGroup.Size = New System.Drawing.Size(272, 332)
+            Me.m_plGroup.Size = New System.Drawing.Size(342, 332)
             Me.m_plGroup.TabIndex = 5
             '
             'm_plFleet
             '
             Me.m_plFleet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plFleet.Location = New System.Drawing.Point(193, 21)
+            Me.m_plFleet.Location = New System.Drawing.Point(239, 21)
             Me.m_plFleet.Name = "m_plFleet"
-            Me.m_plFleet.Size = New System.Drawing.Size(178, 332)
+            Me.m_plFleet.Size = New System.Drawing.Size(224, 332)
             Me.m_plFleet.TabIndex = 4
             '
             'm_plObjectives
@@ -851,17 +894,17 @@ Namespace Ecospace
             Me.m_plObjectives.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plObjectives.Location = New System.Drawing.Point(3, 21)
             Me.m_plObjectives.Name = "m_plObjectives"
-            Me.m_plObjectives.Size = New System.Drawing.Size(178, 332)
+            Me.m_plObjectives.Size = New System.Drawing.Size(224, 332)
             Me.m_plObjectives.TabIndex = 3
             '
             'm_lbFleet
             '
             Me.m_lbFleet.AutoSize = True
             Me.m_lbFleet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbFleet.Location = New System.Drawing.Point(190, 0)
+            Me.m_lbFleet.Location = New System.Drawing.Point(236, 0)
             Me.m_lbFleet.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lbFleet.Name = "m_lbFleet"
-            Me.m_lbFleet.Size = New System.Drawing.Size(184, 18)
+            Me.m_lbFleet.Size = New System.Drawing.Size(230, 18)
             Me.m_lbFleet.TabIndex = 1
             Me.m_lbFleet.Text = "Fleet"
             Me.m_lbFleet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -870,10 +913,10 @@ Namespace Ecospace
             '
             Me.m_lblGroup.AutoSize = True
             Me.m_lblGroup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblGroup.Location = New System.Drawing.Point(380, 0)
+            Me.m_lblGroup.Location = New System.Drawing.Point(472, 0)
             Me.m_lblGroup.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblGroup.Name = "m_lblGroup"
-            Me.m_lblGroup.Size = New System.Drawing.Size(278, 18)
+            Me.m_lblGroup.Size = New System.Drawing.Size(348, 18)
             Me.m_lblGroup.TabIndex = 2
             Me.m_lblGroup.Text = "Group"
             Me.m_lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -885,7 +928,7 @@ Namespace Ecospace
             Me.m_tabMap.Location = New System.Drawing.Point(4, 22)
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabMap.Size = New System.Drawing.Size(658, 483)
+            Me.m_tabMap.Size = New System.Drawing.Size(820, 483)
             Me.m_tabMap.TabIndex = 1
             Me.m_tabMap.Text = "Map Input"
             Me.m_tabMap.UseVisualStyleBackColor = True
@@ -900,7 +943,7 @@ Namespace Ecospace
             Me.m_lblMap.Location = New System.Drawing.Point(0, 0)
             Me.m_lblMap.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblMap.Name = "m_lblMap"
-            Me.m_lblMap.Size = New System.Drawing.Size(658, 18)
+            Me.m_lblMap.Size = New System.Drawing.Size(820, 18)
             Me.m_lblMap.TabIndex = 0
             Me.m_lblMap.Text = "Map input"
             Me.m_lblMap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -923,57 +966,43 @@ Namespace Ecospace
             '
             Me.m_scContent.Panel2.Controls.Add(Me.m_lblOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
-            Me.m_scContent.Size = New System.Drawing.Size(666, 782)
+            Me.m_scContent.Size = New System.Drawing.Size(828, 782)
             Me.m_scContent.SplitterDistance = 509
             Me.m_scContent.TabIndex = 6
             '
             'm_bntNewSearch
             '
             Me.m_bntNewSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_bntNewSearch.Location = New System.Drawing.Point(563, 23)
+            Me.m_bntNewSearch.Location = New System.Drawing.Point(725, 23)
             Me.m_bntNewSearch.Name = "m_bntNewSearch"
             Me.m_bntNewSearch.Size = New System.Drawing.Size(96, 23)
             Me.m_bntNewSearch.TabIndex = 5
             Me.m_bntNewSearch.Text = "&New search"
             Me.m_bntNewSearch.UseVisualStyleBackColor = True
             '
-            'm_lblDiscRate
+            'PictureBox1
             '
-            Me.m_lblDiscRate.AutoSize = True
-            Me.m_lblDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblDiscRate.Location = New System.Drawing.Point(476, 0)
-            Me.m_lblDiscRate.Name = "m_lblDiscRate"
-            Me.m_lblDiscRate.Size = New System.Drawing.Size(79, 26)
-            Me.m_lblDiscRate.TabIndex = 16
-            Me.m_lblDiscRate.Text = "&Discount rate:"
-            Me.m_lblDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.PictureBox1.BackColor = System.Drawing.Color.White
+            Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+            Me.PictureBox1.Location = New System.Drawing.Point(321, 22)
+            Me.PictureBox1.Name = "PictureBox1"
+            Me.PictureBox1.Size = New System.Drawing.Size(137, 27)
+            Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+            Me.PictureBox1.TabIndex = 7
+            Me.PictureBox1.TabStop = False
             '
-            'm_nudDiscRate
+            'PictureBox2
             '
-            Me.m_nudDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudDiscRate.Location = New System.Drawing.Point(561, 3)
-            Me.m_nudDiscRate.Name = "m_nudDiscRate"
-            Me.m_nudDiscRate.Size = New System.Drawing.Size(94, 20)
-            Me.m_nudDiscRate.TabIndex = 17
-            '
-            'm_nudGenDiscRate
-            '
-            Me.m_nudGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_nudGenDiscRate.Location = New System.Drawing.Point(561, 29)
-            Me.m_nudGenDiscRate.Name = "m_nudGenDiscRate"
-            Me.m_nudGenDiscRate.Size = New System.Drawing.Size(94, 20)
-            Me.m_nudGenDiscRate.TabIndex = 19
-            '
-            'm_lblGenDiscRate
-            '
-            Me.m_lblGenDiscRate.AutoSize = True
-            Me.m_lblGenDiscRate.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblGenDiscRate.Location = New System.Drawing.Point(476, 26)
-            Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
-            Me.m_lblGenDiscRate.Size = New System.Drawing.Size(79, 26)
-            Me.m_lblGenDiscRate.TabIndex = 18
-            Me.m_lblGenDiscRate.Text = "&Gen. disc. rate:"
-            Me.m_lblGenDiscRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.PictureBox2.BackColor = System.Drawing.Color.White
+            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
+            Me.PictureBox2.Location = New System.Drawing.Point(452, 22)
+            Me.PictureBox2.Name = "PictureBox2"
+            Me.PictureBox2.Size = New System.Drawing.Size(61, 26)
+            Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+            Me.PictureBox2.TabIndex = 8
+            Me.PictureBox2.TabStop = False
             '
             'frmMPAOptimizations
             '
@@ -983,7 +1012,7 @@ Namespace Ecospace
             Me.AutoScroll = True
             Me.AutoScrollMinSize = New System.Drawing.Size(600, 800)
             Me.CancelButton = Me.m_btnStop
-            Me.ClientSize = New System.Drawing.Size(665, 830)
+            Me.ClientSize = New System.Drawing.Size(827, 830)
             Me.Controls.Add(Me.m_bntNewSearch)
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
@@ -992,6 +1021,8 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_lblParameters)
             Me.Controls.Add(Me.m_lblSearchType)
             Me.Controls.Add(Me.m_rbEcoseed)
+            Me.Controls.Add(Me.PictureBox2)
+            Me.Controls.Add(Me.PictureBox1)
             Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
             Me.DoubleBuffered = True
             Me.Name = "frmMPAOptimizations"
@@ -1014,6 +1045,8 @@ Namespace Ecospace
             CType(Me.m_nudMinArea, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMaxArea, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudDiscRate, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudGenDiscRate, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMap.Panel1.ResumeLayout(False)
             Me.m_scMap.Panel2.ResumeLayout(False)
             Me.m_scMap.ResumeLayout(False)
@@ -1025,8 +1058,8 @@ Namespace Ecospace
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)
             Me.m_scContent.ResumeLayout(False)
-            CType(Me.m_nudDiscRate, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudGenDiscRate, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1100,5 +1133,7 @@ Namespace Ecospace
         Private WithEvents m_nudDiscRate As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudGenDiscRate As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
+        Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+        Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     End Class
 End Namespace

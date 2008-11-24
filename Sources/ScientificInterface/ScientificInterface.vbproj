@@ -1325,6 +1325,7 @@
     <None Include="Resources\NavForward.png" />
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\ProtectFormHS.png" />
+    <None Include="Resources\mgel_logo2.gif" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
