@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.5  2008/11/24 18:11:07  jeroens
+' Electivity exposed
+'
 ' Revision 1.4  2008/11/13 19:34:14  joeh
 ' Fix the error in the calculation of total ascendency
 '
@@ -13,49 +16,13 @@
 ' Revision 1.1  2008/09/26 07:31:00  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.38  2008/08/13 00:00:02  jeroens
-' Sssst!
-'
-' Revision 1.37  2008/06/25 02:25:21  joeh
-' Compute and send ecosim NA data to csv file - Take 2
-'
-' Revision 1.36  2008/06/18 21:48:14  joeh
-' Compute and send Ecosim NA data to csv file - Take 2
-'
-' Revision 1.35  2008/06/18 20:16:03  joeh
-' Plot Ascendency on flow in a second pane
-'
-' Revision 1.34  2008/06/14 00:00:28  joeh
-' Compute and send ecosim NA data to csv file
-'
-' Revision 1.33  2007/09/25 22:46:11  joeh
-' Fix bug 252
-'
-' Revision 1.32  2007/09/25 19:02:53  joeb
-' Fixed frmHideGroups bug
-'
-' Revision 1.31  2007/09/25 00:01:02  joeh
-' Fix bug 252
-'
-' Revision 1.30  2007/06/28 19:32:57  joeh
-' Add tool strip button Cancel and reduce the number of event raising to update the progress bar in the form
-'
-' Revision 1.29  2007/06/22 00:35:30  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.28  2007/06/20 18:13:56  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
+
 Option Strict On
 Option Explicit On
 
 Imports EwECore
-
-Imports System.xml
-
-#Region "Network Manager"
+Imports System.Xml
 
 ''' <summary>
 ''' Manager for the Network Analysis
@@ -1449,6 +1416,15 @@ Public Class cNetworkManager
     End Property
 #End Region
 
+#Region " Indicators "
+
+    Public ReadOnly Property Electivity(ByVal iSel As Integer, ByVal iPrey As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return Me.m_EcoNetwork.Elect(iSel, iPrey, iTime)
+        End Get
+    End Property
+
+#End Region
 #Region "Primary Production Required"
 
     Public ReadOnly Property nCatch() As Integer
@@ -2135,5 +2111,3 @@ Public Class cNetworkManager
 #End Region
 
 End Class
-
-#End Region

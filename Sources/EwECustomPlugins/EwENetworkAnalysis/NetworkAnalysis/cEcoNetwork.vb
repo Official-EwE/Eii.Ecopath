@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.7  2008/11/24 18:11:06  jeroens
+' Electivity exposed
+'
 ' Revision 1.6  2008/11/13 23:01:11  joeh
 ' Fix integer overflow problem for variable NoArrows
 '
@@ -37,13 +40,13 @@
 ' Revision 1.24  2007/06/20 18:13:56  joeh
 ' add header to the top of the file so that CVS will log the file with every update
 '
-'
 '==============================================================================
+
 Option Explicit On
 Option Strict On
 Imports EwECore
-
 Imports System.Xml
+
 Public Class cEcoNetwork
 
 #Region "Private data"
@@ -308,7 +311,7 @@ Public Class cEcoNetwork
     '  Public CostSim() As Single
     ' Public ValueSim() As Single
     Private CatchSim() As Single
-    Private Elect(,,) As Single
+    Public Elect(,,) As Single
     Private ByTL(,,) As Single
 
     Private BiomassFish As Single
