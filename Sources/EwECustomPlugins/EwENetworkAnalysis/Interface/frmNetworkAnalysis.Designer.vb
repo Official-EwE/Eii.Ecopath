@@ -68,7 +68,7 @@ Partial Class frmNetworkAnalysis
         Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Without primary production required estimate", 1, 1)
         Dim TreeNode45 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("With primary production required estimate", 1, 1)
         Dim TreeNode46 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis indices ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode44, TreeNode45})
-        Dim TreeNode47 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Network analysis plug-in", 5, 5)
+        Dim TreeNode47 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Functional response", 1, 1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
@@ -310,10 +310,10 @@ Partial Class frmNetworkAnalysis
         TreeNode46.Name = "ndEcosim network analysis indices"
         TreeNode46.SelectedImageIndex = 5
         TreeNode46.Text = "Ecosim network analysis indices "
-        TreeNode47.ImageIndex = 5
-        TreeNode47.Name = "ndEwENetworkAnalysisPlugin"
-        TreeNode47.SelectedImageIndex = 5
-        TreeNode47.Text = "Network analysis plug-in"
+        TreeNode47.ImageIndex = 1
+        TreeNode47.Name = "ndFunctionalResponse"
+        TreeNode47.SelectedImageIndex = 1
+        TreeNode47.Text = "Functional response"
         Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode22, TreeNode25, TreeNode26, TreeNode43, TreeNode46, TreeNode47})
         Me.tvNetworkAnalysis.SelectedImageIndex = 0
         Me.tvNetworkAnalysis.Size = New System.Drawing.Size(270, 467)
@@ -400,7 +400,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnCancel.Image = CType(resources.GetObject("tsbtnCancel.Image"), System.Drawing.Image)
         Me.tsbtnCancel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnCancel.Name = "tsbtnCancel"
-        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 22)
+        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 17)
         Me.tsbtnCancel.Text = "Cancel"
         '
         'tsbtnOutputIndicesCSV
