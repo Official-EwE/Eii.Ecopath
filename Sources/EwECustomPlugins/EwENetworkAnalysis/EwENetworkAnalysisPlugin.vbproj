@@ -16,6 +16,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +66,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
@@ -91,6 +95,7 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\Algorithm\cEcosimNetworkAnalysis.vb" />
@@ -120,6 +125,12 @@
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
     </Compile>
     <Compile Include="Interface\frmNetworkAnalysis.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\Indices\frmFunctionalResponse.Designer.vb">
+      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Indices\frmFunctionalResponse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
@@ -166,6 +177,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Indices\frmFunctionalResponse.resx">
+      <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.resx">
       <DependentUpon>frmHideGroups.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -200,6 +215,10 @@
     <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
