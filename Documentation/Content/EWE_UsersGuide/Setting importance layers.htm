@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/Stylesheets/EWE_UsersGuide.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>
+            <MadCap:keyword term="Import importance layers;Importance layers;Setting importance layers;Shape files;ASCII files;Raster;MPA selection;MPA;Spatial optimization;Ecoseed" />11.5 Setting importance layers</h2>
+        <p>
+            <img src="../Resources/Images/mgel_logo2.gif" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Lenfest Logo_50px.jpg" />
+        </p>
+        <p>&#160;</p>
+        <p>When <b>Importance layer</b> has been selected on the<b><![CDATA[ ]]></b><a href="Spatial optimizations.htm">Spatial optimizations</a> form, the <b>Layers</b> <![CDATA[ ]]>panel on the <b>Map Input</b> tab is used to set <b>Importance layers</b>. Importance layers are used to give greater importance to certain cells during random selection of seed cells during the <b>Spatial optimization </b>procedure. </p>
+        <p>NOTE: Importances in importance layers have no effect on calculation of the objective function (see <a href="Spatial optimization procedures.htm">Spatial optimizations procedures</a>). There are a number of ways to read in data for setting importance layers, listed here.</p>
+        <p>&#160;</p>
+        <h3>Reading in importance layers</h3>
+        <p>1. To read in importance layers, make sure you have first, loaded an <a href="Ecosim menu.htm">Ecosim</a> and <a href="Ecospace menu.htm">Ecospace</a> scenario, and opened the <a href="Spatial optimizations.htm">Spatial optimizations</a> form. After setting input parameters and <b style="font-weight: normal;">selecting <b>Search type: Importance layer</b></b> on the <b>Configuration</b> tab, go to the <b>Map Input</b> tab.</p>
+        <p>
+            <img src="../Resources/Images/ImportanceLayerWindow_Random.bmp" style="width: 154px;height: 327px;" />
+        </p>
+        <p style="font-style: normal;">The<b> Layers</b> <![CDATA[ ]]>panel on the <b>Map Input</b> tab of the <i>Spatial optimizations</i> form (<b>Importance layer</b> configuration).</p>
+        <p>2. In the <b>Layers</b> <![CDATA[ ]]>panel, double click on the layer for which you want to import data (highlighted in the image above). This will open the <b>Edit layer</b> dialogue box. You can use this dialogue box to edit the description and appearance (i.e., display colour) of the importance layer.</p>
+        <p>IMPORTANT&#160;NOTE: You must also assign the layer a <b>Weight</b> on the <b>Description and Appearance</b> tab (see image below). Importances are normalised within each importance layer.&#160;Therefore the <b>Weight</b> assigns relative importance of layers relative to one another.</p>
+        <p>
+            <img src="../Resources/Images/Edit layer_ImportanceLayer.bmp" style="width: 533px;height: 389px;" />
+        </p>
+        <p>The <b>Edit layer</b> dialogue box (<b>Description and Appearance</b> tab), before data entry.</p>
+        <p>3. Next, click on the <b>Data</b> tab (image below). The tab contains a spreadsheet with exactly the same row and column configuration as the Ecospace <a href="Basemap.htm">Base map</a>. Numbers entered into the cells on the <b>Data</b> tab represent relative importance weights for each cell <u>within</u> the layer. Note that the routine will normalise all values on the sheet, so only relative values are required (i.e., units are unimportant).</p>
+        <p>NOTE: There are two methods to enter data into the <b>Data</b> tab.</p>
+        <p>In the first method, copy and paste cells directly from a spreadsheet into the cells on the <b>Data</b> tab. <u>Note that the data must be in exactly the same configuration as the cells in the base map</u>. Assign greater importance to the cells of conservation interest (e.g., marine mammal breeding habitat; fish nursery areas; known habitat of rare species). Assign zero importance to cells of no conservation interest and land cells. After entering data this way, close the dialogue box and return to the <a href="Spatial optimizations.htm">Spatial optimizations</a> form.<u></u></p>
+        <p>In the second method, Ecospace can read in raster files with spatial information such as importance layers or other Ecospace base map layers. It is possible to read from comma separated text files (.csv), ESRI ASCII files (.asc), and ESRI shape files (.shp). </p>
+        <p>To use this method, first click on the <b>Import ...</b> button on the <b>Data</b> tab. This will open the <b>Import layer data</b> dialogue box. Proceed to Step 4 below.</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/ImportanceLayerWindow_Ecoseed_EditLayerDATA.bmp" style="width: 538px;height: 394px;" />
+        </p>
+        <p>The <b>Edit layer</b> dialogue box (<b>Data</b> tab), before data entry.</p>
+        <p>&#160;</p>
+        <p>4. Click on the <b>Open</b> icon [<img src="../Resources/Images/openHS.png" style="width: 16px;height: 16px;vertical-align: sub;" />] on the <b>Import layer data</b> dialogue box (image below) and navigate to the location of the data file. </p>
+        <p>NOTE: at the bottom right of the <b>Open</b> dialogue box, there is a pull-down menu labelled <b>Comma separated text file </b>(see bottom image below)<b></b>. Use this pull-down menu to select the type of file (.csv, .asc, .shp) you will be importing. Click <b>Open</b> to open the file you wish to import.</p>
+        <p><u>IMPORTANT: To correctly import shape files, files must have row and column attributes identified and must have the same dimensions as the base map</u>.<u></u></p>
+        <p>Use <b>Cell row identifier</b> and <b>Cell column identifier</b> to select the attributes of the rows and columns in the shape file. Note that shape files may have several layers (e.g., see image below). These will be displayed in the <b>Mappings</b> panel of the dialogue box. </p>
+        <p>Select <b>OK</b> to close the <b>Import layer data</b> dialogue box. Select <b>OK</b> again to close the <b>Edit layer</b> dialogue box. Imported layer(s) will now be visible on the <b>Layer</b> panel of the <b>Map Input</b> tab. </p>
+        <p>Click <a href="Spatial optimizations.htm">here</a> to return to the <i>Spatial optimizations</i> documentation.</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/ImportLayerData_dialogue.bmp" style="width: 415px;height: 324px;" />
+        </p>
+        <p>The <b>Import layer data</b> dialogue box.</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/ImportLayerData_dialogue_OPEN.bmp" style="width: 610px;height: 303px;" />
+        </p>
+        <p>The <b>Open</b> dialogue box. Note the <b>Comma separated text file</b> pull-down menu at the bottom right.</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p><u>&#160;</u>
+        </p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+    </body>
+</html>

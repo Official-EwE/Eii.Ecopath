@@ -5,83 +5,147 @@
     </head>
     <body>
         <h2>
-            <MadCap:keyword term="Spatial optimization;Ecoseed;MPA;Marine protected areas;MPA selection" />11.4 Spatial optimizations</h2>
-        <p>EwE6 now allows you to use Ecospace to search for optimum placement of marine protected areas (MPAs) that would maximize a user-defined obejective function. This routine is implemented using the <i>Spatial optimizations</i> form (<i>Spatial dynamic (Ecospace) &gt; Tools &gt; Spatial optimizations</i>). </p>
-        <p>NOTE: Before using this routine you must have already defined an Ecosim scenario (see Ecosim menu) and an Ecospace scenario (see Ecospace menu). Load the scenarios from the Ecosim and Ecospace menus or from the Ecosim [<img src="../Resources/Images/03000092.png" style="width: 19px;height: 19px;vertical-align: sub;" />] and Ecospace [<img src="../Resources/Images/030000B4.png" style="width: 19px;height: 19px;vertical-align: sub;" />] shortcut buttons.</p>
+            <MadCap:keyword term="Spatial optimization;Ecoseed;MPA;Marine protected areas;MPA selection;Objective function" />11.4 Spatial optimizations</h2>
+        <p>&#160;</p>
+        <img src="../Resources/Images/mgel_logo2.gif" />
+        <p>
+            <img src="../Resources/Images/Lenfest Logo_50px.jpg" />
+        </p>
+        <p>EwE6 now allows you to use Ecospace to search for optimum placement of marine protected areas (MPAs) that would maximize a user-defined objective function. This routine is implemented using the <i>Spatial optimizations</i> form (<i>Spatial dynamic (Ecospace) &gt; Tools &gt; Spatial optimizations</i>). </p>
+        <p>NOTE: Before using this routine you must have already defined an Ecosim scenario (see <a href="Ecosim menu.htm">Ecosim menu</a>) and an Ecospace scenario (see <a href="Ecospace menu.htm">Ecospace menu</a>). Load the scenarios from the Ecosim and Ecospace menus or from the Ecosim [<img src="../Resources/Images/03000092.png" style="width: 19px;height: 19px;vertical-align: sub;" />] and Ecospace [<img src="../Resources/Images/030000B4.png" style="width: 19px;height: 19px;vertical-align: sub;" />] shortcut buttons.</p>
+        <p>&#160;</p>
         <h3>Introduction</h3>
-        <p>While Ecospace has been applied quite extensively in a gaming- and scenario-development mode, we have only seen very limited effort applied to spatial optimization and zoning. A first attempt in this direction is represented, though, by the ‘Ecoseed’ approach, developed for Ecospace some years ago as part of a thesis project (Beattie et al. 2002), but never fully implemented and released as part of the software. We have made further developments to this approach to incorporate a new objectivity function, bringing it to a level where it is part of the released EwE6. Further, we describe a new spatial optimization module, which uses the same objectivity function as the updated Ecoseed, but where the spatial cell selection process is influenced by spatial reference layers, typically of conservation interest.</p>
-        <p>Two alternative approaches to running the routine have been developed: (i) 'Ecoseed', based on the original approach of Beattie (2001) and Beattie et al. (2002); and (ii) 'Random', an extension of this approach, which allows the user to incorporate other forms of spatial information in the selection of seed cells. </p>
+        <p>While Ecospace has been applied quite extensively in a gaming- and scenario-development mode, we have only seen very limited effort applied to spatial optimization and zoning. A first attempt in this direction is represented, though, by the ‘Ecoseed’ approach, developed for Ecospace some years ago as part of a thesis project (Beattie 2001; Beattie et al. 2002), but never fully implemented and released as part of the software. We have developed this approach to incorporate a new objectivity function, bringing it to a level where it is part of the released EwE6. Further, we describe a new spatial optimization module, which uses the same objectivity function as the updated seed cell, but where the spatial cell selection process is influenced by spatial reference layers, typically of conservation interest.</p>
+        <p>Two alternative approaches to running the routine have been developed: (i) 'Seed cell', based on the original approach of Beattie (2001) and Beattie et al. (2002); and (ii) 'Importance layer', a variation on the approach, which allows the user to incorporate other forms of spatial information in the selection of seed cells. </p>
         <p>&#160;</p>
         <h4>Seed cell selection procedure
-('Ecoseed' method)</h4>
-        <p>This optimization method (user selects 'Ecoseed' method) is based on a previous study (Beattie, 2001; Beattie et al., 2002), in which we use a very simple optimization scheme to evaluate tradeoff between proportion of area protected and the ecosystem-level objectivity function. We have modified the previous approach by securing a better program flow, and notably by changing the objectivity function from considering only profit from fishing and existence value of biomass groups to the more detailed objective function described  in Equation 2 of <a href="Spatial optimization procedures.htm">Spatial optimization procedures</a>.
+('Seed cell' method)</h4>
+        <p>This optimization method (user selects 'Seed cell' method) is based on a previous study (Beattie 2001; Beattie et al. 2002), in which we use a very simple optimization scheme to evaluate the trade-off between proportion of area protected and the value of the objective function. We have modified the previous approach by securing a better program flow, and by changing the objective function from considering only profit from fishing and existence value of biomass groups to a more detailed objective function described  in Equation 2 of <a href="Spatial optimization procedures.htm">Spatial optimization procedures</a>.
 </p>
-        <p>The procedure takes as its starting point the designation of one, more, or all spatial cells as ‘seed cells’, i.e. cells that are to be considered as potential protected cells in the next program iteration. The procedure will then run the Ecospace model repeatedly between two time steps, closing one of the seeds cells in each run, while storing the ecosystem objective function value. The seed cell that results in the highest objective function is then closed for fishing, and its four neighbouring cells (above, below, and to either side) are then turned into seed cells, unless they are so already, or already are protected, or are land cells. This procedure will continue until all cells are protected.
-Finally, the routine will return the set of cells to be protected that maximises the objective function.</p>
-        <p>The time over which the selection procedure is run is chosen dependent on the application. Typically, an ecosystem model is initially developed and tuned using time series data to cover a certain time period, e.g., from 1950 to 2005. Subsequently, the model is used in a scenario development mode to evaluate for instance protected area placement covering the period 2006-2020. </p>
-        <p>The major result from the seed cell selection procedure is an evaluation of the trade-off between size of protected area, and each of the objectives in<span style="color: #ff0000;"> <![CDATA[ ]]></span>the objective function<span style="color: #ff0000;">.</span> This can, for instance, be used to consider what proportion of the total area to close in subsequent, more detailed analysis based on importance layer sampling.
+        <p>The procedure takes as its starting point the designation of one, more, or all spatial cells as ‘seed cells’, i.e. cells that are to be considered as potential protected cells in the next program iteration. The procedure will then run the Ecospace model repeatedly between two time steps, closing one of the seeds cells in each run, while storing the ecosystem objective function value. The seed cell that results in the highest objective function value is then closed for fishing, and its four neighbouring cells (above, below, left, right) are then turned into seed cells, unless they are so already, or already are protected, or are land cells. This procedure will continue until all cells are protected.
+Finally, the routine will return the set of cells to be protected that would maximize the objective function.</p>
+        <p>The time over which the selection procedure is run is dependent on the application. Typically, an ecosystem model is initially developed and tuned using time series data to cover a certain time period, e.g., from 1950 to 2005. Subsequently, the model is used in a scenario development mode to evaluate, for instance, protected area placement covering the period 2006-2020. </p>
+        <p>The major result from the seed cell selection procedure is an evaluation of the trade-off between size of protected area, and each of the objectives in<span style="color: #ff0000;"> <![CDATA[ ]]></span>the objective function<span style="color: #ff0000;">.</span> This can, for instance, be used to consider what proportion of the total area to close in subsequent, more detailed analysis based on importance layer sampling (see next section).
 </p>
         <h4>Importance layer sampling procedure
-('Random' method)</h4>
+('Importance layer' method)</h4>
         <p>An advantage of the seed cell modelling approach described above is that it allows a comprehensive overview of the trade-off between proportion of area closed to fishing, and the ecological, social, and economical benefit and costs of the closures. This is done, based on the information already included in the EwE modelling approach, with no new information being needed. While this may be an advantage from one perspective, it does not allow use of other form for information, notably in form of spatial information, e.g., critical fish habitat layers from GIS. 
 </p>
-        <p>To address this shortcoming, we have developed a new optimization routine for the Ecospace model (user selects 'Random' method), which uses spatial layers of conservation interest (‘importance layers’) to set likelihoods for spatial cells being considered for protection. The optimizations are performed using a Monte Carlo approach where the importance layers are used for the initial cell selection in each MC realization. The Ecospace model is then run, the objectivity function (Equation 2 in<a href="Spatial optimization procedures.htm"> Spatial optimization procedures</a>) is evaluated, and the results, including which cells were protected, are stored for each run (see Figure 11.2). 
+        <p>To address this shortcoming, we have developed a new optimization routine for the Ecospace model (user selects 'Importance layer' method), which uses spatial layers of conservation interest (‘importance layers’) to set likelihoods for spatial cells being considered for protection. The optimizations are performed using a Monte Carlo approach where the importance layers are used for the initial cell selection in each MC realization. The Ecospace model is then run, the objective function (Equation 2 in<a href="Spatial optimization procedures.htm"> Spatial optimization procedures</a>) is evaluated, and the results, including which cells were protected, are stored for each run (see Figure 11.2). 
 </p>
-        <p>The importance layers are defined as raster layers, with dimensions similar to the base map layers in the underlying Ecospace model, i.e. they are rectangular cells in a grid with a certain number of rows and columns. Each cell in a given layer has a certain ‘importance’ for conservation, expressed, e.g., as the probability of occurrence for an endangered species. For each importance layer (<i>l</i>), we initially scale the importance layer values to sum to unity, and then calculate an overall cell weighting (<i>w<sub>c</sub></i>) for each cell (<i>c</i>) from
+        <p>NOTE: importance layers are not used to evaluate the objective function. The information in the importance layers is used only to influence initial cell selection. </p>
+        <p>The importance layers are defined as raster layers, with dimensions similar to the base map layers in the underlying Ecospace model, i.e. they are rectangular cells in a grid with a certain number of rows and columns. Each cell in a given layer has a certain ‘importance’ for conservation, expressed, e.g., as the probability of occurrence for an endangered species. For each importance layer (<i>l</i>), we initially scale the importance layer values to sum to unity, and then calculate an overall cell weighting (<i>w<sub>c</sub></i>) for each cell (<i>C</i>) from
 </p>
         <p>
             <img src="../Resources/Images/ImportanceLayerEquation.bmp" />
         </p>
         <p><i></i>
         </p>
-        <p>where   are the importance layer weightings, and  the cell-specific, scaled importance layer values. 
-</p>
+        <p>where <i>w<sub>l</sub></i>  are the importance layer weightings, and  the <i>C<sub>c,l</sub></i> cell-specific, scaled importance layer values.</p>
         <p>Similar to the seed cell selection procedure, we typically develop and tune the model to an initial time period, and then use the sampling procedure to evaluate scenarios for protected areas for a subsequent time period.
 </p>
-        <p>We have developed a capability for Ecospace to read raster files with spatial information such as importance layers or other Ecospace base map layers. The reading is possible from comma separated text files (.csv), ESRI ASCII files (.asc), and ESRI shape files (.shp). The files need to have layers or columns with row and column numbers matching the Ecospace model. 
+        <p>We have developed a capability for Ecospace to read raster files with spatial information such as importance layers or other Ecospace base map layers. The reading is possible from comma separated text files (.csv), ESRI ASCII files (.asc), and ESRI shape files (.shp). The files need to have layers or columns with row and column numbers matching the Ecospace model (see below for details). 
 </p>
         <p>Further information can be found in <a href="Spatial optimization procedures.htm">Spatial optimization procedures</a> and it is strongly recommended you read this section before  proceeding with the <i>Spatial optimizations</i> routine.</p>
         <p>&#160;</p>
         <p>
-            <img src="../Resources/Images/ImportanceLayerRoutine.bmp" />
+            <img src="../Resources/Images/ImportanceLayerRoutine.bmp" style="width: 428px;height: 349px;" />
         </p>
-        <p><b>Figure 11.2</b> <![CDATA[ ]]>Logic of the importance layer sampling procedure. For each run a given percentage of all cells are protected based on weighted likelihood in importance layers. The evaluation of each run is done independently based on a defined objectivity function. </p>
+        <p><b>Figure 11.2</b> Logic of the importance layer sampling procedure. For each run a given percentage of all cells are protected based on weighted likelihood in importance layers. The evaluation of each run is done independently based on a defined objective function (see <b>Objectives</b> below). </p>
         <p>&#160;</p>
         <h3>Implementing <i>Spatial optimizations </i>in Ecospace</h3>
-        <p style="font-style: normal;">Inputs (Parameters, Map, Objectives, Layers) and Output of the <i>Spatial optimizations</i> routine are located on the same form (Figure 11.3). </p>
+        <p>The <i>Spatial optimizations</i> form is divided into two sections. Inputs are entered in the top half of the form in the <b>Configuration</b> and <b>Map Input</b> tabs. <b></b>Results are displayed on the bottom half of the form on the <b>Progress</b> and <b>Results</b> tabs.</p>
         <p style="font-style: normal;">
-            <img src="../Resources/Images/SpatialOptimization_sc.bmp" style="width: 940px;height: 687px;" />
+            <img src="../Resources/Images/SpatialOptimization_sc.bmp" style="width: 773px;height: 563px;" />
         </p>
-        <p><span style="font-size: 10;"><b>Figure 11.3</b> The<i style="font-size: 10;"> Spatial optimizations</i> form.</span>
+        <p><span style="font-size: 10;"><small style="font-weight: bold;">Figure 11.3</small><small> The</small><small><![CDATA[ ]]><i>Spatial optimizations</i></small><small> form, <b>Configuration</b> tab.</small></span>
         </p>
         <h4 style="font-size: 10pt;">&#160;</h4>
-        <h4>Parameters</h4>
-        <p style="font-style: normal;">Users can choose between two methods of implementing the spatial optimisation routine: <b>Ecoseed</b> or <b>Random</b> (see <a href="Spatial optimization procedures.htm"></a>above). Before proceeding with the optimization routine, users should first select one of these two options in the <b>'Search'</b> box on the <b>Parameters</b> section of the form (Figure 11.3). Selection of one of these methods will determine the inputs required.</p>
-        <p style="font-style: normal;">In both cases, users must set the <b>Start year</b> and <b>End year</b> for the optimization search. If <b>Start year</b> is set to 1, the routine will start running Ecospace and evaluating the objective function from the first year of simulations. However, in many cases, users will wish to run Ecospace for a period of time, possibly to obtain some degree of equilibrium under fishing,  before optimization begins. In this case, set <b>Start year</b> to the first year that the objective function is to be evaluated, e.g., if <b>Start year</b> is set to five, Ecospace will run for four years and then start the search routine in year five. Set <b>End year</b> to the year in which the search routine is to stop. The objective function is evaluated in this year. The length of time over which to run the optimization routine will depend on the time horizon of the particular management question and the life span of the species affected by the MPA.</p>
-        <p style="font-style: normal;">In both cases, users can also select an <b>MPA</b> previously defined on the <a href="Basemap.htm">Ecospace Basemap</a> (see also <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a>). The cells bordering the MPA will then also be used as seed cells.</p>
-        <p style="font-style: normal;"> Additionally, if <b>Random </b>is selected, the user defines the minimum and maximum area (<b>Min area %</b> and <b>Max area %</b>, with step size <b>Step %</b>) to be set aside as MPA. The percentage area can be set to a fixed value by setting  <b>Min area %</b> and <b>Max area %</b> to the same value. Users also set the number of <b>Iterations</b> that will be implemented in the Monte Carlo search routine (see above). </p>
+        <h3>Configuration tab</h3>
+        <p style="font-style: normal;">Users can choose between two methods of implementing the spatial optimisation routine: <b>Seed cell</b> or <b>Importance layer</b> (see <a href="Spatial optimization procedures.htm"></a>above). Before proceeding with the optimization routine, users should first select one of these two options in the <b>Search</b> box on the <b>Parameters</b> panel of the form (Figure 11.3). Selection of one of these methods will determine the inputs required.</p>
+        <p style="font-style: normal;">In both cases, users must set the <b>Start year</b> and <b>End year</b> for the optimization search. If <b>Start year</b> is set to 1, the routine will start running Ecospace and evaluating the objective function from the first year of simulations. However, in many cases, users will wish to run Ecospace for a period of time, possibly to obtain some degree of equilibrium under fishing,  before optimization begins. In this case, set <b>Start year</b> to the first year that the objective function is to be evaluated, e.g., if <b>Start year</b> is set to five, Ecospace will run for four years and then start the search routine in year five. Set <b>End year</b> to the year in which the search routine is to stop.  The appropriatelength of time over which to run the optimization routine will depend on the time horizon of the particular management question and the life span of the species affected by the MPA.</p>
+        <p style="font-style: normal;">In both cases, users can also select an <b>MPA</b> previously defined on the <a href="Basemap.htm">Ecospace Basemap</a> (see also <a href="Define Ecospace habitats.htm">Define Ecospace habitats</a>). The cells bordering the MPA will then also be used as seed cells and the selected MPA may be modified during the search. Any other MPAs will be unaffected by the search.</p>
+        <p style="font-style: normal;"> Additionally, if <b>Importance layer </b>is selected, the user defines the minimum and maximum area (<b>Min area %</b> and <b>Max area %</b>, with step size <b>Step %</b>) to be set aside as MPA. The percentage area can be set to a fixed value by setting  <b>Min area %</b> and <b>Max area %</b> to the same value. Users also set the number of <b>Iterations</b> that will be implemented in the Monte Carlo search routine (see above). </p>
+        <p style="font-style: normal;">The search routine is initialized using the <b>Run</b> button. It can be stopped using the <b>Stop</b> button.</p>
+        <p style="font-style: normal;">NOTE: If you initialize a search then stop the search, you cannot restart it or change input parameter values. You must use the <b>New Search </b>button to start a new search.</p>
         <h4>Objectives</h4>
-        <p style="font-style: normal;">The objective function used in the routine is analogous to that used in Ecosim's <a href="Implementing policy optimization.htm">Policy optimization</a> routine. Use the <b>Objectives</b> section of the form (Figure 11.3) to define objective function weights for <b>Net economic value</b> (total landed value of catch minus total operating cost to take this landed value); <b>Social value (employment)</b>, i.e., a social indicator, assumed proportional to gross landed value of catch for each fleet with a different jobs/landed value ratio for each fleet; and two ecological objectives: 1. <b>Mandated rebuilding</b> of one group (value of the objective function is measured by departures of biomasses over time from target biomass levels specified by entering ratios of target to Ecopath base biomasses) and ; 2.<b> Ecosystem structure</b>, which favours biomasses of large, long-lived organisms.  See Policy objectives in <a href="Fishing policy search.htm">Fishing policy search</a> and Christensen and Walters 2004b for more details about these objectives.<b></b></p>
+        <p style="font-style: normal;">The objective function used in the routine is analogous to that used in Ecosim's <a href="Implementing policy optimization.htm">Policy optimization</a> routine. It is strongly recommended you read   <![CDATA[ ]]><a href="Spatial optimization procedures.htm">Spatial optimization procedures</a> for detailed description of the objective function.</p>
+        <p style="font-style: normal;">Use the <b>Objectives</b> <![CDATA[ ]]>table  (Figure 11.3) to define objective function weights for <b>Net economic value</b> (total landed value of catch minus total operating cost); <b>Social value (employment)</b>, i.e., a social indicator, assumed proportional to gross landed value of catch for each fleet with a different jobs/landed value ratio for each fleet; and two ecological objectives: 1. <b>Mandated rebuilding</b> of one group (value of the objective function is measured by departures of biomasses over time from target biomass levels specified by entering ratios of target to Ecopath base biomasses); and 2.<b> Ecosystem structure</b>, which favours biomasses of large, long-lived organisms.  See <b>Policy objectives</b> in <a href="Fishing policy search.htm">Fishing policy search</a> and Christensen and Walters (2004b) for more details about these objectives.</p>
+        <p style="font-style: normal;">Use <b>Boundary </b>weight<b></b><span> to adjust the weight given to size of the protected area in the objective funtion. This is estimated as total boundary length over the protected area size and </span>captures spatial connectivity of protected areas.<b></b></p>
         <p style="font-style: normal;">Note that you may initially need play with different values for the objective function weight for each factor to find ranges that produce contrast in the final value of the objective function. 
 </p>
-        <p style="font-style: normal;"><u style="text-decoration: none;"><b></b>If you are placing weight on <b>Employment</b>,<b> Mandated rebuilding</b> or <b>Ecosystem structure</b> you may also need to set extra parameters for these on the two tabs in the <b>O</b></u><b>bjectives</b> section. Use the <b>Fleet</b> tab to set the number of jobs relative to the catch value. The default is 1 for each fleet, implying that if the catch doubled, the number of jobs would also double. 
-The table on the <b>Group</b> tab has two columns: </p>
-        <p style="font-style: normal;"><b>Mandated rel. biomass
+        <p style="font-style: normal;"><u style="text-decoration: none;"><b></b>You may also need to set extra parameters for these using the two tabs <b></b>on the<b> Configuration</b> panel</u>. Use the <b>Fleet</b> table to set the number of jobs relative to the catch value. The default is 1 for each fleet, implying that if the catch doubled, the number of jobs would also double. 
+For economic objectives, you may wish to adjust the <b>Discount rate</b> and <b>Generational discount rate</b>. The discount rate is the annual rate (entered in %) applied to discount the present value of future catches relative to present base value. See Ainsworth and Sumaila (2005) for description of intergenerational discounting.
+</p>
+        <p style="font-style: normal;">The  <b>Group</b> table has two columns: </p>
+        <blockquote>
+            <p style="font-style: normal;"><b>Mandated rel. biomass
 </b>
-        </p>
-        <p style="font-style: normal;">Use this column to set a threshold biomass (relative to the biomass in Ecopath) for the species or group of interest. The search routine will search for the fleet effort structure that will most effectively ensure this objective.
+            </p>
+            <p style="font-style: normal;">Use this column to set a threshold biomass (relative to the biomass in Ecopath) for the species or group of interest. 
 </p>
-        <p style="font-style: normal;"><b>Structure rel. weight</b>
-        </p>
-        <p style="font-style: normal;">When Ecosystem structure is included in the objective function, the search routine favours larger biomasses of long-lived organisms, indicated by&#160; B/P (i.e., P/B-1).&#160;These values are listed in the <i>Structure rel. weight</i> column and can be changed if users wish to place more or less weight on some groups than indicated by their B/P or if the user wishes to optimize for something other than B/P under the ecological objective.
+            <p style="font-style: normal;"><b>Structure rel. weight</b>
+            </p>
+            <p style="font-style: normal;">When Ecosystem structure is included in the objective function, the search routine favours larger biomasses of long-lived organisms, indicated by&#160; B/P (i.e., P/B<sup>-1</sup>).&#160;These values are listed in the <i>Structure rel. weight</i> column and can be changed if users wish to place more or less weight on some groups than indicated by their B/P or if the user wishes to optimize for something other than B/P under the ecological objective.
 </p>
-        <p style="font-style: normal;">Use <b>Boundary weight</b> to adjust the weight given to size of the protected area. This is estimated as total boundary length over the protected area size and <span style="color: #ff0000;">captures spatial connecti</span></p>
-        <p>The search routine is initialized using the <b>Run</b> button. It can be stopped using the <b>Stop</b> button.</p>
+        </blockquote>
         <p style="font-style: normal;">&#160;</p>
-        <h4>Layers</h4>
-        <p style="font-style: normal;">&#160;</p>
-        <h4>Map</h4>
-        <p style="font-style: normal;">&#160;</p>
-        <h4>Output</h4>
+        <h3>Map Input tab</h3>
+        <p>The <b>Map</b> <![CDATA[ ]]><b>Input</b> tab displays the<a href="Basemap.htm"> Ecospace basemap</a> associated with the <a href="Ecospace menu.htm">Ecospace scenario</a> that has been loaded. It displays progress of the search and the final results of the analysis.</p>
+        <p>
+            <img src="../Resources/Images/SpatialOptimization_MAP_sc.bmp" style="width: 782px;height: 625px;" />
+        </p>
+        <p><b>Figure 11.4</b> The<i style="font-size: 10;"> <![CDATA[ ]]><small>Spatial optimizations</small></i> form, <b>Map Input</b> tab.</p>
+        <h3>Layers</h3>
+        <p>The <b>Layers</b> panel is also found on the <b>Map Input</b> tab. Available options will change, depending on whether the <b>Seed cell</b> or <b>Importance layer</b> search is selected. Note that the Layers panel has a root directory format, which can be collapsed or expanded using the plus and minus icons. Use the eye symbols  to show  [<img src="../Resources/Images/Eye_open.PNG" style="vertical-align: sub;width: 16px;height: 16px;" />] or hide [<img src="../Resources/Images/Eye_closed.PNG" style="width: 16px;height: 16px;vertical-align: sub;" />] layers on the <b>Map</b>.</p>
+        <p><b style="font-size: 11;">Seed cell</b>
+        </p>
+        <p>When <b>Seed cell</b> has been selected on the<b> Configuration</b> tab, use the <b>Layers</b> panel (see image below) to set seed cells. </p>
+        <p>You cannot set <b>Best cells</b> or <b>Current cells</b>, as these are output results, but you can edit their appearance (i.e., colour) by clicking once on the symbol (coloured circles in the image below). This will open a dialogue box (the <b>Edit layer</b> dialogue box, see image below) where the colour of the symbol can be set. You can also change the appearance of <b>Seed cells</b> in this way. Once you have set the appearance of seed cells, click <b>OK</b> to close the dialogue box. </p>
+        <p>Click to the left of the<b> Seed cells</b> eye symbol to pick up the pen tool [<img src="../Resources/Images/Editable.png" style="width: 16px;height: 16px;vertical-align: sub;" />]. You can now click on the <b>Map</b> to select cell(s) to be used as seed cells. These will be indicated by a coloured circle (blue in this example). Note that you can use the <b>Seed</b> button at the top of the panel (see image below) to <b>Clear all</b> seed cells or <b>Set all</b> cells as seed cells. </p>
+        <p>Note also that if you now click on the <b>Seed cells</b> symbol (blue circle in the image below) the <b>Edit layer</b> dialogue box will now display the location of the seed cell(s) in the <b>Description and Appearance</b> tab. The <b>Data</b> tab of the <b>Edit layer</b> dialogue box displays the map as a spreadsheet of numbered cells corresponding to the cells on the map. Seed cells are indicated by 1 and all other cells are indicated by 0. Note that 1s and 0s relate only to the layer currently being edited. These data can be exported to a csv file using the <b>Export ...</b> button on the <b>Data</b> tab.</p>
+        <p><b>Habitats</b>, <b>MPAs</b> and <b>Land</b> can also be modified using the Layers panel. Again, use the eye icon  [<img src="../Resources/Images/Eye_open.PNG" style="vertical-align: sub;width: 16px;height: 16px;" />] to show or hide layers. Use the pen tool  [<img src="../Resources/Images/Editable.png" />] to modify location of these layers on the <b>Map</b>. Note that you can use the <b>MPA</b> button at the top of the panel (see image below) to <b>Clear all</b> MPAs or <b>Set all</b> cells as MPAs.<b></b></p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/ImportanceLayerWindow_Ecoseed.bmp" />
+        </p>
+        <p>The<b> Layers</b> panel on the <b>Map Input</b> tab (<b>Seed cell</b> configuration).</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/ImportanceLayerWindow_Ecoseed_EditLayer.bmp" style="width: 434px;height: 317px;" />
+        </p>
+        <p>The <b>Edit layer</b> dialogue box.</p>
+        <p><b>&#160;</b>
+        </p>
+        <p><b style="font-size: 11;">Importance layer</b>
+        </p>
+        <p>
+            <MadCap:keyword term="Importance layers;Importing importance layers" />When <b>Importance layer</b> has been selected on the<b> Configuration</b> tab, the <b>Layers</b> panel (see image below) is used to set <b>Importance layers</b> (users do not set seed cells). Note that importance layers are not used in calculation of the objective function, but rather are used to give greater importance to certain cells during random selection of seed cells. There are a number of ways to read in data for setting or importing importance layers. See <a href="Setting importance layers.htm">Setting importance layers</a> for full details on importing data importance layers. See <a href="Spatial optimization procedures.htm">Spatial optimization procedures</a> for more on Importance layers.</p>
+        <p>After you have imported the importance layers, they will be displayed in the <b>Layers</b> panel.</p>
+        <p>&#160;</p>
+        <p style="font-style: normal;">
+            <img src="../Resources/Images/ImportanceLayerWindow_Random.bmp" />
+        </p>
+        <p>The<b> Layers</b> panel on the <b>Map Input</b> tab (<b>Importance layer</b> configuration).</p>
+        <p>&#160;</p>
+        <h3>Output</h3>
+        <h4>Progress tab</h4>
+        <p>As the search algorithm proceeds, progress is displayed on the <b>Progress </b>tab of the <b>Output</b> window (image below). On the left of the Progress tab, relative values of the components of the objective function are displayed. On the right, relative values of the components of the objective function are shown as a function of number of cells closed.</p>
+        <p>
+            <img src="../Resources/Images/SpatialOptimization_Progress.bmp" style="width: 620px;height: 528px;" />
+        </p>
+        <h4>&#160;</h4>
+        <h4>Results tab</h4>
+        <p>When the algorithm has finished, results are shown on the <b>Results</b> tab. Results are displayed graphically, as on the progress tab, as relative values of the components of the objective function, and are displayed as a function of the number of cells closed. Results are also shown in tabular form at the right of the <b>Results</b> panel and as MPAs on  the <b>Map Input</b> panel.</p>
+        <p>Results can be filtered in three ways. </p>
+        <p>1. You can mouse over the final results graph to display results at that location on the graph (vertical orange line below). Results at this location are displayed in tabular form on the right of the panel.</p>
+        <p>2. You can also use the <b>Area closed (%)</b> window, above the graph, to select results to display. </p>
+        <p>3.You can also use the <b>Best (%)</b> window on the <b>Results</b> tab to filter which results are displayed on the map (e.g., if 10% is selected, only results that produced the top 10% of objective function values will be displayed). </p>
+        <p> Final filtered results can be saved to csv file using the <b>Save...</b> button. The final filtered results  can be converted to MPAs on the base map using the<b> Convert to MPA</b> button. This will result in MPAs being placed on the <a href="Basemap.htm">Basemap</a> for the current Ecospace scenario. Original MPAs can be reset using the <b>Reset MPAs</b> button.</p>
+        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/SpatialOptimization_Result.bmp" />
+        </p>
+        <p>&#160;</p>
     </body>
 </html>
