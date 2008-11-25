@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cRelativeFlows.vb,v $
+' Revision 1.2  2008/11/25 05:47:34  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:56  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -42,7 +45,6 @@ Public Class cRelativeFlows
     'Private m_Panel As Windows.Forms.Panel   
     Private Shared m_Panel As Windows.Forms.Panel   '???
 
-
     Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cRelativeFlows
         m_Panel = Panel  '???
 
@@ -74,9 +76,21 @@ Public Class cRelativeFlows
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups
+        DataGrid.RowCount = m_NetworkManager.nGroups + 1
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = ""
+        strRowContent(1) = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
+        For j As Integer = 1 To m_NetworkManager.nTrophicLevels
+            strRowContent(j + 1) = CRoman(j)
+        Next
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
+
         For i As Integer = 1 To m_NetworkManager.nGroups
             strRowContent(0) = CStr(i)
             strRowContent(1) = m_NetworkManager.GroupName(i)
@@ -84,9 +98,8 @@ Public Class cRelativeFlows
                 strRowContent(j + 1) = (m_NetworkManager.RelativeFlow(i, j)).ToString("F4")
             Next
             'DataGrid.Rows.Add(strary)
-            DataGrid.Rows(i - 1).SetValues(strRowContent)
-            DataGrid.Rows(i - 1).Visible = True
-
+            DataGrid.Rows(i).SetValues(strRowContent)
+            DataGrid.Rows(i).Visible = True
 
             'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
             'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
@@ -121,11 +134,8 @@ Public Class cRelativeFlows
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
-        DataGrid.Columns(0).HeaderText = ""
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
-        For i As Integer = 1 To m_NetworkManager.nTrophicLevels
-            DataGrid.Columns(i + 1).HeaderText = CRoman(i)
-        Next
+        'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
+        'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
     End Sub
 
     Private Sub RemoveToolStrip()

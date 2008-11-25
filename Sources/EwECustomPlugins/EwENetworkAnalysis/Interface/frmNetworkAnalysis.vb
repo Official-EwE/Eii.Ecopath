@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.3  2008/11/25 05:47:34  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.2  2008/11/17 13:08:31  jeroens
 ' Removed obsolete root node
 '
@@ -60,6 +63,8 @@
 
 Option Strict On
 Option Explicit On
+
+Imports System.Windows.Forms
 
 Public Class frmNetworkAnalysis
     Private WithEvents m_NetworkManager As cNetworkManager
@@ -654,6 +659,27 @@ Public Class frmNetworkAnalysis
     Private Sub m_IndicesWithPPREstClass_AddToolStrip() Handles m_IndicesWithPPREstClass.AddToolStrip
         scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
     End Sub
+
+    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvNetworkAnalysis.CellClick
+        If e.RowIndex > 0 And e.ColumnIndex > 0 Then
+            'highlight the cell
+            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
+            dgvNetworkAnalysis.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+        ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
+            'highlight the row
+            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            dgvNetworkAnalysis.Rows(e.RowIndex).Selected = True
+        ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
+            'highlight the column
+            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
+            dgvNetworkAnalysis.Columns(e.ColumnIndex).Selected = True
+        ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
+            'highlight the whole grid
+            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
+            dgvNetworkAnalysis.SelectAll()
+        End If
+    End Sub
+
     'Private Sub btRunEcosimNetwork_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
     '    Dim iTime As Integer
 

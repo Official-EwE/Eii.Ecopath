@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: modUtility.vb,v $
+' Revision 1.2  2008/11/25 05:47:34  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:58  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -46,6 +49,7 @@ Module modUtility
     Public Const DEFAULT_COL_WIDTH As Integer = 70
     Public Const ID_COL_WIDTH As Integer = 25
     Public Const GRP_NAME_COL_WIDTH As Integer = 110
+    Public Const FIRST_ROW_HEIGHT As Integer = 45
 
     'Public Declare Function FindWindow& Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String)
     Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
@@ -98,8 +102,9 @@ Module modUtility
     End Function
 
     Public Sub SetGridColumnPropertyDefault(ByVal DataGrid As Windows.Forms.DataGridView)
+        DataGrid.ColumnHeadersVisible = False
         For intColIndex As Integer = 0 To DataGrid.ColumnCount - 1
-            DataGrid.Columns(intColIndex).HeaderCell.Style.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+            'DataGrid.Columns(intColIndex).HeaderCell.Style.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
             DataGrid.Columns(intColIndex).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
             DataGrid.Columns(intColIndex).DefaultCellStyle.BackColor = Drawing.Color.White
             DataGrid.Columns(intColIndex).Width = DEFAULT_COL_WIDTH '110
