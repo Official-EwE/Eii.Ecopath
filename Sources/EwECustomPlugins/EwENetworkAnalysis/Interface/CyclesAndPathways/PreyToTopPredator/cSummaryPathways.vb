@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSummaryPathways.vb,v $
+' Revision 1.2  2008/11/25 23:14:03  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:49  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -78,14 +81,23 @@ Namespace PreyToPredator
 
             'Set up grid rows
             DataGrid.RowHeadersVisible = False
-            DataGrid.RowCount = 2
+            DataGrid.RowCount = 3
+            DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+            DataGrid.Rows(0).Frozen = True
+            DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
             Cursor.Current = Cursors.Default
 
             ReDim strRowContent(DataGrid.Columns.Count)
-            strRowContent(0) = My.Resources.ROW_HDR_TOTAL_NUM_PATH
-            strRowContent(1) = CStr(m_NetworkManager.PathWays.Count)
+            strRowContent(0) = My.Resources.COL_HDR_PARAM
+            strRowContent(1) = My.Resources.COL_HDR_VALUE
             DataGrid.Rows(0).SetValues(strRowContent)
             DataGrid.Rows(0).Visible = True
+
+            strRowContent(0) = My.Resources.ROW_HDR_TOTAL_NUM_PATH
+            strRowContent(1) = CStr(m_NetworkManager.PathWays.Count)
+            DataGrid.Rows(1).SetValues(strRowContent)
+            DataGrid.Rows(1).Visible = True
 
             strRowContent(0) = My.Resources.ROW_HDR_MEAN_PATH_LEN
             If m_NetworkManager.PathWays.Count = 0 Then
@@ -93,8 +105,8 @@ Namespace PreyToPredator
             Else
                 strRowContent(1) = (m_NetworkManager.NumArrows / m_NetworkManager.PathWays.Count).ToString("F2")
             End If
-            DataGrid.Rows(1).SetValues(strRowContent)
-            DataGrid.Rows(1).Visible = True
+            DataGrid.Rows(2).SetValues(strRowContent)
+            DataGrid.Rows(2).Visible = True
 
             DataGrid.ClearSelection()
 
@@ -122,9 +134,6 @@ Namespace PreyToPredator
             DataGrid.Columns(0).Frozen = True
             DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
             DataGrid.Columns(0).Width = 400
-            DataGrid.Columns(0).HeaderText = My.Resources.COL_HDR_PARAM
-
-            DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_VALUE
         End Sub
 
         Private Sub RemoveToolStrip()
