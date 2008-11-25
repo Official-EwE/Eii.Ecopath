@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.3  2008/11/25 17:58:11  joeb
+' Fixed bug 459 initEcosimForSearchIteration() now does a full init of ecosim
+'
 ' Revision 1.2  2008/11/19 18:03:08  joeb
 ' Update calls to RunModelValue to use new signature
 '
@@ -786,8 +789,6 @@ Namespace FitToTimeSeries
                 m_core.m_EcoSim.TimeStepDelegate = Nothing
 
                 'make sure ecosim has been initialized
-                ' m_core.m_EcoSim.Init()
-
                 initEcosimForSearchIteration()
 
                 'create the results object for this type of run
@@ -815,15 +816,16 @@ Namespace FitToTimeSeries
         ''' </summary>
         ''' <remarks>In EwE5 this is called PrepareSimSpace()</remarks>
         Private Sub initEcosimForSearchIteration()
-            Dim simModel As cEcoSimModel = m_core.m_EcoSim
 
-            simModel.Set_pbm_pbbiomass()
-            simModel.RedimForSearchRun()
-            '  m_core.m_EcoSim.RedimEcoSimVars()
-            simModel.CalcEatenOfBy()
-            simModel.CalcStartEatenOfBy()
-            simModel.InitialState()
-            simModel.setpred(m_core.m_EcoSimData.StartBiomass)
+            m_ecosim.Init(True)
+
+            'm_ecosim.Set_pbm_pbbiomass()
+            'm_ecosim.RedimForSearchRun()
+            ''  m_core.m_EcoSim.RedimEcoSimVars()
+            'm_ecosim.CalcEatenOfBy()
+            'm_ecosim.CalcStartEatenOfBy()
+            'm_ecosim.InitialState()
+            'm_ecosim.setpred(m_core.m_EcoSimData.StartBiomass)
 
         End Sub
 
@@ -910,7 +912,6 @@ Namespace FitToTimeSeries
                     Exit Sub
                 End If
 
-
                 'REM set some initial conditions for iteration counters
                 rmax = 1
                 Jit = 0
@@ -950,15 +951,12 @@ Namespace FitToTimeSeries
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
                 End If
 
-
-
                 For i = 1 To n
                     If Math.Abs(St(i) / (P(Ipn(i)) + dinc)) > 0.001 Then GoTo 220 REM seek correction step if newton step is still large
                 Next
 
                 GoTo 250
                 '   220 GoSub 700: Rem find and apply corrected step if possible
-
 
                 'VC Sep 08, had a case where the grad check in sub700 would estimate Grad to be very small, then kick out 
                 'of sub700, but next check above of 
