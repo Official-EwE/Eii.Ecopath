@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.27  2008/11/25 17:56:37  joeb
+' Fixed bug 459
+'
 ' Revision 1.26  2008/11/19 18:01:07  joeb
 ' Added an overloaded RunModelValue to not include search results. Search value are now obtained from the SearchDatastructures once RunModelValue has returned. The original RunModelValue is still there to allow existing code to still function!
 '
@@ -493,7 +496,7 @@ Public Property PluginManager() As cPluginManager
                 'redim and load any time series forcing data 
                 'PoolForceBB, PoolForceCatch and PoolForceZ
                 Me.m_RefData.nGroups = Me.nGroups
-                Me.m_RefData.LoadForcingData(Me.m_Data, Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch)
+                Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
 
                 DefaultDF()
 
@@ -3472,10 +3475,9 @@ Public Property PluginManager() As cPluginManager
                     '    System.Console.WriteLine("Vulrate " & i & ", " & j & " = " & m_Data.vulrate(i, j).ToString("##.000000000000000"))
 
                 End If
-                'If i = 5 And j = 3 Then Stop
+
                 If m_Data.vulrate(i, j) = 0 Then m_Data.vulrate(i, j) = 2
-                ' Debug.Assert(m_Data.vulrate(i, j) > Single.Epsilon)
-                'FlowType(i, j) = 2
+
             Else
                 m_Data.vulrate(i, j) = 1
             End If
