@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForConsumpOfAllGp.vb,v $
+' Revision 1.2  2008/11/25 20:55:41  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:54  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -85,8 +88,26 @@ Public Class cForConsumpOfAllGp
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = core.nLivingGroups + 1
+        DataGrid.RowCount = core.nLivingGroups + 2
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = ""
+        strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
+        strRowContent(2) = My.Resources.COL_HDR_NUM_PATH
+        strRowContent(3) = My.Resources.COL_HDR_TL
+        strRowContent(4) = My.Resources.COL_HDR_PPR_PP
+        strRowContent(5) = My.Resources.COL_HDR_PPR_DET
+        strRowContent(6) = My.Resources.COL_HDR_PPR
+        strRowContent(7) = My.Resources.COL_HDR_CONSUM
+        strRowContent(8) = My.Resources.COL_HDR_PPR_COMSUM
+        strRowContent(9) = My.Resources.COL_HDR_PPR_TOTAL_PP
+        strRowContent(10) = My.Resources.COL_HDR_PPR_U_BIOMASS
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
 
         For i As Integer = 1 To core.nLivingGroups
             strRowContent(0) = CStr(i)
@@ -109,8 +130,8 @@ Public Class cForConsumpOfAllGp
             Else
                 strRowContent(10) = ""
             End If
-            DataGrid.Rows(i - 1).SetValues(strRowContent)
-            DataGrid.Rows(i - 1).Visible = True
+            DataGrid.Rows(i).SetValues(strRowContent)
+            DataGrid.Rows(i).Visible = True
 
             'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
             'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
@@ -130,7 +151,7 @@ Public Class cForConsumpOfAllGp
         For i As Integer = 1 To core.nLivingGroups
             If m_NetworkManager.PPRCons(i) <= 0.0 Or _
                 m_NetworkManager.TotalPrimaryProduction <= 0.0 Then
-                DataGrid.Rows(i - 1).Visible = False
+                DataGrid.Rows(i).Visible = False
             End If
         Next
         DataGrid.ClearSelection()
@@ -162,18 +183,6 @@ Public Class cForConsumpOfAllGp
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
-
-        DataGrid.Columns(0).HeaderText = ""
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_GRP_NAME
-        DataGrid.Columns(2).HeaderText = My.Resources.COL_HDR_NUM_PATH
-        DataGrid.Columns(3).HeaderText = My.Resources.COL_HDR_TL
-        DataGrid.Columns(4).HeaderText = My.Resources.COL_HDR_PPR_PP
-        DataGrid.Columns(5).HeaderText = My.Resources.COL_HDR_PPR_DET
-        DataGrid.Columns(6).HeaderText = My.Resources.COL_HDR_PPR
-        DataGrid.Columns(7).HeaderText = My.Resources.COL_HDR_CONSUM
-        DataGrid.Columns(8).HeaderText = My.Resources.COL_HDR_PPR_COMSUM
-        DataGrid.Columns(9).HeaderText = My.Resources.COL_HDR_PPR_TOTAL_PP
-        DataGrid.Columns(10).HeaderText = My.Resources.COL_HDR_PPR_U_BIOMASS
     End Sub
 
     Private Sub RemoveToolStrip()

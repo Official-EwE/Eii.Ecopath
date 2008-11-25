@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cByGroup.vb,v $
+' Revision 1.2  2008/11/25 20:55:41  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:48  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -85,9 +88,23 @@ Public Class cByGroup
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups + 3
+        DataGrid.RowCount = m_NetworkManager.nGroups + 4
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = ""
+        strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
+        strRowContent(2) = My.Resources.COL_HDR_ASCEND
+        strRowContent(3) = My.Resources.COL_HDR_OVERHEAD
+        strRowContent(4) = My.Resources.COL_HDR_CAPACITY
+        strRowContent(5) = My.Resources.COL_HDR_INFO
+        strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT_UNIT
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
+
         For i As Integer = 1 To m_NetworkManager.nGroups
             strRowContent(0) = CStr(i)
             strRowContent(1) = m_NetworkManager.GroupName(i)
@@ -96,8 +113,8 @@ Public Class cByGroup
             strRowContent(4) = m_NetworkManager.CapacityByGroup(i).ToString("F4")
             strRowContent(5) = m_NetworkManager.InformationByGroup(i).ToString("F4")
             strRowContent(6) = m_NetworkManager.ThroughputByGroup(i).ToString("F4")
-            DataGrid.Rows(i - 1).SetValues(strRowContent)
-            DataGrid.Rows(i - 1).Visible = True
+            DataGrid.Rows(i).SetValues(strRowContent)
+            DataGrid.Rows(i).Visible = True
         Next
 
         strRowContent(0) = ""
@@ -107,8 +124,8 @@ Public Class cByGroup
         strRowContent(4) = ""
         strRowContent(5) = ""
         strRowContent(6) = m_NetworkManager.ThroughputByGroup(m_NetworkManager.nGroups + 1).ToString("F4")
-        DataGrid.Rows(m_NetworkManager.nGroups).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups).Visible = True
+        DataGrid.Rows(m_NetworkManager.nGroups + 1).SetValues(strRowContent)
+        DataGrid.Rows(m_NetworkManager.nGroups + 1).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
@@ -121,8 +138,8 @@ Public Class cByGroup
             strRowContent(5) = ""
         End If
         strRowContent(6) = m_NetworkManager.ThroughputTotal.ToString("F4")
-        DataGrid.Rows(m_NetworkManager.nGroups + 1).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups + 1).Visible = True
+        DataGrid.Rows(m_NetworkManager.nGroups + 2).SetValues(strRowContent)
+        DataGrid.Rows(m_NetworkManager.nGroups + 2).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_PCT
@@ -131,8 +148,8 @@ Public Class cByGroup
         strRowContent(4) = (m_NetworkManager.CapacityTotal / m_NetworkManager.CapacityTotal * 100.0).ToString("F4")
         strRowContent(5) = ""
         strRowContent(6) = ""
-        DataGrid.Rows(m_NetworkManager.nGroups + 2).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups + 2).Visible = True
+        DataGrid.Rows(m_NetworkManager.nGroups + 3).SetValues(strRowContent)
+        DataGrid.Rows(m_NetworkManager.nGroups + 3).Visible = True
 
         DataGrid.ClearSelection()
         Cursor.Current = Cursors.default
@@ -167,14 +184,6 @@ Public Class cByGroup
         'For intIndex As Integer = 2 To 4
         '    DataGrid.Columns(intIndex).Width = 120
         'Next
-
-        DataGrid.Columns(0).HeaderText = ""
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_GRP_NAME
-        DataGrid.Columns(2).HeaderText = My.Resources.COL_HDR_ASCEND
-        DataGrid.Columns(3).HeaderText = My.Resources.COL_HDR_OVERHEAD
-        DataGrid.Columns(4).HeaderText = My.Resources.COL_HDR_CAPACITY
-        DataGrid.Columns(5).HeaderText = My.Resources.COL_HDR_INFO
-        DataGrid.Columns(6).HeaderText = My.Resources.COL_HDR_THROUGHPUT_UNIT
     End Sub
 
     Private Sub RemoveToolStrip()

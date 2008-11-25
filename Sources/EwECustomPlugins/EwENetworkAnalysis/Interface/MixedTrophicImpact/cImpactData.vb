@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cImpactData.vb,v $
+' Revision 1.2  2008/11/25 20:55:41  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:54  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -77,9 +80,24 @@ Public Class cImpactData
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups + m_NetworkManager.nFleets
+        DataGrid.RowCount = m_NetworkManager.nGroups + m_NetworkManager.nFleets + 1
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = ""
+        strRowContent(1) = My.Resources.COL_HDR_IMPACTING_IMPACTED
+        For intIndex As Integer = 1 To m_NetworkManager.nGroups
+            strRowContent(intIndex + 1) = m_NetworkManager.GroupName(intIndex)
+        Next
+        For intIndex As Integer = 1 To m_NetworkManager.nFleets
+            strRowContent(m_NetworkManager.nGroups + intIndex + 1) = m_NetworkManager.FleetName(intIndex)
+        Next
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
+
         For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
             strRowContent(0) = CStr(i)
             If i <= m_NetworkManager.nGroups Then
@@ -90,8 +108,8 @@ Public Class cImpactData
             For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
                 strRowContent(j + 1) = (m_NetworkManager.MixedTrophicImpacts(i, j)).ToString("F4")
             Next
-            DataGrid.Rows(i - 1).SetValues(strRowContent)
-            DataGrid.Rows(i - 1).Visible = True
+            DataGrid.Rows(i).SetValues(strRowContent)
+            DataGrid.Rows(i).Visible = True
         Next
         DataGrid.ClearSelection()
         Cursor.Current = Cursors.Default
@@ -122,15 +140,6 @@ Public Class cImpactData
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
-
-        DataGrid.Columns(0).HeaderText = ""
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_IMPACTING_IMPACTED
-        For intIndex As Integer = 1 To iNumGroups
-            DataGrid.Columns(intIndex + 1).HeaderText = m_NetworkManager.GroupName(intIndex)
-        Next
-        For intIndex As Integer = 1 To iNumFleets
-            DataGrid.Columns(iNumGroups + intIndex + 1).HeaderText = m_NetworkManager.FleetName(intIndex)
-        Next
     End Sub
 
     Private Sub RemoveToolStrip()

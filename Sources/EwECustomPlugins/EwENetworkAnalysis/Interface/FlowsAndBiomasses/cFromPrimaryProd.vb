@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromPrimaryProd.vb,v $
+' Revision 1.2  2008/11/25 20:55:41  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:53  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -73,10 +76,24 @@ Public Class cFromPrimaryProd
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nTrophicLevels + 1
+        DataGrid.RowCount = m_NetworkManager.nTrophicLevels + 2
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
         ReDim sngSumVariable(DataGrid.Columns.Count)
+        strRowContent(0) = My.Resources.COL_HDR_TRP_LVL_FLOW
+        strRowContent(1) = My.Resources.COL_HDR_IMPORT
+        strRowContent(2) = My.Resources.COL_HDR_CONSUM_PREDAT
+        strRowContent(3) = My.Resources.COL_HDR_EXPORT
+        strRowContent(4) = My.Resources.COL_HDR_FLOW_DET
+        strRowContent(5) = My.Resources.COL_HDR_RESP
+        strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Visible = True
+
         For i As Integer = m_NetworkManager.nTrophicLevels To 1 Step -1
             'strRowContent(0) = CStr(i)
             strRowContent(0) = CRoman(i)
@@ -96,8 +113,8 @@ Public Class cFromPrimaryProd
             sngSumVariable(5) = sngSumVariable(5) + m_NetworkManager.PPRespiration(i)
             strRowContent(6) = m_NetworkManager.PPThroughtput(i).ToString("F4")
             sngSumVariable(6) = sngSumVariable(6) + m_NetworkManager.PPThroughtput(i)
-            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i).SetValues(strRowContent)
-            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i).Visible = True
+            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
+            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
         strRowContent(0) = My.Resources.ROW_HDR_SUM
@@ -129,14 +146,6 @@ Public Class cFromPrimaryProd
 
         DataGrid.Columns(0).Frozen = True
         DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-
-        DataGrid.Columns(0).HeaderText = My.Resources.COL_HDR_TRP_LVL_FLOW
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_IMPORT
-        DataGrid.Columns(2).HeaderText = My.Resources.COL_HDR_CONSUM_PREDAT
-        DataGrid.Columns(3).HeaderText = My.Resources.COL_HDR_EXPORT
-        DataGrid.Columns(4).HeaderText = My.Resources.COL_HDR_FLOW_DET
-        DataGrid.Columns(5).HeaderText = My.Resources.COL_HDR_RESP
-        DataGrid.Columns(6).HeaderText = My.Resources.COL_HDR_THROUGHPUT
     End Sub
 
     Private Sub RemoveToolStrip()

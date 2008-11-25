@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTotal.vb,v $
+' Revision 1.2  2008/11/25 20:55:41  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:48  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -74,9 +77,23 @@ Public Class cTotal
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = 5
+        DataGrid.RowCount = 6
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = My.Resources.COL_HDR_SOURCE
+        strRowContent(1) = My.Resources.COL_HDR_ASCEND_FLOWBIT
+        strRowContent(2) = My.Resources.COL_HDR_ASCEND_PCT
+        strRowContent(3) = My.Resources.COL_HDR_OVERHEAD_FLOWBIT
+        strRowContent(4) = My.Resources.COL_HDR_OVERHEAD_PCT
+        strRowContent(5) = My.Resources.COL_HDR_CAPACITY_FLOWBIT
+        strRowContent(6) = My.Resources.COL_HDR_CAPACITY_PCT
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
+
         strRowContent(0) = My.Resources.ROW_HDR_IMPORT
         strRowContent(1) = m_NetworkManager.AscendancyImportTotal.ToString("F1")
         strRowContent(2) = m_NetworkManager.AscendancyImportPer.ToString("F1")
@@ -84,8 +101,8 @@ Public Class cTotal
         strRowContent(4) = m_NetworkManager.OverheadImportPer.ToString("F1")
         strRowContent(5) = m_NetworkManager.CapacityImportTotal.ToString("F1")
         strRowContent(6) = m_NetworkManager.CapacityImportPer.ToString("F1")
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        DataGrid.Rows(1).SetValues(strRowContent)
+        DataGrid.Rows(1).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
         strRowContent(1) = m_NetworkManager.AscendancyInternalFlowTotal.ToString("F1")
@@ -94,8 +111,8 @@ Public Class cTotal
         strRowContent(4) = m_NetworkManager.OverheadFlowPer.ToString("F1")
         strRowContent(5) = m_NetworkManager.CapacityFlowTotal.ToString("F1")
         strRowContent(6) = m_NetworkManager.CapacityFlowPer.ToString("F1")
-        DataGrid.Rows(1).SetValues(strRowContent)
-        DataGrid.Rows(1).Visible = True
+        DataGrid.Rows(2).SetValues(strRowContent)
+        DataGrid.Rows(2).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_EXPORT
         strRowContent(1) = m_NetworkManager.AscendancyExportTotal.ToString("F1")
@@ -104,8 +121,8 @@ Public Class cTotal
         strRowContent(4) = m_NetworkManager.OverheadExportPer.ToString("F1")
         strRowContent(5) = m_NetworkManager.CapacityExportTotal.ToString("F1")
         strRowContent(6) = m_NetworkManager.CapacityExportPer.ToString("F1")
-        DataGrid.Rows(2).SetValues(strRowContent)
-        DataGrid.Rows(2).Visible = True
+        DataGrid.Rows(3).SetValues(strRowContent)
+        DataGrid.Rows(3).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_RESP
         strRowContent(1) = m_NetworkManager.AscendancyRespTotal.ToString("F1")
@@ -114,8 +131,8 @@ Public Class cTotal
         strRowContent(4) = m_NetworkManager.OverheadRespPer.ToString("F1")
         strRowContent(5) = m_NetworkManager.CapacityRespTotal.ToString("F1")
         strRowContent(6) = m_NetworkManager.CapacityRespPer.ToString("F1")
-        DataGrid.Rows(3).SetValues(strRowContent)
-        DataGrid.Rows(3).Visible = True
+        DataGrid.Rows(4).SetValues(strRowContent)
+        DataGrid.Rows(4).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_TOTAL
         strRowContent(1) = m_NetworkManager.AscendancyTotalsTotal.ToString("F1")
@@ -124,8 +141,8 @@ Public Class cTotal
         strRowContent(4) = m_NetworkManager.OverheadTotalsPer.ToString("F1")
         strRowContent(5) = m_NetworkManager.CapacityTotalsTotal.ToString("F1")
         strRowContent(6) = m_NetworkManager.CapacityTotalsPer.ToString("F1")
-        DataGrid.Rows(4).SetValues(strRowContent)
-        DataGrid.Rows(4).Visible = True
+        DataGrid.Rows(5).SetValues(strRowContent)
+        DataGrid.Rows(5).Visible = True
 
         DataGrid.ClearSelection()
         Cursor.Current = Cursors.Default
@@ -151,14 +168,6 @@ Public Class cTotal
 
         DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(0).Frozen = True
-
-        DataGrid.Columns(0).HeaderText = My.Resources.COL_HDR_SOURCE
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_ASCEND_FLOWBIT
-        DataGrid.Columns(2).HeaderText = My.Resources.COL_HDR_ASCEND_PCT
-        DataGrid.Columns(3).HeaderText = My.Resources.COL_HDR_OVERHEAD_FLOWBIT
-        DataGrid.Columns(4).HeaderText = My.Resources.COL_HDR_OVERHEAD_PCT
-        DataGrid.Columns(5).HeaderText = My.Resources.COL_HDR_CAPACITY_FLOWBIT
-        DataGrid.Columns(6).HeaderText = My.Resources.COL_HDR_CAPACITY_PCT
     End Sub
 
     Private Sub RemoveToolStrip()
