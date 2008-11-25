@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnRunTrials.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnStop.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="tcMCOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -373,7 +373,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tcMCOutput.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -643,7 +643,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;prgMCTrials.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="btApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -673,10 +673,58 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btApply.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="gpbInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;nudNumTrials.Name" xml:space="preserve">
+    <value>nudNumTrials</value>
+  </data>
+  <data name="&gt;&gt;nudNumTrials.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudNumTrials.Parent" xml:space="preserve">
+    <value>gpbInput</value>
+  </data>
+  <data name="&gt;&gt;nudNumTrials.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnTS.Name" xml:space="preserve">
+    <value>btnTS</value>
+  </data>
+  <data name="&gt;&gt;btnTS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnTS.Parent" xml:space="preserve">
+    <value>gpbInput</value>
+  </data>
+  <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="gpbInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="gpbInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>514, 89</value>
+  </data>
+  <data name="gpbInput.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="gpbInput.Text" xml:space="preserve">
+    <value>&amp;Input options</value>
+  </data>
+  <data name="&gt;&gt;gpbInput.Name" xml:space="preserve">
+    <value>gpbInput</value>
+  </data>
+  <data name="&gt;&gt;gpbInput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gpbInput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gpbInput.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="nudNumTrials.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 17</value>
@@ -726,32 +774,104 @@
   <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="gpbInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="gpbInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>514, 89</value>
-  </data>
-  <data name="gpbInput.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="gpbInput.Text" xml:space="preserve">
-    <value>&amp;Input options</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Name" xml:space="preserve">
-    <value>gpbInput</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="gpbOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;lblValueERun.Name" xml:space="preserve">
+    <value>lblValueERun</value>
+  </data>
+  <data name="&gt;&gt;lblValueERun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblValueERun.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lblValueERun.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSBest.Name" xml:space="preserve">
+    <value>lblValueSSBest</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSBest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSBest.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSBest.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lblValueSS.Name" xml:space="preserve">
+    <value>lblValueSS</value>
+  </data>
+  <data name="&gt;&gt;lblValueSS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblValueSS.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lblValueSS.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSOrg.Name" xml:space="preserve">
+    <value>lblValueSSOrg</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSOrg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSOrg.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lblValueSSOrg.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblValueTrial.Name" xml:space="preserve">
+    <value>lblValueTrial</value>
+  </data>
+  <data name="&gt;&gt;lblValueTrial.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblValueTrial.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lblValueTrial.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;lbSSOrg.Name" xml:space="preserve">
+    <value>lbSSOrg</value>
+  </data>
+  <data name="&gt;&gt;lbSSOrg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbSSOrg.Parent" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="gpbOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>532, 12</value>
+  </data>
+  <data name="gpbOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 89</value>
+  </data>
+  <data name="gpbOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gpbOutput.Text" xml:space="preserve">
+    <value>&amp;Output parameters</value>
+  </data>
+  <data name="&gt;&gt;gpbOutput.Name" xml:space="preserve">
+    <value>gpbOutput</value>
+  </data>
+  <data name="&gt;&gt;gpbOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gpbOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gpbOutput.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="lblValueERun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -930,28 +1050,37 @@
   <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="gpbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>532, 12</value>
+  <data name="lblTrialsComplete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
-  <data name="gpbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 89</value>
+  <data name="lblTrialsComplete.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="gpbOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="lblTrialsComplete.Location" type="System.Drawing.Point, System.Drawing">
+    <value>260, 596</value>
   </data>
-  <data name="gpbOutput.Text" xml:space="preserve">
-    <value>&amp;Output parameters</value>
+  <data name="lblTrialsComplete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 13</value>
   </data>
-  <data name="&gt;&gt;gpbOutput.Name" xml:space="preserve">
-    <value>gpbOutput</value>
+  <data name="lblTrialsComplete.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="&gt;&gt;gpbOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lblTrialsComplete.Text" xml:space="preserve">
+    <value>Trials complete</value>
   </data>
-  <data name="&gt;&gt;gpbOutput.Parent" xml:space="preserve">
+  <data name="lblTrialsComplete.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;lblTrialsComplete.Name" xml:space="preserve">
+    <value>lblTrialsComplete</value>
+  </data>
+  <data name="&gt;&gt;lblTrialsComplete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTrialsComplete.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gpbOutput.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblTrialsComplete.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -976,6 +1105,6 @@
     <value>MCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.1.2734.23473, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

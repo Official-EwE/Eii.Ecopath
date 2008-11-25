@@ -54,6 +54,7 @@ Namespace Ecosim
             Me.lblValueSSOrg = New System.Windows.Forms.Label
             Me.lblValueTrial = New System.Windows.Forms.Label
             Me.lbSSOrg = New System.Windows.Forms.Label
+            Me.lblTrialsComplete = New System.Windows.Forms.Label
             Me.tcMCOutput.SuspendLayout()
             Me.gpbInput.SuspendLayout()
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -200,7 +201,7 @@ Namespace Ecosim
             'nudNumTrials
             '
             resources.ApplyResources(Me.nudNumTrials, "nudNumTrials")
-            Me.nudNumTrials.Maximum = New Decimal(New Integer() {Integer.MaxValue, 0, 0, 0})
+            Me.nudNumTrials.Maximum = New Decimal(New Integer() {2147483647, 0, 0, 0})
             Me.nudNumTrials.Name = "nudNumTrials"
             '
             'btnTS
@@ -255,10 +256,17 @@ Namespace Ecosim
             resources.ApplyResources(Me.lbSSOrg, "lbSSOrg")
             Me.lbSSOrg.Name = "lbSSOrg"
             '
+            'lblTrialsComplete
+            '
+            resources.ApplyResources(Me.lblTrialsComplete, "lblTrialsComplete")
+            Me.lblTrialsComplete.BackColor = System.Drawing.Color.Transparent
+            Me.lblTrialsComplete.Name = "lblTrialsComplete"
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.lblTrialsComplete)
             Me.Controls.Add(Me.gpbOutput)
             Me.Controls.Add(Me.gpbInput)
             Me.Controls.Add(Me.tcMCOutput)
@@ -274,6 +282,7 @@ Namespace Ecosim
             Me.gpbOutput.ResumeLayout(False)
             Me.gpbOutput.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Friend WithEvents lblNumTrials As System.Windows.Forms.Label
@@ -306,6 +315,7 @@ Namespace Ecosim
         Friend WithEvents lblValueSS As System.Windows.Forms.Label
         Friend WithEvents lblValueSSOrg As System.Windows.Forms.Label
         Friend WithEvents lblValueTrial As System.Windows.Forms.Label
+        Friend WithEvents lblTrialsComplete As System.Windows.Forms.Label
     End Class
 
 End Namespace

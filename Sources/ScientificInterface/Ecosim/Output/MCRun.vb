@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.2  2008/11/25 02:16:26  sherman
+' Added feedback onto monte carlo progress bar.
+'
 ' Revision 1.1  2008/09/26 07:31:47  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -269,6 +272,7 @@ Namespace Ecosim
 
             Try
                 prgMCTrials.PerformStep()
+                If Me.prgMCTrials.Value = Me.prgMCTrials.Maximum Then Me.lblTrialsComplete.Visible = True
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -347,6 +351,7 @@ Namespace Ecosim
 
             Me.prgMCTrials.Maximum = m_mcManager.nTrials
             Me.prgMCTrials.Value = 0
+            Me.lblTrialsComplete.Visible = False
 
             Me.btApply.Enabled = False
             Me.tcMCOutput.SelectedIndex = 5 ' For biomass plot page.
