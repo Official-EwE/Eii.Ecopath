@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCyclingAndPathLen.vb,v $
+' Revision 1.2  2008/11/25 23:44:07  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:50  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -76,17 +79,27 @@ Public Class cCyclingAndPathLen
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = 7
+        DataGrid.RowCount = 8
+        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        DataGrid.Rows(0).Frozen = True
+        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
+        strRowContent(0) = My.Resources.COL_HDR_PARAM
+        strRowContent(1) = My.Resources.COL_HDR_VALUE
+        strRowContent(2) = My.Resources.COL_HDR_UNIT
+        DataGrid.Rows(0).SetValues(strRowContent)
+        DataGrid.Rows(0).Visible = True
+
         'SetCellText(Grid, 1, 1, "Throughput cycled (excluding detritus)")
         'SetCellValue(Grid, 2, 1, Format(Tc, "0.00"))
         'SetCellText(Grid, 3, 1, GetUnits(2, 2))
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_LIV
         strRowContent(1) = m_NetworkManager.ThroughputCycledLiving.ToString("F2")
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        DataGrid.Rows(1).SetValues(strRowContent)
+        DataGrid.Rows(1).Visible = True
 
         'g_Recordset.Fields("TrputCyclExlDet").value = Tc
         'SetCellText(Grid, 1, 2, "Predatory cycling index")
@@ -101,8 +114,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_PCT_THROUGHPUT_LIV
-        DataGrid.Rows(1).SetValues(strRowContent)
-        DataGrid.Rows(1).Visible = True
+        DataGrid.Rows(2).SetValues(strRowContent)
+        DataGrid.Rows(2).Visible = True
 
         'SetCellText(Grid, 1, 3, "Throughput cycled (including detritus)")
         'SetCellValue(Grid, 2, 3, IIf(Abs(TcD) > 0, Format(TcD, "0.00"), ""))  'Format(100 * Tc / TcD, "0.00"), "")
@@ -115,8 +128,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        DataGrid.Rows(2).SetValues(strRowContent)
-        DataGrid.Rows(2).Visible = True
+        DataGrid.Rows(3).SetValues(strRowContent)
+        DataGrid.Rows(3).Visible = True
 
         'SetCellText(Grid, 1, 4, "Finn's cycling index")
         'SetCellValue(Grid, 2, 4, Format(100 * TcD / TruPut, "0.00"))
@@ -126,8 +139,8 @@ Public Class cCyclingAndPathLen
         strRowContent(1) = (100.0 * m_NetworkManager.ThroughputCycledAll / _
             m_NetworkManager.ThroughputTotal).ToString("F2")
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
-        DataGrid.Rows(3).SetValues(strRowContent)
-        DataGrid.Rows(3).Visible = True
+        DataGrid.Rows(4).SetValues(strRowContent)
+        DataGrid.Rows(4).Visible = True
 
         'Mean path length is truput/(export+respiration)
         'SetCellText(Grid, 1, 5, "Finn's mean path length")
@@ -145,8 +158,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_NONE
-        DataGrid.Rows(4).SetValues(strRowContent)
-        DataGrid.Rows(4).Visible = True
+        DataGrid.Rows(5).SetValues(strRowContent)
+        DataGrid.Rows(5).Visible = True
 
         'SetCellText(Grid, 1, 6, "Finn's straight-through path length")
         'If (SumEx - Ex(NumGroups) + SumResp) > 0 Then
@@ -165,8 +178,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_WO_DET
-        DataGrid.Rows(5).SetValues(strRowContent)
-        DataGrid.Rows(5).Visible = True
+        DataGrid.Rows(6).SetValues(strRowContent)
+        DataGrid.Rows(6).Visible = True
 
         'SetCellText(Grid, 1, 7, "Finn's straight-through path length") '7
         'If SumEx + SumResp > 0 Then
@@ -181,8 +194,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_W_DET
-        DataGrid.Rows(6).SetValues(strRowContent)
-        DataGrid.Rows(6).Visible = True
+        DataGrid.Rows(7).SetValues(strRowContent)
+        DataGrid.Rows(7).Visible = True
 
         DataGrid.ClearSelection()
         Cursor.Current = Cursors.Default
@@ -208,14 +221,9 @@ Public Class cCyclingAndPathLen
         DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(0).Width = 220
         DataGrid.Columns(0).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(0).HeaderText = My.Resources.COL_HDR_PARAM
-
-        DataGrid.Columns(1).HeaderText = My.Resources.COL_HDR_VALUE
 
         DataGrid.Columns(2).Width = 165
         DataGrid.Columns(2).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(2).HeaderText = My.Resources.COL_HDR_UNIT
-
     End Sub
 
     Private Sub RemoveToolStrip()

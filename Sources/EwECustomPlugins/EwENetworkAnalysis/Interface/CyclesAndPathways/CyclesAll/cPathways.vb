@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.2  2008/11/25 23:44:07  joeh
+' Copy and paste in cells of data grid view
+'
 ' Revision 1.1  2008/09/26 07:30:48  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -71,7 +74,7 @@ Namespace CyclesAll
             Cursor.Current = Cursors.WaitCursor
             RemoveToolStrip()
 
-            SetUpGridColumn(My.Resources.COL_HDR_CYC)
+            SetUpGridColumn()
 
             'Set up grid rows
             DataGrid.RowHeadersVisible = False
@@ -79,25 +82,45 @@ Namespace CyclesAll
             ReDim strRowContent(DataGrid.Columns.Count)
             'm_NetworkManager.FindPathwaysCyclesAll()
             If m_NetworkManager.PathWays.Count > 0 Then
-                DataGrid.RowCount = m_NetworkManager.PathWays.Count
+                DataGrid.RowCount = m_NetworkManager.PathWays.Count + 1
+                DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                DataGrid.Rows(0).Frozen = True
+                DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+
+                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                strRowContent(1) = My.Resources.COL_HDR_CYC
+                DataGrid.Rows(0).SetValues(strRowContent)
+                DataGrid.Rows(0).Visible = True
+
                 For intPathwayIndex As Integer = 0 To m_NetworkManager.PathWays.Count - 1
                     strRowContent(0) = CStr(intPathwayIndex + 1)
                     strRowContent(1) = CStr(m_NetworkManager.PathWays.Item(intPathwayIndex))
-                    DataGrid.Rows(intPathwayIndex).SetValues(strRowContent)
-                    DataGrid.Rows(intPathwayIndex).Visible = True
+                    DataGrid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
+                    DataGrid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
-                DataGrid.RowCount = 1
-                strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
-                strRowContent(1) = ""
+                DataGrid.RowCount = 2
+                DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                DataGrid.Rows(0).Frozen = True
+                DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+
+                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                strRowContent(1) = My.Resources.COL_HDR_CYC
                 DataGrid.Rows(0).SetValues(strRowContent)
                 DataGrid.Rows(0).Visible = True
+
+                strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
+                strRowContent(1) = ""
+                DataGrid.Rows(1).SetValues(strRowContent)
+                DataGrid.Rows(1).Visible = True
             End If
             DataGrid.ClearSelection()
             Cursor.Current = Cursors.Default
         End Sub
 
-        Private Sub SetUpGridColumn(ByVal strSecondColumnHeader As String)
+        Private Sub SetUpGridColumn()
             Dim DataGrid As Windows.Forms.DataGridView = _
                 CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
             Dim GraphPane As ZedGraphControl = _
@@ -115,11 +138,9 @@ Namespace CyclesAll
 
             DataGrid.Columns(0).Frozen = True
             DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-            DataGrid.Columns(0).HeaderText = My.Resources.COL_HDR_PATH_NUM
 
             DataGrid.Columns(1).Width = 660
             DataGrid.Columns(1).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-            DataGrid.Columns(1).HeaderText = strSecondColumnHeader
         End Sub
 
         Private Sub RemoveToolStrip()
