@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.37  2008/11/25 17:55:08  joeb
+' Changes to setEcosimRunLength() for bug 459
+'
 ' Revision 1.36  2008/11/20 19:18:19  jeroens
 ' Hmm, EcosimLoaded state is still required!
 '
@@ -1684,9 +1687,9 @@ Public Class cCore
         ' Load enabled TS
         Me.m_TSData.loadEnabled()
 
-        'set_EcosimNYears will call DoDatValCalculations
-        'to Apply the time series data
-        Me.set_ModelRunLength(Me.m_TSData.NdatYear, False)
+        'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
+        Dim nyears As Integer = Math.Max(Me.m_TSData.NdatYear, Me.m_EcoSimData.NumYears)
+        Me.setEcosimRunLength(nyears, False)
 
         Me.m_EcoSim.SetFFromGear()
 
@@ -4978,8 +4981,8 @@ Public Class cCore
     ''' Change the number of years the ecosim model runs for
     ''' </summary>
     ''' <param name="newNumberOfYears"></param>
-    ''' <remarks></remarks>
-    Private Sub set_ModelRunLength(ByVal newNumberOfYears As Integer, Optional ByVal bOverwriteNewData As Boolean = True)
+    ''' <remarks>There are two events that can trigger this. User has set the Ecosim run length. User has loaded timeseries data which will set the Ecosim run length to the same as the timeseries data</remarks>
+    Private Sub setEcosimRunLength(ByVal newNumberOfYears As Integer, Optional ByVal bOverwriteNewData As Boolean = True)
         'newNumberOfYears has already passed validation
         'set the number of years the model will run for and resize and reload all the data
 
@@ -4991,7 +4994,9 @@ Public Class cCore
 
             Me.m_EcoSim.RedimTotalTimeVariables(False)
 
-            Me.m_TSData.DoDatValCalculations(m_EcoSimData)
+            'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
+            'forcing data needs to be the max of Reference data years and Ecosim Years
+            Me.m_TSData.LoadForcingData(m_EcoSimData, Math.Max(m_TSData.NdatYear, m_EcoSimData.NumYears))
 
             Me.m_SearchData.redimByTime(m_EcoSimData.NumYears)
 
@@ -9466,7 +9471,7 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.EcoSimNYears
 
-                        set_ModelRunLength(CInt(value.Value))
+                        setEcosimRunLength(CInt(value.Value))
                         'the length of the ecospace run will be changed as well
                         Me.LoadEcospaceModelParameters()
                         'jb 26/09/2008 EcoSimNYears is already in the variables list adding it again causes loops over variables to execute twice
@@ -9587,7 +9592,7 @@ Public Class cCore
                     Case eVarNameFlags.TotalTime
 
                         'set_ModelRunLength will set the model run length in both ecosim and ecospace
-                        set_ModelRunLength(CInt(value.Value))
+                        setEcosimRunLength(CInt(value.Value))
                         'load the new data into the parameters object
                         Me.LoadEcospaceModelParameters()
 
