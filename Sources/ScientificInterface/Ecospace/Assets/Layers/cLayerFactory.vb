@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.6  2008/11/26 02:57:27  jeroens
+' MPAs use hatch patterns
+'
 ' Revision 1.5  2008/11/19 14:35:09  jeroens
 ' Fixed seed cell colour screw-up
 '
@@ -175,7 +178,7 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerMPA
 
-                    avs = brushProvider.GetVisualStyles(core.nMPAs, cEwEBrushProvider.eBrushType.Glyphs)
+                    avs = brushProvider.GetVisualStyles(core.nMPAs, cEwEBrushProvider.eBrushType.HatchPattern)
 
                     For iMPA As Integer = 1 To core.nMPAs
 
