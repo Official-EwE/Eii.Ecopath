@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.2  2008/11/26 18:19:44  sherman
+' Added Results Plots to FPS
+'
 ' Revision 1.1  2008/11/19 14:40:35  jeroens
 ' Moved and renamed
 '
@@ -50,6 +53,11 @@ Namespace Ecosim
         Private m_propBaseYear As cProperty = Nothing
 
         Private m_lstOptVisControls As New List(Of cControlVisContainer)
+
+        ''' <summary>Results to be plotted</summary>
+        ''' <remarks></remarks>
+        Private m_lptsResults() As ResultPoints
+        Private m_zghResults As ZedGraphHelper
 
         Public Sub New()
 
@@ -164,6 +172,10 @@ Namespace Ecosim
                     InitMaxFVParams()
             End Select
 
+            ' Plot graph
+            InitResultsPlot()
+
+            ' Controls
             setVisibleControls()
 
             Me.btnSearch.Enabled = True
@@ -289,6 +301,9 @@ Namespace Ecosim
                 scIterResultMultiRun.Panel2Collapsed = True
             End If
 
+            ' Init the Results plot
+            ReInitResultsPlot(m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
+
             m_manager.Run(Me)
             Me.btnSearch.Enabled = False
             Me.btnStop.Enabled = True
@@ -375,6 +390,10 @@ Namespace Ecosim
                 End If
 
                 m_gridSystemObjectives.InsertOneIterResult(results, m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
+
+                UpdateResultsGraph(results)
+
+
             Catch ex As Exception
                 cLog.Write(ex)
                 SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
@@ -450,7 +469,152 @@ Namespace Ecosim
 
         End Sub
 
-    End Class
+        Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+            Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+        End Sub
+
+#Region " Graphing Region "
+
+        Private Sub InitResultsPlot()
+
+            Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
+            Me.m_zghResults.ShowCursor = False
+
+            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+        End Sub
+
+        Private Sub ReInitResultsPlot(ByVal nSearchBlocks As Integer, ByRef pbc As ucParmBlockCodes)
+            Dim zgcr As New ZedGraph.ColorSymbolRotator
+
+            Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
+            Me.m_graphResults.GraphPane.Title.IsVisible = False
+            Me.m_graphResults.GraphPane.XAxis.Title.Text = "Iterations"
+            Me.m_graphResults.GraphPane.YAxis.Title.Text = "Objective value"
+
+            Me.m_graphResults.GraphPane.CurveList.Clear()
+
+            ' JS 19nov08: let graph figure out the ticks
+            '' Only show major ticks
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
+            ReDim m_lptsResults(6) ' + nSearchBlocks) Will not plot blocks yet
+
+            Me.m_lptsResults(1) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(2) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(3) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(4) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            Me.m_lptsResults(5) = New ResultPoints()
+            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+
+            ' Will not plot blocks for now
+            'For i As Integer = 1 To nSearchBlocks
+            '    Me.m_lptsResults(6) = New ResultPoints()
+            '    Me.m_graphResults.GraphPane.AddCurve("Block " & i.ToString, Me.m_lptsResults(5 + i), pbc.BlockColor(i), ZedGraph.SymbolType.None)
+            'Next
+
+            Me.m_zghResults.AutoscalePane = True
+
+        End Sub
+
+        Private Sub UpdateResultsGraph(ByVal results As cFPSSearchResults)
+
+
+            Dim aiBlocks() As Integer = results.BlockNumber
+            Dim asResults() As Single = results.BlockResults
+
+            Try
+                ' Fill output graph
+                For iResult As Integer = 1 To results.CriteriaValues.Length - 1
+                    Me.m_lptsResults(iResult).AddItem(results.CriteriaValues(iResult), CSng(results.nCalls))
+                Next
+
+                'Me.m_graphResults.GraphPane.XAxis.Scale.Max = m_lptsResults.Count - 1
+
+                Me.m_zghResults.CursorPos = 0.0
+                Me.m_zghResults.RescaleAndRedraw()
+
+            Catch ex As Exception
+                Debug.Assert(False, "Failed to add Items to results")
+            End Try
+
+        End Sub
+
+        Private Sub ShowIteration(ByVal iIteration As Integer)
+
+            Dim lResults As List(Of cObjectiveResult) = Nothing
+            Dim res As cObjectiveResult = Nothing
+
+
+            '' Get the results
+            'lResults = Me.m_manager.Results()
+
+
+            'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
+
+            'If iIteration = -1 Then Return
+
+            '' Update indicators
+            'Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
+            '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
+            '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
+            '                           res.objFuncTotal, res.PercentageClosed)
+
+
+        End Sub
+#End Region ' Graphing region
+
+#Region " Helper classes "
+
+        ''' <summary>
+        ''' Utility class for maintaining a list of results in the output (zed)graph
+        ''' </summary>
+        Private Class ResultPoints
+            Implements ZedGraph.IPointList
+
+            Private m_list As New List(Of ZedGraph.PointPair)
+
+            Public Sub Clear()
+                Me.m_list.Clear()
+            End Sub
+
+            Public Function Clone() As Object Implements System.ICloneable.Clone
+                Return Nothing
+            End Function
+
+            Public ReadOnly Property Count() As Integer Implements ZedGraph.IPointList.Count
+                Get
+                    Return Me.m_list.Count
+                End Get
+            End Property
+
+            Default Public ReadOnly Property Item(ByVal index As Integer) As ZedGraph.PointPair Implements ZedGraph.IPointList.Item
+                Get
+                    Return Me.m_list(index)
+                End Get
+            End Property
+
+            Public Sub AddItem(ByVal yValue As Single, Optional ByVal xValue As Single = Nothing)
+                If xValue = Nothing Then
+                    Me.m_list.Add(New ZedGraph.PointPair(Me.Count, yValue))
+                Else
+                    Me.m_list.Add(New ZedGraph.PointPair(xValue, yValue))
+                End If
+
+            End Sub
+
+        End Class
+
+#End Region ' Helper classes
+
+    End Class ' frmFishingPolicySearch
 
     ''' <summary>
     ''' Set the visibility of a control based on an optimize approach value
