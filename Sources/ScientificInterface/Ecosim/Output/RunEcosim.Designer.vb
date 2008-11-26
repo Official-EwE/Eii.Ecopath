@@ -27,7 +27,6 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcosim))
             Me.btnRunOrStop = New System.Windows.Forms.Button
-            Me.gpbFF = New System.Windows.Forms.GroupBox
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tslTarget = New System.Windows.Forms.ToolStripLabel
             Me.tscbTarget = New ScientificInterfaceShared.Controls.CustomToolstripComboBox
@@ -37,10 +36,11 @@ Namespace Ecosim
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
             Me.m_sketchPad = New ScientificInterface.Ecosim.ucForcingSketchPad
             Me.m_graph = New ScientificInterface.Ecosim.ucBiomassPlotzgc
-            Me.gpbRun = New System.Windows.Forms.GroupBox
-            Me.gpbFF.SuspendLayout()
+            Me.m_spContainer = New System.Windows.Forms.SplitContainer
             Me.ToolStrip1.SuspendLayout()
-            Me.gpbRun.SuspendLayout()
+            Me.m_spContainer.Panel1.SuspendLayout()
+            Me.m_spContainer.Panel2.SuspendLayout()
+            Me.m_spContainer.SuspendLayout()
             Me.SuspendLayout()
             '
             'btnRunOrStop
@@ -49,14 +49,6 @@ Namespace Ecosim
             Me.btnRunOrStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.btnRunOrStop.Name = "btnRunOrStop"
             Me.btnRunOrStop.UseVisualStyleBackColor = True
-            '
-            'gpbFF
-            '
-            resources.ApplyResources(Me.gpbFF, "gpbFF")
-            Me.gpbFF.Controls.Add(Me.ToolStrip1)
-            Me.gpbFF.Controls.Add(Me.m_sketchPad)
-            Me.gpbFF.Name = "gpbFF"
-            Me.gpbFF.TabStop = False
             '
             'ToolStrip1
             '
@@ -121,34 +113,40 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
             '
-            'gpbRun
+            'm_spContainer
             '
-            resources.ApplyResources(Me.gpbRun, "gpbRun")
-            Me.gpbRun.Controls.Add(Me.btnRunOrStop)
-            Me.gpbRun.Name = "gpbRun"
-            Me.gpbRun.TabStop = False
+            resources.ApplyResources(Me.m_spContainer, "m_spContainer")
+            Me.m_spContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+            Me.m_spContainer.Name = "m_spContainer"
+            '
+            'm_spContainer.Panel1
+            '
+            Me.m_spContainer.Panel1.Controls.Add(Me.m_graph)
+            '
+            'm_spContainer.Panel2
+            '
+            Me.m_spContainer.Panel2.Controls.Add(Me.ToolStrip1)
+            Me.m_spContainer.Panel2.Controls.Add(Me.btnRunOrStop)
+            Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
             '
             'RunEcosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gpbRun)
-            Me.Controls.Add(Me.m_graph)
-            Me.Controls.Add(Me.gpbFF)
+            Me.Controls.Add(Me.m_spContainer)
             Me.Name = "RunEcosim"
-            Me.gpbFF.ResumeLayout(False)
-            Me.gpbFF.PerformLayout()
             Me.ToolStrip1.ResumeLayout(False)
             Me.ToolStrip1.PerformLayout()
-            Me.gpbRun.ResumeLayout(False)
+            Me.m_spContainer.Panel1.ResumeLayout(False)
+            Me.m_spContainer.Panel2.ResumeLayout(False)
+            Me.m_spContainer.Panel2.PerformLayout()
+            Me.m_spContainer.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents btnRunOrStop As System.Windows.Forms.Button
-        Private WithEvents gpbFF As System.Windows.Forms.GroupBox
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_graph As ucBiomassPlotzgc
-        Private WithEvents gpbRun As System.Windows.Forms.GroupBox
         Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
         Private WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
         Private WithEvents tscbTarget As CustomToolstripComboBox
@@ -156,6 +154,7 @@ Namespace Ecosim
         Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
+        Friend WithEvents m_spContainer As System.Windows.Forms.SplitContainer
 
     End Class
 End Namespace

@@ -119,17 +119,17 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRunOrStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Top, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnRunOrStop.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="btnRunOrStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 17</value>
+    <value>848, 28</value>
   </data>
   <data name="btnRunOrStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 23</value>
+    <value>104, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRunOrStop.TabIndex" type="System.Int32, mscorlib">
@@ -145,16 +145,13 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnRunOrStop.Parent" xml:space="preserve">
-    <value>gpbRun</value>
+    <value>m_spContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;btnRunOrStop.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gpbFF.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>1</value>
   </data>
   <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 16</value>
+    <value>0, 0</value>
   </metadata>
   <data name="tslTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 22</value>
@@ -247,10 +244,10 @@
     <value>Reset &amp;All</value>
   </data>
   <data name="ToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
+    <value>0, 0</value>
   </data>
   <data name="ToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>824, 25</value>
+    <value>970, 25</value>
   </data>
   <data name="ToolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -265,19 +262,19 @@
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
-    <value>gpbFF</value>
+    <value>m_spContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_sketchPad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_sketchPad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 46</value>
+    <value>48, 28</value>
   </data>
   <data name="m_sketchPad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>755, 124</value>
+    <value>781, 179</value>
   </data>
   <data name="m_sketchPad.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -289,43 +286,19 @@
     <value>ScientificInterface.Ecosim.ucForcingSketchPad, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
-    <value>gpbFF</value>
+    <value>m_spContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gpbFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 354</value>
-  </data>
-  <data name="gpbFF.Size" type="System.Drawing.Size, System.Drawing">
-    <value>830, 178</value>
-  </data>
-  <data name="gpbFF.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gpbFF.Text" xml:space="preserve">
-    <value>Forcing</value>
-  </data>
-  <data name="&gt;&gt;gpbFF.Name" xml:space="preserve">
-    <value>gpbFF</value>
-  </data>
-  <data name="&gt;&gt;gpbFF.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbFF.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gpbFF.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 3</value>
+    <value>0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>953, 345</value>
+    <value>970, 348</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -337,36 +310,63 @@
     <value>ScientificInterface.Ecosim.ucBiomassPlotzgc, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_spContainer.Panel1</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_spContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_spContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_spContainer.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel1.Name" xml:space="preserve">
+    <value>m_spContainer.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel1.Parent" xml:space="preserve">
+    <value>m_spContainer</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel2.Name" xml:space="preserve">
+    <value>m_spContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel2.Parent" xml:space="preserve">
+    <value>m_spContainer</value>
+  </data>
+  <data name="&gt;&gt;m_spContainer.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="gpbRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+  <data name="m_spContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>970, 536</value>
   </data>
-  <data name="gpbRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>841, 354</value>
+  <data name="m_spContainer.SplitterDistance" type="System.Int32, mscorlib">
+    <value>348</value>
   </data>
-  <data name="gpbRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 178</value>
+  <data name="m_spContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="gpbRun.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;m_spContainer.Name" xml:space="preserve">
+    <value>m_spContainer</value>
   </data>
-  <data name="gpbRun.Text" xml:space="preserve">
-    <value>Run</value>
+  <data name="&gt;&gt;m_spContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gpbRun.Name" xml:space="preserve">
-    <value>gpbRun</value>
-  </data>
-  <data name="&gt;&gt;gpbRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbRun.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_spContainer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gpbRun.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_spContainer.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -377,6 +377,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>970, 536</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value />

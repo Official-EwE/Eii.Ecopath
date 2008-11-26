@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.3  2008/11/26 21:18:57  sherman
+' Removed Group Boxes
+'
 ' Revision 1.2  2008/11/26 16:00:22  jeroens
 ' Fixed issue 571
 '
@@ -415,18 +418,6 @@ Namespace Ecosim
             Me.btnRunOrStop.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
             ' Reflect change immediately
             Me.btnRunOrStop.Update()
-
-            Select Case Me.SelectionMode
-
-                Case eSelectionModeType.Fleets
-                    'Me.cbGroups.SelectedIndex = -1
-                    gpbFF.Text = My.Resources.ECOSIM_RUN_MODEFLEET
-
-                Case eSelectionModeType.Groups
-                    'Me.cbFleets.SelectedIndex = -1
-                    gpbFF.Text = My.Resources.ECOSIM_RUN_MODEGROUP
-
-            End Select
 
             ' Reset buttons
             Me.tsbSetToValue.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
