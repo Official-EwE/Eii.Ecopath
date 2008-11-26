@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucPolicyColorBlocks.vb,v $
+' Revision 1.2  2008/11/26 14:45:37  jeroens
+' Fixed bug 578
+'
 ' Revision 1.1  2008/11/19 14:40:35  jeroens
 ' Moved and renamed
 '
@@ -231,32 +234,43 @@ Namespace Ecosim
 
             ' Is row header clicked?
             If (iCol < 1) Then
+
                 ' #Yes: is column header clicked? If so: cannot fill block row
                 If iRow < 1 Then Return
+
                 For i As Integer = 1 To m_BlockCells.GetLength(1) - 1
-                    Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(i) = Me.m_blockCodes.SelectedBlockNum
-                    Me.m_BlockCells(iRow, i) = Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(i)
-                    ' Me.m_FPManager.FleetInputs(iRow).SearchBlocks(i) = Me.m_blockCodes.SelectedBlockNum
-                Next
-                ' Is column header clicked?
-            ElseIf (iRow < 1) Then
-                ' #Yes: is row header clicked? If so: cannot fill block column
-                If iCol < 1 Then Return
-                For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
-                    Me.m_FPManager.SearchBlocks(i).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlockNum
-                    Me.m_BlockCells(i, iCol) = Me.m_FPManager.SearchBlocks(i).SearchBlocks(iCol)
-                    '  Me.m_FPManager.FleetInputs(i).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlockNum
+                    Me.FillBlock(iRow, i)
                 Next
             Else
-                ' Fill single block
-                Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlockNum
-                Me.m_BlockCells(iRow, iCol) = Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol)
+                ' Is column header clicked?
+                If (iRow < 1) Then
+                    ' #Yes: is row header clicked? If so: cannot fill block column
+                    If (iCol < 1) Then Return
+                    For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
+                        Me.FillBlock(i, iCol)
+                    Next
+                Else
+                    Me.FillBlock(iRow, iCol)
+                End If
             End If
 
-            pbFishingBlocks.Invalidate()
+            Me.pbFishingBlocks.Invalidate()
 
         End Sub
 
+        Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
+
+            ' Sanity checks
+            If (iCol <= Me.m_FPManager.ObjectiveParameters.BaseYear) Then Return
+
+            If (iRow < 1) Then Return
+            If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
+
+            ' Fill single block
+            Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlockNum
+            Me.m_BlockCells(iRow, iCol) = Me.m_FPManager.SearchBlocks(iRow).SearchBlocks(iCol)
+
+        End Sub
 #End Region
 
         Private Sub btnSetEveryGear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEveryGear.Click
