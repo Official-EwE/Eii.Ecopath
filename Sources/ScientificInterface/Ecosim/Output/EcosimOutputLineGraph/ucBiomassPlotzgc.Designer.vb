@@ -23,7 +23,6 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucBiomassPlotzgc))
-            Me.gbAnonymous = New System.Windows.Forms.GroupBox
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.lbOverlay = New System.Windows.Forms.ListBox
             Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
@@ -57,31 +56,17 @@ Namespace Ecosim
             Me.m_tstbScaleMax = New System.Windows.Forms.ToolStripTextBox
             Me.m_tslMin = New System.Windows.Forms.ToolStripLabel
             Me.m_tstbScaleMin = New System.Windows.Forms.ToolStripTextBox
-            Me.gbAnonymous.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
-            'gbAnonymous
-            '
-            Me.gbAnonymous.Controls.Add(Me.SplitContainer1)
-            Me.gbAnonymous.Controls.Add(Me.m_zgc)
-            Me.gbAnonymous.Controls.Add(Me.m_ts)
-            Me.gbAnonymous.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.gbAnonymous.Location = New System.Drawing.Point(0, 0)
-            Me.gbAnonymous.Name = "gbAnonymous"
-            Me.gbAnonymous.Size = New System.Drawing.Size(860, 460)
-            Me.gbAnonymous.TabIndex = 0
-            Me.gbAnonymous.TabStop = False
-            Me.gbAnonymous.Text = "Ecosim biomass output"
-            '
             'SplitContainer1
             '
             Me.SplitContainer1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.SplitContainer1.Location = New System.Drawing.Point(740, 44)
+            Me.SplitContainer1.Location = New System.Drawing.Point(740, 25)
             Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(0)
             Me.SplitContainer1.Name = "SplitContainer1"
             Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
@@ -93,8 +78,8 @@ Namespace Ecosim
             'SplitContainer1.Panel2
             '
             Me.SplitContainer1.Panel2.Controls.Add(Me.lbGroups)
-            Me.SplitContainer1.Size = New System.Drawing.Size(119, 410)
-            Me.SplitContainer1.SplitterDistance = 141
+            Me.SplitContainer1.Size = New System.Drawing.Size(119, 429)
+            Me.SplitContainer1.SplitterDistance = 164
             Me.SplitContainer1.TabIndex = 12
             '
             'lbOverlay
@@ -104,7 +89,7 @@ Namespace Ecosim
             Me.lbOverlay.IntegralHeight = False
             Me.lbOverlay.Location = New System.Drawing.Point(0, 0)
             Me.lbOverlay.Name = "lbOverlay"
-            Me.lbOverlay.Size = New System.Drawing.Size(119, 141)
+            Me.lbOverlay.Size = New System.Drawing.Size(119, 164)
             Me.lbOverlay.TabIndex = 0
             '
             'lbGroups
@@ -116,7 +101,7 @@ Namespace Ecosim
             Me.lbGroups.Location = New System.Drawing.Point(0, 0)
             Me.lbGroups.Name = "lbGroups"
             Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-            Me.lbGroups.Size = New System.Drawing.Size(119, 265)
+            Me.lbGroups.Size = New System.Drawing.Size(119, 261)
             Me.lbGroups.TabIndex = 1
             '
             'm_zgc
@@ -124,7 +109,7 @@ Namespace Ecosim
             Me.m_zgc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_zgc.Location = New System.Drawing.Point(3, 44)
+            Me.m_zgc.Location = New System.Drawing.Point(3, 25)
             Me.m_zgc.Name = "m_zgc"
             Me.m_zgc.ScrollGrace = 0
             Me.m_zgc.ScrollMaxX = 0
@@ -133,15 +118,15 @@ Namespace Ecosim
             Me.m_zgc.ScrollMinX = 0
             Me.m_zgc.ScrollMinY = 0
             Me.m_zgc.ScrollMinY2 = 0
-            Me.m_zgc.Size = New System.Drawing.Size(731, 411)
+            Me.m_zgc.Size = New System.Drawing.Size(731, 430)
             Me.m_zgc.TabIndex = 11
             '
             'm_ts
             '
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1, Me.m_tsbAutoscale, Me.m_tsbCustomScale, Me.m_tlsMax, Me.m_tstbScaleMax, Me.m_tslMin, Me.m_tstbScaleMin})
-            Me.m_ts.Location = New System.Drawing.Point(3, 16)
+            Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
-            Me.m_ts.Size = New System.Drawing.Size(854, 25)
+            Me.m_ts.Size = New System.Drawing.Size(860, 25)
             Me.m_ts.TabIndex = 10
             Me.m_ts.Text = "ToolStrip1"
             '
@@ -352,21 +337,21 @@ Namespace Ecosim
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gbAnonymous)
+            Me.Controls.Add(Me.SplitContainer1)
+            Me.Controls.Add(Me.m_zgc)
+            Me.Controls.Add(Me.m_ts)
             Me.Name = "ucBiomassPlotzgc"
             Me.Size = New System.Drawing.Size(860, 460)
-            Me.gbAnonymous.ResumeLayout(False)
-            Me.gbAnonymous.PerformLayout()
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
 
-        Private WithEvents gbAnonymous As System.Windows.Forms.GroupBox
         Private WithEvents m_ts As System.Windows.Forms.ToolStrip
         Private WithEvents tsblbSS As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_zgc As ZedGraph.ZedGraphControl
