@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblNumTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 19</value>
+    <value>13, 31</value>
   </data>
   <data name="lblNumTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 13</value>
@@ -141,17 +141,17 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblNumTrials.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblNumTrials.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>9</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRunTrials.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="btnRunTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>553, 590</value>
+    <value>561, 508</value>
   </data>
   <data name="btnRunTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -172,13 +172,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnRunTrials.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>24</value>
   </data>
   <data name="btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>640, 590</value>
+    <value>648, 508</value>
   </data>
   <data name="btnStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnStop.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>23</value>
   </data>
   <data name="tcMCOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -211,7 +211,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="tbpB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 451</value>
+    <value>809, 369</value>
   </data>
   <data name="tbpB.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -355,10 +355,10 @@
     <value>5</value>
   </data>
   <data name="tcMCOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 107</value>
+    <value>4, 107</value>
   </data>
   <data name="tcMCOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>796, 477</value>
+    <value>817, 395</value>
   </data>
   <data name="tcMCOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -373,7 +373,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tcMCOutput.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>13</value>
   </data>
   <data name="cbPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -385,7 +385,7 @@
     <value>False</value>
   </data>
   <data name="cbPedigree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 64</value>
+    <value>400, 76</value>
   </data>
   <data name="cbPedigree.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 17</value>
@@ -406,16 +406,16 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbPedigree.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;cbPedigree.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>11</value>
   </data>
   <data name="cbRetainEstimates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbRetainEstimates.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 64</value>
+    <value>16, 76</value>
   </data>
   <data name="cbRetainEstimates.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 17</value>
@@ -433,10 +433,10 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbRetainEstimates.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRetainEstimates.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>15</value>
   </data>
   <data name="cbRetainCurPattern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -448,7 +448,7 @@
     <value>False</value>
   </data>
   <data name="cbRetainCurPattern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>321, 41</value>
+    <value>305, 53</value>
   </data>
   <data name="cbRetainCurPattern.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 17</value>
@@ -469,10 +469,10 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbRetainCurPattern.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRetainCurPattern.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>20</value>
   </data>
   <data name="lblTrial.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -481,7 +481,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 19</value>
+    <value>508, 31</value>
   </data>
   <data name="lblTrial.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 13</value>
@@ -499,10 +499,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblTrial.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblTrial.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>17</value>
   </data>
   <data name="lblERun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -511,7 +511,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblERun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 42</value>
+    <value>508, 54</value>
   </data>
   <data name="lblERun.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 13</value>
@@ -529,10 +529,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblERun.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblERun.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>19</value>
   </data>
   <data name="lblSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -541,7 +541,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 42</value>
+    <value>656, 54</value>
   </data>
   <data name="lblSS.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 13</value>
@@ -559,10 +559,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblSS.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblSS.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>14</value>
   </data>
   <data name="lblBestSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -571,7 +571,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblBestSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 65</value>
+    <value>656, 77</value>
   </data>
   <data name="lblBestSS.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
@@ -589,16 +589,16 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblBestSS.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblBestSS.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>12</value>
   </data>
   <data name="cbShowBioTraj.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbShowBioTraj.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 41</value>
+    <value>16, 53</value>
   </data>
   <data name="cbShowBioTraj.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 17</value>
@@ -616,19 +616,19 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbShowBioTraj.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;cbShowBioTraj.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>22</value>
   </data>
   <data name="prgMCTrials.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="prgMCTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 591</value>
+    <value>12, 509</value>
   </data>
   <data name="prgMCTrials.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 23</value>
+    <value>543, 23</value>
   </data>
   <data name="prgMCTrials.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -643,7 +643,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;prgMCTrials.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>21</value>
   </data>
   <data name="btApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -652,7 +652,7 @@
     <value>False</value>
   </data>
   <data name="btApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>727, 590</value>
+    <value>735, 508</value>
   </data>
   <data name="btApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -673,61 +673,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btApply.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="gpbInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;nudNumTrials.Name" xml:space="preserve">
-    <value>nudNumTrials</value>
-  </data>
-  <data name="&gt;&gt;nudNumTrials.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nudNumTrials.Parent" xml:space="preserve">
-    <value>gpbInput</value>
-  </data>
-  <data name="&gt;&gt;nudNumTrials.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnTS.Name" xml:space="preserve">
-    <value>btnTS</value>
-  </data>
-  <data name="&gt;&gt;btnTS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnTS.Parent" xml:space="preserve">
-    <value>gpbInput</value>
-  </data>
-  <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gpbInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="gpbInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>514, 89</value>
-  </data>
-  <data name="gpbInput.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="gpbInput.Text" xml:space="preserve">
-    <value>&amp;Input options</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Name" xml:space="preserve">
-    <value>gpbInput</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gpbInput.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>18</value>
   </data>
   <data name="nudNumTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 17</value>
+    <value>160, 29</value>
   </data>
   <data name="nudNumTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 20</value>
@@ -742,16 +691,13 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudNumTrials.Parent" xml:space="preserve">
-    <value>gpbInput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;nudNumTrials.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>3</value>
   </data>
   <data name="btnTS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>416, 14</value>
+    <value>400, 26</value>
   </data>
   <data name="btnTS.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 23</value>
@@ -769,109 +715,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnTS.Parent" xml:space="preserve">
-    <value>gpbInput</value>
-  </data>
-  <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gpbOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;lblValueERun.Name" xml:space="preserve">
-    <value>lblValueERun</value>
-  </data>
-  <data name="&gt;&gt;lblValueERun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblValueERun.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lblValueERun.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSBest.Name" xml:space="preserve">
-    <value>lblValueSSBest</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSBest.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSBest.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSBest.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;lblValueSS.Name" xml:space="preserve">
-    <value>lblValueSS</value>
-  </data>
-  <data name="&gt;&gt;lblValueSS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblValueSS.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lblValueSS.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSOrg.Name" xml:space="preserve">
-    <value>lblValueSSOrg</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSOrg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSOrg.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lblValueSSOrg.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;lblValueTrial.Name" xml:space="preserve">
-    <value>lblValueTrial</value>
-  </data>
-  <data name="&gt;&gt;lblValueTrial.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblValueTrial.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lblValueTrial.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;lbSSOrg.Name" xml:space="preserve">
-    <value>lbSSOrg</value>
-  </data>
-  <data name="&gt;&gt;lbSSOrg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbSSOrg.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="gpbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>532, 12</value>
-  </data>
-  <data name="gpbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 89</value>
-  </data>
-  <data name="gpbOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gpbOutput.Text" xml:space="preserve">
-    <value>&amp;Output parameters</value>
-  </data>
-  <data name="&gt;&gt;gpbOutput.Name" xml:space="preserve">
-    <value>gpbOutput</value>
-  </data>
-  <data name="&gt;&gt;gpbOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbOutput.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gpbOutput.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="lblValueERun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -880,7 +727,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblValueERun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 42</value>
+    <value>588, 54</value>
   </data>
   <data name="lblValueERun.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 13</value>
@@ -898,10 +745,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueERun.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblValueERun.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="lblValueSSBest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -910,7 +757,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblValueSSBest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 65</value>
+    <value>726, 77</value>
   </data>
   <data name="lblValueSSBest.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 13</value>
@@ -928,10 +775,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSSBest.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblValueSSBest.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="lblValueSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -940,7 +787,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblValueSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 42</value>
+    <value>726, 54</value>
   </data>
   <data name="lblValueSS.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 13</value>
@@ -958,10 +805,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSS.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblValueSS.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="lblValueSSOrg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -970,7 +817,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblValueSSOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 19</value>
+    <value>726, 31</value>
   </data>
   <data name="lblValueSSOrg.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 13</value>
@@ -988,16 +835,16 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSSOrg.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblValueSSOrg.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="lblValueTrial.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblValueTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 19</value>
+    <value>588, 31</value>
   </data>
   <data name="lblValueTrial.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 13</value>
@@ -1015,10 +862,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueTrial.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblValueTrial.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>10</value>
   </data>
   <data name="lbSSOrg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1027,7 +874,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lbSSOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 19</value>
+    <value>656, 31</value>
   </data>
   <data name="lbSSOrg.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 13</value>
@@ -1045,10 +892,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbSSOrg.Parent" xml:space="preserve">
-    <value>gpbOutput</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>16</value>
   </data>
   <data name="lblTrialsComplete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1057,7 +904,7 @@
     <value>True</value>
   </data>
   <data name="lblTrialsComplete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 596</value>
+    <value>260, 514</value>
   </data>
   <data name="lblTrialsComplete.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 13</value>
@@ -1081,6 +928,75 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblTrialsComplete.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_lblInputOpt.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblInputOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblInputOpt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 5</value>
+  </data>
+  <data name="m_lblInputOpt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>498, 18</value>
+  </data>
+  <data name="m_lblInputOpt.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lblInputOpt.Text" xml:space="preserve">
+    <value>&amp;Input options</value>
+  </data>
+  <data name="m_lblInputOpt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblInputOpt.Name" xml:space="preserve">
+    <value>m_lblInputOpt</value>
+  </data>
+  <data name="&gt;&gt;m_lblInputOpt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblInputOpt.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblInputOpt.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblOutputParam.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblOutputParam.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblOutputParam.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblOutputParam.Location" type="System.Drawing.Point, System.Drawing">
+    <value>508, 5</value>
+  </data>
+  <data name="m_lblOutputParam.Size" type="System.Drawing.Size, System.Drawing">
+    <value>313, 18</value>
+  </data>
+  <data name="m_lblOutputParam.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_lblOutputParam.Text" xml:space="preserve">
+    <value>&amp;Output parameters</value>
+  </data>
+  <data name="m_lblOutputParam.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutputParam.Name" xml:space="preserve">
+    <value>m_lblOutputParam</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutputParam.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutputParam.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutputParam.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1090,7 +1006,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>819, 624</value>
+    <value>827, 542</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

@@ -44,10 +44,8 @@ Namespace Ecosim
             Me.cbShowBioTraj = New System.Windows.Forms.CheckBox
             Me.prgMCTrials = New System.Windows.Forms.ProgressBar
             Me.btApply = New System.Windows.Forms.Button
-            Me.gpbInput = New System.Windows.Forms.GroupBox
             Me.nudNumTrials = New System.Windows.Forms.NumericUpDown
             Me.btnTS = New System.Windows.Forms.Button
-            Me.gpbOutput = New System.Windows.Forms.GroupBox
             Me.lblValueERun = New System.Windows.Forms.Label
             Me.lblValueSSBest = New System.Windows.Forms.Label
             Me.lblValueSS = New System.Windows.Forms.Label
@@ -55,10 +53,10 @@ Namespace Ecosim
             Me.lblValueTrial = New System.Windows.Forms.Label
             Me.lbSSOrg = New System.Windows.Forms.Label
             Me.lblTrialsComplete = New System.Windows.Forms.Label
+            Me.m_lblInputOpt = New System.Windows.Forms.Label
+            Me.m_lblOutputParam = New System.Windows.Forms.Label
             Me.tcMCOutput.SuspendLayout()
-            Me.gpbInput.SuspendLayout()
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.gpbOutput.SuspendLayout()
             Me.SuspendLayout()
             '
             'lblNumTrials
@@ -185,19 +183,6 @@ Namespace Ecosim
             Me.btApply.Name = "btApply"
             Me.btApply.UseVisualStyleBackColor = True
             '
-            'gpbInput
-            '
-            resources.ApplyResources(Me.gpbInput, "gpbInput")
-            Me.gpbInput.Controls.Add(Me.nudNumTrials)
-            Me.gpbInput.Controls.Add(Me.btnTS)
-            Me.gpbInput.Controls.Add(Me.lblNumTrials)
-            Me.gpbInput.Controls.Add(Me.cbPedigree)
-            Me.gpbInput.Controls.Add(Me.cbRetainEstimates)
-            Me.gpbInput.Controls.Add(Me.cbRetainCurPattern)
-            Me.gpbInput.Controls.Add(Me.cbShowBioTraj)
-            Me.gpbInput.Name = "gpbInput"
-            Me.gpbInput.TabStop = False
-            '
             'nudNumTrials
             '
             resources.ApplyResources(Me.nudNumTrials, "nudNumTrials")
@@ -209,22 +194,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.btnTS, "btnTS")
             Me.btnTS.Name = "btnTS"
             Me.btnTS.UseVisualStyleBackColor = True
-            '
-            'gpbOutput
-            '
-            resources.ApplyResources(Me.gpbOutput, "gpbOutput")
-            Me.gpbOutput.Controls.Add(Me.lblValueERun)
-            Me.gpbOutput.Controls.Add(Me.lblValueSSBest)
-            Me.gpbOutput.Controls.Add(Me.lblValueSS)
-            Me.gpbOutput.Controls.Add(Me.lblValueSSOrg)
-            Me.gpbOutput.Controls.Add(Me.lblValueTrial)
-            Me.gpbOutput.Controls.Add(Me.lblBestSS)
-            Me.gpbOutput.Controls.Add(Me.lblSS)
-            Me.gpbOutput.Controls.Add(Me.lbSSOrg)
-            Me.gpbOutput.Controls.Add(Me.lblTrial)
-            Me.gpbOutput.Controls.Add(Me.lblERun)
-            Me.gpbOutput.Name = "gpbOutput"
-            Me.gpbOutput.TabStop = False
             '
             'lblValueERun
             '
@@ -262,25 +231,52 @@ Namespace Ecosim
             Me.lblTrialsComplete.BackColor = System.Drawing.Color.Transparent
             Me.lblTrialsComplete.Name = "lblTrialsComplete"
             '
+            'm_lblInputOpt
+            '
+            Me.m_lblInputOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_lblInputOpt, "m_lblInputOpt")
+            Me.m_lblInputOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblInputOpt.Name = "m_lblInputOpt"
+            '
+            'm_lblOutputParam
+            '
+            resources.ApplyResources(Me.m_lblOutputParam, "m_lblOutputParam")
+            Me.m_lblOutputParam.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblOutputParam.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblOutputParam.Name = "m_lblOutputParam"
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_lblOutputParam)
+            Me.Controls.Add(Me.m_lblInputOpt)
+            Me.Controls.Add(Me.lblValueERun)
+            Me.Controls.Add(Me.nudNumTrials)
+            Me.Controls.Add(Me.lblValueSSBest)
             Me.Controls.Add(Me.lblTrialsComplete)
-            Me.Controls.Add(Me.gpbOutput)
-            Me.Controls.Add(Me.gpbInput)
+            Me.Controls.Add(Me.lblValueSS)
+            Me.Controls.Add(Me.btnTS)
+            Me.Controls.Add(Me.lblValueSSOrg)
+            Me.Controls.Add(Me.lblNumTrials)
+            Me.Controls.Add(Me.lblValueTrial)
+            Me.Controls.Add(Me.cbPedigree)
+            Me.Controls.Add(Me.lblBestSS)
             Me.Controls.Add(Me.tcMCOutput)
+            Me.Controls.Add(Me.lblSS)
+            Me.Controls.Add(Me.cbRetainEstimates)
+            Me.Controls.Add(Me.lbSSOrg)
+            Me.Controls.Add(Me.lblTrial)
             Me.Controls.Add(Me.btApply)
+            Me.Controls.Add(Me.lblERun)
+            Me.Controls.Add(Me.cbRetainCurPattern)
             Me.Controls.Add(Me.prgMCTrials)
+            Me.Controls.Add(Me.cbShowBioTraj)
             Me.Controls.Add(Me.btnStop)
             Me.Controls.Add(Me.btnRunTrials)
             Me.Name = "MCRun"
             Me.tcMCOutput.ResumeLayout(False)
-            Me.gpbInput.ResumeLayout(False)
-            Me.gpbInput.PerformLayout()
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.gpbOutput.ResumeLayout(False)
-            Me.gpbOutput.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -305,9 +301,7 @@ Namespace Ecosim
         Friend WithEvents prgMCTrials As System.Windows.Forms.ProgressBar
         Friend WithEvents btApply As System.Windows.Forms.Button
         Friend WithEvents tbpBPlot As System.Windows.Forms.TabPage
-        Friend WithEvents gpbInput As System.Windows.Forms.GroupBox
         Friend WithEvents btnTS As System.Windows.Forms.Button
-        Friend WithEvents gpbOutput As System.Windows.Forms.GroupBox
         Friend WithEvents lbSSOrg As System.Windows.Forms.Label
         Friend WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
         Friend WithEvents lblValueERun As System.Windows.Forms.Label
@@ -316,6 +310,8 @@ Namespace Ecosim
         Friend WithEvents lblValueSSOrg As System.Windows.Forms.Label
         Friend WithEvents lblValueTrial As System.Windows.Forms.Label
         Friend WithEvents lblTrialsComplete As System.Windows.Forms.Label
+        Friend WithEvents m_lblInputOpt As System.Windows.Forms.Label
+        Friend WithEvents m_lblOutputParam As System.Windows.Forms.Label
     End Class
 
 End Namespace

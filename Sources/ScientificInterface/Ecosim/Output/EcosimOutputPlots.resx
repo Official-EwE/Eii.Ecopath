@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="zgcPlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>750, 607</value>
+    <value>726, 607</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="zgcPlots.TabIndex" type="System.Int32, mscorlib">
@@ -136,7 +136,7 @@
     <value>zgcPlots</value>
   </data>
   <data name="&gt;&gt;zgcPlots.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;zgcPlots.Parent" xml:space="preserve">
     <value>scMain.Panel1</value>
@@ -151,13 +151,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnShowAllFits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 0</value>
+    <value>98, 0</value>
   </data>
   <data name="btnShowAllFits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
   </data>
   <data name="btnShowAllFits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 25</value>
+    <value>92, 25</value>
   </data>
   <data name="btnShowAllFits.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +190,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 268</value>
+    <value>194, 268</value>
   </data>
   <data name="lbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -217,7 +217,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="btnSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 25</value>
+    <value>92, 25</value>
   </data>
   <data name="btnSave.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -250,7 +250,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="lbPredRanks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 122</value>
+    <value>194, 122</value>
   </data>
   <data name="lbPredRanks.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -265,7 +265,7 @@
     <value>Panel3</value>
   </data>
   <data name="&gt;&gt;lbPredRanks.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lbPreyRanks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -280,7 +280,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="lbPreyRanks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 122</value>
+    <value>194, 122</value>
   </data>
   <data name="lbPreyRanks.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -321,31 +321,40 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_lblGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="m_lblGroup.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
+  <data name="m_lblGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, -1</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>&amp;Groups:</value>
+  <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 18</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="m_lblGroup.Text" xml:space="preserve">
+    <value>&amp;Group</value>
+  </data>
+  <data name="m_lblGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Name" xml:space="preserve">
+    <value>m_lblGroup</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGroup.Parent" xml:space="preserve">
     <value>Panel2</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="Panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -355,7 +364,7 @@
     <value>3, 3</value>
   </data>
   <data name="Panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 285</value>
+    <value>187, 285</value>
   </data>
   <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -373,7 +382,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="TableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
@@ -388,7 +397,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 25</value>
+    <value>190, 25</value>
   </data>
   <data name="TableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -418,7 +427,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 26</value>
+    <value>193, 26</value>
   </data>
   <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -435,35 +444,41 @@
   <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_lblPredRank.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="Label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblPredRank.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblPredRank.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="m_lblPredRank.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, -3</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 13</value>
+  <data name="m_lblPredRank.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 18</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="m_lblPredRank.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="m_lblPredRank.Text" xml:space="preserve">
     <value>Pre&amp;dators ranked:</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="m_lblPredRank.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPredRank.Name" xml:space="preserve">
+    <value>m_lblPredRank</value>
+  </data>
+  <data name="&gt;&gt;m_lblPredRank.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPredRank.Parent" xml:space="preserve">
     <value>Panel3</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_lblPredRank.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="Panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -472,7 +487,7 @@
     <value>3, 294</value>
   </data>
   <data name="Panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 139</value>
+    <value>187, 139</value>
   </data>
   <data name="Panel3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -489,34 +504,40 @@
   <data name="&gt;&gt;Panel3.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_lblPreyRank.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="Label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblPreyRank.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblPreyRank.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 0</value>
+  <data name="m_lblPreyRank.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, -2</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+  <data name="m_lblPreyRank.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 18</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="m_lblPreyRank.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="m_lblPreyRank.Text" xml:space="preserve">
     <value>Pre&amp;y ranked:</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
+  <data name="m_lblPreyRank.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPreyRank.Name" xml:space="preserve">
+    <value>m_lblPreyRank</value>
+  </data>
+  <data name="&gt;&gt;m_lblPreyRank.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPreyRank.Parent" xml:space="preserve">
     <value>Panel4</value>
   </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPreyRank.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="Panel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -526,7 +547,7 @@
     <value>3, 439</value>
   </data>
   <data name="Panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 139</value>
+    <value>187, 139</value>
   </data>
   <data name="Panel4.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -553,7 +574,7 @@
     <value>4</value>
   </data>
   <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 607</value>
+    <value>193, 607</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -586,10 +607,10 @@
     <value>1</value>
   </data>
   <data name="scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>963, 607</value>
+    <value>923, 607</value>
   </data>
   <data name="scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>750</value>
+    <value>726</value>
   </data>
   <data name="scMain.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -613,7 +634,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>984, 628</value>
+    <value>944, 628</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>300, 300</value>
@@ -628,6 +652,6 @@
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.EwEForm, EwE6, Version=6.0.3.13, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

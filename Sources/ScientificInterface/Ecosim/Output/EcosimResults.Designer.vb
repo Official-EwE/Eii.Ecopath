@@ -22,35 +22,21 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimResults))
-            Me.gpbYear = New System.Windows.Forms.GroupBox
             Me.Label3 = New System.Windows.Forms.Label
             Me.udNumTimeSteps = New System.Windows.Forms.NumericUpDown
             Me.txtSumEnd = New System.Windows.Forms.TextBox
             Me.txtSumStart = New System.Windows.Forms.TextBox
             Me.Label1 = New System.Windows.Forms.Label
             Me.Label2 = New System.Windows.Forms.Label
-            Me.gpbOption = New System.Windows.Forms.GroupBox
             Me.cbGears = New System.Windows.Forms.ComboBox
             Me.rbGroup = New System.Windows.Forms.RadioButton
             Me.rbIndices = New System.Windows.Forms.RadioButton
             Me.rbGear = New System.Windows.Forms.RadioButton
             Me.plResultsGrid = New System.Windows.Forms.Panel
-            Me.gpbYear.SuspendLayout()
+            Me.m_lblYear = New System.Windows.Forms.Label
+            Me.m_lblShow = New System.Windows.Forms.Label
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.gpbOption.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'gpbYear
-            '
-            Me.gpbYear.Controls.Add(Me.Label3)
-            Me.gpbYear.Controls.Add(Me.udNumTimeSteps)
-            Me.gpbYear.Controls.Add(Me.txtSumEnd)
-            Me.gpbYear.Controls.Add(Me.txtSumStart)
-            Me.gpbYear.Controls.Add(Me.Label1)
-            Me.gpbYear.Controls.Add(Me.Label2)
-            resources.ApplyResources(Me.gpbYear, "gpbYear")
-            Me.gpbYear.Name = "gpbYear"
-            Me.gpbYear.TabStop = False
             '
             'Label3
             '
@@ -81,16 +67,6 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.Label2, "Label2")
             Me.Label2.Name = "Label2"
-            '
-            'gpbOption
-            '
-            resources.ApplyResources(Me.gpbOption, "gpbOption")
-            Me.gpbOption.Controls.Add(Me.cbGears)
-            Me.gpbOption.Controls.Add(Me.rbGroup)
-            Me.gpbOption.Controls.Add(Me.rbIndices)
-            Me.gpbOption.Controls.Add(Me.rbGear)
-            Me.gpbOption.Name = "gpbOption"
-            Me.gpbOption.TabStop = False
             '
             'cbGears
             '
@@ -124,28 +100,47 @@ Namespace Ecosim
             resources.ApplyResources(Me.plResultsGrid, "plResultsGrid")
             Me.plResultsGrid.Name = "plResultsGrid"
             '
+            'm_lblYear
+            '
+            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
+            Me.m_lblYear.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblYear.Name = "m_lblYear"
+            '
+            'm_lblShow
+            '
+            resources.ApplyResources(Me.m_lblShow, "m_lblShow")
+            Me.m_lblShow.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblShow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblShow.Name = "m_lblShow"
+            '
             'EcosimResults
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gpbYear)
-            Me.Controls.Add(Me.gpbOption)
+            Me.Controls.Add(Me.m_lblShow)
+            Me.Controls.Add(Me.cbGears)
+            Me.Controls.Add(Me.Label3)
+            Me.Controls.Add(Me.rbGroup)
+            Me.Controls.Add(Me.m_lblYear)
+            Me.Controls.Add(Me.rbIndices)
+            Me.Controls.Add(Me.udNumTimeSteps)
+            Me.Controls.Add(Me.rbGear)
+            Me.Controls.Add(Me.txtSumEnd)
+            Me.Controls.Add(Me.txtSumStart)
             Me.Controls.Add(Me.plResultsGrid)
+            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.Label2)
             Me.Name = "EcosimResults"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.gpbYear.ResumeLayout(False)
-            Me.gpbYear.PerformLayout()
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.gpbOption.ResumeLayout(False)
-            Me.gpbOption.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
-        Friend WithEvents gpbYear As System.Windows.Forms.GroupBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents gpbOption As System.Windows.Forms.GroupBox
         Friend WithEvents cbGears As System.Windows.Forms.ComboBox
         Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
         Friend WithEvents rbIndices As System.Windows.Forms.RadioButton
@@ -155,6 +150,8 @@ Namespace Ecosim
         Friend WithEvents txtSumStart As System.Windows.Forms.TextBox
         Friend WithEvents Label3 As System.Windows.Forms.Label
         Friend WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
+        Friend WithEvents m_lblYear As System.Windows.Forms.Label
+        Friend WithEvents m_lblShow As System.Windows.Forms.Label
     End Class
 
 End Namespace

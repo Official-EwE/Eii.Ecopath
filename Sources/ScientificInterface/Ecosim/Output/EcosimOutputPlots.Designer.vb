@@ -32,22 +32,22 @@ Namespace Ecosim
             Me.scMain = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.Panel2 = New System.Windows.Forms.Panel
-            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_lblGroup = New System.Windows.Forms.Label
             Me.Panel1 = New System.Windows.Forms.Panel
-            Me.Panel3 = New System.Windows.Forms.Panel
-            Me.Label2 = New System.Windows.Forms.Label
-            Me.Panel4 = New System.Windows.Forms.Panel
-            Me.Label3 = New System.Windows.Forms.Label
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
+            Me.Panel3 = New System.Windows.Forms.Panel
+            Me.m_lblPredRank = New System.Windows.Forms.Label
+            Me.Panel4 = New System.Windows.Forms.Panel
+            Me.m_lblPreyRank = New System.Windows.Forms.Label
             Me.scMain.Panel1.SuspendLayout()
             Me.scMain.Panel2.SuspendLayout()
             Me.scMain.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.Panel2.SuspendLayout()
             Me.Panel1.SuspendLayout()
+            Me.TableLayoutPanel2.SuspendLayout()
             Me.Panel3.SuspendLayout()
             Me.Panel4.SuspendLayout()
-            Me.TableLayoutPanel2.SuspendLayout()
             Me.SuspendLayout()
             '
             'zgcPlots
@@ -122,15 +122,17 @@ Namespace Ecosim
             '
             'Panel2
             '
-            Me.Panel2.Controls.Add(Me.Label1)
+            Me.Panel2.Controls.Add(Me.m_lblGroup)
             Me.Panel2.Controls.Add(Me.lbGroups)
             resources.ApplyResources(Me.Panel2, "Panel2")
             Me.Panel2.Name = "Panel2"
             '
-            'Label1
+            'm_lblGroup
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
+            Me.m_lblGroup.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblGroup.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblGroup.Name = "m_lblGroup"
             '
             'Panel1
             '
@@ -138,36 +140,40 @@ Namespace Ecosim
             resources.ApplyResources(Me.Panel1, "Panel1")
             Me.Panel1.Name = "Panel1"
             '
-            'Panel3
-            '
-            Me.Panel3.Controls.Add(Me.lbPredRanks)
-            Me.Panel3.Controls.Add(Me.Label2)
-            resources.ApplyResources(Me.Panel3, "Panel3")
-            Me.Panel3.Name = "Panel3"
-            '
-            'Label2
-            '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
-            '
-            'Panel4
-            '
-            Me.Panel4.Controls.Add(Me.Label3)
-            Me.Panel4.Controls.Add(Me.lbPreyRanks)
-            resources.ApplyResources(Me.Panel4, "Panel4")
-            Me.Panel4.Name = "Panel4"
-            '
-            'Label3
-            '
-            resources.ApplyResources(Me.Label3, "Label3")
-            Me.Label3.Name = "Label3"
-            '
             'TableLayoutPanel2
             '
             resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
             Me.TableLayoutPanel2.Controls.Add(Me.btnSave, 0, 0)
             Me.TableLayoutPanel2.Controls.Add(Me.btnShowAllFits, 1, 0)
             Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+            '
+            'Panel3
+            '
+            Me.Panel3.Controls.Add(Me.m_lblPredRank)
+            Me.Panel3.Controls.Add(Me.lbPredRanks)
+            resources.ApplyResources(Me.Panel3, "Panel3")
+            Me.Panel3.Name = "Panel3"
+            '
+            'm_lblPredRank
+            '
+            resources.ApplyResources(Me.m_lblPredRank, "m_lblPredRank")
+            Me.m_lblPredRank.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblPredRank.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblPredRank.Name = "m_lblPredRank"
+            '
+            'Panel4
+            '
+            Me.Panel4.Controls.Add(Me.m_lblPreyRank)
+            Me.Panel4.Controls.Add(Me.lbPreyRanks)
+            resources.ApplyResources(Me.Panel4, "Panel4")
+            Me.Panel4.Name = "Panel4"
+            '
+            'm_lblPreyRank
+            '
+            resources.ApplyResources(Me.m_lblPreyRank, "m_lblPreyRank")
+            Me.m_lblPreyRank.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblPreyRank.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblPreyRank.Name = "m_lblPreyRank"
             '
             'EcosimOutputPlots
             '
@@ -181,13 +187,10 @@ Namespace Ecosim
             Me.scMain.ResumeLayout(False)
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.Panel2.ResumeLayout(False)
-            Me.Panel2.PerformLayout()
             Me.Panel1.ResumeLayout(False)
-            Me.Panel3.ResumeLayout(False)
-            Me.Panel3.PerformLayout()
-            Me.Panel4.ResumeLayout(False)
-            Me.Panel4.PerformLayout()
             Me.TableLayoutPanel2.ResumeLayout(False)
+            Me.Panel3.ResumeLayout(False)
+            Me.Panel4.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -200,13 +203,13 @@ Namespace Ecosim
         Friend WithEvents scMain As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents Panel2 As System.Windows.Forms.Panel
-        Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents Panel1 As System.Windows.Forms.Panel
         Friend WithEvents Panel3 As System.Windows.Forms.Panel
-        Friend WithEvents Label2 As System.Windows.Forms.Label
         Friend WithEvents Panel4 As System.Windows.Forms.Panel
-        Friend WithEvents Label3 As System.Windows.Forms.Label
         Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_lblGroup As System.Windows.Forms.Label
+        Friend WithEvents m_lblPredRank As System.Windows.Forms.Label
+        Friend WithEvents m_lblPreyRank As System.Windows.Forms.Label
     End Class
 
 End Namespace
