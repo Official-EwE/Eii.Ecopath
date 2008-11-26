@@ -153,14 +153,11 @@
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_gpbDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="m_cbDisplayGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cbDisplayGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 89</value>
+    <value>28, 221</value>
   </data>
   <data name="m_cbDisplayGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 21</value>
@@ -175,7 +172,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.Parent" xml:space="preserve">
-    <value>m_gpbDisplayOptions</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -184,7 +181,7 @@
     <value>True</value>
   </data>
   <data name="m_rbShowSingle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 66</value>
+    <value>11, 198</value>
   </data>
   <data name="m_rbShowSingle.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 17</value>
@@ -202,16 +199,16 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.Parent" xml:space="preserve">
-    <value>m_gpbDisplayOptions</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbShowNonHidden.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbShowNonHidden.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 43</value>
+    <value>11, 175</value>
   </data>
   <data name="m_rbShowNonHidden.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 17</value>
@@ -229,16 +226,16 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.Parent" xml:space="preserve">
-    <value>m_gpbDisplayOptions</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_rbShowAll.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbShowAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 20</value>
+    <value>11, 152</value>
   </data>
   <data name="m_rbShowAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 17</value>
@@ -256,34 +253,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowAll.Parent" xml:space="preserve">
-    <value>m_gpbDisplayOptions</value>
-  </data>
-  <data name="&gt;&gt;m_rbShowAll.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_gpbDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 125</value>
-  </data>
-  <data name="m_gpbDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 119</value>
-  </data>
-  <data name="m_gpbDisplayOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_gpbDisplayOptions.Text" xml:space="preserve">
-    <value>Display options</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplayOptions.Name" xml:space="preserve">
-    <value>m_gpbDisplayOptions</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplayOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplayOptions.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_gpbDisplayOptions.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_rbShowAll.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="m_cbOverlay.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,10 +289,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_cbOverlay.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_gpbDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>12</value>
   </data>
   <data name="m_rbDisplayCoverB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -328,7 +298,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayCoverB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 88</value>
+    <value>11, 99</value>
   </data>
   <data name="m_rbDisplayCoverB.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 17</value>
@@ -346,10 +316,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayCoverB.Parent" xml:space="preserve">
-    <value>m_gpbDisplay</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayCoverB.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="m_rbDisplayContaminantC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -358,7 +328,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayContaminantC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 65</value>
+    <value>11, 76</value>
   </data>
   <data name="m_rbDisplayContaminantC.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 17</value>
@@ -376,16 +346,16 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayContaminantC.Parent" xml:space="preserve">
-    <value>m_gpbDisplay</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayContaminantC.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="m_rbDisplayFishingEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbDisplayFishingEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 42</value>
+    <value>11, 53</value>
   </data>
   <data name="m_rbDisplayFishingEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 17</value>
@@ -403,16 +373,16 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayFishingEffort.Parent" xml:space="preserve">
-    <value>m_gpbDisplay</value>
+    <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayFishingEffort.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>9</value>
   </data>
   <data name="m_rbDisplayRelBiomass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbDisplayRelBiomass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 19</value>
+    <value>11, 30</value>
   </data>
   <data name="m_rbDisplayRelBiomass.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 17</value>
@@ -430,34 +400,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayRelBiomass.Parent" xml:space="preserve">
-    <value>m_gpbDisplay</value>
-  </data>
-  <data name="&gt;&gt;m_rbDisplayRelBiomass.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_gpbDisplay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 5</value>
-  </data>
-  <data name="m_gpbDisplay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 114</value>
-  </data>
-  <data name="m_gpbDisplay.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_gpbDisplay.Text" xml:space="preserve">
-    <value>Distribution of:</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplay.Name" xml:space="preserve">
-    <value>m_gpbDisplay</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpbDisplay.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_gpbDisplay.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;m_rbDisplayRelBiomass.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="m_btnStop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -511,7 +457,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_pbSmallPlot.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>14</value>
   </data>
   <data name="m_pbMap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -646,7 +592,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lbPlotTime.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>13</value>
   </data>
   <data name="m_lblLargePoolName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -727,13 +673,85 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblPoolName.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>10</value>
   </data>
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
+  </data>
+  <data name="m_lblDispOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblDispOpt.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblDispOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblDispOpt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 128</value>
+  </data>
+  <data name="m_lblDispOpt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 18</value>
+  </data>
+  <data name="m_lblDispOpt.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="m_lblDispOpt.Text" xml:space="preserve">
+    <value>Display options</value>
+  </data>
+  <data name="m_lblDispOpt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblDispOpt.Name" xml:space="preserve">
+    <value>m_lblDispOpt</value>
+  </data>
+  <data name="&gt;&gt;m_lblDispOpt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDispOpt.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lblDispOpt.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblDist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblDist.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblDist.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblDist.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 5</value>
+  </data>
+  <data name="m_lblDist.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 18</value>
+  </data>
+  <data name="m_lblDist.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="m_lblDist.Text" xml:space="preserve">
+    <value>Distribution of:</value>
+  </data>
+  <data name="m_lblDist.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblDist.Name" xml:space="preserve">
+    <value>m_lblDist</value>
+  </data>
+  <data name="&gt;&gt;m_lblDist.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDist.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lblDist.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_tlpRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -763,7 +781,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_tlpRun.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>8</value>
   </data>
   <data name="m_tlpRun.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnRun" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStop" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -913,6 +931,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.6, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
