@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.14  2008/11/26 12:21:30  jeroens
+' Explicity handled exception when handling new Ecosim groups
+'
 ' Revision 1.13  2008/11/21 16:21:59  jeroens
 ' Fixed bug 544
 '
@@ -3015,22 +3018,25 @@ Public Class cDBDataSource
         Dim iGroupID As Integer = 1
         Dim iFishMortShapeID As Integer = -1
 
-        Try
-            readerGroup = Me.m_db.GetReader(String.Format("SELECT GroupID, FishMortShapeID FROM EcosimScenarioGroup WHERE (EcopathGroupID={0}) AND (ScenarioID={1})", iEcopathGroupID, iScenarioID))
-            readerGroup.Read()
-            ' Try to find existing Sim group ID
-            iGroupID = CInt(readerGroup(0))
-            ' Try to find existing Fish mort shape ID
-            iFishMortShapeID = CInt(readerGroup(1))
-            Me.m_db.ReleaseReader(readerGroup)
+        readerGroup = Me.m_db.GetReader(String.Format("SELECT GroupID, FishMortShapeID FROM EcosimScenarioGroup WHERE (EcopathGroupID={0}) AND (ScenarioID={1})", iEcopathGroupID, iScenarioID))
+        If readerGroup IsNot Nothing Then
+            Try
+                readerGroup.Read()
 
-            ' It this did not fail we have found a group, whoot! whoot!
-            bGroupFound = True
-        Catch ex As Exception
-            iGroupID = -1
-            iFishMortShapeID = -1
-            bGroupFound = False
-        End Try
+                ' Try to find existing Sim group ID
+                iGroupID = CInt(readerGroup(0))
+                ' Try to find existing Fish mort shape ID
+                iFishMortShapeID = CInt(readerGroup(1))
+
+                ' It this did not fail we have found a group, whoot! whoot!
+                bGroupFound = True
+            Catch ex As InvalidOperationException
+                iGroupID = -1
+                iFishMortShapeID = -1
+                bGroupFound = False
+            End Try
+            Me.m_db.ReleaseReader(readerGroup)
+        End If
 
         ' Resolve group ID
         If (iGroupID <= 0) Then
