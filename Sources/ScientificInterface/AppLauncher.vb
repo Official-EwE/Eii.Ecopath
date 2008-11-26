@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.14  2008/11/26 23:19:51  jeroens
+' Weight! Weight, dude
+'
 ' Revision 1.13  2008/11/20 18:42:16  jeroens
 ' CoreController uses cCoreStateManager
 '
@@ -2190,7 +2193,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the apply time series dialog.
     ''' </summary>
     Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnInvoke
-        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Enable)
+        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
     End Sub
 
     ''' <summary>
@@ -3227,7 +3230,7 @@ Public Class AppLauncher
                 Case dlgManageTimeSeries.eModeType.Load
                     MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, dlg.DatasetName, MRUHelper.eModuleType.Dataset)
                     My.Settings.Save()
-                Case dlgManageTimeSeries.eModeType.Enable
+                Case dlgManageTimeSeries.eModeType.Weight
                     ' NOP
                 Case dlgManageTimeSeries.eModeType.Import
                     MRUHelper.UpdateMRUString(My.Settings.MdbRecentlyUsedList, dlg.DatasetName, MRUHelper.eModuleType.Dataset)

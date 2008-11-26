@@ -25,7 +25,7 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Me.m_split1 = New System.Windows.Forms.SplitContainer
-            Me.m_btnTimeSeries = New System.Windows.Forms.Button
+            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer
             Me.m_cbFishingMortalityPenalty = New System.Windows.Forms.CheckBox
             Me.m_plGrid = New System.Windows.Forms.Panel
@@ -60,6 +60,7 @@ Namespace Ecosim
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label
             Me.m_lbSplinePoints = New System.Windows.Forms.Label
             Me.m_tbVariancePrimaryProd = New System.Windows.Forms.TextBox
+            Me.Label1 = New System.Windows.Forms.Label
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -88,7 +89,7 @@ Namespace Ecosim
             '
             'm_split1.Panel1
             '
-            Me.m_split1.Panel1.Controls.Add(Me.m_btnTimeSeries)
+            Me.m_split1.Panel1.Controls.Add(Me.m_btnTimeSeriesWeights)
             Me.m_split1.Panel1.Controls.Add(Me.m_splitSearch)
             Me.m_split1.Panel1.Controls.Add(Me.m_lbSearchTypes)
             Me.m_split1.Panel1.Controls.Add(Me.m_tbxVariance)
@@ -102,21 +103,22 @@ Namespace Ecosim
             'm_split1.Panel2
             '
             Me.m_split1.Panel2.Controls.Add(Me.tabSearchOptions)
+            Me.m_split1.Panel2.Controls.Add(Me.Label1)
             Me.m_split1.Panel2.Padding = New System.Windows.Forms.Padding(0, 3, 0, 0)
             Me.m_split1.Size = New System.Drawing.Size(784, 633)
             Me.m_split1.SplitterDistance = 249
             Me.m_split1.TabIndex = 0
             '
-            'm_btnTimeSeries
+            'm_btnTimeSeriesWeights
             '
-            Me.m_btnTimeSeries.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnTimeSeries.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-            Me.m_btnTimeSeries.Location = New System.Drawing.Point(138, 26)
-            Me.m_btnTimeSeries.Name = "m_btnTimeSeries"
-            Me.m_btnTimeSeries.Size = New System.Drawing.Size(105, 22)
-            Me.m_btnTimeSeries.TabIndex = 20
-            Me.m_btnTimeSeries.Text = "&Time series..."
-            Me.m_btnTimeSeries.UseVisualStyleBackColor = True
+            Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnTimeSeriesWeights.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(138, 26)
+            Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
+            Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(105, 44)
+            Me.m_btnTimeSeriesWeights.TabIndex = 20
+            Me.m_btnTimeSeriesWeights.Text = "&Time series weights..."
+            Me.m_btnTimeSeriesWeights.UseVisualStyleBackColor = True
             '
             'm_splitSearch
             '
@@ -273,7 +275,7 @@ Namespace Ecosim
             Me.m_lbSearchTypes.Name = "m_lbSearchTypes"
             Me.m_lbSearchTypes.Size = New System.Drawing.Size(246, 18)
             Me.m_lbSearchTypes.TabIndex = 0
-            Me.m_lbSearchTypes.Text = "Search Types"
+            Me.m_lbSearchTypes.Text = "Search types"
             Me.m_lbSearchTypes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tbxVariance
@@ -322,10 +324,10 @@ Namespace Ecosim
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.tabSearchOptions.Controls.Add(Me.tpVulnerabilitySearch)
             Me.tabSearchOptions.Controls.Add(Me.tpAnomalySearch)
-            Me.tabSearchOptions.Location = New System.Drawing.Point(0, 3)
+            Me.tabSearchOptions.Location = New System.Drawing.Point(0, 26)
             Me.tabSearchOptions.Name = "tabSearchOptions"
             Me.tabSearchOptions.SelectedIndex = 0
-            Me.tabSearchOptions.Size = New System.Drawing.Size(531, 630)
+            Me.tabSearchOptions.Size = New System.Drawing.Size(531, 607)
             Me.tabSearchOptions.TabIndex = 0
             '
             'tpVulnerabilitySearch
@@ -337,7 +339,7 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch.Margin = New System.Windows.Forms.Padding(0)
             Me.tpVulnerabilitySearch.Name = "tpVulnerabilitySearch"
             Me.tpVulnerabilitySearch.Padding = New System.Windows.Forms.Padding(3)
-            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(523, 604)
+            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(523, 581)
             Me.tpVulnerabilitySearch.TabIndex = 0
             Me.tpVulnerabilitySearch.Text = "Vulnerability Search"
             Me.tpVulnerabilitySearch.UseVisualStyleBackColor = True
@@ -380,7 +382,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.Location = New System.Drawing.Point(-1, 83)
             Me.m_vulnerabilityBlockMatrix.Name = "m_vulnerabilityBlockMatrix"
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = 0
-            Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(521, 521)
+            Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(521, 498)
             Me.m_vulnerabilityBlockMatrix.TabIndex = 9
             Me.m_vulnerabilityBlockMatrix.TabStop = False
             '
@@ -552,13 +554,28 @@ Namespace Ecosim
             Me.m_tbVariancePrimaryProd.TabIndex = 3
             Me.m_tbVariancePrimaryProd.Text = "0.1"
             '
-            'FitToTimeSeries
+            'Label1
+            '
+            Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.Label1.Location = New System.Drawing.Point(0, 3)
+            Me.Label1.Margin = New System.Windows.Forms.Padding(0)
+            Me.Label1.Name = "Label1"
+            Me.Label1.Size = New System.Drawing.Size(531, 18)
+            Me.Label1.TabIndex = 0
+            Me.Label1.Text = "Search"
+            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'frmFitToTimeSeries
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(784, 633)
             Me.Controls.Add(Me.m_split1)
-            Me.Name = "FitToTimeSeries"
+            Me.Name = "frmFitToTimeSeries"
             Me.TabText = "Form1"
             Me.Text = "Form1"
             Me.m_split1.Panel1.ResumeLayout(False)
@@ -623,7 +640,8 @@ Namespace Ecosim
         Private WithEvents m_lbAppliedFF As System.Windows.Forms.Label
         Private WithEvents m_cbFishingMortalityPenalty As System.Windows.Forms.CheckBox
         Private WithEvents m_plGrid As System.Windows.Forms.Panel
-        Private WithEvents m_btnTimeSeries As System.Windows.Forms.Button
+        Private WithEvents m_btnTimeSeriesWeights As System.Windows.Forms.Button
+        Private WithEvents Label1 As System.Windows.Forms.Label
     End Class
 
 End Namespace

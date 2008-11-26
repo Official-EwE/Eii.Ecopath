@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.5  2008/11/26 23:19:52  jeroens
+' Weight! Weight, dude
+'
 ' Revision 1.4  2008/11/10 01:56:19  jeroens
 ' Oops
 '
@@ -71,7 +74,7 @@ Public Class dlgManageTimeSeries
 
     Public Enum eModeType As Integer
         Load = 0
-        Enable
+        Weight
         Import
         ' Export
         Delete
@@ -107,7 +110,7 @@ Public Class dlgManageTimeSeries
         Me.ReloadTimeSeries()
 
         ' Validate mode
-        If mode = eModeType.Enable And Not Me.m_core.HasTimeSeries Then
+        If mode = eModeType.Weight And Not Me.m_core.HasTimeSeries Then
             mode = eModeType.Load
         End If
 
@@ -136,7 +139,7 @@ Public Class dlgManageTimeSeries
             Case 0
                 Me.Mode = eModeType.Load
             Case 1
-                Me.Mode = eModeType.Enable
+                Me.Mode = eModeType.Weight
             Case 2
                 Me.Mode = eModeType.Import
             Case 3
@@ -155,7 +158,7 @@ Public Class dlgManageTimeSeries
                     Me.ApplyTimeSeries(True)
                 End If
 
-            Case eModeType.Enable
+            Case eModeType.Weight
                 Me.ApplyTimeSeries()
 
             Case eModeType.Import
@@ -296,7 +299,7 @@ Public Class dlgManageTimeSeries
             Select Case mode
                 Case eModeType.Load
                     Me.m_tcMain.SelectedIndex = 0
-                Case eModeType.Enable
+                Case eModeType.Weight
                     Me.m_tcMain.SelectedIndex = 1
                 Case eModeType.Import
                     Me.m_tcMain.SelectedIndex = 2
@@ -342,7 +345,7 @@ Public Class dlgManageTimeSeries
 
         Select Case Me.Mode
             Case eModeType.Load : bCanPerformAction = (Me.m_lvLoadDatasets.SelectedItems.Count > 0)
-            Case eModeType.Enable : bCanPerformAction = True
+            Case eModeType.Weight : bCanPerformAction = True
             Case eModeType.Import : bCanPerformAction = bHasPreview And bHasDataset
                 'Case eModeType.Export : bCanPerformAction = False
             Case eModeType.Delete : bCanPerformAction = (Me.GetDeleteSelectedDatasets.Length > 0)

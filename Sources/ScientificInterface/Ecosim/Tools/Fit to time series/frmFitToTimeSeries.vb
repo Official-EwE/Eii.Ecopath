@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.2  2008/11/26 23:19:52  jeroens
+' Weight! Weight, dude
+'
 ' Revision 1.1  2008/11/19 14:40:55  jeroens
 ' Moved and renamed
 '
@@ -34,7 +37,7 @@ Namespace Ecosim
         Private m_shapeHandler As AppliedFFGUIHandler = Nothing
         Private m_dlgSensOfSS As dlgSensitivityOfSStoV = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
-        Private m_cmd As Command = Nothing
+        Private m_cmdTSWeights As Command = Nothing
 
 #End Region 'Private variables
 
@@ -130,9 +133,9 @@ Namespace Ecosim
 
             Me.m_shapeHandler = New AppliedFFGUIHandler(Me.m_core, Me.m_shapeToolBox, Me.m_sketchPad)
 
-            Me.m_cmd = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
-            If (Me.m_cmd IsNot Nothing) Then
-                AddHandler Me.m_cmd.OnUpdate, AddressOf OnUpdateTSCommand
+            Me.m_cmdTSWeights = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            If (Me.m_cmdTSWeights IsNot Nothing) Then
+                AddHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
             End If
 
             If Me.m_F2TSManager.LastYear > Me.m_F2TSManager.FirstYear Then
@@ -154,9 +157,9 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockCodeSelector = Nothing
             Me.m_F2TSManager = Nothing
 
-            If (Me.m_cmd IsNot Nothing) Then
-                RemoveHandler Me.m_cmd.OnUpdate, AddressOf OnUpdateTSCommand
-                Me.m_cmd = Nothing
+            If (Me.m_cmdTSWeights IsNot Nothing) Then
+                RemoveHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
+                Me.m_cmdTSWeights = Nothing
             End If
 
         End Sub
@@ -219,8 +222,8 @@ Namespace Ecosim
             Dim shapeSelected As cShapeData = Nothing
 
             ' Try to make sure TS are loaded
-            If (Me.m_core.nTimeSeriesEnabled = 0) And (Me.m_cmd IsNot Nothing) Then
-                Me.m_cmd.Invoke()
+            If (Me.m_core.nTimeSeriesEnabled = 0) And (Me.m_cmdTSWeights IsNot Nothing) Then
+                Me.m_cmdTSWeights.Invoke()
             End If
 
             If (Me.m_core.nTimeSeriesEnabled = 0) Then Return
@@ -372,9 +375,10 @@ Namespace Ecosim
             Me.m_bInUpdate = False
         End Sub
 
-        Private Sub m_btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnTimeSeries.Click
-            If (Me.m_cmd IsNot Nothing) Then
-                Me.m_cmd.Invoke()
+        Private Sub m_btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnTimeSeriesWeights.Click
+            If (Me.m_cmdTSWeights IsNot Nothing) Then
+                Me.m_cmdTSWeights.Invoke()
             End If
         End Sub
 
