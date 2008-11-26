@@ -1,59 +1,11 @@
 '==============================================================================
 '
 ' $Log: FisheryOutputValueEwEGrid.vb,v $
+' Revision 1.2  2008/11/26 02:58:04  jeroens
+' Fixed issue 565 part II
+'
 ' Revision 1.1  2008/09/26 07:31:32  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.21  2008/08/04 02:27:45  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
-'
-' Revision 1.20  2008/07/18 19:27:38  jeroens
-' Incorporated monetary units
-'
-' Revision 1.19  2008/06/02 00:01:26  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.18  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.17  2008/04/07 02:31:06  jeroens
-' Cleaning up resources
-'
-' Revision 1.16  2008/02/13 16:44:30  jeroens
-' Renamed resources
-'
-' Revision 1.15  2008/01/31 17:08:15  jeroens
-' Made fleet column headers live updating
-'
-' Revision 1.14  2007/10/10 02:59:11  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.13  2007/08/23 14:50:51  jeroens
-' * Moved NonMarketValue from fleet to groupinput
-'
-' Revision 1.12  2007/07/05 19:34:32  joeh
-' Create columns dynamically
-'
-' Revision 1.11  2007/07/03 23:51:19  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.10  2007/07/03 23:13:33  joeh
-' Implement Total Cost and Total Profit
-'
-' Revision 1.9  2007/06/15 16:35:49  jeroens
-' * Capable of handling a model without fleets
-'
-' Revision 1.8  2007/06/05 02:45:49  jeroens
-' * Renamed cMultiOperation Add ->Sum
-'
-' Revision 1.7  2007/05/08 01:05:42  joeh
-' Implement the column sum and row sum
-'
-' Revision 1.6  2007/05/05 00:47:25  joeh
-' no message
-'
-' Revision 1.5  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
 '
 '==============================================================================
 
@@ -237,7 +189,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALVALUE)
+            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALVALUE, StyleGuide.eUnitType.Monetary)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
