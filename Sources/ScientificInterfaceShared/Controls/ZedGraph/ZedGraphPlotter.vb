@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.12  2008/11/26 16:01:24  jeroens
+' Removed Ecosim-tied method SetCorrectAxis
+'
 ' Revision 1.11  2008/11/05 22:41:06  joeh
 ' Use gray lines in cumulative plot
 '
@@ -95,10 +98,15 @@ Namespace Controls
             m_graphPane = p_graphPane
             m_core = core
 
+            ' Designer-time bailout
+            If core Is Nothing Then Return
+
             m_graphPane.Title.Text = Title
             m_graphPane.XAxis.Title.Text = XaxisTitle
             m_graphPane.YAxis.Title.Text = YaxisTitle
-            SetCorrectAxis()
+
+            ' Oof, this code relies on Ecosim being loaded - this cannot be allowed in ScIntShared!
+            'SetCorrectAxis()
 
             m_graphPane.Legend.IsVisible = False
 
@@ -161,7 +169,7 @@ Namespace Controls
         Public Sub StoreDataset()
             m_Overlays.Add(m_CurrentOverlay)
 
-            SetCorrectAxis()
+            'SetCorrectAxis()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -284,7 +292,6 @@ Namespace Controls
             End Get
         End Property
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>Allows users to toggle the Legend</summary>
         ''' -------------------------------------------------------------------
@@ -319,26 +326,27 @@ Namespace Controls
 
 #Region " Private Helpers "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>Ensures the axis are set correctly</summary>
-        ''' -------------------------------------------------------------------
-        Private Sub SetCorrectAxis()
-            m_graphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
-            m_graphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
-            m_graphPane.YAxis.Scale.Min = 0
-            If m_graphPane.YAxis.Scale.Max < 2 Then m_graphPane.YAxis.Scale.Max = 2
-        End Sub
+        ' JS26nov08: No references to Ecosim from within this class!
+        '''' -------------------------------------------------------------------
+        '''' <summary>Ensures the axis are set correctly</summary>
+        '''' -------------------------------------------------------------------
+        'Private Sub SetCorrectAxis()
+        '    m_graphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
+        '    m_graphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+        '    m_graphPane.YAxis.Scale.Min = 0
+        '    If m_graphPane.YAxis.Scale.Max < 2 Then m_graphPane.YAxis.Scale.Max = 2
+        'End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>Will set all the colors either original or gray</summary>
         ''' -------------------------------------------------------------------
-        Private Sub SetAllToColors(Optional ByVal UseOriginalColor As Boolean = True)
+        Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
             ' Set the lines
             For iOver As Integer = 0 To m_Overlays.Count - 1
                 'For iIndex As Integer = 0 To m_Overlays.Item(iOver).Count - 1
                 For iIndex As Integer = m_Overlays.Item(iOver).Count - 1 To 0 Step -1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(iIndex)
-                    If UseOriginalColor Then
+                    If bUseOriginalColor Then
                         SetLine(crv, True, False)
                     Else
                         SetLine(crv, False, False)
@@ -349,7 +357,7 @@ Namespace Controls
             ' Set the TS plots
             For iIndex As Integer = 0 To m_core.nGroups - 1
                 If m_dicTimeSeriesGroup.ContainsKey(iIndex) Then
-                    If UseOriginalColor Then
+                    If bUseOriginalColor Then
                         SetLine(m_dicTimeSeriesGroup(iIndex), True, False)
                     Else
                         SetLine(m_dicTimeSeriesGroup(iIndex), False, False)
