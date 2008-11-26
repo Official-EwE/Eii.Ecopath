@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="Controls\Indicator renderers\cUpwellingIndicator.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
+    <Compile Include="Controls\ZedGraph\ZedGraphKiteDiagram.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphPlotter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
