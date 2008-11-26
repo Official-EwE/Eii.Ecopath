@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEBrushProvider.vb,v $
+' Revision 1.2  2008/11/26 02:57:03  jeroens
+' Colour logic does not need a legend
+'
 ' Revision 1.1  2008/09/26 07:31:26  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -31,7 +34,7 @@ Namespace Controls
 
     Public Class cEwEBrushProvider
 
-        Private m_abrGlyphsDefaults As Image() = { _
+        Private m_abrDefaultGlyphs As Image() = { _
                 My.Resources.glyph_blue1, _
                 My.Resources.glyph_blue2, _
                 My.Resources.glyph_blue3, _
@@ -72,7 +75,7 @@ Namespace Controls
                 My.Resources.glyph_circles_large, _
                 My.Resources.glyph_circles_small}
 
-        Private m_abrPatternDefaults As HatchStyle() = {HatchStyle.DiagonalCross, _
+        Private m_abrDefaultHatchPatterns As HatchStyle() = {HatchStyle.DiagonalCross, _
                                                   HatchStyle.Cross, _
                                                   HatchStyle.DiagonalBrick, _
                                                   HatchStyle.Divot, _
@@ -87,7 +90,7 @@ Namespace Controls
 
         Enum eBrushType As Integer
             Color
-            Pattern
+            HatchPattern
             Glyphs
         End Enum
 
@@ -98,38 +101,43 @@ Namespace Controls
                 Case cEwEBrushProvider.eBrushType.Color
                     Debug.Assert(nBrushes >= 0)
                     ReDim avs(nBrushes)
-                    GetColors(avs)
+                    Me.GetColors(avs)
+
                 Case cEwEBrushProvider.eBrushType.Glyphs
-                    If (nBrushes < 0) Then nBrushes = m_abrGlyphsDefaults.Length
+                    If (nBrushes < 0) Then nBrushes = m_abrDefaultGlyphs.Length
                     ReDim avs(nBrushes)
-                    GetGlyphs(avs)
-                Case cEwEBrushProvider.eBrushType.Pattern
-                    If (nBrushes < 0) Then nBrushes = m_abrPatternDefaults.Length
+                    Me.GetGlyphs(avs)
+
+                Case cEwEBrushProvider.eBrushType.HatchPattern
+                    If (nBrushes < 0) Then nBrushes = m_abrDefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
-                    GetPatterns(avs)
+                    Me.GetPatterns(avs)
+
             End Select
 
-            ' ok, Done
+            ' ok, done
             Return avs
         End Function
 
 #Region " Internal implementation "
 
         Private Sub GetColors(ByVal avs() As cVisualStyle)
-            Dim vs As cVisualStyle = Nothing
-            Dim lgnd As Legend = LegendPicker.CreateLegend(LegendScaleFactory.LegendScaleType.Linear, avs.Length, avs.Length, 0, LegendScale.eFriendlyValueType.Original)
-            lgnd.ColorRamp = New SAUPColorRamp()
 
-            ' Loop through number of brushes
+            Dim vs As cVisualStyle = Nothing
+            Dim clrramp As New SAUPColorRamp()
+
+            ' Loop through number of requested visual styles
             For i As Integer = 0 To avs.Length - 1
-                ' store the Visual Style
+                ' Build visual style
                 vs = New cVisualStyle()
-                vs.ForeColour = lgnd.GetColor(i)
+                vs.ForeColour = clrramp.GetColor(i, avs.Length - 1)
+                ' Store
                 avs(i) = vs
             Next i
         End Sub
 
         Private Sub GetGlyphs(ByVal avs() As cVisualStyle)
+
             Dim vs As cVisualStyle = Nothing
             Dim iGlyphIndex As Integer = 0
 
@@ -139,17 +147,19 @@ Namespace Controls
                 vs = New cVisualStyle()
                 vs.ForeColour = Color.Gray
                 vs.BackColour = Color.Transparent
-                vs.Image = m_abrGlyphsDefaults(iGlyphIndex)
+                vs.Image = m_abrDefaultGlyphs(iGlyphIndex)
 
                 avs(i) = vs
 
                 ' increment counter
                 iGlyphIndex += 1
-                If iGlyphIndex = m_abrGlyphsDefaults.Length Then iGlyphIndex = 0
+                If iGlyphIndex = m_abrDefaultGlyphs.Length Then iGlyphIndex = 0
             Next i
+
         End Sub
 
         Private Sub GetPatterns(ByVal avs() As cVisualStyle)
+
             Dim vs As cVisualStyle = Nothing
             Dim iPatternIndex As Integer = 0
 
@@ -159,15 +169,15 @@ Namespace Controls
                 vs = New cVisualStyle()
                 vs.ForeColour = Color.Gray
                 vs.BackColour = Color.Transparent
-                vs.HatchStyle = m_abrPatternDefaults(iPatternIndex)
+                vs.HatchStyle = m_abrDefaultHatchPatterns(iPatternIndex)
 
                 avs(i) = vs
 
                 ' increment counter
                 iPatternIndex += 1
-                If iPatternIndex = m_abrPatternDefaults.Length Then iPatternIndex = 0
+                If iPatternIndex = m_abrDefaultHatchPatterns.Length Then iPatternIndex = 0
             Next i
-            ' Yay done, no need to return anything coz passed by ref
+
         End Sub
 
 #End Region ' Internal implementation
