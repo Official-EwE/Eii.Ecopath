@@ -46,12 +46,13 @@ Namespace Ecospace
             Me.m_pbLargePlot = New System.Windows.Forms.PictureBox
             Me.m_lblPoolName = New System.Windows.Forms.Label
             Me.m_scMain = New System.Windows.Forms.SplitContainer
+            Me.m_pnDisplayOptions = New System.Windows.Forms.Panel
+            Me.m_lblDispOpt = New System.Windows.Forms.Label
+            Me.m_lblDist = New System.Windows.Forms.Label
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
-            Me.m_lblDist = New System.Windows.Forms.Label
-            Me.m_lblDispOpt = New System.Windows.Forms.Label
             CType(Me.m_pbSmallPlot, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,6 +60,7 @@ Namespace Ecospace
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.m_pnDisplayOptions.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabSmallMultiples.SuspendLayout()
@@ -205,18 +207,15 @@ Namespace Ecospace
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_cbDisplayGroup)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDispOpt)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbShowSingle)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayCoverB)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbShowNonHidden)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDist)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbShowAll)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayContaminantC)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayFishingEffort)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblPoolName)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayRelBiomass)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayFishingEffort)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_pnDisplayOptions)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayContaminantC)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayCoverB)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDispOpt)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDist)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblPoolName)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbOverlay)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lbPlotTime)
             Me.m_scMain.Panel1.Controls.Add(Me.m_pbSmallPlot)
@@ -224,6 +223,29 @@ Namespace Ecospace
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutputs)
+            '
+            'm_pnDisplayOptions
+            '
+            resources.ApplyResources(Me.m_pnDisplayOptions, "m_pnDisplayOptions")
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowAll)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowSingle)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbDisplayGroup)
+            Me.m_pnDisplayOptions.Name = "m_pnDisplayOptions"
+            '
+            'm_lblDispOpt
+            '
+            resources.ApplyResources(Me.m_lblDispOpt, "m_lblDispOpt")
+            Me.m_lblDispOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblDispOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblDispOpt.Name = "m_lblDispOpt"
+            '
+            'm_lblDist
+            '
+            resources.ApplyResources(Me.m_lblDist, "m_lblDist")
+            Me.m_lblDist.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblDist.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblDist.Name = "m_lblDist"
             '
             'm_tlpRun
             '
@@ -258,20 +280,6 @@ Namespace Ecospace
             Me.m_tabPlot.Name = "m_tabPlot"
             Me.m_tabPlot.UseVisualStyleBackColor = True
             '
-            'm_lblDist
-            '
-            resources.ApplyResources(Me.m_lblDist, "m_lblDist")
-            Me.m_lblDist.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDist.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblDist.Name = "m_lblDist"
-            '
-            'm_lblDispOpt
-            '
-            resources.ApplyResources(Me.m_lblDispOpt, "m_lblDispOpt")
-            Me.m_lblDispOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDispOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblDispOpt.Name = "m_lblDispOpt"
-            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -286,6 +294,8 @@ Namespace Ecospace
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
+            Me.m_pnDisplayOptions.ResumeLayout(False)
+            Me.m_pnDisplayOptions.PerformLayout()
             Me.m_tlpRun.ResumeLayout(False)
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabSmallMultiples.ResumeLayout(False)
@@ -321,6 +331,7 @@ Namespace Ecospace
         Friend WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_lblDispOpt As System.Windows.Forms.Label
         Friend WithEvents m_lblDist As System.Windows.Forms.Label
+        Friend WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
 
  
     End Class

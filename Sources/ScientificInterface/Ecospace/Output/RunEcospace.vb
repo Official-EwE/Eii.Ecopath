@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.4  2008/11/26 23:23:37  sherman
+' Updated Display Options group box
+'
 ' Revision 1.3  2008/11/20 15:28:08  jeroens
 ' Resust form no longer invoked as a dialog
 '
@@ -811,7 +814,7 @@ Namespace Ecospace
             Me.m_btnRun.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = False)
             Me.m_btnStop.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = True)
             ' Enable display options for non-fleet maps
-            Me.m_gpbDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
+            Me.m_pnDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
 
             ' Enable contaminant options based on space tracer enabled state
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
