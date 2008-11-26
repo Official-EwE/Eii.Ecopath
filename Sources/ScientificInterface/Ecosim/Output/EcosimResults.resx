@@ -376,7 +376,7 @@
     <value>4, 108</value>
   </data>
   <data name="plResultsGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>640, 504</value>
+    <value>635, 504</value>
   </data>
   <data name="plResultsGrid.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -393,9 +393,6 @@
   <data name="&gt;&gt;plResultsGrid.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_lblYear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="m_lblYear.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
@@ -406,7 +403,7 @@
     <value>7, 9</value>
   </data>
   <data name="m_lblYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 18</value>
+    <value>187, 18</value>
   </data>
   <data name="m_lblYear.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -442,7 +439,7 @@
     <value>205, 9</value>
   </data>
   <data name="m_lblShow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>439, 18</value>
+    <value>434, 18</value>
   </data>
   <data name="m_lblShow.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -473,6 +470,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>651, 615</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

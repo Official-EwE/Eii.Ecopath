@@ -233,8 +233,8 @@ Namespace Ecosim
             '
             'm_lblInputOpt
             '
-            Me.m_lblInputOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
             resources.ApplyResources(Me.m_lblInputOpt, "m_lblInputOpt")
+            Me.m_lblInputOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.m_lblInputOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblInputOpt.Name = "m_lblInputOpt"
             '

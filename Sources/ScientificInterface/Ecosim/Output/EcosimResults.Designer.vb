@@ -102,8 +102,8 @@ Namespace Ecosim
             '
             'm_lblYear
             '
-            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
             Me.m_lblYear.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
             Me.m_lblYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblYear.Name = "m_lblYear"
             '
