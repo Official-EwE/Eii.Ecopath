@@ -36,7 +36,7 @@ Namespace Ecosim
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
             Me.m_sketchPad = New ScientificInterface.Ecosim.ucForcingSketchPad
-            Me.plBPlot = New System.Windows.Forms.Panel
+            Me.m_graph = New ScientificInterface.Ecosim.ucBiomassPlotzgc
             Me.gpbRun = New System.Windows.Forms.GroupBox
             Me.gpbFF.SuspendLayout()
             Me.ToolStrip1.SuspendLayout()
@@ -116,10 +116,10 @@ Namespace Ecosim
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
             '
-            'plBPlot
+            'm_graph
             '
-            resources.ApplyResources(Me.plBPlot, "plBPlot")
-            Me.plBPlot.Name = "plBPlot"
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
             '
             'gpbRun
             '
@@ -133,7 +133,7 @@ Namespace Ecosim
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.gpbRun)
-            Me.Controls.Add(Me.plBPlot)
+            Me.Controls.Add(Me.m_graph)
             Me.Controls.Add(Me.gpbFF)
             Me.Name = "RunEcosim"
             Me.gpbFF.ResumeLayout(False)
@@ -144,18 +144,18 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents btnRunOrStop As System.Windows.Forms.Button
-        Friend WithEvents gpbFF As System.Windows.Forms.GroupBox
-        Friend WithEvents m_sketchPad As ucForcingSketchPad
-        Friend WithEvents plBPlot As System.Windows.Forms.Panel
-        Friend WithEvents gpbRun As System.Windows.Forms.GroupBox
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-        Friend WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents tscbTarget As CustomToolstripComboBox
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
+        Private WithEvents btnRunOrStop As System.Windows.Forms.Button
+        Private WithEvents gpbFF As System.Windows.Forms.GroupBox
+        Private WithEvents m_sketchPad As ucForcingSketchPad
+        Private WithEvents m_graph As ucBiomassPlotzgc
+        Private WithEvents gpbRun As System.Windows.Forms.GroupBox
+        Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+        Private WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
+        Private WithEvents tscbTarget As CustomToolstripComboBox
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
 
     End Class
 End Namespace

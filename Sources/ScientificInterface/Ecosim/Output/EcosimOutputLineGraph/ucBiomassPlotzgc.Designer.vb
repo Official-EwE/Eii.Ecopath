@@ -202,7 +202,7 @@ Namespace Ecosim
             '
             Me.CumulativeToolStripMenuItem.CheckOnClick = True
             Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
             Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
             '
             'RelativeToolStripMenuItem
@@ -211,7 +211,7 @@ Namespace Ecosim
             Me.RelativeToolStripMenuItem.CheckOnClick = True
             Me.RelativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
             Me.RelativeToolStripMenuItem.Text = "&Relative"
             '
             'ToolStripSeparator2

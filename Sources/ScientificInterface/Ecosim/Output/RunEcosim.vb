@@ -1,150 +1,11 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.2  2008/11/26 16:00:22  jeroens
+' Fixed issue 571
+'
 ' Revision 1.1  2008/09/26 07:31:48  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.79  2008/07/30 20:00:36  jeroens
-' Fixed Sim runstate feedback bug
-'
-' Revision 1.78  2008/07/29 19:35:16  sherman
-' Bug fixes
-' - clear lines when core state changed
-' - fixed year change bugs
-'
-' Revision 1.77  2008/07/29 16:14:48  sherman
-' Added sum of squares
-'
-' Revision 1.76  2008/07/25 20:59:32  sherman
-' Ported BiomassPlots to zedgraph in RunEcosim
-'
-' Revision 1.75  2008/05/18 02:12:58  jeroens
-' Fixed issue 361
-'
-' Revision 1.74  2008/05/05 22:21:26  jeroens
-' Shared progress bar
-'
-' Revision 1.73  2008/02/05 16:04:14  jeroens
-' Fixed bug 401
-'
-' Revision 1.72  2008/01/08 20:15:02  jeroens
-' Last manual value repeated across shape - fixes bug 361
-'
-' Revision 1.71  2008/01/07 16:45:58  jeroens
-' Fixed number interpretation bug
-'
-' Revision 1.70  2007/12/31 15:53:51  jeroens
-' * Fixed bug 365
-'
-' Revision 1.69  2007/12/14 15:48:09  jeroens
-' * Fixed hokey layout, uses toolbars instead
-'
-' Revision 1.68  2007/12/10 02:30:13  sherman
-' Re-organized Ecosim Plots and Ecosim Results.  Moved monte carlo run to tools.
-'
-' Revision 1.67  2007/12/05 03:46:16  jeroens
-' - Removed links to specialized core state events; generic core state event suffices
-'
-' Revision 1.66  2007/11/22 18:40:54  jeroens
-' * Uses command
-'
-' Revision 1.65  2007/11/02 16:23:02  joeb
-' Redraw summary graph lines in response to core message
-'
-' Revision 1.64  2007/10/31 16:04:45  jeroens
-' * Respond to relevant shape manager messages
-'
-' Revision 1.63  2007/10/30 22:53:44  jeroens
-' + Reconnected reset commands
-'
-' Revision 1.62  2007/10/29 16:38:42  jeroens
-' * Uses new revamped shape controls layout
-'
-' Revision 1.61  2007/10/29 14:06:34  jeroens
-' * Updated to reworked shape controls
-'
-' Revision 1.60  2007/10/18 22:04:50  joeb
-' release core state monitor
-'
-' Revision 1.59  2007/10/15 20:04:10  joeb
-' Removed some commented out code
-'
-' Revision 1.58  2007/10/15 16:48:07  joeb
-' Removed core message handler and put all message handling in OnCoreMessage
-'
-' Revision 1.57  2007/10/15 15:26:13  jeroens
-' * Updated to renamed override
-'
-' Revision 1.56  2007/10/14 17:01:08  joeb
-' Changes to Dispose
-'
-' Revision 1.55  2007/10/14 16:45:13  jeroens
-' - Released message sources
-'
-' Revision 1.54  2007/10/13 22:38:28  jeroens
-' * Fixed bug 282
-'
-' Revision 1.53  2007/10/12 15:20:50  joeb
-' Changes for Results forms
-'
-' Revision 1.52  2007/10/09 18:58:57  joeb
-' Progress bar
-'
-' Revision 1.51  2007/10/05 18:15:15  joeb
-' Added BatchMode to biomass graph
-'
-' Revision 1.50  2007/09/29 01:17:01  joeb
-' Bug Fixes
-'
-' Revision 1.49  2007/09/28 18:55:18  joeb
-' changed number of years
-'
-' Revision 1.48  2007/09/13 17:18:25  jeroens
-' * Re-enabled group/fleet tree view. Why was this commented out?
-'
-' Revision 1.47  2007/09/11 21:13:44  fgao
-' More FPS stuff
-'
-' Revision 1.46  2007/09/11 12:25:17  jeroens
-' * Fixed group selection to mortality shape index offset bug
-'
-' Revision 1.45  2007/09/07 13:34:15  jeroens
-' * Replaced fleet and group combo's with single drop down tree
-'
-' Revision 1.44  2007/09/04 18:39:40  jeroens
-' * Reset F's updated to screen immediately
-'
-' Revision 1.43  2007/08/24 22:53:43  fgao
-' Add a progress bar
-'
-' Revision 1.42  2007/08/21 19:50:06  jeroens
-' * Simplified fleet/group selection handling
-'
-' Revision 1.41  2007/08/10 23:23:41  fgao
-' Finish ucBiomassPlot, make them work for both MCRun and RunEcosim UI,
-' Add annual plot options etc.
-'
-' Revision 1.40  2007/08/07 16:41:34  jeroens
-' * Fixed several layout issues
-'
-' Revision 1.39  2007/08/03 23:46:49  fgao
-' Improved a lot in biomass rendering speed.
-'
-' Revision 1.38  2007/08/03 17:59:29  jeroens
-' - Removed dead logic
-'
-' Revision 1.37  2007/08/03 16:31:13  jeroens
-' + Localized
-' + Properly uses m_selectionMode
-'
-' Revision 1.36  2007/08/01 23:42:44  fgao
-' Add MC Run plot now....
-'
-' Revision 1.35  2007/08/01 23:09:36  joeb
-' Fixxed UpdateCoreShapeData bug it was not calling the correct manager
-'
-' Revision 1.34  2007/08/01 21:00:39  fgao
-' Refactoring out the Biomass plot control, so it can be used for MCRun.
 '
 '==============================================================================
 
@@ -180,14 +41,8 @@ Namespace Ecosim
 #Region " Variables "
 
         Private WithEvents m_coreStateMonitor As cCoreStateMonitor = Nothing
-
-        Private m_ucBPlots As New ucBiomassPlotzgc
-
         Private m_Core As cCore = Nothing
-        'Private m_FishingRateManager As cFishingRateManger = Nothing
-        'Private m_FishMortalityManager As cFishMortalityManger = Nothing
         Private m_shapeGUIHandler As ForcingShapeGUIHandler = Nothing
-
         Private m_BiomassResults(,) As Single
         Private m_EcosimModelParams As cEcoSimModelParameters = Nothing
         Private m_TimeSteps As Integer
@@ -244,14 +99,6 @@ Namespace Ecosim
 
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            plBPlot.Controls.Clear()
-
-            'm_ucBPlots.BatchMode = False
-            'm_ucBPlots.ProgressVisible = False
-            m_ucBPlots.Dock = DockStyle.Fill
-
-            plBPlot.Controls.Add(m_ucBPlots)
-
             Me.m_ccb = New CustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
 
             Me.MessageSources = New eMessageSource() {eMessageSource.EcoPath, eMessageSource.EcoSim, eMessageSource.ShapesManager}
@@ -274,7 +121,7 @@ Namespace Ecosim
                 'jb clear the graph
                 'Me.m_ucBPlots.Plot.Clear()
                 'm_ucBPlots.ProgressVisible = True
-                Me.m_ucBPlots.Refresh()
+                Me.m_graph.Refresh()
 
                 ReDim m_BiomassResults(m_Core.nGroups, m_TimeSteps)
                 m_Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
@@ -309,13 +156,13 @@ Namespace Ecosim
                             If m_BiomassResults IsNot Nothing Then
                                 'm_ucBPlots.ProgressVisible = False
                                 'm_ucBPlots.AddValues(m_BiomassResults)
-                                m_ucBPlots.SSValue = Me.m_Core.EcosimStats.SS
+                                Me.m_graph.SSValue = Me.m_Core.EcosimStats.SS
 
 
                             End If
 
                             ' Now plot the graphs.
-                            Me.m_ucBPlots.EcosimCompleteDelegate()
+                            Me.m_graph.EcosimCompleteDelegate()
 
                         Catch ex As Exception
                             'make sure the model can be rerun if something goes wrong
@@ -384,7 +231,7 @@ Namespace Ecosim
             If (iState = eCoreExecutionState.EcosimLoaded) Then
                 ' #Yes: clear run results
                 'Me.m_ucBPlots.Plot.Clear()
-                Me.m_ucBPlots.OnCoreExecutionStateChanged()
+                Me.m_graph.OnCoreExecutionStateChanged()
             End If
 
             ' Check whether ecosim is running

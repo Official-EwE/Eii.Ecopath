@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.18  2008/11/26 16:00:23  jeroens
+' Fixed issue 571
+'
 ' Revision 1.17  2008/11/11 00:52:23  joeh
 ' Set plot type default to relative and scale default to auto
 '
@@ -52,76 +55,6 @@
 ' Revision 1.1  2008/09/26 07:31:50  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.22  2008/09/23 16:13:51  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.21  2008/09/19 16:05:00  jeroens
-' Fixed issue 542
-'
-' Revision 1.20  2008/09/02 14:47:30  jeroens
-' Simplified ZedGraphHelper wrap interface
-'
-' Revision 1.19  2008/08/28 21:25:58  sherman
-' Moved ZedGraphHelper to SI Shared
-'
-' Revision 1.18  2008/08/15 00:43:50  sherman
-' Fixed plotting with timeseries bug in the x axis
-'
-' Revision 1.17  2008/08/14 01:56:07  sherman
-' Added base year to Yaxis
-'
-' Revision 1.16  2008/07/31 17:31:10  jeroens
-' Smoothened list box populating
-'
-' Revision 1.15  2008/07/31 17:21:00  jeroens
-' Integrated LegendListBox
-'
-' Revision 1.14  2008/07/31 16:43:08  sherman
-' Updated listbox debugging code - tsk sherman
-'
-' Revision 1.13  2008/07/31 01:46:19  sherman
-' Fixed Time Series highlights
-' - still need
-'
-' Revision 1.12  2008/07/30 20:21:54  sherman
-' Debugging version.
-'
-' Revision 1.11  2008/07/30 00:37:55  sherman
-' Added Timeseries
-'
-' Revision 1.10  2008/07/29 19:35:17  sherman
-' Bug fixes
-' - clear lines when core state changed
-' - fixed year change bugs
-'
-' Revision 1.9  2008/07/29 17:11:46  jeroens
-' List boxes no longer integral height
-' Coloured lines at foreground
-'
-' Revision 1.8  2008/07/29 16:32:33  jeroens
-' Prettified
-'
-' Revision 1.7  2008/07/29 16:14:48  sherman
-' Added sum of squares
-'
-' Revision 1.6  2008/07/26 00:01:38  sherman
-' Documentation
-'
-' Revision 1.5  2008/07/25 20:59:32  sherman
-' Ported BiomassPlots to zedgraph in RunEcosim
-'
-' Revision 1.4  2008/07/25 06:44:35  sherman
-' Updated Ecosim Biomass plot to zed graph.  Still not perfect.
-'
-' Revision 1.3  2008/07/25 00:56:09  sherman
-' Bug fix - does not draw the very first time
-'
-' Revision 1.2  2008/07/24 23:05:29  sherman
-' Work in progress... able to draw code
-'
-' Revision 1.1  2008/07/21 19:33:49  sherman
-' initial upload
-'
 '==============================================================================
 
 #Region "Imports Directive"
@@ -151,23 +84,14 @@ Namespace Ecosim
         Private m_ZGPlotter As ZedGraphPlotter = Nothing
 
 #Region " Constructor "
+
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
-            SplitContainer1.Panel1Collapsed = True
-
-            ' Santa's little helper :)
-            m_ZGHelper = New ZedGraphHelper(m_zgc)
-
-            ' 0.5) Call new graph
-            m_ZGPlotter = New ZedGraphPlotter(m_zgc.GraphPane, m_core, "Relative biomass", "Year", "Relative biomass")
-
-            m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
+            Me.InitializeComponent()
+            Me.SplitContainer1.Panel1Collapsed = True
 
         End Sub
+
 #End Region ' Constructor
 
 #Region " Public Interfaces "
@@ -178,6 +102,8 @@ Namespace Ecosim
         Public Sub EcosimCompleteDelegate()
             Dim list1 As New PointPairList()
             Dim listSum As New PointPairList
+
+            ' ToDo: Localize this!
 
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
@@ -350,18 +276,18 @@ Namespace Ecosim
             ' 4) Tell the plotter it's finished
             Me.m_ZGPlotter.StoreDataset()
 
+            ' JS: I'm too impatient to figure out how to make the plotter do this
+            Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
+            Me.m_zgc.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+
             ' Draw the boxes, but should this be here or external?
             DrawTimeSeries()
 
             ' Make sure the group boxes say the correct items.
             PopulateGroupBoxes()
 
-            'Set default scaling to auto
-            Me.m_ZGHelper.AutoscalePane = True
-
             ' Calculate the Axis Scale Ranges
             Me.m_ZGHelper.RescaleAndRedraw()
-            'Me.oldUpdateControls()
             Me.UpdateControls()
 
         End Sub
@@ -485,6 +411,20 @@ Namespace Ecosim
 
             lbOverlay.ResumeLayout()
             lbGroups.ResumeLayout()
+
+        End Sub
+
+        Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            ' Santa's little helper :)
+            Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
+
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.m_ZGHelper.YScaleMin = 0.0!
+            Me.m_ZGHelper.YScaleMax = 2.0!
+
+            ' ToDo_JS: Localize this!
+            Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
+            Me.m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
         End Sub
 
@@ -640,6 +580,7 @@ Namespace Ecosim
             AutoScaleToolStripMenuItem.Checked = False
             CustomScaleToolStripMenuItem.Checked = False
         End Sub
+
     End Class
     
 End Namespace

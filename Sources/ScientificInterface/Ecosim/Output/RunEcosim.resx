@@ -286,7 +286,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucForcingSketchPad, EwE6, Version=6.0.3.16, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecosim.ucForcingSketchPad, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>gpbFF</value>
@@ -318,28 +318,28 @@
   <data name="&gt;&gt;gpbFF.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="plBPlot.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="plBPlot.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 3</value>
   </data>
-  <data name="plBPlot.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
     <value>953, 345</value>
   </data>
-  <data name="plBPlot.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;plBPlot.Name" xml:space="preserve">
-    <value>plBPlot</value>
+  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
+    <value>m_graph</value>
   </data>
-  <data name="&gt;&gt;plBPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.ucBiomassPlotzgc, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;plBPlot.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;plBPlot.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="gpbRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -378,6 +378,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>970, 536</value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;tslTarget.Name" xml:space="preserve">
     <value>tslTarget</value>
   </data>
@@ -388,7 +391,7 @@
     <value>tscbTarget</value>
   </data>
   <data name="&gt;&gt;tscbTarget.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.CustomToolstripComboBox, ScientificInterfaceShared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.CustomToolstripComboBox, ScientificInterfaceShared, Version=1.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
@@ -418,6 +421,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.3.16, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
