@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.5  2008/11/26 02:58:58  jeroens
+' Fixed issue 565 part I
+'
 ' Revision 1.4  2008/10/29 15:48:08  jeroens
 ' Fixed issue 562
 '
@@ -634,16 +637,18 @@ Namespace Controls.EwEGrid
                 If iRow > r.Start.Row Then sbClipText.Append(vbCr + vbLf)
                 For iCol As Integer = r.Start.Column To r.End.Column
                     pos = New Position(iRow, iCol)
+                    strValue = ""
+
                     If (Me.m_sel.Contains(pos) Or bIgnoreSelection) Then
                         cell = Me(iRow, iCol)
-                        If TypeOf cell Is PropertyCell Then
-                            prop = DirectCast(cell, PropertyCell).GetProperty()
-                            strValue = CStr(prop.GetValue(False))
-                        Else
-                            strValue = CStr(Me(iRow, iCol).GetValue(pos))
+                        If cell IsNot Nothing Then
+                            If TypeOf cell Is PropertyCell Then
+                                prop = DirectCast(cell, PropertyCell).GetProperty()
+                                strValue = CStr(prop.GetValue(False))
+                            Else
+                                strValue = CStr(Me(iRow, iCol).GetValue(pos))
+                            End If
                         End If
-                    Else
-                        strValue = ""
                     End If
 
                     If String.Compare(strValue, CStr(cCore.NULL_VALUE)) = 0 Then strValue = ""
@@ -703,20 +708,24 @@ Namespace Controls.EwEGrid
 
                     For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, r.End.Column)
                         pos = New Position(iRow, iCol)
-                        ' Is cell enabled for editing?
-                        If (Me(iRow, iCol).DataModel.EnableEdit) Then
-                            ' Is cell either part of a selection OR should selections be ignored?
-                            If (Me.m_sel.Contains(pos) Or bIgnoreSelection) Then
-                                ' #Yes: attempt to set value
-                                strValue = astrCols(iCol - r.Start.Column)
-                                cell = Me(iRow, iCol)
+                        cell = Me(iRow, iCol)
 
-                                If (String.Compare(strValue, "") = 0) And _
-                                    ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
-                                    strValue = cCore.NULL_VALUE.ToString()
+                        ' Prevent from crashing on irregular grids
+                        If cell IsNot Nothing Then
+                            ' Is cell enabled for editing?
+                            If (cell.DataModel.EnableEdit) Then
+                                ' Is cell either part of a selection OR should selections be ignored?
+                                If (Me.m_sel.Contains(pos) Or bIgnoreSelection) Then
+                                    ' #Yes: attempt to set value
+                                    strValue = astrCols(iCol - r.Start.Column)
+
+                                    If (String.Compare(strValue, "") = 0) And _
+                                        ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
+                                        strValue = cCore.NULL_VALUE.ToString()
+                                    End If
+
+                                    cell.SetValue(pos, strValue)
                                 End If
-
-                                Me(iRow, iCol).SetValue(pos, strValue)
                             End If
                         End If
                     Next iCol
