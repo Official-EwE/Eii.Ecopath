@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.4  2008/11/27 18:19:38  joeb
+' Added EcoFunctions to Ecopath constructor
+'
 ' Revision 1.3  2008/11/05 18:16:08  joeb
 ' Fixed Bug that caused discards not to be include in Fishing mortality shapes FishRateNo() by moving caculation of PropDiscards() to Ecopath with calculation of PropLandings()
 '
@@ -128,9 +131,12 @@ Namespace Ecopath
         'status flag for the estimation results
         Dim m_EstimStatus As eStatusFlags
 
+        Dim m_Ecofunctions As cEcoFunctions
 
-        Public Sub New()
+
+        Public Sub New(ByVal EcoFunctions As cEcoFunctions)
             m_eEstimType = eEstimateParameterFor.ParameterEstimation
+            m_Ecofunctions = EcoFunctions
         End Sub
 
         ''' <summary>
