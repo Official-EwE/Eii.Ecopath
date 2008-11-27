@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: WebBrowserDC.vb,v $
+' Revision 1.2  2008/11/27 19:45:51  jeroens
+' Renamed ApplicationComponents interfaces to more properly reflect their function
+'
 ' Revision 1.1  2008/09/26 07:32:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -71,7 +74,7 @@ Public Class WebBrowserDC
     Private Function EwEBaseURL() As String
         Dim core As cCore = cCore.GetInstance()
         Dim ac As ApplicationComponents = AppLauncher.GetInstance().ApplicationComponents()
-        Dim aAssemblyNames As AssemblyName() = ac.LoadedComponents()
+        Dim aAssemblyNames As AssemblyName() = ac.RequiredComponents()
         Dim pm As cPluginManager = core.PluginManager
         Dim ub As New EwEUtils.Utilities.UrlBuilder(cBASEURL)
 

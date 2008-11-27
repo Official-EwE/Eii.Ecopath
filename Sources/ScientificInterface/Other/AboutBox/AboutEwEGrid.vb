@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AboutEwEGrid.vb,v $
+' Revision 1.2  2008/11/27 19:45:51  jeroens
+' Renamed ApplicationComponents interfaces to more properly reflect their function
+'
 ' Revision 1.1  2008/09/26 07:32:07  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -60,7 +63,7 @@ Public Class AboutEwEGrid
 
         ac = AppLauncher.GetInstance().ApplicationComponents()
         pm = core.PluginManager()
-        aanLoaded = ac.LoadedComponents()
+        aanLoaded = ac.RequiredComponents()
         aanPlugins = pm.PluginAssemblyNames()
 
         ' Control face colour to use for grid rows and grid background

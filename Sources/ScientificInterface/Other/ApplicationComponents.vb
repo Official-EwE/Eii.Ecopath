@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ApplicationComponents.vb,v $
+' Revision 1.2  2008/11/27 19:45:51  jeroens
+' Renamed ApplicationComponents interfaces to more properly reflect their function
+'
 ' Revision 1.1  2008/09/26 07:32:07  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -57,13 +60,13 @@ Public Class ApplicationComponents
         Dim astrExcludeAssemblies() As String = {"mscorlib", "system", "microsoft"}
         ' Scientific Interface assembly
         Dim assExecuting As Assembly = Assembly.GetExecutingAssembly()
-        ' All loaded assemblies
-        Dim anLoaded() As AssemblyName = assExecuting.GetReferencedAssemblies()
+        ' All required assemblies (not actually loaded!)
+        Dim anRequired() As AssemblyName = assExecuting.GetReferencedAssemblies()
 
         Me.m_lanComponents.Add(Assembly.GetEntryAssembly().GetName())
 
         ' Figure out which assemblies to show
-        For Each an As AssemblyName In anLoaded
+        For Each an As AssemblyName In anRequired
             ' Not already accepted?
             If Not Me.m_lanComponents.Contains(an) Then
                 ' #Yes: this is a new assembly
@@ -89,10 +92,10 @@ Public Class ApplicationComponents
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns an array of loaded components
+    ''' Returns an array of required components.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function LoadedComponents() As AssemblyName()
+    Public Function RequiredComponents() As AssemblyName()
         Return Me.m_lanComponents.ToArray()
     End Function
 
