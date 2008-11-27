@@ -1,104 +1,11 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.2  2008/11/27 03:10:43  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:31:23  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.9  2008/08/15 21:24:46  jeroens
-' Renamed 'GraphsAndFiguresd' style to 'Fonts'
-'
-' Revision 1.8  2008/08/15 20:30:19  jeroens
-' Commented new mindboggling tweaks and fixes
-'
-' Revision 1.7  2008/08/15 20:28:36  jeroens
-' Fires off colorschanged event when the colors have indeed changed
-'
-' Revision 1.6  2008/08/06 01:24:17  jeroens
-' Thou shalst comply!
-'
-' Revision 1.5  2008/08/03 02:15:07  jeroens
-' Removed obsolete styles
-'
-' Revision 1.4  2008/07/18 19:25:16  jeroens
-' Suuports monetary units
-'
-' Revision 1.3  2008/07/10 18:22:58  jeroens
-' Fixed units to properly behave
-' - Split both curr and time units into enum + custom string
-'
-' Revision 1.2  2008/06/02 05:35:12  jeroens
-' Changed HIGHLIGHT default color
-'
-' Revision 1.1  2008/06/01 23:45:46  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.11  2008/05/27 17:41:46  jeroens
-' Nitty-gritty
-'
-' Revision 1.10  2008/05/26 21:06:43  jeroens
-' Time and currency unit no longer obtained from settings
-'
-' Revision 1.9  2008/05/07 01:39:06  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.8  2008/05/05 17:32:46  jeroens
-' Added color/integer conversion
-'
-' Revision 1.7  2008/05/05 08:32:05  jeroens
-' Separated HSV logic from StyleGuide
-'
-' Revision 1.6  2008/03/02 15:28:27  jeroens
-' Checked values reflected in AppColors GUI as background color, not as text coler
-'
-' Revision 1.5  2008/01/31 03:08:24  jeroens
-' Fixed comment
-'
-' Revision 1.4  2008/01/11 12:21:41  jeroens
-' * Boosted lower limit colour ramp use to avoid near-white colour
-'
-' Revision 1.3  2007/12/22 22:37:07  jeroens
-' + Added graph legend styles
-' * Font sizes changed to Single type
-'
-' Revision 1.2  2007/12/22 16:48:27  jeroens
-' + Added GraphsAndFigures setting
-'
-' Revision 1.1  2007/12/20 02:38:23  jeroens
-' - Moved from Options subfolder
-'
-' Revision 1.23  2007/12/05 23:28:21  jeroens
-' * Fixed feature 354
-'
-' Revision 1.22  2007/11/11 23:14:02  jeroens
-' * Default colours always available
-'
-' Revision 1.21  2007/11/11 23:01:16  jeroens
-' * Fixed crash after using missing colours loaded from incomplete colour schemes
-'
-' Revision 1.20  2007/10/30 18:43:51  jeroens
-' + Defined highlight color
-'
-' Revision 1.19  2007/10/14 22:04:07  jeroens
-' * Fixed bugs 281 and 160
-' * ColorManager reduced to ApplicationColorManager
-'
-' Revision 1.18  2007/10/14 19:45:28  jeroens
-' * Removed group colours buffer, directly uses core groups colour field instead
-'
-' Revision 1.17  2007/10/14 17:31:20  jeroens
-' * Solved compiler warnings
-'
-' Revision 1.16  2007/10/09 14:48:31  joeb
-' Fixed bug in SaveGroupColors() m_GroupColor(i - 1) GroupColor() is a list indexed from zero not one
-'
-' Revision 1.15  2007/10/03 12:33:19  jeroens
-' * Renamed event lock methods
-'
-' Revision 1.14  2007/10/03 02:32:54  jeroens
-' no message
-'
-' Revision 1.13  2007/10/03 01:54:29  jeroens
-' * Reworked styleguide, colormanager
 '
 '==============================================================================
 
@@ -174,6 +81,12 @@ Namespace Style
         Private m_sGraphLegendFontSize As Single = 10
         ''' <summary></summary>
         Private m_fsGraphLegendFontStye As FontStyle = FontStyle.Regular
+
+        ' -- group visibility --
+        ''' <summary>List of indexes of groups to hide.</summary>
+        Private m_lHiddenGroups As New List(Of Integer)
+        Private m_bHideTotalCatch As Boolean = False
+        Private m_bHideTotalValue As Boolean = False
 
         ' -- event locks --
         ''' <summary>Event lock count.</summary>
@@ -690,6 +603,7 @@ Namespace Style
             NumDigits = &H2
             Units = &H4
             Fonts = &H8
+            GroupVisibility = &H10
             All = &HFFFFFFFF
         End Enum
 
@@ -705,7 +619,7 @@ Namespace Style
             ' Are events locked?
             If (Me.m_nEventLock > 0) Then
                 ' #Yes: remember that an event is pending
-                m_pendingChangeEventTypes = m_pendingChangeEventTypes Or changeType
+                Me.m_pendingChangeEventTypes = Me.m_pendingChangeEventTypes Or changeType
                 ' Abort, leave the event for later
                 Return
             End If
@@ -735,9 +649,9 @@ Namespace Style
             ' Did this clear the event lock?
             If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
                 ' Fire remaining event(s)
-                FireChangeEvent(m_pendingChangeEventTypes)
+                FireChangeEvent(Me.m_pendingChangeEventTypes)
                 ' Clear cache
-                m_pendingChangeEventTypes = eChangeType.None
+                Me.m_pendingChangeEventTypes = eChangeType.None
             End If
         End Sub
 
@@ -1120,6 +1034,62 @@ Namespace Style
         End Sub
 
 #End Region ' Graphs and figures
+
+#Region " Item visibility "
+
+        Public Property GroupVisible(ByVal iGroup As Integer) As Boolean
+            Get
+                ' Return whether group is not hidden
+                Return (Me.m_lHiddenGroups.IndexOf(iGroup) = -1)
+            End Get
+            Set(ByVal bVisible As Boolean)
+
+                Dim bChanged As Boolean = False
+
+                If bVisible Then
+                    ' Remove group from hidden list, if applicable
+                    If (Me.m_lHiddenGroups.IndexOf(iGroup) <> -1) Then
+                        Me.m_lHiddenGroups.Remove(iGroup)
+                        bChanged = True
+                    End If
+                Else
+                    ' Add group to hidden list, if applicable
+                    If (Me.m_lHiddenGroups.IndexOf(iGroup) = -1) Then
+                        Me.m_lHiddenGroups.Add(iGroup)
+                        bChanged = True
+                    End If
+                End If
+
+                If bChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+            End Set
+        End Property
+
+        Public Property TotalCatchVisible() As Boolean
+            Get
+                Return (Me.m_bHideTotalCatch = False)
+            End Get
+            Set(ByVal bShow As Boolean)
+                Me.m_bHideTotalCatch = (bShow = False)
+            End Set
+        End Property
+
+        Public Property TotalValueVisible() As Boolean
+            Get
+                Return (Me.m_bHideTotalValue = False)
+            End Get
+            Set(ByVal bShow As Boolean)
+                Me.m_bHideTotalValue = (bShow = False)
+            End Set
+        End Property
+
+        Public Sub ResetVisibleFlags()
+            Me.m_lHiddenGroups.Clear()
+            Me.m_bHideTotalCatch = False
+            Me.m_bHideTotalValue = False
+            Me.FireChangeEvent(eChangeType.GroupVisibility)
+        End Sub
+
+#End Region ' Group visibility
 
 #End Region ' Public access
 

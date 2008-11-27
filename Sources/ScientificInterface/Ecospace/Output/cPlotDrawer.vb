@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPlotDrawer.vb,v $
+' Revision 1.2  2008/11/27 03:10:42  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:32:02  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -85,7 +88,6 @@ Namespace Ecospace
             Dim mx As New Matrix()
             Dim mxTmp As Matrix = g.Transform
             Dim sg As StyleGuide = StyleGuide.GetInstance()
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim bShowGroup As Boolean = True
 
             mx.Translate(0, CSng(rc.Height / 2))
@@ -99,7 +101,7 @@ Namespace Ecospace
                         Case RunEcospace.eShowGroupType.ShowAll
                             bShowGroup = True
                         Case RunEcospace.eShowGroupType.ShowNonHidden
-                            bShowGroup = appl.GroupDisplayFlags(iGroup)
+                            bShowGroup = sg.GroupVisible(iGroup)
                         Case RunEcospace.eShowGroupType.ShowSingle
                             bShowGroup = (iGroup = Me.m_iGroupToShow)
                     End Select

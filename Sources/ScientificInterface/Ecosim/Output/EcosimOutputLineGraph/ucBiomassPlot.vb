@@ -1,70 +1,11 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlot.vb,v $
+' Revision 1.2  2008/11/27 03:10:43  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:31:49  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.27  2008/08/02 03:04:21  jeroens
-' Renamed resources
-'
-' Revision 1.26  2008/07/18 17:51:08  jeroens
-' Removed progress indicator
-' Updated to new ZedGraphHelper interface
-'
-' Revision 1.25  2008/07/01 19:13:12  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.24  2008/07/01 14:15:48  jeroens
-' Fixed issue 375
-'
-' Revision 1.23  2008/06/02 00:01:47  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.22  2008/05/30 23:49:54  jeroens
-' Fixed autoscale crash
-'
-' Revision 1.21  2008/05/14 18:45:54  jeroens
-' Fixed autoscale issue
-'
-' Revision 1.20  2008/05/07 01:39:03  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.19  2008/05/05 22:21:26  jeroens
-' Shared progress bar
-'
-' Revision 1.18  2008/02/13 18:03:19  jeroens
-' Fixed bug 417
-'
-' Revision 1.17  2008/02/13 16:52:22  jeroens
-' Former HideGroups dialog invoked via central command
-'
-' Revision 1.16  2007/12/17 16:27:48  jeroens
-' * Added metadata for custom graph axis
-'
-' Revision 1.15  2007/12/17 16:15:03  sherman
-' Bug fix to ensure Y axis is not set <=0
-'
-' Revision 1.14  2007/12/15 02:40:32  jeroens
-' * Fixed autoscale vs user def. scale
-'
-' Revision 1.13  2007/12/14 20:08:36  jeroens
-' * sigh * User Y axis value does not work yet
-'
-' Revision 1.12  2007/12/14 18:50:06  jeroens
-' no message
-'
-' Revision 1.11  2007/12/14 17:44:52  jeroens
-' * Fixed graph options startup states
-'
-' Revision 1.10  2007/12/14 15:47:56  jeroens
-' * Fixed hokey layout, uses toolbars instead
-'
-' Revision 1.9  2007/12/10 00:34:48  jeroens
-' * Fixed bizarre load order bug
-'
-' Revision 1.8  2007/11/29 02:16:07  jeroens
-' + Organized
-' + Added format provider for text box
 '
 '==============================================================================
 
@@ -87,25 +28,14 @@ Namespace Ecosim
     ''' </summary>
     Public Class ucBiomassPlot
 
-        ''' <summary>
-        ''' State change flags
-        ''' </summary>
-        Private Enum eChangedStateTypes
-            Scale
-            ScaleValue
-            Overlay
-            Batch
-        End Enum
-
 #Region " Private vars "
 
         Private m_Graph As New EcosimOutputLineGraph
-        Private m_GroupDisplayFlags() As Boolean
-        Private WithEvents m_Applauncher As AppLauncher = AppLauncher.GetInstance()
         Private m_core As cCore = Nothing
         Private m_bClbToggle As Boolean = False
         Private m_bBatch As Boolean = False
         Private m_fpYAxisValue As cEwEFormatProvider = Nothing
+        Private m_sg As StyleGuide = Nothing
 
 #End Region ' Private vars
 
@@ -179,21 +109,23 @@ Namespace Ecosim
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing
 
-
-            Me.m_core = cCore.GetInstance()
-            Me.Dock = DockStyle.Fill
-
-            Me.m_fpYAxisValue = New cEwEFormatProvider(Me.tstbxYAxisValue.Control, GetType(Single), _
-                New cVariableMetaData(0.0!, Single.MaxValue, _
-                    cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan)))
-            Me.m_fpYAxisValue.Value = Me.m_Graph.FixedYAxisScaleMax
-
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.tsbtnShowHideGroups)
             End If
 
             Me.plBiomassPlot.Controls.Add(m_Graph)
+            Me.Dock = DockStyle.Fill
+
+            Me.m_core = cCore.GetInstance()
+            Me.m_sg = StyleGuide.GetInstance()
+            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            Me.m_fpYAxisValue = New cEwEFormatProvider(Me.tstbxYAxisValue.Control, GetType(Single), _
+                    New cVariableMetaData(0.0!, Single.MaxValue, _
+                                          cOperatorManager.getOperator(eOperators.GreaterThan), _
+                                          cOperatorManager.getOperator(eOperators.LessThan)))
+            Me.m_fpYAxisValue.Value = Me.m_Graph.FixedYAxisScaleMax
 
             Me.UpdateControls()
 
@@ -208,7 +140,12 @@ Namespace Ecosim
             End If
 
             Me.m_fpYAxisValue = Nothing
-            Me.m_Applauncher = Nothing
+
+            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.m_sg = Nothing
+
+            Me.m_core = Nothing
+
         End Sub
 
         Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbGroups.SelectedIndexChanged
@@ -279,21 +216,6 @@ Namespace Ecosim
             Me.UpdateFixedGraphYScale()
         End Sub
 
-        Private Sub OnDislayGroupsChanged() Handles m_Applauncher.DisplayGroupsChanged
-
-            m_GroupDisplayFlags = AppLauncher.GetInstance.GroupDisplayFlags
-
-            For i As Integer = 0 To m_Graph.Layers.Count - 1
-                For j As Integer = 0 To m_Graph.Layers(i).Lines.Count - 1
-                    m_Graph.Layers(i).Lines(j).IsShown = m_GroupDisplayFlags(j + 1)
-                Next
-            Next
-
-            m_Graph.GenerateOutputImage()
-            UpdateGroups()
-
-        End Sub
-
         Private Sub OnTextBoxKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tstbxYAxisValue.KeyDown
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then Me.UpdateFixedGraphYScale(True)
@@ -309,6 +231,21 @@ Namespace Ecosim
 
         Private Sub m_tsbSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbSet.Click
             Me.UpdateFixedGraphYScale(True)
+        End Sub
+
+        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+
+            If (ct And StyleGuide.eChangeType.GroupVisibility) > 0 Then
+                For i As Integer = 0 To m_Graph.Layers.Count - 1
+                    For j As Integer = 0 To m_Graph.Layers(i).Lines.Count - 1
+                        m_Graph.Layers(i).Lines(j).IsShown = Me.m_sg.GroupVisible(j + 1)
+                    Next
+                Next
+            End If
+
+            Me.m_Graph.GenerateOutputImage()
+            Me.UpdateGroups()
+
         End Sub
 
 #End Region ' Events

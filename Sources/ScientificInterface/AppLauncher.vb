@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.15  2008/11/27 03:10:41  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.14  2008/11/26 23:19:51  jeroens
 ' Weight! Weight, dude
 '
@@ -105,11 +108,7 @@ Public Class AppLauncher
     Private m_DeserializeDockContent As DeserializeDockContent
     Private m_Help As ApplicationHelp = Nothing
 
-    Private m_abGroupDisplayFlags() As Boolean
-
-    'Private m_coreEcosimMessageHandler As cMessageHandler = Nothing
-    'Private m_coreEcospaceMessageHandler As cMessageHandler = Nothing
-
+    ' -- commands --
     Private WithEvents m_cmdFileOpen As cFileOpenCommand = Nothing
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdNewModel As Command = Nothing
@@ -158,10 +157,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdDisplayGroups As Command = Nothing
     Private WithEvents m_cmdEnableEcotracer As Command = Nothing
 
-    Public Delegate Sub DisplayGroupsChangedEventHandler()
-    Public Event DisplayGroupsChanged As DisplayGroupsChangedEventHandler
-
-    ''' <summary>Helper class, provides information on loaded EwE-specific assemblies.</summary>
     Private m_applicationComponents As ApplicationComponents = Nothing
 
 #End Region ' Variables
@@ -205,35 +200,6 @@ Public Class AppLauncher
                 End If
             End If
         End Get
-    End Property
-
-    Public Property GroupDisplayFlags() As Boolean()
-        Get
-            Return Me.m_abGroupDisplayFlags
-        End Get
-        Set(ByVal abDisplayFlags As Boolean())
-            ' JS 13feb08: Copy values rather than adopting the new array blindly
-            For iValue As Integer = 0 To Math.Min(abDisplayFlags.Length - 1, Me.m_abGroupDisplayFlags.Length - 1)
-                Me.m_abGroupDisplayFlags(iValue) = abDisplayFlags(iValue)
-            Next iValue
-            ' Notify the world
-            Me.OnDisplayGroupsChanged()
-        End Set
-    End Property
-
-    Public Property GroupDisplayFlags(ByVal i As Integer) As Boolean
-        Get
-            If i > 0 And i < m_abGroupDisplayFlags.Length Then
-                Return m_abGroupDisplayFlags(i)
-            End If
-            ' JS 13feb08: PLEASE do return a default!
-            Return False
-        End Get
-        Set(ByVal value As Boolean)
-            If i > 0 And i < m_abGroupDisplayFlags.Length Then
-                m_abGroupDisplayFlags(i) = value
-            End If
-        End Set
     End Property
 
     Public ReadOnly Property ApplicationComponents() As ScientificInterface.ApplicationComponents
@@ -352,7 +318,6 @@ Public Class AppLauncher
             Me.EnsureDefaultNodeSelected()
             ' Keep at it, Maurice
             Me.UpdateModelControls()
-            Me.InitGroupsDisplayFlags()
 
             Return True
         Else
@@ -890,20 +855,6 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub InitGroupsDisplayFlags()
-        'The last two: One is for total catch, the other is for total value
-        'Used in results grid
-        ReDim m_abGroupDisplayFlags(m_core.nGroups + 2)
-        For i As Integer = 1 To m_abGroupDisplayFlags.Length - 1
-            If i < m_abGroupDisplayFlags.Length - 2 Then
-                m_abGroupDisplayFlags(i) = True
-            Else
-                m_abGroupDisplayFlags(i) = False
-            End If
-        Next
-
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper method, tries to activate an opened dock panel or MDI child 
@@ -1426,10 +1377,6 @@ Public Class AppLauncher
 
     End Function
 
-    Protected Overridable Sub OnDisplayGroupsChanged()
-        RaiseEvent DisplayGroupsChanged()
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -1880,13 +1827,11 @@ Public Class AppLauncher
 
         If nc.PageID = "ndScenario" Then
             m_coreController.LoadEcosimScenario()
-            InitGroupsDisplayFlags()
             Return
         End If
 
         If nc.PageID = "ndEcospaceScenario" Then
             m_coreController.LoadEcospaceScenario()
-            InitGroupsDisplayFlags()
         End If
 
         If nc.PageID = "ndEcotracerScenario" Then

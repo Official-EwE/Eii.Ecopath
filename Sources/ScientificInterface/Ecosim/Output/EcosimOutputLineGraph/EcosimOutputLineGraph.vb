@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputLineGraph.vb,v $
+' Revision 1.2  2008/11/27 03:10:43  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:31:49  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -215,6 +218,7 @@ Namespace Ecosim
                 Dim core As cCore = cCore.GetInstance()
                 Dim group As cEcoPathGroupInput = Nothing
                 Dim line As cGroupLine = Nothing
+                Dim sg As StyleGuide = StyleGuide.GetInstance()
 
                 For i As Integer = 1 To v.GetLength(0) - 1
                     Dim pt(v.GetLength(1) - 1) As PointF
@@ -229,7 +233,7 @@ Namespace Ecosim
                     Next
 
                     group = core.EcoPathGroupInputs(i)
-                    line = New cGroupLine(pt, group, AppLauncher.GetInstance.GroupDisplayFlags(i))
+                    line = New cGroupLine(pt, group, sg.GroupVisible(i))
                     m_Lines.Add(line)
                 Next
 

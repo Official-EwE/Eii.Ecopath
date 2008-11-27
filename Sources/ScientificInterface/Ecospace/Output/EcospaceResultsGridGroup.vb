@@ -14,24 +14,25 @@ Namespace Ecospace
     Public Class cGridEcospaceResultsGroup
         : Inherits gridResultsBase
 
-        Private m_SelFleetIndex As Integer
-        Private m_GroupDisplayFlags() As Boolean
-        Private m_DisplayGrpCnt As Integer
+        Private m_sg As StyleGuide = Nothing
+        Private m_iFleetSelected As Integer
+        Private m_iNumVisibleGroups As Integer
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
 
-            m_GroupDisplayFlags = AppLauncher.GetInstance.GroupDisplayFlags
-            m_DisplayGrpCnt = 0
+            Me.m_iNumVisibleGroups = 0
 
+            Me.m_sg = StyleGuide.GetInstance()
+            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
         Public Property SelFleetIndex() As Integer
             Get
-                Return m_SelFleetIndex
+                Return Me.m_iFleetSelected
             End Get
             Set(ByVal value As Integer)
-                m_SelFleetIndex = value
+                Me.m_iFleetSelected = value
                 Me.UpdateData()
             End Set
         End Property
@@ -70,21 +71,21 @@ Namespace Ecospace
 
             'This method init the cells, its visual and data models. 
             Dim core As cCore = cCore.GetInstance()
+            Dim aCalc() As Integer = {4, 7, 10}
 
             Dim lName As New List(Of String)
             lName.Add(String.Empty)
 
-            For i As Integer = 1 To core.nGroups
-                If m_GroupDisplayFlags(i) Then
-                    lName.Add(core.EcospaceGroupSummary(i).Name)
-                    m_DisplayGrpCnt += 1
+            Me.m_iNumVisibleGroups = 0
+            For iGroup As Integer = 1 To core.nGroups
+                If Me.m_sg.GroupVisible(iGroup) Then
+                    lName.Add(core.EcospaceGroupSummary(iGroup).Name)
+                    m_iNumVisibleGroups += 1
                 End If
 
             Next
 
-            Dim aCalc() As Integer = {4, 7, 10}
-
-            Me.InitCells(m_DisplayGrpCnt + 1, lName.ToArray, aCalc)
+            Me.InitCells(m_iNumVisibleGroups + 1, lName.ToArray, aCalc)
 
             Me.UpdateData()
 
@@ -98,39 +99,39 @@ Namespace Ecospace
             Dim totalValue(0 To 10) As Single
             Me.InitTotalArray(totalValue)
 
-            For groupIndex As Integer = 1 To core.nGroups
+            For iGroup As Integer = 1 To core.nGroups
 
                 'Only display selected groups
-                If m_GroupDisplayFlags(groupIndex) Then
+                If Me.m_sg.GroupVisible(iGroup) Then
 
-                    source = core.EcospaceGroupSummary(groupIndex)
+                    source = core.EcospaceGroupSummary(iGroup)
 
-                    SetCellValue(groupIndex, 2, source.BiomassStart, totalValue)
-                    SetCellValue(groupIndex, 3, source.BiomassEnd, totalValue)
+                    SetCellValue(iGroup, 2, source.BiomassStart, totalValue)
+                    SetCellValue(iGroup, 3, source.BiomassEnd, totalValue)
 
                     'The logic was pulled out from EwE5
                     If source.BiomassStart > 0 And source.BiomassEnd > 0 Then
-                        SetCellValue(groupIndex, 4, CSng(source.BiomassEnd / source.BiomassStart), totalValue)
+                        SetCellValue(iGroup, 4, CSng(source.BiomassEnd / source.BiomassStart), totalValue)
                     End If
 
                     Dim fCS As Single = source.CatchStart(Me.SelFleetIndex)
-                    SetCellValue(groupIndex, 5, fCS, totalValue)
+                    SetCellValue(iGroup, 5, fCS, totalValue)
 
                     Dim fCE As Single = source.CatchEnd(Me.SelFleetIndex)
-                    SetCellValue(groupIndex, 6, fCE, totalValue)
+                    SetCellValue(iGroup, 6, fCE, totalValue)
 
                     If fCS > 0 And fCE > 0 Then
-                        SetCellValue(groupIndex, 7, CSng(fCE / fCS), totalValue)
+                        SetCellValue(iGroup, 7, CSng(fCE / fCS), totalValue)
                     End If
 
                     Dim fVS As Single = source.ValueStart(Me.SelFleetIndex)
-                    SetCellValue(groupIndex, 8, fVS, totalValue)
+                    SetCellValue(iGroup, 8, fVS, totalValue)
 
                     Dim fVE As Single = source.ValueEnd(Me.SelFleetIndex)
-                    SetCellValue(groupIndex, 9, fVE, totalValue)
+                    SetCellValue(iGroup, 9, fVE, totalValue)
 
                     If fVS > 0 And fVE > 0 Then
-                        SetCellValue(groupIndex, 10, CSng(fVE / fVS), totalValue)
+                        SetCellValue(iGroup, 10, CSng(fVE / fVS), totalValue)
                     End If
 
                 End If
@@ -152,6 +153,20 @@ Namespace Ecospace
 
         End Sub
 
+#Region " Events "
+
+        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+            If (ct And StyleGuide.eChangeType.GroupVisibility) > 0 Then
+                Me.RefreshContent()
+            End If
+        End Sub
+
+        Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
+            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        End Sub
+
+#End Region ' Events
 
     End Class
 

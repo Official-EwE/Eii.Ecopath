@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgDisplayGroups.vb,v $
+' Revision 1.2  2008/11/27 03:10:42  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:32:08  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -28,14 +31,15 @@ Namespace Ecosim
 
     Public Class dlgDisplayGroups
 
-        Private m_Core As cCore
+        Private m_core As cCore = Nothing
+        Private m_sg As StyleGuide = Nothing
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
-            ' Add any initialization after the InitializeComponent() call.
-            Me.m_Core = cCore.GetInstance()
+
+            Me.m_core = cCore.GetInstance()
+            Me.m_sg = StyleGuide.GetInstance()
 
         End Sub
 
@@ -45,29 +49,30 @@ Namespace Ecosim
             Dim group As cEcoPathGroupInput = Nothing
 
             Me.m_clbGroups.Items.Clear()
-            For iGroup As Integer = 1 To Me.m_Core.nGroups
 
-                group = m_Core.EcoPathGroupInputs(iGroup)
-                Me.m_clbGroups.Items.Add(group.Name, appl.GroupDisplayFlags(iGroup))
+            For iGroup As Integer = 1 To Me.m_core.nGroups
+                group = m_core.EcoPathGroupInputs(iGroup)
+                Me.m_clbGroups.Items.Add(group.Name, Me.m_sg.GroupVisible(iGroup))
             Next
 
-            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, appl.GroupDisplayFlags(Me.m_Core.nGroups + 1))
-            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, appl.GroupDisplayFlags(Me.m_Core.nGroups + 2))
+            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, Me.m_sg.TotalCatchVisible)
+            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, Me.m_sg.TotalValueVisible)
 
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles OK_Button.Click
 
-            ' Display flag array is 1-based, lb items are 0-based. Allocate 1 value more
-            Dim abFlags(Me.m_clbGroups.Items.Count) As Boolean
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
+            Me.m_sg.SuspendEvents()
 
-            ' Copy item states into the array of flags to pass to AppLauncher
-            For iItem As Integer = 0 To Me.m_clbGroups.Items.Count - 1
-                abFlags(iItem + 1) = Me.m_clbGroups.GetItemChecked(iItem)
+            For iGroup As Integer = 1 To Me.m_core.nGroups
+                Me.m_sg.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
             Next
-            ' There!
-            appl.GroupDisplayFlags = abFlags
+
+            Me.m_sg.TotalCatchVisible = Me.m_clbGroups.GetItemChecked(Me.m_core.nGroups)
+            Me.m_sg.TotalValueVisible = Me.m_clbGroups.GetItemChecked(Me.m_core.nGroups + 1)
+
+            Me.m_sg.ResumeEvents()
 
             ' And done
             Me.DialogResult = System.Windows.Forms.DialogResult.OK

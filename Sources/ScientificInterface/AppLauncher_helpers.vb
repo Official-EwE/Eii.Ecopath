@@ -1,66 +1,11 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.2  2008/11/27 03:10:42  jeroens
+' Group visible flags maintained by style guide, no longer by AppLauncher
+'
 ' Revision 1.1  2008/09/26 07:31:24  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.18  2008/08/05 15:38:55  jeroens
-' Search uses marquee status bar
-'
-' Revision 1.17  2008/08/02 03:04:08  jeroens
-' Renamed resources
-'
-' Revision 1.16  2008/07/18 19:32:11  jeroens
-' Styleguide supports monetary units
-'
-' Revision 1.15  2008/07/16 20:23:06  jeroens
-' Removed trace
-'
-' Revision 1.14  2008/07/10 18:27:54  jeroens
-' Fixed style guide updater
-'
-' Revision 1.13  2008/06/02 04:58:46  jeroens
-' Reverted preliminary experiment
-'
-' Revision 1.12  2008/06/02 00:06:59  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.11  2008/05/27 17:40:38  jeroens
-' Time and currency unit no longer obtained from settings
-'
-' Revision 1.10  2008/05/26 21:05:27  jeroens
-' Unit changes cascaded to StyleGuide
-'
-' Revision 1.9  2008/04/07 02:31:04  jeroens
-' Cleaning up resources
-'
-' Revision 1.8  2008/03/14 17:10:56  jeroens
-' Added option to use progress bar in the status pane
-'
-' Revision 1.7  2008/02/11 03:49:43  jeroens
-' Fixed MRU safety check
-'
-' Revision 1.6  2008/02/08 01:22:17  jeroens
-' Discontinued obsolete MRU items
-' Added Load and apply last TS menu item
-' Dataset added to MRU string
-'
-' Revision 1.5  2008/02/01 16:47:31  jeroens
-' Status selection pane is much smarter now
-'
-' Revision 1.4  2008/01/24 04:14:54  jeroens
-' Selection pane text encapsulated in brackets
-'
-' Revision 1.3  2008/01/24 01:34:24  jeroens
-' Added selection status pane
-' Added opened model name to toolbar
-'
-' Revision 1.2  2007/12/21 13:41:06  jeroens
-' + Added tracer status pane
-'
-' Revision 1.1  2007/12/09 22:16:20  jeroens
-' * Changed form state tracking
-' * Split class in two files
 '
 '==============================================================================
 
@@ -580,6 +525,7 @@ Partial Public Class AppLauncher
                 Me.m_propUnitMonetaryText = Nothing
             End If
 
+            Me.m_sg.ResetVisibleFlags()
             Me.m_sg.ResumeEvents()
 
         End Sub
