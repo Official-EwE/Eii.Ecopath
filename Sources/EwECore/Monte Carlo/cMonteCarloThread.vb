@@ -4,6 +4,13 @@ Imports System
 Imports System.Threading
 
 
+
+#Region "xxx DEAD CODE xxx"
+
+
+#If 0 Then
+
+
 Public Class cMonteCarloThread
     Public ES As New cEcoSimModel
     Public ESdata As New cEcosimDatastructures
@@ -171,3 +178,7 @@ Public Class cMonteCarloThread
     End Function
 
 End Class
+
+#End If
+
+#End Region

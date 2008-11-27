@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.14  2008/11/27 18:24:07  joeb
+' Began making changes to removed threaded monte carlo code
+'
 ' Revision 1.13  2008/10/31 00:35:38  villyc
 ' monte carlo stuff
 '
@@ -342,60 +345,7 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Sub initThreads(ByVal trList As List(Of cMonteCarloThread), ByVal nThreads As Integer)
-        'gives back a list (nThreads long) of fully initialized cMonteCarloThread objects
 
-        Dim MCthread As cMonteCarloThread
-
-        Try
-            For i As Integer = 1 To nThreads
-                MCthread = New cMonteCarloThread(i)
-                MCthread.init(m_core.nGroups, m_core.nLivingGroups)
-
-                'get ep data
-                m_epdata.copyTo(MCthread.EPdata)
-                MCthread.EP.ModelingData = MCthread.EPdata
-                MCthread.EP.ParameterEstimationType = m_ecopath.ParameterEstimationType
-                MCthread.EP.EstimateParameters()
-                MCthread.ES.EcopathParameters = MCthread.EPdata
-                MCthread.EP.missing = m_ecopath.missing.Clone
-
-                'init ES and copy data
-                m_esdata.CopyTo(MCthread.ESdata)
-                m_ecosim.copyTo(MCthread.ES)
-                MCthread.ES.m_Data = MCthread.ESdata
-                MCthread.ES.SetCounters()
-                'MCthread.ES.SetDefaultParameters()
-
-                'get other data structures
-                m_stanza.copyTo(MCthread.StanzaData)
-                MCthread.ES.TracerData = New cContaminantTracerDataStructures
-                m_tracerData.CopyTo(MCthread.ES.TracerData)
-
-                'link models to data structures
-                MCthread.ES.m_stanza = MCthread.StanzaData
-                MCthread.ES.TimeSeriesData = m_ecosim.TimeSeriesData
-                MCthread.ES.SearchData = m_ecosim.SearchData
-                'MCthread.ES.TimeStepDelegate = m_ecosim.TimeStepDelegate
-
-                'init some ecosim stuff
-
-                'MCthread.ES.m_Data.RedimVars()
-                MCthread.ES.InitStanza()
-
-                'assign thread properties
-                MCthread.pmean = Pmean.Clone
-                MCthread.CVpar = CVpar.Clone
-                MCthread.parLimit = ParLimit.Clone
-
-                trList.Add(MCthread)
-            Next
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-        'mcthread.iter=iter
-    End Sub
 
     Public Sub Run(ByVal ob As Object)
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
@@ -465,8 +415,6 @@ Public Class cEcosimMonteCarlo
                     'If itrial > Ntrials / 10 Then 
                     ChangeVulnerabilities(Pmean, CVpar)
 
-
-
                     'For Each MCthread In MCthreadList
                     '    Itertot = Itertot + iter
                     '    Array.Copy(Pmean, MCthread.pmean, Pmean.Length)
@@ -477,7 +425,6 @@ Public Class cEcosimMonteCarlo
                     'Next
 
                     'VC Sep 2008: Change the vulmult at this point
-
 
                     m_ecosim.Init(True) 'StartEcoSimAgain())
 
@@ -976,4 +923,71 @@ Public Class cEcosimMonteCarlo
         '    Console.WriteLine(sStr)
         'End If
     End Sub
+
+
+#Region "xxx DEAD CODE (Multi threaded Monte Carlo) xxx"
+
+#If 0 Then
+
+    ''' <summary>
+    ''' Multi threaded Monte Carlo code has been disabled but left in place for future reference
+    ''' </summary>
+    Private Sub initThreads(ByVal trList As List(Of cMonteCarloThread), ByVal nThreads As Integer)
+        'gives back a list (nThreads long) of fully initialized cMonteCarloThread objects
+
+        Dim MCthread As cMonteCarloThread
+
+        Try
+            For i As Integer = 1 To nThreads
+                MCthread = New cMonteCarloThread(i)
+                MCthread.init(m_core.nGroups, m_core.nLivingGroups)
+
+                'get ep data
+                m_epdata.copyTo(MCthread.EPdata)
+                MCthread.EP.ModelingData = MCthread.EPdata
+                MCthread.EP.ParameterEstimationType = m_ecopath.ParameterEstimationType
+                MCthread.EP.EstimateParameters()
+                MCthread.ES.EcopathParameters = MCthread.EPdata
+                MCthread.EP.missing = m_ecopath.missing.Clone
+
+                'init ES and copy data
+                m_esdata.CopyTo(MCthread.ESdata)
+                m_ecosim.copyTo(MCthread.ES)
+                MCthread.ES.m_Data = MCthread.ESdata
+                MCthread.ES.SetCounters()
+                'MCthread.ES.SetDefaultParameters()
+
+                'get other data structures
+                m_stanza.copyTo(MCthread.StanzaData)
+                MCthread.ES.TracerData = New cContaminantTracerDataStructures
+                m_tracerData.CopyTo(MCthread.ES.TracerData)
+
+                'link models to data structures
+                MCthread.ES.m_stanza = MCthread.StanzaData
+                MCthread.ES.TimeSeriesData = m_ecosim.TimeSeriesData
+                MCthread.ES.SearchData = m_ecosim.SearchData
+                'MCthread.ES.TimeStepDelegate = m_ecosim.TimeStepDelegate
+
+                'init some ecosim stuff
+
+                'MCthread.ES.m_Data.RedimVars()
+                MCthread.ES.InitStanza()
+
+                'assign thread properties
+                MCthread.pmean = Pmean.Clone
+                MCthread.CVpar = CVpar.Clone
+                MCthread.parLimit = ParLimit.Clone
+
+                trList.Add(MCthread)
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        'mcthread.iter=iter
+    End Sub
+
+#End If
+
+#End Region
 End Class
