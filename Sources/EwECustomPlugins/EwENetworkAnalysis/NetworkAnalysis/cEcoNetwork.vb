@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.8  2008/11/27 23:45:05  joeb
+' Moved MatrixCalc to EcoFunctions
+'
 ' Revision 1.7  2008/11/24 18:11:06  jeroens
 ' Electivity exposed
 '
@@ -1780,23 +1783,23 @@ smulterr:
         ErrCode = 0
 
         'MatrixCalc.matluS uses up and lo 
-        MatrixCalc.Lo = 1 'LBound(A, 1)
-        MatrixCalc.Up = UBound(A, 1)
-        Dim Lo As Integer = MatrixCalc.Lo
-        Dim Up As Integer = MatrixCalc.Up
-        ReDim MatrixCalc.rpvt(Up)
-        ReDim MatrixCalc.cpvt(Up)
+        m_core.EcoFunction.MatrixCalc.Lo = 1 'LBound(A, 1)
+        m_core.EcoFunction.MatrixCalc.Up = UBound(A, 1)
+        Dim Lo As Integer = m_core.EcoFunction.MatrixCalc.Lo
+        Dim Up As Integer = m_core.EcoFunction.MatrixCalc.Up
+        ReDim m_core.EcoFunction.MatrixCalc.rpvt(Up)
+        ReDim m_core.EcoFunction.MatrixCalc.cpvt(Up)
 
 
         ReDim Ain(Up, Up)
         ReDim Ein(Up)
         ReDim X(Up)
 
-        ErrCode = MatrixCalc.matluS(A, True)                     'Get LU matrix
+        ErrCode = m_core.EcoFunction.MatrixCalc.matluS(A, True)                     'Get LU matrix
         'nong 'stop If Not continue Then Error ErrCode
         For col = Lo To Up                         'find A^-1 one column at a time
             Ein(col) = 1.0!
-            bserrcode = MatrixCalc.matbsS(A, Ein, X)
+            bserrcode = m_core.EcoFunction.MatrixCalc.matbsS(A, Ein, X)
             If bserrcode <> 0 Then Error bserrcode
             For row = Lo To Up
                 Ain(row, col) = X(row)
@@ -1810,7 +1813,7 @@ smulterr:
         Next col
         If ErrCode <> 0 Then Error ErrCode
 sinvexit:
-        Erase E, X, Ain, rpvt, cpvt
+        Erase E, X, Ain, m_core.EcoFunction.MatrixCalc.rpvt, m_core.EcoFunction.MatrixCalc.cpvt
         MatInvS = ErrCode
         Exit Function
 sinverr:
@@ -3753,6 +3756,8 @@ NextPivot:
 
             ReDim Diet(m_epdata.NumGroups, m_epdata.NumGroups)
 
+            Windows.Forms.Application.DoEvents()
+
             For i = 1 To m_epdata.NumLiving  'consumer
                 If m_esdata.Eatenby(i) > 0 Then
                     SumDiet = 0
@@ -3861,7 +3866,7 @@ NextPivot:
                 m_epdata.LHS(i, i) = 1
             Next i
 
-            ErrCode = MatSEqnS(m_epdata.LHS, TL)   'Inverses matrix to find
+            ErrCode = m_core.EcoFunction.MatrixCalc.MatSEqnS(m_epdata.LHS, TL)   'Inverses matrix to find
             If ErrCode = 0 Then 'no error
                 For i = 1 To m_epdata.NumGroups : TLreturn(i) = TL(i) : Next
             End If
