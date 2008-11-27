@@ -151,7 +151,6 @@
     <Compile Include="Core\cValueID.vb" />
     <Compile Include="Core\cVariableMetaData.vb" />
     <Compile Include="Core\ICoreInputOutput.vb" />
-    <Compile Include="Core\MatrixCalc.vb" />
     <Compile Include="Shapes\Forcing Functions\cPredPreyInteraction.vb" />
     <Compile Include="DataSource\IEcosimDatasource.vb" />
     <Compile Include="DataSource\IEcopathDataSource.vb" />
@@ -164,7 +163,6 @@
     <Compile Include="EcoPath\cEcoPathGroupOutput.vb" />
     <Compile Include="EcoPath\cEcoPathModel.vb" />
     <Compile Include="EcoPath\cFleetInput.vb" />
-    <Compile Include="EcoPath\EcopathMassBalance.vb" />
     <Compile Include="EcoSim\Model\cEcoSimDatastructures.vb" />
     <Compile Include="EcoSim\Input Output\cEcoSimGroupInput.vb" />
     <Compile Include="EcoSim\Model\cEcoSimModel.vb" />
