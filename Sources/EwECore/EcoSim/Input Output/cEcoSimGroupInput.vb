@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimGroupInput.vb,v $
+' Revision 1.5  2008/11/27 23:38:10  joeb
+' Removed MaxFishingMort
+'
 ' Revision 1.4  2008/10/08 20:32:11  joeb
 ' Added CVBest and KalWt
 '
@@ -220,11 +223,6 @@ Public Class cEcoSimGroupInput
             val = New cValue(New Single, eVarNameFlags.SalinitySpreadRight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinitySpreadRight))
             m_values.Add(val.varName, val)
 
-            'GroupMaxMort
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.EcosimGroupMaxMort, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimGroupMaxMort))
-            m_values.Add(val.varName, val)
-
             'Quota per species
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
@@ -387,16 +385,6 @@ Public Class cEcoSimGroupInput
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.SalinitySpreadRight, value)
-        End Set
-    End Property
-
-    Public Property MaxMortality() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimGroupMaxMort))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimGroupMaxMort, value)
         End Set
     End Property
 
