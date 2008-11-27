@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.40  2008/11/27 23:35:26  joeb
+' Renamed cEcoPathModel.EstimateParameter to Run
+'
 ' Revision 1.39  2008/11/27 18:16:45  joeb
 ' Moved Flimit() back to Search data
 '
@@ -1114,6 +1117,9 @@ Public Class cCore
         m_bCoreIsInit = False
         m_bEcoSimIsInit = False
 
+        'Ecofunctions is needed by Ecopath so make sure it is created before Ecopath
+        m_Functions = New cEcoFunctions
+
         'initialize the models
         'each models initialization will handle its own messages and flags
         Dim bsuccess As Boolean
@@ -1124,7 +1130,6 @@ Public Class cCore
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
         m_gameManger = New cGameServerInterface(Me)
-        m_Functions = New cEcoFunctions
 
         If bsuccess Then
             m_bCoreIsInit = True
@@ -3082,7 +3087,7 @@ Public Class cCore
             m_EcoPathData.CopyInputToModelArrays()
 
             'call EcoPath to estimate the missing parameters
-            If (m_EcoPath.EstimateParameters() = True) Or (bAllowErrors = True) Then
+            If (m_EcoPath.Run() = True) Or (bAllowErrors = True) Then
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
