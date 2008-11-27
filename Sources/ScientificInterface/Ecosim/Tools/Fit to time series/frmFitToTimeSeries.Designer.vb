@@ -145,24 +145,24 @@ Namespace Ecosim
             '
             'm_cbFishingMortalityPenalty
             '
-            Me.m_cbFishingMortalityPenalty.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_cbFishingMortalityPenalty.AutoSize = True
-            Me.m_cbFishingMortalityPenalty.Location = New System.Drawing.Point(6, 257)
+            Me.m_cbFishingMortalityPenalty.Location = New System.Drawing.Point(12, 23)
             Me.m_cbFishingMortalityPenalty.Name = "m_cbFishingMortalityPenalty"
             Me.m_cbFishingMortalityPenalty.Size = New System.Drawing.Size(137, 17)
             Me.m_cbFishingMortalityPenalty.TabIndex = 7
             Me.m_cbFishingMortalityPenalty.Text = "Fishing mortality &penalty"
             Me.m_cbFishingMortalityPenalty.UseVisualStyleBackColor = True
+            Me.m_cbFishingMortalityPenalty.Visible = False
             '
             'm_plGrid
             '
             Me.m_plGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plGrid.Location = New System.Drawing.Point(0, 18)
+            Me.m_plGrid.Location = New System.Drawing.Point(0, 23)
             Me.m_plGrid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plGrid.Name = "m_plGrid"
-            Me.m_plGrid.Size = New System.Drawing.Size(246, 236)
+            Me.m_plGrid.Size = New System.Drawing.Size(246, 254)
             Me.m_plGrid.TabIndex = 6
             '
             'm_lbFishingMortality
@@ -177,7 +177,7 @@ Namespace Ecosim
             Me.m_lbFishingMortality.Name = "m_lbFishingMortality"
             Me.m_lbFishingMortality.Size = New System.Drawing.Size(246, 18)
             Me.m_lbFishingMortality.TabIndex = 5
-            Me.m_lbFishingMortality.Text = "Fishing mortality"
+            Me.m_lbFishingMortality.Text = "Max fishing mortality"
             Me.m_lbFishingMortality.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tlbSearch
@@ -400,7 +400,7 @@ Namespace Ecosim
             Me.tpAnomalySearch.Location = New System.Drawing.Point(4, 22)
             Me.tpAnomalySearch.Name = "tpAnomalySearch"
             Me.tpAnomalySearch.Padding = New System.Windows.Forms.Padding(3)
-            Me.tpAnomalySearch.Size = New System.Drawing.Size(523, 604)
+            Me.tpAnomalySearch.Size = New System.Drawing.Size(523, 581)
             Me.tpAnomalySearch.TabIndex = 1
             Me.tpAnomalySearch.Text = "Anomaly Search"
             Me.tpAnomalySearch.UseVisualStyleBackColor = True

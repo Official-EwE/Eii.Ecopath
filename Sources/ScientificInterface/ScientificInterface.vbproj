@@ -1160,6 +1160,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
+    <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\ImportExport\cImportExportData.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.vb">
       <SubType>Form</SubType>

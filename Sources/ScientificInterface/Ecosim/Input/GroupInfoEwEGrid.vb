@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupInfoEwEGrid.vb,v $
+' Revision 1.3  2008/11/27 20:56:10  sherman
+' Switched MaxFishing Mortality to Search routines.
+'
 ' Revision 1.2  2008/11/12 21:35:31  jeroens
 ' Resources!
 '
@@ -78,7 +81,7 @@ Namespace Ecosim
             FeedingTimeAdjustRate
             OtherMortFeedingTime
             PredatorFeedingTime
-            FLimit
+            'FLimit
             DenDepCatchability
             QBMaxQBO
             SwitchPower
@@ -105,7 +108,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.OtherMortFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
             Me(0, eColumnTypes.PredatorFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PREDATORFEEDINGTIME)
             Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
+            'Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(My.Resources.HEADER_SWITCHINGPOWER_VALRANGE)
             Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTSALINITY)
@@ -166,7 +169,7 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.SalinityOpt) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.OtherMortFeedingTime) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.PredatorFeedingTime) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.FLimit) = New EwERowHeaderCell()
+                        'Me(iRow, eColumnTypes.FLimit) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.QBMaxQBO) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SalinitySpreadLeft) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SalinitySpreadRight) = New EwERowHeaderCell()
@@ -201,7 +204,7 @@ Namespace Ecosim
             Me(iRow, eColumnTypes.OtherMortFeedingTime) = New PropertyCell(source, eVarNameFlags.OtherMortFeedingTime)
             Me(iRow, eColumnTypes.PredatorFeedingTime) = New PropertyCell(source, eVarNameFlags.PredEffectFeedingTime)
             Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(source, eVarNameFlags.DenDepCatchability)
-            Me(iRow, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.EcosimGroupMaxMort)
+            'Me(iRow, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.EcosimGroupMaxMort)
             Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(source, eVarNameFlags.QBMaxQBio)
             Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(source, eVarNameFlags.SwitchingPower)
             Me(iRow, eColumnTypes.SalinityOpt) = New PropertyCell(source, eVarNameFlags.SalinityOpt)
@@ -228,7 +231,7 @@ Namespace Ecosim
             Me.Columns(eColumnTypes.OtherMortFeedingTime).Width = 78
             Me.Columns(eColumnTypes.PredatorFeedingTime).Width = 78
             Me.Columns(eColumnTypes.DenDepCatchability).Width = 78
-            Me.Columns(eColumnTypes.FLimit).Width = 78
+            'Me.Columns(eColumnTypes.FLimit).Width = 78
             Me.Columns(eColumnTypes.QBMaxQBO).Width = 78
             Me.Columns(eColumnTypes.SwitchPower).Width = 78
             Me.Columns(eColumnTypes.SalinityOpt).Width = 78

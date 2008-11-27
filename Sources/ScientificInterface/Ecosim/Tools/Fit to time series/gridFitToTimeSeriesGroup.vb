@@ -1,14 +1,8 @@
-'==============================================================================
-'
-' $Log: gridSearchObjectivesGroup.vb,v $
-' Revision 1.3  2008/11/27 20:56:11  sherman
+﻿'==============================================================================
+' $Log: gridFitToTimeSeriesGroup.vb,v $
+' Revision 1.1  2008/11/27 20:56:11  sherman
 ' Switched MaxFishing Mortality to Search routines.
 '
-' Revision 1.2  2008/11/19 14:46:10  jeroens
-' Renamed a few resources
-'
-' Revision 1.1  2008/11/12 21:37:32  jeroens
-' Renamed, moved
 '
 '==============================================================================
 
@@ -26,7 +20,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class gridSearchObjectivesGroup
+    Public Class gridFitToTimeSeriesGroup
         : Inherits EwEGrid
 
         Private m_core As cCore
@@ -34,8 +28,6 @@ Namespace Ecosim
 
         Private Enum eColumnTypes As Integer
             Group = 0
-            ManRB
-            StructureW
             FLimit
         End Enum
 
@@ -51,8 +43,6 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_BIOMASS_RELATIVE)
-            Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(My.Resources.HEADER_STRUCTURERELATIVEWEIGHT)
             Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
 
         End Sub
@@ -66,8 +56,6 @@ Namespace Ecosim
 
                 Me.Rows.Insert(i)
                 Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
-                Me(i, eColumnTypes.ManRB) = New PropertyCell(source, eVarNameFlags.FPSGroupMandRelBiom)
-                Me(i, eColumnTypes.StructureW) = New PropertyCell(source, eVarNameFlags.FPSGroupStrucRelWeight)
                 Me(i, eColumnTypes.FLimit) = New PropertyCell(source, eVarNameFlags.FPSFishingLimit)
             Next
 
