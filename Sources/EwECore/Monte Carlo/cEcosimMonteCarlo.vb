@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.15  2008/11/27 23:38:55  joeb
+' Renamed Ecopath.EstimateParameters to Run
+'
 ' Revision 1.14  2008/11/27 18:24:07  joeb
 ' Began making changes to removed threaded monte carlo code
 '
@@ -631,7 +634,7 @@ Public Class cEcosimMonteCarlo
                 m_ecosim.InitStanza()
 
                 'Estimate basic params
-                If Not m_ecopath.EstimateParameters() Then
+                If Not m_ecopath.Run() Then
 
                     ' ''Failed to estimate parameters
                     Dim status As eStatusFlags = m_ecopath.EstimationStatus
