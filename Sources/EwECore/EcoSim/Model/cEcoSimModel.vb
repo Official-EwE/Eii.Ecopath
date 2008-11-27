@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.28  2008/11/27 18:21:44  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.27  2008/11/25 17:56:37  joeb
 ' Fixed bug 459
 '
@@ -624,7 +627,7 @@ Public Property PluginManager() As cPluginManager
         ''' <param name="ecovalue"></param>
         ''' <param name="frateopt"></param>
         ''' <param name="nopt"></param>
-        ''' <remarks>Hopefully this is temporary once all the exixting code is changed to use RunModelValue(NumberOfYears,frateopt(),nopt) this can be removed</remarks>
+        ''' <remarks>Hopefully this is temporary once all the existing code is changed to use RunModelValue(NumberOfYears,frateopt(),nopt) this can be removed</remarks>
         Friend Sub RunModelValue(ByVal NumberOfYears As Integer, ByRef totval As Double, ByRef Employ As Double, _
                        ByRef manvalue As Double, ByRef ecovalue As Double, ByRef frateopt() As Double, ByVal nopt As Integer)
 
@@ -1003,7 +1006,7 @@ Public Property PluginManager() As cPluginManager
                     'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
 
                     'The next is easier, and gives almost the same answer:
-                    If m_Data.FishTime(iGrp) > m_Data.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_Data.FLimit(iGrp) ' : Stop
+                    If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_search.FLimit(iGrp) ' : Stop
                 Else
                     'Computed fishing mortality
                     m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
@@ -3551,10 +3554,10 @@ Public Property PluginManager() As cPluginManager
             ReDim m_Data.FlowType(nGroups, nGroups)
             ReDim m_Data.Cbase(nGroups)
             ReDim m_Data.FtimeMax(nGroups)
-            ReDim m_Data.FLimit(nGroups)
+            ReDim m_search.FLimit(nGroups)
             'default from frmOptF.Form_Load()
             For igrp As Integer = 1 To nGroups
-                m_Data.FLimit(igrp) = 1000
+                m_search.FLimit(igrp) = 1000
             Next
 
             ReDim GearIncludeInEquil(m_EPData.NumFleet)

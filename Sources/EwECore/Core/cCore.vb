@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.39  2008/11/27 18:16:45  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.38  2008/11/26 02:55:46  jeroens
 ' Fixed bug 577
 '
@@ -1137,7 +1140,7 @@ Public Class cCore
 
         Try
             'build a new EcoPath Model object
-            m_EcoPath = New Ecopath.cEcoPathModel
+            m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
             m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eMessageSource.EcoPath, eMessageType.Any))
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
@@ -4182,6 +4185,7 @@ Public Class cCore
             End If
 
             'things that need to happen before a scenario is loaded
+            m_EcoSim.SearchData = m_SearchData
             m_EcoSim.SetCounters()
             m_EcoSim.InitStanza()
             m_EcoSim.SetDefaultParameters()
@@ -4195,7 +4199,6 @@ Public Class cCore
             End If
 
             m_SearchData.redimByTime(Me.nEcosimYears)
-            m_EcoSim.SearchData = m_SearchData
 
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
@@ -4447,7 +4450,6 @@ Public Class cCore
             group.DenDepCatchability = m_EcoSimData.QmQo(iGroup)
             group.QBMaxQBio = m_EcoSimData.CmCo(iGroup)
             group.SwitchingPower = m_EcoSimData.SwitchPower(iGroup)
-            group.MaxMortality = m_EcoSimData.FLimit(iGroup)
             group.SalinityOpt = m_EcoSimData.SalOpt(iGroup)
             group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
             group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
@@ -4916,7 +4918,6 @@ Public Class cCore
             m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
             m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
-            m_EcoSimData.FLimit(iGroup) = group.MaxMortality
             m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
             m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
             m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt

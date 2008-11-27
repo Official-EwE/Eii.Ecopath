@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.15  2008/11/27 18:17:18  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.14  2008/11/26 12:21:30  jeroens
 ' Explicity handled exception when handling new Ecosim groups
 '
@@ -3205,7 +3208,6 @@ Public Class cDBDataSource
                 ecosimDS.MoPred(i) = CSng(reader("MoPred"))
                 ecosimDS.FishRateMax(i) = CSng(reader("FishRateMax"))
                 ' ecosimDS.ShowGroup(i) = CBool(reader("Show"))
-                ecosimDS.FLimit(i) = CSng(Me.ReadSafe(reader, "FishMortMax", 1000.0!))
 
                 ecosimDS.RiskTime(i) = CSng(reader("RiskTime"))
                 ecosimDS.QmQo(i) = CSng(reader("QmQo"))
@@ -3366,7 +3368,6 @@ Public Class cDBDataSource
                 drow("FtimeAdjust") = ecosimDS.FtimeAdjust(i)
                 drow("MoPred") = ecosimDS.MoPred(i)
                 drow("FishRateMax") = ecosimDS.FishRateMax(i)
-                drow("FishMortMax") = ecosimDS.FLimit(i)
                 ' drow("Show") = ecosimDS.ShowGroup(i)
                 drow("RiskTime") = ecosimDS.RiskTime(i)
                 drow("QmQo") = ecosimDS.QmQo(i)

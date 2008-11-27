@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.4  2008/11/27 18:22:30  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.3  2008/11/19 18:02:28  joeb
 ' Added Biomass diversity and updated calls to RunModelValue() to use new signature
 '
@@ -1794,19 +1797,19 @@ Next
             LimitFPenalty = 1
             Dim tSteps As Integer = m_core.nEcosimTimeSteps
             For Grp = 1 To m_core.nLivingGroups
-                If m_core.m_EcoSimData.FLimit(Grp) < 1000 And m_core.m_EcoSimData.FLimit(Grp) > 0 Then
+                If m_searchData.FLimit(Grp) < 1000 And m_searchData.FLimit(Grp) > 0 Then
                     maxF = 0
                     '080610VC: changed the time loop below to start at baseyear+1, 
                     'we're not interested in what happened earlier when doing a search
                     'Also, changed it to annual steps, since effort is annual; faster!
                     For i = 12 * (m_searchData.BaseYear + 1) To tSteps Step 12
-                        If m_core.m_EcoSimData.FishRateNo(Grp, i) > m_core.m_EcoSimData.FLimit(Grp) Then
+                        If m_core.m_EcoSimData.FishRateNo(Grp, i) > m_searchData.FLimit(Grp) Then
                             If m_core.m_EcoSimData.FishRateNo(Grp, i) > maxF Then
                                 maxF = m_core.m_EcoSimData.FishRateNo(Grp, i)
                             End If
                         End If
                     Next
-                    If maxF > 0 Then LimitFPenalty = LimitFPenalty * (m_core.m_EcoSimData.FLimit(Grp) / maxF) ^ 2 ': Stop
+                    If maxF > 0 Then LimitFPenalty = LimitFPenalty * (m_searchData.FLimit(Grp) / maxF) ^ 2 ': Stop
                 End If
             Next
 

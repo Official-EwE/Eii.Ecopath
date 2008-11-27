@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.9  2008/11/27 18:21:43  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.8  2008/10/09 17:21:04  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -203,7 +206,7 @@ Public Class cEcosimDatastructures
     Public TimeJuv() As Single
     Public maxtimejuv() As Single
     Public mintimejuv() As Single
-    Public FLimit() As Single
+    '  Public FLimit() As Single
 
     'Public wk() As Single     'weight at recruitment to adult stage
     'Public wzero() As Single  'weight at recruitment to juvenile stage

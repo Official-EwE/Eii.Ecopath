@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SearchInputOutput.vb,v $
+' Revision 1.3  2008/11/27 18:22:47  joeb
+' Moved Flimit() back to Search data
+'
 ' Revision 1.2  2008/11/12 18:02:34  jeroens
 ' Added Biomass Diversity search weight input + output
 '
@@ -297,15 +300,15 @@ Namespace SearchObjectives
         End Property
 
 
-        'Public Property FishingLimit() As Single
-        '    Get
-        '        Return CType(GetVariable(eVarNameFlags.FPSFishingLimit), Single)
-        '    End Get
+        Public Property FishingLimit() As Single
+            Get
+                Return CType(GetVariable(eVarNameFlags.FPSFishingLimit), Single)
+            End Get
 
-        '    Set(ByVal value As Single)
-        '        SetVariable(eVarNameFlags.FPSFishingLimit, value)
-        '    End Set
-        'End Property
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.FPSFishingLimit, value)
+            End Set
+        End Property
 
 
     End Class

@@ -117,6 +117,7 @@ Public Class cSearchDatastructures
     Public BaseYearIncome() As Single
     'BaseYearCost
     Public UseFishingMortalityPenalty As Boolean
+    Public FLimit() As Single
 
     Public nRuns As Integer
     Public nInterations As Integer
@@ -696,7 +697,7 @@ Public Class cSearchDatastructures
     Public Sub setLimitFishingMortality()
         LimitFishingMortality = False
         For i As Integer = 1 To NumLiving
-            If Me.m_ecosimData.FLimit(i) < 1000 And Me.m_ecosimData.FLimit(i) > 0 Then
+            If FLimit(i) < 1000 And FLimit(i) > 0 Then
                 LimitFishingMortality = True
             End If
         Next
