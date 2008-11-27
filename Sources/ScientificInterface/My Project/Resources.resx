@@ -319,7 +319,7 @@
     <value>Rel. feed. rate in bad habitat</value>
   </data>
   <data name="GENERIC_LABEL_MAXFISHINGMORTAILITY" xml:space="preserve">
-    <value>Max fish mortality</value>
+    <value>Max fishing mortality</value>
   </data>
   <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
     <value>Image background|Background colour to use for images</value>

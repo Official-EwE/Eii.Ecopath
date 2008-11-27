@@ -1700,7 +1700,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Max fish mortality.
+        '''  Looks up a localized string similar to Max fishing mortality.
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_MAXFISHINGMORTAILITY() As String
             Get
