@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.4  2008/11/28 01:58:34  joeh
+' Implement new MTI plot and save MTI plot as emf file
+'
 ' Revision 1.3  2008/11/25 05:47:34  joeh
 ' Copy and paste in cells of data grid view
 '
@@ -91,7 +94,8 @@ Public Class frmNetworkAnalysis
     Private m_ForHarvestOfAllGp As cForHarvestOfAllGp
 
     Private m_ImpactData As cImpactData
-    Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
+    'Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
+    Private WithEvents m_PlotOfMixedTrophicImpact As cPlotOfMixedTrophicImpact
     Private m_HideGroupsClass As cHideGroups
     Private m_HideGroupsForm As frmHideGroups
 
@@ -302,15 +306,23 @@ Public Class frmNetworkAnalysis
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
                 End If
-                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
-                m_GraphOfMixedTrophicImpact.SetUpPanel()
-                m_GraphOfMixedTrophicImpact.CreatePlot()
-            Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
-                m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
-                m_HideGroupsClass.SetUpPanel()
-                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                m_HideGroupsForm.ShowDialog()
+                m_PlotOfMixedTrophicImpact = cPlotOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                m_PlotOfMixedTrophicImpact.SetUpPanel()
+                m_PlotOfMixedTrophicImpact.CreatePlot(Me)
+                'Case My.Resources.TREE_NODE_GRAPH_MTI
+                '    If Not m_NetworkManager.IsMainNetworkRun Then
+                '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                '        m_NetworkAnalysis.RunNetworkAnalysis()
+                '    End If
+                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
+                '    m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+                '    m_GraphOfMixedTrophicImpact.SetUpPanel()
+                '    m_GraphOfMixedTrophicImpact.CreatePlot()
+                'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
+                '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
+                '    m_HideGroupsClass.SetUpPanel()
+                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
+                '    m_HideGroupsForm.ShowDialog()
             Case My.Resources.TREE_NODE_TOTAL
                 If Not m_NetworkManager.IsMainNetworkRun Then
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
@@ -533,6 +545,10 @@ Public Class frmNetworkAnalysis
         tvNetworkAnalysis.SelectedNode.BackColor = Drawing.Color.MintCream
     End Sub
 
+    Private Sub m_PlotOfMixedTrophicImpact_AddToolStrip() Handles m_PlotOfMixedTrophicImpact.AddToolStrip
+        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
+    End Sub
+
     Private Sub m_TL1ToConsumerPathways_AddToolStrip() Handles m_TL1ToConsumerPathways.AddToolStrip
         scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
     End Sub
@@ -561,6 +577,10 @@ Public Class frmNetworkAnalysis
                 'm_IndicesWithPPREstClass = cIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_IndicesWithPPREstClass.ExtractToCSV()
         End Select
+    End Sub
+
+    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnOutputGraphEMF.Click
+        m_PlotOfMixedTrophicImpact.SaveToEMF()
     End Sub
 
     Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tscmbSelection1.SelectedIndexChanged
@@ -677,6 +697,14 @@ Public Class frmNetworkAnalysis
             'highlight the whole grid
             dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
             dgvNetworkAnalysis.SelectAll()
+        End If
+    End Sub
+
+    Private Sub scNetworkAnalysis_SplitterMoved(ByVal sender As Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scNetworkAnalysis.SplitterMoved
+        If Not tvNetworkAnalysis.SelectedNode Is Nothing Then
+            If tvNetworkAnalysis.SelectedNode.Text = My.Resources.TREE_NODE_GRAPH_MTI Then
+                m_PlotOfMixedTrophicImpact.CreatePlot(Me)
+            End If
         End If
     End Sub
 

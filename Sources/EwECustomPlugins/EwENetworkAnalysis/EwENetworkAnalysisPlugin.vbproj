@@ -136,6 +136,7 @@
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cHideGroups.vb" />
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cPlotOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.Designer.vb">
       <DependentUpon>frmHideGroups.vb</DependentUpon>
     </Compile>

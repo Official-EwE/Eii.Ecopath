@@ -96,6 +96,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\cEwEFormatProvider.vb" />
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.Designer.vb">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>

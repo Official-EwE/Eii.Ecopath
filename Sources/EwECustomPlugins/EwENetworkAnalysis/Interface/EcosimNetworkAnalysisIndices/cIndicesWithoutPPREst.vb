@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.3  2008/11/28 01:58:33  joeh
+' Implement new MTI plot and save MTI plot as emf file
+'
 ' Revision 1.2  2008/11/10 05:34:54  jeroens
 ' Renamed file command
 '
@@ -163,6 +166,8 @@ Public Class cIndicesWithoutPPREst
         Dim ToolStripPrgBar As Windows.Forms.ToolStripProgressBar = New Windows.Forms.ToolStripProgressBar
         Dim ToolStripButton1 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
         Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+        Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+        Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
 
         RemoveToolStrip()
 
@@ -178,6 +183,8 @@ Public Class cIndicesWithoutPPREst
             ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), Windows.Forms.ToolStripProgressBar)
             ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), Windows.Forms.ToolStripButton)
             ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
+            ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
+            ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
 
             ToolStripLabel1.Visible = False
             ToolStripCombo1.Visible = False
@@ -189,6 +196,8 @@ Public Class cIndicesWithoutPPREst
             ToolStripPrgBar.Visible = False
             ToolStripButton1.Visible = False
             ToolStripButton2.Visible = True
+            ToolStripButton3.Visible = False
+            ToolStripButton4.Visible = False
 
             ToolStrip.Refresh()
         End If

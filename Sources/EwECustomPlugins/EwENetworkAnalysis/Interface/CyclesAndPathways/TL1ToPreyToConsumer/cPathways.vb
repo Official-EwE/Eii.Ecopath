@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.3  2008/11/28 01:58:33  joeh
+' Implement new MTI plot and save MTI plot as emf file
+'
 ' Revision 1.2  2008/11/25 23:14:04  joeh
 ' Copy and paste in cells of data grid view
 '
@@ -125,6 +128,8 @@ Namespace TL1ToPreyToConsumer
             Dim ToolStripPrgBar As Windows.Forms.ToolStripProgressBar = New Windows.Forms.ToolStripProgressBar
             Dim ToolStripButton1 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
             Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+            Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+            Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
 
             RemoveToolStrip()
             RaiseEvent AddToolStrip()
@@ -138,6 +143,8 @@ Namespace TL1ToPreyToConsumer
             ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), Windows.Forms.ToolStripProgressBar)
             ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), Windows.Forms.ToolStripButton)
             ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
+            ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
+            ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
 
             ToolStripLabel1.Visible = True
             ToolStripLabel1.Text = My.Resources.LBL_PATH_TO
@@ -163,6 +170,8 @@ Namespace TL1ToPreyToConsumer
             ToolStripPrgBar.Visible = False
             ToolStripButton1.Visible = False
             ToolStripButton2.Visible = False
+            ToolStripButton3.Visible = False
+            ToolStripButton4.Visible = False
 
             ToolStrip.Refresh()
         End Sub
