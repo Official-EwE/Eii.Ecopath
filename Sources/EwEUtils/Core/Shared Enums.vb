@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.14  2008/11/28 16:56:15  joeb
+' Removed a ToDo
+'
 ' Revision 1.13  2008/11/20 17:17:18  jeroens
 ' Added Initialized core exec states
 '
@@ -489,7 +492,6 @@ Namespace Core
         AdjustSpace
 
         'jb outputs for ecospace
-        'ToDo_jb Ecospace output in eVarNameFlags documentation
         EcospaceMapBiomass
 
         'Ecospace Group output

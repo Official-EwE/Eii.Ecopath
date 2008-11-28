@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.6  2008/11/28 16:55:46  joeb
+' Removed a ToDo
+'
 ' Revision 1.5  2008/11/28 02:43:25  jeroens
 ' Added plugin compatibility checks to prevent the system from dying
 '
@@ -215,8 +218,6 @@ Public Class cPluginManager
             For Each ex As Exception In loaderEX.LoaderExceptions
                 System.Console.WriteLine(ex.Message)
             Next
-            'ToDo_jb LoadPluginAssembly loader exception just passing this exception out does not give enough info to the user to tell what is going on
-            'there needs to be a more descriptive way of doing this
             RaiseEvent PluginException(loaderEX)
             Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & loaderEX.Message)
 
