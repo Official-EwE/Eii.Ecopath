@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.2  2008/11/28 16:57:04  joeb
+' Removed ToDo with my name on it
+'
 ' Revision 1.1  2008/09/26 07:32:04  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -91,8 +94,6 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class frmEcotracerOutput
-
-    'ToDo_jb frmEcotracerOutput Localize hardwired strings
 
 #Region " Definitions "
 
