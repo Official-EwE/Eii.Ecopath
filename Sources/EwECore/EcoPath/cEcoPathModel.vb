@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.6  2008/11/28 16:03:17  joeb
+' Minor code cleanup after moving all code to cEcopathModel
+'
 ' Revision 1.5  2008/11/27 23:33:56  joeb
 ' Removed EcopoathMassBalance module all code now in cEcopathModel
 '
@@ -266,7 +269,6 @@ Namespace Ecopath
             Dim msg As cMessage = Nothing
 
             'For development test that everything has been initialized 
-            'This is for development to test that Ecopath has been initialized properly that's why it is an Assert
             Debug.Assert(Not m_Data Is Nothing, Me.ToString + ".EstimateParameters() DataSouce must be set before model is called.")
             Debug.Assert(m_Data.bInitialized, Me.ToString + ".EstimateParameters() Datasource has not been initilized.")
 
@@ -305,9 +307,6 @@ Namespace Ecopath
 
             Try
 
-                'jb debugging
-                '      cLog.WriteArrayToFile("Test.csv", mData.QB, "QB")
-
                 'check that all diet composition DC() sum to 1
                 'False flag do NOT to ask user what to do
                 If Not checkDietsSumToOne(False) Then
@@ -341,7 +340,7 @@ Namespace Ecopath
 
                 If bPluginFailed Then
 
-                    Me.EstimateParameters(m_Data, m_eEstimType, m_EstimStatus)
+                    Me.EstimateParameters(m_eEstimType, m_EstimStatus)
 
                 End If
 
@@ -1387,7 +1386,7 @@ Namespace Ecopath
 
 #Region "Estimate Parameters"
 
-        Private Function EstimateParameters(ByVal EcoPathDataStructures As cEcopathDataStructures, ByVal EstimateFor As eEstimateParameterFor, ByRef Result As eStatusFlags) As Boolean
+        Private Function EstimateParameters(ByVal EstimateFor As eEstimateParameterFor, ByRef Result As eStatusFlags) As Boolean
 
             Dim ji As Integer
             'Dim From As Integer
@@ -1397,8 +1396,6 @@ Namespace Ecopath
             Dim CyclesDone As Boolean
             Dim msg As cMessage = Nothing
             Dim TimesTried As Integer
-
-            m_Data = EcoPathDataStructures
 
             RedimVariables()
             'Programmer: Villy Christensen
@@ -1410,9 +1407,6 @@ Namespace Ecopath
 
 Start:
                 LoopC = 0
-
-                'VC Sep 2008: the next routine doesn't do anything anymore, so why call it, Joe?
-                CountMissingB_Ex()
 
 LoopCalc:
                 LoopC = LoopC + 1
@@ -1521,8 +1515,6 @@ LoopCalc:
 
                     End If
 
-
-
                     'in the original code  EstimateB(Pass, from) could set "From" to -1
                     'which would cause the loop to exit
                     'This has been changed to set a boolean flag 'ExitSen'
@@ -1550,9 +1542,7 @@ LoopCalc:
                     End If
 
                     If EstimateFor = eEstimateParameterFor.Sensitivity And SecLoop = 3 Then
-                        'jb todo implement the exit below
-                        'this has not been implemented yet so just assert for now
-                        '    Debug.Assert(False)
+                        'in the Sensitivity loop Exit 
                         Result = eStatusFlags.OK
                         Return False
 
@@ -1598,6 +1588,8 @@ LoopCalc:
 
                 End If           'If NoMissing>0   This was earlier called NOGIM
 
+                'From EwE5 SensitivLoop 
+                'EwE6 does not do EcoPath Sensitivity 
                 'If iterate > 1 Then CalcDeviation()
                 'If iterate > 1 Then Progress()
                 'NextSensL:
@@ -2075,8 +2067,6 @@ nextJ:
             Dim Answer As Single
             Dim msg As cFeedbackMessage = Nothing
             Static done As Boolean
-
-
 
             ' ToDo_JS: Localize this
             str = "Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative "
