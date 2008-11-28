@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPedigreeManager.vb,v $
+' Revision 1.2  2008/11/28 16:54:00  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:09  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -184,12 +187,11 @@ Public Class cPedigreeManager
 
         End If
 
-        'ToDo_jb message this is important
         Return Nothing
     End Function
 
     Public Overridable Function Remove(ByVal level As cPedigreeLevel) As Boolean
-        'ToDo_jb cForcingFunctionManager.Remove() Do I need to check if the shape exists before I try to remove it?????????
+
         Try
 
             'Remove all references to ShapeToRemove from Databse, EcoSim data arrays and All Shape Managers

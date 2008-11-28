@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.12  2008/11/28 16:54:07  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.11  2008/11/18 23:10:31  joeb
 ' Fixed bug in calculation of model run time for EcoSpaceSummarizeIndicators
 '
@@ -1769,7 +1772,6 @@ Public Class cEcoSpace
             'ToDo_jb initSpatialEquilibrium() Still need to  implement reading of the nutrient maps
             'and 
             '        ReDim SimPlot(NumGroups, 7, TotalTime / TimeStep + 1)
-            'ToDo_jb FindSpatial........ ReadNutrientMaps() sort our how this will work
             '        ReadNutrientMaps()
 
             m_Ecosim.InitializeDataInfo()
@@ -2692,7 +2694,6 @@ Public Class cEcoSpace
             Next j
         Next i
 
-        'ToDo_jb SetMovementParameters() implement ConSimOn
         If m_tracerData.EcoSpaceConSimOn Then
             'set movement rates for physical contaminant concentration to
             'rates for first detritus pool
@@ -2917,9 +2918,6 @@ Public Class cEcoSpace
         iter = 0
 iterate:
         For jj = 1 To NomCols
-
-            'ToDo_jb SolveGrid StopRun needs to be implemented this flag is in here and SolveGridRow
-            'If StopRun = 1 Then Exit Sub
 
             j = jord(jj)
             For i = 1 To M
@@ -4897,7 +4895,6 @@ exitline:
                 Next j
             Next i
 
-            'ToDo_jb SetMovementParameters() implement ConSimOn
             If m_tracerData.EcoSpaceConSimOn Then
                 'set movement rates for physical contaminant concentration to
                 'rates for first detritus pool

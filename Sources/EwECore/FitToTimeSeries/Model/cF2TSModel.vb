@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.4  2008/11/28 16:54:13  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.3  2008/11/25 17:58:11  joeb
 ' Fixed bug 459 initEcosimForSearchIteration() now does a full init of ecosim
 '
@@ -197,11 +200,6 @@ Namespace FitToTimeSeries
 
     Public Class cF2TSModel
 
-        'ToDo_jb make sure EatenBy and EatenOf are cleared on each call to Ecosim
-        'ToDo_jb replace all message boxes with messages
-        '
-
-
 #Region "Private data"
 
 #Region "run data"
@@ -364,7 +362,7 @@ Namespace FitToTimeSeries
         ''' 
         ''' </summary>
         ''' <remarks>
-        ''' ToDo: pass in params that this method needs instead of obtaining them from the manager. This class may NOT KNOW ITS MANAGER!
+        '''pass in params that this method needs instead of obtaining them from the manager. This class may NOT KNOW ITS MANAGER!
         ''' </remarks>
         Public Sub RunSensitivitySS2VByPredPrey()
 
@@ -455,7 +453,7 @@ Namespace FitToTimeSeries
         ''' 
         ''' </summary>
         ''' <remarks>
-        ''' ToDo: pass in params that this method needs instead of obtaining them from the manager. This class may NOT KNOW ITS MANAGER!
+        ''' pass in params that this method needs instead of obtaining them from the manager. This class may NOT KNOW ITS MANAGER!
         ''' </remarks>
         Public Sub RunSensitivitySS2VByPredator()
 

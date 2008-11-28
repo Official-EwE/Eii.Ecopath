@@ -374,7 +374,6 @@ Public Class cSpaceSolver
 
             '  Debug.Assert(i <> 2)
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
-            'ToDo_JB FindSpat..... nutrient forcing file 
             'If NutFile = "" Then
             derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, m_Data.RelPP(i, j) / PPScale * RelPPupwell, i, j)
             'Else

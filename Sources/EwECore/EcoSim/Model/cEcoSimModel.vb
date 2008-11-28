@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.29  2008/11/28 16:54:06  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.28  2008/11/27 18:21:44  joeb
 ' Moved Flimit() back to Search data
 '
@@ -1136,9 +1139,6 @@ Public Property PluginManager() As cPluginManager
                 ElseIf m_Data.NoIntegrate(i) = 0 Then
                     yt(i) = (1 - m_Data.SorWt) * biomeq(i) + m_Data.SorWt * B(i)
                     If yt(i) < 0 Then
-                        'ToDo_jb rk4 Error message 
-                        'this needs a better way to exit
-                        ' MsgBox("Error in Runge Kutta", vbCritical, "Ecopath with Ecosim, critical error")
                         Me.m_publisher.SendMessage(New cMessage("Error in Runge Kutta.", eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical))
                         Debug.Assert(False, "yt(i) < 0 for i=" & i.ToString & ", t=" & t.ToString)
                         AbortRun = True
@@ -1750,14 +1750,7 @@ Public Property PluginManager() As cPluginManager
         Private Function checkOKToRun(ByRef msg As String) As Boolean
             Dim nMissing As Integer
 
-            'ToDo_jb Send a message I think?? 
-            'Most of these problems are programing but I think it still needs a message because this method can stop the model from running
             msg = Me.ToString
-            'If m_ProgressDelegate Is Nothing Then
-            '    nMissing += 1
-            '    msg = msg + vbNewLine & "Model not initialized properly: The Time Step Delegate has not been set."
-            '    cLog.Write(Me.ToString & "Model not initialized properly: The Time Step Delegate has not been set.")
-            'End If
 
             If m_EPData Is Nothing Then
                 nMissing += 1
@@ -2872,7 +2865,6 @@ Public Property PluginManager() As cPluginManager
             Next
             LogL = LogL / 2
 
-
             'vc sep 2008, adding an option for increasing SS with a fishing mortality penalty
             'if doing a fit to time series, and there are any fmax in the fishing policy screen,
             'then use them here:
@@ -2893,14 +2885,6 @@ Public Property PluginManager() As cPluginManager
             '    Next
             'End If
 
-
-            'System.Console.WriteLine(Ss)
-            'For ie As Integer = 1 To m_EPData.NumGroups
-            '    System.Console.WriteLine(SSgroup(ie))
-            'Next
-
-            'jb commented this out for now
-            'If SetToLike = True Then Ss = LogL
         End Sub
 
 

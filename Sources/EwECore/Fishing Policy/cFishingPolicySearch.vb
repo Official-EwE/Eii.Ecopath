@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.5  2008/11/28 16:54:12  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.4  2008/11/27 18:22:30  joeb
 ' Moved Flimit() back to Search data
 '
@@ -360,8 +363,6 @@ Namespace FishingPolicy
 
                 m_searchData.saveInitialFishingRate(m_core.m_EcoSimData)
 
-                'ToDo_jb: make sure the initialization of the fishing policy search is consistant will EwE5
-                'this includes the call to ecosim from Minimize
                 m_ecosim.Init(False)
 
                 checkUseCostPenalty(nBlocksUsed)

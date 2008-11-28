@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.6  2008/11/28 16:54:56  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.5  2008/11/24 18:11:07  jeroens
 ' Electivity exposed
 '
@@ -288,7 +291,6 @@ Public Class cNetworkManager
 
                 m_runstate = eRunState.RequirePPHasRun
 
-                ' ToDo_jb cNetworkManager.Run Tell the StateMonitor the network analysis has run
                 breturn = True
                 m_IsRequiredPrimaryProdRun = True
 

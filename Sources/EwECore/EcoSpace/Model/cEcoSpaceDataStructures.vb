@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.2  2008/11/28 16:54:10  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -706,8 +709,6 @@ Public Class cEcospaceDataStructures
         Dim i As Integer
 
         Try
-            'ToDo_jb Ecospace SetDefaults() I need to figure out how to dimension the data and set defaults 
-            'this has to use a different strategy then EwE5
 
             'EwE5 default value hardwired into the interface
             FitnessResp = 100
@@ -717,8 +718,6 @@ Public Class cEcospaceDataStructures
             'SOR weight from EwE5 interface frmSpace.text3
             W = 0.9
 
-            'jb?????????????????
-            'ToDo_jb Ecospace TimeStep Need to figure out where to set it and what the default is
             TimeStep = 1 / 12 'monthly time steps. In EwE5 this is set all over the place 
 
             'EwE5 set to True in frmSpace.Form_Activate()

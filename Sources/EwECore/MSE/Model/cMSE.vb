@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.2  2008/11/28 16:54:14  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -324,7 +327,6 @@ Namespace MSE
                         If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
                     End If
 
-                    'ToDo_jb RunModelValue implement sstest.Normal()
                     If iYear = 1 Then Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(m_data.VarQest(i))))
 
                 Next i

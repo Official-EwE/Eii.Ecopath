@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.9  2008/11/28 16:54:14  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.8  2008/10/15 21:15:26  villyc
 ' mc fixes
 '
@@ -655,7 +658,7 @@ Public Class cMonteCarloManager
 
     Public ReadOnly Property MaxEcoPathInterations() As Integer
         Get
-            'ToDo_jb montecarlo manager this will need to come from the monte carlo model
+            'ToDo_jb montecarlo manager this should come from the monte carlo model
             Return 2000
         End Get
     End Property

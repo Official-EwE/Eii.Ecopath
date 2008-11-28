@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGridSolver.vb,v $
+' Revision 1.2  2008/11/28 16:54:11  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:23  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -350,9 +353,6 @@ Public Class cGridSolver
             iter = 0
 iterate:
             For jj = 1 To NomCols
-
-                'ToDo_jb SolveGrid StopRun needs to be implemented this flag is in here and SolveGridRow
-                'If StopRun = 1 Then Exit Sub
 
                 j = jord(jj)
                 For i = iStartRow(j) To iEndRow(j)

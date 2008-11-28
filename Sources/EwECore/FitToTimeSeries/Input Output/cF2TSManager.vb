@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSManager.vb,v $
+' Revision 1.2  2008/11/28 16:54:12  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:24  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -41,7 +44,6 @@ Imports EwECore.SearchObjectives
 Public Class cF2TSManager
     Inherits cCoreInputOutputBase
     Implements SearchObjectives.ISearchObjective
-
 
     'ToDo_jb Firstyear and LastYear need to be set for the time series data
 

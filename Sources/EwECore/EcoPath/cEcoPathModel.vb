@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.7  2008/11/28 16:54:05  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.6  2008/11/28 16:03:17  joeb
 ' Minor code cleanup after moving all code to cEcopathModel
 '
@@ -1486,7 +1489,6 @@ LoopCalc:
                     EstimateB(Pass, EstimateFor, ExitSen)
 
                     If EstimateFor = eEstimateParameterFor.ParameterEstimation And (Exit_Sub_Missing_Par = 0 Or SecLoop = 3) Then
-                        'ToDo_jb EstimateParameters AGAIN this code has never been tested!!!!
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb
@@ -2128,8 +2130,6 @@ exitSub:
                         If NoQuestionsAsked Then    'just do it
                             RetVal = cFeedbackMessage.eReply.OK
                         ElseIf briefQuestion Then
-                            '    Debug.Assert(False, "checkDietsSumToOne() needs message")
-                            'ToDo_jb 
                             '    ' first time only
                             '    briefQuestion = False
                             ' ToDo_JS: globalize this
@@ -2666,7 +2666,6 @@ ONE:
             Dim strMsg As String
             Dim msg As cMessage = Nothing
 
-            'TODo_jb ManyUnknown InParameterEstimation has not been set
             If InParameterEstimation = 0 Then
                 Exit Sub
             End If
@@ -2782,10 +2781,8 @@ ONE:
             Static done As Boolean
             Static DoneAlready As Boolean
 
-            'ToDO_jb test CheckPredatorPreyTrophicLevels
-
             'JB WARNING
-            'THIS HAS NEVER BEEN TESTED!!!!!!!!!!!!!!!!!!
+            'THIS HAS NEVER BEEN EXPLICITY TESTED!!!!!!!!!!!!!!!!!!
             'It was just copied from EWE5 this could be dangerous
 
             If DoneAlready = False Then

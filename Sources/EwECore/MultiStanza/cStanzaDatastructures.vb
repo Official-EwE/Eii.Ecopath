@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStanzaDatastructures.vb,v $
+' Revision 1.2  2008/11/28 16:54:15  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:28  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -133,9 +136,6 @@ Public Class cStanzaDatastructures
     'Public LockedParameter() As Boolean
     Public CurrentStanza As Integer
 
-    'ToDo_jb stanza data SpeciesCode() is dimmed by nGroups I need to sort out where this should get set
-    'Public SpeciesCode(,) As Integer 'species code number for each ecopath group (0 if not a stanza in a split species)
-    ' Public vBMann() As Single
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
 

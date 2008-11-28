@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeManagers.vb,v $
+' Revision 1.2  2008/11/28 16:54:15  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:33  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -107,10 +110,6 @@ Public MustInherit Class cBaseShapeManager
 
 #Region " Obligatory overrides "
 
-    'ToDo_jb cBaseShapeManger I need to look into how the shapes load there data
-    'and how the Ecosim idex is used in this process the shape should use the dbid as its ID not the index
-    'it may be possible to do this all in the base class
-
     ''' <summary>
     ''' Initialize/build all the shapes that belong to this shape manager
     ''' </summary>
@@ -172,7 +171,6 @@ Public MustInherit Class cBaseShapeManager
     End Function
 
     Public Overridable ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
-        'ToDo_jb error handling
         Get
             Try
                 Return m_shapes.Item(ItemIndex)
@@ -524,7 +522,6 @@ Public Class cForcingFunctionManager
 
         End If
 
-        'ToDo_jb message this is important
         Return Nothing
     End Function
 
@@ -618,7 +615,6 @@ Public Class cMediationManager
 
         End If
 
-        'ToDo_jb message this is important
         Return Nothing
 
     End Function
@@ -869,7 +865,6 @@ Public Class cGroupShapePair
             Return m_manager.OnChanged(Me)
 
         Catch ex As Exception
-            'ToDo_jb sort out what to do if this Fails
             cLog.Write(ex)
             Return False
         End Try

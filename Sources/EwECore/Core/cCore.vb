@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.41  2008/11/28 16:54:00  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.40  2008/11/27 23:35:26  joeb
 ' Renamed cEcoPathModel.EstimateParameter to Run
 '
@@ -1059,7 +1062,7 @@ Public Class cCore
         End If
 
         'At this time the shape manager has not had time to add the shape to it's list 
-        'so sending a message or telling the other manager what has happend is permature.
+        'so sending a message or telling the other manager what has happend is premature.
         'The shape manager will handle telling the other shape managers that it has changed the underlying data
         Return bSucces
 
@@ -2497,7 +2500,6 @@ Public Class cCore
 
                 Input.AllowValidation = True
             Else
-                'ToDo_jb LoadEcopathInputs do something if no iGroup found
                 Debug.Assert(False)
             End If
 
@@ -2569,7 +2571,6 @@ Public Class cCore
                 Next i
 
             Else
-                'ToDo_jb UpdateEcopathInputs() failed to find igroup
                 Debug.Assert(False)
                 bSucces = False
             End If
@@ -2810,7 +2811,6 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitFleets() Error: " & ex.Message)
-            'ToDo_jb a message here??????? need to do something here
             Return False
         End Try
     End Function
@@ -3091,20 +3091,15 @@ Public Class cCore
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
-                'ToDo_jb RunEcoPath() message on successfull run Datachanged there are new outputs
-
                 If Me.m_pluginManager IsNot Nothing Then
                     m_pluginManager.EcopathRunCompleted(m_EcoPathData)
                 End If
-
-
                 bsuccess = True
 
             Else 'If mEcoPath.EstimateParameters() Then
 
                 'I am assuming here that if EcoPath returned false it has already sent a message that explains the problem 
                 'so I don't need to send another message
-                'I HOPE
 
                 cLog.Write(Me.ToString & ".RunEcoPath() Failed to Estimate Parameters.")
                 bsuccess = False
@@ -3997,17 +3992,12 @@ Public Class cCore
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
             m_EcoSim.EcopathParameters = m_EcoPathData
-
-            'Hack: jb EcoSim data needs to be set in EcoSim Some other way
             m_EcoSim.m_Data = m_EcoSimData
-            'ToDo_jb InitEcoSim() find a better way to set the Ecosim and Stanza data in Ecosim this sucks.............
             m_EcoSim.m_stanza = m_Stanza
 
             m_EcoSim.TracerData = m_tracerData
 
             m_EcoSim.TimeSeriesData = m_TSData
-
-            '     m_FPSearch = New cFishingPolicyManager()
 
             'Build all the shape managers
             m_ShapeManagers = New Dictionary(Of eDataTypes, cBaseShapeManager)
@@ -5604,7 +5594,6 @@ Public Class cCore
             Return True
 
         Catch ex As Exception
-            'ToDo_jb dumpEcosimModelResults if this routine stays it need to post a message if it failed
             Debug.Assert(False, ex.Message)
             Try
                 strm.Close()
@@ -6329,7 +6318,6 @@ Public Class cCore
             'For an Ecospace scenario to load there must be an Ecosim scenario loaded
             If Not Me.m_StateMonitor.HasEcosimLoaded() Then
                 'No implicit running of Ecosim because we do not know which Ecosim scenario to run
-                'ToDo_jb Ecospace could not load because Ecosim was not loaded message
                 Debug.Assert(False, "LoadEcospaceScenario() Load  Ecosim first. This is temporary.")
                 SendEcospaceLoadMessage(iScenario, "Load Ecosim first. This is temporary.")
                 Return False
@@ -7789,13 +7777,8 @@ Public Class cCore
     ''' <summary>
     ''' Initialize and populate the Stanza interface between the core and an interface
     ''' </summary>
-    ''' <remarks>This is temp until there is some kind of a datasource because the cores stanza data structures 
-    ''' are not stored in the eii files</remarks>
+    ''' <remarks></remarks>
     Private Function InitStanzas() As Boolean
-
-        'ToDo_jb this must call InitStanza in EwE5 this is critical
-        'it must be called every time ANY model is loaded EcoPath, EcoSim or EcoSpace
-        ' **** Me.m_EcoSim.InitStanza() ' NOT YET!! Stanza stuff must be read entirely first
 
         ' Now (re)generate CoreInterface objects.
         Try

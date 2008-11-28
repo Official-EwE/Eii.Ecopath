@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shapes.vb,v $
+' Revision 1.2  2008/11/28 16:54:15  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:33  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -138,9 +141,6 @@ Option Strict On
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-
-'ToDo_jb Mediation weights I need to sort out if this has to be 0-1 or it can be any value
-'ToDo_jb Mediation weights is this getting saved to datastructures
 
 #Region " Forcing Shape "
 
@@ -421,8 +421,6 @@ Public Class cForcingFunction
             Return True
 
         Catch ex As Exception
-            'ToDo: jg cForcingFunction.update Error I need to do something better then this but I'm not sure what
-            'possible some kind of a roll back
             Debug.Assert(False, Me.ToString & ".update() Error: " & ex.Message)
             cLog.Write(Me.ToString & ".update() Error: " & ex.Message)
             Return False
@@ -566,7 +564,6 @@ Public Class cMediationFunction
             m_datatype = eDataTypes.Mediation
 
             m_bInInit = True
-            'ToDo_jb IMedBase() added
             m_data = EcoSimData
             m_dbID = DBID
             m_iEcoSimIndex = Array.IndexOf(m_data.MediationDBIDs, m_dbID)
@@ -684,8 +681,6 @@ Public Class cMediationFunction
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Overrides Function Update() As Boolean
-
-        'ToDo_jb IMedBase() updated
 
         'do not update during initialization
         If m_bInInit Then

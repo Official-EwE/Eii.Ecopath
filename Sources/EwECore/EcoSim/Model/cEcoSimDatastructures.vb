@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.10  2008/11/28 16:54:05  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.9  2008/11/27 18:21:43  joeb
 ' Moved Flimit() back to Search data
 '
@@ -971,7 +974,6 @@ Public Class cEcosimDatastructures
         'frmSim1.fValueToPerturb.Text = tempstr
         EquilibriumStepSize = 0.003
 
-        'ToDo_jb summary time periods for Ecosim
         'Hack warning temp hard wire of summary time periods
         SumStart(0) = 0
         SumStart(1) = NumYears - 1

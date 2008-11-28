@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.2  2008/11/28 16:54:13  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -256,7 +259,6 @@ Namespace MSE
         Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
 
             Try
-                'ToDo_jb Update of parameters
                 Select Case DataType
 
                     Case eDataTypes.MSEGroupInput

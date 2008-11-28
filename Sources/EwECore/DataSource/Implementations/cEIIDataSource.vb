@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.3  2008/11/28 16:54:03  joeb
+' Cleaned up ToDo's
+'
 ' Revision 1.2  2008/10/07 00:38:45  jeroens
 ' Ecosim prey/pred ff table flipped
 '
@@ -730,8 +733,6 @@ Public Class cEIIDataSource
             Next iPrey
         Next iPred
 
-        '     tempCreateForcingMediationShapes()
-
         Dim i As Integer
         'jb Temp Hack to build DBID for each shape 
         For i = 1 To ecosimDS.ForcingShapes
@@ -803,114 +804,6 @@ Public Class cEIIDataSource
 
 #Region " Forcing Shapes "
 
-    Private Sub tempCreateForcingMediationShapes()
-
-        'temp
-        'ToDo_jb  remove this temp hack to load the forcing functions 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
-
-        Try
-            '
-            'ecosimDS.ForcingShapes = 2 'one Forcing one EggProd
-            ' ecosimDS.MediationShapes = 1
-            ecosimDS.ResizeForcingShapes(2)
-            ' ecosimDS.redimForcingShapes()
-            '   ecosimDS.InitForcingShapes()
-            ecosimDS.ResizeMediationShapes(1)
-            '  ecosimDS.ReDimMediation()
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Forcing Shape
-            Dim iForceShape As Integer = 1
-            ecosimDS.ForcingTitles(iForceShape) = "Forcing Shape From Datasource"
-            ecosimDS.ForcingShapeType(iForceShape) = eDataTypes.Forcing
-            ecosimDS.ForcingDBIDs(iForceShape) = CInt(Rnd() * 1000)
-
-            For ipt As Integer = 1 To ecosimDS.ForcePoints
-                ecosimDS.zscale(ipt, iForceShape) = (2 / ecosimDS.ForcePoints) * ipt
-            Next ipt
-
-            'apply this shape to all the valid pred/prey
-            For iPred As Integer = 1 To ecosimDS.nGroups
-                For iPrey As Integer = 1 To ecosimDS.nGroups
-                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPrey, iPred, 1) = iForceShape
-                        ecosimDS.IsMedFunction(iPrey, iPred, 1) = False
-                        If iPred = iPrey Then
-                            ecosimDS.FunctionType(iPrey, iPred, 1) = 2
-                        Else
-                            ecosimDS.FunctionType(iPrey, iPred, 1) = 1
-                        End If
-                    End If
-                Next iPrey
-            Next iPred
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Egg Production
-            Dim iEggShape As Integer = 2
-
-            ecosimDS.ForcingTitles(iEggShape) = "EggProd Shape From Datasource"
-            ecosimDS.ForcingShapeType(iEggShape) = eDataTypes.EggProd
-            ecosimDS.ForcingDBIDs(iEggShape) = CInt(Rnd() * 1000)
-
-            For ipt As Integer = 1 To ecosimDS.ForcePoints
-                ecosimDS.zscale(ecosimDS.ForcePoints - ipt, iEggShape) = (2 / ecosimDS.ForcePoints) * ipt
-            Next ipt
-
-            For iStanza As Integer = 1 To stanzaDS.Nsplit 'nSplit is the number of stanza groups
-                stanzaDS.EggProdShapeSplit(iStanza) = iEggShape
-            Next iStanza
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Mediation 
-            ecosimDS.MediationTitles(1) = "Mediation Function from Datasource"
-            ecosimDS.MediationDBIDs(1) = CInt(Rnd() * 1000)
-            ecosimDS.MedIsUsed(1) = True
-            ecosimDS.NMedXused(1) = 2
-
-            'IMedUsed(nGroups + nGear, MediationShapes)
-            ecosimDS.IMedUsed(1, 1) = 1
-            ecosimDS.IMedUsed(2, 1) = ecosimDS.nGroups
-
-            ecosimDS.MedWeights(1, 1) = 1
-            ecosimDS.MedWeights(2, 1) = 0.5
-
-            For ipt As Integer = 1 To ecosimDS.NMedPoints
-                ecosimDS.Medpoints(ipt, 1) = (2 / ecosimDS.NMedPoints) * ipt
-            Next ipt
-
-            'apply this shape to all the valid pred/prey
-            For iPred As Integer = 1 To ecosimDS.nGroups
-                For iPrey As Integer = 1 To ecosimDS.nGroups
-                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPrey, iPred, 2) = 1
-                        ecosimDS.IsMedFunction(iPrey, iPred, 2) = True
-                        ecosimDS.FunctionType(iPrey, iPred, 2) = eForcingFunctionApplication.ProductionRate
-                    End If
-                Next iPrey
-            Next iPred
-
-            'shape parameters for both type of shapes
-            Dim i As Integer
-            For i = 1 To ecosimDS.MediationShapes
-                ecosimDS.MediationShapeParams(i).ShapeFunctionType = eShapeFunctionType.NotSet
-            Next
-
-            For i = 1 To ecosimDS.ForcingShapes
-                ecosimDS.ForcingShapeParams(i).ShapeFunctionType = eShapeFunctionType.Exponential
-            Next
-
-        Catch ex As Exception
-            Debug.Assert(False, "Error in temporary init of Forcing & Mediation Shapes.")
-        End Try
-
-
-    End Sub
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -1190,6 +1083,119 @@ Public Class cEIIDataSource
     End Function
 
 #End Region ' Stanza
+
+#Region "Dead Code used during development"
+#If 0 Then
+    Private Sub tempCreateForcingMediationShapes()
+
+        'temp
+        'ToDo_jb  remove this temp hack to load the forcing functions 
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+
+        Try
+            '
+            'ecosimDS.ForcingShapes = 2 'one Forcing one EggProd
+            ' ecosimDS.MediationShapes = 1
+            ecosimDS.ResizeForcingShapes(2)
+            ' ecosimDS.redimForcingShapes()
+            '   ecosimDS.InitForcingShapes()
+            ecosimDS.ResizeMediationShapes(1)
+            '  ecosimDS.ReDimMediation()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Forcing Shape
+            Dim iForceShape As Integer = 1
+            ecosimDS.ForcingTitles(iForceShape) = "Forcing Shape From Datasource"
+            ecosimDS.ForcingShapeType(iForceShape) = eDataTypes.Forcing
+            ecosimDS.ForcingDBIDs(iForceShape) = CInt(Rnd() * 1000)
+
+            For ipt As Integer = 1 To ecosimDS.ForcePoints
+                ecosimDS.zscale(ipt, iForceShape) = (2 / ecosimDS.ForcePoints) * ipt
+            Next ipt
+
+            'apply this shape to all the valid pred/prey
+            For iPred As Integer = 1 To ecosimDS.nGroups
+                For iPrey As Integer = 1 To ecosimDS.nGroups
+                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
+                        ecosimDS.FunctionNumber(iPrey, iPred, 1) = iForceShape
+                        ecosimDS.IsMedFunction(iPrey, iPred, 1) = False
+                        If iPred = iPrey Then
+                            ecosimDS.FunctionType(iPrey, iPred, 1) = 2
+                        Else
+                            ecosimDS.FunctionType(iPrey, iPred, 1) = 1
+                        End If
+                    End If
+                Next iPrey
+            Next iPred
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Egg Production
+            Dim iEggShape As Integer = 2
+
+            ecosimDS.ForcingTitles(iEggShape) = "EggProd Shape From Datasource"
+            ecosimDS.ForcingShapeType(iEggShape) = eDataTypes.EggProd
+            ecosimDS.ForcingDBIDs(iEggShape) = CInt(Rnd() * 1000)
+
+            For ipt As Integer = 1 To ecosimDS.ForcePoints
+                ecosimDS.zscale(ecosimDS.ForcePoints - ipt, iEggShape) = (2 / ecosimDS.ForcePoints) * ipt
+            Next ipt
+
+            For iStanza As Integer = 1 To stanzaDS.Nsplit 'nSplit is the number of stanza groups
+                stanzaDS.EggProdShapeSplit(iStanza) = iEggShape
+            Next iStanza
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Mediation 
+            ecosimDS.MediationTitles(1) = "Mediation Function from Datasource"
+            ecosimDS.MediationDBIDs(1) = CInt(Rnd() * 1000)
+            ecosimDS.MedIsUsed(1) = True
+            ecosimDS.NMedXused(1) = 2
+
+            'IMedUsed(nGroups + nGear, MediationShapes)
+            ecosimDS.IMedUsed(1, 1) = 1
+            ecosimDS.IMedUsed(2, 1) = ecosimDS.nGroups
+
+            ecosimDS.MedWeights(1, 1) = 1
+            ecosimDS.MedWeights(2, 1) = 0.5
+
+            For ipt As Integer = 1 To ecosimDS.NMedPoints
+                ecosimDS.Medpoints(ipt, 1) = (2 / ecosimDS.NMedPoints) * ipt
+            Next ipt
+
+            'apply this shape to all the valid pred/prey
+            For iPred As Integer = 1 To ecosimDS.nGroups
+                For iPrey As Integer = 1 To ecosimDS.nGroups
+                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
+                        ecosimDS.FunctionNumber(iPrey, iPred, 2) = 1
+                        ecosimDS.IsMedFunction(iPrey, iPred, 2) = True
+                        ecosimDS.FunctionType(iPrey, iPred, 2) = eForcingFunctionApplication.ProductionRate
+                    End If
+                Next iPrey
+            Next iPred
+
+            'shape parameters for both type of shapes
+            Dim i As Integer
+            For i = 1 To ecosimDS.MediationShapes
+                ecosimDS.MediationShapeParams(i).ShapeFunctionType = eShapeFunctionType.NotSet
+            Next
+
+            For i = 1 To ecosimDS.ForcingShapes
+                ecosimDS.ForcingShapeParams(i).ShapeFunctionType = eShapeFunctionType.Exponential
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, "Error in temporary init of Forcing & Mediation Shapes.")
+        End Try
+
+
+    End Sub
+#End If
+#End Region
 
 End Class
 
