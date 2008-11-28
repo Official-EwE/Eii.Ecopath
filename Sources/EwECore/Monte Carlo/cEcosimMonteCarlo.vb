@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.16  2008/11/28 16:04:13  joeb
+' Disabled some EcoBio code
+'
 ' Revision 1.15  2008/11/27 23:38:55  joeb
 ' Renamed Ecopath.EstimateParameters to Run
 '
@@ -311,6 +314,8 @@ Public Class cEcosimMonteCarlo
             CheckWhoIsCrashed()
             CalculateUpperLowerLimits(True)
 
+#If 0 Then
+
             Dim FromEcobio As Boolean = True
             If FromEcobio Then
                 'Using sw As StreamWriter = New StreamWriter("c:\LME\UpperLowerLimits.csv", True)  'true makes it append
@@ -327,7 +332,7 @@ Public Class cEcosimMonteCarlo
                 'sw.Close()
                 'End Using
             End If
-
+#End If
             SSorg = m_esdata.SS
 
             'make sure the ecopath type of run is correct for the monte carlo runs
