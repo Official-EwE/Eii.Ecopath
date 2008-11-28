@@ -69,6 +69,7 @@ Namespace Other
             Me.m_ilPlugins.Images.SetKeyName(1, "NavForward.png")
             Me.m_ilPlugins.Images.SetKeyName(2, "BreakpointHS.png")
             Me.m_ilPlugins.Images.SetKeyName(3, "OptionsHS.png")
+            Me.m_ilPlugins.Images.SetKeyName(4, "WarningHS.png")
             '
             'm_split
             '
@@ -104,7 +105,7 @@ Namespace Other
         Friend WithEvents lblTitle As System.Windows.Forms.Label
         Friend WithEvents m_tvPlugins As System.Windows.Forms.TreeView
         Friend WithEvents m_split As System.Windows.Forms.SplitContainer
-        Friend WithEvents m_ilPlugins As System.Windows.Forms.ImageList
+        Private WithEvents m_ilPlugins As System.Windows.Forms.ImageList
 
     End Class
 

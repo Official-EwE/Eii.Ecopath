@@ -67,7 +67,7 @@ Partial Class ucAppPluginDetails
         Me.m_tbName.Location = New System.Drawing.Point(66, 3)
         Me.m_tbName.Name = "m_tbName"
         Me.m_tbName.ReadOnly = True
-        Me.m_tbName.Size = New System.Drawing.Size(374, 13)
+        Me.m_tbName.Size = New System.Drawing.Size(222, 13)
         Me.m_tbName.TabIndex = 1
         '
         'm_tbDescription
@@ -79,7 +79,7 @@ Partial Class ucAppPluginDetails
         Me.m_tbDescription.Multiline = True
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
-        Me.m_tbDescription.Size = New System.Drawing.Size(434, 156)
+        Me.m_tbDescription.Size = New System.Drawing.Size(282, 156)
         Me.m_tbDescription.TabIndex = 6
         Me.m_tbDescription.Text = "Description"
         '
@@ -91,7 +91,7 @@ Partial Class ucAppPluginDetails
         Me.m_tbAuthor.Location = New System.Drawing.Point(66, 22)
         Me.m_tbAuthor.Name = "m_tbAuthor"
         Me.m_tbAuthor.ReadOnly = True
-        Me.m_tbAuthor.Size = New System.Drawing.Size(374, 13)
+        Me.m_tbAuthor.Size = New System.Drawing.Size(222, 13)
         Me.m_tbAuthor.TabIndex = 3
         '
         'm_tbContact
@@ -103,7 +103,7 @@ Partial Class ucAppPluginDetails
         Me.m_tbContact.Multiline = True
         Me.m_tbContact.Name = "m_tbContact"
         Me.m_tbContact.ReadOnly = True
-        Me.m_tbContact.Size = New System.Drawing.Size(374, 31)
+        Me.m_tbContact.Size = New System.Drawing.Size(222, 31)
         Me.m_tbContact.TabIndex = 5
         Me.m_tbContact.Text = "l1" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "l2"
         '
@@ -131,7 +131,7 @@ Partial Class ucAppPluginDetails
         Me.Controls.Add(Me.m_lblAuthor)
         Me.Controls.Add(Me.m_lblName)
         Me.Name = "ucAppPluginDetails"
-        Me.Size = New System.Drawing.Size(443, 261)
+        Me.Size = New System.Drawing.Size(291, 261)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

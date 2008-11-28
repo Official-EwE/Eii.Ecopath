@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.2  2008/11/28 02:43:26  jeroens
+' Added plugin compatibility checks to prevent the system from dying
+'
 ' Revision 1.1  2008/09/26 07:32:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -49,6 +52,7 @@ Namespace Other
         Const cIMAGE_ENABLED As Integer = 1
         Const cIMAGE_DISABLED As Integer = 2
         Const cIMAGE_DEFAULT As Integer = 3
+        Const cIMAGE_INCOMPATIBLE As Integer = 4
 
 #Region " Helper classes "
 
@@ -219,13 +223,10 @@ Namespace Other
         End Sub
 
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
-            If pa.AlwaysEnabled Then
-                Return cIMAGE_CORE
-            ElseIf pa.Enabled Then
-                Return cIMAGE_ENABLED
-            Else
-                Return cIMAGE_DISABLED
-            End If
+            If pa.AlwaysEnabled Then Return cIMAGE_CORE
+            If pa.Enabled Then Return cIMAGE_ENABLED
+            If (pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible) Then Return cIMAGE_INCOMPATIBLE
+            Return cIMAGE_DISABLED
         End Function
 
 #End Region ' Events

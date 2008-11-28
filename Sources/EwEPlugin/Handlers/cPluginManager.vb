@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.5  2008/11/28 02:43:25  jeroens
+' Added plugin compatibility checks to prevent the system from dying
+'
 ' Revision 1.4  2008/10/31 16:48:14  jeroens
 ' Added MPA opt plugin invocation
 '
@@ -134,20 +137,27 @@ Public Class cPluginManager
             clsAssembly = Assembly.LoadFrom(strFileName)
             nameAssembly = clsAssembly.GetName
 
-            ' Create plugin assembly
-            plugAssem = New cPluginAssembly(nameAssembly)
-
             ' Test if valid
             If clsAssembly Is Nothing Then Return False
 
-            'look for appropriate types...
+            ' Create plugin assembly
+            plugAssem = New cPluginAssembly(nameAssembly)
+
+            ' Set compatible flag
+            If Me.IsCompatibleWithAssemblies(clsAssembly) Then
+                plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.Compatible
+            Else
+                plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.FailedAssemblyVersion
+            End If
+
+            ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes
-                'only look at types we can create...
+                ' Only look at types we can create
                 If clsType.IsPublic = True Then
-                    'ignore abstract classes...
+                    ' Ignore abstract classes
                     If Not ((clsType.Attributes And System.Reflection.TypeAttributes.Abstract) = _
                         System.Reflection.TypeAttributes.Abstract) Then
-                        'check for the implementation of the specified interface...
+                        ' Check for the implementation of the specified interface
                         clsInterface = clsType.GetInterface("IPlugin", True)
                         If Not (clsInterface Is Nothing) Then
                             ' Get the plugin
@@ -156,8 +166,13 @@ Public Class cPluginManager
                             plugAssem.Plugin(ip.Name) = ip
                             ' Core assigned?
                             If (Me.m_core IsNot Nothing) Then
-                                ' Initialize plugin
-                                ip.Initialize(Me.m_core)
+                                Try
+                                    ' Initialize plugin
+                                    ip.Initialize(Me.m_core)
+                                Catch ex As Exception
+                                    ' Disable the plugin entirely
+                                    plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.FailedInitialization
+                                End Try
                             End If
                             ' Yeah, got info allright
                             bHasPlugins = True
@@ -1394,6 +1409,22 @@ Public Class cPluginManager
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a list of <see cref="AssemblyName">AssemblyName</see> instances
+    ''' for incompatible plug-ins.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function GetIncompatiblePlugins() As ICollection(Of cPluginAssembly)
+        Dim collPlugins As New List(Of cPluginAssembly)
+        For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+            If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible Then
+                collPlugins.Add(pa)
+            End If
+        Next
+        Return collPlugins
+    End Function
+
 #End Region ' Plugin access
 
 #Region " Plugin core state response "
@@ -1482,6 +1513,47 @@ Public Class cPluginManager
         If oValues Is Nothing Then Return Nothing
         If oValues.Length = 0 Then Return Nothing
         Return oValues(0)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tests whether a specific assembly is compatible with the assemblies 
+    ''' currently loaded by the main application.
+    ''' </summary>
+    ''' <param name="assemPlugin">The assembly to test</param>
+    ''' <returns>True if compatible.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function IsCompatibleWithAssemblies(ByVal assemPlugin As Assembly) As Boolean
+
+        ' List of assemblies that the specified assembly is EXPECTING. 
+        ' This list includes assembly version numbers.
+        Dim aanameExpected As AssemblyName() = assemPlugin.GetReferencedAssemblies()
+        ' List of assemblies that this application has loaded, including their version numbers.
+        Dim aassemLoaded As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
+        ' A loaded assembly name
+        Dim anameLoaded As AssemblyName = Nothing
+        ' Assume all is well
+        Dim bCompatible As Boolean = True
+
+        ' For every expected assembly search its loaded counterpart
+        For Each anExpected As AssemblyName In aanameExpected
+
+            For Each asLoaded As Assembly In aassemLoaded
+                ' Get the assenmbly name (e.g. definition) for this loaded assembly
+                anameLoaded = asLoaded.GetName()
+                ' Found a match?
+                If String.Compare(anExpected.Name, anameLoaded.Name, True) = 0 Then
+                    ' #Yep: test if versions match
+                    bCompatible = bCompatible And anExpected.Version.Equals(anameLoaded.Version)
+                    ' Next
+                    Exit For
+                End If
+
+            Next
+        Next
+
+        Return bCompatible
+
     End Function
 
 #End Region ' Private helper methods

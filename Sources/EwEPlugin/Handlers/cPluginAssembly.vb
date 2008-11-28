@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.2  2008/11/28 02:43:25  jeroens
+' Added plugin compatibility checks to prevent the system from dying
+'
 ' Revision 1.1  2008/09/26 07:31:03  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -54,6 +57,8 @@ Public Class cPluginAssembly
     Private m_strFileName As String = ""
     ''' <summary>Assembly enable state.</summary>
     Private m_bEnabled As Boolean = True
+    ''' <summary>Assembly compatibility state.</summary>
+    Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.Compatible
 
 #End Region ' Private parts
 
@@ -143,12 +148,12 @@ Public Class cPluginAssembly
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/Set assembly changed state.
+    ''' Get/Set assembly enabled state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return Me.m_bEnabled
+            Return (Me.m_bEnabled = True) And (Me.Compatibility = ePluginCompatibilityTypes.Compatible)
         End Get
         Set(ByVal bEnabled As Boolean)
             ' Abort when enabled state will not change
@@ -176,6 +181,34 @@ Public Class cPluginAssembly
     End Property
 
 #End Region ' Enabling/disabling
+
+#Region " Compatibility "
+
+    Public Enum ePluginCompatibilityTypes As Integer
+        Compatible = 0
+        FailedAssemblyVersion
+        FailedInitialization
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set plugin compatibility state.
+    ''' </summary>
+    ''' <remarks>
+    ''' States whether a plug-in is compatible with the set of assemblies that
+    ''' the main application relies on.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Property Compatibility() As ePluginCompatibilityTypes
+        Get
+            Return Me.m_compatibility
+        End Get
+        Friend Set(ByVal value As ePluginCompatibilityTypes)
+            Me.m_compatibility = value
+        End Set
+    End Property
+
+#End Region ' Compatibility
 
 #Region " Assembly metadata "
 
