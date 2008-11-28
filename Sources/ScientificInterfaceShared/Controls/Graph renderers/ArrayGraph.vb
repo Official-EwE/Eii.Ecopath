@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ArrayGraph.vb,v $
+' Revision 1.2  2008/11/28 20:20:44  joeh
+' Change the label topaxis angle to 0
+'
 ' Revision 1.1  2008/11/28 01:58:32  joeh
 ' Implement new MTI plot and save MTI plot as emf file
 '
@@ -14,16 +17,18 @@ Option Explicit On
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
+Imports System.ComponentModel
 
 Public Class ArrayGraph
 
     Private m_font As Font = SystemFonts.DefaultFont
+    Private m_nodes As Boolean
 
     ''' <summary>Spacer between cells, expressed in cell size</summary>
     ''' <remarks></remarks>
     Private Const cCELL_PADDING_RATIO As Single = 0.3333!
     ''' <summary>Angle of top labels, specied in degress, off of the vertical axis</summary>
-    Private Const cLABEL_TOPAXIS_ANGLE As Integer = 30
+    Private Const cLABEL_TOPAXIS_ANGLE As Integer = 0 '30
 
     Public Sub New()
     End Sub

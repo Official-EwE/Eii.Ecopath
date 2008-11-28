@@ -33,20 +33,6 @@ Public Class cPlotOfMixedTrophicImpact
     End Function
 
     Private Sub New()
-        'Dummy data
-        'm_asData = New Single(9, 8) {{1.2, -3.1, 0.8, 3.1, -0.2, 3.9, -3.1, -2.2, 4.1}, _
-        '                        {3.9, 2.7, -0.9, -5.0, 3.4, 3.7, 4.8, 3.1, -0.4}, _
-        '                        {1.2, 3.4, -4.9, -3.3, -4.2, 0.9, 3.5, 3.8, 2.1}, _
-        '                        {-4.1, 4.9, 2.7, 0.9, -5.0, 2.4, 0.7, 2.8, -1.4}, _
-        '                        {3.9, 3.1, -1.9, -2.5, 2.2, 1.4, -0.8, 0.0, 3.4}, _
-        '                        {2.1, 2.3, -0.9, -3.0, 3.4, 2.7, 3.1, -3.1, 2.4}, _
-        '                        {-3.9, 2.2, 3.9, 3.0, -3.1, 1.7, -3.8, -3.1, 1.4}, _
-        '                        {-2.7, 1.7, 2.4, 1.7, -2.2, 3.7, 2.8, 2.1, 3.4}, _
-        '                        {3.3, -2.0, -1.9, 0.0, 3.4, 2.7, -1.1, -0.1, 5.0}, _
-        '                        {1.9, 0.0, 0.9, -3.7, 0.5, 3.7, 4.1, 3.1, 2.4}}
-        'm_astrLabelsX = New String() {"Mammals", "Large cod", "Small cod", "Large other fish", "Small other fish", "Herring", "Krill", "Shrimps", "Large bivalves", "Detritus"}
-        'm_astrLabelsY = New String() {"Mammals", "Large cod", "Small cod", "Large other fish", "Very, very small other fish", "Herring", "Krill", "Shrimps", "Large bivalves"}
-        'Dummy data
         '
     End Sub
 
@@ -96,11 +82,12 @@ Public Class cPlotOfMixedTrophicImpact
         Dim hdc As IntPtr = Nothing ' :)
         Dim mMetafile As Metafile = Nothing
 
-        cmdFS.Invoke("emf files (*.emf)|*.emf|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
+        cmdFS.Invoke("emf files (*.emf)|*.emf|All files (*.*)|*.*", 1)
         If cmdFS.Result = Windows.Forms.DialogResult.OK Then
             m_Panel.Refresh()
             fs = New FileStream(cmdFS.FileName, FileMode.Create)
-            bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
+            'bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
+            bmp = New Bitmap(m_Panel.Width, m_Panel.Height, PixelFormat.Format32bppArgb)
             Using g As Graphics = Graphics.FromImage(bmp)
                 hdc = g.GetHdc()
                 mMetafile = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -223,8 +210,8 @@ Public Class cPlotOfMixedTrophicImpact
 
         r.X = m_Panel.ClientRectangle.X
         r.Y = 0
-        r.Width = m_Panel.ClientRectangle.Width * 3
-        r.Height = (m_Panel.ClientRectangle.Height - r.Y) * 3
+        r.Width = m_Panel.ClientRectangle.Width ' * 3
+        r.Height = (m_Panel.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         ag.Draw(g, r, m_asData, m_astrLabelsX, m_astrLabelsY)
     End Sub
