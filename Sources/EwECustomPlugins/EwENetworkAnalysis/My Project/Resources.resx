@@ -589,4 +589,7 @@
   <data name="COL_HDR_ENTROPY" xml:space="preserve">
     <value>Entropy</value>
   </data>
+  <data name="TREE_NODE_FUNCT_RESP" xml:space="preserve">
+    <value>Functional response</value>
+  </data>
 </root>

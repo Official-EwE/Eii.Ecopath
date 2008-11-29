@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.5  2008/11/29 00:36:25  joeh
+' Add a new node "Response Function" to Network Analysis - Take one
+'
 ' Revision 1.4  2008/11/28 01:58:34  joeh
 ' Implement new MTI plot and save MTI plot as emf file
 '
@@ -532,6 +535,13 @@ Public Class frmNetworkAnalysis
                     dgvNetworkAnalysis.Visible = False
                     zgcNetworkAnalysis.Visible = False
                 End If
+            Case My.Resources.TREE_NODE_FUNCT_RESP
+                If Not m_NetworkManager.IsMainNetworkRun Then
+                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                    m_NetworkAnalysis.RunNetworkAnalysis()
+                End If
+                Dim asd As New frmFunctionalResponse(m_NetworkManager)
+                asd.ShowDialog()
             Case Else
         End Select
 

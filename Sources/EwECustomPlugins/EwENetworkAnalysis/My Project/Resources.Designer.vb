@@ -1371,6 +1371,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Functional response.
+        '''</summary>
+        Friend ReadOnly Property TREE_NODE_FUNCT_RESP() As String
+            Get
+                Return ResourceManager.GetString("TREE_NODE_FUNCT_RESP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Graph of mixed trophic impact.
         '''</summary>
         Friend ReadOnly Property TREE_NODE_GRAPH_MTI() As String
