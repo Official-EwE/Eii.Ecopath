@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.19  2008/11/29 19:00:11  sherman
+' Updated bugs and rescaling in RunEcosim plot
+'
 ' Revision 1.18  2008/11/26 16:00:23  jeroens
 ' Fixed issue 571
 '
@@ -342,7 +345,7 @@ Namespace Ecosim
         End Sub
 
         Public Sub OnCoreExecutionStateChanged()
-            Me.m_ZGPlotter.PrepareDataset(True)
+            Me.m_ZGPlotter.PrepareDataset()
             Me.PopulateGroupBoxes()
         End Sub
 
@@ -351,7 +354,6 @@ Namespace Ecosim
                 Me.tslblSSValue.Text = StyleGuide.GetInstance().FormatNumber(value)
             End Set
         End Property
-
 #End Region
 
         ''' -------------------------------------------------------------------
@@ -418,9 +420,8 @@ Namespace Ecosim
             ' Santa's little helper :)
             Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
 
-            Me.m_ZGHelper.AutoscalePane = False
+            Me.m_ZGHelper.AutoscaleY(ZedGraphHelper.ScaleOptions.Max)
             Me.m_ZGHelper.YScaleMin = 0.0!
-            Me.m_ZGHelper.YScaleMax = 2.0!
 
             ' ToDo_JS: Localize this!
             Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
@@ -428,6 +429,23 @@ Namespace Ecosim
 
         End Sub
 
+
+
+        Private Sub oldUpdateControls()
+            Me.m_tsbAutoscale.Checked = Me.m_ZGHelper.AutoscalePane
+            Me.m_tsbCustomScale.Checked = Not Me.m_ZGHelper.AutoscalePane
+            Me.m_tstbScaleMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
+            Me.m_tstbScaleMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
+        End Sub
+
+        Private Sub UpdateControls()
+            AutoScaleToolStripMenuItem.Checked = Me.m_ZGHelper.AutoscalePane
+            CustomScaleToolStripMenuItem.Checked = Not AutoScaleToolStripMenuItem.Checked
+            Me.m_tstbxSetMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
+            Me.m_tstbxSetMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
+        End Sub
+
+#Region " Menu Item Clicks "
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
@@ -463,62 +481,6 @@ Namespace Ecosim
         Private Sub OnCustomScale(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbCustomScale.Click
             Me.m_ZGHelper.AutoscalePane = False
             Me.oldUpdateControls()
-        End Sub
-
-        Private Sub OnScaleMinValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
-            Handles m_tstbScaleMin.Validating
-
-            Try
-                Dim dTest As Double
-                Double.TryParse(Me.m_tstbScaleMin.Text, dTest)
-            Catch ex As Exception
-                e.Cancel = True
-            End Try
-
-        End Sub
-
-        Private Sub OnScaleMaxValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
-            Handles m_tstbScaleMax.Validating 'Handles m_tstbScaleMin.Validating
-
-            Try
-                Dim dTest As Double
-                Double.TryParse(Me.m_tstbScaleMax.Text, dTest)
-            Catch ex As Exception
-                e.Cancel = True
-            End Try
-
-        End Sub
-
-        Private Sub OnScaleMinValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tstbScaleMin.Validated
-
-            Double.TryParse(Me.m_tstbScaleMin.Text, Me.m_ZGHelper.YScaleMin)
-            Me.m_ZGHelper.AutoscalePane = False
-            Me.oldUpdateControls()
-
-        End Sub
-
-        Private Sub OnScaleMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tstbScaleMax.Validated
-
-            Double.TryParse(Me.m_tstbScaleMax.Text, Me.m_ZGHelper.YScaleMax)
-            Me.m_ZGHelper.AutoscalePane = False
-            Me.oldUpdateControls()
-
-        End Sub
-
-        Private Sub oldUpdateControls()
-            Me.m_tsbAutoscale.Checked = Me.m_ZGHelper.AutoscalePane
-            Me.m_tsbCustomScale.Checked = Not Me.m_ZGHelper.AutoscalePane
-            Me.m_tstbScaleMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
-            Me.m_tstbScaleMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
-        End Sub
-
-        Private Sub UpdateControls()
-            AutoScaleToolStripMenuItem.Checked = Me.m_ZGHelper.AutoscalePane
-            CustomScaleToolStripMenuItem.Checked = Not AutoScaleToolStripMenuItem.Checked
-            Me.m_tstbxSetMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
-            Me.m_tstbxSetMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -571,15 +533,65 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tstbxSetMax_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.Click
+        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click, m_tstbxSetMax.Click
             AutoScaleToolStripMenuItem.Checked = False
-            CustomScaleToolStripMenuItem.Checked = False
+            CustomScaleToolStripMenuItem.Checked = True
         End Sub
 
-        Private Sub m_tstbxSetMin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click
-            AutoScaleToolStripMenuItem.Checked = False
-            CustomScaleToolStripMenuItem.Checked = False
+        Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.LostFocus ' m_tstbxSetMax.KeyPress, 
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMax)
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.UpdateControls()
         End Sub
+
+        Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.LostFocus
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMin)
+            Me.m_ZGHelper.AutoscalePane = False
+            Me.UpdateControls()
+        End Sub
+
+        'Private Sub OnScaleMinValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+        '    Handles m_tstbScaleMin.Validating
+
+        '    Try
+        '        Dim dTest As Double
+        '        Double.TryParse(Me.m_tstbScaleMin.Text, dTest)
+        '    Catch ex As Exception
+        '        e.Cancel = True
+        '    End Try
+
+        'End Sub
+
+        'Private Sub OnScaleMaxValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+        '    Handles m_tstbScaleMax.Validating 'Handles m_tstbScaleMin.Validating
+
+        '    Try
+        '        Dim dTest As Double
+        '        Double.TryParse(Me.m_tstbScaleMax.Text, dTest)
+        '    Catch ex As Exception
+        '        e.Cancel = True
+        '    End Try
+
+        'End Sub
+
+        'Private Sub OnScaleMinValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
+        '    Handles m_tstbScaleMin.LostFocus
+
+        '    Double.TryParse(Me.m_tstbScaleMin.Text, Me.m_ZGHelper.YScaleMin)
+        '    Me.m_ZGHelper.AutoscalePane = False
+        '    Me.oldUpdateControls()
+
+        'End Sub
+
+        'Private Sub OnScaleMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
+        '    Handles m_tstbScaleMax.Leave
+
+        '    Double.TryParse(Me.m_tstbScaleMax.Text, Me.m_ZGHelper.YScaleMax)
+        '    Me.m_ZGHelper.AutoscalePane = False
+        '    Me.oldUpdateControls()
+
+        'End Sub
+#End Region ' Menu Items Clicks
 
     End Class
     

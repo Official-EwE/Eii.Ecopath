@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.5  2008/11/29 19:00:11  sherman
+' Updated bugs and rescaling in RunEcosim plot
+'
 ' Revision 1.4  2008/11/11 00:52:24  joeh
 ' Set plot type default to relative and scale default to auto
 '
@@ -113,6 +116,14 @@ Namespace Controls
         Private m_bShowCursor() As Boolean
         Private m_sCursorPos() As Single
         Private m_liCursor() As LineItem
+
+        ''' <summary>To set the max and min auto options.</summary>
+        Public Enum ScaleOptions
+            Max
+            Min
+            Both
+            None
+        End Enum
 
 #End Region ' Private vars
 
@@ -372,6 +383,27 @@ Namespace Controls
                 End With
             End Set
         End Property
+
+        Public Sub AutoscaleY(ByVal ScaleOption As ScaleOptions, Optional ByVal iPane As Integer = 1)
+            With Me.GetPane(iPane).YAxis.Scale
+                'If bAutoscale <> .MinAuto And bAutoscale <> .MaxAuto Then
+                Select Case ScaleOption
+                    Case ScaleOptions.Both
+                        .MinAuto = True
+                        .MaxAuto = True
+                    Case ScaleOptions.Max
+                        .MaxAuto = True
+                    Case ScaleOptions.Min
+                        .MinAuto = True
+                    Case ScaleOptions.None
+                        .MinAuto = False
+                        .MaxAuto = False
+                End Select
+                RescaleAndRedraw(iPane)
+                'End If
+            End With
+
+        End Sub
 
         Public Property YScaleMin(Optional ByVal iPane As Integer = 1) As Double
             Get
