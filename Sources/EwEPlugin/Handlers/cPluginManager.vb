@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.7  2008/12/01 02:52:08  jeroens
+' Relaxed assert constraints
+'
 ' Revision 1.6  2008/11/28 16:55:46  joeb
 ' Removed a ToDo
 '
@@ -212,15 +215,25 @@ Public Class cPluginManager
 
         Catch loaderEX As System.Reflection.ReflectionTypeLoadException
 
-            'the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
+            ' A few things can have happened here, but for sure the DLL that the accessed module
+            ' cannot be examined for types. This means that the module is incompatible with the
+            ' current assembly file set. Since type detection has failed it cannot be determined
+            ' whether the assembly is actually a plug-in or any other file.
+
+            ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
             System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
-            'what the hell happend
+            ' what the hell happend
             For Each ex As Exception In loaderEX.LoaderExceptions
                 System.Console.WriteLine(ex.Message)
             Next
             RaiseEvent PluginException(loaderEX)
-            Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & loaderEX.Message)
 
+            ' JS 29nov08: only assert when this is a confirmed plug-in.
+            '             (which will not be the case since the manager could not access 
+            '             the Types contained within the assembly)
+            If bHasPlugins Then
+                Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & loaderEX.Message)
+            End If
 
         Catch ex As Exception
 
