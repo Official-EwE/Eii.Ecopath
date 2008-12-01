@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.4  2008/12/01 11:21:05  jeroens
+' Actively connect to IP4 networks only
+'
 ' Revision 1.3  2008/10/02 21:27:25  jeroens
 ' Socket able to connect to URI
 '
@@ -288,7 +291,14 @@ Namespace NetUtilities
             If (aIP Is Nothing) Then Return False
             If (aIP.Length = 0) Then Return False
 
-            Return Me.Connect(aIP(0), iPort)
+            ' Use IP4, not IP6
+            For Each ip As IPAddress In aIP
+                If ip.AddressFamily = AddressFamily.InterNetwork Then
+                    Return Me.Connect(ip, iPort)
+                End If
+            Next
+            Return False
+
         End Function
 
         ''' -------------------------------------------------------------------
