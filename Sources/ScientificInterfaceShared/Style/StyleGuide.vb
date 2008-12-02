@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.3  2008/12/02 18:22:14  jeroens
+' Added standard colour ramp offsets to prevent groups colours getting too light to see
+'
 ' Revision 1.2  2008/11/27 03:10:43  jeroens
 ' Group visible flags maintained by style guide, no longer by AppLauncher
 '
@@ -59,8 +62,12 @@ Namespace Style
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
         Private m_dtApplicationColors As New Dictionary(Of StyleGuide.eApplicationColorType, Color)
-        ''' <summary>Color ramp for obtaining the standard EwE colors</summary>
-        Private m_clrRamp As New SAUPColorRamp()
+        ''' <summary>Color ramp for obtaining the standard EwE5 colors</summary>
+        Private m_clrrmpEwE5 As New SAUPColorRamp()
+        ''' <summary>Start offset for colour ramp.</summary>
+        Private Const c_sRampOffsetStart As Single = 0.15!
+        ''' <summary>End offset for colour ramp.</summary>
+        Private Const c_sRampOffsetEnd As Single = 1.0!
 
         ' -- graphs --
         ''' <summary></summary>
@@ -104,6 +111,12 @@ Namespace Style
 
             ' Register one and only instance
             StyleGuide._inst_ = Me
+
+            ' Control how colour ramp delivers its colours
+            Me.m_clrrmpEwE5.ColorOffsetStart = c_sRampOffsetStart
+            Me.m_clrrmpEwE5.ColorOffsetEnd = c_sRampOffsetEnd
+
+            ' Load up
             Me.LoadDefaultApplicationColors()
             Me.LoadMonetaryUnitNames()
 
@@ -853,7 +866,7 @@ Namespace Style
         Public ReadOnly Property GroupColorDefault(ByVal core As cCore, ByVal iGroup As Integer, Optional ByVal nGroups As Integer = -1) As Color
             Get
                 If nGroups = -1 Then nGroups = core.nGroups
-                Return Me.m_clrRamp.GetColor(iGroup, nGroups)
+                Return Me.m_clrrmpEwE5.GetColor(iGroup, nGroups)
             End Get
         End Property
 
@@ -880,9 +893,8 @@ Namespace Style
         ''' for computation to avoid rounding error.</remarks>
         Public Function GetColorRamp(ByVal iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
-            Dim cOffset As Integer = 2
             For i As Integer = 0 To iNumLevels
-                Dim clr As Color = m_clrRamp.GetColor(CDbl(i + cOffset), CDbl(iNumLevels + cOffset))
+                Dim clr As Color = Me.m_clrrmpEwE5.GetColor(i, iNumLevels)
                 lColors.Add(clr)
             Next
             Return lColors
