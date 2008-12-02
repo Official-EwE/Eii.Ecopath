@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFPSResultSystemObjectives.vb,v $
+' Revision 1.3  2008/12/02 17:23:14  joeb
+' Resized the fishing block selector to fit on the form
+'
 ' Revision 1.2  2008/11/19 19:21:34  jeroens
 ' Fixed crash
 '
@@ -78,7 +81,7 @@ Namespace Ecosim
             Me.Rows.Insert(cnt)
             Me(cnt, 0) = New EwERowHeaderCell(CStr(results.nCalls))
             Me(cnt, 1) = New Cell(CStr(results.Totals))
-            For iResult As Integer = 1 To 5 ' Hmm, hard-coded?
+            For iResult As Integer = 1 To 4 ' Hmm, hard-coded?
                 Me(cnt, 1 + iResult) = New Cell(results.CriteriaValues(iResult).ToString)
             Next
 
