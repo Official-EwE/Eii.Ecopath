@@ -134,6 +134,12 @@
     <Compile Include="Interface\Indices\frmFunctionalResponse.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Interface\Indices\ucFunctionalResponse.Designer.vb">
+      <DependentUpon>ucFunctionalResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Indices\ucFunctionalResponse.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cHideGroups.vb" />
@@ -181,6 +187,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Indices\frmFunctionalResponse.resx">
       <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Indices\ucFunctionalResponse.resx">
+      <DependentUpon>ucFunctionalResponse.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.resx">
