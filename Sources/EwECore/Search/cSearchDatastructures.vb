@@ -334,7 +334,7 @@ Public Class cSearchDatastructures
         End Try
     End Function
 
-    Public Function redimByTime(Optional ByVal NumberOfYears As Integer = cCore.NULL_VALUE) As Boolean
+    Friend Function redimTime(Optional ByVal NumberOfYears As Integer = cCore.NULL_VALUE) As Boolean
         Try
 
             If NumberOfYears <> cCore.NULL_VALUE Then
