@@ -270,8 +270,8 @@
   <data name="COL_HDR_TL" xml:space="preserve">
     <value>TL</value>
   </data>
-  <data name="TREE_NODE_W_PPR_EST" xml:space="preserve">
-    <value>With primary production required estimate</value>
+  <data name="TREE_NODE_INDC_W_PPR_EST" xml:space="preserve">
+    <value>Indices with primary production required estimate</value>
   </data>
   <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
     <value>Total (t/km²/year)</value>
@@ -315,8 +315,8 @@
   <data name="COL_HDR_PARAM" xml:space="preserve">
     <value>Parameter</value>
   </data>
-  <data name="TREE_NODE_WO_PPR_EST" xml:space="preserve">
-    <value>Without primary production required estimate</value>
+  <data name="TREE_NODE_INDC_WO_PPR_EST" xml:space="preserve">
+    <value>Indices without primary production required estimate</value>
   </data>
   <data name="LBL_PATH_VIA" xml:space="preserve">
     <value>&amp;via:</value>

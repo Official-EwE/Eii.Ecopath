@@ -127,6 +127,7 @@
     <Compile Include="Interface\frmNetworkAnalysis.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Interface\Indices\cFunctionalResponse.vb" />
     <Compile Include="Interface\Indices\frmFunctionalResponse.Designer.vb">
       <DependentUpon>frmFunctionalResponse.vb</DependentUpon>
     </Compile>

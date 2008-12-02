@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.6  2008/12/02 03:06:24  joeh
+' Incorporate Functional Response into Network Analysis
+'
 ' Revision 1.5  2008/11/29 00:36:25  joeh
 ' Add a new node "Response Function" to Network Analysis - Take one
 '
@@ -123,6 +126,7 @@ Public Class frmNetworkAnalysis
     'Private m_IndicesWithoutPPREstForm As frmIndicesWithoutPPREst
     Private WithEvents m_IndicesWithPPREstClass As cIndicesWithPPREst
     'Private m_IndicesWithPPREstForm As frmIndicesWithPPREst
+    Private m_FunctionalResponse As cFunctionalResponse
 
     Private m_AlgorithmRunning As String
     Private m_ParentOfPathwayNode As String
@@ -481,7 +485,7 @@ Public Class frmNetworkAnalysis
                 End If
                 m_CyclingAndPathLen = cCyclingAndPathLen.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_CyclingAndPathLen.DisplayData()
-            Case My.Resources.TREE_NODE_WO_PPR_EST
+            Case My.Resources.TREE_NODE_INDC_WO_PPR_EST
                 If Not m_NetworkManager.IsMainNetworkRun Then
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
@@ -501,7 +505,7 @@ Public Class frmNetworkAnalysis
                     'm_IndicesWithoutPPREstForm = frmIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     'm_IndicesWithoutPPREstForm.ShowDialog()
                 End If
-            Case My.Resources.TREE_NODE_W_PPR_EST
+            Case My.Resources.TREE_NODE_INDC_W_PPR_EST
                 Dim Answer As String
                 If Not m_NetworkManager.IsEcosimNetworkWithPPREstRun Then
                     Answer = CStr(MsgBox(My.Resources.MSG_BOX_EST_PPR, MsgBoxStyle.YesNo, My.Resources.MSG_BOX_EWE_NA_PLUGIN))
@@ -540,8 +544,16 @@ Public Class frmNetworkAnalysis
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
                 End If
-                Dim asd As New frmFunctionalResponse(m_NetworkManager)
-                asd.ShowDialog()
+                If Not m_NetworkManager.IsEcosimNetworkWithoutPPREstRun Then
+                    m_EcosimNetworkAnalysis = cEcosimNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                    m_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis(False) 'False->WithoutPPREst
+                End If
+                m_FunctionalResponse = cFunctionalResponse.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                m_FunctionalResponse.SetUpPanel()
+                If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
+                    m_FunctionalResponse.CreatePlot() ', zgcNetworkAnalysis)
+                    'scNetworkAnalysis.Panel2.Refresh()
+                End If
             Case Else
         End Select
 
@@ -580,10 +592,10 @@ Public Class frmNetworkAnalysis
 
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnOutputIndicesCSV.Click
         Select Case tvNetworkAnalysis.SelectedNode.Text
-            Case My.Resources.TREE_NODE_WO_PPR_EST
+            Case My.Resources.TREE_NODE_INDC_WO_PPR_EST
                 'm_IndicesWithoutPPREstClass = cIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_IndicesWithoutPPREstClass.ExtractToCSV()
-            Case My.Resources.TREE_NODE_W_PPR_EST
+            Case My.Resources.TREE_NODE_INDC_W_PPR_EST
                 'm_IndicesWithPPREstClass = cIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_IndicesWithPPREstClass.ExtractToCSV()
         End Select

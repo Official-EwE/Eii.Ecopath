@@ -1398,6 +1398,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Indices with primary production required estimate.
+        '''</summary>
+        Friend ReadOnly Property TREE_NODE_INDC_W_PPR_EST() As String
+            Get
+                Return ResourceManager.GetString("TREE_NODE_INDC_W_PPR_EST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Indices without primary production required estimate.
+        '''</summary>
+        Friend ReadOnly Property TREE_NODE_INDC_WO_PPR_EST() As String
+            Get
+                Return ResourceManager.GetString("TREE_NODE_INDC_WO_PPR_EST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Pathway.
         '''</summary>
         Friend ReadOnly Property TREE_NODE_PATH() As String
@@ -1457,24 +1475,6 @@ Namespace My.Resources
         Friend ReadOnly Property TREE_NODE_TRANSFER_EFF() As String
             Get
                 Return ResourceManager.GetString("TREE_NODE_TRANSFER_EFF", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to With primary production required estimate.
-        '''</summary>
-        Friend ReadOnly Property TREE_NODE_W_PPR_EST() As String
-            Get
-                Return ResourceManager.GetString("TREE_NODE_W_PPR_EST", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Without primary production required estimate.
-        '''</summary>
-        Friend ReadOnly Property TREE_NODE_WO_PPR_EST() As String
-            Get
-                Return ResourceManager.GetString("TREE_NODE_WO_PPR_EST", resourceCulture)
             End Get
         End Property
     End Module
