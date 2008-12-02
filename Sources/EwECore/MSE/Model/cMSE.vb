@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.3  2008/12/02 19:08:21  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.2  2008/11/28 16:54:14  joeb
 ' Cleaned up ToDo's
 '
@@ -111,7 +114,7 @@ Namespace MSE
                 Next
 
                 'initialize Ecosim
-                m_esData.dimResults()
+                'm_esData.dimResults()
                 m_Ecosim.Init(False)
 
             Catch ex As Exception
@@ -136,9 +139,9 @@ Namespace MSE
                 'set up the search data
 
                 'turn the evaluator on for the trials
-                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear)
-                'via MSE.YearTimeStep() and MSE.AccessFs
+                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
                 Me.m_Search.SearchMode = eSearchModes.MSE
+                Me.m_esData.bTimestepOutput = True
                 Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
                 Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
                 If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
@@ -158,7 +161,7 @@ Namespace MSE
                     'Set MSE data back to initial values for a new run
                     m_data.InitForTrial()
 
-                    m_esData.dimResults()
+                    ' m_esData.dimResults()
                     m_Ecosim.RunModelValue(m_esData.NumYears, tmpTotval, tmpEmpval, tmpManval, tmpEcoval, Nothing, 0)
 
                     Me.SumValues(tmpTotval, tmpEmpval, tmpManval, tmpEcoval)
@@ -279,7 +282,7 @@ Namespace MSE
 
 
         ''' <summary>
-        ''' Count the number of time the Biomass is outside the lower or upper risk boundry
+        ''' Count the number of times the Biomass is outside the lower or upper risk boundry
         ''' </summary>
         ''' <param name="Biomass"></param>
         ''' <remarks>The biomass risk count can only be one per trial</remarks>

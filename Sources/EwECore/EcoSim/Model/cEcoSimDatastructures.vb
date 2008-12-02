@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.11  2008/12/02 19:06:24  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.10  2008/11/28 16:54:05  joeb
 ' Cleaned up ToDo's
 '
@@ -74,6 +77,12 @@ Public Class cEcosimDatastructures
         Prey
     End Enum
 
+
+    ''' <summary>
+    ''' Boolean flag set by the calling routine to tell Ecosim if it should process the output timestep data cEcoSImModel.ProcessTimeStep()
+    ''' </summary>
+    ''' <remarks>If true then Ecosim will compute all output data including data over time and call the timestep delegate. If false then it will run in a silent mode and not compute output data  </remarks>
+    Public bTimestepOutput As Boolean
 
     ''' <summary>Array of Ecosim group database IDs.</summary>
     Public GroupDBID() As Integer
@@ -810,7 +819,7 @@ Public Class cEcosimDatastructures
     ''' Resize and set time data to the new number of years set by a user
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub resizeTimeArrays(ByVal newNumberOfYears As Integer, ByVal nRefDataYears As Integer, ByVal bCopyLastShapePoint As Boolean)
+    Friend Sub redimTime(ByVal newNumberOfYears As Integer, ByVal nRefDataYears As Integer, ByVal bCopyLastShapePoint As Boolean)
         Dim ipt As Integer, ishape As Integer
         Dim orgNYears As Integer, orgNTimes As Integer
 
@@ -819,11 +828,11 @@ Public Class cEcosimDatastructures
         orgNTimes = NTimes
 
         'set number of years to the new value this will also set NTimes (number of time steps)
-        NumYears = newNumberOfYears
+        Me.NumYears = newNumberOfYears
 
         'Fishing rate shapes need to be big enough to hold reference data see DoDataValCalculations()
-        Dim ntimesteps As Integer = NTimes
-        If NumYears < nRefDataYears Then
+        Dim ntimesteps As Integer = Me.NTimes
+        If Me.NumYears < nRefDataYears Then
             ntimesteps = nRefDataYears * Me.NumStepsPerYear
         End If
 
@@ -1086,33 +1095,55 @@ Public Class cEcosimDatastructures
     End Sub
 
     ''' <summary>
-    ''' Dimension the ResultsOverTime(variables,groups,time) array
+    ''' Dimension the results over time arrays i.e. ResultsOverTime(),ResultsSumCatchByGroupGear()
     ''' </summary>
-    ''' <remarks>This only gets called if/when the model is actually run <see>cEcoSimModel.Run</see>
+    ''' <remarks>This only gets called if/when the model is actually run <see>cEcoSimModel.RunModelValue</see>
     ''' This reduces the memory needs of ecosim so that it can be initialized but not run. 
     ''' Ecosim is initialized but not run when Ecospace is loaded.
     ''' This would also allow for a flag to turn of the saving of results over time.
     ''' </remarks>
-    Public Sub dimResults()
+    Public Sub dimResults(ByVal NumberOfYears As Integer)
+
+        Dim nt As Integer = NumberOfYears * NumStepsPerYear
 
         'VB Wierdness N_TIME_RESULTS is the actual number of results variables in ResultsOverTime(,,) but because of the way vb dims arrays
         'N_TIME_RESULTS referes to the last element not the number of elements
         'so ReDim ResultsOverTime(N_TIME_RESULTS,) will give N_TIME_RESULTS +1 elements in the array
-        ReDim ResultsOverTime(N_TIME_RESULTS - 1, nGroups, NTimes)
-        ReDim PredPreyResultsOverTime(1, nGroups, nGroups, NTimes)
+        ReDim ResultsOverTime(N_TIME_RESULTS - 1, nGroups, nt)
+        ReDim PredPreyResultsOverTime(1, nGroups, nGroups, nt)
         ReDim ResultsSumByGroup(1, nGroups, nGroups)
 
         'fisheries data
-        ReDim ResultsSumCatchByGroupGear(nGroups, nGear, NTimes) ' groups,fleets,time
+        ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
         ReDim ResultsSumCatchByGear(nGear, NTimes)
-        ReDim ResultsSumValueByGroupGear(nGroups, nGear, NTimes)
-        ReDim ResultsSumValueByGear(nGear, NTimes)
-        ReDim ResultsEffort(nGear, NTimes)
-       
+        ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
+        ReDim ResultsSumValueByGear(nGear, nt)
+        ReDim ResultsEffort(nGear, nt)
+
     End Sub
 
+
     ''' <summary>
-    ''' Number of time step to run the model for
+    ''' Erase all the results arrays 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub eraseResults()
+
+        Erase ResultsOverTime
+        Erase PredPreyResultsOverTime
+        Erase ResultsSumByGroup
+
+        'fisheries data
+        Erase ResultsSumCatchByGroupGear ' groups,fleets,time
+        Erase ResultsSumCatchByGear
+        Erase ResultsSumValueByGroupGear
+        Erase ResultsSumValueByGear
+        Erase ResultsEffort
+    End Sub
+
+
+    ''' <summary>
+    ''' Number of time steps to run the model for
     ''' </summary>
     ''' <remarks>[number of years]*[number of time steps per year]</remarks>
     Public ReadOnly Property NTimes() As Integer

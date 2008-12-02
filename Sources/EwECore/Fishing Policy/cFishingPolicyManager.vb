@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.3  2008/12/02 19:07:21  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.2  2008/10/29 19:51:02  joeb
 ' Bug Fix When doing multiple runs the interface was not getting a chance to update before the next set of iterations started. Made RunCompleted delegate synchronous
 '
@@ -659,6 +662,7 @@ Namespace FishingPolicy
                 Me.setWait()
 
                 search.SearchMode = eSearchModes.FishingPolicy
+                Me.m_core.m_EcoSimData.bTimestepOutput = False
                 Me.Update(Me.DataType)
 
                 thrdMC = New Thread(AddressOf Me.m_FPsearch.Run)

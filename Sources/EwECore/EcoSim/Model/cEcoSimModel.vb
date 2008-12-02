@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.30  2008/12/02 19:06:25  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.29  2008/11/28 16:54:06  joeb
 ' Cleaned up ToDo's
 '
@@ -514,7 +517,7 @@ Public Property PluginManager() As cPluginManager
                 'EcoSimFileOpen()
                 '   SetDefaultParameters()
 
-                RedimTotalTimeVariables(True)
+                redimTime(True)
                 Calc_nvar()
 
                 CalcEatenOfBy()
@@ -668,6 +671,12 @@ Public Property PluginManager() As cPluginManager
             'Set to one for normal run has no effect on catchability (relQ)
             'For a managment strategy evalution MSE varied as a function of Qgrow (user input) in MSE.YearTimeStep()
             Dim QYear() As Single
+
+            If m_Data.bTimestepOutput Then
+                m_Data.dimResults(NumberOfYears + ExtraTime)
+            Else
+                m_Data.eraseResults()
+            End If
 
             AbortRun = False
             m_Data.FirstTime = True
@@ -885,7 +894,7 @@ Public Property PluginManager() As cPluginManager
                     'jb For optimization of Searches results and timestep data are not computed when in a Search
                     'This could be changed so that a plugin could access the timestep and results data
                     'by using a boolean flag to process the timestep results which could be set by a plugin
-                    If Not m_search.bInSearch Then
+                    If m_Data.bTimestepOutput Then
                         ProcessTimeStep(itime, ipct)
                     End If
 
@@ -916,13 +925,15 @@ Public Property PluginManager() As cPluginManager
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            'summarize any data for output
-            For igrp As Integer = 1 To m_EPData.NumGroups
-                For ipp As Integer = 1 To m_EPData.NumGroups
-                    m_Data.ResultsSumByGroup(0, igrp, ipp) = m_Data.ResultsSumByGroup(0, igrp, ipp) / itime
-                    m_Data.ResultsSumByGroup(1, igrp, ipp) = m_Data.ResultsSumByGroup(1, igrp, ipp) / itime
+            If m_Data.bTimestepOutput Then
+                'summarize any data for output
+                For igrp As Integer = 1 To m_EPData.NumGroups
+                    For ipp As Integer = 1 To m_EPData.NumGroups
+                        m_Data.ResultsSumByGroup(0, igrp, ipp) = m_Data.ResultsSumByGroup(0, igrp, ipp) / itime
+                        m_Data.ResultsSumByGroup(1, igrp, ipp) = m_Data.ResultsSumByGroup(1, igrp, ipp) / itime
+                    Next
                 Next
-            Next
+            End If
 
             'VC080523 Subtracts baseyear from the calc's below as we only need to look from that point on
             'only go in here if searching
@@ -1525,10 +1536,6 @@ Public Property PluginManager() As cPluginManager
                     End If
                 End If
 
-                'Dimension ResultsOverTime() variable
-                'this postpones the memory allocation until it is actually needed
-                m_Data.dimResults()
-
                 RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
 
                 bsuccess = True
@@ -1551,6 +1558,7 @@ Public Property PluginManager() As cPluginManager
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub setSearchOff()
+            m_Data.bTimestepOutput = True
             m_search.SearchMode = eSearchModes.NotInSearch 'turn off the fishing policy search
             m_search.setMinSearchBlocks()
             '  m_search.clearBaseYear() 'sets baseyear to zero
@@ -3497,7 +3505,7 @@ Public Property PluginManager() As cPluginManager
 
         End Sub
 
-        Friend Sub RedimTotalTimeVariables(ByVal DontPreserve As Boolean)
+        Friend Sub redimTime(ByVal DontPreserve As Boolean)
             'Dim MaxTime As Integer
 
             Debug.Assert(m_Data.NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")

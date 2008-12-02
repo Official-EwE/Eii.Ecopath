@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.17  2008/12/02 19:08:07  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.16  2008/11/28 16:04:13  joeb
 ' Disabled some EcoBio code
 '
@@ -279,6 +282,7 @@ Public Class cEcosimMonteCarlo
             StopTrial = False
             m_ecosim.Init(True)
 
+            m_core.m_EcoSimData.bTimestepOutput = True
             m_ecosim.TimeStepDelegate = EcosimTimeStep
             'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
 

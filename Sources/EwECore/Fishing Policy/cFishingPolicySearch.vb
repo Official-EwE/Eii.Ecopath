@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.6  2008/12/02 19:07:22  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.5  2008/11/28 16:54:12  joeb
 ' Cleaned up ToDo's
 '
@@ -322,9 +325,6 @@ Namespace FishingPolicy
                 m_searchData.initForRun(m_core.m_EcoPathData, m_core.m_EcoSimData)
 
                 TotalTime = m_core.nEcosimYears
-
-                m_core.m_EcoSimData.dimResults()
-
                 m_searchData.redimForRun()
 
                 m_searchData.setLimitFishingMortality()

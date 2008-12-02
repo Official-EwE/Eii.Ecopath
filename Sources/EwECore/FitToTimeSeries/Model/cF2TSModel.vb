@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.5  2008/12/02 19:07:43  joeb
+' Added flag for computation of EcoSim timestep ouput
+'
 ' Revision 1.4  2008/11/28 16:54:13  joeb
 ' Cleaned up ToDo's
 '
@@ -763,10 +766,22 @@ Namespace FitToTimeSeries
                 'make sure the fit to timeseries search is turned on
                 StopRun = False
 
-                'make sure the fishing policy search is turned off
-                '   m_core.m_SearchData.bInSearch = False
-                m_core.m_SearchData.SearchMode = eSearchModes.FitToTimeSeries
+                'Init Ecosim
 
+                'make sure the fishing policy search is turned off
+                m_core.m_SearchData.SearchMode = eSearchModes.FitToTimeSeries
+                'No timestep ouput
+                m_core.m_EcoSimData.bTimestepOutput = False
+
+                'make sure ecosim does not call the interface 
+                'setting bTimestepOutput = False should have had the same effect
+                m_core.m_EcoSim.TimeStepDelegate = Nothing
+
+                ''init ecosim
+                'm_esdata.dimResults()
+
+                'Now Init Ecosim
+                initEcosimForSearchIteration()
 
                 TotalTime = m_esdata.NumYears
 
@@ -779,15 +794,6 @@ Namespace FitToTimeSeries
                 If VblockCode Is Nothing Then
                     ReDim VblockCode(m_esdata.inlinks)
                 End If
-
-                'init ecosim
-                m_esdata.dimResults()
-
-                'make sure ecosim does not call the interface
-                m_core.m_EcoSim.TimeStepDelegate = Nothing
-
-                'make sure ecosim has been initialized
-                initEcosimForSearchIteration()
 
                 'create the results object for this type of run
                 m_results = cF2TSResultsFactory.Create(runType)
