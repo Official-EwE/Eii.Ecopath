@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.16  2008/12/02 19:15:32  jeroens
+' Plug-ins loaded after GUI up and running to show notifications
+' Warnings thrown for incompatible plug-ins
+'
 ' Revision 1.15  2008/11/27 03:10:41  jeroens
 ' Group visible flags maintained by style guide, no longer by AppLauncher
 '
@@ -759,9 +763,6 @@ Public Class AppLauncher
         ' Create plugin menu handler to position plugin menu items in the main menu from this form
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager)
 
-        ' Load plugins AFTER the core has been created.
-        Me.LoadPlugins()
-
         ' Initialize core controller
         Me.m_coreController = New EwECoreController(Me.m_core.StateMonitor, Me.m_core.StateManager)
         ' Initialize style guide updated
@@ -801,6 +802,13 @@ Public Class AppLauncher
             If pa.AlwaysEnabled = False Then
                 ' Disabled?
                 pa.Enabled = (alDisabledPlugins.IndexOf(pa.Filename) = -1)
+            End If
+
+            ' Check for incompatible plug-ins
+            If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible Then
+                Dim msg As New cMessage(String.Format("The plug-in '{0}' is incompatible with the current version of EwE6, and has been disabled.", pa.Filename), _
+                                        eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
             End If
         Next
     End Sub
@@ -2964,16 +2972,13 @@ Public Class AppLauncher
         Me.InitEventHandlers()
         Me.InitHelp()
 
-        'Me.m_coreEcosimMessageHandler = New cMessageHandler(AddressOf CoreMessageHandler, eMessageSource.EcoSim, eMessageType.DataAddedOrRemoved)
-        'Me.m_coreEcospaceMessageHandler = New cMessageHandler(AddressOf CoreMessageHandler, eMessageSource.EcoSpace, eMessageType.DataAddedOrRemoved)
-        'Me.m_core.Messages.AddMessageHandler(Me.m_coreEcosimMessageHandler)
-        'Me.m_core.Messages.AddMessageHandler(Me.m_coreEcospaceMessageHandler)
         AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         Me.ShowDockPanels()
-
         'Show start page
         Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+
+
         ' Set app caption
         Me.Text = Me.GetApplicationCaption()
         ' Start controlling the status strip
@@ -2981,7 +2986,9 @@ Public Class AppLauncher
         ' Start controlling forms
         Me.m_FormStateHelper = New EwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
 
-        ' Launch launchable plugins
+        ' Load plugins once GUI has been created.
+        Me.LoadPlugins()
+        ' Auto-launch plugins
         Me.AutolaunchPlugins()
 
         Me.ProcessCommandLine()
