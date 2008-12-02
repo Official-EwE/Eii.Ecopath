@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.42  2008/12/02 19:10:54  joeb
+' Minor changes to setEcosimRunLength()
+'
 ' Revision 1.41  2008/11/28 16:54:00  joeb
 ' Cleaned up ToDo's
 '
@@ -4193,7 +4196,7 @@ Public Class cCore
                 Return False
             End If
 
-            m_SearchData.redimByTime(Me.nEcosimYears)
+            m_SearchData.redimTime(Me.nEcosimYears)
 
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
@@ -4991,15 +4994,15 @@ Public Class cCore
 
             If newNumberOfYears = 0 Then Exit Sub
             'sets NumYears and NTimes and resize the underlying data to the new number of years
-            m_EcoSimData.resizeTimeArrays(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
+            m_EcoSimData.redimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
 
-            Me.m_EcoSim.RedimTotalTimeVariables(False)
+            Me.m_EcoSim.redimTime(False)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
             Me.m_TSData.LoadForcingData(m_EcoSimData, Math.Max(m_TSData.NdatYear, m_EcoSimData.NumYears))
 
-            Me.m_SearchData.redimByTime(m_EcoSimData.NumYears)
+            Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 
             Me.m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
 
@@ -5019,7 +5022,6 @@ Public Class cCore
 
             Me.m_publisher.AddMessage(New cMessage("Ecosim number of years has changed.", eMessageType.EcosimNYearsChanged, _
                                                      eMessageSource.EcoSim, eMessageImportance.Maintenance))
-
 
             Me.m_publisher.AddMessage(New cMessage("Ecosim number of years has changed.", eMessageType.DataModified, _
                                                      eMessageSource.ShapesManager, eMessageImportance.Maintenance))
@@ -9585,7 +9587,7 @@ Public Class cCore
 
                     Case eVarNameFlags.TotalTime
 
-                        'set_ModelRunLength will set the model run length in both ecosim and ecospace
+                        'setEcosimRunLength will set the model run length in both ecosim and ecospace
                         setEcosimRunLength(CInt(value.Value))
                         'load the new data into the parameters object
                         Me.LoadEcospaceModelParameters()
