@@ -1,4 +1,11 @@
-﻿#Region " Imports "
+﻿'==============================================================================
+'
+' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.3  2008/12/02 03:05:37  joeh
+' Initial version
+'
+
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
