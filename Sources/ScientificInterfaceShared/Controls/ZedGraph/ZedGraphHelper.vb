@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.6  2008/12/02 20:45:35  sherman
+' Fixed autoscale bugs
+'
 ' Revision 1.5  2008/11/29 19:00:11  sherman
 ' Updated bugs and rescaling in RunEcosim plot
 '
@@ -119,8 +122,8 @@ Namespace Controls
 
         ''' <summary>To set the max and min auto options.</summary>
         Public Enum ScaleOptions
-            Max
-            Min
+            MaxOnly
+            MinOnly
             Both
             None
         End Enum
@@ -384,26 +387,41 @@ Namespace Controls
             End Set
         End Property
 
-        Public Sub AutoscaleY(ByVal ScaleOption As ScaleOptions, Optional ByVal iPane As Integer = 1)
-            With Me.GetPane(iPane).YAxis.Scale
-                'If bAutoscale <> .MinAuto And bAutoscale <> .MaxAuto Then
-                Select Case ScaleOption
-                    Case ScaleOptions.Both
-                        .MinAuto = True
-                        .MaxAuto = True
-                    Case ScaleOptions.Max
-                        .MaxAuto = True
-                    Case ScaleOptions.Min
-                        .MinAuto = True
-                    Case ScaleOptions.None
-                        .MinAuto = False
-                        .MaxAuto = False
-                End Select
-                RescaleAndRedraw(iPane)
-                'End If
-            End With
-
-        End Sub
+        Public Property AutoScaleOption(Optional ByVal iPane As Integer = 1) As ScaleOptions
+            Get
+                With Me.GetPane(iPane).YAxis.Scale
+                    If .MinAuto And .MaxAuto Then
+                        Return ScaleOptions.Both
+                    ElseIf .MaxAuto And Not .MinAuto Then
+                        Return ScaleOptions.MaxOnly
+                    ElseIf Not .MaxAuto And .MinAuto Then
+                        Return ScaleOptions.MinOnly
+                    ElseIf Not .MaxAuto And Not .MinAuto Then
+                        Return ScaleOptions.None
+                    End If
+                    Return ScaleOptions.None
+                End With
+            End Get
+            Set(ByVal value As ScaleOptions)
+                With Me.GetPane(iPane).YAxis.Scale
+                    Select Case value
+                        Case ScaleOptions.Both
+                            .MinAuto = True
+                            .MaxAuto = True
+                        Case ScaleOptions.MaxOnly
+                            .MaxAuto = True
+                            .MinAuto = False
+                        Case ScaleOptions.MinOnly
+                            .MaxAuto = False
+                            .MinAuto = True
+                        Case ScaleOptions.None
+                            .MinAuto = False
+                            .MaxAuto = False
+                    End Select
+                    RescaleAndRedraw(iPane)
+                End With
+            End Set
+        End Property
 
         Public Property YScaleMin(Optional ByVal iPane As Integer = 1) As Double
             Get

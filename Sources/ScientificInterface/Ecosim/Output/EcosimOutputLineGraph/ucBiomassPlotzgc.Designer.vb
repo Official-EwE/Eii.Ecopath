@@ -22,7 +22,6 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucBiomassPlotzgc))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.lbOverlay = New System.Windows.Forms.ListBox
             Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
@@ -39,8 +38,8 @@ Namespace Ecosim
             Me.RelativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsdrpdnbtnGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
-            Me.AutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.CustomScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tlsAutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tlsCustomScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.SetMaxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tstbxSetMax = New System.Windows.Forms.ToolStripTextBox
             Me.SetMinToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -50,12 +49,6 @@ Namespace Ecosim
             Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ShowLegendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbAutoscale = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbCustomScale = New System.Windows.Forms.ToolStripButton
-            Me.m_tlsMax = New System.Windows.Forms.ToolStripLabel
-            Me.m_tstbScaleMax = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tslMin = New System.Windows.Forms.ToolStripLabel
-            Me.m_tstbScaleMin = New System.Windows.Forms.ToolStripTextBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -123,7 +116,7 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1, Me.m_tsbAutoscale, Me.m_tsbCustomScale, Me.m_tlsMax, Me.m_tstbScaleMax, Me.m_tslMin, Me.m_tstbScaleMin})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.Size = New System.Drawing.Size(860, 25)
@@ -187,7 +180,7 @@ Namespace Ecosim
             '
             Me.CumulativeToolStripMenuItem.CheckOnClick = True
             Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
             '
             'RelativeToolStripMenuItem
@@ -196,7 +189,7 @@ Namespace Ecosim
             Me.RelativeToolStripMenuItem.CheckOnClick = True
             Me.RelativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
+            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
             Me.RelativeToolStripMenuItem.Text = "&Relative"
             '
             'ToolStripSeparator2
@@ -206,28 +199,28 @@ Namespace Ecosim
             '
             'm_tsdrpdnbtnGraphOptions
             '
-            Me.m_tsdrpdnbtnGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutoScaleToolStripMenuItem, Me.CustomScaleToolStripMenuItem, Me.SetMaxToolStripMenuItem, Me.m_tstbxSetMax, Me.SetMinToolStripMenuItem, Me.m_tstbxSetMin, Me.ToolStripSeparator4, Me.AnnualOutputToolStripMenuItem, Me.OverlayToolStripMenuItem, Me.ShowLegendToolStripMenuItem})
+            Me.m_tsdrpdnbtnGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tlsAutoScaleToolStripMenuItem, Me.m_tlsCustomScaleToolStripMenuItem, Me.SetMaxToolStripMenuItem, Me.m_tstbxSetMax, Me.SetMinToolStripMenuItem, Me.m_tstbxSetMin, Me.ToolStripSeparator4, Me.AnnualOutputToolStripMenuItem, Me.OverlayToolStripMenuItem, Me.ShowLegendToolStripMenuItem})
             Me.m_tsdrpdnbtnGraphOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.m_tsdrpdnbtnGraphOptions.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsdrpdnbtnGraphOptions.Name = "m_tsdrpdnbtnGraphOptions"
             Me.m_tsdrpdnbtnGraphOptions.Size = New System.Drawing.Size(103, 22)
             Me.m_tsdrpdnbtnGraphOptions.Text = "Graph &options"
             '
-            'AutoScaleToolStripMenuItem
+            'm_tlsAutoScaleToolStripMenuItem
             '
-            Me.AutoScaleToolStripMenuItem.Checked = True
-            Me.AutoScaleToolStripMenuItem.CheckOnClick = True
-            Me.AutoScaleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.AutoScaleToolStripMenuItem.Name = "AutoScaleToolStripMenuItem"
-            Me.AutoScaleToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
-            Me.AutoScaleToolStripMenuItem.Text = "&Auto scale"
+            Me.m_tlsAutoScaleToolStripMenuItem.Checked = True
+            Me.m_tlsAutoScaleToolStripMenuItem.CheckOnClick = True
+            Me.m_tlsAutoScaleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tlsAutoScaleToolStripMenuItem.Name = "m_tlsAutoScaleToolStripMenuItem"
+            Me.m_tlsAutoScaleToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+            Me.m_tlsAutoScaleToolStripMenuItem.Text = "&Auto scale"
             '
-            'CustomScaleToolStripMenuItem
+            'm_tlsCustomScaleToolStripMenuItem
             '
-            Me.CustomScaleToolStripMenuItem.CheckOnClick = True
-            Me.CustomScaleToolStripMenuItem.Name = "CustomScaleToolStripMenuItem"
-            Me.CustomScaleToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
-            Me.CustomScaleToolStripMenuItem.Text = "Custom &scale"
+            Me.m_tlsCustomScaleToolStripMenuItem.CheckOnClick = True
+            Me.m_tlsCustomScaleToolStripMenuItem.Name = "m_tlsCustomScaleToolStripMenuItem"
+            Me.m_tlsCustomScaleToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+            Me.m_tlsCustomScaleToolStripMenuItem.Text = "Custom &scale"
             '
             'SetMaxToolStripMenuItem
             '
@@ -285,54 +278,6 @@ Namespace Ecosim
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
             '
-            'm_tsbAutoscale
-            '
-            Me.m_tsbAutoscale.Checked = True
-            Me.m_tsbAutoscale.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsbAutoscale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbAutoscale.Image = CType(resources.GetObject("m_tsbAutoscale.Image"), System.Drawing.Image)
-            Me.m_tsbAutoscale.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbAutoscale.Name = "m_tsbAutoscale"
-            Me.m_tsbAutoscale.Size = New System.Drawing.Size(62, 22)
-            Me.m_tsbAutoscale.Text = "Auto-scale"
-            Me.m_tsbAutoscale.Visible = False
-            '
-            'm_tsbCustomScale
-            '
-            Me.m_tsbCustomScale.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbCustomScale.Image = CType(resources.GetObject("m_tsbCustomScale.Image"), System.Drawing.Image)
-            Me.m_tsbCustomScale.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbCustomScale.Name = "m_tsbCustomScale"
-            Me.m_tsbCustomScale.Size = New System.Drawing.Size(74, 22)
-            Me.m_tsbCustomScale.Text = "Custom scale"
-            Me.m_tsbCustomScale.Visible = False
-            '
-            'm_tlsMax
-            '
-            Me.m_tlsMax.Name = "m_tlsMax"
-            Me.m_tlsMax.Size = New System.Drawing.Size(31, 22)
-            Me.m_tlsMax.Text = "Max:"
-            Me.m_tlsMax.Visible = False
-            '
-            'm_tstbScaleMax
-            '
-            Me.m_tstbScaleMax.Name = "m_tstbScaleMax"
-            Me.m_tstbScaleMax.Size = New System.Drawing.Size(50, 25)
-            Me.m_tstbScaleMax.Visible = False
-            '
-            'm_tslMin
-            '
-            Me.m_tslMin.Name = "m_tslMin"
-            Me.m_tslMin.Size = New System.Drawing.Size(27, 22)
-            Me.m_tslMin.Text = "Min:"
-            Me.m_tslMin.Visible = False
-            '
-            'm_tstbScaleMin
-            '
-            Me.m_tstbScaleMin.Name = "m_tstbScaleMin"
-            Me.m_tstbScaleMin.Size = New System.Drawing.Size(50, 25)
-            Me.m_tstbScaleMin.Visible = False
-            '
             'ucBiomassPlotzgc
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -364,12 +309,6 @@ Namespace Ecosim
         Private WithEvents OverlayToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents ShowLegendToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tsbAutoscale As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbCustomScale As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tstbScaleMin As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents m_tslMin As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tlsMax As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents m_tstbScaleMax As System.Windows.Forms.ToolStripTextBox
         Friend WithEvents m_tsdrpdnbtnPlotType As System.Windows.Forms.ToolStripDropDownButton
         Friend WithEvents CumulativeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents RelativeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -378,8 +317,8 @@ Namespace Ecosim
         Friend WithEvents BiomassToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents CatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents AutoScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents CustomScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents m_tlsAutoScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents m_tlsCustomScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents m_tstbxSetMax As System.Windows.Forms.ToolStripTextBox
         Friend WithEvents m_tstbxSetMin As System.Windows.Forms.ToolStripTextBox
         Friend WithEvents SetMaxToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
