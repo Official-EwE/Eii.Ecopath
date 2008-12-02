@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.7  2008/12/02 23:31:55  joeh
+' Remove Zed graph control from the parameters of CreatePlot( )
+'
 ' Revision 1.6  2008/12/02 03:06:24  joeh
 ' Incorporate Functional Response into Network Analysis
 '
@@ -500,7 +503,7 @@ Public Class frmNetworkAnalysis
                 m_IndicesWithoutPPREstClass.SetUpPanel(m_NetworkManager.IsEcosimNetworkWithoutPPREstRun)
                 'm_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis() might not be successfully run because Ecosim scenario has not been loaded
                 If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
-                    m_IndicesWithoutPPREstClass.CreatePlot(Me, zgcNetworkAnalysis)
+                    m_IndicesWithoutPPREstClass.CreatePlot(Me) ', zgcNetworkAnalysis)
                     scNetworkAnalysis.Panel2.Refresh()
                     'm_IndicesWithoutPPREstForm = frmIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     'm_IndicesWithoutPPREstForm.ShowDialog()
@@ -529,7 +532,7 @@ Public Class frmNetworkAnalysis
                     m_IndicesWithPPREstClass.SetUpPanel(m_NetworkManager.IsEcosimNetworkWithPPREstRun)
                     'm_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis() might not be successfully run because Ecosim scenario has not been loaded
                     If m_NetworkManager.IsEcosimNetworkWithPPREstRun = True Then
-                        m_IndicesWithPPREstClass.CreatePlot(Me, zgcNetworkAnalysis)
+                        m_IndicesWithPPREstClass.CreatePlot(Me) ', zgcNetworkAnalysis)
                         scNetworkAnalysis.Panel2.Refresh()
                         'm_IndicesWithPPREstForm = frmIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                         'm_IndicesWithPPREstForm.ShowDialog()
@@ -552,7 +555,7 @@ Public Class frmNetworkAnalysis
                 m_FunctionalResponse.SetUpPanel()
                 If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
                     m_FunctionalResponse.CreatePlot() ', zgcNetworkAnalysis)
-                    'scNetworkAnalysis.Panel2.Refresh()
+                    scNetworkAnalysis.Panel2.Refresh()
                 End If
             Case Else
         End Select

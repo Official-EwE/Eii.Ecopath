@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.4  2008/12/02 23:31:55  joeh
+' Remove Zed graph control from the parameters of CreatePlot( )
+'
 ' Revision 1.3  2008/11/28 01:58:33  joeh
 ' Implement new MTI plot and save MTI plot as emf file
 '
@@ -92,7 +95,9 @@ Public Class cIndicesWithPPREst
         SetUpGrid(IsEcosimNetworkAnalysisSuccess)
     End Sub
 
-    Public Sub CreatePlot(ByVal Frm As Form, ByVal Zgc As ZedGraphControl)
+    Public Sub CreatePlot(ByVal Frm As Form) ', ByVal Zgc As ZedGraphControl)
+        Dim Zgc As ZedGraphControl = _
+            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim Panes As MasterPane = Zgc.MasterPane
         Dim Pane1 As GraphPane = New ZedGraph.GraphPane
         Dim Pane2 As GraphPane = New ZedGraph.GraphPane
