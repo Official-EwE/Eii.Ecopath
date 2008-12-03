@@ -10,6 +10,8 @@ Public Class cEcosimGroupOutput
 
     Private m_pred(,) As Single
     Private m_prey(,) As Single
+    Private m_consumpt(,) As Single
+    Private m_elect(,) As Single
 
 #End Region
 
@@ -95,6 +97,8 @@ Public Class cEcosimGroupOutput
 
         ReDim m_pred(m_core.nGroups, m_core.nEcosimTimeSteps)
         ReDim m_prey(m_core.nGroups, m_core.nEcosimTimeSteps)
+        ReDim m_consumpt(m_core.nGroups, m_core.nEcosimTimeSteps)
+        ReDim m_elect(m_core.nGroups, m_core.nEcosimTimeSteps)
 
     End Function
 
@@ -371,6 +375,47 @@ Public Class cEcosimGroupOutput
         Set(ByVal value As Single)
             Try
                 m_pred(iPredGroup, iTime) = value
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+            End Try
+        End Set
+    End Property
+
+
+    Public Property Consumption(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
+        Get
+            Try
+                Return m_consumpt(iPredGroup, iTime)
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+            End Try
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_consumpt(iPredGroup, iTime) = value
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+            End Try
+        End Set
+    End Property
+
+    Public Property Electivity(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
+        Get
+            Try
+                Return m_elect(iPredGroup, iTime)
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+            End Try
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                m_elect(iPredGroup, iTime) = value
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)

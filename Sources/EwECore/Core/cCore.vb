@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.43  2008/12/03 17:39:52  joeb
+' Added Consumption(iPP, iTime)  and Electivity to EcosimGroupOutput for Functional Response and Electivity graphs
+'
 ' Revision 1.42  2008/12/02 19:10:54  joeb
 ' Minor changes to setEcosimRunLength()
 '
@@ -4755,6 +4758,8 @@ Public Class cCore
                 For iPP As Integer = 1 To nGroups
                     group.Predation(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, iPP, iTime)
                     group.PreyPercentage(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, iPP, iTime)
+                    group.Consumption(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, iGroup, iPP, iTime)
+                    group.Electivity(iPP, iTime) = m_EcoSimData.Elect(iGroup, iPP, iTime)
                 Next iPP
             Next iTime
 
