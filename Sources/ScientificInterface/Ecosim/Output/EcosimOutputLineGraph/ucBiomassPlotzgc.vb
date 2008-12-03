@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.23  2008/12/03 22:29:22  sherman
+' Fixed TS off by 1 year (Bug #545)
+'
 ' Revision 1.22  2008/12/03 18:20:00  sherman
 ' Listened to Color change event
 '
@@ -332,17 +335,12 @@ Namespace Ecosim
                             Dim da() As Single = gts.ShapeData()
                             list1 = New PointPairList
 
-                            ' This is hard coded for number of years only
                             For j As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
                                 If j < da.Length Then
                                     If da(j) > 0 Then
-                                        list1.Add(j + m_core.EcosimFirstYear, (da(j) / CSng(Math.Exp(gts.DataQ))) / m_core.StartBiomass(gts.GroupIndex))
-
-                                        'If j < 5 Then Console.WriteLine(String.Format("da(j)={0}, gts.DataQ={1}, SB={2}, gIndex={3}", da(j), gts.DataQ, m_Core.StartBiomass(gts.GroupIndex), gts.GroupIndex))
+                                        ' Minus 1 because it should start with the first year
+                                        list1.Add(j + m_core.EcosimFirstYear - 1, (da(j) / CSng(Math.Exp(gts.DataQ))) / m_core.StartBiomass(gts.GroupIndex))
                                     End If
-                                    'Else
-                                    '    'Assign a NULL value
-                                    '    points(j) = Single.NaN
                                 End If
                             Next
 
