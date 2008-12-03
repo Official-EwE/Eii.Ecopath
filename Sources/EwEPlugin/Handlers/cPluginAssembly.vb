@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.3  2008/12/03 02:34:30  jeroens
+' Added levels of compatibility
+' Added 'IsCompatibleToRun'
+'
 ' Revision 1.2  2008/11/28 02:43:25  jeroens
 ' Added plugin compatibility checks to prevent the system from dying
 '
@@ -58,7 +62,7 @@ Public Class cPluginAssembly
     ''' <summary>Assembly enable state.</summary>
     Private m_bEnabled As Boolean = True
     ''' <summary>Assembly compatibility state.</summary>
-    Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.Compatible
+    Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.VersionCompatible
 
 #End Region ' Private parts
 
@@ -153,7 +157,7 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return (Me.m_bEnabled = True) And (Me.Compatibility = ePluginCompatibilityTypes.Compatible)
+            Return Me.m_bEnabled And Me.IsCompatibleToRun()
         End Get
         Set(ByVal bEnabled As Boolean)
             ' Abort when enabled state will not change
@@ -185,9 +189,14 @@ Public Class cPluginAssembly
 #Region " Compatibility "
 
     Public Enum ePluginCompatibilityTypes As Integer
-        Compatible = 0
-        FailedAssemblyVersion
-        FailedInitialization
+        ''' <summary>Versions are fully compatible.</summary>
+        VersionCompatible = 0
+        ''' <summary>Versions may be compatible.</summary>
+        VersionCompatibleCaution
+        ''' <summary>Major revision version incompatibility detected.</summary>
+        VersionIncompatible
+        ''' <summary>Unable to determine level of incompatibility.</summary>
+        IncompatibleUndetermined
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -207,6 +216,18 @@ Public Class cPluginAssembly
             Me.m_compatibility = value
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a plugin assembly is compatible enough to run with EwE.
+    ''' </summary>
+    ''' <returns>True if compatible to run, false otherwise.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsCompatibleToRun() As Boolean
+        ' Minor version revisions should not matter
+        Return (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatible) Or _
+               (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatibleCaution)
+    End Function
 
 #End Region ' Compatibility
 
