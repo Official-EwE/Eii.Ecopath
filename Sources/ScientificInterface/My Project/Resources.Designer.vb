@@ -4507,6 +4507,33 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; uses older EwE components, and may be incompatible with this version of EwE6..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_PLUGIN_CAUTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_PLUGIN_CAUTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; is incompatible with this version of EwE6, and has been disabled..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_PLUGIN_INCOMPATIBLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_PLUGIN_INCOMPATIBLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; cannot be diagnosed for compatibility with EwE6, and has been disabled as a precaution..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_PLUGIN_UNDETERMINED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_PLUGIN_UNDETERMINED", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)
