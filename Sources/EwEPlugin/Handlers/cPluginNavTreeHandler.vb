@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginNavTreeHandler.vb,v $
+' Revision 1.3  2008/12/03 02:33:09  jeroens
+' Added crash test
+'
 ' Revision 1.2  2008/11/02 00:53:42  jeroens
 ' Fixed missing selected item index
 '
@@ -157,9 +160,9 @@ Public Class cPluginNavTreeHandler
                     ' Add the node
                     tnc.Add(tn)
                 Else
-                    ' #Removing: remove the node
+                    ' #Removing: try to remove the node
                     tn = tnc.Item(ip.Name)
-                    tnc.Remove(tn)
+                    If (tn IsNot Nothing) Then tnc.Remove(tn)
                 End If
             End If
         Catch ex As Exception
