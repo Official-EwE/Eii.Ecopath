@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.4  2008/12/03 00:07:58  jeroens
+' Fixed bug 580
+'
 ' Revision 1.3  2008/11/26 21:18:57  sherman
 ' Removed Group Boxes
 '
@@ -43,7 +46,7 @@ Namespace Ecosim
 
 #Region " Variables "
 
-        Private WithEvents m_coreStateMonitor As cCoreStateMonitor = Nothing
+        Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_Core As cCore = Nothing
         Private m_shapeGUIHandler As ForcingShapeGUIHandler = Nothing
         Private m_BiomassResults(,) As Single
@@ -103,14 +106,18 @@ Namespace Ecosim
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             Me.m_ccb = New CustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
-
             Me.MessageSources = New eMessageSource() {eMessageSource.EcoPath, eMessageSource.EcoSim, eMessageSource.ShapesManager}
+
+            ' Track core monitor changes
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.UpdateControls()
 
         End Sub
 
         Private Sub RunEcosim_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
             Me.m_coreStateMonitor = Nothing
             Me.MessageSources = Nothing
         End Sub
@@ -226,7 +233,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState) Handles m_coreStateMonitor.CoreExecutionStateEvent
+        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState)
 
             Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
 
