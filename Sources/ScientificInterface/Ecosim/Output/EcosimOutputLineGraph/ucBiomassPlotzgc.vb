@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.21  2008/12/03 17:54:57  sherman
+' Cleaned up the code
+'
 ' Revision 1.20  2008/12/02 20:45:35  sherman
 ' Fixed autoscale bugs
 '
@@ -88,17 +91,24 @@ Namespace Ecosim
         Private m_core As cCore = cCore.GetInstance()
         Private m_ZGHelper As ZedGraphHelper = Nothing
         Private m_ZGPlotter As ZedGraphPlotter = Nothing
+        Private m_sg As StyleGuide = Nothing
 
-#Region " Constructor "
+#Region " Constructor/Destructor "
 
         Public Sub New()
+            Me.m_sg = StyleGuide.GetInstance()
 
             Me.InitializeComponent()
             Me.SplitContainer1.Panel1Collapsed = True
 
+            AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
-#End Region ' Constructor
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+            RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        End Sub
+#End Region ' Constructor/Destructor
 
 #Region " Public Interfaces "
 
@@ -359,6 +369,27 @@ Namespace Ecosim
         End Property
 #End Region
 
+#Region " Events "
+        Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            ' Santa's little helper :)
+            Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
+
+            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_ZGHelper.YScaleMin = 0.0!
+
+
+            ' ToDo_JS: Localize this!
+            Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
+            Me.m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
+
+        End Sub
+
+        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+            If ((ct And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
+                'Me.Invalidate()
+            End If
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary> When any of the indexes are changed </summary>
         ''' -------------------------------------------------------------------
@@ -375,18 +406,18 @@ Namespace Ecosim
                 End If
             Next
 
-            
             For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
                 m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
             Next
             Me.m_zgc.Invalidate()
         End Sub
+#End Region ' Events
 
+#Region " Private Helpers "
         ''' -------------------------------------------------------------------
         ''' <summary> Draws all the names </summary>
         ''' -------------------------------------------------------------------
         Private Sub PopulateGroupBoxes()
-
             lbOverlay.SuspendLayout()
             lbGroups.SuspendLayout()
 
@@ -416,21 +447,6 @@ Namespace Ecosim
 
             lbOverlay.ResumeLayout()
             lbGroups.ResumeLayout()
-
-        End Sub
-
-        Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            ' Santa's little helper :)
-            Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
-
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
-            Me.m_ZGHelper.YScaleMin = 0.0!
-
-
-            ' ToDo_JS: Localize this!
-            Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
-            Me.m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
-
         End Sub
 
         Private Sub UpdateControls()
@@ -439,7 +455,8 @@ Namespace Ecosim
             Me.m_tstbxSetMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
             Me.m_tstbxSetMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
         End Sub
-
+#End Region ' Private helpers
+        
 #Region " Menu Item Clicks "
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
