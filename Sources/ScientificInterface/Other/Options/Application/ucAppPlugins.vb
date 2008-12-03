@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.3  2008/12/03 02:40:54  jeroens
+' Added levels of plugin compatibility
+'
 ' Revision 1.2  2008/11/28 02:43:26  jeroens
 ' Added plugin compatibility checks to prevent the system from dying
 '
@@ -225,7 +228,7 @@ Namespace Other
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
             If pa.AlwaysEnabled Then Return cIMAGE_CORE
             If pa.Enabled Then Return cIMAGE_ENABLED
-            If (pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible) Then Return cIMAGE_INCOMPATIBLE
+            If Not pa.IsCompatibleToRun() Then Return cIMAGE_INCOMPATIBLE
             Return cIMAGE_DISABLED
         End Function
 

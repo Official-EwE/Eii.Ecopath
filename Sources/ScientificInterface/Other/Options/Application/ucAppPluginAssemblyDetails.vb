@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPluginAssemblyDetails.vb,v $
+' Revision 1.3  2008/12/03 02:40:54  jeroens
+' Added levels of plugin compatibility
+'
 ' Revision 1.2  2008/11/28 02:43:26  jeroens
 ' Added plugin compatibility checks to prevent the system from dying
 '
@@ -48,7 +51,7 @@ Public Class ucAppPluginAssemblyDetails
         Me.m_pa = pa
         Me.m_cbEnabled.Checked = pa.Enabled
         Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False) And _
-                                 (pa.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.Compatible)
+                                 (pa.IsCompatibleToRun() = True)
 
     End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.17  2008/12/03 02:40:52  jeroens
+' Added levels of plugin compatibility
+'
 ' Revision 1.16  2008/12/02 19:15:32  jeroens
 ' Plug-ins loaded after GUI up and running to show notifications
 ' Warnings thrown for incompatible plug-ins
@@ -773,6 +776,7 @@ Public Class AppLauncher
     Private Sub LoadPlugins()
 
         Dim strAppPath As String = Path.GetFullPath(".\")
+        Dim msg As cMessage = Nothing
 
         Me.m_pluginManager.LoadPlugins(strAppPath)
 
@@ -805,11 +809,26 @@ Public Class AppLauncher
             End If
 
             ' Check for incompatible plug-ins
-            If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible Then
-                Dim msg As New cMessage(String.Format("The plug-in '{0}' is incompatible with the current version of EwE6, and has been disabled.", pa.Filename), _
-                                        eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End If
+            Select Case pa.Compatibility
+
+                Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
+                    msg = Nothing
+
+                Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
+                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+
+                Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
+                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+
+                Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
+                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+
+            End Select
+
+            If msg IsNot Nothing Then Me.m_core.Messages.SendMessage(msg)
         Next
     End Sub
 
