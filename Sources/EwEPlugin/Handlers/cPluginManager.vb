@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.8  2008/12/03 02:33:38  jeroens
+' Added levels of compatibility
+'
 ' Revision 1.7  2008/12/01 02:52:08  jeroens
 ' Relaxed assert constraints
 '
@@ -150,11 +153,7 @@ Public Class cPluginManager
             plugAssem = New cPluginAssembly(nameAssembly)
 
             ' Set compatible flag
-            If Me.IsCompatibleWithAssemblies(clsAssembly) Then
-                plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.Compatible
-            Else
-                plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.FailedAssemblyVersion
-            End If
+            plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
 
             ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes
@@ -177,7 +176,7 @@ Public Class cPluginManager
                                     ip.Initialize(Me.m_core)
                                 Catch ex As Exception
                                     ' Disable the plugin entirely
-                                    plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.FailedInitialization
+                                    plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
                                 End Try
                             End If
                             ' Yeah, got info allright
@@ -1432,7 +1431,7 @@ Public Class cPluginManager
     Public Function GetIncompatiblePlugins() As ICollection(Of cPluginAssembly)
         Dim collPlugins As New List(Of cPluginAssembly)
         For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
-            If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.Compatible Then
+            If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible Then
                 collPlugins.Add(pa)
             End If
         Next
@@ -1537,7 +1536,7 @@ Public Class cPluginManager
     ''' <param name="assemPlugin">The assembly to test</param>
     ''' <returns>True if compatible.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function IsCompatibleWithAssemblies(ByVal assemPlugin As Assembly) As Boolean
+    Private Function GetCompatibility(ByVal assemPlugin As Assembly) As cPluginAssembly.ePluginCompatibilityTypes
 
         ' List of assemblies that the specified assembly is EXPECTING. 
         ' This list includes assembly version numbers.
@@ -1547,7 +1546,7 @@ Public Class cPluginManager
         ' A loaded assembly name
         Dim anameLoaded As AssemblyName = Nothing
         ' Assume all is well
-        Dim bCompatible As Boolean = True
+        Dim compatibility As cPluginAssembly.ePluginCompatibilityTypes = cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
 
         ' For every expected assembly search its loaded counterpart
         For Each anExpected As AssemblyName In aanameExpected
@@ -1558,15 +1557,23 @@ Public Class cPluginManager
                 ' Found a match?
                 If String.Compare(anExpected.Name, anameLoaded.Name, True) = 0 Then
                     ' #Yep: test if versions match
-                    bCompatible = bCompatible And anExpected.Version.Equals(anameLoaded.Version)
-                    ' Next
-                    Exit For
+                    If anExpected.Version.Revision <> anameLoaded.Version.Revision Then
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
+                    End If
+                    If anExpected.Version.Build <> anameLoaded.Version.Build Then
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
+                    End If
+                    If anExpected.Version.Minor <> anameLoaded.Version.Minor Then
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible), cPluginAssembly.ePluginCompatibilityTypes)
+                    End If
+                    If anExpected.Version.Major <> anameLoaded.Version.Major Then
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible), cPluginAssembly.ePluginCompatibilityTypes)
+                    End If
                 End If
-
             Next
         Next
 
-        Return bCompatible
+        Return compatibility
 
     End Function
 
