@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.22  2008/12/03 18:20:00  sherman
+' Listened to Color change event
+'
 ' Revision 1.21  2008/12/03 17:54:57  sherman
 ' Cleaned up the code
 '
@@ -386,7 +389,7 @@ Namespace Ecosim
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
             If ((ct And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
-                'Me.Invalidate()
+                Me.InvalidateGraph()
             End If
         End Sub
 
@@ -394,6 +397,12 @@ Namespace Ecosim
         ''' <summary> When any of the indexes are changed </summary>
         ''' -------------------------------------------------------------------
         Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbOverlay.SelectedIndexChanged, lbGroups.SelectedIndexChanged
+            Me.InvalidateGraph()
+        End Sub
+#End Region ' Events
+
+#Region " Private Helpers "
+        Private Sub InvalidateGraph()
             ' The plotter will set the highlight for this item.
             'm_ZGPlotter.SetHighlight(lbGroups.SelectedIndex, lbOverlay.SelectedIndex - 1)
             'Check the SelectedIndices collection
@@ -411,9 +420,6 @@ Namespace Ecosim
             Next
             Me.m_zgc.Invalidate()
         End Sub
-#End Region ' Events
-
-#Region " Private Helpers "
         ''' -------------------------------------------------------------------
         ''' <summary> Draws all the names </summary>
         ''' -------------------------------------------------------------------
