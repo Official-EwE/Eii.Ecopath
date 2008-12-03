@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.31  2008/12/03 17:40:20  joeb
+' *** empty log message ***
+'
 ' Revision 1.30  2008/12/02 19:06:25  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -1584,6 +1587,8 @@ Public Property PluginManager() As cPluginManager
 
                 m_Results.CurrentT = iTime
 
+                calcFunctionalResponse(iTime)
+
                 For igrp = 1 To m_Results.nGroups
                     'output biomass is relative to its initial state  
                     'StartBiomass() is the input to EcoSim which is the output from EcoPath
@@ -1610,6 +1615,7 @@ Public Property PluginManager() As cPluginManager
                         m_Data.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Pred, igrp, ipred) += m_Data.Consumpt(igrp, ipred) 'm_Data.Eatenby(i) '
                         m_Data.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Prey, igrp, ipred) += m_Data.Consumpt(ipred, igrp) 'm_Data.Eatenof(i) '
 
+                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred)
                         m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred) / BB(igrp)
                         m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, igrp, ipred, iTime) = m_Data.Consumpt(ipred, igrp) / (BB(igrp) * (m_Data.Eatenby(igrp) / BB(igrp)))
                     Next ipred
@@ -4371,6 +4377,70 @@ Public Property PluginManager() As cPluginManager
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
+        End Sub
+
+
+        Public Sub calcFunctionalResponse(ByVal time As Integer)
+            Dim i As Integer
+            Dim j As Integer
+            Dim Diet(,) As Single
+            Dim SumDiet As Single
+            Dim SumR() As Single
+            Dim Alpha(,) As Single
+            'On Local Error Resume Next
+            Dim SumBio() As Single
+
+            Try
+
+                ReDim Diet(m_EPData.NumGroups, m_EPData.NumGroups)
+
+                For i = 1 To m_EPData.NumLiving  'consumer
+                    If m_Data.Eatenby(i) > 0 Then
+                        SumDiet = 0
+                        For j = 1 To m_EPData.NumGroups  'food
+                            Diet(i, j) = m_Data.Consumpt(j, i) / m_Data.Eatenby(i)
+                            SumDiet = SumDiet + Diet(i, j)
+                        Next
+                        If SumDiet > 0 Then
+                            For j = 1 To m_EPData.NumGroups  'food
+                                Diet(i, j) = Diet(i, j) / SumDiet
+                            Next
+                        End If
+                    End If
+                Next
+
+                ReDim SumBio(m_EPData.NumLiving)
+                ReDim SumR(m_EPData.NumLiving)
+                ReDim Alpha(m_EPData.NumLiving, m_EPData.NumGroups)
+                For i = 1 To m_EPData.NumLiving
+                    If m_EPData.QB(i) > 0 Then    'Estimate Chesson from Sim
+                        SumBio(i) = 0
+                        For j = 1 To m_EPData.NumGroups
+                            SumBio(i) = SumBio(i) + m_EPData.B(j)
+                        Next
+                        SumR(i) = 0
+                        For j = 1 To m_EPData.NumGroups              'FOLLOWING CHESSON (1983)
+                            If m_EPData.B(j) > 0 Then Alpha(i, j) = Diet(i, j) / (BB(j) / SumBio(i))
+                            SumR(i) = SumR(i) + Alpha(i, j)
+                        Next
+
+                        If SumR(i) > 0 Then
+                            For j = 1 To m_EPData.NumGroups
+                                Alpha(i, j) = Alpha(i, j) / SumR(i)
+                            Next                'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
+                        End If
+
+                        For j = 1 To m_EPData.NumGroups
+                            m_Data.Elect(i, j, time) = Alpha(i, j) '(NumGroups * Alpha(j) - 1) / ((NumGroups - 2) * Alpha(j) + 1)
+                        Next
+                    End If
+                Next
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".calcFunctionalResponse() Error: " & ex.Message)
+            End Try
+
         End Sub
 
     End Class

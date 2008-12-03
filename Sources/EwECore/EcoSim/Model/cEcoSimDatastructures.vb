@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.12  2008/12/03 17:40:18  joeb
+' *** empty log message ***
+'
 ' Revision 1.11  2008/12/02 19:06:24  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -75,6 +78,7 @@ Public Class cEcosimDatastructures
     Public Enum eEcosimPredPreyResults
         Pred
         Prey
+        Consumption
     End Enum
 
 
@@ -319,6 +323,8 @@ Public Class cEcosimDatastructures
     'Added or Changed Varaibles
     'jb April-06-2006 added to keep track of the type of a forcing shape (time or Egg)this does not include mediation shapes as they are stored seperately
     Public ForcingShapeType() As eDataTypes
+
+    Public Elect(,,) As Single
 
 #Region "Regulated Fisheries arrays"
 
@@ -1110,7 +1116,7 @@ Public Class cEcosimDatastructures
         'N_TIME_RESULTS referes to the last element not the number of elements
         'so ReDim ResultsOverTime(N_TIME_RESULTS,) will give N_TIME_RESULTS +1 elements in the array
         ReDim ResultsOverTime(N_TIME_RESULTS - 1, nGroups, nt)
-        ReDim PredPreyResultsOverTime(1, nGroups, nGroups, nt)
+        ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
         ReDim ResultsSumByGroup(1, nGroups, nGroups)
 
         'fisheries data
@@ -1119,6 +1125,8 @@ Public Class cEcosimDatastructures
         ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumValueByGear(nGear, nt)
         ReDim ResultsEffort(nGear, nt)
+
+        ReDim Elect(nGroups, nGroups, nt)
 
     End Sub
 
@@ -1139,6 +1147,8 @@ Public Class cEcosimDatastructures
         Erase ResultsSumValueByGroupGear
         Erase ResultsSumValueByGear
         Erase ResultsEffort
+        Erase Elect
+
     End Sub
 
 
