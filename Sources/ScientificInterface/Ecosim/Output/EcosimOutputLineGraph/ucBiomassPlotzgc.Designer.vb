@@ -24,7 +24,6 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.lbOverlay = New System.Windows.Forms.ListBox
-            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
@@ -49,6 +48,7 @@ Namespace Ecosim
             Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ShowLegendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -77,6 +77,7 @@ Namespace Ecosim
             '
             'lbOverlay
             '
+            Me.lbOverlay.Cursor = System.Windows.Forms.Cursors.Hand
             Me.lbOverlay.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lbOverlay.FormattingEnabled = True
             Me.lbOverlay.IntegralHeight = False
@@ -84,18 +85,6 @@ Namespace Ecosim
             Me.lbOverlay.Name = "lbOverlay"
             Me.lbOverlay.Size = New System.Drawing.Size(119, 164)
             Me.lbOverlay.TabIndex = 0
-            '
-            'lbGroups
-            '
-            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.lbGroups.FormattingEnabled = True
-            Me.lbGroups.IntegralHeight = False
-            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
-            Me.lbGroups.Name = "lbGroups"
-            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-            Me.lbGroups.Size = New System.Drawing.Size(119, 261)
-            Me.lbGroups.TabIndex = 1
             '
             'm_zgc
             '
@@ -180,7 +169,7 @@ Namespace Ecosim
             '
             Me.CumulativeToolStripMenuItem.CheckOnClick = True
             Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
             Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
             '
             'RelativeToolStripMenuItem
@@ -189,7 +178,7 @@ Namespace Ecosim
             Me.RelativeToolStripMenuItem.CheckOnClick = True
             Me.RelativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
             Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
             Me.RelativeToolStripMenuItem.Text = "&Relative"
             '
             'ToolStripSeparator2
@@ -277,6 +266,19 @@ Namespace Ecosim
             '
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            '
+            'lbGroups
+            '
+            Me.lbGroups.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.lbGroups.FormattingEnabled = True
+            Me.lbGroups.IntegralHeight = False
+            Me.lbGroups.Location = New System.Drawing.Point(0, 0)
+            Me.lbGroups.Name = "lbGroups"
+            Me.lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+            Me.lbGroups.Size = New System.Drawing.Size(119, 261)
+            Me.lbGroups.TabIndex = 1
             '
             'ucBiomassPlotzgc
             '
