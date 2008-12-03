@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.4  2008/12/03 18:43:48  joeh
+' Incorportate Functional Response into Network Analysis - Take two
+'
 ' Revision 1.3  2008/12/02 03:05:37  joeh
 ' Initial version
 '
@@ -162,10 +165,13 @@ Public Class cPlotOfMixedTrophicImpact
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+        Dim FunctRespUC As ucFunctionalResponse = _
+            CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
+        FunctRespUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()
