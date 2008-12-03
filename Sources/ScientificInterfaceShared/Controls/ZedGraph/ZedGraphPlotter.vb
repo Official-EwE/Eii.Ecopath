@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.13  2008/12/03 18:10:44  sherman
+' Fixed timeseries coloring
+'
 ' Revision 1.12  2008/11/26 16:01:24  jeroens
 ' Removed Ecosim-tied method SetCorrectAxis
 '
@@ -355,7 +358,7 @@ Namespace Controls
             Next iOver
 
             ' Set the TS plots
-            For iIndex As Integer = 0 To m_core.nGroups - 1
+            For iIndex As Integer = 1 To m_core.nGroups
                 If m_dicTimeSeriesGroup.ContainsKey(iIndex) Then
                     If bUseOriginalColor Then
                         SetLine(m_dicTimeSeriesGroup(iIndex), True, False)
@@ -387,58 +390,64 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub SetLine(ByVal crv As CurveItem, Optional ByVal bColorLine As Boolean = True, Optional ByVal bHighlightLine As Boolean = False, _
           Optional ByVal bWhiteFillColor As Boolean = False)
+
+            ' Safety first
+            If Not TypeOf (crv) Is LineItem Then Return
+            If Not TypeOf (crv.Tag) Is CurveType Then Return
+
             Dim p_line As LineItem = DirectCast(crv, LineItem)
+            Dim p_CurveTag As CurveType = DirectCast(crv.Tag, CurveType)
 
-            If TypeOf crv.Tag Is CurveType Then
-                'If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Then DirectCast(crv, LineItem).Line.Fill = New Fill(Color.Transparent)
+            ' Remove the curve
+            Me.m_graphPane.CurveList.Remove(crv)
 
-                ' Remove the curve
-                Me.m_graphPane.CurveList.Remove(crv)
-
-                ' Change the color
-                If bColorLine Then
-                    'Relative plot
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeCatch Then
-                        crv.Color = Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index)
-                    End If
-
-                    'Cumulative plot
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
-                        crv.Color = Drawing.Color.LightSlateGray 'Black
-                        If bWhiteFillColor = True Then
-                            DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.White)
-                        Else
-                            DirectCast(crv, LineItem).Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
-                        End If
-                    End If
-                    Me.m_graphPane.CurveList.Insert(0, p_line)
-                Else
-                    crv.Color = Drawing.Color.LightSlateGray
-                    'Cumulative plot
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
-                        DirectCast(crv, LineItem).Line.Fill = New Fill(Drawing.Color.Transparent)
-                    End If
-                    Me.m_graphPane.CurveList.Add(crv)
+            ' Change the color
+            If bColorLine Then
+                'TimeSeries
+                If p_CurveTag.LineType = eLineType.TimeSeries Then
+                    crv.Color = Me.m_styGuide.GroupColor(m_core, p_CurveTag.Index)
                 End If
 
-                ' Set the highlights
-                If bHighlightLine Then
-                    DirectCast(crv, LineItem).Line.Width = 3
-                Else
-                    DirectCast(crv, LineItem).Line.Width = 1
+                'Relative plot
+                If p_CurveTag.LineType = eLineType.RelativeBiomass Or _
+                   p_CurveTag.LineType = eLineType.RelativeCatch Then
+                    crv.Color = Me.m_styGuide.GroupColor(m_core, p_CurveTag.Index)
                 End If
 
-                ' Hide the time series lines
-                If DirectCast(crv.Tag, CurveType).LineType = eLineType.TimeSeries Then
-                    DirectCast(crv, LineItem).Line.Color = Color.Transparent
+                'Cumulative plot
+                If p_CurveTag.LineType = eLineType.CumulativeBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeSelectedBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeCatch Then
+                    crv.Color = Drawing.Color.LightSlateGray 'Black
+                    If bWhiteFillColor = True Then
+                        p_line.Line.Fill = New Fill(Drawing.Color.White)
+                    Else
+                        p_line.Line.Fill = New Fill(Me.m_styGuide.GroupColor(m_core, DirectCast(crv.Tag, CurveType).Index))
+                    End If
                 End If
+                Me.m_graphPane.CurveList.Insert(0, p_line)
+            Else
+                crv.Color = Drawing.Color.LightSlateGray
+                'Cumulative plot
+                If p_CurveTag.LineType = eLineType.CumulativeBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeSelectedBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeCatch Then
+                    p_line.Line.Fill = New Fill(Drawing.Color.Transparent)
+                End If
+                Me.m_graphPane.CurveList.Add(crv)
             End If
 
+            ' Set the highlights
+            If bHighlightLine Then
+                p_line.Line.Width = 3
+            Else
+                p_line.Line.Width = 1
+            End If
+
+            ' Hide the time series lines
+            If p_CurveTag.LineType = eLineType.TimeSeries Then
+                p_line.Line.Color = Color.Transparent
+            End If
         End Sub
 
 #End Region ' Private Helpers
