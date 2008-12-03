@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.5  2008/12/03 20:49:19  joeh
+' Incorportate Functional Response into Network Analysis - Take three
+'
 ' Revision 1.4  2008/12/03 18:43:48  joeh
 ' Incorportate Functional Response into Network Analysis - Take two
 '
@@ -171,7 +174,7 @@ Public Class cPlotOfMixedTrophicImpact
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        FunctRespUC.Visible = False
+        If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()

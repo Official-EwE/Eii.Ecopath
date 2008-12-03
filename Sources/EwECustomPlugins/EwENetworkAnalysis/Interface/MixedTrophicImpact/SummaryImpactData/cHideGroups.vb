@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.2  2008/12/03 20:49:19  joeh
+' Incorportate Functional Response into Network Analysis - Take three
+'
 ' Revision 1.1  2008/09/26 07:30:53  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -64,10 +67,13 @@ Public Class cHideGroups
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+        Dim FunctRespUC As ucFunctionalResponse = _
+            CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
+        If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()
