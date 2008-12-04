@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.15  2008/12/04 06:03:59  sherman
+' Fixed Show/Hide refresh bug
+' Fixed disposed bug
+'
 ' Revision 1.14  2008/12/04 03:34:45  sherman
 ' Added show/hide group.
 '
@@ -140,7 +144,7 @@ Namespace Controls
         ''' <summary>(2) Add a single dataset</summary>
         ''' -------------------------------------------------------------------
         Public Sub AddSingleData(ByVal name As String, ByVal index As Integer, ByVal lineType As eLineType, ByVal list As PointPairList)
-            Dim crv As LineItem
+            Dim crv As LineItem = Nothing
             Dim crvType As CurveType = New CurveType(name, index, m_Overlays.Count - 1, lineType)
 
             Select Case crvType.LineType
@@ -166,6 +170,16 @@ Namespace Controls
                         crv.Tag = crvType
                     End If
             End Select
+
+
+            ' After all that, just make sure it's shown
+            If (lineType = eLineType.RelativeBiomass Or _
+                   lineType = eLineType.CumulativeSelectedBiomass Or _
+                   lineType = eLineType.CumulativeBiomass Or _
+                   lineType = eLineType.TimeSeries) And _
+                   Not crv Is Nothing Then
+                crv.IsVisible = Me.m_styGuide.GroupVisible(index)
+            End If
 
         End Sub
 
@@ -431,7 +445,13 @@ Namespace Controls
             End If
 
             ' After all that, just make sure it's shown
-            p_line.IsVisible = Me.m_styGuide.GroupVisible(p_CurveTag.Index)
+            If p_CurveTag.LineType = eLineType.RelativeBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeSelectedBiomass Or _
+                   p_CurveTag.LineType = eLineType.CumulativeBiomass Or _
+                   p_CurveTag.LineType = eLineType.TimeSeries Then
+                p_line.IsVisible = Me.m_styGuide.GroupVisible(p_CurveTag.Index)
+            End If
+
         End Sub
 
 #End Region ' Private Helpers

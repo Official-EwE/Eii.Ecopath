@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.25  2008/12/04 06:03:59  sherman
+' Fixed Show/Hide refresh bug
+' Fixed disposed bug
+'
 ' Revision 1.24  2008/12/04 03:34:44  sherman
 ' Added show/hide group.
 '
@@ -133,12 +137,12 @@ Namespace Ecosim
                 cmd.RemoveControl(Me.tsbtnShowHideGroups)
             End If
 
+        End Sub
+
+        ''' <summary>Disposes of the form is called before Finalize</summary>
+        Private Sub ucBiomassPlotzgc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             ' Style guide
             RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-            ' Anal
-            Me.m_sg = Nothing
-            Me.m_core = Nothing
         End Sub
 #End Region ' Constructor/Destructor
 
@@ -329,8 +333,8 @@ Namespace Ecosim
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
             Me.m_zgc.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
 
-            ' Draw the boxes, but should this be here or external?
-            DrawTimeSeries()
+            ' Draw timeseries 
+            If BiomassToolStripMenuItem.Checked And RelativeToolStripMenuItem.Checked Then DrawTimeSeries()
 
             ' Make sure the group boxes say the correct items.
             PopulateGroupBoxes()
@@ -353,6 +357,7 @@ Namespace Ecosim
 
             Dim ts As cTimeSeries = Nothing
 
+            ' Don't draw if it's biomass relative
             For i As Integer = 1 To m_core.nTimeSeries
                 ts = m_core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
@@ -498,7 +503,8 @@ Namespace Ecosim
             Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
         End Sub
-#End Region ' Menu Items Clicks
+#End Region
+        ' Menu Items Clicks
 
         Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             ' Santa's little helper :)
@@ -519,6 +525,7 @@ Namespace Ecosim
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
             Me.InvalidateGraph()
+            Me.EcosimCompleteDelegate()
         End Sub
 
         ''' -------------------------------------------------------------------
