@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.8  2008/12/04 01:14:16  joeh
+' Add ucPlotOfMixedTrophicImpact
+'
 ' Revision 1.7  2008/12/02 23:31:55  joeh
 ' Remove Zed graph control from the parameters of CreatePlot( )
 '
@@ -318,7 +321,7 @@ Public Class frmNetworkAnalysis
                 End If
                 m_PlotOfMixedTrophicImpact = cPlotOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_PlotOfMixedTrophicImpact.SetUpPanel()
-                m_PlotOfMixedTrophicImpact.CreatePlot(Me)
+                m_PlotOfMixedTrophicImpact.CreatePlot()
                 'Case My.Resources.TREE_NODE_GRAPH_MTI
                 '    If Not m_NetworkManager.IsMainNetworkRun Then
                 '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
@@ -722,14 +725,6 @@ Public Class frmNetworkAnalysis
             'highlight the whole grid
             dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
             dgvNetworkAnalysis.SelectAll()
-        End If
-    End Sub
-
-    Private Sub scNetworkAnalysis_SplitterMoved(ByVal sender As Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scNetworkAnalysis.SplitterMoved
-        If Not tvNetworkAnalysis.SelectedNode Is Nothing Then
-            If tvNetworkAnalysis.SelectedNode.Text = My.Resources.TREE_NODE_GRAPH_MTI Then
-                m_PlotOfMixedTrophicImpact.CreatePlot(Me)
-            End If
         End If
     End Sub
 

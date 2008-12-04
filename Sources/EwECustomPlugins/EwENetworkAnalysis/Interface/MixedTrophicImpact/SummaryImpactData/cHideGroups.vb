@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.3  2008/12/04 01:14:48  joeh
+' Add ucPlotOfMixedTrophicImpact
+'
 ' Revision 1.2  2008/12/03 20:49:19  joeh
 ' Incorportate Functional Response into Network Analysis - Take three
 '
@@ -69,11 +72,14 @@ Public Class cHideGroups
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
         Dim FunctRespUC As ucFunctionalResponse = _
             CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
+            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
         If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
+        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()

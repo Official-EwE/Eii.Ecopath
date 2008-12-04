@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cImpactData.vb,v $
+' Revision 1.3  2008/12/04 01:14:15  joeh
+' Add ucPlotOfMixedTrophicImpact
+'
 ' Revision 1.2  2008/11/25 20:55:41  joeh
 ' Copy and paste in cells of data grid view
 '
@@ -143,15 +146,15 @@ Public Class cImpactData
     End Sub
 
     Private Sub RemoveToolStrip()
-        Dim ToolStrip As Windows.Forms.ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
+        'Dim ToolStrip As Windows.Forms.ToolStrip = _
+        '    CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
         Dim DataGrid As Windows.Forms.DataGridView = _
             CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
 
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = Windows.Forms.DockStyle.Fill
-        End If
+        'If Not ToolStrip Is Nothing Then
+        m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
+        DataGrid.Dock = Windows.Forms.DockStyle.Fill
+        'End If
     End Sub
 
 End Class

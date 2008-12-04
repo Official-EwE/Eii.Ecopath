@@ -150,6 +150,12 @@
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMixedTrophicImpact.Designer.vb">
+      <DependentUpon>ucPlotOfMixedTrophicImpact.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMixedTrophicImpact.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\modUtility.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForConsumpOfAllGp.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForHarvestOfAllGp.vb" />

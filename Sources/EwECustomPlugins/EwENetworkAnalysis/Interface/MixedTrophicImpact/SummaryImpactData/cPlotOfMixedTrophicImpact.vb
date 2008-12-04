@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.6  2008/12/04 01:14:16  joeh
+' Add ucPlotOfMixedTrophicImpact
+'
 ' Revision 1.5  2008/12/03 20:49:19  joeh
 ' Incorportate Functional Response into Network Analysis - Take three
 '
@@ -76,15 +79,24 @@ Public Class cPlotOfMixedTrophicImpact
         SetUpGrid()
     End Sub
 
-    Public Sub CreatePlot(ByVal Frm As Form)
-        AddHandler Frm.Paint, AddressOf PaintForm
-        AddHandler Frm.Resize, AddressOf ResizeForm
-
-        'MsgBox("Paintform")
+    Public Sub CreatePlot() '(ByVal Frm As Form)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
         Dim g As Drawing.Graphics
 
-        g = m_Panel.CreateGraphics
-        PlotToScreen(g)
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        If MixedTrophicImpactUC Is Nothing Then
+            MixedTrophicImpactUC = New ucPlotOfMixedTrophicImpact
+            MixedTrophicImpactUC.Name = "ucPlotOfMixedTrophicImpact"
+            MixedTrophicImpactUC.Dock = DockStyle.Fill
+            m_Panel.Controls.Add(MixedTrophicImpactUC) 'MixedTrophicImpactVisible is defaulted to True
+            'g = MixedTrophicImpactUC.CreateGraphics 'm_Panel.CreateGraphics
+            'PlotToScreen(MixedTrophicImpactUC, g)
+        Else
+            MixedTrophicImpactUC.Visible = True
+        End If
+
+        AddHandler MixedTrophicImpactUC.Paint, AddressOf PaintUC
+        AddHandler MixedTrophicImpactUC.Resize, AddressOf ResizeUC
     End Sub
 
     Public Sub SaveToEMF()
@@ -94,13 +106,15 @@ Public Class cPlotOfMixedTrophicImpact
         Dim bmp As Bitmap = Nothing
         Dim hdc As IntPtr = Nothing ' :)
         Dim mMetafile As Metafile = Nothing
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
 
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
         cmdFS.Invoke("emf files (*.emf)|*.emf|All files (*.*)|*.*", 1)
         If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-            m_Panel.Refresh()
+            MixedTrophicImpactUC.Refresh() 'm_Panel.Refresh()
             fs = New FileStream(cmdFS.FileName, FileMode.Create)
             'bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
-            bmp = New Bitmap(m_Panel.Width, m_Panel.Height, PixelFormat.Format32bppArgb)
+            bmp = New Bitmap(MixedTrophicImpactUC.Width, MixedTrophicImpactUC.Height, PixelFormat.Format32bppArgb)
             Using g As Graphics = Graphics.FromImage(bmp)
                 hdc = g.GetHdc()
                 mMetafile = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -182,39 +196,43 @@ Public Class cPlotOfMixedTrophicImpact
             CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
         Dim DataGrid As Windows.Forms.DataGridView = _
             CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-                    CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
+        'Dim GraphPane As ZedGraphControl = _
+        '    CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
 
         If Not ToolStrip Is Nothing Then
             m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
             DataGrid.Dock = Windows.Forms.DockStyle.Fill
-            GraphPane.Dock = DockStyle.Fill
+            'GraphPane.Dock = DockStyle.Fill
         End If
     End Sub
 
-    Private Sub PaintForm(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
-        'MsgBox("Paintform")
+    Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
         Dim g As Drawing.Graphics
 
-        g = m_Panel.CreateGraphics
-        PlotToScreen(g)
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        'g = MixedTrophicImpactUC.CreateGraphics
+        g = e.Graphics
+        PlotToScreen(MixedTrophicImpactUC, g)
     End Sub
 
-    Private Sub ResizeForm(ByVal sender As Object, ByVal e As System.EventArgs)
-        'MsgBox("Resizeform")
-        m_Panel.Invalidate()
+    Private Sub ResizeUC(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        MixedTrophicImpactUC.Invalidate() 'm_Panel.Invalidate()
     End Sub
 
-    Private Sub PlotToScreen(ByVal g As Graphics)
-        'Dim g As Drawing.Graphics
+    Private Sub PlotToScreen(ByVal uc As ucPlotOfMixedTrophicImpact, ByVal g As Graphics)
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
 
-        'g = m_Panel.CreateGraphics
-        r.X = m_Panel.ClientRectangle.X
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        r.X = MixedTrophicImpactUC.ClientRectangle.X
         r.Y = 0
-        r.Width = m_Panel.ClientRectangle.Width
-        r.Height = m_Panel.ClientRectangle.Height - r.Y
+        r.Width = MixedTrophicImpactUC.ClientRectangle.Width
+        r.Height = MixedTrophicImpactUC.ClientRectangle.Height - r.Y
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         ag.Draw(g, r, m_asData, m_astrLabelsX, m_astrLabelsY)
     End Sub
@@ -223,11 +241,13 @@ Public Class cPlotOfMixedTrophicImpact
         'g.DrawEllipse(Pens.Green, New Rectangle(10, 10, 380, 380))
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
 
-        r.X = m_Panel.ClientRectangle.X
+        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        r.X = MixedTrophicImpactUC.ClientRectangle.X
         r.Y = 0
-        r.Width = m_Panel.ClientRectangle.Width ' * 3
-        r.Height = (m_Panel.ClientRectangle.Height - r.Y) ' * 3
+        r.Width = MixedTrophicImpactUC.ClientRectangle.Width ' * 3
+        r.Height = (MixedTrophicImpactUC.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         ag.Draw(g, r, m_asData, m_astrLabelsX, m_astrLabelsY)
     End Sub
