@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.7  2008/12/04 21:41:53  joeh
+' Change the location and size of ucPlotOfMixedTrophicImpact so that the upper end of the vertical labels will not be hidden
+'
 ' Revision 1.6  2008/12/04 01:14:16  joeh
 ' Add ucPlotOfMixedTrophicImpact
 '
@@ -80,14 +83,16 @@ Public Class cPlotOfMixedTrophicImpact
     End Sub
 
     Public Sub CreatePlot() '(ByVal Frm As Form)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
-        Dim g As Drawing.Graphics
+        Dim ToolStrip As Windows.Forms.ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
+            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
         If MixedTrophicImpactUC Is Nothing Then
             MixedTrophicImpactUC = New ucPlotOfMixedTrophicImpact
             MixedTrophicImpactUC.Name = "ucPlotOfMixedTrophicImpact"
-            MixedTrophicImpactUC.Dock = DockStyle.Fill
+            MixedTrophicImpactUC.Location = New Point(0, ToolStrip.Height)
+            MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Height - ToolStrip.Height)
             m_Panel.Controls.Add(MixedTrophicImpactUC) 'MixedTrophicImpactVisible is defaulted to True
             'g = MixedTrophicImpactUC.CreateGraphics 'm_Panel.CreateGraphics
             'PlotToScreen(MixedTrophicImpactUC, g)
