@@ -208,7 +208,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnCheckAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnCheckAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>270, 12</value>
@@ -238,7 +238,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnUnCheckAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnUnCheckAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>270, 41</value>

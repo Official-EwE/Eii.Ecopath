@@ -154,7 +154,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btnUseDefault.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnUseDefault.Location" type="System.Drawing.Point, System.Drawing">
     <value>234, 281</value>
@@ -271,7 +271,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnCustomForeColor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnCustomForeColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>358, 41</value>
@@ -328,7 +328,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnCustomBackColor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnCustomBackColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>358, 85</value>

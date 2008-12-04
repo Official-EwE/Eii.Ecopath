@@ -125,7 +125,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnClear.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnClear.Location" type="System.Drawing.Point, System.Drawing">
@@ -343,7 +343,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnSaveLocation.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnSaveLocation.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 60</value>
@@ -376,7 +376,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnRemoveAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnRemoveAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>258, 15</value>

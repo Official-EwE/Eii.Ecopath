@@ -148,7 +148,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnAddRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnAddRegion.Location" type="System.Drawing.Point, System.Drawing">
     <value>226, 12</value>
@@ -178,7 +178,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnRemoveRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnRemoveRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -304,7 +304,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnPreserve.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnPreserve.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -367,7 +367,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnHabToRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnHabToRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -400,7 +400,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnFromCells.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="btnFromCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

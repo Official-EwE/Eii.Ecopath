@@ -259,7 +259,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnSearch.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnSearch.Location" type="System.Drawing.Point, System.Drawing">
     <value>89, 91</value>
@@ -646,7 +646,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnUpdate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnUpdate.Location" type="System.Drawing.Point, System.Drawing">
     <value>194, 91</value>

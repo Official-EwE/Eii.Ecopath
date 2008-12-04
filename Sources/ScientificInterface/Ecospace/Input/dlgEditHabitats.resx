@@ -148,7 +148,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnAddHabitat.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnAddHabitat.Location" type="System.Drawing.Point, System.Drawing">
     <value>220, 12</value>
@@ -178,7 +178,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnRemoveHabitat.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnRemoveHabitat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -304,7 +304,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnPreserve.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnPreserve.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

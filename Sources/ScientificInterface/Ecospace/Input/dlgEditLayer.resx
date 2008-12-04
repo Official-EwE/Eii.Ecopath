@@ -409,7 +409,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDataImport.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnDataImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -442,7 +442,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDataExport.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+    <value>Popup</value>
   </data>
   <data name="m_btnDataExport.Location" type="System.Drawing.Point, System.Drawing">
     <value>721, 56</value>
