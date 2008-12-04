@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.24  2008/12/04 03:34:44  sherman
+' Added show/hide group.
+'
 ' Revision 1.23  2008/12/03 22:29:22  sherman
 ' Fixed TS off by 1 year (Bug #545)
 '
@@ -102,17 +105,40 @@ Namespace Ecosim
 #Region " Constructor/Destructor "
 
         Public Sub New()
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
+
             Me.m_sg = StyleGuide.GetInstance()
 
             Me.InitializeComponent()
             Me.SplitContainer1.Panel1Collapsed = True
 
+            ' Show/Hide Groups
+            cmd = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.tsbtnShowHideGroups)
+            End If
+
+            ' Style guide
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
         Protected Overrides Sub Finalize()
             MyBase.Finalize()
+
+            ' Show/Hide Groups
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.RemoveControl(Me.tsbtnShowHideGroups)
+            End If
+
+            ' Style guide
             RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            ' Anal
+            Me.m_sg = Nothing
+            Me.m_core = Nothing
         End Sub
 #End Region ' Constructor/Destructor
 
@@ -125,7 +151,8 @@ Namespace Ecosim
             Dim list1 As New PointPairList()
             Dim listSum As New PointPairList
 
-            ' ToDo: Localize this!
+            ' Double check
+            If Me.m_ZGHelper Is Nothing Or Me.m_ZGPlotter Is Nothing Then Return
 
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
@@ -311,6 +338,7 @@ Namespace Ecosim
             ' Calculate the Axis Scale Ranges
             Me.m_ZGHelper.RescaleAndRedraw()
             Me.UpdateControls()
+            Me.InvalidateGraph()
 
         End Sub
 
@@ -371,6 +399,107 @@ Namespace Ecosim
 #End Region
 
 #Region " Events "
+
+#Region " Menu Item Clicks "
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OverlayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverlayToolStripMenuItem.Click
+            OverlayToolStripMenuItem.Checked = Not OverlayToolStripMenuItem.Checked
+            m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Checked
+            PopulateGroupBoxes()
+            m_ZGHelper.RescaleAndRedraw()
+            SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
+            AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
+            m_ZGPlotter.PrepareDataset(True)
+            PopulateGroupBoxes()
+            m_ZGHelper.RescaleAndRedraw()
+        End Sub
+
+        Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowLegendToolStripMenuItem.Click
+            ShowLegendToolStripMenuItem.Checked = Not ShowLegendToolStripMenuItem.Checked
+            m_ZGPlotter.ShowLegend = ShowLegendToolStripMenuItem.Checked
+            m_ZGHelper.RescaleAndRedraw()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
+            RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
+            Me.EcosimCompleteDelegate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
+            CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+            Me.EcosimCompleteDelegate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BiomassToolStripMenuItem.Click
+            CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
+            'Set default plot type to relative
+            RelativeToolStripMenuItem.Checked = True
+            Me.EcosimCompleteDelegate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
+            BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
+            'Set default plot type to relative
+            RelativeToolStripMenuItem.Checked = True
+            Me.EcosimCompleteDelegate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary> Upon toggleing of menu item </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsAutoScaleToolStripMenuItem.Click
+            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click, m_tstbxSetMax.Click
+            m_tlsAutoScaleToolStripMenuItem.Checked = False
+            m_tlsCustomScaleToolStripMenuItem.Checked = True
+        End Sub
+
+        '''' -------------------------------------------------------------------
+        '''' <summary> Upon toggleing of menu item </summary>
+        '''' -------------------------------------------------------------------
+        Private Sub CustomScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsCustomScaleToolStripMenuItem.Click
+            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_ZGHelper.YScaleMax)
+            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_ZGHelper.YScaleMin)
+            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.LostFocus ' m_tstbxSetMax.KeyPress, 
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMax)
+            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.LostFocus
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMin)
+            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Me.UpdateControls()
+        End Sub
+#End Region ' Menu Items Clicks
+
         Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             ' Santa's little helper :)
             Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
@@ -378,17 +507,18 @@ Namespace Ecosim
             Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.m_ZGHelper.YScaleMin = 0.0!
 
-
             ' ToDo_JS: Localize this!
             Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
             Me.m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
 
+            ' Set the axis
+            Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
+            Me.m_zgc.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
+            Me.m_zgc.AxisChange()
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
-            If ((ct And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
-                Me.InvalidateGraph()
-            End If
+            Me.InvalidateGraph()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -461,103 +591,6 @@ Namespace Ecosim
         End Sub
 #End Region ' Private helpers
         
-#Region " Menu Item Clicks "
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OverlayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverlayToolStripMenuItem.Click
-            OverlayToolStripMenuItem.Checked = Not OverlayToolStripMenuItem.Checked
-            m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Checked
-            PopulateGroupBoxes()
-            m_ZGHelper.RescaleAndRedraw()
-            SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
-            AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
-            m_ZGPlotter.PrepareDataset(True)
-            PopulateGroupBoxes()
-            m_ZGHelper.RescaleAndRedraw()
-        End Sub
-
-        Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowLegendToolStripMenuItem.Click
-            ShowLegendToolStripMenuItem.Checked = Not ShowLegendToolStripMenuItem.Checked
-            m_ZGPlotter.ShowLegend = ShowLegendToolStripMenuItem.Checked
-            m_ZGHelper.RescaleAndRedraw()
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
-            RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
-            CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BiomassToolStripMenuItem.Click
-            CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
-            'Set default plot type to relative
-            RelativeToolStripMenuItem.Checked = True
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
-            BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
-            'Set default plot type to relative
-            RelativeToolStripMenuItem.Checked = True
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsAutoScaleToolStripMenuItem.Click
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click, m_tstbxSetMax.Click
-            m_tlsAutoScaleToolStripMenuItem.Checked = False
-            m_tlsCustomScaleToolStripMenuItem.Checked = True
-        End Sub
-
-        '''' -------------------------------------------------------------------
-        '''' <summary> Upon toggleing of menu item </summary>
-        '''' -------------------------------------------------------------------
-        Private Sub CustomScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsCustomScaleToolStripMenuItem.Click
-            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_ZGHelper.YScaleMax)
-            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_ZGHelper.YScaleMin)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.LostFocus ' m_tstbxSetMax.KeyPress, 
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMax)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.LostFocus
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMin)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
-            Me.UpdateControls()
-        End Sub
-
-#End Region ' Menu Items Clicks
-
     End Class
     
 End Namespace

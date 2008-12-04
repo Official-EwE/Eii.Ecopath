@@ -49,6 +49,8 @@ Namespace Ecosim
             Me.ShowLegendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
+            Me.tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
+            Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -105,7 +107,7 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSSValue, Me.tsblbSS, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, Me.ToolStripSeparator5, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.Size = New System.Drawing.Size(860, 25)
@@ -280,6 +282,19 @@ Namespace Ecosim
             Me.lbGroups.Size = New System.Drawing.Size(119, 261)
             Me.lbGroups.TabIndex = 1
             '
+            'tsbtnShowHideGroups
+            '
+            Me.tsbtnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.tsbtnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.tsbtnShowHideGroups.Name = "tsbtnShowHideGroups"
+            Me.tsbtnShowHideGroups.Size = New System.Drawing.Size(101, 22)
+            Me.tsbtnShowHideGroups.Text = "Show &groups..."
+            '
+            'ToolStripSeparator5
+            '
+            Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+            Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
+            '
             'ucBiomassPlotzgc
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -326,6 +341,8 @@ Namespace Ecosim
         Friend WithEvents SetMaxToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents SetMinToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
 
     End Class
 

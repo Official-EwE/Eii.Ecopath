@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.14  2008/12/04 03:34:45  sherman
+' Added show/hide group.
+'
 ' Revision 1.13  2008/12/03 18:10:44  sherman
 ' Fixed timeseries coloring
 '
@@ -195,40 +198,18 @@ Namespace Controls
 
                 For iOver As Integer = 0 To m_Overlays.Count - 1
                     Dim crv As CurveItem = m_Overlays.Item(iOver).Item(index - 1)
+                    Dim crvType As CurveType = DirectCast(crv.Tag, CurveType)
+
                     'If relative plot then plot line of selected group with highlight
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.RelativeCatch Then
+                    If crvType.LineType = eLineType.RelativeBiomass Or _
+                       crvType.LineType = eLineType.RelativeCatch Then
                         SetLine(crv, True, True)
                     End If
 
                     'If cumulative plot then plot line of selected group without highlight but with color fill
-                    If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Or _
-                       DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeCatch Then
-                        'If DirectCast(crv.Tag, CurveType).LineType = eLineType.CumulativeSelectedBiomass Then
-                        '    If index >= 2 Then
-                        '        Dim crvTmp As CurveItem = m_Overlays.Item(iOver).Item(index - 2)
-                        '        For p As Integer = 0 To crv.NPts - 1
-                        '            crv.Item(p).Y = crv.Item(p).Y - crvTmp.Item(p).Y
-                        '        Next
-
-                        '        If i = 0 Then
-                        '            m_listSum.Clear()
-                        '            For t As Integer = 0 To m_core.nEcosimTimeSteps
-                        '                m_listSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
-                        '            Next
-                        '        End If
-
-                        '        For p As Integer = 0 To crv.NPts - 1
-                        '            m_listSum(p).Y = m_listSum(p).Y + crv.Item(p).Y
-                        '        Next
-                        '        For p As Integer = 0 To crv.NPts - 1
-                        '            crv.Item(p).Y = m_listSum(p).Y
-                        '        Next
-                        '    Else
-
-                        '    End If
-                        'End If
+                    If crvType.LineType = eLineType.CumulativeBiomass Or _
+                       crvType.LineType = eLineType.CumulativeSelectedBiomass Or _
+                       crvType.LineType = eLineType.CumulativeCatch Then
 
                         SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
@@ -448,6 +429,9 @@ Namespace Controls
             If p_CurveTag.LineType = eLineType.TimeSeries Then
                 p_line.Line.Color = Color.Transparent
             End If
+
+            ' After all that, just make sure it's shown
+            p_line.IsVisible = Me.m_styGuide.GroupVisible(p_CurveTag.Index)
         End Sub
 
 #End Region ' Private Helpers
