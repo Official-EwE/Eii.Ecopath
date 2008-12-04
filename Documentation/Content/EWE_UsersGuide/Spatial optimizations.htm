@@ -48,7 +48,7 @@ Finally, the routine will return the set of cells to be protected that would max
         <h3>Implementing <i>Spatial optimizations </i>in Ecospace</h3>
         <p>The <i>Spatial optimizations</i> form is divided into two sections. Inputs are entered in the top half of the form in the <b>Configuration</b> and <b>Map Input</b> tabs. <b></b>Results are displayed on the bottom half of the form on the <b>Progress</b> and <b>Results</b> tabs.</p>
         <p style="font-style: normal;">
-            <img src="../Resources/Images/SpatialOptimization_sc.bmp" style="width: 773px;height: 563px;" />
+            <img src="../Resources/Images/SpatialOptimization_sc.bmp" />
         </p>
         <p><span style="font-size: 10;"><small style="font-weight: bold;">Figure 11.3</small><small> The</small><small><![CDATA[ ]]><i>Spatial optimizations</i></small><small> form, <b>Configuration</b> tab.</small></span>
         </p>
@@ -62,7 +62,7 @@ Finally, the routine will return the set of cells to be protected that would max
         <p style="font-style: normal;">The search routine is initialized using the <b>Run</b> button. It can be stopped using the <b>Stop</b> button.</p>
         <p style="font-style: normal;">NOTE: If you initialize a search then stop the search, you cannot restart it or change input parameter values. You must use the <b>New Search </b>button to start a new search.</p>
         <h4>Objectives</h4>
-        <p style="font-style: normal;">The objective function used in the routine is analogous to that used in Ecosim's <a href="Implementing policy optimization.htm">Policy optimization</a> routine. It is strongly recommended you read    <![CDATA[ ]]><a href="Spatial optimization procedures.htm">Spatial optimization procedures</a> for detailed description of the objective function.</p>
+        <p style="font-style: normal;">The objective function used in the routine is analogous to that used in Ecosim's <a href="Implementing policy optimization.htm">Policy optimization</a> routine. It is strongly recommended you read     <![CDATA[ ]]><a href="Spatial optimization procedures.htm">Spatial optimization procedures</a> for detailed description of the objective function.</p>
         <p style="font-style: normal;">Use the <b>Objectives</b> <![CDATA[ ]]>table  (Figure 11.3) to define objective function weights for <b>Net economic value</b> (total landed value of catch minus total operating cost); <b>Social value (employment)</b>, i.e., a social indicator, assumed proportional to gross landed value of catch for each fleet with a different jobs/landed value ratio for each fleet; and two ecological objectives: 1. <b>Mandated rebuilding</b> of one group (value of the objective function is measured by departures of biomasses over time from target biomass levels specified by entering ratios of target to Ecopath base biomasses); and 2.<b> Ecosystem structure</b>, which favours biomasses of large, long-lived organisms.  See <b>Policy objectives</b> in <a href="Fishing policy search.htm">Fishing policy search</a> and Christensen and Walters (2004b) for more details about these objectives.</p>
         <p style="font-style: normal;">Use <b>Boundary </b>weight<b></b><span> to adjust the weight given to size/border ratio of the protected area in the objective function. This is estimated as protected area size over the total boundary length,  and </span>captures spatial connectivity of protected areas.<b></b></p>
         <p style="font-style: normal;">Note that you may initially need to play with different values for the objective function weight for each factor to find ranges that produce contrast in the final value of the objective function. 
@@ -86,7 +86,7 @@ For economic objectives, you may wish to adjust the <b>Discount rate</b> and <b>
         <h3>Map Input tab</h3>
         <p>The <b>Map</b> <![CDATA[ ]]><b>Input</b> tab displays the<a href="Basemap.htm"> Ecospace basemap</a> associated with the <a href="Ecospace menu.htm">Ecospace scenario</a> that has been loaded. It displays progress of the search and the final results of the analysis.</p>
         <p>
-            <img src="../Resources/Images/SpatialOptimization_MAP_sc.bmp" style="width: 782px;height: 625px;" />
+            <img src="../Resources/Images/SpatialOptimization_MAP_sc.bmp" />
         </p>
         <p><b>Figure 11.4</b> The<i style="font-size: 10;"> <![CDATA[ ]]><small>Spatial optimizations</small></i> form, <b>Map Input</b> tab.</p>
         <h3>Layers</h3>
@@ -105,7 +105,7 @@ For economic objectives, you may wish to adjust the <b>Discount rate</b> and <b>
         <p>The<b> Layers</b> panel on the <b>Map Input</b> tab (<b>Seed cell</b> configuration).</p>
         <p>&#160;</p>
         <p>
-            <img src="../Resources/Images/ImportanceLayerWindow_Ecoseed_EditLayer.bmp" style="width: 434px;height: 317px;" />
+            <img src="../Resources/Images/ImportanceLayerWindow_Ecoseed_EditLayer.bmp" />
         </p>
         <p>The <b>Edit layer</b> dialogue box.</p>
         <p><b>&#160;</b>
@@ -125,7 +125,7 @@ For economic objectives, you may wish to adjust the <b>Discount rate</b> and <b>
         <h4>Progress tab</h4>
         <p>As the search algorithm proceeds, progress is displayed on the <b>Progress </b>tab of the <b>Output</b> window (image below). On the left of the Progress tab, relative values of the components of the objective function are displayed. On the right, relative values of the components of the objective function are shown as a function of number of cells closed.</p>
         <p>
-            <img src="../Resources/Images/SpatialOptimization_Progress.bmp" style="width: 620px;height: 528px;" />
+            <img src="../Resources/Images/SpatialOptimization_Progress.bmp" />
         </p>
         <h4>&#160;</h4>
         <h4>Results tab</h4>
