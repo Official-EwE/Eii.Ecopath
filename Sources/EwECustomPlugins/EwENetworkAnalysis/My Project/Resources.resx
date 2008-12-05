@@ -592,4 +592,10 @@
   <data name="TREE_NODE_FUNCT_RESP" xml:space="preserve">
     <value>Functional response</value>
   </data>
+  <data name="LBL_IMPACTED_GP" xml:space="preserve">
+    <value>Impacted group</value>
+  </data>
+  <data name="LBL_IMPACTING_GP" xml:space="preserve">
+    <value>Impacting group</value>
+  </data>
 </root>

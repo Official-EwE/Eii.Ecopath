@@ -761,6 +761,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Impacted group.
+        '''</summary>
+        Friend ReadOnly Property LBL_IMPACTED_GP() As String
+            Get
+                Return ResourceManager.GetString("LBL_IMPACTED_GP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Impacting group.
+        '''</summary>
+        Friend ReadOnly Property LBL_IMPACTING_GP() As String
+            Get
+                Return ResourceManager.GetString("LBL_IMPACTING_GP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Kemptons Q.
         '''</summary>
         Friend ReadOnly Property LBL_KEMPTONS_Q() As String

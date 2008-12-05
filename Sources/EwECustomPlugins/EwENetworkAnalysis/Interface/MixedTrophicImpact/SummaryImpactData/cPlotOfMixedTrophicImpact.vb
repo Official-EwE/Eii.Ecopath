@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.8  2008/12/05 19:45:33  joeh
+' Add "Impacting group" and "Impacted group"
+'
 ' Revision 1.7  2008/12/04 21:41:53  joeh
 ' Change the location and size of ucPlotOfMixedTrophicImpact so that the upper end of the vertical labels will not be hidden
 '
@@ -239,7 +242,7 @@ Public Class cPlotOfMixedTrophicImpact
         r.Width = MixedTrophicImpactUC.ClientRectangle.Width
         r.Height = MixedTrophicImpactUC.ClientRectangle.Height - r.Y
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(g, r, m_asData, m_astrLabelsX, m_astrLabelsY)
+        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY)
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
@@ -254,6 +257,6 @@ Public Class cPlotOfMixedTrophicImpact
         r.Width = MixedTrophicImpactUC.ClientRectangle.Width ' * 3
         r.Height = (MixedTrophicImpactUC.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(g, r, m_asData, m_astrLabelsX, m_astrLabelsY)
+        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY)
     End Sub
 End Class
