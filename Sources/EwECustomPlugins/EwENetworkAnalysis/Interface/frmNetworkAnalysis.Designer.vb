@@ -65,8 +65,7 @@ Partial Class frmNetworkAnalysis
         Dim TreeNode41 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles and pathways", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode27, TreeNode30, TreeNode33, TreeNode36, TreeNode39, TreeNode40})
         Dim TreeNode42 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices without primary production required estimate", 1, 1)
         Dim TreeNode43 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices with primary production required estimate", 1, 1)
-        Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Functional response", 1, 1)
-        Dim TreeNode45 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode42, TreeNode43, TreeNode44})
+        Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode42, TreeNode43})
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
@@ -299,15 +298,11 @@ Partial Class frmNetworkAnalysis
         TreeNode43.Name = "ndWithPrimaryProductionRequiredEstimate"
         TreeNode43.SelectedImageIndex = 1
         TreeNode43.Text = "Indices with primary production required estimate"
-        TreeNode44.ImageIndex = 1
-        TreeNode44.Name = "ndFunctionalResponse"
-        TreeNode44.SelectedImageIndex = 1
-        TreeNode44.Text = "Functional response"
-        TreeNode45.ImageIndex = 5
-        TreeNode45.Name = "ndEcosim network analysis indices"
-        TreeNode45.SelectedImageIndex = 5
-        TreeNode45.Text = "Ecosim network analysis "
-        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode20, TreeNode23, TreeNode24, TreeNode41, TreeNode45})
+        TreeNode44.ImageIndex = 5
+        TreeNode44.Name = "ndEcosim network analysis indices"
+        TreeNode44.SelectedImageIndex = 5
+        TreeNode44.Text = "Ecosim network analysis "
+        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode20, TreeNode23, TreeNode24, TreeNode41, TreeNode44})
         Me.tvNetworkAnalysis.SelectedImageIndex = 0
         Me.tvNetworkAnalysis.Size = New System.Drawing.Size(270, 467)
         Me.tvNetworkAnalysis.TabIndex = 2
