@@ -68,8 +68,7 @@ Namespace Other
             Me.m_ilPlugins.Images.SetKeyName(0, "Ecopath.ico")
             Me.m_ilPlugins.Images.SetKeyName(1, "NavForward.png")
             Me.m_ilPlugins.Images.SetKeyName(2, "BreakpointHS.png")
-            Me.m_ilPlugins.Images.SetKeyName(3, "OptionsHS.png")
-            Me.m_ilPlugins.Images.SetKeyName(4, "WarningHS.png")
+            Me.m_ilPlugins.Images.SetKeyName(3, "ConflictHS.png")
             '
             'm_split
             '
