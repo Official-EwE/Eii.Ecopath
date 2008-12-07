@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPluginAssemblyDetails.vb,v $
+' Revision 1.4  2008/12/07 20:50:53  jeroens
+' Incompatible plug-ins can be activated
+'
 ' Revision 1.3  2008/12/03 02:40:54  jeroens
 ' Added levels of plugin compatibility
 '
@@ -50,12 +53,12 @@ Public Class ucAppPluginAssemblyDetails
 
         Me.m_pa = pa
         Me.m_cbEnabled.Checked = pa.Enabled
-        Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False) And _
-                                 (pa.IsCompatibleToRun() = True)
+        Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False)
 
     End Sub
 
-    Private Sub OnCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_cbEnabled.CheckedChanged
+    Private Sub OnCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_cbEnabled.CheckedChanged
         Me.m_pa.Enabled = Me.m_cbEnabled.Checked
     End Sub
 
