@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.4  2008/12/07 20:44:23  jeroens
+' Add IsCompatible
+'
 ' Revision 1.3  2008/12/03 02:34:30  jeroens
 ' Added levels of compatibility
 ' Added 'IsCompatibleToRun'
@@ -227,6 +230,16 @@ Public Class cPluginAssembly
         ' Minor version revisions should not matter
         Return (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatible) Or _
                (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatibleCaution)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a plugin assembly is compatible with all EwE assemblies.
+    ''' </summary>
+    ''' <returns>True if compatible to run, false otherwise.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsCompatible() As Boolean
+        Return (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatible)
     End Function
 
 #End Region ' Compatibility
