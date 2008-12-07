@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.18  2008/12/07 21:00:49  jeroens
+' Only compatibility of enabled plug-ins is assessed
+'
 ' Revision 1.17  2008/12/03 02:40:52  jeroens
 ' Added levels of plugin compatibility
 '
@@ -808,27 +811,31 @@ Public Class AppLauncher
                 pa.Enabled = (alDisabledPlugins.IndexOf(pa.Filename) = -1)
             End If
 
-            ' Check for incompatible plug-ins
-            Select Case pa.Compatibility
+            ' Check for enabled and incompatible plug-ins
+            If pa.Enabled Then
 
-                Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
-                    msg = Nothing
+                Select Case pa.Compatibility
 
-                Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
-                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
+                        msg = Nothing
 
-                Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
-                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
+                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
 
-                Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
-                                       eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                    Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
+                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
 
-            End Select
+                    Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
+                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
 
-            If msg IsNot Nothing Then Me.m_core.Messages.SendMessage(msg)
+                End Select
+
+                If msg IsNot Nothing Then Me.m_core.Messages.SendMessage(msg)
+            End If
+
         Next
     End Sub
 
