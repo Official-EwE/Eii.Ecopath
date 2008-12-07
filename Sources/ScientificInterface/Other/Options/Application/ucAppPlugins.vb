@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.4  2008/12/07 20:44:54  jeroens
+' Plugin tree images put in correct order
+'
 ' Revision 1.3  2008/12/03 02:40:54  jeroens
 ' Added levels of plugin compatibility
 '
@@ -54,8 +57,7 @@ Namespace Other
         Const cIMAGE_CORE As Integer = 0
         Const cIMAGE_ENABLED As Integer = 1
         Const cIMAGE_DISABLED As Integer = 2
-        Const cIMAGE_DEFAULT As Integer = 3
-        Const cIMAGE_INCOMPATIBLE As Integer = 4
+        Const cIMAGE_CONFLICT As Integer = 3
 
 #Region " Helper classes "
 
@@ -89,7 +91,7 @@ Namespace Other
         Private Class cPluginInfo
 
             Private m_pi As IPlugin = Nothing
-            Private m_iImageIndex As Integer = cIMAGE_DEFAULT
+            Private m_iImageIndex As Integer = cIMAGE_ENABLED
 
             Public Sub New(ByVal pi As IPlugin)
                 Me.m_pi = pi
@@ -226,10 +228,15 @@ Namespace Other
         End Sub
 
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
-            If pa.AlwaysEnabled Then Return cIMAGE_CORE
-            If pa.Enabled Then Return cIMAGE_ENABLED
-            If Not pa.IsCompatibleToRun() Then Return cIMAGE_INCOMPATIBLE
-            Return cIMAGE_DISABLED
+            ' Order of state images:
+            '    1. Disabled state
+            '    2. Conflict state
+            '    3. Always enabled state
+            '    4. Normal enabled state
+            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
+            If (pa.IsCompatible = False) Then Return cIMAGE_CONFLICT
+            If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
+            Return cIMAGE_ENABLED
         End Function
 
 #End Region ' Events
