@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.44  2008/12/08 16:46:41  jeroens
+' Added SearchInitialized plugin point
+'
 ' Revision 1.43  2008/12/03 17:39:52  joeb
 ' Added Consumption(iPP, iTime)  and Electivity to EcosimGroupOutput for Functional Response and Electivity graphs
 '
@@ -10162,6 +10165,10 @@ Public Class cCore
             Me.m_SearchManagers.Add(eDataTypes.FitToTimeSeries, SearchManager)
         End If
 
+        ' Fire plug-in point
+        If Me.m_pluginManager IsNot Nothing Then
+            Me.m_pluginManager.SearchInitialized(Me.m_SearchData)
+        End If
 
     End Sub
 
