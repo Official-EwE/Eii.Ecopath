@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.4  2008/12/08 16:46:03  jeroens
+' DoDatValCalculations public again
+'
 ' Revision 1.3  2008/11/25 18:00:04  joeb
 ' Fixed bug 459 made DoDatValCalculation() private
 '
@@ -392,7 +395,7 @@ Public Class cTimeSeriesDataStructures
     ''' </summary>
     ''' <param name="EcosimData"></param>
     ''' <remarks>This needs to be called after the time series data is loaded to update other data arrays.</remarks>
-    Private Sub DoDatValCalculations(ByRef EcosimData As cEcosimDatastructures)
+    Public Sub DoDatValCalculations(ByRef EcosimData As cEcosimDatastructures)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'CAUTION
