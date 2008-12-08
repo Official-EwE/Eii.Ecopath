@@ -128,9 +128,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Plugin templates\GUI\IHelpPlugin.vb" />
-    <Compile Include="Plugin templates\MPOptimizations\IRandomSearchPlugin.vb" />
-    <Compile Include="Plugin templates\MPOptimizations\IEcoseedPlugin.vb" />
-    <Compile Include="Plugin templates\MPOptimizations\IMPAOptimizationPlugin.vb" />
+    <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
