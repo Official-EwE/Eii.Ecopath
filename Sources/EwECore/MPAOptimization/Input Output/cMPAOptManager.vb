@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.16  2008/12/08 16:45:38  jeroens
+' Removed plug-ins
+'
 ' Revision 1.15  2008/11/20 04:23:39  jeroens
 ' CellSelectMap accepts TopPercentile as Single
 '
@@ -279,8 +282,6 @@ Public Class cMPAOptManager
 
         Try
 
-            Dim dlgt As New InvokePluginPointDelegate(AddressOf InvokePluginPoint)
-
             If RunState = eRunStates.NewBestResultFound Then
                 m_curRowCol.Init(m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
             End If
@@ -297,9 +298,6 @@ Public Class cMPAOptManager
                 'this lets the interface gather data before it has changed is response to a new best cell selected
                 Me.m_syncObject.Invoke(Me.m_SeedRunStateCallback, New Object() {RunState})
 
-                ' Invoke plugins
-                Me.m_syncObject.Invoke(dlgt, New Object() {RunState})
-
             Else
                 System.Console.WriteLine("EcoSeedManager not connected to an interface.")
             End If
@@ -311,34 +309,6 @@ Public Class cMPAOptManager
     End Sub
 
     Private Sub OnSendMessage(ByVal Message As EwECore.cMessage)
-
-    End Sub
-
-    Private Delegate Sub InvokePluginPointDelegate(ByVal RunState As eRunStates)
-
-    Private Sub InvokePluginPoint(ByVal RunState As eRunStates)
-
-        Dim pm As cPluginManager = Me.m_core.PluginManager
-
-        If (pm IsNot Nothing) Then
-
-            Select Case RunState
-
-                Case eRunStates.Initializing
-                    pm.MPAOptimizationsSearchInitialized(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
-                Case eRunStates.Searching
-                    pm.MPAOptimizationsSearchStart(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
-                Case eRunStates.Completed
-                    pm.MPAOptimizationsSearchEnd(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
-                Case eRunStates.NewBestResultFound
-                    pm.MPAOptimizationsSearchNewBestResultFound(Me.m_MPASearch, Me.m_core.m_MPAOptData.SearchType)
-                Case eRunStates.NewCellSelected
-                    Debug.Assert(Me.m_core.m_MPAOptData.SearchType = eMPAOptimizationModels.EcoSeed)
-                    pm.EcoseedNewCellSelected(Me.m_MPASearch)
-
-            End Select
-
-        End If
 
     End Sub
 
