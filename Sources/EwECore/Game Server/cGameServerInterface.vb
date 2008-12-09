@@ -32,7 +32,7 @@ Public Class cGameServerInterface
 
         'EcoSpace
         m_dctCoreData.Add(eDataTypes.EcospaceRegionResults, m_core.m_EcospaceRegionSummaries)
-        m_dctCoreData.Add(eDataTypes.EcospaceBiomassResults, m_core.m_EcospaceGroupOuputs)
+        m_dctCoreData.Add(eDataTypes.EcospaceGroupOuput, m_core.m_EcospaceGroupOuputs)
 
 
     End Sub
