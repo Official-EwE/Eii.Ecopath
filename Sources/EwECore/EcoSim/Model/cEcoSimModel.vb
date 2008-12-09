@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.32  2008/12/09 19:47:35  joeb
+' Changes to the dimensioning of time data
+'
 ' Revision 1.31  2008/12/03 17:40:20  joeb
 ' *** empty log message ***
 '
@@ -520,7 +523,7 @@ Public Property PluginManager() As cPluginManager
                 'EcoSimFileOpen()
                 '   SetDefaultParameters()
 
-                redimTime(True)
+                'redimTime(True)
                 Calc_nvar()
 
                 CalcEatenOfBy()
@@ -676,6 +679,7 @@ Public Property PluginManager() As cPluginManager
             Dim QYear() As Single
 
             If m_Data.bTimestepOutput Then
+                Me.redimTime(NumberOfYears + ExtraTime, True)
                 m_Data.dimResults(NumberOfYears + ExtraTime)
             Else
                 m_Data.eraseResults()
@@ -3511,19 +3515,15 @@ Public Property PluginManager() As cPluginManager
 
         End Sub
 
-        Friend Sub redimTime(ByVal DontPreserve As Boolean)
+        Friend Sub redimTime(ByVal nYears As Integer, ByVal DontPreserve As Boolean)
             'Dim MaxTime As Integer
-
-            Debug.Assert(m_Data.NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
-
-            'jb this was in the original code we can not change the size of TotalTime without going through a major event......
-            'If m_Params.TotalTime = 0 Then m_Params.TotalTime = 20
-
+            Debug.Assert(nYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
+            Dim nts As Integer = nYears * m_Data.NumStepsPerYear
             'Ntimes = MaxTime
             If DontPreserve Then
-                ReDim Bstore(nGroups, m_Data.NTimes)   'was 1200
+                ReDim Bstore(nGroups, nts)   'was 1200
             Else
-                ReDim Preserve Bstore(nGroups, m_Data.NTimes) 'was 1200
+                ReDim Preserve Bstore(nGroups, nts) 'was 1200
             End If
 
         End Sub
