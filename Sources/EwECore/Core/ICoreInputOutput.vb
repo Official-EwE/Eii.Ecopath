@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.2  2008/12/09 19:44:44  joeb
+' Added IResultsWrapper this wraps a core array so it can be used by a CoreInputOutput directly instead of buffering the data
+'
 ' Revision 1.1  2008/09/26 07:30:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -422,7 +425,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="iIndex"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
+    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Return m_values.Item(VarName).Status(iIndex)
         Catch ex As Exception
@@ -1048,6 +1051,105 @@ Public Class cCoreInputOutputList(Of T)
 #End Region ' List interfaces
 
 End Class ' cCoreInputOutputList
+
+#End Region
+
+#Region "Ecosim and Ecospace Results Wrappers"
+
+''' <summary>
+''' Interface for a helper class that wraps Ecosim or EcoSpace data structure results arrays
+''' </summary>
+''' <remarks>Ouput (model time step results) objects <see cref="cEcoSimGroupOutput">cEcoSimGroupOutput</see> hold a reference to core data that is wrapped for the interface to access via dot operators or getVariable(eVarNameFalgs,index,index)  </remarks>
+Friend Interface IResultsWrapper
+
+    Property Value(ByVal Index1 As Integer, ByVal index2 As Integer) As Single
+
+End Interface
+
+
+''' <summary>
+''' 4D array with the first two indexes fixed
+''' </summary>
+''' <remarks> cEcosimDataStrucures.PredPreyResultsOverTime(var,prey,pred,time)</remarks>
+Friend Class c4DResultsWrapper
+    Implements IResultsWrapper
+
+    'var, group, group, time
+    Private m_data(,,,) As Single
+    Private m_VarIndex As Integer
+    Private m_GroupIndex As Integer
+
+    Public Sub New(ByVal TheBuffer(,,,) As Single, ByVal VarIndex As Integer, ByVal GroupIndex As Integer)
+        m_data = TheBuffer
+        m_VarIndex = VarIndex
+        m_GroupIndex = GroupIndex
+    End Sub
+
+    Public Property Value(ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_VarIndex, m_GroupIndex, GroupIndex, TimeIndex)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_VarIndex, m_GroupIndex, GroupIndex, TimeIndex) = value
+        End Set
+    End Property
+End Class
+
+
+''' <summary>
+''' 3D array with the first index fixed
+''' </summary>
+''' <remarks></remarks>
+Friend Class c3DResultsWrapper
+    Implements IResultsWrapper
+
+    ' group, group, time
+    Private m_data(,,) As Single
+    Private m_FixedGroupIndex As Integer
+
+    Public Sub New(ByVal TheBuffer(,,) As Single, ByVal FixedGroupIndex As Integer)
+        m_data = TheBuffer
+        m_FixedGroupIndex = FixedGroupIndex
+    End Sub
+
+    Public Property Value(ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_FixedGroupIndex, GroupIndex, TimeIndex)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_FixedGroupIndex, GroupIndex, TimeIndex) = value
+        End Set
+    End Property
+End Class
+
+''' <summary>
+''' 3D array with the first TWO indexes fixed i.e. ResultsOverTime(FixedVar,FixedGroup,time) 
+''' </summary>
+''' <remarks>cEcosimDataStructures.ResultsOverTime(var,group,time)</remarks>
+Friend Class c3DResultsWrapper2Fixed
+    Implements IResultsWrapper
+
+    'var, group, time
+    Private m_data(,,) As Single
+    Private m_FixedGroupIndex As Integer
+    Private m_FixedVarIndex As Integer
+
+
+    Public Sub New(ByVal TheBuffer(,,) As Single, ByVal FixedVarIndex As Integer, ByVal FixedGroupIndex As Integer)
+        m_data = TheBuffer
+        m_FixedGroupIndex = FixedGroupIndex
+        m_FixedVarIndex = FixedVarIndex
+    End Sub
+
+    Public Property Value(ByVal TimeIndex As Integer, ByVal NotUsed As Integer) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex) = value
+        End Set
+    End Property
+End Class
 
 #End Region
 
