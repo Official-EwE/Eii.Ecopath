@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.10  2008/12/09 00:30:01  joeh
+' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
+'
 ' Revision 1.9  2008/11/21 21:33:57  jeroens
 ' Removed functional response, will move to Network Analysis
 '
@@ -143,6 +146,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimOutputPlots), "Ecosim plot.htm")
         m_nodeController.Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
         m_nodeController.Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SRplot), "Stock recruitment S R plot.htm")
+        m_nodeController.Add("ndSuitabilityPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
 
         ' Ecosim Tools
         m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help

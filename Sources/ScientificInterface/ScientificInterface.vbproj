@@ -1037,6 +1037,14 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\SuitabilityPlot.resx">
+      <DependentUpon>SuitabilityPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\ucSuitabilityPlot.resx">
+      <DependentUpon>ucSuitabilityPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1160,6 +1168,18 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
+    <Compile Include="Ecosim\Output\SuitabilityPlot.Designer.vb">
+      <DependentUpon>SuitabilityPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\SuitabilityPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\ucSuitabilityPlot.Designer.vb">
+      <DependentUpon>ucSuitabilityPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\ucSuitabilityPlot.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
