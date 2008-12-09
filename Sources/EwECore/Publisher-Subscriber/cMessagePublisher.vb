@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessagePublisher.vb,v $
+' Revision 1.2  2008/12/09 15:00:44  jeroens
+' Fixed possible message handling exception
+'
 ' Revision 1.1  2008/09/26 07:30:30  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -167,7 +170,7 @@ Public Class cMessagePublisher
     ''' </remarks>
     Public Function SendMessage(ByVal Message As cMessage, Optional ByVal bPassLock As Boolean = False) As Boolean
         Dim handler As cMessageHandler
-        Dim messageHandled As Boolean
+        Dim bMessageHandled As Boolean
 
         ' Special case: feedback messages always pass the lock
         bPassLock = bPassLock Or (TypeOf Message Is cFeedbackMessage)
@@ -200,28 +203,35 @@ Public Class cMessagePublisher
                     ' Do not log these
             End Select
 
+            ' JS 09Dec08: Handle messages on a COPY of the original handlers list, since message handlers may
+            '             unsubscribe themselves from messages in response to a message. In the current
+            '             approach, where messages are sent by iterating over the original message handlers list,
+            '             the handler collection may thus change and the iteration process will throw an
+            '             exception, aborting the message handling process.
+            '             Some handlers may then not receive messages.
+            Dim aHandlers As cMessageHandler() = Me.m_handlers.ToArray()
             'Loop over the list of handlers and asking each one to post the message
             'if a handler can handle this type of message it will return True (the message has been handled)
-            For Each handler In m_handlers
+            For Each handler In aHandlers
                 If handler.SendMessage(Message) Then
                     'this handler is for this type of message
-                    messageHandled = True
+                    bMessageHandled = True
                     'even though the message has been handled 
                     'try all the handlers to see if there is another one that can handle this type of message
                 End If
             Next handler
 
-            If Not messageHandled Then
+            If Not bMessageHandled Then
                 'something is very wrong 
                 'the owner of this publisher has tried to send a message that has no handler
 
                 'Debugging issue you have not defined a handler for this type of message
                 '  Debug.Assert(messageHandled, "No default message handler defined for source = " & Message.Source.ToString)
                 cLog.Write(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
-                messageHandled = False
+                bMessageHandled = False
             End If
 
-            Return messageHandled
+            Return bMessageHandled
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".SendMessage(...) Error: " & ex.Message)
