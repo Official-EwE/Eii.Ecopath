@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.3  2008/12/09 19:48:59  joeb
+' Ouput objects now use core data instead of buffering data
+'
 ' Revision 1.2  2008/11/28 16:54:10  joeb
 ' Cleaned up ToDo's
 '
@@ -449,11 +452,11 @@ Public Class cEcospaceDataStructures
     Public SumEffort(,) As Single
     Public SumCatchGear(,) As Single
     Public NoRegions As Integer
-    Public SumBiomassRegion(,,) As Single
-    Public CatchGearGroupRegion(,,,) As Single
+    Public SumBiomassRegion(,,) As Single 'SumBiomassRegion(summary_period, NoRegions, NGroups)
+    Public CatchGearGroupRegion(,,,) As Single 'CatchGearGroupRegion(summary_period, NoRegions, nFleets, NGroups)
     Public ValueGearGroup(,,) As Single
 
-    Public BiomassByRegion(,,) As Single
+    Public BiomassRegionGroup(,,) As Single 'BiomassByRegion(region, group, timestep)
 
     'ToDo_jb SpaceTSData() will need an enumerator for data types that are summarized
     ''' <summary> Summarized time step data </summary>
@@ -1068,7 +1071,7 @@ Public Class cEcospaceDataStructures
     Public Sub ReDimRegionVars()
         ReDim Me.RegionDBID(NoRegions)
         ReDim Me.RegionName(NoRegions)
-        ReDim BiomassByRegion(NGroups, NoRegions, nTimeSteps)
+        ReDim BiomassRegionGroup(NoRegions, NGroups, nTimeSteps)
     End Sub
 
     Public Sub ReDimMapDims()
@@ -1194,7 +1197,7 @@ Public Class cEcospaceDataStructures
         Debug.Assert(TimeStep > 0 And TotalTime > 0)
         ReDim SpaceTSData(m_ngroups, N_SPACE_TS_DATA, NumberOfTimeSteps)
 
-        ReDim BiomassByRegion(NGroups, NoRegions, NumberOfTimeSteps)
+        ReDim BiomassRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
 
     End Sub
 

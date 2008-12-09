@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.4  2008/12/09 19:49:17  joeb
+' Ouput objects now use core data instead of buffering data
+'
 ' Revision 1.3  2008/12/02 19:08:21  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -114,7 +117,6 @@ Namespace MSE
                 Next
 
                 'initialize Ecosim
-                'm_esData.dimResults()
                 m_Ecosim.Init(False)
 
             Catch ex As Exception
@@ -161,7 +163,6 @@ Namespace MSE
                     'Set MSE data back to initial values for a new run
                     m_data.InitForTrial()
 
-                    ' m_esData.dimResults()
                     m_Ecosim.RunModelValue(m_esData.NumYears, tmpTotval, tmpEmpval, tmpManval, tmpEcoval, Nothing, 0)
 
                     Me.SumValues(tmpTotval, tmpEmpval, tmpManval, tmpEcoval)
@@ -195,7 +196,7 @@ Namespace MSE
         ''' <summary>
         ''' Sum results of Model run into Mean values
         ''' </summary>
-        ''' <remarks>Once the trials have been finished the mean will be caculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
+        ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
         Private Sub SumValues(ByVal TotalValue As Double, ByVal EmployValue As Double, ByVal ManValue As Double, ByVal EcoValue As Double)
 
             m_data.MeanEmploy += EmployValue

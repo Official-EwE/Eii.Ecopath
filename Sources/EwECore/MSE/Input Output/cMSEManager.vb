@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.3  2008/12/09 19:49:15  joeb
+' Ouput objects now use core data instead of buffering data
+'
 ' Revision 1.2  2008/11/28 16:54:13  joeb
 ' Cleaned up ToDo's
 '
@@ -187,6 +190,7 @@ Namespace MSE
             Next
 
             m_output = New cMSEOutput(m_core)
+            m_output.Resize()
 
             m_parameters = New cMSEParameters(m_core)
 
@@ -386,10 +390,10 @@ Namespace MSE
             Me.m_output.TrialNumber = Me.m_MSEdata.CurrentIteration
 
             Me.m_output.BestTotalValue = Me.m_MSEdata.BestTotalValue
-            Me.m_output.MeanTotalValue = Me.m_MSEdata.MeanTotalValue
-            Me.m_output.MeanEcologicalValue = Me.m_MSEdata.MeanEcoVal
-            Me.m_output.MeanEmployValue = Me.m_MSEdata.MeanEmploy
-            Me.m_output.MeanMandatedValue = Me.m_MSEdata.MeanManVal
+            Me.m_output.MeanTotalValue = Me.m_MSEdata.MeanTotalValue / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanEcologicalValue = Me.m_MSEdata.MeanEcoVal / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanEmployValue = Me.m_MSEdata.MeanEmploy / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanMandatedValue = Me.m_MSEdata.MeanManVal / Me.m_MSEdata.CurrentIteration
 
             Me.m_output.TotalValue = Me.m_MSEdata.BestTotalValue
             Me.m_output.EcologicalValue = Me.m_MSEdata.BaseEcoVal
@@ -399,7 +403,13 @@ Namespace MSE
             For iGrp As Integer = 1 To m_core.nGroups
                 Me.m_output.LowerRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 0)
                 Me.m_output.UpperRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 1)
-            Next
+
+                For t As Integer = 1 To m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+                    Me.m_output.Biomass(iGrp, t) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, t)
+                Next
+
+            Next iGrp
+
 
         End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.13  2008/12/09 19:48:57  joeb
+' Ouput objects now use core data instead of buffering data
+'
 ' Revision 1.12  2008/11/28 16:54:07  joeb
 ' Cleaned up ToDo's
 '
@@ -1873,8 +1876,9 @@ Public Class cEcoSpace
         'm_Data.NumStep0 = 0 : m_Data.NumStep1 = 0
 
         '  If m_Data.NoRegions > 0 Then
-        ReDim m_Data.SumBiomassRegion(1, m_Data.NGroups, m_Data.NoRegions)
-        ReDim m_Data.CatchGearGroupRegion(1, m_Data.nFleets, m_Data.NGroups, m_Data.NoRegions)
+        ReDim m_Data.SumBiomassRegion(1, m_Data.NoRegions, m_Data.NGroups)
+        ' ReDim m_Data.CatchGearGroupRegion(1, m_Data.nFleets, m_Data.NGroups, m_Data.NoRegions)
+        ReDim m_Data.CatchGearGroupRegion(1, m_Data.NoRegions, m_Data.nFleets, m_Data.NGroups)
         '  End If
 
 
@@ -3244,7 +3248,7 @@ exitline:
                 End If 'If iGrp = 1 Then
 
                 If m_Data.NoRegions > 0 Then
-                    m_Data.SumBiomassRegion(iSumIndex, iGrp, m_Data.Region(iRow, iCol)) = m_Data.SumBiomassRegion(iSumIndex, iGrp, m_Data.Region(iRow, iCol)) + Biomass(iGrp)
+                    m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), iGrp) = m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), iGrp) + Biomass(iGrp)
                 End If
 
                 If m_EPdata.fCatch(iGrp) > 0 Then
@@ -3260,7 +3264,7 @@ exitline:
 
                             'Next line is for adding up catch by region etc
                             If m_Data.NoRegions > 0 Then
-                                m_Data.CatchGearGroupRegion(iSumIndex, iFlt, iGrp, m_Data.Region(iRow, iCol)) = m_Data.CatchGearGroupRegion(iSumIndex, iFlt, iGrp, m_Data.Region(iRow, iCol)) + sum
+                                m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, iGrp) = m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, iGrp) + sum
                             End If
                             'Then multily with marketvalue * prop landed
                             sum = sum * m_EPdata.Market(iFlt, iGrp) * m_EPdata.Landing(iFlt, iGrp) / (m_EPdata.Landing(iFlt, iGrp) + m_EPdata.Discard(iFlt, iGrp))
@@ -3334,8 +3338,6 @@ exitline:
 
         Try
 
-            'Me.m_FleetSum.Add(Biomass, iRow, iCol)
-
             'summarize the data if this timestep is part of the start or end time period
             'iSumIndex will = -1 if this timestep is not being summarized
             If iSumIndex >= 0 Then
@@ -3359,7 +3361,7 @@ exitline:
                 For igrp As Integer = 1 To Me.m_Data.NGroups
 
                     If m_Data.NoRegions > 0 Then
-                        m_Data.SumBiomassRegion(iSumIndex, igrp, m_Data.Region(iRow, iCol)) = m_Data.SumBiomassRegion(iSumIndex, igrp, m_Data.Region(iRow, iCol)) + Biomass(igrp)
+                        m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), igrp) = m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), igrp) + Biomass(igrp)
                     End If
 
                     If m_EPdata.fCatch(igrp) > 0 Then
@@ -3375,7 +3377,7 @@ exitline:
 
                                 'Next line is for adding up catch by region etc
                                 If m_Data.NoRegions > 0 Then
-                                    m_Data.CatchGearGroupRegion(iSumIndex, iFlt, igrp, m_Data.Region(iRow, iCol)) = m_Data.CatchGearGroupRegion(iSumIndex, iFlt, igrp, m_Data.Region(iRow, iCol)) + sum
+                                    m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, igrp) = m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, igrp) + sum
                                 End If
                                 'Then multily with marketvalue * prop landed
                                 sum = sum * m_EPdata.Market(iFlt, igrp) * m_EPdata.Landing(iFlt, igrp) / (m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp))
@@ -3448,11 +3450,9 @@ exitline:
             For ir As Integer = 1 To Me.m_Data.Inrow
                 For ic As Integer = 1 To Me.m_Data.InCol
                     irgn = Me.m_Data.Region(ir, ic)
-                    ' For irgn As Integer = 0 To Me.m_Data.NoRegions
                     For igrp = 1 To Me.m_Data.NGroups
-                        Me.m_Data.BiomassByRegion(igrp, irgn, iTimeStep) = Me.m_Data.BiomassByRegion(igrp, irgn, iTimeStep) + Me.m_Data.Bcell(ir, ic, igrp)
+                        Me.m_Data.BiomassRegionGroup(irgn, igrp, iTimeStep) = Me.m_Data.BiomassRegionGroup(irgn, igrp, iTimeStep) + Me.m_Data.Bcell(ir, ic, igrp)
                     Next
-                    'Next irgn
                 Next ic
             Next ir
 
@@ -3617,8 +3617,8 @@ exitline:
             m_Data.SumBiomass(1, i) = m_Data.SumBiomass(1, i) / m_Data.NumStep1
 
             For ii = 1 To m_Data.NoRegions
-                m_Data.SumBiomassRegion(0, i, ii) = m_Data.SumBiomassRegion(0, i, ii) / m_Data.NumStep0
-                m_Data.SumBiomassRegion(1, i, ii) = m_Data.SumBiomassRegion(1, i, ii) / m_Data.NumStep1
+                m_Data.SumBiomassRegion(0, ii, i) = m_Data.SumBiomassRegion(0, ii, i) / m_Data.NumStep0
+                m_Data.SumBiomassRegion(1, ii, i) = m_Data.SumBiomassRegion(1, ii, i) / m_Data.NumStep1
             Next
 
             m_Data.SumCatch(0, i) = m_Data.SumCatch(0, i) / m_Data.NumStep0
@@ -3630,8 +3630,8 @@ exitline:
                 m_Data.ValueGearGroup(0, iFlt, i) = m_Data.ValueGearGroup(0, iFlt, i) / m_Data.NumStep0
                 m_Data.ValueGearGroup(1, iFlt, i) = m_Data.ValueGearGroup(1, iFlt, i) / m_Data.NumStep1
                 For ii = 1 To m_Data.NoRegions
-                    m_Data.CatchGearGroupRegion(0, iFlt, i, ii) = m_Data.CatchGearGroupRegion(0, iFlt, i, ii) / m_Data.NumStep0
-                    m_Data.CatchGearGroupRegion(1, iFlt, i, ii) = m_Data.CatchGearGroupRegion(1, iFlt, i, ii) / m_Data.NumStep1
+                    m_Data.CatchGearGroupRegion(0, ii, iFlt, i) = m_Data.CatchGearGroupRegion(0, ii, iFlt, i) / m_Data.NumStep0
+                    m_Data.CatchGearGroupRegion(1, ii, iFlt, i) = m_Data.CatchGearGroupRegion(1, ii, iFlt, i) / m_Data.NumStep1
                 Next
             Next
         Next

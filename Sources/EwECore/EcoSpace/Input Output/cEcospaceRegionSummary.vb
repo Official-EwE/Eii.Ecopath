@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceRegionSummary.vb,v $
+' Revision 1.2  2008/12/09 19:48:56  joeb
+' Ouput objects now use core data instead of buffering data
+'
 ' Revision 1.1  2008/09/26 07:30:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -31,45 +34,37 @@ Imports EwEUtils.Core
 Public Class cEcospaceRegionSummary
     Inherits cCoreInputOutputBase
 
-    Private m_data(,,) As Single
-    Private m_biomByTime(,) As Single
+    'Private m_data(,,) As Single
+    'Private m_biomByTime(,) As Single
+    Private m_spacedata As cEcospaceDataStructures
+    Private m_Vars As New Dictionary(Of eVarNameFlags, IResultsWrapper)
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore, ByVal iRegion As Integer)
+    Public Sub New(ByRef TheCore As cCore, ByVal EcospaceData As cEcospaceDataStructures, ByVal iRegion As Integer)
         MyBase.New(TheCore)
 
-        Dim val As cValue
+        Me.m_spacedata = EcospaceData
 
         Me.DBID = iRegion '????
         Me.Index = iRegion
         Me.m_DataType = eDataTypes.EcospaceRegionResults
-        'no validators
-        'Biomass
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassStart, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf TheCore.GetCoreCounter)
-        m_values.Add(val.varName, val)
+    End Sub
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassEnd, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf TheCore.GetCoreCounter)
-        m_values.Add(val.varName, val)
 
-        Me.dimPrivateArrays()
+    Public Sub Init()
 
-        'Dim nGrps As Integer = TheCore.GetCoreCounter(eCoreCounterTypes.nGroups)
-        'Dim nFlts As Integer = TheCore.GetCoreCounter(eCoreCounterTypes.nFleets)
-        'Dim nTs As Integer = TheCore.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
+        m_Vars.Clear()
+        m_Vars.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(m_spacedata.BiomassRegionGroup, Me.Index))
 
-        'ReDim m_data(1, nFlts, nGrps)
-        'ReDim Me.m_biomByTime(nGrps, nTs)
+        'BiomassByRegion(summaryperiod(fixed),region(fixed),group(varies))
+        m_Vars.Add(eVarNameFlags.EcospaceRegionBiomassStart, New c3DResultsWrapper2Fixed(m_spacedata.SumBiomassRegion, 0, Me.Index))
+        m_Vars.Add(eVarNameFlags.EcospaceRegionBiomassEnd, New c3DResultsWrapper2Fixed(m_spacedata.SumBiomassRegion, 1, Me.Index))
 
-        ''no validators
-        ''Catch
-        'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionCatchStart, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.getCoreCounter)
-        'm_values.Add(val.varName, val)
-
-        'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionCatchEnd, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.getCoreCounter)
-        'm_values.Add(val.varName, val)
-
+        'CatchGearGroupRegion(var(fixed),region(fixed),fleet(varies),group(varies)) vartype and region fixed
+        m_Vars.Add(eVarNameFlags.EcospaceRegionCatchStart, New c4DResultsWrapper(m_spacedata.CatchGearGroupRegion, 0, Me.Index))
+        m_Vars.Add(eVarNameFlags.EcospaceRegionCatchEnd, New c4DResultsWrapper(m_spacedata.CatchGearGroupRegion, 1, Me.Index))
 
     End Sub
 
@@ -80,47 +75,19 @@ Public Class cEcospaceRegionSummary
     Public Overrides Function GetVariable(ByVal varName As eVarNameFlags, Optional ByVal iFirstIndex As Integer = cCore.NULL_VALUE, Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE) As Object
         Try
 
-            If iSecondIndex = cCore.NULL_VALUE Then
-                Return MyBase.GetVariable(varName, iFirstIndex)
+            If Not m_Vars.ContainsKey(varName) Then
+                'NOT in list of sim vars so get the value from the base class GetVariable(...)
+                Return MyBase.GetVariable(varName, iFirstIndex, iSecondIndex)
+            Else
+                'Varname is access directly via the core data
+                Return m_Vars.Item(varName).Value(iFirstIndex, iSecondIndex)
             End If
 
-            Select Case varName
-                Case eVarNameFlags.EcospaceRegionCatchStart
-                    Return m_data(0, iFirstIndex, iSecondIndex)
-                Case eVarNameFlags.EcospaceRegionCatchEnd
-                    Return m_data(1, iFirstIndex, iSecondIndex)
-
-                Case eVarNameFlags.EcospaceRegionBiomass
-                    Return m_biomByTime(iFirstIndex, iSecondIndex)
-            End Select
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
 
         Return cCore.NULL_VALUE
-
-    End Function
-
-    Public Overloads Function SetVariable(ByVal varName As eVarNameFlags, ByVal newValue As Single, ByVal iFirstIndex As Integer, ByVal iSecondIndex As Integer) As Boolean
-        Try
-            Select Case varName
-                Case eVarNameFlags.EcospaceRegionCatchStart
-                    m_data(0, iFirstIndex, iSecondIndex) = newValue
-                Case eVarNameFlags.EcospaceRegionCatchEnd
-                    m_data(1, iFirstIndex, iSecondIndex) = newValue
-
-                Case eVarNameFlags.EcospaceRegionBiomass
-                    m_biomByTime(iFirstIndex, iSecondIndex) = newValue
-
-            End Select
-
-            Return True
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-            Return False
-        End Try
-
 
     End Function
 
@@ -133,49 +100,32 @@ Public Class cEcospaceRegionSummary
     End Function
 
 
-    Friend Overrides Function Resize() As Boolean
-        MyBase.Resize()
-
-        dimPrivateArrays()
-
-    End Function
-
-
-    Private Sub dimPrivateArrays()
-        Dim nGrps As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
-        Dim nFlts As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets)
-        Dim nTs As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcospaceTimeSteps)
-
-        ReDim m_data(1, nFlts, nGrps)
-        ReDim Me.m_biomByTime(nGrps, nTs)
-
-    End Sub
 #End Region
 
 #Region "Variable via dot '.' operator"
 
-    Public Property BiomassStart(ByVal iGroup As Integer) As Single
+    Public ReadOnly Property BiomassStart(ByVal iGroup As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceRegionBiomassStart, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
-        End Set
+        'Set(ByVal value As Single)
+        '    SetVariable(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
+        'End Set
     End Property
 
-    Public Property BiomassEnd(ByVal iGroup As Integer) As Single
+    Public ReadOnly Property BiomassEnd(ByVal iGroup As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
-        End Set
+        'Set(ByVal value As Single)
+        '    SetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
+        'End Set
     End Property
 
 
-    Public Property CatchFleetGroupStart(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
+    Public ReadOnly Property CatchFleetGroupStart(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
         Get
             Try
                 Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionCatchStart, iFleet, iGroup), Single)
@@ -186,17 +136,17 @@ Public Class cEcospaceRegionSummary
 
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                SetVariable(eVarNameFlags.EcospaceRegionCatchStart, value, iFleet, iGroup)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Set
+        'Set(ByVal value As Single)
+        '    Try
+        '        SetVariable(eVarNameFlags.EcospaceRegionCatchStart, value, iFleet, iGroup)
+        '    Catch ex As Exception
+        '        Debug.Assert(False, ex.Message)
+        '    End Try
+        'End Set
     End Property
 
 
-    Public Property CatchFleetGroupEnd(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
+    Public ReadOnly Property CatchFleetGroupEnd(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
         Get
             Try
                 Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionCatchEnd, iFleet, iGroup), Single)
@@ -207,18 +157,18 @@ Public Class cEcospaceRegionSummary
 
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                SetVariable(eVarNameFlags.EcospaceRegionCatchEnd, value, iFleet, iGroup)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Set
+        'Set(ByVal value As Single)
+        '    Try
+        '        SetVariable(eVarNameFlags.EcospaceRegionCatchEnd, value, iFleet, iGroup)
+        '    Catch ex As Exception
+        '        Debug.Assert(False, ex.Message)
+        '    End Try
+        'End Set
 
     End Property
 
 
-    Public Property BiomassByTime(ByVal IGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property BiomassByTime(ByVal IGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Try
                 Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomass, IGroup, iTime), Single)
@@ -229,13 +179,13 @@ Public Class cEcospaceRegionSummary
 
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                SetVariable(eVarNameFlags.EcospaceRegionBiomass, value, IGroup, iTime)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Set
+        'Set(ByVal value As Single)
+        '    Try
+        '        SetVariable(eVarNameFlags.EcospaceRegionBiomass, value, IGroup, iTime)
+        '    Catch ex As Exception
+        '        Debug.Assert(False, ex.Message)
+        '    End Try
+        'End Set
 
     End Property
 

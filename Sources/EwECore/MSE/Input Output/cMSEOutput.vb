@@ -6,6 +6,14 @@ Imports EwEUtils.Core
 Public Class cMSEOutput
     Inherits cCoreGroupBase
 
+#Region "Private data"
+
+    Private m_biomass(,) As Single
+
+#End Region
+
+#Region "Construction"
+
     Public Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
 
@@ -83,24 +91,28 @@ Public Class cMSEOutput
 
     End Sub
 
+#End Region
 
-    Public Property LowerRiskCount(ByVal iGroup As Integer) As Single
+#Region "Variable access via dot operators"
+
+
+    Public Property LowerRiskCount(ByVal iGroup As Integer) As Integer
         Get
-            Return CType(GetVariable(eVarNameFlags.MSELowerRiskCount, iGroup), Single)
+            Return CInt(GetVariable(eVarNameFlags.MSELowerRiskCount, iGroup))
         End Get
 
-        Set(ByVal value As Single)
+        Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.MSELowerRiskCount, value, iGroup)
         End Set
     End Property
 
 
-    Public Property UpperRiskCount(ByVal iGroup As Integer) As Single
+    Public Property UpperRiskCount(ByVal iGroup As Integer) As Integer
         Get
-            Return CSng(GetVariable(eVarNameFlags.MSEUpperRiskCount, iGroup))
+            Return CInt(GetVariable(eVarNameFlags.MSEUpperRiskCount, iGroup))
         End Get
 
-        Set(ByVal value As Single)
+        Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.MSEUpperRiskCount, value, iGroup)
         End Set
     End Property
@@ -230,7 +242,29 @@ Public Class cMSEOutput
         End Set
     End Property
 
+    Public Property Biomass(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
+        Get
+            'Biomass array is zero based
+            Return m_biomass(iGroup - 1, iTime - 1)
+        End Get
 
+        Set(ByVal value As Single)
+            m_biomass(iGroup - 1, iTime - 1) = value
+        End Set
+    End Property
+
+#End Region
+
+#Region "Over ridden methods"
+
+    Friend Overrides Function Resize() As Boolean
+        MyBase.Resize()
+        Dim ng As Integer = m_core.GetCoreCounter(eCoreCounterTypes.nGroups) - 1
+        Dim nt As Integer = m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps) - 1
+        ReDim m_biomass(ng, nt)
+        Return True
+
+    End Function
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         Dim i As Integer
@@ -257,6 +291,19 @@ Public Class cMSEOutput
         Return True
 
     End Function
+
+
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999) As Object
+
+        If VarName = eVarNameFlags.MSEBiomass Then
+            Debug.Assert(iIndex <> cCore.NULL_VALUE And iIndex2 <> cCore.NULL_VALUE)
+            Return Biomass(iIndex, iIndex2)
+        End If
+        Return MyBase.GetVariable(VarName, iIndex, iIndex2)
+
+    End Function
+
+#End Region
 
 End Class
 
