@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.15  2008/12/09 19:51:17  joeb
+' Added MSE and Electivity varnames
+'
 ' Revision 1.14  2008/11/28 16:56:15  joeb
 ' Removed a ToDo
 '
@@ -605,6 +608,18 @@ Namespace Core
         EcosimAvgPrey
         EcosimAvgPred
 
+        ''' <summary>Consumption by Pred of this Prey over time </summary>
+        EcosimPredConsumpTime
+
+        ''' <summary>Consumption Rate by Pred of this Prey over time (consumpt(prey,pred)/b(prey)) over time</summary>
+        EcosimPredRateTime
+
+        EcosimElectivityTime
+
+        ''' <summary>Percentage of a group this group consumes over time</summary>
+        EcosimPreyPercentageTime
+
+
         isPred
         isPrey
 
@@ -921,6 +936,7 @@ Namespace Core
         MSEForcastGain
         MSEAssessPower
         MSENTrials
+        MSEBiomass
 
         ' Pedigree
         VariableName
@@ -1108,7 +1124,7 @@ Namespace Core
         ''' <summary>
         ''' 
         ''' </summary>
-        EcospaceBiomassResults
+        EcospaceGroupOuput
 
         EcospaceRegionResults
 
