@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.2  2008/12/09 19:52:43  joeb
+' Changes to UpdateGraph to draw data (still not done)
+'
 ' Revision 1.1  2008/12/09 00:30:02  joeh
 ' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
 '
@@ -142,7 +145,7 @@ Public Class ucSuitabilityPlot
 
         Dim predIn As cEcoPathGroupInput = Me.SelectedPredator()
         Dim predOut As cEcosimGroupOutput = Nothing
-        Dim preyIn As cEcoPathGroupOutput = Nothing
+        Dim preyEcopath As cEcoPathGroupOutput = Nothing
         Dim preyOut As cEcosimGroupOutput = Nothing
         Dim asX As Double()
         Dim asY As Double()
@@ -161,31 +164,46 @@ Public Class ucSuitabilityPlot
                 .YAxis.Title.Text = "Q prey / B pred"
                 .CurveList.Clear()
 
+                ReDim asX(Me.m_core.nEcosimTimeSteps - 1)
+                ReDim asY(Me.m_core.nEcosimTimeSteps - 1)
+
                 For iPrey As Integer = 1 To Me.m_core.nGroups
-                    preyIn = Me.m_core.EcoPathGroupOutputs(iPrey)
+                    preyEcopath = Me.m_core.EcoPathGroupOutputs(iPrey)
                     predOut = Me.m_core.EcoSimGroupOutputs(predIn.Index)
                     preyOut = Me.m_core.EcoSimGroupOutputs(iPrey)
 
-                    If (predIn.DietComp(iPrey) > 0.0!) And (preyIn.Biomass > 0.0) Then
+                    If (predIn.DietComp(iPrey) > 0.0!) And (preyEcopath.Biomass > 0.0) Then
 
-                        ReDim asX(Me.m_core.nEcosimTimeSteps - 1)
-                        ReDim asY(Me.m_core.nEcosimTimeSteps - 1)
+                        Array.Clear(asX, 0, asX.Length)
+                        Array.Clear(asY, 0, asX.Length)
 
                         For iTime As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                            asX(iTime - 1) = preyOut.Biomass(iTime) / preyIn.Biomass
-                            Select Case Me.m_tscmbPlotType.SelectedItem.ToString
-                                Case "Electivity"
-                                    asY(iTime - 1) = preyOut.Electivity(predIn.Index, iTime) / predOut.Biomass(iTime)
-                                Case "Functional response"
+
+                            Select Case Me.m_tscmbPlotType.SelectedIndex
+                                Case 0
+                                    '"Electivity"
+                                    'x = time
+                                    'y = Electpred(prey,t)
+                                    asX(iTime - 1) = iTime
+                                    asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
+                                Case 1
+                                    ' "Functional response"
+                                    'x = Bprey(T)/Bprey(0)
+                                    'y = Qpred(prey,t)/Bpred(t)
+                                    asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
                                     asY(iTime - 1) = preyOut.Consumption(predIn.Index, iTime) / predOut.Biomass(iTime)
-                                Case "Suitability"
-                                    asY(iTime - 1) = preyOut.Consumption(predIn.Index, iTime) / predOut.Biomass(iTime)
+                                Case 2
+                                    '"Suitability"
+                                    'x = Bprey(T)/Bprey(0)
+                                    'y = Elect(pred,prey)
+                                    asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
+                                    asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
                             End Select
-                            If asX(iTime - 1) > Xmax Then Xmax = asX(iTime - 1)
-                            If asY(iTime - 1) > Ymax Then Ymax = asY(iTime - 1)
+                            Xmax = Math.Max(asX(iTime - 1), Xmax)
+                            Ymax = Math.Max(asY(iTime - 1), Ymax)
                         Next
 
-                        .AddCurve(preyIn.Name, asX, asY, Me.m_sg.GroupColor(Me.m_core, iPrey), ZedGraph.SymbolType.None)
+                        .AddCurve(preyEcopath.Name, asX, asY, Me.m_sg.GroupColor(Me.m_core, iPrey), ZedGraph.SymbolType.None)
                     End If
                 Next
                 .XAxis.Scale.Max = CInt(Xmax)
