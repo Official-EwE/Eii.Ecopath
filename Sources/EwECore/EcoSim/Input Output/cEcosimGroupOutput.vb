@@ -8,17 +8,21 @@ Public Class cEcosimGroupOutput
 
 #Region "Private Data"
 
-    Private m_pred(,) As Single
-    Private m_prey(,) As Single
-    Private m_consumpt(,) As Single
-    Private m_elect(,) As Single
+    Private m_simData As cEcosimDatastructures
+    'dictionary of vars and wrappers that directly access the core data
+    Private m_simVars As New Dictionary(Of eVarNameFlags, IResultsWrapper)
 
 #End Region
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore, ByVal iGroup As Integer)
+    Public Sub New(ByRef TheCore As cCore, ByVal EcosimData As cEcosimDatastructures, ByVal iGroup As Integer)
         MyBase.New(TheCore)
+
+        Debug.Assert(TheCore IsNot Nothing)
+        Debug.Assert(EcosimData IsNot Nothing)
+
+        m_simData = EcosimData
 
         Dim val As cValue = Nothing
 
@@ -26,56 +30,9 @@ Public Class cEcosimGroupOutput
         Me.Index = iGroup
         Me.m_DataType = eDataTypes.EcoSimGroupOutput
 
-        'no validators
-        'MaxRelPB
+        'See Me.Init() for list of variables
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimAvgPred, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimAvgPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-
-        ' Biomass over all the time steps
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        ' Yield over all the time steps
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimYield, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimFeedingTime, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimConsumpBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimPredMort, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimFishMort, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                 AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimTotalMort, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimProdConsump, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimAvgWeight, eStatusFlags.NotEditable, eCoreCounterTypes.nEcosimTimeSteps, _
-                                AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
+        'Boolean vars use same structures as other vars
         'isPred
         val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.isPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
                                 AddressOf m_core.GetCoreCounter)
@@ -88,17 +45,54 @@ Public Class cEcosimGroupOutput
 
     End Sub
 
+
+    Public Sub Init()
+
+        'the results arrays of ecosim are redim for each run
+        'this means the reference to the results data changes 
+        'so reset the reference
+        m_simVars.Clear()
+
+        m_simVars.Add(eVarNameFlags.EcosimBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
+
+        'cEcosimDataStrucures.ResultsOverTime(var,group,time)
+        m_simVars.Add(eVarNameFlags.EcosimYield, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimFeedingTime, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.FeedingTime, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimConsumpBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ConsumpBiomass, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimPredMort, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.PredMort, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimFishMort, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.FishMort, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimTotalMort, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.TotalMort, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimAvgWeight, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.AvgWeight, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimProdConsump, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ProdConsump, Me.Index))
+
+        'cEcosimDataStrucures.ResultsSumByGroup(var,group,time)
+        m_simVars.Add(eVarNameFlags.EcosimAvgPred, New c3DResultsWrapper2Fixed(m_simData.ResultsSumByGroup, cEcosimDatastructures.eEcosimPredPreyResults.Pred, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimAvgPrey, New c3DResultsWrapper2Fixed(m_simData.ResultsSumByGroup, cEcosimDatastructures.eEcosimPredPreyResults.Prey, Me.Index))
+
+        'cEcosimDataStrucures.PredPreyResultsOverTime(var,prey,pred,time)
+        m_simVars.Add(eVarNameFlags.EcosimPredConsumpTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Consumption, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimPreyPercentageTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Prey, Me.Index))
+        m_simVars.Add(eVarNameFlags.EcosimPredRateTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Pred, Me.Index))
+
+        'cEcosimDataStrucures.Elect(group,group,time)
+        m_simVars.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
+
+    End Sub
+
 #End Region
 
 #Region "Overridden base class methods"
 
-    Friend Overrides Function Resize() As Boolean
-        MyBase.Resize()
 
-        ReDim m_pred(m_core.nGroups, m_core.nEcosimTimeSteps)
-        ReDim m_prey(m_core.nGroups, m_core.nEcosimTimeSteps)
-        ReDim m_consumpt(m_core.nGroups, m_core.nEcosimTimeSteps)
-        ReDim m_elect(m_core.nGroups, m_core.nEcosimTimeSteps)
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999) As Object
+
+        If Not m_simVars.ContainsKey(VarName) Then
+            'NOT in list of sim vars so get the value from the base class GetVariable(...)
+            Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
+        Else
+            'Varname is access directly via the core data
+            Return m_simVars.Item(VarName).Value(iIndex1, iIndex2)
+        End If
 
     End Function
 
@@ -184,143 +178,98 @@ Public Class cEcosimGroupOutput
 
     End Property
 
-    Public Property Biomass(ByVal iTime As Integer) As Single
+    Public ReadOnly Property Biomass(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimBiomass, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimBiomass, value, iTime)
-        End Set
-
     End Property
 
-    Public Property Yield(ByVal iTime As Integer) As Single
+    Public ReadOnly Property Yield(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimYield, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimYield, value, iTime)
-        End Set
-
     End Property
 
-    Public Property ConsumpBiomass(ByVal iTime As Integer) As Single
+    Public ReadOnly Property ConsumpBiomass(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimConsumpBiomass, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimConsumpBiomass, value, iTime)
-        End Set
-
     End Property
 
-    Public Property FeedingTime(ByVal iTime As Integer) As Single
+    Public ReadOnly Property FeedingTime(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimFeedingTime, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimFeedingTime, value, iTime)
-        End Set
-
     End Property
 
-    Public Property PredMort(ByVal iTime As Integer) As Single
+    Public ReadOnly Property PredMort(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimPredMort, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimPredMort, value, iTime)
-        End Set
-
     End Property
     ''' <summary>
     ''' Predation mort rate + fishing mort rate
     ''' </summary>
-    Public Property FishMort(ByVal iTime As Integer) As Single
+    Public ReadOnly Property FishMort(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimFishMort, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimFishMort, value, iTime)
-        End Set
-
     End Property
 
-    Public Property TotalMort(ByVal iTime As Integer) As Single
+    Public ReadOnly Property TotalMort(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimTotalMort, iTime))
         End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimTotalMort, value, iTime)
-        End Set
 
     End Property
 
     ''' <summary>
     ''' Production / Consumption (Ecopath GE)
     ''' </summary>
-    Public Property ProdConsump(ByVal iTime As Integer) As Single
+    Public ReadOnly Property ProdConsump(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimProdConsump, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimProdConsump, value, iTime)
-        End Set
-
     End Property
 
-    Public Property AvgWeight(ByVal iTime As Integer) As Single
+    Public ReadOnly Property AvgWeight(ByVal iTime As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgWeight, iTime))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimAvgWeight, value, iTime)
-        End Set
-
     End Property
 
-    Public Property AvgPredConsumption(ByVal iGroup As Integer) As Single
+    Public ReadOnly Property AvgPredConsumption(ByVal iGroup As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgPred, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimAvgPred, value, iGroup)
-        End Set
-
     End Property
 
-    Public Property AvgPreyConsumption(ByVal igroup As Integer) As Single
+    Public ReadOnly Property AvgPreyConsumption(ByVal igroup As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgPrey, igroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimAvgPrey, value, igroup)
-        End Set
-
     End Property
-
 
 #End Region
 
@@ -334,93 +283,61 @@ Public Class cEcosimGroupOutput
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property PreyPercentage(ByVal iPreyGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property PreyPercentage(ByVal iPreyGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Try
-                Return m_prey(iPreyGroup, iTime)
+                Return CSng(GetVariable(eVarNameFlags.EcosimPreyPercentageTime, iPreyGroup, iTime))
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PreyConsumption() " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".PreyPercentage() " & ex.Message)
             End Try
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                m_prey(iPreyGroup, iTime) = value
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PreyConsumption() " & ex.Message)
-            End Try
-        End Set
     End Property
 
     ''' <summary>
-    ''' Predation rate on this group by a group (predator)
+    ''' Predation rate on this prey by a pred 
     ''' </summary>
     ''' <param name="iPredGroup">Index of group that predates on this group</param>
     ''' <param name="iTime">Ecosim time step</param>
     ''' <value></value>
     ''' <returns>Predation on this group</returns>
     ''' <remarks></remarks>
-    Public Property Predation(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property Predation(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Try
-                Return m_pred(iPredGroup, iTime)
+                Return CSng(GetVariable(eVarNameFlags.EcosimPredRateTime, iPredGroup, iTime))
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".Predation() " & ex.Message)
             End Try
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                m_pred(iPredGroup, iTime) = value
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
-            End Try
-        End Set
     End Property
 
 
-    Public Property Consumption(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property Consumption(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Try
-                Return m_consumpt(iPredGroup, iTime)
+                Return CSng(GetVariable(eVarNameFlags.EcosimPredConsumpTime, iPredGroup, iTime))
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".Consumption() " & ex.Message)
             End Try
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                m_consumpt(iPredGroup, iTime) = value
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
-            End Try
-        End Set
     End Property
 
-    Public Property Electivity(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property Electivity(ByVal iPredGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Try
-                Return m_elect(iPredGroup, iTime)
+                Return CSng(GetVariable(eVarNameFlags.EcosimElectivityTime, iPredGroup, iTime))
             Catch ex As Exception
                 cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".Electivity() " & ex.Message)
             End Try
         End Get
 
-        Set(ByVal value As Single)
-            Try
-                m_elect(iPredGroup, iTime) = value
-            Catch ex As Exception
-                cLog.Write(ex)
-                Debug.Assert(False, Me.ToString & ".PredConsumption() " & ex.Message)
-            End Try
-        End Set
     End Property
 
 #End Region

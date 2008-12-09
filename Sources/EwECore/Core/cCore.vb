@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.45  2008/12/09 19:45:51  joeb
+' Added IResultsWrapper for wrapping core data arrays in output objects
+'
 ' Revision 1.44  2008/12/08 16:46:41  jeroens
 ' Added SearchInitialized plugin point
 '
@@ -4720,7 +4723,7 @@ Public Class cCore
         'populate the list of cEcoSimGroupInfo objects that the user will interact with 
         'to change group related parameters from the interface see EcosimGroupOutputs(iGroup)
         For i As Integer = 1 To nGroups
-            m_EcoSimGroupOuputs.Add(New cEcosimGroupOutput(Me, i))
+            m_EcoSimGroupOuputs.Add(New cEcosimGroupOutput(Me, Me.m_EcoSimData, i))
         Next i
 
     End Function
@@ -4729,6 +4732,9 @@ Public Class cCore
         Dim iGroup As Integer
 
         For Each group As cEcosimGroupOutput In m_EcoSimGroupOuputs
+
+            'reset the reference to the sim results arrays
+            group.Init()
 
             'this will only resize the arrays if NumGroups is different then the existing array size
             group.Resize()
@@ -4745,47 +4751,43 @@ Public Class cCore
             group.StanzaID = getStanzaIDForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
+            'For iTime As Integer = 1 To Me.nEcosimTimeSteps
+            '    group.Biomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iTime)
+            '    group.Yield(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, iTime)
+            '    group.ConsumpBiomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, iGroup, iTime)
+            '    group.FeedingTime(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, iGroup, iTime)
+            '    group.PredMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iGroup, iTime)
+            '    group.FishMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGroup, iTime)
+            '    group.TotalMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, iGroup, iTime)
 
-            For iTime As Integer = 1 To Me.nEcosimTimeSteps
-                group.Biomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iTime)
-                group.Yield(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, iTime)
-                group.ConsumpBiomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, iGroup, iTime)
-                group.FeedingTime(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, iGroup, iTime)
-                group.PredMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iGroup, iTime)
-                group.FishMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGroup, iTime)
-                group.TotalMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, iGroup, iTime)
+            '    group.ProdConsump(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, iGroup, iTime)
+            '    group.AvgWeight(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, iGroup, iTime)
 
-                group.ProdConsump(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, iGroup, iTime)
-                group.AvgWeight(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, iGroup, iTime)
-
-                For iPP As Integer = 1 To nGroups
-                    group.Predation(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, iPP, iTime)
-                    group.PreyPercentage(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, iPP, iTime)
-                    group.Consumption(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, iGroup, iPP, iTime)
-                    group.Electivity(iPP, iTime) = m_EcoSimData.Elect(iGroup, iPP, iTime)
-                Next iPP
-            Next iTime
+            '    For iPP As Integer = 1 To nGroups
+            '        group.Predation(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, iPP, iTime)
+            '        group.PreyPercentage(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, iPP, iTime)
+            '        group.Consumption(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, iGroup, iPP, iTime)
+            '        group.Electivity(iPP, iTime) = m_EcoSimData.Elect(iGroup, iPP, iTime)
+            '    Next iPP
+            'Next iTime
 
             For i As Integer = 1 To nGroups
 
-                group.AvgPredConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, i)
-                group.AvgPreyConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, i)
+                '   group.AvgPredConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, i)
+                '  group.AvgPreyConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, i)
 
+                group.isPrey(i) = False
                 'is this i prey for this output group
                 If m_EcoPathData.DC(iGroup, i) > 0 Then
                     group.isPrey(i) = True
-                Else
-                    group.isPrey(i) = False
                 End If
 
+                group.isPred(i) = False
                 'is this i a predator of this output group
                 If m_EcoPathData.DC(i, iGroup) > 0 Then
                     group.isPred(i) = True
-                Else
-                    group.isPred(i) = False
                 End If
             Next
-
 
             group.ResetStatusFlags()
 
@@ -5004,7 +5006,8 @@ Public Class cCore
             'sets NumYears and NTimes and resize the underlying data to the new number of years
             m_EcoSimData.redimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
 
-            Me.m_EcoSim.redimTime(False)
+            'jb Ecosim.redimTime() now called at the start of an ecosim run
+            'Me.m_EcoSim.redimTime(False)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
@@ -5949,7 +5952,7 @@ Public Class cCore
                     End If
 
                     For irgn As Integer = 1 To nRegions
-                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.BiomassByRegion(igrp, irgn, iTime)
+                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.BiomassRegionGroup(irgn, igrp, iTime)
                     Next
                 Next
 
@@ -6990,7 +6993,7 @@ Public Class cCore
 
             For igrp As Integer = 1 To nGroups
                 Me.m_EcospaceGroupSummaries.Add(New cEcospaceGroupSummary(Me, igrp))
-                m_EcospaceGroupOuputs.Add(New cEcospaceGroupOutput(Me, igrp))
+                m_EcospaceGroupOuputs.Add(New cEcospaceGroupOutput(Me, Me.m_EcoSpaceData, igrp))
             Next
 
             'this includes zero index 'Combined Fleets' 
@@ -7002,7 +7005,7 @@ Public Class cCore
             'the zero index holds the data not include in one of the other regions (OR)
             'It is NOT like the Fleets where the zero index in the combined values (AND)
             For iRgn As Integer = 0 To nRegions
-                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionSummary(Me, iRgn))
+                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionSummary(Me, Me.m_EcoSpaceData, iRgn))
             Next
 
             'load a new results object for the new scenario
@@ -7068,39 +7071,30 @@ Public Class cCore
                     objRgn.Name = "Undefined Area"
                 End If
 
+                'average the data over the number of cells in the region for output
                 Dim nCellsInRegion As Integer = m_EcoSpaceData.nCellsInRegion(objRgn.Index)
                 If nCellsInRegion = 0 Then nCellsInRegion = 1
 
                 For igrp = 1 To nGroups
-                    objRgn.BiomassStart(igrp) = m_EcoSpaceData.SumBiomassRegion(0, igrp, objRgn.Index) / nCellsInRegion
-                    objRgn.BiomassEnd(igrp) = m_EcoSpaceData.SumBiomassRegion(1, igrp, objRgn.Index) / nCellsInRegion
+                    m_EcoSpaceData.SumBiomassRegion(0, objRgn.Index, igrp) = m_EcoSpaceData.SumBiomassRegion(0, objRgn.Index, igrp) / nCellsInRegion
+                    m_EcoSpaceData.SumBiomassRegion(1, objRgn.Index, igrp) = m_EcoSpaceData.SumBiomassRegion(1, objRgn.Index, igrp) / nCellsInRegion
 
                     For iflt = 0 To nFleets
-                        objRgn.CatchFleetGroupStart(iflt, igrp) = m_EcoSpaceData.CatchGearGroupRegion(0, iflt, igrp, objRgn.Index) / nCellsInRegion
-                        objRgn.CatchFleetGroupEnd(iflt, igrp) = m_EcoSpaceData.CatchGearGroupRegion(1, iflt, igrp, objRgn.Index) / nCellsInRegion
+                        m_EcoSpaceData.CatchGearGroupRegion(0, objRgn.Index, iflt, igrp) = m_EcoSpaceData.CatchGearGroupRegion(0, objRgn.Index, iflt, igrp) / nCellsInRegion
+                        m_EcoSpaceData.CatchGearGroupRegion(1, objRgn.Index, iflt, igrp) = m_EcoSpaceData.CatchGearGroupRegion(1, objRgn.Index, iflt, igrp) / nCellsInRegion
                     Next iflt
                 Next igrp
 
-                For igrp = 1 To nGroups
-                    For it As Integer = 1 To nEcospaceTimeSteps
-                        objRgn.BiomassByTime(igrp, it) = m_EcoSpaceData.BiomassByRegion(igrp, objRgn.Index, it)
-                    Next
-                Next igrp
+                'init the data in region object
+                objRgn.Init()
 
             Next objRgn
 
             For Each objGrpOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
-                objGrpOutput.Resize()
+                'init the object to the underlying ecospace data
+                objGrpOutput.Init()
                 objGrpOutput.ResetStatusFlags()
-
                 objGrpOutput.Name = m_EcoPathData.GroupName(objGrpOutput.Index)
-                For itime As Integer = 1 To nEcospaceTimeSteps
-
-                    'this could change to have the object take a reference to the underlying data
-                    'instead of buffering the data twice
-                    objGrpOutput.Biomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.Biomass, itime)
-                    objGrpOutput.RelativeBiomass(itime) = m_EcoSpaceData.SpaceTSData(objGrpOutput.Index, eSpaceTSResults.RelativeBiomass, itime)
-                Next
             Next
 
             Me.m_EcospaceStats.SS = m_EcoSpaceData.SS
