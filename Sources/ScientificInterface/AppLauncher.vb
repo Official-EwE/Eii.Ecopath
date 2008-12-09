@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.19  2008/12/09 00:08:04  jeroens
+' Removed support for special plugin directories
+'
 ' Revision 1.18  2008/12/07 21:00:49  jeroens
 ' Only compatibility of enabled plug-ins is assessed
 '
@@ -778,24 +781,10 @@ Public Class AppLauncher
 
     Private Sub LoadPlugins()
 
-        Dim strAppPath As String = Path.GetFullPath(".\")
+        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
         Dim msg As cMessage = Nothing
 
-        Me.m_pluginManager.LoadPlugins(strAppPath)
-
-        ' Get plugins from dedicated plugin directory, if any
-        Try
-            Dim astrPluginDirs As String() = Directory.GetDirectories(Path.Combine(strAppPath, "Plugins"), _
-                "*.*", SearchOption.AllDirectories)
-            For Each strPluginPath As String In astrPluginDirs
-                If Directory.Exists(strPluginPath) Then Me.m_pluginManager.LoadPlugins(strPluginPath)
-            Next
-        Catch ex As Exception
-            ' Plugin dir not found? No big deal
-        End Try
-
-        ' Analyze settings
-        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
+        Me.m_pluginManager.LoadPlugins(Path.GetFullPath(".\"))
 
         ' Set up settings for disabling plug-ins
         If alDisabledPlugins Is Nothing Then
