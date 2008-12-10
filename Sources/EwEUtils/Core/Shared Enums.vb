@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.16  2008/12/10 02:00:02  jeroens
+' Moved datasource types here
+'
 ' Revision 1.15  2008/12/09 19:51:17  joeb
 ' Added MSE and Electivity varnames
 '
@@ -1491,7 +1494,7 @@ Namespace Core
 
 #End Region ' System units
 
-#Region "Quota types"
+#Region " Quota types "
 
     'enum values are hard coded so that they can be stored in the database 
     Public Enum eQuotaTypes
@@ -1501,6 +1504,26 @@ Namespace Core
         Selective = 3
     End Enum
 
-#End Region
+#End Region ' Quota types
+
+#Region " Datasource types "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Supported types of data sources.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Enum eDataSourceTypes
+        ''' <summary>No support.</summary>
+        NotSet = 0
+        ''' <summary>Datasource capable of handling EII-formatted data.</summary>
+        EII
+        ''' <summary>Datasource capable of handling MDB-formatted data.</summary>
+        MDB
+        ''' <summary>Datasource capable of handling ACCDB-formatted data.</summary>
+        ACCDB
+    End Enum
+
+#End Region ' Datasource types
 
 End Namespace ' Core
