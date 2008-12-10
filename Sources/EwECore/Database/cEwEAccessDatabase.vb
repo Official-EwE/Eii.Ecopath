@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.5  2008/12/10 02:12:10  jeroens
+' Open, Create can force database type
+'
 ' Revision 1.4  2008/11/26 20:39:41  jeroens
 ' Eitje
 '
@@ -24,6 +27,7 @@ Imports System.Data.OleDb
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -56,20 +60,26 @@ Namespace Database
         ''' </summary>
         ''' <param name="strDatabase">The file name of the .MDB to create.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
+        ''' <param name="databaseType">Database type to force.</param>
         ''' <returns>A <see cref="eAccessType">eAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------
         Public Overrides Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False) As eAccessType
+                Optional ByVal bOverwrite As Boolean = False, _
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
             Dim strSource As String = ""
             Dim datResult As eAccessType = eAccessType.Created
 
-            Select Case cDataSourceFactory.GetSupportedType(strDatabase)
-                Case cDataSourceFactory.eDataSourceTypes.MDB
+            If databaseType = eDataSourceTypes.NotSet Then
+                databaseType = cDataSourceFactory.GetSupportedType(strDatabase)
+            End If
+
+            Select Case databaseType
+                Case eDataSourceTypes.MDB
                     strSource = "EwE6.mdb"
-                Case cDataSourceFactory.eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.ACCDB
                     strSource = "EwE6.accdb"
                 Case Else
                     datResult = eAccessType.Failed_UnknownType
@@ -116,15 +126,20 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function SaveAs(ByVal strDatabaseTo As String, _
                 ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False) As eAccessType
+                Optional ByVal bOverwrite As Boolean = False, _
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
             Dim datResult As eAccessType = eAccessType.Created
             Dim strDatabaseFrom As String = Me.Name
             Dim bSucces As Boolean = True
 
+            If databaseType = eDataSourceTypes.NotSet Then
+                databaseType = cDataSourceFactory.GetSupportedType(strDatabaseTo)
+            End If
+
             ' Databases are copied from one spot to another, not using proper database replication
             ' Therefore, check if source and target types will remain unchanged
-            If cDataSourceFactory.GetSupportedType(strDatabaseTo) <> cDataSourceFactory.GetSupportedType(strDatabaseFrom) Then
+            If databaseType <> cDataSourceFactory.GetSupportedType(strDatabaseFrom) Then
                 Return eAccessType.Failed_TransferTypes
             End If
 
@@ -164,30 +179,46 @@ Namespace Database
         ''' Open a connection to a M$ Access database.
         ''' </summary>
         ''' <param name="strDatabase">The database to open.</param>
+        ''' <param name="databaseType">Type to use to open the database. Set this
+        ''' to 'NotSet' to auto-detect the database type.</param>
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open(ByVal strDatabase As String) As eAccessType
+        Public Overrides Function Open(ByVal strDatabase As String, _
+                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
             ' Pre
             Debug.Assert(Not String.IsNullOrEmpty(strDatabase), "Invalid data source specified")
             Debug.Assert(Not Me.IsConnected(), "Connection already open, close first")
 
-            Dim datResult As eAccessType = eAccessType.Opened
+            Dim datResult As eAccessType = eAccessType.Failed_Unknown
+
+            ' Does file exist?
+            If Not File.Exists(strDatabase) Then Return eAccessType.Failed_FileNotFound
+
+            ' Need to auto-detect database type?
+            If databaseType = eDataSourceTypes.NotSet Then
+                ' #Yes: auto-detect
+                databaseType = cDataSourceFactory.GetSupportedType(strDatabase)
+            End If
 
             Me.m_conn = New OleDbConnection()
 
-            Select Case cDataSourceFactory.GetSupportedType(strDatabase)
-                Case cDataSourceFactory.eDataSourceTypes.MDB
+            ' Try to assemble connection string
+            Select Case databaseType
+                Case eDataSourceTypes.MDB
                     Me.m_conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
-                Case cDataSourceFactory.eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.ACCDB
                     Me.m_conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
-                Case cDataSourceFactory.eDataSourceTypes.NotSupported
+                Case eDataSourceTypes.NotSet
+                    Me.m_conn.ConnectionString = ""
                     datResult = eAccessType.Failed_UnknownType
             End Select
-            If datResult = eAccessType.Opened Then
+
+            If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
 
                 Try
                     Me.m_conn.Open()
+                    datResult = eAccessType.Opened
                 Catch e As Exception
                     Console.WriteLine("** Exception {0} when opening Access db {1}", e.Message, strDatabase)
                     datResult = eAccessType.Failed_OSUnsupported
@@ -201,6 +232,8 @@ Namespace Database
                 End If
 
             End If
+
+            Return datResult
 
         End Function
 
@@ -318,9 +351,9 @@ Namespace Database
             Dim bCompactToOriginal As Boolean = (String.Compare(strDBFrom, strDBTo, True) = 0)
 
             Select Case cDataSourceFactory.GetSupportedType(strDBFrom)
-                Case cDataSourceFactory.eDataSourceTypes.MDB
+                Case eDataSourceTypes.MDB
                     strConnection = Me.m_strConnectionMDB
-                Case cDataSourceFactory.eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.ACCDB
                     ' Accdb needs different compaction engine, no idea how to do that for now
                     'strConnection = Me.m_strConnectionACCDB
                 Case Else

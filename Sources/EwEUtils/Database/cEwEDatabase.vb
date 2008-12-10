@@ -1,79 +1,14 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.3  2008/12/10 02:11:51  jeroens
+' Open, Create can force database type
+'
 ' Revision 1.2  2008/10/25 16:11:06  jeroens
 ' Added Compact
 '
 ' Revision 1.1  2008/09/26 07:31:10  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.27  2008/08/13 17:37:30  jeroens
-' Sssst...
-'
-' Revision 1.26  2008/07/25 14:21:10  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.25  2008/07/25 03:00:46  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.24  2008/07/21 18:26:08  jeroens
-' Fixed default transformations in FixUnwantedDBNulls
-'
-' Revision 1.23  2008/06/05 02:41:07  jeroens
-' Optimized OOP query
-'
-' Revision 1.22  2008/04/23 04:22:47  jeroens
-' OOP: Debugged list ref storing
-'
-' Revision 1.21  2008/04/21 11:30:26  jeroens
-' OOP: Added cOOPStorableList
-'
-' Revision 1.20  2008/04/18 01:13:32  jeroens
-' OOP: Added shared Adapter logic
-'
-' Revision 1.19  2008/04/17 14:59:58  jeroens
-' OOP: Fixed FK directions
-'
-' Revision 1.18  2008/04/16 16:17:47  jeroens
-' OOP: tested cOOPStorable.CopyFrom
-'
-' Revision 1.17  2008/04/15 17:35:42  jeroens
-' OOP: Added better tracing options
-' OOP: Disabled hokey datatypes
-' OOP: Added cOOPStorable.CopyFrom
-'
-' Revision 1.16  2008/04/14 19:12:11  jeroens
-' OOP: include only writable props
-' OOP: added different field types
-'
-' Revision 1.15  2008/04/13 19:37:51  jeroens
-' OOP: tweaked console output
-'
-' Revision 1.14  2008/04/13 18:44:46  jeroens
-' OOP: Fixed FK read issue
-'
-' Revision 1.13  2008/04/13 18:28:30  jeroens
-' OOP: reorganized regions
-' OOP: added remote cache control
-' OOP: FK objects saved
-'
-' Revision 1.12  2008/04/12 21:25:47  jeroens
-' Debugged object reading:
-' - Able to lookup type in loaded assemblies
-' - Type stored and read as [assembly name]![type name]
-'
-' Revision 1.11  2008/04/12 02:57:55  jeroens
-' Expaning OOP capabilities, can now store links to storable objects
-'
-' Revision 1.10  2008/04/10 19:26:28  jeroens
-' Added OOP storage/read support
-'
-' Revision 1.9  2008/04/08 12:11:23  jeroens
-' Removed assert on Execute, the return value is all that matters
-'
-' Revision 1.8  2008/02/28 17:35:54  jeroens
-' Removed wrongful assert on getting a reader
 '
 '==============================================================================
 
@@ -85,6 +20,7 @@ Imports System.Data.SqlClient
 Imports System.Data.Common
 Imports System.Reflection
 Imports System.ComponentModel
+Imports EwEUtils.Core
 
 Namespace Database
 
@@ -540,6 +476,8 @@ Namespace Database
             Failed_TransferTypes
             ''' <summary>Cannot perform requested operation on this type of file.</summary>
             Failed_DeprecatedOperation
+            ''' <summary>File is not found.</summary>
+            Failed_FileNotFound
         End Enum
 
 #End Region ' Public enums
@@ -558,16 +496,20 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public MustOverride Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False) As eAccessType
+                Optional ByVal bOverwrite As Boolean = False, _
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Open a connection to a database.
         ''' </summary>
         ''' <param name="strDatabase">The database to open.</param>
+        ''' <param name="databaseType">Type to use to open the database. Set this
+        ''' to 'NotSet' to auto-detect the database type.</param>
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Open(ByVal strDatabase As String) As eAccessType
+        Public MustOverride Function Open(ByVal strDatabase As String, _
+                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -594,7 +536,8 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public MustOverride Function SaveAs(ByVal strDatabaseTo As String, _
                 ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False) As eAccessType
+                Optional ByVal bOverwrite As Boolean = False, _
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
 
 #End Region ' Open and close
 
@@ -1202,23 +1145,25 @@ Namespace Database
             strSQL = String.Format("SELECT {0}, DBID FROM {1} ORDER BY DBID ASC", OOP_CLASSNAMECOL, Me.OOPGetTableName(GetType(cOOPStorable)))
             reader = Me.GetReader(strSQL)
 
-            Try
-                While reader.Read
-                    tData = OOPStringToType(CStr(reader(OOP_CLASSNAMECOL)))
-                    If bIncludeInherited Then
-                        bInclude = t.IsAssignableFrom(tData)
-                    Else
-                        bInclude = t Is tData
-                    End If
-                    If bInclude Then
-                        objKey = New cOOPKey(tData, CInt(reader("DBID")))
-                        lKeys.Add(objKey)
-                    End If
-                End While
-                Me.ReleaseReader(reader)
-            Catch ex As Exception
+            If reader IsNot Nothing Then
+                Try
+                    While reader.Read
+                        tData = OOPStringToType(CStr(reader(OOP_CLASSNAMECOL)))
+                        If bIncludeInherited Then
+                            bInclude = t.IsAssignableFrom(tData)
+                        Else
+                            bInclude = t Is tData
+                        End If
+                        If bInclude Then
+                            objKey = New cOOPKey(tData, CInt(reader("DBID")))
+                            lKeys.Add(objKey)
+                        End If
+                    End While
+                    Me.ReleaseReader(reader)
+                Catch ex As Exception
 
-            End Try
+                End Try
+            End If
             Return lKeys.ToArray()
 
         End Function
