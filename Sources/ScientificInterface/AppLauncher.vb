@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.20  2008/12/10 02:12:58  jeroens
+' Moved datasource types to EwEUtils
+'
 ' Revision 1.19  2008/12/09 00:08:04  jeroens
 ' Removed support for special plugin directories
 '
@@ -61,7 +64,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -89,7 +92,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
 
-#End Region
+#End Region ' Imports
 
 ''' <summary>
 ''' The main entry point for the graphics interface
@@ -258,8 +261,8 @@ Public Class AppLauncher
         Me.m_StatusPanel.Clear()
 
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
-            Case cDataSourceFactory.eDataSourceTypes.ACCDB, _
-                 cDataSourceFactory.eDataSourceTypes.MDB
+            Case eDataSourceTypes.ACCDB, _
+                 eDataSourceTypes.MDB
                 If Not ConvertToLatestVersion(strFileName) Then
                     ' #No: EwE6 database? abort
                     Return False
@@ -370,19 +373,21 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Public Function CreateEcopathModel(ByVal strFileName As String, ByVal strModelName As String) As cEwEDatabase
 
+        ' ToDo_JS: Globalize this method!
+
         Dim db As cEwEDatabase = Nothing
         Dim atResult As cEwEDatabase.eAccessType = cEwEDatabase.eAccessType.Failed_Unknown
         Dim msg As cMessage = Nothing
 
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
-            Case cDataSourceFactory.eDataSourceTypes.MDB, cDataSourceFactory.eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
                 db = New cEwEAccessDatabase()
                 atResult = db.Create(strFileName, strModelName, True)
 
-            Case cDataSourceFactory.eDataSourceTypes.EII
+            Case eDataSourceTypes.EII
                 atResult = cEwEDatabase.eAccessType.Failed_DeprecatedOperation
 
-            Case cDataSourceFactory.eDataSourceTypes.NotSupported
+            Case eDataSourceTypes.NotSet
                 atResult = cEwEDatabase.eAccessType.Failed_UnknownType
         End Select
 
@@ -1970,10 +1975,10 @@ Public Class AppLauncher
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case cDataSourceFactory.eDataSourceTypes.MDB
+            Case eDataSourceTypes.MDB
                 ' Only allow saving as MDB
                 strFileFilter = My.Resources.FILEFILTER_SAVE_MDB
-            Case cDataSourceFactory.eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.ACCDB
                 ' Only allow saving as ACCDB
                 strFileFilter = My.Resources.FILEFILTER_SAVE_ACCDB
             Case Else
@@ -2007,7 +2012,7 @@ Public Class AppLauncher
         Dim bEnable As Boolean = Me.m_core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case cDataSourceFactory.eDataSourceTypes.MDB, cDataSourceFactory.eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
                 ' NOP
             Case Else
                 ' Only allow save as when file was opened as MDB or ACCDB since the core does

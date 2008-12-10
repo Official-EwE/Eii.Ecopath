@@ -1,84 +1,14 @@
 '==============================================================================
 '
 ' $Log: DatabaseConversionWizard.vb,v $
+' Revision 1.3  2008/12/10 02:12:32  jeroens
+' Moved datasource types to EwEUtils
+'
 ' Revision 1.2  2008/11/08 23:52:52  jeroens
 ' Renamed file commands
 '
 ' Revision 1.1  2008/09/26 07:32:22  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.30  2008/09/09 14:44:49  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.29  2008/07/25 22:55:16  joeh
-' Change file extension from .mdb to .EwEmdb
-'
-' Revision 1.28  2008/07/25 14:21:12  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.27  2008/07/24 18:07:18  jeroens
-' ToValidFileName can be told to preserve path chars
-'
-' Revision 1.26  2008/07/09 14:38:19  jeroens
-' Added accdb import support
-'
-' Revision 1.25  2008/05/07 20:15:23  jeroens
-' Uses new FileUtilties
-'
-' Revision 1.24  2008/05/07 01:59:50  jeroens
-' Fixed bug 471
-'
-' Revision 1.23  2008/03/19 16:58:28  jeroens
-' Changed default new mdb names
-'
-' Revision 1.22  2007/11/24 16:47:45  jeroens
-' * Changed layout a bit
-' * Made ready to offer button for viewing log file
-'
-' Revision 1.21  2007/10/08 02:11:37  jeroens
-' * Restyled
-'
-' Revision 1.20  2007/07/25 03:25:19  jeroens
-' * Moved cEwEDatabase to EwEUtils
-'
-' Revision 1.19  2007/07/08 07:35:45  jeroens
-' * Localized
-'
-' Revision 1.18  2007/05/18 15:00:54  jeroens
-' * Fixed overwrite prompt timing
-' + Added output file path check
-'
-' Revision 1.17  2007/05/14 22:54:14  fgao
-' Add overwritten pop up dialog when the file exists in the directory.
-'
-' Revision 1.16  2007/05/09 04:14:29  jeroens
-' - Simplified
-' + Wizard buttons behave as expected
-'
-' Revision 1.15  2007/04/25 03:36:32  jeroens
-' Fixed crash on involuntary path chars in model name
-'
-' Revision 1.14  2006/12/19 08:00:55  jeroens
-' + Improved target dir picker dialog
-'
-' Revision 1.13  2006/12/16 02:02:25  jeroens
-' - Removed obsolete resource
-'
-' Revision 1.12  2006/12/06 02:28:07  jeroens
-' * Renamed AppLaucher to AppLauncher
-'
-' Revision 1.11  2006/09/27 15:20:51  jeroens
-' + Double-click on model list proceeds to next step
-'
-' Revision 1.10  2006/09/08 20:57:57  fgao
-' More reasonal finish button behavior...
-'
-' Revision 1.9  2006/08/16 02:14:26  jeroens
-' + Added import progress feedback
-'
-' Revision 1.8  2006/08/12 03:35:23  jeroens
-' * Localized
-' * Displays model titles instead of model names
 '
 '==============================================================================
 
@@ -91,6 +21,7 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Database
 Imports EwECore.DataSources
+Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Commands
@@ -400,7 +331,7 @@ Namespace Wizard
                     ' Enable when a model to convert is selected
                     bEnableNext = bEnableNext And (lbModels.SelectedIndex > -1)
                     ' ..and when an output location has been specified
-                    bEnableNext = bEnableNext And (cDataSourceFactory.GetSupportedType(txbSaveModelName.Text) <> cDataSourceFactory.eDataSourceTypes.NotSupported)
+                    bEnableNext = bEnableNext And (cDataSourceFactory.GetSupportedType(txbSaveModelName.Text) <> eDataSourceTypes.NotSet)
                 Case 2
             End Select
 
