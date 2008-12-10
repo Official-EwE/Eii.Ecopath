@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.11  2008/12/10 20:56:20  joeh
+' Finalize the Suitability Plot
+'
 ' Revision 1.10  2008/12/09 00:30:01  joeh
 ' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
 '
@@ -146,7 +149,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimOutputPlots), "Ecosim plot.htm")
         m_nodeController.Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
         m_nodeController.Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SRplot), "Stock recruitment S R plot.htm")
-        m_nodeController.Add("ndSuitabilityPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
+        m_nodeController.Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
 
         ' Ecosim Tools
         m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.9  2008/12/10 20:56:19  joeh
+' Finalize the Suitability Plot
+'
 ' Revision 1.8  2008/12/05 19:45:33  joeh
 ' Add "Impacting group" and "Impacted group"
 '
@@ -190,13 +193,13 @@ Public Class cPlotOfMixedTrophicImpact
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
-        Dim FunctRespUC As ucFunctionalResponse = _
-            CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
+        'Dim FunctRespUC As ucFunctionalResponse = _
+        '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
+        'If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.9  2008/12/10 20:56:19  joeh
+' Finalize the Suitability Plot
+'
 ' Revision 1.8  2008/12/04 01:14:16  joeh
 ' Add ucPlotOfMixedTrophicImpact
 '
@@ -132,7 +135,7 @@ Public Class frmNetworkAnalysis
     'Private m_IndicesWithoutPPREstForm As frmIndicesWithoutPPREst
     Private WithEvents m_IndicesWithPPREstClass As cIndicesWithPPREst
     'Private m_IndicesWithPPREstForm As frmIndicesWithPPREst
-    Private m_FunctionalResponse As cFunctionalResponse
+    'Private m_FunctionalResponse As cFunctionalResponse
 
     Private m_AlgorithmRunning As String
     Private m_ParentOfPathwayNode As String
@@ -545,21 +548,21 @@ Public Class frmNetworkAnalysis
                     dgvNetworkAnalysis.Visible = False
                     zgcNetworkAnalysis.Visible = False
                 End If
-            Case My.Resources.TREE_NODE_FUNCT_RESP
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If Not m_NetworkManager.IsEcosimNetworkWithoutPPREstRun Then
-                    m_EcosimNetworkAnalysis = cEcosimNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis(False) 'False->WithoutPPREst
-                End If
-                m_FunctionalResponse = cFunctionalResponse.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FunctionalResponse.SetUpPanel()
-                If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
-                    m_FunctionalResponse.CreatePlot() ', zgcNetworkAnalysis)
-                    scNetworkAnalysis.Panel2.Refresh()
-                End If
+                'Case My.Resources.TREE_NODE_FUNCT_RESP
+                '    If Not m_NetworkManager.IsMainNetworkRun Then
+                '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                '        m_NetworkAnalysis.RunNetworkAnalysis()
+                '    End If
+                '    If Not m_NetworkManager.IsEcosimNetworkWithoutPPREstRun Then
+                '        m_EcosimNetworkAnalysis = cEcosimNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                '        m_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis(False) 'False->WithoutPPREst
+                '    End If
+                '    m_FunctionalResponse = cFunctionalResponse.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+                '    m_FunctionalResponse.SetUpPanel()
+                '    If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
+                '        m_FunctionalResponse.CreatePlot() ', zgcNetworkAnalysis)
+                '        scNetworkAnalysis.Panel2.Refresh()
+                '    End If
             Case Else
         End Select
 

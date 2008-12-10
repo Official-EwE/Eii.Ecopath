@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.4  2008/12/10 20:56:19  joeh
+' Finalize the Suitability Plot
+'
 ' Revision 1.3  2008/12/04 01:14:48  joeh
 ' Add ucPlotOfMixedTrophicImpact
 '
@@ -70,15 +73,15 @@ Public Class cHideGroups
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
-        Dim FunctRespUC As ucFunctionalResponse = _
-            CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
+        'Dim FunctRespUC As ucFunctionalResponse = _
+        '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
             CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
+        'If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
         If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
     End Sub
 

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.3  2008/12/10 20:56:20  joeh
+' Finalize the Suitability Plot
+'
 ' Revision 1.2  2008/12/09 19:52:43  joeb
 ' Changes to UpdateGraph to draw data (still not done)
 '
@@ -120,7 +123,16 @@ Public Class ucSuitabilityPlot
     End Function
 
     Private Sub UpdatePlotTypeDropdown()
-        Me.m_tscmbPlotType.SelectedIndex = 0
+        With Me.m_tscmbPlotType
+            .Items.Clear()
+            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY)
+            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP)
+            .Items.Add(My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY)
+            If .Items.Count > 0 Then
+                .Sorted = True
+                .SelectedIndex = 0
+            End If
+        End With
     End Sub
 
     Private Sub UpdatePredatorDropdown()
@@ -159,9 +171,23 @@ Public Class ucSuitabilityPlot
             End With
         Else
             With Me.m_graph.GraphPane()
-                .Title.Text = String.Format("Functional Response {0}", predIn.Name)
-                .XAxis.Title.Text = "Prey biomass relative to Ecopath biomass"
-                .YAxis.Title.Text = "Q prey / B pred"
+                Select Case Me.m_tscmbPlotType.SelectedItem.ToString
+                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY
+                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & vbCrLf & _
+                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                        .XAxis.Title.Text = ""
+                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY
+                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP
+                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & vbCrLf & _
+                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                        .XAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
+                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_QPREY_BPRED
+                    Case My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
+                        .Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & vbCrLf & _
+                                      My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
+                        .XAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
+                        .YAxis.Title.Text = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
+                End Select
                 .CurveList.Clear()
 
                 ReDim asX(Me.m_core.nEcosimTimeSteps - 1)
@@ -179,20 +205,20 @@ Public Class ucSuitabilityPlot
 
                         For iTime As Integer = 1 To Me.m_core.nEcosimTimeSteps
 
-                            Select Case Me.m_tscmbPlotType.SelectedIndex
-                                Case 0
+                            Select Case Me.m_tscmbPlotType.SelectedItem.ToString
+                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY
                                     '"Electivity"
                                     'x = time
                                     'y = Electpred(prey,t)
                                     asX(iTime - 1) = iTime
                                     asY(iTime - 1) = predOut.Electivity(preyOut.Index, iTime)
-                                Case 1
+                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP
                                     ' "Functional response"
                                     'x = Bprey(T)/Bprey(0)
                                     'y = Qpred(prey,t)/Bpred(t)
                                     asX(iTime - 1) = preyOut.Biomass(iTime) / preyEcopath.Biomass
                                     asY(iTime - 1) = preyOut.Consumption(predIn.Index, iTime) / predOut.Biomass(iTime)
-                                Case 2
+                                Case My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
                                     '"Suitability"
                                     'x = Bprey(T)/Bprey(0)
                                     'y = Elect(pred,prey)
@@ -206,8 +232,8 @@ Public Class ucSuitabilityPlot
                         .AddCurve(preyEcopath.Name, asX, asY, Me.m_sg.GroupColor(Me.m_core, iPrey), ZedGraph.SymbolType.None)
                     End If
                 Next
-                .XAxis.Scale.Max = CInt(Xmax)
-                .YAxis.Scale.Max = CInt(Ymax)
+                .XAxis.Scale.Max = Xmax * 1.01
+                .YAxis.Scale.Max = Ymax * 1.01
             End With
         End If
 

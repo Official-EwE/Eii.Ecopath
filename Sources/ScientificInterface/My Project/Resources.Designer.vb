@@ -765,6 +765,69 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Chesson&apos;s electivity.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Electivity.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_ELECTIVITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_ELECTIVITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Functional response.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_FUNCT_RESP() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_FUNCT_RESP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predator: .
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_PRED() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_PRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey biomass relative to Ecopath biomass.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Q prey / B pred.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_QPREY_BPRED() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_QPREY_BPRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Suitability.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_SUITABILITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_SUITABILITY", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Ecosim3() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecosim3", resourceCulture)
