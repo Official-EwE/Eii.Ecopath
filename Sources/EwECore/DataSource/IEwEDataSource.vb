@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.2  2008/12/10 02:00:32  jeroens
+' Moved datasource types to EwEUtils
+'
 ' Revision 1.1  2008/09/26 07:30:13  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -80,22 +83,6 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Supported types of data sources.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eDataSourceTypes
-            ''' <summary>No support.</summary>
-            NotSupported = 0
-            ''' <summary>Datasource capable of handling <see cref="cEIIDataSource">EII</see>-formatted data.</summary>
-            EII
-            ''' <summary>Datasource capable of handling <see cref="cDBDataSource">MDB</see>-formatted data.</summary>
-            MDB
-            ''' <summary>Datasource capable of handling <see cref="cDBDataSource">ACCDB</see>-formatted data.</summary>
-            ACCDB
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Returns an EwE <see cref="eDataSourceTypes">datasource type</see> that
         ''' will be able to interact with the provided file name.
         ''' </summary>
@@ -110,7 +97,7 @@ Namespace DataSources
                 Case ".mdb", ".ewemdb" : Return eDataSourceTypes.MDB
                 Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.ACCDB
             End Select
-            Return eDataSourceTypes.NotSupported
+            Return eDataSourceTypes.NotSet
         End Function
 
         ''' -------------------------------------------------------------------
