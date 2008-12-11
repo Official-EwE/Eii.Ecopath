@@ -66,6 +66,7 @@ Partial Class ucSuitabilityPlot
         '
         'm_tscmbPlotType
         '
+        Me.m_tscmbPlotType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbPlotType.Items.AddRange(New Object() {"Electivity", "Functional response", "Suitability"})
         Me.m_tscmbPlotType.Name = "m_tscmbPlotType"
         Me.m_tscmbPlotType.Size = New System.Drawing.Size(121, 25)
@@ -78,6 +79,7 @@ Partial Class ucSuitabilityPlot
         '
         'm_tscmbPredator
         '
+        Me.m_tscmbPredator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbPredator.Name = "m_tscmbPredator"
         Me.m_tscmbPredator.Size = New System.Drawing.Size(121, 25)
         '
