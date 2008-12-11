@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.4  2008/12/11 18:28:31  jeroens
+' Added VERBOSE_LEVEL
+'
 ' Revision 1.3  2008/12/10 02:11:51  jeroens
 ' Open, Create can force database type
 '
@@ -12,6 +15,8 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 
 Imports System.Data
@@ -21,6 +26,12 @@ Imports System.Data.Common
 Imports System.Reflection
 Imports System.ComponentModel
 Imports EwEUtils.Core
+
+#End Region ' Imports
+
+#If VERBOSE Then
+#Const VERBOSE_LEVEL = 1
+#End If
 
 Namespace Database
 
@@ -434,14 +445,13 @@ Namespace Database
 
                                 Case Else
                                     ' Unexpected datatype encountered
+#If VERBOSE_LEVEL >= 2 Then
                                     Console.WriteLine("   - Default {0} for column {1}: unexpected datatype {2}", drow(strColumnName), strColumnName, columnDataType.ToString())
+#End If
                                     ' Set the default and hope for the best
                                     drow(strColumnName) = strColumnDefault
 
                             End Select
-                            ' Console.WriteLine("   - Default {0} set for column {1} ({2})", drow(strColumnName), strColumnName, columnDataType.ToString())
-                        Else
-                            ' Console.WriteLine("   - Default missing for column {0}, this should NOT be null", strColumnName)
                         End If
                     End If
                 Next
@@ -602,10 +612,8 @@ Namespace Database
         Public Function CommitTransaction(Optional ByVal bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
-                'Console.WriteLine("cEwEDatabase: Transaction commit started")
                 Me.m_transaction.Commit()
                 Me.m_transaction = Nothing
-                'Console.WriteLine("cEwEDatabase: Transaction commit succesful")
                 Return True
             Catch ex As Exception
                 Console.WriteLine("cEwEDatabase: Transaction commit failed: {0}", ex.Message)
@@ -623,10 +631,8 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
-                'Console.WriteLine("cEwEDatabase: Transaction rollback started")
                 Transaction.Rollback()
                 Me.m_transaction = Nothing
-                'Console.WriteLine("cEwEDatabase: Transaction rollback succesful")
                 Return True
             Catch ex As Exception
                 Console.WriteLine("cEwEDatabase: Transaction rollback failed: {0}", ex.Message)
@@ -853,9 +859,7 @@ Namespace Database
 
             ' Table name optional, no need to Assert
             Try
-                If (adapter.Update(dset) > 0) Then
-                    ' Console.WriteLine("Updated {0}", strTable)
-                End If
+                adapter.Update(dset)
             Catch ex As Exception
                 ' Woops
                 Console.WriteLine("Error {0} updating {1}", ex.Message, strTable)
@@ -962,8 +966,10 @@ Namespace Database
                                     piTgt.SetValue(Me, piSrc.GetValue(objSrc, Nothing), Nothing)
                                 End If
                             Catch ex As Exception
+#If VERBOSE_LEVEL >= 2 Then
                                 ' Ok, this did not work
                                 Console.WriteLine("Woops: failed to copy prop {0} : {1}", piTgt.Name, ex.Message)
+#End If
                             End Try
                         End If
                     Next
@@ -1241,14 +1247,14 @@ Namespace Database
                     Me.m_iNextDBID += 1
                 End If
 
-                ' Add to object cache to prevent loops, assume all is well
+                ' Add to saved object cache to prevent looped saving. Assume all is well
                 Me.m_OOPObjectCache.AddObject(obj)
                 ' Write the object with the primary key
                 bSucces = Me.OOPWriteObjectRecursive(t, obj, piKey)
 
                 ' Failure?!
                 If Not bSucces Then
-                    ' Remove object from the cache
+                    ' Remove object from the saved object cache
                     Me.m_OOPObjectCache.RemoveObject(obj)
                 End If
             End If
@@ -1489,7 +1495,11 @@ Namespace Database
                 bSucces = bSucces And Me.Execute(strQuery)
             Next
 
-            If Not bSucces Then Console.WriteLine("Failed to create table scheme {0}", Me.OOPGetTableName(t))
+            If Not bSucces Then
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("Failed to create table scheme {0}", Me.OOPGetTableName(t))
+#End If
+            End If
             Return bSucces
 
         End Function
@@ -1540,7 +1550,9 @@ Namespace Database
             End If
 
             If Not bSucces Then
+#If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("Failed to update table scheme {0}", Me.OOPGetTableName(t))
+#End If
             End If
 
             Return bSucces
@@ -1913,7 +1925,9 @@ Namespace Database
             Dim bIsBaseClass As Boolean = False
             Dim bSucces As Boolean = True
 
+#If VERBOSE_LEVEL >= 2 Then
             Console.WriteLine("Reading {0}.{1}", strTable, iDBID)
+#End If
 
             ' Not the base class?
             If Not Me.OOPIsBaseClass(t) Then
@@ -1948,7 +1962,9 @@ Namespace Database
                                             If Not Me.m_OOPObjectCache.HasObject(iLinkedDBID) Then
                                                 ' #Yes: read object into cache
                                                 If Me.ReadObject(Me.ReadObjectKey(iLinkedDBID)) Is Nothing Then
+#If VERBOSE_LEVEL >= 1 Then
                                                     Console.WriteLine("Read: fk object {0} failed to load for {1}.{2}", iLinkedDBID, strColumnName, strTable)
+#End If
                                                 End If
                                             End If
                                             ' Get the object
@@ -2003,7 +2019,9 @@ Namespace Database
             Dim key As cOOPKey = Nothing
             Dim bSucces As Boolean = True
 
+#If VERBOSE_LEVEL >= 2 Then
             Console.WriteLine("Reading list items {0}", list.DBID)
+#End If
 
             strSQL = String.Format("SELECT * FROM {0} WHERE DBID={1}", strTable, list.DBID)
             reader = Me.GetReader(strSQL)
@@ -2144,17 +2162,23 @@ Namespace Database
                                 ' #Yes: write foreign key value
                                 Dim objFK As cOOPStorable = DirectCast(pi.GetValue(obj, Nothing), cOOPStorable)
                                 Dim iDBIDFK As Integer = 0
-
+                                ' Has linked object attached?
                                 If (objFK IsNot Nothing) Then
-                                    ' Get DBID for linked object. 
+                                    ' #Yes: get DBID for linked object. 
                                     '     ! Note that this ID might not yet be assigned
                                     iDBIDFK = objFK.DBID
                                     ' Test if referenced object needs to be stored first
                                     If Not Me.m_OOPObjectCache.HasObject(iDBIDFK) Then
                                         ' Write linked object
-                                        Me.WriteObject(objFK)
-                                        ' Just in case, obtain DBID again in case WriteObject assigned this
-                                        iDBIDFK = objFK.DBID
+                                        If Me.WriteObject(objFK) Then
+                                            ' Just in case, obtain DBID again in case WriteObject assigned this
+                                            iDBIDFK = objFK.DBID
+                                        Else
+#If VERBOSE_LEVEL >= 1 Then
+                                            Console.WriteLine("Unable to write FK object {0} when writing {1} as {2}", objFK.DBID, obj, strTable)
+#End If
+                                            iDBIDFK = 0
+                                        End If
                                     End If
                                 End If
                                 ' Write FK key value
@@ -2164,14 +2188,18 @@ Namespace Database
                                 drow(strColumnName) = pi.GetValue(obj, Nothing)
                             End If
                         Else
+#If VERBOSE_LEVEL >= 2 Then
                             Console.WriteLine("Column type {0} not supported when writing {1} as {2}", strColumnName, obj, strTable)
+#End If
                         End If
                     Next
 
                     If bNewRow Then dt.Rows.Add(drow) Else drow.EndEdit()
 
                 Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
                     Console.WriteLine("Error {0} while saving {1} as {2}", ex.Message, obj, t.Name)
+#End If
                     bSucces = False
                 End Try
 
