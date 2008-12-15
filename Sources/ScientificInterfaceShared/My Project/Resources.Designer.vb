@@ -60,12 +60,73 @@ Namespace My.Resources
             End Set
         End Property
         
+        Friend ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CheckBoxHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Egg production shape {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWEGGPRODSHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Forcing shape {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEFAULT_NEWFORCINGSHAPE() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWFORCINGSHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New time series {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEFAULT_NEWTIMESERIES() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWTIMESERIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
+        '''</summary>
+        Friend ReadOnly Property FILEFILTER_IMAGE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_IMAGE", resourceCulture)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dolla [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property GENERIC_CURRENCIES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CURRENCIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to file &apos;{1}&apos;: {2}..
+        '''</summary>
+        Friend ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILESAVE_FAILURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &apos;{0}&apos; is succesfully saved to file &apos;{1}&apos;..
+        '''</summary>
+        Friend ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILESAVE_SUCCES", resourceCulture)
             End Get
         End Property
         
@@ -88,6 +149,114 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apr.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_APRIL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_APRIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Aug.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_AUGUST() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_AUGUST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Dec.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_DECEMBER() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_DECEMBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Feb.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_FEBRUARY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_FEBRUARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Jan.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_JANUARY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JANUARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Jul.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_JULY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JULY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Jun.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_JUNE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JUNE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mar.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_MARCH() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_MARCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to May.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_MAY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_MAY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Nov.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_NOVEMBER() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_NOVEMBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Oct.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_OCTOBER() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_OCTOBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sep.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_MONTH_ABBR_SEPTEMBER() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_SEPTEMBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cursor.
         '''</summary>
         Friend ReadOnly Property GENERIC_TEXT_CURSOR() As String
@@ -105,6 +274,69 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Add.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ADD() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ADD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time.
+        '''</summary>
+        Friend ReadOnly Property HEADER_TIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Values.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VALUES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Fleet:.
+        '''</summary>
+        Friend ReadOnly Property LABEL_FLEET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_FLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Group:.
+        '''</summary>
+        Friend ReadOnly Property LABEL_GROUP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_GROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mediating group (weighted) biomass.
+        '''</summary>
+        Friend ReadOnly Property MEDIATION_X_AXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("MEDIATION_X_AXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property minus() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("minus", resourceCulture)
@@ -116,6 +348,106 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("plus", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FORCING_DELETE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FORCING_DELETE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_TIMESERIES_DELETE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The name can not be empty..
+        '''</summary>
+        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG1() As String
+            Get
+                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cannot rename forcing function &quot;{0}&quot; {1}The name you specified already exists. Please specify another name.
+        '''.
+        '''</summary>
+        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG2() As String
+            Get
+                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Renaming mediation function error.
+        '''</summary>
+        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG3() As String
+            Get
+                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG3", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Change F.
+        '''</summary>
+        Friend ReadOnly Property RUN_ECOSIM_F_VALUE_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Enter F~value (or enter a string of comma separated F&apos;s for all fleets).
+        '''</summary>
+        Friend ReadOnly Property RUN_ECOSIM_F_VALUE_MSG() As String
+            Get
+                Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_MSG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Change shape type.
+        '''</summary>
+        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Changing a shape from &apos;Long term&apos; to &apos;Seasonal&apos; will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_MSG() As String
+            Get
+                Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_MSG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Adding time series {0} ....
+        '''</summary>
+        Friend ReadOnly Property STATUS_TIMESERIES_ADDING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_TIMESERIES_ADDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Updating time series {0}....
+        '''</summary>
+        Friend ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
             End Get
         End Property
         
@@ -206,6 +538,13 @@ Namespace My.Resources
         Friend ReadOnly Property VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("VALUE_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property WarningHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("WarningHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
     End Module
