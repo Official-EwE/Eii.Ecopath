@@ -27,17 +27,17 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
             Me.plSketchPad = New System.Windows.Forms.Panel
             Me.tlpSketchPad = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ScientificInterface.Ecosim.ucSketchPadToolbar
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucMediationSketchPad
+            Me.m_sketchPadToolbar = New ucSketchPadToolbar
+            Me.m_sketchPad = New ucMediationSketchPad
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
             Me.plBiomassPerct = New System.Windows.Forms.Panel
-            Me.m_bioPercent = New ScientificInterface.Ecosim.ucBioPercent
+            Me.m_bioPercent = New ucBioPercent
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tsBtnEditBioPert = New System.Windows.Forms.ToolStripButton
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolBox = New ScientificInterface.Ecosim.ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ScientificInterface.Ecosim.ucShapeToolboxToolbar
+            Me.m_shapeToolBox = New ucShapeToolbox
+            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
             Me.plSketchPad.SuspendLayout()
             Me.tlpSketchPad.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -200,7 +200,7 @@ Namespace Ecosim
         Friend WithEvents m_shapeToolBox As ucShapeToolbox
         Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
         Friend WithEvents m_bioPercent As ucBioPercent
-        Friend WithEvents m_sketchPad As ScientificInterface.Ecosim.ucMediationSketchPad
+        Friend WithEvents m_sketchPad As ucMediationSketchPad
 
     End Class
 End Namespace

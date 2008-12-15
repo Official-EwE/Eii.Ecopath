@@ -27,10 +27,10 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingMortality))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucForcingSketchPad
-            Me.m_shapeToolboxToolbar = New ScientificInterface.Ecosim.ucShapeToolboxToolbar
-            Me.m_shapeToolBox = New ScientificInterface.Ecosim.ucShapeToolbox
-            Me.m_sketchPadToolbar = New ScientificInterface.Ecosim.ucSketchPadToolbar
+            Me.m_sketchPad = New ucForcingSketchPad
+            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
+            Me.m_shapeToolBox = New ucShapeToolbox
+            Me.m_sketchPadToolbar = New ucSketchPadToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -105,11 +105,11 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Friend WithEvents m_shapeToolBox As ucShapeToolbox
-        Friend WithEvents m_sketchPad As ScientificInterface.Ecosim.ucForcingSketchPad
-        Friend WithEvents m_shapeToolboxToolbar As ScientificInterface.Ecosim.ucShapeToolboxToolbar
-        Friend WithEvents m_sketchPadToolbar As ScientificInterface.Ecosim.ucSketchPadToolbar
+        Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+        Private WithEvents m_shapeToolBox As ucShapeToolbox
+        Private WithEvents m_sketchPad As ucForcingSketchPad
+        Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
+        Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
 
     End Class
 End Namespace

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.2  2008/12/15 16:03:02  jeroens
+' Shape controls moved to ScIntShared
+'
 ' Revision 1.1  2008/09/26 07:31:45  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -45,7 +48,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -56,8 +59,9 @@ Imports System.Text.RegularExpressions
 Imports ScientificInterface.Other
 Imports EwECore
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared
 
-#End Region
+#End Region ' Imports
 
 Namespace Ecosim
 

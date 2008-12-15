@@ -192,18 +192,6 @@
     <Compile Include="Ecopath\Input\DietComp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.Designer.vb">
-      <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.Designer.vb">
-      <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.Designer.vb">
       <DependentUpon>ucBioPercent.vb</DependentUpon>
     </Compile>
@@ -255,35 +243,6 @@
     </Compile>
     <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeImage.vb" />
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.Designer.vb">
-      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeGUIHandlers.vb" />
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.Designer.vb">
-      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.Designer.vb">
-      <DependentUpon>frmShapeValue.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeValue\ShapeValueGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.Designer.vb">
-      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.Designer.vb">
       <DependentUpon>frmTimeSeries.vb</DependentUpon>
@@ -339,12 +298,6 @@
     <Compile Include="Ecosim\EcosimScenarioDlg.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\frmApplyShapeBase.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\ApplyShapeEwEGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.Designer.vb">
       <DependentUpon>frmForcingFunction.vb</DependentUpon>
     </Compile>
@@ -360,23 +313,11 @@
     <Compile Include="Ecosim\Input\MediationFunction\ucBioPercent.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.Designer.vb">
-      <DependentUpon>dlgApplyShape.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.Designer.vb">
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.Designer.vb">
-      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimOutputPlots.Designer.vb">
       <DependentUpon>EcosimOutputPlots.vb</DependentUpon>
@@ -708,44 +649,14 @@
     <Compile Include="Ecopath\Output\SearchRatesEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.Designer.vb">
-      <DependentUpon>dlgChangeShape.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.Designer.vb">
-      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.Designer.vb">
-      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\GroupInfoEwEGrid.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.Designer.vb">
-      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EcosimParameters.Designer.vb">
       <DependentUpon>EcosimParameters.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\EcosimParameters.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.Designer.vb">
-      <DependentUpon>ucSketchPad.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\VulnerabilitiesEwEGrid.vb">
       <SubType>Component</SubType>
@@ -876,17 +787,9 @@
       <DependentUpon>defBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\dlgApplyShape.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>dlgApplyShape.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\MediationFunction\frmMediationFunction.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPadToolbar.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\EcosimOutputPlots.resx">
       <SubType>Designer</SubType>
@@ -940,28 +843,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>ucAppGeneral.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
-      <DependentUpon>dlgChangeShape.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ForcingFunction\ucForcingSketchPad.resx">
-      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.resx">
-      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucMediationSketchPad.resx">
-      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EcosimParameters.resx">
       <DependentUpon>EcosimParameters.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\SketchPad\ucSketchPad.resx">
-      <DependentUpon>ucSketchPad.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\RunEcosim.resx">
@@ -1021,16 +904,28 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmModelDescription.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.resx">
-      <DependentUpon>frmTFMpolicy.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\dlgApplyShape.resx">
+      <DependentUpon>dlgApplyShape.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFConsumer.resx">
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.resx">
       <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.resx">
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.resx">
       <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.resx">
+      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.resx">
+      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.resx">
+      <DependentUpon>frmTFMpolicy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucBioPercent.resx">
@@ -1115,9 +1010,44 @@
     <Compile Include="Controls\VisualStyleEditors\ucHatchSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Definitions\UIEnums.vb" />
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ApplyShapeEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\dlgApplyShape.Designer.vb">
+      <DependentUpon>dlgApplyShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\dlgApplyShape.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.Designer.vb">
+      <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.Designer.vb">
+      <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\frmApplyShapeBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
+      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.Designer.vb">
+      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingRegulation\frmTFMpolicy.Designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
@@ -1134,18 +1064,7 @@
     <Compile Include="Ecosim\Input\FishingRegulation\gridTFMpolicy.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
-      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.Designer.vb">
-      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\MediationGUIHandler.vb" />
     <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
       <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>
     </Compile>
@@ -1390,32 +1309,8 @@
       <DependentUpon>frmFishingMortality.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedConsumer.resx">
-      <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ApplyShape\Mediation\frmApplyMedPrimaryProducer.resx">
-      <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolbox.resx">
-      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ShapeFunc\ShapeValue\frmShapeValue.resx">
-      <DependentUpon>frmShapeValue.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.resx">
       <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\TimeSeries\ucTimeSeriesSketchPad.resx">
-      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\TimeSeries\frmTimeSeries.resx">

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.3  2008/12/15 16:03:01  jeroens
+' Shape controls moved to ScIntShared
+'
 ' Revision 1.2  2008/11/26 18:19:44  sherman
 ' Added Results Plots to FPS
 '
@@ -18,7 +21,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

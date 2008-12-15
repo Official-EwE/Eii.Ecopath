@@ -1,4 +1,4 @@
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared
 
 Namespace Ecosim
 
@@ -28,8 +28,8 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmForcingFunction))
             Me.m_split = New System.Windows.Forms.SplitContainer
             Me.m_tlpShapeToolbox = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolbox = New ScientificInterface.Ecosim.ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ScientificInterface.Ecosim.ucShapeToolboxToolbar
+            Me.m_shapeToolbox = New ucShapeToolbox
+            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_sketchPadToolbar = New ucSketchPadToolbar
             Me.m_sketchPad = New ucForcingSketchPad
@@ -107,14 +107,13 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        'Friend WithEvents m_plSketchPad As System.Windows.Forms.Panel
-        Friend WithEvents m_split As System.Windows.Forms.SplitContainer
-        Friend WithEvents m_shapeToolbox As ucShapeToolbox
-        Friend WithEvents m_tlpShapeToolbox As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_sketchPadToolbar As ucSketchPadToolbar
-        Friend WithEvents m_sketchPad As ucForcingSketchPad
+        Private WithEvents m_split As System.Windows.Forms.SplitContainer
+        Private WithEvents m_shapeToolbox As ucShapeToolbox
+        Private WithEvents m_tlpShapeToolbox As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
+        Private WithEvents m_sketchPad As ucForcingSketchPad
     End Class
 End Namespace
 

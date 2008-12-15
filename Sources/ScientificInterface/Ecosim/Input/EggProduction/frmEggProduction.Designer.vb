@@ -1,4 +1,5 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
@@ -29,9 +30,9 @@ Namespace Ecosim
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.plSketchPad = New System.Windows.Forms.Panel
             Me.tlpSketchpad = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ScientificInterface.Ecosim.ucSketchPadToolbar
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucForcingSketchPad
-            Me.m_shapeToolBox = New ScientificInterface.Ecosim.ucShapeToolbox
+            Me.m_sketchPadToolbar = New ucSketchPadToolbar
+            Me.m_sketchPad = New ucForcingSketchPad
+            Me.m_shapeToolBox = New ucShapeToolbox
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
