@@ -96,6 +96,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\cEwEFormatProvider.vb" />
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.Designer.vb">
@@ -158,6 +159,53 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
+    <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeImage.vb" />
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.Designer.vb">
+      <DependentUpon>dlgChangeShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.Designer.vb">
+      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolbox.Designer.vb">
+      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolbox.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.Designer.vb">
+      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.Designer.vb">
+      <DependentUpon>frmShapeValue.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeValue\ShapeValueGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.Designer.vb">
+      <DependentUpon>ucSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.Designer.vb">
+      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\TextBox\ucCharacterTextBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -178,6 +226,24 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cUpwellingIndicator.vb" />
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.Designer.vb">
+      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.Designer.vb">
+      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.Designer.vb">
+      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteDiagram.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphPlotter.vb" />
@@ -222,8 +288,48 @@
       <DependentUpon>frmMemoryBox.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
+      <DependentUpon>dlgChangeShape.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.resx">
+      <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolbox.resx">
+      <DependentUpon>ucShapeToolbox.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeToolbox\ucShapeToolboxToolbar.resx">
+      <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeValue\frmShapeValue.resx">
+      <DependentUpon>frmShapeValue.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\SketchPad\ucSketchPad.resx">
+      <DependentUpon>ucSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.resx">
+      <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Slider\ucSlider.resx">
       <DependentUpon>ucSlider.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.resx">
+      <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.resx">
+      <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.resx">
+      <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -257,6 +363,12 @@
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CheckBoxHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WarningHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
