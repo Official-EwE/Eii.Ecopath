@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cUpwellingIndicator.vb,v $
-' Revision 1.1  2008/09/26 07:31:17  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:37:27  jeroens
+' no message
 '
 ' Revision 1.1  2008/06/01 23:45:09  jeroens
 ' Separated from Scientific Interface
@@ -12,13 +12,13 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Public Class cUpwellingIndicator
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphPlotter.vb,v $
+' Revision 1.16  2008/12/15 15:37:28  jeroens
+' no message
+'
 ' Revision 1.15  2008/12/04 06:03:59  sherman
 ' Fixed Show/Hide refresh bug
 ' Fixed disposed bug
@@ -52,14 +55,13 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports ZedGraph
 Imports ScientificInterfaceShared.Style
-#End Region
-
+#End Region ' Imports
 
 Namespace Controls
     Public Class ZedGraphPlotter

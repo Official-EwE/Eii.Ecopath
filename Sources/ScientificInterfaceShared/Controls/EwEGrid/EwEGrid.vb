@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.6  2008/12/15 15:37:28  jeroens
+' no message
+'
 ' Revision 1.5  2008/11/26 02:58:58  jeroens
 ' Fixed issue 565 part I
 '
@@ -67,7 +70,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

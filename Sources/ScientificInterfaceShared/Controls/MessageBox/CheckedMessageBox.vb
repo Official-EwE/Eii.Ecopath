@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CheckedMessageBox.vb,v $
+' Revision 1.2  2008/12/15 15:37:27  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:18  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -18,7 +21,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Runtime.InteropServices
@@ -26,7 +29,7 @@ Imports System.Windows.Forms
 Imports EwEUtils.Win32Api
 Imports System.Threading
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Controls
 
@@ -37,7 +40,7 @@ Namespace Controls
     ''' ===========================================================================
     Public Class CheckedMessageBox
 
-#Region " Imports directive "
+#Region " Imports "
 
         Private Shared s_iHook As Integer = 0
         Private Shared s_hwnd As IntPtr = IntPtr.Zero
@@ -46,7 +49,7 @@ Namespace Controls
         Private Shared s_bChecked As Boolean = True
         Private Shared s_strCheckText As String = ""
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 #Region " Public interfaces "
 

@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cEwESettingsProvider.vb,v $
-' Revision 1.1  2008/09/26 07:31:22  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:37:54  jeroens
+' no message
 '
 ' Revision 1.1  2008/08/14 01:49:54  jeroens
 ' Moved
@@ -15,7 +15,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System
@@ -30,7 +30,7 @@ Imports System.Collections.Specialized
 Imports Microsoft.Win32
 Imports System.Xml
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Public Class cEwESettingsProvider
     Inherits SettingsProvider

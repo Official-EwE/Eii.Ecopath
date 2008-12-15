@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFormatProvider.vb,v $
+' Revision 1.2  2008/12/15 15:33:21  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -22,7 +25,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -35,7 +38,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Properties
 
-#End Region ' Imports directive 
+#End Region ' Imports 
 
 Namespace Controls
 

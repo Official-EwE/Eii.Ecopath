@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucCharacterTextBox.vb,v $
+' Revision 1.2  2008/12/15 15:37:28  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:19  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -18,13 +21,13 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms
 Imports System.ComponentModel
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Controls
 

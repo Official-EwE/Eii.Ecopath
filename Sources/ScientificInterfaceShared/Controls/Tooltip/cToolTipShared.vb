@@ -1,19 +1,19 @@
 '==============================================================================
 '
 ' $Log: cToolTipShared.vb,v $
-' Revision 1.1  2008/09/26 07:31:19  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:37:27  jeroens
+' no message
 '
 ' Revision 1.1  2008/08/10 01:35:27  jeroens
 ' Initial version
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Controls
 

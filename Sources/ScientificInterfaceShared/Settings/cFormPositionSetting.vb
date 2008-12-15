@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFormPositionSetting.vb,v $
+' Revision 1.3  2008/12/15 15:37:54  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/06 04:44:56  jeroens
 ' Fixed bug 554
 '
@@ -9,7 +12,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Text
@@ -17,7 +20,7 @@ Imports System.Windows.Forms
 Imports System.Collections.Specialized
 Imports EwEUtils.Win32Api
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
