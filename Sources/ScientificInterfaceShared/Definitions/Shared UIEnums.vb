@@ -1,11 +1,8 @@
 '==============================================================================
 '
 ' $Log: Shared UIEnums.vb,v $
-' Revision 1.2  2008/10/02 17:05:26  villyc
-' mc ecobio updates
-'
-' Revision 1.1  2008/09/26 07:31:20  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.3  2008/12/15 15:37:44  jeroens
+' Moved shape enums from ScInt
 '
 ' Revision 1.2  2008/09/26 00:22:50  villyc
 ' updating ecosimMonteCarlo to pick vulnerabilities
@@ -89,7 +86,95 @@ Namespace Definitions
         EE
         BA
         VU
+    End Enum
 
+    ''' <summary>
+    ''' Enumerated type that states how line graphs will be rendered.
+    ''' </summary>
+    <CLSCompliant(True)> _
+    Public Enum eSketchDrawModeTypes As Integer
+        ''' <summary>The area under a graph will be filled.</summary>
+        Fill = 0
+        ''' <summary>A graph will be rendered as a line.</summary>
+        Line
+        ''' <summary>A graph will be rendered as individual points.</summary>
+        Dots
+        ''' <summary>A graph will be rendered as a line, connecting non-zero points only.</summary>
+        LineSelective
+    End Enum
+
+    ''' <summary>
+    ''' Enumerated type that states whether a graph will display its axes.
+    ''' </summary>
+    <CLSCompliant(True)> _
+    Public Enum eAxisDisplayModeTypes As Integer
+        ''' <summary>Axes will be displayed.</summary>
+        Show
+        ''' <summary>Axes will not be displayed.</summary>
+        Hide
+    End Enum
+
+    ''' <summary>
+    ''' Enumerated type that states how graph tick marks will be scaled.
+    ''' </summary>
+    <CLSCompliant(True)> _
+    Public Enum eAxisTickmarkDisplayModeTypes As Integer
+        ''' <summary>Tick marks will be only be displayed for the range of values on an axis.</summary>
+        Relative
+        ''' <summary>Tick marks will display the full (absolute) range of values on an axis.</summary>
+        Absolute
+    End Enum
+
+    ''' <summary>
+    ''' Enumerated type that states how the values on a graph axis will be scaled.
+    ''' </summary>
+    <CLSCompliant(True)> _
+    Public Enum eAxisAutoScaleModeTypes As Integer
+        ''' <summary>A graph will automatically scale its axis to show the range of values on an axis.</summary>
+        Auto
+        ''' <summary>A graph will not scale its axis to show the range of values on an axis.</summary>
+        Fixed
+    End Enum
+
+    <CLSCompliant(True)> _
+    Public Enum eRightClickAutoScaleModeTypes As Integer
+        Auto
+        Fixed
+    End Enum
+
+    <CLSCompliant(True)> _
+    Public Enum eApplyTargetTypes As Integer
+        NotSet = 0
+        Consumer
+        PrimaryProducer
+    End Enum
+
+    <CLSCompliant(True)> _
+    Public Enum eApplyShapeTypes As Integer
+        NotSet = 0
+        Forcing
+        Mediation
+    End Enum
+
+    <CLSCompliant(True)> _
+    Public Enum eTracerRunModeTypes As Integer
+        Disabled = 0
+        RunSim
+        RunSpace
+    End Enum
+
+    ''' <summary>
+    ''' Enumerated type for identifying the broad categories of time shapes.
+    ''' </summary>
+    <CLSCompliant(True)> _
+    Public Enum eShapeCategoryTypes As Integer
+        NotSet
+        ''' <summary>Shape is a <see cref="EwECore.cForcingFunction">Forcing shape</see>.</summary>
+        Forcing
+        ''' <summary>Shape is a <see cref="EwECore.cMediationFunction">Mediation shape</see>.</summary>
+        Mediation
+        ''' <summary>Shape is a Egg production shape.</summary>
+        EggProduction
     End Enum
 
 End Namespace
