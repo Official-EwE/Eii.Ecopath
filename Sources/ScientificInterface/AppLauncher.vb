@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.21  2008/12/15 15:57:42  jeroens
+' Uses IApplicationStatusDispatcher
+'
 ' Revision 1.20  2008/12/10 02:12:58  jeroens
 ' Moved datasource types to EwEUtils
 '
@@ -98,6 +101,7 @@ Imports Microsoft.VisualBasic
 ''' The main entry point for the graphics interface
 ''' </summary>
 Public Class AppLauncher
+    Implements IApplicationStatusDispatcher
 
 #Region " Variables "
 
@@ -110,6 +114,7 @@ Public Class AppLauncher
     Private m_StatusStripHelper As StatusStripHelper = Nothing
     ''' <summary>Style guide updater.</summary>
     Private m_sgu As StyleGuideUpdater = Nothing
+    Private m_asn As cApplicationStatusNotifier = Nothing
 
     Private m_strLastSelectedPath As String = ""
     ''' <summary>Active wait cursor count.</summary>
@@ -197,6 +202,7 @@ Public Class AppLauncher
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
 
+        Me.m_asn = New cApplicationStatusNotifier(Me)
     End Sub
 
 #End Region ' Constructors
@@ -476,7 +482,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public Sub SetStatusText(Optional ByVal strText As String = "", _
         Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-        Optional ByVal sProgress As Single = 0.0)
+        Optional ByVal sProgress As Single = 0.0) Implements ScientificInterfaceShared.IApplicationStatusDispatcher.SetStatusText
 
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
