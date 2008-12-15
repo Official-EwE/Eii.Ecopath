@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridRegulatoryOptions.vb,v $
+' Revision 1.2  2008/12/15 15:55:35  jeroens
+' no message
+'
 ' Revision 1.1  2008/10/09 00:09:38  jeroens
 ' Renamed
 '
@@ -27,7 +30,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -35,7 +38,7 @@ Imports EwEUtils.Core
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Ecosim
 

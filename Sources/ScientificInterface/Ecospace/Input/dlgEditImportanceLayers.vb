@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditImportanceLayers.vb,v $
+' Revision 1.4  2008/12/15 15:54:30  jeroens
+' no message
+'
 ' Revision 1.3  2008/11/11 07:36:52  jeroens
 ' Added comments
 '
@@ -12,7 +15,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

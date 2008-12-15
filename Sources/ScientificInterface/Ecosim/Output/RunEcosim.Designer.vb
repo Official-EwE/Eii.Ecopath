@@ -1,9 +1,9 @@
 Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterface.Controls
+Imports ScientificInterfaceShared
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
+    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class RunEcosim
         Inherits frmEwE
 
@@ -34,8 +34,8 @@ Namespace Ecosim
             Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucForcingSketchPad
-            Me.m_graph = New ScientificInterface.Ecosim.ucBiomassPlotzgc
+            Me.m_sketchPad = New ucForcingSketchPad
+            Me.m_graph = New Ecosim.ucBiomassPlotzgc
             Me.m_spContainer = New System.Windows.Forms.SplitContainer
             Me.ToolStrip1.SuspendLayout()
             Me.m_spContainer.Panel1.SuspendLayout()
@@ -93,7 +93,7 @@ Namespace Ecosim
             'm_sketchPad
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.AxisDisplayMode = ScientificInterface.eAxisDisplayModeTypes.Show
+            Me.m_sketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.BaselineValue = 1.0!
             Me.m_sketchPad.Color = System.Drawing.Color.AliceBlue
@@ -101,10 +101,10 @@ Namespace Ecosim
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.RightClickAutoScaleMode = ScientificInterface.eRightClickAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.SketchDrawMode = ScientificInterface.eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterface.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
             '

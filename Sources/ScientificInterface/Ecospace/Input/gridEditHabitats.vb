@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditHabitats.vb,v $
+' Revision 1.2  2008/12/15 15:55:33  jeroens
+' no message
+'
 ' Revision 1.1  2008/11/04 04:58:44  jeroens
 ' Renamed
 '
@@ -12,7 +15,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

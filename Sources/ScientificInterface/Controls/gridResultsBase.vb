@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: gridResultsBase.vb,v $
-' Revision 1.1  2008/09/26 07:31:26  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:55:36  jeroens
+' no message
 '
 ' Revision 1.1  2008/06/02 00:01:20  jeroens
 ' Added ScientificInterfaceShared
@@ -18,7 +18,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

@@ -265,10 +265,6 @@
   <data name="HEADER_BIOMASSSTART" xml:space="preserve">
     <value>Biomass (start)</value>
   </data>
-  <data name="GENERIC_MONTH_ABBR_MAY" xml:space="preserve">
-    <value>May</value>
-    <comment>Short for May (how much shorter can you get?)</comment>
-  </data>
   <data name="HEADER_PBZ" xml:space="preserve">
     <value>Prod./biom (=Z)</value>
   </data>
@@ -301,9 +297,6 @@
   <data name="STATUSSTRIP_ECOSPACE_TOOLTIP" xml:space="preserve">
     <value>Ecospace scenario{0}Name: {1}{3}{0}Description: {2}</value>
     <comment>Ecospace scenario status tooltip. Fields: {0}=vbNewLine, {1}=scenario name, {2}=scenario description,{3}=modified state [STATUSSTRIP_MODIFIED]</comment>
-  </data>
-  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
-    <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
   <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecospace scenario - Ecopath model {0}</value>
@@ -357,7 +350,7 @@
   <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
     <value>Remove</value>
   </data>
-  <data name="TS_STATUS_UPDATINGTIMESERIES" xml:space="preserve">
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
     <value>Updating time series {0}...</value>
     <comment>{0}: time series name</comment>
   </data>
@@ -417,10 +410,6 @@
     <value>{0} {1}</value>
     <comment>{0}: name, {1}: sequence number. Used to name new items in a sequential order</comment>
   </data>
-  <data name="GENERIC_MONTH_ABBR_AUGUST" xml:space="preserve">
-    <value>Aug</value>
-    <comment>Short for August</comment>
-  </data>
   <data name="ABOUT_CAPTION" xml:space="preserve">
     <value>About {0}</value>
     <comment>{0}: Application name</comment>
@@ -430,13 +419,6 @@
   </data>
   <data name="HEADER_CATCHVALUE" xml:space="preserve">
     <value>Catch value</value>
-  </data>
-  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
-    <value>Change shape type</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JULY" xml:space="preserve">
-    <value>Jul</value>
-    <comment>Short for July</comment>
   </data>
   <data name="STATUS_ECOSPACE_SAVING" xml:space="preserve">
     <value>Saving Ecospace scenario '{0}'...</value>
@@ -453,10 +435,6 @@
         7/+ivf//2xXfBmn2IikWQIpBhgS33AVqXh2IL63gTUgORWedCCU02qREQrbijEZSNMLUAgANpa9LnnNK
         OAAAAABJRU5ErkJggg==
 </value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_MARCH" xml:space="preserve">
-    <value>Mar</value>
-    <comment>Short for March</comment>
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
     <value>Search started, base SS = {0}</value>
@@ -570,9 +548,6 @@
     <value>Total cost ({0})</value>
     <comment>{0}: Monetary unit</comment>
   </data>
-  <data name="TS_CATCHES_NAME" xml:space="preserve">
-    <value>Catches</value>
-  </data>
   <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
     <value>Group {0}</value>
     <comment>{0}: sequential number</comment>
@@ -620,10 +595,6 @@
   </data>
   <data name="HEADER_STARTAGE" xml:space="preserve">
     <value>Age, start (months)</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JANUARY" xml:space="preserve">
-    <value>Jan</value>
-    <comment>Short for January</comment>
   </data>
   <data name="HEADER_EFFPOWER" xml:space="preserve">
     <value>Effective power</value>
@@ -699,9 +670,6 @@
   <data name="GENERIC_CAPTION" xml:space="preserve">
     <value>Ecopath with Ecosim 6</value>
   </data>
-  <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
-    <value>Mediating group (weighted) biomass</value>
-  </data>
   <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
     <value>Adding time series {0} ...</value>
     <comment>{0}: time series name</comment>
@@ -719,9 +687,6 @@
   <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
     <value>Population biomass</value>
   </data>
-  <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
-    <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
-  </data>
   <data name="MoveUp" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -737,10 +702,7 @@
   <data name="HEADER_TOTALCATCH" xml:space="preserve">
     <value>Total catch</value>
   </data>
-  <data name="RENAME_FORCING_ERROR_MSG1" xml:space="preserve">
-    <value>The name can not be empty.</value>
-  </data>
-  <data name="FORCING_PROMPT_DELETE" xml:space="preserve">
+  <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
     <value>You are about to delete forcing function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0} = forcing function name</comment>
   </data>
@@ -759,9 +721,6 @@
   <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
     <value>To delete</value>
     <comment>Used in complex item management dialogs. States that an item will be deleted once the dialog is applied</comment>
-  </data>
-  <data name="TS_BIOMASSFORCING_NAME" xml:space="preserve">
-    <value>Force biomass</value>
   </data>
   <data name="HEADER_STANZA_AGE" xml:space="preserve">
     <value>Stanza age (in months)</value>
@@ -814,16 +773,9 @@
   <data name="MCRUN_HEADER_OUTPUT_BA" xml:space="preserve">
     <value>Biom.acc.</value>
   </data>
-  <data name="CheckBoxHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CheckBoxHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecosim scenario - Ecopath model {0}</value>
     <comment>{0} = Ecosim scenario name</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_APRIL" xml:space="preserve">
-    <value>Apr</value>
-    <comment>Short for April</comment>
   </data>
   <data name="SET_ROW_VUL_MSG" xml:space="preserve">
     <value>Enter new vulnerability setting for {0} as prey</value>
@@ -837,9 +789,6 @@
   </data>
   <data name="HEADER_BIOMASS" xml:space="preserve">
     <value>Biomass</value>
-  </data>
-  <data name="TS_CATCHESFORCING_NAME" xml:space="preserve">
-    <value>Force catches</value>
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
     <value>{0} rows x {1} cols</value>
@@ -897,11 +846,6 @@
   </data>
   <data name="HEADER_UNASSIMILCONSUMPTION" xml:space="preserve">
     <value>Unassimil. / consumption</value>
-  </data>
-  <data name="RENAME_FORCING_ERROR_MSG2" xml:space="preserve">
-    <value>Cannot rename forcing function "{0}" {1}The name you specified already exists. Please specify another name.
-</value>
-    <comment>{0}: ff name, {1}: newline character</comment>
   </data>
   <data name="Ecospace_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecospace_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -987,7 +931,7 @@
   <data name="HEADER_MAXRELPB" xml:space="preserve">
     <value>Max rel. P/B</value>
   </data>
-  <data name="TS_PROMPT_DELETE" xml:space="preserve">
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
     <value>You are about to delete time series '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: time series name</comment>
   </data>
@@ -1005,7 +949,7 @@
   <data name="IMPORT_PROMPT_UPDATEBACKUP" xml:space="preserve">
     <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
   </data>
-  <data name="TS_DATASET_INFORMATION" xml:space="preserve">
+  <data name="LABEL_DATASET_INFORMATION" xml:space="preserve">
     <value>{0} - {1} Time Series</value>
     <comment>{0}: dataset name. {1}: time series count</comment>
   </data>
@@ -1069,29 +1013,18 @@
     <value>The start age for stanza '{0}' has been corrected.</value>
     <comment>{0}: stanza name</comment>
   </data>
-  <data name="FORCING_DEFAULT_NAME" xml:space="preserve">
+  <data name="ECOSIM_DEFAULT_NEWFORCINGNAME" xml:space="preserve">
     <value>Forcing shape {0}</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_OCTOBER" xml:space="preserve">
-    <value>Oct</value>
-    <comment>Short for October</comment>
   </data>
   <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
     <value>Forcing shape {0}</value>
     <comment>The default name for a new Ecosim forcing shape. {0}: autonumber</comment>
-  </data>
-  <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
-    <value>Change F</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
     <value>Rel. dispersal in bad habitat</value>
   </data>
   <data name="STATUS_APPLYVALUES" xml:space="preserve">
     <value>Applying values, please wait</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_NOVEMBER" xml:space="preserve">
-    <value>Nov</value>
-    <comment>Short for November</comment>
   </data>
   <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1214,10 +1147,6 @@
     <value>Save Ecospace scenario - Ecopath model {0}</value>
     <comment>{0} = Ecospace scenario name</comment>
   </data>
-  <data name="GENERIC_MONTH_ABBR_DECEMBER" xml:space="preserve">
-    <value>Dec</value>
-    <comment>Short for December</comment>
-  </data>
   <data name="HEADER_STRUCTURERELATIVEWEIGHT" xml:space="preserve">
     <value>Structure rel. weight</value>
   </data>
@@ -1271,10 +1200,6 @@
   <data name="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete group '{0}? This action cannot be undone.</value>
     <comment>{0}: group name</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_SEPTEMBER" xml:space="preserve">
-    <value>Sep</value>
-    <comment>Short for September</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_EWCONT" xml:space="preserve">
     <value>East/west concentration</value>
@@ -1368,9 +1293,6 @@
   <data name="HEADER_BIOMASSEND" xml:space="preserve">
     <value>Biomass (end)</value>
   </data>
-  <data name="FORCING_CAPTION_DELETE" xml:space="preserve">
-    <value>Delete forcing function</value>
-  </data>
   <data name="NewDocumentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewDocumentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1401,9 +1323,6 @@
   <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
     <value>Save</value>
     <comment>Generic 'Save' button text</comment>
-  </data>
-  <data name="RENAME_FORCING_ERROR_MSG3" xml:space="preserve">
-    <value>Renaming mediation function error</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
     <value>Checked values|Computed values that are correct but may require extra attention</value>
@@ -1472,10 +1391,6 @@
   </data>
   <data name="VALUE_ALLGROUPS" xml:space="preserve">
     <value>(All groups)</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JUNE" xml:space="preserve">
-    <value>Jun</value>
-    <comment>Short for June</comment>
   </data>
   <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
     <value>{0} of {1} years</value>
@@ -1600,10 +1515,6 @@
   </data>
   <data name="HEADER_FIXEDCOST" xml:space="preserve">
     <value>Fixed cost (%)</value>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_FEBRUARY" xml:space="preserve">
-    <value>Feb</value>
-    <comment>Short for February</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_REMARKS" xml:space="preserve">
     <value>Values with remarks|Values that have a remark attached. Remarks can be edited via the Remark panel.</value>
@@ -1847,9 +1758,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="IMPORT_ERROR_EWE7_OR_NEWER" xml:space="preserve">
     <value>This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6.</value>
   </data>
-  <data name="WarningHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WarningHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_FLEETS" xml:space="preserve">
     <value>Fleets</value>
   </data>
@@ -1937,7 +1845,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TS_STATUS_REMOVINGDATASET" xml:space="preserve">
+  <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
     <value>Removing existing Time Series dataset {0}</value>
     <comment>{0} dataset name</comment>
   </data>
@@ -2275,5 +2183,59 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_PRED" xml:space="preserve">
     <value>Predator: </value>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_APRIL" xml:space="preserve">
+    <value>Apr</value>
+    <comment>Short for April</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_AUGUST" xml:space="preserve">
+    <value>Aug</value>
+    <comment>Short for August</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_DECEMBER" xml:space="preserve">
+    <value>Dec</value>
+    <comment>Short for December</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_FEBRUARY" xml:space="preserve">
+    <value>Feb</value>
+    <comment>Short for February</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_JANUARY" xml:space="preserve">
+    <value>Jan</value>
+    <comment>Short for January</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_JULY" xml:space="preserve">
+    <value>Jul</value>
+    <comment>Short for July</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_JUNE" xml:space="preserve">
+    <value>Jun</value>
+    <comment>Short for June</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_MARCH" xml:space="preserve">
+    <value>Mar</value>
+    <comment>Short for March</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_MAY" xml:space="preserve">
+    <value>May</value>
+    <comment>Short for May (how much shorter can you get?)</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_NOVEMBER" xml:space="preserve">
+    <value>Nov</value>
+    <comment>Short for November</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_OCTOBER" xml:space="preserve">
+    <value>Oct</value>
+    <comment>Short for October</comment>
+  </data>
+  <data name="GENERIC_MONTH_ABBR_SEPTEMBER" xml:space="preserve">
+    <value>Sep</value>
+    <comment>Short for September</comment>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
+    <value>Change F</value>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
+    <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
   </data>
 </root>

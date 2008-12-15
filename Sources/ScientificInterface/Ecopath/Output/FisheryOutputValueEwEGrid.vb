@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryOutputValueEwEGrid.vb,v $
+' Revision 1.3  2008/12/15 15:53:40  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/26 02:58:04  jeroens
 ' Fixed issue 565 part II
 '
@@ -9,7 +12,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

@@ -1,4 +1,4 @@
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

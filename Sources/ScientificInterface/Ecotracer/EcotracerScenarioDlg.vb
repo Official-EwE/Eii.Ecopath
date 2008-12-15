@@ -1,40 +1,15 @@
 '==============================================================================
 '
 ' $Log: EcotracerScenarioDlg.vb,v $
+' Revision 1.2  2008/12/15 15:52:27  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:32:03  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.5  2008/08/02 03:04:16  jeroens
-' Renamed resources
-'
-' Revision 1.4  2007/12/07 16:46:26  jeroens
-' * Simplified scenario dialog interface
-' * Fixed interaction
-'
-' Revision 1.3  2007/12/06 16:29:25  jeroens
-' * Inherits Wizard scenario dialog
-'
-' Revision 1.2  2007/12/06 00:47:41  jeroens
-' * Implemented feature 356
-'
-' Revision 1.1  2007/12/05 03:54:37  jeroens
-' * Initial version
-'
-' Revision 1.4  2007/10/16 02:31:46  jeroens
-' * Fixed 'save as' bug
-'
-' Revision 1.3  2007/09/12 13:40:56  jeroens
-' - Dialog no longer tries to match scenario names
-'
-' Revision 1.2  2007/09/10 01:59:27  jeroens
-' * Sync'ed ecosim and ecotracer scenario dialogs
-'
-' Revision 1.1  2007/07/11 07:46:49  jeroens
-' * Renamed LoadEcotracerDlg
-'
 '==============================================================================
 
-#Region " Imports Directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -43,7 +18,7 @@ Imports EwECore
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Ecotracer
 
-#End Region ' Imports Directive
+#End Region ' Imports
 
 Namespace Ecotracer
 

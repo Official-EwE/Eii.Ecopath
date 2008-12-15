@@ -1,22 +1,15 @@
 '==============================================================================
 '
 ' $Log: EcospaceScenarioDlg.vb,v $
+' Revision 1.2  2008/12/15 15:52:27  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:54  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.8  2008/08/02 03:04:16  jeroens
-' Renamed resources
-'
-' Revision 1.7  2007/12/07 16:46:26  jeroens
-' * Simplified scenario dialog interface
-' * Fixed interaction
-'
-' Revision 1.6  2007/12/06 21:48:32  jeroens
-' * Implemented generic scenario dialogs
-'
 '==============================================================================
 
-#Region " Imports Directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -25,7 +18,7 @@ Imports EwECore
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Ecospace
 
-#End Region ' Imports Directive
+#End Region ' Imports
 
 Namespace Ecospace
 

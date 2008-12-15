@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SearchRatesEwEGrid.vb,v $
+' Revision 1.2  2008/12/15 15:56:19  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:34  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -39,7 +42,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

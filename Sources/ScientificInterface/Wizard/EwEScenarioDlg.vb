@@ -1,70 +1,18 @@
 '==============================================================================
 '
 ' $Log: EwEScenarioDlg.vb,v $
+' Revision 1.3  2008/12/15 15:54:31  jeroens
+' no message
+'
 ' Revision 1.2  2008/10/04 00:08:39  jeroens
 ' Fixed potential crash
 '
 ' Revision 1.1  2008/09/26 07:32:22  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.18  2008/08/15 17:21:24  jeroens
-' Cannot delete a loaded scenario
-'
-' Revision 1.17  2008/07/28 22:28:53  jeroens
-' Fixed issue 438
-'
-' Revision 1.16  2008/05/08 17:16:26  jeroens
-' SaveAs mode does not update description, author, contact when selecting different scenarios
-'
-' Revision 1.15  2008/05/07 21:43:18  villyc
-' Fixed crash on open ecospace without scenarios
-'
-' Revision 1.14  2008/04/26 10:21:55  sherman
-' Select first item and set OK Cancel button
-'
-' Revision 1.13  2008/04/07 02:31:19  jeroens
-' Cleaning up resources
-'
-' Revision 1.12  2008/02/13 03:55:13  jeroens
-' Replaced author column with loaded status
-'
-' Revision 1.11  2008/02/01 03:40:19  jeroens
-' Default scenario can be selected
-'
-' Revision 1.10  2008/01/30 02:57:53  jeroens
-' Last saved string entirely formatted by system
-'
-' Revision 1.9  2008/01/28 04:38:18  jeroens
-' Scenarios listed in a list view
-'
-' Revision 1.8  2008/01/11 12:46:30  jeroens
-' Properly localized
-'
-' Revision 1.7  2007/12/17 14:07:29  jeroens
-' * Fixed crash
-'
-' Revision 1.6  2007/12/08 00:54:38  jeroens
-' * Debugged automated tab switching
-'
-' Revision 1.5  2007/12/07 17:46:24  jeroens
-' + Organized
-'
-' Revision 1.4  2007/12/07 17:23:42  jeroens
-' * Fixed startup load/create mode bug
-'
-' Revision 1.3  2007/12/07 16:49:44  jeroens
-' * Hmpf, users allowed to plagiarize
-'
-' Revision 1.2  2007/12/07 16:46:26  jeroens
-' * Simplified scenario dialog interface
-' * Fixed interaction
-'
-' Revision 1.1  2007/12/06 16:29:00  jeroens
-' Initial version
-'
 '==============================================================================
 
-#Region " Imports Directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -73,7 +21,7 @@ Imports EwECore
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
 
-#End Region ' Imports Directive
+#End Region ' Imports
 
 Namespace Wizard
 

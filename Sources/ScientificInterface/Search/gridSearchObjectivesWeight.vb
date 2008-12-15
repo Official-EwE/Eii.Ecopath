@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridSearchObjectivesWeight.vb,v $
+' Revision 1.7  2008/12/15 15:55:36  jeroens
+' no message
+'
 ' Revision 1.6  2008/11/19 14:46:10  jeroens
 ' Renamed a few resources
 '
@@ -21,7 +24,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

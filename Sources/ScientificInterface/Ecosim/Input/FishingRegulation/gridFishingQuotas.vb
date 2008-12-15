@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridFishingQuotas.vb,v $
+' Revision 1.4  2008/12/15 15:55:35  jeroens
+' no message
+'
 ' Revision 1.3  2008/10/04 00:49:09  jeroens
 ' Connected v1
 '
@@ -12,14 +15,14 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2.Cells
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Ecosim
 

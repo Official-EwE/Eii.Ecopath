@@ -1,21 +1,15 @@
 '==============================================================================
 '
 ' $Log: UriBuilder.vb,v $
+' Revision 1.2  2008/12/15 16:06:33  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:13  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.3  2008/05/09 02:11:58  jeroens
-' Implemented var naming conventions
-'
-' Revision 1.2  2007/10/14 17:31:31  jeroens
-' * Solved compiler warnings
-'
-' Revision 1.1  2007/09/27 18:01:12  jeroens
-' Initial version
-'
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 
@@ -23,7 +17,7 @@ Imports System
 Imports System.Web
 Imports System.Collections.Specialized
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Utilities
 

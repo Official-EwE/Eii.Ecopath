@@ -1,20 +1,20 @@
 '==============================================================================
 '
 ' $Log: cMessageStateHandler.vb,v $
-' Revision 1.1  2008/09/26 07:32:12  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:58:24  jeroens
+' no message
 '
 ' Revision 1.1  2008/07/23 21:18:18  jeroens
 ' Initial version
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 '''============================================================================
 ''' <summary>

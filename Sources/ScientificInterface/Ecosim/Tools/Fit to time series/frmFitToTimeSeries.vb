@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.4  2008/12/15 16:01:38  jeroens
+' no message
+'
 ' Revision 1.3  2008/11/27 20:56:11  sherman
 ' Switched MaxFishing Mortality to Search routines.
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 Option Explicit On
 Option Strict On
 

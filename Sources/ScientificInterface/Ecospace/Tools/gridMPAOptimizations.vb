@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridMPAOptimizations.vb,v $
+' Revision 1.5  2008/12/15 15:55:36  jeroens
+' no message
+'
 ' Revision 1.4  2008/11/19 14:35:29  jeroens
 ' Resources!
 '
@@ -15,12 +18,12 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

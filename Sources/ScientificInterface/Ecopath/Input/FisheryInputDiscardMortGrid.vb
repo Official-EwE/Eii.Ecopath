@@ -1,19 +1,22 @@
 ﻿'==============================================================================
 '
 ' $Log: FisheryInputDiscardMortGrid.vb,v $
+' Revision 1.2  2008/12/15 15:53:39  jeroens
+' no message
+'
 ' Revision 1.1  2008/10/08 17:57:17  jeroens
 ' Initial version
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports SourceGrid2.Cells
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

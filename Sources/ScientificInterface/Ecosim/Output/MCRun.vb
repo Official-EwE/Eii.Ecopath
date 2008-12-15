@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.3  2008/12/15 15:55:37  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/25 02:16:26  sherman
 ' Added feedback onto monte carlo progress bar.
 '
@@ -84,7 +87,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

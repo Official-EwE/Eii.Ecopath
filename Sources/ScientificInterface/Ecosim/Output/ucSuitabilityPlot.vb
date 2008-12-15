@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.4  2008/12/15 15:56:03  jeroens
+' no message
+'
 ' Revision 1.3  2008/12/10 20:56:20  joeh
 ' Finalize the Suitability Plot
 '
@@ -10,9 +13,9 @@
 ' Revision 1.1  2008/12/09 00:30:02  joeh
 ' Add node for the three Suitability curves (Electivity, Functional response and Suitability)
 '
-'
+'==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -23,7 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports EwENetworkAnalysis
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Public Class ucSuitabilityPlot
 

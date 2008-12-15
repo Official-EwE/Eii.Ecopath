@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.12  2008/12/15 15:55:38  jeroens
+' no message
+'
 ' Revision 1.11  2008/12/10 20:56:20  joeh
 ' Finalize the Suitability Plot
 '
@@ -37,7 +40,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmAboutEwE.vb,v $
+' Revision 1.2  2008/12/15 15:54:31  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:32:07  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -28,7 +31,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Reflection
@@ -36,7 +39,7 @@ Imports System.Deployment
 Imports System.Text
 Imports EwEUtils.Utilities
 
-#End Region 'Imports directive
+#End Region ' Imports 
 
 Namespace Other
     ''' <summary>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFitToTimeSeries.vb,v $
+' Revision 1.2  2008/12/15 15:55:35  jeroens
+' no message
+'
 ' Revision 1.1  2008/11/19 14:40:55  jeroens
 ' Moved and renamed
 '
@@ -33,7 +36,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 Option Strict On
 Option Explicit On
 

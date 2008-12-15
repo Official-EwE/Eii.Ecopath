@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: gridWeightTS.vb,v $
-' Revision 1.1  2008/09/26 07:31:45  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:55:36  jeroens
+' no message
 '
 ' Revision 1.1  2008/09/23 16:07:54  jeroens
 ' Renamed
@@ -27,12 +27,12 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 <CLSCompliant(False)> _
 Public Class gridWeightTS

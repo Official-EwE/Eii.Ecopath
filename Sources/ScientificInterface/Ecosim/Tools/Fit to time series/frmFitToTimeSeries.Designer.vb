@@ -45,16 +45,16 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
             Me.m_tsVulSearchTools = New System.Windows.Forms.ToolStrip
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
-            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
-            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
+            Me.m_vulnerabilityBlockCodeSelector = New Ecosim.ucParmBlockCodes
+            Me.m_vulnerabilityBlockMatrix = New Ecosim.ucVulnerabiltyBlocks
             Me.tpAnomalySearch = New System.Windows.Forms.TabPage
             Me.m_nudLastYear = New System.Windows.Forms.NumericUpDown
             Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
             Me.m_nudSplinePts = New System.Windows.Forms.NumericUpDown
             Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad
+            Me.m_sketchPad = New Ecosim.ucAnomalySearchSketchPad
             Me.m_lbAppliedFF = New System.Windows.Forms.Label
-            Me.m_shapeToolBox = New ScientificInterface.Ecosim.ucShapeToolbox
+            Me.m_shapeToolBox = New ucShapeToolbox
             Me.m_lbFirstYear = New System.Windows.Forms.Label
             Me.m_lbLastYear = New System.Windows.Forms.Label
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label
@@ -354,7 +354,7 @@ Namespace Ecosim
             '
             'm_tsbSensOfSS2V
             '
-            Me.m_tsbSensOfSS2V.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+            Me.m_tsbSensOfSS2V.Image = My.Resources.Resources.ZoomHS
             Me.m_tsbSensOfSS2V.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSensOfSS2V.Name = "m_tsbSensOfSS2V"
             Me.m_tsbSensOfSS2V.Size = New System.Drawing.Size(126, 22)
@@ -454,7 +454,7 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
-            Me.m_sketchPad.AxisDisplayMode = ScientificInterface.eAxisDisplayModeTypes.Show
+            Me.m_sketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.BaselineValue = -9999.0!
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -470,12 +470,12 @@ Namespace Ecosim
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.NumTSYears = 0
-            Me.m_sketchPad.RightClickAutoScaleMode = ScientificInterface.eRightClickAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.Size = New System.Drawing.Size(523, 386)
-            Me.m_sketchPad.SketchDrawMode = ScientificInterface.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
             Me.m_sketchPad.TabIndex = 0
-            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterface.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
             '

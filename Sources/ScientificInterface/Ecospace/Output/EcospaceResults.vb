@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.3  2008/12/15 15:52:26  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/20 15:19:24  jeroens
 ' Renamed classes
 '
@@ -12,7 +15,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

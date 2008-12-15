@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.5  2008/12/15 15:56:03  jeroens
+' no message
+'
 ' Revision 1.4  2008/12/07 20:44:54  jeroens
 ' Plugin tree images put in correct order
 '
@@ -32,7 +35,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

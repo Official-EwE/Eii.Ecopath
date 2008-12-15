@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.3  2008/12/15 15:53:26  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/08 23:53:28  jeroens
 ' Renamed file commands
 '
@@ -61,7 +64,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

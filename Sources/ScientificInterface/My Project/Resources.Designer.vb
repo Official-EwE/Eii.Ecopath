@@ -147,13 +147,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CheckBoxHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Collapsed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)
@@ -483,6 +476,15 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWEGGPRODSHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Forcing shape {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_DEFAULT_NEWFORCINGNAME() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWFORCINGNAME", resourceCulture)
             End Get
         End Property
         
@@ -1565,38 +1567,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Delete forcing function.
-        '''</summary>
-        Friend ReadOnly Property FORCING_CAPTION_DELETE() As String
-            Get
-                Return ResourceManager.GetString("FORCING_CAPTION_DELETE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Forcing shape {0}.
-        '''</summary>
-        Friend ReadOnly Property FORCING_DEFAULT_NAME() As String
-            Get
-                Return ResourceManager.GetString("FORCING_DEFAULT_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Mediation, rel, weighting.
         '''</summary>
         Friend ReadOnly Property FORCING_OPTIONS_MEDIATING_GROUPS() As String
             Get
                 Return ResourceManager.GetString("FORCING_OPTIONS_MEDIATING_GROUPS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
-        '''</summary>
-        Friend ReadOnly Property FORCING_PROMPT_DELETE() As String
-            Get
-                Return ResourceManager.GetString("FORCING_PROMPT_DELETE", resourceCulture)
             End Get
         End Property
         
@@ -4143,6 +4118,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} - {1} Time Series.
+        '''</summary>
+        Friend ReadOnly Property LABEL_DATASET_INFORMATION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_DATASET_INFORMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Fleet:.
         '''</summary>
         Friend ReadOnly Property LABEL_FLEET() As String
@@ -4209,15 +4193,6 @@ Namespace My.Resources
         Friend ReadOnly Property MCRUN_HEADER_OUTPUT_BA() As String
             Get
                 Return ResourceManager.GetString("MCRUN_HEADER_OUTPUT_BA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mediating group (weighted) biomass.
-        '''</summary>
-        Friend ReadOnly Property MEDIATION_X_AXIS_LABEL() As String
-            Get
-                Return ResourceManager.GetString("MEDIATION_X_AXIS_LABEL", resourceCulture)
             End Get
         End Property
         
@@ -4562,6 +4537,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FORCING_DELETE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FORCING_DELETE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Do you want to delete the selected MPA? This action cannot be undone..
         '''</summary>
         Friend ReadOnly Property PROMPT_MPA_DELETE_CONFIRMATION() As String
@@ -4594,6 +4578,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_PLUGIN_UNDETERMINED() As String
             Get
                 Return ResourceManager.GetString("PROMPT_PLUGIN_UNDETERMINED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_TIMESERIES_DELETE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE", resourceCulture)
             End Get
         End Property
         
@@ -4649,34 +4642,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("Regions", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to The name can not be empty..
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG1() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cannot rename forcing function &quot;{0}&quot; {1}The name you specified already exists. Please specify another name.
-        '''.
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG2() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Renaming mediation function error.
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG3() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG3", resourceCulture)
             End Get
         End Property
         
@@ -4915,24 +4880,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to Change shape type.
-        '''</summary>
-        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_CAPTION() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Changing a shape from &apos;Long term&apos; to &apos;Seasonal&apos; will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?.
-        '''</summary>
-        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_MSG() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_MSG", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Sponsors() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Sponsors", resourceCulture)
@@ -4982,6 +4929,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_APPLYVALUES() As String
             Get
                 Return ResourceManager.GetString("STATUS_APPLYVALUES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Removing existing Time Series dataset {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_DATASET_REMOVING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_DATASET_REMOVING", resourceCulture)
             End Get
         End Property
         
@@ -5148,6 +5104,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Updating time series {0}....
+        '''</summary>
+        Friend ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath model{0}Name: {1}{3}{0}Path: {2}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOPATH_TOOLTIP() As String
@@ -5202,33 +5167,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Force biomass.
-        '''</summary>
-        Friend ReadOnly Property TS_BIOMASSFORCING_NAME() As String
-            Get
-                Return ResourceManager.GetString("TS_BIOMASSFORCING_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Catches.
-        '''</summary>
-        Friend ReadOnly Property TS_CATCHES_NAME() As String
-            Get
-                Return ResourceManager.GetString("TS_CATCHES_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Force catches.
-        '''</summary>
-        Friend ReadOnly Property TS_CATCHESFORCING_NAME() As String
-            Get
-                Return ResourceManager.GetString("TS_CATCHESFORCING_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Z (Constant total mortality).
         '''</summary>
         Friend ReadOnly Property TS_CONSTANTTOTALMORTALITY_NAME() As String
@@ -5243,42 +5181,6 @@ Namespace My.Resources
         Friend ReadOnly Property TS_CONSTANTTOTALMORTALITY_REMARKS() As String
             Get
                 Return ResourceManager.GetString("TS_CONSTANTTOTALMORTALITY_REMARKS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} - {1} Time Series.
-        '''</summary>
-        Friend ReadOnly Property TS_DATASET_INFORMATION() As String
-            Get
-                Return ResourceManager.GetString("TS_DATASET_INFORMATION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
-        '''</summary>
-        Friend ReadOnly Property TS_PROMPT_DELETE() As String
-            Get
-                Return ResourceManager.GetString("TS_PROMPT_DELETE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Removing existing Time Series dataset {0}.
-        '''</summary>
-        Friend ReadOnly Property TS_STATUS_REMOVINGDATASET() As String
-            Get
-                Return ResourceManager.GetString("TS_STATUS_REMOVINGDATASET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Updating time series {0}....
-        '''</summary>
-        Friend ReadOnly Property TS_STATUS_UPDATINGTIMESERIES() As String
-            Get
-                Return ResourceManager.GetString("TS_STATUS_UPDATINGTIMESERIES", resourceCulture)
             End Get
         End Property
         
@@ -5306,13 +5208,6 @@ Namespace My.Resources
         Friend ReadOnly Property VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("VALUE_NOTAVAILABLE", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property WarningHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("WarningHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditHabitats.vb,v $
+' Revision 1.2  2008/12/15 15:54:30  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:57  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -18,7 +21,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

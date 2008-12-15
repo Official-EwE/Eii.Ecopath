@@ -1,12 +1,15 @@
 ﻿'==============================================================================
 ' $Log: gridFitToTimeSeriesGroup.vb,v $
+' Revision 1.2  2008/12/15 15:55:35  jeroens
+' no message
+'
 ' Revision 1.1  2008/11/27 20:56:11  sherman
 ' Switched MaxFishing Mortality to Search routines.
 '
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

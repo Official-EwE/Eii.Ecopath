@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.26  2008/12/15 16:00:49  jeroens
+' no message
+'
 ' Revision 1.25  2008/12/04 06:03:59  sherman
 ' Fixed Show/Hide refresh bug
 ' Fixed disposed bug
@@ -79,7 +82,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

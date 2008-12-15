@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupInfoEwEGrid.vb,v $
+' Revision 1.4  2008/12/15 15:55:36  jeroens
+' no message
+'
 ' Revision 1.3  2008/11/27 20:56:10  sherman
 ' Switched MaxFishing Mortality to Search routines.
 '
@@ -10,53 +13,9 @@
 ' Revision 1.1  2008/09/26 07:31:35  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.20  2008/09/25 02:31:48  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.19  2008/08/02 03:04:15  jeroens
-' Renamed resources
-'
-' Revision 1.18  2008/06/02 00:01:34  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.17  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.16  2008/04/07 02:31:14  jeroens
-' Cleaning up resources
-'
-' Revision 1.15  2008/02/28 20:32:54  joeb
-' Added Left and Right Salinity
-'
-' Revision 1.14  2008/01/11 12:33:20  jeroens
-' Fixed bug 299
-'
-' Revision 1.13  2007/12/04 02:23:54  jeroens
-' * Columns indicated via Enum
-' + Added salinity vars
-'
-' Revision 1.12  2007/10/10 02:59:15  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.11  2007/07/06 20:11:19  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.10  2007/06/22 18:49:17  fgao
-' Finish making up this grid.. better looking now??
-' Indent multi stanza group display..
-'
-' Revision 1.9  2007/06/21 22:23:38  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.8  2007/06/13 22:36:08  fgao
-' Fixed Bug 67: Relating to Grid cell alignment.
-'
-' Revision 1.7  2007/04/29 03:45:13  jeroens
-' * Connected to EwEGridRefresh
-'
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -65,7 +24,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Ecosim
 

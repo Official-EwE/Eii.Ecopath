@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.5  2008/12/15 15:56:20  jeroens
+' no message
+'
 ' Revision 1.4  2008/11/26 23:23:37  sherman
 ' Updated Display Options group box
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

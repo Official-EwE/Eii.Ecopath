@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucPolicyColorBlocks.vb,v $
+' Revision 1.3  2008/12/15 15:56:03  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/26 14:45:37  jeroens
 ' Fixed bug 578
 '
@@ -12,7 +15,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

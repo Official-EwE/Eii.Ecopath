@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.2  2008/12/15 16:00:49  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:38  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -27,7 +30,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppColors.vb,v $
+' Revision 1.2  2008/12/15 15:56:02  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:32:09  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -27,7 +30,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

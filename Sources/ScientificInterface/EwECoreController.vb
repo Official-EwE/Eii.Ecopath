@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwECoreController.vb,v $
+' Revision 1.5  2008/12/15 15:52:11  jeroens
+' no message
+'
 ' Revision 1.4  2008/11/20 19:15:15  jeroens
 ' Added handling of *Initialized states
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -25,7 +28,7 @@ Imports EwEUtils.Core
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

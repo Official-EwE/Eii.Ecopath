@@ -1,36 +1,18 @@
 '==============================================================================
 '
 ' $Log: AboutEwEGrid.vb,v $
+' Revision 1.3  2008/12/15 15:58:24  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/27 19:45:51  jeroens
 ' Renamed ApplicationComponents interfaces to more properly reflect their function
 '
 ' Revision 1.1  2008/09/26 07:32:07  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.7  2008/08/02 03:04:07  jeroens
-' Renamed resources
-'
-' Revision 1.6  2008/06/02 00:07:44  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.5  2007/10/20 22:55:42  jeroens
-' * Made designer-safe
-'
-' Revision 1.4  2007/10/10 16:52:47  jeroens
-' + Added plugins
-'
-' Revision 1.3  2007/09/27 18:04:16  jeroens
-' + Uses ApplicationComponents
-'
-' Revision 1.2  2007/09/17 02:44:41  jeroens
-' * Fixed ambiguities
-'
-' Revision 1.1  2007/07/08 07:37:44  jeroens
-' * Moved, revamped
-'
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -38,7 +20,7 @@ Imports EwEPlugin
 Imports System.Reflection
 Imports SourceGrid2
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

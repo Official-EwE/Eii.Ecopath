@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResultsGridGroup.vb,v $
+' Revision 1.3  2008/12/15 15:53:27  jeroens
+' no message
+'
 ' Revision 1.2  2008/11/27 03:10:43  jeroens
 ' Group visible flags maintained by style guide, no longer by AppLauncher
 '
@@ -36,7 +39,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

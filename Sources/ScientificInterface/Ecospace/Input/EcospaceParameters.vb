@@ -1,85 +1,15 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.2  2008/12/15 15:52:26  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:55  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.24  2008/08/10 01:43:07  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.23  2008/07/02 20:42:30  jeroens
-' Fixed update issue on switching scenarios
-'
-' Revision 1.22  2008/06/02 00:01:23  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.21  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.20  2008/05/13 16:14:55  jeroens
-' Tracer enabled via generic command
-'
-' Revision 1.19  2008/05/08 19:32:41  jeroens
-' Fixed bug 467
-'
-' Revision 1.18  2008/03/03 16:05:08  joeb
-' Made the Consim flag specific to Ecosim and Ecospace
-'
-' Revision 1.17  2008/02/26 17:08:08  jeroens
-' Fixed issue 424
-'
-' Revision 1.16  2008/01/08 19:47:36  jeroens
-' ConTracing click will invoke tracer scenario dialog
-'
-' Revision 1.15  2007/12/21 22:17:42  jeroens
-' + Added Space con sim on flag
-'
-' Revision 1.14  2007/09/13 01:26:19  joeh
-' Fix tab order and shortcut key
-'
-' Revision 1.13  2007/06/29 04:21:15  jeroens
-' + Added UseExact support
-'
-' Revision 1.12  2007/06/15 16:37:07  jeroens
-' * Replaced single/double up/down controls with text boxes
-'
-' Revision 1.11  2007/06/14 16:53:20  jeroens
-' + Uses Tolerance, SOL (W) and MaxIter
-'
-' Revision 1.10  2007/06/13 18:05:23  jeroens
-' * Implemented model run time controls
-'
-' Revision 1.9  2007/06/13 17:33:14  jeroens
-' (In progress)
-'
-' Revision 1.8  2007/06/13 02:05:12  jeroens
-' * Fixed totaltime vs summary confusion
-'
-' Revision 1.7  2007/06/12 15:28:20  jeroens
-' + Added summary parameters
-'
-' Revision 1.6  2007/06/11 13:47:44  jeroens
-' - Removed IFDPower
-' + Added time step
-'
-' Revision 1.5  2007/06/11 12:38:01  jeroens
-' + Added PredictEffort
-'
-' Revision 1.4  2007/06/08 16:48:47  jeroens
-' * Added more, placeholder for summary fields
-'
-' Revision 1.3  2007/06/07 11:31:26  jeroens
-' + Commented
-'
-' Revision 1.2  2007/06/07 03:54:36  jeroens
-' + Implemented initial version
-'
-' Revision 1.1  2007/06/06 01:43:11  jeroens
-' + Added "Ecospace parameters"
-'
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 
@@ -87,7 +17,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Ecospace
 

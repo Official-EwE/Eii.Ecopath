@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.2  2008/12/15 15:55:32  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:32:08  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -48,7 +51,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 
@@ -58,7 +61,7 @@ Imports WeifenLuo.WinFormsUI
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
 
-#End Region
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

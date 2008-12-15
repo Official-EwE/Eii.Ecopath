@@ -1,40 +1,15 @@
 '==============================================================================
 '
 ' $Log: EcosimResults.vb,v $
+' Revision 1.2  2008/12/15 15:53:26  jeroens
+' no message
+'
 ' Revision 1.1  2008/09/26 07:31:46  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.13  2008/08/10 01:43:07  jeroens
-' Renamed PropertyFormatProvider
-'
-' Revision 1.12  2008/07/16 16:19:29  jeroens
-' Cleaned-up
-'
-' Revision 1.11  2008/06/02 00:01:32  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.10  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.9  2008/03/06 01:59:55  jeroens
-' Fixed refresh issue
-' Removed close button
-'
-' Revision 1.8  2007/09/20 18:54:16  joeb
-' Bug Fixes
-'
-' Revision 1.7  2007/09/20 16:06:40  joeb
-' Summary time period fixes
-'
-' Revision 1.6  2007/09/19 22:15:18  joeb
-' Added Summary data
-'
-' Revision 1.5  2007/08/10 02:12:20  jeroens
-' + Flagged localizables
-'
 '==============================================================================
 
-#Region " Imports Directive "
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -43,7 +18,7 @@ Imports EwECore
 Imports ScientificInterface.Controls
 Imports EwEUtils.Core
 
-#End Region ' Imports Directive
+#End Region ' Imports
 
 Namespace Ecosim
 

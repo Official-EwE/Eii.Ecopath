@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.5  2008/12/15 15:56:20  jeroens
+' no message
+'
 ' Revision 1.4  2008/12/03 00:07:58  jeroens
 ' Fixed bug 580
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -25,6 +28,7 @@ Imports SAUPUtil.SAUPData.Mapping
 Imports EwEUtils.Core
 Imports ScientificInterface.Other
 Imports Microsoft.VisualBasic
+Imports ScientificInterfaceShared
 
 #End Region
 

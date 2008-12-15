@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgSensitivityOfSStoV.vb,v $
+' Revision 1.2  2008/12/15 15:54:30  jeroens
+' no message
+'
 ' Revision 1.1  2008/11/19 14:40:54  jeroens
 ' Moved and renamed
 '
@@ -10,51 +13,9 @@
 ' Revision 1.1  2008/09/26 07:31:53  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.13  2008/07/02 22:07:52  jeroens
-' Update ran after search
-'
-' Revision 1.12  2008/03/20 19:01:46  joeb
-' SetDefaultVulnerabilities() was not setting Detritus
-'
-' Revision 1.11  2008/03/20 18:35:13  joeb
-' Fixed bug Detritus not being included in fit when set from interface
-' Removed dead code
-'
-' Revision 1.10  2008/01/26 00:18:09  joeb
-' Move binning of sensitivity to manager/model
-'
-' Revision 1.9  2008/01/24 17:26:22  jeroens
-' Restyled
-'
-' Revision 1.8  2007/11/30 20:50:34  joeb
-' Change the way the binning of the colour works,
-' This may need to change again once it's clear what the intent of the display is
-'
-' Revision 1.7  2007/11/30 16:46:38  joeb
-' Fixed indexing bug in progressbar
-'
-' Revision 1.6  2007/11/11 16:52:47  jeroens
-' * Updated to new block selector logic
-'
-' Revision 1.5  2007/11/08 18:19:13  jeroens
-' + Implemented transfer methods
-'
-' Revision 1.4  2007/11/08 08:02:57  jeroens
-' * Getting there
-'
-' Revision 1.3  2007/11/08 00:08:53  jeroens
-' * Fixed sync object screw-up
-' * Dialog controlled and kept up to date by form
-'
-' Revision 1.2  2007/11/06 20:32:35  jeroens
-' ~ To appease the masses
-'
-' Revision 1.1  2007/11/06 17:59:19  jeroens
-' Initial version
-'
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.Drawing
@@ -62,7 +23,7 @@ Imports EwECore
 Imports EwECore.FitToTimeSeries
 Imports ScientificInterface.Other
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridTFMpolicy.vb,v $
+' Revision 1.5  2008/12/15 15:55:35  jeroens
+' no message
+'
 ' Revision 1.4  2008/10/08 22:13:47  jeroens
 ' Selection event sent when initializing to a group
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -23,7 +26,7 @@ Imports EwEUtils.Core
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 Namespace Ecosim
 

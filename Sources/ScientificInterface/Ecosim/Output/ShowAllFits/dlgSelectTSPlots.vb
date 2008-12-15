@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: dlgSelectTSPlots.vb,v $
-' Revision 1.1  2008/09/26 07:31:50  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2008/12/15 15:54:30  jeroens
+' no message
 '
 ' Revision 1.1  2008/02/12 23:06:56  jeroens
 ' Revised and debugged
@@ -12,7 +12,7 @@
 '
 '==============================================================================
 
-#Region "Imports directive"
+#Region " Imports "
 
 Option Strict On
 Option Explicit On

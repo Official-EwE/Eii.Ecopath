@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.3  2008/12/15 15:53:27  jeroens
+' no message
+'
 ' Revision 1.2  2008/10/08 19:27:21  jeroens
 ' Added checkbox for sim RegulatoryFeedback flag
 '
@@ -9,7 +12,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

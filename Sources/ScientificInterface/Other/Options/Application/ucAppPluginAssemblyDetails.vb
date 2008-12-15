@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPluginAssemblyDetails.vb,v $
+' Revision 1.5  2008/12/15 15:56:02  jeroens
+' no message
+'
 ' Revision 1.4  2008/12/07 20:50:53  jeroens
 ' Incompatible plug-ins can be activated
 '
@@ -11,21 +14,11 @@
 ' Added plugin compatibility checks to prevent the system from dying
 '
 ' Revision 1.1  2008/09/26 07:32:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/29 23:46:27  jeroens
-' Plug-in detail page also has option to disable assembly
-' Synchronized layout between plug-in detail pages
-'
-' Revision 1.2  2008/07/16 13:22:53  jeroens
-' Even more pretty
-'
-' Revision 1.1  2008/07/15 20:22:31  jeroens
-' Initial version
+' --== DELETED HISTORY ==-- Initial version
 '
 '==============================================================================
 
-#Region " Imports Directive "
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -35,7 +28,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEPlugin
 
-#End Region ' Imports Directive
+#End Region ' Imports
 
 Public Class ucAppPluginAssemblyDetails
 

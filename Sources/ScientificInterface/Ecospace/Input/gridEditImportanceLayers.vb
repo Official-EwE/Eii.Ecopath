@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditImportanceLayers.vb,v $
+' Revision 1.5  2008/12/15 15:55:33  jeroens
+' no message
+'
 ' Revision 1.4  2008/11/11 07:37:28  jeroens
 ' New layers have a weight of 1
 '
@@ -15,7 +18,7 @@
 '
 '==============================================================================
 
-#Region "Imports Directive"
+#Region " Imports "
 
 Option Explicit On
 Option Strict On

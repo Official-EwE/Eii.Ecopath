@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAnomalySearchSketchPad.vb,v $
+' Revision 1.2  2008/12/15 15:56:02  jeroens
+' no message
+'
 ' Revision 1.1  2008/11/19 14:42:22  jeroens
 ' Moved and renamed
 '
@@ -18,9 +21,13 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports System.Drawing.Drawing2D
+
+#End Region ' Imports
 
 Namespace Ecosim
 
