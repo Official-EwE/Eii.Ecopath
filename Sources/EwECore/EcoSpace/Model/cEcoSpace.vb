@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.15  2008/12/16 16:32:46  sherman
+' Corrected EcospacePostFishingEffortModTimestep
+'
 ' Revision 1.14  2008/12/16 16:29:17  sherman
 ' Corrected EcospaceEndTimeStep
 '
@@ -711,7 +714,7 @@ Public Class cEcoSpace
 
                 If m_Data.PredictEffort Then PredictEffortDistribution(imonth, its)
 
-                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_ESData, m_Data.TimeNow)
+                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, m_Data.TimeNow)
 
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
