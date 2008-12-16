@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.14  2008/12/16 16:29:17  sherman
+' Corrected EcospaceEndTimeStep
+'
 ' Revision 1.13  2008/12/09 19:48:57  joeb
 ' Ouput objects now use core data instead of buffering data
 '
@@ -853,7 +856,7 @@ Public Class cEcoSpace
                 processTimeStep(itt)
                 timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
 
-                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_ESData, m_Data.TimeNow)
+                If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, m_Data.TimeNow)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
