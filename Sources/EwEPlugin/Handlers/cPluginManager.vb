@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.10  2008/12/16 16:57:26  sherman
+' Corrected EcospacePostFishingEffortModTimestep
+'
 ' Revision 1.9  2008/12/08 16:44:08  jeroens
 ' Removed Seed/MPA opt plugins
 ' Added generic ISearchPlugin
@@ -958,7 +961,7 @@ Public Class cPluginManager
 
     Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceEndTimestepPlugin))
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospacePostFishingEffortModTimestepPlugin))
         Try
 
             ' give every plugin that supports this interface a chance at running
