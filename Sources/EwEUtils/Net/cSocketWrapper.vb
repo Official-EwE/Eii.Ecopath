@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.5  2008/12/17 20:53:01  joeb
+' Bug fixes to sending and receiving data
+'
 ' Revision 1.4  2008/12/01 11:21:05  jeroens
 ' Actively connect to IP4 networks only
 '
@@ -65,7 +68,7 @@ Imports System.Reflection
 '   1: Main info, main failures
 '   2: Status updates
 '   3: Data details (for the hardcore debuggers)
-#Const VERBOSE_LEVEL = 0
+#Const VERBOSE_LEVEL = 1
 
 Namespace NetUtilities
 
@@ -160,7 +163,7 @@ Namespace NetUtilities
         End Enum
 
         ''' <summary>Size of buffer for receiving data.</summary>
-        Private Const cBUFFER_SIZE As Integer = 4096 
+        Private Const cBUFFER_SIZE As Integer = 1024 * 1000
         ''' <summary>The one buffer for receiving data.</summary>
         Private m_abBuffer(cSocketWrapper.cBUFFER_SIZE) As Byte
         ''' <summary>The wrapped socket.</summary>
@@ -183,8 +186,11 @@ Namespace NetUtilities
         Private m_iID As Int32 = 0
 
         '''' <summary>Semaphore to lock sending of data </summary>
-        ' Private m_SendLock As New System.Threading.Semaphore(1, 1, "SendLock")
+        '   Private m_SendLock As New System.Threading.Semaphore(1, 1)
         Private m_readState As eReadStates = eReadStates.ReadingSize
+
+        Private m_readlock As New System.Threading.Semaphore(1, 1)
+        Private m_pendingSend As Integer
 
 
 #End Region ' Privates
@@ -439,12 +445,17 @@ Namespace NetUtilities
             ' Sanity check(s)
             If (obj Is Nothing) Then Return False
 
+            ' Debug.Assert(m_pendingSend = 0, "sw send not completed!")
+
+            'Me.m_SendLock.WaitOne()
+            'Debug.Assert(m_pendingSend = 0, "sw send not completed!")
             Dim bf As New BinaryFormatter()
             Dim ms As New MemoryStream()
             Dim bSucces As Boolean = False
 
             'Block all other calls to Send until this Send has finished (SendCallback)
-            ' Me.m_SendLock.WaitOne()
+
+            m_pendingSend += 1
             bf.Serialize(ms, obj)
             ' Reset position in stream
             ms.Seek(0, 0)
@@ -455,17 +466,15 @@ Namespace NetUtilities
 #End If
                 bSucces = SendBinary(ms.GetBuffer(), bRequiresAuthorization, bSendImmediately)
             Catch ex As Exception
-                'release the semaphore if there has been an error
-                'ths will prevent a deadlock if there has been an error
-                ' Me.m_SendLock.Release()
+
                 bSucces = False
             End Try
-
+            m_pendingSend -= 1
             ' Cleanup
             ms.Close()
             ms = Nothing
             bf = Nothing
-            ' Me.m_SendLock.Release()
+            '  Me.m_SendLock.Release()
 
             Return bSucces
         End Function
@@ -554,7 +563,8 @@ Namespace NetUtilities
         ''' </summary>
         ''' <param name="iNumBytes">The number of bytes that were received.</param>
         ''' -------------------------------------------------------------------
-        Private Function ReadBuffer(ByVal iNumBytes As Integer) As cSerializableObject
+        Private Function ReadBuffer(ByVal iNumBytes As Integer) As List(Of cSerializableObject)
+            'Private Function ReadBuffer(ByVal iNumBytes As Integer) As cSerializableObject
 
             Dim objData As cSerializableObject = Nothing
             Dim bf As BinaryFormatter = Nothing
@@ -562,10 +572,12 @@ Namespace NetUtilities
             Dim iOffset As Integer = 0
             Dim iChunkSize As Integer = 0
             Dim nSizeCopy As Integer
+            Dim lstObs As List(Of cSerializableObject)
+            lstObs = New List(Of cSerializableObject)
 
             Try
 
-#If VERBOSE_LEVEL >= 3 Then
+#If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("sw {0} read buffer {1} bytes ", Me.ToString(), iNumBytes)
 #End If
 
@@ -643,7 +655,7 @@ Namespace NetUtilities
 
                         Try
                             ' Reconstruct data
-                            objData = CType(bf.Deserialize(ms), cSerializableObject)
+                            lstObs.Add(CType(bf.Deserialize(ms), cSerializableObject))
                         Catch ex As Exception
                             Debug.Assert(False, ex.Message)
                         End Try
@@ -667,7 +679,7 @@ Namespace NetUtilities
                 Throw New Exception("sw ReadBuffer() Error: " & ex.Message, ex)
             End Try
 
-            Return objData
+            Return lstObs
 
         End Function
 
@@ -682,8 +694,10 @@ Namespace NetUtilities
             ' Retrieve SocketData
             Dim sw As cSocketWrapper = CType(ar.AsyncState, cSocketWrapper)
             Dim iNumBytes As Integer = -1
-            Dim objRead As cSerializableObject = Nothing
             Dim bSendAuthorization As Boolean = False
+
+            'list of objects assembled from the buffer in ReadBuffer()
+            Dim ObjectsInStream As List(Of cSerializableObject)
 
             ' Read incoming bytes
             Try
@@ -719,85 +733,106 @@ Namespace NetUtilities
                 Return
             End If
 
-            ' Not connected? Read the data
-            objRead = sw.ReadBuffer(iNumBytes)
+            ' get a list of cSerializableObject objects from the buffer
+            ObjectsInStream = sw.ReadBuffer(iNumBytes)
 
-            ' All data read?
-            If (objRead IsNot Nothing) Then
+            ' 
+            For Each objRead As cSerializableObject In ObjectsInStream
 
                 ' Is handshake?
                 If (TypeOf objRead Is cHandShake) Then
-                    ' #Yes: process handshake
+
+                    'process the handshake
                     Dim hs As cHandShake = DirectCast(objRead, cHandShake)
+                    Me.ReceiveHandShake(sw, hs)
                     ' Immediately forget object because it should not be sent out in the OnData event
                     objRead = Nothing
 
-#If VERBOSE_LEVEL >= 2 Then
-                    Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), hs.ToString())
-#End If
-                    ' Is the socket wrapper not authorized?
-                    If (sw.Authorized = False) Then
-                        ' #Yes: is the incoming handshake designated for the socket wrapper?
-                        If sw.IsHandshake(hs.HandshakeID) Then
-                            ' #Yes: Authorized
-                            sw.Authorized = True
-                            bSendAuthorization = True
-#If VERBOSE_LEVEL >= 1 Then
-                            Console.WriteLine("sw {0} authorized", Me.ToString())
-#End If
-                        Else
-#If VERBOSE_LEVEL >= 1 Then
-                            Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), hs.HandshakeID, sw.m_iHandshake)
-#End If
-                        End If
-                    Else
-#If VERBOSE_LEVEL >= 2 Then
-                        Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
-#End If
-                    End If
-                    ' First relay handshake
-                    sw.RelayHandshake(hs)
-                    ' Then raise authorization event
-                    If bSendAuthorization Then
+                Else ' If (TypeOf objRead Is cHandShake) Then
+
+                    ' #No: not a handshake but a valid object
+
+                    'is this connection Authorized
+                    If sw.Authorized Then
+                        'Yes connection is Authorized 
+                        ' Broadcast new data
                         Try
-                            RaiseEvent OnStatus(Me, eStatusTypes.Authorized, "")
+                            ' Send event
+                            RaiseEvent OnData(Me, objRead)
+
                         Catch ex As Exception
 #If VERBOSE_LEVEL >= 1 Then
-                            Console.WriteLine(">> sw {0} OnStatus(Authorized) exception '{1}' ", Me.ToString(), ex.Message)
+                            Console.WriteLine(">> sw {0} OnData() exception '{1}' ", Me.ToString(), ex.Message)
 #End If
                         End Try
-                    End If
 
-                Else
-                    ' #No: not a handshake but a valid object, broadcast its arrival
-                    If sw.Authorized Then
 #If VERBOSE_LEVEL >= 1 Then
                         Console.WriteLine("sw {0} received data '{1}'", Me.ToString(), objRead.ToString())
 #End If
                     Else
+                        'NOT Authorized
 #If VERBOSE_LEVEL >= 1 Then
                         Console.WriteLine("sw {0} not authorized to receive data", Me.ToString())
 #End If
                     End If ' If sw.Authorized Then
-                End If ' If TypeOf objRead Is cHandShake Then
-            End If ' If sw.HasData Then
+                End If
+
+            Next objRead
 
             ' After all data is handled prepare for receiving next chunk
             If iNumBytes > 1 Then
                 sw.m_socket.BeginReceive(sw.m_abBuffer, 0, cSocketWrapper.cBUFFER_SIZE, SocketFlags.None, AddressOf ReceiveCallBack, sw)
             End If
 
-            ' Broadcast new data
-            If (objRead IsNot Nothing) Then
+        End Sub
+
+        ''' <summary>
+        ''' Process a Handshake object received by the socket callback ReceiveCallBack(IAsyncResult)
+        ''' </summary>
+        ''' <param name="sw">SocketWrapper object the handshake was recieved on</param>
+        ''' <param name="Handshake">Handshake to process</param>
+        ''' <remarks></remarks>
+        Private Sub ReceiveHandShake(ByVal sw As cSocketWrapper, ByVal Handshake As cHandShake)
+            Dim bSendAuthorization As Boolean
+
+
+#If VERBOSE_LEVEL >= 2 Then
+                                Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), hs.ToString())
+#End If
+            ' Is the socket wrapper not authorized?
+            If (sw.Authorized = False) Then
+                ' #Yes: is the incoming handshake designated for the socket wrapper?
+                If sw.IsHandshake(Handshake.HandshakeID) Then
+                    ' #Yes: Authorized
+                    sw.Authorized = True
+                    bSendAuthorization = True
+#If VERBOSE_LEVEL >= 1 Then
+                    Console.WriteLine("sw {0} authorized", Me.ToString())
+#End If
+                Else
+#If VERBOSE_LEVEL >= 1 Then
+                    Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), Handshake.HandshakeID, sw.m_iHandshake)
+#End If
+                End If
+            Else
+#If VERBOSE_LEVEL >= 2 Then
+                                    Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
+#End If
+            End If
+            ' First relay handshake
+            sw.RelayHandshake(Handshake)
+            ' Then raise authorization event
+            If bSendAuthorization Then
                 Try
-                    ' Send event
-                    RaiseEvent OnData(Me, objRead)
+                    RaiseEvent OnStatus(Me, eStatusTypes.Authorized, "")
                 Catch ex As Exception
 #If VERBOSE_LEVEL >= 1 Then
-                    Console.WriteLine(">> sw {0} OnData() exception '{1}' ", Me.ToString(), ex.Message)
+                    Console.WriteLine(">> sw {0} OnStatus(Authorized) exception '{1}' ", Me.ToString(), ex.Message)
 #End If
                 End Try
             End If
+
+
         End Sub
 
 #End Region ' READ
@@ -839,18 +874,20 @@ Namespace NetUtilities
             Array.Copy(byMessage, 0, byData, 4, iLength)
 
             Try
-#If VERBOSE_LEVEL >= 3 Then
+#If VERBOSE_LEVEL >= 1 Then
                 Me.m_iQueue += (iLength + 4)
                 Console.WriteLine("sw {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength + 4), Me.m_iQueue)
 #End If
 
-                If bSendImmedately Then
-                    Me.m_socket.Send(byData, 0, byData.Length, SocketFlags.None)
-                Else
-                    Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
-                End If
+                'If bSendImmedately Then
+                '    Me.m_socket.Send(byData, 0, byData.Length, SocketFlags.None)
+                '    'Me.m_readlock.Release()
+                'Else
+                Me.m_socket.BeginSend(byData, 0, byData.Length, SocketFlags.None, AddressOf Me.SendCallback, Me.m_socket)
+                'End If
 
             Catch ex As Exception
+                Debug.Assert(False)
                 Return False
             End Try
             Return True
@@ -868,20 +905,21 @@ Namespace NetUtilities
                 If s Is Nothing Then Return
                 If Not s.Connected Then Return
                 nb = s.EndSend(ar)
+                m_pendingSend -= 1
 
-#If VERBOSE_LEVEL >= 3 Then
-                me.m_iQueue -= (nb)
-                Console.WriteLine("sw {0} sent {1} bytes (queue size {2})", Me.ToString(), nb, me.m_iQueue)
+#If VERBOSE_LEVEL >= 1 Then
+                Me.m_iQueue -= (nb)
+                Console.WriteLine("sw {0} sent {1} bytes (queue size {2})", Me.ToString(), nb, Me.m_iQueue)
 #End If
             Catch ex As Exception
                 ' Woops!
                 Debug.Assert(False, ex.Message)
             Finally
                 'release the semaphore
-                '  Me.m_SendLock.Release()
+
             End Try
 
-            ' Me.m_SendLock.Release()
+            '   Me.m_SendLock.Release()
 
         End Sub
 
