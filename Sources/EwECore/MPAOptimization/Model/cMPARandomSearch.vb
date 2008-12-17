@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.17  2008/12/17 01:30:14  villyc
+' *** empty log message ***
+'
 ' Revision 1.16  2008/11/22 02:42:38  villyc
 ' boundary length calc in random updated, baseline wasn't calculated properly
 '
@@ -485,10 +488,10 @@ Public Class cMPARandomSearch
             'Get the layer weights by percentage MPA coverage
             sortLayersByCellWeight(CellCount)
             'vc hack:
-            Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", False)  'true makes it append
-                sw.WriteLine("Protected, obj.function, layers1, layer 2, etc")
-                sw.Close()
-            End Using
+            'Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", False)  'true makes it append
+            '    sw.WriteLine("Protected, obj.function, layers1, layer 2, etc")
+            '    sw.Close()
+            'End Using
 
 
             Dim StoreNo As Integer = CInt(StoreOptimalPct * m_data.nIterations / 100)
@@ -539,10 +542,10 @@ Public Class cMPARandomSearch
                         End If
                     Next
                     'vc hack:
-                    Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", True)  'true makes it append
-                        sw.WriteLine(sLayer)
-                        sw.Close()
-                    End Using
+                    'Using sw As StreamWriter = New StreamWriter("c:\RandomMPA.csv", True)  'true makes it append
+                    '    sw.WriteLine(sLayer)
+                    '    sw.Close()
+                    'End Using
 
                     'Save to csv file
                     Me.WriteOutputData()
