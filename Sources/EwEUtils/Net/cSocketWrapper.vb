@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.6  2008/12/18 21:53:25  joeb
+' Changed the size of the buffer from huge to 1024
+'
 ' Revision 1.5  2008/12/17 20:53:01  joeb
 ' Bug fixes to sending and receiving data
 '
@@ -163,7 +166,7 @@ Namespace NetUtilities
         End Enum
 
         ''' <summary>Size of buffer for receiving data.</summary>
-        Private Const cBUFFER_SIZE As Integer = 1024 * 1000
+        Private Const cBUFFER_SIZE As Integer = 1024
         ''' <summary>The one buffer for receiving data.</summary>
         Private m_abBuffer(cSocketWrapper.cBUFFER_SIZE) As Byte
         ''' <summary>The wrapped socket.</summary>
@@ -876,7 +879,7 @@ Namespace NetUtilities
             Try
 #If VERBOSE_LEVEL >= 1 Then
                 Me.m_iQueue += (iLength + 4)
-                Console.WriteLine("sw {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength + 4), Me.m_iQueue)
+                Console.WriteLine("sw BeginSend() {0} sending {1} bytes (queue size {2})", Me.ToString(), (iLength + 4), Me.m_iQueue)
 #End If
 
                 'If bSendImmedately Then
@@ -909,7 +912,7 @@ Namespace NetUtilities
 
 #If VERBOSE_LEVEL >= 1 Then
                 Me.m_iQueue -= (nb)
-                Console.WriteLine("sw {0} sent {1} bytes (queue size {2})", Me.ToString(), nb, Me.m_iQueue)
+                Console.WriteLine("sw SendCallback() {0} received {1} bytes (queue size {2})", Me.ToString(), nb, Me.m_iQueue)
 #End If
             Catch ex As Exception
                 ' Woops!
