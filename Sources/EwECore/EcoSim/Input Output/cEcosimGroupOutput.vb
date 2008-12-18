@@ -49,13 +49,13 @@ Public Class cEcosimGroupOutput
     Public Sub Init()
 
         'the results arrays of ecosim are redim for each run
-        'this means the reference to the results data changes 
+        'this means the reference to the results data is lost on each run 
         'so reset the reference
         m_simVars.Clear()
 
         m_simVars.Add(eVarNameFlags.EcosimBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
 
-        'cEcosimDataStrucures.ResultsOverTime(var,group,time)
+        'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
         m_simVars.Add(eVarNameFlags.EcosimYield, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimFeedingTime, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.FeedingTime, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimConsumpBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ConsumpBiomass, Me.Index))
@@ -65,16 +65,16 @@ Public Class cEcosimGroupOutput
         m_simVars.Add(eVarNameFlags.EcosimAvgWeight, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.AvgWeight, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimProdConsump, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ProdConsump, Me.Index))
 
-        'cEcosimDataStrucures.ResultsSumByGroup(var,group,time)
+        'cEcosimDataStrucures.ResultsSumByGroup(var,group,time) Var and Group are fixed
         m_simVars.Add(eVarNameFlags.EcosimAvgPred, New c3DResultsWrapper2Fixed(m_simData.ResultsSumByGroup, cEcosimDatastructures.eEcosimPredPreyResults.Pred, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimAvgPrey, New c3DResultsWrapper2Fixed(m_simData.ResultsSumByGroup, cEcosimDatastructures.eEcosimPredPreyResults.Prey, Me.Index))
 
-        'cEcosimDataStrucures.PredPreyResultsOverTime(var,prey,pred,time)
+        'cEcosimDataStrucures.PredPreyResultsOverTime(var,prey,pred,time) Var and Prey are fixed
         m_simVars.Add(eVarNameFlags.EcosimPredConsumpTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Consumption, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimPreyPercentageTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Prey, Me.Index))
         m_simVars.Add(eVarNameFlags.EcosimPredRateTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPredPreyResults.Pred, Me.Index))
 
-        'cEcosimDataStrucures.Elect(group,group,time)
+        'cEcosimDataStrucures.Elect(group,group,time) First Group is fixed
         m_simVars.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
     End Sub
