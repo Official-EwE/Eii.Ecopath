@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimFleetSummary.vb,v $
+' Revision 1.2  2008/12/18 21:56:05  joeb
+' Added FleetSummary Profit and Jobs
+'
 ' Revision 1.1  2008/09/26 07:30:19  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -58,9 +61,43 @@ Public Class cEcosimFleetSummary
         m_values.Add(val.varName, val)
 
 
+        'Profit
+        val = New cValue(0, eVarNameFlags.EcosimFleetProfit, eStatusFlags.OK, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
+        'Jobs
+        val = New cValue(0, eVarNameFlags.EcosimFleetJobs, eStatusFlags.OK, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
+
     End Sub
 
 #Region "Variable via dot '.' operator"
+
+
+
+    Public Property Profit() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimFleetProfit))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcosimFleetProfit, value)
+        End Set
+    End Property
+
+
+    Public Property Jobs() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimFleetJobs))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcosimFleetJobs, value)
+        End Set
+    End Property
+
+
 
 
     Public Property CatchStart() As Single

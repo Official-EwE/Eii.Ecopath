@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.46  2008/12/18 21:55:59  joeb
+' Added FleetSummary Profit and Jobs
+'
 ' Revision 1.45  2008/12/09 19:45:51  joeb
 ' Added IResultsWrapper for wrapping core data arrays in output objects
 '
@@ -4617,7 +4620,6 @@ Public Class cCore
                 Next
 
             Next group
-
             For Each fleet As cEcosimFleetSummary In m_EcosimFleetSummaries
                 fleet.Resize()
 
@@ -4650,6 +4652,17 @@ Public Class cCore
                 If sVal <> 0 Then
                     fleet.Effort = endVal / sVal
                 End If
+
+                Dim sumValue As Single
+                For it As Integer = 1 To Me.m_EcoSimData.NTimes
+                    sumValue += Me.m_EcoSimData.ResultsSumValueByGear(iFlt, it)
+                Next
+
+                'TEMP just for something to wrk with until we have ECost working
+                '[sum of value] * [ecopath profit (precentage of catch value that is profit)]
+                fleet.Profit = sumValue * (m_EcoPathData.CostPct(iFlt, 0) / 100)
+                '[sum of value] * [Jobs(fleet) from the search forms]
+                fleet.Jobs = sumValue * Me.m_SearchData.Jobs(iFlt)
 
             Next
 

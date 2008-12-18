@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.17  2008/12/18 21:56:05  joeb
+' Added FleetSummary Profit and Jobs
+'
 ' Revision 1.16  2008/12/10 02:00:02  jeroens
 ' Moved datasource types here
 '
@@ -703,6 +706,8 @@ Namespace Core
         EcosimFleetCostStart
         EcosimFleetCostEnd
         EcosimFleetEffort
+        EcosimFleetJobs
+        EcosimFleetProfit
 
         ' Time series
 
@@ -967,6 +972,12 @@ Namespace Core
 
         ''' <summary>View settings for the Client set by the Server (visible groups...)</summary>
         GameViewSetting
+
+        ''' <summary>Profit by Fleet </summary>      
+        GameFleetProfit
+
+        ''' <summary>Jobs(?) by Fleet </summary>    
+        GameFleetJobs
 
 
     End Enum
