@@ -1,9 +1,11 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.47  2008/12/28 20:46:59  villyc
+' *** empty log message ***
+'
 ' Revision 1.46  2008/12/18 21:55:59  joeb
 ' Added FleetSummary Profit and Jobs
-'
 ' Revision 1.45  2008/12/09 19:45:51  joeb
 ' Added IResultsWrapper for wrapping core data arrays in output objects
 '
