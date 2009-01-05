@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.5  2009/01/05 12:54:08  jeroens
+' Added change events to cOOPStorable
+'
 ' Revision 1.4  2008/12/11 18:28:31  jeroens
 ' Added VERBOSE_LEVEL
 '
@@ -959,26 +962,64 @@ Namespace Database
                 apiSrc = objSrc.GetType().GetProperties()
                 apiTgt = Me.GetType().GetProperties()
                 For Each piSrc In apiSrc
-                    For Each piTgt In apiTgt
-                        If piSrc.Name = piTgt.Name Then
-                            Try
-                                If piTgt.CanWrite() Then
-                                    piTgt.SetValue(Me, piSrc.GetValue(objSrc, Nothing), Nothing)
-                                End If
-                            Catch ex As Exception
+                    If String.Compare(piSrc.Name, "DBID") <> 0 Then
+                        For Each piTgt In apiTgt
+                            If piSrc.Name = piTgt.Name Then
+                                Try
+                                    If piTgt.CanWrite() Then
+                                        piTgt.SetValue(Me, piSrc.GetValue(objSrc, Nothing), Nothing)
+                                    End If
+                                Catch ex As Exception
 #If VERBOSE_LEVEL >= 2 Then
                                 ' Ok, this did not work
                                 Console.WriteLine("Woops: failed to copy prop {0} : {1}", piTgt.Name, ex.Message)
 #End If
-                            End Try
-                        End If
-                    Next
+                                End Try
+                            End If
+                        Next
+                    End If
                 Next
             End Sub
 
-            Public Shared Function IsValidDBID(ByVal iDBID As Integer) As Boolean
-                Return (iDBID <> cDBID_INVALID)
-            End Function
+#Region " Updates "
+
+            ''' <summary>
+            ''' Event to notify that instance unit has changed
+            ''' </summary>
+            ''' <param name="obj"></param>
+            Public Event OnChanged(ByVal obj As cOOPStorable)
+
+            ''' <summary>Flag stating whether this unit is allowed to broadcast change events.</summary>
+            Private m_bAllowEvents As Boolean = True
+
+            <Browsable(False)> _
+            Public Property AllowEvents(Optional ByVal bFireChangeWhenReleased As Boolean = False) As Boolean
+                Get
+                    Return Me.m_bAllowEvents
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bAllowEvents = value
+                    If bFireChangeWhenReleased Then Me.SetChanged()
+                End Set
+            End Property
+
+            ' Deadlock prevention flag
+            Private m_bInUpdate As Boolean = False
+
+            Protected Sub SetChanged()
+                If Me.m_bAllowEvents Then
+                    If (Me.m_bInUpdate = False) Then
+                        ' Set deadlonk prevention lock
+                        Me.m_bInUpdate = True
+                        ' Raise event
+                        RaiseEvent OnChanged(Me)
+                        ' Release deadlonk prevention lock
+                        Me.m_bInUpdate = False
+                    End If
+                End If
+            End Sub
+
+#End Region ' Updates
 
         End Class
 
