@@ -1,17 +1,15 @@
 '==============================================================================
 '
 ' $Log: PropertyUtils.vb,v $
+' Revision 1.3  2009/01/06 12:42:08  jeroens
+' Cleaned up
+' Property order sorting takes Category, DisplayName into account
+'
 ' Revision 1.2  2008/12/15 16:06:33  jeroens
 ' no message
 '
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/04/15 17:38:41  jeroens
-' Moved propery disagnostics from Ecost logic to here
-'
-' Revision 1.1  2008/04/14 17:31:25  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -34,11 +32,12 @@ Namespace Utilities
     ''' <remarks>
     ''' Usage:
     ''' 
-    ''' [TypeConverter(typeof(PropertySorter))]
+    ''' [TypeConverter(TypeOf(PropertySorter))]
     ''' [DefaultProperty("Name")]
     ''' Public Class Person
     ''' {
-    '''     ..
+    '''     [cPropertySorter.PropertyOrder(1)}
+    '''     Public Property Test
     '''     ..
     ''' }
     ''' </remarks>
@@ -46,12 +45,122 @@ Namespace Utilities
     Public Class cPropertySorter
         Inherits ExpandableObjectConverter
 
+#Region " Helper classes "
+
+#Region " PropertyOrderAttribute "
+
+        <AttributeUsage(AttributeTargets.[Property])> _
+        Public Class PropertyOrderAttribute
+            Inherits Attribute
+
+            ''' <summary>Simple attribute to allow the order of a property to be specified.</summary>
+            Private m_iOrder As Integer = 0
+
+            Public Sub New(ByVal iOrder As Integer)
+                Me.m_iOrder = iOrder
+            End Sub
+
+            Public ReadOnly Property Order() As Integer
+                Get
+                    Return Me.m_iOrder
+                End Get
+            End Property
+        End Class
+
+#End Region ' PropertyOrderAttribute
+
+#Region " PropertyOrderComparer "
+
+        Private Class PropertyOrderComparer
+            Implements IComparable
+
+            Private m_strPropertyName As String = ""
+            Private m_strCategory As String = ""
+            Private m_strDisplayName As String = ""
+            Private m_iOrder As Integer = 0
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' 
+            ''' </summary>
+            ''' <param name="strPropertyName">Property name</param>
+            ''' <param name="strCategory">Category attribute</param>
+            ''' <param name="strDisplayName">Name attribute</param>
+            ''' <param name="iOrder">Order attribute</param>
+            ''' ---------------------------------------------------------------
+            Public Sub New(ByVal strPropertyName As String, _
+                           ByVal strCategory As String, ByVal strDisplayName As String, ByVal iOrder As Integer)
+                Me.m_strPropertyName = strPropertyName
+                Me.m_strCategory = strCategory
+                Me.m_strDisplayName = strDisplayName
+                Me.m_iOrder = iOrder
+            End Sub
+
+            Public ReadOnly Property PropertyName() As String
+                Get
+                    Return Me.m_strPropertyName
+                End Get
+            End Property
+
+            Public ReadOnly Property Category() As String
+                Get
+                    Return Me.m_strCategory
+                End Get
+            End Property
+
+            Public ReadOnly Property DisplayName() As String
+                Get
+                    Return Me.m_strDisplayName
+                End Get
+            End Property
+
+            Public ReadOnly Property Order() As Integer
+                Get
+                    Return Me.m_iOrder
+                End Get
+            End Property
+
+            Public Function CompareTo(ByVal obj As Object) As Integer _
+                Implements System.IComparable.CompareTo
+
+                ' Get object to compare to
+                Dim cmp As PropertyOrderComparer = DirectCast(obj, PropertyOrderComparer)
+                ' Sort by category first
+                Dim iSort As Integer = String.Compare(Me.m_strCategory, cmp.Category)
+
+                ' Categories match?
+                If iSort = 0 Then
+                    ' #Yes: sort by order
+                    ' Orders match?
+                    If cmp.Order = Me.m_iOrder Then
+                        ' #Yes: sort by name 
+                        iSort = String.Compare(Me.m_strDisplayName, cmp.DisplayName)
+                    Else
+                        ' #No: sort by order
+                        If cmp.Order > m_iOrder Then
+                            iSort = -1
+                        Else
+                            iSort = 1
+                        End If
+                    End If
+                End If
+
+                Return iSort
+
+            End Function
+
+        End Class
+
+#End Region ' PropertyOrderComparer
+
+#End Region ' Helper classes
+
         Public Overloads Overrides Function GetPropertiesSupported(ByVal context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
 
         ''' <summary>
-        ''' This override returns a list of properties in order
+        ''' This override returns a list of properties in order.
         ''' </summary>
         ''' <param name="context"></param>
         ''' <param name="value"></param>
@@ -60,17 +169,31 @@ Namespace Utilities
         Public Overloads Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object, ByVal attributes As Attribute()) As PropertyDescriptorCollection
 
             Dim pdc As PropertyDescriptorCollection = TypeDescriptor.GetProperties(value, attributes)
+            Dim attribute As Attribute = Nothing
+            Dim poa As PropertyOrderAttribute = Nothing
+            Dim strName As String = ""
             Dim alPropsOrdered As New ArrayList()
+            Dim lstrNames As New List(Of String)
+
             For Each pd As PropertyDescriptor In pdc
-                Dim attribute As Attribute = pd.Attributes(GetType(PropertyOrderAttribute))
+
+                ' Get appropriate name
+                If Not String.IsNullOrEmpty(pd.DisplayName) Then
+                    strName = pd.DisplayName
+                Else
+                    strName = pd.Name
+                End If
+
+                ' Get order attribute, if any
+                attribute = pd.Attributes(GetType(PropertyOrderAttribute))
                 ' Has an order specifier attribute?
                 If attribute IsNot Nothing Then
                     ' #Yes: create an pair object to hold it
-                    Dim poa As PropertyOrderAttribute = DirectCast(attribute, PropertyOrderAttribute)
-                    alPropsOrdered.Add(New PropertyOrderPair(pd.Name, poa.Order))
+                    poa = DirectCast(attribute, PropertyOrderAttribute)
+                    alPropsOrdered.Add(New PropertyOrderComparer(pd.Name, pd.Category, strName, poa.Order))
                 Else
-                    ' #No: give a default order of 0
-                    alPropsOrdered.Add(New PropertyOrderPair(pd.Name, 0))
+                    ' #No: create dummy pair object with a default order of 0
+                    alPropsOrdered.Add(New PropertyOrderComparer(pd.Name, pd.Category, strName, 0))
                 End If
             Next
 
@@ -79,81 +202,33 @@ Namespace Utilities
             alPropsOrdered.Sort()
 
             ' Build a string list of the ordered names
-            Dim lNames As New List(Of String)
-            For Each pop As PropertyOrderPair In alPropsOrdered
-                lNames.Add(pop.Name)
+            For Each pop As PropertyOrderComparer In alPropsOrdered
+                lstrNames.Add(pop.PropertyName)
             Next
 
             ' Pass in the ordered list for the PropertyDescriptorCollection to sort by
-            Return pdc.Sort(lNames.ToArray())
+            Return pdc.Sort(lstrNames.ToArray())
         End Function
 
     End Class
 
-#Region "Helper Class - PropertyOrderAttribute"
+    ''' =======================================================================
+    ''' <summary>
+    ''' Property conversion utility class.
+    ''' </summary>
+    ''' =======================================================================
+    Public Class cPropertyConverter
 
-    <AttributeUsage(AttributeTargets.[Property])> _
-    Public Class PropertyOrderAttribute
-        Inherits Attribute
-
-        ''' <summary>Simple attribute to allow the order of a property to be specified.</summary>
-        Private m_iOrder As Integer = 0
-
-        Public Sub New(ByVal iOrder As Integer)
-            m_iOrder = iOrder
-        End Sub
-
-        Public ReadOnly Property Order() As Integer
-            Get
-                Return m_iOrder
-            End Get
-        End Property
-    End Class
-
-#End Region
-
-#Region "Helper Class - PropertyOrderPair"
-
-    Public Class PropertyOrderPair
-        Implements IComparable
-
-        Private _order As Integer
-        Private _name As String
-        Public ReadOnly Property Name() As String
-            Get
-                Return _name
-            End Get
-        End Property
-
-        Public Sub New(ByVal name As String, ByVal order As Integer)
-            _order = order
-            _name = name
-        End Sub
-
-        Public Function CompareTo(ByVal obj As Object) As Integer Implements System.IComparable.CompareTo
-            '
-            ' Sort the pair objects by ordering by order value
-            ' Equal values get the same rank
-            '
-            Dim otherOrder As Integer = DirectCast(obj, PropertyOrderPair)._order
-            If otherOrder = _order Then
-                '
-                ' If order not specified, sort by name
-                '
-                Dim otherName As String = DirectCast(obj, PropertyOrderPair)._name
-                Return String.Compare(_name, otherName)
-            ElseIf otherOrder > _order Then
-                Return -1
-            End If
-            Return 1
-        End Function
-
-    End Class
-
-#End Region
-
-    Public Class cPropertyUtils
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find a <see cref="PropertyDescriptor">PropertyDescriptor</see> for
+        ''' a given <see cref="PropertyInfo">PropertyInfo</see> instance.
+        ''' </summary>
+        ''' <param name="pi">The property info instance to find a 
+        ''' property descriptor for.</param>
+        ''' <returns>A <see cref="PropertyDescriptor">PropertyDescriptor</see>
+        ''' instance, or nothing if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function FindOrigPropertyDescriptor(ByVal pi As PropertyInfo) As PropertyDescriptor
             For Each pd As PropertyDescriptor In TypeDescriptor.GetProperties(pi.DeclaringType)
                 If pd.Name.Equals(pi.Name) Then
@@ -163,6 +238,17 @@ Namespace Utilities
             Return Nothing
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find a  for <see cref="PropertyInfo">PropertyInfo</see> a given 
+        ''' <see cref="PropertyDescriptor">PropertyDescriptor</see> instance.
+        ''' </summary>
+        ''' <param name="t">The type to search.</param>
+        ''' <param name="pd">The property descriptor instance to find a 
+        ''' property descriptor for.</param>
+        ''' <returns>A <see cref="PropertyInfo">PropertyInfo</see> instance,
+        ''' or nothing if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function FindOrigPropertyInfo(ByVal t As Type, ByVal pd As PropertyDescriptor) As PropertyInfo
             For Each pi As PropertyInfo In t.GetProperties()
                 If pd.Name.Equals(pi.Name) Then
