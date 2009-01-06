@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.22  2009/01/06 11:39:07  jeroens
+' no message
+'
 ' Revision 1.21  2008/12/15 15:57:42  jeroens
 ' Uses IApplicationStatusDispatcher
 '
@@ -1025,6 +1028,8 @@ Public Class AppLauncher
 
     Private Sub UpdateModelControls()
 
+        Dim mnuItem As ToolStripMenuItem = Nothing
+
         ' Clear the dropdown items first
         Me.m_tsbEcosim.DropDownItems.Clear()
         ' Clear the dropdown items first
@@ -1034,7 +1039,7 @@ Public Class AppLauncher
         If Me.m_core.StateMonitor.HasEcopathLoaded() Then
             If Me.m_core.EcosimScenarioCount > 0 Then
                 For i As Integer = 1 To Me.m_core.EcosimScenarioCount
-                    Dim mnuItem As New ToolStripMenuItem()
+                    mnuItem = New ToolStripMenuItem()
                     mnuItem.Text = m_core.EcosimScenarios(i).Name
                     mnuItem.Tag = i
                     AddHandler mnuItem.Click, AddressOf EcosimScenarioClickEventHandler
@@ -1045,7 +1050,7 @@ Public Class AppLauncher
             'Load Ecospace scenarios
             If Me.m_core.EcospaceScenarioCount > 0 Then
                 For i As Integer = 1 To Me.m_core.EcospaceScenarioCount
-                    Dim mnuItem As New ToolStripMenuItem()
+                    mnuItem = New ToolStripMenuItem()
                     mnuItem.Text = m_core.EcospaceScenarios(i).Name
                     mnuItem.Tag = i
                     AddHandler mnuItem.Click, AddressOf EcospaceScenarioClickEventHandler
