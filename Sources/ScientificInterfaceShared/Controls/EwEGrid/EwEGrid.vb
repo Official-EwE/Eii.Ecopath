@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.7  2009/01/06 12:39:16  jeroens
+' Added comment
+'
 ' Revision 1.6  2008/12/15 15:37:28  jeroens
 ' no message
 '
@@ -471,8 +474,11 @@ Namespace Controls.EwEGrid
         End Function
 
         ''' <summary>
-        ''' 
+        ''' Flag, states whether columns are fixed in width and height.
         ''' </summary>
+        ''' <remarks>
+        ''' When True, the header row is set to a fixed height of 45 (shudder)
+        ''' </remarks>
         <Browsable(True), Description("States whether columns are fixed in width and height")> _
         Public Property FixedColumnWidths() As Boolean
             Get
