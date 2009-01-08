@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.6  2009/01/08 16:18:57  jeroens
+' Fixed issue 582
+'
 ' Revision 1.5  2008/12/15 15:56:20  jeroens
 ' no message
 '
@@ -563,11 +566,13 @@ Namespace Ecospace
                     icc = Math.Max(Math.Min(Me.m_nEffortBins, icc), 0)
 
                     Dim tmpBrush As SolidBrush = Nothing
-                    'If it is land
-                    If CInt(m_BaseMapDepthLayer.Cell(i, j)) = 0 Then
-                        tmpBrush = New SolidBrush(Color.Black)
-                    Else
+                    'If it is water
+                    If CInt(m_BaseMapDepthLayer.Cell(i, j)) > 0 Then
+                        ' #Water
                         tmpBrush = New SolidBrush(lColors(CInt(icc)))
+                    Else
+                        ' #Land
+                        tmpBrush = New SolidBrush(Color.Black)
                     End If
 
                     Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _

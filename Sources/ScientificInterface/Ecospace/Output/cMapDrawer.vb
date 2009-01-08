@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMapDrawer.vb,v $
+' Revision 1.2  2009/01/08 16:18:57  jeroens
+' Fixed issue 582
+'
 ' Revision 1.1  2008/09/26 07:32:02  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -226,11 +229,13 @@ Public Class cMapDrawer
                     icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
 
                     Dim tmpBrush As SolidBrush = Nothing
-                    'If it is land
-                    If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) = 0 Then
-                        tmpBrush = New SolidBrush(Color.Gray)
-                    Else
+                    'If it is water
+                    If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
+                        ' #Water
                         tmpBrush = New SolidBrush(m_lColors(CInt(icc)))
+                    Else
+                        ' #Land
+                        tmpBrush = New SolidBrush(Color.Gray)
                     End If
                     Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
                                                                CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _

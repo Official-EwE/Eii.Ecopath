@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.5  2009/01/08 16:18:53  jeroens
+' Fixed issue 582
+'
 ' Revision 1.4  2008/11/06 01:09:47  jeroens
 ' deppaws loc dna loc reyal noitargiM
 '
@@ -102,7 +105,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerDepth
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -121,7 +124,7 @@ Public Class cEcospaceBasemap
             ' ----------------
 
             ' Depth layer
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerDepth, cCore.NULL_VALUE, meta)
             Me.Layers(eVarNameFlags.LayerDepth) = layer
 

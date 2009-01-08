@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.32  2009/01/08 16:18:59  jeroens
+' Fixed issue 582
+'
 ' Revision 1.31  2008/11/21 01:27:29  jeroens
 ' MPA commits are rendered globally now
 '
@@ -1508,7 +1511,7 @@ Namespace Ecospace
                 For iCol = 1 To Me.m_basemap.InCol
 
                     ' Only consider water cells
-                    If (layerDepth.Cell(iRow, iCol) <> 0) Then
+                    If (layerDepth.Cell(iRow, iCol) > 0) Then
 
                         ' Clear existing target MPA cells
                         If (layerMPA.Cell(iRow, iCol) = iMPA) Then

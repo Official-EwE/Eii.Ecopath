@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBaseMap.vb,v $
+' Revision 1.4  2009/01/08 16:19:01  jeroens
+' Fixed issue 582
+'
 ' Revision 1.3  2008/11/08 23:50:13  jeroens
 ' Made cell interface more intuitive
 '
@@ -390,7 +393,7 @@ Namespace Ecospace
                     rcScreen = Me.GetCellRect(ptCell)
 
                     ' Test if cell is a water cell
-                    bIsWater = (CInt(ldDepth.Cell(Y, X)) <> 0)
+                    bIsWater = (CInt(ldDepth.Cell(Y, X)) > 0)
 
                     ' Draw layers in reverse order
                     For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1

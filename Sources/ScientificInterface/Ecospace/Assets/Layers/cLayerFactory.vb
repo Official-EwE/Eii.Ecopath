@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.7  2009/01/08 16:18:56  jeroens
+' Fixed issue 582
+'
 ' Revision 1.6  2008/11/26 02:57:27  jeroens
 ' MPAs use hatch patterns
 '
@@ -91,9 +94,9 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent depth as a solid colour
                     renderer = New cLayerRendererGradient(vs)
-                    editor = New cLayerEditorTwoState()
+                    editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
-                    layer = New cLayer(layerData, renderer, editor, 0, 1, bmd, eVarNameFlags.LayerDepth)
+                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_LAND
 
                     lLayers.Add(layer)
