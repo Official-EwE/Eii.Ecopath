@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.18  2009/01/12 22:57:15  joeb
+' Added Comments
+'
 ' Revision 1.17  2008/12/17 01:30:14  villyc
 ' *** empty log message ***
 '
@@ -1431,6 +1434,7 @@ Public Class cMPARandomSearch
         Return CSng(Dist)
 
         'This code can not be reached
+        'Dist is returned before this can execute
         '        Xdist = Sqrt(Dist ^ 2 - Ydist ^ 2) * Sign(Lon1 - Lon2)
         '        Exit Function
 
