@@ -35,8 +35,8 @@ Public Class cEcospaceGroupOutput
 
         m_Vars.Clear()
         'SpaceTSData(group,var,time)
-        m_Vars.Add(eVarNameFlags.EcospaceBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.SpaceTSData, Me.Index, eSpaceTSResults.Biomass))
-        m_Vars.Add(eVarNameFlags.EcospaceRelativeBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.SpaceTSData, Me.Index, eSpaceTSResults.RelativeBiomass))
+        m_Vars.Add(eVarNameFlags.EcospaceBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.Biomass, Me.Index))
+        m_Vars.Add(eVarNameFlags.EcospaceRelativeBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.RelativeBiomass, Me.Index))
 
     End Sub
 
