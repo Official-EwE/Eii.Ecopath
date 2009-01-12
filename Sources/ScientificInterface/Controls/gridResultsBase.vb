@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridResultsBase.vb,v $
+' Revision 1.3  2009/01/12 23:01:45  joeb
+' Added SetCellValue(Integer, Integer,  Single)
+'
 ' Revision 1.2  2008/12/15 15:55:36  jeroens
 ' no message
 '
@@ -109,6 +112,16 @@ Namespace Controls
                 'do nothing??
             End Try
         End Sub
+
+        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As Single)
+            Try
+                Me(iRow, iCol).Value = sValue
+            Catch ex As Exception
+                'do nothing??
+            End Try
+        End Sub
+
+
 
 
         Protected Sub InitTotalArray(ByRef asValueTotal() As Single)
