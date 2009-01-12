@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.4  2009/01/12 22:54:57  joeb
+' Ecospace now stores all results over time. Not just for the summary periods.
+'
 ' Revision 1.3  2008/12/09 19:48:59  joeb
 ' Ouput objects now use core data instead of buffering data
 '
@@ -266,8 +269,6 @@ Public Class cEcospaceDataStructures
     Public chkMPA As Boolean
 
     Public NumStep As Integer       'Number of steps for averaging results in sim space
-    Public NumStep0 As Integer      'Actual number of steps for the zero element of the summary arrays Start summary time period
-    Public NumStep1 As Integer      'Actual number of steps for the one element of the summary arrays end summary time peroid
 
     ''' <summary>Start time of the first and second summary data period. In Years </summary>
     ''' <remarks> Data is summarized over two time periods set by SumStart(0) and SumStart(1). The number of time steps to summarize over is set in NumStep.
@@ -432,7 +433,7 @@ Public Class cEcospaceDataStructures
     Public MPAorig(,) As Integer      'for use with habitat change
     Public RelPPorig(,) As Single     'for use with habitat change
     Public RelCinorig(,) As Single    'for use with habitat change
-    Public Sail(,,) As Single
+    Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
     Public ImportanceLayers As New List(Of cLayerImportanceData)
     'must public the seed var here too abmpa
@@ -445,30 +446,22 @@ Public Class cEcospaceDataStructures
     Public BBase() As Single
 
     'Summary data
-    Public SumBiomass(,) As Single
-    Public SumCatch(,) As Single
-    Public SumCost(,) As Single
-    Public SumCostInit(,) As Single
-    Public SumEffort(,) As Single
-    Public SumCatchGear(,) As Single
     Public NoRegions As Integer
-    Public SumBiomassRegion(,,) As Single 'SumBiomassRegion(summary_period, NoRegions, NGroups)
-    Public CatchGearGroupRegion(,,,) As Single 'CatchGearGroupRegion(summary_period, NoRegions, nFleets, NGroups)
-    Public ValueGearGroup(,,) As Single
+    Public CatchRegionGearGroup(,,,) As Single 'CatchGearGroupRegion( NoRegions, nFleets, NGroups, ntimesteps)
 
-    Public BiomassRegionGroup(,,) As Single 'BiomassByRegion(region, group, timestep)
+    Public ResultsByFleet(,,) As Single 'ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)
+    Public ResultsByFleetGroup(,,,) As Single 'ResultsByFleetGroup(nvars,nFleets,nGroups,NumberOfTimeSteps)
 
-    'ToDo_jb SpaceTSData() will need an enumerator for data types that are summarized
+    Public ResultsRegionGroup(,,) As Single 'ResultsRegionGroup(region, group, timestep)
+
     ''' <summary> Summarized time step data </summary>
     ''' <remarks>populated in sumarizeTimeStepData()</remarks>
-    Public SpaceTSData(,,) As Single
+    Public ResultsByGroup(,,) As Single 'ResultsByGroup(nVars,Ngroups,  NumberOfTimeSteps)
 
-    ''' <summary>Number of variables summarized in SpaceTSData() </summary>
-    Public Const N_SPACE_TS_DATA As Integer = 1
-
-    Public SumValueGear(,) As Single
-    Public CatchGearGroup(,,) As Single
-
+    ''' <summary>Number of variables in ResultsXXX arrays </summary>
+    Public Const N_RESULTS_GROUPS As Integer = 2
+    Public Const N_RESULTS_FLEETS As Integer = 3
+    Public Const N_RESULTS_FLEETGROUPS As Integer = 1
 
     Public PPupWell As Single
 
@@ -1071,7 +1064,7 @@ Public Class cEcospaceDataStructures
     Public Sub ReDimRegionVars()
         ReDim Me.RegionDBID(NoRegions)
         ReDim Me.RegionName(NoRegions)
-        ReDim BiomassRegionGroup(NoRegions, NGroups, nTimeSteps)
+        ReDim ResultsRegionGroup(NoRegions, NGroups, nTimeSteps)
     End Sub
 
     Public Sub ReDimMapDims()
@@ -1189,15 +1182,18 @@ Public Class cEcospaceDataStructures
     End Sub
 
     ''' <summary>
-    ''' Redim the data that saves the Ecospace time step results data.
+    ''' Redim the data that saves the Ecospace results over time
     ''' </summary>
-    ''' <remarks>This only needs to get called by Ecospace at the start of a run.</remarks>
+    ''' <remarks>This must be called by Ecospace at the start of a run to clear out any existing data.</remarks>
     Public Sub redimTimeStepResults(ByVal NumberOfTimeSteps As Integer)
 
         Debug.Assert(TimeStep > 0 And TotalTime > 0)
-        ReDim SpaceTSData(m_ngroups, N_SPACE_TS_DATA, NumberOfTimeSteps)
+        ReDim Me.ResultsByGroup(N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
+        ReDim Me.ResultsByFleet(N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
+        ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
 
-        ReDim BiomassRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
+        ReDim Me.ResultsRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
+        ReDim Me.CatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
 
     End Sub
 
@@ -1209,12 +1205,10 @@ Public Class cEcospaceDataStructures
             SumStart(0) = 0 'start of first summary period
             SumStart(1) = TotalTime - 1 'start of last summary perion
             NumStep = CInt(1.0 / TimeStep) 'number of time steps to summarize over one year for the default summary
-            NumStep0 = 0 : NumStep1 = 0 'number of time steps that the data was actually summarized over
         Catch ex As Exception
             SumStart(0) = 0 'start of first summary period
             SumStart(1) = TotalTime - 1 'start of last summary period
             NumStep = 1 'number of time steps to summarize over one year for the default summary
-            NumStep0 = 0 : NumStep1 = 0 'number of time steps that the data was actually summarized over
             Debug.Assert(False)
         End Try
     End Sub
@@ -1237,6 +1231,229 @@ Public Class cEcospaceDataStructures
 
         '     End If
 
+    End Sub
+
+
+    ''' <summary>
+    ''' Get sum of Biomass by Region Group for the Start and End summary period
+    ''' </summary>
+    ''' <remarks>Summary time windows are defined by the user</remarks>
+    Public Sub getSumBiomByRegion(ByVal iRegion As Integer, ByVal iGroup As Integer, ByRef startBio As Single, ByRef endBio As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startBio = 0
+        endBio = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startBio = startBio + Me.ResultsRegionGroup(iRegion, iGroup, it)
+        Next
+        startBio = startBio / nts
+
+        For it As Integer = et To et + nts - 1
+            endBio = endBio + Me.ResultsRegionGroup(iRegion, iGroup, it)
+        Next
+        endBio = endBio / nts
+
+    End Sub
+    ''' <summary>
+    ''' Get Biomass for summary periods
+    ''' </summary>
+    Public Sub getSumBiom(ByVal iGroup As Integer, ByRef startBio As Single, ByRef endBio As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startBio = 0
+        endBio = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startBio = startBio + Me.ResultsByGroup(eSpaceResultsGroups.Biomass, iGroup, it)
+        Next
+        startBio = startBio / nts
+
+        For it As Integer = et To et + nts - 1
+            endBio = endBio + Me.ResultsByGroup(eSpaceResultsGroups.Biomass, iGroup, it)
+        Next
+        endBio = endBio / nts
+
+    End Sub
+
+    ''' <summary>
+    ''' Get Catch by Fleet Group for summary periods
+    ''' </summary>
+    Public Sub getSumCatchFleetGroup(ByVal iFleet As Integer, ByVal iGroup As Integer, ByRef startCatch As Single, ByRef endCatch As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startCatch = 0
+        endCatch = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startCatch = startCatch + Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFleet, iGroup, it)
+        Next
+        startCatch = startCatch / nts
+
+        For it As Integer = et To et + nts - 1
+            endCatch = endCatch + Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFleet, iGroup, it)
+        Next
+        endCatch = endCatch / nts
+
+    End Sub
+
+    ''' <summary>
+    ''' Get Value by Fleet Group for summary periods
+    ''' </summary>
+    Public Sub getSumValueFleetGroup(ByVal iFleet As Integer, ByVal iGroup As Integer, ByRef startCatch As Single, ByRef endCatch As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startCatch = 0
+        endCatch = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startCatch = startCatch + Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFleet, iGroup, it)
+        Next
+        startCatch = startCatch / nts
+
+        For it As Integer = et To et + nts - 1
+            endCatch = endCatch + Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFleet, iGroup, it)
+        Next
+        endCatch = endCatch / nts
+
+    End Sub
+
+    ''' <summary>
+    ''' Get Catch by Fleet for summary periods
+    ''' </summary>
+    Public Sub getSumCatchFleet(ByVal iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startCatch = 0
+        endCatch = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startCatch = startCatch + Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFleet, it)
+        Next
+        startCatch = startCatch / nts
+
+        For it As Integer = et To et + nts - 1
+            endCatch = endCatch + Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFleet, it)
+        Next
+        endCatch = endCatch / nts
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Get Cost by Fleet for summary periods
+    ''' </summary>
+    ''' <remarks>Cost is computed from values saved over time because of the was it's calculated</remarks>
+    Public Sub getSumCostFleet(ByVal EcopathCost(,) As Single, ByVal iFleet As Integer, ByRef startCost As Single, ByRef endCost As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        Dim sSailEffort As Single, eSailEffort As Single
+        Dim sFishEffort As Single, eFishEffort As Single
+        startCost = 0
+        endCost = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        'eSpaceResultsFleets.Cost is sum of sailing effort across all the cells
+        For it As Integer = st To st + nts - 1
+            sSailEffort += Me.ResultsByFleet(eSpaceResultsFleets.Cost, iFleet, it)
+            sFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+        Next
+        'in EwE5 Effort is averaged over time steps
+        'sailing cost(sailing effort) is not
+        sFishEffort = sFishEffort / nts
+
+        For it As Integer = et To et + nts - 1
+            eSailEffort = eSailEffort + Me.ResultsByFleet(eSpaceResultsFleets.Cost, iFleet, it)
+            eFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+        Next
+        eFishEffort = eFishEffort / nts
+
+        'cost = [fixed cost] + ([fishing effort] * [ecopath effort cost] + [sailing effort] * [ecopath sailing cost])
+        startCost = EcopathCost(iFleet, 1) + (sFishEffort * EcopathCost(iFleet, 2) + sSailEffort * EcopathCost(iFleet, 3))
+        endCost = EcopathCost(iFleet, 1) + (eFishEffort * EcopathCost(iFleet, 2) + eSailEffort * EcopathCost(iFleet, 3))
+
+    End Sub
+
+
+
+    ''' <summary>
+    ''' Get Value by Fleet for summary periods
+    ''' </summary>
+    Public Sub getSumValueFleet(ByVal iFleet As Integer, ByRef startValue As Single, ByRef endValue As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startValue = 0
+        endValue = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startValue = startValue + Me.ResultsByFleet(eSpaceResultsFleets.Value, iFleet, it)
+        Next
+        startValue = startValue / nts
+
+        For it As Integer = et To et + nts - 1
+            endValue = endValue + Me.ResultsByFleet(eSpaceResultsFleets.Value, iFleet, it)
+        Next
+        endValue = endValue / nts
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Get Catch by REgion, Fleet, Group for summary periods
+    ''' </summary>
+    Public Sub getSumCatchRegionGearGroup(ByVal iRegion As Integer, ByVal iFleet As Integer, ByVal iGroup As Integer, ByRef startCatch As Single, ByRef endCatch As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        startCatch = 0
+        endCatch = 0
+
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            startCatch = startCatch + Me.CatchRegionGearGroup(iRegion, iFleet, iGroup, it)
+        Next
+        startCatch = startCatch / nts
+
+        For it As Integer = et To et + nts - 1
+            endCatch = endCatch + Me.CatchRegionGearGroup(iRegion, iFleet, iGroup, it)
+        Next
+        endCatch = endCatch / nts
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Get the indexes for the user defined time windows that the results data is summarized over
+    ''' </summary>
+    ''' <param name="startIndex">Index for the first time window</param>
+    ''' <param name="endIndex">Index for the end/last time window</param>
+    ''' <param name="nIndexes">Number of time steps the user defined to summarize the data over</param>
+    ''' <remarks></remarks>
+    Private Sub getStartEndSumIndex(ByRef startIndex As Integer, ByRef endIndex As Integer, ByRef nIndexes As Integer)
+        startIndex = CInt(Me.SumStart(0) * Me.NumStep) + 1
+        endIndex = CInt(Me.SumStart(1) * Me.NumStep) + 1
+        nIndexes = Me.NumStep
     End Sub
 
 #End Region

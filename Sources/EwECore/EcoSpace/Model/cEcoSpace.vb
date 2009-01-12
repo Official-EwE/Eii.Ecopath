@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.16  2009/01/12 22:54:54  joeb
+' Ecospace now stores all results over time. Not just for the summary periods.
+'
 ' Revision 1.15  2008/12/16 16:32:46  sherman
 ' Corrected EcospacePostFishingEffortModTimestep
 '
@@ -185,7 +188,7 @@ Public Class cEcoSpace
 
     Private TimeStep2 As Single
 
-    Dim Tn As Integer ' summary array index
+    ' Dim Tn As Integer ' summary array index
 
     'jb Movement parameter with no migration?????
     'Set in SetMovementParameters() to the same values as counterparts BcwNomig() = Bcw()
@@ -708,9 +711,8 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                'TN is a pointer being used to decide which sum to work with
-
-                SetSummaryTimeStep(Tn)
+                ''TN is a pointer being used to decide which sum to work with
+                ' SetSummaryTimeStep(Tn)
 
                 If m_Data.PredictEffort Then PredictEffortDistribution(imonth, its)
 
@@ -847,7 +849,7 @@ Public Class cEcoSpace
                     bAccumulateData = False
                 End If
 
-                summarizeTimeStepData(itt, imonth, Tn)
+                summarizeTimeStepData(itt, imonth)
 
                 If m_search.bInSearch And iYear = m_search.BaseYear And imonth = 12 Then
                     m_search.calcBaseYearCost(iYear, m_Data.nWaterCells)
@@ -856,7 +858,7 @@ Public Class cEcoSpace
                 Dim slvET3 As Single = Microsoft.VisualBasic.Timer
 
                 'post notification that a time step has been completed
-                processTimeStep(itt)
+                onTimeStep(itt)
                 timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, m_Data.TimeNow)
@@ -865,9 +867,6 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-            summarizeOutputData()
-            computeCombinedFleetsSummary()
 
             If m_search.bInSearch Then
                 Dim runTime As Integer = CInt(itt * m_Data.TimeStep)
@@ -1334,25 +1333,12 @@ Public Class cEcoSpace
             ReDim Cper(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
             ReDim Ecode(m_Data.Nvarsplit)
 
-            ReDim m_Data.SumBiomass(1, m_Data.nvartot)
-            ReDim m_Data.SumCatch(1, m_Data.NGroups)
-            ReDim m_Data.SumCost(1, m_Data.nFleets)
-            ReDim m_Data.SumCostInit(1, m_Data.nFleets)
-            ReDim m_Data.SumEffort(1, m_Data.nFleets)
-            ReDim m_Data.SumCatchGear(1, m_Data.nFleets)
-
-            ' m_tracerData.EcoSpaceConSimOn = True
             If m_tracerData.EcoSpaceConSimOn Then
                 m_Data.RedimConSimVars()
                 m_tracerData.redimForEcospaceRun(m_Data.NoRegions, m_Data.NGroups, m_Data.nTimeSteps)
             End If
 
             m_ESData.FirstTime = True
-
-            'set the counter for data summary 
-            'this is the number of time steps that the data has been summed over for the start and end period
-            m_Data.NumStep0 = 0
-            m_Data.NumStep1 = 0
 
             'In EwE5 this was part of InitialState changed here
             'compute the IecoCode() index
@@ -1366,9 +1352,6 @@ Public Class cEcoSpace
                     IecoCode(igrp) = ir
                 Next
             Next
-
-            '    ReDim ConcMax(m_Data.nGroups)
-            '    ReDim ConTotal(NumGroups)
 
             'populates Kmovefit() and PzoTOmove()
             SetKmove() 'test set for movement in relation to fitness 
@@ -1865,30 +1848,7 @@ Public Class cEcoSpace
         ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
 
         ReDim m_Data.BBase(m_Data.NGroups)
-        ReDim m_Data.SumBiomass(1, m_Data.NGroups)
-        ReDim m_Data.SumCatch(1, m_Data.NGroups)
-        ReDim m_Data.SumCost(1, m_Data.nFleets)
-        ReDim m_Data.SumCostInit(1, m_Data.nFleets)
-        ReDim m_Data.SumEffort(1, m_Data.nFleets)
-        ReDim m_Data.SumCatchGear(1, m_Data.nFleets)
-        ReDim m_Data.SumValueGear(1, m_Data.nFleets)
-        ReDim m_Data.CatchGearGroup(1, m_Data.nFleets, m_Data.NGroups)
 
-        ''ToDo_jb redimForRun SumStart() need to be set to it's defaults some place else
-        ''summarize the data over all the  time steps
-        'm_Data.SumStart(0) = 0 'start of summary
-        'm_Data.SumStart(1) = m_ESData.NumYears 'end of summary - 1 '- one from EwE5
-        'If m_Data.NumStep < 1 Then m_Data.NumStep = m_ESData.NumYears * (1 / m_Data.TimeStep) 'summarize over all the timesteps by default' = 5 'five is from EwE5 why five I have no idea
-        'm_Data.NumStep0 = 0 : m_Data.NumStep1 = 0
-
-        '  If m_Data.NoRegions > 0 Then
-        ReDim m_Data.SumBiomassRegion(1, m_Data.NoRegions, m_Data.NGroups)
-        ' ReDim m_Data.CatchGearGroupRegion(1, m_Data.nFleets, m_Data.NGroups, m_Data.NoRegions)
-        ReDim m_Data.CatchGearGroupRegion(1, m_Data.NoRegions, m_Data.nFleets, m_Data.NGroups)
-        '  End If
-
-
-        ReDim m_Data.ValueGearGroup(1, m_Data.nFleets, m_Data.NGroups)
         ReDim RelFitness(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.NGroups)
         ReDim Basebiomass(m_Data.nvartot)
         ReDim der(m_Data.NGroups)
@@ -3212,121 +3172,6 @@ exitline:
 #Region "Data summary"
 
     ''' <summary>
-    ''' Summarize the fisheries data (catch) for a single group for this map cell. 
-    ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
-    ''' </summary>
-    ''' <param name="iSumIndex">Index of the summary time period -1 if this time step is not part of the summary period</param>
-    ''' <param name="iGrp">index of the group to summarize</param>
-    ''' <param name="Biomass">Biomass for all the groups at this time step</param>
-    ''' <param name="iRow">Map row</param>
-    ''' <param name="iCol">Map col</param>
-    ''' <remarks></remarks>
-    Public Sub summarizeCatchData_old(ByVal iSumIndex As Integer, ByVal iCumTime As Integer, ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim sum As Single, iFlt As Integer
-
-        'Only one thread can use this code at a time
-        'block all others
-        Me.m_SpaceCatchSemaphor.WaitOne()
-
-        Try
-
-            'summarize the data if this timestep is part of the start or end time period
-            'iSumIndex will = -1 if this timestep is not being summarized
-            If iSumIndex >= 0 Then
-
-
-                'Sum of the effort: only once for each time step
-                If iGrp = 1 Then
-                    For iFlt = 1 To m_Data.nFleets
-                        m_Data.SumEffort(iSumIndex, iFlt) = m_Data.SumEffort(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol)
-                        m_Data.SumCost(iSumIndex, iFlt) = m_Data.SumCost(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-
-                        'To get the original effort the effortspace is divided by the fishrategear for the month
-                        'If m_ESData.FishRateGear(iFlt, m_Data.TimeNow * 12) > 0 Then
-                        '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, m_Data.TimeNow * 12) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                        'End If
-
-                        If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
-                            m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                        End If
-
-                    Next
-                End If 'If iGrp = 1 Then
-
-                If m_Data.NoRegions > 0 Then
-                    m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), iGrp) = m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), iGrp) + Biomass(iGrp)
-                End If
-
-                If m_EPdata.fCatch(iGrp) > 0 Then
-                    m_Data.SumCatch(iSumIndex, iGrp) = m_Data.SumCatch(iSumIndex, iGrp) + Biomass(iGrp) * m_ESData.FishTime(iGrp)
-                    'Next value of catch, depends on what gear was used:
-                    For iFlt = 1 To m_EPdata.NumFleet
-                        If m_EPdata.Landing(iFlt, iGrp) + m_EPdata.Discard(iFlt, iGrp) > 0 Then
-                            'First get catch
-                            sum = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_ESData.relQ(iFlt, iGrp)
-                            'Sum the total catch by gear
-                            m_Data.SumCatchGear(iSumIndex, iFlt) = m_Data.SumCatchGear(iSumIndex, iFlt) + sum
-                            m_Data.CatchGearGroup(iSumIndex, iFlt, iGrp) = m_Data.CatchGearGroup(iSumIndex, iFlt, iGrp) + sum
-
-                            'Next line is for adding up catch by region etc
-                            If m_Data.NoRegions > 0 Then
-                                m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, iGrp) = m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, iGrp) + sum
-                            End If
-                            'Then multily with marketvalue * prop landed
-                            sum = sum * m_EPdata.Market(iFlt, iGrp) * m_EPdata.Landing(iFlt, iGrp) / (m_EPdata.Landing(iFlt, iGrp) + m_EPdata.Discard(iFlt, iGrp))
-                            'And add to group and to gear sums
-                            m_Data.ValueGearGroup(iSumIndex, iFlt, iGrp) = m_Data.ValueGearGroup(iSumIndex, iFlt, iGrp) + sum
-                            'SumValueGroup(Tn, iGrp) = SumValueGroup(Tn, iGrp) + sum
-                            m_Data.SumValueGear(iSumIndex, iFlt) = m_Data.SumValueGear(iSumIndex, iFlt) + sum
-                        End If
-                    Next iFlt
-                End If
-            End If
-
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-
-        Me.m_SpaceCatchSemaphor.Release()
-
-
-
-        '                        '060109VC: Adding Time Series Reference Data to Ecospace
-        '                        'Will only save data for once per year, (at half year)
-        '                        'save at iYear = int(timenow)
-        '                        'ReDim SpaceBiomassByRegion(totalTime, m_data.nGroups, NoRegions)
-        '                        'ReDim SpaceCatchByRegion(totalTime, m_data.nGroups, NoRegions)
-        '                        If StoreTimeSeriesData Then
-        '                            SpaceBiomassByRegion(iYear, iGrp, 0) = SpaceBiomassByRegion(iYear, iGrp, 0) + Biomass(iGrp)
-        '                            SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp)
-        '                            SpaceBiomassByRegionCount(iYear, iGrp, 0) = SpaceBiomassByRegionCount(iYear, iGrp, 0) + 1
-        '                            SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
-        '                    If Catch(iGrp) > 0 Then
-        '                                SpaceCatchByRegion(iYear, iGrp, 0) = SpaceCatchByRegion(iYear, iGrp, 0) + Biomass(iGrp) * FishTime(iGrp)
-        '                                SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp) * FishTime(iGrp)
-        '                                SpaceCatchByRegionCount(iYear, iGrp, 0) = SpaceCatchByRegionCount(iYear, iGrp, 0) + 1
-        '                                SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
-        '                            End If
-        '                            If iGrp = 1 Then
-        '                                ForiFlt= 1 To NumGear
-        '                                    SpaceEffortByRegionFleet(iYear, ig, 0) = SpaceEffortByRegionFleet(iYear, ig, 0) + EffortSpace(ig, iRow, iCol)
-        '                                    SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) + EffortSpace(ig, iRow, iCol)
-        '                                    SpaceEffortByRegionFleetCount(iYear, ig, 0) = SpaceEffortByRegionFleetCount(iYear, ig, 0) + 1
-        '                                    SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) + 1
-        '                                Next
-        '                            End If
-        '                        End If
-
-        '                        'abmpa: use this routine for ecoseed abmpa
-        '                        If En1 >= 0 And chkMPA.value = Checked Then
-        '                            If Shadow(iGrp) > 0 Then Ecoseed.CalcBioValSeed(iRow, iCol, ebb(), iGrp, En1)
-        '                    If Catch(iGrp) > 0 Then Ecoseed.CalcGearValSeed iRow, iCol, ebb(), iGrp, En1
-        '                        End If
-
-    End Sub
-
-
-    ''' <summary>
     ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
     ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
     ''' </summary>
@@ -3335,7 +3180,7 @@ exitline:
     ''' <param name="iRow">Map row</param>
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
-    Public Sub accumCatchData(ByVal iSumIndex As Integer, ByVal iCumTime As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim sum As Single, iFlt As Integer
 
         'Only one thread can use this code at a time
@@ -3343,59 +3188,68 @@ exitline:
         Me.m_SpaceCatchSemaphor.WaitOne()
 
         Try
-
+            '     iSumIndex = 0
             'summarize the data if this timestep is part of the start or end time period
             'iSumIndex will = -1 if this timestep is not being summarized
-            If iSumIndex >= 0 Then
+            '     If iSumIndex >= 0 Then
 
+            For iFlt = 1 To m_Data.nFleets
+                'Effort
+                m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, iFlt, iCumTime) += m_Data.EffortSpace(iFlt, iRow, iCol)
+                'Cost: at this point Cost is  Effort * effort of each fishing each cell (Sail(iFlt, iRow, iCol)) scaled by SailScale(ifleet)
+                'Effort of fishing all the cells
+                m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
-                For iFlt = 1 To m_Data.nFleets
-                    m_Data.SumEffort(iSumIndex, iFlt) = m_Data.SumEffort(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol)
-                    m_Data.SumCost(iSumIndex, iFlt) = m_Data.SumCost(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
+                'sum values into All Fleets 0 index 
+                m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, iFlt, iCumTime)
+                m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) ' m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) + m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
 
-                    'To get the original effort the effortspace is divided by the fishrategear for the month
-                    'If m_ESData.FishRateGear(iFlt, m_Data.TimeNow * 12) > 0 Then
-                    '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, m_Data.TimeNow * 12) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                    'End If
+                ''To get the original effort the effortspace is divided by the fishrategear for the month
+                'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
+                '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
+                'End If
 
-                    If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
-                        m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                    End If
+            Next
 
-                Next
+            For igrp As Integer = 1 To Me.m_Data.NGroups
 
-                For igrp As Integer = 1 To Me.m_Data.NGroups
+                'If m_Data.NoRegions > 0 Then
+                '    m_Data.ResultsRegionGroup(m_Data.Region(iRow, iCol), igrp, iCumTime) += Biomass(igrp)
+                'End If
 
-                    If m_Data.NoRegions > 0 Then
-                        m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), igrp) = m_Data.SumBiomassRegion(iSumIndex, m_Data.Region(iRow, iCol), igrp) + Biomass(igrp)
-                    End If
+                If m_EPdata.fCatch(igrp) > 0 Then
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + Biomass(igrp) * m_ESData.FishTime(igrp)
+                    'Next value of catch, depends on what gear was used:
+                    For iFlt = 1 To m_EPdata.NumFleet
+                        If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
+                            'First get catch
+                            sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_ESData.relQ(iFlt, igrp)
+                            'Sum the total catch by gear
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += sum
 
-                    If m_EPdata.fCatch(igrp) > 0 Then
-                        m_Data.SumCatch(iSumIndex, igrp) = m_Data.SumCatch(iSumIndex, igrp) + Biomass(igrp) * m_ESData.FishTime(igrp)
-                        'Next value of catch, depends on what gear was used:
-                        For iFlt = 1 To m_EPdata.NumFleet
-                            If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
-                                'First get catch
-                                sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_ESData.relQ(iFlt, igrp)
-                                'Sum the total catch by gear
-                                m_Data.SumCatchGear(iSumIndex, iFlt) = m_Data.SumCatchGear(iSumIndex, iFlt) + sum
-                                m_Data.CatchGearGroup(iSumIndex, iFlt, igrp) = m_Data.CatchGearGroup(iSumIndex, iFlt, igrp) + sum
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += sum
+                            'sum all fleets into the zero fleet index
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += sum
 
-                                'Next line is for adding up catch by region etc
-                                If m_Data.NoRegions > 0 Then
-                                    m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, igrp) = m_Data.CatchGearGroupRegion(iSumIndex, m_Data.Region(iRow, iCol), iFlt, igrp) + sum
-                                End If
-                                'Then multily with marketvalue * prop landed
-                                sum = sum * m_EPdata.Market(iFlt, igrp) * m_EPdata.Landing(iFlt, igrp) / (m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp))
-                                'And add to group and to gear sums
-                                m_Data.ValueGearGroup(iSumIndex, iFlt, igrp) = m_Data.ValueGearGroup(iSumIndex, iFlt, igrp) + sum
-                                'SumValueGroup(Tn, iGrp) = SumValueGroup(Tn, iGrp) + sum
-                                m_Data.SumValueGear(iSumIndex, iFlt) = m_Data.SumValueGear(iSumIndex, iFlt) + sum
+                            'Next line is for adding up catch by region etc
+                            If m_Data.NoRegions > 0 Then
+                                m_Data.CatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
                             End If
-                        Next iFlt
-                    End If 'If m_EPdata.fCatch(igrp) > 0 Then
-                Next igrp
-            End If
+                            'Then multily with marketvalue * prop landed
+                            sum = sum * m_EPdata.Market(iFlt, igrp) * m_EPdata.Landing(iFlt, igrp) / (m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp))
+
+                            'And add to group and to gear sums
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += sum
+                            'sum of all fleets
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += sum
+
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iFlt, iCumTime) += sum
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += sum
+                        End If
+                    Next iFlt
+                End If 'If m_EPdata.fCatch(igrp) > 0 Then
+            Next igrp
+            '        End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -3439,7 +3293,7 @@ exitline:
 
     End Sub
 
-    Private Sub summarizeTimeStepData(ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iSumIndex As Integer)
+    Private Sub summarizeTimeStepData(ByVal iTimeStep As Integer, ByVal iMonth As Integer)
 
         Dim igrp As Integer
         Try
@@ -3457,7 +3311,7 @@ exitline:
                 For ic As Integer = 1 To Me.m_Data.InCol
                     irgn = Me.m_Data.Region(ir, ic)
                     For igrp = 1 To Me.m_Data.NGroups
-                        Me.m_Data.BiomassRegionGroup(irgn, igrp, iTimeStep) = Me.m_Data.BiomassRegionGroup(irgn, igrp, iTimeStep) + Me.m_Data.Bcell(ir, ic, igrp)
+                        Me.m_Data.ResultsRegionGroup(irgn, igrp, iTimeStep) += Me.m_Data.Bcell(ir, ic, igrp)
                     Next
                 Next ic
             Next ir
@@ -3469,14 +3323,9 @@ exitline:
 
                 'save for each time step
                 'biomass
-                m_Data.SpaceTSData(igrp, eSpaceTSResults.Biomass, iTimeStep) = Btime(igrp)
+                m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.SpaceTSData(igrp, eSpaceTSResults.RelativeBiomass, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp)
-
-                'if this time step is part of one of the summary time period sum the biomass
-                If iSumIndex >= 0 Then
-                    m_Data.SumBiomass(iSumIndex, igrp) = m_Data.SumBiomass(iSumIndex, igrp) + Btime(igrp)
-                End If
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp)
 
             Next igrp
 
@@ -3578,29 +3427,7 @@ exitline:
 
     End Sub
 
-    ''' <summary>
-    ''' Set the iSummaryIndex array index to the array element the data is being summarized into based on the model time step(TimeNow)
-    ''' </summary>
-    ''' <param name="iSummaryIndex">Index to store the data in </param>
-    ''' <remarks>iSummaryIndex will equal -1 if this time step is not in the summary period defined by SumStart() and NumStep0 or NumStep1 </remarks>
-    Private Sub SetSummaryTimeStep(ByRef iSummaryIndex As Integer)
-
-        iSummaryIndex = -1
-
-        'iSummaryIndex is the index that the average is on in the sumxxxx arrays ex. SumBiomass(iSummaryIndex,igrp)
-        '   If m_Data.EcoseedOn = False Then       'abmpa
-        If m_Data.TimeNow >= m_Data.SumStart(0) And m_Data.NumStep0 <= m_Data.NumStep - 1 Then
-            iSummaryIndex = 0
-            m_Data.NumStep0 = m_Data.NumStep0 + 1
-        ElseIf m_Data.TimeNow >= m_Data.SumStart(1) And m_Data.NumStep1 <= m_Data.NumStep - 1 Then
-            iSummaryIndex = 1
-            m_Data.NumStep1 = m_Data.NumStep1 + 1
-        End If
-
-    End Sub
-
-
-    Private Sub processTimeStep(ByVal iTime As Integer)
+    Private Sub onTimeStep(ByVal iTime As Integer)
 
         Try
             If Me.m_TimestepDelegate IsNot Nothing Then
@@ -3612,102 +3439,6 @@ exitline:
         End Try
 
     End Sub
-
-
-    Public Sub summarizeOutputData()
-        Dim i As Integer, iFlt As Integer, ii As Integer
-
-        For i = 1 To m_Data.NGroups
-
-            m_Data.SumBiomass(0, i) = m_Data.SumBiomass(0, i) / m_Data.NumStep0
-            m_Data.SumBiomass(1, i) = m_Data.SumBiomass(1, i) / m_Data.NumStep1
-
-            For ii = 1 To m_Data.NoRegions
-                m_Data.SumBiomassRegion(0, ii, i) = m_Data.SumBiomassRegion(0, ii, i) / m_Data.NumStep0
-                m_Data.SumBiomassRegion(1, ii, i) = m_Data.SumBiomassRegion(1, ii, i) / m_Data.NumStep1
-            Next
-
-            m_Data.SumCatch(0, i) = m_Data.SumCatch(0, i) / m_Data.NumStep0
-            m_Data.SumCatch(1, i) = m_Data.SumCatch(1, i) / m_Data.NumStep1
-
-            For iFlt = 1 To m_EPdata.NumFleet     'Discarded fish has no value
-                m_Data.CatchGearGroup(0, iFlt, i) = m_Data.CatchGearGroup(0, iFlt, i) / m_Data.NumStep0
-                m_Data.CatchGearGroup(1, iFlt, i) = m_Data.CatchGearGroup(1, iFlt, i) / m_Data.NumStep1
-                m_Data.ValueGearGroup(0, iFlt, i) = m_Data.ValueGearGroup(0, iFlt, i) / m_Data.NumStep0
-                m_Data.ValueGearGroup(1, iFlt, i) = m_Data.ValueGearGroup(1, iFlt, i) / m_Data.NumStep1
-                For ii = 1 To m_Data.NoRegions
-                    m_Data.CatchGearGroupRegion(0, ii, iFlt, i) = m_Data.CatchGearGroupRegion(0, ii, iFlt, i) / m_Data.NumStep0
-                    m_Data.CatchGearGroupRegion(1, ii, iFlt, i) = m_Data.CatchGearGroupRegion(1, ii, iFlt, i) / m_Data.NumStep1
-                Next
-            Next
-        Next
-
-        'the zero index include the combined fleets index
-        For iFlt = 0 To m_EPdata.NumFleet    'Discarded fish has no value
-            m_Data.SumEffort(0, iFlt) = m_Data.SumEffort(0, iFlt) / m_Data.NumStep0
-            m_Data.SumEffort(1, iFlt) = m_Data.SumEffort(1, iFlt) / m_Data.NumStep1
-
-            m_Data.SumCost(0, iFlt) = m_Data.SumCost(0, iFlt) / m_Data.NumStep0
-            m_Data.SumCost(1, iFlt) = m_Data.SumCost(1, iFlt) / m_Data.NumStep1
-
-            m_Data.SumCatchGear(0, iFlt) = m_Data.SumCatchGear(0, iFlt) / m_Data.NumStep0
-            m_Data.SumCatchGear(1, iFlt) = m_Data.SumCatchGear(1, iFlt) / m_Data.NumStep1
-            m_Data.SumValueGear(0, iFlt) = m_Data.SumValueGear(0, iFlt) / m_Data.NumStep0
-            m_Data.SumValueGear(1, iFlt) = m_Data.SumValueGear(1, iFlt) / m_Data.NumStep1
-
-            For isum As Integer = 0 To 1
-                'EwE5 CalulateSimSpaceResults()
-                ' Sum = cost(i, 1) + (SumEffort(0, i) * cost(i, 2) + SumCost(0, i) * cost(i, 3)) 
-                m_Data.SumCost(isum, iFlt) = m_EPdata.cost(iFlt, 1) + (m_Data.SumEffort(isum, iFlt) * m_EPdata.cost(iFlt, 2) + m_Data.SumCost(isum, iFlt) * m_EPdata.cost(iFlt, 3))
-            Next
-
-
-        Next
-    End Sub
-
-    ''' <summary>
-    ''' Compute the combined fleets summary
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub computeCombinedFleetsSummary()
-        Dim iflt As Integer
-        Dim igrp As Integer
-        Dim iperiod As Integer
-
-        'sum all the fleet summary data into the zero index
-        'this is the combined fleets summary
-        For iflt = 1 To m_EPdata.NumFleet
-            For iperiod = 0 To 1
-                m_Data.SumEffort(iperiod, 0) = m_Data.SumEffort(iperiod, 0) + m_Data.SumEffort(iperiod, iflt)
-
-                m_Data.SumCatchGear(iperiod, 0) = m_Data.SumCatchGear(iperiod, 0) + m_Data.SumCatchGear(iperiod, iflt)
-
-                m_Data.SumValueGear(iperiod, 0) = m_Data.SumValueGear(iperiod, 0) + m_Data.SumValueGear(iperiod, iflt)
-
-                m_Data.SumCost(iperiod, 0) = m_Data.SumCost(iperiod, 0) + m_Data.SumCost(iperiod, iflt)
-            Next iperiod
-        Next iflt
-
-        For igrp = 1 To m_Data.NGroups
-            For iflt = 1 To m_Data.nFleets
-                For iperiod = 0 To 1
-                    'Sum catch by group into the zero fleet index
-                    m_Data.CatchGearGroup(iperiod, 0, igrp) = m_Data.CatchGearGroup(iperiod, 0, igrp) + m_Data.CatchGearGroup(iperiod, iflt, igrp)
-                    'sum catch by gear into the zero group index
-                    m_Data.CatchGearGroup(iperiod, iflt, 0) = m_Data.CatchGearGroup(iperiod, iflt, 0) + m_Data.CatchGearGroup(iperiod, iflt, igrp)
-                    m_Data.CatchGearGroup(iperiod, 0, 0) = m_Data.CatchGearGroup(iperiod, 0, 0) + m_Data.CatchGearGroup(iperiod, iflt, igrp)
-
-                    'sum value by group into the zero fleet index
-                    m_Data.ValueGearGroup(iperiod, 0, igrp) = m_Data.ValueGearGroup(iperiod, 0, igrp) + m_Data.ValueGearGroup(iperiod, iflt, igrp)
-                    'sum value by fleet into the zero group index
-                    m_Data.ValueGearGroup(iperiod, iflt, 0) = m_Data.ValueGearGroup(iperiod, 0, 0) + m_Data.ValueGearGroup(iperiod, iflt, igrp)
-                    m_Data.ValueGearGroup(iperiod, 0, 0) = m_Data.ValueGearGroup(iperiod, 0, 0) + m_Data.ValueGearGroup(iperiod, iflt, igrp)
-                Next iperiod
-            Next iflt
-        Next igrp
-
-    End Sub
-
 
 #End Region
 
@@ -3975,7 +3706,7 @@ exitline:
                 solver.PbSpace = PbSpace
 
                 'needs to be set from ecospace, but not references
-                solver.Tn = Tn
+                ' solver.Tn = Tn
                 solver.nvar2 = nvar2
                 solver.itt = its 'itimestep index to data stored by month
                 solver.PPScale = PPScale
@@ -4085,7 +3816,6 @@ exitline:
         Try
 
             For Each solver In m_spaceSolvers
-                solver.Tn = Tn
                 solver.nvar2 = nvar2
                 solver.itt = its 'itimestep index to data stored by month
                 solver.PPScale = PPScale

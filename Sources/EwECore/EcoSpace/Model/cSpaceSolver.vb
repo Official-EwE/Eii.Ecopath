@@ -59,7 +59,7 @@ Public Class cSpaceSolver
     Public PbSpace() As Single
 
     'needs to be set from ecospace, but not references
-    Public Tn As Integer
+    'Public Tn As Integer
     Public nvar2 As Integer
     Public itt As Integer
     Public PPScale As Single
@@ -355,7 +355,7 @@ Public Class cSpaceSolver
 
             Next ip
 
-            m_EcospaceModel.accumCatchData(Tn, itt, BB, i, j)
+            m_EcospaceModel.accumCatchData(itt, BB, i, j)
 
             For isc = 1 To m_Data.Nvarsplit
                 ieco = Ecode(isc)
