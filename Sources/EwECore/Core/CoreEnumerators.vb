@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.6  2009/01/12 22:48:42  joeb
+' Added enums for Ecospace results over time
+'
 ' Revision 1.5  2008/10/20 20:21:08  joeb
 ' Quota editable from Game Client
 '
@@ -576,13 +579,27 @@ End Enum
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Index of results from Ecospace saved over time to SpaceTSData
+''' Index of results from Ecospace saved over time by group
 ''' </summary>
 ''' <remarks>This data will be exposed by the core so it needs to know the index that the data is stored in</remarks>
 ''' ---------------------------------------------------------------------------
-Friend Enum eSpaceTSResults
+Friend Enum eSpaceResultsGroups
     Biomass
     RelativeBiomass
+    CatchBio
+End Enum
+
+Friend Enum eSpaceResultsFleets
+    Cost
+    Effort
+    CatchBio
+    Value
+End Enum
+
+
+Friend Enum eSpaceResultsFleetsGroups
+    CatchBio
+    Value
 End Enum
 
 #End Region
