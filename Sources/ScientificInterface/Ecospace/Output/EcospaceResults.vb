@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.4  2009/01/12 22:59:49  joeb
+' Fixed bugs 574 and 569
+'
 ' Revision 1.3  2008/12/15 15:52:26  jeroens
 ' no message
 '
@@ -96,15 +99,21 @@ Namespace Ecospace
             If rbGear.Checked Then
                 'Display gear results
                 m_GridGear.Visible = True : m_GridRegion.Visible = False : m_GridGroup.Visible = False
+                Me.cbGears.Enabled = False
+                Me.cbRegions.Enabled = False
 
             ElseIf rbGroup.Checked Then
                 'Display group results
                 m_GridGear.Visible = False : m_GridRegion.Visible = False : m_GridGroup.Visible = True
+                Me.cbGears.Enabled = True
+                Me.cbRegions.Enabled = False
+
 
             ElseIf rbRegion.Checked Then
                 'Display region results
                 m_GridGear.Visible = False : m_GridRegion.Visible = True : m_GridGroup.Visible = False
-
+                Me.cbGears.Enabled = False
+                Me.cbRegions.Enabled = True
             End If
 
         End Sub
@@ -112,12 +121,14 @@ Namespace Ecospace
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGears.SelectedIndexChanged
 
             m_GridGroup.SelFleetIndex = cbGears.SelectedIndex ' + 1
+            m_GridGroup.RefreshContent()
 
         End Sub
 
         Private Sub cbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRegions.SelectedIndexChanged
 
             m_GridRegion.SelRegionIndex = cbRegions.SelectedIndex ' + 1
+            m_GridRegion.RefreshContent()
 
         End Sub
 

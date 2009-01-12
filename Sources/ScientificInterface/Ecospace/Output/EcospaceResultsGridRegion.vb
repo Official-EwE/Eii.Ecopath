@@ -71,6 +71,8 @@ Namespace Ecospace
 
             Me.InitCells(core.nFleets + 1, aName, aCalc)
 
+            Me.UpdateData()
+
         End Sub
 
         Private Sub UpdateData()
@@ -95,7 +97,20 @@ Namespace Ecospace
                     If gBS > 0 And gBE > 0 Then
                         SetCellValue(groupIndex, 4, CSng(gBE / gBS), totalValue)
                     End If
-                Next
+
+                    'sum of catch by group
+                    Dim sCatch As Single = 0, eCatch As Single = 0
+                    For iflt As Integer = 1 To core.nFleets
+                        sCatch += source.CatchFleetGroupStart(iflt, groupIndex)
+                        eCatch += source.CatchFleetGroupEnd(iflt, groupIndex)
+                    Next iflt
+                    SetCellValue(groupIndex, 5, sCatch)
+                    SetCellValue(groupIndex, 6, eCatch)
+                    If sCatch > 0 And eCatch > 0 Then
+                        SetCellValue(groupIndex, 7, CSng(eCatch / sCatch))
+                    End If
+
+                Next groupIndex
 
                 Dim rowIndex As Integer = core.nGroups + 1
 
