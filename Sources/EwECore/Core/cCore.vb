@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.51  2009/01/13 21:30:37  joeb
+' Still cleaning up after Merge of Summary with Output data
+'
 ' Revision 1.50  2009/01/13 21:15:03  joeb
 ' Merged Ecospace summary objects into Output objects
 '
@@ -3882,7 +3885,7 @@ Public Class cCore
     '   Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cEcosimGroupOutput)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
-    Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
+    'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
@@ -4569,12 +4572,7 @@ Public Class cCore
     Private Sub InitEcosimFleetOutput()
         Try
 
-            Me.m_EcoSimGroupSummaries.Clear()
             Me.m_EcosimFleetOutputs.Clear()
-
-            'For igrp As Integer = 1 To nGroups
-            '    Me.m_EcoSimGroupSummaries.Add(New cEcosimGroupSummary(Me, igrp))
-            'Next
 
             'this includes zero index 'Combined Fleets' 
             For iflt As Integer = 0 To nFleets
@@ -4661,108 +4659,6 @@ Public Class cCore
 
     End Function
 
-    'Private Function LoadEcosimSummaries() As Boolean
-    '    Dim iGroup As Integer
-    '    Dim iFlt As Integer
-    '    Dim sBio As Single, EndBio As Single, sCatch As Single, EndCatch As Single
-    '    Dim sVal As Single, endVal As Single
-
-    '    'if Ecosim has not run the results data will not be dimensioned so do not try to load it
-    '    If m_EcoSimData.ResultsOverTime Is Nothing Then
-    '        'HACK WARNING
-    '        'this should use the state monitor however there is a problem with that
-    '        'if the user edits cEcosimModelParameters.StartSummaryTime the statemonitor will flag ecosim as needing to run which it does not
-    '        Exit Function
-    '    End If
-
-    '    Try
-    '        'For Each group As cEcosimGroupSummary In m_EcoSimGroupSummaries
-
-    '        '    'this will only resize the arrays if NumGroups is different then the existing array size
-    '        '    group.Resize()
-
-    '        '    group.AllowValidation = False
-
-    '        '    'the group index was passed into the constructor
-    '        '    iGroup = group.Index
-
-    '        '    'get the group name from EcoPath not EcoSim
-    '        '    group.Name = m_EcoPathData.GroupName(iGroup)
-
-    '        '    'Biomass
-    '        '    m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
-    '        '    group.BiomassStart = sBio
-    '        '    group.BiomassEnd = EndBio
-
-    '        '    'catch by group
-    '        '    For iFlt = 0 To nFleets 'Zero is the combined fleets 
-    '        '        m_EcoSimData.getSummaryCatchByGroup(iGroup, iFlt, sCatch, EndCatch)
-    '        '        group.CatchStart(iFlt) = sCatch
-    '        '        group.CatchEnd(iFlt) = EndCatch
-
-    '        '        m_EcoSimData.getSummaryValueByGroup(iGroup, iFlt, sVal, endVal)
-    '        '        group.ValueStart(iFlt) = sVal
-    '        '        group.ValueEnd(iFlt) = endVal
-    '        '    Next
-
-    '        'Next group
-    '        'For Each fleet As cEcosimFleetSummary In m_EcosimFleetSummaries
-    '        '    fleet.Resize()
-
-    '        '    fleet.AllowValidation = False
-
-    '        '    'the group index was passed into the constructor
-    '        '    iFlt = fleet.Index
-
-    '        '    If iFlt = 0 Then
-    '        '        ' ToDo_JS: localize this
-    '        '        fleet.Name = "Combined Fleets"
-    '        '    Else
-    '        '        fleet.Name = m_EcoPathData.FleetName(iFlt)
-    '        '    End If
-
-    '        '    m_EcoSimData.getSummaryBioOfCatch(iFlt, sCatch, EndCatch)
-    '        '    fleet.CatchStart = sCatch
-    '        '    fleet.CatchEnd = EndCatch
-
-    '        '    m_EcoSimData.getSummaryValueOfCatch(iFlt, sVal, endVal)
-    '        '    fleet.ValueStart = sVal
-    '        '    fleet.ValueEnd = endVal
-
-    '        '    'see EwE5 CalculateSimSpaceResults
-    '        '    m_EcoSimData.getSummaryCostByCatch(iFlt, sVal, endVal)
-    '        '    fleet.CostStart = sVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
-    '        '    fleet.CostEnd = endVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
-
-    '        '    fleet.Effort = 0.0F
-    '        '    If sVal <> 0 Then
-    '        '        fleet.Effort = endVal / sVal
-    '        '    End If
-
-    '        '    Dim sumValue As Single
-    '        '    For it As Integer = 1 To Me.m_EcoSimData.NTimes
-    '        '        sumValue += Me.m_EcoSimData.ResultsSumValueByGear(iFlt, it)
-    '        '    Next
-
-    '        '    'TEMP just for something to working with until we have ECost up and running
-    '        '    '[sum of value] * [ecopath profit (precentage of catch value that is profit)]
-    '        '    fleet.Profit = sumValue * (m_EcoPathData.CostPct(iFlt, 0) / 100)
-    '        '    '[sum of value] * [Jobs(fleet) from the search forms]
-    '        '    fleet.Jobs = sumValue * Me.m_SearchData.Jobs(iFlt)
-
-    '        'Next
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        m_publisher.AddMessage(New cMessage("Error loading Ecosim Summary data. " & ex.Message, eMessageType.ErrorEncountered, _
-    '                                eMessageSource.EcoSim, eMessageImportance.Critical))
-    '        Debug.Assert(False, ex.Message)
-    '        Return False
-    '    End Try
-
-    'End Function
 
     ''' <summary>
     ''' Update the list of available ecosim input groups
@@ -4869,31 +4765,7 @@ Public Class cCore
                 group.ValueEnd(iFlt) = endVal
             Next
 
-
-            'For iTime As Integer = 1 To Me.nEcosimTimeSteps
-            '    group.Biomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iTime)
-            '    group.Yield(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, iTime)
-            '    group.ConsumpBiomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, iGroup, iTime)
-            '    group.FeedingTime(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, iGroup, iTime)
-            '    group.PredMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iGroup, iTime)
-            '    group.FishMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGroup, iTime)
-            '    group.TotalMort(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, iGroup, iTime)
-
-            '    group.ProdConsump(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, iGroup, iTime)
-            '    group.AvgWeight(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, iGroup, iTime)
-
-            '    For iPP As Integer = 1 To nGroups
-            '        group.Predation(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, iPP, iTime)
-            '        group.PreyPercentage(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, iPP, iTime)
-            '        group.Consumption(iPP, iTime) = m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, iGroup, iPP, iTime)
-            '        group.Electivity(iPP, iTime) = m_EcoSimData.Elect(iGroup, iPP, iTime)
-            '    Next iPP
-            'Next iTime
-
             For i As Integer = 1 To nGroups
-
-                '   group.AvgPredConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Pred, iGroup, i)
-                '  group.AvgPreyConsumption(i) = m_EcoSimData.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Prey, iGroup, i)
 
                 group.isPrey(i) = False
                 'is this i prey for this output group
@@ -5978,74 +5850,6 @@ Public Class cCore
     End Sub
 
 
-    '''' <summary>
-    '''' Write the Ecospace summary data to the output window
-    '''' </summary>
-    '''' <remarks>This is temp for debugging</remarks>
-    'Private Sub outputEcospaceSummary_temp()
-    '    Dim objGrp As cEcospaceGroupSummary
-    '    Dim objFlt As cEcospaceFleetSummary
-    '    Dim objRgn As cEcospaceRegionSummary
-    '    Dim Spaceparam As cEcospaceModelParameters = Me.EcospaceModelParameters
-    '    Dim igrp As Integer, iflt As Integer
-
-    '    System.Console.WriteLine("----------Ecospace summary output------------------")
-    '    System.Console.WriteLine("Start Time " & Spaceparam.StartSummaryTime & ", End Time: " & Spaceparam.EndSummaryTime & ", Number of time steps " & Spaceparam.NumberSummaryTimeSteps)
-    '    System.Console.WriteLine("Group Biomass summary")
-    '    System.Console.WriteLine("Group name, Biomass Start, Biomass end")
-    '    For igrp = 1 To nGroups
-    '        objGrp = Me.EcospaceGroupSummary(igrp)
-    '        System.Console.WriteLine(objGrp.Name & vbTab & objGrp.BiomassStart.ToString("##0.0000") & vbTab & objGrp.BiomassEnd.ToString("##0.0000"))
-    '    Next
-
-    '    System.Console.WriteLine("---------------")
-    '    System.Console.WriteLine("Group fisheries")
-
-    '    System.Console.WriteLine("Catch start, Catch End, Value Start, Value End")
-    '    For igrp = 1 To nGroups
-    '        objGrp = Me.EcospaceGroupSummary(igrp)
-    '        For iflt = 0 To nFleets
-    '            If objGrp.CatchStart(iflt) <> 0 Then
-    '                System.Console.WriteLine(objGrp.Name & vbTab & Me.EcospaceFleetSummary(iflt).Name & vbTab & objGrp.CatchStart(iflt).ToString("##0.0000") & vbTab & objGrp.CatchEnd(iflt).ToString("##0.0000") & vbTab & objGrp.ValueStart(iflt) & vbTab & objGrp.ValueEnd(iflt))
-    '            End If
-    '        Next iflt
-    '    Next igrp
-
-    '    System.Console.WriteLine("---------------")
-    '    System.Console.WriteLine("Fisheries")
-    '    System.Console.WriteLine("Catch start, Catch End, Value Start, Value End, Cost start, Cost end")
-    '    For iflt = 0 To nFleets
-    '        objFlt = Me.EcospaceFleetSummary(iflt)
-    '        System.Console.WriteLine(objFlt.Name & vbTab & objFlt.CatchStart & vbTab & objFlt.CatchEnd & vbTab & objFlt.ValueStart & vbTab & objFlt.ValueEnd _
-    '                    & vbTab & objFlt.CostStart & vbTab & objFlt.CostEnd)
-    '    Next iflt
-
-    '    If nRegions > 0 Then
-    '        System.Console.WriteLine("---------------")
-    '        System.Console.WriteLine("Regions")
-    '        System.Console.WriteLine("Region Name, Group name, Biomass start, Biomass end")
-    '        For irgn As Integer = 0 To nRegions
-    '            objRgn = EcospaceRegionSummary(irgn)
-
-    '            For igrp = 1 To nGroups
-    '                If objRgn.BiomassStart(igrp) <> 0 Then
-    '                    System.Console.WriteLine(objRgn.Name & vbTab & Me.EcospaceGroupSummary(igrp).Name & vbTab & objRgn.BiomassStart(igrp) _
-    '                        & vbTab & objRgn.BiomassEnd(igrp))
-    '                End If
-    '                'For iflt = 0 To nFleets
-    '                '    If grpobj.CatchStart(iflt) <> 0 Then
-    '                '        System.Console.WriteLine(grpobj.Name & vbTab & Me.EcospaceFleetOutput(iflt).Name & vbTab & grpobj.CatchStart(iflt) & vbTab & grpobj.CatchEnd(iflt) & vbTab & grpobj.ValueStart(iflt) & vbTab & grpobj.ValueEnd(iflt))
-    '                '    End If
-    '                'Next iflt
-    '            Next igrp
-
-    '        Next irgn
-    '    End If
-
-    '    System.Console.WriteLine("----------Ecospace summary output------------------")
-
-
-    'End Sub
 
     ''' <summary>
     ''' This gets call by Ecospace at every time step
@@ -6083,16 +5887,6 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".processEcospaceTimeStep() Error: " & ex.Message)
         End Try
     End Sub
-
-
-    'Public Property EcospaceTimeStep1() As EcoSpaceInterfaceDelegate
-    '    Get
-    '        Return Me.m_SpaceInterfaceCallBack
-    '    End Get
-    '    Set(ByVal value As EcoSpaceInterfaceDelegate)
-    '        m_SpaceInterfaceCallBack = value
-    '    End Set
-    'End Property
 
 
     ''' <summary>
@@ -6191,16 +5985,6 @@ Public Class cCore
         End Get
     End Property
 
-    '''' <summary>
-    '''' Ecosim Group summary results from last Ecosim run.
-    '''' </summary>
-    'Public ReadOnly Property EcosimGroupSummaries(ByVal iGroup As Integer) As cEcosimGroupSummary
-    '    Get
-    '        ' JS 06Jul07: list will handle group index / item index offsets
-    '        Return DirectCast(Me.m_EcoSimGroupSummaries(iGroup), cEcosimGroupSummary)
-    '    End Get
-    'End Property
-
     ''' <summary>
     ''' Ecosim Fleet summary results from last Ecosim run.
     ''' </summary>
@@ -6221,13 +6005,6 @@ Public Class cCore
         End Get
     End Property
 
-    'Public ReadOnly Property EcospaceGroupSummary(ByVal iGroup As Integer) As cEcospaceGroupSummary
-    '    Get
-    '        ' JS 06Jul07: list will handle group index / item index offsets
-    '        Return Me.m_EcospaceGroupSummaries(iGroup)
-    '    End Get
-    'End Property
-
     Public ReadOnly Property EcospaceFleetOutput(ByVal iFleet As Integer) As cEcospaceFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
@@ -6235,7 +6012,7 @@ Public Class cCore
         End Get
     End Property
 
-    Public ReadOnly Property EcospaceRegionSummary(ByVal iRegion As Integer) As cEcospaceRegionOutput
+    Public ReadOnly Property EcospaceRegionOutput(ByVal iRegion As Integer) As cEcospaceRegionOutput
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
             Return DirectCast(Me.m_EcospaceRegionSummaries(iRegion), cEcospaceRegionOutput)
