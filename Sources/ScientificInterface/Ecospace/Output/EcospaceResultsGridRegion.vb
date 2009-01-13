@@ -57,7 +57,7 @@ Namespace Ecospace
 
             Dim aName(core.nGroups) As String
             For i As Integer = 1 To core.nGroups
-                aName(i) = core.EcospaceGroupSummary(i).Name
+                aName(i) = core.EcospaceGroupOutput(i).Name
             Next
 
             Dim aCalc() As Integer = {4, 7}
@@ -66,7 +66,7 @@ Namespace Ecospace
 
             ReDim aName(core.nFleets)
             For i As Integer = 1 To core.nFleets
-                aName(i) = core.EcospaceFleetSummary(i).Name
+                aName(i) = core.EcospaceFleetOutput(i).Name
             Next
 
             Me.InitCells(core.nFleets + 1, aName, aCalc)
@@ -80,7 +80,7 @@ Namespace Ecospace
             Dim core As cCore = cCore.GetInstance()
             Try
 
-                Dim source As cEcospaceRegionSummary = core.EcospaceRegionSummary(Me.SelRegionIndex)
+                Dim source As cEcospaceRegionOutput = core.EcospaceRegionSummary(Me.SelRegionIndex)
 
                 'The array for storing total values
                 Dim totalValue(0 To 7) As Single

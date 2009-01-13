@@ -70,14 +70,14 @@ Namespace Ecospace
         Private Sub UpdateData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim source As cEcospaceFleetSummary = Nothing
+            Dim source As cEcospaceFleetOutput = Nothing
 
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
             For fleetIndex As Integer = 1 To core.nFleets
 
-                source = core.EcospaceFleetSummary(fleetIndex)
+                source = core.EcospaceFleetOutput(fleetIndex)
 
                 SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
                 SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)

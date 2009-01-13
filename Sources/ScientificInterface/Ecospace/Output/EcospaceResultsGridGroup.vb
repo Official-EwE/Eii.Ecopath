@@ -79,7 +79,7 @@ Namespace Ecospace
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To core.nGroups
                 If Me.m_sg.GroupVisible(iGroup) Then
-                    lName.Add(core.EcospaceGroupSummary(iGroup).Name)
+                    lName.Add(core.EcospaceGroupOutput(iGroup).Name)
                     m_iNumVisibleGroups += 1
                 End If
 
@@ -94,7 +94,7 @@ Namespace Ecospace
         Private Sub UpdateData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim source As cEcospaceGroupSummary = Nothing
+            Dim source As cEcospaceGroupOutput = Nothing
 
             Dim totalValue(0 To 10) As Single
             Me.InitTotalArray(totalValue)
@@ -104,7 +104,7 @@ Namespace Ecospace
                 'Only display selected groups
                 If Me.m_sg.GroupVisible(iGroup) Then
 
-                    source = core.EcospaceGroupSummary(iGroup)
+                    source = core.EcospaceGroupOutput(iGroup)
 
                     SetCellValue(iGroup, 2, source.BiomassStart, totalValue)
                     SetCellValue(iGroup, 3, source.BiomassEnd, totalValue)

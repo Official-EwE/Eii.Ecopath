@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.5  2009/01/13 21:18:17  joeb
+' Merged Ecospace summary objects into Ecospace Output objects
+'
 ' Revision 1.4  2009/01/12 22:59:49  joeb
 ' Fixed bugs 574 and 569
 '
@@ -78,15 +81,15 @@ Namespace Ecospace
 
             cbGears.Items.Clear()
 
-            Dim efo As cEcospaceFleetSummary = Nothing
+            Dim efo As cEcospaceFleetOutput = Nothing
             For i As Integer = 0 To m_Core.nFleets
-                efo = m_Core.EcospaceFleetSummary(i)
+                efo = m_Core.EcospaceFleetOutput(i)
                 cbGears.Items.Add(efo.Name)
             Next
             cbGears.SelectedIndex = 0
 
             cbRegions.Items.Clear()
-            Dim ero As cEcospaceRegionSummary = Nothing
+            Dim ero As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To m_Core.nRegions
                 ero = m_Core.EcospaceRegionSummary(i)
                 cbRegions.Items.Add(ero.Name)
