@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.49  2009/01/13 17:56:51  joeb
+' Replaced Ecosim summary output objects with EcosimGroup and Fleet output objects
+'
 ' Revision 1.48  2009/01/12 22:50:39  joeb
 ' Ecospace results are saved over time then summarized into summary time periods at the end of the run
 '
@@ -3877,7 +3880,7 @@ Public Class cCore
     Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
     Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
-    Friend m_EcosimFleetSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
+    Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
 
@@ -4232,7 +4235,7 @@ Public Class cCore
             m_PPIManager.Load()
 
             InitEcosimGroupOutput()
-            InitEcosimSummaries()
+            InitEcosimFleetOutput()
             InitEcosimFisheriesRegulations()
 
             InitAndLoadEcosimTimeSeriesDatasets()
@@ -4560,19 +4563,19 @@ Public Class cCore
         End Get
     End Property
 
-    Private Sub InitEcosimSummaries()
+    Private Sub InitEcosimFleetOutput()
         Try
 
             Me.m_EcoSimGroupSummaries.Clear()
-            Me.m_EcosimFleetSummaries.Clear()
+            Me.m_EcosimFleetOutputs.Clear()
 
-            For igrp As Integer = 1 To nGroups
-                Me.m_EcoSimGroupSummaries.Add(New cEcosimGroupSummary(Me, igrp))
-            Next
+            'For igrp As Integer = 1 To nGroups
+            '    Me.m_EcoSimGroupSummaries.Add(New cEcosimGroupSummary(Me, igrp))
+            'Next
 
             'this includes zero index 'Combined Fleets' 
             For iflt As Integer = 0 To nFleets
-                Me.m_EcosimFleetSummaries.Add(New cEcosimFleetSummary(Me, iflt))
+                Me.m_EcosimFleetOutputs.Add(New cEcosimFleetOutput(Me, iflt))
             Next
 
         Catch ex As Exception
@@ -4580,52 +4583,24 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Function LoadEcosimSummaries() As Boolean
-        Dim iGroup As Integer
+
+
+    Private Function LoadEcosimFleetOutputs() As Boolean
         Dim iFlt As Integer
-        Dim sBio As Single, EndBio As Single, sCatch As Single, EndCatch As Single
+        Dim sCatch As Single, EndCatch As Single
         Dim sVal As Single, endVal As Single
 
         'if Ecosim has not run the results data will not be dimensioned so do not try to load it
         If m_EcoSimData.ResultsOverTime Is Nothing Then
             'HACK WARNING
             'this should use the state monitor however there is a problem with that
-            'if the user edits cEcosimModelParameters.StartSummaryTime the statemonitor will flag ecosim as needing to run which it is not
+            'if the user edits cEcosimModelParameters.StartSummaryTime the statemonitor will flag ecosim as needing to run which it does not
             Exit Function
         End If
 
         Try
-            For Each group As cEcosimGroupSummary In m_EcoSimGroupSummaries
 
-                'this will only resize the arrays if NumGroups is different then the existing array size
-                group.Resize()
-
-                group.AllowValidation = False
-
-                'the group index was passed into the constructor
-                iGroup = group.Index
-
-                'get the group name from EcoPath not EcoSim
-                group.Name = m_EcoPathData.GroupName(iGroup)
-
-                'Biomass
-                m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
-                group.BiomassStart = sBio
-                group.BiomassEnd = EndBio
-
-                'catch by group
-                For iFlt = 0 To nFleets 'Zero is the combined fleets 
-                    m_EcoSimData.getSummaryCatchByGroup(iGroup, iFlt, sCatch, EndCatch)
-                    group.CatchStart(iFlt) = sCatch
-                    group.CatchEnd(iFlt) = EndCatch
-
-                    m_EcoSimData.getSummaryValueByGroup(iGroup, iFlt, sVal, endVal)
-                    group.ValueStart(iFlt) = sVal
-                    group.ValueEnd(iFlt) = endVal
-                Next
-
-            Next group
-            For Each fleet As cEcosimFleetSummary In m_EcosimFleetSummaries
+            For Each fleet As cEcosimFleetOutput In m_EcosimFleetOutputs
                 fleet.Resize()
 
                 fleet.AllowValidation = False
@@ -4663,7 +4638,7 @@ Public Class cCore
                     sumValue += Me.m_EcoSimData.ResultsSumValueByGear(iFlt, it)
                 Next
 
-                'TEMP just for something to wrk with until we have ECost working
+                'TEMP just for something to working with until we have ECost up and running
                 '[sum of value] * [ecopath profit (precentage of catch value that is profit)]
                 fleet.Profit = sumValue * (m_EcoPathData.CostPct(iFlt, 0) / 100)
                 '[sum of value] * [Jobs(fleet) from the search forms]
@@ -4682,6 +4657,109 @@ Public Class cCore
         End Try
 
     End Function
+
+    'Private Function LoadEcosimSummaries() As Boolean
+    '    Dim iGroup As Integer
+    '    Dim iFlt As Integer
+    '    Dim sBio As Single, EndBio As Single, sCatch As Single, EndCatch As Single
+    '    Dim sVal As Single, endVal As Single
+
+    '    'if Ecosim has not run the results data will not be dimensioned so do not try to load it
+    '    If m_EcoSimData.ResultsOverTime Is Nothing Then
+    '        'HACK WARNING
+    '        'this should use the state monitor however there is a problem with that
+    '        'if the user edits cEcosimModelParameters.StartSummaryTime the statemonitor will flag ecosim as needing to run which it does not
+    '        Exit Function
+    '    End If
+
+    '    Try
+    '        'For Each group As cEcosimGroupSummary In m_EcoSimGroupSummaries
+
+    '        '    'this will only resize the arrays if NumGroups is different then the existing array size
+    '        '    group.Resize()
+
+    '        '    group.AllowValidation = False
+
+    '        '    'the group index was passed into the constructor
+    '        '    iGroup = group.Index
+
+    '        '    'get the group name from EcoPath not EcoSim
+    '        '    group.Name = m_EcoPathData.GroupName(iGroup)
+
+    '        '    'Biomass
+    '        '    m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
+    '        '    group.BiomassStart = sBio
+    '        '    group.BiomassEnd = EndBio
+
+    '        '    'catch by group
+    '        '    For iFlt = 0 To nFleets 'Zero is the combined fleets 
+    '        '        m_EcoSimData.getSummaryCatchByGroup(iGroup, iFlt, sCatch, EndCatch)
+    '        '        group.CatchStart(iFlt) = sCatch
+    '        '        group.CatchEnd(iFlt) = EndCatch
+
+    '        '        m_EcoSimData.getSummaryValueByGroup(iGroup, iFlt, sVal, endVal)
+    '        '        group.ValueStart(iFlt) = sVal
+    '        '        group.ValueEnd(iFlt) = endVal
+    '        '    Next
+
+    '        'Next group
+    '        'For Each fleet As cEcosimFleetSummary In m_EcosimFleetSummaries
+    '        '    fleet.Resize()
+
+    '        '    fleet.AllowValidation = False
+
+    '        '    'the group index was passed into the constructor
+    '        '    iFlt = fleet.Index
+
+    '        '    If iFlt = 0 Then
+    '        '        ' ToDo_JS: localize this
+    '        '        fleet.Name = "Combined Fleets"
+    '        '    Else
+    '        '        fleet.Name = m_EcoPathData.FleetName(iFlt)
+    '        '    End If
+
+    '        '    m_EcoSimData.getSummaryBioOfCatch(iFlt, sCatch, EndCatch)
+    '        '    fleet.CatchStart = sCatch
+    '        '    fleet.CatchEnd = EndCatch
+
+    '        '    m_EcoSimData.getSummaryValueOfCatch(iFlt, sVal, endVal)
+    '        '    fleet.ValueStart = sVal
+    '        '    fleet.ValueEnd = endVal
+
+    '        '    'see EwE5 CalculateSimSpaceResults
+    '        '    m_EcoSimData.getSummaryCostByCatch(iFlt, sVal, endVal)
+    '        '    fleet.CostStart = sVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
+    '        '    fleet.CostEnd = endVal * (m_EcoPathData.cost(iFlt, 2) + m_EcoPathData.cost(iFlt, 3)) + m_EcoPathData.cost(iFlt, 1)
+
+    '        '    fleet.Effort = 0.0F
+    '        '    If sVal <> 0 Then
+    '        '        fleet.Effort = endVal / sVal
+    '        '    End If
+
+    '        '    Dim sumValue As Single
+    '        '    For it As Integer = 1 To Me.m_EcoSimData.NTimes
+    '        '        sumValue += Me.m_EcoSimData.ResultsSumValueByGear(iFlt, it)
+    '        '    Next
+
+    '        '    'TEMP just for something to working with until we have ECost up and running
+    '        '    '[sum of value] * [ecopath profit (precentage of catch value that is profit)]
+    '        '    fleet.Profit = sumValue * (m_EcoPathData.CostPct(iFlt, 0) / 100)
+    '        '    '[sum of value] * [Jobs(fleet) from the search forms]
+    '        '    fleet.Jobs = sumValue * Me.m_SearchData.Jobs(iFlt)
+
+    '        'Next
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        m_publisher.AddMessage(New cMessage("Error loading Ecosim Summary data. " & ex.Message, eMessageType.ErrorEncountered, _
+    '                                eMessageSource.EcoSim, eMessageImportance.Critical))
+    '        Debug.Assert(False, ex.Message)
+    '        Return False
+    '    End Try
+
+    'End Function
 
     ''' <summary>
     ''' Update the list of available ecosim input groups
@@ -4748,6 +4826,9 @@ Public Class cCore
 
     Private Function LoadEcosimGroupOutputs() As Boolean
         Dim iGroup As Integer
+        Dim sBio As Single, EndBio As Single, sCatch As Single, EndCatch As Single
+        Dim sVal As Single, endVal As Single
+
 
         For Each group As cEcosimGroupOutput In m_EcoSimGroupOuputs
 
@@ -4768,6 +4849,23 @@ Public Class cCore
             'stanza variables setting the stanza id will also set the isMultiStanza Flag
             group.StanzaID = getStanzaIDForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
+
+            'Biomass
+            m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
+            group.BiomassStart = sBio
+            group.BiomassEnd = EndBio
+
+            'catch by group
+            For iFlt As Integer = 0 To nFleets 'Zero is the combined fleets 
+                m_EcoSimData.getSummaryCatchByGroup(iGroup, iFlt, sCatch, EndCatch)
+                group.CatchStart(iFlt) = sCatch
+                group.CatchEnd(iFlt) = EndCatch
+
+                m_EcoSimData.getSummaryValueByGroup(iGroup, iFlt, sVal, endVal)
+                group.ValueStart(iFlt) = sVal
+                group.ValueEnd(iFlt) = endVal
+            Next
+
 
             'For iTime As Integer = 1 To Me.nEcosimTimeSteps
             '    group.Biomass(iTime) = m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iTime)
@@ -5293,7 +5391,7 @@ Public Class cCore
         Me.m_TSData.Update()
 
         LoadEcosimGroupOutputs()
-        LoadEcosimSummaries()
+        LoadEcosimFleetOutputs()
         LoadEcosimTimeSeries()
 
         LoadEcosimStats()
@@ -6090,23 +6188,23 @@ Public Class cCore
         End Get
     End Property
 
-    ''' <summary>
-    ''' Ecosim Group summary results from last Ecosim run.
-    ''' </summary>
-    Public ReadOnly Property EcosimGroupSummaries(ByVal iGroup As Integer) As cEcosimGroupSummary
-        Get
-            ' JS 06Jul07: list will handle group index / item index offsets
-            Return DirectCast(Me.m_EcoSimGroupSummaries(iGroup), cEcosimGroupSummary)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Ecosim Group summary results from last Ecosim run.
+    '''' </summary>
+    'Public ReadOnly Property EcosimGroupSummaries(ByVal iGroup As Integer) As cEcosimGroupSummary
+    '    Get
+    '        ' JS 06Jul07: list will handle group index / item index offsets
+    '        Return DirectCast(Me.m_EcoSimGroupSummaries(iGroup), cEcosimGroupSummary)
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' Ecosim Fleet summary results from last Ecosim run.
     ''' </summary>
-    Public ReadOnly Property EcosimFleetSummaries(ByVal iFleet As Integer) As cEcosimFleetSummary
+    Public ReadOnly Property EcosimFleetOutput(ByVal iFleet As Integer) As cEcosimFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
-            Return DirectCast(Me.m_EcosimFleetSummaries(iFleet), cEcosimFleetSummary)
+            Return DirectCast(Me.m_EcosimFleetOutputs(iFleet), cEcosimFleetOutput)
         End Get
     End Property
 
@@ -7016,7 +7114,7 @@ Public Class cCore
 
             'this includes zero index 'Combined Fleets' 
             For iflt As Integer = 0 To nFleets 'this includes the 'Combined Fleets' 
-                Me.m_EcospaceFleetSummaries.Add(New cEcospaceFleetSummary(Me, iflt))
+                Me.m_EcospaceFleetSummaries.Add(New cEcospaceFleetSummary(Me, Me.m_EcoSpaceData, iflt))
             Next
 
             'This will include the zero indexed region 
@@ -7088,6 +7186,9 @@ Public Class cCore
                 m_EcoSpaceData.getSumValueFleet(objFlt.Index, stVal, endVal)
                 objFlt.ValueStart = stVal / m_EcoSpaceData.nWaterCells
                 objFlt.ValueEnd = endVal / m_EcoSpaceData.nWaterCells
+
+                'loads results over time
+                objFlt.Init()
             Next objFlt
 
             For Each objRgn As cEcospaceRegionSummary In m_EcospaceRegionSummaries
@@ -9810,7 +9911,9 @@ Public Class cCore
                         'this is the red vertical lines on the Ecosim biomass graph
 
                         'reload the ecosim results object with the new summary data
-                        LoadEcosimSummaries()
+                        ' LoadEcosimSummaries()
+                        Me.LoadEcosimGroupOutputs()
+                        Me.LoadEcosimFleetOutputs()
 
                         'tell the world that this has happened
                         Dim msg As New cMessage("Ecosim results time period has changed.", eMessageType.DataModified, _
