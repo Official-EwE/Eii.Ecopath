@@ -22,13 +22,10 @@ Public Class cGameServerInterface
 
         'ecosim
         m_dctCoreData.Add(eDataTypes.EcoSimGroupOutput, m_core.m_EcoSimGroupOuputs)
-        m_dctCoreData.Add(eDataTypes.EcosimFleetSummary, m_core.m_EcosimFleetOutputs)
-        m_dctCoreData.Add(eDataTypes.EcosimGroupSummary, m_core.m_EcoSimGroupSummaries)
+        m_dctCoreData.Add(eDataTypes.EcosimFleetOutput, m_core.m_EcosimFleetOutputs)
         m_dctCoreData.Add(eDataTypes.EcoSimScenario, m_core.m_EcoSimScenarios)
         m_dctCoreData.Add(eDataTypes.EcosimFisheriesRegulation, m_core.m_EcosimFisheriesRegulations)
         m_dctCoreData.Add(eDataTypes.EcoSimGroupInput, m_core.m_EcoSimGroups)
-
-
 
         'EcoSpace
         m_dctCoreData.Add(eDataTypes.EcospaceRegionResults, m_core.m_EcospaceRegionSummaries)
