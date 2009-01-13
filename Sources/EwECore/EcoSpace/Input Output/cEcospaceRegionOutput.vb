@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: cEcospaceRegionSummary.vb,v $
+' $Log: cEcospaceRegionOutput.vb,v $
+' Revision 1.1  2009/01/13 21:13:59  joeb
+' Merged Summary objects into Output objects
+'
 ' Revision 1.3  2009/01/12 22:52:19  joeb
 ' Changed how Ecospace stores it results all data is now stored over time
 '
@@ -34,7 +37,7 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-Public Class cEcospaceRegionSummary
+Public Class cEcospaceRegionOutput
     Inherits cCoreInputOutputBase
 
     Private m_spacedata As cEcospaceDataStructures

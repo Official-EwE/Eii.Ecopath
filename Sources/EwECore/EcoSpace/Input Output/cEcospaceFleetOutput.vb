@@ -2,7 +2,7 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-Public Class cEcospaceFleetSummary
+Public Class cEcospaceFleetOutput
     Inherits cCoreInputOutputBase
 
     Private m_CoreArrays As New Dictionary(Of eVarNameFlags, IResultsWrapper)
