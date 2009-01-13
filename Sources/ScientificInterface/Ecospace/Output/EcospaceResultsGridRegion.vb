@@ -80,7 +80,7 @@ Namespace Ecospace
             Dim core As cCore = cCore.GetInstance()
             Try
 
-                Dim source As cEcospaceRegionOutput = core.EcospaceRegionSummary(Me.SelRegionIndex)
+                Dim source As cEcospaceRegionOutput = core.EcospaceRegionOutput(Me.SelRegionIndex)
 
                 'The array for storing total values
                 Dim totalValue(0 To 7) As Single

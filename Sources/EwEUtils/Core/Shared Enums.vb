@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.19  2009/01/13 21:32:46  joeb
+' Still making changes from merge of Summary into Output objects
+'
 ' Revision 1.18  2009/01/13 18:15:40  joeb
 ' Added Ecospace output varnames
 '
@@ -1039,12 +1042,6 @@ Namespace Core
         ''' </summary>
         FleetInput
 
-        '''' <summary>
-        '''' Data belongs to the Ecopath fleet outputs,
-        '''' which are produced by a parameter estimation run.
-        '''' </summary>
-        'FleetOutput
-
         ''' <summary>
         ''' Data belongs to an Ecosim scenario.
         ''' </summary>
@@ -1190,9 +1187,6 @@ Namespace Core
         ''' </summary>
         EcoSimGroupOutput
         EcosimFleetOutput
-        EcosimFleetSummary
-        EcosimGroupSummary
-
 
         FitToTimeSeries
 

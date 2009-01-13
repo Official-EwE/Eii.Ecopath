@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.6  2009/01/13 21:32:47  joeb
+' Still making changes from merge of Summary into Output objects
+'
 ' Revision 1.5  2009/01/13 21:18:17  joeb
 ' Merged Ecospace summary objects into Ecospace Output objects
 '
@@ -91,7 +94,7 @@ Namespace Ecospace
             cbRegions.Items.Clear()
             Dim ero As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To m_Core.nRegions
-                ero = m_Core.EcospaceRegionSummary(i)
+                ero = m_Core.EcospaceRegionOutput(i)
                 cbRegions.Items.Add(ero.Name)
             Next
             cbRegions.SelectedIndex = 0
