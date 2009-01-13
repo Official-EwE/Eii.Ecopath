@@ -121,17 +121,16 @@
     <Compile Include="HelperClasses\cXMLLogWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayer.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleet.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceFleetSummary.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceFleetOutput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceGroup.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceGroupOutput.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceGroupSummary.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceHabitat.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceModelParameters.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceMPA.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceRegion.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EcoSpace\Input Output\cEcospaceRegionSummary.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceRegionOutput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />

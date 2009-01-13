@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.50  2009/01/13 21:15:03  joeb
+' Merged Ecospace summary objects into Output objects
+'
 ' Revision 1.49  2009/01/13 17:56:51  joeb
 ' Replaced Ecosim summary output objects with EcosimGroup and Fleet output objects
 '
@@ -5777,9 +5780,9 @@ Public Class cCore
     Private m_SpaceInterfaceCallBack As EcoSpaceInterfaceDelegate
 
     'Ecospace output lists
-    Friend m_EcospaceGroupSummaries As New cCoreInputOutputList(Of cEcospaceGroupSummary)(eDataTypes.NotSet, 1)
+    '  Friend m_EcospaceGroupSummaries As New cCoreInputOutputList(Of cEcospaceGroupSummary)(eDataTypes.NotSet, 1)
     ' Index 0 holds the combined fleet
-    Friend m_EcospaceFleetSummaries As New cCoreInputOutputList(Of cEcospaceFleetSummary)(eDataTypes.NotSet, 0)
+    Friend m_EcospaceFleetOutputs As New cCoreInputOutputList(Of cEcospaceFleetOutput)(eDataTypes.NotSet, 0)
     ' the zero index holds the data not include in one of the other regions
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
@@ -5975,74 +5978,74 @@ Public Class cCore
     End Sub
 
 
-    ''' <summary>
-    ''' Write the Ecospace summary data to the output window
-    ''' </summary>
-    ''' <remarks>This is temp for debugging</remarks>
-    Private Sub outputEcospaceSummary_temp()
-        Dim objGrp As cEcospaceGroupSummary
-        Dim objFlt As cEcospaceFleetSummary
-        Dim objRgn As cEcospaceRegionSummary
-        Dim Spaceparam As cEcospaceModelParameters = Me.EcospaceModelParameters
-        Dim igrp As Integer, iflt As Integer
+    '''' <summary>
+    '''' Write the Ecospace summary data to the output window
+    '''' </summary>
+    '''' <remarks>This is temp for debugging</remarks>
+    'Private Sub outputEcospaceSummary_temp()
+    '    Dim objGrp As cEcospaceGroupSummary
+    '    Dim objFlt As cEcospaceFleetSummary
+    '    Dim objRgn As cEcospaceRegionSummary
+    '    Dim Spaceparam As cEcospaceModelParameters = Me.EcospaceModelParameters
+    '    Dim igrp As Integer, iflt As Integer
 
-        System.Console.WriteLine("----------Ecospace summary output------------------")
-        System.Console.WriteLine("Start Time " & Spaceparam.StartSummaryTime & ", End Time: " & Spaceparam.EndSummaryTime & ", Number of time steps " & Spaceparam.NumberSummaryTimeSteps)
-        System.Console.WriteLine("Group Biomass summary")
-        System.Console.WriteLine("Group name, Biomass Start, Biomass end")
-        For igrp = 1 To nGroups
-            objGrp = Me.EcospaceGroupSummary(igrp)
-            System.Console.WriteLine(objGrp.Name & vbTab & objGrp.BiomassStart.ToString("##0.0000") & vbTab & objGrp.BiomassEnd.ToString("##0.0000"))
-        Next
+    '    System.Console.WriteLine("----------Ecospace summary output------------------")
+    '    System.Console.WriteLine("Start Time " & Spaceparam.StartSummaryTime & ", End Time: " & Spaceparam.EndSummaryTime & ", Number of time steps " & Spaceparam.NumberSummaryTimeSteps)
+    '    System.Console.WriteLine("Group Biomass summary")
+    '    System.Console.WriteLine("Group name, Biomass Start, Biomass end")
+    '    For igrp = 1 To nGroups
+    '        objGrp = Me.EcospaceGroupSummary(igrp)
+    '        System.Console.WriteLine(objGrp.Name & vbTab & objGrp.BiomassStart.ToString("##0.0000") & vbTab & objGrp.BiomassEnd.ToString("##0.0000"))
+    '    Next
 
-        System.Console.WriteLine("---------------")
-        System.Console.WriteLine("Group fisheries")
+    '    System.Console.WriteLine("---------------")
+    '    System.Console.WriteLine("Group fisheries")
 
-        System.Console.WriteLine("Catch start, Catch End, Value Start, Value End")
-        For igrp = 1 To nGroups
-            objGrp = Me.EcospaceGroupSummary(igrp)
-            For iflt = 0 To nFleets
-                If objGrp.CatchStart(iflt) <> 0 Then
-                    System.Console.WriteLine(objGrp.Name & vbTab & Me.EcospaceFleetSummary(iflt).Name & vbTab & objGrp.CatchStart(iflt).ToString("##0.0000") & vbTab & objGrp.CatchEnd(iflt).ToString("##0.0000") & vbTab & objGrp.ValueStart(iflt) & vbTab & objGrp.ValueEnd(iflt))
-                End If
-            Next iflt
-        Next igrp
+    '    System.Console.WriteLine("Catch start, Catch End, Value Start, Value End")
+    '    For igrp = 1 To nGroups
+    '        objGrp = Me.EcospaceGroupSummary(igrp)
+    '        For iflt = 0 To nFleets
+    '            If objGrp.CatchStart(iflt) <> 0 Then
+    '                System.Console.WriteLine(objGrp.Name & vbTab & Me.EcospaceFleetSummary(iflt).Name & vbTab & objGrp.CatchStart(iflt).ToString("##0.0000") & vbTab & objGrp.CatchEnd(iflt).ToString("##0.0000") & vbTab & objGrp.ValueStart(iflt) & vbTab & objGrp.ValueEnd(iflt))
+    '            End If
+    '        Next iflt
+    '    Next igrp
 
-        System.Console.WriteLine("---------------")
-        System.Console.WriteLine("Fisheries")
-        System.Console.WriteLine("Catch start, Catch End, Value Start, Value End, Cost start, Cost end")
-        For iflt = 0 To nFleets
-            objFlt = Me.EcospaceFleetSummary(iflt)
-            System.Console.WriteLine(objFlt.Name & vbTab & objFlt.CatchStart & vbTab & objFlt.CatchEnd & vbTab & objFlt.ValueStart & vbTab & objFlt.ValueEnd _
-                        & vbTab & objFlt.CostStart & vbTab & objFlt.CostEnd)
-        Next iflt
+    '    System.Console.WriteLine("---------------")
+    '    System.Console.WriteLine("Fisheries")
+    '    System.Console.WriteLine("Catch start, Catch End, Value Start, Value End, Cost start, Cost end")
+    '    For iflt = 0 To nFleets
+    '        objFlt = Me.EcospaceFleetSummary(iflt)
+    '        System.Console.WriteLine(objFlt.Name & vbTab & objFlt.CatchStart & vbTab & objFlt.CatchEnd & vbTab & objFlt.ValueStart & vbTab & objFlt.ValueEnd _
+    '                    & vbTab & objFlt.CostStart & vbTab & objFlt.CostEnd)
+    '    Next iflt
 
-        If nRegions > 0 Then
-            System.Console.WriteLine("---------------")
-            System.Console.WriteLine("Regions")
-            System.Console.WriteLine("Region Name, Group name, Biomass start, Biomass end")
-            For irgn As Integer = 0 To nRegions
-                objRgn = EcospaceRegionSummary(irgn)
+    '    If nRegions > 0 Then
+    '        System.Console.WriteLine("---------------")
+    '        System.Console.WriteLine("Regions")
+    '        System.Console.WriteLine("Region Name, Group name, Biomass start, Biomass end")
+    '        For irgn As Integer = 0 To nRegions
+    '            objRgn = EcospaceRegionSummary(irgn)
 
-                For igrp = 1 To nGroups
-                    If objRgn.BiomassStart(igrp) <> 0 Then
-                        System.Console.WriteLine(objRgn.Name & vbTab & Me.EcospaceGroupSummary(igrp).Name & vbTab & objRgn.BiomassStart(igrp) _
-                            & vbTab & objRgn.BiomassEnd(igrp))
-                    End If
-                    'For iflt = 0 To nFleets
-                    '    If grpobj.CatchStart(iflt) <> 0 Then
-                    '        System.Console.WriteLine(grpobj.Name & vbTab & Me.EcospaceFleetOutput(iflt).Name & vbTab & grpobj.CatchStart(iflt) & vbTab & grpobj.CatchEnd(iflt) & vbTab & grpobj.ValueStart(iflt) & vbTab & grpobj.ValueEnd(iflt))
-                    '    End If
-                    'Next iflt
-                Next igrp
+    '            For igrp = 1 To nGroups
+    '                If objRgn.BiomassStart(igrp) <> 0 Then
+    '                    System.Console.WriteLine(objRgn.Name & vbTab & Me.EcospaceGroupSummary(igrp).Name & vbTab & objRgn.BiomassStart(igrp) _
+    '                        & vbTab & objRgn.BiomassEnd(igrp))
+    '                End If
+    '                'For iflt = 0 To nFleets
+    '                '    If grpobj.CatchStart(iflt) <> 0 Then
+    '                '        System.Console.WriteLine(grpobj.Name & vbTab & Me.EcospaceFleetOutput(iflt).Name & vbTab & grpobj.CatchStart(iflt) & vbTab & grpobj.CatchEnd(iflt) & vbTab & grpobj.ValueStart(iflt) & vbTab & grpobj.ValueEnd(iflt))
+    '                '    End If
+    '                'Next iflt
+    '            Next igrp
 
-            Next irgn
-        End If
+    '        Next irgn
+    '    End If
 
-        System.Console.WriteLine("----------Ecospace summary output------------------")
+    '    System.Console.WriteLine("----------Ecospace summary output------------------")
 
 
-    End Sub
+    'End Sub
 
     ''' <summary>
     ''' This gets call by Ecospace at every time step
@@ -6218,24 +6221,24 @@ Public Class cCore
         End Get
     End Property
 
-    Public ReadOnly Property EcospaceGroupSummary(ByVal iGroup As Integer) As cEcospaceGroupSummary
-        Get
-            ' JS 06Jul07: list will handle group index / item index offsets
-            Return Me.m_EcospaceGroupSummaries(iGroup)
-        End Get
-    End Property
+    'Public ReadOnly Property EcospaceGroupSummary(ByVal iGroup As Integer) As cEcospaceGroupSummary
+    '    Get
+    '        ' JS 06Jul07: list will handle group index / item index offsets
+    '        Return Me.m_EcospaceGroupSummaries(iGroup)
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property EcospaceFleetSummary(ByVal iFleet As Integer) As cEcospaceFleetSummary
+    Public ReadOnly Property EcospaceFleetOutput(ByVal iFleet As Integer) As cEcospaceFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
-            Return Me.m_EcospaceFleetSummaries(iFleet)
+            Return Me.m_EcospaceFleetOutputs(iFleet)
         End Get
     End Property
 
-    Public ReadOnly Property EcospaceRegionSummary(ByVal iRegion As Integer) As cEcospaceRegionSummary
+    Public ReadOnly Property EcospaceRegionSummary(ByVal iRegion As Integer) As cEcospaceRegionOutput
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
-            Return DirectCast(Me.m_EcospaceRegionSummaries(iRegion), cEcospaceRegionSummary)
+            Return DirectCast(Me.m_EcospaceRegionSummaries(iRegion), cEcospaceRegionOutput)
         End Get
     End Property
 
@@ -7102,26 +7105,24 @@ Public Class cCore
     Private Sub InitEcospaceOutputs()
         Try
 
-            m_EcospaceGroupSummaries.Clear()
-            m_EcospaceFleetSummaries.Clear()
+            m_EcospaceFleetOutputs.Clear()
             m_EcospaceRegionSummaries.Clear()
             m_EcospaceGroupOuputs.Clear()
 
             For igrp As Integer = 1 To nGroups
-                Me.m_EcospaceGroupSummaries.Add(New cEcospaceGroupSummary(Me, igrp))
                 m_EcospaceGroupOuputs.Add(New cEcospaceGroupOutput(Me, Me.m_EcoSpaceData, igrp))
             Next
 
             'this includes zero index 'Combined Fleets' 
             For iflt As Integer = 0 To nFleets 'this includes the 'Combined Fleets' 
-                Me.m_EcospaceFleetSummaries.Add(New cEcospaceFleetSummary(Me, Me.m_EcoSpaceData, iflt))
+                Me.m_EcospaceFleetOutputs.Add(New cEcospaceFleetOutput(Me, Me.m_EcoSpaceData, iflt))
             Next
 
             'This will include the zero indexed region 
             'the zero index holds the data not include in one of the other regions (OR)
             'It is NOT like the Fleets where the zero index in the combined values (AND)
             For iRgn As Integer = 0 To nRegions
-                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionSummary(Me, Me.m_EcoSpaceData, iRgn))
+                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionOutput(Me, Me.m_EcoSpaceData, iRgn))
             Next
 
             'load a new results object for the new scenario
@@ -7146,29 +7147,29 @@ Public Class cCore
         Dim stVal As Single, endVal As Single
 
         Try
-            'group summarized output
-            'average values over all the map cells with water
-            For Each objGrp As cEcospaceGroupSummary In m_EcospaceGroupSummaries
-                objGrp.Name = m_EcoPathData.GroupName(objGrp.Index)
+            ''group summarized output
+            ''average values over all the map cells with water
+            'For Each objGrp As cEcospaceGroupSummary In m_EcospaceGroupSummaries
+            '    objGrp.Name = m_EcoPathData.GroupName(objGrp.Index)
 
-                m_EcoSpaceData.getSumBiom(objGrp.Index, stVal, endVal)
-                objGrp.BiomassStart = stVal
-                objGrp.BiomassEnd = endVal
+            '    m_EcoSpaceData.getSumBiom(objGrp.Index, stVal, endVal)
+            '    objGrp.BiomassStart = stVal
+            '    objGrp.BiomassEnd = endVal
 
-                For iflt = 0 To nFleets
-                    m_EcoSpaceData.getSumCatchFleetGroup(iflt, objGrp.Index, stVal, endVal)
-                    objGrp.CatchStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
-                    objGrp.CatchEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
+            '    For iflt = 0 To nFleets
+            '        m_EcoSpaceData.getSumCatchFleetGroup(iflt, objGrp.Index, stVal, endVal)
+            '        objGrp.CatchStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
+            '        objGrp.CatchEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
 
-                    m_EcoSpaceData.getSumValueFleetGroup(iflt, objGrp.Index, stVal, endVal)
-                    objGrp.ValueStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
-                    objGrp.ValueEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
-                Next iflt
+            '        m_EcoSpaceData.getSumValueFleetGroup(iflt, objGrp.Index, stVal, endVal)
+            '        objGrp.ValueStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
+            '        objGrp.ValueEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
+            '    Next iflt
 
-            Next objGrp
+            'Next objGrp
 
             'Fleet summarized output
-            For Each objFlt As cEcospaceFleetSummary In m_EcospaceFleetSummaries
+            For Each objFlt As cEcospaceFleetOutput In m_EcospaceFleetOutputs
                 If objFlt.Index <> 0 Then
                     objFlt.Name = m_EcoPathData.FleetName(objFlt.Index)
                 Else
@@ -7191,7 +7192,7 @@ Public Class cCore
                 objFlt.Init()
             Next objFlt
 
-            For Each objRgn As cEcospaceRegionSummary In m_EcospaceRegionSummaries
+            For Each objRgn As cEcospaceRegionOutput In m_EcospaceRegionSummaries
                 objRgn.Resize()
                 If objRgn.Index <> 0 Then
                     objRgn.Name = m_EcoSpaceData.RegionName(objRgn.Index)
@@ -7230,6 +7231,21 @@ Public Class cCore
                 objGrpOutput.Init()
                 objGrpOutput.ResetStatusFlags()
                 objGrpOutput.Name = m_EcoPathData.GroupName(objGrpOutput.Index)
+
+                m_EcoSpaceData.getSumBiom(objGrpOutput.Index, stVal, endVal)
+                objGrpOutput.BiomassStart = stVal
+                objGrpOutput.BiomassEnd = endVal
+
+                For iflt = 0 To nFleets
+                    m_EcoSpaceData.getSumCatchFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
+                    objGrpOutput.CatchStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
+                    objGrpOutput.CatchEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
+
+                    m_EcoSpaceData.getSumValueFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
+                    objGrpOutput.ValueStart(iflt) = stVal / m_EcoSpaceData.nWaterCells
+                    objGrpOutput.ValueEnd(iflt) = endVal / m_EcoSpaceData.nWaterCells
+                Next iflt
+
             Next
 
             Me.m_EcospaceStats.SS = m_EcoSpaceData.SS
