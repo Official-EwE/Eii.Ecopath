@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.3  2009/01/13 17:54:49  joeb
+' renamed some variables in c3DResultsWrapper
+'
 ' Revision 1.2  2008/12/09 19:44:44  joeb
 ' Added IResultsWrapper this wraps a core array so it can be used by a CoreInputOutput directly instead of buffering the data
 '
@@ -1076,21 +1079,21 @@ Friend Class c4DResultsWrapper
 
     'var, group, group, time
     Private m_data(,,,) As Single
-    Private m_VarIndex As Integer
-    Private m_GroupIndex As Integer
+    Private m_iVarFixed As Integer
+    Private m_iGroupFixed As Integer
 
     Public Sub New(ByVal TheBuffer(,,,) As Single, ByVal VarIndex As Integer, ByVal GroupIndex As Integer)
         m_data = TheBuffer
-        m_VarIndex = VarIndex
-        m_GroupIndex = GroupIndex
+        m_iVarFixed = VarIndex
+        m_iGroupFixed = GroupIndex
     End Sub
 
     Public Property Value(ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_VarIndex, m_GroupIndex, GroupIndex, TimeIndex)
+            Return m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex)
         End Get
         Set(ByVal value As Single)
-            m_data(m_VarIndex, m_GroupIndex, GroupIndex, TimeIndex) = value
+            m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex) = value
         End Set
     End Property
 End Class
