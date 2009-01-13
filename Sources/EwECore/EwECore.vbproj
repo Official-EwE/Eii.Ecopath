@@ -103,9 +103,7 @@
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="Database\Import\cEwE6DatabaseImporter.vb" />
     <Compile Include="Database\Updates\~sample~DB~Update~.vb" />
-    <Compile Include="EcoSim\Input Output\cEcosimFleetSummary.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />
-    <Compile Include="EcoSim\Input Output\cEcosimGroupSummary.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
     <Compile Include="Search\cSearchDatastructures.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceStats.vb" />
