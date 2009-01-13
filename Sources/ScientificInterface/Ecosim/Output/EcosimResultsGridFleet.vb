@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResultsGridFleet.vb,v $
+' Revision 1.3  2009/01/13 18:00:47  joeb
+' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
+'
 ' Revision 1.2  2008/12/15 15:53:26  jeroens
 ' no message
 '
@@ -111,7 +114,7 @@ Namespace Ecosim
             Dim astrNames(core.nFleets) As String
 
             For i As Integer = 1 To core.nFleets
-                astrNames(i) = core.EcosimFleetSummaries(i).Name
+                astrNames(i) = core.EcosimFleetOutput(i).Name
             Next
 
             Dim aCalc() As Integer = {4, 7, 10}
@@ -125,14 +128,14 @@ Namespace Ecosim
         Friend Sub updateData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim source As cEcosimFleetSummary = Nothing
+            Dim source As cEcosimFleetOutput = Nothing
 
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
             For fleetIndex As Integer = 1 To core.nFleets
 
-                source = core.EcosimFleetSummaries(fleetIndex)
+                source = core.EcosimFleetOutput(fleetIndex)
                 If source.CatchStart > 0 Then SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
                 If source.CatchEnd > 0 Then SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)
 
@@ -173,6 +176,8 @@ Namespace Ecosim
                     End If
                 End If
             Next
+
+            Me.Refresh()
 
         End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResults.vb,v $
+' Revision 1.3  2009/01/13 18:00:47  joeb
+' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
+'
 ' Revision 1.2  2008/12/15 15:53:26  jeroens
 ' no message
 '
@@ -82,9 +85,9 @@ Namespace Ecosim
             Me.m_fpNumSteps = New cPropertyFormatProvider(Me.udNumTimeSteps, m_Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
 
             cbGears.Items.Clear()
-            Dim efo As cEcosimFleetSummary = Nothing
+            Dim efo As cEcosimFleetOutput = Nothing
             For i As Integer = 0 To m_Core.nFleets 'includes the 'combined fleets' object
-                efo = m_Core.EcosimFleetSummaries(i)
+                efo = m_Core.EcosimFleetOutput(i)
                 cbGears.Items.Add(efo.Name)
             Next
             cbGears.SelectedIndex = 0

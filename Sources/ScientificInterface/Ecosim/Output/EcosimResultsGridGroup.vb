@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResultsGridGroup.vb,v $
+' Revision 1.4  2009/01/13 18:00:47  joeb
+' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
+'
 ' Revision 1.3  2008/12/15 15:53:27  jeroens
 ' no message
 '
@@ -122,7 +125,7 @@ Namespace Ecosim
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To core.nGroups
                 If sg.GroupVisible(iGroup) Then
-                    lName.Add(core.EcosimGroupSummaries(iGroup).Name)
+                    lName.Add(core.EcoSimGroupOutputs(iGroup).Name)
                     Me.m_iNumVisibleGroups += 1
                 End If
             Next
@@ -138,7 +141,7 @@ Namespace Ecosim
 
             Dim core As cCore = cCore.GetInstance()
             Dim sg As StyleGuide = StyleGuide.GetInstance()
-            Dim source As cEcosimGroupSummary = Nothing
+            Dim source As cEcosimGroupOutput = Nothing
 
             Dim asTotal(0 To 10) As Single
             Me.InitTotalArray(asTotal)
@@ -148,7 +151,7 @@ Namespace Ecosim
                 'Only display selected groups
                 If sg.GroupVisible(iGroup) Then
 
-                    source = core.EcosimGroupSummaries(iGroup)
+                    source = core.EcoSimGroupOutputs(iGroup)
 
                     'clear all fleet cells
                     For icell As Integer = 5 To 10
