@@ -5,14 +5,18 @@ Imports EwEUtils.Core
 Public Class cEcospaceFleetSummary
     Inherits cCoreInputOutputBase
 
-    Public Sub New(ByRef TheCore As cCore, ByVal iGroup As Integer)
+    Private m_CoreArrays As New Dictionary(Of eVarNameFlags, IResultsWrapper)
+    Private m_spacedata As cEcospaceDataStructures
+
+    Public Sub New(ByRef TheCore As cCore, ByVal EcospaceData As cEcospaceDataStructures, ByVal iGroup As Integer)
         MyBase.New(TheCore)
 
         Dim val As cValue
 
-
         Me.Index = iGroup
         Me.DBID = iGroup '????
+        m_spacedata = EcospaceData
+
         'no validators
         'Catch biomass
         val = New cValue(0, eVarNameFlags.EcospaceFleetCatchStart, eStatusFlags.OK, eValueTypes.Sng)
@@ -37,6 +41,34 @@ Public Class cEcospaceFleetSummary
 
 
     End Sub
+
+    Public Sub Init()
+
+        m_CoreArrays.Clear()
+        m_CoreArrays.Add(eVarNameFlags.EcospaceFleetCatch, New c3DResultsWrapper2Fixed(m_spacedata.ResultsByFleet, eSpaceResultsFleets.CatchBio, Me.Index))
+        m_CoreArrays.Add(eVarNameFlags.EcospaceFleetValue, New c3DResultsWrapper2Fixed(m_spacedata.ResultsByFleet, eSpaceResultsFleets.Value, Me.Index))
+
+    End Sub
+
+
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999) As Object
+
+        Try
+            If Not m_CoreArrays.ContainsKey(VarName) Then
+                'NOT in list of sim vars so get the value from the base class GetVariable(...)
+                Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
+            Else
+                'Varname is access directly via the core data
+                Return m_CoreArrays.Item(VarName).Value(iIndex1, iIndex2)
+            End If
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        Return Nothing 'Oh this could hurt
+
+    End Function
+
 
 #Region "Variable via dot '.' operator"
 
@@ -102,6 +134,19 @@ Public Class cEcospaceFleetSummary
             SetVariable(eVarNameFlags.EcospaceFleetCostEnd, value)
         End Set
     End Property
+
+    Public ReadOnly Property CatchBiomass(ByVal Time As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetCatch))
+        End Get
+    End Property
+
+    Public ReadOnly Property Value(ByVal Time As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetValue))
+        End Get
+    End Property
+
 
 #End Region
 
