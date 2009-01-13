@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.18  2009/01/13 18:15:40  joeb
+' Added Ecospace output varnames
+'
 ' Revision 1.17  2008/12/18 21:56:05  joeb
 ' Added FleetSummary Profit and Jobs
 '
@@ -523,6 +526,11 @@ Namespace Core
         EcospaceFleetCostStart
         EcospaceFleetCostEnd
 
+        ''' <summary>Ecospace Catch by Fleet Time </summary>
+        EcospaceFleetCatch
+        ''' <summary>Ecospace Value by Fleet Time </summary>
+        EcospaceFleetValue
+
         ''' <summary>Biomass of a group in a region for the start summary period </summary>
         EcospaceRegionBiomassStart
 
@@ -549,6 +557,12 @@ Namespace Core
 
         ''' <summary> Ecospace [computed biomass] / [base biomass] averaged over all the cells for each timestep </summary>
         EcospaceRelativeBiomassOverTime
+
+        ''' <summary> Ecospace Catch over time </summary>
+        EcospaceGroupCatchOverTime
+
+        ''' <summary> Ecospace Value over time </summary>
+        EcospaceGroupValueOverTime
 
         ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region for each timestep </summary>
         EcospaceRegionBiomass
@@ -954,7 +968,7 @@ Namespace Core
         'Varnames added for Game Server
         ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
-        ''' <summary> User entered fishing rate modifiers/shapes for groups</summary>
+        ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
         GameGroupFishingRates
 
         ' EcosimResults
@@ -962,6 +976,14 @@ Namespace Core
         GameModel
         GameBiomass
         GameBiomassByRegion
+
+        ''' <summary>Profit by Fleet </summary>      
+        GameFleetProfit
+
+        ''' <summary>Jobs(?) by Fleet </summary>    
+        GameFleetJobs
+
+        GameGroupFleetValue
 
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
         GameYield
@@ -973,11 +995,6 @@ Namespace Core
         ''' <summary>View settings for the Client set by the Server (visible groups...)</summary>
         GameViewSetting
 
-        ''' <summary>Profit by Fleet </summary>      
-        GameFleetProfit
-
-        ''' <summary>Jobs(?) by Fleet </summary>    
-        GameFleetJobs
 
 
     End Enum
