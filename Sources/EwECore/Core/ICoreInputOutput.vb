@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.4  2009/01/14 18:42:46  joeb
+' Added third index to IResultsWrapper.Value
+'
 ' Revision 1.3  2009/01/13 17:54:49  joeb
 ' renamed some variables in c3DResultsWrapper
 '
@@ -1065,7 +1068,7 @@ End Class ' cCoreInputOutputList
 ''' <remarks>Ouput (model time step results) objects <see cref="cEcoSimGroupOutput">cEcoSimGroupOutput</see> hold a reference to core data that is wrapped for the interface to access via dot operators or getVariable(eVarNameFalgs,index,index)  </remarks>
 Friend Interface IResultsWrapper
 
-    Property Value(ByVal Index1 As Integer, ByVal index2 As Integer) As Single
+    Property Value(ByVal Index1 As Integer, Optional ByVal index2 As Integer = cCore.NULL_VALUE, Optional ByVal index3 As Integer = cCore.NULL_VALUE) As Single
 
 End Interface
 
@@ -1088,7 +1091,7 @@ Friend Class c4DResultsWrapper
         m_iGroupFixed = GroupIndex
     End Sub
 
-    Public Property Value(ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single Implements IResultsWrapper.Value
+    Public Property Value(ByVal GroupIndex As Integer, Optional ByVal TimeIndex As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
             Return m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex)
         End Get
@@ -1097,6 +1100,33 @@ Friend Class c4DResultsWrapper
         End Set
     End Property
 End Class
+
+''' <summary>
+''' 2D array with the first index fixed
+''' </summary>
+''' <remarks></remarks>
+Friend Class c2DResultsWrapper
+    Implements IResultsWrapper
+
+    ' group, group, time
+    Private m_data(,) As Single
+    Private m_FixedGroupIndex As Integer
+
+    Public Sub New(ByVal TheBuffer(,) As Single, ByVal FixedGroupIndex As Integer)
+        m_data = TheBuffer
+        m_FixedGroupIndex = FixedGroupIndex
+    End Sub
+
+    Public Property Value(ByVal TimeIndex As Integer, Optional ByVal NotUsedIndex1 As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex2 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_FixedGroupIndex, TimeIndex)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_FixedGroupIndex, TimeIndex) = value
+        End Set
+    End Property
+End Class
+
 
 
 ''' <summary>
@@ -1115,12 +1145,12 @@ Friend Class c3DResultsWrapper
         m_FixedGroupIndex = FixedGroupIndex
     End Sub
 
-    Public Property Value(ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single Implements IResultsWrapper.Value
+    Public Property Value(ByVal GroupIndex As Integer, Optional ByVal Timeindex As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_FixedGroupIndex, GroupIndex, TimeIndex)
+            Return m_data(m_FixedGroupIndex, GroupIndex, Timeindex)
         End Get
         Set(ByVal value As Single)
-            m_data(m_FixedGroupIndex, GroupIndex, TimeIndex) = value
+            m_data(m_FixedGroupIndex, GroupIndex, Timeindex) = value
         End Set
     End Property
 End Class
@@ -1144,7 +1174,7 @@ Friend Class c3DResultsWrapper2Fixed
         m_FixedVarIndex = FixedVarIndex
     End Sub
 
-    Public Property Value(ByVal TimeIndex As Integer, ByVal NotUsed As Integer) As Single Implements IResultsWrapper.Value
+    Public Property Value(ByVal TimeIndex As Integer, Optional ByVal index2 As Integer = cCore.NULL_VALUE, Optional ByVal index3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
             Return m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex)
         End Get
