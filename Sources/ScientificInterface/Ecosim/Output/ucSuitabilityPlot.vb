@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.5  2009/01/14 17:48:44  jeroens
+' Fixed compiler warning
+'
 ' Revision 1.4  2008/12/15 15:56:03  jeroens
 ' no message
 '
@@ -24,7 +27,6 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwENetworkAnalysis
 
 #End Region ' Imports
 
