@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.16  2009/01/14 20:18:25  jeroens
+' Fixed groups cascading delete block on EcosimScenarioQuota
+'
 ' Revision 1.15  2008/11/27 18:17:18  joeb
 ' Moved Flimit() back to Search data
 '
@@ -1568,7 +1571,7 @@ Public Class cDBDataSource
     Friend Function RemoveStanza(ByVal iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveStanza
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM Stanza WHERE (StanzaID={0})", iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iDBID))
             Return Me.LoadGroupInfo()
         Catch ex As Exception
             ' Kaboom
@@ -1624,7 +1627,7 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM StanzaLifeStage WHERE (StanzaID={0}) AND (GroupID={1})", iStanzaDBID, iGroupDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM StanzaLifeStage WHERE (StanzaID={0}) AND (GroupID={1})", iStanzaDBID, iGroupDBID))
         Catch ex As Exception
             bSucces = False
         End Try
@@ -1977,15 +1980,26 @@ Public Class cDBDataSource
              Implements IEcopathDataSource.RemoveGroup
 
         Dim bSucces As Boolean = True
+
         Try
-            bSucces = Me.RemoveEcosimGroup(iDBID)
+            ' Remove all Ecosim groups related to this Ecopath group
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iDBID))
+            If (reader IsNot Nothing) Then
+                While reader.Read()
+                    bSucces = Me.RemoveEcosimGroup(CInt(reader("GroupID")))
+                End While
+            End If
+            Me.m_db.ReleaseReader(reader)
+
+            ' Oh, now wait until we need to do this for Ecospace...
+
+            ' Now Ecosim is clean, delete the group from Ecopath
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iDBID))
+
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing group {1}", ex.Message, iDBID))
             bSucces = False
         End Try
-
-        ' Cascading deletion will delete corresponding groups from Ecosim
 
         Return bSucces
 
@@ -2762,7 +2776,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         ' Delete existing scenario
-        Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenario WHERE ScenarioName='{0}'", strScenarioName))
+        Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE ScenarioName='{0}'", strScenarioName))
 
         Try
             iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario")) + 1
@@ -2958,7 +2972,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iDBID))
             bSucces = False
@@ -3145,11 +3159,14 @@ Public Class cDBDataSource
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function RemoveEcosimFleet(ByVal iEcopathFleetID As Integer) As Boolean
+        Dim bSucces As Boolean = True
         Try
-            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
         Catch ex As Exception
+            bSucces = False
         End Try
-        Return False
+        Return bSucces
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -3163,15 +3180,21 @@ Public Class cDBDataSource
     ''' delete. Hence, we need to eradicate linked groups and fleets via code.
     ''' </para> 
     ''' </summary>
-    ''' <param name="iEcopathGroupID"></param>
+    ''' <param name="iDBID">DBID of the Ecosim group to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function RemoveEcosimGroup(ByVal iEcopathGroupID As Integer) As Boolean
+    Private Function RemoveEcosimGroup(ByVal iDBID As Integer) As Boolean
+        Dim bSucces As Boolean = True
         Try
-            Return Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
+
+            ' Big sigh, it's even worse...
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iDBID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iDBID))
+
         Catch ex As Exception
+            bSucces = False
         End Try
-        Return False
+        Return bSucces
     End Function
 
 #End Region ' Modify
@@ -3460,7 +3483,7 @@ Public Class cDBDataSource
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
         Dim bSucces As Boolean = True
 
-        strSQL = String.Format("DELETE * FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
+        strSQL = String.Format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
         bSucces = Me.m_db.Execute(strSQL)
 
         Try
@@ -4342,7 +4365,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcoSimScenarioForcingMatrix")
 
             For iPredator = 1 To ecosimDS.nGroups
@@ -4379,7 +4402,7 @@ Public Class cDBDataSource
 
         Try
 
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcosimScenarioPredPreyShape")
 
             For iPredator As Integer = 1 To ecosimDS.nGroups
@@ -4435,7 +4458,7 @@ Public Class cDBDataSource
 
         Try
 
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcosimScenarioshapeMedWeightsGroup")
             For iGroup As Integer = 1 To ecosimDS.nGroups
                 For iShape As Integer = 1 To ecosimDS.MediationShapes
@@ -4452,7 +4475,7 @@ Public Class cDBDataSource
             Next iGroup
             Me.m_db.ReleaseWriter(writer, True)
 
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcosimScenarioShapeMedWeightsFleet")
             For iFleet As Integer = 1 To ecosimDS.nGear
                 For iShape As Integer = 1 To ecosimDS.MediationShapes
@@ -4784,13 +4807,13 @@ Public Class cDBDataSource
             ' Manually set 'soft' shape links to 0
             Me.m_db.Execute(String.Format("UPDATE EcoSimStanzaShape Set EggProdShapeID=NULL WHERE (EggProdShapeID={0})", iDBID))
             Me.m_db.Execute(String.Format("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=NULL WHERE (HatchCodeShapeID={0})", iDBID))
-            Me.m_db.Execute("DELETE * FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=NULL) AND (EggProdShapeID=NULL))")
+            Me.m_db.Execute("DELETE FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=NULL) AND (EggProdShapeID=NULL))")
 
             Me.m_db.Execute(String.Format("UPDATE EcoSimScenario Set SalinityForcingShapeID=NULL WHERE (SalinityForcingShapeID={0})", iDBID))
             Me.m_db.Execute(String.Format("UPDATE EcoSimScenario Set NutForcingShapeID=NULL WHERE (NutForcingShapeID={0})", iDBID))
 
             ' Destroy the given shape
-            Me.m_db.Execute(String.Format("DELETE * FROM EcoSimShape WHERE (ShapeID={0})", iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iDBID))
             ' Reload shapes data
             bSucces = Me.LoadShapes()
 
@@ -5180,8 +5203,8 @@ Public Class cDBDataSource
         Try
             ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
             ' Solution: manually delete all dataset links
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
         Catch ex As Exception
             bSucces = False
         End Try
@@ -5521,7 +5544,7 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
         Catch ex As Exception
             bSucces = False
         End Try
@@ -5668,7 +5691,7 @@ Public Class cDBDataSource
         Me.m_db.BeginTransaction()
 
         ' Delete existing scenario
-        Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
+        Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
 
         Try
             iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario")) + 1
@@ -5958,7 +5981,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
             bSucces = False
@@ -6132,7 +6155,7 @@ Public Class cDBDataSource
 
         Try
             ' Destroy current
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioBasemap WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioBasemap WHERE (ScenarioID={0})", iScenarioID))
 
             ' Rebuild
             writer = Me.m_db.GetWriter("EcospaceScenarioBasemap")
@@ -6328,7 +6351,7 @@ Public Class cDBDataSource
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID))
 
             writer = Me.m_db.GetWriter("EcospaceScenarioHabitatChange")
             For iChange As Integer = 1 To ecospaceDS.NoHabChanges
@@ -6425,7 +6448,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) AND (HabitatID={1})", iScenarioID, iHabitatID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) AND (HabitatID={1})", iScenarioID, iHabitatID))
             ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
             bSucces = Me.LoadEcospaceScenario(iScenarioID)
         Catch ex As Exception
@@ -6639,7 +6662,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) AND (RegionID={1})", iScenarioID, iRegionID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) AND (RegionID={1})", iScenarioID, iRegionID))
             ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
             bSucces = Me.LoadEcospaceScenario(iScenarioID)
         Catch ex As Exception
@@ -6850,7 +6873,7 @@ Public Class cDBDataSource
 
         Try
             ' No incremental save for now
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioGroupHabitat WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE ScenarioID={0}", iScenarioID))
 
             writer = Me.m_db.GetWriter("EcospaceScenarioGroupHabitat")
             For iGroup = 1 To ecopathDS.NumGroups
@@ -7198,7 +7221,7 @@ Public Class cDBDataSource
 
         Try
             ' Erase
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioFleetMap WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE ScenarioID={0}", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioFleetMap")
 
             For iFleet = 1 To ecospaceDS.nFleets
@@ -7252,7 +7275,7 @@ Public Class cDBDataSource
 
         Try
             ' Erase
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioHabitatFishery WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitatFishery WHERE ScenarioID={0}", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioHabitatFishery")
 
             For iFleet = 1 To ecospaceDS.nFleets
@@ -7295,7 +7318,7 @@ Public Class cDBDataSource
 
         Try
             ' Erase
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioMPAFishery WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMPAFishery WHERE ScenarioID={0}", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioMPAFishery")
 
             For iFleet = 1 To ecospaceDS.nFleets
@@ -7604,7 +7627,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) AND (MPAID={1})", iScenarioID, iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) AND (MPAID={1})", iScenarioID, iDBID))
             ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
             bSucces = Me.LoadEcospaceScenario(iScenarioID)
         Catch ex As Exception
@@ -7772,7 +7795,7 @@ Public Class cDBDataSource
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID={0}", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID={0}", iScenarioID))
 
             writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayerCell")
 
@@ -8274,7 +8297,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE * FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
             bSucces = False
