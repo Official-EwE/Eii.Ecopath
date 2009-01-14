@@ -100,8 +100,7 @@ Namespace Ecospace
                     SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue)
                 End If
 
-                ' Effort E/S -- End /Start Calculated value? -- Core? 
-                Me(fleetIndex, 11) = New EwECell(0.0, GetType(System.Single))
+                SetCellValue(fleetIndex, 11, source.EffortES)
 
             Next
 

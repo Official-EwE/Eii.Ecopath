@@ -8,13 +8,14 @@ Public Class cEcospaceFleetOutput
     Private m_CoreArrays As New Dictionary(Of eVarNameFlags, IResultsWrapper)
     Private m_spacedata As cEcospaceDataStructures
 
-    Public Sub New(ByRef TheCore As cCore, ByVal EcospaceData As cEcospaceDataStructures, ByVal iGroup As Integer)
+    Public Sub New(ByRef TheCore As cCore, ByVal EcospaceData As cEcospaceDataStructures, ByVal FleetIndex As Integer)
         MyBase.New(TheCore)
 
         Dim val As cValue
 
-        Me.Index = iGroup
-        Me.DBID = iGroup '????
+        Me.Index = FleetIndex
+        Me.DBID = FleetIndex '????
+        Me.m_DataType = eDataTypes.EcospaceFleetOuput
         m_spacedata = EcospaceData
 
         'no validators
@@ -37,6 +38,10 @@ Public Class cEcospaceFleetOutput
         m_values.Add(val.varName, val)
 
         val = New cValue(0, eVarNameFlags.EcospaceFleetCostEnd, eStatusFlags.OK, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+
+
+        val = New cValue(0, eVarNameFlags.EcospaceFleetEffortES, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
 
@@ -135,6 +140,16 @@ Public Class cEcospaceFleetOutput
         End Set
     End Property
 
+
+    Public Property EffortES() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetEffortES))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcospaceFleetEffortES, value)
+        End Set
+    End Property
     Public ReadOnly Property CatchBiomass(ByVal Time As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceFleetCatch))
