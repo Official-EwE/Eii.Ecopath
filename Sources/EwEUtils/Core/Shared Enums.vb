@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.20  2009/01/14 18:48:10  joeb
+' Added varnames for Ecospace results
+'
 ' Revision 1.19  2009/01/13 21:32:46  joeb
 ' Still making changes from merge of Summary into Output objects
 '
@@ -528,6 +531,8 @@ Namespace Core
 
         EcospaceFleetCostStart
         EcospaceFleetCostEnd
+        ''' <summary>Ecospace [Effort End] / [Effort Start] </summary>
+        EcospaceFleetEffortES
 
         ''' <summary>Ecospace Catch by Fleet Time </summary>
         EcospaceFleetCatch
@@ -725,6 +730,8 @@ Namespace Core
         EcosimFleetEffort
         EcosimFleetJobs
         EcosimFleetProfit
+        EcosimFleetValueTime
+        EcosimFleetCatchTime
 
         ' Time series
 
@@ -981,10 +988,15 @@ Namespace Core
         GameBiomassByRegion
 
         ''' <summary>Profit by Fleet </summary>      
-        GameFleetProfit
+        GameFleetProfitSummary
 
         ''' <summary>Jobs(?) by Fleet </summary>    
-        GameFleetJobs
+        GameFleetJobsSummary
+
+        GameFleetValue
+        GameFleetCatch
+
+        GameGroupValue
 
         GameGroupFleetValue
 
@@ -1153,6 +1165,8 @@ Namespace Core
         ''' 
         ''' </summary>
         EcospaceGroupOuput
+
+        EcospaceFleetOuput
 
         EcospaceRegionResults
 
