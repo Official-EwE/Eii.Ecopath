@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.5  2009/01/14 18:46:55  joeb
+' Time series results averaged over space at the end of the run
+'
 ' Revision 1.4  2009/01/12 22:54:57  joeb
 ' Ecospace now stores all results over time. Not just for the summary periods.
 '
@@ -890,15 +893,6 @@ Public Class cEcospaceDataStructures
     '''</remarks>
     Public Sub RedimHabitatVariables(Optional ByVal PreserveHabitat As Boolean = False)
 
-        'jb just for debugging
-        ' Debug.Assert(nGroups > 0, Me.ToString, ".RedimHabitatVariables() number of groups has not been set.")
-        '  Debug.Assert(nFleets > 0, Me.ToString, ".RedimHabitatVariables() number of fishing fleets has not been set.")
-
-
-        'jb interface stuff
-        'ReDim habColr(NoHabitats)
-        'X = ColorGrad(habColr)
-
         Try
 
             If Not PreserveHabitat Then
@@ -1419,6 +1413,32 @@ Public Class cEcospaceDataStructures
 
 
     ''' <summary>
+    ''' Get Value by Fleet for summary periods
+    ''' </summary>
+    Public Sub getSumEffortES(ByVal iFleet As Integer, ByRef EndoverStart As Single)
+        Dim st As Integer, et As Integer, nts As Integer
+        Dim s As Single, e As Single
+        'get the start and end time indexes and number of time steps to sum over
+        'getStartEndSumIndex() will figure out the one based indexes
+        Me.getStartEndSumIndex(st, et, nts)
+
+        For it As Integer = st To st + nts - 1
+            s = s + Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+        Next
+        s = s / nts
+
+        For it As Integer = et To et + nts - 1
+            e = e + Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+        Next
+        e = e / nts
+
+        If s = 0 Then s = 1
+        EndoverStart = e / s
+
+    End Sub
+
+
+    ''' <summary>
     ''' Get Catch by REgion, Fleet, Group for summary periods
     ''' </summary>
     Public Sub getSumCatchRegionGearGroup(ByVal iRegion As Integer, ByVal iFleet As Integer, ByVal iGroup As Integer, ByRef startCatch As Single, ByRef endCatch As Single)
@@ -1439,6 +1459,67 @@ Public Class cEcospaceDataStructures
             endCatch = endCatch + Me.CatchRegionGearGroup(iRegion, iFleet, iGroup, it)
         Next
         endCatch = endCatch / nts
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Average the results values over number of water cells
+    ''' </summary>
+    Public Sub AverageSpatialResults()
+        Dim iflt As Integer, igrp As Integer, it As Integer, ivar As Integer, irgn As Integer
+
+        Try
+
+            For ivar = 0 To N_RESULTS_FLEETS
+                For iflt = 0 To Me.nFleets
+                    For it = 1 To nTimeSteps
+                        Me.ResultsByFleet(ivar, iflt, it) /= Me.nWaterCells
+                    Next it
+                Next iflt
+            Next ivar
+
+            For ivar = 0 To N_RESULTS_GROUPS
+                For igrp = 1 To Me.NGroups
+                    For it = 1 To nTimeSteps
+                        Me.ResultsByGroup(ivar, igrp, it) /= Me.nWaterCells
+                    Next it
+                Next igrp
+            Next ivar
+
+            For ivar = 0 To N_RESULTS_FLEETGROUPS
+                For iflt = 0 To Me.nFleets
+                    For igrp = 1 To Me.NGroups
+                        For it = 1 To nTimeSteps
+                            Me.ResultsByFleetGroup(ivar, iflt, igrp, it) /= Me.nWaterCells
+                        Next it
+                    Next igrp
+                Next iflt
+            Next ivar
+
+            For irgn = 0 To Me.NoRegions
+                For igrp = 1 To Me.NGroups
+                    For it = 1 To nTimeSteps
+                        Me.ResultsRegionGroup(irgn, igrp, it) /= Me.nCellsInRegion(irgn)
+                    Next it
+                Next igrp
+            Next irgn
+
+            For irgn = 0 To Me.NoRegions
+                For iflt = 0 To Me.nFleets
+                    For igrp = 1 To Me.NGroups
+                        For it = 1 To nTimeSteps
+                            Me.CatchRegionGearGroup(irgn, iflt, igrp, it) /= Me.nCellsInRegion(irgn)
+                        Next it
+                    Next igrp
+                Next iflt
+            Next irgn
+
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            cLog.Write(ex)
+        End Try
 
     End Sub
 

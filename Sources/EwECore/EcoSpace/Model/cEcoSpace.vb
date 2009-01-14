@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.17  2009/01/14 18:46:52  joeb
+' Time series results averaged over space at the end of the run
+'
 ' Revision 1.16  2009/01/12 22:54:54  joeb
 ' Ecospace now stores all results over time. Not just for the summary periods.
 '
@@ -867,6 +870,8 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Me.m_Data.AverageSpatialResults()
 
             If m_search.bInSearch Then
                 Dim runTime As Integer = CInt(itt * m_Data.TimeStep)
@@ -3175,7 +3180,6 @@ exitline:
     ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
     ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
     ''' </summary>
-    ''' <param name="iSumIndex">Index of the summary time period -1 if this time step is not part of the summary period</param>
     ''' <param name="Biomass">Biomass for all the groups at this time step</param>
     ''' <param name="iRow">Map row</param>
     ''' <param name="iCol">Map col</param>
@@ -3226,6 +3230,8 @@ exitline:
                             sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_ESData.relQ(iFlt, igrp)
                             'Sum the total catch by gear
                             m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += sum
+                            'sum all fleets
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0, iCumTime) += sum
 
                             m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += sum
                             'sum all fleets into the zero fleet index
@@ -4938,7 +4944,6 @@ exitline:
         Next
 
     End Sub
-
 
 End Class
 
