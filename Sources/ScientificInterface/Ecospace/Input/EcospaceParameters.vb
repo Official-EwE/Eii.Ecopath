@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.3  2009/01/15 22:39:55  joeb
+' Moved Ecospace start and end summary periods from Parameters form to Results form
+'
 ' Revision 1.2  2008/12/15 15:52:26  jeroens
 ' no message
 '
@@ -37,11 +40,6 @@ Namespace Ecospace
         Private m_fpScenarioDescription As cEwEFormatProvider = Nothing
         Private m_fpAuthor As cEwEFormatProvider = Nothing
         Private m_fpContact As cEwEFormatProvider = Nothing
-
-        ' Summary
-        Private m_fpSumStartTime As cEwEFormatProvider = Nothing
-        Private m_fpSumEndTime As cEwEFormatProvider = Nothing
-        Private m_fpSumLength As cEwEFormatProvider = Nothing
 
         ' Threading
         Private m_fpNumThreads As cEwEFormatProvider = Nothing
@@ -91,10 +89,6 @@ Namespace Ecospace
             Me.m_fpAuthor = Nothing
             Me.m_fpContact = Nothing
 
-            Me.m_fpSumStartTime = Nothing
-            Me.m_fpSumEndTime = Nothing
-            Me.m_fpSumLength = Nothing
-
             Me.m_fpNumThreads = Nothing
             Me.m_fpNumThreads2 = Nothing
             Me.m_fpNumPackets = Nothing
@@ -132,9 +126,6 @@ Namespace Ecospace
             ' This is not allowed. Therefore, all format providers are initialized last in this method.
             Me.UpdateControls()
 
-            Me.m_fpSumStartTime = New cPropertyFormatProvider(Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
-            Me.m_fpSumEndTime = New cPropertyFormatProvider(Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
-            Me.m_fpSumLength = New cPropertyFormatProvider(Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
             ' Hmm, connecting one control to two live properties - this could be dangerous
             Me.m_fpNumThreads = New cPropertyFormatProvider(Me.udNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
             Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.udNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)

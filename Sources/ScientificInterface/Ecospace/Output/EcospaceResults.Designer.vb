@@ -23,19 +23,20 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cFormEcospaceResults))
             Me.plResultsGrid = New System.Windows.Forms.Panel
-            Me.gpbOption = New System.Windows.Forms.GroupBox
+            Me.udSumLength = New System.Windows.Forms.NumericUpDown
+            Me.tbSumEndTime = New System.Windows.Forms.TextBox
+            Me.tbSumStartTime = New System.Windows.Forms.TextBox
+            Me.Label1 = New System.Windows.Forms.Label
+            Me.Label2 = New System.Windows.Forms.Label
             Me.cbRegions = New System.Windows.Forms.ComboBox
             Me.cbGears = New System.Windows.Forms.ComboBox
             Me.rbGroup = New System.Windows.Forms.RadioButton
             Me.rbRegion = New System.Windows.Forms.RadioButton
             Me.rbGear = New System.Windows.Forms.RadioButton
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.txbBegin = New System.Windows.Forms.TextBox
-            Me.txbEnd = New System.Windows.Forms.TextBox
-            Me.Label2 = New System.Windows.Forms.Label
-            Me.gpbYear = New System.Windows.Forms.GroupBox
-            Me.gpbOption.SuspendLayout()
-            Me.gpbYear.SuspendLayout()
+            Me.m_lblYear = New System.Windows.Forms.Label
+            Me.m_lblShow = New System.Windows.Forms.Label
+            Me.Label3 = New System.Windows.Forms.Label
+            CType(Me.udSumLength, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'plResultsGrid
@@ -43,16 +44,30 @@ Namespace Ecospace
             resources.ApplyResources(Me.plResultsGrid, "plResultsGrid")
             Me.plResultsGrid.Name = "plResultsGrid"
             '
-            'gpbOption
+            'udSumLength
             '
-            resources.ApplyResources(Me.gpbOption, "gpbOption")
-            Me.gpbOption.Controls.Add(Me.cbRegions)
-            Me.gpbOption.Controls.Add(Me.cbGears)
-            Me.gpbOption.Controls.Add(Me.rbGroup)
-            Me.gpbOption.Controls.Add(Me.rbRegion)
-            Me.gpbOption.Controls.Add(Me.rbGear)
-            Me.gpbOption.Name = "gpbOption"
-            Me.gpbOption.TabStop = False
+            resources.ApplyResources(Me.udSumLength, "udSumLength")
+            Me.udSumLength.Name = "udSumLength"
+            '
+            'tbSumEndTime
+            '
+            resources.ApplyResources(Me.tbSumEndTime, "tbSumEndTime")
+            Me.tbSumEndTime.Name = "tbSumEndTime"
+            '
+            'tbSumStartTime
+            '
+            resources.ApplyResources(Me.tbSumStartTime, "tbSumStartTime")
+            Me.tbSumStartTime.Name = "tbSumStartTime"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
             '
             'cbRegions
             '
@@ -89,65 +104,63 @@ Namespace Ecospace
             Me.rbGear.TabStop = True
             Me.rbGear.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_lblYear
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            Me.m_lblYear.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
+            Me.m_lblYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblYear.Name = "m_lblYear"
             '
-            'txbBegin
+            'm_lblShow
             '
-            resources.ApplyResources(Me.txbBegin, "txbBegin")
-            Me.txbBegin.Name = "txbBegin"
-            Me.txbBegin.ReadOnly = True
+            resources.ApplyResources(Me.m_lblShow, "m_lblShow")
+            Me.m_lblShow.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblShow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblShow.Name = "m_lblShow"
             '
-            'txbEnd
+            'Label3
             '
-            resources.ApplyResources(Me.txbEnd, "txbEnd")
-            Me.txbEnd.Name = "txbEnd"
-            Me.txbEnd.ReadOnly = True
+            resources.ApplyResources(Me.Label3, "Label3")
+            Me.Label3.Name = "Label3"
             '
-            'Label2
-            '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
-            '
-            'gpbYear
-            '
-            Me.gpbYear.Controls.Add(Me.txbEnd)
-            Me.gpbYear.Controls.Add(Me.Label1)
-            Me.gpbYear.Controls.Add(Me.txbBegin)
-            Me.gpbYear.Controls.Add(Me.Label2)
-            resources.ApplyResources(Me.gpbYear, "gpbYear")
-            Me.gpbYear.Name = "gpbYear"
-            Me.gpbYear.TabStop = False
-            '
-            'EcospaceResults
+            'cFormEcospaceResults
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gpbYear)
-            Me.Controls.Add(Me.gpbOption)
+            Me.Controls.Add(Me.Label3)
+            Me.Controls.Add(Me.m_lblShow)
+            Me.Controls.Add(Me.m_lblYear)
+            Me.Controls.Add(Me.cbRegions)
+            Me.Controls.Add(Me.cbGears)
+            Me.Controls.Add(Me.rbGroup)
+            Me.Controls.Add(Me.rbRegion)
+            Me.Controls.Add(Me.rbGear)
+            Me.Controls.Add(Me.udSumLength)
+            Me.Controls.Add(Me.tbSumEndTime)
+            Me.Controls.Add(Me.tbSumStartTime)
+            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.plResultsGrid)
-            Me.Name = "EcospaceResults"
-            Me.gpbOption.ResumeLayout(False)
-            Me.gpbOption.PerformLayout()
-            Me.gpbYear.ResumeLayout(False)
-            Me.gpbYear.PerformLayout()
+            Me.Name = "cFormEcospaceResults"
+            CType(Me.udSumLength, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Friend WithEvents plResultsGrid As System.Windows.Forms.Panel
-        Friend WithEvents txbEnd As System.Windows.Forms.TextBox
+        Friend WithEvents udSumLength As System.Windows.Forms.NumericUpDown
+        Friend WithEvents tbSumEndTime As System.Windows.Forms.TextBox
+        Friend WithEvents tbSumStartTime As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents txbBegin As System.Windows.Forms.TextBox
-        Friend WithEvents gpbOption As System.Windows.Forms.GroupBox
-        Friend WithEvents gpbYear As System.Windows.Forms.GroupBox
+        Friend WithEvents cbRegions As System.Windows.Forms.ComboBox
+        Friend WithEvents cbGears As System.Windows.Forms.ComboBox
         Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
         Friend WithEvents rbRegion As System.Windows.Forms.RadioButton
         Friend WithEvents rbGear As System.Windows.Forms.RadioButton
-        Friend WithEvents cbRegions As System.Windows.Forms.ComboBox
-        Friend WithEvents cbGears As System.Windows.Forms.ComboBox
+        Friend WithEvents m_lblYear As System.Windows.Forms.Label
+        Friend WithEvents m_lblShow As System.Windows.Forms.Label
+        Friend WithEvents Label3 As System.Windows.Forms.Label
     End Class
 
 End Namespace

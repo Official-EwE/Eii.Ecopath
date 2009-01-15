@@ -34,21 +34,14 @@ Namespace Ecospace
             Me.rbIBM = New System.Windows.Forms.RadioButton
             Me.rbOldSchool = New System.Windows.Forms.RadioButton
             Me.cbPredictEffort = New System.Windows.Forms.CheckBox
-            Me.lbSummarySize = New System.Windows.Forms.Label
-            Me.udSumLength = New System.Windows.Forms.NumericUpDown
             Me.lbNumThreads = New System.Windows.Forms.Label
             Me.udNumThreads = New System.Windows.Forms.NumericUpDown
             Me.lbPacketsMultiplier = New System.Windows.Forms.Label
             Me.lblInitializationHeader = New System.Windows.Forms.Label
-            Me.Label2 = New System.Windows.Forms.Label
             Me.Label1 = New System.Windows.Forms.Label
-            Me.Label5 = New System.Windows.Forms.Label
-            Me.Label6 = New System.Windows.Forms.Label
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.gbThreading = New System.Windows.Forms.GroupBox
             Me.tbNumPackets = New System.Windows.Forms.TextBox
-            Me.tbSumStartTime = New System.Windows.Forms.TextBox
-            Me.tbSumEndTime = New System.Windows.Forms.TextBox
             Me.udMaxIterations = New System.Windows.Forms.NumericUpDown
             Me.lbTotalTime = New System.Windows.Forms.Label
             Me.Label3 = New System.Windows.Forms.Label
@@ -76,7 +69,6 @@ Namespace Ecospace
             gbModel = New System.Windows.Forms.GroupBox
             gbBiomass.SuspendLayout()
             gbModel.SuspendLayout()
-            CType(Me.udSumLength, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.udNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.gbThreading.SuspendLayout()
@@ -142,18 +134,6 @@ Namespace Ecospace
             Me.cbPredictEffort.Name = "cbPredictEffort"
             Me.cbPredictEffort.UseVisualStyleBackColor = True
             '
-            'lbSummarySize
-            '
-            resources.ApplyResources(Me.lbSummarySize, "lbSummarySize")
-            Me.lbSummarySize.Name = "lbSummarySize"
-            '
-            'udSumLength
-            '
-            resources.ApplyResources(Me.udSumLength, "udSumLength")
-            Me.udSumLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.udSumLength.Name = "udSumLength"
-            Me.udSumLength.Value = New Decimal(New Integer() {26, 0, 0, 0})
-            '
             'lbNumThreads
             '
             resources.ApplyResources(Me.lbNumThreads, "lbNumThreads")
@@ -179,29 +159,12 @@ Namespace Ecospace
             Me.lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblInitializationHeader.Name = "lblInitializationHeader"
             '
-            'Label2
-            '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.Label2.Name = "Label2"
-            '
             'Label1
             '
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.Label1.Name = "Label1"
-            '
-            'Label5
-            '
-            resources.ApplyResources(Me.Label5, "Label5")
-            Me.Label5.Name = "Label5"
-            '
-            'Label6
-            '
-            resources.ApplyResources(Me.Label6, "Label6")
-            Me.Label6.Name = "Label6"
             '
             'TableLayoutPanel1
             '
@@ -224,16 +187,6 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.tbNumPackets, "tbNumPackets")
             Me.tbNumPackets.Name = "tbNumPackets"
-            '
-            'tbSumStartTime
-            '
-            resources.ApplyResources(Me.tbSumStartTime, "tbSumStartTime")
-            Me.tbSumStartTime.Name = "tbSumStartTime"
-            '
-            'tbSumEndTime
-            '
-            resources.ApplyResources(Me.tbSumEndTime, "tbSumEndTime")
-            Me.tbSumEndTime.Name = "tbSumEndTime"
             '
             'udMaxIterations
             '
@@ -385,24 +338,16 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.gbDetails)
             Me.Controls.Add(Me.lblScenario)
-            Me.Controls.Add(Me.tbSumEndTime)
-            Me.Controls.Add(Me.tbSumStartTime)
             Me.Controls.Add(Me.gbRunTime)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.lblInitializationHeader)
-            Me.Controls.Add(Me.Label6)
-            Me.Controls.Add(Me.udSumLength)
-            Me.Controls.Add(Me.Label5)
-            Me.Controls.Add(Me.lbSummarySize)
             Me.Controls.Add(gbBiomass)
             Me.Name = "EcospaceParameters"
             gbBiomass.ResumeLayout(False)
             gbBiomass.PerformLayout()
             gbModel.ResumeLayout(False)
             gbModel.PerformLayout()
-            CType(Me.udSumLength, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.udNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.gbThreading.ResumeLayout(False)
@@ -413,11 +358,8 @@ Namespace Ecospace
             Me.gbDetails.ResumeLayout(False)
             Me.gbDetails.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
-        Friend WithEvents lbSummarySize As System.Windows.Forms.Label
-        Friend WithEvents udSumLength As System.Windows.Forms.NumericUpDown
         Friend WithEvents rbNewStanzaModel As System.Windows.Forms.RadioButton
         Friend WithEvents rbIBM As System.Windows.Forms.RadioButton
         Friend WithEvents lbNumThreads As System.Windows.Forms.Label
@@ -425,18 +367,13 @@ Namespace Ecospace
         Friend WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Friend WithEvents rbOldSchool As System.Windows.Forms.RadioButton
         Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents Label2 As System.Windows.Forms.Label
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents rbBaseBiomass As System.Windows.Forms.RadioButton
         Friend WithEvents rbAdjustedBiomass As System.Windows.Forms.RadioButton
         Friend WithEvents cbPredictEffort As System.Windows.Forms.CheckBox
-        Friend WithEvents Label5 As System.Windows.Forms.Label
-        Friend WithEvents Label6 As System.Windows.Forms.Label
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents gbThreading As System.Windows.Forms.GroupBox
         Friend WithEvents tbNumPackets As System.Windows.Forms.TextBox
-        Friend WithEvents tbSumStartTime As System.Windows.Forms.TextBox
-        Friend WithEvents tbSumEndTime As System.Windows.Forms.TextBox
         Friend WithEvents udMaxIterations As System.Windows.Forms.NumericUpDown
         Friend WithEvents lbTotalTime As System.Windows.Forms.Label
         Friend WithEvents Label3 As System.Windows.Forms.Label

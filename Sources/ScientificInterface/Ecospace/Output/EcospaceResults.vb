@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.7  2009/01/15 22:39:56  joeb
+' Moved Ecospace start and end summary periods from Parameters form to Results form
+'
 ' Revision 1.6  2009/01/13 21:32:47  joeb
 ' Still making changes from merge of Summary into Output objects
 '
@@ -30,6 +33,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region
 
@@ -44,6 +48,12 @@ Namespace Ecospace
         Private m_GridGear As cGridEcospaceResultsGear = Nothing
         Private m_GridGroup As cGridEcospaceResultsGroup = Nothing
         Private m_GridRegion As cGridEcospaceResultsRegion = Nothing
+
+        ' Summary
+        Private m_fpSumStartTime As cEwEFormatProvider = Nothing
+        Private m_fpSumEndTime As cEwEFormatProvider = Nothing
+        Private m_fpSumLength As cEwEFormatProvider = Nothing
+
 
         Public Sub New()
 
@@ -64,9 +74,25 @@ Namespace Ecospace
             plResultsGrid.Controls.Add(m_GridGroup)
             plResultsGrid.Controls.Add(m_GridRegion)
 
+            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+
+        End Sub
+
+        Private Sub cFormEcospaceResults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+            Me.m_fpSumStartTime = Nothing
+            Me.m_fpSumEndTime = Nothing
+            Me.m_fpSumLength = Nothing
         End Sub
 
         Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_Core.EcospaceModelParameters()
+            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+
+            Me.m_fpSumStartTime = New cPropertyFormatProvider(Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
+            Me.m_fpSumEndTime = New cPropertyFormatProvider(Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
+            Me.m_fpSumLength = New cPropertyFormatProvider(Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
+
             PopulateResults()
             Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
         End Sub
@@ -78,9 +104,6 @@ Namespace Ecospace
         ''' <summary> Repopulates the variables on demand. </summary>
         Private Sub PopulateResults()
             rbGear.Checked = True
-
-            txbBegin.Text = CStr(m_Core.EcospaceModelParameters.StartSummaryTime)
-            txbEnd.Text = CStr(m_Core.EcospaceModelParameters.EndSummaryTime)
 
             cbGears.Items.Clear()
 
@@ -98,9 +121,10 @@ Namespace Ecospace
                 cbRegions.Items.Add(ero.Name)
             Next
             cbRegions.SelectedIndex = 0
+
         End Sub
 
-        Private Sub rbResults_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbGear.CheckedChanged, rbRegion.CheckedChanged, rbGroup.CheckedChanged
+        Private Sub rbResults_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbGear.CheckedChanged, rbGroup.CheckedChanged, rbRegion.CheckedChanged
 
             If rbGear.Checked Then
                 'Display gear results
@@ -114,7 +138,6 @@ Namespace Ecospace
                 Me.cbGears.Enabled = True
                 Me.cbRegions.Enabled = False
 
-
             ElseIf rbRegion.Checked Then
                 'Display region results
                 m_GridGear.Visible = False : m_GridRegion.Visible = True : m_GridGroup.Visible = False
@@ -125,23 +148,46 @@ Namespace Ecospace
         End Sub
 
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGears.SelectedIndexChanged
-
-            m_GridGroup.SelFleetIndex = cbGears.SelectedIndex ' + 1
+            'fleets are zero based so the zero index is ok
+            m_GridGroup.SelFleetIndex = cbGears.SelectedIndex
             m_GridGroup.RefreshContent()
 
         End Sub
 
         Private Sub cbRegions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRegions.SelectedIndexChanged
 
-            m_GridRegion.SelRegionIndex = cbRegions.SelectedIndex ' + 1
+            'regions are zero based so the zero index is ok
+            m_GridRegion.SelRegionIndex = cbRegions.SelectedIndex
             m_GridRegion.RefreshContent()
 
         End Sub
 
-        Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
+        'Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        '    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        '    Me.Close()
+        'End Sub
+
+        ''' <summary>
+        ''' Message handler for core Ecosim Datachanged message
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <remarks>This updates the grids with the results if the user changed the time periods</remarks>
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            If msg.DataType = eDataTypes.EcospaceModelParameter Then
+                For Each var As cVariableStatus In msg.Variables
+                    If var.VarName = eVarNameFlags.EcospaceSummaryTimeStart Or var.VarName = eVarNameFlags.EcospaceSummaryTimeEnd Or var.VarName = eVarNameFlags.EcospaceNumberSummaryTimeSteps Then
+
+                        If m_GridGroup.Visible Then m_GridGroup.RefreshContent()
+                        If m_GridRegion.Visible Then m_GridRegion.RefreshContent()
+                        If m_GridGear.Visible Then m_GridGear.RefreshContent()
+
+                        Exit Sub
+                    End If
+                Next
+            End If
+            MyBase.OnCoreMessage(msg)
         End Sub
+
     End Class
 
 End Namespace
