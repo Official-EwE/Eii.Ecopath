@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceModelParameters.vb,v $
+' Revision 1.2  2009/01/15 22:38:37  joeb
+' Fixed bug Messagesource was Ecosim instead of Ecospace
+'
 ' Revision 1.1  2008/09/26 07:30:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -114,7 +117,7 @@ Public Class cEcospaceModelParameters
             m_messageSource = eMessageSource.EcoSpace
             Me.AllowValidation = False
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceModelParameter, eMessageSource.EcoSpace, Index, cCore.NULL_VALUE)
 
             ' Number of time steps per year
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
