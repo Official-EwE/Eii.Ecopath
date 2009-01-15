@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.53  2009/01/15 22:44:41  joeb
+' Added OnValidated for Ecospace Start and End summary periods
+'
 ' Revision 1.52  2009/01/14 18:44:33  joeb
 ' Averaging of Ecospace results is handled be space at the end of the run instead of when the results objects are populated
 '
@@ -9052,6 +9055,12 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceModelParameter
                     If bValidatedOk Then Me.UpdateEcospaceModelParameters()
+                    ' Special case: do not flag the core as dirty on select variables
+                    If (vs.VarName = eVarNameFlags.EcospaceNumberSummaryTimeSteps) Or _
+                       (vs.VarName = eVarNameFlags.EcospaceSummaryTimeEnd) Or _
+                       (vs.VarName = eVarNameFlags.EcospaceSummaryTimeStart) Then
+                        msAffected = eMessageSource.NotSet
+                    End If
 
                 Case eDataTypes.EcospaceHabitat
                     If bValidatedOk Then Me.UpdateEcospaceHabitat(idAffected)
@@ -9501,12 +9510,14 @@ Public Class cCore
                 Select Case value.varName
 
                     Case eVarNameFlags.EcospaceSummaryTimeStart
-                        spaceParams.EndSummaryTime = Math.Max(spaceParams.EndSummaryTime, spaceParams.StartSummaryTime)
-                        msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcospaceSummaryTimeEnd))
 
-                    Case eVarNameFlags.EcospaceSummaryTimeEnd
                         spaceParams.StartSummaryTime = Math.Min(spaceParams.EndSummaryTime, spaceParams.StartSummaryTime)
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcospaceSummaryTimeStart))
+
+                    Case eVarNameFlags.EcospaceSummaryTimeEnd
+
+                        spaceParams.EndSummaryTime = Math.Max(spaceParams.EndSummaryTime, spaceParams.StartSummaryTime)
+                        msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcospaceSummaryTimeEnd))
 
                     Case eVarNameFlags.TotalTime
 
@@ -9735,6 +9746,10 @@ Public Class cCore
 
                     Case eVarNameFlags.UseIBM
                         Me.Set_IBM_Flags(emp)
+
+
+                    Case eVarNameFlags.EcospaceNumberSummaryTimeSteps, eVarNameFlags.EcospaceSummaryTimeEnd, eVarNameFlags.EcospaceSummaryTimeStart
+                        Me.LoadEcospaceResults()
 
                 End Select 'Select Case value.varName
 
