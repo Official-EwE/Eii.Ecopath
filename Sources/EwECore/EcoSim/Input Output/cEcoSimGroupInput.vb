@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimGroupInput.vb,v $
+' Revision 1.6  2009/01/16 18:30:17  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.5  2008/11/27 23:38:10  joeb
 ' Removed MaxFishingMort
 '
@@ -156,14 +159,14 @@ Public Class cEcoSimGroupInput
 
             m_nGroups = theCore.nGroups
 
-            m_DataType = eDataTypes.EcoSimGroupInput
-            m_messageSource = eMessageSource.EcoSim
+            m_dataType = eDataTypes.EcoSimGroupInput
+            m_coreComponent = eCoreComponentType.EcoSim
             Me.AllowValidation = False
             Me.DBID = DBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             Dim val As cValue
             Dim meta As cVariableMetaData

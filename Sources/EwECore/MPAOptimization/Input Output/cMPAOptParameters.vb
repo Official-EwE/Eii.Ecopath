@@ -15,13 +15,13 @@ Public Class cMPAOptParameters
 
             'no data validation at this time
             Me.AllowValidation = False
-            m_messageSource = eMessageSource.MPAOptimization
-            m_DataType = eDataTypes.MPAOptParameters
+            m_coreComponent = eCoreComponentType.MPAOptimization
+            m_dataType = eDataTypes.MPAOptParameters
             Dim status As eStatusFlags = eStatusFlags.Null
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimModelParameter, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimModelParameter, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             'MPAOptSearchType stored as an integer
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMPAOptimizationModels)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

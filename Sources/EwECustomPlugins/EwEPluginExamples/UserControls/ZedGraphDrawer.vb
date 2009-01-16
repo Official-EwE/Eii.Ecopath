@@ -1,5 +1,6 @@
 Imports EwECore
 Imports ZedGraph
+Imports ScientificInterfaceShared.Style
 
 Public Class ZedGraphDrawer
     Private m_core As cCore
@@ -23,6 +24,7 @@ Public Class ZedGraphDrawer
     ''' Function to plot biomass
     ''' </summary>
     Private Sub plotBiomass()
+        Dim sg As StyleGuide = StyleGuide.GetInstance()
         Dim graphArea As GraphPane = m_zgc.GraphPane
         Dim x, y As Double()
 
@@ -50,7 +52,7 @@ Public Class ZedGraphDrawer
             Next timeStep
 
             ' Add the curve with the name, temp data, pool color
-            graphArea.AddCurve(m_core.EcoPathGroupInputs(i).Name, x, y, m_core.EcoPathGroupInputs(i).PoolColorArgb, SymbolType.None)
+            graphArea.AddCurve(m_core.EcoPathGroupInputs(i).Name, x, y, sg.GroupColor(m_core, i), SymbolType.None)
 
         Next i
 

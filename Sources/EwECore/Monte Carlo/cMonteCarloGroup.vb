@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloGroup.vb,v $
+' Revision 1.2  2009/01/16 18:30:19  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:28  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -54,14 +57,14 @@ Public Class cMonteCarloGroup
         MyBase.New(theCore)
 
 
-        m_DataType = eDataTypes.MonteCarlo
-        m_messageSource = eMessageSource.EcoSim
+        m_dataType = eDataTypes.MonteCarlo
+        m_coreComponent = eCoreComponentType.EcoSim
         Me.AllowValidation = False
         Me.DBID = DBID
 
         'default OK status used for setVariable
         'see comment setVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
         Dim val As cValue
         Dim meta As cVariableMetaData

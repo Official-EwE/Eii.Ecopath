@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataset.vb,v $
+' Revision 1.2  2009/01/16 18:30:37  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:34  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -62,15 +65,15 @@ Public Class cTimeSeriesDataset
 
         Try
 
-            Me.m_DataType = eDataTypes.TimeSeriesDataset
+            Me.m_dataType = eDataTypes.TimeSeriesDataset
             Me.m_iNumTimeSeries = nTimeSeries
 
             ' Definition changes do not affect the running state of the model
-            m_messageSource = eMessageSource.DataSource
+            m_coreComponent = eCoreComponentType.DataSource
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimScenario, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimScenario, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' Description
             meta = New cVariableMetaData(250)

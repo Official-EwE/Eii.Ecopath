@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceLayerImportance.vb,v $
+' Revision 1.2  2009/01/16 18:30:23  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -47,10 +50,10 @@ Public Class cEcospaceLayerImportance
         Me.AllowValidation = False
 
         Try
-            m_DataType = eDataTypes.EcospaceImportanceLayer
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceImportanceLayer
+            m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' Weight
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))

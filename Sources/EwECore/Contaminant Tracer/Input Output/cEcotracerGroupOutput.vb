@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcotracerGroupOutput.vb,v $
+' Revision 1.2  2009/01/16 18:30:25  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -32,8 +35,8 @@ Public Class cEcotracerGroupOutput
         MyBase.New(TheCore)
 
         Dim val As cValue
-        Me.m_DataType = eDataTypes.EcotracerSimOutput
-        Me.m_messageSource = eMessageSource.Ecotracer
+        Me.m_dataType = eDataTypes.EcotracerSimOutput
+        Me.m_coreComponent = eCoreComponentType.Ecotracer
 
         Me.DBID = 1
         Me.Index = 1

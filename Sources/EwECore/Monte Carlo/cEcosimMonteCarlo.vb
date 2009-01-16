@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.18  2009/01/16 18:30:19  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.17  2008/12/02 19:08:07  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -649,9 +652,9 @@ Public Class cEcosimMonteCarlo
                     Dim status As eStatusFlags = m_ecopath.EstimationStatus
                     Dim msg As cMessage
                     If status = eStatusFlags.MissingParameter Then
-                        msg = New cMessage("Monte Carlo: To many missing parameters to run Ecopath. Check your input parameters.", eMessageType.TooManyMissingParameters, eMessageSource.EcoSim, eMessageImportance.Critical)
+                        msg = New cMessage("Monte Carlo: To many missing parameters to run Ecopath. Check your input parameters.", eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     Else
-                        msg = New cMessage("Error in Ecopath Monte Carlo trials could not be run.", eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical)
+                        msg = New cMessage("Error in Ecopath Monte Carlo trials could not be run.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     End If
                     ' m_manager.AddMessage(msg)
                     'Return False

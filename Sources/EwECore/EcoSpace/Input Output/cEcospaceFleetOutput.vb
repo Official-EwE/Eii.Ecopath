@@ -15,7 +15,7 @@ Public Class cEcospaceFleetOutput
 
         Me.Index = FleetIndex
         Me.DBID = FleetIndex '????
-        Me.m_DataType = eDataTypes.EcospaceFleetOuput
+        Me.m_dataType = eDataTypes.EcospaceFleetOuput
         m_spacedata = EcospaceData
 
         'no validators

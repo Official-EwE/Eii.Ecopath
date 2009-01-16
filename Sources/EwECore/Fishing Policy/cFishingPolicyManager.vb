@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.4  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/02 19:07:21  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -653,7 +656,7 @@ Namespace FishingPolicy
 
                 If Me.isRunning Then
                     m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
-                                                eMessageSource.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+                                                eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
                     Return False
                 End If
 
@@ -674,7 +677,7 @@ Namespace FishingPolicy
 
                 search.SearchMode = eSearchModes.NotInSearch
                 m_core.Messages.SendMessage(New cMessage("Error running the Fishing Policy Search.", eMessageType.ErrorEncountered, _
-                                            eMessageSource.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+                                            eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
 
                 'if an error has been thrown make sure the SearchCompletedCallBack delegate is called
                 'this way an interface can responded 
@@ -696,6 +699,12 @@ Namespace FishingPolicy
         Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
             Get
                 Return eDataTypes.FishingPolicyManager
+            End Get
+        End Property
+
+        Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.EcoSim
             End Get
         End Property
 

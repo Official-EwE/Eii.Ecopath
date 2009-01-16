@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStanzaGroup.vb,v $
+' Revision 1.2  2009/01/16 18:30:36  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:28  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -126,8 +129,8 @@ Public Class cStanzaGroup
         Me.DBID = DBID
         Me.Index = iStanza
         m_core = core
-        m_DataType = eDataTypes.Stanza
-        m_messageSource = eMessageSource.EcoPath
+        m_dataType = eDataTypes.Stanza
+        m_coreComponent = eCoreComponentType.EcoPath
 
         'get the core counter interface for the MaxAge (max age) and NStanza (number of stanza) counters
         m_CoreCounter = AddressOf m_core.GetCoreCounter
@@ -243,7 +246,7 @@ Public Class cStanzaGroup
         Catch ex As Exception
             cLog.Write(ex)
             m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message), _
-                    eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+                    eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
 
@@ -268,7 +271,7 @@ Public Class cStanzaGroup
         Catch ex As Exception
             cLog.Write(ex)
             m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message), _
-                    eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+                    eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
 
@@ -285,7 +288,7 @@ Public Class cStanzaGroup
         Catch ex As Exception
             cLog.Write(ex)
             m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message), _
-                eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+                eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
 

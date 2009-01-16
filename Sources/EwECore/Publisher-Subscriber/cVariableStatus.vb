@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cVariableStatus.vb,v $
+' Revision 1.2  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:30  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -73,7 +76,7 @@ Public Class cVariableStatus
     Public Message As String
 
     ''' <summary>Source of the message. I.e. EcoPath, EcoSim...</summary>
-    Public Source As eMessageSource
+    Public Source As eCoreComponentType
 
     ''' <summary>Index of the item in its containing list (was iGroup)</summary>
     Public Index As Integer
@@ -99,7 +102,7 @@ Public Class cVariableStatus
         DataType = eDataTypes.NotSet
         Status = eStatusFlags.Null
         Message = ""
-        Source = eMessageSource.NotSet
+        Source = eCoreComponentType.NotSet
         Index = cCore.NULL_VALUE
         iArrayIndex = cCore.NULL_VALUE
         CoreDataObject = Nothing
@@ -134,11 +137,11 @@ Public Class cVariableStatus
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable ID</see> that this status applies to.</param>
     ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype ID</see> of the variable.</param>
-    ''' <param name="MessageSource"><see cref="eMessageSource">EwE component ID</see> that sent this variable belongs to.</param>
+    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component ID</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component instance</paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary ID, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
     Sub New(ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eMessageSource, ByVal iIndex As Integer, Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eCoreComponentType, ByVal iIndex As Integer, Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
@@ -160,11 +163,11 @@ Public Class cVariableStatus
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable ID</see> that this status applies to.</param>
     ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype ID</see> of the variable.</param>
-    ''' <param name="MessageSource"><see cref="eMessageSource">EwE component ID</see> that sent this variable belongs to.</param>
+    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component ID</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component instance</paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary ID, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
     Sub New(ByVal ParentCoreDataObject As ICoreInterface, ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eMessageSource, ByVal iIndex As Integer, ByVal iArrayIndex As Integer)
+            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eCoreComponentType, ByVal iIndex As Integer, ByVal iArrayIndex As Integer)
 
         Me.VarName = VarName
         Me.Status = StatusFlag

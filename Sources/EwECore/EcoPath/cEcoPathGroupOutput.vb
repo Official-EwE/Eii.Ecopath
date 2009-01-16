@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.2  2009/01/16 18:30:15  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -263,15 +266,15 @@ Public Class cEcoPathGroupOutput
 
         'get the number of groups from the core delegate
         m_nGroups = m_core.GetCoreCounter(eCoreCounterTypes.nGroups)
-        m_DataType = eDataTypes.EcoPathGroupOutput
+        m_dataType = eDataTypes.EcoPathGroupOutput
 
         ' Outputs should never send out messages
-        m_messageSource = eMessageSource.NotSet
+        m_coreComponent = eCoreComponentType.NotSet
 
         'default OK status used for SetVariable
         'see comment SetVariable(...)
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoPathGroupOutput, _
-                                        eMessageSource.EcoPath, Index, cCore.NULL_VALUE)
+                                        eCoreComponentType.EcoPath, Index, cCore.NULL_VALUE)
 
         Me.DBID = DBID
 

@@ -28,7 +28,7 @@ Public Class cEcosimGroupOutput
 
         Me.DBID = iGroup '????
         Me.Index = iGroup
-        Me.m_DataType = eDataTypes.EcoSimGroupOutput
+        Me.m_dataType = eDataTypes.EcoSimGroupOutput
 
         'See Me.Init() for list of variables
 

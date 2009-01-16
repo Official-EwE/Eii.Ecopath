@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessageStateHandler.vb,v $
+' Revision 1.3  2009/01/16 18:30:31  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 15:58:24  jeroens
 ' no message
 '
@@ -94,21 +97,21 @@ Public Class cMessageStateHandler
 
 #Region " Private variables "
 
-    Private m_dtMessageState As Dictionary(Of eMessageSource, cMessageStateCache)
+    Private m_dtMessageState As Dictionary(Of eCoreComponentType, cMessageStateCache)
 
 #End Region ' Private variables
 
 #Region " Construction "
 
     Public Sub New()
-        Me.m_dtMessageState = New Dictionary(Of eMessageSource, cMessageStateCache)
+        Me.m_dtMessageState = New Dictionary(Of eCoreComponentType, cMessageStateCache)
     End Sub
 
 #End Region ' Construction
 
 #Region " Public bits "
 
-    Public Property Suppress(ByVal source As eMessageSource, ByVal mt As eMessageType) As Boolean
+    Public Property Suppress(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As Boolean
         Get
             Return Me.GetCache(source).Suppress(mt)
         End Get
@@ -117,7 +120,7 @@ Public Class cMessageStateHandler
         End Set
     End Property
 
-    Public Property AutoReply(ByVal source As eMessageSource, ByVal mt As eMessageType) As DialogResult
+    Public Property AutoReply(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As DialogResult
         Get
             Return Me.GetCache(source).AutoReply(mt)
         End Get
@@ -130,41 +133,41 @@ Public Class cMessageStateHandler
 
         If (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified) Then
             Select Case msg.Source
-                Case eMessageSource.EcoPath, eMessageSource.EcoSim, eMessageSource.EcoSpace, eMessageSource.Ecotracer
+                Case eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer
                     Me.Clear(msg.Source)
                 Case Else
-                    Me.Clear(eMessageSource.Core)
+                    Me.Clear(eCoreComponentType.Core)
             End Select
         End If
     End Sub
 
-    Public Sub Clear(ByVal src As eMessageSource)
+    Public Sub Clear(ByVal src As eCoreComponentType)
 
         Select Case src
-            Case eMessageSource.Ecotracer
-                Me.GetCache(eMessageSource.Ecotracer).Clear()
+            Case eCoreComponentType.Ecotracer
+                Me.GetCache(eCoreComponentType.Ecotracer).Clear()
 
-            Case eMessageSource.EcoSpace
-                Me.GetCache(eMessageSource.Ecotracer).Clear()
-                Me.GetCache(eMessageSource.EcoSpace).Clear()
+            Case eCoreComponentType.EcoSpace
+                Me.GetCache(eCoreComponentType.Ecotracer).Clear()
+                Me.GetCache(eCoreComponentType.EcoSpace).Clear()
 
-            Case eMessageSource.EcoSim
-                Me.GetCache(eMessageSource.Ecotracer).Clear()
-                Me.GetCache(eMessageSource.EcoSpace).Clear()
-                Me.GetCache(eMessageSource.EcoSim).Clear()
+            Case eCoreComponentType.EcoSim
+                Me.GetCache(eCoreComponentType.Ecotracer).Clear()
+                Me.GetCache(eCoreComponentType.EcoSpace).Clear()
+                Me.GetCache(eCoreComponentType.EcoSim).Clear()
 
-            Case eMessageSource.EcoPath
-                Me.GetCache(eMessageSource.Ecotracer).Clear()
-                Me.GetCache(eMessageSource.EcoSpace).Clear()
-                Me.GetCache(eMessageSource.EcoSim).Clear()
-                Me.GetCache(eMessageSource.EcoPath).Clear()
+            Case eCoreComponentType.EcoPath
+                Me.GetCache(eCoreComponentType.Ecotracer).Clear()
+                Me.GetCache(eCoreComponentType.EcoSpace).Clear()
+                Me.GetCache(eCoreComponentType.EcoSim).Clear()
+                Me.GetCache(eCoreComponentType.EcoPath).Clear()
 
-            Case eMessageSource.Core
-                Me.GetCache(eMessageSource.Ecotracer).Clear()
-                Me.GetCache(eMessageSource.EcoSpace).Clear()
-                Me.GetCache(eMessageSource.EcoSim).Clear()
-                Me.GetCache(eMessageSource.EcoPath).Clear()
-                Me.GetCache(eMessageSource.Core).Clear()
+            Case eCoreComponentType.Core
+                Me.GetCache(eCoreComponentType.Ecotracer).Clear()
+                Me.GetCache(eCoreComponentType.EcoSpace).Clear()
+                Me.GetCache(eCoreComponentType.EcoSim).Clear()
+                Me.GetCache(eCoreComponentType.EcoPath).Clear()
+                Me.GetCache(eCoreComponentType.Core).Clear()
 
         End Select
 
@@ -174,15 +177,15 @@ Public Class cMessageStateHandler
 
 #Region " Internals "
 
-    Private Function GetCache(ByVal source As eMessageSource) As cMessageStateCache
+    Private Function GetCache(ByVal source As eCoreComponentType) As cMessageStateCache
 
         Dim c As cMessageStateCache = Nothing
 
         Select Case source
-            Case eMessageSource.EcoPath, eMessageSource.EcoSim, eMessageSource.EcoSpace, eMessageSource.Ecotracer
+            Case eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer
                 ' NOP
             Case Else
-                source = eMessageSource.Core
+                source = eCoreComponentType.Core
         End Select
 
         If (Me.m_dtMessageState.ContainsKey(source) = False) Then

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptManager.vb,v $
+' Revision 1.17  2009/01/16 18:30:31  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.16  2008/12/08 16:45:38  jeroens
 ' Removed plug-ins
 '
@@ -325,13 +328,13 @@ Public Class cMPAOptManager
             m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
             If Me.isRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage("Optimization is already running. Only one evaluation can be run at a time.", eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
+                Me.m_core.Messages.SendMessage(New cMessage("Optimization is already running. Only one evaluation can be run at a time.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
                 Return False
             End If
 
             ' Test if no seed cells nor MPA
             If Not Me.m_MPASearch.OKtoRun Then
-                Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eMessageSource.MPAOptimization, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.OK_CANCEL, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.CANCEL)
+                Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eCoreComponentType.MPAOptimization, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.OK_CANCEL, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.CANCEL)
                 Me.m_core.Messages.SendMessage(msg)
                 If msg.Reply = cFeedbackMessage.eReply.CANCEL Or msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
@@ -350,7 +353,7 @@ Public Class cMPAOptManager
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            Me.m_core.Messages.SendMessage(New cMessage("Ecoseed Error: " & ex.Message, eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
+            Me.m_core.Messages.SendMessage(New cMessage("Ecoseed Error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
             Me.ReleaseWait()
             Return False
         End Try
@@ -431,7 +434,7 @@ Public Class cMPAOptManager
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
-            Me.m_core.Messages.SendMessage(New cMessage("MPA Optimization Error: " & ex.Message, eMessageType.ErrorEncountered, eMessageSource.SearchObjective, eMessageImportance.Critical))
+            Me.m_core.Messages.SendMessage(New cMessage("MPA Optimization Error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.SearchObjective, eMessageImportance.Critical))
             Return Nothing
 
         End Try
@@ -515,6 +518,12 @@ Public Class cMPAOptManager
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return eDataTypes.MPAOptManager
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return eCoreComponentType.EcoSpace
         End Get
     End Property
 

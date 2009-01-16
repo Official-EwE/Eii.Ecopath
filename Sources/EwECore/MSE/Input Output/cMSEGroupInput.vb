@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEGroupInput.vb,v $
+' Revision 1.2  2009/01/16 18:30:32  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -27,14 +30,14 @@ Namespace MSE
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            m_DataType = eDataTypes.MSEGroupInput
-            m_messageSource = eMessageSource.MSE
+            m_dataType = eDataTypes.MSEGroupInput
+            m_coreComponent = eCoreComponentType.MSE
             Me.AllowValidation = False
             Me.DBID = theGroupDBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eMessageSource.MSE, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
 
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

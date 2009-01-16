@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.3  2009/01/16 18:30:43  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 16:03:02  jeroens
 ' Shape controls moved to ScIntShared
 '
@@ -115,7 +118,7 @@ Namespace Ecosim
         Private Sub TimeSeries_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             ' Hook up message sources
-            Me.MessageSources = New eMessageSource() {eMessageSource.TimeSeries}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries}
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.m_core.HasTimeSeries Then
@@ -137,7 +140,7 @@ Namespace Ecosim
 #Region " Internal implementation "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If ((msg.Source = eMessageSource.TimeSeries) And _
+            If ((msg.Source = eCoreComponentType.TimeSeries) And _
                 (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified)) Then
                 ' Refresh content
                 Me.m_stbHandler.Refresh()

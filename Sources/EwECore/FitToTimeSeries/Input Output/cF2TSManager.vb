@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSManager.vb,v $
+' Revision 1.3  2009/01/16 18:30:27  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/28 16:54:12  joeb
 ' Cleaned up ToDo's
 '
@@ -96,8 +99,8 @@ Public Class cF2TSManager
         Dim meta As cVariableMetaData = Nothing
 
         Me.AllowValidation = False
-        Me.m_messageSource = eMessageSource.EcoSimFitToTimeSeries
-        Me.m_DataType = eDataTypes.FitToTimeSeries
+        Me.m_coreComponent = eCoreComponentType.EcoSimFitToTimeSeries
+        Me.m_dataType = eDataTypes.FitToTimeSeries
 
         Me.m_core = theCore
         Me.m_EPData = theCore.m_EcoPathData
@@ -106,7 +109,7 @@ Public Class cF2TSManager
         m_searchObjective = theCore.SearchObjective
 
         'default OK status used for setVariable
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FitToTimeSeries, eMessageSource.EcoSimFitToTimeSeries, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FitToTimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, Index, cCore.NULL_VALUE)
 
         'boolean
         ' F2TSVulnerabilitySearch
@@ -446,7 +449,7 @@ Public Class cF2TSManager
         bCanRun = bCanRun And isRefDataLoaded()
         bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
         If Not bCanRun Then
-            m_core.Messages.SendMessage(New cMessage("Fit to Time Series can not be run.", eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            m_core.Messages.SendMessage(New cMessage("Fit to Time Series can not be run.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End If
         Return bCanRun
     End Function
@@ -490,7 +493,7 @@ Public Class cF2TSManager
 
         'jb this should never happen but if it does we better tell the interface why this could not be run
         m_core.Messages.SendMessage(New cMessage("Fit to Time Series no time series data loaded for fitting.", eMessageType.ErrorEncountered, _
-                                    eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
 
         Return False
     End Function
@@ -556,7 +559,7 @@ Public Class cF2TSManager
             Me.m_SignalState.Reset()
 
             ' Make sure model can access manager variables from the shared data structures
-            Me.Update(Me.m_DataType)
+            Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
             If Me.m_SyncObject IsNot Nothing Then
@@ -574,7 +577,7 @@ Public Class cF2TSManager
             Me.m_semaphore.Release()
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_DataType))
+                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
 
         End Try
 
@@ -603,7 +606,7 @@ Public Class cF2TSManager
             Debug.Assert(Me.m_thrdRun Is Nothing)
 
             ' Make sure model can access manager variables from the shared data structures
-            Me.Update(Me.m_DataType)
+            Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
             If Me.m_SyncObject IsNot Nothing Then
@@ -620,7 +623,7 @@ Public Class cF2TSManager
             Me.m_SignalState.Set()
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_DataType))
+                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
         End Try
 
     End Function
@@ -653,7 +656,7 @@ Public Class cF2TSManager
             Me.m_SignalState.Reset()
 
             ' Make sure model can access manager variables from the shared data structures
-            Me.Update(Me.m_DataType)
+            Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
             If Me.m_SyncObject IsNot Nothing Then
@@ -671,7 +674,7 @@ Public Class cF2TSManager
             Me.m_runSilent = False
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
-                         eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_DataType))
+                         eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
 
             Return False
 
@@ -831,7 +834,7 @@ Public Class cF2TSManager
         Catch ex As Exception
             cLog.Write(ex)
             'this should work because this routine MUST be on the interface thread!!!!
-            m_core.Messages.SendMessage(New cMessage("Fit to Time Series error: " & ex.Message, eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            m_core.Messages.SendMessage(New cMessage("Fit to Time Series error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End Try
 
     End Sub

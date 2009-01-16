@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.19  2009/01/16 18:30:32  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.18  2009/01/12 22:57:15  joeb
 ' Added Comments
 '
@@ -1231,7 +1234,7 @@ Public Class cMPARandomSearch
         Try
 
             If Me.m_SendMessageCallback IsNot Nothing Then
-                Dim msg As New cMessage(message, eMessageType.ErrorEncountered, eMessageSource.MPAOptimization, eMessageImportance.Critical)
+                Dim msg As New cMessage(message, eMessageType.ErrorEncountered, eCoreComponentType.MPAOptimization, eMessageImportance.Critical)
                 Me.m_SendMessageCallback.Invoke(msg)
             End If
 

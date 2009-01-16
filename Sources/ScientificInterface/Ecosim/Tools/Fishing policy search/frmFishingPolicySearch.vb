@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.4  2009/01/16 18:30:41  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/15 16:03:01  jeroens
 ' Shape controls moved to ScIntShared
 '
@@ -99,7 +102,7 @@ Namespace Ecosim
 
             Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cbIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.FishingPolicySearch, eMessageSource.SearchObjective, eMessageSource.TimeSeries}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
@@ -335,7 +338,7 @@ Namespace Ecosim
                 AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault)
 
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
-                        eMessageType.NotSet, eMessageSource.EcoSim, eMessageImportance.Information))
+                        eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -350,7 +353,7 @@ Namespace Ecosim
                 Me.m_gridSystemObjectives.ClearData()
 
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
-                        eMessageType.NotSet, eMessageSource.EcoSim, eMessageImportance.Information))
+                        eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -429,11 +432,11 @@ Namespace Ecosim
 
         'send a generic error message
         Private Sub SendErrorMessage(ByVal theMessage As String)
-            m_core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+            m_core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
-            If msg.Source = eMessageSource.TimeSeries Then
+            If msg.Source = eCoreComponentType.TimeSeries Then
                 Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
             End If
         End Sub

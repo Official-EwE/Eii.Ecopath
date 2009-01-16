@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeManagers.vb,v $
+' Revision 1.3  2009/01/16 18:30:34  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/28 16:54:15  joeb
 ' Cleaned up ToDo's
 '
@@ -373,6 +376,12 @@ Public MustInherit Class cBaseShapeManager
         End Get
     End Property
 
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return eCoreComponentType.EcoSim
+        End Get
+    End Property
+
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return cCore.NULL_VALUE
@@ -709,7 +718,7 @@ Public Class cEggProductionManager
 
     Friend Sub validationFailedMessage()
         m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation, _
-                                    eMessageSource.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
+                                    eCoreComponentType.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
     End Sub
 
 

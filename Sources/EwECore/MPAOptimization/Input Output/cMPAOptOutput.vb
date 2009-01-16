@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPAOptOutput.vb,v $
+' Revision 1.7  2009/01/16 18:30:31  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2008/11/13 18:40:06  joeb
 ' Added AreaBoundary
 '
@@ -37,14 +40,14 @@ Public Class cMPAOptOutput
 
         Me.DBID = cCore.NULL_VALUE '????
         Me.Index = cCore.NULL_VALUE
-        Me.m_DataType = eDataTypes.MPAOptOuput
+        Me.m_dataType = eDataTypes.MPAOptOuput
 
         ' Outputs should never send out messages
-        m_messageSource = eMessageSource.MPAOptimization
+        m_coreComponent = eCoreComponentType.MPAOptimization
         'default OK status used for SetVariable
         'see comment SetVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_DataType, _
-                                        m_messageSource, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
+                                        m_coreComponent, Index, cCore.NULL_VALUE)
 
         val = New cValue(New Integer, eVarNameFlags.MPAOptBestCol, eStatusFlags.NotEditable, eValueTypes.Int)
         m_values.Add(val.varName, val)

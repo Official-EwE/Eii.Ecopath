@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcotracerGroupInput.vb,v $
+' Revision 1.2  2009/01/16 18:30:25  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -47,12 +50,12 @@ Public Class cEcotracerGroupInput
         Try
 
             Me.DBID = iDBID
-            Me.m_DataType = eDataTypes.EcotracerGroupInput
-            Me.m_messageSource = eMessageSource.Ecotracer
+            Me.m_dataType = eDataTypes.EcotracerGroupInput
+            Me.m_coreComponent = eCoreComponentType.Ecotracer
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimScenario, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimScenario, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' CZero
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

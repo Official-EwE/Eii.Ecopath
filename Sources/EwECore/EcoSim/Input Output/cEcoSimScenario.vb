@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimScenario.vb,v $
+' Revision 1.2  2009/01/16 18:30:17  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:19  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -77,7 +80,7 @@ Public Class cEcoSimScenario
 
     Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
-        m_DataType = eDataTypes.EcoSimScenario
+        m_dataType = eDataTypes.EcoSimScenario
     End Sub
 
 #End Region

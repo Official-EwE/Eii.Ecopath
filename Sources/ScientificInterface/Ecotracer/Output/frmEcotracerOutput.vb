@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.3  2009/01/16 18:30:39  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/28 16:57:04  joeb
 ' Removed ToDo with my name on it
 '
@@ -151,7 +154,7 @@ Public Class frmEcotracerOutput
         Me.m_sg = StyleGuide.GetInstance()
         Me.m_ZedGraphHelper = New ZedGraphHelper(m_zgc)
 
-        Me.MessageSources = New eMessageSource() {eMessageSource.EcoSim, eMessageSource.EcoSpace}
+        Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
     End Sub
 
@@ -672,7 +675,7 @@ Public Class frmEcotracerOutput
 
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
-        If msg.Source = eMessageSource.EcoSim Or msg.Source = eMessageSource.EcoSpace Then
+        If msg.Source = eCoreComponentType.EcoSim Or msg.Source = eCoreComponentType.EcoSpace Then
             Me.RefreshData()
         End If
 

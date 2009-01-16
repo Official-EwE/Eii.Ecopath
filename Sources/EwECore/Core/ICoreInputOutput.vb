@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.5  2009/01/16 18:30:12  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.4  2009/01/14 18:42:46  joeb
 ' Added third index to IResultsWrapper.Value
 '
@@ -129,6 +132,8 @@ Public Interface ICoreInterface
     Property Index() As Integer
     ''' <summary><see cref="eDataTypes">Data type</see> identifying the class of a core data entity.</summary>
     ReadOnly Property DataType() As eDataTypes
+    ''' <summary><see cref="eCoreComponentType">Message source</see> identifying the section of core data entity where this logic originates from.</summary>
+    ReadOnly Property CoreComponent() As eCoreComponentType
 
 End Interface ' ICoreInterface
 
@@ -269,7 +274,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <summary>
     ''' Container for the <see cref="ICoreInterface.DataType">data type</see> describing the object.
     ''' </summary>
-    Protected m_DataType As eDataTypes = eDataTypes.NotSet
+    Protected m_dataType As eDataTypes = eDataTypes.NotSet
 
     ''' <summary>
     ''' The variables maintained by this object. Implemented as a collection of <see cref="cValue">variable values</see>
@@ -278,10 +283,10 @@ Public MustInherit Class cCoreInputOutputBase
     Friend m_values As New Dictionary(Of eVarNameFlags, cValue)
 
     ''' <summary>
-    ''' The <see cref="eMessageSource">EwE core component</see> that this object belongs to
+    ''' The <see cref="eCoreComponentType">EwE core component</see> that this object belongs to
     ''' </summary>
     ''' <remarks></remarks>
-    Protected m_messageSource As eMessageSource = eMessageSource.NotSet
+    Protected m_coreComponent As eCoreComponentType = eCoreComponentType.NotSet
 
     ''' <summary>
     ''' Reference to the <see cref="cCore">EwE Core</see> that exposes the object.
@@ -341,19 +346,25 @@ Public MustInherit Class cCoreInputOutputBase
 
 #End Region
 
-#Region "Public Functions/Methods"
+#Region " Public Functions/Methods "
 
     ''' <summary>
     ''' Returns the unique ID for this object
     ''' </summary>
     Public Function getID() As String Implements ICoreInterface.GetID
         ' Return unique ID
-        Return cValueID.getDataTypeID(Me.m_DataType, Me.DBID)
+        Return cValueID.getDataTypeID(Me.m_dataType, Me.DBID)
     End Function
 
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
-            Return Me.m_DataType
+            Return Me.m_dataType
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return Me.m_coreComponent
         End Get
     End Property
 
@@ -368,14 +379,7 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
-    ''' <summary>
-    ''' Returns the <see cref="eMessageSource">EwE core component</see> that this object belongs to.
-    ''' </summary>
-    Public Function MessageSource() As eMessageSource
-        Return Me.m_messageSource
-    End Function
-
-#End Region
+#End Region ' Public Functions/Methods
 
 #Region " Mustoverride Methods "
 

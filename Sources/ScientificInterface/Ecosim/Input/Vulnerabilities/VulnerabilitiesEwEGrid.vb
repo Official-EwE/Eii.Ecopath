@@ -98,9 +98,9 @@ Namespace Ecosim
             Next
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eMessageSource
+        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
             Get
-                Return eMessageSource.EcoSim
+                Return eCoreComponentType.EcoSim
             End Get
         End Property
 

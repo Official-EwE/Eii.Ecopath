@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotrophGrid.vb,v $
+' Revision 1.2  2009/01/16 18:30:40  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:44  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -132,7 +135,7 @@ Public Class frmEcotrophGrid
     Private Sub tvEcotroph_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvEcotroph.AfterSelect
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         Select Case e.Node.Text
             Case My.Resources.TREE_NODE_AUTO_SMOOTH
@@ -512,7 +515,7 @@ Public Class frmEcotrophGrid
         Dim SelTabPgIdx As Integer
         Dim DataGrid As DataGridView
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFO As FileOpenCommand = DirectCast(cmdh.GetCommand(FileOpenCommand.COMMAND_NAME), FileOpenCommand)
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         ConnectToComputation.cTranspose.Transpose.m_EcotrophManager = m_EcotrophManager
         ConnectToComputation.cTranspose.Transpose.m_PanelToolStrip = scEcotroph1.Panel2

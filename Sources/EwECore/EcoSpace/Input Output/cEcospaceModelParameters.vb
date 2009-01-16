@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceModelParameters.vb,v $
+' Revision 1.5  2009/01/16 18:30:24  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.4  2009/01/16 17:00:22  jeroens
 ' Added cValue.AffectsRunState
 '
@@ -119,11 +122,11 @@ Public Class cEcospaceModelParameters
 
             Me.DBID = DBID
 
-            m_DataType = eDataTypes.EcospaceModelParameter
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceModelParameter
+            m_coreComponent = eCoreComponentType.EcoSpace
             Me.AllowValidation = False
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceModelParameter, eMessageSource.EcoSpace, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceModelParameter, eCoreComponentType.EcoSpace, Index, cCore.NULL_VALUE)
 
             ' Number of time steps per year
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))

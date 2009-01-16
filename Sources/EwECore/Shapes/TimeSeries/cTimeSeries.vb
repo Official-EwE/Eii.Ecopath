@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeries.vb,v $
+' Revision 1.2  2009/01/16 18:30:36  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:34  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -441,6 +444,7 @@ Public Class cGroupTimeSeries
     Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.GroupTimeSeries
+        Me.m_coreComponent = eCoreComponentType.EcoSim
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -495,6 +499,7 @@ Public Class cFleetTimeSeries
     Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.FleetTimeSeries
+        Me.m_coreComponent = eCoreComponentType.EcoSim
     End Sub
 
     ''' -----------------------------------------------------------------------

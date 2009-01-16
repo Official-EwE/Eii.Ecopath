@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesTextReader.vb,v $
+' Revision 1.5  2009/01/16 18:30:37  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.4  2008/11/06 05:31:23  jeroens
 ' Pool code check mistakenly excluded upper boundary
 '
@@ -634,7 +637,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Flag line error if possible
         If iLineNumber = cCore.NULL_VALUE Then
             ' Send warning message
-            Me.m_core.m_publisher.SendMessage(New cMessage(strError, eMessageType.DataImport, eMessageSource.TimeSeries, eMessageImportance.Warning))
+            Me.m_core.m_publisher.SendMessage(New cMessage(strError, eMessageType.DataImport, eCoreComponentType.TimeSeries, eMessageImportance.Warning))
         Else
             Dim sb As StringBuilder = Nothing
 

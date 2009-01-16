@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.4  2009/01/16 18:30:38  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/15 15:53:27  jeroens
 ' no message
 '
@@ -83,7 +86,7 @@ Namespace Ecosim
             AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
-            Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager, eMessageSource.EcoSim}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
 
             Me.UpdateFFFormatProviders()
             Me.RebuildScenarioFormatProviders()
@@ -157,11 +160,11 @@ Namespace Ecosim
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
-            If ((msg.Source = eMessageSource.ShapesManager) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+            If ((msg.Source = eCoreComponentType.ShapesManager) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 Me.UpdateFFFormatProviders()
             End If
 
-            If msg.Source = eMessageSource.EcoSim And msg.Type = eMessageType.DataAddedOrRemoved Then
+            If msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.DataAddedOrRemoved Then
                 Me.RebuildScenarioFormatProviders()
             End If
         End Sub

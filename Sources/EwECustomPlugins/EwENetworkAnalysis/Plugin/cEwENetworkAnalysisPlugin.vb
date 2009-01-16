@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.3  2009/01/16 18:30:27  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/10/07 21:20:56  jeroens
 ' Implemented data exchange plugin structure
 '
@@ -178,13 +181,13 @@ Public Class cEwENetworkAnalysisPlugin
 
                 'some kind of a message
                 m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
             m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
 
         End Try
 
@@ -352,13 +355,13 @@ Public Class cEwENetworkAnalysisPlugin
 
                 'some kind of a message
                 m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
             m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
 
         End Try
 

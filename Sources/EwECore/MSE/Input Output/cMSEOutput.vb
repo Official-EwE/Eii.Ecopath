@@ -20,8 +20,8 @@ Public Class cMSEOutput
         Dim val As cValue
         Dim meta As cVariableMetaData
 
-        m_DataType = eDataTypes.MSEOutput
-        m_messageSource = eMessageSource.MSE
+        m_dataType = eDataTypes.MSEOutput
+        m_coreComponent = eCoreComponentType.MSE
 
         'Allow validation should be false for MSE output values
         'the status flag is set in Me.ResetStatusFlags() and should always stay the same eStatusFlags.NotEditable Or eStatusFlags.OK not via the validation
@@ -30,7 +30,7 @@ Public Class cMSEOutput
         Me.AllowValidation = False
         Me.DBID = cCore.NULL_VALUE
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eMessageSource.MSE, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
 
         ''arrayed values
         'Risk

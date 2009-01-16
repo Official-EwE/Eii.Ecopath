@@ -22,13 +22,13 @@ Public Class cEcoSimModelParameters
         Try
             'no data validation at this time
             Me.AllowValidation = False
-            m_messageSource = eMessageSource.EcoSim
-            m_DataType = eDataTypes.EcoSimModelParameter
+            m_coreComponent = eCoreComponentType.EcoSim
+            m_dataType = eDataTypes.EcoSimModelParameter
 
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimModelParameter, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimModelParameter, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             'StepSize
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

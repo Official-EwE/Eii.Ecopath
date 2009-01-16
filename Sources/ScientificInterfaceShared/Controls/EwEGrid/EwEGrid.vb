@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.8  2009/01/16 18:30:39  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.7  2009/01/06 12:39:16  jeroens
 ' Added comment
 '
@@ -551,15 +554,15 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Public Overridable ReadOnly Property MessageSource() As eMessageSource
+        Public Overridable ReadOnly Property MessageSource() As eCoreComponentType
             Get
-                Return eMessageSource.NotSet
+                Return eCoreComponentType.NotSet
             End Get
         End Property
 
-        Public Overridable ReadOnly Property MessageSources() As eMessageSource()
+        Public Overridable ReadOnly Property MessageSources() As eCoreComponentType()
             Get
-                Return New eMessageSource() {Me.MessageSource}
+                Return New eCoreComponentType() {Me.MessageSource}
             End Get
         End Property
 

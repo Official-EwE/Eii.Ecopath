@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceHabitat.vb,v $
+' Revision 1.2  2009/01/16 18:30:23  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -40,15 +43,15 @@ Public Class cEcospaceHabitat
         MyBase.New(theCore)
 
         Me.DBID = DBID
-        m_DataType = eDataTypes.EcospaceHabitat
-        m_messageSource = eMessageSource.EcoSpace
+        m_dataType = eDataTypes.EcospaceHabitat
+        m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
         Dim meta As cVariableMetaData
 
         Try
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceHabitat, eMessageSource.EcoSpace, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceHabitat, eCoreComponentType.EcoSpace, Index, cCore.NULL_VALUE)
 
             ' HabAreaProportion
             meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

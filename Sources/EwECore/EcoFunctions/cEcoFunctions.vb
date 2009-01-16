@@ -100,7 +100,7 @@ Public Class cEcoFunctions
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message)
-            Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
+            Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
             m_core.Messages.SendMessage(msg)
             'swallow all errors!!!!
             '     Throw New ApplicationException(Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message, ex)

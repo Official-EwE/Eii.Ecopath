@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessage.vb,v $
+' Revision 1.2  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:29  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -51,10 +54,10 @@ Public Class cMessage
     Private m_type As eMessageType
 
     ''' <summary>
-    ''' Enumerated type discribing the <see cref="eMessageSource">Source</see> of the message,
+    ''' Enumerated type discribing the <see cref="eCoreComponentType">Source</see> of the message,
     ''' indicating what part of the EwE core a message originated from.
     ''' </summary>
-    Private m_source As eMessageSource
+    Private m_source As eCoreComponentType
 
     ''' <summary>
     ''' Message <see cref="eMessageImportance">Importance</see> indicates the impact 
@@ -96,12 +99,12 @@ Public Class cMessage
     Sub New()
         Me.Message = ""
         Me.Type = eMessageType.NotSet
-        Me.Source = eMessageSource.NotSet
+        Me.Source = eCoreComponentType.NotSet
         Me.Importance = eMessageImportance.Maintenance
         Me.DataType = eDataTypes.NotSet
     End Sub
 
-    Sub New(ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eMessageSource, ByVal msgImportance As eMessageImportance, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    Sub New(ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eCoreComponentType, ByVal msgImportance As eMessageImportance, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
         Me.Message = msgStr
         Me.Type = msgType
         Me.Source = msgSource
@@ -152,11 +155,11 @@ Public Class cMessage
         End Set
     End Property
 
-    Public Property Source() As eMessageSource
+    Public Property Source() As eCoreComponentType
         Get
             Return Me.m_source
         End Get
-        Set(ByVal value As eMessageSource)
+        Set(ByVal value As eCoreComponentType)
             Me.m_source = value
         End Set
     End Property

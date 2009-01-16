@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPedigreeManager.vb,v $
+' Revision 1.3  2009/01/16 18:30:33  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/28 16:54:00  joeb
 ' Cleaned up ToDo's
 '
@@ -40,7 +43,7 @@ Public Class cPedigreeLevel
         Me.DBID = iDBID
         Me.m_data = core.m_EcoPathData
         Me.m_manager = manager
-        Me.m_DataType = eDataTypes.PedigreeLevel
+        Me.m_dataType = eDataTypes.PedigreeLevel
 
         'VarName
         meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
@@ -145,6 +148,7 @@ Public Class cPedigreeManager
     Protected m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Protected m_levels As New List(Of cPedigreeLevel)
     Protected m_dataType As eDataTypes = eDataTypes.PedigreeLevel
+    Protected m_messageSource As eCoreComponentType = eCoreComponentType.Core
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags)
         Me.m_core = core
@@ -286,6 +290,12 @@ Public Class cPedigreeManager
     Public ReadOnly Property DataType() As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
         Get
             Return Me.m_dataType
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return Me.m_messageSource
         End Get
     End Property
 

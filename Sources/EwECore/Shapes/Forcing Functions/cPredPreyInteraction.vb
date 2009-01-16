@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPredPreyInteraction.vb,v $
+' Revision 1.2  2009/01/16 18:30:33  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:33  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -353,6 +356,12 @@ Public Class cPredPreyInteraction
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return eDataTypes.PredPreyInteraction
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return eCoreComponentType.EcoSim
         End Get
     End Property
 

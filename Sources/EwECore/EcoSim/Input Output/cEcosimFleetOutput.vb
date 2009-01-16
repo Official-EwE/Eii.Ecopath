@@ -17,7 +17,7 @@ Public Class cEcosimFleetOutput
         Dim val As cValue
         m_simData = TheCore.m_EcoSimData
 
-        Me.m_DataType = eDataTypes.EcosimFleetOutput
+        Me.m_dataType = eDataTypes.EcosimFleetOutput
         Me.Index = iFleet
         Me.DBID = TheCore.m_EcoPathData.FleetDBID(iFleet)
 

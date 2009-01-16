@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.23  2009/01/16 18:30:05  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.22  2009/01/06 11:39:07  jeroens
 ' no message
 '
@@ -255,7 +258,7 @@ Public Class AppLauncher
         If Not File.Exists(strFileName) Then
             ' ToDo_JS: globalize this
             If Not bQuiet Then
-                Me.m_core.Messages.SendMessage(New cMessage(String.Format("Model {0} cannot be found", strFileName), eMessageType.Any, eMessageSource.DataSource, eMessageImportance.Information))
+                Me.m_core.Messages.SendMessage(New cMessage(String.Format("Model {0} cannot be found", strFileName), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
             End If
             Me.RemoveRecentFilesSetting(strFileName)
             Return False
@@ -285,7 +288,7 @@ Public Class AppLauncher
             If Not bQuiet Then
                 ' ToDo_JS: globalize this
                 Me.m_core.Messages.SendMessage(New cMessage(String.Format("File {0} does not seem to be a valid Ecopath model", strFileName), _
-                        eMessageType.Any, eMessageSource.DataSource, eMessageImportance.Information))
+                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
             End If
             Me.RemoveRecentFilesSetting(strFileName)
             Return False
@@ -406,7 +409,7 @@ Public Class AppLauncher
             Case cEwEDatabase.eAccessType.Created, cEwEDatabase.eAccessType.Opened
                 msg = New cMessage(String.Format("New EwE6 model successfully created at '{0}'", strFileName), _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, eMessageImportance.Information)
+                    eCoreComponentType.DataSource, eMessageImportance.Information)
 
                 ' Hackety-hack: destroy any layout file for this model
                 Dim fi As New FileInfo(strFileName)
@@ -422,34 +425,34 @@ Public Class AppLauncher
             Case cEwEDatabase.eAccessType.Failed_CannotSave
                 msg = New cMessage(String.Format("Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use.", strFileName), _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, _
+                    eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case cEwEDatabase.eAccessType.Failed_OSUnsupported
                 msg = New cMessage("This system does not have to required drivers installed to work with files of this type.", _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, _
+                    eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case cEwEDatabase.eAccessType.Failed_UnknownType
                 msg = New cMessage("This type of file is not supported by EwE6.", _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, _
+                    eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case cEwEDatabase.eAccessType.Failed_DeprecatedOperation
                 msg = New cMessage("This type of model belonged to an older version of Ecopath, and cannot be created in EwE6.", _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, _
+                    eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
 
             Case cEwEDatabase.eAccessType.Failed_Unknown
                 msg = New cMessage(String.Format("A generic error occurred while trying to create an EwE6 model at '{0}'.", strFileName), _
                     eMessageType.Any, _
-                    eMessageSource.DataSource, _
+                    eCoreComponentType.DataSource, _
                     eMessageImportance.Warning)
                 db = Nothing
 
@@ -824,15 +827,15 @@ Public Class AppLauncher
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
                         msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
-                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
                         msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
-                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
                         msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
-                                           eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
 
                 End Select
 
@@ -1013,7 +1016,7 @@ Public Class AppLauncher
             Me.m_NavPanel.Reset()
 
             ' Clear the properties cache
-            cPropertyManager.GetInstance().Clear(eMessageSource.EcoPath)
+            cPropertyManager.GetInstance().Clear(eCoreComponentType.EcoPath)
             ' Clean up
             GC.Collect()
             ' Redraw everything immediately
@@ -1134,7 +1137,7 @@ Public Class AppLauncher
                                     File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
                                 Catch ex As Exception
                                     ' Todo_JS: globalize this
-                                    Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to backup model {0}: {1}", strFileName, ex.Message), eMessageType.DataImport, eMessageSource.Core, eMessageImportance.Warning))
+                                    Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to backup model {0}: {1}", strFileName, ex.Message), eMessageType.DataImport, eCoreComponentType.Core, eMessageImportance.Warning))
                                     Return False
                                 End Try
                                 ' Fall through

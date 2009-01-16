@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmApplyShapeBase.vb,v $
+' Revision 1.2  2009/01/16 18:30:39  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/12/15 19:54:04  jeroens
 ' *** empty log message ***
 '
@@ -53,7 +56,7 @@ Namespace Ecosim
             ' Hook up to core messages
             ' * Shapes manager to refresh lists of avialable FFs
             ' * Ecopath to refresh lists of available groups
-            Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager, eMessageSource.EcoPath, eMessageSource.PPIManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.PPIManager}
         End Sub
 
         Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -78,7 +81,7 @@ Namespace Ecosim
             Dim bMustRedimension As Boolean = False
             Dim bMustUpdate As Boolean = False
 
-            If (msg.Source = eMessageSource.ShapesManager) Then
+            If (msg.Source = eCoreComponentType.ShapesManager) Then
                 If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                     ' Redimension when number of shapes has changed
                     bMustRedimension = True
@@ -86,7 +89,7 @@ Namespace Ecosim
             End If
 
             ' Refresh when Ecopath number of groups has changed
-            If (msg.Source = eMessageSource.EcoPath) Then
+            If (msg.Source = eCoreComponentType.EcoPath) Then
                 If ((msg.Type = eMessageType.DataAddedOrRemoved) And (msg.DataType = eDataTypes.EcoPathGroupInput)) Then
                     bMustRedimension = True
                 ElseIf (msg.Type = eMessageType.DietComp) Then
@@ -94,7 +97,7 @@ Namespace Ecosim
                 End If
             End If
 
-            If (msg.Source = eMessageSource.PPIManager) Then
+            If (msg.Source = eCoreComponentType.PPIManager) Then
                 ' Update content to show new assignments
                 bMustUpdate = True
             End If

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEModel.vb,v $
+' Revision 1.2  2009/01/16 18:30:11  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -72,12 +75,12 @@ Public Class cEwEModel
 
         Try
 
-            m_DataType = eDataTypes.EwEModel
-            m_messageSource = eMessageSource.Core
+            m_dataType = eDataTypes.EwEModel
+            m_coreComponent = eCoreComponentType.Core
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EwEModel, eMessageSource.Core, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.Core, Index, cCore.NULL_VALUE)
 
             ' Description
             meta = New cVariableMetaData(250)

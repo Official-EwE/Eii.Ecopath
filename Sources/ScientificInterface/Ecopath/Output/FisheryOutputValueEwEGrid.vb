@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryOutputValueEwEGrid.vb,v $
+' Revision 1.4  2009/01/16 18:30:08  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/15 15:53:40  jeroens
 ' no message
 '
@@ -328,9 +331,9 @@ Namespace Ecopath.Output
             Me(Me.RowsCount - 1, Me.ColumnsCount - 3) = New PropertyCell(propSumProfit)
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eMessageSource
+        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
             Get
-                Return eMessageSource.EcoPath
+                Return eCoreComponentType.EcoPath
             End Get
         End Property
 

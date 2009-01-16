@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.4  2009/01/16 18:30:37  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/15 15:53:26  jeroens
 ' no message
 '
@@ -158,7 +161,7 @@ Namespace Ecosim
             Me.UpdateControls()
             Me.UpdateColors()
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.TimeSeries}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
@@ -269,7 +272,7 @@ Namespace Ecosim
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If (msg.Source = eMessageSource.TimeSeries) Then
+            If (msg.Source = eCoreComponentType.TimeSeries) Then
                 Me.UpdateControls()
             End If
         End Sub

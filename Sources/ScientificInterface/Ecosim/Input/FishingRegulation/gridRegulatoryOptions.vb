@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridRegulatoryOptions.vb,v $
+' Revision 1.3  2009/01/16 18:30:43  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 15:55:35  jeroens
 ' no message
 '
@@ -134,9 +137,9 @@ Namespace Ecosim
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eMessageSource
+        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
             Get
-                Return eMessageSource.EcoSim
+                Return eCoreComponentType.EcoSim
             End Get
         End Property
 

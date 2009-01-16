@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.4  2009/01/16 18:30:11  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/11/20 17:32:56  jeroens
 ' Fixed Has**Initialized diagnostics
 '
@@ -772,8 +775,8 @@ Public Class cCoreStateMonitor
 
     Private m_bRequiresEcosimFullInit As Boolean = False
 
-    Friend Sub RegisterModification(ByVal messageSource As eMessageSource)
-        If messageSource = eMessageSource.EcoPath Then Me.m_bRequiresEcosimFullInit = True
+    Friend Sub RegisterModification(ByVal component As eCoreComponentType)
+        If component = eCoreComponentType.EcoPath Then Me.m_bRequiresEcosimFullInit = True
     End Sub
 
     Friend Function RequiresEcosimFullInit() As Boolean

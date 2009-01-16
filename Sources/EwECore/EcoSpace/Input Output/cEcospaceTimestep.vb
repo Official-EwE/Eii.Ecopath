@@ -62,7 +62,7 @@ Public Class cEcospaceTimestep
 
 #End Region
 
-#Region "Puplic Properties"
+#Region "Public Properties"
 
     Public Property iTimeStep() As Integer
         Get
@@ -218,10 +218,17 @@ Public Class cEcospaceTimestep
 
 #End Region
 
-#Region "ICoreInterface implementation"
+#Region " ICoreInterface implementation "
+
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return eDataTypes.EcospaceTimestepResults
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return eCoreComponentType.EcoSpace
         End Get
     End Property
 

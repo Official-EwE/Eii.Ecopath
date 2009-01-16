@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceGroup.vb,v $
+' Revision 1.2  2009/01/16 18:30:23  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -70,18 +73,18 @@ Public Class cEcospaceGroup
         MyBase.New(theCore)
 
         Me.DBID = DBID
-        m_DataType = eDataTypes.EcospaceGroup
-        m_messageSource = eMessageSource.EcoSpace
+        m_dataType = eDataTypes.EcospaceGroup
+        m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
         Dim meta As cVariableMetaData
 
         Try
 
-            m_DataType = eDataTypes.EcospaceGroup
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceGroup
+            m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' Mvel
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
@@ -107,7 +110,7 @@ Public Class cEcospaceGroup
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
- 
+
             ' IsAdvected
             meta = New cVariableMetaData(False)
             val = New cValue(New Boolean, eVarNameFlags.IsAdvected, eStatusFlags.Null, eValueTypes.Bool, _

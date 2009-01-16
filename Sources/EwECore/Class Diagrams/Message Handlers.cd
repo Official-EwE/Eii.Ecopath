@@ -158,7 +158,7 @@
       <HashCode>IAAAECAAAAABAgAAAAAAEAAAAAYAAAAAACAAAAgAAAA=</HashCode>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="EwECore.eMessageSource">
+  <Enum Name="EwECore.eCoreComponentType">
     <Position X="14.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <FileName>Core\CoreEnumerators.vb</FileName>

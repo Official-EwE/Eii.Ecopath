@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcotracerScenario.vb,v $
+' Revision 1.2  2009/01/16 18:30:25  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -40,7 +43,7 @@ Public Class cEcotracerScenario
 
     Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
-        m_DataType = eDataTypes.EcotracerScenario
+        m_dataType = eDataTypes.EcotracerScenario
     End Sub
 
 #End Region ' Constructor

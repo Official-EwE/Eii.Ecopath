@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingMortality.vb,v $
+' Revision 1.3  2009/01/16 18:30:41  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 16:03:01  jeroens
 ' Shape controls moved to ScIntShared
 '
@@ -88,7 +91,7 @@ Namespace Ecosim
 #Region " Private event handlers "
 
         Private Sub frmFishingRate_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
         Private Sub frmFishingRate_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -101,7 +104,7 @@ Namespace Ecosim
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             Select Case msg.Source
-                Case eMessageSource.ShapesManager
+                Case eCoreComponentType.ShapesManager
                     If (msg.DataType = eDataTypes.FishMort) Then
                         Me.m_handler.Refresh()
                     End If

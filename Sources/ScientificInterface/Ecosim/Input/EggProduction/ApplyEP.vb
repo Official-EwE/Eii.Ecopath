@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ApplyEP.vb,v $
+' Revision 1.3  2009/01/16 18:30:06  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 16:01:58  jeroens
 ' no message
 '
@@ -96,7 +99,7 @@ Namespace Ecosim
             ' Init the form to the current data
             InitForm()
             ' Hook up to baseclass refresh
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoPath, eMessageSource.ShapesManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
         End Sub
 
         Private Sub ApplyEP_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -247,13 +250,13 @@ Namespace Ecosim
 
             ' Check for relevant messages:
             ' * Refresh on any ShapesManager EggProd message
-            If ((msg.Source = eMessageSource.ShapesManager) And (msg.DataType = eDataTypes.EggProd)) Then
+            If ((msg.Source = eCoreComponentType.ShapesManager) And (msg.DataType = eDataTypes.EggProd)) Then
                 bRefreshGrid = (msg.Type = eMessageType.DataModified)
                 bRefreshForm = (msg.Type = eMessageType.DataAddedOrRemoved)
             End If
 
             ' * Refresh on Ecopath stanza additions or removals
-            If ((msg.Source = eMessageSource.EcoPath) And (msg.DataType = eDataTypes.Stanza)) Then
+            If ((msg.Source = eCoreComponentType.EcoPath) And (msg.DataType = eDataTypes.Stanza)) Then
                 bRefreshForm = (msg.Type = eMessageType.DataAddedOrRemoved)
             End If
 

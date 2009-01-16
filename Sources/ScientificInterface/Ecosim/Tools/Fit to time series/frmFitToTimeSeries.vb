@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.5  2009/01/16 18:30:41  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.4  2008/12/15 16:01:38  jeroens
 ' no message
 '
@@ -156,7 +159,7 @@ Namespace Ecosim
 
             Me.m_F2TSManager.Connect(Me, AddressOf m_F2TSManager_OnRunStarted, AddressOf m_F2TSManager_OnRunStep, AddressOf m_F2TSManager_OnRunStopped, AddressOf m_F2TSManager_OnModelRun)
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.TimeSeries, eMessageSource.EcoPath, eMessageSource.ShapesManager, eMessageSource.PPIManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
             Me.UpdateControls()
         End Sub
 
@@ -193,7 +196,7 @@ Namespace Ecosim
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             Select Case msg.Source
 
-                Case eMessageSource.EcoPath
+                Case eCoreComponentType.EcoPath
                     ' Hmm, this can be quite disastrous. Consider what to do here!
                     If ((msg.Type = eMessageType.DataAddedOrRemoved) And (msg.DataType = eDataTypes.EcoPathGroupInput)) Then
                         ' Make the vul control update itself
@@ -201,17 +204,17 @@ Namespace Ecosim
                         ' Etc...
                     End If
 
-                Case eMessageSource.TimeSeries
+                Case eCoreComponentType.TimeSeries
                     Me.m_sketchPad.NumTSYears = Me.m_core.nTimeSeriesYears
 
-                Case eMessageSource.ShapesManager
+                Case eCoreComponentType.ShapesManager
                     ' Refresh the Anomaly search content
                     If ((msg.DataType = eDataTypes.Forcing) Or (msg.DataType = eDataTypes.EggProd) Or (msg.DataType = eDataTypes.Mediation)) Then
                         Me.m_shapeHandler.Refresh()
                         Me.ReloadControls()
                     End If
 
-                Case eMessageSource.PPIManager
+                Case eCoreComponentType.PPIManager
                     ' Refresh on shape assignment changes
                     Me.m_shapeHandler.Refresh()
 

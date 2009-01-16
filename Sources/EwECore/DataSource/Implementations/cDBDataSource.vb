@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.17  2009/01/16 18:30:12  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.16  2009/01/14 20:18:25  jeroens
 ' Fixed groups cascading delete block on EcosimScenarioQuota
 '
@@ -342,48 +345,48 @@ Public Class cDBDataSource
     ''' <summary>Dictionary of changed database IDs, categorized per eDataType.</summary>
     Private m_dictChangedDBIDs As New Dictionary(Of eDataTypes, List(Of Integer))
     ''' <summary>Dictonary stating to what message source each datatype belongs.</summary>
-    Private m_dictDataTypeComponents As New Dictionary(Of eDataTypes, eMessageSource)
+    Private m_dictDataTypeComponents As New Dictionary(Of eDataTypes, eCoreComponentType)
 
     Private Sub RegisterDataTypeComponents()
 
         ' Configure Model descriptive values
-        m_dictDataTypeComponents.Add(eDataTypes.EwEModel, eMessageSource.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimScenario, eMessageSource.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSpaceScenario, eMessageSource.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerScenario, eMessageSource.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.PedigreeLevel, eMessageSource.DataSource)
+        m_dictDataTypeComponents.Add(eDataTypes.EwEModel, eCoreComponentType.DataSource)
+        m_dictDataTypeComponents.Add(eDataTypes.EcoSimScenario, eCoreComponentType.DataSource)
+        m_dictDataTypeComponents.Add(eDataTypes.EcoSpaceScenario, eCoreComponentType.DataSource)
+        m_dictDataTypeComponents.Add(eDataTypes.EcotracerScenario, eCoreComponentType.DataSource)
+        m_dictDataTypeComponents.Add(eDataTypes.PedigreeLevel, eCoreComponentType.DataSource)
 
         ' Configure Ecopath
-        m_dictDataTypeComponents.Add(eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath)
-        m_dictDataTypeComponents.Add(eDataTypes.FleetInput, eMessageSource.EcoPath)
-        m_dictDataTypeComponents.Add(eDataTypes.Stanza, eMessageSource.EcoPath)
+        m_dictDataTypeComponents.Add(eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath)
+        m_dictDataTypeComponents.Add(eDataTypes.FleetInput, eCoreComponentType.EcoPath)
+        m_dictDataTypeComponents.Add(eDataTypes.Stanza, eCoreComponentType.EcoPath)
 
         ' Configure Ecosim
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimModelParameter, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.Forcing, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EggProd, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.Mediation, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FishingRate, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FishMort, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.GroupTimeSeries, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FleetTimeSeries, eMessageSource.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EcosimFisheriesRegulation, eMessageSource.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.EcoSimModelParameter, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.Forcing, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.EggProd, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.Mediation, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.FishingRate, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.FishMort, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.GroupTimeSeries, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.FleetTimeSeries, eCoreComponentType.EcoSim)
+        m_dictDataTypeComponents.Add(eDataTypes.EcosimFisheriesRegulation, eCoreComponentType.EcoSim)
 
         ' Configure Ecospace
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceModelParameter, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemap, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemapLayer, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceHabitat, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceRegion, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceMPA, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceGroup, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceFleet, eMessageSource.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceImportanceLayer, eMessageSource.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceModelParameter, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemap, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemapLayer, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceHabitat, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceRegion, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceMPA, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceGroup, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceFleet, eCoreComponentType.EcoSpace)
+        m_dictDataTypeComponents.Add(eDataTypes.EcospaceImportanceLayer, eCoreComponentType.EcoSpace)
 
         ' Configure Ecotracer
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerGroupInput, eMessageSource.Ecotracer)
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerModelParameters, eMessageSource.Ecotracer)
+        m_dictDataTypeComponents.Add(eDataTypes.EcotracerGroupInput, eCoreComponentType.Ecotracer)
+        m_dictDataTypeComponents.Add(eDataTypes.EcotracerModelParameters, eCoreComponentType.Ecotracer)
 
     End Sub
 
@@ -483,7 +486,7 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Helper method; states whether there are pending changes for a particular
-    ''' <see cref="eMessageSource">EwE component</see>.
+    ''' <see cref="eCoreComponentType">EwE component</see>.
     ''' </summary>
     ''' <param name="component">The EwE component to check.</param>
     ''' <returns>True if there are any pending changes for any datatype that
@@ -493,7 +496,7 @@ Public Class cDBDataSource
     ''' and is configured in <see cref="RegisterDataTypeComponents">RegisterDataTypeComponents</see>.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Private Function IsChanged(ByVal component As eMessageSource) As Boolean
+    Private Function IsChanged(ByVal component As eCoreComponentType) As Boolean
 
         Dim bChanged As Boolean = False
 
@@ -509,7 +512,7 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Clears the changed administration for all datatypes that belong to
-    ''' a given <see cref="eMessageSource">EwE component</see>.
+    ''' a given <see cref="eCoreComponentType">EwE component</see>.
     ''' </summary>
     ''' <param name="component">The EwE component to clear the changed
     ''' adminsitration for.</param>
@@ -518,7 +521,7 @@ Public Class cDBDataSource
     ''' and is configured in <see cref="RegisterDataTypeComponents">RegisterDataTypeComponents</see>.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Private Sub ClearChanged(ByVal component As eMessageSource)
+    Private Sub ClearChanged(ByVal component As eCoreComponentType)
 
         For Each dt As eDataTypes In Me.m_dictDataTypeComponents.Keys
             If Me.m_dictDataTypeComponents(dt) = component Then
@@ -649,7 +652,7 @@ Public Class cDBDataSource
             Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information)
 
         If (Me.m_core IsNot Nothing) Then
-            Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eMessageSource.DataSource, msgImportance))
+            Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
         End If
         Console.WriteLine(strMessage)
 
@@ -670,7 +673,7 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     Public Function IsModified() As Boolean Implements DataSources.IEwEDataSource.IsModified
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eMessageSource.DataSource)
+        Return Me.IsChanged(eCoreComponentType.DataSource)
     End Function
 
 #End Region ' Diagnostics
@@ -740,8 +743,8 @@ Public Class cDBDataSource
         ' Save succesful?
         If bSucces Then
             ' #Yes: Clear changed flags
-            Me.ClearChanged(eMessageSource.EcoPath)
-            Me.ClearChanged(eMessageSource.DataSource)
+            Me.ClearChanged(eCoreComponentType.EcoPath)
+            Me.ClearChanged(eCoreComponentType.DataSource)
         End If
 
         Return bSucces
@@ -1650,7 +1653,7 @@ Public Class cDBDataSource
     Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eMessageSource.EcoPath)
+        Return Me.IsChanged(eCoreComponentType.EcoPath)
 
     End Function
 
@@ -2692,7 +2695,7 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcosimScenario < 0 Then Return False
 
-        Return Me.IsChanged(eMessageSource.EcoSim)
+        Return Me.IsChanged(eCoreComponentType.EcoSim)
 
     End Function
 
@@ -2891,7 +2894,7 @@ Public Class cDBDataSource
         ' Reload ecosim scenario definitions to update lastsaved data
         Me.LoadEcosimScenarioDefinitions()
 
-        Me.ClearChanged(eMessageSource.EcoSim)
+        Me.ClearChanged(eCoreComponentType.EcoSim)
 
         Return bSucces
 
@@ -5576,7 +5579,7 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcospaceScenario < 0 Then Return False
 
-        Return Me.IsChanged(eMessageSource.EcoSpace)
+        Return Me.IsChanged(eCoreComponentType.EcoSpace)
 
     End Function
 
@@ -5789,7 +5792,7 @@ Public Class cDBDataSource
         ' Reload ecospace scenario definitions to update lastsaved data
         Me.LoadEcospaceScenarioDefinitions()
 
-        If bSucces Then Me.ClearChanged(eMessageSource.EcoSpace)
+        If bSucces Then Me.ClearChanged(eCoreComponentType.EcoSpace)
 
         Return bSucces
     End Function
@@ -7954,7 +7957,7 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcotracerScenario < 0 Then Return False
 
-        Return Me.IsChanged(eMessageSource.Ecotracer)
+        Return Me.IsChanged(eCoreComponentType.Ecotracer)
 
     End Function
 
@@ -8107,7 +8110,7 @@ Public Class cDBDataSource
         ' Reload ecotracer scenario definitions to update lastsaved data
         Me.LoadEcotracerScenarioDefinitions()
 
-        If bSucces Then Me.ClearChanged(eMessageSource.Ecotracer)
+        If bSucces Then Me.ClearChanged(eCoreComponentType.Ecotracer)
 
         Return bSucces
     End Function

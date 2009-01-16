@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.7  2009/01/16 18:30:44  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2009/01/08 16:18:57  jeroens
 ' Fixed issue 582
 '
@@ -262,7 +265,7 @@ Namespace Ecospace
             ' Start tracking styleguide changes for colour feedback
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSim, eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.UpdateStyleColors()
             Me.UpdateControls()

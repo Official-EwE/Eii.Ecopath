@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceRegion.vb,v $
+' Revision 1.2  2009/01/16 18:30:24  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -38,11 +41,11 @@ Public Class cEcospaceRegion
 
         Try
 
-            Me.m_DataType = eDataTypes.EcospaceRegion
-            Me.m_messageSource = eMessageSource.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceRegion
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.DBID = iDBID
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceHabitat, eMessageSource.EcoSpace, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceHabitat, eCoreComponentType.EcoSpace, Index, cCore.NULL_VALUE)
 
             ResetStatusFlags()
 

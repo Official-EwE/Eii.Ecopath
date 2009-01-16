@@ -15,15 +15,15 @@ Public Class cFishingPolicySearchBlock
         Dim val As cValue
         Dim meta As cVariableMetaData
 
-        m_DataType = eDataTypes.FishingPolicySearchBlocks
-        m_messageSource = eMessageSource.FishingPolicySearch
+        m_dataType = eDataTypes.FishingPolicySearchBlocks
+        m_coreComponent = eCoreComponentType.FishingPolicySearch
         Me.AllowValidation = False
         Me.DBID = DBID
 
         'default OK status used for setVariable
         'see comment setVariable(...)
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FishingPolicySearchBlocks, _
-                                                    eMessageSource.FishingPolicySearch, Index, cCore.NULL_VALUE)
+                                                    eCoreComponentType.FishingPolicySearch, Index, cCore.NULL_VALUE)
 
 
         meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.6  2009/01/16 18:30:38  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.5  2008/12/15 15:56:20  jeroens
 ' no message
 '
@@ -110,7 +113,7 @@ Namespace Ecosim
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             Me.m_ccb = New CustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoPath, eMessageSource.EcoSim, eMessageSource.ShapesManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             ' Track core monitor changes
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -447,7 +450,7 @@ Namespace Ecosim
             Select Case msg.Source
 
                 ' Is Ecopath 'data added or removed' message?
-                Case eMessageSource.EcoPath
+                Case eCoreComponentType.EcoPath
                     'DataAddedOrRemoved for a Group or a Fleet 
                     If msg.Type = eMessageType.DataAddedOrRemoved And _
                                 ((msg.DataType = eDataTypes.EcoPathGroupInput) Or (msg.DataType = eDataTypes.FleetInput)) Then
@@ -456,11 +459,11 @@ Namespace Ecosim
 
                     End If
 
-                Case eMessageSource.EcoSim
+                Case eCoreComponentType.EcoSim
                     'handle ecosim messages
                     EcosimMessageHandler(msg)
 
-                Case eMessageSource.ShapesManager
+                Case eCoreComponentType.ShapesManager
                     ' Respond to relevant shape changes
                     If (Me.m_shapeGUIHandler Is Nothing) Then Return
 

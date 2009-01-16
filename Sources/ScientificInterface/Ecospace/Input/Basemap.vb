@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.9  2009/01/16 18:30:07  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.8  2008/11/05 01:16:51  jeroens
 ' Optionally clear new layer groups
 '
@@ -170,7 +173,7 @@ Namespace Ecospace.Basemap
                 AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             Me.m_propContaminantTracing = pm.GetProperty(source, eVarNameFlags.ConSimOnEcoSpace)
             AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
@@ -416,7 +419,7 @@ Namespace Ecospace.Basemap
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             ' Refresh basemap on ANY data added or removed message from Ecospace
-            If ((msg.Source = eMessageSource.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+            If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Refresh it all
                 Me.Basemap = Me.m_core.EcospaceBasemap
             End If

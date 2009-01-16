@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFishery.vb,v $
+' Revision 1.3  2009/01/16 18:30:07  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 15:55:35  jeroens
 ' no message
 '
@@ -152,9 +155,9 @@ Namespace Ecospace
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSources() As EwECore.eMessageSource()
+        Public Overrides ReadOnly Property MessageSources() As EwECore.eCoreComponentType()
             Get
-                Return New eMessageSource() {eMessageSource.EcoPath, eMessageSource.EcoSpace}
+                Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSpace}
             End Get
         End Property
 

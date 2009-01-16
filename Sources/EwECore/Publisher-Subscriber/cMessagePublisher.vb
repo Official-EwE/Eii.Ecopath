@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessagePublisher.vb,v $
+' Revision 1.3  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/09 15:00:44  jeroens
 ' Fixed possible message handling exception
 '
@@ -154,7 +157,7 @@ Public Class cMessagePublisher
     End Function
 
     ''' <summary>
-    ''' Send the message to the all handlers that can handle this type of message or to the default handler for this eMessageSource.
+    ''' Send the message to the all handlers that can handle this type of message or to the default handler for this eCoreComponentType.
     ''' </summary>
     ''' <param name="Message">The <see cref="cMessage">message</see> to send right away.</param>
     ''' <param name="bPassLock">Flag stating that the message should pass through an active 
@@ -191,7 +194,7 @@ Public Class cMessagePublisher
             If Message Is Nothing Then
                 Debug.Assert(False, "Cannot send a Null message.")
             End If
-            If (Message.Source = eMessageSource.NotSet) Then
+            If (Message.Source = eCoreComponentType.NotSet) Then
                 Debug.Assert(False, "Message source must be set.")
             End If
 

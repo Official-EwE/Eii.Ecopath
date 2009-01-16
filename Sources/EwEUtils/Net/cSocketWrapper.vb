@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.7  2009/01/16 18:30:35  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2008/12/18 21:53:25  joeb
 ' Changed the size of the buffer from huge to 1024
 '
@@ -71,7 +74,7 @@ Imports System.Reflection
 '   1: Main info, main failures
 '   2: Status updates
 '   3: Data details (for the hardcore debuggers)
-#Const VERBOSE_LEVEL = 1
+#Const VERBOSE_LEVEL = 0
 
 Namespace NetUtilities
 

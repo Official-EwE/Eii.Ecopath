@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.7  2009/01/16 18:30:33  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2008/11/28 16:54:56  joeb
 ' Cleaned up ToDo's
 '
@@ -116,7 +119,7 @@ Public Class cNetworkManager
 
     Private m_EcoNetwork As cEcoNetwork
     Private m_core As cCore
-    Private m_messagesource As eMessageSource = eMessageSource.Plugin
+    Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
     Private m_runstate As eRunState
     Private m_epdata As cEcopathDataStructures
     Private m_esdata As cEcosimDatastructures
@@ -280,7 +283,7 @@ Public Class cNetworkManager
                     'implicitly run the network analysis if it has not been run
                     If Not Me.RunMainNetwork() Then
                         'ooopssss........
-                        m_core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eMessageSource.Plugin, eMessageImportance.Critical))
+                        m_core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                         Return False
                     End If
                 End If
@@ -297,7 +300,7 @@ Public Class cNetworkManager
             Catch ex As Exception
                 cLog.Write(ex)
                 Dim msg As String = Me.unravelExceptionMessage(ex)
-                m_core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Critical))
+                m_core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
 
                 breturn = False
             End Try
@@ -460,7 +463,7 @@ Public Class cNetworkManager
             If Not m_core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded the Ecosim network analysis can not be run
                 m_core.Messages.SendMessage(New cMessage("Please load an Ecosim scenario before running Network Analysis for Ecosim.", _
-                         eMessageType.ErrorEncountered, eMessageSource.Plugin, eMessageImportance.Critical))
+                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
 
                 m_bEcosimNetwork = False
 
@@ -481,7 +484,7 @@ Public Class cNetworkManager
             cLog.Write(ex)
             m_bEcosimNetwork = False
             m_core.Messages.SendMessage(New cMessage("Error while running Network Analysis for Ecosim. " & ex.Message, _
-                                            eMessageType.ErrorEncountered, eMessageSource.Plugin, eMessageImportance.Critical))
+                                            eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False
         End Try
 
@@ -537,7 +540,7 @@ Public Class cNetworkManager
             If Not m_core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded this can not be initialized
                 m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because an Ecosim scenario has not been loaded.", _
-                         eMessageType.ErrorEncountered, eMessageSource.Plugin, eMessageImportance.Critical))
+                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                 Return False
             End If
 
@@ -546,7 +549,7 @@ Public Class cNetworkManager
                 'implicitly run the network analysis if it has not been run
                 If Not Me.RunMainNetwork() Then
                     'ooopssss........
-                    m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eMessageSource.Plugin, eMessageImportance.Critical))
+                    m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                     Return False
                 End If
             End If

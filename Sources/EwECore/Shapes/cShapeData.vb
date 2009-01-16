@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cShapeData.vb,v $
+' Revision 1.2  2009/01/16 18:30:35  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:35  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -65,6 +68,7 @@ Public MustInherit Class cShapeData
     Protected m_iEcoSimIndex As Integer = 0
 
     Protected m_datatype As eDataTypes = eDataTypes.NotSet
+    Protected m_coreComponent As eCoreComponentType = eCoreComponentType.NotSet
     Protected m_dbID As Integer = 0
     Private m_strName As String
     Private m_xdata() As Single
@@ -305,6 +309,12 @@ Public MustInherit Class cShapeData
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return m_datatype 'datatype is set in the constructor of each class
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return m_coreComponent
         End Get
     End Property
 

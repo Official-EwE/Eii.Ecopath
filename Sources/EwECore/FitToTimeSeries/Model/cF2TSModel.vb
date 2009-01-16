@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.6  2009/01/16 18:30:28  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.5  2008/12/02 19:07:43  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -433,12 +436,12 @@ Namespace FitToTimeSeries
             Catch ex As Threading.ThreadAbortException
 
                 AddMessage(New cMessage("Fit to Time Series aborted.", _
-                                     eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             Catch ex As Exception
 
                 AddMessage(New cMessage("Fit to Time Series Error: " & ex.Message, _
-                    eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             End Try
 
@@ -540,12 +543,12 @@ Namespace FitToTimeSeries
                 ' Done
                 'this should not happen under normal circumstances
                 'm_runmessageHandler(New cMessage("Fit to Time Series aborted.", _
-                '                    eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                '                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             Catch ex As Exception
                 ' Woops
                 AddMessage(New cMessage("Fit to Time Series Error: " & ex.Message, _
-                                    eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             End Try
 
@@ -565,7 +568,7 @@ Namespace FitToTimeSeries
             If Me.m_lastRunSens = eSensType.NotRun Then
 
                 AddMessage(New cMessage("Sensitivity routine has not been run. The blocks can not be set.", _
-                            eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
 
                 Exit Sub
             End If
@@ -668,7 +671,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
                 AddMessage(New cMessage("Fit to Time Series Error: " & ex.Message, _
-                      eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             End Try
 
@@ -911,7 +914,7 @@ Namespace FitToTimeSeries
                     'message
 
                     AddMessage(New cMessage("Nothing to estimate, sketch interactions, exiting search", eMessageType.ErrorEncountered, _
-                                                eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                                                eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
                     '   MsgBox("Nothing to estimate, sketch interactions, exiting search")
                     Exit Sub
                 End If
@@ -949,7 +952,7 @@ Namespace FitToTimeSeries
                 If m_estIter > 500 Then GoTo 250
 
                 If StopIndex > 0 Then
-                    fbmsg = New cFeedbackMessage("More Iterations (y/n)?", eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
+                    fbmsg = New cFeedbackMessage("More Iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
                     sendMessage(fbmsg)
                     If fbmsg.Reply = cFeedbackMessage.eReply.NO Then GoTo 250
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
@@ -984,7 +987,7 @@ Namespace FitToTimeSeries
                 sub900()
                 MatInv(n, amat, det)
 
-                fbmsg = New cFeedbackMessage("Estimates converged. Do you want to do more iterations (y/n)?", eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
+                fbmsg = New cFeedbackMessage("Estimates converged. Do you want to do more iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
                 sendMessage(fbmsg)
                 If fbmsg.Reply = cFeedbackMessage.eReply.YES Then GoTo 220
 
@@ -1018,7 +1021,7 @@ Namespace FitToTimeSeries
                 m_runType = eRunType.Idle
 
                 AddMessage(New cMessage("Estimation Error; original parameter values restored " & ex.Message, _
-                    eMessageType.ErrorEncountered, eMessageSource.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
             End Try
 
 

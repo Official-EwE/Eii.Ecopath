@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEEcotrophPlugin.vb,v $
+' Revision 1.2  2009/01/16 18:30:27  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:38  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -75,13 +78,13 @@ Public Class cEwEEcotrophPlugin
             Else
                 'some kind of a message
                 m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwEEcotroph.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
             m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwEEcotroph.EcopathRunCompleted() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, EwECore.eMessageSource.Core, EwECore.eMessageImportance.Warning))
+                            , EwECore.eMessageType.ErrorEncountered, EwECore.eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
         End Try
     End Sub
 

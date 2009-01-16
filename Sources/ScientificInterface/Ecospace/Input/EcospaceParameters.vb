@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.4  2009/01/16 18:30:07  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2009/01/15 22:39:55  joeb
 ' Moved Ecospace start and end summary periods from Parameters form to Results form
 '
@@ -74,7 +77,7 @@ Namespace Ecospace
 
             Me.m_core = cCore.GetInstance()
             Me.InitContent()
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
         Private Sub EcospaceParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -291,7 +294,7 @@ Namespace Ecospace
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If ((msg.Source = eMessageSource.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
+            If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Reload
                 Me.InitContent()
             End If

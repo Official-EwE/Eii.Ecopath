@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.8  2009/01/16 18:30:16  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.7  2008/11/28 16:54:05  joeb
 ' Cleaned up ToDo's
 '
@@ -383,7 +386,7 @@ Namespace Ecopath
                     Else 'If ParamsEstimated  = eStatusFlags.ErrorEncountered Then
 
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
-                                            eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
+                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                         NotifyCore(msg)
                         cLog.Write("ParamEstimate(...) failed to estimate parameters because of an error.")
 
@@ -400,7 +403,7 @@ Namespace Ecopath
                 Debug.Assert(False)
 
                 msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
-                                    eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
+                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                 NotifyCore(msg)
 
                 cLog.Write(Me.ToString + ".ParamEstimate() Error during parameter estimation: " & ex.Message)
@@ -434,7 +437,7 @@ Namespace Ecopath
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE, m_Data.GroupName(igrp))
                             End If
 
-                            Dim fbMsg As New cFeedbackMessage(strMsg, eMessageSource.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
+                            Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
                             fbMsg.Suppressable = True
                             NotifyCore(fbMsg)
 
@@ -647,12 +650,12 @@ Namespace Ecopath
                     If m_Data.Resp(i) >= m_Data.InputToDet(i) Then
                         If msg Is Nothing Then
                             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP, _
-                                               eMessageType.RespirationExceeedsDetritus, eMessageSource.EcoPath, eMessageImportance.Warning)
+                                               eMessageType.RespirationExceeedsDetritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                             msg.Suppressable = True
                         End If
 
                         str = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP, Me.m_Data.GroupName(i))
-                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i)
+                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         msg.AddVariable(vs)
                     End If
 
@@ -739,12 +742,12 @@ Namespace Ecopath
                 If m_Data.EE(i) > EEMax Then
                     If msg Is Nothing Then
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE_GENERIC, _
-                                            eMessageType.EE, eMessageSource.EcoPath, eMessageImportance.Warning, eDataTypes.EcoPathGroupOutput)
+                                            eMessageType.EE, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.EcoPathGroupOutput)
                         msg.Suppressable = True
                     End If
                     msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
                                 String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, i), _
-                                eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eMessageSource.EcoPath, i))
+                                eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
 
                 End If
             Next
@@ -756,7 +759,7 @@ Namespace Ecopath
 
         End Sub
 
-       
+
 
         Private Sub CalcTotalPrimProd()
             Dim i As Integer
@@ -781,14 +784,14 @@ Namespace Ecopath
                         If Object.ReferenceEquals(msgPB0, Nothing) Then
                             ' #Not existing, create it
                             msgPB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0_GENERIC, _
-                                     eMessageType.InvalidModel_PB0_Generic, eMessageSource.EcoPath, eMessageImportance.Warning, _
+                                     eMessageType.InvalidModel_PB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
                                      eDataTypes.EcoPathGroupInput)
                             msgPB0.Suppressable = True
                         End If
                         ' Create variable information for this messages
                         vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
                                 String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0, i), _
-                                eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i)
+                                eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgPB0.Variables.Add(vs)
 
@@ -797,14 +800,14 @@ Namespace Ecopath
                         If Object.ReferenceEquals(msgQB0, Nothing) Then
                             ' #Not existing, create it
                             msgQB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, _
-                                     eMessageType.InvalidModel_QB0_Generic, eMessageSource.EcoPath, eMessageImportance.Warning, _
+                                     eMessageType.InvalidModel_QB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
                                      eDataTypes.EcoPathGroupInput)
                             msgQB0.Suppressable = True
                         End If
                         ' Create variable information for this messages
                         vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
                                 String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, i), _
-                                eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i)
+                                eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgQB0.Variables.Add(vs)
                     End If
@@ -913,7 +916,7 @@ Namespace Ecopath
                     If (m_Data.Discard(i, j) = 0) Or (m_Data.Landing(i, j) = 0) Then
                         If msg Is Nothing Then
                             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_CATCH_GENERIC, _
-                                    eMessageType.NoCatchForFleet, eMessageSource.EcoPath, _
+                                    eMessageType.NoCatchForFleet, eCoreComponentType.EcoPath, _
                                     eMessageImportance.Warning, eDataTypes.FleetInput)
                             msg.Suppressable = True
                         End If
@@ -922,12 +925,12 @@ Namespace Ecopath
                             ' Inform core that the sum of landing and discards is missing
                             msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
                                     String.Format(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_LANDING, m_Data.FleetName(i), m_Data.GroupName(j)), _
-                                    eVarNameFlags.Landings, eDataTypes.FleetInput, eMessageSource.EcoPath, i, j))
+                                    eVarNameFlags.Landings, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
                         If m_Data.Discard(i, j) = 0 Then
                             msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
                                     String.Format(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_DISCARD, m_Data.FleetName(i), m_Data.GroupName(j)), _
-                                    eVarNameFlags.Discards, eDataTypes.FleetInput, eMessageSource.EcoPath, i, j))
+                                    eVarNameFlags.Discards, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
                     End If
 
@@ -1012,17 +1015,17 @@ Namespace Ecopath
             If isMissing Then
 
                 Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC, _
-                                        eMessageType.TooManyMissingParameters, eMessageSource.EcoPath, _
+                                        eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, _
                                         eMessageImportance.Warning, eDataTypes.EcoPathGroupInput)
                 msg.Suppressable = False
 
                 For i = 1 To m_Data.NumLiving
-                    If m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i))
-                    If m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i))
-                    If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i))
+                    If m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                    If m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                    If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                     If m_Data.EE(i) < 0 Then
-                        msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i))
-                        If m_Data.BA(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i))
+                        msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                        If m_Data.BA(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                     End If
                 Next
 
@@ -1206,7 +1209,7 @@ Namespace Ecopath
             For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
                 If m_Data.BHinput(i) < 0 And msg Is Nothing Then
                     msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING, _
-                                eMessageType.InvalidModel_B_Detritus, eMessageSource.EcoPath, eMessageImportance.Warning)
+                                eMessageType.InvalidModel_B_Detritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                     msg.Suppressable = True
                 End If
             Next
@@ -1233,13 +1236,13 @@ Namespace Ecopath
 
             If (nFound > 0) Then
                 msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY, nFound), _
-                                   eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Warning)
+                                   eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
                 For iGroup As Integer = 1 To m_Data.NumLiving
                     If bImportOnly(iGroup) Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
                         String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP, Me.m_Data.GroupName(iGroup)), _
-                        eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, iGroup))
+                        eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iGroup))
                 Next
                 Me.NotifyCore(msg)
             End If
@@ -1307,13 +1310,13 @@ Namespace Ecopath
 
             If nFound > 0 Then
                 msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DFLARGERTHANONE, nFound), _
-                                   eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Warning)
+                                   eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
                 For i As Integer = 1 To m_Data.NumGroups
                     If DFtooBig(i) Then
                         str = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP, Me.m_Data.GroupName(i))
-                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.DetritusFate, eDataTypes.EcoPathGroupInput, eMessageSource.EcoPath, i)
+                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.DetritusFate, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         msg.AddVariable(vs)
                     End If
                 Next
@@ -1359,13 +1362,13 @@ Namespace Ecopath
             ElseIf nFound > 0 Then
 
                 str = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE, nFound)
-                msg = New cMessage(str, eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Warning)
+                msg = New cMessage(str, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
                 For i As Integer = 1 To m_Data.NumFleet
                     If bNoDiscardFate(i) Then
                         str = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET, m_Data.FleetName(i))
-                        vs = New cVariableStatus(eStatusFlags.MissingParameter, str, eVarNameFlags.DiscardFate, eDataTypes.FleetInput, eMessageSource.EcoPath, i)
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter, str, eVarNameFlags.DiscardFate, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i)
                         msg.AddVariable(vs)
                     End If
                 Next
@@ -2025,7 +2028,7 @@ nextJ:
                             ' Prepare message text
                             strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY, j, m_Data.GroupName(j))
                             ' Prepare message
-                            msg = New cFeedbackMessage(strMessage, eMessageSource.EcoPath, eMessageImportance.Maintenance)
+                            msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                             ' Send off
                             NotifyCore(msg)
                             ' Catch result
@@ -2038,7 +2041,7 @@ nextJ:
                                 ' Prepare message text
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, m_Data.GroupName(j), Only.ToString("0.000"))
                                 ' Prepare message
-                                msg = New cFeedbackMessage(strMessage, eMessageSource.EcoPath, eMessageImportance.Maintenance)
+                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                                 ' Send off
                                 NotifyCore(msg)
                                 ' Catch result
@@ -2047,7 +2050,7 @@ nextJ:
                                 ' Prepare message text
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY, j, m_Data.GroupName(j), m_Data.B(j).ToString("0.000"))
                                 ' Prepare message
-                                msg = New cFeedbackMessage(strMessage, eMessageSource.EcoPath, eMessageImportance.Maintenance)
+                                msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                                 ' Send off
                                 NotifyCore(msg)
                                 ' Catch result
@@ -2078,7 +2081,7 @@ nextJ:
             str2 = str & vbNewLine + vbNewLine
             str2 = str2 & "Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs. (Note: your input data will not be changed)"
             If done = False Then
-                msg = New cFeedbackMessage(str, eMessageSource.EcoPath, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                msg = New cFeedbackMessage(str, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
                 NotifyCore(msg)
 
                 RetVal = msg.Reply
@@ -2134,7 +2137,7 @@ exitSub:
                             '    briefQuestion = False
                             ' ToDo_JS: globalize this
                             msg = New cFeedbackMessage(My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
-                                    eMessageSource.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO)
+                                    eCoreComponentType.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO)
                             msg.Suppressable = True
                             NotifyCore(msg)
                             RetVal = msg.Reply
@@ -2145,7 +2148,7 @@ exitSub:
 
                             '        ' check rest individually
                             '        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_NORMALIZE_DIET, Pred, Sum), _
-                            '                 eMessageType.Any, eMessageSource.EcoPath, eMessageImportance.Maintenance)
+                            '                 eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                             '        notifyCore(msg)
                             '        RetVal = msg.Reply
 
@@ -2153,7 +2156,7 @@ exitSub:
                             'Else
                             '    ' dialog for each group (slow way)
                             '    msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_NORMALIZE_DIET, Pred, Sum), _
-                            '             eMessageType.Any, eMessageSource.EcoPath, eMessageImportance.Maintenance)
+                            '             eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                             '    notifyCore(msg)
                             '    RetVal = msg.Reply
 
@@ -2316,7 +2319,7 @@ EndOfFunction:
             If NBQB > 0 Then
 
                 Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_INSUFFICIENTDATA, _
-                    eMessageType.MassBalance_InsufficientData, eMessageSource.EcoPath, eMessageImportance.Warning)
+                    eMessageType.MassBalance_InsufficientData, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
                 NotifyCore(msg)
@@ -2332,7 +2335,7 @@ EndOfFunction:
                         AUL(i, j) = -9999
                         If NoBQB(j) = 11 Then
                             Dim strMsg As String = String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSING_B_QB, m_Data.GroupName(j))
-                            Dim msg As New cMessage(strMsg, eMessageType.Any, eMessageSource.EcoPath, eMessageImportance.Warning)
+                            Dim msg As New cMessage(strMsg, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                             NotifyCore(msg)
                             Exit_Sub_Missing_Par = 0
                             Exit Sub
@@ -2485,7 +2488,7 @@ EndOfFunction:
 
                 Debug.Assert(False, "SolvenoBnoQB")
 
-                'msg = New cMessage(My.Resources.INFORMATION_MISSING_PARAMETERS, eMessageType.Any, eMessageSource.EcoPath, eMessageImportance.Information)
+                'msg = New cMessage(My.Resources.INFORMATION_MISSING_PARAMETERS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
                 'notifyCore(msg)
 
                 Exit_Sub_Missing_Par = 0
@@ -2678,7 +2681,7 @@ ONE:
                 If NoBQB(i) = 10 Then strMsg$ = strMsg$ & "Q/B for group " & i & vbCrLf
             Next i
             strMsg = strMsg & vbCrLf & "Check the estimated values carefully."
-            msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eMessageSource.EcoPath, eMessageImportance.Warning)
+            msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
             msg.Suppressable = False
             NotifyCore(msg)
 
@@ -2699,7 +2702,7 @@ ONE:
                 strMsg = strMsg & vbCrLf & vbCrLf
                 strMsg = strMsg & "Please re-edit the input parameters."
 
-                msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eMessageSource.EcoPath, eMessageImportance.Warning)
+                msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = False
                 NotifyCore(msg)
                 ' MsgBox(StrLong, vbCritical + vbOKOnly, "Parameter estimation failed")
@@ -2802,7 +2805,7 @@ ONE:
 
                             ' Prepare message
                             Dim strMsg As String = String.Format(My.Resources.CoreMessages.DIETCOMP_PROMPT_CORRECTTO15PERC, m_Data.GroupName(i), CInt(dcsum * 100))
-                            Dim msg As New cFeedbackMessage(strMsg, eMessageSource.EcoPath, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                            Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
                             msg.Suppressable = True
                             msg.Type = eMessageType.DietComp_CorrectTo15Perc
 

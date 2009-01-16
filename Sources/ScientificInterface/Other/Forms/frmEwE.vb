@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.3  2009/01/16 18:30:40  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 15:55:32  jeroens
 ' no message
 '
@@ -102,7 +105,7 @@ Public Class frmEwE
 #Region " Internal admin "
 
         ''' <summary>Administration of registered forms per message source type.</summary>
-        Private m_dictSourceToForm As New Dictionary(Of eMessageSource, List(Of frmEwE))
+        Private m_dictSourceToForm As New Dictionary(Of eCoreComponentType, List(Of frmEwE))
 
 #End Region ' Internal admin
 
@@ -143,7 +146,7 @@ Public Class frmEwE
         ''' Register a form to automated refresh instructions.
         ''' </summary>
         ''' <param name="form">The <see cref="frmEwE">frmEwE</see> to register.</param>
-        ''' <param name="messageSource">The <see cref="eMessageSource">message source</see> to monitor 
+        ''' <param name="messageSource">The <see cref="eCoreComponentType">message source</see> to monitor 
         ''' for <see cref="eMessageType.DataAddedOrRemoved">DataAddedOrRemoved</see> messages.</param>
         ''' <remarks>
         ''' A registered form will receive <see cref="frmEwE.OnCoreMessage">OnCoreMessage</see>
@@ -151,7 +154,7 @@ Public Class frmEwE
         ''' messages originating from the given <paramref name="messageSource">message source</paramref>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub RegisterForm(ByVal form As frmEwE, ByVal messageSource As eMessageSource)
+        Public Sub RegisterForm(ByVal form As frmEwE, ByVal messageSource As eCoreComponentType)
             Dim lForms As List(Of frmEwE) = Nothing
             If Me.m_dictSourceToForm.ContainsKey(messageSource) Then
                 lForms = Me.m_dictSourceToForm(messageSource)
@@ -168,7 +171,7 @@ Public Class frmEwE
         ''' Unregister a form from automated refresh instructions.
         ''' </summary>
         ''' <param name="form">The <see cref="frmEwE">frmEwE</see> to unregister.</param>
-        ''' <param name="messageSource">The <see cref="eMessageSource">message source</see> to 
+        ''' <param name="messageSource">The <see cref="eCoreComponentType">message source</see> to 
         ''' stop monitoring for <see cref="eMessageType.DataAddedOrRemoved">DataAddedOrRemoved</see>
         ''' messages.</param>
         ''' <remarks>
@@ -177,7 +180,7 @@ Public Class frmEwE
         ''' messages originating from the given <paramref name="messageSource">message source</paramref>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub UnregisterForm(ByVal form As frmEwE, ByVal messageSource As eMessageSource)
+        Public Sub UnregisterForm(ByVal form As frmEwE, ByVal messageSource As eCoreComponentType)
             Debug.Assert(Me.m_dictSourceToForm.ContainsKey(messageSource), String.Format("Form not defined for message source {0}", messageSource.ToString()))
             Me.m_dictSourceToForm(messageSource).Remove(form)
         End Sub
@@ -196,14 +199,14 @@ Public Class frmEwE
             Me.ConfigMessageHandlers(True)
         End Sub
 
-        Dim m_dtMessageHanders As New Dictionary(Of eMessageSource, cMessageHandler)
+        Dim m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
 
-        Private Sub ConfigMessageHandler(ByVal src As eMessageSource, ByVal bSet As Boolean)
+        Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
 
             Dim mh As cMessageHandler = Nothing
             Dim core As cCore = cCore.GetInstance()
 
-            If (src = eMessageSource.NotSet) Then Return
+            If (src = eCoreComponentType.NotSet) Then Return
 
             If bSet Then
                 mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any)
@@ -227,7 +230,7 @@ Public Class frmEwE
         Private Sub ConfigMessageHandlers(ByVal bSet As Boolean)
 
             ' Set up message handlers
-            For Each src As eMessageSource In [Enum].GetValues(GetType(eMessageSource))
+            For Each src As eCoreComponentType In [Enum].GetValues(GetType(eCoreComponentType))
                 Me.ConfigMessageHandler(src, bSet)
             Next
 
@@ -265,7 +268,7 @@ Public Class frmEwE
     ''' <summary>Core state that determines the enabled state of a form.</summary>
     Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
     ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
-    Private m_aMessageSources As eMessageSource() = Nothing
+    Private m_aMessageSources As eCoreComponentType() = Nothing
     ''' <summary>Flag stating whether this is an input grid.</summary>
     Private m_bIsInputForm As Boolean = False
 
@@ -353,18 +356,18 @@ Public Class frmEwE
     ''' how these flags are being used.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property MessageSources() As eMessageSource()
+    Public Property MessageSources() As eCoreComponentType()
         Get
             Return m_aMessageSources
         End Get
 
-        Set(ByVal value As eMessageSource())
+        Set(ByVal value As eCoreComponentType())
             Dim fr As EwEFormRefresh = EwEFormRefresh.GetInstance()
 
             ' Detach
             If Me.m_aMessageSources IsNot Nothing Then
-                For Each ms As eMessageSource In Me.m_aMessageSources
-                    If ms <> eMessageSource.NotSet Then
+                For Each ms As eCoreComponentType In Me.m_aMessageSources
+                    If ms <> eCoreComponentType.NotSet Then
                         fr.UnregisterForm(Me, ms)
                     End If
                 Next
@@ -375,8 +378,8 @@ Public Class frmEwE
 
             ' Attach
             If Me.m_aMessageSources IsNot Nothing Then
-                For Each ms As eMessageSource In Me.m_aMessageSources
-                    If ms <> eMessageSource.NotSet Then
+                For Each ms As eCoreComponentType In Me.m_aMessageSources
+                    If ms <> eCoreComponentType.NotSet Then
                         fr.RegisterForm(Me, ms)
                     End If
                 Next

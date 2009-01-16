@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmForcingFunction.vb,v $
+' Revision 1.3  2009/01/16 18:30:42  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 16:03:02  jeroens
 ' Shape controls moved to ScIntShared
 '
@@ -90,18 +93,18 @@ Namespace Ecosim
         ''' <summary>
         ''' Event handler; implemented to make sure that this form receives 
         ''' <see cref="cMessage">messages</see> from specific 
-        ''' <see cref="eMessageSource">message sources</see>.
+        ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; implemented to make sure that this form stops receiving
         ''' <see cref="cMessage">messages</see> from specific 
-        ''' <see cref="eMessageSource">message sources</see>.
+        ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub frmForcingFunction_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -121,7 +124,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
-            If msg.Source = eMessageSource.ShapesManager Then
+            If msg.Source = eCoreComponentType.ShapesManager Then
                 If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _
                      (msg.DataType = eDataTypes.Forcing)) Then
                     Me.m_shapeguihandler.Refresh()

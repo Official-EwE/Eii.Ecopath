@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: DatabaseConversionWizard.vb,v $
+' Revision 1.4  2009/01/16 18:30:37  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/10 02:12:32  jeroens
 ' Moved datasource types to EwEUtils
 '
@@ -170,7 +173,7 @@ Namespace Wizard
 
                     ' Import the model to EwE6 format
                     Dim bSuccess As Boolean = False
-                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eMessageSource.DataSource, eMessageType.Any)
+                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.DataSource, eMessageType.Any)
                     Dim mlbi As ModelListboxItem = Nothing
 
                     m_core.Messages.AddMessageHandler(mh)

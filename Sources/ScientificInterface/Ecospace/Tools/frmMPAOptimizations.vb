@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.33  2009/01/16 18:30:42  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.32  2009/01/08 16:18:59  jeroens
 ' Fixed issue 582
 '
@@ -298,7 +301,7 @@ Namespace Ecospace
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             ' Configure graphs
             Me.InitProgressGraph()
@@ -567,7 +570,7 @@ Namespace Ecospace
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eMessageSource.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved) Then
+            If (msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved) Then
                 ' Reload data
                 Me.Reload()
                 ' Cascade mode down
@@ -1664,7 +1667,7 @@ Namespace Ecospace
             ' Check MPA selection
             If Me.m_cmbMPA.SelectedIndex = -1 Then
                 ' ToDo_JS: Globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("MPA selection required", eMessageType.Any, eMessageSource.MPAOptimization, eMessageImportance.Warning))
+                Me.m_core.Messages.SendMessage(New cMessage("MPA selection required", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
                 Return False
             End If
 
@@ -1677,7 +1680,7 @@ Namespace Ecospace
                 Next
                 If bOk = False Then
                     ' ToDo_JS: Globalize this
-                    Me.m_core.Messages.SendMessage(New cMessage("No mandated biomasses specified", eMessageType.Any, eMessageSource.MPAOptimization, eMessageImportance.Warning))
+                    Me.m_core.Messages.SendMessage(New cMessage("No mandated biomasses specified", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
                     Return False
                 End If
             End If

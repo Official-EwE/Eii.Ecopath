@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResults.vb,v $
+' Revision 1.4  2009/01/16 18:30:38  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2009/01/13 18:00:47  joeb
 ' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
 '
@@ -95,7 +98,7 @@ Namespace Ecosim
             curDisplayMode = eDisplayMode.Fleets
             UpdateControls()
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSim}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
         Private Sub EcosimResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing

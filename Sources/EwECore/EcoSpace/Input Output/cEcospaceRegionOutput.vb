@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceRegionOutput.vb,v $
+' Revision 1.2  2009/01/16 18:30:24  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2009/01/13 21:13:59  joeb
 ' Merged Summary objects into Output objects
 '
@@ -53,7 +56,7 @@ Public Class cEcospaceRegionOutput
 
         Me.DBID = iRegion '????
         Me.Index = iRegion
-        Me.m_DataType = eDataTypes.EcospaceRegionResults
+        Me.m_dataType = eDataTypes.EcospaceRegionResults
 
         Dim val As cValue
 

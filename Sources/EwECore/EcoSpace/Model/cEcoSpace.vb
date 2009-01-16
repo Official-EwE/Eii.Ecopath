@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.18  2009/01/16 18:30:20  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.17  2009/01/14 18:46:52  joeb
 ' Time series results averaged over space at the end of the run
 '
@@ -536,7 +539,7 @@ Public Class cEcoSpace
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             m_publisher.AddMessage(New cMessage("Ecospace Error: " & ex.Message, eMessageType.ErrorEncountered, _
-                                        eMessageSource.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+                                        eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
             bsuccess = False
         End Try
 

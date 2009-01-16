@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessageHandler.vb,v $
+' Revision 1.2  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:29  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -43,7 +46,7 @@
 ''' <para>Define a method in your interface that will do the actual message handling with the same signature as EwECore.cCore.CoreMessageDelegate(cMessage).</para>
 ''' <para>Create a cMessageHandler object and in its constructor pass in 3 arguments</para>
 ''' <para>1.) The AddressOf the delegate that will handle the message</para>
-''' <para>2.) Source of the message (eMessageSource)</para>
+''' <para>2.) Source of the message (eCoreComponentType)</para>
 ''' <para>3.) The message to handle (eMessageType)</para>
 ''' <para>This tells the handler what type of message to handle and where to send the message.</para>
 ''' <para>Next</para>
@@ -56,7 +59,7 @@
 Public Class cMessageHandler
 
     Private m_DelegateNotifier As EwECore.cCore.CoreMessageDelegate
-    Private m_source As eMessageSource
+    Private m_source As eCoreComponentType
     Private m_Type As eMessageType
 
     ''' <summary>
@@ -69,7 +72,7 @@ Public Class cMessageHandler
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eMessageSource, ByVal MessageTypeToHandle As eMessageType)
+    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType)
 
         m_DelegateNotifier = DelegateToCall
         m_source = SourceToHandle

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.33  2009/01/16 18:30:17  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.32  2008/12/09 19:47:35  joeb
 ' Changes to the dimensioning of time data
 '
@@ -877,7 +880,7 @@ Public Property PluginManager() As cPluginManager
 
                     If AbortRun Then
                         'rk4() sent a message
-                        'm_publisher.AddMessage(New cMessage("Ecosim run aborted.", eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical))
+                        'm_publisher.AddMessage(New cMessage("Ecosim run aborted.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
                         Exit Sub
                     End If
 
@@ -1157,7 +1160,7 @@ Public Property PluginManager() As cPluginManager
                 ElseIf m_Data.NoIntegrate(i) = 0 Then
                     yt(i) = (1 - m_Data.SorWt) * biomeq(i) + m_Data.SorWt * B(i)
                     If yt(i) < 0 Then
-                        Me.m_publisher.SendMessage(New cMessage("Error in Runge Kutta.", eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical))
+                        Me.m_publisher.SendMessage(New cMessage("Error in Runge Kutta.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
                         Debug.Assert(False, "yt(i) < 0 for i=" & i.ToString & ", t=" & t.ToString)
                         AbortRun = True
                         Exit Sub
@@ -1531,7 +1534,7 @@ Public Property PluginManager() As cPluginManager
                 Dim msg As String
                 If Not checkOKToRun(msg) Then
                     m_publisher.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, _
-                                            eMessageSource.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
+                                            eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
                     m_publisher.sendAllMessages()
                     Return False
                 End If
@@ -1551,7 +1554,7 @@ Public Property PluginManager() As cPluginManager
 
                 cLog.Write(ex)
                 m_publisher.AddMessage(New cMessage("Ecosim Run() Error: " & ex.Message, eMessageType.ErrorEncountered, _
-                                        eMessageSource.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
+                                        eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
                 bsuccess = False
             End Try
 
@@ -2685,7 +2688,7 @@ Public Property PluginManager() As cPluginManager
                     m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
                     If m_Data.MedYbase(i) = 0 Then
                         Me.m_publisher.AddMessage(New cMessage("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data", _
-                                                    eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical))
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
 
                         '   MsgBox("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data")
                         m_Data.MedIsUsed(i) = False
@@ -3224,7 +3227,7 @@ Public Property PluginManager() As cPluginManager
 
                 If vbK = 0 Then
                     '  MsgBox("Enter K of VBGF") : Exit Sub
-                    Me.m_publisher.SendMessage(New cMessage("Missing K of VBGF for multi stanza group " & isp.ToString, eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Warning))
+                    Me.m_publisher.SendMessage(New cMessage("Missing K of VBGF for multi stanza group " & isp.ToString, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
                     Exit Sub
                 End If
 
@@ -4001,7 +4004,7 @@ Public Property PluginManager() As cPluginManager
                         If Tcon(i, j) < 1 Then
 
                             Me.m_publisher.AddMessage(New cMessage("total predation on prey type " + m_EPData.GroupName(i) + "by predator " + m_EPData.GroupName(j) + " not accounted for, stopping", _
-                                                        eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Warning))
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
 
                             '    MsgBox("total predation on prey type " + m_EPData.GroupName(i) + "by predator " + m_EPData.GroupName(j) + " not accounted for, stopping")
                             'assign remaining consumption by j of i to the i,j arena
@@ -4027,7 +4030,7 @@ Public Property PluginManager() As cPluginManager
                 'jb throw an Error!!!!
                 '  MsgBox("feeding proportions by arenas not set properly")
                 Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly", _
-                                            eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Warning))
+                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
                 Stop
             End If
 

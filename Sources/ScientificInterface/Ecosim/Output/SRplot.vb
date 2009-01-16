@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.3  2009/01/16 18:30:38  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/12/15 15:56:20  jeroens
 ' no message
 '
@@ -79,7 +82,7 @@ Namespace Ecosim
             m_coreStateMonitor = Me.m_Core.StateMonitor
             m_SRResults = New List(Of SRLine)
 
-            m_Core.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcosimMessageHandler, eMessageSource.EcoSim, eMessageType.Any))
+            m_Core.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any))
 
         End Sub
 

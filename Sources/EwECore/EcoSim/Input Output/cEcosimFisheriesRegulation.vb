@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimFisheriesRegulation.vb,v $
+' Revision 1.6  2009/01/16 18:30:17  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.5  2008/10/22 15:54:41  joeb
 ' ResetStatusFlags handled by the core
 '
@@ -38,10 +41,10 @@ Public Class cEcosimFisheriesRegulation
             Dim val As cValue = Nothing
             Dim meta As cVariableMetaData = Nothing
 
-            Me.m_DataType = eDataTypes.EcosimFisheriesRegulation
-            Me.m_messageSource = eMessageSource.EcoSim
+            Me.m_dataType = eDataTypes.EcosimFisheriesRegulation
+            Me.m_coreComponent = eCoreComponentType.EcoSim
             Me.DBID = DBID
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_DataType, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             Me.AllowValidation = False
 

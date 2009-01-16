@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonteCarloManager.vb,v $
+' Revision 1.10  2009/01/16 18:30:20  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.9  2008/11/28 16:54:14  joeb
 ' Cleaned up ToDo's
 '
@@ -90,7 +93,7 @@
 ' + Added ResetStatusFlags after group update
 '
 ' Revision 1.10  2007/07/31 16:02:52  joeb
-' Changed eMessageSource from Ecosim to EcosimMonteCarlo
+' Changed eCoreComponentType from Ecosim to EcosimMonteCarlo
 '
 ' Revision 1.9  2007/07/24 18:32:20  joeb
 ' Get ss to current data on load
@@ -248,20 +251,20 @@ Public Class cMonteCarloManager
                     Else 'If m_core.m_TSData.NdatType > 0 Then
                         'm_core.m_TSData.NdatType = 0
                         'there must be at least one reference data set loaded
-                        m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                        m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
                     End If
 
                 Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
                     'no ecosim scenario loaded
-                    m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                    m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
 
                 End If
 
             Catch ex As Exception
                 cLog.Write(ex)
                 Me.ReleaseWait()
-                m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eMessageSource.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+                m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
             End Try
 
             m_core.Messages.sendAllMessages()
@@ -431,7 +434,7 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False)
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage("Monte Carlo Error: Failed to apply best fits.", eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Critical))
+            m_core.Messages.SendMessage(New cMessage("Monte Carlo Error: Failed to apply best fits.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
         End Try
 
     End Sub
@@ -822,7 +825,7 @@ Public Class cMonteCarloManager
 
             Next 'For Each grp As cMonteCarloGroup
 
-            Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eMessageSource.EcoSim, eMessageImportance.Maintenance))
+            Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -912,6 +915,12 @@ Public Class cMonteCarloManager
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return (eDataTypes.MonteCarlo)
+        End Get
+    End Property
+
+    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+        Get
+            Return eCoreComponentType.EcoSimMonteCarlo
         End Get
     End Property
 

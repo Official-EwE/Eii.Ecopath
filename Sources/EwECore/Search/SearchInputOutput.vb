@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SearchInputOutput.vb,v $
+' Revision 1.4  2009/01/16 18:30:44  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/11/27 18:22:47  joeb
 ' Moved Flimit() back to Search data
 '
@@ -46,14 +49,14 @@ Namespace SearchObjectives
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_DataType = eDataTypes.SearchObjectiveFleetInput
-            Me.m_messageSource = eMessageSource.SearchObjective
+            Me.m_dataType = eDataTypes.SearchObjectiveFleetInput
+            Me.m_coreComponent = eCoreComponentType.SearchObjective
             Me.DBID = DBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_DataType, _
-                                                        Me.m_messageSource, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
+                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
 
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -111,13 +114,13 @@ Namespace SearchObjectives
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_DataType = eDataTypes.SearchObjectiveWeights
-            Me.m_messageSource = eMessageSource.SearchObjective
+            Me.m_dataType = eDataTypes.SearchObjectiveWeights
+            Me.m_coreComponent = eCoreComponentType.SearchObjective
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_DataType, _
-                                                        Me.m_messageSource, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
+                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
 
             'FPSEcoSystemWeight()
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -245,13 +248,13 @@ Namespace SearchObjectives
             Me.AllowValidation = False
             Me.DBID = DBID
 
-            Me.m_DataType = eDataTypes.SearchObjectiveGroupInput
-            Me.m_messageSource = eMessageSource.SearchObjective
+            Me.m_dataType = eDataTypes.SearchObjectiveGroupInput
+            Me.m_coreComponent = eCoreComponentType.SearchObjective
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_DataType, _
-                                                        Me.m_messageSource, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
+                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
 
 
 
@@ -325,14 +328,14 @@ Namespace SearchObjectives
 
             Me.AllowValidation = False
             Me.DBID = cCore.NULL_VALUE
-            Me.m_DataType = eDataTypes.SearchObjectiveParameters
-            Me.m_messageSource = eMessageSource.SearchObjective
+            Me.m_dataType = eDataTypes.SearchObjectiveParameters
+            Me.m_coreComponent = eCoreComponentType.SearchObjective
             AllowValidation = False
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_DataType, _
-                                                         Me.m_messageSource, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, _
+                                                         Me.m_coreComponent, Index, cCore.NULL_VALUE)
 
             Dim val As cValue
             Dim meta As cVariableMetaData

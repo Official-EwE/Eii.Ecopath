@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.4  2009/01/16 18:30:14  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/11/14 00:21:09  joeb
 ' Added comment to cost(,)
 '
@@ -813,7 +816,7 @@ Public Class cEcopathDataStructures
             strMsg = strMsg & " are suppressed. Please check parameters and rerun program."
 
             cCore.GetInstance.Messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
-                                                    eMessageSource.EcoPath, eMessageImportance.Warning))
+                                                    eCoreComponentType.EcoPath, eMessageImportance.Warning))
             ' MsgBox(strMsg)
             ''SetMousePtr 0
         End If

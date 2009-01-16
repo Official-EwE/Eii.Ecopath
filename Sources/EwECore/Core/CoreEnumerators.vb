@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.7  2009/01/16 18:30:12  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2009/01/12 22:48:42  joeb
 ' Added enums for Ecospace results over time
 '
@@ -328,7 +331,7 @@ End Enum
 ''' to indicate the EwE core comnponent that sent the message.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
-Public Enum eMessageSource
+Public Enum eCoreComponentType
     ''' <summary>The message source is not specified.</summary>
     NotSet
     ''' <summary>The message originated from the Ecopath module of EwE.</summary>

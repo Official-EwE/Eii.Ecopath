@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEFleetInput.vb,v $
+' Revision 1.2  2009/01/16 18:30:32  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:26  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -30,14 +33,14 @@ Namespace MSE
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            m_DataType = eDataTypes.MSEFleetInput
-            m_messageSource = eMessageSource.MSE
+            m_dataType = eDataTypes.MSEFleetInput
+            m_coreComponent = eCoreComponentType.MSE
             Me.AllowValidation = False
             Me.DBID = theFleetDBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_DataType, m_messageSource, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, m_coreComponent, Index, cCore.NULL_VALUE)
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSEQIncrease, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEQIncrease))

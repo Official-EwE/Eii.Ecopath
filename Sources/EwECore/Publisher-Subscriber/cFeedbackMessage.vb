@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFeedbackMessage.vb,v $
+' Revision 1.2  2009/01/16 18:30:28  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:29  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -144,12 +147,12 @@ Public Class cFeedbackMessage
     ''' Constructor, initializes a new instance of this class.
     ''' </summary>
     ''' <param name="msgStr">Message text.</param>
-    ''' <param name="msgSource"><see cref="eMessageSource">Source</see> of the message.</param>
+    ''' <param name="msgSource"><see cref="eCoreComponentType">Source</see> of the message.</param>
     ''' <param name="msgImportance"><see cref="eMessageImportance">Importance</see> of the message.</param>
     ''' <param name="replyStyle"><see cref="eReplyStyle">Reply style</see> of the message.</param>
     ''' <param name="msgDataType"><see cref="eDataTypes">Data type</see> associated with the message, if any.</param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal msgStr As String, ByVal msgSource As eMessageSource, ByVal msgImportance As eMessageImportance, _
+    Sub New(ByVal msgStr As String, ByVal msgSource As eCoreComponentType, ByVal msgImportance As eMessageImportance, _
             Optional ByVal replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
             Optional ByVal defaultReply As eReply = eReply.CANCEL)
         MyBase.New(msgStr, eMessageType.Any, msgSource, msgImportance, msgDataType)

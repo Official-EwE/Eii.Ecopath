@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.2  2009/01/16 18:30:35  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/12/15 15:37:16  jeroens
 ' Moved from ScInt
 '
@@ -296,10 +299,10 @@ Namespace Controls
                 ' Let sketchpad save the image
                 If sp.SaveAsImage(shape, cmdFS.FileName, imgFormat, strError) Then
                     msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, shape.Name, cmdFS.FileName), _
-                            eMessageType.Any, eMessageSource.External, eMessageImportance.Information)
+                            eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
                 Else
                     msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, shape.Name, cmdFS.FileName, strError), _
-                            eMessageType.Any, eMessageSource.External, eMessageImportance.Warning)
+                            eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 End If
                 ' Provide feedback on result
                 Me.m_core.Messages.SendMessage(msg)
@@ -1578,7 +1581,7 @@ Namespace Controls
                         Me.ResetShape(shape, CSng(Val(astrEntered(0))))
                     Catch ex As Exception
                         Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
-                                eMessageType.NotSet, eMessageSource.ShapesManager, eMessageImportance.Warning))
+                                eMessageType.NotSet, eCoreComponentType.ShapesManager, eMessageImportance.Warning))
                     End Try
 
                 ElseIf astrEntered.Length > 1 Then

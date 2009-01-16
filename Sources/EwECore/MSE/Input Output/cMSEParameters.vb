@@ -17,14 +17,14 @@ Public Class cMSEParameters
 
         Me.AllowValidation = False
         Me.DBID = cCore.NULL_VALUE
-        Me.m_DataType = eDataTypes.MSEParameters
-        Me.m_messageSource = eMessageSource.MSE
+        Me.m_dataType = eDataTypes.MSEParameters
+        Me.m_coreComponent = eCoreComponentType.MSE
         AllowValidation = False
 
         'default OK status used for setVariable
         'see comment setVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_DataType, _
-                                                     Me.m_messageSource, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
+                                                     Me.m_coreComponent, Index, cCore.NULL_VALUE)
 
         'fishing assesment methods
         'Catch estimated biomass

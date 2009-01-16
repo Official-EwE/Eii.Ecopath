@@ -20,7 +20,7 @@ Public Class cEcospaceGroupOutput
 
         Me.DBID = iGroup '????
         Me.Index = iGroup
-        Me.m_DataType = eDataTypes.EcospaceGroupOuput
+        Me.m_dataType = eDataTypes.EcospaceGroupOuput
 
         m_spaceData = EcoSpaceData
 

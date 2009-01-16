@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerInput.vb,v $
+' Revision 1.2  2009/01/16 18:30:39  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:32:03  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -78,7 +81,7 @@ Namespace Ecotracer
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
             Me.m_fpCOutflowEnv = New cPropertyFormatProvider(Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.ShapesManager}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager}
             Me.UpdateFFFormatProviders()
 
             Me.m_plGrid.Controls.Add(Me.Grid)

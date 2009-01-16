@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cProgressMessage.vb,v $
+' Revision 1.2  2009/01/16 18:30:29  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:30  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -26,7 +29,7 @@ Public Class cProgressMessage
     Private m_state As eProgressState
     Private m_max As Single
 
-    Sub New(ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eMessageSource, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    Sub New(ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eCoreComponentType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
         Me.m_sProgress = sProgress
         Me.Message = msgStr
         Me.Type = msgType
@@ -37,7 +40,7 @@ Public Class cProgressMessage
 
 
     Sub New(ByVal State As eProgressState, ByVal MaxValue As Single, ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, _
-                    ByVal msgSource As eMessageSource, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+                    ByVal msgSource As eCoreComponentType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
         Me.New(sProgress, msgStr, msgType, msgSource, msgDataType)
 
         Me.m_state = State

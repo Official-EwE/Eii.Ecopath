@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceFleet.vb,v $
+' Revision 1.2  2009/01/16 18:30:23  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -53,11 +56,11 @@ Public Class cEcospaceFleet
 
         Try
 
-            Me.m_DataType = eDataTypes.EcospaceFleet
-            Me.m_messageSource = eMessageSource.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceFleet
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.DBID = iDBID
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' EffectivePower
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))

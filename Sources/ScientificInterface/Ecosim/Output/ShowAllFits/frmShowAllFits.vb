@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmShowAllFits.vb,v $
+' Revision 1.3  2009/01/16 18:30:43  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/08 23:51:54  jeroens
 ' Renamed file commands
 '
@@ -843,7 +846,7 @@ Namespace Ecosim
             ' Notify user
             ' ToDo_JS: globalize this
             Me.m_core.Messages.SendMessage(New cMessage(String.Format("All fits data are saved to: {0}", strPath), _
-                    eMessageType.NotSet, eMessageSource.EcoSim, eMessageImportance.Information))
+                    eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
 
         End Sub
 

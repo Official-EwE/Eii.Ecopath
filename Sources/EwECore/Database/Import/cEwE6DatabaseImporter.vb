@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.5  2009/01/16 18:30:25  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.4  2008/11/04 20:01:50  jeroens
 ' Vul < 1.0 set to 2.0
 '
@@ -219,7 +222,7 @@ Namespace Database
             If iStep = -1 Then m_iStep += 1 Else m_iStep = iStep
             If Me.m_nSteps <> 0 Then sProgress = CSng(Me.m_iStep / Me.m_nSteps) Else sProgress = 1.0
             ' Send as progress message
-            Me.m_core.Messages.SendMessage(New cProgressMessage(sProgress, strMessage, eMessageType.DataImport, eMessageSource.DataSource))
+            Me.m_core.Messages.SendMessage(New cProgressMessage(sProgress, strMessage, eMessageType.DataImport, eCoreComponentType.DataSource))
             ' Send to log as well
             Me.LogMessage(strMessage, eMessageType.DataImport, eMessageImportance.Information, False)
         End Sub
@@ -234,7 +237,7 @@ Namespace Database
                 Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information, _
                 Optional ByVal bPublishToInterface As Boolean = False)
 
-            Me.LogMessage(New cMessage(strMessage, msgType, eMessageSource.DataSource, msgImportance))
+            Me.LogMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
             ' Log everything
             Me.m_sbLog.AppendLine(strMessage)
 

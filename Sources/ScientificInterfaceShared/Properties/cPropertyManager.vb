@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.2  2009/01/16 18:30:34  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:31:22  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -199,26 +202,26 @@ Namespace Properties
         ''' Clears the properties cache, useful when loading new models.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Clear(ByVal msgSource As eMessageSource)
+        Public Sub Clear(ByVal msgSource As eCoreComponentType)
 
             Select Case msgSource
-                Case eMessageSource.EcoPath
+                Case eCoreComponentType.EcoPath
                     Me.m_htGeneric.Clear()
                     Me.m_htEcopath.Clear()
                     Me.m_htEcosim.Clear()
                     Me.m_htEcospace.Clear()
                     Me.m_htEcotracer.Clear()
 
-                Case eMessageSource.EcoSim
+                Case eCoreComponentType.EcoSim
                     Me.m_htEcosim.Clear()
                     Me.m_htEcospace.Clear()
                     Me.m_htEcotracer.Clear()
 
-                Case eMessageSource.EcoSpace
+                Case eCoreComponentType.EcoSpace
                     Me.m_htEcospace.Clear()
                     Me.m_htEcotracer.Clear()
 
-                Case eMessageSource.Ecotracer
+                Case eCoreComponentType.Ecotracer
                     Me.m_htEcotracer.Clear()
 
             End Select
@@ -292,11 +295,11 @@ Namespace Properties
 
             ' Get an ID for this property
             strID = cValueID.Generate(Source, VarName, SourceSec)
-            Select Case Source.MessageSource
-                Case eMessageSource.EcoPath : ht = Me.m_htEcopath
-                Case eMessageSource.EcoSim : ht = Me.m_htEcosim
-                Case eMessageSource.EcoSpace : ht = Me.m_htEcospace
-                Case eMessageSource.Ecotracer : ht = Me.m_htEcotracer
+            Select Case Source.CoreComponent
+                Case eCoreComponentType.EcoPath : ht = Me.m_htEcopath
+                Case eCoreComponentType.EcoSim : ht = Me.m_htEcosim
+                Case eCoreComponentType.EcoSpace : ht = Me.m_htEcospace
+                Case eCoreComponentType.Ecotracer : ht = Me.m_htEcotracer
                 Case Else : ht = Me.m_htGeneric
             End Select
 
@@ -439,10 +442,10 @@ Namespace Properties
         ''' Refresh the core values of all properties
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Refresh(ByVal msgSource As eMessageSource)
+        Public Sub Refresh(ByVal msgSource As eCoreComponentType)
 
             Select Case msgSource
-                Case eMessageSource.EcoPath
+                Case eCoreComponentType.EcoPath
                     For Each prop As cProperty In Me.m_htGeneric.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -464,7 +467,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eMessageSource.EcoSim
+                Case eCoreComponentType.EcoSim
                     For Each prop As cProperty In Me.m_htGeneric.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -482,7 +485,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eMessageSource.EcoSpace
+                Case eCoreComponentType.EcoSpace
                     For Each prop As cProperty In Me.m_htGeneric.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -496,7 +499,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eMessageSource.Ecotracer
+                Case eCoreComponentType.Ecotracer
                     For Each prop As cProperty In Me.m_htGeneric.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -518,11 +521,11 @@ Namespace Properties
 
             Dim core As cCore = cCore.GetInstance()
 
-            'core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eMessageSource.ShapesManager, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eMessageSource.EcoPath, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eMessageSource.EcoSim, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eMessageSource.EcoSpace, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eMessageSource.Ecotracer, eMessageType.Any))
+            'core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.ShapesManager, eMessageType.Any))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any))
 
         End Sub
 
@@ -539,7 +542,7 @@ Namespace Properties
             Dim prop As cProperty = Nothing
 
             ' Respond to major events
-            If (msg.Type = eMessageType.DataAddedOrRemoved) And (msg.Source = eMessageSource.EcoPath) Then
+            If (msg.Type = eMessageType.DataAddedOrRemoved) And (msg.Source = eCoreComponentType.EcoPath) Then
                 ' Clear existing properties when number of ecopath groups has changed
                 Me.Clear(msg.Source)
                 ' No need to proceed since all Properties are gone

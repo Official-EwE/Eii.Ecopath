@@ -12,17 +12,17 @@ Public Class cEcospaceStats
         MyBase.New(theCore)
 
         Me.DBID = DBID
-        m_DataType = eDataTypes.EcospaceGroup
-        m_messageSource = eMessageSource.EcoSpace
+        m_dataType = eDataTypes.EcospaceGroup
+        m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
         Try
 
-            m_DataType = eDataTypes.EcospaceGroup
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceGroup
+            m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
             'SS
             val = New cValue(New Single, eVarNameFlags.EcospaceSS, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)

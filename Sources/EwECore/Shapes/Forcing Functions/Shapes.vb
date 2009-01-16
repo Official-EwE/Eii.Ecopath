@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shapes.vb,v $
+' Revision 1.3  2009/01/16 18:30:34  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.2  2008/11/28 16:54:15  joeb
 ' Cleaned up ToDo's
 '
@@ -312,6 +315,7 @@ Public Class cForcingFunction
         m_data = esData
 
         m_datatype = DataType
+        m_coreComponent = CoreComponent
         m_dbID = DBID
 
         m_manager = Manager 'keep a reference to the manager for this shape
@@ -562,6 +566,7 @@ Public Class cMediationFunction
         Try
 
             m_datatype = eDataTypes.Mediation
+            m_coreComponent = eCoreComponentType.EcoSim
 
             m_bInInit = True
             m_data = EcoSimData

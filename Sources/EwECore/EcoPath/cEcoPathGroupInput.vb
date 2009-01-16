@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.2  2009/01/16 18:30:15  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:17  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -97,7 +100,7 @@ Public Class cEcoPathGroupInput
     Private Sub ClearCurrentStatus()
 
         m_ValidationStatus.Status = eStatusFlags.OK
-        m_ValidationStatus.Source = eMessageSource.EcoPath
+        m_ValidationStatus.Source = eCoreComponentType.EcoPath
         m_ValidationStatus.Message = ""
         m_ValidationStatus.VarName = eVarNameFlags.NotSet
         m_ValidationStatus.Index = Index
@@ -124,8 +127,8 @@ Public Class cEcoPathGroupInput
         ''jb June-09-06 added m_ndetritus to the constructor so that detritus fate could be dimensioned
         'm_nDetritus = m_core.getCoreCounter(eCoreCounterTypes.nDetritus)
 
-        m_DataType = eDataTypes.EcoPathGroupInput
-        m_messageSource = eMessageSource.EcoPath
+        m_dataType = eDataTypes.EcoPathGroupInput
+        m_coreComponent = eCoreComponentType.EcoPath
 
         'create and set the status object to this source and OK
         m_ValidationStatus = New cVariableStatus

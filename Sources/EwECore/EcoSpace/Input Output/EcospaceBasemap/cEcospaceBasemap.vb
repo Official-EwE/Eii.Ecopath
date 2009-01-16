@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.6  2009/01/16 18:30:22  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.5  2009/01/08 16:18:53  jeroens
 ' Fixed issue 582
 '
@@ -55,10 +58,10 @@ Public Class cEcospaceBasemap
 
         Try
             Me.DBID = DBID
-            m_DataType = eDataTypes.EcospaceBasemap
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceBasemap
+            m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
             ' InRow
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
@@ -296,7 +299,7 @@ Public Class cEcospaceBasemap
                 Return Me.m_lstLayerImportance(index - 1)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access LayerImportance of index:" & index & ". Error: " & ex.Message)
-                m_core.Messages.AddMessage(New cMessage("Unable to access LayerImportance of index", eMessageType.DataValidation, eMessageSource.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                m_core.Messages.AddMessage(New cMessage("Unable to access LayerImportance of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get

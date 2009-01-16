@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFleetInput.vb,v $
+' Revision 1.4  2009/01/16 18:30:16  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/10/09 17:21:04  jeroens
 ' Moved discard mort data from Ecosim to Ecopath
 '
@@ -36,10 +39,10 @@ Public Class cFleetInput
         'stop the data validation for now
         'ToDo_jb add data validation for Fleets
         AllowValidation = False
-        m_messageSource = eMessageSource.EcoPath
-        m_DataType = eDataTypes.FleetInput
+        m_coreComponent = eCoreComponentType.EcoPath
+        m_dataType = eDataTypes.FleetInput
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FleetInput, eMessageSource.EcoPath, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FleetInput, eCoreComponentType.EcoPath, Index, cCore.NULL_VALUE)
 
         nGroups = m_core.nGroups
         nDetritusGroups = m_core.nDetritusGroups

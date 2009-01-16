@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.2  2009/01/16 18:30:09  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:31:30  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -268,9 +271,9 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eMessageSource
+        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
             Get
-                Return eMessageSource.EcoPath
+                Return eCoreComponentType.EcoPath
             End Get
         End Property
 

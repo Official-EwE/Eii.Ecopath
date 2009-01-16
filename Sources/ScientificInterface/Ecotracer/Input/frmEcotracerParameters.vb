@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerParameters.vb,v $
+' Revision 1.2  2009/01/16 18:30:39  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:32:04  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -86,7 +89,7 @@ Namespace Ecotracer
 
             Me.UpdateControls()
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSim, eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         End Sub
 
@@ -125,10 +128,10 @@ Namespace Ecotracer
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If msg.Source = eMessageSource.EcoSim Then
+            If msg.Source = eCoreComponentType.EcoSim Then
                 Me.ConnectToEcosim(Me.m_core.ActiveEcosimScenarioIndex > 0)
             End If
-            If msg.Source = eMessageSource.EcoSpace Then
+            If msg.Source = eCoreComponentType.EcoSpace Then
                 Me.ConnectToEcospace(Me.m_core.ActiveEcospaceScenarioIndex > 0)
             End If
         End Sub

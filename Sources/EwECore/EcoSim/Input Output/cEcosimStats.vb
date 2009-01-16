@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimStats.vb,v $
+' Revision 1.2  2009/01/16 18:30:17  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -33,17 +36,17 @@ Public Class cEcosimStats
         MyBase.New(theCore)
 
         Me.DBID = DBID
-        m_DataType = eDataTypes.EcospaceGroup
-        m_messageSource = eMessageSource.EcoSpace
+        m_dataType = eDataTypes.EcospaceGroup
+        m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
         Try
 
-            m_DataType = eDataTypes.EcospaceGroup
-            m_messageSource = eMessageSource.EcoSpace
+            m_dataType = eDataTypes.EcospaceGroup
+            m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
             'SS
             val = New cValue(New Single, eVarNameFlags.EcosimSS, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             m_values.Add(val.varName, val)

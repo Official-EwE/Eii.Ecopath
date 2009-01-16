@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.7  2009/01/16 18:30:30  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.6  2008/12/02 19:07:22  joeb
 ' Added flag for computation of EcoSim timestep ouput
 '
@@ -465,7 +468,7 @@ Namespace FishingPolicy
 
             Try
 
-                addMessage(New cMessage(strMessage, msgType, eMessageSource.EcoSim, msgImportance))
+                addMessage(New cMessage(strMessage, msgType, eCoreComponentType.EcoSim, msgImportance))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -626,7 +629,7 @@ Namespace FishingPolicy
 
                         addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + _
                                         " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", _
-                                        eMessageSource.EcoSim, eMessageImportance.Critical))
+                                        eCoreComponentType.EcoSim, eMessageImportance.Critical))
                         Exit For
                     End If  'Villy: Carl had introduced the clause above, omitting the calculation of basevalues
                 Next

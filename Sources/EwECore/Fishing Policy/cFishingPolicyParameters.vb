@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyParameters.vb,v $
+' Revision 1.2  2009/01/16 18:30:30  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:30:24  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -97,14 +100,14 @@ Public Class cFishingPolicyParameters
 
         Me.AllowValidation = False
         Me.DBID = DBID
-        Me.m_DataType = eDataTypes.FishingPolicyParameters
-        Me.m_messageSource = eMessageSource.FishingPolicySearch
+        Me.m_dataType = eDataTypes.FishingPolicyParameters
+        Me.m_coreComponent = eCoreComponentType.FishingPolicySearch
         AllowValidation = False
 
         'default OK status used for setVariable
         'see comment setVariable(...)
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FishingPolicyParameters, _
-                                                    eMessageSource.EcoSim, Index, cCore.NULL_VALUE)
+                                                    eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
         Dim val As cValue
         Dim meta As cVariableMetaData

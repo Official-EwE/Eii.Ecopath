@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.4  2009/01/16 18:30:32  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.3  2008/12/09 19:49:15  joeb
 ' Ouput objects now use core data instead of buffering data
 '
@@ -136,7 +139,7 @@ Namespace MSE
 
                 If Me.isRunning Then
                     Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.", _
-                                                                eMessageType.ErrorEncountered, eMessageSource.MSE, eMessageImportance.Critical, eDataTypes.MSEManager))
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical, eDataTypes.MSEManager))
                     Return False
                 End If
 
@@ -420,6 +423,12 @@ Namespace MSE
         Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
             Get
                 Return eDataTypes.MSEManager
+            End Get
+        End Property
+
+        Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.EcoSpace
             End Get
         End Property
 

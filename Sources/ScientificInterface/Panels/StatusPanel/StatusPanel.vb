@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.2  2009/01/16 18:30:31  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.1  2008/09/26 07:32:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -100,19 +103,19 @@ Public Class StatusPanel
     Public Sub Clear()
         Me.SetHighlights(Nothing)
         Me.tvStatus.Nodes.Clear()
-        Me.m_msh.Clear(eMessageSource.Core)
+        Me.m_msh.Clear(eCoreComponentType.Core)
     End Sub
 
 #Region " Core message handling "
 
-    Dim m_dtMessageHanders As New Dictionary(Of eMessageSource, cMessageHandler)
+    Dim m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
 
-    Private Sub ConfigMessageHandler(ByVal src As eMessageSource, ByVal bSet As Boolean)
+    Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
 
         Dim mh As cMessageHandler = Nothing
         Dim core As cCore = cCore.GetInstance()
 
-        If (src = eMessageSource.NotSet) Then Return
+        If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
             mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any)
@@ -136,7 +139,7 @@ Public Class StatusPanel
     Private Sub ConfigMessageHandlers(ByVal bSet As Boolean)
 
         ' Set up message handlers
-        For Each src As eMessageSource In [Enum].GetValues(GetType(eMessageSource))
+        For Each src As eCoreComponentType In [Enum].GetValues(GetType(eCoreComponentType))
             Me.ConfigMessageHandler(src, bSet)
         Next
 
