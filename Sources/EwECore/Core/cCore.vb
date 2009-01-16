@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.55  2009/01/16 17:16:57  joeb
+' Changing Ecospace run length sets default summary periods
+'
 ' Revision 1.54  2009/01/16 16:02:56  joeb
 ' onValidated() only sets msAffected from cValue.isStored flag
 '
@@ -9514,6 +9517,10 @@ Public Class cCore
 
                         'setEcosimRunLength will set the model run length in both ecosim and ecospace
                         setEcosimRunLength(CInt(value.Value))
+
+                        'change the summary periods to fit the new run length
+                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+
                         'load the new data into the parameters object
                         Me.LoadEcospaceModelParameters()
 
