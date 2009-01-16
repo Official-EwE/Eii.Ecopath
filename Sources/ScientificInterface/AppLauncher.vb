@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.25  2009/01/16 23:48:37  jeroens
+' ApplyTS -> WeightTS
+'
 ' Revision 1.24  2009/01/16 23:47:47  jeroens
 ' ApplyTS -> WeightTS
 '
@@ -2222,9 +2225,10 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdReloadTimeSeries">Reload TimeSeries command</see>.
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdLoadWeightTimeSeries">Load and weight TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadApplyTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
+    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
     End Sub
