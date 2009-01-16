@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.54  2009/01/16 16:02:56  joeb
+' onValidated() only sets msAffected from cValue.isStored flag
+'
 ' Revision 1.53  2009/01/15 22:44:41  joeb
 ' Added OnValidated for Ecospace Start and End summary periods
 '
@@ -9023,12 +9026,6 @@ Public Class cCore
 
                 Case eDataTypes.EcoSimModelParameter
                     If bValidatedOk Then Me.UpdateEcoSimModelParameters()
-                    ' Special case: do not flag the core as dirty on select variables
-                    If (vs.VarName = eVarNameFlags.EcosimSumStart) Or _
-                       (vs.VarName = eVarNameFlags.EcosimSumEnd) Or _
-                       (vs.VarName = eVarNameFlags.EcosimSumNTimeSteps) Then
-                        msAffected = eMessageSource.NotSet
-                    End If
 
                 Case eDataTypes.EcoSimScenario
                     If bValidatedOk Then Me.UpdateEcoSimScenario(idAffected)
@@ -9055,12 +9052,6 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceModelParameter
                     If bValidatedOk Then Me.UpdateEcospaceModelParameters()
-                    ' Special case: do not flag the core as dirty on select variables
-                    If (vs.VarName = eVarNameFlags.EcospaceNumberSummaryTimeSteps) Or _
-                       (vs.VarName = eVarNameFlags.EcospaceSummaryTimeEnd) Or _
-                       (vs.VarName = eVarNameFlags.EcospaceSummaryTimeStart) Then
-                        msAffected = eMessageSource.NotSet
-                    End If
 
                 Case eDataTypes.EcospaceHabitat
                     If bValidatedOk Then Me.UpdateEcospaceHabitat(idAffected)
