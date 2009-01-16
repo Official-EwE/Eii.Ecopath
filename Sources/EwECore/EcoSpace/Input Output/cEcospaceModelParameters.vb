@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceModelParameters.vb,v $
+' Revision 1.3  2009/01/16 16:03:24  joeb
+' isStored = False for Summary time period data
+'
 ' Revision 1.2  2009/01/15 22:38:37  joeb
 ' Fixed bug Messagesource was Ecosim instead of Ecospace
 '
@@ -216,6 +219,7 @@ Public Class cEcospaceModelParameters
             meta = Nothing
             val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeStart, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceSummaryTimeStart))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'EndSummaryTime 
@@ -223,6 +227,7 @@ Public Class cEcospaceModelParameters
             meta = Nothing
             val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeEnd, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceSummaryTimeEnd))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'NumSummaryTimeSteps
@@ -230,6 +235,7 @@ Public Class cEcospaceModelParameters
             meta = Nothing
             val = New cValue(1, eVarNameFlags.EcospaceNumberSummaryTimeSteps, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceNumberSummaryTimeSteps))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
 
