@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.9  2009/01/16 18:37:09  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.8  2009/01/16 17:17:50  joeb
 ' Removed unused variable
 '
@@ -77,7 +80,7 @@ Namespace Ecospace
             plResultsGrid.Controls.Add(m_GridGroup)
             plResultsGrid.Controls.Add(m_GridRegion)
 
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
         End Sub
 
@@ -96,7 +99,7 @@ Namespace Ecospace
             Me.m_fpSumLength = New cPropertyFormatProvider(Me.udSumLength, ecospaceModelParams, eVarNameFlags.EcospaceNumberSummaryTimeSteps)
 
             PopulateResults()
-            Me.MessageSources = New eMessageSource() {eMessageSource.EcoSpace}
+            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
         Private Sub frmEcospaceResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing

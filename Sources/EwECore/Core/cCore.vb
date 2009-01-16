@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.56  2009/01/16 18:37:07  jeroens
+' eMessageSource renamed to eCoreComponentTypes
+'
 ' Revision 1.55  2009/01/16 17:16:57  joeb
 ' Changing Ecospace run length sets default summary periods
 '
@@ -973,13 +976,13 @@ Public Class cCore
         ' Start the actual work
         If (DirectCast(Me.DataSource, IEcopathDataSource).AddGroup(strName, sPP, iGroup, iGroupID)) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupInput)
-            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupOutput)
-            Me.DataAddedOrRemovedMessage("Fleet number of groups has changed.", eMessageSource.EcoPath, eDataTypes.FleetInput)
-            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eMessageSource.EcoSim, eDataTypes.Stanza)
+            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupInput)
+            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupOutput)
+            Me.DataAddedOrRemovedMessage("Fleet number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
+            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.Stanza)
 
             If m_bEcoSimIsInit And (m_EcoSimData.GroupDBID IsNot Nothing) Then
-                Me.DataAddedOrRemovedMessage("EcoSim number of groups has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimGroupInput)
+                Me.DataAddedOrRemovedMessage("EcoSim number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimGroupInput)
             End If
 
             bSucces = True
@@ -1008,14 +1011,14 @@ Public Class cCore
         ds = DirectCast(Me.DataSource, IEcopathDataSource)
         If ds.RemoveGroup(Me.m_EcoPathData.GroupDBID(iGroup)) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupInput)
-            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupOutput)
-            Me.DataAddedOrRemovedMessage("Fleet number of groups has changed.", eMessageSource.EcoPath, eDataTypes.FleetInput)
-            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eMessageSource.EcoSim, eDataTypes.Stanza)
+            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupInput)
+            Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupOutput)
+            Me.DataAddedOrRemovedMessage("Fleet number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
+            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.Stanza)
 
             If m_bEcoSimIsInit And (m_EcoSimData.GroupDBID IsNot Nothing) Then
                 'load the Ecosim Groups with the Ecosim data reloaded from the database above
-                Me.DataAddedOrRemovedMessage("EcoSim number of groups has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimGroupInput)
+                Me.DataAddedOrRemovedMessage("EcoSim number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimGroupInput)
             End If
 
             bSucces = True
@@ -1042,12 +1045,12 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcopathDataSource)
         If ds.MoveGroup(Me.m_EcoPathData.GroupDBID(iGroup), iIndex) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath group order has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupInput)
-            Me.DataAddedOrRemovedMessage("Ecopath group order has changed.", eMessageSource.EcoPath, eDataTypes.EcoPathGroupOutput)
+            Me.DataAddedOrRemovedMessage("Ecopath group order has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupInput)
+            Me.DataAddedOrRemovedMessage("Ecopath group order has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupOutput)
 
             If m_bEcoSimIsInit And (m_EcoSimData.GroupDBID IsNot Nothing) Then
                 'load the Ecosim Groups with the Ecosim data reloaded from the database above
-                Me.DataAddedOrRemovedMessage("EcoSim group order has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimGroupInput)
+                Me.DataAddedOrRemovedMessage("EcoSim group order has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimGroupInput)
             End If
 
             bSucces = True
@@ -1190,7 +1193,7 @@ Public Class cCore
         Try
             'build a new EcoPath Model object
             m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
-            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eMessageSource.EcoPath, eMessageType.Any))
+            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any))
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
@@ -1201,7 +1204,7 @@ Public Class cCore
             Catch ex As Exception
                 'the validation manager creates all the validators. Make sure we know if something went wrong
                 Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.CORE_INIT_CRITICAL_VALIDATORS, ex.Message), _
-                        eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical)
+                        eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical)
                 'the message publisher is declared with the new operator so it already exists 
                 m_publisher.AddMessage(msg)
                 m_publisher.sendAllMessages()
@@ -1211,7 +1214,7 @@ Public Class cCore
         Catch ex As Exception
             'Major Error ???????
             Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.CORE_INIT_CRITICAL_GENERIC, ex.Message), _
-                    eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical)
+                    eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical)
             'the message publisher is declared with the new operator so it already exists 
             m_publisher.AddMessage(msg)
             m_publisher.sendAllMessages()
@@ -1228,7 +1231,7 @@ Public Class cCore
     ''' <param name="message">Test of the message</param>
     ''' <param name="dataType">eDataTypes enumerator for the type of data</param>
     ''' <remarks>This is just to wrap the creation and sending of a datachanged message to clean up the code a bit</remarks>
-    Private Sub DataAddedOrRemovedMessage(ByRef message As String, ByVal messageSource As eMessageSource, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
+    Private Sub DataAddedOrRemovedMessage(ByRef message As String, ByVal messageSource As eCoreComponentType, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
 
         ' Create msg
         Dim msg As New cMessage(message, eMessageType.DataAddedOrRemoved, messageSource, eMessageImportance.Maintenance, dataType)
@@ -1594,14 +1597,14 @@ Public Class cCore
             Else
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_SUCCESS, strDataset)
             End If
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eMessageSource.TimeSeries, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.TimeSeries, eMessageImportance.Information)
         Else
             If String.IsNullOrEmpty(strDataset) Then
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_UNLOAD_FAILED, strError)
             Else
                 strText = String.Format(My.Resources.CoreMessages.TIMESERIES_LOAD_FAILED, strDataset, strError)
             End If
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.TimeSeries, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.TimeSeries, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -1761,7 +1764,7 @@ Public Class cCore
             End If
         Next
 
-        Me.DataAddedOrRemovedMessage("Time Series have been updated", eMessageSource.TimeSeries, eDataTypes.NotSet)
+        Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
         Me.Messages.sendAllMessages()
 
         Return True
@@ -1801,7 +1804,7 @@ Public Class cCore
         Try
             ' Try to add TS to the datasource
             If DirectCast(DataSource, IEcosimDatasource).AppendTimeSeries(strName, iPool, timeSeriesType, sWeight, asValues, iDBID) Then
-                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eMessageSource.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
             End If
         Catch ex As Exception
@@ -1843,7 +1846,7 @@ Public Class cCore
         Try
             ' Try to add TS to the datasource
             If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeries(iTS) Then
-                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eMessageSource.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
             End If
         Catch ex As Exception
@@ -1881,7 +1884,7 @@ Public Class cCore
             If ds.AppendTimeSeriesDataset(strName, strDescription, strAuthor, strContact, iFirstYear, iNumYears, iDatasetID) Then
 
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
-                Me.DataAddedOrRemovedMessage("Ecosim number of datasets has changed.", eMessageSource.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Ecosim number of datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 iDataset = Array.IndexOf(Me.m_TSData.iDatasetDBID, iDatasetID)
                 Return Me.LoadTimeSeries(iDataset, False)
 
@@ -1906,7 +1909,7 @@ Public Class cCore
         Try
             ' Try to add TS to the datasource
             If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeriesDataset(dataset.Index) Then
-                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eMessageSource.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
             End If
         Catch ex As Exception
@@ -1945,7 +1948,7 @@ Public Class cCore
     ''' <param name="MessageType">Type of message</param>
     ''' <returns>A new cMessage Object</returns>
     ''' <remarks>Used as a simple way to build a new object</remarks>
-    Private Function CreateMessage(ByVal message As String, ByVal source As eMessageSource, ByVal MessageType As eMessageType) As cMessage
+    Private Function CreateMessage(ByVal message As String, ByVal source As eCoreComponentType, ByVal MessageType As eMessageType) As cMessage
         Dim msg As New cMessage
         msg.Message = message
         msg.Source = source
@@ -1969,7 +1972,7 @@ Public Class cCore
         If Me.m_StateMonitor.IsEcotracerModified Then
             ' Prepare feedback message
             strPrompt = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_PROMPT, Me.m_EcoPathData.EcotracerScenarioName(Me.ActiveEcotracerScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eMessageSource.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
             If (bQuiet) Then
                 fm.Reply = cFeedbackMessage.eReply.YES
             Else
@@ -1992,7 +1995,7 @@ Public Class cCore
         If Me.m_StateMonitor.IsEcospaceModified Then
             ' Prepare feedback message
             strPrompt = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_PROMPT, Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eMessageSource.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
+            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
             If (bQuiet) Then
                 fm.Reply = cFeedbackMessage.eReply.YES
             Else
@@ -2015,7 +2018,7 @@ Public Class cCore
         If Me.m_StateMonitor.IsEcosimModified Then
             ' Prepare feedback message
             strPrompt = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_PROMPT, Me.m_EcoPathData.EcosimScenarioName(Me.ActiveEcosimScenarioIndex))
-            fm = New cFeedbackMessage(strPrompt, eMessageSource.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
+            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
             If (bQuiet) Then
                 fm.Reply = cFeedbackMessage.eReply.YES
             Else
@@ -2036,7 +2039,7 @@ Public Class cCore
         End If
 
         If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
-            fm = New cFeedbackMessage(My.Resources.CoreMessages.ECOPATH_SAVE_PROMPT, eMessageSource.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
+            fm = New cFeedbackMessage(My.Resources.CoreMessages.ECOPATH_SAVE_PROMPT, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, , cFeedbackMessage.eReply.YES)
             If (bQuiet) Then
                 fm.Reply = cFeedbackMessage.eReply.YES
             Else
@@ -2195,10 +2198,10 @@ Public Class cCore
 
         If String.IsNullOrEmpty(strError) Then
             strText = String.Format(My.Resources.CoreMessages.ECOPATH_LOAD_SUCCESS, ds.ToString())
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eMessageSource.EcoPath, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoPath, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOPATH_LOAD_FAILED, ds.ToString(), strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -2258,7 +2261,7 @@ Public Class cCore
                 'there needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this
                 ' VERIFY_JS: Discuss what to do here
                 m_publisher.AddMessage(New cMessage("Loaded model '" & m_EwEModel.Name & "'", eMessageType.DataModified, _
-                                        eMessageSource.Core, eMessageImportance.Maintenance))
+                                        eCoreComponentType.Core, eMessageImportance.Maintenance))
 
                 'copy the input data into the output data this could wait for a model run but it may be safer to do it here
                 m_EcoPathData.CopyInputToModelArrays()
@@ -2384,7 +2387,7 @@ Public Class cCore
             ' Oh we're happy now!
             Return True
         Else
-            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, DataSource.ToString), eMessageType.Any, eMessageSource.DataSource, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, DataSource.ToString), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning))
             cLog.Write("cCore.SaveModel() Failed to save the current model") 'the current model name will be in the log file
             Return False
         End If
@@ -2986,11 +2989,11 @@ Public Class cCore
         ' Start the actual work. The datasource will ensure the new fleet will be added througout models and scenarios
         If (DirectCast(DataSource, IEcopathDataSource).AddFleet(strName, iFleet, iFleetID)) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eMessageSource.EcoPath, eDataTypes.FleetInput)
-            'DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eMessageSource.EcoPath, eDataTypes.FleetOutput)
+            Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
+            'DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetOutput)
 
             If Me.ActiveEcospaceScenarioIndex > 0 Then
-                Me.DataAddedOrRemovedMessage("EcoSpace number of fleets has changed.", eMessageSource.EcoSpace, eDataTypes.EcospaceFleet)
+                Me.DataAddedOrRemovedMessage("EcoSpace number of fleets has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceFleet)
             End If
 
             bSucces = True
@@ -3019,11 +3022,11 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcopathDataSource)
         If ds.RemoveFleet(Me.m_EcoPathData.FleetDBID(iFleet)) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eMessageSource.EcoPath, eDataTypes.FleetInput)
-            'Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eMessageSource.EcoPath, eDataTypes.FleetOutput)
+            Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
+            'Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetOutput)
 
             If Me.ActiveEcospaceScenarioIndex > 0 Then
-                Me.DataAddedOrRemovedMessage("EcoSpace number of fleets has changed.", eMessageSource.EcoSpace, eDataTypes.EcospaceFleet)
+                Me.DataAddedOrRemovedMessage("EcoSpace number of fleets has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceFleet)
             End If
 
             bSucces = True
@@ -3050,11 +3053,11 @@ Public Class cCore
         ds = DirectCast(DataSource, IEcopathDataSource)
         If ds.MoveFleet(Me.m_EcoPathData.FleetDBID(iFleet), iIndex) Then
 
-            Me.DataAddedOrRemovedMessage("Ecopath fleet order has changed.", eMessageSource.EcoPath, eDataTypes.FleetInput)
-            'Me.DataAddedOrRemovedMessage("Ecopath fleet order has changed.", eMessageSource.EcoPath, eDataTypes.FleetOutput)
+            Me.DataAddedOrRemovedMessage("Ecopath fleet order has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
+            'Me.DataAddedOrRemovedMessage("Ecopath fleet order has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetOutput)
 
             If Me.ActiveEcospaceScenarioIndex > 0 Then
-                Me.DataAddedOrRemovedMessage("EcoSpace group order has changed.", eMessageSource.EcoSpace, eDataTypes.EcospaceFleet)
+                Me.DataAddedOrRemovedMessage("EcoSpace group order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceFleet)
             End If
 
             bSucces = True
@@ -3106,7 +3109,7 @@ Public Class cCore
         Try
 
             If Me.m_StateMonitor.HasEcopathLoaded() = False Then
-                msg = CreateMessage(My.Resources.CoreMessages.ECOPATH_ERROR_NOMODEL, eMessageSource.EcoPath, eMessageType.ErrorEncountered)
+                msg = CreateMessage(My.Resources.CoreMessages.ECOPATH_ERROR_NOMODEL, eCoreComponentType.EcoPath, eMessageType.ErrorEncountered)
                 m_publisher.AddMessage(msg)
 
                 cLog.Write(Me.ToString & ".RunEcoPath() Failed EcoPath Model has not been initialized. InitEcoPath(filename) must be called before .RunEcoPath().")
@@ -3150,7 +3153,7 @@ Public Class cCore
         Catch ex As Exception
 
             msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RUN_ERROR_EXCEPTION, ex.Message), _
-                    eMessageSource.EcoPath, eMessageType.ErrorEncountered)
+                    eCoreComponentType.EcoPath, eMessageType.ErrorEncountered)
             m_publisher.AddMessage(msg)
 
             cLog.Write(Me.ToString & ".RunEcoPath() Error. " & ex.Message)
@@ -3160,9 +3163,9 @@ Public Class cCore
 
         If bsuccess Then
             ' This message serves to allow a user interface to update to new data.
-            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eMessageSource.EcoPath, eMessageImportance.Information)
+            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
         Else
-            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eMessageSource.EcoPath, eMessageImportance.Warning)
+            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
         End If
 
         m_publisher.AddMessage(msg)
@@ -3325,7 +3328,7 @@ Public Class cCore
         ' Refresh ecopath groups
         Me.LoadEcopathInputs()
         ' Send out data changed message for ecopath
-        Me.m_publisher.AddMessage(Me.CreateMessage("", eMessageSource.EcoPath, eMessageType.DataModified))
+        Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoPath, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
         ' Flag datasource as dirty
         Me.DataSource.SetChanged(eDataTypes.EcoPathGroupInput)
@@ -3443,7 +3446,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3527,7 +3530,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         Return True
@@ -3553,7 +3556,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3575,7 +3578,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3595,7 +3598,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3652,7 +3655,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3672,7 +3675,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+                    eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
         obj.AllowValidation = True
@@ -3693,7 +3696,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
         End If
 
         obj.AllowValidation = True
@@ -3721,7 +3724,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcosimFisheriesRegulation))
         End If
 
         obj.AllowValidation = True
@@ -3742,7 +3745,7 @@ Public Class cCore
 
         If bSendMessage Then
             Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
-                    eMessageSource.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
         End If
 
         fleet.AllowValidation = True
@@ -4028,7 +4031,7 @@ Public Class cCore
 
             m_EcoSim = New Ecosim.cEcoSimModel
 
-            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eMessageSource.EcoSim, eMessageType.Any))
+            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any))
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
@@ -4106,10 +4109,10 @@ Public Class cCore
 
         If String.IsNullOrEmpty(strError) Then
             strText = String.Format(My.Resources.CoreMessages.ECOSIM_LOAD_SUCCESS, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eMessageSource.EcoSim, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOSIM_LOAD_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -4124,10 +4127,10 @@ Public Class cCore
 
         If bSucces Then
             strText = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_SUCCESS, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataModified, eMessageSource.EcoSim, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.EcoSim, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -4162,7 +4165,7 @@ Public Class cCore
             If (ds.AppendEcosimScenario(strName, strDescription, strAuthor, strContact, iScenarioID)) Then
 
                 Me.InitEcosimScenarios()
-                DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimScenario)
+                DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
                 Return Me.LoadEcosimScenario(iScenario)
 
@@ -4380,7 +4383,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcoSimLoaded(True, True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
-            DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimScenario)
+            DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
             Return True
         End If
 
@@ -4431,7 +4434,7 @@ Public Class cCore
                 bSucces = Me.InitEcoSim()
             End If
 
-            Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eMessageSource.EcoSim, eDataTypes.EcoSimScenario)
+            Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
 
         End If
         ' Return succes
@@ -4666,7 +4669,7 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex)
             m_publisher.AddMessage(New cMessage("Error loading Ecosim Summary data. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eMessageSource.EcoSim, eMessageImportance.Critical))
+                                    eCoreComponentType.EcoSim, eMessageImportance.Critical))
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -5009,7 +5012,7 @@ Public Class cCore
 
             If newNumberOfYears = 0 Then Exit Sub
             'sets NumYears and NTimes and resize the underlying data to the new number of years
-            m_EcoSimData.redimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
+            m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
 
             'jb Ecosim.redimTime() now called at the start of an ecosim run
             'Me.m_EcoSim.redimTime(False)
@@ -5037,10 +5040,10 @@ Public Class cCore
             Me.LoadEcoSimModelParameters()
 
             Me.m_publisher.AddMessage(New cMessage("Ecosim number of years has changed.", eMessageType.EcosimNYearsChanged, _
-                                                     eMessageSource.EcoSim, eMessageImportance.Maintenance))
+                                                     eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
 
             Me.m_publisher.AddMessage(New cMessage("Ecosim number of years has changed.", eMessageType.DataModified, _
-                                                     eMessageSource.ShapesManager, eMessageImportance.Maintenance))
+                                                     eCoreComponentType.ShapesManager, eMessageImportance.Maintenance))
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -5235,7 +5238,7 @@ Public Class cCore
 
                 'EcoPath is supposed to have sent a message if it failed
                 msg = New cMessage("Ecosim could not be run because Ecopath failed to balance the model.", eMessageType.ErrorEncountered, _
-                                            eMessageSource.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet)
+                                            eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet)
                 m_publisher.SendMessage(msg)
                 Return False
             End If
@@ -5262,7 +5265,7 @@ Public Class cCore
             'Ecopath should have sent out its own message 
             'so we should only need to send a message for Ecosim
             msg = New cMessage("Ecosim has re-run Ecopath and initialized its data.", eMessageType.DataModified, _
-                                        eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet)
+                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet)
             m_publisher.SendMessage(msg)
         End If
 
@@ -5292,7 +5295,7 @@ Public Class cCore
             Me.m_ShapeManagers(eDataTypes.FishMort).Load()
 
             Me.m_publisher.AddMessage(New cMessage("Data changed.", eMessageType.DataAddedOrRemoved, _
-             eMessageSource.ShapesManager, eMessageImportance.Maintenance))
+             eCoreComponentType.ShapesManager, eMessageImportance.Maintenance))
 
         End If
 
@@ -5300,7 +5303,7 @@ Public Class cCore
         m_EcoSim.bStopRunning = False
 
         m_publisher.AddMessage(New cMessage("Ecosim run completed.", eMessageType.EcosimRunCompleted, _
-                                        eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet))
+                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet))
 
         ' Update core state monitor
         Me.m_StateMonitor.SetEcosimCompleted()
@@ -5556,14 +5559,14 @@ Public Class cCore
     '    '   OnShapeEdited(eDataTypes.Forcing)
 
     '    m_publisher.SendMessage(New cMessage("Groups have been updated.", _
-    '                    eMessageType.DataModified, eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
+    '                    eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
     '    m_publisher.SendMessage(New cMessage("Model parameters have been updated.", _
-    '            eMessageType.DataModified, eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimModelParameter))
+    '            eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimModelParameter))
 
     '    'the data changed message has to be sent be the core instead of the shapemanagers 
     '    'because the message refers to all the shape managers not just a single one so all the data has to be loaded before the message can be sent
     '    'm_publisher.SendMessage(New cMessage("Forcing Shapes have been updated.", _
-    '    '                        eMessageType.DataChanged, eMessageSource.ShapesManager, eMessageImportance.Warning, eDataTypes.Shape))
+    '    '                        eMessageType.DataChanged, eCoreComponentType.ShapesManager, eMessageImportance.Warning, eDataTypes.Shape))
 
     'End Function
 
@@ -5637,7 +5640,7 @@ Public Class cCore
             DataSource.SetChanged(eDataTypes.EcoSimGroupInput)
             Me.m_StateMonitor.UpdateDataState(DataSource)
 
-            Me.Messages.SendMessage(New cMessage("Vulnerabilites changed.", eMessageType.DataModified, eMessageSource.EcoSim, eMessageImportance.Maintenance))
+            Me.Messages.SendMessage(New cMessage("Vulnerabilites changed.", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -5681,7 +5684,7 @@ Public Class cCore
 
         m_Ecospace = New cEcoSpace
 
-        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eMessageSource.EcoSpace, eMessageType.Any))
+        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any))
 
         m_EcoSpaceData = New cEcospaceDataStructures
         m_SpaceTSData = New cEcospaceTimeSeriesDataStructures
@@ -5758,13 +5761,13 @@ Public Class cCore
                     loadEcoTracerResults()
 
                     Me.m_publisher.AddMessage(New cMessage("Ecospace has completed a model run.", _
-                                  eMessageType.EcospaceRunCompleted, eMessageSource.EcoSpace, eMessageImportance.Information))
+                                  eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
 
                 End If 'If GroupsMissingHabitat() Then
 
             Else 'If Me.m_StateMonitor.HasEcospaceLoaded Then
                 Me.m_publisher.AddMessage(New cMessage("An Ecospace scenario must be loaded before Ecospace can be run.", _
-                                          eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Warning))
+                                          eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If 'If Me.m_StateMonitor.HasEcospaceLoaded Then
 
             System.Console.WriteLine("cCore.RunEcospace() Run Time = " & CDbl(Timer - t))
@@ -5778,7 +5781,7 @@ Public Class cCore
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Me.m_publisher.SendMessage(New cMessage("Run Ecospace Error: " & ex.Message, _
-                                      eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
+                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
 
             Return False
         End Try
@@ -5839,7 +5842,7 @@ Public Class cCore
             grpNames += " Ecospace cannot be run."
             grpNames += " Please edit either your Habitat Assignments or Basemap data."
 
-            Me.Messages.AddMessage(New cMessage(grpNames, eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Critical))
+            Me.Messages.AddMessage(New cMessage(grpNames, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
             Return False
         End If
 
@@ -6125,10 +6128,10 @@ Public Class cCore
 
         If String.IsNullOrEmpty(strError) Then
             strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_SUCCESS, Me.m_EcoPathData.EcospaceScenarioName(iScenario))
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_FAILED, Me.m_EcoPathData.EcospaceScenarioName(iScenario), strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -6144,10 +6147,10 @@ Public Class cCore
 
         If bSucces Then
             strText = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_SUCCES, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataModified, eMessageSource.EcoSpace, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOSPACE_SAVE_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.EcoSpace, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -6405,7 +6408,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceLoaded(True, True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
-            Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eMessageSource.EcoSpace, eDataTypes.EcoSpaceScenario)
+            Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
             Return True
         Else
             ' Restore active scenario
@@ -6457,7 +6460,7 @@ Public Class cCore
                 ' #Yes: Must entirely re-initialize Ecosim
                 bSucces = Me.InitEcoSim()
             End If
-            Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eMessageSource.EcoSpace, eDataTypes.EcoSpaceScenario)
+            Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
         End If
         ' Return succes
         Return bSucces
@@ -6639,7 +6642,7 @@ Public Class cCore
             Dim r As New Random()
             If CInt(r.NextDouble * 42) = 13 Then
                 Me.m_publisher.AddMessage(New cMessage("Map has been resized; a tsunami warning has been issued.", _
-                    eMessageType.NotSet, eMessageSource.EcoSpace, eMessageImportance.Warning))
+                    eMessageType.NotSet, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If
 
         End If
@@ -7156,7 +7159,7 @@ Public Class cCore
         If ds.AddEcospaceHabitat(strHabitatName, iHabitatID) Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace habitat {0} has been added", strHabitatName), _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
         End If
@@ -7195,7 +7198,7 @@ Public Class cCore
         If bsucces Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage("Ecospace habitat has been removed", _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         End If
 
         ' Decrease batch count, stating what has changed
@@ -7311,7 +7314,7 @@ Public Class cCore
         If ds.AppendEcospaceRegion(strRegionName, iDBID) Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace Region {0} has been added", strRegionName), _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
         End If
@@ -7348,7 +7351,7 @@ Public Class cCore
         If bsucces Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage("Ecospace region has been removed", _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         End If
 
         ' Decrease batch count, stating what has changed
@@ -7471,7 +7474,7 @@ Public Class cCore
             'bSucces = Me.LoadEcospaceScenario(Me.m_EcoPathData.ActiveEcospaceScenario)
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace MPA {0} has been added", strMPAName), _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
         End If
@@ -7508,7 +7511,7 @@ Public Class cCore
         If bsucces Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage("Ecospace MPA has been removed", _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         End If
 
         ' Decrease batch count, stating what has changed
@@ -7655,7 +7658,7 @@ Public Class cCore
         If ds.AppendEcospaceImportanceLayer(strName, strDescription, sWeight, iID) Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace importance layer {0} has been added", strName), _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
         End If
@@ -7693,7 +7696,7 @@ Public Class cCore
         If bsucces Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage("Ecospace importance has been removed", _
-                eMessageType.DataAddedOrRemoved, eMessageSource.EcoSpace, eMessageImportance.Maintenance))
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         End If
 
         ' Decrease batch count, stating what has changed
@@ -7867,7 +7870,7 @@ Public Class cCore
                 'Stanza parameters can not be calculated until this has been done by the interface
                 ' ToDo_JS: Add cVariableStatuses for missing vars
                 Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, StanzaGrp.Name), _
-                                            eMessageType.TooManyMissingParameters, eMessageSource.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza))
+                                            eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza))
                 'maybe not the correct messagetype but it seems to work
                 Return False
             End If
@@ -7927,7 +7930,7 @@ Public Class cCore
 
             'tell the interface that the stanza object has changed
             m_publisher.AddMessage(New cMessage("New Stanza parameters calculated.", eMessageType.DataModified, _
-                        eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.Stanza))
+                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.Stanza))
 
             m_publisher.sendAllMessages()
             Return True
@@ -7935,7 +7938,7 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex)
             m_publisher.AddMessage(New cMessage("Error Calculating Stanza variables. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eMessageSource.EcoSim, eMessageImportance.Critical, eDataTypes.Stanza))
+                                    eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.Stanza))
             m_publisher.sendAllMessages()
             Return False
         End Try
@@ -8008,7 +8011,7 @@ Public Class cCore
         ' Append the stanza
         ds = DirectCast(DataSource, IEcopathDataSource)
         If ds.AppendStanza(strStanzaName, aiGroupID, aiStartAge, iDBID) Then
-            Me.DataAddedOrRemovedMessage("Ecopath number of stanza has changed.", eMessageSource.EcoPath, eDataTypes.Stanza)
+            Me.DataAddedOrRemovedMessage("Ecopath number of stanza has changed.", eCoreComponentType.EcoPath, eDataTypes.Stanza)
             bSucces = True
         End If
         ' Decrease batch count
@@ -8040,7 +8043,7 @@ Public Class cCore
         ' Remove the stanza
         ds = DirectCast(DataSource, IEcopathDataSource)
         If ds.RemoveStanza(iDBID) Then
-            Me.DataAddedOrRemovedMessage("Ecopath number of stanza has changed.", eMessageSource.EcoPath, eDataTypes.Stanza)
+            Me.DataAddedOrRemovedMessage("Ecopath number of stanza has changed.", eCoreComponentType.EcoPath, eDataTypes.Stanza)
             bSucces = True
         End If
         ' Decrease batch count
@@ -8360,7 +8363,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcotracerLoaded(True, True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
-            Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eMessageSource.Ecotracer, eDataTypes.EcotracerScenario)
+            Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
             Return True
         End If
 
@@ -8409,7 +8412,7 @@ Public Class cCore
                 ' #Yes: Must entirely re-initialize Ecosim
                 bSucces = Me.InitEcoSim()
             End If
-            Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eMessageSource.Ecotracer, eDataTypes.EcotracerScenario)
+            Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
         End If
         ' Return succes
         Return bSucces
@@ -8495,10 +8498,10 @@ Public Class cCore
 
         If String.IsNullOrEmpty(strError) Then
             strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_SUCCESS, Me.m_EcoPathData.EcotracerScenarioName(iScenario))
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eMessageSource.Ecotracer, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED, Me.m_EcoPathData.EcotracerScenarioName(iScenario), strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.Ecotracer, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -8514,10 +8517,10 @@ Public Class cCore
 
         If bSucces Then
             strText = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_SUCCES, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataModified, eMessageSource.Ecotracer, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         Else
             strText = String.Format(My.Resources.CoreMessages.ECOTRACER_SAVE_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eMessageSource.Ecotracer, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -8974,12 +8977,14 @@ Public Class cCore
         Dim bValidatedOk As Boolean = ((value.ValidationStatus And eStatusFlags.FailedValidation) = 0)
         Dim dtAffected As eDataTypes = eDataTypes.NotSet
         Dim idAffected As Integer = 0
-        Dim msAffected As eMessageSource = eMessageSource.NotSet
+        Dim msAffected As eCoreComponentType = eCoreComponentType.NotSet
+        Dim rsAffected As eCoreExecutionState = eCoreExecutionState.Idle
+
         'Dim objAffected As cCoreInputOutputBase = Nothing
         Dim msg As cMessage = Nothing
 
         ' Prepare main validation message
-        msg = New cMessage(value.ValidationMessage, eMessageType.DataValidation, objValidated.MessageSource, eMessageImportance.Information, objValidated.DataType)
+        msg = New cMessage(value.ValidationMessage, eMessageType.DataValidation, objValidated.CoreComponent, eMessageImportance.Information, objValidated.DataType)
         ' JS 27sep07: validation success messages are maintenance messages now; the user does not need to see these.
         If bValidatedOk Then msg.Importance = eMessageImportance.Maintenance
 
@@ -8994,7 +8999,7 @@ Public Class cCore
 
             dtAffected = DirectCast(vs.CoreDataObject, cCoreInputOutputBase).DataType
             idAffected = DirectCast(vs.CoreDataObject, cCoreInputOutputBase).DBID
-            msAffected = DirectCast(vs.CoreDataObject, cCoreInputOutputBase).MessageSource
+            msAffected = DirectCast(vs.CoreDataObject, cCoreInputOutputBase).CoreComponent
 
             Select Case dtAffected
 
@@ -9007,7 +9012,7 @@ Public Class cCore
                     ' Special cases: name and colour changes will not the Ecopath execution state!
                     ' Reroute these changes to the model itself
                     If vs.VarName = eVarNameFlags.Name Or vs.VarName = eVarNameFlags.PoolColor Then
-                        msAffected = eMessageSource.DataSource
+                        msAffected = eCoreComponentType.DataSource
                     End If
 
                 Case eDataTypes.EcoPathGroupOutput
@@ -9042,7 +9047,7 @@ Public Class cCore
                      eDataTypes.FishingRate, _
                      eDataTypes.FishMort
                     ' VERIFY_JS: This line of code is never hit?
-                    msAffected = eMessageSource.ShapesManager
+                    msAffected = eCoreComponentType.ShapesManager
 
                 Case eDataTypes.EcosimFisheriesRegulation
                     If bValidatedOk Then Me.UpdateEcosimFisheriesRegulation(idAffected)
@@ -9122,7 +9127,7 @@ Public Class cCore
                     ' Block non-stored variables from dirtying the datasource
                     If value.Stored = False Then
                         bBlock = True
-                        msAffected = eMessageSource.NotSet
+                        msAffected = eCoreComponentType.NotSet
                     End If
 
                     If Not bBlock Then DataSource.SetChanged(dtAffected, idAffected)
@@ -9333,7 +9338,7 @@ Public Class cCore
         ' ToDo_JS: Localize this
         Return New cVariableStatus(obj, eStatusFlags.OK, _
                 String.Format("Variable {0} has been adjusted", cCoreEnumNamesIndex.GetInstance.GetVarName(varName)), _
-                varName, obj.DataType, obj.MessageSource, obj.Index, iSecIndex)
+                varName, obj.DataType, obj.CoreComponent, obj.Index, iSecIndex)
     End Function
 
     ''' <summary>
@@ -9590,7 +9595,7 @@ Public Class cCore
 
                         'tell the world that that the Fishing Policy search blocks have changed
                         Dim sbmsg As New cMessage("Fishing Policy search blocks have changed.", eMessageType.DataModified, _
-                                        eMessageSource.FishingPolicySearch, eMessageImportance.Maintenance, eDataTypes.FishingPolicySearchBlocks)
+                                        eCoreComponentType.FishingPolicySearch, eMessageImportance.Maintenance, eDataTypes.FishingPolicySearchBlocks)
                         Me.m_publisher.AddMessage(sbmsg)
 
                 End Select 'Select Case value.varName
@@ -9648,7 +9653,7 @@ Public Class cCore
                             Me.m_SearchManagers(eDataTypes.SearchObjectiveManager).Load()
 
                             Dim msg As New cMessage("Search Structure rel. weight changed.", eMessageType.DataModified, _
-                                            eMessageSource.SearchObjective, eMessageImportance.Maintenance, eDataTypes.SearchObjectiveManager)
+                                            eCoreComponentType.SearchObjective, eMessageImportance.Maintenance, eDataTypes.SearchObjectiveManager)
                             Me.m_publisher.AddMessage(msg)
 
                         End If
@@ -9712,7 +9717,7 @@ Public Class cCore
 
                         'tell the world that this has happened
                         Dim msg As New cMessage("Ecosim results time period has changed.", eMessageType.DataModified, _
-                                        eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimModelParameter)
+                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimModelParameter)
 
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcosimSumStart))
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.EcosimSumEnd))
@@ -9760,7 +9765,7 @@ Public Class cCore
 
                         Me.m_MonteCarlo.CalculateUpperLowerLimits()
                         Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                                                     eMessageSource.EcoSim, eMessageImportance.Maintenance, eDataTypes.MonteCarlo))
+                                                     eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MonteCarlo))
 
 
                 End Select
@@ -9802,7 +9807,7 @@ Public Class cCore
             Select Case obj.DataType
 
                 Case eDataTypes.PredPreyInteraction
-                    Me.m_publisher.AddMessage(New cMessage("Shape application changed.", eMessageType.DataModified, eMessageSource.PPIManager, eMessageImportance.Maintenance))
+                    Me.m_publisher.AddMessage(New cMessage("Shape application changed.", eMessageType.DataModified, eCoreComponentType.PPIManager, eMessageImportance.Maintenance))
 
                 Case eDataTypes.Forcing, eDataTypes.EggProd, eDataTypes.Mediation
 
@@ -9822,13 +9827,13 @@ Public Class cCore
                     If TypeOfChange = eMessageType.DataAddedOrRemoved Then
                         ' Only send out ONE message
                         Me.m_publisher.AddMessage(New cMessage("Shape added or removed.", eMessageType.DataAddedOrRemoved, _
-                                     eMessageSource.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
+                                     eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
                     End If
 
                     If TypeOfChange = eMessageType.DataModified Then
                         ' Only send out ONE message
                         Me.m_publisher.AddMessage(New cMessage("Shape modified.", eMessageType.DataModified, _
-                                     eMessageSource.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
+                                     eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
                     End If
 
                     If (obj.DataType = eDataTypes.Forcing Or obj.DataType = eDataTypes.Mediation) Then
@@ -9841,14 +9846,14 @@ Public Class cCore
                             m_PPIManager.Load()
 
                             Me.m_publisher.AddMessage(New cMessage("PPI manager reloaded data.", eMessageType.DataModified, _
-                                                eMessageSource.ShapesManager, eMessageImportance.Maintenance, eDataTypes.PredPreyInteraction))
+                                                eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.PredPreyInteraction))
                         End If
 
                     End If
 
                 Case eDataTypes.FishMort
 
-                    Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eMessageSource.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
+                    Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.FishingRate, eDataTypes.FishingPolicyManager
                     'if the FishRate shape manager has changed the data then fishmort was also changed
@@ -9865,15 +9870,15 @@ Public Class cCore
                     manager = m_ShapeManagers.Item(eDataTypes.FishingRate)
                     manager.Load()
 
-                    Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eMessageSource.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingRate))
-                    Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eMessageSource.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
+                    Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingRate))
+                    Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.EcospaceBasemapLayer
 
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eMessageSource.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceBasemapLayer))
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eMessageSource.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceBasemapLayer))
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
 
                 Case eDataTypes.EcospaceHabitat
 
@@ -9886,11 +9891,11 @@ Public Class cCore
                     Me.LoadEcopathInputs()
 
                     'The Stanza object knows that it has changed make sure anything else that is listening knows as well
-                    Me.m_publisher.AddMessage(New cMessage("Stanza group changed.", eMessageType.DataModified, eMessageSource.EcoSim, _
+                    Me.m_publisher.AddMessage(New cMessage("Stanza group changed.", eMessageType.DataModified, eCoreComponentType.EcoSim, _
                                                             eMessageImportance.Maintenance, eDataTypes.Stanza))
 
                     'Ecopath Message
-                    Me.m_publisher.AddMessage(New cMessage("Stanza group changed Ecopath values.", eMessageType.DataModified, eMessageSource.EcoPath, _
+                    Me.m_publisher.AddMessage(New cMessage("Stanza group changed Ecopath values.", eMessageType.DataModified, eCoreComponentType.EcoPath, _
                                        eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
 
                     'Tell the datasource that both Ecopath and Stanza data need saving. May not need to do this it may be good enough that the stanza data is dirty
@@ -9908,7 +9913,7 @@ Public Class cCore
                     Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
 
                     Me.m_publisher.AddMessage(New cMessage("Time series have changed.", eMessageType.DataModified, _
-                        eMessageSource.TimeSeries, eMessageImportance.Maintenance))
+                        eCoreComponentType.TimeSeries, eMessageImportance.Maintenance))
 
                 Case eDataTypes.PedigreeLevel
 
@@ -9939,7 +9944,7 @@ Public Class cCore
             cLog.Write(ex)
             'maybe a better message than this
             Me.m_publisher.AddMessage(New cMessage("Error in " & Me.ToString & ".OnChanged(). " & ex.Message, _
-                                        eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+                                        eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
 
         End Try
 
@@ -9980,7 +9985,7 @@ Public Class cCore
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) Handles m_pluginManager.AssemblyAdded
-        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' loaded", paAdded.Filename), eMessageType.Any, eMessageSource.Core, eMessageImportance.Information))
+        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -9990,7 +9995,7 @@ Public Class cCore
     ''' <param name="paRemoved">A removed <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) Handles m_pluginManager.AssemblyRemoved
-        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eMessageSource.Core, eMessageImportance.Information))
+        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10000,7 +10005,7 @@ Public Class cCore
     ''' <param name="PluginException"></param>
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_PluginException(ByVal PluginException As System.Exception) Handles m_pluginManager.PluginException
-        m_publisher.SendMessage(New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eMessageSource.Core, eMessageImportance.Critical))
+        m_publisher.SendMessage(New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
     End Sub
 
     ''' -----------------------------------------------------------------------
