@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.2  2009/01/16 23:46:21  jeroens
+' Fixed ApplyTimeSeries outdated name bug
+'
 ' Revision 1.1  2008/12/15 15:36:41  jeroens
 ' Moved from ScInt
 '
@@ -310,7 +313,7 @@ Namespace Controls
             If cmd IsNot Nothing Then
             End If
 
-            cmd = CommandHandler.GetInstance().GetCommand("ApplyTimeSeries")
+            cmd = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If
@@ -326,7 +329,7 @@ Namespace Controls
             If cmd IsNot Nothing Then
             End If
 
-            cmd = CommandHandler.GetInstance().GetCommand("ApplyTimeSeries")
+            cmd = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.RemoveControl(Me.ApplyToolStripMenuItem)
             End If

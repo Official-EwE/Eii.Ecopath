@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.4  2009/01/16 23:46:21  jeroens
+' Fixed ApplyTimeSeries outdated name bug
+'
 ' Revision 1.3  2008/12/15 15:55:37  jeroens
 ' no message
 '
@@ -222,7 +225,7 @@ Namespace Ecosim
             CommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
 
             ' Disconnect from ApplyTS command
-            Dim cmd As Command = CommandHandler.GetInstance().GetCommand("ApplyTimeSeries")
+            Dim cmd As Command = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
 
             ' Disconnect from property
