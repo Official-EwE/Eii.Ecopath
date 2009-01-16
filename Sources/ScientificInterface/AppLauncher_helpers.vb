@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.4  2009/01/16 23:49:06  jeroens
+' Status strip items no longer confusingly enabled
+'
 ' Revision 1.3  2009/01/16 16:05:53  joeb
 ' Removed the Hack that closed Ecospace forms in response to any state changed
 '
@@ -175,7 +178,7 @@ Partial Public Class AppLauncher
                     simScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcosimScenario, simScenario.Name, _
                            FormatTooltipText(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, simScenario.Name, simScenario.Description, m_csm.IsEcosimModified), _
-                           m_csm.IsEcosimModified, Me.m_csm.IsExecutionStateSuperceded(eCoreExecutionState.EcosimLoaded))
+                           m_csm.IsEcosimModified)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcosimScenario)
                 End If
@@ -187,7 +190,7 @@ Partial Public Class AppLauncher
                     spaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, _
                            FormatTooltipText(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, spaceScenario.Name, spaceScenario.Description, m_csm.IsEcospaceModified), _
-                           m_csm.IsEcospaceModified, Me.m_csm.IsExecutionStateSuperceded(eCoreExecutionState.EcospaceLoaded))
+                           m_csm.IsEcospaceModified)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
                 End If
@@ -199,7 +202,7 @@ Partial Public Class AppLauncher
                     tracerScenario = Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, _
                            FormatTooltipText(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, tracerScenario.Name, tracerScenario.Description, m_csm.IsEcotracerModified), _
-                           m_csm.IsEcotracerModified, Me.m_csm.HasEcotracerLoaded())
+                           m_csm.IsEcotracerModified)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
                 End If
@@ -237,8 +240,7 @@ Partial Public Class AppLauncher
         Private Sub UpdateToolstripItem(ByRef tsi As ToolStripItem, _
                 Optional ByVal strText As String = "", _
                 Optional ByVal strTooltipText As String = "", _
-                Optional ByVal bModified As Boolean = False, _
-                Optional ByVal bReady As Boolean = True)
+                Optional ByVal bModified As Boolean = False)
 
             ' Abort if something went wrong
             If tsi Is Nothing Then Return
@@ -252,8 +254,6 @@ Partial Public Class AppLauncher
                 .ToolTipText = strTooltipText
                 ' Hide item if item has no text
                 .Visible = (Not String.IsNullOrEmpty(strText))
-                '.ForeColor = DirectCast(IIf(bReady, Color.Black, Color.Gray), Color)
-                .Enabled = bReady
             End With
         End Sub
 
