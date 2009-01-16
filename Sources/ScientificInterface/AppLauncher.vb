@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.24  2009/01/16 23:47:47  jeroens
+' ApplyTS -> WeightTS
+'
 ' Revision 1.23  2009/01/16 18:30:05  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -177,7 +180,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdImportTimeSeries As Command = Nothing
     Private WithEvents m_cmdLoadTimeSeries As Command = Nothing
     Private WithEvents m_cmdWeightTimeSeries As Command = Nothing
-    Private WithEvents m_cmdReloadTimeSeries As Command = Nothing
+    Private WithEvents m_cmdLoadWeightTimeSeries As Command = Nothing
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As Command = Nothing
     Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
@@ -720,9 +723,9 @@ Public Class AppLauncher
         cmdh.Add(Me.m_cmdWeightTimeSeries)
 
         'Create and configure LoadApplyTimeSeries command
-        Me.m_cmdReloadTimeSeries = New Command("LoadApplyTimeSeries")
-        Me.m_cmdReloadTimeSeries.AddControl(Me.LoadAndApplyLastTimeSeriesToolStripMenuItem)
-        cmdh.Add(Me.m_cmdReloadTimeSeries)
+        Me.m_cmdLoadWeightTimeSeries = New Command("LoadWeightTimeSeries")
+        Me.m_cmdLoadWeightTimeSeries.AddControl(Me.LoadAndApplyLastTimeSeriesToolStripMenuItem)
+        cmdh.Add(Me.m_cmdLoadWeightTimeSeries)
 
         'Create and configure Help>About command
         Me.m_cmdHelpAbout = New Command("HelpAbout")
@@ -2208,7 +2211,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the reload time series dialog.
     ''' </summary>
-    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdReloadTimeSeries.OnInvoke
+    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnInvoke
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
             If (String.Compare(Me.m_core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
@@ -2221,7 +2224,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdReloadTimeSeries">Reload TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadApplyTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdReloadTimeSeries.OnUpdate
+    Private Sub m_cmdLoadApplyTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
     End Sub
