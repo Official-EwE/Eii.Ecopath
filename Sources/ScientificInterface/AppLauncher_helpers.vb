@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.3  2009/01/16 16:05:53  joeb
+' Removed the Hack that closed Ecospace forms in response to any state changed
+'
 ' Revision 1.2  2008/11/27 03:10:42  jeroens
 ' Group visible flags maintained by style guide, no longer by AppLauncher
 '
@@ -421,9 +424,10 @@ Partial Public Class AppLauncher
                 '             closes Ecospace input forms whenever underlying crucial data has changed.
 
                 ' Ecospace hack: close all ecospace input forms when ecopath or ecosim are reloading
-                If (stateForm = eCoreExecutionState.EcospaceLoaded) Then
-                    bMustCloseForm = bMustCloseForm Or ((Me.m_csm.HasEcosimLoaded = False) Or (Me.m_csm.HasEcopathLoaded = False))
-                End If
+                'jb removed the Ecospace HACK Ecospace forms now deal with this on there own
+                'If (stateForm = eCoreExecutionState.EcospaceLoaded) Then
+                '    bMustCloseForm = bMustCloseForm Or ((Me.m_csm.HasEcosimLoaded = False) Or (Me.m_csm.HasEcopathLoaded = False))
+                'End If
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form
