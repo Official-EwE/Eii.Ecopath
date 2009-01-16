@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.8  2009/01/16 17:17:50  joeb
+' Removed unused variable
+'
 ' Revision 1.7  2009/01/15 22:39:56  joeb
 ' Moved Ecospace start and end summary periods from Parameters form to Results form
 '
@@ -87,7 +90,6 @@ Namespace Ecospace
         Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_Core.EcospaceModelParameters()
-            Dim pm As cPropertyManager = cPropertyManager.GetInstance()
 
             Me.m_fpSumStartTime = New cPropertyFormatProvider(Me.tbSumStartTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeStart)
             Me.m_fpSumEndTime = New cPropertyFormatProvider(Me.tbSumEndTime, ecospaceModelParams, eVarNameFlags.EcospaceSummaryTimeEnd)
