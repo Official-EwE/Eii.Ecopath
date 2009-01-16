@@ -114,39 +114,43 @@ Public Class cEcoSimModelParameters
             meta = New cVariableMetaData(0, 999, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.EcosimSumStart, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumStart))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'end summary
             meta = New cVariableMetaData(0, 999, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.EcosimSumEnd, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumEnd))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'summary num time steps
             meta = New cVariableMetaData(1, 999, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.EcosimSumNTimeSteps, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumNTimeSteps))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'Contaminant tracing
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSim, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.ConSimOnEcoSim))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PredictEffort
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PredictEffort))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'Regulatory FeedBack T/F
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.RegFeedBack, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.RegFeedBack))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
-
-
 
             '  Me.AllowValidation = True
 

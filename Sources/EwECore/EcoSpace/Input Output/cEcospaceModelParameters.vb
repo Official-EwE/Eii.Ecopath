@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceModelParameters.vb,v $
+' Revision 1.4  2009/01/16 17:00:22  jeroens
+' Added cValue.AffectsRunState
+'
 ' Revision 1.3  2009/01/16 16:03:24  joeb
 ' isStored = False for Summary time period data
 '
@@ -175,6 +178,7 @@ Public Class cEcospaceModelParameters
             val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSpace, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.ConSimOnEcoSpace))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -220,6 +224,7 @@ Public Class cEcospaceModelParameters
             val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeStart, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceSummaryTimeStart))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'EndSummaryTime 
@@ -228,6 +233,7 @@ Public Class cEcospaceModelParameters
             val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeEnd, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceSummaryTimeEnd))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'NumSummaryTimeSteps
@@ -236,6 +242,7 @@ Public Class cEcospaceModelParameters
             val = New cValue(1, eVarNameFlags.EcospaceNumberSummaryTimeSteps, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceNumberSummaryTimeSteps))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
 

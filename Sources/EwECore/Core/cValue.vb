@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cValue.vb,v $
+' Revision 1.3  2009/01/16 17:00:23  jeroens
+' Added cValue.AffectsRunState
+'
 ' Revision 1.2  2008/10/25 19:03:22  joeb
 ' Changed array handling to use a hard typed array instead of an Object
 '
@@ -174,6 +177,7 @@ Namespace ValueWrapper
 
         Protected m_iIndex As Integer
         Protected m_bStored As Boolean
+        Protected m_bAffectsRunState As Boolean
 
         ''' <summary>
         ''' Validator supplied in the constructor of the object.
@@ -195,6 +199,7 @@ Namespace ValueWrapper
             m_bValidate = False
             m_validator = Nothing
             m_bStored = True
+            m_bAffectsRunState = True
         End Sub
 
         Sub New(ByVal Value As Object, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal VarType As eValueTypes, ByRef MetaData As cVariableMetaData)
@@ -207,6 +212,7 @@ Namespace ValueWrapper
             m_bValidate = False
             m_validator = Nothing
             m_bStored = True
+            m_bAffectsRunState = True
         End Sub
 
         ''' <summary>
@@ -232,13 +238,14 @@ Namespace ValueWrapper
             m_bValidate = True
             m_validator = Validator
             m_bStored = True
-
+            m_bAffectsRunState = True
         End Sub
 
         Sub New()
             m_varName = eVarNameFlags.NotSet
             m_status = eStatusFlags.Null
             m_bStored = False
+            m_bAffectsRunState = False
         End Sub
 
         Public Property Index() As Integer
@@ -324,6 +331,18 @@ Namespace ValueWrapper
             End Get
             Friend Set(ByVal value As Boolean)
                 Me.m_bStored = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Flag stating whether a variable will affect the core run state when it is modified.
+        ''' </summary>
+        Public Property AffectsRunState() As Boolean
+            Get
+                Return Me.m_bAffectsRunState
+            End Get
+            Friend Set(ByVal value As Boolean)
+                Me.m_bAffectsRunState = value
             End Set
         End Property
 
