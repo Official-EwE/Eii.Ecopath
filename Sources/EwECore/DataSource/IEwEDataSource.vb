@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.3  2009/01/16 23:51:20  jeroens
+' Datasource no longer maitains data state by datatype, but by eCoreComponentType
+'
 ' Revision 1.2  2008/12/10 02:00:32  jeroens
 ' Moved datasource types to EwEUtils
 '
@@ -239,10 +242,10 @@ Namespace DataSources
         ''' Flag a core object as changed in the datasource. The datasource
         ''' will consult this information when performing incremental saves.
         ''' </summary>
-        ''' <param name="dataType">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
-        ''' <param name="iDBID">The database ID of the object that changed.</param>
+        ''' <param name="cc">The <see cref="eCoreComponentType">core component</see>
+        ''' that changed.</param>
         ''' -------------------------------------------------------------------
-        Sub SetChanged(ByVal dataType As eDataTypes, Optional ByVal iDBID As Integer = 0)
+        Sub SetChanged(ByVal cc As eCoreComponentType)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

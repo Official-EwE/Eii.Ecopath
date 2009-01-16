@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.57  2009/01/16 23:51:14  jeroens
+' Datasource no longer maitains data state by datatype, but by eCoreComponentType
+'
 ' Revision 1.56  2009/01/16 18:37:07  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -1512,7 +1515,7 @@ Public Class cCore
 
             Next
 
-            DataSource.SetChanged(eDataTypes.GroupTimeSeries)
+            DataSource.SetChanged(eCoreComponentType.EcoSim)
 
         Catch ex As Exception
             bSucces = False
@@ -1549,7 +1552,7 @@ Public Class cCore
 
             Next
 
-            DataSource.SetChanged(eDataTypes.FleetTimeSeries)
+            DataSource.SetChanged(eCoreComponentType.EcoSim)
 
         Catch ex As Exception
             bSucces = False
@@ -3331,7 +3334,7 @@ Public Class cCore
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoPath, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
         ' Flag datasource as dirty
-        Me.DataSource.SetChanged(eDataTypes.EcoPathGroupInput)
+        Me.DataSource.SetChanged(eCoreComponentType.EcoPath)
         ' Yo!
         Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
@@ -5637,7 +5640,7 @@ Public Class cCore
         Try
             Me.LoadEcosimGroups()
 
-            DataSource.SetChanged(eDataTypes.EcoSimGroupInput)
+            DataSource.SetChanged(eCoreComponentType.EcoSim)
             Me.m_StateMonitor.UpdateDataState(DataSource)
 
             Me.Messages.SendMessage(New cMessage("Vulnerabilites changed.", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
@@ -8775,7 +8778,7 @@ Public Class cCore
 
     Private Sub AuxillaryDataChanged()
         ' Notify datasource 
-        Me.DataSource.SetChanged(eDataTypes.EwEModel)
+        Me.DataSource.SetChanged(eCoreComponentType.EcoPath)
         ' Update data state
         Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
@@ -9130,7 +9133,7 @@ Public Class cCore
                         msAffected = eCoreComponentType.NotSet
                     End If
 
-                    If Not bBlock Then DataSource.SetChanged(dtAffected, idAffected)
+                    If Not bBlock Then DataSource.SetChanged(msAffected)
                     ' Notify state monitor of data modification
                     Me.m_StateMonitor.RegisterModification(msAffected)
 
@@ -9899,8 +9902,8 @@ Public Class cCore
                                        eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
 
                     'Tell the datasource that both Ecopath and Stanza data need saving. May not need to do this it may be good enough that the stanza data is dirty
-                    DataSource.SetChanged(eDataTypes.EcoPathGroupInput)
-                    DataSource.SetChanged(eDataTypes.EcoSimGroupInput)
+                    DataSource.SetChanged(eCoreComponentType.EcoPath)
+                    DataSource.SetChanged(eCoreComponentType.EcoSim)
                     ' Ecopath needs to run again
                     Me.StateMonitor.SetEcopathLoaded(True)
 
@@ -9927,7 +9930,7 @@ Public Class cCore
             ' JS 31aug07: DataAddedOrRemoved messages are initialized by the db, thus the db should not get flagged as dirty
             If TypeOfChange <> eMessageType.DataAddedOrRemoved Then
                 ' Update data state
-                DataSource.SetChanged(obj.DataType, obj.DBID)
+                DataSource.SetChanged(obj.CoreComponent)
                 Me.m_StateMonitor.UpdateDataState(DataSource)
             End If
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.18  2009/01/16 23:51:17  jeroens
+' Datasource no longer maitains data state by datatype, but by eCoreComponentType
+'
 ' Revision 1.17  2009/01/16 18:30:12  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -73,7 +76,11 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class cDBDataSource
-    : Implements IEwEDataSource, IEcopathDataSource, IEcosimDatasource, IEcospaceDatasource, IEcotracerDatasource
+    Implements IEwEDataSource
+    Implements IEcopathDataSource
+    Implements IEcosimDatasource
+    Implements IEcospaceDatasource
+    Implements IEcotracerDatasource
 
     ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this datasource.</summary>
     Private m_db As cEwEDatabase = Nothing
@@ -89,8 +96,6 @@ Public Class cDBDataSource
         Debug.Assert(db IsNot Nothing)
         ' Store ref to DB
         Me.m_db = db
-        ' Update internal admin
-        Me.RegisterDataTypeComponents()
 
     End Sub
 
@@ -342,145 +347,28 @@ Public Class cDBDataSource
 
 #Region " Change management "
 
-    ''' <summary>Dictionary of changed database IDs, categorized per eDataType.</summary>
-    Private m_dictChangedDBIDs As New Dictionary(Of eDataTypes, List(Of Integer))
-    ''' <summary>Dictonary stating to what message source each datatype belongs.</summary>
-    Private m_dictDataTypeComponents As New Dictionary(Of eDataTypes, eCoreComponentType)
-
-    Private Sub RegisterDataTypeComponents()
-
-        ' Configure Model descriptive values
-        m_dictDataTypeComponents.Add(eDataTypes.EwEModel, eCoreComponentType.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimScenario, eCoreComponentType.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSpaceScenario, eCoreComponentType.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerScenario, eCoreComponentType.DataSource)
-        m_dictDataTypeComponents.Add(eDataTypes.PedigreeLevel, eCoreComponentType.DataSource)
-
-        ' Configure Ecopath
-        m_dictDataTypeComponents.Add(eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath)
-        m_dictDataTypeComponents.Add(eDataTypes.FleetInput, eCoreComponentType.EcoPath)
-        m_dictDataTypeComponents.Add(eDataTypes.Stanza, eCoreComponentType.EcoPath)
-
-        ' Configure Ecosim
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EcoSimModelParameter, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.Forcing, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EggProd, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.Mediation, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FishingRate, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FishMort, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.GroupTimeSeries, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.FleetTimeSeries, eCoreComponentType.EcoSim)
-        m_dictDataTypeComponents.Add(eDataTypes.EcosimFisheriesRegulation, eCoreComponentType.EcoSim)
-
-        ' Configure Ecospace
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceModelParameter, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemap, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceBasemapLayer, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceHabitat, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceRegion, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceMPA, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceGroup, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceFleet, eCoreComponentType.EcoSpace)
-        m_dictDataTypeComponents.Add(eDataTypes.EcospaceImportanceLayer, eCoreComponentType.EcoSpace)
-
-        ' Configure Ecotracer
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerGroupInput, eCoreComponentType.Ecotracer)
-        m_dictDataTypeComponents.Add(eDataTypes.EcotracerModelParameters, eCoreComponentType.Ecotracer)
-
-    End Sub
+    ''' <summary>Dictionary of changed core components.</summary>
+    Private m_dictChangedComponents As New Dictionary(Of eCoreComponentType, Boolean)
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Flag a core object as changed in the datasource.
     ''' </summary>
-    ''' <param name="dataType">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
-    ''' <param name="iDBID">The database ID of the object that changed.</param>
+    ''' <param name="cc">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
     ''' -------------------------------------------------------------------
-    Public Sub SetChanged(ByVal dataType As eDataTypes, Optional ByVal iDBID As Integer = 0) _
+    Public Sub SetChanged(ByVal cc As eCoreComponentType) _
             Implements IEwEDataSource.SetChanged
-
-        Dim lInt As List(Of Integer) = Nothing
-
-        If (Me.m_dictChangedDBIDs.ContainsKey(dataType)) Then
-            lInt = Me.m_dictChangedDBIDs(dataType)
-        Else
-            lInt = New List(Of Integer)
-            Me.m_dictChangedDBIDs.Add(dataType, lInt)
-        End If
-
-        ' JS 08apr08: For now, also flag core as dirty on invalid DBID values
-        'If iDBID > 0 And Not lInt.Contains(iDBID) Then
-        If Not lInt.Contains(iDBID) Then
-            lInt.Add(iDBID)
-        End If
-
+        Me.m_dictChangedComponents.Item(cc) = True
     End Sub
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Gets a 1-based array of changed DBIDs for a given <see cref="eDataTypes">DataType</see>.
-    ''' </summary>
-    ''' <param name="dataType">The <see cref="eDataTypes">DataType</see> to obtain the list for.</param>
-    ''' <returns>An array representing DBIDs that are flagged as changed, and thus need saving.</returns>
-    ''' <remarks>The EwECore uses 1-based arrays *shudder*.</remarks>
-    ''' -------------------------------------------------------------------
-    Private Function GetChangedIDArray(ByVal dataType As eDataTypes) As Integer()
-
-        Dim al As List(Of Integer) = Nothing
-        Dim aIDs() As Integer = Nothing
-
-        If (Me.m_dictChangedDBIDs.ContainsKey(dataType)) Then
-            al = Me.m_dictChangedDBIDs(dataType)
-            aIDs = al.ToArray()
-        End If
-
-        Return aIDs
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, states whether there are pending changes for a particular
-    ''' datatype and optional database ID.
-    ''' </summary>
-    ''' <param name="dataType">The <see cref="eDataTypes">data type</see> to test
-    ''' for changes.</param>
-    ''' <param name="iDBID">The optional database ID to test for changes.</param>
-    ''' <returns>True if there are pending changes for the given datatype
-    ''' and optional database ID.</returns>
-    ''' -------------------------------------------------------------------
-    Private Function IsChanged(ByVal dataType As eDataTypes, Optional ByVal iDBID As Integer = 0) As Boolean
-        Dim bChanged As Boolean = False
-
-        If (Me.m_dictChangedDBIDs.ContainsKey(dataType)) Then
-            If iDBID = 0 Then
-                bChanged = True
-            Else
-                Dim lInt As List(Of Integer) = Me.m_dictChangedDBIDs(dataType)
-                bChanged = (lInt.IndexOf(iDBID) <> -1)
-            End If
-        End If
-
-        Return bChanged
-    End Function
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Helper method, clears all changed information for either a given
     ''' data type or for the entire datasource.
     ''' </summary>
-    ''' <param name="dataType">Datatype to clear the changed adminsitration
-    ''' for. If not specified, the entire changed administration will be 
-    ''' cleared.</param>
     ''' -------------------------------------------------------------------
-    Private Sub ClearChanged(Optional ByVal dataType As eDataTypes = eDataTypes.NotSet)
-        If (dataType = eDataTypes.NotSet) Then
-            Me.m_dictChangedDBIDs.Clear()
-        Else
-            If (Me.m_dictChangedDBIDs.ContainsKey(dataType)) Then
-                Me.m_dictChangedDBIDs.Remove(dataType)
-            End If
-        End If
+    Private Sub ClearChanged()
+        Me.m_dictChangedComponents.Clear()
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -491,22 +379,9 @@ Public Class cDBDataSource
     ''' <param name="component">The EwE component to check.</param>
     ''' <returns>True if there are any pending changes for any datatype that
     ''' belongs to this EwE component.</returns>
-    ''' <remarks>
-    ''' The EwE component data type registration is kept locally in this datasource,
-    ''' and is configured in <see cref="RegisterDataTypeComponents">RegisterDataTypeComponents</see>.
-    ''' </remarks>
     ''' -------------------------------------------------------------------
     Private Function IsChanged(ByVal component As eCoreComponentType) As Boolean
-
-        Dim bChanged As Boolean = False
-
-        For Each dt As eDataTypes In Me.m_dictDataTypeComponents.Keys
-            If Me.m_dictDataTypeComponents(dt) = component Then
-                If Me.IsChanged(dt) Then Return True
-            End If
-        Next
-        Return False
-
+        Return Me.m_dictChangedComponents.ContainsKey(component)
     End Function
 
     ''' -------------------------------------------------------------------
@@ -516,18 +391,12 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <param name="component">The EwE component to clear the changed
     ''' adminsitration for.</param>
-    ''' <remarks>
-    ''' The EwE component data type registration is kept locally in this datasource,
-    ''' and is configured in <see cref="RegisterDataTypeComponents">RegisterDataTypeComponents</see>.
-    ''' </remarks>
     ''' -------------------------------------------------------------------
     Private Sub ClearChanged(ByVal component As eCoreComponentType)
 
-        For Each dt As eDataTypes In Me.m_dictDataTypeComponents.Keys
-            If Me.m_dictDataTypeComponents(dt) = component Then
-                Me.ClearChanged(dt)
-            End If
-        Next
+        If Me.m_dictChangedComponents.ContainsKey(component) Then
+            Me.m_dictChangedComponents.Remove(component)
+        End If
 
     End Sub
 
@@ -5818,10 +5687,8 @@ Public Class cDBDataSource
         Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = True
         Dim bDuplicating As Boolean = False
-        Dim bSaving As Boolean = False
 
         iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
-        bSaving = (Me.IsChanged(eDataTypes.EcoSpaceScenario) Or idm.HasMapping(eDataTypes.EcoSpaceScenario, iScenarioID))
 
         Try
 
@@ -8128,10 +7995,8 @@ Public Class cDBDataSource
         Dim iScenario As Integer = ecopathDS.ActiveEcotracerScenario
         Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = True
-        Dim bSaving As Boolean = False
 
         iScenarioID = idm.GetID(eDataTypes.EcotracerScenario, ecopathDS.EcotracerScenarioDBID(iScenario))
-        bSaving = (Me.IsChanged(eDataTypes.EcotracerScenario) Or idm.HasMapping(eDataTypes.EcotracerScenario, iScenarioID))
 
         Try
 

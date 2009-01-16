@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.4  2009/01/16 23:51:20  jeroens
+' Datasource no longer maitains data state by datatype, but by eCoreComponentType
+'
 ' Revision 1.3  2008/11/28 16:54:03  joeb
 ' Cleaned up ToDo's
 '
@@ -137,10 +140,9 @@ Public Class cEIIDataSource
     ''' Flag a core object as changed in the datasource. Since the EIIDataSource
     ''' does not support incremental saving, this method will contain no implementation
     ''' </summary>
-    ''' <param name="dataType">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
-    ''' <param name="iDBID">The database ID of the object that changed.</param>
+    ''' <param name="cc">The <see cref="eCoreComponentType">core component</see> that changed.</param>
     ''' -------------------------------------------------------------------
-    Public Sub SetChanged(ByVal dataType As eDataTypes, Optional ByVal iDBID As Integer = 0) _
+    Public Sub SetChanged(ByVal cc As eCoreComponentType) _
             Implements IEwEDataSource.SetChanged
         ' Take no action
     End Sub
