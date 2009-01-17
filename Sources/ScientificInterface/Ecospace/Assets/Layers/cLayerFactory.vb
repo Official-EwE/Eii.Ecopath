@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerFactory.vb,v $
+' Revision 1.8  2009/01/17 03:24:07  jeroens
+' Added depth layer renderer
+'
 ' Revision 1.7  2009/01/08 16:18:56  jeroens
 ' Fixed issue 582
 '
@@ -92,8 +95,8 @@ Namespace Ecospace.Basemap.Layers
                         core.VisualStyle(strID) = vs
                     End If
 
-                    ' Represent depth as a solid colour
-                    renderer = New cLayerRendererGradient(vs)
+                    ' Represent depth as a .. depth layer! Whoohoo!
+                    renderer = New cLayerRendererDepth(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
                     layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
