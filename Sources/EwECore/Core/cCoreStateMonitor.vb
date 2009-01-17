@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.5  2009/01/17 03:25:51  jeroens
+' Core State Monitor data and execute states separated
+'
 ' Revision 1.4  2009/01/16 18:30:11  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -166,12 +169,17 @@ Public Class cCoreStateMonitor
     ''' <see cref="CoreExecutionStateEvent">CoreExecutionStateEvent</see> is
     ''' broadcasted when the Core execution state changes.
     ''' </summary>
+    ''' <param name="tsForceUpdate">Flag stating whether an update should be sent:
+    ''' true    - force, 
+    ''' default - send update when changed, 
+    ''' false   - do NOT send update
+    ''' </param>
     ''' -----------------------------------------------------------------------
     Private Sub CalcExecutionState(ByVal iEcopathState As eCoreExecutionState, _
             ByVal iEcosimState As eCoreExecutionState, _
             ByVal iEcospaceState As eCoreExecutionState, _
             ByVal iEcotracerState As eCoreExecutionState, _
-            Optional ByVal bForceUpdate As Boolean = False)
+            Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
 
         Dim iState As eCoreExecutionState = eCoreExecutionState.Idle
         Dim bEcopathStateChange As Boolean = False
@@ -185,7 +193,8 @@ Public Class cCoreStateMonitor
         bEcotracerStateChange = (iEcotracerState <> Me.m_iEcotracerState)
 
         ' No state changes?
-        If (Not bEcopathStateChange And Not bEcosimStateChange And Not bEcospaceStateChange And Not bEcotracerStateChange) And (Not bForceUpdate) Then Return
+        If (Not bEcopathStateChange And Not bEcosimStateChange And Not bEcospaceStateChange And Not bEcotracerStateChange) And _
+           (tsForceUpdate <> TriState.True) Then Return
 
         ' Accept ecopath state
         iState = iEcopathState
@@ -215,27 +224,11 @@ Public Class cCoreStateMonitor
         ' Update core execution state flag
         Me.m_iExecutionState = iState
 
-        ' Broadcast states
-        RaiseEvent CoreExecutionStateEvent(Me.m_core, Me.m_iExecutionState)
-    End Sub
-
-    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
-
-        Dim bDatasourceModified As Boolean = False
-        Dim bEcopathModified As Boolean = False
-        Dim bEcosimModified As Boolean = False
-        Dim bEcospaceModified As Boolean = False
-        Dim bEcotracerModified As Boolean = False
-
-        If (ds IsNot Nothing) Then
-            bDatasourceModified = ds.IsModified()
-            If (TypeOf ds Is IEcopathDataSource) Then bEcopathModified = DirectCast(ds, IEcopathDataSource).IsEcopathModified()
-            If (TypeOf ds Is IEcosimDatasource) Then bEcosimModified = DirectCast(ds, IEcosimDatasource).IsEcosimModified()
-            If (TypeOf ds Is IEcospaceDatasource) Then bEcospaceModified = DirectCast(ds, IEcospaceDatasource).IsEcospaceModified()
-            If (TypeOf ds Is IEcotracerDatasource) Then bEcotracerModified = DirectCast(ds, IEcotracerDatasource).IsEcotracerModified()
+        ' No need to suppress update?
+        If (tsForceUpdate <> TriState.False) Then
+            ' #Yes: Broadcast event
+            RaiseEvent CoreExecutionStateEvent(Me.m_core, Me.m_iExecutionState)
         End If
-
-        Me.UpdateDataState(bDatasourceModified, bEcopathModified, bEcosimModified, bEcospaceModified, bEcotracerModified, tsSendUpdate)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -265,13 +258,13 @@ Public Class cCoreStateMonitor
         Me.m_bEcospaceModified = bEcospaceModified
         Me.m_bEcotracerModified = bEcotracerModified
 
-        ' Update core execution state
-        Me.CalcExecutionState( _
-            DirectCast(IIf(Me.m_bEcopathModified, eCoreExecutionState.EcopathLoaded, Me.m_iEcopathState), eCoreExecutionState), _
-            DirectCast(IIf(Me.m_bEcosimModified, eCoreExecutionState.EcosimLoaded, Me.m_iEcosimState), eCoreExecutionState), _
-            DirectCast(IIf(Me.m_bEcospaceModified, eCoreExecutionState.EcospaceLoaded, Me.m_iEcospaceState), eCoreExecutionState), _
-            DirectCast(IIf(Me.m_bEcotracerModified, eCoreExecutionState.EcotracerLoaded, Me.m_iEcotracerState), eCoreExecutionState), _
-            (tsSendUpdate = TriState.True))
+        '' Update core execution state
+        'Me.CalcExecutionState( _
+        '    DirectCast(IIf(Me.m_bEcopathModified, eCoreExecutionState.EcopathLoaded, Me.m_iEcopathState), eCoreExecutionState), _
+        '    DirectCast(IIf(Me.m_bEcosimModified, eCoreExecutionState.EcosimLoaded, Me.m_iEcosimState), eCoreExecutionState), _
+        '    DirectCast(IIf(Me.m_bEcospaceModified, eCoreExecutionState.EcospaceLoaded, Me.m_iEcospaceState), eCoreExecutionState), _
+        '    DirectCast(IIf(Me.m_bEcotracerModified, eCoreExecutionState.EcotracerLoaded, Me.m_iEcotracerState), eCoreExecutionState), _
+        '    (tsSendUpdate = TriState.True))
 
         ' Broadcast data state event
         If tsSendUpdate = TriState.False Then Return
@@ -286,6 +279,70 @@ Public Class cCoreStateMonitor
 
 #Region " State configuration "
 
+#Region " Data "
+
+    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+
+        Dim bDatasourceModified As Boolean = False
+        Dim bEcopathModified As Boolean = False
+        Dim bEcosimModified As Boolean = False
+        Dim bEcospaceModified As Boolean = False
+        Dim bEcotracerModified As Boolean = False
+
+        If (ds IsNot Nothing) Then
+            bDatasourceModified = ds.IsModified()
+            If (TypeOf ds Is IEcopathDataSource) Then bEcopathModified = DirectCast(ds, IEcopathDataSource).IsEcopathModified()
+            If (TypeOf ds Is IEcosimDatasource) Then bEcosimModified = DirectCast(ds, IEcosimDatasource).IsEcosimModified()
+            If (TypeOf ds Is IEcospaceDatasource) Then bEcospaceModified = DirectCast(ds, IEcospaceDatasource).IsEcospaceModified()
+            If (TypeOf ds Is IEcotracerDatasource) Then bEcotracerModified = DirectCast(ds, IEcotracerDatasource).IsEcotracerModified()
+        End If
+
+        Me.UpdateDataState(bDatasourceModified, bEcopathModified, bEcosimModified, bEcospaceModified, bEcotracerModified, tsSendUpdate)
+    End Sub
+
+#End Region ' Data
+
+#Region " Execution "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="cc">The core component that changed.</param>
+    ''' -----------------------------------------------------------------------
+    Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType, _
+                                    Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+
+        Select Case cc
+            Case eCoreComponentType.Core, _
+                 eCoreComponentType.DataSource, _
+                 eCoreComponentType.External, _
+                 eCoreComponentType.NotSet, _
+                 eCoreComponentType.SearchObjective
+                ' NOP
+
+            Case eCoreComponentType.EcoPath
+                SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
+
+            Case eCoreComponentType.EcoSim, _
+                 eCoreComponentType.EcoSimFitToTimeSeries, _
+                 eCoreComponentType.EcoSimMonteCarlo, _
+                 eCoreComponentType.FishingPolicySearch, _
+                 eCoreComponentType.ShapesManager, _
+                 eCoreComponentType.TimeSeries
+                SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
+
+            Case eCoreComponentType.EcoSpace, _
+                 eCoreComponentType.MPAOptimization
+                Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
+
+            Case eCoreComponentType.Ecotracer
+                Me.SetEcotracerLoaded(Me.HasEcotracerLoaded(), tsSendUpdate, False)
+
+        End Select
+
+    End Sub
+
 #Region " Ecopath "
 
     ''' -----------------------------------------------------------------------
@@ -295,8 +352,14 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="bHasModel">Flag indicating whether an Ecopath model is
     ''' loaded (True) or unloaded (False).</param>
+    ''' <param name="tsForceUpdate">Flag stating whether an update should be sent:
+    ''' true    - force, 
+    ''' default - send update when changed, 
+    ''' false   - do NOT send update
+    ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcopathLoaded(ByVal bHasModel As Boolean, Optional ByVal bForceUpdate As Boolean = False)
+    Friend Sub SetEcopathLoaded(ByVal bHasModel As Boolean, _
+                                Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
         ' Update execution state
         If bHasModel Then
             ' Switch to ecopath loaded. All other model states must be reset to either idle or loaded
@@ -304,9 +367,9 @@ Public Class cCoreStateMonitor
                 DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
                 DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
-                bForceUpdate)
+                tsForceUpdate)
         Else
-            Me.CalcExecutionState(eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, bForceUpdate)
+            Me.CalcExecutionState(eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, tsForceUpdate)
         End If
     End Sub
 
@@ -367,20 +430,30 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="bHasScenario">Flag indicating whether an Ecosim scenario is
     ''' loaded (True) or unloaded (False).</param>
+    ''' <param name="tsForceUpdate">Flag stating whether an update should be sent:
+    ''' true    - force, 
+    ''' default - send update when changed, 
+    ''' false   - do NOT send update
+    ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcoSimLoaded(ByVal bHasScenario As Boolean, Optional ByVal bForceUpdate As Boolean = False)
+    Friend Sub SetEcoSimLoaded(ByVal bHasScenario As Boolean, _
+                               Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+                               Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecosim loaded state. Space and Tracer states must be reset to either idle or loaded
             Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimLoaded, _
                 DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
-                bForceUpdate)
+                tsForceUpdate)
         Else
-            Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, bForceUpdate)
+            Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, tsForceUpdate)
         End If
-        ' Clear scenario changed flags
-        Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, False, False, Me.m_bEcotracerModified)
+
+        If bResetDataState Then
+            ' Clear scenario changed flags
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, False, False, Me.m_bEcotracerModified)
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -441,19 +514,30 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="bHasScenario">Flag indicating whether an Ecospace scenario is
     ''' loaded (True) or unloaded (False).</param>
+    ''' <param name="tsForceUpdate">Flag stating whether an update should be sent:
+    ''' true    - force, 
+    ''' default - send update when changed, 
+    ''' false   - do NOT send update
+    ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcospaceLoaded(ByVal bHasScenario As Boolean, Optional ByVal bForceUpdate As Boolean = False)
+    Friend Sub SetEcospaceLoaded(ByVal bHasScenario As Boolean, _
+                                 Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+                                Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecospace loaded state. Tracer state must be reset to either idle or loaded
             Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceLoaded, _
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
-                bForceUpdate)
+                tsForceUpdate)
         Else
-            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.Idle, Me.m_iEcotracerState, bForceUpdate)
+            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.Idle, Me.m_iEcotracerState, tsForceUpdate)
         End If
-        ' Clear scenario changed flags
-        Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, False, Me.m_bEcotracerModified)
+
+        If bResetDataState Then
+            ' Clear scenario changed flags
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, False, Me.m_bEcotracerModified)
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -507,19 +591,32 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="bHasScenario">Flag indicating whether an Ecotracer scenario is
     ''' loaded (True) or unloaded (False).</param>
+    ''' <param name="tsForceUpdate">Flag stating whether an update should be sent:
+    ''' true    - force, 
+    ''' default - send update when changed, 
+    ''' false   - do NOT send update
+    ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcotracerLoaded(ByVal bHasScenario As Boolean, Optional ByVal bForceUpdate As Boolean = False)
+    Friend Sub SetEcotracerLoaded(ByVal bHasScenario As Boolean, _
+                                  Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+                                  Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
-            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, eCoreExecutionState.EcotracerLoaded, bForceUpdate)
+            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, eCoreExecutionState.EcotracerLoaded, tsForceUpdate)
         Else
-            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, eCoreExecutionState.Idle, bForceUpdate)
+            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, eCoreExecutionState.Idle, tsForceUpdate)
         End If
-        ' Clear scenario changed flags
-        Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, Me.m_bEcospaceModified, False)
+
+        If bResetDataState Then
+            ' Clear scenario changed flags
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, Me.m_bEcospaceModified, False)
+        End If
+
     End Sub
 
 #End Region ' Ecotracer
+
+#End Region ' Ececution
 
 #End Region ' State configuration
 

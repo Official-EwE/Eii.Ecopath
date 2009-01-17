@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.58  2009/01/17 03:25:48  jeroens
+' Core State Monitor data and execute states separated
+'
 ' Revision 1.57  2009/01/16 23:51:14  jeroens
 ' Datasource no longer maitains data state by datatype, but by eCoreComponentType
 '
@@ -762,10 +765,11 @@ Public Class cCore
             ' Release datasource
             DataSource = Nothing
         End If
+
         ' Forget model
         Me.m_StateMonitor.SetEcopathLoaded(False)
-        ' Update state monitor
         Me.m_StateMonitor.UpdateDataState(Nothing)
+
         ' Reset counters
         With Me.m_EcoPathData
             .NumGroups = 0
@@ -932,6 +936,7 @@ Public Class cCore
 
             ' Broadcast data state change
             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.True)
+
         End If
 
         ' Decrease messages lock count
@@ -3322,7 +3327,6 @@ Public Class cCore
     ''' <summary>
     ''' Normalize ecopath input values
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub NormalizeDietInput()
         ' Sanity check
         Debug.Assert(Me.StateMonitor.HasEcopathLoaded())
@@ -3330,13 +3334,14 @@ Public Class cCore
         Me.m_EcoPathData.SumDCToOne(True)
         ' Refresh ecopath groups
         Me.LoadEcopathInputs()
+        Me.m_StateMonitor.SetEcopathLoaded(True)
         ' Send out data changed message for ecopath
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoPath, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
         ' Flag datasource as dirty
         Me.DataSource.SetChanged(eCoreComponentType.EcoPath)
-        ' Yo!
         Me.m_StateMonitor.UpdateDataState(DataSource)
+
     End Sub
 
 #Region " Status flags updating "
@@ -4331,7 +4336,7 @@ Public Class cCore
             ' #Yes: invoke plugin point
             If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
             ' Force update
-            Me.m_StateMonitor.SetEcoSimLoaded(True, True)
+            Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             ' Report succes
@@ -4383,7 +4388,7 @@ Public Class cCore
             ' Inform the world
             Me.SendEcosimSaveStateMessage(strName)
             ' Force update
-            Me.m_StateMonitor.SetEcoSimLoaded(True, True)
+            Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
@@ -5640,6 +5645,7 @@ Public Class cCore
         Try
             Me.LoadEcosimGroups()
 
+            Me.m_StateMonitor.SetEcoSimLoaded(True)
             DataSource.SetChanged(eCoreComponentType.EcoSim)
             Me.m_StateMonitor.UpdateDataState(DataSource)
 
@@ -6352,7 +6358,7 @@ Public Class cCore
             ' Invoke plugin point
             If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
             ' Force update
-            Me.m_StateMonitor.SetEcospaceLoaded(True, True)
+            Me.m_StateMonitor.SetEcospaceLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             ' Report succes
@@ -6408,7 +6414,7 @@ Public Class cCore
             ' Inform the world
             Me.SendEcospaceSaveStateMessage(strName)
             ' Force update
-            Me.m_StateMonitor.SetEcospaceLoaded(True, True)
+            Me.m_StateMonitor.SetEcospaceLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
@@ -8310,7 +8316,7 @@ Public Class cCore
             ' Invoke plugin point
             If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
             ' Force update
-            Me.m_StateMonitor.SetEcotracerLoaded(True, True)
+            Me.m_StateMonitor.SetEcotracerLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             ' Report succes
@@ -8363,7 +8369,7 @@ Public Class cCore
             ' Inform the world
             Me.SendEcotracerSaveStateMessage(strName)
             ' Force update
-            Me.m_StateMonitor.SetEcotracerLoaded(True, True)
+            Me.m_StateMonitor.SetEcotracerLoaded(True, TriState.True)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
@@ -9136,6 +9142,10 @@ Public Class cCore
                     If Not bBlock Then DataSource.SetChanged(msAffected)
                     ' Notify state monitor of data modification
                     Me.m_StateMonitor.RegisterModification(msAffected)
+
+                    ' Update state monitor execution state
+                    Me.m_StateMonitor.UpdateExecutionState(msAffected, _
+                        DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
 
                 End If
             End If
@@ -9933,6 +9943,8 @@ Public Class cCore
                 DataSource.SetChanged(obj.CoreComponent)
                 Me.m_StateMonitor.UpdateDataState(DataSource)
             End If
+
+            Me.m_StateMonitor.UpdateExecutionState(obj.CoreComponent)
 
             Try
                 Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
