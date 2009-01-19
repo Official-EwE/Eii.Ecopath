@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.6  2009/01/19 20:22:53  joeb
+' Fixed bug in AverageSpatialResults() biomass does not need to be average over space. This happens at the end of the time step.
+'
 ' Revision 1.5  2009/01/14 18:46:55  joeb
 ' Time series results averaged over space at the end of the run
 '
@@ -1468,7 +1471,7 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public Sub AverageSpatialResults()
         Dim iflt As Integer, igrp As Integer, it As Integer, ivar As Integer, irgn As Integer
-
+        Dim ncells As Integer
         Try
 
             For ivar = 0 To N_RESULTS_FLEETS
@@ -1477,14 +1480,6 @@ Public Class cEcospaceDataStructures
                         Me.ResultsByFleet(ivar, iflt, it) /= Me.nWaterCells
                     Next it
                 Next iflt
-            Next ivar
-
-            For ivar = 0 To N_RESULTS_GROUPS
-                For igrp = 1 To Me.NGroups
-                    For it = 1 To nTimeSteps
-                        Me.ResultsByGroup(ivar, igrp, it) /= Me.nWaterCells
-                    Next it
-                Next igrp
             Next ivar
 
             For ivar = 0 To N_RESULTS_FLEETGROUPS
@@ -1498,18 +1493,23 @@ Public Class cEcospaceDataStructures
             Next ivar
 
             For irgn = 0 To Me.NoRegions
+                ncells = Me.nCellsInRegion(irgn)
+                If ncells = 0 Then ncells = 1
+
                 For igrp = 1 To Me.NGroups
                     For it = 1 To nTimeSteps
-                        Me.ResultsRegionGroup(irgn, igrp, it) /= Me.nCellsInRegion(irgn)
+                        Me.ResultsRegionGroup(irgn, igrp, it) /= ncells
                     Next it
                 Next igrp
             Next irgn
 
             For irgn = 0 To Me.NoRegions
+                ncells = Me.nCellsInRegion(irgn)
+                If ncells = 0 Then ncells = 1
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
                         For it = 1 To nTimeSteps
-                            Me.CatchRegionGearGroup(irgn, iflt, igrp, it) /= Me.nCellsInRegion(irgn)
+                            Me.CatchRegionGearGroup(irgn, iflt, igrp, it) /= ncells
                         Next it
                     Next igrp
                 Next iflt
