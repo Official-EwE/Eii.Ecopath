@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessageHandler.vb,v $
+' Revision 1.3  2009/01/19 18:07:24  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.2  2009/01/16 18:30:29  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -34,6 +37,9 @@
 '
 '==============================================================================
 
+Option Strict Off
+Imports System.ComponentModel
+
 ''' <summary>
 ''' <para>This class is the message handler portion of the Message-Publisher/Message-Handler pattern use to pass messages from the core(publisher) to an interface(handler).</para>
 ''' <para>This pattern is based on the Subject/Observer or Publisher/Subscriber patterns.
@@ -59,8 +65,9 @@
 Public Class cMessageHandler
 
     Private m_DelegateNotifier As EwECore.cCore.CoreMessageDelegate
-    Private m_source As eCoreComponentType
-    Private m_Type As eMessageType
+    Private m_syncobj As ISynchronizeInvoke = Nothing
+    Private m_corecomponent As eCoreComponentType
+    Private m_msgtype As eMessageType
 
     ''' <summary>
     ''' Constructs a new cMessageHandler object that will send messages of a given type to the DelegateToCall argument.
@@ -72,11 +79,12 @@ Public Class cMessageHandler
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType)
+    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, ByVal SourceToHandle As eCoreComponentType, ByVal MessageTypeToHandle As eMessageType, ByVal syncobj As ISynchronizeInvoke)
 
-        m_DelegateNotifier = DelegateToCall
-        m_source = SourceToHandle
-        m_Type = MessageTypeToHandle
+        Me.m_DelegateNotifier = DelegateToCall
+        Me.m_corecomponent = SourceToHandle
+        Me.m_msgtype = MessageTypeToHandle
+        Me.m_syncobj = syncobj
 
     End Sub
 
@@ -102,11 +110,15 @@ Public Class cMessageHandler
 
                 'test the type and source of the message
                 ' JS 15Mar06: test for MessageType.Any
-                If (message.Type = m_Type Or m_Type = eMessageType.Any) And _
-                   (message.Source = m_source) Then
+                If (message.Type = m_msgtype Or m_msgtype = eMessageType.Any) And _
+                   (message.Source = m_corecomponent) Then
 
                     Try
-                        m_DelegateNotifier(message)
+                        If Object.ReferenceEquals(Me.m_syncobj, Nothing) Then
+                            m_DelegateNotifier(message)
+                        Else
+                            Me.m_syncobj.Invoke(Me.m_DelegateNotifier, New Object() {message})
+                        End If
                     Catch ex As Exception
                         'Error thrown in the handler by an interface that was not handled 
                         'we have no idea if this message got handled or not

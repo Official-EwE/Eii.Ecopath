@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.3  2009/01/19 18:07:25  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.2  2009/01/16 18:30:34  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -159,10 +162,15 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 Imports eweCore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports System.ComponentModel
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -172,6 +180,9 @@ Namespace Properties
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cPropertyManager
+
+        ''' <summary>Message handler synchronizer.</summary>
+        Private m_sync As ISynchronizeInvoke = Nothing
 
         ''' <summary>Error property</summary>
         Private m_propNoData As cStringProperty = Nothing
@@ -246,6 +257,19 @@ Namespace Properties
         End Function
 
 #End Region ' Singleton
+
+#Region " Config "
+
+        Public Property SyncObject() As ISynchronizeInvoke
+            Get
+                Return Me.m_sync
+            End Get
+            Set(ByVal value As ISynchronizeInvoke)
+                Me.m_sync = value
+            End Set
+        End Property
+
+#End Region ' Config
 
 #Region " Public property access "
 
@@ -522,10 +546,10 @@ Namespace Properties
             Dim core As cCore = cCore.GetInstance()
 
             'core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.ShapesManager, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any))
-            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_sync))
 
         End Sub
 

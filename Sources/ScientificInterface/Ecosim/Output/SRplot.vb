@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.4  2009/01/19 18:07:26  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.3  2009/01/16 18:30:38  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -82,7 +85,7 @@ Namespace Ecosim
             m_coreStateMonitor = Me.m_Core.StateMonitor
             m_SRResults = New List(Of SRLine)
 
-            m_Core.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any))
+            m_Core.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me))
 
         End Sub
 

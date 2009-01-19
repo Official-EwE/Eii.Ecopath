@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.3  2009/01/19 18:07:26  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.2  2009/01/16 18:30:31  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -118,7 +121,7 @@ Public Class StatusPanel
         If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
-            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any)
+            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me)
             Me.m_dtMessageHanders(src) = mh
             core.Messages.AddMessageHandler(mh)
         Else
@@ -253,9 +256,13 @@ Public Class StatusPanel
                 Next
             End If
 
-            ' Add node(s) to the first position
-            Me.tvStatus.Nodes.Add(tnMessage)
-            tnMessage.EnsureVisible()
+            Try
+                ' Add node(s) to the first position
+                Me.tvStatus.Nodes.Add(tnMessage)
+                tnMessage.EnsureVisible()
+            Catch ex As Exception
+                ' Hmm
+            End Try
 
         End If
 

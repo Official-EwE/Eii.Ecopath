@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.26  2009/01/19 18:07:20  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.25  2009/01/16 23:48:37  jeroens
 ' ApplyTS -> WeightTS
 '
@@ -782,10 +785,13 @@ Public Class AppLauncher
     Private Sub InitCoreParams()
 
         ' Get one and only core
-        m_core = cCore.GetInstance()
+        Me.m_core = cCore.GetInstance()
+        ' Config state monitor
+        Me.m_core.StateMonitor.SyncObject = Me
 
         ' Get one and only property manager AFTER the core has been created.
         Me.m_propertyManager = cPropertyManager.GetInstance()
+        Me.m_propertyManager.SyncObject = Me
 
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.4  2009/01/19 18:07:25  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.3  2009/01/16 18:30:40  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -63,6 +66,7 @@ Imports EwEUtils.Core
 Imports WeifenLuo.WinFormsUI
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -106,6 +110,8 @@ Public Class frmEwE
 
         ''' <summary>Administration of registered forms per message source type.</summary>
         Private m_dictSourceToForm As New Dictionary(Of eCoreComponentType, List(Of frmEwE))
+        Private m_so As ISynchronizeInvoke = Nothing
+        Private m_core As cCore = Nothing
 
 #End Region ' Internal admin
 
@@ -120,8 +126,10 @@ Public Class frmEwE
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub New()
-            ' Hmm, maybe this'd better be done by passing a core instance in?
-            Me.Initialize(cCore.GetInstance())
+            Me.m_so = AppLauncher.GetInstance()
+            Me.m_core = cCore.GetInstance()
+
+            Me.Initialize()
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -193,9 +201,8 @@ Public Class frmEwE
         ''' <summary>
         ''' Initialize this class to listen to messages from an EwE Core instance.
         ''' </summary>
-        ''' <param name="core">The <see cref="cCore">Core instance</see> to listen to.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Initialize(ByVal core As cCore)
+        Private Sub Initialize()
             Me.ConfigMessageHandlers(True)
         End Sub
 
@@ -204,18 +211,17 @@ Public Class frmEwE
         Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
 
             Dim mh As cMessageHandler = Nothing
-            Dim core As cCore = cCore.GetInstance()
 
             If (src = eCoreComponentType.NotSet) Then Return
 
             If bSet Then
-                mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any)
+                mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.m_so)
                 Me.m_dtMessageHanders(src) = mh
-                core.Messages.AddMessageHandler(mh)
+                Me.m_core.Messages.AddMessageHandler(mh)
             Else
                 mh = Me.m_dtMessageHanders(src)
                 Me.m_dtMessageHanders.Remove(src)
-                core.Messages.RemoveMessageHandler(mh)
+                Me.m_core.Messages.RemoveMessageHandler(mh)
                 mh = Nothing
             End If
 

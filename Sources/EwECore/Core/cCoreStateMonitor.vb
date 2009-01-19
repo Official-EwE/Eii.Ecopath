@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.6  2009/01/19 18:07:24  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.5  2009/01/17 03:25:51  jeroens
 ' Core State Monitor data and execute states separated
 '
@@ -18,10 +21,15 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 
 Imports EwECore.DataSources
 Imports EwEUtils.Core
+Imports System.ComponentModel
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -48,6 +56,37 @@ Imports EwEUtils.Core
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCoreStateMonitor
+
+#Region " Private members "
+
+    ''' <summary>Reference to the monitored core.</summary>
+    Private m_core As cCore = Nothing
+    ''' <summary>Sync object for delivering events.</summary>
+    Private m_sync As ISynchronizeInvoke = Nothing
+
+    ''' <summary>Core execution state flag.</summary>
+    Private m_iExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
+    ''' <summary>Ecopath execution state flag.</summary>
+    Private m_iEcopathState As eCoreExecutionState = eCoreExecutionState.Idle
+    ''' <summary>Ecosim execution state flag.</summary>
+    Private m_iEcosimState As eCoreExecutionState = eCoreExecutionState.Idle
+    ''' <summary>Ecospace execution state flag.</summary>
+    Private m_iEcospaceState As eCoreExecutionState = eCoreExecutionState.Idle
+    ''' <summary>Ecotracer execution state flag.</summary>
+    Private m_iEcotracerState As eCoreExecutionState = eCoreExecutionState.Idle
+
+    ''' <summary>Flag indicating whether the datasource contains unsaved changes that do not affect the running model and its scenarios.</summary>
+    Private m_bDatasourceModified As Boolean = False
+    ''' <summary>Flag indicating whether the ecopath model data contains unsaved changes.</summary>
+    Private m_bEcopathModified As Boolean = False
+    ''' <summary>Flag indicating whether the ecosim scenario data contains unsaved changes.</summary>
+    Private m_bEcosimModified As Boolean = False
+    ''' <summary>Flag indicating whether the ecospace scenario data contains unsaved changes.</summary>
+    Private m_bEcospaceModified As Boolean = False
+    ''' <summary>Flag indicating whether the ecotracer scenario data contains unsaved changes.</summary>
+    Private m_bEcotracerModified As Boolean = False
+
+#End Region ' Private members
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -78,7 +117,11 @@ Public Class cCoreStateMonitor
     Public Custom Event CoreExecutionStateEvent As CoreExecutionStateDelegate
         AddHandler(ByVal handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Add(handler)
-            handler.Invoke(Me.m_core, Me.m_iExecutionState)
+            If m_sync IsNot Nothing Then
+                Me.m_sync.Invoke(handler, New Object() {Me.m_core, Me.m_iExecutionState})
+            Else
+                handler.Invoke(Me.m_core, Me.m_iExecutionState)
+            End If
         End AddHandler
 
         RemoveHandler(ByVal handler As CoreExecutionStateDelegate)
@@ -87,7 +130,11 @@ Public Class cCoreStateMonitor
 
         RaiseEvent(ByVal core As cCore, ByVal iState As eCoreExecutionState)
             For Each h As CoreExecutionStateDelegate In Me.m_executionStateHandlers
-                h.Invoke(core, iState)
+                If m_sync IsNot Nothing Then
+                    Me.m_sync.Invoke(h, New Object() {Me.m_core, Me.m_iExecutionState})
+                Else
+                    h.Invoke(Me.m_core, Me.m_iExecutionState)
+                End If
             Next
         End RaiseEvent
     End Event
@@ -113,7 +160,11 @@ Public Class cCoreStateMonitor
     Public Custom Event CoreDataStateEvent As CoreDataStateDelegate
         AddHandler(ByVal handler As CoreDataStateDelegate)
             Me.m_dataStateHandlers.Add(handler)
-            handler.Invoke(Me)
+            If m_sync IsNot Nothing Then
+                Me.m_sync.Invoke(handler, New Object() {Me})
+            Else
+                handler.Invoke(Me)
+            End If
         End AddHandler
 
         RemoveHandler(ByVal handler As CoreDataStateDelegate)
@@ -122,7 +173,11 @@ Public Class cCoreStateMonitor
 
         RaiseEvent(ByVal coreStateMonitor As cCoreStateMonitor)
             For Each h As CoreDataStateDelegate In Me.m_dataStateHandlers
-                h.Invoke(Me)
+                If m_sync IsNot Nothing Then
+                    Me.m_sync.Invoke(h, New Object() {Me})
+                Else
+                    h.Invoke(Me)
+                End If
             Next
         End RaiseEvent
     End Event
@@ -131,35 +186,6 @@ Public Class cCoreStateMonitor
     Private m_dataStateHandlers As New List(Of CoreDataStateDelegate)
 
 #End Region ' CoreExcutionState Delegate and Event
-
-#Region " Private members "
-
-    ''' <summary>Reference to the monitored core.</summary>
-    Private m_core As cCore = Nothing
-
-    ''' <summary>Core execution state flag.</summary>
-    Private m_iExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
-    ''' <summary>Ecopath execution state flag.</summary>
-    Private m_iEcopathState As eCoreExecutionState = eCoreExecutionState.Idle
-    ''' <summary>Ecosim execution state flag.</summary>
-    Private m_iEcosimState As eCoreExecutionState = eCoreExecutionState.Idle
-    ''' <summary>Ecospace execution state flag.</summary>
-    Private m_iEcospaceState As eCoreExecutionState = eCoreExecutionState.Idle
-    ''' <summary>Ecotracer execution state flag.</summary>
-    Private m_iEcotracerState As eCoreExecutionState = eCoreExecutionState.Idle
-
-    ''' <summary>Flag indicating whether the datasource contains unsaved changes that do not affect the running model and its scenarios.</summary>
-    Private m_bDatasourceModified As Boolean = False
-    ''' <summary>Flag indicating whether the ecopath model data contains unsaved changes.</summary>
-    Private m_bEcopathModified As Boolean = False
-    ''' <summary>Flag indicating whether the ecosim scenario data contains unsaved changes.</summary>
-    Private m_bEcosimModified As Boolean = False
-    ''' <summary>Flag indicating whether the ecospace scenario data contains unsaved changes.</summary>
-    Private m_bEcospaceModified As Boolean = False
-    ''' <summary>Flag indicating whether the ecotracer scenario data contains unsaved changes.</summary>
-    Private m_bEcotracerModified As Boolean = False
-
-#End Region ' Private members
 
 #Region " Private helpers "
 
@@ -276,6 +302,19 @@ Public Class cCoreStateMonitor
     End Sub
 
 #End Region ' Private helpers
+
+#Region " Config "
+
+    Public Property SyncObject() As ISynchronizeInvoke
+        Get
+            Return Me.m_sync
+        End Get
+        Set(ByVal value As ISynchronizeInvoke)
+            Me.m_sync = value
+        End Set
+    End Property
+
+#End Region ' Config
 
 #Region " State configuration "
 

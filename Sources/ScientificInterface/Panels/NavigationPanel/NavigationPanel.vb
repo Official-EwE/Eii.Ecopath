@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.13  2009/01/19 18:07:25  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.12  2008/12/15 15:55:38  jeroens
 ' no message
 '
@@ -225,7 +228,6 @@ Public Class NavigationPanel
     ''' <remarks>
     ''' Firing this command will not result in navigation changes.
     ''' </remarks>
-    <CLSCompliant(False)> _
     Public Function GetTemporaryNavCommand(ByVal ndType As String) As NavigationCommand
 
         Dim ni As cNodeInfo = m_nodeController.SearchNodeByType(ndType)

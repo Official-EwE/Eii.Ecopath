@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.59  2009/01/19 18:07:21  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.58  2009/01/17 03:25:48  jeroens
 ' Core State Monitor data and execute states separated
 '
@@ -1201,7 +1204,7 @@ Public Class cCore
         Try
             'build a new EcoPath Model object
             m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
-            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any))
+            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
@@ -4039,7 +4042,7 @@ Public Class cCore
 
             m_EcoSim = New Ecosim.cEcoSimModel
 
-            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any))
+            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Nothing))
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
@@ -5693,7 +5696,7 @@ Public Class cCore
 
         m_Ecospace = New cEcoSpace
 
-        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any))
+        m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Nothing))
 
         m_EcoSpaceData = New cEcospaceDataStructures
         m_SpaceTSData = New cEcospaceTimeSeriesDataStructures

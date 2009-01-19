@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: DatabaseConversionWizard.vb,v $
+' Revision 1.5  2009/01/19 18:07:25  jeroens
+' MessageHandlers, CoreStateMonitor have sync objects
+'
 ' Revision 1.4  2009/01/16 18:30:37  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -173,7 +176,7 @@ Namespace Wizard
 
                     ' Import the model to EwE6 format
                     Dim bSuccess As Boolean = False
-                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.DataSource, eMessageType.Any)
+                    Dim mh As cMessageHandler = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.DataSource, eMessageType.Any, appl)
                     Dim mlbi As ModelListboxItem = Nothing
 
                     m_core.Messages.AddMessageHandler(mh)
