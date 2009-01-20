@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.7  2009/01/20 22:32:01  joeb
+' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
+'
 ' Revision 1.6  2009/01/19 20:22:53  joeb
 ' Fixed bug in AverageSpatialResults() biomass does not need to be average over space. This happens at the end of the time step.
 '
@@ -442,22 +445,16 @@ Public Class cEcospaceDataStructures
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
     Public ImportanceLayers As New List(Of cLayerImportanceData)
-    'must public the seed var here too abmpa
-    ' Public MPASeed(,) As Integer
 
     Public EffPower() As Single
-    '  Public ebb() As Single
-    ' Public BB() As Single
 
     Public BBase() As Single
 
     'Summary data
     Public NoRegions As Integer
-    Public CatchRegionGearGroup(,,,) As Single 'CatchGearGroupRegion( NoRegions, nFleets, NGroups, ntimesteps)
-
+    Public ResultsCatchRegionGearGroup(,,,) As Single 'ResultsCatchRegionGearGroup( NoRegions, nFleets, NGroups, ntimesteps)
     Public ResultsByFleet(,,) As Single 'ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)
     Public ResultsByFleetGroup(,,,) As Single 'ResultsByFleetGroup(nvars,nFleets,nGroups,NumberOfTimeSteps)
-
     Public ResultsRegionGroup(,,) As Single 'ResultsRegionGroup(region, group, timestep)
 
     ''' <summary> Summarized time step data </summary>
@@ -1190,7 +1187,7 @@ Public Class cEcospaceDataStructures
         ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
 
         ReDim Me.ResultsRegionGroup(NoRegions, NGroups, NumberOfTimeSteps)
-        ReDim Me.CatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+        ReDim Me.ResultsCatchRegionGearGroup(NoRegions, nFleets, NGroups, NumberOfTimeSteps)
 
     End Sub
 
@@ -1454,12 +1451,12 @@ Public Class cEcospaceDataStructures
         Me.getStartEndSumIndex(st, et, nts)
 
         For it As Integer = st To st + nts - 1
-            startCatch = startCatch + Me.CatchRegionGearGroup(iRegion, iFleet, iGroup, it)
+            startCatch = startCatch + Me.ResultsCatchRegionGearGroup(iRegion, iFleet, iGroup, it)
         Next
         startCatch = startCatch / nts
 
         For it As Integer = et To et + nts - 1
-            endCatch = endCatch + Me.CatchRegionGearGroup(iRegion, iFleet, iGroup, it)
+            endCatch = endCatch + Me.ResultsCatchRegionGearGroup(iRegion, iFleet, iGroup, it)
         Next
         endCatch = endCatch / nts
 
@@ -1495,7 +1492,6 @@ Public Class cEcospaceDataStructures
             For irgn = 0 To Me.NoRegions
                 ncells = Me.nCellsInRegion(irgn)
                 If ncells = 0 Then ncells = 1
-
                 For igrp = 1 To Me.NGroups
                     For it = 1 To nTimeSteps
                         Me.ResultsRegionGroup(irgn, igrp, it) /= ncells
@@ -1509,12 +1505,11 @@ Public Class cEcospaceDataStructures
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
                         For it = 1 To nTimeSteps
-                            Me.CatchRegionGearGroup(irgn, iflt, igrp, it) /= ncells
+                            Me.ResultsCatchRegionGearGroup(irgn, iflt, igrp, it) /= ncells
                         Next it
                     Next igrp
                 Next iflt
             Next irgn
-
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

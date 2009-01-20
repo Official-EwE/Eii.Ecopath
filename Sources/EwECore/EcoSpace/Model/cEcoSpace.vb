@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.19  2009/01/20 22:31:58  joeb
+' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
+'
 ' Revision 1.18  2009/01/16 18:30:20  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -3242,7 +3245,7 @@ exitline:
 
                             'Next line is for adding up catch by region etc
                             If m_Data.NoRegions > 0 Then
-                                m_Data.CatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
+                                m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
                             End If
                             'Then multily with marketvalue * prop landed
                             sum = sum * m_EPdata.Market(iFlt, igrp) * m_EPdata.Landing(iFlt, igrp) / (m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp))
