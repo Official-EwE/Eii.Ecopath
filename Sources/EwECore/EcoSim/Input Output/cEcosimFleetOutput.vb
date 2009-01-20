@@ -74,7 +74,7 @@ Public Class cEcosimFleetOutput
 
 
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999) As Object
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex1 As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         If Not m_coreData.ContainsKey(VarName) Then
             'NOT in list of sim vars so get the value from the base class GetVariable(...)
