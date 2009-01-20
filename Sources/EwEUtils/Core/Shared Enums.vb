@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.22  2009/01/20 23:44:18  joeb
+' Renamed GameYield to GameGroupCatch
+'
 ' Revision 1.21  2009/01/20 22:32:56  joeb
 ' Added GameCatchRegionFleetGroup
 '
@@ -1010,7 +1013,7 @@ Namespace Core
         GameGroupFleetValue
 
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
-        GameYield
+        GameGroupCatch
 
         GameState
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
