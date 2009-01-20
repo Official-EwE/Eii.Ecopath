@@ -293,7 +293,7 @@ Public Class cMSEOutput
     End Function
 
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999) As Object
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iIndex2 As Integer = -9999, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         If VarName = eVarNameFlags.MSEBiomass Then
             Debug.Assert(iIndex <> cCore.NULL_VALUE And iIndex2 <> cCore.NULL_VALUE)
