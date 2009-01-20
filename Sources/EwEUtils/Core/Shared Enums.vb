@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.21  2009/01/20 22:32:56  joeb
+' Added GameCatchRegionFleetGroup
+'
 ' Revision 1.20  2009/01/14 18:48:10  joeb
 ' Added varnames for Ecospace results
 '
@@ -551,6 +554,9 @@ Namespace Core
         ''' <summary> Biomass of catch in a region for the end summary period</summary>
         EcospaceRegionCatchEnd
 
+        ''' <summary> Biomass of catch in a region by fleet, group and time </summary>
+        EcospaceRegionFleetGroupCatch
+
         ''' <summary>Time in Years of the Start summary time period </summary>
         EcospaceSummaryTimeStart
 
@@ -568,6 +574,7 @@ Namespace Core
 
         ''' <summary> Ecospace Catch over time </summary>
         EcospaceGroupCatchOverTime
+
 
         ''' <summary> Ecospace Value over time </summary>
         EcospaceGroupValueOverTime
@@ -986,6 +993,8 @@ Namespace Core
         GameModel
         GameBiomass
         GameBiomassByRegion
+        GameCatchRegionFleetGroup
+
 
         ''' <summary>Profit by Fleet </summary>      
         GameFleetProfitSummary
