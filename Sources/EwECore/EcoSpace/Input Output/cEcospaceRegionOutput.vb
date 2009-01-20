@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceRegionOutput.vb,v $
+' Revision 1.3  2009/01/20 22:30:45  joeb
+' Added Catch Region Fleet Group
+'
 ' Revision 1.2  2009/01/16 18:30:24  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -78,13 +81,14 @@ Public Class cEcospaceRegionOutput
 
     Public Sub Init()
 
-        m_CoreArrays.Clear()
-        m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(m_spacedata.ResultsRegionGroup, Me.Index))
-
-
-        ''CatchGearGroupRegion(var(fixed),region(fixed),fleet(varies),group(varies)) vartype and region fixed
-        'm_CoreArrays.Add(eVarNameFlags.EcospaceRegionCatchStart, New c4DResultsWrapper(m_spacedata.CatchRegionGearGroup, 0, Me.Index))
-        'm_CoreArrays.Add(eVarNameFlags.EcospaceRegionCatchEnd, New c4DResultsWrapper(m_spacedata.CatchRegionGearGroup, 1, Me.Index))
+        Try
+            m_CoreArrays.Clear()
+            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(m_spacedata.ResultsRegionGroup, Me.Index))
+            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
+            cLog.Write(ex)
+        End Try
 
     End Sub
 
@@ -92,15 +96,16 @@ Public Class cEcospaceRegionOutput
 
 #Region "Implementation of GetVariable() SetVariable() GetStatus() SetStatus()"
 
-    Public Overrides Function GetVariable(ByVal varName As eVarNameFlags, Optional ByVal iFirstIndex As Integer = cCore.NULL_VALUE, Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Function GetVariable(ByVal varName As eVarNameFlags, Optional ByVal iFirstIndex As Integer = cCore.NULL_VALUE, Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
         Try
 
             If Not m_CoreArrays.ContainsKey(varName) Then
+                Debug.Assert(iSecondIndex = cCore.NULL_VALUE, Me.ToString & ".GetVariable() called with optional argument iSecondIndex for variable " & varName.ToString & " this can not be handled for this variable.")
                 'NOT in list of sim vars so get the value from the base class GetVariable(...)
-                Return MyBase.GetVariable(varName, iFirstIndex, iSecondIndex)
+                Return MyBase.GetVariable(varName, iFirstIndex)
             Else
                 'Varname is access directly via the core data
-                Return m_CoreArrays.Item(varName).Value(iFirstIndex, iSecondIndex)
+                Return m_CoreArrays.Item(varName).Value(iFirstIndex, iSecondIndex, iIndex3)
             End If
 
         Catch ex As Exception
@@ -110,6 +115,7 @@ Public Class cEcospaceRegionOutput
         Return cCore.NULL_VALUE
 
     End Function
+
 
     Public Overloads Function GetStatus(ByVal varName As eVarNameFlags, ByVal iFleet As Integer, ByVal iGroup As Integer) As eStatusFlags
         Return eStatusFlags.OK 'Oh Yeah 
@@ -206,13 +212,20 @@ Public Class cEcospaceRegionOutput
 
         End Get
 
-        'Set(ByVal value As Single)
-        '    Try
-        '        SetVariable(eVarNameFlags.EcospaceRegionBiomass, value, IGroup, iTime)
-        '    Catch ex As Exception
-        '        Debug.Assert(False, ex.Message)
-        '    End Try
-        'End Set
+    End Property
+
+
+    Public ReadOnly Property CatchFleetGroupTime(ByVal FleetIndex As Integer, ByVal GroupIndex As Integer, ByVal TimeIndex As Integer) As Single
+
+        Get
+            Try
+                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatch, FleetIndex, GroupIndex, TimeIndex), Single)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return cCore.NULL_VALUE
+            End Try
+
+        End Get
 
     End Property
 
