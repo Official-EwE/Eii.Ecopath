@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.6  2009/01/20 22:34:26  joeb
+' Added Option ThirdIndex to GetVariable() for dealing with data by Region, Fleet, Group and time
+'
 ' Revision 1.5  2009/01/16 18:30:12  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -153,7 +156,7 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iIndex2">Optional index of the value to return when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex1 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE) As Object
+    Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex1 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
     ''' <summary>
     ''' Sets the value of a variable exposed by a Core input or output object.
@@ -507,7 +510,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="iIndex2">Optional index for indexed variables.</param>
     ''' <returns></returns>
     ''' <remarks>This only provides variables for one optional index Override this if you you need access to variables with two indexes</remarks>
-    Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
+    Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
 
         Try
             Debug.Assert(iIndex2 = cCore.NULL_VALUE, Me.ToString & ".GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
@@ -1104,6 +1107,34 @@ Friend Class c4DResultsWrapper
         End Set
     End Property
 End Class
+
+
+''' <summary>
+''' 4D array with the first two indexes fixed
+''' </summary>
+''' <remarks> cEcosimDataStrucures.PredPreyResultsOverTime(var,prey,pred,time)</remarks>
+Friend Class c4DResultsWrapperFirstFixed
+    Implements IResultsWrapper
+
+    'var, group, group, time
+    Private m_data(,,,) As Single
+    Private m_FixedIndex As Integer
+
+    Public Sub New(ByVal TheBuffer(,,,) As Single, ByVal FixedIndex As Integer)
+        m_data = TheBuffer
+        m_FixedIndex = FixedIndex
+    End Sub
+
+    Public Property Value(ByVal FirstIndex As Integer, Optional ByVal SecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal ThirdIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex) = value
+        End Set
+    End Property
+End Class
+
 
 ''' <summary>
 ''' 2D array with the first index fixed
