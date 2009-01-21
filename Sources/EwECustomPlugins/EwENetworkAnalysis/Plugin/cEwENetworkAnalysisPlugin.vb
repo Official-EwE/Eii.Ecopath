@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.4  2009/01/21 19:11:01  jeroens
+' Uses changed plug-in data exchange structure
+'
 ' Revision 1.3  2009/01/16 18:30:27  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -10,83 +13,19 @@
 ' Revision 1.1  2008/09/26 07:31:00  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.27  2008/08/08 23:14:18  jeroens
-' Disabled console traces
-'
-' Revision 1.26  2008/07/08 14:37:45  jeroens
-' Exposes AscendancyTotal
-'
-' Revision 1.25  2008/07/07 02:23:22  jeroens
-' Grouped and reorganized functionality
-'
-' Revision 1.24  2008/07/06 17:28:07  jeroens
-' Implemented as IDataExchangePlugin
-'
-' Revision 1.23  2008/06/19 18:48:46  joeh
-' Change Network Analysis Plug-in to Network analysis plug-in
-'
-' Revision 1.22  2008/03/03 23:40:59  sherman
-' Removed EwE from names.
-'
-' Revision 1.21  2007/10/30 19:21:09  jeroens
-' + Plugins need Author, contact
-'
-' Revision 1.20  2007/10/10 16:52:29  jeroens
-' * Fixed textual representations
-'
-' Revision 1.19  2007/09/25 22:46:11  joeh
-' Fix bug 252
-'
-' Revision 1.18  2007/09/25 00:01:01  joeh
-' Fix bug 252
-'
-' Revision 1.17  2007/06/22 00:35:29  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.16  2007/06/10 00:46:39  joeh
-' Add progress bars
-'
-' Revision 1.15  2007/06/06 01:22:54  jeroens
-' * Fixed nav tree node location
-' * Changed tooltip text
-'
-' Revision 1.14  2007/06/05 14:48:50  joeb
-' Changes to initialization of Ecosim Network
-'
-' Revision 1.13  2007/06/01 17:31:59  joeb
-' More Ecosim Network Analysis
-'
-' Revision 1.12  2007/05/29 21:19:36  joeb
-' Network Analysis from Ecosim
-'
-' Revision 1.11  2007/05/28 21:37:15  joeb
-' Added Ecosim interfaces
-'
-' Revision 1.10  2007/05/24 18:24:20  joeb
-' Added Ecosim pluging interfaces
-'
-' Revision 1.9  2007/05/23 00:04:47  joeh
-' Add new classes for the UI
-'
-' Revision 1.8  2007/05/02 01:17:52  joeh
-' Second shot at Network Analysis Plugin UI
-'
-' Revision 1.7  2007/04/30 17:37:16  joeh
-' *First shot at the EwENetwork Analysis UI
-'
-' Revision 1.6  2007/04/26 15:06:46  joeb
-' Minor comments
-'
-' Revision 1.5  2007/04/26 14:01:40  jeroens
-' + Form only created when necessary
-'
 '==============================================================================
+
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
 
 Imports EwECore
 Imports EwEPlugin
+Imports EwEPlugin.Data
+Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
@@ -94,7 +33,7 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IDataProducerPlugin
+    Implements EwEPlugin.Data.IDataProducerPlugin
     'at this time we do not need these plugin points
     'Implements EwEPlugin.IEcosimRunCompletedPlugin
     'Implements EwEPlugin.IEcosimBeginTimestepPlugin
@@ -403,71 +342,130 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Data exchange "
 
+    Private Class cNetworkAnalysisData
+
+        Implements IPluginData
+        Implements INetworkAnalysisData
+
+        Private m_strAssemblyName As String = ""
+        Private m_strPluginName As String = ""
+        Private m_assAscendancy As Single(,) = Nothing
+
+        Public Sub New(ByVal strAssemblyName As String, ByVal strPluginName As String, ByVal assAscendancy As Single(,))
+            Me.m_strAssemblyName = strAssemblyName
+            Me.m_strPluginName = strPluginName
+            Me.m_assAscendancy = assAscendancy
+        End Sub
+
+        Public ReadOnly Property AssemblyName() As String _
+            Implements IPluginData.AssemblyName
+            Get
+                Return Me.m_strAssemblyName
+            End Get
+        End Property
+
+        Public ReadOnly Property PluginName() As String _
+            Implements IPluginData.PluginName
+            Get
+                Return Me.m_strPluginName
+            End Get
+        End Property
+
+        Public ReadOnly Property Ascendancy() As Single(,) _
+            Implements EwEUtils.Core.INetworkAnalysisData.Ascendancy
+            Get
+                Return Me.m_assAscendancy
+            End Get
+        End Property
+
+    End Class
+
     Private m_broadcaster As IDataBroadcaster = Nothing
 
-    Public Sub Broadcaster(ByVal broadcaster As EwEPlugin.IDataBroadcaster) _
-        Implements EwEPlugin.IDataProducerPlugin.Broadcaster
+    Public Sub Broadcaster(ByVal broadcaster As IDataBroadcaster) _
+        Implements IDataProducerPlugin.Broadcaster
 
         Me.m_broadcaster = broadcaster
 
     End Sub
 
-    Public Function GetData(ByVal strDataName As String, ByRef objData As Object) As Boolean _
-            Implements EwEPlugin.IDataProducerPlugin.GetData
-
-        ' Run network if needed
-        If Not Me.m_NetworkManager.IsMainNetworkRun Then
-            m_NetworkManager.RunMainNetwork()
-        End If
+    Public Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean _
+            Implements IDataProducerPlugin.GetDataByName
 
         Try
             Select Case strDataName
                 Case "AscendancyTotal"
-                    Dim asData(6, 5) As Single
-
-                    asData(1, 1) = m_NetworkManager.AscendancyImportTotal
-                    asData(2, 1) = m_NetworkManager.AscendancyImportPer
-                    asData(3, 1) = m_NetworkManager.OverheadImportTotal
-                    asData(4, 1) = m_NetworkManager.OverheadImportPer
-                    asData(5, 1) = m_NetworkManager.CapacityImportTotal
-                    asData(6, 1) = m_NetworkManager.CapacityImportPer
-
-                    asData(1, 2) = m_NetworkManager.AscendancyInternalFlowTotal
-                    asData(2, 2) = m_NetworkManager.AscendancyInternalFlowPer
-                    asData(3, 2) = m_NetworkManager.OverheadFlowTotal
-                    asData(4, 2) = m_NetworkManager.OverheadFlowPer
-                    asData(5, 2) = m_NetworkManager.CapacityFlowTotal
-                    asData(6, 2) = m_NetworkManager.CapacityFlowPer
-
-                    asData(1, 3) = m_NetworkManager.AscendancyExportTotal
-                    asData(2, 3) = m_NetworkManager.AscendancyExportPer
-                    asData(3, 3) = m_NetworkManager.OverheadExportTotal
-                    asData(4, 3) = m_NetworkManager.OverheadExportPer
-                    asData(5, 3) = m_NetworkManager.CapacityExportTotal
-                    asData(6, 3) = m_NetworkManager.CapacityExportPer
-
-                    asData(1, 4) = m_NetworkManager.AscendancyRespTotal
-                    asData(2, 4) = m_NetworkManager.AscendancyRespPer
-                    asData(3, 4) = m_NetworkManager.OverheadRespTotal
-                    asData(4, 4) = m_NetworkManager.OverheadRespPer
-                    asData(5, 4) = m_NetworkManager.CapacityRespTotal
-                    asData(6, 4) = m_NetworkManager.CapacityRespPer
-
-                    asData(1, 5) = m_NetworkManager.AscendancyTotalsTotal
-                    asData(2, 5) = m_NetworkManager.AscendancyTotalsPer
-                    asData(3, 5) = m_NetworkManager.OverheadTotalsTotal
-                    asData(4, 5) = m_NetworkManager.OverheadTotalsPer
-                    asData(5, 5) = m_NetworkManager.CapacityTotalsTotal
-                    asData(6, 5) = m_NetworkManager.CapacityTotalsPer
-
-                    objData = asData
-                    Return True
+                    data = Me.GetData()
             End Select
         Catch ex As Exception
-            objData = Nothing
+            data = Nothing
         End Try
 
-        Return False
+        Return (data IsNot Nothing)
+
+    End Function
+
+    Public Function GetDataByType(ByVal typeData As System.Type, ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
+        Implements IDataProducerPlugin.GetDataByType
+
+        Try
+            If typeData Is GetType(INetworkAnalysisData) Then
+                data = Me.GetData()
+            End If
+        Catch ex As Exception
+            data = Nothing
+        End Try
+        Return (data IsNot Nothing)
+    End Function
+
+    Private Function GetData() As cNetworkAnalysisData
+
+        Dim asData(6, 5) As Single
+
+        ' Run network if needed
+        If Not Me.m_NetworkManager.IsMainNetworkRun Then
+            Me.m_NetworkManager.RunMainNetwork()
+        End If
+
+        asData(1, 1) = m_NetworkManager.AscendancyImportTotal
+        asData(2, 1) = m_NetworkManager.AscendancyImportPer
+        asData(3, 1) = m_NetworkManager.OverheadImportTotal
+        asData(4, 1) = m_NetworkManager.OverheadImportPer
+        asData(5, 1) = m_NetworkManager.CapacityImportTotal
+        asData(6, 1) = m_NetworkManager.CapacityImportPer
+
+        asData(1, 2) = m_NetworkManager.AscendancyInternalFlowTotal
+        asData(2, 2) = m_NetworkManager.AscendancyInternalFlowPer
+        asData(3, 2) = m_NetworkManager.OverheadFlowTotal
+        asData(4, 2) = m_NetworkManager.OverheadFlowPer
+        asData(5, 2) = m_NetworkManager.CapacityFlowTotal
+        asData(6, 2) = m_NetworkManager.CapacityFlowPer
+
+        asData(1, 3) = m_NetworkManager.AscendancyExportTotal
+        asData(2, 3) = m_NetworkManager.AscendancyExportPer
+        asData(3, 3) = m_NetworkManager.OverheadExportTotal
+        asData(4, 3) = m_NetworkManager.OverheadExportPer
+        asData(5, 3) = m_NetworkManager.CapacityExportTotal
+        asData(6, 3) = m_NetworkManager.CapacityExportPer
+
+        asData(1, 4) = m_NetworkManager.AscendancyRespTotal
+        asData(2, 4) = m_NetworkManager.AscendancyRespPer
+        asData(3, 4) = m_NetworkManager.OverheadRespTotal
+        asData(4, 4) = m_NetworkManager.OverheadRespPer
+        asData(5, 4) = m_NetworkManager.CapacityRespTotal
+        asData(6, 4) = m_NetworkManager.CapacityRespPer
+
+        asData(1, 5) = m_NetworkManager.AscendancyTotalsTotal
+        asData(2, 5) = m_NetworkManager.AscendancyTotalsPer
+        asData(3, 5) = m_NetworkManager.OverheadTotalsTotal
+        asData(4, 5) = m_NetworkManager.OverheadTotalsPer
+        asData(5, 5) = m_NetworkManager.CapacityTotalsTotal
+        asData(6, 5) = m_NetworkManager.CapacityTotalsPer
+
+        ' ToDo: look up plugin assembly name dynamically
+        ' Dim s As String = System.Reflection.Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)).FullName)
+        Return New cNetworkAnalysisData("EwENetworkAnalysis", Me.Name, asData)
+
     End Function
 
 #End Region ' Data exchange
