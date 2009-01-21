@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.11  2009/01/21 19:38:26  jeroens
+' Added GetData
+'
 ' Revision 1.10  2008/12/16 16:57:26  sherman
 ' Corrected EcospacePostFishingEffortModTimestep
 '
@@ -41,6 +44,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEPlugin.Data
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -1178,13 +1182,15 @@ Public Class cPluginManager
 
 #Region " Data Exchange Plugins "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Exchange data from a <see cref="IDataProducerPlugin">data producer plug-in</see>
     ''' to any interested <see cref="IDataConsumerPlugin">data consumer plug-in</see>.
     ''' </summary>
-    ''' <param name="ds">The data to exchange.</param>
-    ''' <returns></returns>
-    Public Function BroadcastData(ByVal strDataName As String, ByVal ds As DataSet) As Boolean _
+    ''' <param name="data">The <see cref="IPluginData">data</see> to exchange.</param>
+    ''' <returns>True if broadcast succeeded.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function BroadcastData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean _
             Implements IDataBroadcaster.BroadcastData
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataConsumerPlugin))
@@ -1194,7 +1200,7 @@ Public Class cPluginManager
 
             For Each ip As IPlugin In collPlugins
                 Try 'protect the core from a plugin exploding
-                    bHandled = bHandled Or DirectCast(ip, IDataConsumerPlugin).ReceiveData(strDataName, ds)
+                    bHandled = bHandled Or DirectCast(ip, IDataConsumerPlugin).ReceiveData(strDataName, data)
                 Catch ex As Exception
                     Debug.Assert(False, ip.Name & " BroadcastData() Error: " & ex.Message)
                     'tell the world
@@ -1208,6 +1214,69 @@ Public Class cPluginManager
 
         Return bHandled
 
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get all <see cref="IPluginData">plug-in data</see> from loaded
+    ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
+    ''' instances that expose data under a given name.
+    ''' </summary>
+    ''' <param name="strDataName">The name of the data to match.</param>
+    ''' <returns>An array of data, or an empty array if an error occurred.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GetData(ByVal strDataName As String) As IPluginData()
+        Dim coll As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim data As IPluginData = Nothing
+        Dim lData As New List(Of IPluginData)
+        Try
+            For Each pi As IPlugin In coll
+
+                Try
+                    If DirectCast(pi, IDataProducerPlugin).GetDataByName(strDataName, data) Then
+                        lData.Add(data)
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, pi.Name & " GetData(" & strDataName & ") Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+        Catch ex As Exception
+        End Try
+        Return lData.ToArray()
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get all <see cref="IPluginData">plug-in data</see> from loaded
+    ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
+    ''' instances that expose data of a given <see cref="Type">Type</see>.
+    ''' </summary>
+    ''' <param name="dataType">The <see cref="Type">Type</see> of the data to
+    ''' obtain.</param>
+    ''' <returns>An array of data, or an empty array if an error occurred.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GetData(ByVal dataType As Type) As IPluginData()
+        Dim coll As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim data As IPluginData = Nothing
+        Dim lData As New List(Of IPluginData)
+        Try
+            For Each pi As IPlugin In coll
+
+                Try
+                    If DirectCast(pi, IDataProducerPlugin).GetDataByType(dataType, data) Then
+                        lData.Add(data)
+                    End If
+                Catch ex As Exception
+                    Debug.Assert(False, pi.Name & " GetData(" & dataType.ToString() & ") Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+        Catch ex As Exception
+        End Try
+        Return lData.ToArray()
     End Function
 
 #End Region ' Data Exchange Plugins 
