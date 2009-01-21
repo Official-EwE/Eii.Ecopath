@@ -77,8 +77,11 @@
     <Compile Include="Handlers\cPluginGUIHandler.vb" />
     <Compile Include="Handlers\cPluginNavTreeHandler.vb" />
     <Compile Include="Plugin templates\Core\ICorePlugin.vb" />
-    <Compile Include="Plugin templates\Core\IDataExchangePlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataConsumerPlugin.vb" />
     <Compile Include="Plugin templates\Core\IDataValidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataBroadcaster.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataProducerPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
     <Compile Include="Plugin templates\Database\IDatabaseUpdatePlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPlugin.vb" />
