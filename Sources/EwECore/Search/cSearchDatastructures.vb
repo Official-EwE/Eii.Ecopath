@@ -1069,7 +1069,7 @@ Public Class cSearchDatastructures
                     'employ = employ + Vlocal * Jobs(i)
                 End If
             Next
-            System.Console.WriteLine()
+            'System.Console.WriteLine()
         Next
 
         For i = 1 To m_ecopathData.NumFleet
