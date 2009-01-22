@@ -1,7 +1,9 @@
-
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.8  2009/01/22 19:06:25  jeroens
+' Uses economic data adapter
+'
 ' Revision 1.7  2009/01/16 18:30:30  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -23,141 +25,11 @@
 ' Revision 1.1  2008/09/26 07:30:24  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.45  2008/09/25 02:31:03  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.44  2008/09/24 00:11:03  villyc
-' f limits and others
-'
-' Revision 1.43  2008/08/11 21:09:11  joeb
-' Changes for Bug Fix 459 Added Search Modes
-'
-' Revision 1.42  2008/06/25 17:38:04  joeb
-' Fix bug 491 Initialization of Ecosim overwriting fishing mort with default
-'
-' Revision 1.41  2008/06/11 00:13:52  villyc
-' VC Policy search update
-'
-' Revision 1.40  2008/06/03 16:42:47  joeb
-' Bug Fix
-'
-' Revision 1.39  2008/05/29 02:03:59  villyc
-' Fixing policy search, think it works now, but LTV not included
-'
-' Revision 1.38  2008/05/27 01:28:56  villyc
-' *** empty log message ***
-'
-' Revision 1.37  2008/05/14 20:33:56  joeb
-' Added bBaseYearSet flag
-' EffortChangePenalty changed so it can not return zero
-'
-' Revision 1.36  2008/05/12 18:58:36  joeb
-' Restructure of search objects to use ISearchObjective interface
-'
-' Revision 1.35  2008/05/06 20:38:07  joeb
-' Fixed Initialization bugs from the last time I commited oppsssss
-'
-' Revision 1.34  2008/05/06 20:03:23  joeb
-' Moinor tweeks to Initialization and error handling
-'
-' Revision 1.33  2008/04/23 17:37:07  joeb
-' ValWeight now come from SearchDataStructures instead of FishPolicySearch
-'
-' Revision 1.32  2008/04/17 20:21:23  joeb
-' Changed cCore.m_EcosimSearch to cCore.m_SearchData
-'
-' Revision 1.31  2008/04/17 20:17:01  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.30  2008/04/15 15:21:06  joeb
-' Added Validation and Updating for BaseYear and SearchBlocks
-'
-' Revision 1.29  2008/04/11 18:46:12  joeb
-' Removed some dead code
-'
-' Revision 1.28  2008/04/11 15:53:28  joeb
-' Removed Messageboxes
-'
-' Revision 1.27  2008/04/11 15:08:13  joeb
-' Added some code for debugging
-'
-' Revision 1.26  2008/02/26 19:51:29  joeb
-' Changes to DPMin
-'
-' Revision 1.25  2007/12/13 15:42:24  joeb
-' Minor edits
-'
-' Revision 1.24  2007/11/21 14:39:31  jeroens
-' * Fixed enums
-'
-' Revision 1.23  2007/10/26 19:25:08  joeb
-' Added a ToDo
-'
-' Revision 1.22  2007/10/14 17:21:38  jeroens
-' * Solved compiler warnings
-'
-' Revision 1.21  2007/10/03 17:17:31  joeb
-' Bug Fixes
-'
-' Revision 1.20  2007/09/24 14:18:44  joeb
-' bDoFPSearch
-'
-' Revision 1.19  2007/09/17 21:23:29  joeb
-' Added comments and ToDo's
-'
-' Revision 1.18  2007/09/17 21:07:24  joeb
-' UseCostPenalty
-'
-' Revision 1.17  2007/09/14 16:34:28  joeb
-' Fixes to Initialization of Frates() still on going
-'
-' Revision 1.16  2007/09/13 15:27:50  joeb
-' Changes to Delegate/Handlers
-'
-' Revision 1.15  2007/09/11 20:17:35  joeb
-' Hooking interface up to objects
-'
-' Revision 1.14  2007/09/11 14:49:45  joeb
-' Dimensioning
-'
-' Revision 1.13  2007/09/10 22:51:32  joeb
-' *** empty log message ***
-'
-' Revision 1.12  2007/09/10 22:31:47  joeb
-' Added SearchForBaseProfitability()
-'
-' Revision 1.11  2007/09/10 14:46:08  joeb
-' still more base code
-'
-' Revision 1.10  2007/09/09 15:21:28  joeb
-' Still adding code
-'
-' Revision 1.9  2007/09/07 15:28:20  joeb
-' Tons O crap!
-'
-' Revision 1.8  2007/09/06 15:29:41  joeb
-' more base code
-'
-' Revision 1.7  2007/09/04 17:16:11  joeb
-' Minor changes for Fishing Policy Search
-'
-' Revision 1.6  2007/08/31 14:49:50  joeb
-' More more more.....
-'
-' Revision 1.5  2007/08/29 15:41:17  joeb
-' Minor changes
-'
-' Revision 1.4  2007/08/29 14:59:36  joeb
-' Added a bunch of computational code
-'
-' Revision 1.3  2007/08/27 15:25:43  joeb
-' Added Log header
-'
 '==============================================================================
 
 Imports EwECore.Ecosim
 Imports EwECore.SearchObjectives
-
+Imports EwEUtils.Core
 
 Namespace FishingPolicy
 
@@ -673,7 +545,7 @@ Namespace FishingPolicy
             '             Alternatively, you might want to create a subroutine to print or
             '             plot them; in this case, call that routine right at the end of
             '             this main program.
-
+            '
             '***********************************************************************
 
 
@@ -1193,6 +1065,7 @@ endline:    '
             'Dim totval As Double, Employ As Double,ecovalue As Double, manvalue As Double,
             Dim LogUtil As Double
             Dim returnvalue As Double
+            Dim adapter As cEconomicDataAdapter = Me.m_core.EconomicDataAdapter
             'dimension any variables needed by your calculations but not shared here 
 
             'then generate your predictions here and calculate the fitting criterion,
@@ -1214,8 +1087,8 @@ endline:    '
                     VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(1) = m_searchData.totval / TotValBase
-                If EmployBase <> 0 Then CritValue(2) = m_searchData.Employ / EmployBase
+                If TotValBase <> 0 Then CritValue(1) = adapter.TotalValue / TotValBase
+                If EmployBase <> 0 Then CritValue(2) = adapter.EmploymentValue / EmployBase
                 If ManValueBase <> 0 Then CritValue(3) = m_searchData.manvalue / ManValueBase
                 If EcoValueBase <> 0 Then CritValue(4) = m_searchData.ecovalue / EcoValueBase
                 If BioDivBase <> 0 Then CritValue(5) = m_searchData.KemptonQ / BioDivBase
