@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEconomicDataAdapter.vb,v $
+' Revision 1.2  2009/01/22 19:04:45  jeroens
+' Renamed property
+'
 ' Revision 1.1  2009/01/22 18:36:49  jeroens
 ' Initial version
 '
@@ -10,6 +13,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEPlugin.Data
 
 #End Region ' Imports
 
@@ -31,7 +35,7 @@ Public Class cEconomicDataAdapter
 
 #Region " Public properties "
 
-    Public ReadOnly Property EmployentValue() As Single
+    Public ReadOnly Property EmploymentValue() As Single
         Get
             Dim ecodata As IEconomicData = Me.GetEconomicData()
             If ecodata Is Nothing Then Return Me.m_core.m_SearchData.Employ
@@ -53,17 +57,19 @@ Public Class cEconomicDataAdapter
 
     Private Function GetEconomicData() As IEconomicData
 
-        Dim adata As IEconomicData()
+        Dim adata As IPluginData()
 
         If Me.m_core.PluginManager IsNot Nothing Then
-            adata = DirectCast(Me.m_core.PluginManager.GetData(GetType(IEconomicData)), IEconomicData())
+            adata = DirectCast(Me.m_core.PluginManager.GetData(GetType(IEconomicData)), IPluginData())
         End If
 
         If (adata Is Nothing) Then Return Nothing
         If (adata.Length = 0) Then Return Nothing
 
         ' ToDo: figure out how to deal with multiple objects
-        Return adata(0)
+        If TypeOf adata Is IEconomicData Then Return DirectCast(adata(0), IEconomicData)
+
+        Return Nothing
 
     End Function
 
