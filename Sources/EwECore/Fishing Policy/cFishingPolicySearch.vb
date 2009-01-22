@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.9  2009/01/22 22:33:42  joeb
+' Use EconomicDataAdapter for setting base economic data
+'
 ' Revision 1.8  2009/01/22 19:06:25  jeroens
 ' Uses economic data adapter
 '
@@ -297,8 +300,12 @@ Namespace FishingPolicy
             'get the base values used by FUNC to tell the change between the current run and the base run
             m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
 
-            TotValBase = m_searchData.totval
-            EmployBase = m_searchData.Employ
+            'Get the economic values from the EconomicDataAdapter
+            'The EconomicDataAdapter will get it's data from ECost if available or Ecosim if not
+            Dim adapter As cEconomicDataAdapter = Me.m_core.EconomicDataAdapter
+
+            TotValBase = adapter.TotalValue
+            EmployBase = adapter.EmploymentValue
             ManValueBase = m_searchData.manvalue
             EcoValueBase = m_searchData.ecovalue
             BioDivBase = m_searchData.KemptonQ
@@ -1065,8 +1072,10 @@ endline:    '
             'Dim totval As Double, Employ As Double,ecovalue As Double, manvalue As Double,
             Dim LogUtil As Double
             Dim returnvalue As Double
+
+            'Get the economic values from the EconomicDataAdapter
+            'The EconomicDataAdapter will get it's data from ECost if available or Ecosim if not
             Dim adapter As cEconomicDataAdapter = Me.m_core.EconomicDataAdapter
-            'dimension any variables needed by your calculations but not shared here 
 
             'then generate your predictions here and calculate the fitting criterion,
             'for example set sumdev=sum over observations of squared deviations between
