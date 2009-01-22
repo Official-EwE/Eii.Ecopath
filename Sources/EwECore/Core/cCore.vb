@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.60  2009/01/22 19:05:36  jeroens
+' Added economic data adapter
+'
 ' Revision 1.59  2009/01/19 18:07:21  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -290,12 +293,10 @@ Public Class cCore
     ''' <summary>Manager to access interface specific to the "Game" interface </summary>
     Private m_gameManger As cGameServerInterface
 
-    ''' <summary>
-    ''' Class to wrap stand alone functions for internal and external access
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions
 
+    Private m_adapterEconomic As cEconomicDataAdapter
 
 #Region "Private Initialization Flags"
 
@@ -1188,6 +1189,7 @@ Public Class cCore
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
         m_gameManger = New cGameServerInterface(Me)
+        m_adapterEconomic = New cEconomicDataAdapter(Me)
 
         If bsuccess Then
             m_bCoreIsInit = True
@@ -8761,6 +8763,16 @@ Public Class cCore
 #End Region ' Groups
 
 #End Region ' Ecotracer
+
+#Region " Data adapters "
+
+    Public ReadOnly Property EconomicDataAdapter() As cEconomicDataAdapter
+        Get
+            Return Me.m_adapterEconomic
+        End Get
+    End Property
+
+#End Region ' Data adapters
 
 #Region "Auxiliary data "
 
