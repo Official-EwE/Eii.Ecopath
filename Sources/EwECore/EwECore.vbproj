@@ -238,6 +238,7 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerRegionGroupOutput.vb" />
     <Compile Include="Core\cCoreStateManager.vb" />
     <Compile Include="Core\cEwEScenario.vb" />
+    <Compile Include="Data Adapters\cEconomicDataAdapter.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_03_02.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_03_04.vb" />
@@ -330,9 +331,6 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ExternalData\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
