@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.6  2009/01/23 17:53:50  jeroens
+' Simplified AllowEvents
+'
 ' Revision 1.5  2009/01/05 12:54:08  jeroens
 ' Added change events to cOOPStorable
 '
@@ -33,7 +36,7 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 #If VERBOSE Then
-#Const VERBOSE_LEVEL = 1
+#Const VERBOSE_LEVEL = 4
 #End If
 
 Namespace Database
@@ -993,13 +996,13 @@ Namespace Database
             Private m_bAllowEvents As Boolean = True
 
             <Browsable(False)> _
-            Public Property AllowEvents(Optional ByVal bFireChangeWhenReleased As Boolean = False) As Boolean
+            Public Property AllowEvents() As Boolean
                 Get
                     Return Me.m_bAllowEvents
                 End Get
                 Set(ByVal value As Boolean)
                     Me.m_bAllowEvents = value
-                    If bFireChangeWhenReleased Then Me.SetChanged()
+                    If m_bAllowEvents Then Me.SetChanged()
                 End Set
             End Property
 
