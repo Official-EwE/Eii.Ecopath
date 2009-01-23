@@ -16,8 +16,7 @@
 imports System
 imports System.Collections.Generic
 imports System.ComponentModel
-imports System.Data
-imports System.Drawing
+Imports System.Drawing
 imports System.Text
 imports System.Windows.Forms
 

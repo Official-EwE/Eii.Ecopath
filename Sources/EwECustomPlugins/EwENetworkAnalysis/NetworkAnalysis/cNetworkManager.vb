@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.8  2009/01/23 03:10:59  jeroens
+' Removed unused references
+'
 ' Revision 1.7  2009/01/16 18:30:33  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -28,7 +31,6 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports System.Xml
 
 ''' <summary>
 ''' Manager for the Network Analysis

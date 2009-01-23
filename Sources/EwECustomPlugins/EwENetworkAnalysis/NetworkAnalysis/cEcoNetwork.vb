@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.9  2009/01/23 03:10:35  jeroens
+' Removed unused references
+'
 ' Revision 1.8  2008/11/27 23:45:05  joeb
 ' Moved MatrixCalc to EcoFunctions
 '
@@ -48,7 +51,6 @@
 Option Explicit On
 Option Strict On
 Imports EwECore
-Imports System.Xml
 
 Public Class cEcoNetwork
 
