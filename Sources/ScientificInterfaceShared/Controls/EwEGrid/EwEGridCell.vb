@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.5  2009/01/23 03:11:47  jeroens
+' Prft
+'
 ' Revision 1.4  2008/11/12 23:42:16  jeroens
 ' Bravo, Sherm
 '
@@ -15,6 +18,9 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
+Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
@@ -23,6 +29,8 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Namespace Controls.EwEGrid
 
