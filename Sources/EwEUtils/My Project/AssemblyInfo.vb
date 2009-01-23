@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEUtils")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyDescription("Ecopath with Ecosim utilities")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEUtils")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2005-2007")> 
+<Assembly: AssemblyCopyright("Copyright © 2005-2009")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)>

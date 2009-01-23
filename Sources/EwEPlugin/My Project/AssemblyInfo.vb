@@ -8,12 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Plugin")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("EwEPlugin")> 
+<Assembly: AssemblyDescription("Foundation library for implementing Ecopath with Ecosim plugins")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
-<Assembly: AssemblyProduct("Plugin")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2006")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyProduct("EwEPlugin")> 
+<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2006-2009")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
 

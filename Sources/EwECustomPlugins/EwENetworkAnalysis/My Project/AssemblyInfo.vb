@@ -9,11 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwENetworkAnalysis")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyDescription("Network Analysis plug-in for Ecopath with Ecosim")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwENetworkAnalysis plugin")> 
-<Assembly: AssemblyCopyright("Copyright © 2007")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyCopyright("Copyright © 2007-2009")> 
 
 <Assembly: ComVisible(False)>
 
