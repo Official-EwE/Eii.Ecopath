@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.4  2009/01/23 03:08:55  jeroens
+' Removed unused imports
+'
 ' Revision 1.3  2008/12/02 18:22:14  jeroens
 ' Added standard colour ramp offsets to prevent groups colours getting too light to see
 '
@@ -20,7 +23,6 @@ Imports System.Text
 Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
-Imports EwEPlugin
 
 Namespace Style
 
