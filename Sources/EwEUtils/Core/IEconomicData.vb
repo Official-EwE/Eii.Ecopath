@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: IEconomicData.vb,v $
+' Revision 1.3  2009/01/24 17:46:16  joeb
+' Added EmploymentValueByFleet and ProfitByFleet
+'
 ' Revision 1.2  2009/01/22 17:38:36  jeroens
 ' Added  2 main economic values
 '
@@ -32,6 +35,20 @@ Namespace Core
         ''' </summary>
         ''' -------------------------------------------------------------------
         ReadOnly Property EmploymentValue() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Employment value by fleet
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property EmploymentValueByFleet(ByVal FleetIndex As Integer) As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Proifit by fleet
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ProfitByFleet(ByVal FleetIndex As Integer) As Single
 
     End Interface
 
