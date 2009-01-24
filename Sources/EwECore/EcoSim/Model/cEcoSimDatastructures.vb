@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.13  2009/01/24 17:45:15  joeb
+' Added SummarizeResults
+'
 ' Revision 1.12  2008/12/03 17:40:18  joeb
 ' *** empty log message ***
 '
@@ -450,9 +453,10 @@ Public Class cEcosimDatastructures
     Public ResultsSumValueByGear(,) As Single
     Public ResultsEffort(,) As Single
 
-
-
-
+    ''' <summary>Summarized Profit from results </summary>
+    Public ProfitByFleet() As Single
+    ''' <summary>Summarized Jobs from results </summary>
+    Public EmploymentValueByFleet() As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1128,6 +1132,9 @@ Public Class cEcosimDatastructures
 
         ReDim Elect(nGroups, nGroups, nt)
 
+        ReDim ProfitByFleet(Me.nGear)
+        ReDim EmploymentValueByFleet(Me.nGear)
+
     End Sub
 
 
@@ -1526,11 +1533,34 @@ Public Class cEcosimDatastructures
     End Function
 
 
+    ''' <summary>
+    ''' Summarize any Ecosim results
+    ''' </summary>
+    ''' <param name="EcopathCost">Ecopath precentage of Cost CostPct(3,nfleets)</param>
+    ''' <param name="JobMultiplier">Jobs multiplier from the Search data</param>
+    ''' <remarks>Computes ProfitByFleet(nFleets) and JobsByFleet(nfleets)</remarks>
+    Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
 
- 
+        ReDim ProfitByFleet(Me.nGear)
+        ReDim EmploymentValueByFleet(Me.nGear)
 
+        Dim sumValue As Single
+        For iflt As Integer = 0 To Me.nGear
+            sumValue = 0
+            For it As Integer = 1 To Me.NTimes
+                sumValue += Me.ResultsSumValueByGear(iflt, it)
+            Next
 
+            '[sum of value] * [ecopath profit (percentage of catch value that is profit)]
+            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) / Me.NumYears
 
+            'TEMP just for something to work with until we have ECost up and running
+            '[sum of value] * [Jobs(fleet) from the search forms]
+            EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / Me.NumYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+
+        Next iflt
+
+    End Sub
 
     Public Sub ClearSummaryResults()
 
@@ -1540,7 +1570,6 @@ Public Class cEcosimDatastructures
         ReDim SumBiomass(2, nGroups) 'SumBiomass(iTimePeriod,iGroup)
         'catch by group
         ReDim SumCatch(2, nGroups)
-
 
     End Sub
 End Class

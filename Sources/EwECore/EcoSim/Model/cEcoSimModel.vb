@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.34  2009/01/24 17:45:25  joeb
+' Added SummarizeResults
+'
 ' Revision 1.33  2009/01/16 18:30:17  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -957,6 +960,9 @@ Public Property PluginManager() As cPluginManager
 
             PlotDataInfo(False, m_Data.SS, m_Data.SSGroup)
             ' System.Console.WriteLine("Ecosim SS = " & m_Data.SS.ToString)
+
+            'summarize the results data 
+            Me.m_Data.SummarizeResults(Me.m_EPData.CostPct, Me.m_search.Jobs)
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
