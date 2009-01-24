@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.61  2009/01/24 17:44:36  joeb
+' Added ProfitByFleet(Fleet) and EmploymentValueByFleet(Fleet) to Economic Adapters
+'
 ' Revision 1.60  2009/01/22 19:05:36  jeroens
 ' Added economic data adapter
 '
@@ -4662,17 +4665,10 @@ Public Class cCore
                     fleet.Effort = endVal / sVal
                 End If
 
-                Dim sumValue As Single
-                For it As Integer = 1 To Me.m_EcoSimData.NTimes
-                    sumValue += Me.m_EcoSimData.ResultsSumValueByGear(iFlt, it)
-                Next
-
-                'TEMP just for something to work with until we have ECost up and running
-                '[sum of value] * [ecopath profit (precentage of catch value that is profit)]
-                fleet.ProfitSummary = sumValue * (m_EcoPathData.CostPct(iFlt, 0) / 100)
-                '[sum of value] * [Jobs(fleet) from the search forms]
-                fleet.JobsSummary = sumValue * Me.m_SearchData.Jobs(iFlt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
-
+                'get Economic data from the data adapter
+                'this economic data could come Ecosim or any Plugin that supplies economic data e.g. ECost
+                fleet.ProfitSummary = Me.m_adapterEconomic.ProfitByFleet(iFlt)
+                fleet.JobsSummary = Me.m_adapterEconomic.EmploymentValueByFleet(iFlt)
                 fleet.Init()
 
             Next

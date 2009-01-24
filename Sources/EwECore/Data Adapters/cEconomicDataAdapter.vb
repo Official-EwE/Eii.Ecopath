@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEconomicDataAdapter.vb,v $
+' Revision 1.3  2009/01/24 17:44:37  joeb
+' Added ProfitByFleet(Fleet) and EmploymentValueByFleet(Fleet) to Economic Adapters
+'
 ' Revision 1.2  2009/01/22 19:04:45  jeroens
 ' Renamed property
 '
@@ -48,6 +51,25 @@ Public Class cEconomicDataAdapter
             Dim ecodata As IEconomicData = Me.GetEconomicData()
             If ecodata Is Nothing Then Return Me.m_core.m_SearchData.totval
             Return ecodata.TotalValue
+        End Get
+    End Property
+
+
+    ''' <summary>Summary of Profit by Fleet</summary>
+    Public ReadOnly Property ProfitByFleet(ByVal FleetIndex As Integer) As Single
+        Get
+            Dim ecodata As IEconomicData = Me.GetEconomicData()
+            If ecodata Is Nothing Then Return Me.m_core.m_EcoSimData.ProfitByFleet(FleetIndex)
+            Return ecodata.ProfitByFleet(FleetIndex)
+        End Get
+    End Property
+
+    ''' <summary>Summary of Jobs by Fleet</summary>
+    Public ReadOnly Property EmploymentValueByFleet(ByVal FleetIndex As Integer) As Single
+        Get
+            Dim ecodata As IEconomicData = Me.GetEconomicData()
+            If ecodata Is Nothing Then Return Me.m_core.m_EcoSimData.EmploymentValueByFleet(FleetIndex)
+            Return ecodata.EmploymentValueByFleet(FleetIndex)
         End Get
     End Property
 
