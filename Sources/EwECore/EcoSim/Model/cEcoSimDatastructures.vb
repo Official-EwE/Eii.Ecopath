@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.14  2009/01/26 18:18:40  joeb
+' Changes to SummarizeResults
+'
 ' Revision 1.13  2009/01/24 17:45:15  joeb
 ' Added SummarizeResults
 '
@@ -78,9 +81,9 @@ Public Class cEcosimDatastructures
         AvgWeight
     End Enum
 
-    Public Enum eEcosimPredPreyResults
-        Pred
+    Public Enum eEcosimPreyPredResults
         Prey
+        Pred
         Consumption
     End Enum
 
@@ -99,9 +102,7 @@ Public Class cEcosimDatastructures
     ''' <summary>Total number of fleets in the model.</summary>
     Public nGear As Integer
 
-
     Public FirstTime As Boolean
-
 
     ' Public ConSimOn As Boolean
     Public TrophicOff As Boolean
@@ -283,9 +284,6 @@ Public Class cEcosimDatastructures
     ''' </summary>
     ''' <remarks> used to scale the FishRateNo() for all the groups fished by a fleet</remarks>
     Public FishRateGear(,) As Single
-
-
-
     Public FishRateGearBasis() As Single
     Public FishRateGearDBID() As Integer
     Public FishRateGearTitle() As String
@@ -439,13 +437,16 @@ Public Class cEcosimDatastructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Model Results Over Time for selected variable
     '
+    ''' <summary>Number of timesteps in the summary data</summary>
+    Public nSumTimeSteps As Integer
+
     ''' <summary>
     ''' Model results over time
     ''' </summary>
     ''' <remarks></remarks>
-    Public ResultsOverTime(,,) As Single ' dim by number of varaiable, groups, time
-    Public PredPreyResultsOverTime(,,,) As Single ' dim by number of pred/prey(2), varaiable, groups, time
-    Public ResultsSumByGroup(,,) As Single ' dim by  pred/prey(2), groups, groups
+    Public ResultsOverTime(,,) As Single ' dim by number of varaiables, groups, time
+    Public PredPreyResultsOverTime(,,,) As Single ' dim by number of pred/prey(2), groups, groups, time
+    Public ResultsAvgByPreyPred(,,) As Single ' dim by  pred/prey(2), groups, groups
     Public ResultsSumCatchByGroupGear(,,) As Single ' groups,fleets,time
     Public ResultsSumCatchByGear(,) As Single ' fleets,time
 
@@ -1114,6 +1115,9 @@ Public Class cEcosimDatastructures
     ''' </remarks>
     Public Sub dimResults(ByVal NumberOfYears As Integer)
 
+        'reset the number of time steps in the summary data
+        nSumTimeSteps = 0
+
         Dim nt As Integer = NumberOfYears * NumStepsPerYear
 
         'VB Wierdness N_TIME_RESULTS is the actual number of results variables in ResultsOverTime(,,) but because of the way vb dims arrays
@@ -1121,7 +1125,7 @@ Public Class cEcosimDatastructures
         'so ReDim ResultsOverTime(N_TIME_RESULTS,) will give N_TIME_RESULTS +1 elements in the array
         ReDim ResultsOverTime(N_TIME_RESULTS - 1, nGroups, nt)
         ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
-        ReDim ResultsSumByGroup(1, nGroups, nGroups)
+        ReDim ResultsAvgByPreyPred(1, nGroups, nGroups)
 
         'fisheries data
         ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
@@ -1146,7 +1150,7 @@ Public Class cEcosimDatastructures
 
         Erase ResultsOverTime
         Erase PredPreyResultsOverTime
-        Erase ResultsSumByGroup
+        Erase ResultsAvgByPreyPred
 
         'fisheries data
         Erase ResultsSumCatchByGroupGear ' groups,fleets,time
@@ -1353,7 +1357,7 @@ Public Class cEcosimDatastructures
             'd.DCPct = DCPct.Clone
             d.ResultsOverTime = ResultsOverTime.Clone
             d.PredPreyResultsOverTime = PredPreyResultsOverTime.Clone
-            d.ResultsSumByGroup = ResultsSumByGroup.Clone
+            d.ResultsAvgByPreyPred = ResultsAvgByPreyPred.Clone
             d.NumStep = NumStep
             d.NumStep0 = NumStep0
             d.NumStep1 = NumStep1
@@ -1534,29 +1538,39 @@ Public Class cEcosimDatastructures
 
 
     ''' <summary>
-    ''' Summarize any Ecosim results
+    ''' Computed summarized results for Ecosim
     ''' </summary>
     ''' <param name="EcopathCost">Ecopath precentage of Cost CostPct(3,nfleets)</param>
     ''' <param name="JobMultiplier">Jobs multiplier from the Search data</param>
-    ''' <remarks>Computes ProfitByFleet(nFleets) and JobsByFleet(nfleets)</remarks>
+    ''' <remarks>Computes ProfitByFleet(nFleets), JobsByFleet(nfleets), Prey Pred consumption</remarks>
     Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
+
+
+        For iPrey As Integer = 1 To Me.nGroups
+            For iPred As Integer = 1 To Me.nGroups
+                Me.ResultsAvgByPreyPred(0, iPrey, iPred) = Me.ResultsAvgByPreyPred(0, iPrey, iPred) / Me.nSumTimeSteps
+                Me.ResultsAvgByPreyPred(1, iPrey, iPred) = Me.ResultsAvgByPreyPred(1, iPrey, iPred) / Me.nSumTimeSteps
+            Next
+        Next
 
         ReDim ProfitByFleet(Me.nGear)
         ReDim EmploymentValueByFleet(Me.nGear)
 
         Dim sumValue As Single
+        'number of years the data was summarized over
+        Dim nYears As Single = Me.nSumTimeSteps / 12
         For iflt As Integer = 0 To Me.nGear
             sumValue = 0
-            For it As Integer = 1 To Me.NTimes
+            For it As Integer = 1 To Me.nSumTimeSteps
                 sumValue += Me.ResultsSumValueByGear(iflt, it)
             Next
 
             '[sum of value] * [ecopath profit (percentage of catch value that is profit)]
-            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) / Me.NumYears
+            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) / nYears
 
             'TEMP just for something to work with until we have ECost up and running
             '[sum of value] * [Jobs(fleet) from the search forms]
-            EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / Me.NumYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+            EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / nYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
 
         Next iflt
 

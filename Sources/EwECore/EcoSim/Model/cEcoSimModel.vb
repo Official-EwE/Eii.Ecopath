@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.35  2009/01/26 18:18:42  joeb
+' Changes to SummarizeResults
+'
 ' Revision 1.34  2009/01/24 17:45:25  joeb
 ' Added SummarizeResults
 '
@@ -894,7 +897,6 @@ Public Property PluginManager() As cPluginManager
                     'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                     '*
                     If m_search.bInSearch And iyr >= m_search.BaseYear Then
-                        'If ipct = 12 Then Stop
                         m_search.calcMonthlyCatch(BB, Fgear, QYear, iyr > m_search.BaseYear)
                     End If
                     '*
@@ -904,9 +906,7 @@ Public Property PluginManager() As cPluginManager
                         m_MSE.AccessBioRisk(BB)
                     End If 'If m_search.PlotOn = True Then
 
-                    'jb For optimization of Searches results and timestep data are not computed when in a Search
-                    'This could be changed so that a plugin could access the timestep and results data
-                    'by using a boolean flag to process the timestep results which could be set by a plugin
+                    'Compute time step results if the calling routine set bTimestepOutput to True
                     If m_Data.bTimestepOutput Then
                         ProcessTimeStep(itime, ipct)
                     End If
@@ -940,19 +940,14 @@ Public Property PluginManager() As cPluginManager
 
             If m_Data.bTimestepOutput Then
                 'summarize any data for output
-                For igrp As Integer = 1 To m_EPData.NumGroups
-                    For ipp As Integer = 1 To m_EPData.NumGroups
-                        m_Data.ResultsSumByGroup(0, igrp, ipp) = m_Data.ResultsSumByGroup(0, igrp, ipp) / itime
-                        m_Data.ResultsSumByGroup(1, igrp, ipp) = m_Data.ResultsSumByGroup(1, igrp, ipp) / itime
-                    Next
-                Next
+                Me.m_Data.SummarizeResults(Me.m_EPData.CostPct, Me.m_search.Jobs)
             End If
 
             'VC080523 Subtracts baseyear from the calc's below as we only need to look from that point on
-            'only go in here if searching
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
             If m_search.bInSearch Then
+                'only go in here if searching
                 m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears, NumberOfYears + ExtraTime - m_search.BaseYear)
             End If
             '*
@@ -960,9 +955,6 @@ Public Property PluginManager() As cPluginManager
 
             PlotDataInfo(False, m_Data.SS, m_Data.SSGroup)
             ' System.Console.WriteLine("Ecosim SS = " & m_Data.SS.ToString)
-
-            'summarize the results data 
-            Me.m_Data.SummarizeResults(Me.m_EPData.CostPct, Me.m_search.Jobs)
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
@@ -1599,6 +1591,8 @@ Public Property PluginManager() As cPluginManager
                 Dim igrp As Integer
 
                 m_Results.CurrentT = iTime
+                'increment the number of time steps in the summary data
+                Me.m_Data.nSumTimeSteps += 1
 
                 calcFunctionalResponse(iTime)
 
@@ -1625,12 +1619,12 @@ Public Property PluginManager() As cPluginManager
 
                     For ipred As Integer = 1 To m_Results.nGroups
                         'sum of consumption for pred and prey
-                        m_Data.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Pred, igrp, ipred) += m_Data.Consumpt(igrp, ipred) 'm_Data.Eatenby(i) '
-                        m_Data.ResultsSumByGroup(cEcosimDatastructures.eEcosimPredPreyResults.Prey, igrp, ipred) += m_Data.Consumpt(ipred, igrp) 'm_Data.Eatenof(i) '
+                        m_Data.ResultsAvgByPreyPred(cEcosimDatastructures.eEcosimPreyPredResults.Pred, igrp, ipred) += m_Data.Consumpt(igrp, ipred) 'm_Data.Eatenby(i) '
+                        m_Data.ResultsAvgByPreyPred(cEcosimDatastructures.eEcosimPreyPredResults.Prey, igrp, ipred) += m_Data.Consumpt(ipred, igrp) 'm_Data.Eatenof(i) '
 
-                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Consumption, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred)
-                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Pred, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred) / BB(igrp)
-                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPredPreyResults.Prey, igrp, ipred, iTime) = m_Data.Consumpt(ipred, igrp) / (BB(igrp) * (m_Data.Eatenby(igrp) / BB(igrp)))
+                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred)
+                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Pred, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred) / BB(igrp)
+                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Prey, igrp, ipred, iTime) = m_Data.Consumpt(ipred, igrp) / (BB(igrp) * (m_Data.Eatenby(igrp) / BB(igrp)))
                     Next ipred
 
                     SumEf = 0
@@ -2791,13 +2785,7 @@ Public Property PluginManager() As cPluginManager
             ReDim m_RefData.Yhat(m_RefData.NdatType * m_RefData.NdatYear)
             ReDim DatDev(m_RefData.NdatType, m_RefData.NdatYear)
 
-            If m_TracerData.EcoSimConSimOn Then
-                'ReDim DatTraceZ(m_refData.NdatType) As Single, DatTraceZ2(m_refData.NdatType) As Single
-                ' ReDim ErTrace(m_refData.NdatType * m_refData.NdatYear)
-            End If
-
             m_RefData.Iobs = 0
-            ' TraceObs = 0
 
         End Sub
 
