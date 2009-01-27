@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.23  2009/01/27 17:41:30  joeb
+' Changed ViewSettings varnames
+'
 ' Revision 1.22  2009/01/20 23:44:18  joeb
 ' Renamed GameYield to GameGroupCatch
 '
@@ -1020,7 +1023,9 @@ Namespace Core
         FleetName
 
         ''' <summary>View settings for the Client set by the Server (visible groups...)</summary>
-        GameViewSetting
+        GameViewVisibleItems
+
+        GameViewAvailableItems
 
 
 
