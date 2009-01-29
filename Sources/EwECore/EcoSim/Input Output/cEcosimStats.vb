@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimStats.vb,v $
+' Revision 1.4  2009/01/29 17:41:45  jeroens
+' Fixed another copy/paste bug
+'
 ' Revision 1.3  2009/01/29 16:11:43  jeroens
 ' Fixed copy/paste bugs
 ' Uses new datatype
@@ -23,16 +26,13 @@ Public Class cEcosimStats
     Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
         MyBase.New(theCore)
 
+        Dim val As cValue = Nothing
+
         Me.DBID = iDBID
         Me.m_dataType = eDataTypes.EcoSimStatistics
         Me.m_coreComponent = eCoreComponentType.EcoSim
 
-        Dim val As cValue
-
         Try
-
-            Me.m_dataType = eDataTypes.EcospaceGroup
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimStatistics, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
 
