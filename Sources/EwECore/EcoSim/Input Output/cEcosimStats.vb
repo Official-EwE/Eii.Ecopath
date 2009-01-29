@@ -1,27 +1,15 @@
 '==============================================================================
 '
 ' $Log: cEcosimStats.vb,v $
+' Revision 1.3  2009/01/29 16:11:43  jeroens
+' Fixed copy/paste bugs
+' Uses new datatype
+'
 ' Revision 1.2  2009/01/16 18:30:17  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
 ' Revision 1.1  2008/09/26 07:30:20  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/07/02 01:55:25  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.4  2008/06/20 19:43:19  joeb
-' Added SSGroup to EcosimStats
-'
-' Revision 1.3  2008/05/29 22:22:43  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.2  2007/06/22 16:09:06  joeb
-' Fixed CVS log
-'
-' Revision 1.1  2007/06/22 16:06:07  joeb
-' Added cEcosimStats file
-'
 '
 '==============================================================================
 
@@ -32,37 +20,36 @@ Imports EwEUtils.Core
 Public Class cEcosimStats
     Inherits cCoreInputOutputBase
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
+    Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
         MyBase.New(theCore)
 
-        Me.DBID = DBID
-        m_dataType = eDataTypes.EcospaceGroup
-        m_coreComponent = eCoreComponentType.EcoSpace
+        Me.DBID = iDBID
+        Me.m_dataType = eDataTypes.EcoSimStatistics
+        Me.m_coreComponent = eCoreComponentType.EcoSim
 
         Dim val As cValue
 
         Try
 
-            m_dataType = eDataTypes.EcospaceGroup
-            m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceGroup
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimStatistics, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+
             'SS
             val = New cValue(New Single, eVarNameFlags.EcosimSS, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
-                         AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
-
-
+            'SSGroup
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
-            Debug.Assert(False, "Error creating new cEcospaceGroup.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceGroup. Error: " & ex.Message)
+            Debug.Assert(False, "Error creating new cEcosimStats.")
+            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcosimStats. Error: " & ex.Message)
         End Try
 
     End Sub
