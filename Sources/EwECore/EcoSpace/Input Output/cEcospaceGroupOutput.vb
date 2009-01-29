@@ -55,11 +55,10 @@ Public Class cEcospaceGroupOutput
     Public Sub Init()
 
         m_CoreData.Clear()
-        'SpaceTSData(group,var,time)
         m_CoreData.Add(eVarNameFlags.EcospaceBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.Biomass, Me.Index))
         m_CoreData.Add(eVarNameFlags.EcospaceRelativeBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.RelativeBiomass, Me.Index))
-        m_CoreData.Add(eVarNameFlags.EcospaceGroupValueOverTime, New c4DResultsWrapper(m_spaceData.ResultsByFleetGroup, eSpaceResultsFleetsGroups.Value, Me.Index))
-        m_CoreData.Add(eVarNameFlags.EcospaceGroupCatchOverTime, New c4DResultsWrapper(m_spaceData.ResultsByFleetGroup, eSpaceResultsFleetsGroups.CatchBio, Me.Index))
+        m_CoreData.Add(eVarNameFlags.EcospaceGroupValueOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.CatchBio, Me.Index))
+        m_CoreData.Add(eVarNameFlags.EcospaceGroupCatchOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.CatchBio, Me.Index))
 
     End Sub
 
