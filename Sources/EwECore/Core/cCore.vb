@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.64  2009/01/29 23:40:23  jeroens
+' Populated profit vars in Ecopath stats
+'
 ' Revision 1.63  2009/01/29 20:18:26  jeroens
 ' Ecopath stats mostly populated
 '
@@ -3167,13 +3170,16 @@ Public Class cCore
                 Me.m_EcopathStats.OmnivIndex = cCore.NULL_VALUE
             End If
 
-            'Me.m_EcopathStats.TotalMarketValue = Me.m_EcoPathData.LandingValue
-            'Me.m_EcopathStats.TotalShadowValue = Me.m_EcoPathData.ShadowValue
-            'Me.m_EcopathStats.TotalValue = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue
-            'Me.m_EcopathStats.TotalFixedCost = Me.m_EcoPathData.fixed
-            'Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.variab
-            'Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.fixed + Me.m_EcoPathData.variab
-            'Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.fixed + Me.m_EcoPathData.variab)
+            ' ToDo_JS: use Economic Adapter here - one day...
+            Me.m_EcopathStats.TotalMarketValue = Me.m_EcoPathData.LandingValue
+            Me.m_EcopathStats.TotalShadowValue = Me.m_EcoPathData.ShadowValue
+            Me.m_EcopathStats.TotalValue = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue
+            Me.m_EcopathStats.TotalFixedCost = Me.m_EcoPathData.Fixed
+            Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.Variab
+            Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab
+            Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
+
+            Me.m_EcopathStats.ResetStatusFlags()
 
         Catch ex As Exception
             cLog.Write(ex)
