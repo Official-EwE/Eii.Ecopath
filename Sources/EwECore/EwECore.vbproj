@@ -256,6 +256,7 @@
     </Compile>
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
+    <Compile Include="EcoPath\cEcoPathStats.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFisheriesRegulation.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />

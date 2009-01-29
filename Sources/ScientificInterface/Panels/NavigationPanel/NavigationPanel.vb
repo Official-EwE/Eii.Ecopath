@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.14  2009/01/29 23:36:50  jeroens
+' Added Ecopath stats
+'
 ' Revision 1.13  2009/01/19 18:07:25  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -128,6 +131,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.FlowDiagram), "Flow diagram.htm")
+        m_nodeController.Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(EcopathStatisticsEwEGrid), "")
         ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
 
         ' Ecosim Input

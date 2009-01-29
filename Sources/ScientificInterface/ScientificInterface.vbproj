@@ -1013,6 +1013,9 @@
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Output\EcopathStatisticsEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyShapeEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
