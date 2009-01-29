@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.7  2009/01/29 16:22:31  jeroens
+' Fixed XML error
+'
 ' Revision 1.6  2009/01/29 16:10:49  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -64,7 +67,7 @@ Namespace Database
         ''' <param name="strDatabase">The file name of the .MDB to create.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
         ''' <param name="databaseType">Database type to force.</param>
-        ''' <returns>A <see cref="eAccessType">eAccessType</see> value</returns>
+        ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------
         Public Overrides Function Create(ByVal strDatabase As String, _
