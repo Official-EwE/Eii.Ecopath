@@ -1,3 +1,12 @@
+'==============================================================================
+'
+' $Log: cEcospaceStats.vb,v $
+' Revision 1.3  2009/01/29 17:40:54  jeroens
+' Fixed datatype
+'
+'==============================================================================
+
+Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
@@ -12,15 +21,12 @@ Public Class cEcospaceStats
         MyBase.New(theCore)
 
         Me.DBID = DBID
-        m_dataType = eDataTypes.EcospaceGroup
+        m_dataType = eDataTypes.EcospaceStats
         m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
         Try
-
-            m_dataType = eDataTypes.EcospaceGroup
-            m_coreComponent = eCoreComponentType.EcoSpace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
             'SS
@@ -36,8 +42,8 @@ Public Class cEcospaceStats
             ResetStatusFlags()
 
         Catch ex As Exception
-            Debug.Assert(False, "Error creating new cEcospaceGroup.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceGroup. Error: " & ex.Message)
+            Debug.Assert(False, "Error creating new cEcospaceStats.")
+            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceStats. Error: " & ex.Message)
         End Try
 
     End Sub
