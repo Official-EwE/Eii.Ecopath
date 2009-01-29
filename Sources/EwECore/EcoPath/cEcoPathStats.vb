@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathStats.vb,v $
+' Revision 1.3  2009/01/29 23:38:26  jeroens
+' Added missing stats handling in ResetStatusFlags
+'
 ' Revision 1.2  2009/01/29 20:18:59  jeroens
 ' Removed left-over group indices
 '
@@ -131,7 +134,11 @@ Public Class cEcoPathStats
                         Next i
 
                     Case eValueTypes.Sng, eValueTypes.Int
-                        value.Status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
+                        If CSng(value.Value) = cCore.NULL_VALUE Then
+                            value.Status = eStatusFlags.Null
+                        Else
+                            value.Status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
+                        End If
 
                 End Select
             Catch ex As Exception
