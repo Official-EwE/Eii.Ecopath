@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.24  2009/01/29 16:09:50  jeroens
+' Added Ecosim, Ecopath statistics data type
+' Moved cEwEDatabase accesstypes to here
+'
 ' Revision 1.23  2009/01/27 17:41:30  joeb
 ' Changed ViewSettings varnames
 '
@@ -1054,6 +1058,11 @@ Namespace Core
         EwEModel
 
         ''' <summary>
+        ''' Data belongs to Ecopath statistics.
+        ''' </summary>
+        EcoPathStatistics
+
+        ''' <summary>
         ''' Data belongs to the Ecopath group inputs,
         ''' which are provided to perform a parameter estimation run. 
         ''' </summary>
@@ -1081,6 +1090,11 @@ Namespace Core
         ''' which instruct how to run an Ecosim scenario.
         ''' </summary>
         EcoSimModelParameter
+
+        ''' <summary>
+        ''' Data belongs to Ecosim statistics.
+        ''' </summary>
+        EcoSimStatistics
 
         ''' <summary>
         ''' Data belongs to an Ecosim group input.
@@ -1576,6 +1590,37 @@ Namespace Core
         ''' <summary>Datasource capable of handling ACCDB-formatted data.</summary>
         ACCDB
     End Enum
+
+#Region " Public enums "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type describing the result of datasource access attempts.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Enum eDatasourceAccessType As Integer
+        ''' <summary>Database succesfully created.</summary>
+        Created = 0
+        ''' <summary>Database succesfully opened.</summary>
+        Opened = 0
+        ''' <summary>Database could not be saved in the indicated location.</summary>
+        Failed_CannotSave
+        ''' <summary>An unknown database type was requested.</summary>
+        Failed_UnknownType
+        ''' <summary>System does not have the correct drivers installed to
+        ''' support the requested database type.</summary>
+        Failed_OSUnsupported
+        ''' <summary>An unknown error has occurred.</summary>
+        Failed_Unknown
+        ''' <summary>Cannot switch from one type of database to another.</summary>
+        Failed_TransferTypes
+        ''' <summary>Cannot perform requested operation on this type of file.</summary>
+        Failed_DeprecatedOperation
+        ''' <summary>File is not found.</summary>
+        Failed_FileNotFound
+    End Enum
+
+#End Region ' Public enums
 
 #End Region ' Datasource types
 
