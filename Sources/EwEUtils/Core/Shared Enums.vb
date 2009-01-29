@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.25  2009/01/29 17:14:29  jeroens
+' Added Ecopath stats vars
+'
 ' Revision 1.24  2009/01/29 16:09:50  jeroens
 ' Added Ecosim, Ecopath statistics data type
 ' Moved cEwEDatabase accesstypes to here
@@ -239,6 +242,57 @@ Namespace Core
         ''' <summary></summary>
         DiscardFate
 
+        'added by JS for Ecopath statistics info Jan-29-09
+        ''' <summary>Sum of all consumption.</summary>
+        EcopathStatsTotalConsumption
+        ''' <summary>Sum of all exports.</summary>
+        EcopathStatsTotalExports
+        ''' <summary>Sum of all respiratory flows.</summary>
+        EcopathStatsTotalRespFlow
+        ''' <summary>Sum of all flows into detritus.</summary>
+        EcopathStatsTotalFlowDetritus
+        ''' <summary>Total system throughput.</summary>
+        EcopathStatsTotalThroughput
+        ''' <summary>Sum of all production.</summary>
+        EcopathStatsTotalProduction
+        ''' <summary>Mean trophic level of the catch.</summary>
+        EcopathStatsMeanTrophicLevelCatch
+        ''' <summary>Gross efficiency (catch/net p.p.).</summary>
+        EcopathStatsGrossEfficiency
+        ''' <summary>Calculated total net primary production.</summary>
+        EcopathStatsTotalNetPP
+        ''' <summary>Total primary production/total respiration.</summary>
+        EcopathStatsTotalPResp
+        ''' <summary>Net system production.</summary>
+        EcopathStatsNetSystemProduction
+        ''' <summary>Total primary production/total biomass.</summary>
+        EcopathStatsTotalPB
+        ''' <summary>Total biomass/total throughput.</summary>
+        EcopathStatsTotalBT
+        ''' <summary>Total biomass (excluding detritus).</summary>
+        EcopathStatsTotalBNonDet
+        ''' <summary>Total catches.</summary>
+        EcopathStatsTotalCatch
+        ''' <summary>Connectance Index.</summary>
+        EcopathStatsConnectanceIndex
+        ''' <summary>System Omnivory Index.</summary>
+        EcopathStatsOmnivIndex
+        ''' <summary>Total market value.</summary>
+        EcopathStatsTotalMarketValue
+        ''' <summary>Total shadow value.</summary>
+        EcopathStatsTotalShadowValue
+        ''' <summary>Total value.</summary>
+        EcopathStatsTotalValue
+        ''' <summary>Total fixed cost.</summary>
+        EcopathStatsTotalFixedCost
+        ''' <summary>Total variable cost.</summary>
+        ''' <remarks>This variable may exist under a different name.</remarks>
+        EcopathStatsTotalVarCost
+        ''' <summary>Total cost.</summary>
+        EcopathStatsTotalCost
+        ''' <summary>Profit.</summary>
+        EcopathStatsProfit
+
         'added by JB for EcoSim Group info Feb-14-06
         ''' <summary></summary>
         MaxRelPB
@@ -333,7 +387,6 @@ Namespace Core
         ' SalinitySpread
         SalinitySpreadLeft
         SalinitySpreadRight
-
 
         ''' <summary>Contaminant tracing on/off</summary>
         ConSimOnEcoSim
@@ -510,7 +563,7 @@ Namespace Core
         LayerAdvection
         ''' <summary>Ecospace/MPA importance.</summary>
         LayerImportance
-        ''' <summary>Ecospace/MPA importance weight of the LayerImportance Variable.</summary>
+        ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
         HabAreaProportion
@@ -993,6 +1046,15 @@ Namespace Core
         ConfidenceInterval
 
         'Varnames added for Game Server
+
+        ''' <summary>Game server loaded model.</summary>
+        GameModel
+        ''' <summary>Game server run state.</summary>
+        GameState
+        ''' <summary>Items the client is allowed to show.</summary>
+        GameViewVisibleItems
+        ''' <summary>Items the client can request from the server.</summary>
+        GameViewAvailableItems
         ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
@@ -1000,42 +1062,27 @@ Namespace Core
 
         ' EcosimResults
         GameSimulationTimeStep
-        GameModel
         GameBiomass
         GameBiomassByRegion
         GameCatchRegionFleetGroup
+        GameGroupValue
+        GameGroupFleetValue
 
-
-        ''' <summary>Profit by Fleet </summary>      
+        ''' <summary>Profit by Fleet.</summary>      
         GameFleetProfitSummary
-
-        ''' <summary>Jobs(?) by Fleet </summary>    
+        ''' <summary>Jobs(?) by Fleet.</summary>    
         GameFleetJobsSummary
 
         GameFleetValue
         GameFleetCatch
 
-        GameGroupValue
-
-        GameGroupFleetValue
-
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
         GameGroupCatch
 
-        GameState
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
 
-        ''' <summary>View settings for the Client set by the Server (visible groups...)</summary>
-        GameViewVisibleItems
-
-        GameViewAvailableItems
-
-
-
     End Enum
-
-
 
 #End Region ' Variable names
 
