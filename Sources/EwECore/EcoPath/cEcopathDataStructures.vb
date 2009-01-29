@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.5  2009/01/29 23:39:34  jeroens
+' Added ComputeProfit, vars
+'
 ' Revision 1.4  2009/01/16 18:30:14  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -12,72 +15,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.49  2008/09/17 01:23:52  jeroens
-' Currency units used correctly by Ecopath
-'
-' Revision 1.48  2008/08/04 16:07:02  jeroens
-' Fixed issue 528
-'
-' Revision 1.47  2008/07/21 14:11:52  jeroens
-' Added pedigree vars
-'
-' Revision 1.46  2008/05/02 19:51:37  villyc
-' EcopathDataStructures.vb: VC changed the SumDietToOne to being public
-'
-' Revision 1.45  2008/04/11 15:06:36  joeb
-' Replaced MessageBoxes with AddMessage
-'
-' Revision 1.44  2008/01/11 09:53:54  jeroens
-' LastSaved date changed to Single to include time
-'
-' Revision 1.43  2008/01/08 23:10:25  jeroens
-' Added LastSaved date to model and scenarios
-'
-' Revision 1.42  2007/11/25 00:44:43  jeroens
-' + Added support for Ecotracer scenarios
-'
-' Revision 1.41  2007/10/30 18:42:51  jeroens
-' + Added author, contact to model, sim and space
-'
-' Revision 1.40  2007/08/08 21:10:29  willw
-' added copyTo function
-'
-' Revision 1.39  2007/07/24 16:53:03  joeb
-' removed   Private m_isInputVar As Dictionary(Of String, Boolean)
-'
-' Revision 1.38  2007/06/28 16:55:12  joeb
-' Changes to allow the Monte Carlo to call Ecopath
-'
-' Revision 1.37  2007/06/26 22:25:05  joeb
-' Added comments
-'
-' Revision 1.36  2007/06/21 14:37:54  joeb
-' Minor comments
-'
-' Revision 1.35  2007/06/15 16:34:31  jeroens
-' * Disabled creation of default fleet
-'
-' Revision 1.34  2007/05/28 21:33:57  joeb
-' change det() from double to single
-'
-' Revision 1.33  2007/05/23 17:21:33  joeb
-' Added comments
-'
-' Revision 1.32  2007/05/20 00:52:09  jeroens
-' * Ok, that last fix made matters worse... fixed the fix
-'
-' Revision 1.31  2007/05/20 00:27:08  jeroens
-' * Fixed missing redim in RedimEcospaceScenarios
-'
-' Revision 1.30  2007/05/04 01:25:19  jeroens
-' + Ecosim and Ecospace scenario definitions moved to Ecopath data structures
-'
-' Revision 1.29  2007/04/12 20:23:14  jeroens
-' * PoolColor split in GroupColor, FleetColor
-'
-' Revision 1.28  2007/03/30 04:58:36  jeroens
-' + Added PoolColor for Ecopath group inputs
 '
 '==============================================================================
 
@@ -314,6 +251,10 @@ Public Class cEcopathDataStructures
     Public SumP As Single 'Sum of all production
     Public Conn As Single 'Connectance Index
     Public SysOm As Single
+    Public LandingValue As Single
+    Public ShadowValue As Single
+    Public Fixed As Single
+    Public Variab As Single
 
     Public vbKInput() As Single 'VBGF curvature parameter K (/year)
     Public vbK() As Single 'VBGF curvature parameter K (/year)
@@ -626,6 +567,7 @@ Public Class cEcopathDataStructures
             ComputeFisheriesStats()
             Compute_M2_Resp_and_Stats()
             ComputeMoreStats()
+            ComputeProfit()
 
             Return True
 
@@ -859,6 +801,32 @@ Public Class cEcopathDataStructures
             SumEx = SumEx + Ex(i)
             If PB(i) > 0 And B(i) > 0 Then SumP = SumP + PB(i) * B(i)
         Next i
+
+    End Sub
+
+    Private Sub ComputeProfit()
+        Dim Gear As Integer
+        Dim Grp As Integer
+        Dim value As Single
+
+        LandingValue = 0
+        ShadowValue = 0
+
+        For Grp = 1 To NumGroups
+            For Gear = 1 To NumFleet
+                value = Landing(Gear, Grp) * Market(Gear, Grp)
+                If value > 0 Then LandingValue = LandingValue + value
+            Next
+            value = Shadow(Grp) * B(Grp)
+            If value > 0 Then ShadowValue = ShadowValue + value
+        Next
+
+        Fixed = 0
+        Variab = 0
+        For Gear = 1 To NumFleet
+            Fixed = Fixed + cost(Gear, 1)
+            Variab = Variab + cost(Gear, 2) + cost(Gear, 3)
+        Next
 
     End Sub
 
