@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.27  2009/01/29 16:10:42  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.26  2009/01/19 18:07:20  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -261,7 +264,7 @@ Public Class AppLauncher
     Public Function LoadEcopathModel(ByVal strFileName As String, Optional ByVal bQuiet As Boolean = False) As Boolean
 
         Dim ds As IEwEDataSource = Nothing
-        Dim atResult As cEwEDatabase.eAccessType = cEwEDatabase.eAccessType.Failed_Unknown
+        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
         ' Check if target file exists at all before affecting anything
         If Not File.Exists(strFileName) Then
@@ -397,7 +400,7 @@ Public Class AppLauncher
         ' ToDo_JS: Globalize this method!
 
         Dim db As cEwEDatabase = Nothing
-        Dim atResult As cEwEDatabase.eAccessType = cEwEDatabase.eAccessType.Failed_Unknown
+        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim msg As cMessage = Nothing
 
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
@@ -406,16 +409,16 @@ Public Class AppLauncher
                 atResult = db.Create(strFileName, strModelName, True)
 
             Case eDataSourceTypes.EII
-                atResult = cEwEDatabase.eAccessType.Failed_DeprecatedOperation
+                atResult = eDatasourceAccessType.Failed_DeprecatedOperation
 
             Case eDataSourceTypes.NotSet
-                atResult = cEwEDatabase.eAccessType.Failed_UnknownType
+                atResult = eDatasourceAccessType.Failed_UnknownType
         End Select
 
         ' Provide status feedback
         Select Case atResult
 
-            Case cEwEDatabase.eAccessType.Created, cEwEDatabase.eAccessType.Opened
+            Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened
                 msg = New cMessage(String.Format("New EwE6 model successfully created at '{0}'", strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, eMessageImportance.Information)
@@ -431,34 +434,34 @@ Public Class AppLauncher
                     ' Woops
                 End Try
 
-            Case cEwEDatabase.eAccessType.Failed_CannotSave
+            Case eDatasourceAccessType.Failed_CannotSave
                 msg = New cMessage(String.Format("Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use.", strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
-            Case cEwEDatabase.eAccessType.Failed_OSUnsupported
+            Case eDatasourceAccessType.Failed_OSUnsupported
                 msg = New cMessage("This system does not have to required drivers installed to work with files of this type.", _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
-            Case cEwEDatabase.eAccessType.Failed_UnknownType
+            Case eDatasourceAccessType.Failed_UnknownType
                 msg = New cMessage("This type of file is not supported by EwE6.", _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
-            Case cEwEDatabase.eAccessType.Failed_DeprecatedOperation
+            Case eDatasourceAccessType.Failed_DeprecatedOperation
                 msg = New cMessage("This type of model belonged to an older version of Ecopath, and cannot be created in EwE6.", _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
 
-            Case cEwEDatabase.eAccessType.Failed_Unknown
+            Case eDatasourceAccessType.Failed_Unknown
                 msg = New cMessage(String.Format("A generic error occurred while trying to create an EwE6 model at '{0}'.", strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
@@ -1108,7 +1111,7 @@ Public Class AppLauncher
         Dim bSucces As Boolean = True
 
         db = New cEwEAccessDatabase()
-        If db.Open(strFileName) = cEwEDatabase.eAccessType.Opened Then
+        If db.Open(strFileName) = eDatasourceAccessType.Opened Then
 
             Select Case cEwE6DatabaseImporter.EstimateVersion(db.GetVersion())
 

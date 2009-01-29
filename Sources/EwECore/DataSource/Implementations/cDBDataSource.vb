@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.19  2009/01/29 16:10:46  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.18  2009/01/16 23:51:17  jeroens
 ' Datasource no longer maitains data state by datatype, but by eCoreComponentType
 '
@@ -108,13 +111,13 @@ Public Class cDBDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore) As cEwEDatabase.eAccessType _
+    Public Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType _
             Implements DataSources.IEwEDataSource.Open
 
         ' Attempt to open existing
-        Dim atResult As cEwEDatabase.eAccessType = Me.m_db.Open(strName)
+        Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName)
         ' Any luck?
-        If atResult = cEwEDatabase.eAccessType.Opened Then
+        If atResult = eDatasourceAccessType.Opened Then
             ' Store core
             Me.m_core = core
             Me.m_strName = strName
@@ -134,13 +137,13 @@ Public Class cDBDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As cEwEDatabase.eAccessType _
+    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
              Implements DataSources.IEwEDataSource.Create
 
         ' Create new db
-        Dim atResult As cEwEDatabase.eAccessType = Me.m_db.Create(strName, strModelName, True)
+        Dim atResult As eDatasourceAccessType = Me.m_db.Create(strName, strModelName, True)
 
-        If atResult = cEwEDatabase.eAccessType.Created Then
+        If atResult = eDatasourceAccessType.Created Then
             atResult = Me.Open(strName, core)
         End If
 
@@ -212,7 +215,7 @@ Public Class cDBDataSource
     ''' <returns>True if succesful.</returns>
     ''' <remarks>This will open the new database if succesful.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function SaveAs(ByVal strFileName As String, ByVal strModelName As String) As cEwEDatabase.eAccessType
+    Public Function SaveAs(ByVal strFileName As String, ByVal strModelName As String) As eDatasourceAccessType
         Return Me.m_db.SaveAs(strFileName, strModelName, True)
     End Function
 

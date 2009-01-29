@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.5  2009/01/29 16:10:48  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.4  2009/01/16 23:51:20  jeroens
 ' Datasource no longer maitains data state by datatype, but by eCoreComponentType
 '
@@ -79,7 +82,7 @@ Public Class cEIIDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore) As cEwEDatabase.eAccessType _
+    Public Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType _
             Implements IEwEDataSource.Open
 
         Dim fnum As Integer = FreeFile()
@@ -114,10 +117,10 @@ Public Class cEIIDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As cEwEDatabase.eAccessType _
+    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
              Implements IEwEDataSource.Create
         ' Cannot write EII files (yet)
-        Return cEwEDatabase.eAccessType.Failed_Unknown
+        Return eDatasourceAccessType.Failed_Unknown
     End Function
 
     ''' -------------------------------------------------------------------

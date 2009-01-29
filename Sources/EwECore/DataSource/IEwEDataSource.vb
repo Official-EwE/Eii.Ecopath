@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.4  2009/01/29 16:10:50  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.3  2009/01/16 23:51:20  jeroens
 ' Datasource no longer maitains data state by datatype, but by eCoreComponentType
 '
@@ -215,7 +218,7 @@ Namespace DataSources
         ''' datastructures to read to, and write from.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Function Open(ByVal strName As String, ByVal core As cCore) As cEwEDatabase.eAccessType
+        Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -227,7 +230,7 @@ Namespace DataSources
         ''' datastructures to read to, and write from.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As cEwEDatabase.eAccessType
+        Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>

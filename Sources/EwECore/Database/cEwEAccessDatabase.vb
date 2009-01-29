@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.6  2009/01/29 16:10:49  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.5  2008/12/10 02:12:10  jeroens
 ' Open, Create can force database type
 '
@@ -67,10 +70,10 @@ Namespace Database
         Public Overrides Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             Dim strSource As String = ""
-            Dim datResult As eAccessType = eAccessType.Created
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Created
 
             If databaseType = eDataSourceTypes.NotSet Then
                 databaseType = cDataSourceFactory.GetSupportedType(strDatabase)
@@ -82,17 +85,17 @@ Namespace Database
                 Case eDataSourceTypes.ACCDB
                     strSource = "EwE6.accdb"
                 Case Else
-                    datResult = eAccessType.Failed_UnknownType
+                    datResult = eDatasourceAccessType.Failed_UnknownType
             End Select
 
-            If (datResult = eAccessType.Created) Then
+            If (datResult = eDatasourceAccessType.Created) Then
 
                 If cCoreResources.SaveResourceToFile(strSource, strDatabase, bOverwrite) Then
                     Try
                         'Try to open the database to update the model name
                         Dim db As New cEwEAccessDatabase()
                         datResult = db.Open(strDatabase)
-                        If (datResult = eAccessType.Opened) Then
+                        If (datResult = eDatasourceAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, EwEUtils.SystemUtilities.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
                             If strModelName.ToLower().Contains(StringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
@@ -103,11 +106,11 @@ Namespace Database
                         End If
                         db = Nothing
                     Catch ex As Exception
-                        datResult = eAccessType.Failed_Unknown
+                        datResult = eDatasourceAccessType.Failed_Unknown
                     End Try
                 Else
                     'Unable to write to target location
-                    datResult = eAccessType.Failed_CannotSave
+                    datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
             End If
             Return datResult
@@ -127,9 +130,9 @@ Namespace Database
         Public Overrides Function SaveAs(ByVal strDatabaseTo As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
-            Dim datResult As eAccessType = eAccessType.Created
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Created
             Dim strDatabaseFrom As String = Me.Name
             Dim bSucces As Boolean = True
 
@@ -140,7 +143,7 @@ Namespace Database
             ' Databases are copied from one spot to another, not using proper database replication
             ' Therefore, check if source and target types will remain unchanged
             If databaseType <> cDataSourceFactory.GetSupportedType(strDatabaseFrom) Then
-                Return eAccessType.Failed_TransferTypes
+                Return eDatasourceAccessType.Failed_TransferTypes
             End If
 
             Me.Close()
@@ -149,7 +152,7 @@ Namespace Database
             datResult = Me.Create(strDatabaseTo, strModelName, bOverwrite)
 
             ' Succes?
-            If (datResult = eAccessType.Created) Then
+            If (datResult = eDatasourceAccessType.Created) Then
 
                 ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
                 Try
@@ -157,12 +160,12 @@ Namespace Database
                     System.IO.File.Copy(strDatabaseFrom, strDatabaseTo, True)
                 Catch ex As Exception
                     ' #Failure
-                    datResult = eAccessType.Failed_CannotSave
+                    datResult = eDatasourceAccessType.Failed_CannotSave
                 End Try
 
                 datResult = Me.Open(strDatabaseTo)
                 'Able to open?
-                If datResult = eAccessType.Opened Then
+                If datResult = eDatasourceAccessType.Opened Then
                     ' #Yes: Fix model name after copying
                     Me.Execute(String.Format("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
                 Else
@@ -184,16 +187,16 @@ Namespace Database
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function Open(ByVal strDatabase As String, _
-                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             ' Pre
             Debug.Assert(Not String.IsNullOrEmpty(strDatabase), "Invalid data source specified")
             Debug.Assert(Not Me.IsConnected(), "Connection already open, close first")
 
-            Dim datResult As eAccessType = eAccessType.Failed_Unknown
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
             ' Does file exist?
-            If Not File.Exists(strDatabase) Then Return eAccessType.Failed_FileNotFound
+            If Not File.Exists(strDatabase) Then Return eDatasourceAccessType.Failed_FileNotFound
 
             ' Need to auto-detect database type?
             If databaseType = eDataSourceTypes.NotSet Then
@@ -211,24 +214,24 @@ Namespace Database
                     Me.m_conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
                 Case eDataSourceTypes.NotSet
                     Me.m_conn.ConnectionString = ""
-                    datResult = eAccessType.Failed_UnknownType
+                    datResult = eDatasourceAccessType.Failed_UnknownType
             End Select
 
             If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
 
                 Try
                     Me.m_conn.Open()
-                    datResult = eAccessType.Opened
+                    datResult = eDatasourceAccessType.Opened
                 Catch e As Exception
                     Console.WriteLine("** Exception {0} when opening Access db {1}", e.Message, strDatabase)
-                    datResult = eAccessType.Failed_OSUnsupported
+                    datResult = eDatasourceAccessType.Failed_OSUnsupported
                 End Try
 
                 ' All well: store file name
                 Me.m_strFileName = strDatabase
                 ' Report succes
                 If Not Me.IsConnected() Then
-                    datResult = eAccessType.Failed_Unknown
+                    datResult = eDatasourceAccessType.Failed_Unknown
                 End If
 
             End If

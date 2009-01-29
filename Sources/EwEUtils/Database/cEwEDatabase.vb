@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.7  2009/01/29 16:10:50  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.6  2009/01/23 17:53:50  jeroens
 ' Simplified AllowEvents
 '
@@ -467,37 +470,6 @@ Namespace Database
 
 #End Region ' Class cEwEDbWriter
 
-#Region " Public enums "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enumerated type describing the result of an open or create command.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eAccessType As Integer
-            ''' <summary>Database succesfully created.</summary>
-            Created = 0
-            ''' <summary>Database succesfully opened.</summary>
-            Opened = 0
-            ''' <summary>Database could not be saved in the indicated location.</summary>
-            Failed_CannotSave
-            ''' <summary>An unknown database type was requested.</summary>
-            Failed_UnknownType
-            ''' <summary>System does not have the correct drivers installed to
-            ''' support the requested database type.</summary>
-            Failed_OSUnsupported
-            ''' <summary>An unknown error has occurred.</summary>
-            Failed_Unknown
-            ''' <summary>Cannot switch from one type of database to another.</summary>
-            Failed_TransferTypes
-            ''' <summary>Cannot perform requested operation on this type of file.</summary>
-            Failed_DeprecatedOperation
-            ''' <summary>File is not found.</summary>
-            Failed_FileNotFound
-        End Enum
-
-#End Region ' Public enums
-
 #Region " Open and close "
 
         ''' -------------------------------------------------------------------
@@ -513,7 +485,7 @@ Namespace Database
         Public MustOverride Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -525,7 +497,7 @@ Namespace Database
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function Open(ByVal strDatabase As String, _
-                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -553,7 +525,7 @@ Namespace Database
         Public MustOverride Function SaveAs(ByVal strDatabaseTo As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eAccessType
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
 #End Region ' Open and close
 

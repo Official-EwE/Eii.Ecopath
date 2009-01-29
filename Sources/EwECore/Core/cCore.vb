@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.62  2009/01/29 16:10:43  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.61  2009/01/24 17:44:36  joeb
 ' Added ProfitByFleet(Fleet) and EmploymentValueByFleet(Fleet) to Economic Adapters
 '
@@ -2367,7 +2370,7 @@ Public Class cCore
         ' Saving to a new file name?
         If (Not String.IsNullOrEmpty(strFileName)) Then
             ' #Yes: First save current database to a new location
-            If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = cEwEDatabase.eAccessType.Created Then
+            If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Created Then
                 ' #Succes! The datasource has been changed this new location, now save data in memory 
                 '          to the new datasource.
                 If Me.SaveChanges(True) Then

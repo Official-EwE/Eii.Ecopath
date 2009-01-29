@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.6  2009/01/29 16:10:48  jeroens
+' Moved cEwEDatabase.eAccessTypes to shared enums
+'
 ' Revision 1.5  2009/01/16 18:30:25  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -277,7 +280,7 @@ Namespace Database
 
             ' Create db
             Dim db As New cEwEAccessDatabase()
-            If db.Open(strEwE5DBName) = cEwEDatabase.eAccessType.Opened Then
+            If db.Open(strEwE5DBName) = eDatasourceAccessType.Opened Then
                 Me.m_openType = eOpenType.File
                 Me.m_dbEwE5 = db
             End If
