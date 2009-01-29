@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.63  2009/01/29 20:18:26  jeroens
+' Ecopath stats mostly populated
+'
 ' Revision 1.62  2009/01/29 16:10:43  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -1943,18 +1946,6 @@ Public Class cCore
 
 #End Region ' Public interfaces
 
-    Friend Sub LoadEcosimStats()
-        Try
-            Me.m_EcosimStats.SS = m_EcoSimData.SS
-            For igrp As Integer = 1 To Me.nGroups
-                Me.m_EcosimStats.SSGroup(igrp) = m_EcoSimData.SSGroup(igrp)
-            Next
-        Catch ex As Exception
-            cLog.Write(ex)
-            Throw New ArgumentException(Me.ToString & ".LoadEcosimStats() Error: " & ex.Message, ex)
-        End Try
-    End Sub
-
 #End Region ' Time series
 
 #Region "Generic helper methods"
@@ -2313,6 +2304,7 @@ Public Class cCore
 
                 bsuccess = bsuccess And InitPedigreeManagers()
 
+                Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
                 Me.InitSearchManagers()
 
                 Me.m_gameManger.Init()
@@ -3091,6 +3083,106 @@ Public Class cCore
 
 #End Region ' Fleets
 
+#Region " Stats "
+
+    Friend Sub LoadEcopathStats()
+        Try
+
+            Dim sTroughput As Single = Me.m_EcoPathData.Consum + Me.m_EcoPathData.SumEx + Me.m_EcoPathData.Dt + Me.m_EcoPathData.RTZ
+
+            Me.m_EcopathStats.TotalConsumption = Me.m_EcoPathData.Consum
+            Me.m_EcopathStats.TotalExports = Me.m_EcoPathData.SumEx
+            Me.m_EcopathStats.TotalRespFlow = Me.m_EcoPathData.RTZ
+            Me.m_EcopathStats.TotalFlowDetritus = Me.m_EcoPathData.Dt
+            Me.m_EcopathStats.TotalThroughput = sTroughput
+            Me.m_EcopathStats.TotalProduction = Me.m_EcoPathData.SumP
+
+            If (Me.m_EcoPathData.GEff > 0) Then
+                Me.m_EcopathStats.MeanTrophicLevelCatch = Me.m_EcoPathData.TLcatch
+                Me.m_EcopathStats.GrossEfficiency = Me.m_EcoPathData.GEff
+            Else
+                Me.m_EcopathStats.MeanTrophicLevelCatch = cCore.NULL_VALUE
+                Me.m_EcopathStats.GrossEfficiency = cCore.NULL_VALUE
+            End If
+
+            Me.m_EcopathStats.TotalNetPP = Me.m_EcoPathData.PProd
+
+            If (Me.m_EcoPathData.Totpp > 0) Then
+                If (Me.m_EcoPathData.RTZ > 0) Then
+                    Me.m_EcopathStats.TotalPResp = Me.m_EcoPathData.Totpp / Me.m_EcoPathData.RTZ
+                Else
+                    Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
+                End If
+
+                ' JS: This is a display issue, fix in GUI
+                'If currUnitIndex < 7 Then
+                '    SetCellValue(Grid, 2, 12, Format(Totpp - RTZ, GenNum))
+                '    SummaryStats(13) = Totpp - RTZ
+                'Else
+                '    SetCellToDash(Grid, 2, 13)
+                '    SummaryStats(13) = ""
+                'End If
+
+                Me.m_EcopathStats.NetSystemProduction = Me.m_EcoPathData.Totpp - Me.m_EcoPathData.RTZ
+                Me.m_EcopathStats.TotalPB = Me.m_EcoPathData.Totpp / Me.m_EcoPathData.SumBio
+            Else
+                If (Me.m_EcoPathData.RTZ > 0) Then
+                    Me.m_EcopathStats.TotalPResp = Me.m_EcoPathData.PProd / Me.m_EcoPathData.RTZ
+                Else
+                    Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
+                End If
+
+                ' JS: This is a display issue, fix in GUI
+                'If currUnitIndex < 7 Then
+                '    SetCellValue(Grid, 2, 13, Format(PProd - RTZ, GenNum))
+                '    SummaryStats(13) = PProd - RTZ
+                'Else
+                '    SetCellToDash(Grid, 2, 13)
+                '    SummaryStats(13) = ""
+                'End If
+
+                Me.m_EcopathStats.NetSystemProduction = Me.m_EcoPathData.PProd - Me.m_EcoPathData.RTZ
+                Me.m_EcopathStats.TotalPB = Me.m_EcoPathData.PProd / Me.m_EcoPathData.SumBio
+            End If
+
+            If (sTroughput > 0) Then
+                Me.m_EcopathStats.TotalBT = Me.m_EcoPathData.SumBio / sTroughput
+            Else
+                Me.m_EcopathStats.TotalBT = cCore.NULL_VALUE
+            End If
+
+            Me.m_EcopathStats.TotalBNonDet = Me.m_EcoPathData.SumBio
+
+            If Me.m_EcoPathData.CatchSum > 0 Then
+                Me.m_EcopathStats.TotalCatch = Me.m_EcoPathData.CatchSum
+            Else
+                Me.m_EcopathStats.TotalCatch = cCore.NULL_VALUE
+            End If
+
+            Me.m_EcopathStats.ConnectanceIndex = Me.m_EcoPathData.Conn
+
+            If (Me.m_EcoPathData.SysOm > 0) Then
+                Me.m_EcopathStats.OmnivIndex = Me.m_EcoPathData.SysOm
+            Else
+                Me.m_EcopathStats.OmnivIndex = cCore.NULL_VALUE
+            End If
+
+            'Me.m_EcopathStats.TotalMarketValue = Me.m_EcoPathData.LandingValue
+            'Me.m_EcopathStats.TotalShadowValue = Me.m_EcoPathData.ShadowValue
+            'Me.m_EcopathStats.TotalValue = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue
+            'Me.m_EcopathStats.TotalFixedCost = Me.m_EcoPathData.fixed
+            'Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.variab
+            'Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.fixed + Me.m_EcoPathData.variab
+            'Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.fixed + Me.m_EcoPathData.variab)
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Throw New ArgumentException(Me.ToString & ".LoadEcopathStats() Error: " & ex.Message, ex)
+        End Try
+    End Sub
+
+#End Region ' Stats
+
     ''' <summary>
     ''' Get the Stanza ID for this iGroup. This is the Index of the stanza grouping it is one based.
     ''' This can be 
@@ -3154,6 +3246,9 @@ Public Class cCore
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
+                're-populate the Ecopath statistics
+                LoadEcopathStats()
+
                 If Me.m_pluginManager IsNot Nothing Then
                     m_pluginManager.EcopathRunCompleted(m_EcoPathData)
                 End If
@@ -3354,6 +3449,15 @@ Public Class cCore
         Me.m_StateMonitor.UpdateDataState(DataSource)
 
     End Sub
+
+    ''' <summary>
+    ''' Statistics from the last Ecopath model run
+    ''' </summary>
+    Public ReadOnly Property EcopathStats() As cEcoPathStats
+        Get
+            Return Me.m_EcopathStats
+        End Get
+    End Property
 
 #Region " Status flags updating "
 
@@ -3924,8 +4028,9 @@ Public Class cCore
     Friend m_EcosimFisheriesRegulations As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFisheriesRegulation, 1)
     Private m_PPIManager As cPPIManager
 
+    Private m_EcopathStats As cEcoPathStats
     Private m_EcosimStats As cEcosimStats
-    '   Private m_FPSearch As cFishingPolicyManager
+    Private m_EcospaceStats As cEcospaceStats
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'MULTI THREADING VARIABLES FOR ECOSIM
@@ -4282,7 +4387,7 @@ Public Class cCore
             InitEcosimTimeSeries()
             LoadEcosimTimeSeries()
 
-            m_EcosimStats = New cEcosimStats(Me, -9999)
+            m_EcosimStats = New cEcosimStats(Me, cCore.NULL_VALUE)
 
             'init the monte carlo model with the newly loaded data
             m_MonteCarlo.init(Me)
@@ -4687,6 +4792,18 @@ Public Class cCore
         End Try
 
     End Function
+
+    Friend Sub LoadEcosimStats()
+        Try
+            Me.m_EcosimStats.SS = m_EcoSimData.SS
+            For igrp As Integer = 1 To Me.nGroups
+                Me.m_EcosimStats.SSGroup(igrp) = m_EcoSimData.SSGroup(igrp)
+            Next
+        Catch ex As Exception
+            cLog.Write(ex)
+            Throw New ArgumentException(Me.ToString & ".LoadEcosimStats() Error: " & ex.Message, ex)
+        End Try
+    End Sub
 
 
     ''' <summary>
@@ -5688,8 +5805,6 @@ Public Class cCore
     ' the zero index holds the data not include in one of the other regions
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
-
-    Private m_EcospaceStats As cEcospaceStats
 
 #End Region ' Variables
 
@@ -6935,7 +7050,7 @@ Public Class cCore
             'load a new results object for the new scenario
             m_spaceresults = New cEcospaceTimestep(nGroups, nRegions)
 
-            m_EcospaceStats = New cEcospaceStats(Me, -9999)
+            m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
 
 
             'in the other InitEcospacexxxx the data is loaded during the init
