@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathStats.vb,v $
+' Revision 1.2  2009/01/29 20:18:59  jeroens
+' Removed left-over group indices
+'
 ' Revision 1.1  2009/01/29 17:29:55  jeroens
 ' Initial version
 '
@@ -44,7 +47,7 @@ Public Class cEcoPathStats
             'TotalProduction
             val = New cValue(New Single, eVarNameFlags.EcopathStatsTotalProduction, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
-            'EcopathStatsMeanTrophicLevelCatch
+            'MeanTrophicLevelCatch
             val = New cValue(New Single, eVarNameFlags.EcopathStatsMeanTrophicLevelCatch, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
             'GrossEfficiency
@@ -160,7 +163,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalExports(ByVal iGroup As Integer) As Single
+    Public Property TotalExports() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalExports))
         End Get
@@ -169,7 +172,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalExportsStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalExportsStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalExports)
         End Get
@@ -180,7 +183,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalRespFlow(ByVal iGroup As Integer) As Single
+    Public Property TotalRespFlow() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalRespFlow))
         End Get
@@ -189,7 +192,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalRespFlowStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalRespFlowStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalRespFlow)
         End Get
@@ -200,7 +203,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalFlowDetritus(ByVal iGroup As Integer) As Single
+    Public Property TotalFlowDetritus() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalFlowDetritus))
         End Get
@@ -209,7 +212,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalFlowDetritusStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalFlowDetritusStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalFlowDetritus)
         End Get
@@ -220,7 +223,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalThroughput(ByVal iGroup As Integer) As Single
+    Public Property TotalThroughput() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalThroughput))
         End Get
@@ -229,7 +232,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalThroughputStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalThroughputStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalThroughput)
         End Get
@@ -240,7 +243,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalProduction(ByVal iGroup As Integer) As Single
+    Public Property TotalProduction() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalProduction))
         End Get
@@ -249,7 +252,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalProductionStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalProductionStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalProduction)
         End Get
@@ -260,7 +263,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property MeanTrophicLevelCatch(ByVal iGroup As Integer) As Single
+    Public Property MeanTrophicLevelCatch() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch))
         End Get
@@ -269,7 +272,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property MeanTrophicLevelCatchStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property MeanTrophicLevelCatchStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsMeanTrophicLevelCatch)
         End Get
@@ -280,7 +283,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property GrossEfficiency(ByVal iGroup As Integer) As Single
+    Public Property GrossEfficiency() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsGrossEfficiency))
         End Get
@@ -289,7 +292,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property GrossEfficiencyStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property GrossEfficiencyStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsGrossEfficiency)
         End Get
@@ -300,7 +303,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalNetPP(ByVal iGroup As Integer) As Single
+    Public Property TotalNetPP() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalNetPP))
         End Get
@@ -309,7 +312,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalNetPPStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalNetPPStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalNetPP)
         End Get
@@ -320,7 +323,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalPResp(ByVal iGroup As Integer) As Single
+    Public Property TotalPResp() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalPResp))
         End Get
@@ -329,7 +332,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalPResptatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalPResptatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalPResp)
         End Get
@@ -340,7 +343,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property NetSystemProduction(ByVal iGroup As Integer) As Single
+    Public Property NetSystemProduction() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsNetSystemProduction))
         End Get
@@ -349,7 +352,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property NetSystemProductionStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property NetSystemProductionStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsNetSystemProduction)
         End Get
@@ -360,7 +363,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalPB(ByVal iGroup As Integer) As Single
+    Public Property TotalPB() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalPB))
         End Get
@@ -369,7 +372,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalPBStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalPBStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalPB)
         End Get
@@ -380,7 +383,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalBT(ByVal iGroup As Integer) As Single
+    Public Property TotalBT() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalBT))
         End Get
@@ -389,7 +392,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalBTStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalBTStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalBT)
         End Get
@@ -400,7 +403,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalBNonDet(ByVal iGroup As Integer) As Single
+    Public Property TotalBNonDet() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalBNonDet))
         End Get
@@ -409,7 +412,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalBNonDetStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalBNonDetStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalBNonDet)
         End Get
@@ -420,7 +423,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalCatch(ByVal iGroup As Integer) As Single
+    Public Property TotalCatch() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalCatch))
         End Get
@@ -429,7 +432,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalCatchStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalCatchStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalCatch)
         End Get
@@ -440,7 +443,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property ConnectanceIndex(ByVal iGroup As Integer) As Single
+    Public Property ConnectanceIndex() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsConnectanceIndex))
         End Get
@@ -449,7 +452,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property ConnectanceIndexStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property ConnectanceIndexStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsConnectanceIndex)
         End Get
@@ -460,7 +463,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property OmnivIndex(ByVal iGroup As Integer) As Single
+    Public Property OmnivIndex() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsOmnivIndex))
         End Get
@@ -469,7 +472,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property OmnivIndexStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property OmnivIndexStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsOmnivIndex)
         End Get
@@ -480,7 +483,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalMarketValue(ByVal iGroup As Integer) As Single
+    Public Property TotalMarketValue() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalMarketValue))
         End Get
@@ -489,7 +492,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalMarketValueStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalMarketValueStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalMarketValue)
         End Get
@@ -500,7 +503,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalShadowValue(ByVal iGroup As Integer) As Single
+    Public Property TotalShadowValue() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalShadowValue))
         End Get
@@ -509,7 +512,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalShadowValueStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalShadowValueStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalShadowValue)
         End Get
@@ -520,7 +523,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalValue(ByVal iGroup As Integer) As Single
+    Public Property TotalValue() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalValue))
         End Get
@@ -529,7 +532,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalValueStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalValueStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalValue)
         End Get
@@ -540,7 +543,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalFixedCost(ByVal iGroup As Integer) As Single
+    Public Property TotalFixedCost() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalFixedCost))
         End Get
@@ -549,7 +552,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalFixedCostStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalFixedCostStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalFixedCost)
         End Get
@@ -560,7 +563,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalVarCost(ByVal iGroup As Integer) As Single
+    Public Property TotalVarCost() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalVarCost))
         End Get
@@ -569,7 +572,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalVarCostStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalVarCostStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalVarCost)
         End Get
@@ -580,7 +583,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property TotalCost(ByVal iGroup As Integer) As Single
+    Public Property TotalCost() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsTotalCost))
         End Get
@@ -589,7 +592,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property TotalCostStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property TotalCostStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsTotalCost)
         End Get
@@ -600,7 +603,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property Profit(ByVal iGroup As Integer) As Single
+    Public Property Profit() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsProfit))
         End Get
@@ -609,7 +612,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property ProfitStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property ProfitStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcopathStatsProfit)
         End Get
