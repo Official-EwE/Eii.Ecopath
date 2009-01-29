@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.26  2009/01/29 17:39:04  jeroens
+' Added datatype cEcospaceStats
+'
 ' Revision 1.25  2009/01/29 17:14:29  jeroens
 ' Added Ecopath stats vars
 '
@@ -1182,6 +1185,11 @@ Namespace Core
         ''' Data belongs to an Ecospace scenario.
         ''' </summary>
         EcoSpaceScenario
+
+        ''' <summary>
+        ''' Data belongs to Ecospace statistics.
+        ''' </summary>
+        EcospaceStats
 
         ''' <summary>
         ''' Data belongs to an Ecospace habitat.
