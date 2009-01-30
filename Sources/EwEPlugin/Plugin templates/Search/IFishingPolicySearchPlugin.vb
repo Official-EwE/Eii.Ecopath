@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
-' $Log: ISearchPlugin.vb,v $
+' $Log: IFishingPolicySearchPlugin.vb,v $
+' Revision 1.1  2009/01/30 23:11:45  joeb
+' Rename ISearchPlugin to IFishingPolicySearchPlugin
+'
 ' Revision 1.1  2008/12/08 16:43:20  jeroens
 ' Initial version
 '
@@ -14,7 +17,7 @@ Option Strict On
 ''' searches
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Interface ISearchPlugin
+Public Interface IFishingPolicySearchPlugin
 
     Sub SearchInitialized(ByVal SearchDatastructures As Object)
 
