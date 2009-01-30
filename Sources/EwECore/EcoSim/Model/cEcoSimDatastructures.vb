@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.15  2009/01/30 18:43:54  joeb
+' Removed DataAdapters
+'
 ' Revision 1.14  2009/01/26 18:18:40  joeb
 ' Changes to SummarizeResults
 '
@@ -1556,7 +1559,7 @@ Public Class cEcosimDatastructures
         ReDim ProfitByFleet(Me.nGear)
         ReDim EmploymentValueByFleet(Me.nGear)
 
-        Dim sumValue As Single
+        Dim sumValue As Single, sumEffort As Single
         'number of years the data was summarized over
         Dim nYears As Single = Me.nSumTimeSteps / 12
         For iflt As Integer = 0 To Me.nGear
@@ -1565,11 +1568,17 @@ Public Class cEcosimDatastructures
                 sumValue += Me.ResultsSumValueByGear(iflt, it)
             Next
 
-            '[sum of value] * [ecopath profit (percentage of catch value that is profit)]
-            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) / nYears
+            sumEffort = 0
+            For it As Integer = 1 To Me.nSumTimeSteps
+                sumEffort += Me.ResultsEffort(iflt, it)
+            Next
+
+            'average profit
+            '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
+            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) * sumEffort / nYears
 
             'TEMP just for something to work with until we have ECost up and running
-            '[sum of value] * [Jobs(fleet) from the search forms]
+            '[value of catch] * [Jobs(fleet) from the search forms]
             EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / nYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
 
         Next iflt

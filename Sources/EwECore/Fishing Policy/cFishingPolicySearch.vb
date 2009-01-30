@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.10  2009/01/30 18:43:56  joeb
+' Removed DataAdapters
+'
 ' Revision 1.9  2009/01/22 22:33:42  joeb
 ' Use EconomicDataAdapter for setting base economic data
 '
@@ -300,12 +303,8 @@ Namespace FishingPolicy
             'get the base values used by FUNC to tell the change between the current run and the base run
             m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
 
-            'Get the economic values from the EconomicDataAdapter
-            'The EconomicDataAdapter will get it's data from ECost if available or Ecosim if not
-            Dim adapter As cEconomicDataAdapter = Me.m_core.EconomicDataAdapter
-
-            TotValBase = adapter.TotalValue
-            EmployBase = adapter.EmploymentValue
+            TotValBase = m_searchData.totval
+            EmployBase = m_searchData.Employ
             ManValueBase = m_searchData.manvalue
             EcoValueBase = m_searchData.ecovalue
             BioDivBase = m_searchData.KemptonQ
@@ -1073,10 +1072,6 @@ endline:    '
             Dim LogUtil As Double
             Dim returnvalue As Double
 
-            'Get the economic values from the EconomicDataAdapter
-            'The EconomicDataAdapter will get it's data from ECost if available or Ecosim if not
-            Dim adapter As cEconomicDataAdapter = Me.m_core.EconomicDataAdapter
-
             'then generate your predictions here and calculate the fitting criterion,
             'for example set sumdev=sum over observations of squared deviations between
             'predicted and observed values
@@ -1096,8 +1091,8 @@ endline:    '
                     VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(1) = adapter.TotalValue / TotValBase
-                If EmployBase <> 0 Then CritValue(2) = adapter.EmploymentValue / EmployBase
+                If TotValBase <> 0 Then CritValue(1) = m_searchData.totval / TotValBase
+                If EmployBase <> 0 Then CritValue(2) = m_searchData.Employ / EmployBase
                 If ManValueBase <> 0 Then CritValue(3) = m_searchData.manvalue / ManValueBase
                 If EcoValueBase <> 0 Then CritValue(4) = m_searchData.ecovalue / EcoValueBase
                 If BioDivBase <> 0 Then CritValue(5) = m_searchData.KemptonQ / BioDivBase

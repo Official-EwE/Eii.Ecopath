@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.65  2009/01/30 18:43:51  joeb
+' Removed DataAdapters
+'
 ' Revision 1.64  2009/01/29 23:40:23  jeroens
 ' Populated profit vars in Ecopath stats
 '
@@ -307,8 +310,6 @@ Public Class cCore
 
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions
-
-    Private m_adapterEconomic As cEconomicDataAdapter
 
 #Region "Private Initialization Flags"
 
@@ -1201,7 +1202,6 @@ Public Class cCore
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
         m_gameManger = New cGameServerInterface(Me)
-        m_adapterEconomic = New cEconomicDataAdapter(Me)
 
         If bsuccess Then
             m_bCoreIsInit = True
@@ -4781,8 +4781,8 @@ Public Class cCore
 
                 'get Economic data from the data adapter
                 'this economic data could come Ecosim or any Plugin that supplies economic data e.g. ECost
-                fleet.ProfitSummary = Me.m_adapterEconomic.ProfitByFleet(iFlt)
-                fleet.JobsSummary = Me.m_adapterEconomic.EmploymentValueByFleet(iFlt)
+                fleet.ProfitSummary = Me.m_EcoSimData.ProfitByFleet(iFlt)
+                fleet.JobsSummary = Me.m_EcoSimData.EmploymentValueByFleet(iFlt)
                 fleet.Init()
 
             Next
@@ -8886,11 +8886,11 @@ Public Class cCore
 
 #Region " Data adapters "
 
-    Public ReadOnly Property EconomicDataAdapter() As cEconomicDataAdapter
-        Get
-            Return Me.m_adapterEconomic
-        End Get
-    End Property
+    'Public ReadOnly Property EconomicDataAdapter() As cEconomicDataAdapter
+    '    Get
+    '        Return Me.m_adapterEconomic
+    '    End Get
+    'End Property
 
 #End Region ' Data adapters
 
