@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.27  2009/01/30 18:33:36  jeroens
+' Moved stats datatypes to the end of the list
+'
 ' Revision 1.26  2009/01/29 17:39:04  jeroens
 ' Added datatype cEcospaceStats
 '
@@ -1097,6 +1100,7 @@ Namespace Core
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eDataTypes
+
         ''' <summary>
         ''' Data type is not specified.
         ''' </summary>
@@ -1106,11 +1110,6 @@ Namespace Core
         ''' Data belongs to the EwE model.
         ''' </summary>
         EwEModel
-
-        ''' <summary>
-        ''' Data belongs to Ecopath statistics.
-        ''' </summary>
-        EcoPathStatistics
 
         ''' <summary>
         ''' Data belongs to the Ecopath group inputs,
@@ -1140,11 +1139,6 @@ Namespace Core
         ''' which instruct how to run an Ecosim scenario.
         ''' </summary>
         EcoSimModelParameter
-
-        ''' <summary>
-        ''' Data belongs to Ecosim statistics.
-        ''' </summary>
-        EcoSimStatistics
 
         ''' <summary>
         ''' Data belongs to an Ecosim group input.
@@ -1185,11 +1179,6 @@ Namespace Core
         ''' Data belongs to an Ecospace scenario.
         ''' </summary>
         EcoSpaceScenario
-
-        ''' <summary>
-        ''' Data belongs to Ecospace statistics.
-        ''' </summary>
-        EcospaceStats
 
         ''' <summary>
         ''' Data belongs to an Ecospace habitat.
@@ -1342,6 +1331,21 @@ Namespace Core
 
         ''' <summary>Data types for Ecosim fisheries regulation</summary>    
         EcosimFisheriesRegulation
+
+        ''' <summary>
+        ''' Data belongs to Ecopath statistics.
+        ''' </summary>
+        EcoPathStatistics
+
+        ''' <summary>
+        ''' Data belongs to Ecosim statistics.
+        ''' </summary>
+        EcoSimStatistics
+
+        ''' <summary>
+        ''' Data belongs to Ecospace statistics.
+        ''' </summary>
+        EcospaceStats
 
     End Enum
 
