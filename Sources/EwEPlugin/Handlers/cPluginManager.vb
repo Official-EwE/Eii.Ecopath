@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.12  2009/01/31 00:57:44  joeb
+' Added Plugin points to FPS
+'
 ' Revision 1.11  2009/01/21 19:38:26  jeroens
 ' Added GetData
 '
@@ -1285,13 +1288,57 @@ Public Class cPluginManager
 
     Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(ISearchPlugin))
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
         Try
 
             ' give every plugin that supports this interface a chance at running
             For Each ip As IPlugin In collPlugins
                 Try 'protect the core from a plugin exploding
-                    DirectCast(ip, ISearchPlugin).SearchInitialized(SearchDS)
+                    DirectCast(ip, IFishingPolicySearchPlugin).SearchInitialized(SearchDS)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function SearchFunctionCall(ByVal SearchDS As Object) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IFishingPolicySearchPlugin).SearchFunctionCall(SearchDS)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+    Public Function SearchIterationsStarting() As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IFishingPolicySearchPlugin).SearchIterationsStarting()
                 Catch ex As Exception
                     Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
                     'tell the world

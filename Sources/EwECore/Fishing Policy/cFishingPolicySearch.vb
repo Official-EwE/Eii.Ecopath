@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.11  2009/01/31 00:57:43  joeb
+' Added Plugin points to FPS
+'
 ' Revision 1.10  2009/01/30 18:43:56  joeb
 ' Removed DataAdapters
 '
@@ -37,6 +40,10 @@ Imports EwECore.Ecosim
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
 
+
+Imports EwEPlugin
+
+
 Namespace FishingPolicy
 
     ''' <summary>
@@ -70,8 +77,6 @@ Namespace FishingPolicy
     Public Class cFishingPolicySearch
 
         'ToDo_jb cFishingPolicySearch What is the message from EwE5 in UseCostPenalty() should this change the InitOption if it fails the test
-        'ToDo_jb cFishingPolicySearch This code should be reorginized to have each search method as a seperate class. 
-        'Then a factory could create a searchmethod object that ran the search
 
         Public Const N_CRIT_RESULTS As Integer = 5
 
@@ -84,10 +89,6 @@ Namespace FishingPolicy
         Public ProgressCallBack As ProgressDelegate
 
         Public Results As cFPSSearchResults
-
-        Private m_core As cCore
-        Private m_ecosim As cEcoSimModel
-        Private m_searchData As cSearchDatastructures
 
         Public MaxRuns As Integer
         Public PrintOn As Boolean
@@ -139,6 +140,15 @@ Namespace FishingPolicy
 
 #End Region
 
+#Region "Private Core variables"
+
+        Private m_core As cCore
+        Private m_ecosim As cEcoSimModel
+        Private m_searchData As cSearchDatastructures
+        Private m_pluginManager As cPluginManager
+
+#End Region
+
 #Region "Construction and Initialization"
 
         Public Sub New()
@@ -154,6 +164,8 @@ Namespace FishingPolicy
                 m_core = theCore
                 m_ecosim = m_core.m_EcoSim
                 m_searchData = m_core.m_SearchData
+
+                m_pluginManager = Me.m_core.PluginManager
 
                 MaxNoOfIterations = 2000 'from EwE5 frmSim1.load() why it is intialized in ecosim I have no idea
                 m_searchData.InitOption = eInitOption.EcopathBaseF
@@ -265,6 +277,8 @@ Namespace FishingPolicy
 
                 'get the base values for the objective function by running ecosim 
                 getBaseValues(nBlocksUsed)
+
+                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.SearchIterationsStarting()
 
                 For Iter As Integer = 1 To m_searchData.nRuns
                     If SearchFailed Or StopEstimation Then
@@ -1085,6 +1099,8 @@ endline:    '
             Try
 
                 m_ecosim.RunModelValue(TotalTime, X, n)
+
+                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.SearchFunctionCall(Me.m_searchData)
 
                 VlocalPenalty = 0
                 For i = 1 To n

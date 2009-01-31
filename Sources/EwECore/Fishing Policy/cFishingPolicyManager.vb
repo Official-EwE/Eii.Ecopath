@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.5  2009/01/31 00:57:42  joeb
+' Added Plugin points to FPS
+'
 ' Revision 1.4  2009/01/16 18:30:29  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -656,7 +659,7 @@ Namespace FishingPolicy
 
                 If Me.isRunning Then
                     m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
-                                                eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
+                                                eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
                     Return False
                 End If
 
