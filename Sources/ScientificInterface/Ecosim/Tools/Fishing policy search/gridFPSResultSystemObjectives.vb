@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFPSResultSystemObjectives.vb,v $
+' Revision 1.5  2009/01/31 00:57:02  joeb
+' Fixed bug Diversity cell missing from output grid
+'
 ' Revision 1.4  2008/12/15 15:55:35  jeroens
 ' no message
 '
@@ -84,7 +87,7 @@ Namespace Ecosim
             Me.Rows.Insert(cnt)
             Me(cnt, 0) = New EwERowHeaderCell(CStr(results.nCalls))
             Me(cnt, 1) = New Cell(CStr(results.Totals))
-            For iResult As Integer = 1 To 4 ' Hmm, hard-coded?
+            For iResult As Integer = 1 To results.CriteriaValues.Length - 1 '4 ' Hmm, hard-coded?
                 Me(cnt, 1 + iResult) = New Cell(results.CriteriaValues(iResult).ToString)
             Next
 
