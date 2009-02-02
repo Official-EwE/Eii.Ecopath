@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.8  2009/02/02 22:28:57  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.7  2009/01/16 18:30:12  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -593,8 +596,8 @@ Friend Enum eSpaceResultsGroups
 End Enum
 
 Friend Enum eSpaceResultsFleets
-    Cost
-    Effort
+    SailingEffort
+    FishingEffort
     CatchBio
     Value
 End Enum

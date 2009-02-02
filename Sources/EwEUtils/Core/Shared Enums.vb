@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.28  2009/02/02 22:29:09  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.27  2009/01/30 18:33:36  jeroens
 ' Moved stats datatypes to the end of the list
 '
@@ -650,6 +653,12 @@ Namespace Core
 
         ''' <summary> Ecospace Biomass by region over time averaged over all the cells in a region for each timestep </summary>
         EcospaceRegionBiomass
+
+        ''' <summary> Ecospace yearly average profit by fleet  </summary>
+        EcospaceFleetProfit
+
+        ''' <summary> Ecospace yearly average jobs [value of catch] * [jobs]  </summary>
+        EcospaceFleetJobs
 
         ''' <summary>Number of fish in a monthly stanza age group </summary>
         StanzaNumberAtAge

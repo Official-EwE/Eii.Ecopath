@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.8  2009/02/02 22:29:08  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.7  2009/01/20 22:32:01  joeb
 ' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
 '
@@ -277,15 +280,7 @@ Public Class cEcospaceDataStructures
 
     Public chkMPA As Boolean
 
-    Public NumStep As Integer       'Number of steps for averaging results in sim space
-
-    ''' <summary>Start time of the first and second summary data period. In Years </summary>
-    ''' <remarks> Data is summarized over two time periods set by SumStart(0) and SumStart(1). The number of time steps to summarize over is set in NumStep.
-    ''' Defaults are set in redimTimeVaraibles().
-    ''' Used in cEcospace.summarySetTimeStep() to set the index to store the summary data in. The first or second summary period.
-    ''' </remarks>
-    Public SumStart(1) As Single
-
+  
     ''' <summary>
     ''' Current Model time step
     ''' </summary>
@@ -449,9 +444,23 @@ Public Class cEcospaceDataStructures
     Public EffPower() As Single
 
     Public BBase() As Single
-
-    'Summary data
     Public NoRegions As Integer
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Summary data
+
+    ''' <summary>Number of timesteps the model ran for. Used to average data over the run.</summary>
+    Public nSumTimeSteps As Integer
+
+    Public NumStep As Integer       'Number of time steps for averaging summary window data
+
+    ''' <summary>Start time of the first and second summary data period. In Years </summary>
+    ''' <remarks> Data is summarized over two time periods set by SumStart(0) and SumStart(1). The number of time steps to summarize over is set in NumStep.
+    ''' Defaults are set in redimTimeVaraibles().
+    ''' Used in cEcospace.summarySetTimeStep() to set the index to store the summary data in. The first or second summary period.
+    ''' </remarks>
+    Public SumStart(1) As Single
+
     Public ResultsCatchRegionGearGroup(,,,) As Single 'ResultsCatchRegionGearGroup( NoRegions, nFleets, NGroups, ntimesteps)
     Public ResultsByFleet(,,) As Single 'ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)
     Public ResultsByFleetGroup(,,,) As Single 'ResultsByFleetGroup(nvars,nFleets,nGroups,NumberOfTimeSteps)
@@ -461,10 +470,14 @@ Public Class cEcospaceDataStructures
     ''' <remarks>populated in sumarizeTimeStepData()</remarks>
     Public ResultsByGroup(,,) As Single 'ResultsByGroup(nVars,Ngroups,  NumberOfTimeSteps)
 
+    Public ResultsSummaryByFleet(,) As Single 'vars, fleets
+
     ''' <summary>Number of variables in ResultsXXX arrays </summary>
     Public Const N_RESULTS_GROUPS As Integer = 2
     Public Const N_RESULTS_FLEETS As Integer = 3
     Public Const N_RESULTS_FLEETGROUPS As Integer = 1
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Public PPupWell As Single
 
@@ -1182,6 +1195,10 @@ Public Class cEcospaceDataStructures
     Public Sub redimTimeStepResults(ByVal NumberOfTimeSteps As Integer)
 
         Debug.Assert(TimeStep > 0 And TotalTime > 0)
+
+        'reset the number of time steps the model ran for
+        nSumTimeSteps = 0
+
         ReDim Me.ResultsByGroup(N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
         ReDim Me.ResultsByFleet(N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
         ReDim Me.ResultsByFleetGroup(N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
@@ -1352,6 +1369,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Get Cost by Fleet for summary periods
     ''' </summary>
+    ''' <param name="EcopathCost">Cost from Ecopath actual cost in Ecopath dollars for one unit of Ecopath fishing</param>
     ''' <remarks>Cost is computed from values saved over time because of the was it's calculated</remarks>
     Public Sub getSumCostFleet(ByVal EcopathCost(,) As Single, ByVal iFleet As Integer, ByRef startCost As Single, ByRef endCost As Single)
         Dim st As Integer, et As Integer, nts As Integer
@@ -1364,18 +1382,18 @@ Public Class cEcospaceDataStructures
         'getStartEndSumIndex() will figure out the one based indexes
         Me.getStartEndSumIndex(st, et, nts)
 
-        'eSpaceResultsFleets.Cost is sum of sailing effort across all the cells
+        'eSpaceResultsFleets.SailingEffort and FishingEffort are spatially averaged cEcospace.accumCatchData() and me.AverageSpatialResults()
         For it As Integer = st To st + nts - 1
-            sSailEffort += Me.ResultsByFleet(eSpaceResultsFleets.Cost, iFleet, it)
-            sFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+            sSailEffort += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFleet, it)
+            sFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, it)
         Next
         'in EwE5 Effort is averaged over time steps
-        'sailing cost(sailing effort) is not
+        'sailing effort is not
         sFishEffort = sFishEffort / nts
 
         For it As Integer = et To et + nts - 1
-            eSailEffort = eSailEffort + Me.ResultsByFleet(eSpaceResultsFleets.Cost, iFleet, it)
-            eFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+            eSailEffort = eSailEffort + Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFleet, it)
+            eFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, it)
         Next
         eFishEffort = eFishEffort / nts
 
@@ -1423,12 +1441,12 @@ Public Class cEcospaceDataStructures
         Me.getStartEndSumIndex(st, et, nts)
 
         For it As Integer = st To st + nts - 1
-            s = s + Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+            s = s + Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, it)
         Next
         s = s / nts
 
         For it As Integer = et To et + nts - 1
-            e = e + Me.ResultsByFleet(eSpaceResultsFleets.Effort, iFleet, it)
+            e = e + Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, it)
         Next
         e = e / nts
 
@@ -1515,6 +1533,40 @@ Public Class cEcospaceDataStructures
             Debug.Assert(False, ex.Message)
             cLog.Write(ex)
         End Try
+
+    End Sub
+
+
+    Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
+        Dim SailEffort As Single, FishEffort As Single
+        Dim cost As Single, value As Single
+
+        Debug.Assert(nSumTimeSteps < ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
+
+        'number of years the model actually ran for, computed in case the model run was stopped by the user
+        Dim nYears As Single = Me.nSumTimeSteps / (1 / TimeStep)
+
+        ReDim Me.ResultsSummaryByFleet(1, Me.nFleets)
+
+        'All values in ResultsByFleet() have been averaged over space
+        For iflt As Integer = 0 To Me.nFleets
+            SailEffort = 0
+            FishEffort = 0
+            value = 0
+            For it As Integer = 1 To Me.nSumTimeSteps
+                SailEffort += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, it)
+                FishEffort += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, it)
+                value += Me.ResultsByFleet(eSpaceResultsFleets.Value, iflt, it)
+            Next
+
+            cost = EcopathCost(iflt, 1) + (FishEffort * EcopathCost(iflt, 2) + SailEffort * EcopathCost(iflt, 3))
+
+            'profit average yearly
+            ResultsSummaryByFleet(0, iflt) = (value - cost) / nYears
+            'jobs average yearly
+            ResultsSummaryByFleet(1, iflt) = value * JobMultiplier(iflt) / nYears
+
+        Next
 
     End Sub
 

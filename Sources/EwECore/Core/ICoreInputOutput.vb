@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.7  2009/02/02 22:28:59  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.6  2009/01/20 22:34:26  joeb
 ' Added Option ThirdIndex to GetVariable() for dealing with data by Region, Fleet, Group and time
 '
@@ -1158,6 +1161,34 @@ Friend Class c2DResultsWrapper
         End Get
         Set(ByVal value As Single)
             m_data(m_FixedGroupIndex, TimeIndex) = value
+        End Set
+    End Property
+End Class
+
+''' <summary>
+''' 2D array with the 2 fixed indexes
+''' </summary>
+''' <remarks></remarks>
+Friend Class c2DResultsWrapper2Fixed
+    Implements IResultsWrapper
+
+    ' group, group, time
+    Private m_data(,) As Single
+    Private m_Fixed1 As Integer
+    Private m_Fixed2 As Integer
+
+    Public Sub New(ByVal TheBuffer(,) As Single, ByVal FirstFixed As Integer, ByVal SecondFixed As Integer)
+        m_data = TheBuffer
+        m_Fixed1 = FirstFixed
+        m_Fixed2 = SecondFixed
+    End Sub
+
+    Public Property Value(ByVal NotUsedIndex1 As Integer, Optional ByVal NotUsedIndex12 As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+        Get
+            Return m_data(m_Fixed1, m_Fixed2)
+        End Get
+        Set(ByVal value As Single)
+            m_data(m_Fixed1, m_Fixed2) = value
         End Set
     End Property
 End Class

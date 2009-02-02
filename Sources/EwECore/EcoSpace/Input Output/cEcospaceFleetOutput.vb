@@ -53,6 +53,9 @@ Public Class cEcospaceFleetOutput
         m_CoreArrays.Add(eVarNameFlags.EcospaceFleetCatch, New c3DResultsWrapper2Fixed(m_spacedata.ResultsByFleet, eSpaceResultsFleets.CatchBio, Me.Index))
         m_CoreArrays.Add(eVarNameFlags.EcospaceFleetValue, New c3DResultsWrapper2Fixed(m_spacedata.ResultsByFleet, eSpaceResultsFleets.Value, Me.Index))
 
+        m_CoreArrays.Add(eVarNameFlags.EcospaceFleetProfit, New c2DResultsWrapper2Fixed(m_spacedata.ResultsSummaryByFleet, 0, Me.Index))
+        m_CoreArrays.Add(eVarNameFlags.EcospaceFleetJobs, New c2DResultsWrapper2Fixed(m_spacedata.ResultsSummaryByFleet, 1, Me.Index))
+
     End Sub
 
 
@@ -162,6 +165,18 @@ Public Class cEcospaceFleetOutput
         End Get
     End Property
 
+
+    Public ReadOnly Property Profit() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetProfit))
+        End Get
+    End Property
+
+    Public ReadOnly Property Jobs() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetJobs))
+        End Get
+    End Property
 
 #End Region
 

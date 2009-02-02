@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.66  2009/02/02 22:28:59  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.65  2009/01/30 18:43:51  joeb
 ' Removed DataAdapters
 '
@@ -7076,6 +7079,8 @@ Public Class cCore
 
         Try
 
+            'Spatial results are averaged over space by Ecospace in cEcoSpaceDataStructures.AverageSpatialResults()
+
             'Fleet summarized output
             For Each objFlt As cEcospaceFleetOutput In m_EcospaceFleetOutputs
 
@@ -7089,16 +7094,16 @@ Public Class cCore
                 End If
 
                 m_EcoSpaceData.getSumCatchFleet(objFlt.Index, stVal, endVal)
-                objFlt.CatchStart = stVal ' / m_EcoSpaceData.nWaterCells
-                objFlt.CatchEnd = endVal ' / m_EcoSpaceData.nWaterCells
+                objFlt.CatchStart = stVal
+                objFlt.CatchEnd = endVal
 
                 m_EcoSpaceData.getSumCostFleet(Me.m_EcoPathData.cost, objFlt.Index, stVal, endVal)
-                objFlt.CostStart = stVal ' / m_EcoSpaceData.nWaterCells
-                objFlt.CostEnd = endVal ' / m_EcoSpaceData.nWaterCells
+                objFlt.CostStart = stVal
+                objFlt.CostEnd = endVal
 
                 m_EcoSpaceData.getSumValueFleet(objFlt.Index, stVal, endVal)
-                objFlt.ValueStart = stVal ' / m_EcoSpaceData.nWaterCells
-                objFlt.ValueEnd = endVal ' / m_EcoSpaceData.nWaterCells
+                objFlt.ValueStart = stVal
+                objFlt.ValueEnd = endVal
 
 
                 m_EcoSpaceData.getSumEffortES(objFlt.Index, stVal)
@@ -7126,15 +7131,15 @@ Public Class cCore
 
                     Dim sbio As Single, ebio As Single
                     m_EcoSpaceData.getSumBiomByRegion(objRgn.Index, igrp, sbio, ebio)
-                    objRgn.BiomassStart(igrp) = sbio ' / nCellsInRegion
-                    objRgn.BiomassEnd(igrp) = ebio '/ nCellsInRegion
+                    objRgn.BiomassStart(igrp) = sbio
+                    objRgn.BiomassEnd(igrp) = ebio
 
                     For iflt = 0 To nFleets
                         Dim sCatch As Single, eCatch As Single
                         m_EcoSpaceData.getSumCatchRegionGearGroup(objRgn.Index, iflt, igrp, sCatch, eCatch)
                         '  Debug.Assert(sCatch = 0)
-                        objRgn.CatchFleetGroupStart(iflt, igrp) = sCatch ' / nCellsInRegion
-                        objRgn.CatchFleetGroupEnd(iflt, igrp) = eCatch ' / nCellsInRegion
+                        objRgn.CatchFleetGroupStart(iflt, igrp) = sCatch
+                        objRgn.CatchFleetGroupEnd(iflt, igrp) = eCatch
                     Next iflt
 
                 Next igrp
@@ -7154,12 +7159,12 @@ Public Class cCore
 
                 For iflt = 0 To nFleets
                     m_EcoSpaceData.getSumCatchFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
-                    objGrpOutput.CatchStart(iflt) = stVal ' / m_EcoSpaceData.nWaterCells
-                    objGrpOutput.CatchEnd(iflt) = endVal ' / m_EcoSpaceData.nWaterCells
+                    objGrpOutput.CatchStart(iflt) = stVal
+                    objGrpOutput.CatchEnd(iflt) = endVal
 
                     m_EcoSpaceData.getSumValueFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
-                    objGrpOutput.ValueStart(iflt) = stVal ' / m_EcoSpaceData.nWaterCells
-                    objGrpOutput.ValueEnd(iflt) = endVal '/ m_EcoSpaceData.nWaterCells
+                    objGrpOutput.ValueStart(iflt) = stVal
+                    objGrpOutput.ValueEnd(iflt) = endVal
                 Next iflt
 
             Next

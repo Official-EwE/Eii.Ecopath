@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.20  2009/02/02 22:29:04  joeb
+' Added more output vars to EcoSpace fleets
+'
 ' Revision 1.19  2009/01/20 22:31:58  joeb
 ' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
 '
@@ -878,6 +881,7 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             Me.m_Data.AverageSpatialResults()
+            Me.m_Data.SummarizeResults(Me.m_EPdata.cost, Me.m_search.Jobs)
 
             If m_search.bInSearch Then
                 Dim runTime As Integer = CInt(itt * m_Data.TimeStep)
@@ -3205,14 +3209,14 @@ exitline:
 
             For iFlt = 1 To m_Data.nFleets
                 'Effort
-                m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, iFlt, iCumTime) += m_Data.EffortSpace(iFlt, iRow, iCol)
-                'Cost: at this point Cost is  Effort * effort of each fishing each cell (Sail(iFlt, iRow, iCol)) scaled by SailScale(ifleet)
+                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime) += m_Data.EffortSpace(iFlt, iRow, iCol)
+                'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
                 'Effort of fishing all the cells
-                m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
                 'sum values into All Fleets 0 index 
-                m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.Effort, iFlt, iCumTime)
-                m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) ' m_Data.ResultsByFleet(eSpaceResultsFleets.Cost, iFlt, iCumTime) + m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
+                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime)
+                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime)
 
                 ''To get the original effort the effortspace is divided by the fishrategear for the month
                 'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
@@ -3305,10 +3309,22 @@ exitline:
 
     End Sub
 
+
+
+    ''' <summary>
+    ''' Sumarize output data for at the end of a time step
+    ''' </summary>
+    ''' <param name="iTimeStep"></param>
+    ''' <param name="iMonth"></param>
+    ''' <remarks>Called at the end of a time step to populate data for a time step output/results.</remarks>
     Private Sub summarizeTimeStepData(ByVal iTimeStep As Integer, ByVal iMonth As Integer)
 
         Dim igrp As Integer
         Try
+
+            'increment the number of timestep the model ran for
+            m_Data.nSumTimeSteps += 1
+
             'if this is the first time step
             'then BBase() needs to be set to the base value calculated be Ecospace this may not be the same as the starting Ecopath biomass
             If iTimeStep = 1 Then
