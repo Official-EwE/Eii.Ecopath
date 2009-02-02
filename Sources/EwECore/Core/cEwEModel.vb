@@ -1,56 +1,14 @@
 '==============================================================================
 '
 ' $Log: cEwEModel.vb,v $
+' Revision 1.3  2009/02/02 18:56:54  jeroens
+' Description max length changed to 4K
+'
 ' Revision 1.2  2009/01/16 18:30:11  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
 ' Revision 1.1  2008/09/26 07:30:12  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.14  2008/07/17 19:19:55  jeroens
-' Added MonetaryUnit
-'
-' Revision 1.13  2008/07/10 18:23:47  jeroens
-' Fixed units to properly behave
-'
-' Revision 1.12  2008/05/29 22:22:47  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.11  2008/05/26 18:07:13  jeroens
-' Contains time unit, currency unit
-'
-' Revision 1.10  2008/03/07 18:19:59  jeroens
-' Added Ecopath Area
-'
-' Revision 1.9  2008/01/11 09:53:44  jeroens
-' LastSaved date changed to Single to include time
-'
-' Revision 1.8  2008/01/08 23:13:44  jeroens
-' Added LastSaved date
-'
-' Revision 1.7  2007/10/30 18:40:28  jeroens
-' + Added author, contact
-'
-' Revision 1.6  2007/09/15 21:22:24  jeroens
-' no message
-'
-' Revision 1.5  2006/12/14 23:33:41  jeroens
-' - Removed SetStatusFlags; relying on baseclass implementation
-'
-' Revision 1.4  2006/08/18 15:11:19  joeb
-' Renamed ICoreInputOutput.CurrentStatus to ValidationStatus
-'
-' Revision 1.3  2006/07/20 14:07:02  joeb
-' Validation using MetaData and operator classes
-'
-' Revision 1.2  2006/07/13 19:10:04  joeb
-' ICoreInputOutputBase uses a reference to the core instead of a delegates to communicate with the core.
-'
-' Revision 1.1  2006/07/03 12:29:21  jeroens
-' * Was cModel
-'
-' Revision 1.1  2006/06/30 04:52:17  jeroens
-' + Initial version
 '
 '==============================================================================
 
@@ -83,7 +41,7 @@ Public Class cEwEModel
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.Core, Index, cCore.NULL_VALUE)
 
             ' Description
-            meta = New cVariableMetaData(250)
+            meta = New cVariableMetaData(4096)
             val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
