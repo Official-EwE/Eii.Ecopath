@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEModel.vb,v $
+' Revision 1.4  2009/02/02 19:00:16  jeroens
+' Hey, why not 60K?! Whoohoo!
+'
 ' Revision 1.3  2009/02/02 18:56:54  jeroens
 ' Description max length changed to 4K
 '
@@ -41,7 +44,7 @@ Public Class cEwEModel
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.Core, Index, cCore.NULL_VALUE)
 
             ' Description
-            meta = New cVariableMetaData(4096)
+            meta = New cVariableMetaData(60000)
             val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
