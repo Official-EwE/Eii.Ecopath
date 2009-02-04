@@ -132,7 +132,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 23</value>
+    <value>91, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
@@ -160,7 +160,7 @@
     <value>22, 72</value>
   </data>
   <data name="m_cbDisplayGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 21</value>
+    <value>152, 21</value>
   </data>
   <data name="m_cbDisplayGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -409,13 +409,13 @@
     <value>Fill</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 0</value>
+    <value>97, 0</value>
   </data>
   <data name="m_btnStop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
   </data>
   <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 23</value>
+    <value>92, 23</value>
   </data>
   <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -442,7 +442,7 @@
     <value>3, 279</value>
   </data>
   <data name="m_pbSmallPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 151</value>
+    <value>189, 151</value>
   </data>
   <data name="m_pbSmallPlot.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -466,7 +466,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pbMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 681</value>
+    <value>535, 572</value>
   </data>
   <data name="m_pbMap.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -487,10 +487,10 @@
     <value>Top, Bottom, Right</value>
   </data>
   <data name="m_pbColors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>528, 16</value>
+    <value>541, 16</value>
   </data>
   <data name="m_pbColors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 949</value>
+    <value>26, 540</value>
   </data>
   <data name="m_pbColors.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -511,7 +511,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_lblHigh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>527, -3</value>
+    <value>540, -3</value>
   </data>
   <data name="m_lblHigh.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 16</value>
@@ -541,7 +541,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_lblLow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 668</value>
+    <value>539, 559</value>
   </data>
   <data name="m_lblLow.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -688,7 +688,7 @@
     <value>6, 149</value>
   </data>
   <data name="m_pnDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 98</value>
+    <value>186, 98</value>
   </data>
   <data name="m_pnDisplayOptions.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -718,7 +718,7 @@
     <value>3, 128</value>
   </data>
   <data name="m_lblDispOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 18</value>
+    <value>189, 18</value>
   </data>
   <data name="m_lblDispOpt.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -754,7 +754,7 @@
     <value>3, 5</value>
   </data>
   <data name="m_lblDist.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 18</value>
+    <value>189, 18</value>
   </data>
   <data name="m_lblDist.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -790,7 +790,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 23</value>
+    <value>189, 23</value>
   </data>
   <data name="m_tlpRun.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -835,7 +835,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabSmallMultiples.Size" type="System.Drawing.Size, System.Drawing">
-    <value>563, 685</value>
+    <value>576, 576</value>
   </data>
   <data name="m_tabSmallMultiples.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -862,7 +862,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>569, 685</value>
+    <value>563, 685</value>
   </data>
   <data name="m_tabPlot.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -886,7 +886,7 @@
     <value>3, 5</value>
   </data>
   <data name="m_tcOutputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 714</value>
+    <value>584, 605</value>
   </data>
   <data name="m_tcOutputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -916,10 +916,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>783, 720</value>
+    <value>800, 611</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>194</value>
+    <value>198</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -943,10 +943,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>783, 720</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>800, 611</value>
   </data>
   <data name="$this.TabText" xml:space="preserve">
     <value>Run Ecospace</value>
@@ -958,6 +955,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.5.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
