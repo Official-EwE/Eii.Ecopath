@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.4  2009/02/05 21:11:55  jeroens
+' Labels can be dragged
+'
 ' Revision 1.3  2008/11/21 23:06:15  sherman
 ' Fixed bugs: 550
 ' - Added listeners to properties, changed text names, made scaling more rhobust.
@@ -11,58 +14,54 @@
 ' Revision 1.1  2008/09/26 07:31:28  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.13  2008/09/09 14:44:52  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.12  2008/07/08 23:22:44  sherman
-' Fixed max TL toggle and closing of Settings Dialogue bug: 422
-'
-' Revision 1.11  2008/07/04 16:13:12  jeroens
-' Added header
-'
 '==============================================================================
 
 #Region " Imports "
 
 Option Strict On
+
+Imports EwECore
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Controls
 Imports System.Drawing
 Imports WeifenLuo.WinFormsUI.Docking
 Imports System.Reflection
-Imports EwEUtils.Commands
 
 #End Region ' Imports
 
 Namespace Ecopath.Controls.FlowDiagram
 
     Public Class FlowDiagram
-        : Inherits DockContent
+        : Inherits frmEwE
 
-        Private components As System.ComponentModel.IContainer
-        'Friend WithEvents FDData As New FlowDiagramData
-        Dim m_FDData As FlowDiagramData = Nothing
-        'Dim FDDataIO As New FlowDiagramDataIO
-        Dim m_FDDraw As Draw = Nothing
+#Region " Private variables "
+
+        Private components As System.ComponentModel.IContainer = Nothing
+        Private m_FDData As FlowDiagramData = Nothing
+        Private m_FDDraw As cFlowDiagramRenderer = Nothing
 
         '' Double buffer Image
-        Dim m_bmpOffScreen As Bitmap = Nothing
-        Dim m_gOffScreen As Graphics = Nothing
-        Dim m_gOnScreen As Graphics = Nothing
+        Private m_bmpOffScreen As Bitmap = Nothing
+        Private m_gOffScreen As Graphics = Nothing
 
-        Dim m_bMouseDown As Boolean = False
-        Friend WithEvents Timer1 As System.Windows.Forms.Timer
-        Friend WithEvents FDPictBox As System.Windows.Forms.PictureBox
-        Friend WithEvents ctxmnuRightClick As System.Windows.Forms.ContextMenuStrip
-        Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents LoadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents SettingsToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents SaveAsImageToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private m_bMouseDown As Boolean = False
+        Private WithEvents m_timer As System.Windows.Forms.Timer
+        Private WithEvents FDPictBox As System.Windows.Forms.PictureBox
+        Private WithEvents m_menuContext As System.Windows.Forms.ContextMenuStrip
+        Private WithEvents m_tsiSaveFile As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsiLoadFile As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsiSettings As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsiSaveImage As System.Windows.Forms.ToolStripMenuItem
 
-        Dim FDSettingsForm As FlowDiagramSettings
+        Private FDSettingsForm As FlowDiagramSettings = Nothing
+
+#End Region ' Private variables
 
 #Region " Constructor/Destructor "
+
         Public Sub New()
-            ' This call is required by the Component Designer.
+
             InitializeComponent()
 
             ' This draws the control whenever it is resized
@@ -79,9 +78,10 @@ Namespace Ecopath.Controls.FlowDiagram
             m_FDData = New FlowDiagramData()
 
             'Initialize Draw
-            m_FDDraw = New Draw(m_FDData, Me.Height, Me.Width)
-            AddHandler m_FDDraw.ForceRedraw, AddressOf RasiseForceRedraw
+            m_FDDraw = New cFlowDiagramRenderer(m_FDData, Me.Height, Me.Width)
+            AddHandler m_FDDraw.ForceRedraw, AddressOf RaiseForceRedraw
 
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
         End Sub
 
         Public Sub New(ByVal text As String)
@@ -92,91 +92,30 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.Text = text
         End Sub
 
-
         Protected Overrides Sub Finalize()
+            RemoveHandler m_FDDraw.ForceRedraw, AddressOf RaiseForceRedraw
+            Me.CoreComponents = Nothing
             MyBase.Finalize()
-
-            RemoveHandler m_FDDraw.ForceRedraw, AddressOf RasiseForceRedraw
         End Sub
+
 #End Region ' Constructor/Destructor 
 
-        Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FlowDiagram))
-            Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-            Me.FDPictBox = New System.Windows.Forms.PictureBox
-            Me.ctxmnuRightClick = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.SettingsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
-            Me.SaveAsImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            CType(Me.FDPictBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.ctxmnuRightClick.SuspendLayout()
-            Me.SuspendLayout()
-            '
-            'FDPictBox
-            '
-            Me.FDPictBox.ContextMenuStrip = Me.ctxmnuRightClick
-            resources.ApplyResources(Me.FDPictBox, "FDPictBox")
-            Me.FDPictBox.Name = "FDPictBox"
-            Me.FDPictBox.TabStop = False
-            '
-            'ctxmnuRightClick
-            '
-            Me.ctxmnuRightClick.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadToolStripMenuItem, Me.SaveToolStripMenuItem, Me.SaveAsImageToolStripMenuItem, Me.ToolStripSeparator1, Me.SettingsToolStripMenuItem1})
-            Me.ctxmnuRightClick.Name = "ContextMenuStrip1"
-            resources.ApplyResources(Me.ctxmnuRightClick, "ctxmnuRightClick")
-            '
-            'SaveToolStripMenuItem
-            '
-            Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-            resources.ApplyResources(Me.SaveToolStripMenuItem, "SaveToolStripMenuItem")
-            '
-            'LoadToolStripMenuItem
-            '
-            Me.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-            resources.ApplyResources(Me.LoadToolStripMenuItem, "LoadToolStripMenuItem")
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'SettingsToolStripMenuItem1
-            '
-            Me.SettingsToolStripMenuItem1.Name = "SettingsToolStripMenuItem1"
-            resources.ApplyResources(Me.SettingsToolStripMenuItem1, "SettingsToolStripMenuItem1")
-            '
-            'SaveAsImageToolStripMenuItem
-            '
-            Me.SaveAsImageToolStripMenuItem.Name = "SaveAsImageToolStripMenuItem"
-            resources.ApplyResources(Me.SaveAsImageToolStripMenuItem, "SaveAsImageToolStripMenuItem")
-            '
-            'FlowDiagram
-            '
-            resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.FDPictBox)
-            Me.Name = "FlowDiagram"
-            CType(Me.FDPictBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.ctxmnuRightClick.ResumeLayout(False)
-            Me.ResumeLayout(False)
+#Region " Events "
 
+        Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles Me.Resize
+            If Not m_FDDraw Is Nothing Then
+                m_FDDraw.resizeGraph(Me.Height, Me.Width)
+            End If
         End Sub
 
-#Region " Raise events "
-        Private Sub RasiseForceRedraw()
-            Invalidate()
-        End Sub
-#End Region ' Raise events
+#Region " Drawing "
 
-#Region "Drawing Routines"
         Private Sub FlowDiagram_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
 
             m_bmpOffScreen = New Bitmap(FDPictBox.Width, FDPictBox.Height)
             m_gOffScreen = Graphics.FromImage(m_bmpOffScreen)
             m_gOffScreen.FillRectangle(New System.Drawing.SolidBrush(Color.White), 0, 0, FDPictBox.Width, FDPictBox.Height)
-
 
             m_FDDraw.DrawDots(m_gOffScreen, m_FDData)
 
@@ -188,35 +127,41 @@ Namespace Ecopath.Controls.FlowDiagram
         '' Overrides the paint routine so it elimates the flicker
         Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
         End Sub
-#End Region
+
+#End Region ' Drawing
 
 #Region "Mouse Events"
-        Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles FDPictBox.MouseDown
-            m_FDDraw.setHighlightNodeLock = True
+
+        Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+            Handles FDPictBox.MouseDown
+
+            Using g As Graphics = Me.CreateGraphics()
+                Me.m_FDDraw.BeginDrag(Me.m_FDData, e.Location, g)
+            End Using
+
         End Sub
 
-        Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles FDPictBox.MouseUp
-            m_FDDraw.setHighlightNodeLock = False
+        Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+            Handles FDPictBox.MouseUp
+            Me.m_FDDraw.EndDrag(Me.m_FDData, e.Location)
         End Sub
 
-        Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles FDPictBox.MouseMove
-            m_FDDraw.CheckMouseOver(m_FDData, e.Location)
+        Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+            Handles FDPictBox.MouseMove
 
-            Invalidate()
+            Using g As Graphics = Me.CreateGraphics()
+                Me.m_FDDraw.ProcessMouseMove(g, Me.m_FDData, e.Location)
+                Me.Invalidate()
+            End Using
+
         End Sub
+
 #End Region
 
-        Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles Me.Resize
-            If Not m_FDDraw Is Nothing Then
-                m_FDDraw.resizeGraph(Me.Height, Me.Width)
-            End If
-        End Sub
-
-#Region " Context Menu Access "
+#Region " Context Menu "
 
         Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles LoadToolStripMenuItem.Click
+                Handles m_tsiLoadFile.Click
 
             Dim ifData As INIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -239,7 +184,7 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
         Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles SaveToolStripMenuItem.Click
+                Handles m_tsiSaveFile.Click
 
             Dim ifData As INIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -260,14 +205,14 @@ Namespace Ecopath.Controls.FlowDiagram
             End If
         End Sub
 
-        Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem1.Click
+        Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsiSettings.Click
             FDSettingsForm = New FlowDiagramSettings
             FDSettingsForm.FDPropertyGrid.SelectedObject = m_FDDraw.m_treeGraph
             FDSettingsForm.Show()
         End Sub
 
         Private Sub OnSaveToImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles SaveAsImageToolStripMenuItem.Click
+                Handles m_tsiSaveImage.Click
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -303,6 +248,80 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
 #End Region
+
+#End Region ' Events
+
+#Region " Internals "
+
+        Private Sub RaiseForceRedraw()
+            Invalidate()
+        End Sub
+
+        Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FlowDiagram))
+            Me.m_timer = New System.Windows.Forms.Timer(Me.components)
+            Me.FDPictBox = New System.Windows.Forms.PictureBox
+            Me.m_menuContext = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.m_tsiLoadFile = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsiSaveFile = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsiSaveImage = New System.Windows.Forms.ToolStripMenuItem
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsiSettings = New System.Windows.Forms.ToolStripMenuItem
+            CType(Me.FDPictBox, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_menuContext.SuspendLayout()
+            Me.SuspendLayout()
+            '
+            'FDPictBox
+            '
+            Me.FDPictBox.ContextMenuStrip = Me.m_menuContext
+            resources.ApplyResources(Me.FDPictBox, "FDPictBox")
+            Me.FDPictBox.Name = "FDPictBox"
+            Me.FDPictBox.TabStop = False
+            '
+            'm_menuContext
+            '
+            Me.m_menuContext.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsiLoadFile, Me.m_tsiSaveFile, Me.m_tsiSaveImage, Me.ToolStripSeparator1, Me.m_tsiSettings})
+            Me.m_menuContext.Name = "ContextMenuStrip1"
+            resources.ApplyResources(Me.m_menuContext, "m_menuContext")
+            '
+            'm_tsiLoadFile
+            '
+            Me.m_tsiLoadFile.Name = "m_tsiLoadFile"
+            resources.ApplyResources(Me.m_tsiLoadFile, "m_tsiLoadFile")
+            '
+            'm_tsiSaveFile
+            '
+            Me.m_tsiSaveFile.Name = "m_tsiSaveFile"
+            resources.ApplyResources(Me.m_tsiSaveFile, "m_tsiSaveFile")
+            '
+            'm_tsiSaveImage
+            '
+            Me.m_tsiSaveImage.Name = "m_tsiSaveImage"
+            resources.ApplyResources(Me.m_tsiSaveImage, "m_tsiSaveImage")
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsiSettings
+            '
+            Me.m_tsiSettings.Name = "m_tsiSettings"
+            resources.ApplyResources(Me.m_tsiSettings, "m_tsiSettings")
+            '
+            'FlowDiagram
+            '
+            resources.ApplyResources(Me, "$this")
+            Me.Controls.Add(Me.FDPictBox)
+            Me.Name = "FlowDiagram"
+            CType(Me.FDPictBox, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_menuContext.ResumeLayout(False)
+            Me.ResumeLayout(False)
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

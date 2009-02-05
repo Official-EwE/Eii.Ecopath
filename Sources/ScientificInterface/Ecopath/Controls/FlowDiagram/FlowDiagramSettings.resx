@@ -141,7 +141,7 @@
     <value>1</value>
   </data>
   <data name="btnOk.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 340</value>

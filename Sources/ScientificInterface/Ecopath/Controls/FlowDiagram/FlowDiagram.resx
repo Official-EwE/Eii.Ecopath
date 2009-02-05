@@ -117,47 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="Timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="ctxmnuRightClick.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_menuContext.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>103, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="LoadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsiLoadFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
   </data>
-  <data name="LoadToolStripMenuItem.Text" xml:space="preserve">
+  <data name="m_tsiLoadFile.Text" xml:space="preserve">
     <value>&amp;Load from File...</value>
   </data>
-  <data name="SaveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsiSaveFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
   </data>
-  <data name="SaveToolStripMenuItem.Text" xml:space="preserve">
+  <data name="m_tsiSaveFile.Text" xml:space="preserve">
     <value>&amp;Save to File...</value>
   </data>
-  <data name="SaveAsImageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsiSaveImage.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
   </data>
-  <data name="SaveAsImageToolStripMenuItem.Text" xml:space="preserve">
+  <data name="m_tsiSaveImage.Text" xml:space="preserve">
     <value>Save as &amp;Image...</value>
   </data>
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 6</value>
   </data>
-  <data name="SettingsToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsiSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 22</value>
   </data>
-  <data name="SettingsToolStripMenuItem1.Text" xml:space="preserve">
+  <data name="m_tsiSettings.Text" xml:space="preserve">
     <value>S&amp;ettings...</value>
   </data>
-  <data name="ctxmnuRightClick.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_menuContext.Size" type="System.Drawing.Size, System.Drawing">
     <value>169, 120</value>
   </data>
-  <data name="&gt;&gt;ctxmnuRightClick.Name" xml:space="preserve">
-    <value>ctxmnuRightClick</value>
+  <data name="&gt;&gt;m_menuContext.Name" xml:space="preserve">
+    <value>m_menuContext</value>
   </data>
-  <data name="&gt;&gt;ctxmnuRightClick.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_menuContext.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -195,22 +195,28 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>1052, 810</value>
   </data>
-  <data name="&gt;&gt;Timer1.Name" xml:space="preserve">
-    <value>Timer1</value>
+  <data name="&gt;&gt;m_timer.Name" xml:space="preserve">
+    <value>m_timer</value>
   </data>
-  <data name="&gt;&gt;Timer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_timer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SaveToolStripMenuItem.Name" xml:space="preserve">
-    <value>SaveToolStripMenuItem</value>
+  <data name="&gt;&gt;m_tsiLoadFile.Name" xml:space="preserve">
+    <value>m_tsiLoadFile</value>
   </data>
-  <data name="&gt;&gt;SaveToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsiLoadFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;LoadToolStripMenuItem.Name" xml:space="preserve">
-    <value>LoadToolStripMenuItem</value>
+  <data name="&gt;&gt;m_tsiSaveFile.Name" xml:space="preserve">
+    <value>m_tsiSaveFile</value>
   </data>
-  <data name="&gt;&gt;LoadToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsiSaveFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsiSaveImage.Name" xml:space="preserve">
+    <value>m_tsiSaveImage</value>
+  </data>
+  <data name="&gt;&gt;m_tsiSaveImage.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
@@ -219,22 +225,16 @@
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;SettingsToolStripMenuItem1.Name" xml:space="preserve">
-    <value>SettingsToolStripMenuItem1</value>
+  <data name="&gt;&gt;m_tsiSettings.Name" xml:space="preserve">
+    <value>m_tsiSettings</value>
   </data>
-  <data name="&gt;&gt;SettingsToolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;SaveAsImageToolStripMenuItem.Name" xml:space="preserve">
-    <value>SaveAsImageToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;SaveAsImageToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsiSettings.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FlowDiagram</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.1.2734.23473, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
