@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerInput.vb,v $
+' Revision 1.3  2009/02/05 17:48:40  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.2  2009/01/16 18:30:39  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -81,7 +84,7 @@ Namespace Ecotracer
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
             Me.m_fpCOutflowEnv = New cPropertyFormatProvider(Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
             Me.UpdateFFFormatProviders()
 
             Me.m_plGrid.Controls.Add(Me.Grid)
@@ -89,7 +92,7 @@ Namespace Ecotracer
         End Sub
 
         Private Sub frmEcotracerInput_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)

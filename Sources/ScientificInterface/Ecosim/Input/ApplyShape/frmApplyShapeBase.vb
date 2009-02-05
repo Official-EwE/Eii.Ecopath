@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmApplyShapeBase.vb,v $
+' Revision 1.3  2009/02/05 17:48:36  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.2  2009/01/16 18:30:39  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -56,12 +59,12 @@ Namespace Ecosim
             ' Hook up to core messages
             ' * Shapes manager to refresh lists of avialable FFs
             ' * Ecopath to refresh lists of available groups
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.PPIManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.PPIManager}
         End Sub
 
         Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             ' Release core messages
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Protected Sub ClearAllPairs()

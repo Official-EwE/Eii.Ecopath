@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.4  2009/02/05 17:48:37  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.3  2009/01/16 18:30:43  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -118,7 +121,7 @@ Namespace Ecosim
         Private Sub TimeSeries_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             ' Hook up message sources
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.m_core.HasTimeSeries Then
@@ -132,7 +135,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub TimeSeries_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
 #End Region ' Event handlers

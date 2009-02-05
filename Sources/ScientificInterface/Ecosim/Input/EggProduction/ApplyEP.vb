@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ApplyEP.vb,v $
+' Revision 1.4  2009/02/05 17:48:36  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.3  2009/01/16 18:30:06  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -99,12 +102,12 @@ Namespace Ecosim
             ' Init the form to the current data
             InitForm()
             ' Hook up to baseclass refresh
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
         End Sub
 
         Private Sub ApplyEP_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             ' Disconnect from baseclass refresh
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub m_tscEggProdShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tscEggProdShapes.SelectedIndexChanged

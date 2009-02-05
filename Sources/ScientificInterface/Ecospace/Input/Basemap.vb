@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.10  2009/02/05 17:48:38  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.9  2009/01/16 18:30:07  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -173,7 +176,7 @@ Namespace Ecospace.Basemap
                 AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             Me.m_propContaminantTracing = pm.GetProperty(source, eVarNameFlags.ConSimOnEcoSpace)
             AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
@@ -188,7 +191,7 @@ Namespace Ecospace.Basemap
             RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
 
             ' Detach from message sources
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
             ' Clean up
             Me.RemoveAllLayers()
 

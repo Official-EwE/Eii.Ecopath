@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.5  2009/02/05 17:48:37  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/16 18:30:37  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -161,14 +164,14 @@ Namespace Ecosim
             Me.UpdateControls()
             Me.UpdateColors()
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
         Private Sub EcosimOutputPlots_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.7  2009/02/05 17:48:38  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.6  2009/01/16 18:30:38  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -113,7 +116,7 @@ Namespace Ecosim
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
             Me.m_ccb = New CustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             ' Track core monitor changes
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -126,7 +129,7 @@ Namespace Ecosim
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.m_coreStateMonitor = Nothing
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub btnRunOrStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunOrStop.Click

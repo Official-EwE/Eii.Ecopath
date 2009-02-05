@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.8  2009/02/05 17:48:39  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.7  2009/01/16 18:30:44  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -265,7 +268,7 @@ Namespace Ecospace
             ' Start tracking styleguide changes for colour feedback
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.UpdateStyleColors()
             Me.UpdateControls()
@@ -282,7 +285,7 @@ Namespace Ecospace
             RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
             Me.m_bpConTracing = Nothing
 
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub RunEcospace_ResizeEnd(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ResizeEnd

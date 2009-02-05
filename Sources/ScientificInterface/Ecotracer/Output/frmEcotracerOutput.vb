@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.4  2009/02/05 17:48:40  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.3  2009/01/16 18:30:39  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -154,7 +157,7 @@ Public Class frmEcotracerOutput
         Me.m_sg = StyleGuide.GetInstance()
         Me.m_ZedGraphHelper = New ZedGraphHelper(m_zgc)
 
-        Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
     End Sub
 

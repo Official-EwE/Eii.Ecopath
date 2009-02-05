@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmForcingFunction.vb,v $
+' Revision 1.4  2009/02/05 17:48:37  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.3  2009/01/16 18:30:42  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -97,7 +100,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -108,7 +111,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub frmForcingFunction_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
 #End Region ' Events 

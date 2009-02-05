@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.5  2009/02/05 17:48:39  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/16 18:30:07  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -77,11 +80,11 @@ Namespace Ecospace
 
             Me.m_core = cCore.GetInstance()
             Me.InitContent()
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
         Private Sub EcospaceParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
             Me.m_bpUseIBM = Nothing
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing

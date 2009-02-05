@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.34  2009/02/05 17:48:39  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.33  2009/01/16 18:30:42  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -301,7 +304,7 @@ Namespace Ecospace
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             ' Configure graphs
             Me.InitProgressGraph()
@@ -330,7 +333,7 @@ Namespace Ecospace
             RemoveHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
             Me.m_propSearchType = Nothing
 
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
 
         End Sub
 

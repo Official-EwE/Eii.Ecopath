@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.5  2009/02/05 17:48:36  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/16 18:30:38  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -86,7 +89,7 @@ Namespace Ecosim
             AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
 
             Me.UpdateFFFormatProviders()
             Me.RebuildScenarioFormatProviders()
@@ -97,7 +100,7 @@ Namespace Ecosim
         Private Sub EcosimParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
 
             ' Clean up
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
 
             RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
             Me.m_propConTracing = Nothing

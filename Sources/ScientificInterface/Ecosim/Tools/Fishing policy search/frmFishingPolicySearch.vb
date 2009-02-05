@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.5  2009/02/05 17:48:38  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/16 18:30:41  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -102,7 +105,7 @@ Namespace Ecosim
 
             Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cbIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
@@ -112,7 +115,7 @@ Namespace Ecosim
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
 
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub setVisibleControls()

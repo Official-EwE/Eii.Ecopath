@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmModelDescription.vb,v $
+' Revision 1.3  2009/02/05 17:48:35  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.2  2008/10/08 19:31:17  jeroens
 ' Cleared history
 '
@@ -82,7 +85,7 @@ Public Class frmModelDescription
         Me.m_txbPath.Text = appl.SelectedFileName()
 
         ' Listen to shapes data added or removed messages
-        Me.MessageSources = Nothing
+        Me.CoreComponents = Nothing
 
         ' Listen to core state monitor
         AddHandler Me.m_csm.CoreDataStateEvent, AddressOf m_csm_CoreDataStateEvent
@@ -106,7 +109,7 @@ Public Class frmModelDescription
 
     Private Sub frmModelDescription_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
-        Me.MessageSources = Nothing
+        Me.CoreComponents = Nothing
 
         RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf m_csm_CoreDataStateEvent
         Me.m_csm = Nothing

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.6  2009/02/05 17:48:38  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.5  2009/01/16 18:30:41  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -159,7 +162,7 @@ Namespace Ecosim
 
             Me.m_F2TSManager.Connect(Me, AddressOf m_F2TSManager_OnRunStarted, AddressOf m_F2TSManager_OnRunStep, AddressOf m_F2TSManager_OnRunStopped, AddressOf m_F2TSManager_OnModelRun)
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
             Me.UpdateControls()
         End Sub
 

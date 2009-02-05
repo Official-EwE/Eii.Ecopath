@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwEGrid.vb,v $
+' Revision 1.3  2009/02/05 17:48:41  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.2  2008/12/15 15:55:33  jeroens
 ' no message
 '
@@ -475,7 +478,7 @@ Public Class frmEwEGrid
         ' Designer crap
         If (Me.m_grid Is Nothing) Then Return
         ' Connect to message sources
-        Me.MessageSources = Me.m_grid.MessageSources
+        Me.CoreComponents = Me.m_grid.MessageSources
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -487,7 +490,7 @@ Public Class frmEwEGrid
         ' Release any quick edit handler
         Me.SetQuickEditHandler(False)
         ' Clear any message source links
-        Me.MessageSources = Nothing
+        Me.CoreComponents = Nothing
     End Sub
 
 #End Region ' Form event handlers

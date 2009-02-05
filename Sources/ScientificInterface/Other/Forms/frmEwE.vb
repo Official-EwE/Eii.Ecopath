@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.5  2009/02/05 17:48:41  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/19 18:07:25  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -323,7 +326,7 @@ Public Class frmEwE
     ''' -----------------------------------------------------------------------
     Private Sub EwEForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         ' Release message sources
-        Me.MessageSources = Nothing
+        Me.CoreComponents = Nothing
     End Sub
 
 #End Region ' Form events
@@ -362,7 +365,7 @@ Public Class frmEwE
     ''' how these flags are being used.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property MessageSources() As eCoreComponentType()
+    Public Property CoreComponents() As eCoreComponentType()
         Get
             Return m_aMessageSources
         End Get

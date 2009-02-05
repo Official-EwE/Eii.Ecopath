@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResults.vb,v $
+' Revision 1.5  2009/02/05 17:48:37  jeroens
+' MessageSources -> CoreComponents
+'
 ' Revision 1.4  2009/01/16 18:30:38  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -98,11 +101,11 @@ Namespace Ecosim
             curDisplayMode = eDisplayMode.Fleets
             UpdateControls()
 
-            Me.MessageSources = New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
         Private Sub EcosimResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-            Me.MessageSources = Nothing
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
