@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.6  2009/02/05 21:01:32  jeroens
+' Fixed XML comment confusion
+'
 ' Revision 1.5  2009/02/05 17:48:41  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -87,9 +90,9 @@ Imports System.ComponentModel
 ''' <item><description>Inherit your form from EwE6Form,</description></item>
 ''' <item><description>In the Load event, specify the message source(s) that
 ''' the form class should respond to via 
-''' <see cref="frmEwE.MessageSources">frmEwE.MessageSources</see></description>,</item>
+''' <see cref="frmEwE.CoreComponents">frmEwE.CoreComponents</see></description>,</item>
 ''' <item><description>In the Unload event, clear the message sources(s) by
-''' setting <see cref="frmEwE.MessageSources">frmEwE.MessageSources</see>
+''' setting <see cref="frmEwE.CoreComponents">frmEwE.CoreComponents</see>
 ''' to Nothing,</description></item>
 ''' <item>Override <see cref="frmEwE.OnCoreMessage">frmEwE.OnCoreMessage</see>
 ''' and implement the response to the message.</item>
