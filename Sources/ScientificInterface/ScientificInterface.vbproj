@@ -149,8 +149,7 @@
     <Compile Include="Ecopath\Controls\FlowDiagram\Data\FlowDiagramData.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\Data\INIFile.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\Draw\Draw.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\FlowDiagramType.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\FlowDiagramType\Tree.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\Tree.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Connector.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Node.vb" />
     <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagram.vb">
