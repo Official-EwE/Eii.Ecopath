@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.8  2009/02/07 20:22:43  jeroens
+' Moved cCoreResources to EwEUtils
+'
 ' Revision 1.7  2009/01/29 16:22:31  jeroens
 ' Fixed XML error
 '
@@ -30,6 +33,7 @@ Option Strict On
 
 Imports System.IO
 Imports System.Data.OleDb
+Imports System.Reflection
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
@@ -93,7 +97,7 @@ Namespace Database
 
             If (datResult = eDatasourceAccessType.Created) Then
 
-                If cCoreResources.SaveResourceToFile(strSource, strDatabase, bOverwrite) Then
+                If ResourceUtilities.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
                     Try
                         'Try to open the database to update the model name
                         Dim db As New cEwEAccessDatabase()

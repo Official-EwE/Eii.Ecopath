@@ -185,7 +185,6 @@
     <Compile Include="Publisher-Subscriber\cMessagePublisher.vb" />
     <Compile Include="Publisher-Subscriber\cProgressMessage.vb" />
     <Compile Include="Publisher-Subscriber\cVariableStatus.vb" />
-    <Compile Include="Resources\cCoreResources.vb" />
     <Compile Include="Resources\CoreDefaults.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -293,11 +292,11 @@
   <ItemGroup>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+      <Name>EwEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+      <Name>EwEUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
