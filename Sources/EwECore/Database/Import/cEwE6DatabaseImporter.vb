@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.7  2009/02/07 20:23:09  jeroens
+' Removed cCoreResources
+'
 ' Revision 1.6  2009/01/29 16:10:48  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -493,7 +496,7 @@ Namespace Database
 
             While r.Read()
                 mi = New cEwE5ModelInfo(CStr(r(0)), CStr(r(1)), _
-                    CStr(Me.FixValue(r, "remarks", cCoreResources.GetMessage("IMPORT_NO_DESCRIPTION"))), CInt(r(3)))
+                    CStr(Me.FixValue(r, "remarks", My.Resources.CoreMessages.IMPORT_NO_DESCRIPTION)), CInt(r(3)))
                 l.Add(mi)
             End While
 
