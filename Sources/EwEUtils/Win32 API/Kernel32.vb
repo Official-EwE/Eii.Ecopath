@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Kernel32.vb,v $
+' Revision 1.3  2009/02/07 17:39:51  jeroens
+' Added ProfileString interfaces
+'
 ' Revision 1.2  2008/10/07 21:57:40  jeroens
 ' More!
 '
@@ -22,7 +25,8 @@
 '==============================================================================
 
 Option Strict On
-Imports system.Runtime.InteropServices
+Imports System.Runtime.InteropServices
+Imports System.Text
 
 Namespace Win32Api
 
@@ -53,6 +57,18 @@ Namespace Win32Api
 
         <DllImport("Kernel32.dll", SetLastError:=True, CallingConvention:=CallingConvention.Winapi)> _
         Public Shared Function IsWow64Process(ByVal hProcess As Long, ByRef lpSystemInfo As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        End Function
+
+        <DllImport("kernel32.dll", SetLastError:=True)> _
+        Public Shared Function GetPrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As StringBuilder, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
+        End Function
+
+        <DllImport("kernel32.dll", SetLastError:=True)> _
+        Public Shared Function WritePrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpString As String, ByVal lpFileName As String) As Boolean
+        End Function
+
+        <DllImport("kernel32.dll", SetLastError:=True)> _
+        Public Shared Function GetPrivateProfileInt(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal nDefault As Integer, ByVal lpFileName As String) As Integer
         End Function
 
     End Class
