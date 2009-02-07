@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.5  2009/02/07 17:48:39  jeroens
+' cINIFile moved
+'
 ' Revision 1.4  2009/02/05 21:11:55  jeroens
 ' Labels can be dragged
 '
@@ -22,9 +25,10 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Win32Api
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 Imports System.Drawing
-Imports WeifenLuo.WinFormsUI.Docking
 Imports System.Reflection
 
 #End Region ' Imports
@@ -103,9 +107,9 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Events "
 
         Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Resize
+            Handles Me.Resize
             If Not m_FDDraw Is Nothing Then
-                m_FDDraw.resizeGraph(Me.Height, Me.Width)
+                m_FDDraw.ResizeGraph(Me.Height, Me.Width)
             End If
         End Sub
 
@@ -163,15 +167,15 @@ Namespace Ecopath.Controls.FlowDiagram
         Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_tsiLoadFile.Click
 
-            Dim ifData As INIFile = Nothing
+            Dim ifData As cINIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 2)
+            cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
-                    ifData = New INIFile(cmdFO.FileName)
+                    ifData = New cINIFile(cmdFO.FileName)
                     m_FDDraw.LoadFromFile(ifData, Me.m_FDData)
                 Catch ex As Exception
                     ' ToDo: provide error feedback via cCore message
@@ -186,15 +190,15 @@ Namespace Ecopath.Controls.FlowDiagram
         Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_tsiSaveFile.Click
 
-            Dim ifData As INIFile = Nothing
+            Dim ifData As cINIFile = Nothing
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 2)
+            cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
-                    ifData = New INIFile(cmdFS.FileName)
+                    ifData = New cINIFile(cmdFS.FileName)
                     m_FDDraw.SaveToFile(ifData, Me.m_FDData)
                 Catch ex As Exception
                     ' ToDo: provide error feedback via cCore message
