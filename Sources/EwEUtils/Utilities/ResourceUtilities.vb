@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ResourceUtilities.vb,v $
+' Revision 1.2  2009/02/07 20:24:18  jeroens
+' Made namespace and assembly independent
+'
 ' Revision 1.1  2009/02/07 20:10:25  jeroens
 ' Extracted from EwECore
 '
@@ -28,14 +31,14 @@ Namespace Utilities
         ''' <param name="strResourceName">The name of the resource, including  in the current assembly, current namespace.</param>
         ''' <param name="strFileName">The name of the file to save the resource to</param>
         ''' <param name="bOverwrite">States whether an existing file is allowed to be overwritten</param>
-        ''' <param name="assembly">The assembly to obtain the resource from.</param>
+        ''' <param name="ass">The assembly to obtain the resource from.</param>
         ''' <param name="strNamespace">The namespace to obtain the resource from.</param>
         ''' <returns>True if succesful</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function SaveResourceToFile(ByVal strResourceName As String, _
                                                   ByVal strFileName As String, _
                                                   Optional ByVal bOverwrite As Boolean = False, _
-                                                  Optional ByVal assembly As Assembly = Nothing, _
+                                                  Optional ByVal ass As Assembly = Nothing, _
                                                   Optional ByVal strNamespace As String = "") As Boolean
 
             Dim sResource As Stream = Nothing
@@ -44,15 +47,15 @@ Namespace Utilities
             Dim byBuffer(nBufLen) As Byte
             Dim nBytesRead As Integer = 0
 
-            If Assembly Is Nothing Then
-                Assembly = Assembly.GetExecutingAssembly()
+            If ass Is Nothing Then
+                ass = Assembly.GetExecutingAssembly()
             End If
 
             If String.IsNullOrEmpty(strNamespace) Then
-                strNamespace = Assembly.GetName().Name.ToString()
+                strNamespace = ass.GetName().Name.ToString()
             End If
 
-            Assembly.GetManifestResourceStream(strNamespace & "." & strResourceName)
+            sResource = ass.GetManifestResourceStream(strNamespace & "." & strResourceName)
 
             ' Pre
             Debug.Assert(Not String.IsNullOrEmpty(strFileName), "Required target file name missing")
