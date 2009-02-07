@@ -102,6 +102,7 @@
     <Compile Include="Net\cSerializableObject.vb" />
     <Compile Include="System\SystemUtilities.vb" />
     <Compile Include="Utilities\FileUtilities.vb" />
+    <Compile Include="Win32 API\cINIFile.vb" />
     <Compile Include="Utilities\PropertyUtils.vb" />
     <Compile Include="Utilities\StringUtils.vb" />
     <Compile Include="Utilities\ToolstripUtils.vb" />
