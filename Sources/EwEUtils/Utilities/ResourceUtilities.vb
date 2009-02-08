@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ResourceUtilities.vb,v $
+' Revision 1.3  2009/02/08 14:01:12  jeroens
+' Added lookup cheat
+'
 ' Revision 1.2  2009/02/07 20:24:18  jeroens
 ' Made namespace and assembly independent
 '
@@ -54,6 +57,9 @@ Namespace Utilities
             If String.IsNullOrEmpty(strNamespace) Then
                 strNamespace = ass.GetName().Name.ToString()
             End If
+
+            ' Cheat
+            Dim astrNames As String() = ass.GetManifestResourceNames()
 
             sResource = ass.GetManifestResourceStream(strNamespace & "." & strResourceName)
 
