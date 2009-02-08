@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.9  2009/02/08 17:35:04  jeroens
+' Can now force datasource type when opening a new source
+'
 ' Revision 1.8  2009/02/07 20:22:43  jeroens
 ' Moved cCoreResources to EwEUtils
 '
@@ -101,7 +104,7 @@ Namespace Database
                     Try
                         'Try to open the database to update the model name
                         Dim db As New cEwEAccessDatabase()
-                        datResult = db.Open(strDatabase)
+                        datResult = db.Open(strDatabase, databaseType)
                         If (datResult = eDatasourceAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, EwEUtils.SystemUtilities.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
@@ -170,7 +173,7 @@ Namespace Database
                     datResult = eDatasourceAccessType.Failed_CannotSave
                 End Try
 
-                datResult = Me.Open(strDatabaseTo)
+                datResult = Me.Open(strDatabaseTo, databaseType)
                 'Able to open?
                 If datResult = eDatasourceAccessType.Opened Then
                     ' #Yes: Fix model name after copying

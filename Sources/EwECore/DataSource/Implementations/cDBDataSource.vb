@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.20  2009/02/08 17:35:01  jeroens
+' Can now force datasource type when opening a new source
+'
 ' Revision 1.19  2009/01/29 16:10:46  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -111,11 +114,12 @@ Public Class cDBDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType _
-            Implements DataSources.IEwEDataSource.Open
+    Public Function Open(ByVal strName As String, ByVal core As cCore, _
+                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
+                         Implements DataSources.IEwEDataSource.Open
 
         ' Attempt to open existing
-        Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName)
+        Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType)
         ' Any luck?
         If atResult = eDatasourceAccessType.Opened Then
             ' Store core
@@ -125,6 +129,17 @@ Public Class cDBDataSource
         ' Report succes
         Return atResult
 
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a datasource is already open.
+    ''' </summary>
+    ''' <returns>True if the datasource is open.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function IsOpen() As Boolean _
+             Implements IEwEDataSource.IsOpen
+        Return Me.m_db.IsConnected
     End Function
 
     ''' -------------------------------------------------------------------

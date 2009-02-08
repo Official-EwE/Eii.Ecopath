@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.5  2009/02/08 17:35:04  jeroens
+' Can now force datasource type when opening a new source
+'
 ' Revision 1.4  2009/01/29 16:10:50  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -13,60 +16,9 @@
 ' Revision 1.1  2008/09/26 07:30:13  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.46  2008/07/25 14:21:12  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.45  2008/07/25 03:00:47  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.44  2008/07/25 01:39:10  joeh
-' Modify to cater the generic datasource engine in the core
-'
-' Revision 1.43  2008/07/25 00:06:43  jeroens
-' Included new file extensions
-'
-' Revision 1.42  2008/07/09 14:36:28  jeroens
-' Added generic type test
-'
-' Revision 1.41  2008/07/09 13:29:27  jeroens
-' Added accdb format support
-'
-' Revision 1.40  2008/06/06 15:55:57  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.39  2007/12/18 22:19:24  jeroens
-' + Added interface for controlling datasource transactions
-'
-' Revision 1.38  2007/12/13 17:15:28  jeroens
-' * Changed SaveModelAs / Database replication structure
-'
-' Revision 1.37  2007/12/09 22:12:20  jeroens
-' + Added IsModified
-'
-' Revision 1.36  2007/09/17 02:45:35  jeroens
-' * Database created with a model name
-'
-' Revision 1.35  2007/07/25 03:08:08  jeroens
-' * Moved cEwEDatabase to EwEUtils
-'
-' Revision 1.34  2007/07/21 14:49:31  jeroens
-' + Version exposed by datasource
-'
-' Revision 1.33  2007/07/17 16:24:25  jeroens
-' + Added basis for copying across datasources
-' * Changed TS support
-'
-' Revision 1.32  2007/07/13 17:24:34  jeroens
-' - Removed Forcing namespace
-'
-' Revision 1.31  2007/04/10 17:24:15  jeroens
-' * Change flags can be set w/o specifyng a DBID
-'
-' Revision 1.30  2007/02/27 03:58:36  jeroens
-' - Removed FileName. This class uses an abstract connection; filename countered this principle. Instead, the function ToString has been added that must be overridden to provide a string representation of a datasources' connection
-'
 '==============================================================================
+
+#Region " Imports "
 
 Option Strict On
 
@@ -75,6 +27,8 @@ Imports EwECore.Database
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Namespace DataSources
 
@@ -218,7 +172,7 @@ Namespace DataSources
         ''' datastructures to read to, and write from.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType
+        Function Open(ByVal strName As String, ByVal core As cCore, Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -231,6 +185,14 @@ Namespace DataSources
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether a datasource is already open.
+        ''' </summary>
+        ''' <returns>True if the datasource is open.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsOpen() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

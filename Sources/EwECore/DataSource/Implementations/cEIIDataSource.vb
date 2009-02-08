@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.6  2009/02/08 17:35:04  jeroens
+' Can now force datasource type when opening a new source
+'
 ' Revision 1.5  2009/01/29 16:10:48  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -16,41 +19,6 @@
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.48  2008/09/17 01:23:53  jeroens
-' Currency units used correctly by Ecopath
-'
-' Revision 1.47  2008/08/08 23:17:25  jeroens
-' Properly implemented SaveScenarioAs
-' Added ImportanceLayers support
-'
-' Revision 1.46  2008/07/25 03:00:42  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.45  2008/07/21 14:04:57  jeroens
-' Implemented pedigree interfaces
-'
-' Revision 1.44  2008/07/05 13:12:19  jeroens
-' Updated to read BInput (instead of B)
-'
-' Revision 1.43  2008/07/04 16:27:41  jeroens
-' Brought up to date with core init requirements
-'
-' Revision 1.42  2008/06/06 15:55:59  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.41  2008/02/22 21:44:03  jeroens
-' vbK tied to StanzaLifeStage
-'
-' Revision 1.40  2008/02/11 03:24:48  jeroens
-' Datasets are separate entities now, no longer just defined by name in Time Series
-'
-' Revision 1.39  2008/01/31 17:06:07  jeroens
-' Added interface to load one single dataset
-'
-' Revision 1.38  2008/01/18 01:35:45  jeroens
-' Added dataset manipulation method to sim datasource interface
-'
 '==============================================================================
 
 Option Strict Off ' Aargh! Let's not attempt to purify the old code!
@@ -61,14 +29,16 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 
+
+''' ===========================================================================
 ''' <summary>
-''' Data access for an Eii file
+''' Data access for an EwE5 .EII file
 ''' </summary>
-<CLSCompliant(False)> _
+''' ===========================================================================
 Public Class cEIIDataSource
     Implements IEwEDataSource, IEcopathDataSource, IEcosimDatasource
 
-    Private m_filename As String = ""
+    Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
 
 #Region " Generic "
@@ -82,14 +52,15 @@ Public Class cEIIDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore) As eDatasourceAccessType _
-            Implements IEwEDataSource.Open
+    Public Function Open(ByVal strName As String, ByVal core As cCore, _
+                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
+                         Implements IEwEDataSource.Open
 
         Dim fnum As Integer = FreeFile()
 
         ' Still open?
-        If (Not String.IsNullOrEmpty(Me.m_filename)) Then Return False
-        m_filename = strName
+        If (Not String.IsNullOrEmpty(Me.m_strFilename)) Then Return False
+        m_strFilename = strName
 
         ' Test if file can be read
         Try
@@ -100,10 +71,21 @@ Public Class cEIIDataSource
 
         FileClose(fnum)
 
-        Me.m_filename = strName
+        Me.m_strFilename = strName
         Me.m_core = core
         Return True
 
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a datasource is already open.
+    ''' </summary>
+    ''' <returns>True if the datasource is open.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function IsOpen() As Boolean _
+             Implements IEwEDataSource.IsOpen
+        Return (Not String.IsNullOrEmpty(Me.m_strFilename))
     End Function
 
     ''' -------------------------------------------------------------------
@@ -132,7 +114,7 @@ Public Class cEIIDataSource
     Public Function Close() As Boolean _
          Implements IEwEDataSource.Close
 
-        Me.m_filename = ""
+        Me.m_strFilename = ""
         Me.m_core = Nothing
         Return True
 
@@ -157,7 +139,7 @@ Public Class cEIIDataSource
     ''' -------------------------------------------------------------------
     Public ReadOnly Property Connection() As Object Implements DataSources.IEwEDataSource.Connection
         Get
-            Return Me.m_filename
+            Return Me.m_strFilename
         End Get
     End Property
 
@@ -167,7 +149,7 @@ Public Class cEIIDataSource
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Overrides Function ToString() As String Implements IEwEDataSource.ToString
-        Return Me.m_filename
+        Return Me.m_strFilename
     End Function
 
     Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
@@ -236,24 +218,24 @@ Public Class cEIIDataSource
 
         fnum = FreeFile()
 
-        If m_filename = "" Then
+        If m_strFilename = "" Then
             cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
             Return False
         End If
 
         Try
-            FileOpen(fnum, m_filename, OpenMode.Input)
+            FileOpen(fnum, m_strFilename, OpenMode.Input)
         Catch ex As Exception
             LoadModel = False
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_filename + vbCrLf + "Error:" + ex.Message())
+            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFilename + vbCrLf + "Error:" + ex.Message())
             Exit Function
         End Try
 
         'fake model data
         m_core.m_EwEModelDBID = 1
-        m_core.m_EwEModelName = Path.GetFileName(m_filename)
+        m_core.m_EwEModelName = Path.GetFileName(m_strFilename)
         m_core.m_EwEModelNumDigits = 3
-        m_core.m_EwEModelDescription = "Simulated model read from EII file " & m_filename
+        m_core.m_EwEModelDescription = "Simulated model read from EII file " & m_strFilename
 
         'read the file
         Try
