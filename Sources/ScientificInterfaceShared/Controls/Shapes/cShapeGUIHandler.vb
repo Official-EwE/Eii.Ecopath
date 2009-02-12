@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.3  2009/02/12 15:33:25  jeroens
+' Fishing rates showing Y mark label
+'
 ' Revision 1.2  2009/01/16 18:30:35  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -1710,7 +1713,7 @@ Namespace Controls
         ''' <returns>The color for rendering fishing mortality shapes.</returns>
         ''' -----------------------------------------------------------------------
         Protected Overrides Function Color() As System.Drawing.Color
-            Return Drawing.Color.Gray
+            Return Drawing.Color.DarkGray
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1730,6 +1733,29 @@ Namespace Controls
         Protected Overrides Function MinYScale() As Single
             Return 0
         End Function
+
+        Public Overrides Property Selection() As EwECore.cShapeData
+            Get
+                Return MyBase.Selection
+            End Get
+            Set(ByVal value As EwECore.cShapeData)
+
+                Dim sMarkValue As Single = cCore.NULL_VALUE
+                Dim strMarkLabel As String = ""
+
+                If value IsNot Nothing Then
+                    sMarkValue = Me.m_core.EcoPathGroupOutputs(value.Index).MortCoFishRate()
+                    strMarkLabel = "Ecopath mort rate"
+                End If
+
+                Me.SketchPad.YMarkValue = sMarkValue
+                Me.SketchPad.YMarkLabel = strMarkLabel
+
+                ' Back to base
+                MyBase.Selection = value
+
+            End Set
+        End Property
 
     End Class
 
