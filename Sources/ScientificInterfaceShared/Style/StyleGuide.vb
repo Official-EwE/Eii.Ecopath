@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.5  2009/02/12 15:32:41  jeroens
+' Fixed fonts
+'
 ' Revision 1.4  2009/01/23 03:08:55  jeroens
 ' Removed unused imports
 '
@@ -73,15 +76,15 @@ Namespace Style
 
         ' -- graphs --
         ''' <summary></summary>
-        Private m_strGraphFontFamilyName As String = "Sans serif"
+        Private m_strGraphFontFamilyName As String = "Microsoft Sans serif"
         ''' <summary></summary>
         Private m_sGraphCaptionFontSize As Single = 16
         ''' <summary></summary>
-        Private m_fsGraphCaptionFontStye As FontStyle = FontStyle.Bold
+        Private m_fsGraphCaptionFontStye As FontStyle = FontStyle.Regular
         ''' <summary></summary>
         Private m_sGraphAxisLabelFontSize As Single = 12
         ''' <summary></summary>
-        Private m_fsGraphAxisLabelFontStye As FontStyle = FontStyle.Bold
+        Private m_fsGraphAxisLabelFontStye As FontStyle = FontStyle.Regular
         ''' <summary></summary>
         Private m_sGraphAxisScaleFontSize As Single = 8.25
         ''' <summary></summary>
