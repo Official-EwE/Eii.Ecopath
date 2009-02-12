@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.2  2009/02/12 15:32:20  jeroens
+' Can add labels to XMark, YMark lines
+'
 ' Revision 1.1  2008/12/15 19:49:12  jeroens
 ' Split off
 '
@@ -130,7 +133,7 @@ Namespace Ecosim
                 If (Me.BioPercent IsNot Nothing) Then Me.BioPercent.Shape = Me.Selection
 
                 If Me.SketchPad IsNot Nothing Then
-                    Me.SketchPad.BaselineValue = CSng(DirectCast(value, cMediationFunction).XBaseIndex)
+                    Me.SketchPad.XMarkValue = CSng(DirectCast(value, cMediationFunction).XBaseIndex)
                 End If
             End Set
         End Property

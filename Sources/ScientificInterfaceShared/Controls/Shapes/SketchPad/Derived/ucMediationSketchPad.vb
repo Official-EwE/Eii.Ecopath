@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.2  2009/02/12 15:32:21  jeroens
+' Can add labels to XMark, YMark lines
+'
 ' Revision 1.1  2008/12/15 15:36:40  jeroens
 ' Moved from ScInt
 '
@@ -17,6 +20,7 @@ Option Strict On
 Imports EwECore
 Imports System.Drawing.Drawing2D
 Imports System.Drawing
+Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
 #End Region
@@ -49,6 +53,7 @@ Namespace Controls
             Dim tmpBrush As SolidBrush = Nothing
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
@@ -68,7 +73,7 @@ Namespace Controls
             sfmt.Alignment = StringAlignment.Center
             sfmt.LineAlignment = StringAlignment.Center
 
-            tmpFont = New Font(Me.Font.FontFamily, Me.Font.Size + 2)
+            tmpFont = New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
             tmpBrush = New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
 
             strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (DirectCast(Me.Shape, cMediationFunction).ID + 1), Me.Shape.Name)

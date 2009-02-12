@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.2  2009/02/12 15:32:21  jeroens
+' Can add labels to XMark, YMark lines
+'
 ' Revision 1.1  2008/12/15 15:36:41  jeroens
 ' Moved from ScInt
 '
@@ -9,50 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:44  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.20  2008/07/01 19:13:12  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.19  2008/07/01 15:25:32  jeroens
-' Baseline hidden by default
-'
-' Revision 1.18  2008/07/01 12:17:04  jeroens
-' Added ability to render a shape baseline value
-'
-' Revision 1.17  2008/06/06 16:01:39  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.16  2008/06/02 00:01:48  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.15  2008/05/20 18:40:28  jeroens
-' Fixed issue 416 (again)
-'
-' Revision 1.14  2008/05/18 02:12:58  jeroens
-' Fixed issue 361
-'
-' Revision 1.13  2008/05/18 01:33:51  jeroens
-' Scale locked to current view max, not shape max!
-'
-' Revision 1.12  2008/05/16 02:26:07  jeroens
-' Fixed issue with yscalelock = ymax = 0
-'
-' Revision 1.11  2008/05/14 16:18:31  jeroens
-' Removed obsolete code
-' Added Y Axis lock while drawing to prevent the sketch pad from resizing (and introducing jabbed etches)
-'
-' Revision 1.10  2008/02/10 02:45:35  jeroens
-' Cleaned-up
-' Added diagnostics to "Save to image" bit
-'
-' Revision 1.9  2008/02/04 18:51:40  jeroens
-' Fixed bug 393
-'
-' Revision 1.8  2008/01/24 04:10:42  jeroens
-' Prevent division by 0 when rendering shapes
-'
-' Revision 1.7  2008/01/21 04:06:42  jeroens
-' Fixed shape max scale issues, once and for all
 '
 '==============================================================================
 
@@ -114,7 +73,15 @@ Namespace Controls
         ''' <summary></summary>
         Private m_sYMax As Single = cCore.NULL_VALUE
         Private m_sYMin As Single = cCore.NULL_VALUE
-        Private m_sBaselineValue As Single = cCore.NULL_VALUE
+
+        ''' <summary>Horizontal mark line.</summary>
+        Private m_sYMarkValue As Single = cCore.NULL_VALUE
+        ''' <summary>Horizontal mark line.</summary>
+        Private m_strYMarkLabel As String = ""
+        ''' <summary>Vertical mark line.</summary>
+        Private m_sXMarkValue As Single = cCore.NULL_VALUE
+        ''' <summary>Vertical mark line label.</summary>
+        Private m_strXMarkLabel As String = ""
 
         ''' <summary></summary>
         Public Delegate Sub ShapeChangedEventHandler(ByVal shape As cShapeData)
@@ -295,12 +262,54 @@ Namespace Controls
             End Set
         End Property
 
-        Public Property BaselineValue() As Single
+        ''' <summary>
+        ''' Value for horizontal (Y mark) line
+        ''' </summary>
+        Public Property YMarkValue() As Single
             Get
-                Return Me.m_sBaselineValue
+                Return Me.m_sYMarkValue
             End Get
             Set(ByVal value As Single)
-                Me.m_sBaselineValue = value
+                Me.m_sYMarkValue = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Label for horizontal (Y mark) line
+        ''' </summary>
+        Public Property YMarkLabel() As String
+            Get
+                Return Me.m_strYMarkLabel
+            End Get
+            Set(ByVal value As String)
+                Me.m_strYMarkLabel = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Value for vertical (X mark) line
+        ''' </summary>
+        Public Property XMarkValue() As Single
+            Get
+                Return Me.m_sXMarkValue
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sXMarkValue = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Label for vertical (X mark) line
+        ''' </summary>
+        Public Property XMarkLabel() As String
+            Get
+                Return Me.m_strXMarkLabel
+            End Get
+            Set(ByVal value As String)
+                Me.m_strXMarkLabel = value
                 Me.Invalidate()
             End Set
         End Property
@@ -428,7 +437,8 @@ Namespace Controls
                                 ByVal sYMax As Single)
 
             ' Draw default
-            ShapeImage.DrawShape(shape, rcImage, g, clr, drawMode, sYMax, Me.BaselineValue)
+            ShapeImage.DrawShape(shape, rcImage, g, clr, drawMode, sYMax, _
+                                 Me.YMarkValue, Me.XMarkValue, Me.YMarkLabel, Me.XMarkLabel)
 
         End Sub
 
@@ -451,8 +461,8 @@ Namespace Controls
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfPrev As PointF = ShapeImage.toModelPoint(ptPrev, Me.ClientRectangle, iXMax, sYMax)
-            Dim ptfCur As PointF = ShapeImage.toModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfPrev As PointF = ShapeImage.ToModelPoint(ptPrev, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
 
             Dim iStart As Integer = CInt(Math.Min(ptfPrev.X, ptfCur.X))
             Dim iEnd As Integer = CInt(Math.Max(ptfPrev.X, ptfCur.X))

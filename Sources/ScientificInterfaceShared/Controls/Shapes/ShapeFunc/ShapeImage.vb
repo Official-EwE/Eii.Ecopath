@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeImage.vb,v $
+' Revision 1.2  2009/02/12 15:32:20  jeroens
+' Can add labels to XMark, YMark lines
+'
 ' Revision 1.1  2008/12/15 15:36:39  jeroens
 ' Moved from ScInt
 '
@@ -24,6 +27,7 @@ Imports System.Drawing.Drawing2D
 Imports System.Globalization
 Imports System.Threading
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
@@ -40,34 +44,6 @@ Namespace Controls
         Public Const cICON_WIDTH As Integer = 48
         Public Const cICON_HEIGHT As Integer = 48
 
-        ' This functionality is provided as cShapeData.YMax. 
-        ' Default scale must be provided by the shape handler when an image is requested
-
-        '''' -------------------------------------------------------------------
-        '''' <summary>
-        '''' Return the maximum Y value for a given shape.
-        '''' </summary>
-        '''' <param name="shape">The shape to explore.</param>
-        '''' <returns>The maximum Y value for the given shape.</returns>
-        '''' -------------------------------------------------------------------
-        'Public Shared Function GetYMax(ByVal shape As cShapeData) As Single
-
-        '    Dim sDefault As Single = 2.0
-        '    If shape.DataType = eDataTypes.Mediation Then
-        '        sDefault = 1.0
-        '    End If
-
-        '    Dim sYMax As Single = sDefault
-        '    Dim iMaxPt As Integer = shape.XMax - 1
-        '    If shape.IsSeasonal Then iMaxPt = 12
-        '    For i As Integer = 1 To iMaxPt
-        '        sYMax = Math.Max(shape.ShapeData(i), sYMax)
-        '    Next
-
-        '    Return sYMax
-
-        'End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' This helper method converts the coordinates of model point to those of the image point
@@ -78,7 +54,7 @@ Namespace Controls
         ''' <param name="sYMax">Clip rectangle vert. axis corresponds to [0, syMax].</param>
         ''' <returns>A point in the clip rectangle that corresponds to ptModel.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function toImagePoint(ByVal ptModel As PointF, _
+        Public Shared Function ToImagePoint(ByVal ptModel As PointF, _
                                     ByVal rcClip As Rectangle, _
                                     ByVal sXMax As Single, ByVal sYMax As Single) As PointF
 
@@ -98,7 +74,7 @@ Namespace Controls
         ''' This helper method transforms the underlying point value to the screen point value
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Shared Function toScreenPoint(ByVal ptModel As PointF, _
+        Public Shared Function ToScreenPoint(ByVal ptModel As PointF, _
                                     ByVal rcClip As Rectangle, _
                                     ByVal sXMax As Single, ByVal sYMax As Single) As PointF
 
@@ -113,7 +89,7 @@ Namespace Controls
         ''' This method transforms the screen point to the underlying model point
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Shared Function toModelPoint(ByVal ptImage As PointF, _
+        Public Shared Function ToModelPoint(ByVal ptImage As PointF, _
                                     ByVal rcClip As Rectangle, _
                                     ByVal sXMax As Single, ByVal sYMax As Single) As PointF
 
@@ -144,15 +120,20 @@ Namespace Controls
                                 ByVal clr As Color, _
                                 ByVal drawMode As eSketchDrawModeTypes, _
                                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
-                                Optional ByVal sBaseline As Single = cCore.NULL_VALUE)
+                                Optional ByVal sYMark As Single = cCore.NULL_VALUE, _
+                                Optional ByVal sXMark As Single = cCore.NULL_VALUE, _
+                                Optional ByVal strYMarkLabel As String = "", _
+                                Optional ByVal strXMarkLabel As String = "")
 
             If shape Is Nothing Then Return
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax(True)
+            If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
             ShapeImage.DrawShapeDirect(shape.ShapeData, shape.XMax, shape.IsSeasonal, _
                     rcImage, g, clr, _
                     drawMode, _
-                    sYMax, CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!)), sBaseline)
+                    sYMax, _
+                    sYMark, sXMark, strYMarkLabel, strXMarkLabel)
 
         End Sub
 
@@ -162,12 +143,15 @@ Namespace Controls
                                 ByVal clr As Color, _
                                 ByVal drawMode As eSketchDrawModeTypes, _
                                 ByVal sYMax As Single, _
-                                ByVal sVertCalibration As Single, _
-                                ByVal sHorzCalibration As Single)
+                                ByVal sYMark As Single, _
+                                ByVal sXMark As Single, _
+                                Optional ByVal strYMarkLabel As String = "", _
+                                Optional ByVal strXMarkLabel As String = "")
 
 
             Dim brShape As New SolidBrush(clr)
             Dim pnShape As New Pen(clr, 1)
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             ' No max specified? Calc it.
             If (sYMax <> sYMax) Then Return
@@ -184,31 +168,31 @@ Namespace Controls
 
                         nPoints = cCore.N_MONTHS
 
-                        pt2 = ShapeImage.toImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
+                        pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
                         For i As Integer = 1 To nPoints
                             pt1 = pt2
-                            pt2 = ShapeImage.toImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                            pt2 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                             gp.AddLine(pt1, pt2)
 
                             pt1 = pt2
-                            pt2 = ShapeImage.toImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
+                            pt2 = ShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
                             gp.AddLine(pt1, pt2)
                         Next
 
                         pt1 = pt2
-                        pt2 = ShapeImage.toImagePoint(New PointF(13.0!, 0), rcImage, nPoints, sYMax)
+                        pt2 = ShapeImage.ToImagePoint(New PointF(13.0!, 0), rcImage, nPoints, sYMax)
                         gp.AddLine(pt1, pt2)
 
                     Else
 
-                        pt2 = ShapeImage.toImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
+                        pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
                         For i As Integer = 1 To nPoints
                             pt1 = pt2
-                            pt2 = ShapeImage.toImagePoint(New PointF(i - 1, asData(i)), rcImage, nPoints, sYMax)
+                            pt2 = ShapeImage.ToImagePoint(New PointF(i - 1, asData(i)), rcImage, nPoints, sYMax)
                             gp.AddLine(pt1, pt2)
                         Next
                         pt1 = pt2
-                        pt2 = ShapeImage.toImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
+                        pt2 = ShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
                         gp.AddLine(pt1, pt2)
 
                     End If
@@ -238,7 +222,7 @@ Namespace Controls
 
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
-                                pt = ShapeImage.toImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
+                                pt = ShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -248,7 +232,7 @@ Namespace Controls
                     Else
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
-                                pt = ShapeImage.toImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                                pt = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -265,7 +249,7 @@ Namespace Controls
                     If bIsSeasonal Then
                         For i As Integer = 1 To 12
                             If asData(i) > 0.0! Then
-                                pt1 = ShapeImage.toImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
+                                pt1 = ShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -275,7 +259,7 @@ Namespace Controls
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
                                 pt2 = pt1
-                                pt1 = ShapeImage.toImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                                pt1 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                                 iNumPoints += 1
 
                                 If (iNumPoints >= 2) Then g.DrawLine(pnShape, pt1, pt2)
@@ -293,27 +277,57 @@ Namespace Controls
 
             End Select
 
-            ' Draw axis
-            If (sVertCalibration > 0) Then
+            ' Draw YMark
+            If (sYMark > 0) Then
                 Try
-                    g.DrawLine(Pens.Gray, _
-                            ShapeImage.toImagePoint(New PointF(0, sVertCalibration), rcImage, nPoints, sYMax), _
-                            ShapeImage.toImagePoint(New PointF(nPoints, sVertCalibration), rcImage, nPoints, sYMax))
+                    Dim ptfFrom As PointF = ShapeImage.ToImagePoint(New PointF(0, sYMark), rcImage, nPoints, sYMax)
+                    Dim ptfTo As PointF = ShapeImage.ToImagePoint(New PointF(nPoints, sYMark), rcImage, nPoints, sYMax)
+
+                    g.DrawLine(Pens.Gray, ptfFrom, ptfTo)
+
+                    ' Draw Ymark label, if any
+                    If Not String.IsNullOrEmpty(strYMarkLabel) Then
+                        Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
+                            Using br As New SolidBrush(sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                                ' Position label on the right end of the graph
+                                ptfTo.X -= g.MeasureString(strYMarkLabel, ft).Width
+                                g.DrawString(strYMarkLabel, ft, br, ptfTo)
+                            End Using
+                        End Using
+                    End If
+
                 Catch ex As Exception
                     ' Error drawing a point out of range
                 End Try
             End If
 
+            ' Draw axis
             g.DrawLine(Pens.Gray, New PointF(0, 0), New PointF(0, rcImage.Height))
             g.DrawLine(Pens.Gray, New PointF(0, rcImage.Height), New PointF(rcImage.Width, rcImage.Height))
 
-            ' Draw baseline
-            If (sHorzCalibration > 0) Then
+            ' Draw XMark
+            If (sXMark > 0) Then
                 Using p As New Pen(Color.Blue, 1)
+
+                    Dim ptfTmp As PointF = ShapeImage.ToImagePoint(New PointF(sXMark, 0), rcImage, nPoints, sYMax)
+                    Dim ptfFrom As New PointF(ptfTmp.X, 0)
+                    Dim ptfTo As New PointF(ptfTmp.X, rcImage.Height)
+
                     p.DashStyle = DashStyle.Dash
-                    g.DrawLine(p, _
-                            ShapeImage.toImagePoint(New PointF(sHorzCalibration, 0), rcImage, nPoints, sYMax), _
-                            ShapeImage.toImagePoint(New PointF(sHorzCalibration, rcImage.Height), rcImage, nPoints, sYMax))
+                    g.DrawLine(p, ptfFrom, ptfTo)
+
+                    ' Draw Xmark label, if any
+                    If Not String.IsNullOrEmpty(strXMarkLabel) Then
+                        Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
+                            Using br As New SolidBrush(Color.Blue)
+                                Dim szfText As SizeF = g.MeasureString(strXMarkLabel, ft)
+                                ' Position label on the top of the graph, left of the line
+                                ptfFrom.X -= szfText.Width
+                                g.DrawString(strXMarkLabel, ft, br, ptfFrom)
+                            End Using
+                        End Using
+                    End If
+
                 End Using
             End If
 

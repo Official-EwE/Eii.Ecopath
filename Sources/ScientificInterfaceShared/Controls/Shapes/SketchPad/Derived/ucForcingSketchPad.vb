@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucForcingSketchPad.vb,v $
+' Revision 1.2  2009/02/12 15:32:21  jeroens
+' Can add labels to XMark, YMark lines
+'
 ' Revision 1.1  2008/12/15 15:36:40  jeroens
 ' Moved from ScInt
 '
@@ -17,6 +20,7 @@ Option Strict On
 Imports EwECore
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
@@ -106,6 +110,7 @@ Namespace Controls
             Dim penTmp As Pen = Nothing
             Dim tmpFont As Font = Nothing
             Dim yStep As Integer = 0
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
@@ -114,8 +119,8 @@ Namespace Controls
 
             'Draw the line with y's value equal to 1
             g.DrawLine(Pens.Black, _
-                ShapeImage.toImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
-                ShapeImage.toImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
+                ShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
+                ShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
 
             ' Draw the axis when this mode is on
             If m_AxisDisplayMode = eAxisDisplayModeTypes.Show Then
@@ -134,7 +139,7 @@ Namespace Controls
                 sBtnSpace = Me.Font.Height
                 brTmp = New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 penTmp = New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-                tmpFont = New Font(Me.Font.FontFamily, Me.Font.Size + 2)
+                tmpFont = New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
 
                 For i As Integer = 0 To astrXMarks.Length - 1
                     If Me.Shape.IsSeasonal Then
@@ -153,7 +158,7 @@ Namespace Controls
                 For j As Double = 0 To sYMax Step yStep * 0.5
                     ' JS 21nov07: calc proper label Y position
                     'Dim yPos As Integer = CInt(rcImage.Bottom - rcImage.Height * j / sYMax)
-                    Dim yPos As Integer = CInt(ShapeImage.toImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
+                    Dim yPos As Integer = CInt(ShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
                     strLabel = j.ToString
                     If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
@@ -166,7 +171,10 @@ Namespace Controls
                 If sYMax < 0.5 And sYMax >= 0.01 Then
                     For j As Integer = 0 To 2
                         Dim yPos As Integer = CInt(rcImage.Bottom - rcImage.Height * (3 - j) / 3)
-                        strLabel = String.Format("{0:f3}", sYMax * (3 - j) / 3)
+
+                        'strLabel = String.Format("{0:f3}", sYMax * (3 - j) / 3)
+                        strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
+
                         If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
                             strLabel = String.Format("x{0}", strLabel)
                         End If
