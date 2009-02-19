@@ -1,0 +1,63 @@
+﻿Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared
+
+Namespace Ecopath.Output
+
+    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+    Partial Class SizeWeightPlot
+        Inherits frmEwE
+
+        'Form overrides dispose to clean up the component list.
+        <System.Diagnostics.DebuggerNonUserCode()> _
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
+        'Required by the Windows Form Designer
+        Private components As System.ComponentModel.IContainer
+
+        'NOTE: The following procedure is required by the Windows Form Designer
+        'It can be modified using the Windows Form Designer.  
+        'Do not modify it using the code editor.
+        <System.Diagnostics.DebuggerStepThrough()> _
+        Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
+            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
+            Me.SuspendLayout()
+            '
+            'zgcZedGraphCntl
+            '
+            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 0)
+            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
+            Me.zgcZedGraphCntl.ScrollGrace = 0
+            Me.zgcZedGraphCntl.ScrollMaxX = 0
+            Me.zgcZedGraphCntl.ScrollMaxY = 0
+            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
+            Me.zgcZedGraphCntl.ScrollMinX = 0
+            Me.zgcZedGraphCntl.ScrollMinY = 0
+            Me.zgcZedGraphCntl.ScrollMinY2 = 0
+            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(535, 445)
+            Me.zgcZedGraphCntl.TabIndex = 0
+            '
+            'SizeWeightPlot
+            '
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.ClientSize = New System.Drawing.Size(535, 445)
+            Me.Controls.Add(Me.zgcZedGraphCntl)
+            Me.Name = "SizeWeightPlot"
+            Me.Text = "SizeWeightPlot"
+            Me.ResumeLayout(False)
+
+        End Sub
+        Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
+    End Class
+
+End Namespace

@@ -2238,4 +2238,34 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
     <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
   </data>
+  <data name="HEADER_A_IN_LW" xml:space="preserve">
+    <value>a in LW</value>
+  </data>
+  <data name="HEADER_B_IN_LW" xml:space="preserve">
+    <value>b in LW</value>
+  </data>
+  <data name="HEADER_K_VBGF_UNIT" xml:space="preserve">
+    <value>K in VBGF (/year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_LENGTH_INFINITY_UNIT" xml:space="preserve">
+    <value>L at infinity (cm)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_MAXAGE_UNIT" xml:space="preserve">
+    <value>Max. age (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_TZERO_VBGF_UNIT" xml:space="preserve">
+    <value>to in VBGF (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_WEIGHT_INFINITY_UNIT" xml:space="preserve">
+    <value>W at infinity (g)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_AGE_FIRST_CAPTURE_UNIT" xml:space="preserve">
+    <value>Age first capture (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
 </root>

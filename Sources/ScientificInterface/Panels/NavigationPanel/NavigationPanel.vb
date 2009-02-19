@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.15  2009/02/19 21:18:26  joeh
+' Particel size distribution - initial version
+'
 ' Revision 1.14  2009/01/29 23:36:50  jeroens
 ' Added Ecopath stats
 '
@@ -116,6 +119,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardMortGrid), "") ' ToDo: connect to help
         m_nodeController.Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputOffVesselPriceEwEGrid), "Market price.htm")
         m_nodeController.Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputNonMarketPriceEwEGrid), "Non market price.htm")
+        m_nodeController.Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(GrowthParametersEwEGrid), "") ' ToDo: connect to help
 
         ' Ecopath Output
         m_nodeController.Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(BasicEstimatesEwEGrid), "Basic estimates.htm")
@@ -130,6 +134,11 @@ Public Class NavigationPanel
         m_nodeController.Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(SearchRatesEwEGrid), "Search rates.htm")
         m_nodeController.Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
+        m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathCompleted, GetType(RunPSD), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDContributionPlot", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDContributionResult", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
+        m_nodeController.Add("ndPSDPlotByGroup", eCoreExecutionState.EcopathCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
+        m_nodeController.Add("ndSizeWeightPlot", eCoreExecutionState.EcopathCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
         m_nodeController.Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.FlowDiagram), "Flow diagram.htm")
         m_nodeController.Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(EcopathStatisticsEwEGrid), "")
         ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"

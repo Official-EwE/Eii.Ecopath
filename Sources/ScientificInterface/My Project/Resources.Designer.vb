@@ -2376,6 +2376,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to a in LW.
+        '''</summary>
+        Friend ReadOnly Property HEADER_A_IN_LW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_A_IN_LW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Absolute biomass.
         '''</summary>
         Friend ReadOnly Property HEADER_ABSOLUTEBIOMASS() As String
@@ -2399,6 +2408,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_AGE() As String
             Get
                 Return ResourceManager.GetString("HEADER_AGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Age first capture (year).
+        '''</summary>
+        Friend ReadOnly Property HEADER_AGE_FIRST_CAPTURE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_AGE_FIRST_CAPTURE_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -2444,6 +2462,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_AVGERAGEWEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_AVGERAGEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to b in LW.
+        '''</summary>
+        Friend ReadOnly Property HEADER_B_IN_LW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_B_IN_LW", resourceCulture)
             End Get
         End Property
         
@@ -3105,6 +3132,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to K in VBGF (/year).
+        '''</summary>
+        Friend ReadOnly Property HEADER_K_VBGF_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_K_VBGF_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Kalman weight.
         '''</summary>
         Friend ReadOnly Property HEADER_KALWT() As String
@@ -3128,6 +3164,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_LEADING_CB() As String
             Get
                 Return ResourceManager.GetString("HEADER_LEADING_CB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to L at infinity (cm).
+        '''</summary>
+        Friend ReadOnly Property HEADER_LENGTH_INFINITY_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LENGTH_INFINITY_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -3173,6 +3218,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_MANDATED_REBUILDING() As String
             Get
                 Return ResourceManager.GetString("HEADER_MANDATED_REBUILDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Max. age (year).
+        '''</summary>
+        Friend ReadOnly Property HEADER_MAXAGE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAXAGE_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -3852,6 +3906,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to to in VBGF (year).
+        '''</summary>
+        Friend ReadOnly Property HEADER_TZERO_VBGF_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TZERO_VBGF_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Unassimil. / consumption.
         '''</summary>
         Friend ReadOnly Property HEADER_UNASSIMILCONSUMPTION() As String
@@ -3938,6 +4001,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_WEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_WEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to W at infinity (g).
+        '''</summary>
+        Friend ReadOnly Property HEADER_WEIGHT_INFINITY_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_WEIGHT_INFINITY_UNIT", resourceCulture)
             End Get
         End Property
         
