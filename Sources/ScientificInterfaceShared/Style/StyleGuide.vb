@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.6  2009/02/20 17:57:30  jeroens
+' Added nominal unit text
+'
 ' Revision 1.5  2009/02/12 15:32:41  jeroens
 ' Fixed fonts
 '
@@ -428,6 +431,8 @@ Namespace Style
             Time
             ''' <summary>Monetary unit.</summary>
             Monetary
+            ''' <summary>Nominal.</summary>
+            Nominal
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -604,6 +609,17 @@ Namespace Style
                     Me.UnitsChanged()
                 End If
             End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, get the nominal unit text to show in the application.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NominalUnitText() As String
+            Get
+                Return "#"
+            End Get
         End Property
 
 #End Region ' Monetary units
