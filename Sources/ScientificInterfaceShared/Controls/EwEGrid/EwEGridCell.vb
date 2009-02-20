@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.7  2009/02/20 17:58:01  jeroens
+' Added support for nominal units
+'
 ' Revision 1.6  2009/01/29 23:38:40  jeroens
 ' Added UnitCell
 '
@@ -457,6 +460,8 @@ Namespace Controls.EwEGrid
                     strUnitString = sg.TimeUnitText(sg.TimeUnit)
                 Case StyleGuide.eUnitType.Monetary
                     strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                Case StyleGuide.eUnitType.Nominal
+                    strUnitString = sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -896,6 +901,8 @@ Namespace Controls.EwEGrid
                     strUnitString = sg.TimeUnitText(sg.TimeUnit)
                 Case StyleGuide.eUnitType.Monetary
                     strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                Case StyleGuide.eUnitType.Nominal
+                    strUnitString = sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -1105,7 +1112,7 @@ Namespace Controls.EwEGrid
     ''' UnitCell implements a cell that shows a dynamic unit string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class UnitCell
+    Public Class EwEUnitCell
         : Inherits EwECell
 
         ''' <summary>One visualizer for all cells</summary>
@@ -1170,6 +1177,8 @@ Namespace Controls.EwEGrid
                     strUnitString = sg.TimeUnitText(sg.TimeUnit)
                 Case StyleGuide.eUnitType.Monetary
                     strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                Case StyleGuide.eUnitType.Nominal
+                    strUnitString = sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)
             End Select
