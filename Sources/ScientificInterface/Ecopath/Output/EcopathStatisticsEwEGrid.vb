@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: EcopathStatisticsEwEGrid.vb,v $
+' Revision 1.2  2009/02/20 17:58:31  jeroens
+' Renamed UnitCell to EwEUnitCell
+'
 ' Revision 1.1  2009/01/29 23:37:21  jeroens
 ' Initial version
 '
@@ -102,7 +105,7 @@ Namespace Ecopath.Output
             Dim iRow As Integer = Me.AddRow()
             Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)
             Me(iRow, eColumnTypes.Value) = New PropertyCell(source, vnf)
-            Me(iRow, eColumnTypes.Units) = New UnitCell(strUnitMask, aUnitTypes)
+            Me(iRow, eColumnTypes.Units) = New EwEUnitCell(strUnitMask, aUnitTypes)
 
         End Sub
 
