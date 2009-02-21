@@ -1,4 +1,12 @@
-﻿#Region " Imports "
+﻿' =============================================================================
+'
+' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.2  2009/02/21 00:23:07  jeroens
+' Added headers
+'
+' =============================================================================
+
+#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -14,7 +22,9 @@ Imports ZedGraph
 Namespace Ecopath.Output
 
     Public Class PSDPlotByGroup
+
         Private m_core As cCore = cCore.GetInstance()
+        Private m_zgh As ZedGraphHelper = Nothing
 
         Public Sub New()
 
@@ -23,6 +33,8 @@ Namespace Ecopath.Output
 
             ' Add any initialization after the InitializeComponent() call.
             PopulateGroupBoxes()
+
+            Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
         End Sub
 

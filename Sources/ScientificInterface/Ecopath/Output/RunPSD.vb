@@ -1,4 +1,25 @@
-﻿Namespace Ecopath.Output
+﻿' =============================================================================
+'
+' $Log: RunPSD.vb,v $
+' Revision 1.2  2009/02/21 00:24:14  jeroens
+' Added headers
+'
+' =============================================================================
+
+#Region " Imports "
+
+Option Explicit On
+Option Strict On
+
+Imports EwECore
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Commands
+Imports ZedGraph
+
+#End Region
+
+Namespace Ecopath.Output
 
     Public Class RunPSD
 
