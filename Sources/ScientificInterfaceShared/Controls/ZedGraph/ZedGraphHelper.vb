@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.7  2009/02/23 03:21:39  jeroens
+' Cleaned
+' Left ToDo
+'
 ' Revision 1.6  2008/12/02 20:45:35  sherman
 ' Fixed autoscale bugs
 '
@@ -18,61 +22,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:20  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.10  2008/09/19 16:05:01  jeroens
-' Fixed issue 542
-'
-' Revision 1.9  2008/09/09 14:44:57  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.8  2008/09/02 14:46:45  jeroens
-' Commented public interfaces
-' ExtractData uses stringbuilder
-'
-' Revision 1.7  2008/09/02 14:05:42  jeroens
-' Cursor handled properly per pane
-' Zoom fixed when cursor disabled
-'
-' Revision 1.6  2008/08/26 18:21:27  jeroens
-' Fixed cursor logic
-'
-' Revision 1.5  2008/08/18 15:48:32  jeroens
-' Preparing for cursor
-' ToDo: rescale cursor to Y axis (e.g. prevent cursor from affecting Y scale)
-'
-' Revision 1.4  2008/08/16 00:00:30  sherman
-' Hooked background colors to style guide
-'
-' Revision 1.3  2008/08/15 21:24:46  jeroens
-' Renamed 'GraphsAndFiguresd' style to 'Fonts'
-'
-' Revision 1.2  2008/07/18 17:50:36  jeroens
-' Added line colour management
-'
-' Revision 1.1  2008/06/01 23:45:11  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.7  2008/04/07 18:09:16  jeroens
-' Labels contained in quotes in CSV output
-'
-' Revision 1.6  2008/04/07 17:57:20  jeroens
-' Every ZGH extends the context menu
-'
-' Revision 1.5  2008/03/03 16:15:54  joeb
-' Error handling in PlotLines
-'
-' Revision 1.4  2007/12/22 22:54:24  jeroens
-' * Added legend configuration
-'
-' Revision 1.3  2007/12/22 16:49:07  jeroens
-' * Connected to StyleGuide
-' + Attempting to standardize
-'
-' Revision 1.2  2007/11/24 16:46:51  jeroens
-' * Fixed compiler warnings
-'
-' Revision 1.1  2007/11/21 20:17:07  sherman
-' Added Export to CSV to zedgraph.
 '
 '==============================================================================
 
@@ -92,6 +41,8 @@ Imports EwEUtils.Commands
 #End Region ' Imports
 
 Namespace Controls
+
+    ' ToDo_JS: 22Feb09 - Add support for displaying units in axis labels (similar to EwECells)
 
     ''' =======================================================================
     ''' <summary>
@@ -618,8 +569,6 @@ Namespace Controls
             Dim sbX As StringBuilder = Nothing
             Dim sbY As StringBuilder = Nothing
             Dim gp As GraphPane = Nothing
-            'Dim str As String = ""
-            'Dim tempX, tempY As String
 
             ' Safety first
             If z IsNot Nothing Then
@@ -631,35 +580,27 @@ Namespace Controls
 
                         ' Print the title
                         sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), p.Title.Text))
-                        'str = str + """" + p.Title.Text + """" + vbCrLf
                         For Each ci As CurveItem In gp.CurveList
                             ' Print Item
                             sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
-                            'str = str + """" + ci.Label.Text + """" + vbCrLf
                             sbX = New StringBuilder("X")
-                            'tempX = "X, "
                             sbY = New StringBuilder("Y")
-                            'tempY = "Y, "
                             For i As Integer = 0 To ci.NPts - 1
                                 sbX.Append(", ")
                                 sbX.Append(ci.Points(i).X.ToString)
-                                'tempX = tempX + ci.Points(i).X.ToString + ", "
 
                                 sbY.Append(", ")
                                 sbY.Append(ci.Points(i).Y.ToString)
-                                'tempY = tempY + ci.Points(i).Y.ToString + ", "
                             Next
 
                             sb.AppendLine(sbX.ToString())
                             sb.AppendLine(sbY.ToString())
-                            'str = str + tempX + vbCrLf + tempY + vbCrLf
                         Next
                     End If
                 Next
             End If
 
             Return sb.ToString()
-            'Return str
         End Function
 
 #End Region ' Context Menu
