@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.21  2009/02/23 03:21:06  jeroens
+' Database changed for core and db message types
+'
 ' Revision 1.20  2009/02/08 17:35:01  jeroens
 ' Can now force datasource type when opening a new source
 '
@@ -560,7 +563,7 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     Public Function IsModified() As Boolean Implements DataSources.IEwEDataSource.IsModified
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.DataSource)
+        Return Me.IsChanged(eCoreComponentType.DataSource) Or Me.IsChanged(eCoreComponentType.Core)
     End Function
 
 #End Region ' Diagnostics
