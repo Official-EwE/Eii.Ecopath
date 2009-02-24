@@ -1,7 +1,7 @@
 Namespace Controls
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class MonetaryUnitComboBox
+    Partial Class cMonetaryUnitComboBox
         Inherits System.Windows.Forms.ComboBox
 
         'UserControl overrides dispose to clean up the component list.

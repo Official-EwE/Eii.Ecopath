@@ -1,14 +1,17 @@
 '==============================================================================
 '
-' $Log: CustomComboBox.vb,v $
+' $Log: cCustomToolstripComboBox.vb,v $
+' Revision 1.1  2009/02/24 03:47:36  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/12/15 15:37:27  jeroens
 ' no message
 '
 ' Revision 1.1  2008/06/01 23:45:06  jeroens
 ' Separated from Scientific Interface
 '
-' Revision 1.2  2007/12/14 15:49:59  jeroens
-' * Renamed conflicting property
+' Revision 1.1  2007/12/14 15:49:19  jeroens
+' Initial version
 '
 ' Revision 1.1  2007/09/07 13:33:08  jeroens
 ' Initial version
@@ -19,6 +22,8 @@
 
 Option Strict On
 
+Imports System.Drawing
+Imports System.Windows.Forms
 Imports EwECore
 
 #End Region
@@ -28,10 +33,12 @@ Namespace Controls
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' <para>ComboBox-derived class that drops down any custom control.</para>
-    ''' <para>This class was based on the Custom ComboBox by Jaredpar, http://blogs.msdn.com/jaredpar/archive/2006/10/13/custom-combobox.aspx</para>
+    ''' <para>This class was based on the Custom ComboBox by Jaredpar,
+    ''' http://blogs.msdn.com/jaredpar/archive/2006/10/13/custom-combobox.aspx</para>
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class CustomComboBox
+    <CLSCompliant(True)> _
+    Public Class cCustomToolstripComboBox
 
         ''' <summary>Form to display the control.</summary>
         Private m_form As Form = Nothing
@@ -52,9 +59,11 @@ Namespace Controls
             m_form.Hide()
             m_form.ShowInTaskbar = False
 
-            Me.DropdownControl = New Control()   ' Default Control
-            m_dropDownHeight = Me.DropDownHeight
-            Me.DropDownHeight = 1       ' Prevent the DropDown from showing
+            ' Default Control
+            Me.DropdownControl = New Control()
+            Me.m_dropDownHeight = Me.DropDownHeight
+            ' Prevent the original dropdown from showing
+            Me.DropDownHeight = 1
         End Sub
 
         Protected Overrides Sub OnDropDown(ByVal e As System.EventArgs)
@@ -68,11 +77,11 @@ Namespace Controls
         End Sub
 
         Private Sub DisplayControl()
-            Dim loc As Point = Me.PointToScreen(Point.Empty)
+            Dim loc As Point = Me.Control.PointToScreen(Point.Empty)
             loc.Y += Me.Height
 
             m_form.Location = loc
-            m_form.Width = Me.Width
+            m_form.Width = Me.DropDownWidth
             m_form.Height = Me.m_dropDownHeight
             m_form.Show()
         End Sub
@@ -97,13 +106,24 @@ Namespace Controls
         End Property
 
         Private Sub OnControlLostFocus(ByVal sender As Object, ByVal e As EventArgs)
-            m_form.Hide()
+            Me.m_form.Hide()
         End Sub
 
         Private Sub OnControlDoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-            m_form.Hide()
+            Me.m_form.Hide()
+        End Sub
+
+        Private Sub CustomToolstripComboBox_LocationChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.LocationChanged
+            Me.m_form.Hide()
+        End Sub
+
+        Private Sub cCustomToolstripComboBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.TextChanged
+            Me.m_form.Hide()
         End Sub
 
     End Class
 
 End Namespace ' Controls
+

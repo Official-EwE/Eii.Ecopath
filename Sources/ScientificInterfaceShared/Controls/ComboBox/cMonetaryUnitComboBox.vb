@@ -1,17 +1,13 @@
 '==============================================================================
 '
-' $Log: MonetaryUnitComboBox.vb,v $
+' $Log: cMonetaryUnitComboBox.vb,v $
+' Revision 1.1  2009/02/24 03:47:36  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/12/15 15:37:27  jeroens
 ' no message
 '
 ' Revision 1.1  2008/09/26 07:31:15  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/07/18 19:26:11  jeroens
-' Uses styleguide to obtain currency descriptions
-'
-' Revision 1.1  2008/07/17 19:18:26  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -32,7 +28,7 @@ Namespace Controls
     ''' <see cref="eUnitMonetaryType">onetary unit</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class MonetaryUnitComboBox
+    Public Class cMonetaryUnitComboBox
 
 #Region " Helper classes "
 
