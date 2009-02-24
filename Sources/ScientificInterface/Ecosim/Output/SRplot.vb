@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.5  2009/02/24 03:46:58  jeroens
+' Reorganized
+'
 ' Revision 1.4  2009/01/19 18:07:26  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -65,27 +68,24 @@ Namespace Ecosim
             Public eGrpName As String
         End Class
 
-        Private m_Core As cCore
-        Private m_GraphPane As GraphPane
+        Private m_core As cCore
+        Private m_graphpane As GraphPane
         Private m_bEcosimRunning As Boolean = False
         Private WithEvents m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_SRResults As List(Of SRLine)
         Private m_SlopeCurve As CurveItem = Nothing
+        Private m_mhEcosim As cMessageHandler = Nothing
 
-#Region "Constructors"
+#Region " Constructors "
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            ' Add any initialization after the InitializeComponent() call.
-            m_Core = cCore.GetInstance()
-            m_GraphPane = zgSRPlot.GraphPane
-            m_coreStateMonitor = Me.m_Core.StateMonitor
-            m_SRResults = New List(Of SRLine)
-
-            m_Core.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me))
+            Me.m_core = cCore.GetInstance()
+            Me.m_coreStateMonitor = Me.m_core.StateMonitor
+            Me.m_graphpane = zgSRPlot.GraphPane
+            Me.m_SRResults = New List(Of SRLine)
 
         End Sub
 
@@ -99,13 +99,168 @@ Namespace Ecosim
             Me.Text = text
 
         End Sub
-#End Region
 
+#End Region ' Constructors
 
-        Private Sub SRplot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            LoadGrps()
-            InitGraphPane(m_GraphPane)
+#Region " Events "
+
+        Private Sub SRplot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
+
+            Me.LoadGrps()
+            Me.InitGraphPane(m_graphpane)
+
+            ' Start listening for core messages
+            Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me)
+            Me.m_core.Messages.AddMessageHandler(Me.m_mhEcosim)
+
         End Sub
+
+
+        Private Sub SRplot_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
+            ' Stop listening for core messages
+            Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+            Me.m_mhEcosim = Nothing
+
+        End Sub
+
+        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
+            If Not m_bEcosimRunning Then
+
+                For i As Integer = 0 To m_SRResults.Count - 1
+                    m_SRResults(i).pts.Clear()
+                Next
+                m_core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+            Else
+                m_core.StopEcoSim()
+            End If
+
+        End Sub
+
+        Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
+
+            If results.hasSRData Then
+
+                Dim sGrp As cStanzaGroup = Nothing
+
+                For i As Integer = 1 To results.nStanza
+
+                    sGrp = m_core.StanzaGroups(i - 1)
+
+                    For j As Integer = 1 To sGrp.NStanzas - 1
+
+                        If results.hasSRData(i, j) Then
+                            Dim tmpSR As New SRData
+
+                            tmpSR.Stock = results.BStock(i, j)
+                            tmpSR.recrt = results.BRecruitment(i, j)
+                            For k As Integer = 0 To m_SRResults.Count - 1
+                                If (i - 1) = m_SRResults(k).iStanza And sGrp.iGroups(j) = m_SRResults(k).iGrpStart Then
+                                    m_SRResults(k).pts.Add(tmpSR)
+                                    Exit For
+                                End If
+                            Next
+                        End If
+
+                    Next
+                Next
+                AddCurves(m_graphpane)
+            End If
+
+        End Sub
+
+        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState) Handles m_coreStateMonitor.CoreExecutionStateEvent
+
+            ' Check whether ecosim is running
+            Dim bEcosimRunning As Boolean = (iState = eCoreExecutionState.EcosimRunning)
+            ' Is this a state change?
+            If (bEcosimRunning <> Me.m_bEcosimRunning) Then
+                ' #Yes: update to new state
+                Me.m_bEcosimRunning = bEcosimRunning
+
+                ' Configure run/stop button
+                ' ToDo_JS: Use two different buttons
+                Me.btnRun.Text = CStr(IIf(Me.m_bEcosimRunning, "&Stop", "&Run"))
+                Me.btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
+                ' Reflect change immediately
+                Me.btnRun.Update()
+
+            End If
+
+            If iState = eCoreExecutionState.EcosimLoaded Then
+                ' Config x-axis labels
+            End If
+
+        End Sub
+
+        Private Sub EcosimMessageHandler(ByRef msg As cMessage)
+
+            Try
+                Select Case msg.Type
+                    Case eMessageType.EcosimRunCompleted
+
+                        If Not m_SRResults Is Nothing Then
+                            Me.AddCurves(m_graphpane, True)
+                        End If
+                End Select
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
+
+        Private Sub tvGroups_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvGroups.AfterSelect
+            Dim iLevel As Integer = e.Node.Level
+            Select Case iLevel
+                Case 0
+                    SetDefaultDisplay()
+                Case 1
+                    SetAllStanzaGrpsDisplay(e.Node.Index)
+                Case 2
+                    Dim tmp() As String = CStr(e.Node.Tag).Split(New [Char]() {","c})
+                    Dim iStart As Integer = CInt(tmp(0))
+                    Dim iEnd As Integer = CInt(tmp(1))
+                    SetOneGrpDisplay(iStart, iEnd)
+            End Select
+
+        End Sub
+
+        Private Function zgSRPlot_MouseDownEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseDownEvent
+
+            Dim mousePt As New PointF(e.X, e.Y)
+            Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
+
+            If Not pane Is Nothing Then
+
+                Dim x, y As Double
+                pane.ReverseTransform(mousePt, x, y)
+                Dim item As CurveItem = pane.AddCurve(String.Empty, New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
+                lblPt.Text = String.Format("({0} , {1}) slope of line is: {2} ", x.ToString("f2"), y.ToString("f2"), (y / x).ToString("f2"))
+                RemoveSlopeCurve(pane, item)
+                'Else
+                '    lblPt.Text = String.Empty
+                '    RemoveSlopeCurve(m_GraphPane, Nothing)
+            End If
+
+            Return False
+        End Function
+
+        Private Function zgSRPlot_MouseMoveEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseMoveEvent
+            Dim mousePt As New PointF(e.X, e.Y)
+            Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
+
+            If pane Is Nothing Then
+                lblPt.Text = String.Empty
+                RemoveSlopeCurve(m_graphpane, Nothing)
+            End If
+        End Function
+
+#End Region ' Events
+
+#Region " Internals "
 
         Private Sub LoadGrps()
 
@@ -115,22 +270,22 @@ Namespace Ecosim
 
             m_SRResults.Clear()
 
-            If m_Core.nStanzas > 0 Then
+            If m_core.nStanzas > 0 Then
                 tvGroups.Nodes.Add(My.Resources.HEADER_SHOWALL)
 
                 Dim sGrp As cStanzaGroup = Nothing
                 Dim source As cCoreGroupBase = Nothing
 
                 'Stanza group Index is Zero-based.
-                For i As Integer = 0 To m_Core.nStanzas - 1
-                    sGrp = m_Core.StanzaGroups(i)
+                For i As Integer = 0 To m_core.nStanzas - 1
+                    sGrp = m_core.StanzaGroups(i)
 
                     tvGroups.Nodes(0).Nodes.Add(sGrp.Name)
                     Dim ilGrp As Integer = sGrp.iGroups(sGrp.NStanzas)
-                    Dim lGrpName As String = m_Core.EcoPathGroupInputs(ilGrp).Name
+                    Dim lGrpName As String = m_core.EcoPathGroupInputs(ilGrp).Name
                     For j As Integer = 1 To sGrp.NStanzas - 1
                         Dim isGrp As Integer = sGrp.iGroups(j)
-                        source = m_Core.EcoPathGroupInputs(isGrp)
+                        source = m_core.EcoPathGroupInputs(isGrp)
                         Dim srl As New SRLine
                         srl.title = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, source.Name, lGrpName)
                         srl.iStanza = i
@@ -155,51 +310,6 @@ Namespace Ecosim
 
             tvGroups.EndUpdate()
             tvGroups.ExpandAll()
-
-        End Sub
-
-        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
-            If Not m_bEcosimRunning Then
-
-                For i As Integer = 0 To m_SRResults.Count - 1
-                    m_SRResults(i).pts.Clear()
-                Next
-                m_Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
-            Else
-                m_Core.StopEcoSim()
-            End If
-
-        End Sub
-
-        Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
-
-            If results.hasSRData Then
-
-                Dim sGrp As cStanzaGroup = Nothing
-
-                For i As Integer = 1 To results.nStanza
-
-                    sGrp = m_Core.StanzaGroups(i - 1)
-
-                    For j As Integer = 1 To sGrp.NStanzas - 1
-
-                        If results.hasSRData(i, j) Then
-                            Dim tmpSR As New SRData
-
-                            tmpSR.Stock = results.BStock(i, j)
-                            tmpSR.recrt = results.BRecruitment(i, j)
-                            For k As Integer = 0 To m_SRResults.Count - 1
-                                If (i - 1) = m_SRResults(k).iStanza And sGrp.iGroups(j) = m_SRResults(k).iGrpStart Then
-                                    m_SRResults(k).pts.Add(tmpSR)
-                                    Exit For
-                                End If
-                            Next
-                        End If
-
-                    Next
-                Next
-                AddCurves(m_GraphPane)
-            End If
 
         End Sub
 
@@ -251,68 +361,11 @@ Namespace Ecosim
                     item.IsVisible = tmp.isShown
                 End If
             Next
-            m_GraphPane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            m_GraphPane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, strTitleY)
+            m_graphpane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
+            m_graphpane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, strTitleY)
 
             zgSRPlot.AxisChange()
             zgSRPlot.Refresh()
-        End Sub
-
-        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState) Handles m_coreStateMonitor.CoreExecutionStateEvent
-
-            ' Check whether ecosim is running
-            Dim bEcosimRunning As Boolean = (iState = eCoreExecutionState.EcosimRunning)
-            ' Is this a state change?
-            If (bEcosimRunning <> Me.m_bEcosimRunning) Then
-                ' #Yes: update to new state
-                Me.m_bEcosimRunning = bEcosimRunning
-
-                ' Configure run/stop button
-                ' ToDo_JS: Use two different buttons
-                Me.btnRun.Text = CStr(IIf(Me.m_bEcosimRunning, "&Stop", "&Run"))
-                Me.btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
-                ' Reflect change immediately
-                Me.btnRun.Update()
-
-            End If
-
-            If iState = eCoreExecutionState.EcosimLoaded Then
-                ' Config x-axis labels
-            End If
-
-        End Sub
-
-        Private Sub EcosimMessageHandler(ByRef msg As cMessage)
-
-            Try
-                Select Case msg.Type
-                    Case eMessageType.EcosimRunCompleted
-
-                        If Not m_SRResults Is Nothing Then
-                            AddCurves(m_GraphPane, True)
-                        End If
-                End Select
-
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
-
-        End Sub
-
-        Private Sub tvGroups_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvGroups.AfterSelect
-            Dim iLevel As Integer = e.Node.Level
-            Select Case iLevel
-                Case 0
-                    SetDefaultDisplay()
-                Case 1
-                    SetAllStanzaGrpsDisplay(e.Node.Index)
-                Case 2
-                    Dim tmp() As String = CStr(e.Node.Tag).Split(New [Char]() {","c})
-                    Dim iStart As Integer = CInt(tmp(0))
-                    Dim iEnd As Integer = CInt(tmp(1))
-                    SetOneGrpDisplay(iStart, iEnd)
-            End Select
-
         End Sub
 
         Private Sub SetDefaultDisplay()
@@ -324,7 +377,7 @@ Namespace Ecosim
                 End If
             Next
 
-            UpdateCurves(m_GraphPane, String.Empty, String.Empty)
+            UpdateCurves(m_graphpane, String.Empty, String.Empty)
 
         End Sub
 
@@ -337,7 +390,7 @@ Namespace Ecosim
                 End If
             Next
 
-            UpdateCurves(m_GraphPane, String.Empty, String.Empty)
+            UpdateCurves(m_graphpane, String.Empty, String.Empty)
 
         End Sub
 
@@ -353,28 +406,8 @@ Namespace Ecosim
                     m_SRResults(i).isShown = False
                 End If
             Next
-            UpdateCurves(m_GraphPane, xTitle, yTitle)
+            UpdateCurves(m_graphpane, xTitle, yTitle)
         End Sub
-
-        Private Function zgSRPlot_MouseDownEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseDownEvent
-
-            Dim mousePt As New PointF(e.X, e.Y)
-            Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
-
-            If Not pane Is Nothing Then
-
-                Dim x, y As Double
-                pane.ReverseTransform(mousePt, x, y)
-                Dim item As CurveItem = pane.AddCurve(String.Empty, New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
-                lblPt.Text = String.Format("({0} , {1}) slope of line is: {2} ", x.ToString("f2"), y.ToString("f2"), (y / x).ToString("f2"))
-                RemoveSlopeCurve(pane, item)
-                'Else
-                '    lblPt.Text = String.Empty
-                '    RemoveSlopeCurve(m_GraphPane, Nothing)
-            End If
-
-            Return False
-        End Function
 
         Private Sub RemoveSlopeCurve(ByRef pane As GraphPane, ByRef item As CurveItem)
 
@@ -386,15 +419,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Function zgSRPlot_MouseMoveEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseMoveEvent
-            Dim mousePt As New PointF(e.X, e.Y)
-            Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
+#End Region 'Internals
 
-            If pane Is Nothing Then
-                lblPt.Text = String.Empty
-                RemoveSlopeCurve(m_GraphPane, Nothing)
-            End If
-        End Function
     End Class
 
 End Namespace
