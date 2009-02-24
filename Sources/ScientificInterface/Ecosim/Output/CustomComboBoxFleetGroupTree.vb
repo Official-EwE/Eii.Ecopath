@@ -1,23 +1,14 @@
 '==============================================================================
 '
 ' $Log: CustomComboBoxFleetGroupTree.vb,v $
+' Revision 1.3  2009/02/24 04:06:25  jeroens
+' Commented
+'
 ' Revision 1.2  2008/12/15 15:58:24  jeroens
 ' no message
 '
 ' Revision 1.1  2008/09/26 07:31:46  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/04/07 02:31:10  jeroens
-' Cleaning up resources
-'
-' Revision 1.3  2007/12/14 15:45:35  jeroens
-' * Uses toolstrip combo
-'
-' Revision 1.2  2007/10/13 22:37:57  jeroens
-' + Added UpdateContent to allow external logic to trigger refreshes
-'
-' Revision 1.1  2007/09/07 13:33:42  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -34,13 +25,13 @@ Imports EwECore
 ''' Fleet + Group tree control for use with a <see cref="CustomComboBox">CustomComboBox</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class CustomComboBoxFleetGroupTree
+Public Class cCustomComboBoxFleetGroupTree
     Inherits TreeView
 
     Private m_core As cCore = Nothing
-    Private m_tscb As CustomToolstripComboBox = Nothing
+    Private m_tscb As cCustomToolstripComboBox = Nothing
 
-    Public Sub New(ByVal core As cCore, ByVal ccb As CustomToolstripComboBox)
+    Public Sub New(ByVal core As cCore, ByVal ccb As cCustomToolstripComboBox)
 
         ' Sanity checks
         Debug.Assert(core IsNot Nothing)
@@ -56,14 +47,21 @@ Public Class CustomComboBoxFleetGroupTree
 
     End Sub
 
-    Private Sub CustomComboBoxDropDownTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Me.AfterSelect
-        Me.UpdateParentCombo()
+    Private Sub CustomComboBoxDropDownTree_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) _
+        Handles Me.AfterSelect
+
+        ' Is a node without children selected?
+        If (Me.SelectedNode.Nodes.Count = 0) Then
+            ' #Yes: update parent combo to apply selection and close
+            Me.UpdateParentCombo()
+        End If
+
     End Sub
 
     Public ReadOnly Property SelectedItem() As ICoreInterface
         Get
             If Me.SelectedNode Is Nothing Then Return Nothing
-            Return CType(Me.SelectedNode.Tag, ICoreInterface)
+            Return DirectCast(Me.SelectedNode.Tag, ICoreInterface)
         End Get
     End Property
 
