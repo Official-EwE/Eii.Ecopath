@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.8  2009/02/24 04:07:11  jeroens
+' Renamed combo class
+'
 ' Revision 1.7  2009/02/05 17:48:38  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -72,7 +75,7 @@ Namespace Ecosim
 
         Private m_simStats As cEcosimStats
 
-        Private m_ccb As CustomComboBoxFleetGroupTree = Nothing
+        Private m_ccb As cCustomComboBoxFleetGroupTree = Nothing
 
 #End Region ' Variables
 
@@ -115,7 +118,7 @@ Namespace Ecosim
 
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            Me.m_ccb = New CustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
+            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             ' Track core monitor changes
@@ -368,7 +371,7 @@ Namespace Ecosim
 #Region " Internal implementation "
 
         Private Function GetSelectedTarget() As ICoreInterface
-            Dim tv As CustomComboBoxFleetGroupTree = DirectCast(Me.tscbTarget.DropdownControl, CustomComboBoxFleetGroupTree)
+            Dim tv As cCustomComboBoxFleetGroupTree = DirectCast(Me.tscbTarget.DropdownControl, cCustomComboBoxFleetGroupTree)
             Return tv.SelectedItem()
         End Function
 
