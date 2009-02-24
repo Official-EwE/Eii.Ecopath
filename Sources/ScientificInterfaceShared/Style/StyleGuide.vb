@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.7  2009/02/24 06:04:09  jeroens
+' Allow 0 decimal digits
+'
 ' Revision 1.6  2009/02/20 17:57:30  jeroens
 ' Added nominal unit text
 '
@@ -379,7 +382,7 @@ Namespace Style
             Dim iMaxPrecision As Integer = 10
 
             ' Use styleguide numdigits setting if value not provided
-            If iNumDigits <= 0 Then iNumDigits = Me.m_iNumDigits
+            If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
 
             ' Calculated values must be formatted with a hard number of digits
             If (style And (eStyleFlags.ValueComputed Or eStyleFlags.Sum)) > 0 Then
