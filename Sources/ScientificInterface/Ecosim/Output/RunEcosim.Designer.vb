@@ -29,7 +29,7 @@ Namespace Ecosim
             Me.btnRunOrStop = New System.Windows.Forms.Button
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tslTarget = New System.Windows.Forms.ToolStripLabel
-            Me.tscbTarget = New ScientificInterfaceShared.Controls.CustomToolstripComboBox
+            Me.tscbTarget = New ScientificInterfaceShared.Controls.cCustomToolstripComboBox
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
@@ -144,17 +144,18 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
+
         Private WithEvents btnRunOrStop As System.Windows.Forms.Button
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_graph As ucBiomassPlotzgc
         Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
         Private WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
-        Private WithEvents tscbTarget As CustomToolstripComboBox
+        Private WithEvents tscbTarget As cCustomToolstripComboBox
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_spContainer As System.Windows.Forms.SplitContainer
+        Private WithEvents m_spContainer As System.Windows.Forms.SplitContainer
 
     End Class
 End Namespace

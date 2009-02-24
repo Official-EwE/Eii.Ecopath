@@ -95,24 +95,24 @@
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ComboBox\MonetaryUnitComboBox.Designer.vb">
-      <DependentUpon>MonetaryUnitComboBox.vb</DependentUpon>
+    <Compile Include="Controls\ComboBox\cMonetaryUnitComboBox.Designer.vb">
+      <DependentUpon>cMonetaryUnitComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\MonetaryUnitComboBox.vb">
+    <Compile Include="Controls\ComboBox\cMonetaryUnitComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\FileDialog\cEwEFileDialogHelper.vb" />
     <Compile Include="Controls\Indicator renderers\cArrowIndicator.vb" />
-    <Compile Include="Controls\ComboBox\CustomComboBox.Designer.vb">
-      <DependentUpon>CustomComboBox.vb</DependentUpon>
+    <Compile Include="Controls\ComboBox\cCustomComboBox.Designer.vb">
+      <DependentUpon>cCustomComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\CustomComboBox.vb">
+    <Compile Include="Controls\ComboBox\cCustomComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ComboBox\CustomToolstripComboBox.Designer.vb">
-      <DependentUpon>CustomToolstripComboBox.vb</DependentUpon>
+    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.Designer.vb">
+      <DependentUpon>cCustomToolstripComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\CustomToolstripComboBox.vb">
+    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\EwEGrid\EwEGrid.vb">

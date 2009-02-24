@@ -61,7 +61,7 @@ Partial Class frmModelDescription
         Me.rbYear = New System.Windows.Forms.RadioButton
         Me.lbNote = New System.Windows.Forms.Label
         Me.m_lblMonetaryUnit = New System.Windows.Forms.Label
-        Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.MonetaryUnitComboBox
+        Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -580,7 +580,7 @@ Partial Class frmModelDescription
     Private WithEvents rbYear As System.Windows.Forms.RadioButton
     Private WithEvents lbNote As System.Windows.Forms.Label
     Private WithEvents m_lblMonetaryUnit As System.Windows.Forms.Label
-    Private WithEvents m_cmbMonetaryUnit As ScientificInterfaceShared.Controls.MonetaryUnitComboBox
+    Private WithEvents m_cmbMonetaryUnit As ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
     Private WithEvents rbNutrientOther As System.Windows.Forms.RadioButton
     Friend WithEvents tbCurrencyNutrientOther As System.Windows.Forms.TextBox
 End Class
