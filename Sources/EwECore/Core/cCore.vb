@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.68  2009/02/25 08:33:01  jeroens
+' Fixed bug 592
+'
 ' Revision 1.67  2009/02/25 07:19:41  jeroens
 ' Implemented DatabasePlugin calls
 '
@@ -3903,7 +3906,7 @@ Public Class cCore
         fleet.AllowValidation = False
 
         For iGroup As Integer = 1 To Me.nGroups
-            If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
+            If (fleet.Discards(iGroup)) <= 0.0! Then
                 fleet.SetStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
             Else
                 fleet.ClearStatusFlags(eVarNameFlags.DiscardMortality, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
@@ -9575,8 +9578,9 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
-                        Set_DiscardMort_Flags(flt, True)
                         Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
+                    Case eVarNameFlags.Discards
+                        Set_DiscardMort_Flags(flt, True)
                 End Select
 
             Case eDataTypes.EcoSimModelParameter
