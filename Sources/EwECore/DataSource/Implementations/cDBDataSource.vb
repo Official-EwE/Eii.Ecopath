@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.23  2009/02/25 08:29:29  jeroens
+' Fixed bug 589
+'
 ' Revision 1.22  2009/02/25 07:18:41  jeroens
 ' Fixed crash on reading forcepoints
 '
@@ -1546,7 +1549,7 @@ Public Class cDBDataSource
     Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.EcoPath)
+        Return Me.IsChanged(eCoreComponentType.EcoPath) 
 
     End Function
 
@@ -2588,7 +2591,12 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcosimScenario < 0 Then Return False
 
-        Return Me.IsChanged(eCoreComponentType.EcoSim)
+        Return Me.IsChanged(eCoreComponentType.EcoSim) Or _
+               Me.IsChanged(eCoreComponentType.ShapesManager) Or _
+               Me.IsChanged(eCoreComponentType.TimeSeries) Or _
+               Me.IsChanged(eCoreComponentType.EcoSimFitToTimeSeries) Or _
+               Me.IsChanged(eCoreComponentType.EcoSimMonteCarlo) Or _
+               Me.IsChanged(eCoreComponentType.PPIManager)
 
     End Function
 
