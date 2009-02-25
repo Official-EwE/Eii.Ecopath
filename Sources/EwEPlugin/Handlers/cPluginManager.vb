@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.13  2009/02/25 07:16:31  jeroens
+' Implemented DatabasePlugin calls
+'
 ' Revision 1.12  2009/01/31 00:57:44  joeb
 ' Added Plugin points to FPS
 '
@@ -573,16 +576,19 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub LoadModel(ByVal dataSource As Object)
+    Public Function LoadModel(ByVal dataSource As Object) As Boolean
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathPlugin))
+        Dim bSucces As Boolean = True
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcopathPlugin).LoadModel(dataSource)
+            bSucces = bSucces And DirectCast(ip, IEcopathPlugin).LoadModel(dataSource)
         Next
 
-    End Sub
+        Return bSucces
+
+    End Function
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -595,13 +601,66 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub SaveModel(ByVal dataSource As Object)
+    Public Function SaveModel(ByVal dataSource As Object) As Boolean
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathPlugin))
+        Dim bSucces As Boolean = True
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcopathPlugin).SaveModel(dataSource)
+            bSucces = bSucces And DirectCast(ip, IEcopathPlugin).SaveModel(dataSource)
+        Next
+
+        Return bSucces
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, open a plug-in database link.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function OpenDatabase(ByVal strName As String) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+        Dim bSucces As Boolean = True
+
+        For Each ip As IPlugin In collPlugins
+            bSucces = bSucces And DirectCast(ip, IDatabasePlugin).Open(strName)
+        Next
+
+        Return bSucces
+
+    End Function
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, states whether any plug-in has pending changes.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function IsModifiedDatabase() As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+        Dim bIsChanged As Boolean = False
+
+        For Each ip As IPlugin In collPlugins
+            bIsChanged = bIsChanged Or DirectCast(ip, IDatabasePlugin).IsModified()
+        Next
+
+        Return bIsChanged
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, close a plug-in data link.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub CloseDatabase()
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+
+        For Each ip As IPlugin In collPlugins
+            DirectCast(ip, IDatabasePlugin).Close()
         Next
 
     End Sub

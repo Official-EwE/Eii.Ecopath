@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.67  2009/02/25 07:19:41  jeroens
+' Implemented DatabasePlugin calls
+'
 ' Revision 1.66  2009/02/02 22:28:59  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -781,6 +784,8 @@ Public Class cCore
             If DataSource.Connection IsNot Nothing Then
                 ' #Yes: Close connection
                 DataSource.Close()
+                ' Close plug-in data sources
+                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase()
             End If
             ' Release datasource
             DataSource = Nothing
@@ -1976,12 +1981,42 @@ Public Class cCore
 
         Dim fm As cFeedbackMessage = Nothing
         Dim strPrompt As String = ""
+        Dim bIsModelChanged As Boolean = False
+        Dim bIsPluginModified As Boolean = False
 
         ' In a batch?
         If (m_iBatchLock > 0) Then Return True
 
-        If Not (Me.m_StateMonitor.IsModified) Then
+        ' Check if core is dirty
+        bIsModelChanged = Me.m_StateMonitor.IsModified
+        ' Check if plugins are dirty
+        If (Me.PluginManager IsNot Nothing) Then bIsPluginModified = Me.PluginManager.IsModifiedDatabase
+
+        If (bIsModelChanged = False) And (bIsPluginModified = False) Then
             Return True
+        End If
+
+        If bIsPluginModified Then
+            ' Prepare feedback message
+            strPrompt = "Do you wish to save pending changes in plug-ins?"
+            fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+            If (bQuiet) Then
+                fm.Reply = cFeedbackMessage.eReply.YES
+            Else
+                ' Send and see what happens
+                Me.m_publisher.SendMessage(fm)
+            End If
+            ' Hmm...
+            Select Case fm.Reply
+                Case cFeedbackMessage.eReply.CANCEL
+                    Return False
+                Case cFeedbackMessage.eReply.YES
+                    If Not Me.PluginManager.SaveModel(Me.m_DataSource) Then
+                        Return False
+                    End If
+                Case cFeedbackMessage.eReply.NO
+                    ' Do nothing
+            End Select
         End If
 
         'default reply Yes save the changes!!!!On my that could be dangerous
