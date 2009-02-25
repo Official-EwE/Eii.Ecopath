@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.22  2009/02/25 07:18:41  jeroens
+' Fixed crash on reading forcepoints
+'
 ' Revision 1.21  2009/02/23 03:21:06  jeroens
 ' Database changed for core and db message types
 '
@@ -4644,7 +4647,7 @@ Public Class cDBDataSource
             Else
                 Dim sbZScale As New Text.StringBuilder()
                 ' Assemble Zscale
-                For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, asData.Length)
+                For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, asData.Length - 1)
                     If (ipt > 1) Then sbZScale.Append(" ")
                     sbZScale.Append(asData(ipt))
                 Next
