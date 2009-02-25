@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEcopathPlugin.vb,v $
+' Revision 1.2  2009/02/25 07:18:04  jeroens
+' LoadModel, SaveModel changed to function
+'
 ' Revision 1.1  2008/09/26 07:31:06  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -38,8 +41,9 @@ Public Interface IEcopathPlugin
     ''' data is being loaded.</param>
     ''' <remarks>This plug-in point is non-exclusive, meaning that multiple
     ''' plug-ins can respond to this event.</remarks>
+    ''' <returns>True if loaded succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Sub LoadModel(ByVal dataSource As Object)
+    Function LoadModel(ByVal dataSource As Object) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -50,6 +54,6 @@ Public Interface IEcopathPlugin
     ''' <remarks>This plug-in point is non-exclusive, meaning that multiple
     ''' plug-ins can respond to this event.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub SaveModel(ByVal dataSource As Object)
+    Function SaveModel(ByVal dataSource As Object) As Boolean
 
 End Interface
