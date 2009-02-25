@@ -111,7 +111,6 @@
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
-        Me.m_tsPlugin = New System.Windows.Forms.ToolStripStatusLabel
         m_tss = New System.Windows.Forms.ToolStripSeparator
         Me.m_ssMain.SuspendLayout()
         Me.m_menuMain.SuspendLayout()
@@ -195,7 +194,7 @@
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsPlugin})
+        Me.m_ssMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario})
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
@@ -641,12 +640,6 @@
         resources.ApplyResources(Me.m_tsbModel, "m_tsbModel")
         Me.m_tsbModel.Name = "m_tsbModel"
         '
-        'm_tsPlugin
-        '
-        Me.m_tsPlugin.Image = Global.ScientificInterface.My.Resources.Resources.NavForward
-        Me.m_tsPlugin.Name = "m_tsPlugin"
-        resources.ApplyResources(Me.m_tsPlugin, "m_tsPlugin")
-        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
@@ -754,7 +747,6 @@
     Friend WithEvents ToolStripSeparator17 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents ImportLayerDataToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents EditImportanceLayersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsPlugin As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsStatus As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsEcopathModel As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsEcosimScenario As System.Windows.Forms.ToolStripStatusLabel
