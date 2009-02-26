@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgChangeShape.vb,v $
+' Revision 1.3  2009/02/26 21:41:56  jeroens
+' Fixed hyperbolic / sigmoid confusion
+'
 ' Revision 1.2  2009/02/26 06:33:51  sherman
 ' Enabled Y-end for all shapes.
 '
@@ -250,7 +253,7 @@ Namespace Controls
 
                     Case eShapeFunctionType.Sigmoid, eShapeFunctionType.Hyperbolic
 
-                        If Me.SelectedShapeType = eShapeFunctionType.Sigmoid Then sSteep = 1
+                        If Me.SelectedShapeType = eShapeFunctionType.Hyperbolic Then sSteep = 1
 
                         If sYBase <> sYZero Then
                             xHalf = CSng((sYEnd - sYZero) * ((xBase ^ sSteep) / (sYBase - sYZero)) - (xBase ^ sSteep))
