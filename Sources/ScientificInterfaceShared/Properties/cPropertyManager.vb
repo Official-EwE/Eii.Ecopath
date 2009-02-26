@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.4  2009/02/26 00:55:40  jeroens
+' Pruned history
+'
 ' Revision 1.3  2009/01/19 18:07:25  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -9,156 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:22  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/08/02 03:04:13  jeroens
-' Renamed resources
-'
-' Revision 1.2  2008/06/15 12:46:19  jeroens
-' Added safety checks when accessing unsupported varnames
-'
-' Revision 1.1  2008/06/01 23:45:46  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.38  2008/05/29 22:22:50  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.37  2008/05/16 15:27:23  jeroens
-' Cleaned-up in code comments
-'
-' Revision 1.36  2008/05/08 17:51:48  jeroens
-' Dear prudence
-'
-' Revision 1.35  2008/04/08 15:45:37  jeroens
-' Updates ancient code to determine variable type
-'
-' Revision 1.34  2008/04/07 02:31:10  jeroens
-' Cleaning up resources
-'
-' Revision 1.33  2008/03/19 00:25:48  jeroens
-' Added crash test in ExtractProperty
-'
-' Revision 1.32  2008/02/27 18:46:08  jeroens
-' Fixed crash on updating property indexed by nMonths
-'
-' Revision 1.31  2008/02/19 13:51:42  jeroens
-' Fixed bug 32
-'
-' Revision 1.30  2008/01/24 14:43:09  jeroens
-' Added SecundaryIndexOffset
-'
-' Revision 1.29  2008/01/15 13:43:05  jeroens
-' Fixed long-standing bug in determining secundary source of variables
-'
-' Revision 1.28  2007/12/21 16:01:20  jeroens
-' * Build tracer refresh support
-'
-' Revision 1.27  2007/09/25 16:54:30  jeroens
-' * iGroup -> iIndex
-'
-' Revision 1.26  2007/08/27 02:28:51  jeroens
-' * Fixed bug. No I didn't. Did I? Erm.. no, neatified code instead
-'
-' Revision 1.25  2007/07/11 00:38:28  jeroens
-' + Introduced selective refresh
-'
-' Revision 1.24  2007/07/06 20:11:18  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.23  2007/05/31 13:11:20  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.22  2006/11/23 04:25:09  jeroens
-' + Added ExtractProperty
-'
-' Revision 1.21  2006/11/19 04:06:11  jeroens
-' + Ecopath data added or removed message will clear the properties cache
-'
-' Revision 1.20  2006/10/16 01:15:48  jeroens
-' * Do not update on irrelevant message types
-'
-' Revision 1.19  2006/09/21 00:58:42  jeroens
-' - Removed ToDo, we're all good here
-'
-' Revision 1.18  2006/07/12 16:34:46  jeroens
-' - Reverted silly property secundary index ID. Secundary object was solid and that will stay, other interfaces just muddle the design.
-'
-' Revision 1.17  2006/07/10 18:43:32  jeroens
-' + Some values require an Index number rather than an object. This is true for for instance Fleet.FixedCost.
-'
-' Revision 1.16  2006/07/06 15:51:24  jeroens
-' + Added base logic to resolve ICoreInterface object for messages with an arrayIndex, but without the secundary object properly filled
-'
-' Revision 1.15  2006/07/03 04:19:10  jeroens
-' + Added support for cIntegerProperty, cBooleanProperty
-'
-' Revision 1.14  2006/06/28 13:59:28  jeroens
-' * Renamed iGroup member vars, properties to Index
-' * Renamed GroupName vartype and usage to Name where applicable
-' * Merged usage of varName Name (fleet) with GroupName
-'
-' Revision 1.13  2006/06/21 03:01:08  jeroens
-' Fixed m_Status VarName vs. VarType confusion
-'
-' Revision 1.12  2006/06/19 23:35:37  jeroens
-' + Added Clear()
-'
-' Revision 1.11  2006/06/14 04:15:22  cvsuser
-' + JS: Added default 'No Data' property to return if a property is requested for an undefined source
-'
-' Revision 1.10  2006/06/13 08:29:01  cvsuser
-' * Secundary index now an object, not an integer. The secundary index object will resolve its iGroup at runtime to allow for dynamic object creation and destruction
-'
-' Revision 1.9  2006/06/07 15:37:26  jeroens
-' + Set up JS homework
-'
-' Revision 1.8  2006/06/07 03:40:57  jeroens
-' + Updated to cCoreInputOutput / ICoreInterface changes
-'
-' Revision 1.7  2006/06/06 15:01:15  jeroens
-' + Added work-around to accept new ICoreInterface baseclass. This needs to be changed structurally in the near future!
-'
-' Revision 1.6  2006/05/03 13:33:47  cvsuser
-' * Changed ProperytIDGenerator to cCore.cValueID
-'
-' Revision 1.5  2006/04/11 16:28:16  cvsuser
-' - Removed MakeProperty
-' + Property no longer generated via Type; was too slow.
-'
-' Revision 1.4  2006/03/21 03:05:54  cvsuser
-' + Fixed crash when attempting to get a non-existing property from the internal storage
-'
-' Revision 1.3  2006/03/17 05:12:20  cvsuser
-' * N -> n :(
-'
-' Revision 1.2  2006/03/17 04:45:47  cvsuser
-' * Moved to Other.Properties - reprise
-'
-' Revision 1.1  2006/03/17 04:43:33  cvsuser
-' * Moved to Other.Properties
-'
-' Revision 1.7  2006/03/16 19:06:02  cvsuser
-' cVariableStatus now has a iArrayIndex property
-'
-' Revision 1.6  2006/03/15 19:23:48  cvsuser
-' * Option Strict ON again
-'
-' Revision 1.5  2006/03/15 19:20:03  cvsuser
-' + Responds to EcoPath messages
-' * Fixed crash on attempt to load non-existant property
-'
-' Revision 1.4  2006/03/15 02:48:31  cvsuser
-' * Simplified message variable resolution with new core information
-' + Uses cCore.VALUE_NULL instead of -1
-'
-' Revision 1.3  2006/03/14 16:41:26  cvsuser
-' + Properties should not be created in response to Core messages
-'
-' Revision 1.2  2006/03/14 16:34:19  cvsuser
-' + Added Core message handling to trigger property updates
-'
-' Revision 1.1  2006/03/13 05:43:28  cvsuser
-' Initial version
-'
 '
 '==============================================================================
 
