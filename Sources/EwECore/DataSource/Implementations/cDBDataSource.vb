@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.25  2009/02/26 21:51:32  jeroens
+' vbK read from EcopathGroup once again for PSD logic
+'
 ' Revision 1.24  2009/02/26 00:56:48  jeroens
 ' Added DB compact
 ' Model dirty flag logic expanded to encompass all relevant core component types
@@ -1032,12 +1035,12 @@ Public Class cDBDataSource
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM PedigreeLevel ORDER BY Sequence ASC")
+        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Pedigree ORDER BY Sequence ASC")
         Dim iLevel As Integer = 1
         Dim bSucces As Boolean = True
 
         ' Init data structure
-        ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM PedigreeLevel"))
+        ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree"))
 
         ' Allocate space
         ecopathDS.RedimPedigreeLevels()
@@ -1084,7 +1087,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            writer = Me.m_db.GetWriter("PedigreeLevel")
+            writer = Me.m_db.GetWriter("Pedigree")
             dt = writer.GetDataTable()
 
             For iLevel = 1 To ecopathDS.NumPedigreeLevels
@@ -1129,13 +1132,13 @@ Public Class cDBDataSource
 
         Try
             Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM PedigreeLevel")) + 1
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
             Catch
                 iDBID = 1
             End Try
 
             ' Start writing, protect sequence
-            writer = Me.m_db.GetWriter("PedigreeLevel", "Sequence")
+            writer = Me.m_db.GetWriter("Pedigree", "Sequence")
 
             ' Get new row to add
             drow = writer.NewRow()
@@ -1165,7 +1168,7 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("UPDATE PedigreeLevel SET Sequence={1} WHERE (LevelID={0})", iDBID, iPosition))
+            Me.m_db.Execute(String.Format("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iDBID, iPosition))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iDBID))
             bSucces = False
@@ -1179,7 +1182,7 @@ Public Class cDBDataSource
 
         Dim bSucces As Boolean = True
         Try
-            Me.m_db.Execute(String.Format("DELETE FROM PedigreeLevel WHERE (LevelID={0})", iDBID))
+            Me.m_db.Execute(String.Format("DELETE FROM Pedigree WHERE (LevelID={0})", iDBID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iDBID))
             bSucces = False
@@ -1297,7 +1300,6 @@ Public Class cDBDataSource
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
                             stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
-                            ecopathDS.vbKInput(iGroup) = CSng(Me.ReadSafe(rdLifeStage, "vbK", 0.3!))
 
                         Catch ex As Exception
                             Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -1632,7 +1634,7 @@ Public Class cDBDataSource
                 ecopathDS.GEinput(iGroup) = CSng(reader("ProdCons"))
                 ecopathDS.Binput(iGroup) = CSng(reader("Biomass"))
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
-                ecopathDS.vbKInput(iGroup) = -1
+                ecopathDS.vbKInput(iGroup) = CSng(Me.ReadSafe(reader, "vbK", -1))
 
                 ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
@@ -1747,7 +1749,7 @@ Public Class cDBDataSource
                 drow("Immigration") = ecopathDS.Immig(iGroup)
                 drow("Emigration") = ecopathDS.Emigration(iGroup)
                 drow("EmigRate") = ecopathDS.Emig(iGroup)
-                'drow("vbK") = ecopathDS.vbKInput(iGroup)
+                drow("vbK") = ecopathDS.vbKInput(iGroup)
                 drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
                 ' Write overriding values, if any
