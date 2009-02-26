@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.24  2009/02/26 00:56:48  jeroens
+' Added DB compact
+' Model dirty flag logic expanded to encompass all relevant core component types
+'
 ' Revision 1.23  2009/02/25 08:29:29  jeroens
 ' Fixed bug 589
 '
@@ -569,12 +573,24 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     Public Function IsModified() As Boolean Implements DataSources.IEwEDataSource.IsModified
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.DataSource) Or Me.IsChanged(eCoreComponentType.Core)
+        Return Me.IsChanged(eCoreComponentType.DataSource) Or _
+               Me.IsChanged(eCoreComponentType.Core) Or _
+               Me.IsChanged(eCoreComponentType.External) Or _
+               Me.IsChanged(eCoreComponentType.MSE)
     End Function
 
 #End Region ' Diagnostics
 
-#End Region
+#Region " Cleanup "
+
+    Public Function Compact(ByVal strTarget As String) As Boolean _
+        Implements DataSources.IEwEDataSource.Compact
+        Return Me.m_db.Compact(strTarget, strTarget)
+    End Function
+
+#End Region ' Cleanup
+
+#End Region ' Generic datasource
 
 #Region " EwEModel "
 
@@ -2596,7 +2612,8 @@ Public Class cDBDataSource
                Me.IsChanged(eCoreComponentType.TimeSeries) Or _
                Me.IsChanged(eCoreComponentType.EcoSimFitToTimeSeries) Or _
                Me.IsChanged(eCoreComponentType.EcoSimMonteCarlo) Or _
-               Me.IsChanged(eCoreComponentType.PPIManager)
+               Me.IsChanged(eCoreComponentType.PPIManager) Or _
+               Me.IsChanged(eCoreComponentType.FishingPolicySearch) 
 
     End Function
 
@@ -5480,7 +5497,8 @@ Public Class cDBDataSource
         If Not Me.IsConnected() Then Return False
         If ecopathDS.ActiveEcospaceScenario < 0 Then Return False
 
-        Return Me.IsChanged(eCoreComponentType.EcoSpace)
+        Return Me.IsChanged(eCoreComponentType.EcoSpace) Or _
+               Me.IsChanged(eCoreComponentType.MPAOptimization)
 
     End Function
 
