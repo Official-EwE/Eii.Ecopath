@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.8  2009/02/26 21:51:48  jeroens
+' vbK read from EcopathGroup once again for PSD logic
+' Fixed Pedigree import
+'
 ' Revision 1.7  2009/02/07 20:23:09  jeroens
 ' Removed cCoreResources
 '
@@ -21,79 +25,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:14  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.196  2008/09/25 22:32:38  jeroens
-' Fixed crash on importing currency unit
-'
-' Revision 1.195  2008/09/25 02:31:01  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.194  2008/09/17 01:23:53  jeroens
-' Currency units used correctly by Ecopath
-'
-' Revision 1.193  2008/08/15 03:44:19  jeroens
-' MPAaaaaargh
-'
-' Revision 1.192  2008/08/10 17:06:57  jeroens
-' Fixed import error on newer Ewe5 db formats
-'
-' Revision 1.191  2008/08/07 03:58:31  jeroens
-' Fixed MPA closed/open confusion
-'
-' Revision 1.190  2008/08/04 02:57:23  jeroens
-' Renamed varname MarketPrice to OffVesselPrice
-'
-' Revision 1.189  2008/07/29 13:06:42  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.188  2008/07/25 14:21:08  jeroens
-' Fixing improved file access feedback
-'
-' Revision 1.187  2008/07/25 03:00:43  jeroens
-' Incorporating new file extensions (w Joe)
-' Adding error diagnostics on file access
-'
-' Revision 1.186  2008/07/21 14:07:03  jeroens
-' Fixed pedigree import
-'
-' Revision 1.185  2008/07/18 22:56:44  jeroens
-' Finally settled for satisfactory Pedigree layout
-'
-' Revision 1.184  2008/07/10 18:28:51  jeroens
-' Added unit conversion to 'proper' system
-'
-' Revision 1.183  2008/06/24 10:31:03  jeroens
-' ImportGroupSize disabled; content no longer useful
-'
-' Revision 1.182  2008/06/08 20:45:23  jeroens
-' Stanza vbK imported to StanzaGroup (fixes bug 486)
-'
-' Revision 1.181  2008/05/29 22:22:46  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.180  2008/05/24 16:43:46  jeroens
-' Fixed bug 483
-'
-' Revision 1.179  2008/05/13 18:28:53  jeroens
-' All import fixes now broadcasted as 'information'
-'
-' Revision 1.178  2008/05/07 21:57:12  jeroens
-' Only show warning messages on errors, info on the rest
-'
-' Revision 1.177  2008/02/28 17:37:37  jeroens
-' Improved TS import speed
-'
-' Revision 1.176  2008/02/11 03:23:02  jeroens
-' Updated to use table EcosimTimeSeriesDataset
-'
-' Revision 1.175  2008/01/22 01:55:04  jeroens
-' Removed transactions; these prohibited remarks from importing properly
-'
-' Revision 1.174  2008/01/11 12:47:29  jeroens
-' Last saved date/time of scenarios and model imported as Julian date when possible
-'
-' Revision 1.173  2008/01/10 11:24:45  jeroens
-' Imported Quotes
 '
 '==============================================================================
 
@@ -1265,7 +1196,9 @@ Namespace Database
                     ' Write per-group stanza settings
                     drow("AgeStart") = Me.FixValue(readerStanza, "ageStart")
                     drow("Mortality") = Me.FixValue(readerStanza, "Mortality")
-                    drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.3)
+
+                    ' vbK moved to groups
+                    'drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.3)
 
                     ' JS 060621: Removed unused fields
                     'drow("Loo") = Me.FixValue(reader,"Loo")
@@ -1487,57 +1420,56 @@ Namespace Database
 
         Public Sub ImportGroupSize(ByVal strModelName As String)
 
-            ' JS24jun08: nothing useful happens here anymore with the demise of EcopathGroup.vbK
+            Dim reader As IDataReader = Nothing
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim nGroupID As Integer = 0
+            Dim drow As DataRow = Nothing
+            Dim drowFK As DataRow = Nothing
+            Dim drowSelect() As DataRow = Nothing
+            Dim dt As DataTable = Nothing
+            Dim sValue As Single = 0.0
 
-            'Dim reader As IDataReader = Nothing
-            'Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            'Dim nGroupID As Integer = 0
-            'Dim drow As DataRow = Nothing
-            'Dim drowFK As DataRow = Nothing
-            'Dim drowSelect() As DataRow = Nothing
-            'Dim dt As DataTable = Nothing
-            'Dim sValue As Single = 0.0
+            ' Merge EwE5 Group Size data with EwE6 GroupInfo
+            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group size] where modelName='{0}'", strModelName))
+            If Object.ReferenceEquals(reader, Nothing) Then Return
 
-            '' Merge EwE5 Group Size data with EwE6 GroupInfo
-            'reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group size] where modelName='{0}'", strModelName))
-            'If Object.ReferenceEquals(reader, Nothing) Then Return
+            writer = m_dbEwE6.GetWriter("EcopathGroup")
 
-            'writer = m_dbEwE6.GetWriter("EcopathGroup")
+            dt = writer.GetDataTable()
 
-            'dt = writer.GetDataTable()
+            While reader.Read()
 
-            'While reader.Read()
+                ' Get EwE6 GroupID for this record
+                nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, CStr(reader("groupName")))
+                ' Find row(s) in GroupInfo that correspond to this GroupID
+                drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
 
-            '    ' Get EwE6 GroupID for this record
-            '    nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, CStr(reader("groupName")))
-            '    ' Find row(s) in GroupInfo that correspond to this GroupID
-            '    drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
+                If (drowSelect.Length = 1) Then
 
-            '    If (drowSelect.Length = 1) Then
+                    drow = drowSelect(0)
 
-            '        drow = drowSelect(0)
+                    drow.BeginEdit()
 
-            '        drow.BeginEdit()
-            '        ' Import overriding values
-            '        'drow("AinLW") = Me.FixValue(reader, "AinLW")
-            '        'drow("BinLW") = Me.FixValue(reader, "BinLW")
-            '        'drow("Loo") = Me.FixValue(reader, "Loo")
-            '        'drow("winf") = Me.FixValue(reader, "winf")
-            '        sValue = CSng(Me.FixValue(reader, "vbK", -1))
-            '        If sValue > -1 Then
-            '            drow("vbK") = sValue
-            '        End If
-            '        'drow("t0") = Me.FixValue(reader, "t0")
-            '        'drow("Tcatch") = Me.FixValue(reader, "Tcatch")
-            '        'drow("Tmax") = Me.FixValue(reader, "Tmax")
-            '        drow.EndEdit()
+                    ' Import overriding values
+                    drow("AinLW") = Me.FixValue(reader, "AinLW")
+                    drow("BinLW") = Me.FixValue(reader, "BinLW")
+                    drow("Loo") = Me.FixValue(reader, "Loo")
+                    drow("winf") = Me.FixValue(reader, "winf")
+                    sValue = CSng(Me.FixValue(reader, "vbK", -1))
+                    If sValue > -1 Then
+                        drow("vbK") = sValue
+                    End If
+                    drow("t0") = Me.FixValue(reader, "t0")
+                    drow("Tcatch") = Me.FixValue(reader, "Tcatch")
+                    drow("Tmax") = Me.FixValue(reader, "Tmax")
+                    drow.EndEdit()
 
-            '    End If
-            'End While
+                End If
+            End While
 
-            '' Clean up, store changes
-            'Me.m_dbEwE6.ReleaseWriter(writer)
-            'Me.m_dbEwE5.ReleaseReader(reader)
+            ' Clean up, store changes
+            Me.m_dbEwE6.ReleaseWriter(writer)
+            Me.m_dbEwE5.ReleaseReader(reader)
 
         End Sub
 
@@ -1777,7 +1709,7 @@ Namespace Database
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Pedigree]"))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
-            writer = Me.m_dbEwE6.GetWriter("PedigreeLevel", "Sequence")
+            writer = Me.m_dbEwE6.GetWriter("Pedigree", "Sequence")
 
             While reader.Read()
                 ' Translate col to varname
