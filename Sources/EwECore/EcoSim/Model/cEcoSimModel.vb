@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.36  2009/02/26 18:38:01  joeb
+' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
+'
 ' Revision 1.35  2009/01/26 18:18:42  joeb
 ' Changes to SummarizeResults
 '
@@ -913,6 +916,8 @@ Public Property PluginManager() As cPluginManager
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
+                    If Me.bStopRunning Then Exit For
+ 
                 Next ipct 'Month
                 'xxxxxxxxxxxxxxxxxxxxxxxxx
                 'END OF MONTHLY TIME LOOP
@@ -932,6 +937,7 @@ Public Property PluginManager() As cPluginManager
                 '*
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
 
+                If Me.bStopRunning Then Exit For
 
             Next iyr 'Year
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1647,8 +1653,8 @@ Public Property PluginManager() As cPluginManager
                                 m_Data.ResultsSumCatchByGear(0, iTime) = m_Data.ResultsSumCatchByGear(0, iTime) + bioCatch
 
                                 valueCatch = bioCatch * m_EPData.Market(iflt, igrp) * m_EPData.Landing(iflt, igrp) / (m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp))
-                                m_Data.ResultsSumValueByGear(iflt, iTime) = m_Data.ResultsSumValueByGear(iflt, iTime) + valueCatch
-                                m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) = m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) + valueCatch
+                                m_Data.ResultsSumValueByGear(iflt, iTime) += valueCatch
+                                m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += valueCatch
 
                                 'combined fleets in zero index
                                 m_Data.ResultsSumValueByGear(0, iTime) = m_Data.ResultsSumValueByGear(0, iTime) + valueCatch
@@ -1828,9 +1834,7 @@ Public Property PluginManager() As cPluginManager
 
             'ToDo_jb AccumulateDataInfo MakeTestData is only set to True from EwE5 Ecoranger EwE6 does not contain Ecoranger so MakeTestData is never True
             Dim i As Integer, j As Integer, iDyear As Integer, Zstat As Single ', bplot As Single
-            Dim Zest As Single, SDtest As Single ', iti As Integer
-            'Dim sd As Single
-            ' Dim bCountStat As Boolean
+            Dim Zest As Single, SDtest As Single 
             SDtest = 0.05
 
             Try
@@ -1844,7 +1848,8 @@ Public Property PluginManager() As cPluginManager
                 '  System.Console.WriteLine("AccumulateDataInfo() year = " & iyear.ToString)
 
                 'VC Sep 2008 Fixing EcosimMonteCarlo:
-                m_RefData.Iobs = 0
+                'Oh no you don't
+                ' m_RefData.Iobs = 0
 
                 'now accumulate z statistics for any observations available this year
                 For j = 1 To m_RefData.NdatType
@@ -1918,17 +1923,7 @@ Public Property PluginManager() As cPluginManager
                         m_RefData.Erpred(m_RefData.Iobs) = Zstat
                         DatNobs(j) = DatNobs(j) + 1
                         DatSumZ(j) = DatSumZ(j) + Zstat
-                        'If m_refData.DatType(j) = 6 Then Stop
                         DatSumZ2(j) = DatSumZ2(j) + Zstat * Zstat
-
-                        'plot the data value for this year
-                        'if the data are of type 'absolute biomass' (m_refData.DatType(j)=1)
-                        'and if pool m_refData.DatPool(j) is being plotted in this run
-
-                        'If PlotOn And m_refData.DatType(j) = 1 And GrpsToShow(m_refData.DatPool(j)) And BiomassOn = True Then
-                        '    bplot = IIf(frmSim1.chk(3).value, m_refData.DatVal(i, j) / m_data.StartBiomass(m_refData.DatPool(j)), Log(m_refData.DatVal(i, j) / m_data.StartBiomass(m_refData.DatPool(j))))
-                        'frmSim1.PlotTime.Circle (iyear + 0.5, bplot), 0.1, poolcolor(m_refData.DatPool(j))
-                        'End If
 
                     ElseIf m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDyear, j) > 0 And (m_RefData.DatType(j) = 8 Or m_RefData.DatType(j) = 9) Then
 
@@ -1948,7 +1943,7 @@ Public Property PluginManager() As cPluginManager
 
                     End If
                 Next j
-                'exitSub:
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False, ex.StackTrace)
@@ -3907,7 +3902,7 @@ Public Property PluginManager() As cPluginManager
                             Next i
                     End Select
                 Next ig
-            End If
+            End If 'If PredEffort Then
 
             For i = 1 To m_Data.nGroups
                 If m_Data.FisForced(i) = False Or PredEffort Then

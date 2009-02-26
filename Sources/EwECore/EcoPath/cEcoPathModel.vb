@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.9  2009/02/26 18:38:01  joeb
+' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
+'
 ' Revision 1.8  2009/01/16 18:30:16  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -2104,8 +2107,9 @@ nextJ:
                 Abort4 = checkDietsSumToOne(True)
             Else
                 ' ToDo_JS: Remove this message box, and figure out what text to display. The current message text is not overly informative.
-                ' VC Sep 2008 updated this, but done is alway true?
-                MsgBox(str & vbNewLine & vbNewLine & "Please edit your data.")
+                ' VC Sep 2008 updated this, but done is alway true? sure!!!! SL
+                ' MsgBox(str & vbNewLine & vbNewLine & "Please edit your data.")
+                Debug.Assert(False, str & vbNewLine & vbNewLine & "Please edit your data.")
             End If
 
 exitSub:

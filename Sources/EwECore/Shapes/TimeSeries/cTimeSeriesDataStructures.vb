@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.5  2009/02/26 18:38:01  joeb
+' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
+'
 ' Revision 1.4  2008/12/08 16:46:03  jeroens
 ' DoDatValCalculations public again
 '
@@ -414,7 +417,7 @@ Public Class cTimeSeriesDataStructures
         HoldIobs = Iobs
         Iobs = 0
 
-        'clear out the FishForced falg
+        'clear out the FishForced flag
         EcosimData.clearFishForced()
 
         Try
