@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.7  2009/02/26 00:57:29  jeroens
+' Added DB compact
+'
 ' Revision 1.6  2009/02/08 17:35:04  jeroens
 ' Can now force datasource type when opening a new source
 '
@@ -1183,6 +1186,11 @@ Public Class cEIIDataSource
     End Sub
 #End If
 #End Region
+
+    Public Function Compact(ByVal strTarget As String) As Boolean _
+        Implements DataSources.IEwEDataSource.Compact
+        Return False
+    End Function
 
 End Class
 

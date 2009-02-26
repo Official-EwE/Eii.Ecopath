@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.10  2009/02/26 00:57:29  jeroens
+' Added DB compact
+'
 ' Revision 1.9  2009/02/08 17:35:04  jeroens
 ' Can now force datasource type when opening a new source
 '
@@ -355,13 +358,15 @@ Namespace Database
         ''' cannot be <see cref="IsConnected">connected</see> when compacting.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overloads Function Compact(ByVal strDBFrom As String, Optional ByVal strDBTo As String = "") As Boolean
+        Public Overrides Function Compact(ByVal strDBFrom As String, ByVal strDBTo As String) As Boolean
 
             ' Fix params
             If String.IsNullOrEmpty(strDBTo) Then strDBTo = strDBFrom
 
             Dim strConnection As String = ""
             Dim bCompactToOriginal As Boolean = (String.Compare(strDBFrom, strDBTo, True) = 0)
+            Dim strDBSource As String = ""
+            Dim strDBTarget As String = ""
 
             Select Case cDataSourceFactory.GetSupportedType(strDBFrom)
                 Case eDataSourceTypes.MDB
@@ -391,8 +396,19 @@ Namespace Database
                         strDBTo = System.IO.Path.GetTempFileName()
                     End If
 
+                    If File.Exists(strDBTo) Then
+                        Try
+                            File.Delete(strDBTo)
+                        Catch ex As Exception
+                            Return False
+                        End Try
+                    End If
+
                     ' Try to compact
-                    jro.CompactDatabase(String.Format(strConnection, strDBFrom), String.Format(strConnection, strDBTo))
+                    strDBSource = String.Format(strConnection, strDBFrom)
+                    strDBTarget = String.Format(strConnection, strDBTo)
+
+                    jro.CompactDatabase(strDBSource, strDBTarget)
 
                     ' Is succesfully compacted?
                     If File.Exists(strDBTo) Then

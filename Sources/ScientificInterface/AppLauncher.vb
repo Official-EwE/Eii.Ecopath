@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.28  2009/02/26 00:56:11  jeroens
+' Added DB compact
+'
 ' Revision 1.27  2009/01/29 16:10:42  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -155,6 +158,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdSave As Command = Nothing
     Private WithEvents m_cmdSaveModelAs As Command = Nothing
     Private WithEvents m_cmdCloseModel As Command = Nothing
+    Private WithEvents m_cmdCompactModel As Command = Nothing
     Private WithEvents m_cmdCloseDocument As Command = Nothing
     Private WithEvents m_cmdNewEcosimScenario As Command = Nothing
     Private WithEvents m_cmdLoadEcosimScenario As Command = Nothing
@@ -545,32 +549,37 @@ Public Class AppLauncher
 
         ' Create and configure new command
         m_cmdNewModel = New Command("NewEcopathModel")
-        m_cmdNewModel.AddControl(Me.NewFileToolStripMenuItem)
+        m_cmdNewModel.AddControl(Me.m_tsmiFileNew)
         cmdh.Add(Me.m_cmdNewModel)
 
         ' Create and configure open command
         m_cmdLoadModel = New Command("LoadEcopathModel")
-        m_cmdLoadModel.AddControl(Me.OpenFileToolStripMenuItem)
+        m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
         m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
         cmdh.Add(Me.m_cmdLoadModel)
 
         ' Create and configure save commands
         m_cmdSaveModelAs = New Command("SaveModelAs")
-        m_cmdSaveModelAs.AddControl(Me.SaveModelAsToolStripMenuItem)
+        m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
         cmdh.Add(Me.m_cmdSaveModelAs)
 
         m_cmdSave = New Command("SaveModel")
-        m_cmdSave.AddControl(Me.SaveModelToolStripMenuItem)
+        m_cmdSave.AddControl(Me.m_tsmiFileSave)
         cmdh.Add(Me.m_cmdSave)
 
         ' Create and configure 'close model' command
         m_cmdCloseModel = New Command("CloseModel")
-        m_cmdCloseModel.AddControl(Me.CloseModelToolStripMenuItem)
+        m_cmdCloseModel.AddControl(Me.m_tsmiFileClose)
         cmdh.Add(Me.m_cmdCloseModel)
+
+        ' Create and configure 'compact model' command
+        m_cmdCompactModel = New Command("CompactModel")
+        m_cmdCompactModel.AddControl(Me.m_tsmiFileCompact)
+        cmdh.Add(Me.m_cmdCompactModel)
 
         ' Create and configure 'close document' command
         m_cmdCloseDocument = New Command("CloseDocument")
-        m_cmdCloseDocument.AddControl(Me.CloseToolStripMenuItem)
+        m_cmdCloseDocument.AddControl(Me.m_tsmiWindowsClose)
         cmdh.Add(Me.m_cmdCloseDocument)
 
         ' Create and configure navigate command
@@ -579,138 +588,138 @@ Public Class AppLauncher
 
         ' Create and configure 'close all forms' command
         m_cmdCloseAllForms = New Command("CloseAllForms")
-        m_cmdCloseAllForms.AddControl(Me.CloseAllToolStripMenuItem)
+        m_cmdCloseAllForms.AddControl(Me.m_tsmiWindowsCloseAll)
         cmdh.Add(Me.m_cmdCloseAllForms)
 
         'Create and configure 'new ecosim scenario' command
         m_cmdNewEcosimScenario = New Command("NewEcosimScenario")
-        m_cmdNewEcosimScenario.AddControl(Me.NewEcosimScenarioToolStripMenuItem)
+        m_cmdNewEcosimScenario.AddControl(Me.m_tsmiEcosimNew)
         cmdh.Add(Me.m_cmdNewEcosimScenario)
 
         'Create and configure 'load ecosim scenario' command
         m_cmdLoadEcosimScenario = New Command("LoadEcosimScenario")
-        m_cmdLoadEcosimScenario.AddControl(Me.LoadEcosimScenarioToolStripMenuItem)
+        m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
         m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
         cmdh.Add(Me.m_cmdLoadEcosimScenario)
 
         'Create and configure 'save ecosim scenario' command
         m_cmdSaveEcosimScenario = New Command("SaveEcosimScenario")
-        m_cmdSaveEcosimScenario.AddControl(Me.SaveEcosimScenarioToolStripMenuItem)
+        m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
         cmdh.Add(Me.m_cmdSaveEcosimScenario)
 
         'Create and configure 'save ecosim scenario as' command
         m_cmdSaveEcosimScenarioAs = New Command("SaveEcosimScenarioAs")
-        m_cmdSaveEcosimScenarioAs.AddControl(Me.SaveEcosimScenarioAsToolStripMenuItem)
+        m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
         cmdh.Add(Me.m_cmdSaveEcosimScenarioAs)
 
         'Create and configure 'new ecospace scenario' command
         m_cmdNewEcospaceScenario = New Command("NewEcospaceScenario")
-        m_cmdNewEcospaceScenario.AddControl(Me.NewEcospaceScenarioToolStripMenuItem)
+        m_cmdNewEcospaceScenario.AddControl(Me.m_tsmiEcospaceNew)
         cmdh.Add(Me.m_cmdNewEcospaceScenario)
 
         'Create and configure 'load ecospace scenario' command
         m_cmdLoadEcospaceScenario = New Command("LoadEcospaceScenario")
-        m_cmdLoadEcospaceScenario.AddControl(Me.LoadEcospaceScenarioToolStripMenuItem)
+        m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
         m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
         cmdh.Add(Me.m_cmdLoadEcospaceScenario)
 
         'Create and configure 'save ecospace scenario' command
         m_cmdSaveEcospaceScenario = New Command("SaveEcospaceScenario")
-        m_cmdSaveEcospaceScenario.AddControl(Me.SaveEcospaceScenarioToolStripMenuItem)
+        m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
         cmdh.Add(Me.m_cmdSaveEcospaceScenario)
 
         'Create and configure 'save ecospace scenario as' command
         m_cmdSaveEcospaceScenarioAS = New Command("SaveEcospaceScenarioAs")
-        m_cmdSaveEcospaceScenarioAS.AddControl(Me.SaveEcospaceScenarioAsToolStripMenuItem)
+        m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
         cmdh.Add(Me.m_cmdSaveEcospaceScenarioAS)
 
         'Create and configure 'new ecotracer scenario' command
         Me.m_cmdNewEcotracerScenario = New Command("NewEcotracerScenario")
-        Me.m_cmdNewEcotracerScenario.AddControl(Me.NewTracerScenarioToolStripMenuItem)
+        Me.m_cmdNewEcotracerScenario.AddControl(Me.m_tsmiEcotracerNew)
         cmdh.Add(Me.m_cmdNewEcotracerScenario)
 
         'Create and configure 'load ecotracer scenario' command
         m_cmdLoadEcotracerScenario = New Command("LoadEcotracerScenario")
-        m_cmdLoadEcotracerScenario.AddControl(Me.LoadTracerScenarioToolStripMenuItem)
+        m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
         cmdh.Add(Me.m_cmdLoadEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario' command
         m_cmdSaveEcotracerScenario = New Command("SaveEcotracerScenario")
-        m_cmdSaveEcotracerScenario.AddControl(Me.SaveTracerScenarioToolStripMenuItem)
+        m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
         cmdh.Add(Me.m_cmdSaveEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario as' command
         m_cmdSaveEcotracerScenarioAS = New Command("SaveEcotracerScenarioAs")
-        m_cmdSaveEcotracerScenarioAS.AddControl(Me.SaveTracerScenarioAsToolStripMenuItem)
+        m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
         cmdh.Add(Me.m_cmdSaveEcotracerScenarioAS)
 
         'Create and configure 'view Navtree' command
         Me.m_cmdViewNavPane = New Command("ViewNavPane")
-        Me.m_cmdViewNavPane.AddControl(Me.NavigationPanelToolStripMenuItem)
+        Me.m_cmdViewNavPane.AddControl(Me.m_tsmiViewNavigation)
         cmdh.Add(Me.m_cmdViewNavPane)
 
         'Create and configure 'view start page' command
         Me.m_cmdViewStartPanel = New Command("ViewStartPage")
-        Me.m_cmdViewStartPanel.AddControl(Me.StartPageToolStripMenuItem)
+        Me.m_cmdViewStartPanel.AddControl(Me.m_tsmiViewStartPage)
         cmdh.Add(Me.m_cmdViewStartPanel)
 
         'Create and configure 'view status pane' command
         Me.m_cmdViewStatusPane = New Command("ViewStatusPane")
-        Me.m_cmdViewStatusPane.AddControl(Me.StatusPanelToolStripMenuItem)
+        Me.m_cmdViewStatusPane.AddControl(Me.m_tsmiViewStatus)
         cmdh.Add(Me.m_cmdViewStatusPane)
 
         'Create and configure 'view properties pane' command
         Me.m_cmdViewRemarkPane = New Command("ViewPropertiesPane")
-        Me.m_cmdViewRemarkPane.AddControl(Me.SelectionPanelToolStripMenuItem)
+        Me.m_cmdViewRemarkPane.AddControl(Me.m_tsmiViewRemarks)
         cmdh.Add(Me.m_cmdViewRemarkPane)
 
         'Create and configure 'view Buttonbar' command
         Me.m_cmdViewModelBar = New Command("ViewButtonBar")
-        Me.m_cmdViewModelBar.AddControl(Me.ModelBarToolStripMenuItem)
+        Me.m_cmdViewModelBar.AddControl(Me.m_tsmiViewModelBar)
         cmdh.Add(Me.m_cmdViewModelBar)
 
         'Create and configure 'view statusbar' command
         Me.m_cmdViewStatusbar = New Command("ViewStatusbar")
-        Me.m_cmdViewStatusbar.AddControl(Me.StatusBarToolStripMenuItem)
+        Me.m_cmdViewStatusbar.AddControl(Me.m_tsmiViewStatusBar)
         cmdh.Add(Me.m_cmdViewStatusbar)
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New Command("EditGroups")
-        Me.m_cmdEditGroups.AddControl(Me.EditGroupsToolStripMenuItem)
+        Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathEditGroups)
         cmdh.Add(Me.m_cmdEditGroups)
 
         'Create and configure EditMultiStanza cammand
         Me.m_cmdEditMultiStanza = New Command("EditMultiStanza")
-        Me.m_cmdEditMultiStanza.AddControl(Me.EditMultiStanzaGroupsToolStripMenuItem1)
+        Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathEditMultiStanza)
         cmdh.Add(Me.m_cmdEditMultiStanza)
 
         'Create and configure EditFleets command
         Me.m_cmdEditFleets = New Command("EditFleets")
-        Me.m_cmdEditFleets.AddControl(Me.EditFleetsToolStripMenuItem)
+        Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
         cmdh.Add(Me.m_cmdEditFleets)
 
         Me.m_cmdEditBasemap = New Command("EditBasemap")
-        Me.m_cmdEditBasemap.AddControl(Me.EditBasemapToolStripMenuItem)
+        Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
         cmdh.Add(Me.m_cmdEditBasemap)
 
         Me.m_cmdEditHabitats = New Command("EditHabitats")
-        Me.m_cmdEditHabitats.AddControl(Me.EditHabitatsToolStripMenuItem)
+        Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceEditHabitats)
         cmdh.Add(Me.m_cmdEditHabitats)
 
         Me.m_cmdEditRegions = New Command("EditRegions")
-        Me.m_cmdEditRegions.AddControl(Me.EditRegionsToolStripMenuItem)
+        Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceEditRegions)
         cmdh.Add(Me.m_cmdEditRegions)
 
         Me.m_cmdEditMPAs = New Command("EditMPAs")
-        Me.m_cmdEditMPAs.AddControl(Me.EditMPAsToolStripMenuItem)
+        Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceEditMPAs)
         cmdh.Add(Me.m_cmdEditMPAs)
 
         Me.m_cmdEditImportanceLayers = New Command("EditImportanceLayers")
-        Me.m_cmdEditImportanceLayers.AddControl(Me.EditImportanceLayersToolStripMenuItem)
+        Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceEditImportanceLayers)
         cmdh.Add(Me.m_cmdEditImportanceLayers)
 
         Me.m_cmdImportLayerData = New Command("ImportLayerData")
-        Me.m_cmdImportLayerData.AddControl(Me.ImportLayerDataToolStripMenuItem)
+        Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
         cmdh.Add(Me.m_cmdImportLayerData)
 
         Me.m_cmdExportLayerData = New Command("ExportLayerData")
@@ -718,27 +727,27 @@ Public Class AppLauncher
 
         'Create and configure ImportTimeSeries command
         Me.m_cmdImportTimeSeries = New Command("ImportTimeSeries")
-        Me.m_cmdImportTimeSeries.AddControl(Me.ImportTimeSeriesToolStripMenuItem)
+        Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
         cmdh.Add(Me.m_cmdImportTimeSeries)
 
         'Create and configure LoadTimeSeries command
         Me.m_cmdLoadTimeSeries = New Command("LoadTimeSeries")
-        Me.m_cmdLoadTimeSeries.AddControl(Me.LoadTimeSeriesToolStripMenuItem)
+        Me.m_cmdLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
         cmdh.Add(Me.m_cmdLoadTimeSeries)
 
         'Create and configure WeightTimeSeries command
         Me.m_cmdWeightTimeSeries = New Command("WeightTimeSeries")
-        Me.m_cmdWeightTimeSeries.AddControl(Me.WeightTimeSeriesToolStripMenuItem)
+        Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
         cmdh.Add(Me.m_cmdWeightTimeSeries)
 
         'Create and configure LoadApplyTimeSeries command
         Me.m_cmdLoadWeightTimeSeries = New Command("LoadWeightTimeSeries")
-        Me.m_cmdLoadWeightTimeSeries.AddControl(Me.LoadAndApplyLastTimeSeriesToolStripMenuItem)
+        Me.m_cmdLoadWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesReloadLast)
         cmdh.Add(Me.m_cmdLoadWeightTimeSeries)
 
         'Create and configure Help>About command
         Me.m_cmdHelpAbout = New Command("HelpAbout")
-        Me.m_cmdHelpAbout.AddControl(Me.AboutToolStripMenuItem)
+        Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
         cmdh.Add(Me.m_cmdHelpAbout)
 
         ' Create plugin gui command for GUI plugins to use
@@ -1043,6 +1052,21 @@ Public Class AppLauncher
         Return True
 
     End Function
+
+    Private Sub CompactModel()
+
+        Dim ds As IEwEDataSource = Me.m_core.DataSource
+        Dim strFileName As String = Me.SelectedFileName()
+
+        If Me.CloseEcopathModel() = False Then Return
+
+        Me.SetStatusText("Compacting database...", TriState.True)
+        ds.Compact(strFileName)
+        Me.SetStatusText("", TriState.False)
+
+        Me.LoadEcopathModel(strFileName)
+
+    End Sub
 
     Private Sub UpdateModelControls()
 
@@ -2084,6 +2108,20 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
+    ''' Compact a model
+    ''' </summary>
+    Private Sub OnCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnInvoke
+        Me.CompactModel()
+    End Sub
+
+    ''' <summary>
+    ''' Update compact model command state
+    ''' </summary>
+    Private Sub OnUpdateCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+    End Sub
+
+    ''' <summary>
     ''' Close the current active document.
     ''' </summary>
     Private Sub OnCloseDocument(ByVal cmd As Command) Handles m_cmdCloseDocument.OnInvoke
@@ -2293,11 +2331,11 @@ Public Class AppLauncher
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
-    Private Sub RecentMDBToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RecentMDBToolStripMenuItem.DropDownOpening
-        DisplayFileLists(RecentMDBToolStripMenuItem, My.Settings.MdbRecentlyUsedList, CInt(My.Settings.MdbRecentlyUsedCount))
+    Private Sub RecentMDBToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileRecent.DropDownOpening
+        DisplayFileLists(m_tsmiFileRecent, My.Settings.MdbRecentlyUsedList, CInt(My.Settings.MdbRecentlyUsedCount))
     End Sub
 
-    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
+    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiFileExit.Click
         Me.Close()
     End Sub
 
@@ -2405,7 +2443,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Open the EwE6 option dialog
     ''' </summary>
-    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptionsToolStripMenuItem.Click
+    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiOptions.Click
 
         Dim dlgOptions As New dlgOptions()
         ' FG: Fixed a bug..Should not use Show instead of using ShowDialog and specify its owner so it will
@@ -2439,19 +2477,19 @@ Public Class AppLauncher
         cmd.Enabled = True
     End Sub
 
-    Private Sub ContentsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ContentsToolStripMenuItem.Click
+    Private Sub ContentsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpContents.Click
         Me.m_Help.ShowHelp(HelpNavigator.TableOfContents)
     End Sub
 
-    Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles IndexToolStripMenuItem.Click
+    Private Sub IndexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpIndex.Click
         Me.m_Help.ShowHelp(HelpNavigator.KeywordIndex)
     End Sub
 
-    Private Sub SearchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchToolStripMenuItem.Click
+    Private Sub SearchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpSearch.Click
         Me.m_Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
-    Private Sub ReportBugMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReportBugMenuItem.Click
+    Private Sub ReportBugMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
         BugReporter.InvokeBugReport()
     End Sub
 
@@ -3245,7 +3283,8 @@ Public Class AppLauncher
         End If
     End Sub
 
-    Private Sub ExportBiomassToFileToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportBiomassToFileToolStripMenuItem.Click
+    Private Sub ExportBiomassToFileToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiExportBiomassToCSV.Click
 
         Dim cmdh As CommandHandler = CommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
@@ -3259,14 +3298,15 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub EcosimToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EcosimToolStripMenuItem.DropDownOpening
+    Private Sub EcosimToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsmiEcosim.DropDownOpening
 
         ' ToDo_JS: Implement via central command
 
         If m_core.StateMonitor.HasEcosimRan Then
-            ExportBiomassToFileToolStripMenuItem.Enabled = True
+            m_tsmiExportBiomassToCSV.Enabled = True
         Else
-            ExportBiomassToFileToolStripMenuItem.Enabled = False
+            m_tsmiExportBiomassToCSV.Enabled = False
         End If
     End Sub
 

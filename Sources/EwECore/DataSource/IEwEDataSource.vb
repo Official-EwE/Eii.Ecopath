@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.6  2009/02/26 00:57:29  jeroens
+' Added DB compact
+'
 ' Revision 1.5  2009/02/08 17:35:04  jeroens
 ' Can now force datasource type when opening a new source
 '
@@ -238,6 +241,8 @@ Namespace DataSources
 
         Function BeginTransaction() As Boolean
         Function EndTransaction(ByVal bCommit As Boolean) As Boolean
+
+        Function Compact(ByVal strTarget As String) As Boolean
 
 #End Region ' Generic
 
