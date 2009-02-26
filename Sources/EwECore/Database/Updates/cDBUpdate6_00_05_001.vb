@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_05_001.vb,v $
+' Revision 1.2  2009/02/26 21:51:04  jeroens
+' Cleaned up GroupInfo
+'
 ' Revision 1.1  2009/02/26 21:43:11  jeroens
 ' Initial version
 '
@@ -55,7 +58,7 @@ Public Class cDBUpdate6_00_05_001
     Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
         Get
             Return "Updated pedigree." & vbNewLine & _
-                   "Added particle size distribution table."
+                   "Added particle size distribution tables."
         End Get
     End Property
 
@@ -63,7 +66,8 @@ Public Class cDBUpdate6_00_05_001
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
         Return Me.UpdatePedigree(db) And _
-               Me.AddPSD(db)
+               Me.AddPSD(db) And _
+               Me.CleanupGroupInfo(db)
 
     End Function
 
@@ -150,6 +154,12 @@ Public Class cDBUpdate6_00_05_001
 
         Return bSucces
 
+    End Function
+
+    Private Function CleanupGroupInfo(ByVal db As cEwEDatabase) As Boolean
+        ' Not crucial
+        db.Execute("ALTER TABLE EcopathGroup DROP COLUMN AdultGroup")
+        Return True
     End Function
 
 #Region " Standard bits "
