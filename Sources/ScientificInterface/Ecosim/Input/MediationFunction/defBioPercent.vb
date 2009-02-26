@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: defBioPercent.vb,v $
+' Revision 1.3  2009/02/26 06:41:25  jeroens
+' Fixed crash on opening twice
+'
 ' Revision 1.2  2008/12/15 16:02:24  jeroens
 ' no message
 '
@@ -134,7 +137,7 @@ Namespace Ecosim
                 For j As Integer = 0 To m_medfn.CountGroup - 1
                     Dim medGrp As cMediatingGroup = m_medfn.Group(j)
                     If iGroup = medGrp.iGroupIndex Then
-                        Me.Add(iGroup, medGrp.Weight)
+                        Me.Add(grp, medGrp.Weight)
                         Exit For
                     End If
                 Next
@@ -147,7 +150,7 @@ Namespace Ecosim
                 For j As Integer = 0 To m_medfn.CountFleet - 1
                     Dim medFlt As cMediatingFleet = m_medfn.Fleet(j)
                     If iFleet = medFlt.iFleetIndex Then
-                        Me.Add(iIndex, medFlt.Weight)
+                        Me.Add(flt, medFlt.Weight)
                         Exit For
                     End If
                 Next
@@ -184,8 +187,13 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAdd.Click, m_lbAvailableGroupsFleets.DoubleClick
-            Me.Add(Me.m_lbAvailableGroupsFleets.SelectedIndex)
+        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAdd.Click, m_lbAvailableGroupsFleets.DoubleClick
+
+            Dim item As ListBoxItem = DirectCast(Me.m_lbAvailableGroupsFleets.SelectedItem, ListBoxItem)
+            If (item IsNot Nothing) Then
+                Me.Add(item.Source)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -300,9 +308,8 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub Add(ByVal iIndex As Integer, Optional ByVal sWeight As Single = 1.0)
-            Dim lbi As ListBoxItem = DirectCast(Me.m_lbAvailableGroupsFleets.SelectedItem, ListBoxItem)
-            If Me.m_grid.Add(lbi.Source, sWeight) Then
+        Private Sub Add(ByVal obj As cCoreInputOutputBase, Optional ByVal sWeight As Single = 1.0)
+            If Me.m_grid.Add(obj, sWeight) Then
                 Me.UpdateGraph()
             End If
         End Sub
