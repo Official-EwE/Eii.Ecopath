@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.6  2009/02/26 21:41:31  jeroens
+' Import TS batch lock now level TimeSeries
+'
 ' Revision 1.5  2008/11/26 23:19:52  jeroens
 ' Weight! Weight, dude
 '
@@ -606,7 +609,7 @@ Public Class dlgManageTimeSeries
             appl.SetStatusText("", TriState.False)
         End If
 
-        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim)
+        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries)
 
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportApplyOnImport.Checked) Then
