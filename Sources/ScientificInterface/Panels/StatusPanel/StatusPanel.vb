@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.4  2009/02/26 21:41:00  jeroens
+' Long messages truncated
+' '\n' substituted for vbNewLine in feedback messages
+'
 ' Revision 1.3  2009/01/19 18:07:26  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -156,7 +160,7 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Public Sub AllMessagesHandler(ByRef msg As cMessage)
 
-        Dim bShow As Boolean = False
+        Dim bStatus As Boolean = False
         Dim bPopup As Boolean = False
 
         '' Give message state handler a shot to refresh
@@ -175,29 +179,36 @@ Public Class StatusPanel
         ' Check settings
         Select Case msg.Importance
             Case eMessageImportance.Critical
-                bShow = My.Settings.FeedbackCriticalStatusMessage
+                bStatus = My.Settings.FeedbackCriticalStatusMessage
                 bPopup = My.Settings.FeedbackCriticalPopup
             Case eMessageImportance.Warning
-                bShow = My.Settings.FeedbackWarningStatusMessage
+                bStatus = My.Settings.FeedbackWarningStatusMessage
                 bPopup = My.Settings.FeedbackWarningPopup
             Case eMessageImportance.Information
-                bShow = My.Settings.FeedbackInformationStatusMessage
+                bStatus = My.Settings.FeedbackInformationStatusMessage
                 bPopup = My.Settings.FeedbackInformationPopup
             Case eMessageImportance.Maintenance
-                bShow = False
+                bStatus = False
                 bPopup = False
             Case eMessageImportance.Progress
                 ' Progress messages are meant for dedicated GUIs
-                bShow = False
+                bStatus = False
                 bPopup = False
             Case Else
                 ' Default behaviour: log it but do not pop up
-                bShow = True
+                bStatus = True
                 bPopup = False
         End Select
 
+        ' Need to show a popup for this message?
+        If bPopup Then
+            ' #Yes: go ahead, Jimmy
+            ' JS 26feb09: If an error occurred the status panel will have to show this message
+            bStatus = bStatus Or Me.ShowMessageBox(msg)
+        End If
+
         ' Must show message?
-        If bShow Then
+        If bStatus Then
             ' #Yes: add message
 
             ' A message with one var and the same text for msg and var should not display a child node?
@@ -264,12 +275,6 @@ Public Class StatusPanel
                 ' Hmm
             End Try
 
-        End If
-
-        ' Need to show a popup for this message?
-        If bPopup Then
-            ' #Yes: go ahead, Jimmy
-            Me.ShowMessageBox(msg)
         End If
 
         ' When the core sends out critical or warning message, status panel will dock it automatically 
@@ -402,7 +407,8 @@ Public Class StatusPanel
                 End If
             End If
         Else
-            dlr = MessageBox.Show(msg.Message, AppLauncher.GetInstance().Text, mbs, mbi)
+            Dim strMsg As String = msg.Message.Replace("\n", vbNewLine)
+            dlr = MessageBox.Show(strMsg, AppLauncher.GetInstance().Text, mbs, mbi)
         End If
 
         ' Translate .NET MessageBox result into reply
@@ -428,61 +434,86 @@ Public Class StatusPanel
     ''' </summary>
     ''' <param name="msg">The <see cref="cMessage">Message</see> to show a
     ''' Message Box for.</param>
+    ''' <returns>
+    ''' True if a problem occurred displaying the message
+    ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Sub ShowMessageBox(ByVal msg As cMessage)
+    Private Function ShowMessageBox(ByVal msg As cMessage) As Boolean
+
         Dim sb As New StringBuilder(msg.Message)
         Dim mbb As MessageBoxButtons = MessageBoxButtons.OK
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Information
         Dim strTmp As String = ""
+        Dim iNumSubLines As Integer = 0
+        Dim bError As Boolean = False
 
         ' Sanity check
-        If msg Is Nothing Then Return
+        If msg IsNot Nothing Then
 
-        ' Concatenate all child messages
-        For Each vs As cVariableStatus In msg.Variables
-            strTmp = vs.Message
-            If Not String.IsNullOrEmpty(strTmp) Then sb.AppendLine() : sb.Append(strTmp)
-        Next
+            ' Concatenate all child messages
+            For Each vs As cVariableStatus In msg.Variables
+                Select Case iNumSubLines
 
-        ' Resolve what icon to show
-        Select Case msg.Importance
-            Case eMessageImportance.Critical
-                mbi = MessageBoxIcon.Error
-            Case eMessageImportance.Warning
-                mbi = MessageBoxIcon.Warning
-            Case eMessageImportance.Information
-                mbi = MessageBoxIcon.Information
-        End Select
+                    Case 0 To 9
+                        strTmp = vs.Message
+                        If Not String.IsNullOrEmpty(strTmp) Then
+                            sb.AppendLine()
+                            sb.Append(strTmp)
+                            iNumSubLines += 1
+                        End If
 
-        ' == Show the message ==
+                    Case 10
+                        sb.AppendLine()
+                        sb.Append("...")
+                        sb.Append("(for further details refer to the status panel)")
+                        bError = True
+                        Exit For
 
-        ' Can the message be suppressed?
-        If msg.Suppressable Then
+                End Select
+            Next
 
-            ' #Yes: check suppressed state
+            ' Resolve what icon to show
+            Select Case msg.Importance
+                Case eMessageImportance.Critical
+                    mbi = MessageBoxIcon.Error
+                Case eMessageImportance.Warning
+                    mbi = MessageBoxIcon.Warning
+                Case eMessageImportance.Information
+                    mbi = MessageBoxIcon.Information
+            End Select
 
-            ' Sanity check
-            Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
+            ' == Show the message ==
 
-            If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
-                ' #No: Good, prepare to show message
-                ' Assume message will not be suppressed
-                Dim bSuppress As Boolean = False
-                ' Invoke the special message box
-                CheckedMessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, _
-                        bSuppress, My.Resources.GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN, _
-                        MessageBoxDefaultButton.Button1)
-                ' User wants to suppress the message?
-                If bSuppress Then
-                    '#Yes: suppress it during the rest of this session
-                    Me.m_msh.Suppress(msg.Source, msg.Type) = True
+            ' Can the message be suppressed?
+            If msg.Suppressable Then
+
+                ' #Yes: check suppressed state
+
+                ' Sanity check
+                Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
+
+                If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
+                    ' #No: Good, prepare to show message
+                    ' Assume message will not be suppressed
+                    Dim bSuppress As Boolean = False
+                    ' Invoke the special message box
+                    CheckedMessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, _
+                            bSuppress, My.Resources.GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN, _
+                            MessageBoxDefaultButton.Button1)
+                    ' User wants to suppress the message?
+                    If bSuppress Then
+                        '#Yes: suppress it during the rest of this session
+                        Me.m_msh.Suppress(msg.Source, msg.Type) = True
+                    End If
                 End If
+            Else
+                ' #No: show the message
+                MessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
-        Else
-            ' #No: show the message
-            MessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
         End If
-    End Sub
+
+        Return bError
+    End Function
 
 #End Region ' Helper methods
 
