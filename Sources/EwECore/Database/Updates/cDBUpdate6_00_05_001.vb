@@ -1,0 +1,212 @@
+'==============================================================================
+'
+' $Log: cDBUpdate6_00_05_001.vb,v $
+' Revision 1.1  2009/02/26 21:43:11  jeroens
+' Initial version
+'
+'
+'==============================================================================
+
+Option Strict On
+
+Imports EwEPlugin
+Imports EwEUtils.Database
+Imports System.Data
+Imports EwEUtils.Core
+
+''' --------------------------------------------------------------------------
+''' <summary>
+''' <para>Database update 6.0.4.022:</para>
+''' <para>
+''' <list type="bullet">
+''' <item><description>Added Ecopath discard mortality.</description></item>
+''' <item><description>Added Ecosim fisheries regulation.</description></item>
+''' <item><description>Updated group x group indexes.</description></item>
+''' </list>
+''' </para>
+''' </summary>
+''' --------------------------------------------------------------------------
+Public Class cDBUpdate6_00_05_001
+    Implements IDatabaseUpdatePlugin
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' This method provides the update version number that will be entered in
+    ''' the update log of the database. This version number is also used to check
+    ''' whether an update should run.
+    ''' </summary>
+    ''' <remarks>
+    ''' If <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> is provided, the
+    ''' update is ran regardless of version number.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property UpdateVersion() As Single Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateVersion
+        Get
+            Return 6.05001!
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' This method provides the text that will be entered in the update log in
+    ''' the database.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
+        Get
+            Return "Updated pedigree." & vbNewLine & _
+                   "Added particle size distribution table."
+        End Get
+    End Property
+
+    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
+            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
+
+        Return Me.UpdatePedigree(db) And _
+               Me.AddPSD(db)
+
+    End Function
+
+    Private Function UpdatePedigree(ByVal db As cEwEDatabase) As Boolean
+
+        Dim reader As IDataReader = Nothing
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim drow As DataRow = Nothing
+        Dim bSucces As Boolean = True
+
+        Try
+
+            If db.Execute("CREATE TABLE Pedigree (LevelID LONG, VarName TEXT(50), Sequence INTEGER, IndexValue SINGLE, Confidence SINGLE, Description MEMO)") Then
+
+                bSucces = bSucces And db.Execute("ALTER TABLE Pedigree ADD CONSTRAINT PK_INDEX PRIMARY KEY (LevelID)")
+
+                reader = db.GetReader("PedigreeLevel")
+                writer = db.GetWriter("Pedigree")
+
+                If reader IsNot Nothing Then
+                    While reader.Read
+
+                        drow = writer.NewRow()
+
+                        drow("LevelID") = reader("LevelID")
+                        drow("VarName") = reader("VarName")
+                        drow("Sequence") = reader("Sequence")
+                        drow("IndexValue") = reader("IndexValue")
+                        drow("Confidence") = reader("Confidence")
+                        drow("Description") = reader("Description")
+
+                        writer.AddRow(drow)
+
+                    End While
+
+                    db.ReleaseWriter(writer)
+                    db.ReleaseReader(reader)
+                End If
+            End If
+
+            db.Execute("DROP Table PedigreeLevel")
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function AddPSD(ByVal db As cEwEDatabase) As Boolean
+
+        Dim reader As IDataReader = Nothing
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim bSucces As Boolean = True
+
+        Try
+            Try
+                db.Execute("ALTER TABLE EcopathGroup ADD COLUMN vbK SINGLE")
+            Catch ex As Exception
+                ' All cool
+            End Try
+
+            ' Move vbK back to groups for Particle Size Distribution purposes
+            reader = db.GetReader("StanzaLifeStage")
+            writer = db.GetWriter("EcopathGroup")
+
+            ' *DEEP sigh*
+            reader = db.GetReader("SELECT EcopathGroup.GroupID AS GroupID, StanzaLifeStage.vbK AS vbK FROM EcopathGroup, StanzaLifeStage WHERE EcopathGroup.GroupID=StanzaLifeStage.GroupID")
+            If reader IsNot Nothing Then
+                While reader.Read
+                    bSucces = bSucces And db.Execute(String.Format("UPDATE EcopathGroup SET vbK={0} WHERE GroupID={1}", reader("vbK"), reader("GroupID")))
+                End While
+            End If
+            db.ReleaseReader(reader)
+
+            ' Now drop the vbK column from StanzaLifeStage
+            bSucces = bSucces And db.Execute("ALTER TABLE StanzaLifeStage DROP COLUMN vbK")
+            db.ReleaseWriter(writer)
+
+        Catch ex As Exception
+
+        End Try
+
+        Return bSucces
+
+    End Function
+
+#Region " Standard bits "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+        Get
+            Return Me.UpdateDescription
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+        ' Void
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "Database update " & Me.UpdateVersion
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:support@ecopath.org"
+        End Get
+    End Property
+
+#End Region ' Standard bits
+
+End Class
