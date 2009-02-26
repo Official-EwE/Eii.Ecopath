@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgChangeShape.vb,v $
+' Revision 1.2  2009/02/26 06:33:51  sherman
+' Enabled Y-end for all shapes.
+'
 ' Revision 1.1  2008/12/15 15:36:38  jeroens
 ' Moved from ScInt
 '
@@ -201,11 +204,11 @@ Namespace Controls
                 Case eShapeFunctionType.Linear
                     bEnableYZero = True : bEnableYEnd = True
                 Case eShapeFunctionType.Sigmoid
-                    bEnableYBase = True : bEnableYZero = True
+                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True
                 Case eShapeFunctionType.Hyperbolic
-                    bEnableYBase = True : bEnableYZero = True : bEnableSteep = True
+                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True : bEnableSteep = True
                 Case eShapeFunctionType.Exponential
-                    bEnableYZero = True : bEnableYBase = True
+                    bEnableYZero = True : bEnableYEnd = True : bEnableYBase = True
                 Case Else
                     Debug.Assert(False)
             End Select
