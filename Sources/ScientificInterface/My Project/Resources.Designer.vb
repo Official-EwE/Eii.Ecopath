@@ -4599,6 +4599,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property pluginicon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pluginicon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to All detritus groups will be moved to the end of the list of groups..
         '''</summary>

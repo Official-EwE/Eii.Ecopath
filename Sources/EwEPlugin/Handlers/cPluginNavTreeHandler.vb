@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginNavTreeHandler.vb,v $
+' Revision 1.4  2009/02/27 08:10:24  sherman
+' Changed Plugin Icon
+'
 ' Revision 1.3  2008/12/03 02:33:09  jeroens
 ' Added crash test
 '
@@ -153,6 +156,10 @@ Public Class cPluginNavTreeHandler
                         tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                         tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
                         Me.m_tv.ImageList.Images.Add(ip.ControlImage)
+                    Else
+                        tn.ImageIndex = Me.m_tv.ImageList.Images.Count
+                        tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
+                        Me.m_tv.ImageList.Images.Add(My.Resources.pluginicon)
                     End If
                     ' Regular font
                     tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)
