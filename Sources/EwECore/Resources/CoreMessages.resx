@@ -275,7 +275,7 @@ System Error: {0}</value>
     <comment>{0} = model name</comment>
   </data>
   <data name="ECOPATH_SAVE_PROMPT" xml:space="preserve">
-    <value>Save changes to this model?</value>
+    <value>Your Ecopath model has changed since the last time you saved. If you proceed these changes will be lost.\n\nYes - save changes\nNo - revert to last saved model\nCancel - abort this operation.</value>
   </data>
   <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
     <value>Ecopath model failed to save to '{0}'</value>
@@ -298,7 +298,7 @@ System Error: {0}</value>
     <comment>{0}= scenario name, {1} is optional error</comment>
   </data>
   <data name="ECOSIM_SAVE_PROMPT" xml:space="preserve">
-    <value>Ecosim scenario '{0}' has changed. Do you wish to save these changes?</value>
+    <value>Ecosim scenario '{0}' has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation.</value>
     <comment>{0} = scenario name</comment>
   </data>
   <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
@@ -318,7 +318,7 @@ System Error: {0}</value>
     <comment>{0} = scneario name, {1} = optional reason</comment>
   </data>
   <data name="ECOSPACE_SAVE_PROMPT" xml:space="preserve">
-    <value>Ecospace scenario '{0}'  has changed. Do you wish to save these changes?</value>
+    <value>Ecospace scenario '{0}' has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation.</value>
     <comment>{0} = scenario name</comment>
   </data>
   <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
@@ -337,7 +337,7 @@ System Error: {0}</value>
     <comment>{0} = scneario name, {1} = optional reason</comment>
   </data>
   <data name="ECOTRACER_SAVE_PROMPT" xml:space="preserve">
-    <value>Ecotracer scenario '{0}'  has changed. Do you wish to save these changes?</value>
+    <value>Ecotracer scenario '{0}' has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation.</value>
     <comment>{0} = scenario name</comment>
   </data>
   <data name="ECOTRACER_SAVE_SUCCES" xml:space="preserve">
