@@ -110,7 +110,7 @@ Namespace Ecopath.Input
             Me(iRow, 3) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
             Me(iRow, 4) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
             Me(iRow, 5) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
+            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBK)
             Me(iRow, 7) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
             Me(iRow, 8) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
             Me(iRow, 9) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
