@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.9  2009/02/27 07:56:12  jeroens
+' Changed vbK placement
+'
 ' Revision 1.8  2009/02/26 21:51:48  jeroens
 ' vbK read from EcopathGroup once again for PSD logic
 ' Fixed Pedigree import
@@ -1427,7 +1430,6 @@ Namespace Database
             Dim drowFK As DataRow = Nothing
             Dim drowSelect() As DataRow = Nothing
             Dim dt As DataTable = Nothing
-            Dim sValue As Single = 0.0
 
             ' Merge EwE5 Group Size data with EwE6 GroupInfo
             reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group size] where modelName='{0}'", strModelName))
@@ -1455,10 +1457,7 @@ Namespace Database
                     drow("BinLW") = Me.FixValue(reader, "BinLW")
                     drow("Loo") = Me.FixValue(reader, "Loo")
                     drow("winf") = Me.FixValue(reader, "winf")
-                    sValue = CSng(Me.FixValue(reader, "vbK", -1))
-                    If sValue > -1 Then
-                        drow("vbK") = sValue
-                    End If
+                    drow("vbK") = Me.FixValue(reader, "vbK", 0.3)
                     drow("t0") = Me.FixValue(reader, "t0")
                     drow("Tcatch") = Me.FixValue(reader, "Tcatch")
                     drow("Tmax") = Me.FixValue(reader, "Tmax")

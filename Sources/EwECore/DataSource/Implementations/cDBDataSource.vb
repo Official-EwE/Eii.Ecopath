@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.26  2009/02/27 07:57:09  jeroens
+' Changed vbK placement
+'
 ' Revision 1.25  2009/02/26 21:51:32  jeroens
 ' vbK read from EcopathGroup once again for PSD logic
 '
@@ -1244,10 +1247,10 @@ Public Class cDBDataSource
 
         stanzaDS.redimStanza()
 
-        ' Set all group vbK values to -1
-        For iGroup = 1 To ecopathDS.NumGroups
-            ecopathDS.vbKInput(iGroup) = -1.0!
-        Next
+        '' Set all group vbK values to -1
+        'For iGroup = 1 To ecopathDS.NumGroups
+        '    ecopathDS.vbKInput(iGroup) = -1.0!
+        'Next
 
         ' First read Stanza
         rdStanza = Me.m_db.GetReader("SELECT * FROM Stanza")
@@ -1387,7 +1390,7 @@ Public Class cDBDataSource
                         drow("Sequence") = iLifeStage
                         drow("AgeStart") = stanzaDS.Age1(iStanza, iLifeStage)
                         drow("Mortality") = stanzaDS.Stanza_Z(iStanza, iLifeStage)
-                        drow("vbK") = ecopathDS.vbKInput(iGroup)
+                        'drow("vbK") = ecopathDS.vbKInput(iGroup)
                         writer.AddRow(drow)
                     End If
                 Next iLifeStage
@@ -1466,7 +1469,7 @@ Public Class cDBDataSource
                 drow("GroupID") = aiGroupID(i)
                 drow("AgeStart") = iGroupAges(i)
                 drow("Sequence") = (i + 1)
-                drow("vbK") = 0.3
+                'drow("vbK") = 0.3
                 writer.AddRow(drow)
             Next
             Me.m_db.ReleaseWriter(writer)
@@ -1507,8 +1510,10 @@ Public Class cDBDataSource
     ''' <param name="sMortality">Mortality for this life stage.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, ByVal iStartAge As Integer, ByVal sMortality As Single, ByVal sVBK As Single) As Boolean _
+    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
+                                       ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean _
             Implements DataSources.IEcopathDataSource.AddStanzaLifestage
+
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
@@ -1521,7 +1526,7 @@ Public Class cDBDataSource
             drow("StanzaID") = iStanzaDBID
             drow("GroupID") = iGroupDBID
             drow("AgeStart") = iStartAge
-            drow("vbK") = sVBK
+            'drow("vbK") = sVBK
             writer.AddRow(drow)
             Me.m_db.ReleaseWriter(writer)
 
@@ -1789,7 +1794,8 @@ Public Class cDBDataSource
     ''' Create a record for a new Ecopath group in the datasource.
     ''' </summary>
     ''' <param name="strGroupName">The name of the group to create.</param>
-    ''' <param name="sPP">The Type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+    ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+    ''' <param name="sVBK">The vbK value to pass to the group.</param>
     ''' <param name="iPosition">The position of the new group in the group sequence.</param>
     ''' <param name="iDBID">Database ID assigned to the new Group.</param>
     ''' <returns>True if succesful.</returns>
@@ -1798,7 +1804,8 @@ Public Class cDBDataSource
     ''' core a full data reload is required after a group is created.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Public Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Public Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
+                             ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -1822,6 +1829,7 @@ Public Class cDBDataSource
             drow("GroupID") = iDBID
             drow("GroupName") = strGroupName
             drow("Type") = sPP
+            drow("vbK") = sVBK
             drow("Sequence") = iPosition
 
             ' Commit to db

@@ -1,94 +1,14 @@
 '==============================================================================
 '
 ' $Log: cStanzaGroup.vb,v $
+' Revision 1.3  2009/02/27 07:55:15  jeroens
+' Changed vbK placement
+'
 ' Revision 1.2  2009/01/16 18:30:36  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
 ' Revision 1.1  2008/09/26 07:30:28  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.20  2008/07/02 01:55:26  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.19  2008/05/29 22:22:51  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.18  2007/08/03 02:14:54  jeroens
-' * Localized
-'
-' Revision 1.17  2007/08/02 23:41:27  joeb
-' Added OkToCalculate
-' Added ResetStatusFlags
-'
-' Revision 1.16  2007/05/23 16:40:55  jeroens
-' * Nitty-gritty
-'
-' Revision 1.15  2007/05/22 13:24:26  jeroens
-' * Nitty-gritty
-'
-' Revision 1.14  2007/05/20 00:28:52  jeroens
-' * MessageSource EcoPath
-' * Apply() only sets core changed state when stanza configuration flagged as dirty
-' * Dirty flag only set when variables have changed
-'
-' Revision 1.13  2007/05/04 15:26:12  jeroens
-' + Added messagesource
-'
-' Revision 1.12  2007/04/17 23:05:22  joeb
-' Bug Fix for WmatWinf
-'
-' Revision 1.11  2007/04/12 15:54:02  joeb
-' Added minor comments
-'
-' Revision 1.10  2007/04/07 16:20:24  joeb
-' Added isDirty flag
-' Added Cancel method
-'
-' Revision 1.9  2007/04/06 17:26:51  joeb
-' Added isDirty Flag this still needs work
-'
-' Revision 1.8  2007/04/03 15:48:00  joeb
-' Minor changes to CalculateParameters() and Apply()
-'
-' Revision 1.7  2007/04/02 22:54:13  joeb
-' Stanza objects now handle calculating there own parameter
-' and updating underlying core data
-'
-' Revision 1.6  2007/04/02 17:43:28  joeb
-' Changed iGroup to use cValueArrayIndexed
-'
-' Revision 1.5  2007/04/01 18:30:35  joeb
-' Changed how Time variables work
-'
-' Revision 1.4  2007/03/30 19:15:05  joeb
-' Added Age variables
-'
-' Revision 1.3  2007/03/27 16:31:05  jeroens
-' * StartAge exposed as Integer
-'
-' Revision 1.2  2007/03/26 03:41:18  jeroens
-' + Exposed whack of new variables
-'
-' Revision 1.1  2007/03/26 02:12:46  jeroens
-' Moved
-'
-' Revision 1.10  2007/03/23 14:01:10  jeroens
-' + Adding variables
-'
-' Revision 1.9  2007/03/20 14:50:20  jeroens
-' + Added nMaxStanza core counter
-'
-' Revision 1.8  2006/11/05 15:37:16  jeroens
-' + Exposed new vars
-'
-' Revision 1.7  2006/10/26 17:24:52  jeroens
-' * Fixed comment error
-'
-' Revision 1.6  2006/10/10 15:18:04  jeroens
-' + DataType now correctly set
-'
-' Revision 1.5  2006/09/18 15:43:06  jeroens
-' * Converted to cCoreInputOutputBase
 '
 '==============================================================================
 
@@ -148,9 +68,10 @@ Public Class cStanzaGroup
         ' ReDim EcopathGroup(Stanza)
         ' vbgfK = vbK(GrpNo)
 
-        'vbgfK
-        val = New cValue(New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        ''vbgfK
+        'meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        'val = New cValue(New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.StanzaVBGF))
+        'm_values.Add(val.varName, val)
 
         'LeadingBiomass
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
@@ -347,15 +268,14 @@ Public Class cStanzaGroup
 
 #Region "Variables by dot (.) operator"
 
-    Public Property VBGF() As Single
-        Get
-            Return CSng(Me.GetVariable(eVarNameFlags.StanzaVBGF))
-        End Get
-        Set(ByVal value As Single)
-            Me.SetVariable(eVarNameFlags.StanzaVBGF, value)
-        End Set
-    End Property
-
+    'Public Property VBGF() As Single
+    '    Get
+    '        Return CSng(Me.GetVariable(eVarNameFlags.StanzaVBGF))
+    '    End Get
+    '    Set(ByVal value As Single)
+    '        Me.SetVariable(eVarNameFlags.StanzaVBGF, value)
+    '    End Set
+    'End Property
 
     Public Property LeadingB() As Integer
         Get

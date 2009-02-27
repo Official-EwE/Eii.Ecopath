@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanzaEwEGrid.vb,v $
+' Revision 1.3  2009/02/27 07:55:14  jeroens
+' Changed vbK placement
+'
 ' Revision 1.2  2008/12/15 15:52:28  jeroens
 ' no message
 '
@@ -433,13 +436,13 @@ Public Class EditMultiStanzaEwEGrid
     Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
         Dim multiStanza As cEcoPathGroupInput = Nothing
         Dim core As cCore = cCore.GetInstance()
-        'Dim source As cCoreInputOutputBase = Nothing
+        Dim source As cEcoPathGroupInput = Nothing
         Dim sg As cStanzaGroup = Nothing
 
         sg = core.StanzaGroups(m_ClickedStanzaGroupIndex)
 
         'sg.Name = m_ClickedStanzaGroupName
-        sg.VBGF = m_CurvParam
+        'sg.VBGF = m_CurvParam
         sg.RecruitmentPower = m_RecruitPower
         sg.BiomassAccumulationRate = m_RelBiomassAccumRate
         sg.WmatWinf = m_WmatWinf
@@ -447,8 +450,6 @@ Public Class EditMultiStanzaEwEGrid
         sg.FixedFecundity = m_FixedFecundity
 
         For iStanza As Integer = 1 To m_NStanza
-
-            'source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
 
             ' JS 27jun07: stanza ages only editable from EditGroups interface
             ''Start age
@@ -468,7 +469,12 @@ Public Class EditMultiStanzaEwEGrid
             'source.SetVariable(eVarNameFlags.QBInput, Me(iStanza, eColumnTypes.QBInput).Value)
             'sg.SetVariable(eVarNameFlags.QBInput, Me(iStanza, eColumnTypes.QBInput).Value, iStanza)
             sg.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.QBInput).Value)
+
         Next
+
+        ' Core will cascade this
+        source = core.EcoPathGroupInputs(sg.iGroups(1))
+        source.VBK = m_CurvParam
 
         If bApplyToCore Then sg.Apply()
 
@@ -524,7 +530,7 @@ Public Class EditMultiStanzaEwEGrid
     Public Sub DetermineClickedStanzaGroup()
         Dim multiStanza As cEcoPathGroupInput = Nothing
         Dim core As cCore = cCore.GetInstance()
-        Dim source As cCoreInputOutputBase = Nothing
+        Dim source As cEcoPathGroupInput = Nothing
         Dim sg As cStanzaGroup = Nothing
         'Dim iRow As Integer
         Dim ewec As EwECell = Nothing
@@ -545,9 +551,10 @@ Public Class EditMultiStanzaEwEGrid
         '    m_ClickedStanzaGroupIndex = m_StanzaClicked.StanzaID
         'End If
         sg = core.StanzaGroups(m_ClickedStanzaGroupIndex)
+        source = core.EcoPathGroupInputs(sg.iGroups(1))
 
         m_ClickedStanzaGroupName = sg.Name
-        m_CurvParam = sg.VBGF
+        m_CurvParam = source.VBK
         m_RecruitPower = sg.RecruitmentPower
         m_RelBiomassAccumRate = sg.BiomassAccumulationRate
         m_WmatWinf = sg.WmatWinf

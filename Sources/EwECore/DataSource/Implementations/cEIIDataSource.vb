@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.8  2009/02/27 07:55:15  jeroens
+' Changed vbK placement
+'
 ' Revision 1.7  2009/02/26 00:57:29  jeroens
 ' Added DB compact
 '
@@ -39,7 +42,9 @@ Imports EwEUtils.Database
 ''' </summary>
 ''' ===========================================================================
 Public Class cEIIDataSource
-    Implements IEwEDataSource, IEcopathDataSource, IEcosimDatasource
+    Implements IEwEDataSource
+    Implements IEcopathDataSource
+    Implements IEcosimDatasource
 
     Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
@@ -515,7 +520,8 @@ Public Class cEIIDataSource
     ''' core a full data reload is required after a group is created.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
+                      ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -1054,7 +1060,8 @@ Public Class cEIIDataSource
     ''' <param name="sMortality">Mortality for this life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, ByVal iStartAge As Integer, ByVal sMortality As Single, ByVal sVBK As Single) As Boolean _
+    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
+                                       ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean _
             Implements DataSources.IEcopathDataSource.AddStanzaLifestage
         Return False
     End Function

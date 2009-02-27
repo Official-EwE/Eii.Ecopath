@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.6  2009/02/27 07:55:14  jeroens
+' Changed vbK placement
+'
 ' Revision 1.5  2008/10/29 19:04:45  jeroens
 ' Cleaned up a tiny bit
 '
@@ -43,6 +46,8 @@ Imports EwEUtils.Drawing
     Private Const sNO_STANZA As String = ""
     ''' <summary>A number representing the row that contains the first group</summary>
     Private Const iFIRSTGROUPROW As Integer = 1
+    ''' <summary>Default VBK</summary>
+    Private Const sVBK As Single = 0.3!
 
     ''' <summary>The <see cref="cCore">Core</see> currently being modified.</summary>
     Private m_core As cCore = Nothing
@@ -198,7 +203,6 @@ Imports EwEUtils.Drawing
             End Set
         End Property
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the <see cref="cEcopathDataStructures.GroupColor">Color</see> value of
@@ -329,6 +333,12 @@ Imports EwEUtils.Drawing
             Return (Me.m_group Is Nothing)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function IsLifeStageChanged() As Boolean
 
             Dim sg As cStanzaGroup = Nothing
@@ -359,12 +369,30 @@ Imports EwEUtils.Drawing
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property VBK() As Single
+            Get
+                If (Me.m_stanza Is Nothing) Then
+                    If (Me.m_group Is Nothing) Then
+                        Return EditGroupsStanzaEwEGrid.sVBK
+                    Else
+                        Return Me.m_group.VBK
+                    End If
+                Else
+                    Return Me.m_stanza.VBK
+                End If
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property FlaggedForDeletion() As Boolean
             Get
                 Return Me.m_status = AddRemoveItemStatus.Removed
@@ -405,6 +433,8 @@ Imports EwEUtils.Drawing
         Private m_strName As String = ""
         ''' <summary>List of groups in this stanza configuration.</summary>
         Private m_alGroups As New List(Of GroupInfo)
+        ''' <summary>VBK value of a stanza group.</summary>
+        Private m_sVBK As Single = EditGroupsStanzaEwEGrid.sVBK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -414,9 +444,15 @@ Imports EwEUtils.Drawing
         ''' to initialize this instance from. If set, this instance represents a
         ''' stanza configuration currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal sg As cStanzaGroup)
+        Public Sub New(ByVal sg As cStanzaGroup, ByVal sVBK As Single)
+
+            ' Sanity check
+            Debug.Assert(sg IsNot Nothing)
+
             Me.m_sg = sg
             Me.m_strName = sg.Name
+            Me.m_sVBK = sVBK
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -428,6 +464,7 @@ Imports EwEUtils.Drawing
         Public Sub New(ByVal strName As String)
             Me.m_sg = Nothing
             Me.m_strName = strName
+            Me.m_sVBK = EditGroupsStanzaEwEGrid.sVBK
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -609,6 +646,17 @@ Imports EwEUtils.Drawing
             Me.m_alGroups.Sort(New StanzaAgeComparer())
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the vbK value for a stanza configuration.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property VBK() As Single
+            Get
+                Return Me.m_sVBK
+            End Get
+        End Property
+
     End Class
 
 #End Region ' Stanza info
@@ -762,7 +810,7 @@ Imports EwEUtils.Drawing
         ' Make snapshot of stanza configuration
         For iStanza As Integer = 0 To core.nStanzas - 1
             stanza = core.StanzaGroups(iStanza)
-            si = New StanzaInfo(stanza)
+            si = New StanzaInfo(stanza, core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Me.m_lsiStanza.Add(si)
 
             ' Stanza group list is a one-based array
@@ -1894,7 +1942,7 @@ Imports EwEUtils.Drawing
                 gi = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
                 If (gi.IsNew()) Then
                     Dim igt As Integer = iGroup + 1
-                    bSuccess = bSuccess And Me.m_core.AddGroup(gi.Name, gi.PP, igt, iDBID)
+                    bSuccess = bSuccess And Me.m_core.AddGroup(gi.Name, gi.PP, gi.vbk, igt, iDBID)
                     Debug.Assert(igt = iGroup + 1)
                     ' Map this new ID during update
                     htGroupID.Add(gi, iDBID)
@@ -1997,7 +2045,7 @@ Imports EwEUtils.Drawing
                             Else
                                 iDBID = htGroupID(gi)
                             End If
-                            If Not Me.m_core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality, 0.3!) Then
+                            If Not Me.m_core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality) Then
                                 bSuccess = False
                             End If
                         Next
@@ -2030,7 +2078,8 @@ Imports EwEUtils.Drawing
                         group = Me.m_core.EcoPathGroupInputs(iGrpTmp)
                         If group.getID = gi.Group.getID Then
                             If (group.Name <> gi.Name) Then group.Name = gi.Name
-                            If (group.PP <> CSng(gi.PP)) Then group.PP = CSng(gi.PP)
+                            If (group.PP <> gi.PP) Then group.PP = gi.PP
+                            If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
                                 If gi.PoolColor = StyleGuide.ColorToInt(stgd.GroupColorDefault(Me.m_core, iGrpTmp, Me.m_core.nGroups)) Then

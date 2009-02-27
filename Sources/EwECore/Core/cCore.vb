@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.69  2009/02/27 07:58:09  jeroens
+' Changed vbK placement
+'
 ' Revision 1.68  2009/02/25 08:33:01  jeroens
 ' Fixed bug 592
 '
@@ -25,192 +28,13 @@
 ' Revision 1.61  2009/01/24 17:44:36  joeb
 ' Added ProfitByFleet(Fleet) and EmploymentValueByFleet(Fleet) to Economic Adapters
 '
-' Revision 1.60  2009/01/22 19:05:36  jeroens
-' Added economic data adapter
-'
-' Revision 1.59  2009/01/19 18:07:21  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.58  2009/01/17 03:25:48  jeroens
-' Core State Monitor data and execute states separated
-'
-' Revision 1.57  2009/01/16 23:51:14  jeroens
-' Datasource no longer maitains data state by datatype, but by eCoreComponentType
-'
-' Revision 1.56  2009/01/16 18:37:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.55  2009/01/16 17:16:57  joeb
-' Changing Ecospace run length sets default summary periods
-'
-' Revision 1.54  2009/01/16 16:02:56  joeb
-' onValidated() only sets msAffected from cValue.isStored flag
-'
-' Revision 1.53  2009/01/15 22:44:41  joeb
-' Added OnValidated for Ecospace Start and End summary periods
-'
-' Revision 1.52  2009/01/14 18:44:33  joeb
-' Averaging of Ecospace results is handled be space at the end of the run instead of when the results objects are populated
-'
-' Revision 1.51  2009/01/13 21:30:37  joeb
-' Still cleaning up after Merge of Summary with Output data
-'
-' Revision 1.50  2009/01/13 21:15:03  joeb
-' Merged Ecospace summary objects into Output objects
-'
-' Revision 1.49  2009/01/13 17:56:51  joeb
-' Replaced Ecosim summary output objects with EcosimGroup and Fleet output objects
-'
-' Revision 1.48  2009/01/12 22:50:39  joeb
-' Ecospace results are saved over time then summarized into summary time periods at the end of the run
-'
-' Revision 1.47  2008/12/28 20:46:59  villyc
-' *** empty log message ***
-'
-' Revision 1.46  2008/12/18 21:55:59  joeb
-' Added FleetSummary Profit and Jobs
-' Revision 1.45  2008/12/09 19:45:51  joeb
-' Added IResultsWrapper for wrapping core data arrays in output objects
-'
-' Revision 1.44  2008/12/08 16:46:41  jeroens
-' Added SearchInitialized plugin point
-'
-' Revision 1.43  2008/12/03 17:39:52  joeb
-' Added Consumption(iPP, iTime)  and Electivity to EcosimGroupOutput for Functional Response and Electivity graphs
-'
-' Revision 1.42  2008/12/02 19:10:54  joeb
-' Minor changes to setEcosimRunLength()
-'
-' Revision 1.41  2008/11/28 16:54:00  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.40  2008/11/27 23:35:26  joeb
-' Renamed cEcoPathModel.EstimateParameter to Run
-'
-' Revision 1.39  2008/11/27 18:16:45  joeb
-' Moved Flimit() back to Search data
-'
-' Revision 1.38  2008/11/26 02:55:46  jeroens
-' Fixed bug 577
-'
-' Revision 1.37  2008/11/25 17:55:08  joeb
-' Changes to setEcosimRunLength() for bug 459
-'
-' Revision 1.36  2008/11/20 19:18:19  jeroens
-' Hmm, EcosimLoaded state is still required!
-'
-' Revision 1.35  2008/11/20 18:48:21  joeb
-' Removed Ecosim.Init from RunEcospace
-'
-' Revision 1.34  2008/11/20 18:36:40  jeroens
-' Ecosim initialized set in Sim scenario load
-'
-' Revision 1.33  2008/11/20 18:29:27  joeb
-' Fixed oppsss
-'
-' Revision 1.32  2008/11/20 17:45:40  joeb
-' Moved updateDietComp from SyncManager to StateManager
-'
-' Revision 1.31  2008/11/20 17:13:38  joeb
-' More cCoreStateManager stuff
-'
-' Revision 1.30  2008/11/20 17:10:17  joeb
-' Added cCoreStateManager
-'
-' Revision 1.29  2008/11/20 15:15:00  jeroens
-' Ecospace acrtive scenario ID preserved when save fails
-'
-' Revision 1.28  2008/11/19 22:11:30  joeb
-' Added EcoSim.Init to RunEcoSpace to bring any edited data up to date
-'
-' Revision 1.27  2008/11/18 16:32:40  joeb
-' Added a ToDo to RunEcoSpace()
-'
-' Revision 1.26  2008/11/14 18:51:46  joeb
-' Fixed an opps from the last commit
-'
-' Revision 1.25  2008/11/14 18:50:37  joeb
-' Changed Ecospace biomass output
-'
-' Revision 1.24  2008/11/12 19:15:14  joeb
-' Added Ecofunctions to Search datastructures
-'
-' Revision 1.23  2008/11/11 21:33:00  joeb
-' Added cEcoFunction
-'
-' Revision 1.22  2008/11/10 06:29:40  jeroens
-' RunEcopath has option to produce outputs, even if param estimation failed
-'
-' Revision 1.21  2008/10/29 19:44:55  joeb
-' Set_Quota_Flags() Boot out is null argument
-'
-' Revision 1.20  2008/10/29 15:49:25  jeroens
-' Pruned history
-'
-' Revision 1.19  2008/10/22 15:53:51  joeb
-' Added NRows and NCols dimensions for map
-' Added OnValidated code for fisheries regulation objects
-'
-' Revision 1.18  2008/10/20 20:21:09  joeb
-' Quota editable from Game Client
-'
-' Revision 1.17  2008/10/15 20:25:17  joeb
-' Added MontCarlo handler to onChanged()
-'
-' Revision 1.16  2008/10/09 17:21:02  jeroens
-' Moved discard mort data from Ecosim to Ecopath
-'
-' Revision 1.15  2008/10/09 00:13:02  joeb
-' *** empty log message ***
-'
-' Revision 1.14  2008/10/08 20:32:10  joeb
-' Added CVBest and KalWt
-'
-' Revision 1.13  2008/10/08 17:53:53  jeroens
-' Added target fishing mortality policy vars
-'
-' Revision 1.12  2008/10/08 17:46:59  joeb
-' Regulatory Feedback Loop
-'
-' Revision 1.11  2008/10/07 22:49:35  jeroens
-' Localized GUI string
-'
-' Revision 1.10  2008/10/07 00:38:12  jeroens
-' Restored wrong EcosimGroup load/update fixes
-'
-' Revision 1.9  2008/10/06 21:11:53  jeroens
-' Added Fisheries Regulation data status flags
-'
-' Revision 1.8  2008/10/06 16:33:12  jeroens
-' Flipped Vulnerabilities matrix in database
-'
-' Revision 1.7  2008/10/05 17:52:39  villyc
-' ecosim mc, removed the Villy public property
-'
-' Revision 1.6  2008/10/04 21:27:23  villyc
-' mc seems to work now,
-'
-' Revision 1.5  2008/10/03 23:08:29  jeroens
-' Added cEcosimFisheriesRegulations
-'
-' Revision 1.4  2008/10/02 20:42:11  jeroens
-' Added Villy's flag
-'
-' Revision 1.3  2008/10/01 16:50:28  villyc
-' Ecosim monte carlo updates, plus ecosim plot bug fix
-'
-' Revision 1.2  2008/09/26 15:25:09  joeb
-' OnValidated() was adding EcoSimNYears to the affected variables list twice
-'
-' Revision 1.1  2008/09/26 07:30:11  sherman
-' --== DELETED HISTORY ==--
-'
 '==============================================================================
 
 Option Strict On
 
-Imports System.Drawing
+#Region " Imports "
 
+Imports System.Drawing
 Imports EwECore.DataSources
 Imports EwECore.ValueWrapper
 Imports EwECore.Auxiliary
@@ -221,6 +45,9 @@ Imports EwECore.FishingPolicy
 Imports EwECore.EcoSeed
 Imports EwECore.MSE
 Imports EwECore.SearchObjectives
+
+#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
@@ -249,18 +76,18 @@ Imports EwECore.SearchObjectives
 ''' ---------------------------------------------------------------------------
 Public Class cCore
 
+#Region " Shared consts "
+
     ''' <summary>The NULL or 'no data' value for values maintained in the EwE Core.</summary>
     Public Const NULL_VALUE As Integer = -9999
     ''' <summary>The maximum age of a stanza life stage.</summary>
     Public Const MAX_AGE As Integer = 400
-    ''' <summary>The number of months in a year.</summary><remarks type="bs">A petition to change the number of months per year to 10 has been submitted to the international organization for standardization (ISO) dd Jun02, 2007. We sincerely hope that the next addendum to ISO 9000 will include this change to facilitate our computational models. Unfortunately, until this change has globally been implemented issued, Ecopath will be using conventional 12 months per year.</remarks>
+    ''' <summary>The number of months in a year.</summary><remarks type="bs">A petition to change the number of months per year to 10 has been submitted to the international organization for standardization (ISO) dd Jun02, 2007. We sincerely hope that the next addendum to ISO 9000 will include this change to facilitate our computational models. Unfortunately, until this change has globally been implemented issued, Ecopath will be using the more conventional assumption of 12 months per year.</remarks>
     Public Const N_MONTHS As Integer = 12
-
-    ''' <summary>
-    ''' Max number of year ecosim or ecospace can run for
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Max number of year ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
+
+#End Region ' Shared consts
 
     ''' <summary>
     ''' Delegate defintion used to pass a message from the core to the interface.
@@ -988,7 +815,7 @@ Public Class cCore
     ''' <param name="iGroupID">Database ID assigned to the new group.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddGroup(ByVal strName As String, ByVal sPP As Single, _
+    Public Function AddGroup(ByVal strName As String, ByVal sPP As Single, ByVal sVBK As Single, _
             ByRef iGroup As Integer, ByRef iGroupID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
@@ -1010,7 +837,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ' Start the actual work
-        If (DirectCast(Me.DataSource, IEcopathDataSource).AddGroup(strName, sPP, iGroup, iGroupID)) Then
+        If (DirectCast(Me.DataSource, IEcopathDataSource).AddGroup(strName, sPP, sVBK, iGroup, iGroupID)) Then
 
             Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupInput)
             Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupOutput)
@@ -1351,8 +1178,11 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     Public Function ImportEcosimTimeSeries(ByVal ts As cTimeSeriesImport, ByVal iDataset As Integer) As Boolean
 
+        Dim bSucces As Boolean = True
+
         If Not (TypeOf DataSource Is IEcosimDatasource) Then Return False
-        Return DirectCast(DataSource, IEcosimDatasource).ImportTimeSeries(ts, iDataset)
+        bSucces = DirectCast(DataSource, IEcosimDatasource).ImportTimeSeries(ts, iDataset)
+        Return bSucces
 
     End Function
 
@@ -2569,7 +2399,7 @@ Public Class cCore
                 Input.BioAccumRate = CSng(m_EcoPathData.BaBi(iGroup))
                 Input.Immigration = m_EcoPathData.Immig(iGroup)
                 Input.PP = m_EcoPathData.PP(iGroup)
-                Input.VBGF = m_EcoPathData.vbKInput(iGroup)
+                Input.VBK = m_EcoPathData.vbKInput(iGroup)
                 Input.PoolColor = m_EcoPathData.GroupColor(iGroup)
                 Input.NonMarketValue = m_EcoPathData.Shadow(iGroup)
 
@@ -2645,7 +2475,7 @@ Public Class cCore
                 m_EcoPathData.EEinput(iGroup) = Input.EEInput
                 m_EcoPathData.GEinput(iGroup) = Input.GEInput
                 m_EcoPathData.BHinput(iGroup) = Input.BiomassAreaInput
-                m_EcoPathData.vbKInput(iGroup) = Input.VBGF
+                m_EcoPathData.vbKInput(iGroup) = Input.VBK
                 m_EcoPathData.GroupColor(iGroup) = Input.PoolColor
                 m_EcoPathData.Shadow(iGroup) = Input.NonMarketValue()
 
@@ -3922,7 +3752,7 @@ Public Class cCore
         Return True
     End Function
 
-    Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
+    Private Sub Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage)
 
         Dim objCascade As cCoreInputOutputBase = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -4015,9 +3845,10 @@ Public Class cCore
                 End If
 
         End Select
-    End Function
+    End Sub
 
-    Private Function Cascade_PP(ByVal sPP As Single, ByVal obj As cCoreGroupBase, ByVal msg As cMessage) As Boolean
+    Private Sub Cascade_PP(ByVal sPP As Single, ByVal obj As cCoreGroupBase, ByVal msg As cMessage)
+
         Dim objCascade As cCoreGroupBase = Nothing
         Dim bAllowValidationOrg As Boolean = False
 
@@ -4047,8 +3878,31 @@ Public Class cCore
             End If
         End If
 
+    End Sub
 
-    End Function
+    Private Sub Cascade_VBFG(ByVal sVBGF As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
+
+        Dim groupCascade As cEcoPathGroupInput = Nothing
+        Dim bAllowValidationOrg As Boolean = False
+        Dim iStanzaID As Integer = group.StanzaID
+
+        ' Is not a stanza life stage?
+        If (iStanzaID = 0) Then Return
+
+        For iGroup As Integer = 1 To Me.nGroups
+            groupCascade = Me.EcoPathGroupInputs(iGroup)
+            If (iGroup <> group.Index) And (groupCascade.StanzaID = iStanzaID) Then
+
+                bAllowValidationOrg = groupCascade.AllowValidation
+                groupCascade.AllowValidation = False
+                groupCascade.VBK = sVBGF
+                groupCascade.AllowValidation = bAllowValidationOrg
+
+                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBK))
+            End If
+        Next
+
+    End Sub
 
 #End Region ' Status flags updating
 
@@ -7972,7 +7826,7 @@ Public Class cCore
             stanza.HatchCode = m_Stanza.HatchCode(iStanza)
             stanza.FixedFecundity = m_Stanza.FixedFecundity(iStanza)
 
-            stanza.VBGF = m_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, m_Stanza.BaseStanza(iStanza)))
+            'stanza.VBGF = m_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, m_Stanza.BaseStanza(iStanza)))
 
             ' Array variables
             For j As Integer = 1 To m_Stanza.Nstanza(iStanza)
@@ -8028,7 +7882,7 @@ Public Class cCore
             Dim iStanza As Integer = StanzaGrp.Index
             Dim nStanzas As Integer = StanzaGrp.NStanzas
             Dim i As Integer
-            Dim orgVBK As Single = StanzaGrp.VBGF
+            Dim orgVBK As Single = Me.EcoPathGroupInputs(StanzaGrp.iGroups(1)).VBK
 
             Dim wmatwinf As Single
             Dim rp As Single
@@ -8087,7 +7941,10 @@ Public Class cCore
 
             're-populate the variables that the user entered as arguments to CalculateStanzaParameters() 
             'that were over written by loadStanza()
-            StanzaGrp.VBGF = orgVBK
+
+            ' JS 25feb09: vbk stored in groups, unaffected by stanza calculations
+            'StanzaGrp.VBGF = orgVBK
+
             For i = 1 To nStanzas
                 StanzaGrp.Biomass(i) = Bio(i)
                 StanzaGrp.Mortality(i) = Z(i)
@@ -8146,8 +8003,8 @@ Public Class cCore
             m_Stanza.EcopathCode(iStanza, iLifeStage) = stanza.iGroups(iLifeStage)
             m_Stanza.Age1(iStanza, iLifeStage) = stanza.StartAge(iLifeStage)
 
-            'update all the lifestages with the single vbK value EwE5 see frmGrpStanza.UpdateGroups
-            m_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.VBGF
+            ''update all the lifestages with the single vbK value EwE5 see frmGrpStanza.UpdateGroups
+            'm_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.VBGF
 
             'Ecopath data that may have been changed by the stanza parameter calculations
             m_EcoPathData.Binput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage)
@@ -8236,8 +8093,10 @@ Public Class cCore
     ''' <param name="iStanza">Index of the stanza group to modify.</param>
     ''' <param name="iGroupDBID">Database if of the Group to assign as life stage.</param>
     ''' <param name="iAge">The age to assign to this life stage.</param>
+    ''' <param name="sMortality"></param>
     ''' <returns>True if succesful.</returns>
-    Public Function AddStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer, ByVal iAge As Integer, ByVal sMortality As Single, ByVal sVBK As Single) As Boolean
+    Public Function AddStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer, _
+                                       ByVal iAge As Integer, ByVal sMortality As Single) As Boolean
 
         Dim iStanzaDBID As Integer = Me.m_Stanza.StanzaDBID(iStanza)
         Dim bSucces As Boolean = False
@@ -8251,7 +8110,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         ' Remove the stanza
         ds = DirectCast(DataSource, IEcopathDataSource)
-        bSucces = ds.AddStanzaLifestage(iStanzaDBID, iGroupDBID, iAge, sMortality, sVBK)
+        bSucces = ds.AddStanzaLifestage(iStanzaDBID, iGroupDBID, iAge, sMortality)
         ' Decrease batch count
         Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
 
@@ -9550,7 +9409,7 @@ Public Class cCore
 
             Case eDataTypes.EcoPathGroupInput
                 Debug.Assert(TypeOf obj Is cEcoPathGroupInput)
-                Dim egi As cEcoPathGroupInput = DirectCast(obj, cEcoPathGroupInput)
+                Dim group As cEcoPathGroupInput = DirectCast(obj, cEcoPathGroupInput)
 
                 Select Case value.varName
 
@@ -9559,16 +9418,17 @@ Public Class cCore
 
                     Case eVarNameFlags.Area, eVarNameFlags.BiomassAreaInput
                         ' Area or BiomassAreaInput have changed: recalculate B (biomass)
-                        m_EcoPathData.Binput(egi.Index) = egi.BiomassAreaInput * egi.Area
+                        m_EcoPathData.Binput(group.Index) = group.BiomassAreaInput * group.Area
                         ' Add to msg
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.Biomass))
 
-                    Case eVarNameFlags.VBGF
+                    Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableUpdated?
+                        Me.Cascade_VBFG(group.VBK, group, msg)
 
                     Case eVarNameFlags.PP
                         ' Cascade PP change to other Groups
-                        Me.Cascade_PP(egi.PP, egi, msg)
+                        Me.Cascade_PP(group.PP, group, msg)
 
                 End Select
 
@@ -9585,7 +9445,7 @@ Public Class cCore
 
             Case eDataTypes.EcoSimModelParameter
                 Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
-                Dim esmp As cEcoSimModelParameters = DirectCast(obj, cEcoSimModelParameters)
+                Dim params As cEcoSimModelParameters = DirectCast(obj, cEcoSimModelParameters)
 
                 Select Case value.varName
                     Case eVarNameFlags.EcoSimNYears
@@ -9867,7 +9727,7 @@ Public Class cCore
                         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
                         '  Me.m_FitToTimeSeries.Load()
 
-                    Case eVarNameFlags.VBGF
+                    Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
 
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.3  2009/02/27 07:55:15  jeroens
+' Changed vbK placement
+'
 ' Revision 1.2  2009/01/16 18:30:15  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -253,8 +256,8 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'VBGF
-        meta = New cVariableMetaData(0, Single.MinValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.VBGF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBGF))
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBK))
         m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -616,13 +619,13 @@ Public Class cEcoPathGroupInput
 
     End Property
 
-    Public Property VBGF() As Single
+    Public Property VBK() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.VBGF))
+            Return CSng(GetVariable(eVarNameFlags.VBK))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.VBGF, value)
+            SetVariable(eVarNameFlags.VBK, value)
         End Set
     End Property
 
@@ -921,13 +924,13 @@ Public Class cEcoPathGroupInput
 
     End Property
 
-    Public Property VBGFStatus() As eStatusFlags
+    Public Property VBKStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.VBGF)
+            Return GetStatus(eVarNameFlags.VBK)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.VBGF, value)
+            SetStatus(eVarNameFlags.VBK, value)
         End Set
     End Property
 

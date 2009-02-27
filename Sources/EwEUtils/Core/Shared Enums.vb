@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.29  2009/02/27 07:56:51  jeroens
+' Changed vbK placement
+'
 ' Revision 1.28  2009/02/02 22:29:09  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -320,7 +323,7 @@ Namespace Core
         ''' <summary></summary>
         SwitchingPower
         ''' <summary></summary>
-        VBGF
+        VBK
         ''' <summary></summary>
         VulRate
         ''' <summary></summary>
@@ -682,7 +685,7 @@ Namespace Core
         ''' <summary>Mortality for this a stanza iStanzaGroup Ecopath PB</summary>
         StanzaMortaility
 
-        StanzaVBGF
+        'StanzaVBGF
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Ecospace multi thread vars

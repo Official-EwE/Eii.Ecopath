@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEcopathDataSource.vb,v $
+' Revision 1.2  2009/02/27 07:55:14  jeroens
+' Changed vbK placement
+'
 ' Revision 1.1  2008/09/26 07:30:13  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -101,7 +104,8 @@ Namespace DataSources
         ''' Create a record for a new Ecopath group in the datasource.
         ''' </summary>
         ''' <param name="strGroupName">The name of the group to create.</param>
-        ''' <param name="sPP">The Type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+        ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
+        ''' <param name="sVBK">vbK value to initialize the group with.</param>
         ''' <param name="iPosition">The position of the new group in the group sequence.</param>
         ''' <param name="iDBID">Database ID assigned to the new Group.</param>
         ''' <returns>True if succesful.</returns>
@@ -110,7 +114,8 @@ Namespace DataSources
         ''' core a full data reload is required after a group is created.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
+        Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
+                          ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -207,10 +212,10 @@ Namespace DataSources
         ''' <param name="iGroupDBID">Group to add as a life stage.</param>
         ''' <param name="iStartAge">Start age of this life stage.</param>
         ''' <param name="sMortality">Mortality for this life stage.</param>
-        ''' <param name="sVBK">vbK value for a life stage.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, ByVal iStartAge As Integer, ByVal sMortality As Single, ByVal sVBK As Single) As Boolean
+        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
+                                    ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
