@@ -1037,6 +1037,9 @@
     <Compile Include="Ecopath\Output\EcopathStatisticsEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Output\GrowthEstimatesEwEGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\PSDContributionPlot.Designer.vb">
       <DependentUpon>PSDContributionPlot.vb</DependentUpon>
     </Compile>
