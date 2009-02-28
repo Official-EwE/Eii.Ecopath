@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.30  2009/02/28 00:10:20  joeh
+' Added PSD variables
+'
 ' Revision 1.29  2009/02/27 07:56:51  jeroens
 ' Changed vbK placement
 '
@@ -322,8 +325,6 @@ Namespace Core
         QBMaxQBio
         ''' <summary></summary>
         SwitchingPower
-        ''' <summary></summary>
-        VBK
         ''' <summary></summary>
         VulRate
         ''' <summary></summary>
@@ -1099,6 +1100,26 @@ Namespace Core
 
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
+
+        'Joeh
+        ''' <summary></summary>
+        VBKInput
+        VBKOutput
+        AinLWInput
+        AinLWOutput
+        BinLWInput
+        BinLWOutput
+        LooInput
+        LooOutput
+        WinfInput
+        WinfOutput
+        t0Input
+        t0Output
+        TcatchInput
+        TcatchOutput
+        TmaxInput
+        TmaxOutput
+        'End Joeh
 
     End Enum
 
