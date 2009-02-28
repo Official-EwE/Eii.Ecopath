@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.16  2009/02/28 00:15:11  joeh
+' Added PSD forms
+'
 ' Revision 1.15  2009/02/19 21:18:26  joeh
 ' Particel size distribution - initial version
 '
@@ -134,6 +137,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(SearchRatesEwEGrid), "Search rates.htm")
         m_nodeController.Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
+        m_nodeController.Add("ndGrowthEstimates", eCoreExecutionState.EcopathCompleted, GetType(GrowthEstimatesEwEGrid), "") ' ToDo: connect to help
         m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathCompleted, GetType(RunPSD), "") ' ToDo: connect to help
         m_nodeController.Add("ndPSDContributionPlot", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
         m_nodeController.Add("ndPSDContributionResult", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
