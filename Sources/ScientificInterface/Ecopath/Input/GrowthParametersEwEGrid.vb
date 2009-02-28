@@ -1,4 +1,12 @@
-﻿#Region " Imports "
+﻿'==============================================================================
+'
+' $Log: GrowthParametersEwEGrid.vb,v $
+' Revision 1.3  2009/02/28 00:28:12  joeh
+' It works! It works!
+'
+'==============================================================================
+
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -106,14 +114,23 @@ Namespace Ecopath.Input
                 Me(iRow, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 3) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 4) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 5) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBK)
-            Me(iRow, 7) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 8) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
-            Me(iRow, 9) = New PropertyCell(group, eVarNameFlags.NonMarketValue)
+            Me(iRow, 2) = New PropertyCell(group, eVarNameFlags.AinLWInput)
+            Me(iRow, 3) = New PropertyCell(group, eVarNameFlags.BinLWInput)
+            Me(iRow, 4) = New PropertyCell(group, eVarNameFlags.LooInput)
+            Me(iRow, 5) = New PropertyCell(group, eVarNameFlags.WinfInput)
+            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBKInput)
+            Me(iRow, 7) = New PropertyCell(group, eVarNameFlags.t0Input)
+            Me(iRow, 8) = New PropertyCell(group, eVarNameFlags.TcatchInput)
+            Me(iRow, 9) = New PropertyCell(group, eVarNameFlags.TmaxInput)
+
+        End Sub
+
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+            Me.
+            For i As Integer = 2 To Me.ColumnsCount - 1
+                Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
+            Next
 
         End Sub
 
