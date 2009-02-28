@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.10  2009/02/28 00:58:08  joeh
+' Add PSD estimation
+'
 ' Revision 1.9  2009/02/26 18:38:01  joeb
 ' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
 '
@@ -350,6 +353,10 @@ Namespace Ecopath
                 If bPluginFailed Then
 
                     Me.EstimateParameters(m_eEstimType, m_EstimStatus)
+
+                    'Joeh
+                    EstimateGrowthParameters()
+                    'End Joeh
 
                 End If
 
@@ -2946,6 +2953,98 @@ nextJ:
             End Try
 
         End Function
+
+        'Joeh
+        Private Sub EstimateGrowthParameters()
+            Dim sg As cStanzaGroup = Nothing
+            Dim core As cCore = cCore.GetInstance()
+            Dim sngTemp As Single
+            Static intStanzaNumber As Integer = 0
+
+            'A in LW
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.AinLW(i) < 0 Then m_Data.AinLW(i) = 0.01
+            Next
+
+            'B in LW
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.BinLW(i) < 0 Then m_Data.BinLW(i) = 3
+            Next
+
+            'Loo
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.Loo(i) < 0 And m_Data.Winf(i) > 0 And m_Data.AinLW(i) > 0 And m_Data.BinLW(i) > 0 Then
+                    m_Data.Loo(i) = CSng(Math.Pow(10.0, (Math.Log10(m_Data.Winf(i)) - Math.Log10(m_Data.AinLW(i))) / m_Data.BinLW(i)))
+                End If
+            Next
+
+            'Winf
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.Winf(i) < 0 And m_Data.Loo(i) > 0 And m_Data.AinLW(i) > 0 And m_Data.BinLW(i) > 0 Then
+                    m_Data.Winf(i) = CSng(m_Data.AinLW(i) * Math.Pow(m_Data.Loo(i), m_Data.BinLW(i)))
+                End If
+            Next
+
+            'K in VBGF
+            'For i As Integer = 1 To m_Data.NumLiving
+            '    If m_Data.StanzaGroup(i) Then
+            '        'Stanza
+            '        'Which stanza group?
+            '        For j As Integer = 0 To core.nStanzas - 1
+            '            sg = core.StanzaGroups(j)
+            '            If m_Data.GroupName(i).Contains(sg.Name) Then Exit For
+            '        Next
+            '        intStanzaNumber = intStanzaNumber + 1
+            '        If intStanzaNumber <> sg.LeadingB() Then
+            '            'Not leading stanza
+            '            'Do nothing
+            '        Else
+            '            'Leading stanza
+            '            'Set KinVBGF of all stanza in the stanza group to that of the leading stanza
+            '            For k As Integer = 1 To sg.NStanzas - 1
+            '                m_Data.KinVBGF(i - k) = m_Data.KinVBGF(i)
+            '            Next
+            '            intStanzaNumber = 0
+            '        End If
+            '    Else
+            '        'Not stanza
+            '        'Do nothing
+            '    End If
+            'Next
+
+            't0
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.t0(i) < -9998.0 And m_Data.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
+                    m_Data.t0(i) = CSng(-Math.Exp(-0.3922 - 0.2752 * Math.Log10(m_Data.Loo(i)) - 1.038 * Math.Log10(m_Data.vbK(i))))
+                End If
+            Next
+
+            'Tmax
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.StanzaGroup(i) Then
+                    'Stanza
+                    'For isp As Integer = 1 To stanza.Nsplit
+                    '    For ist As Integer = 1 To stanza.Nstanza(isp)
+                    '        If m_Data.GroupName(i) = stanza.StanzaName(isp) Then 'StanzaName(isp, ist) Then 'found the name
+                    '            m_Data.Tmax(i) = CSng(stanza.Age2(isp, ist) / 12)
+                    '        End If
+                    '    Next
+                    'Next
+                Else
+                    'Not stanza
+                    If m_Data.PBinput(i) > 0 Then
+                        sngTemp = m_Data.PBinput(i)
+                    Else
+                        sngTemp = m_Data.PB(i)
+                    End If
+                    If sngTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
+                        sngTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
+                    End If
+                End If
+                If m_Data.Tmax(i) < 0 And sngTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
+            Next
+        End Sub
+        'End Joeh
 #End Region
 
     End Class
