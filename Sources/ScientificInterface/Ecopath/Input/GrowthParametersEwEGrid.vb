@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: GrowthParametersEwEGrid.vb,v $
+' Revision 1.4  2009/02/28 00:57:11  joeh
+' Remove syntax error
+'
 ' Revision 1.3  2009/02/28 00:28:12  joeh
 ' It works! It works!
 '
@@ -127,7 +130,7 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            Me.
+
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
