@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.71  2009/02/28 00:52:55  joeh
+' Remove Static variable
+'
 ' Revision 1.70  2009/02/28 00:15:58  joeh
 ' Added PSD foundation
 '
@@ -3798,27 +3801,34 @@ Public Class cCore
     End Function
 
     'Joeh
-    Friend Function Set_VBK_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_VBK_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
         Dim sg As cStanzaGroup = Nothing
-        Static intStanzaNumber As Integer = 0
+        Dim groupLeading As cEcoPathGroupInput = Nothing
+        Dim bIsLeadingGroup As Boolean = False
 
-        obj.AllowValidation = False
+        group.AllowValidation = False
 
-        If obj.isMultiStanza Then
-            'Stanza
-            sg = Me.StanzaGroups(obj.StanzaID)
-            intStanzaNumber = intStanzaNumber + 1
-            If intStanzaNumber <> sg.LeadingB() Then
-                'Not leading stanza
-                obj.SetStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+        ' Is a multi-stanza group?
+        If group.isMultiStanza Then
+            ' #Yes: configure VBK editable mode
+            sg = Me.StanzaGroups(group.StanzaID)
+
+            ' Get the leading group for this stanza config
+            groupLeading = Me.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
+            bIsLeadingGroup = Object.ReferenceEquals(groupLeading, group)
+
+            ' Is leading stanza?
+            If bIsLeadingGroup Then
+                ' #Yes: make VBK editable to the user
+                group.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
             Else
-                'Leading stanza
-                obj.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
-                intStanzaNumber = 0
+                ' #No: make VBK read-only to the user
+                group.SetStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
             End If
         Else
-            'Not stanza
-            obj.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+            ' #No: Make VBK editable to the user
+            group.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then
@@ -3826,7 +3836,7 @@ Public Class cCore
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
-        obj.AllowValidation = True
+        group.AllowValidation = True
     End Function
     'End Joeh
 
@@ -3974,6 +3984,7 @@ Public Class cCore
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
                 groupCascade.VBK = sVBK
+                groupCascade.ResetStatusFlags()
                 groupCascade.AllowValidation = bAllowValidationOrg
 
                 msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBKInput))
