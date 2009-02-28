@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.70  2009/02/28 00:15:58  joeh
+' Added PSD foundation
+'
 ' Revision 1.69  2009/02/27 07:58:09  jeroens
 ' Changed vbK placement
 '
@@ -2160,6 +2163,12 @@ Public Class cCore
 
                 'build input and output objects
                 bsuccess = bsuccess And InitEcoPathGroups()
+
+                'Joeh
+                'build the Stanza Groups for the interface
+                bsuccess = bsuccess And InitStanzas()
+                'End Joeh
+
                 'populate input objects
                 bsuccess = bsuccess And LoadEcopathInputs()
                 'populate output objects
@@ -2173,8 +2182,10 @@ Public Class cCore
                 bsuccess = bsuccess And InitEcospaceScenarios()
                 bsuccess = bsuccess And InitEcotracerScenarios()
 
-                'build the Stanza Groups for the interface
-                bsuccess = bsuccess And InitStanzas()
+                'Joeh
+                ''build the Stanza Groups for the interface
+                'bsuccess = bsuccess And InitStanzas()
+                'End Joeh
 
                 bsuccess = bsuccess And InitPedigreeManagers()
 
@@ -2424,6 +2435,17 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.StanzaID = getStanzaIDForGroup(iGroup)
 
+                'Joeh
+                Input.AinLWInput = m_EcoPathData.AinLWInput(iGroup)
+                Input.BinLWInput = m_EcoPathData.BinLWInput(iGroup)
+                Input.LooInput = m_EcoPathData.LooInput(iGroup)
+                Input.WinfInput = m_EcoPathData.WinfInput(iGroup)
+                Input.VBK = m_EcoPathData.vbKInput(iGroup)
+                Input.t0Input = m_EcoPathData.t0Input(iGroup)
+                Input.TcatchInput = m_EcoPathData.TcatchInput(iGroup)
+                Input.TmaxInput = m_EcoPathData.TmaxInput(iGroup)
+                'End Joeh
+
                 'set all the status flags to default value
                 Input.ResetStatusFlags()
 
@@ -2470,12 +2492,24 @@ Public Class cCore
                 m_EcoPathData.Emig(iGroup) = Input.EmigRate
                 m_EcoPathData.PP(iGroup) = Input.PP
 
+                'Joeh
+                m_EcoPathData.AinLWInput(iGroup) = Input.AinLWInput
+                m_EcoPathData.BinLWInput(iGroup) = Input.BinLWInput
+                m_EcoPathData.LooInput(iGroup) = Input.LooInput
+                m_EcoPathData.WinfInput(iGroup) = Input.WinfInput
+                m_EcoPathData.vbKInput(iGroup) = Input.VBK
+
+                m_EcoPathData.t0Input(iGroup) = Input.t0Input
+                m_EcoPathData.TcatchInput(iGroup) = Input.TcatchInput
+                m_EcoPathData.TmaxInput(iGroup) = Input.TmaxInput
+                'End Joeh
+
                 m_EcoPathData.QBinput(iGroup) = Input.QBInput
                 m_EcoPathData.PBinput(iGroup) = Input.PBInput
                 m_EcoPathData.EEinput(iGroup) = Input.EEInput
                 m_EcoPathData.GEinput(iGroup) = Input.GEInput
                 m_EcoPathData.BHinput(iGroup) = Input.BiomassAreaInput
-                m_EcoPathData.vbKInput(iGroup) = Input.VBK
+
                 m_EcoPathData.GroupColor(iGroup) = Input.PoolColor
                 m_EcoPathData.Shadow(iGroup) = Input.NonMarketValue()
 
@@ -2609,6 +2643,17 @@ Public Class cCore
                 output.QBOutput = CSng(m_EcoPathData.QB(iGroup))
                 output.EEOutput = CSng(m_EcoPathData.EE(iGroup))
                 output.GEOutput = CSng(m_EcoPathData.GE(iGroup))
+
+                'Joeh
+                output.AinLWOutput = CSng(m_EcoPathData.AinLW(iGroup))
+                output.BinLWOutput = CSng(m_EcoPathData.BinLW(iGroup))
+                output.LooOutput = CSng(m_EcoPathData.Loo(iGroup))
+                output.WinfOutput = CSng(m_EcoPathData.Winf(iGroup))
+                output.KinVBGFOutput = CSng(m_EcoPathData.vbK(iGroup))
+                output.t0Output = CSng(m_EcoPathData.t0(iGroup))
+                output.TcatchOutput = CSng(m_EcoPathData.Tcatch(iGroup))
+                output.TmaxOutput = CSng(m_EcoPathData.Tmax(iGroup))
+                'End Joeh
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'mortality coefficients are computed when they are needed
@@ -3752,7 +3797,40 @@ Public Class cCore
         Return True
     End Function
 
-    Private Sub Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage)
+    'Joeh
+    Friend Function Set_VBK_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+        Dim sg As cStanzaGroup = Nothing
+        Static intStanzaNumber As Integer = 0
+
+        obj.AllowValidation = False
+
+        If obj.isMultiStanza Then
+            'Stanza
+            sg = Me.StanzaGroups(obj.StanzaID)
+            intStanzaNumber = intStanzaNumber + 1
+            If intStanzaNumber <> sg.LeadingB() Then
+                'Not leading stanza
+                obj.SetStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+            Else
+                'Leading stanza
+                obj.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+                intStanzaNumber = 0
+            End If
+        Else
+            'Not stanza
+            obj.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+        End If
+
+        If bSendMessage Then
+            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+        End If
+
+        obj.AllowValidation = True
+    End Function
+    'End Joeh
+
+    Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
 
         Dim objCascade As cCoreInputOutputBase = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -3845,7 +3923,7 @@ Public Class cCore
                 End If
 
         End Select
-    End Sub
+    End Function
 
     Private Sub Cascade_PP(ByVal sPP As Single, ByVal obj As cCoreGroupBase, ByVal msg As cMessage)
 
@@ -3880,7 +3958,7 @@ Public Class cCore
 
     End Sub
 
-    Private Sub Cascade_VBFG(ByVal sVBGF As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
+    Private Sub Cascade_VBK(ByVal sVBK As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -3895,10 +3973,10 @@ Public Class cCore
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
-                groupCascade.VBK = sVBGF
+                groupCascade.VBK = sVBK
                 groupCascade.AllowValidation = bAllowValidationOrg
 
-                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBK))
+                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBKInput))
             End If
         Next
 
@@ -9422,9 +9500,9 @@ Public Class cCore
                         ' Add to msg
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.Biomass))
 
-                    Case eVarNameFlags.VBK
+                    Case eVarNameFlags.VBKInput
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableUpdated?
-                        Me.Cascade_VBFG(group.VBK, group, msg)
+                        Me.Cascade_VBK(group.VBK, group, msg)
 
                     Case eVarNameFlags.PP
                         ' Cascade PP change to other Groups
@@ -9727,7 +9805,7 @@ Public Class cCore
                         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
                         '  Me.m_FitToTimeSeries.Load()
 
-                    Case eVarNameFlags.VBK
+                    Case eVarNameFlags.VBKInput
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
 
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.27  2009/02/28 00:16:09  joeh
+' Added PSD foundation
+'
 ' Revision 1.26  2009/02/27 07:57:09  jeroens
 ' Changed vbK placement
 '
@@ -1632,6 +1635,17 @@ Public Class cDBDataSource
                 ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
                 ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
 
+                'Joeh
+                ecopathDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
+                ecopathDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
+                ecopathDS.LooInput(iGroup) = CSng(reader("Loo"))
+                ecopathDS.WinfInput(iGroup) = CSng(reader("Winf"))
+                ecopathDS.vbKInput(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
+                ecopathDS.t0Input(iGroup) = CSng(reader("t0"))
+                ecopathDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
+                ecopathDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
+                'End Joeh
+
                 'variables with input output pairs
                 ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
                 ecopathDS.PBinput(iGroup) = CSng(reader("ProdBiom"))
@@ -1765,6 +1779,17 @@ Public Class cDBDataSource
                 ' drow("t0") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.t0), ?.t0, -1.0)
                 ' drow("Tcatch") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.TCatch), ?.TCatch, -1.0)
                 ' drow("Tmax") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.Tmax), ?.Tmax, -1.0)
+
+                'Joeh
+                drow("AinLW") = ecopathDS.AinLWInput(iGroup)
+                drow("BinLW") = ecopathDS.BinLWInput(iGroup)
+                drow("Loo") = ecopathDS.LooInput(iGroup)
+                drow("Winf") = ecopathDS.WinfInput(iGroup)
+                drow("VBK") = ecopathDS.vbKInput(iGroup)
+                drow("t0") = ecopathDS.t0Input(iGroup)
+                drow("Tcatch") = ecopathDS.TcatchInput(iGroup)
+                drow("Tmax") = ecopathDS.TmaxInput(iGroup)
+                'End Joeh
 
                 drow.EndEdit()
 

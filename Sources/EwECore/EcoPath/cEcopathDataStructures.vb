@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.6  2009/02/28 00:16:28  joeh
+' Added PSD foundation
+'
 ' Revision 1.5  2009/01/29 23:39:34  jeroens
 ' Added ComputeProfit, vars
 '
@@ -277,6 +280,24 @@ Public Class cEcopathDataStructures
     ''' <remarks>These are the variables that need to be computed be Ecopath</remarks>
     Public mis() As Integer
 
+    'Joeh
+    Public AinLW() As Single
+    Public BinLW() As Single
+    Public Loo() As Single
+    Public Winf() As Single
+    Public t0() As Single
+    Public Tcatch() As Single
+    Public Tmax() As Single
+
+    Public AinLWInput() As Single
+    Public BinLWInput() As Single
+    Public LooInput() As Single
+    Public WinfInput() As Single
+    Public t0Input() As Single
+    Public TcatchInput() As Single
+    Public TmaxInput() As Single
+
+    'End Joeh
 #End Region
 
 #Region " Borrowed from EcoRanger "
@@ -415,6 +436,24 @@ Public Class cEcopathDataStructures
 
         ' GearVariables(True)
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
+
+        'Joeh
+        ReDim AinLW(NumGroups)
+        ReDim BinLW(NumGroups)
+        ReDim Loo(NumGroups)
+        ReDim Winf(NumGroups)
+        ReDim t0(NumGroups)
+        ReDim Tcatch(NumGroups)
+        ReDim Tmax(NumGroups)
+
+        ReDim AinLWInput(NumGroups)
+        ReDim BinLWInput(NumGroups)
+        ReDim LooInput(NumGroups)
+        ReDim WinfInput(NumGroups)
+        ReDim t0Input(NumGroups)
+        ReDim TcatchInput(NumGroups)
+        ReDim TmaxInput(NumGroups)
+        'End Joeh
 
         Return True
     End Function
@@ -868,6 +907,17 @@ Public Class cEcopathDataStructures
             QBinput.CopyTo(QB, 0)
             GEinput.CopyTo(GE, 0)
             vbKInput.CopyTo(vbK, 0)
+
+            'Joeh
+            AinLWInput.CopyTo(AinLW, 0)
+            BinLWInput.CopyTo(BinLW, 0)
+            LooInput.CopyTo(Loo, 0)
+            WinfInput.CopyTo(Winf, 0)
+            t0Input.CopyTo(t0, 0)
+            TcatchInput.CopyTo(Tcatch, 0)
+            TmaxInput.CopyTo(Tmax, 0)
+            'End Joeh
+
             ' copy dc
             For i As Integer = 0 To Me.NumGroups
                 For j As Integer = 0 To Me.NumGroups

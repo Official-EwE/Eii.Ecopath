@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.4  2009/02/28 00:17:46  joeh
+' Added PSD foundation
+'
 ' Revision 1.3  2009/02/27 07:55:15  jeroens
 ' Changed vbK placement
 '
@@ -255,10 +258,47 @@ Public Class cEcoPathGroupInput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DetritusFate, eStatusFlags.Null, eCoreCounterTypes.nDetritus, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
-        'VBGF
+        'VBK
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBK))
+        val = New cValue(New Single, eVarNameFlags.VBKInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBKInput))
         m_values.Add(val.varName, val)
+
+        'Joeh
+        'A in LW
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.AinLWInput))
+        m_values.Add(val.varName, val)
+
+        'B in LW
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.BinLWInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.BinLWInput))
+        m_values.Add(val.varName, val)
+
+        'Loo
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.LooInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LooInput))
+        m_values.Add(val.varName, val)
+
+        'Winf
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.WinfInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.WinfInput))
+        m_values.Add(val.varName, val)
+
+        't0
+        meta = New cVariableMetaData(-1, 0, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.t0Input))
+        m_values.Add(val.varName, val)
+
+        'Tcatch
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.TcatchInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TcatchInput))
+        m_values.Add(val.varName, val)
+
+        'Tmax
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TmaxInput))
+        m_values.Add(val.varName, val)
+        'End Joeh
 
         Me.AllowValidation = True
 
@@ -273,6 +313,10 @@ Public Class cEcoPathGroupInput
         Me.m_core.Set_GS_Flags(Me, False)
         Me.m_core.Set_EE_Flags(Me, False)
         Me.m_core.Set_DetImp_Flags(Me, False)
+
+        'Joeh
+        Me.m_core.Set_VBK_Flags(Me, False)
+        'End Joeh
 
     End Function
 
@@ -621,11 +665,11 @@ Public Class cEcoPathGroupInput
 
     Public Property VBK() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.VBK))
+            Return CSng(GetVariable(eVarNameFlags.VBKInput))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.VBK, value)
+            SetVariable(eVarNameFlags.VBKInput, value)
         End Set
     End Property
 
@@ -648,6 +692,78 @@ Public Class cEcoPathGroupInput
         End Set
 
     End Property
+
+    'Joeh
+    Public Property AinLWInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.AinLWInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.AinLWInput, value)
+        End Set
+    End Property
+
+    Public Property BinLWInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.BinLWInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.BinLWInput, value)
+        End Set
+    End Property
+
+    Public Property LooInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.LooInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.LooInput, value)
+        End Set
+    End Property
+
+    Public Property WinfInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.WinfInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.WinfInput, value)
+        End Set
+    End Property
+
+    Public Property t0Input() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.t0Input))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.t0Input, value)
+        End Set
+    End Property
+
+    Public Property TcatchInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TcatchInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TcatchInput, value)
+        End Set
+    End Property
+
+    Public Property TmaxInput() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.TmaxInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.TmaxInput, value)
+        End Set
+    End Property
+    'End Joeh
 
 #End Region
 
@@ -926,11 +1042,11 @@ Public Class cEcoPathGroupInput
 
     Public Property VBKStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.VBK)
+            Return GetStatus(eVarNameFlags.VBKInput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.VBK, value)
+            SetStatus(eVarNameFlags.VBKInput, value)
         End Set
     End Property
 
