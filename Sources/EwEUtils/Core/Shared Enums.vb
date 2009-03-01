@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.31  2009/03/01 19:36:35  jeroens
+' -- region
+'
 ' Revision 1.30  2009/02/28 00:10:20  joeh
 ' Added PSD variables
 '
@@ -1380,6 +1383,12 @@ Namespace Core
         ''' </summary>
         EcospaceStats
 
+        ''' <summary>
+        ''' Data belongs to an external source.
+        ''' </summary>
+        ''' <remarks></remarks>
+        External
+
     End Enum
 
 #End Region ' Data Types
@@ -1683,8 +1692,6 @@ Namespace Core
         ACCDB
     End Enum
 
-#Region " Public enums "
-
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type describing the result of datasource access attempts.
@@ -1711,8 +1718,6 @@ Namespace Core
         ''' <summary>File is not found.</summary>
         Failed_FileNotFound
     End Enum
-
-#End Region ' Public enums
 
 #End Region ' Datasource types
 
