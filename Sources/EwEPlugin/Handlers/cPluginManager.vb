@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.14  2009/03/01 19:59:01  jeroens
+' GetPlugins can be filtered by assembly
+'
 ' Revision 1.13  2009/02/25 07:16:31  jeroens
 ' Implemented DatabasePlugin calls
 '
@@ -82,7 +85,7 @@ Public Class cPluginManager
             ' Remember core
             m_core = core
             ' Initialize active plugins
-            For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+            For Each pa As cPluginAssembly In Me.PluginAssemblies
                 For Each ip As IPlugin In pa.Plugins
                     ip.Initialize(Me.m_core)
                 Next
@@ -632,14 +635,16 @@ Public Class cPluginManager
         Return bSucces
 
     End Function
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Bridge, states whether any plug-in has pending changes.
+    ''' Bridge, polls all plug-ins for unsaved data modifications.
     ''' </summary>
+    ''' <param name="pa">cPluginAssembly to check, if any.</param>
     ''' ---------------------------------------------------------------------------
-    Public Function IsModifiedDatabase() As Boolean
+    Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin), pa)
         Dim bIsChanged As Boolean = False
 
         For Each ip As IPlugin In collPlugins
@@ -1423,13 +1428,22 @@ Public Class cPluginManager
     ''' <see cref="Type">Type</see>.
     ''' </summary>
     ''' <param name="t">The <see cref="Type">Type</see> of the plugins to retrieve.</param>
+    ''' <param name="pa">The <see cref="cPluginAssembly">plug-in assembly</see> to search.
+    ''' If not specified, all plug-in assemblies will be searched.</param>
     ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function GetPlugins(ByVal t As Type) As ICollection(Of IPlugin)
+    Public Function GetPlugins(ByVal t As Type, _
+                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+
         Dim collPlugins As New List(Of IPlugin)
-        For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+        Dim lpa As New List(Of cPluginAssembly)
+
+        If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
+
+        For Each pa In lpa
             collPlugins.AddRange(pa.Plugins(t))
         Next
+
         Return collPlugins
     End Function
 
@@ -1440,9 +1454,15 @@ Public Class cPluginManager
     ''' <param name="strName">Name of the plugin to return. Names are
     ''' case insensitive.</param>
     ''' -----------------------------------------------------------------------
-    Public Function GetPlugin(ByVal strName As String) As ICollection(Of IPlugin)
+    Public Function GetPlugin(ByVal strName As String, _
+                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+
         Dim collPlugins As New List(Of IPlugin)
-        For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+        Dim lpa As New List(Of cPluginAssembly)
+
+        If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
+
+        For Each pa In lpa
             Dim pi As IPlugin = pa.Plugin(strName)
             If pi IsNot Nothing Then
                 collPlugins.Add(pi)
@@ -1454,18 +1474,20 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns a plugin assembly by <see cref="AssemblyName.Name">name</see> 
-    ''' and (optionally) by <see cref="AssemblyName.Version">version</see>.
+    ''' and (optionally) by <see cref="AssemblyName.Version">version</see> number.
     ''' </summary>
-    ''' <param name="strName"></param>
+    ''' <param name="strName">Name of the assembly</param>
     ''' <param name="ver"></param>
     ''' <value></value>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property PluginAssembly(ByVal strName As String, Optional ByVal ver As Version = Nothing) As cPluginAssembly
+    Public ReadOnly Property PluginAssembly(ByVal strName As String, _
+                                            Optional ByVal ver As Version = Nothing) As cPluginAssembly
         Get
             Dim an As AssemblyName = Nothing
             Dim bFound As Boolean = False
-            For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+
+            For Each pa As cPluginAssembly In Me.PluginAssemblies
                 an = pa.AssemblyName
                 If String.Compare(an.Name, strName, True) = 0 Then
                     If ver Is Nothing Then
@@ -1488,7 +1510,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property PluginAssemblies() As ICollection(Of cPluginAssembly)
         Get
-            Return m_dictAssemblies.Values
+            Return Me.m_dictAssemblies.Values
         End Get
     End Property
 
@@ -1501,7 +1523,7 @@ Public Class cPluginManager
     Public ReadOnly Property PluginAssemblyNames() As AssemblyName()
         Get
             Dim lan As New List(Of AssemblyName)
-            For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+            For Each pa As cPluginAssembly In Me.PluginAssemblies
                 lan.Add(pa.AssemblyName)
             Next
             Return lan.ToArray()
@@ -1516,7 +1538,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function GetIncompatiblePlugins() As ICollection(Of cPluginAssembly)
         Dim collPlugins As New List(Of cPluginAssembly)
-        For Each pa As cPluginAssembly In Me.m_dictAssemblies.Values
+        For Each pa As cPluginAssembly In Me.PluginAssemblies
             If pa.Compatibility <> cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible Then
                 collPlugins.Add(pa)
             End If
