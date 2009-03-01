@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.7  2009/03/01 19:32:40  jeroens
+' Added plugin modified support
+'
 ' Revision 1.6  2009/01/19 18:07:24  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -85,6 +88,8 @@ Public Class cCoreStateMonitor
     Private m_bEcospaceModified As Boolean = False
     ''' <summary>Flag indicating whether the ecotracer scenario data contains unsaved changes.</summary>
     Private m_bEcotracerModified As Boolean = False
+    ''' <summary>Flag indicating whether plugin data contains unsaved changes.</summary>
+    Private m_bPluginModified As Boolean = False
 
 #End Region ' Private members
 
@@ -269,13 +274,15 @@ Public Class cCoreStateMonitor
             ByVal bEcosimModified As Boolean, _
             ByVal bEcospaceModified As Boolean, _
             ByVal bEcotracerModified As Boolean, _
+            ByVal bPluginModified As Boolean, _
             Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
         Dim bChange As Boolean = (bDatasourceModified <> Me.m_bDatasourceModified) Or _
            (bEcopathModified <> Me.m_bEcopathModified) Or _
            (bEcosimModified <> Me.m_bEcosimModified) Or _
            (bEcospaceModified <> Me.m_bEcospaceModified) Or _
-           (bEcotracerModified <> Me.m_bEcotracerModified)
+           (bEcotracerModified <> Me.m_bEcotracerModified) Or _
+           (bPluginModified <> Me.m_bPluginModified)
 
         ' Update flags
         Me.m_bDatasourceModified = bDatasourceModified
@@ -283,14 +290,7 @@ Public Class cCoreStateMonitor
         Me.m_bEcosimModified = bEcosimModified
         Me.m_bEcospaceModified = bEcospaceModified
         Me.m_bEcotracerModified = bEcotracerModified
-
-        '' Update core execution state
-        'Me.CalcExecutionState( _
-        '    DirectCast(IIf(Me.m_bEcopathModified, eCoreExecutionState.EcopathLoaded, Me.m_iEcopathState), eCoreExecutionState), _
-        '    DirectCast(IIf(Me.m_bEcosimModified, eCoreExecutionState.EcosimLoaded, Me.m_iEcosimState), eCoreExecutionState), _
-        '    DirectCast(IIf(Me.m_bEcospaceModified, eCoreExecutionState.EcospaceLoaded, Me.m_iEcospaceState), eCoreExecutionState), _
-        '    DirectCast(IIf(Me.m_bEcotracerModified, eCoreExecutionState.EcotracerLoaded, Me.m_iEcotracerState), eCoreExecutionState), _
-        '    (tsSendUpdate = TriState.True))
+        Me.m_bPluginModified = bPluginModified
 
         ' Broadcast data state event
         If tsSendUpdate = TriState.False Then Return
@@ -320,13 +320,15 @@ Public Class cCoreStateMonitor
 
 #Region " Data "
 
-    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, _
+                               Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
         Dim bDatasourceModified As Boolean = False
         Dim bEcopathModified As Boolean = False
         Dim bEcosimModified As Boolean = False
         Dim bEcospaceModified As Boolean = False
         Dim bEcotracerModified As Boolean = False
+        Dim bPluginModified As Boolean = False
 
         If (ds IsNot Nothing) Then
             bDatasourceModified = ds.IsModified()
@@ -336,7 +338,14 @@ Public Class cCoreStateMonitor
             If (TypeOf ds Is IEcotracerDatasource) Then bEcotracerModified = DirectCast(ds, IEcotracerDatasource).IsEcotracerModified()
         End If
 
-        Me.UpdateDataState(bDatasourceModified, bEcopathModified, bEcosimModified, bEcospaceModified, bEcotracerModified, tsSendUpdate)
+        If (Me.m_core.PluginManager IsNot Nothing) Then
+            bPluginModified = Me.m_core.PluginManager.IsDatabaseModified
+        End If
+
+        Me.UpdateDataState(bDatasourceModified, bEcopathModified, _
+                           bEcosimModified, bEcospaceModified, _
+                           bEcotracerModified, bPluginModified, _
+                           tsSendUpdate)
     End Sub
 
 #End Region ' Data
@@ -491,7 +500,7 @@ Public Class cCoreStateMonitor
 
         If bResetDataState Then
             ' Clear scenario changed flags
-            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, False, False, Me.m_bEcotracerModified)
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, False, False, Me.m_bEcotracerModified, Me.m_bPluginModified)
         End If
     End Sub
 
@@ -574,7 +583,7 @@ Public Class cCoreStateMonitor
 
         If bResetDataState Then
             ' Clear scenario changed flags
-            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, False, Me.m_bEcotracerModified)
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, False, Me.m_bEcotracerModified, Me.m_bPluginModified)
         End If
 
     End Sub
@@ -648,7 +657,7 @@ Public Class cCoreStateMonitor
 
         If bResetDataState Then
             ' Clear scenario changed flags
-            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, Me.m_bEcospaceModified, False)
+            Me.UpdateDataState(Me.m_bDatasourceModified, Me.m_bEcopathModified, Me.m_bEcosimModified, Me.m_bEcospaceModified, False, Me.m_bPluginModified)
         End If
 
     End Sub
@@ -668,7 +677,7 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function IsModified() As Boolean
         ' OMG
-        Return (Me.IsDatasourceModified Or Me.IsEcopathModified Or Me.IsEcosimModified Or Me.IsEcospaceModified Or Me.IsEcotracerModified)
+        Return (Me.IsDatasourceModified Or Me.IsEcopathModified Or Me.IsEcosimModified Or Me.IsEcospaceModified Or Me.IsEcotracerModified Or Me.IsPluginModified)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -903,6 +912,16 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function IsEcotracerModified() As Boolean
         Return Me.m_bEcotracerModified
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the plug-ins contains data changes that have not 
+    ''' been saved.</summary>
+    ''' <returns>True if there are unsaved changes, False otherwise.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsPluginModified() As Boolean
+        Return Me.m_bPluginModified
     End Function
 
 #End Region ' ..for if you don't like events
