@@ -214,13 +214,13 @@
     <value>&amp;Help</value>
   </data>
   <data name="m_tsmiWindowsClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="m_tsmiWindowsClose.Text" xml:space="preserve">
     <value>&amp;Close</value>
   </data>
   <data name="m_tsmiWindowsCloseAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>125, 22</value>
   </data>
   <data name="m_tsmiWindowsCloseAll.Text" xml:space="preserve">
     <value>C&amp;lose All</value>
@@ -232,7 +232,7 @@
     <value>&amp;Windows</value>
   </data>
   <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>134, 22</value>
   </data>
   <data name="m_tsmiOptions.Text" xml:space="preserve">
     <value>&amp;Options...</value>
@@ -241,7 +241,7 @@
     <value>MiddleLeft</value>
   </data>
   <data name="m_tsStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>813, 21</value>
+    <value>477, 21</value>
   </data>
   <data name="m_tsStatus.Text" xml:space="preserve">
     <value> </value>
@@ -311,6 +311,15 @@
     <value>No Ecotracer scenario loaded</value>
   </data>
   <data name="m_tsEcotracerScenario.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_tsiModified.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 21</value>
+  </data>
+  <data name="m_tsiModified.Text" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="m_tsiModified.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_ssMain.Location" type="System.Drawing.Point, System.Drawing">
@@ -401,7 +410,7 @@
     <value>False</value>
   </data>
   <data name="NoneToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>117, 22</value>
   </data>
   <data name="NoneToolStripMenuItem.Text" xml:space="preserve">
     <value>(none)</value>
@@ -428,40 +437,40 @@
     <value>0, 0</value>
   </metadata>
   <data name="m_tsmiViewStartPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewStartPage.Text" xml:space="preserve">
     <value>Start Pa&amp;ge</value>
   </data>
   <data name="m_tsmiViewNavigation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewNavigation.Text" xml:space="preserve">
     <value>&amp;Navigator</value>
   </data>
   <data name="m_tsmiViewStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewStatus.Text" xml:space="preserve">
     <value>Sta&amp;tus</value>
   </data>
   <data name="m_tsmiViewRemarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewRemarks.Text" xml:space="preserve">
     <value>&amp;Remarks</value>
   </data>
   <data name="ToolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 6</value>
+    <value>133, 6</value>
   </data>
   <data name="m_tsmiViewModelBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewModelBar.Text" xml:space="preserve">
     <value>&amp;Model Bar</value>
   </data>
   <data name="m_tsmiViewStatusBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="m_tsmiViewStatusBar.Text" xml:space="preserve">
     <value>&amp;Status Bar</value>
@@ -644,7 +653,7 @@
     <value>Ecos&amp;pace</value>
   </data>
   <data name="ToolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 6</value>
+    <value>131, 6</value>
   </data>
   <data name="m_tsmiEcotracerNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -674,7 +683,7 @@
     <value>Save Scenario &amp;As...</value>
   </data>
   <data name="m_tsmiEcotracer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>134, 22</value>
   </data>
   <data name="m_tsmiEcotracer.Text" xml:space="preserve">
     <value>Eco&amp;tracer</value>
@@ -5950,6 +5959,12 @@
   <data name="&gt;&gt;m_tsmiFileSaveAs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsmiFileCompact.Name" xml:space="preserve">
+    <value>m_tsmiFileCompact</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiFileCompact.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;ToolStripSeparator9.Name" xml:space="preserve">
     <value>ToolStripSeparator9</value>
   </data>
@@ -6298,11 +6313,11 @@
   <data name="&gt;&gt;m_tsbModel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmiFileCompact.Name" xml:space="preserve">
-    <value>m_tsmiFileCompact</value>
+  <data name="&gt;&gt;m_tsiModified.Name" xml:space="preserve">
+    <value>m_tsiModified</value>
   </data>
-  <data name="&gt;&gt;m_tsmiFileCompact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsiModified.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AppLauncher</value>

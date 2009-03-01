@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.5  2009/03/01 19:32:14  jeroens
+' Changed data modified indicator
+'
 ' Revision 1.4  2009/01/16 23:49:06  jeroens
 ' Status strip items no longer confusingly enabled
 '
@@ -15,11 +18,16 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Imports EwECore
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEPlugin
+Imports System.Text
+
+#End Region ' Imports
 
 Partial Public Class AppLauncher
 
@@ -58,6 +66,8 @@ Partial Public Class AppLauncher
         Private m_tsStatus As ToolStripItem = Nothing
         ''' <summary>Main progress bar.</summary>
         Private m_tsbProgress As ToolStripProgressBar = Nothing
+        ''' <summary>Modified state pane.</summary>
+        Private m_tsiModified As ToolStripItem = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -77,6 +87,7 @@ Partial Public Class AppLauncher
             Me.m_tsEcosimScenario = ss.Items("m_tsEcosimScenario")
             Me.m_tsEcospaceScenario = ss.Items("m_tsEcospaceScenario")
             Me.m_tsEcotracerScenario = ss.Items("m_tsEcotracerScenario")
+            Me.m_tsiModified = ss.Items("m_tsiModified")
             Me.m_tsStatus = ss.Items("m_tsStatus")
             Me.m_tsbProgress = CType(ss.Items("m_tsbProgress"), ToolStripProgressBar)
 
@@ -168,8 +179,7 @@ Partial Public Class AppLauncher
                 ' Datasource and Ecopath
                 ' ----------------------
                 Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, _
-                        FormatTooltipText(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, eweModel.Name, appl.SelectedFileName, m_csm.IsEcopathModified Or m_csm.IsDatasourceModified), _
-                        m_csm.IsEcopathModified Or m_csm.IsDatasourceModified)
+                        FormatTooltipText(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, eweModel.Name, appl.SelectedFileName, m_csm.IsEcopathModified Or m_csm.IsDatasourceModified))
 
                 ' -------
                 ' Ecosim
@@ -177,8 +187,7 @@ Partial Public Class AppLauncher
                 If Me.m_core.ActiveEcosimScenarioIndex >= 0 Then
                     simScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcosimScenario, simScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, simScenario.Name, simScenario.Description, m_csm.IsEcosimModified), _
-                           m_csm.IsEcosimModified)
+                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, simScenario.Name, simScenario.Description, m_csm.IsEcosimModified))
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcosimScenario)
                 End If
@@ -189,8 +198,7 @@ Partial Public Class AppLauncher
                 If (Me.m_core.ActiveEcospaceScenarioIndex >= 0) Then
                     spaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, spaceScenario.Name, spaceScenario.Description, m_csm.IsEcospaceModified), _
-                           m_csm.IsEcospaceModified)
+                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, spaceScenario.Name, spaceScenario.Description, m_csm.IsEcospaceModified))
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
                 End If
@@ -201,8 +209,7 @@ Partial Public Class AppLauncher
                 If (Me.m_core.ActiveEcotracerScenarioIndex >= 0) Then
                     tracerScenario = Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex)
                     Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, tracerScenario.Name, tracerScenario.Description, m_csm.IsEcotracerModified), _
-                           m_csm.IsEcotracerModified)
+                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, tracerScenario.Name, tracerScenario.Description, m_csm.IsEcotracerModified))
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
                 End If
@@ -214,6 +221,9 @@ Partial Public Class AppLauncher
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
                 Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
             End If
+
+            ' Update modified indicator
+            Me.m_tsiModified.Visible = Me.m_csm.IsModified()
 
         End Sub
 
@@ -234,18 +244,13 @@ Partial Public Class AppLauncher
         ''' item will not be displayed.</param>
         ''' <param name="strTooltipText">Tooltip text to assign to the item. If this value
         ''' is an empty string no tooltip will appear.</param>
-        ''' <param name="bModified">Flag stating that a modified notification will be
-        ''' appended to the text of the item.</param>
         ''' -----------------------------------------------------------------------
         Private Sub UpdateToolstripItem(ByRef tsi As ToolStripItem, _
                 Optional ByVal strText As String = "", _
-                Optional ByVal strTooltipText As String = "", _
-                Optional ByVal bModified As Boolean = False)
+                Optional ByVal strTooltipText As String = "")
 
             ' Abort if something went wrong
             If tsi Is Nothing Then Return
-
-            If bModified Then strText = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, strText, My.Resources.STATUSSTRIP_MODIFIED)
 
             ' Configure the item that was found
             With tsi

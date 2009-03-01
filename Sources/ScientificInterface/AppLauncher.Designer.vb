@@ -51,6 +51,7 @@
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiFileSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileSaveAs = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiFileCompact = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiFileRecent = New System.Windows.Forms.ToolStripMenuItem
         Me.NoneToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -111,7 +112,7 @@
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
-        Me.m_tsmiFileCompact = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsiModified = New System.Windows.Forms.ToolStripStatusLabel
         m_tss = New System.Windows.Forms.ToolStripSeparator
         Me.m_ssMain.SuspendLayout()
         Me.m_menuMain.SuspendLayout()
@@ -195,7 +196,7 @@
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario})
+        Me.m_ssMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsiModified})
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
@@ -297,6 +298,11 @@
         '
         Me.m_tsmiFileSaveAs.Name = "m_tsmiFileSaveAs"
         resources.ApplyResources(Me.m_tsmiFileSaveAs, "m_tsmiFileSaveAs")
+        '
+        'm_tsmiFileCompact
+        '
+        Me.m_tsmiFileCompact.Name = "m_tsmiFileCompact"
+        resources.ApplyResources(Me.m_tsmiFileCompact, "m_tsmiFileCompact")
         '
         'ToolStripSeparator9
         '
@@ -641,10 +647,12 @@
         resources.ApplyResources(Me.m_tsbModel, "m_tsbModel")
         Me.m_tsbModel.Name = "m_tsbModel"
         '
-        'm_tsmiFileCompact
+        'm_tsiModified
         '
-        Me.m_tsmiFileCompact.Name = "m_tsmiFileCompact"
-        resources.ApplyResources(Me.m_tsmiFileCompact, "m_tsmiFileCompact")
+        Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsiModified.Image = Global.ScientificInterface.My.Resources.Resources.Modified
+        Me.m_tsiModified.Name = "m_tsiModified"
+        resources.ApplyResources(Me.m_tsiModified, "m_tsiModified")
         '
         'AppLauncher
         '
@@ -760,6 +768,7 @@
     Private WithEvents m_tsmiFileRecent As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileExit As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsiModified As System.Windows.Forms.ToolStripStatusLabel
 
 End Class
 
