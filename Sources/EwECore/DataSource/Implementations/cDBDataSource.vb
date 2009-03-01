@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.28  2009/03/01 19:38:49  jeroens
+' 'External' data no longer tracked by datasource; it really has no business here
+'
 ' Revision 1.27  2009/02/28 00:16:09  joeh
 ' Added PSD foundation
 '
@@ -583,9 +586,7 @@ Public Class cDBDataSource
     Public Function IsModified() As Boolean Implements DataSources.IEwEDataSource.IsModified
         If Not Me.IsConnected() Then Return False
         Return Me.IsChanged(eCoreComponentType.DataSource) Or _
-               Me.IsChanged(eCoreComponentType.Core) Or _
-               Me.IsChanged(eCoreComponentType.External) Or _
-               Me.IsChanged(eCoreComponentType.MSE)
+               Me.IsChanged(eCoreComponentType.Core)
     End Function
 
 #End Region ' Diagnostics
@@ -1575,7 +1576,7 @@ Public Class cDBDataSource
     Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
         If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.EcoPath) 
+        Return Me.IsChanged(eCoreComponentType.EcoPath)
 
     End Function
 
@@ -2648,7 +2649,7 @@ Public Class cDBDataSource
                Me.IsChanged(eCoreComponentType.EcoSimFitToTimeSeries) Or _
                Me.IsChanged(eCoreComponentType.EcoSimMonteCarlo) Or _
                Me.IsChanged(eCoreComponentType.PPIManager) Or _
-               Me.IsChanged(eCoreComponentType.FishingPolicySearch) 
+               Me.IsChanged(eCoreComponentType.FishingPolicySearch)
 
     End Function
 
