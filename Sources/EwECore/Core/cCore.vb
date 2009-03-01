@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.72  2009/03/01 19:59:47  jeroens
+' Uses plug-in safe prompt from resources
+'
 ' Revision 1.71  2009/02/28 00:52:55  joeh
 ' Remove Static variable
 '
@@ -1821,23 +1824,20 @@ Public Class cCore
         Dim fm As cFeedbackMessage = Nothing
         Dim strPrompt As String = ""
         Dim bIsModelChanged As Boolean = False
-        Dim bIsPluginModified As Boolean = False
 
         ' In a batch?
         If (m_iBatchLock > 0) Then Return True
 
-        ' Check if core is dirty
+        ' Check if core data is dirty
         bIsModelChanged = Me.m_StateMonitor.IsModified
-        ' Check if plugins are dirty
-        If (Me.PluginManager IsNot Nothing) Then bIsPluginModified = Me.PluginManager.IsModifiedDatabase
 
-        If (bIsModelChanged = False) And (bIsPluginModified = False) Then
+        If (bIsModelChanged = False) Then
             Return True
         End If
 
-        If bIsPluginModified Then
+        If Me.m_StateMonitor.IsPluginModified Then
             ' Prepare feedback message
-            strPrompt = "Do you wish to save pending changes in plug-ins?"
+            strPrompt = My.Resources.CoreMessages.PLUGIN_SAVE_PROMPT
             fm = New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
             If (bQuiet) Then
                 fm.Reply = cFeedbackMessage.eReply.YES
@@ -10128,7 +10128,7 @@ Public Class cCore
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) Handles m_pluginManager.AssemblyAdded
-        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
+        m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
     End Sub
 
     ''' -----------------------------------------------------------------------
