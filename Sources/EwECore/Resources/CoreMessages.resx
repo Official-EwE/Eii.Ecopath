@@ -723,4 +723,7 @@ System Error: {0}</value>
     <value>Group '{0}' has a respiration value exceeding input to detritus.</value>
     <comment>{0}=group name</comment>
   </data>
+  <data name="PLUGIN_SAVE_PROMPT" xml:space="preserve">
+    <value>One or more plug-ins contain changes that have not been saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - possibly loose changes\nCancel - abort this operation.</value>
+  </data>
 </root>

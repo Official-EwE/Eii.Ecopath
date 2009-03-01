@@ -1311,6 +1311,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to One or more plug-ins contain changes that have not been saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - possibly loose changes\nCancel - abort this operation..
+        '''</summary>
+        Friend Shared ReadOnly Property PLUGIN_SAVE_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_SAVE_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to QB cleared..
         '''</summary>
         Friend Shared ReadOnly Property QB_CLEARED() As String
