@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgGraphDisplayOptions.vb,v $
+' Revision 1.3  2009/03/02 17:44:20  jeroens
+' Cleaned up
+'
 ' Revision 1.2  2009/03/02 01:49:20  jeroens
 ' Removed right-click scaling option
 '
@@ -35,7 +38,7 @@ Namespace Controls
 #Region " Private vars "
 
         ''' <summary></summary>
-        Private m_SketchPad As ucSketchPad = Nothing
+        Private m_sketchpad As ucSketchPad = Nothing
         ''' <summary></summary>
         Private m_fbYMax As cEwEFormatProvider = Nothing
 
@@ -53,7 +56,7 @@ Namespace Controls
 
             Me.InitializeComponent()
 
-            Me.m_SketchPad = sketchPad
+            Me.m_sketchpad = sketchPad
             Me.CenterToParent()
 
         End Sub
@@ -70,17 +73,13 @@ Namespace Controls
         Private Sub Apply()
 
             ' Show marks or not
-            If Me.m_cbShowScaleAndTitle.Checked Then
-                Me.m_SketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show
-            Else
-                Me.m_SketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Hide
-            End If
+            Me.m_sketchpad.DisplayAxis = Me.m_cbShowScaleAndTitle.Checked
 
             ' Do we need auto scale? 
             If Me.cbAutoScale.Checked Then
-                Me.m_SketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto
+                Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto
             Else
-                Me.m_SketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Fixed
+                Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Fixed
             End If
 
             '' Do we want mouse right click auto scale?
@@ -91,12 +90,12 @@ Namespace Controls
             'End If
 
             ' Set display mode
-            If Me.m_rbFill.Checked Then Me.m_SketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
-            If Me.m_rbLine.Checked Then Me.m_SketchPad.SketchDrawMode = eSketchDrawModeTypes.Line
-            If Me.m_rbDots.Checked Then Me.m_SketchPad.SketchDrawMode = eSketchDrawModeTypes.Dots
+            If Me.m_rbFill.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Fill
+            If Me.m_rbLine.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Line
+            If Me.m_rbDots.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Dots
 
             ' The Y scale
-            Me.m_SketchPad.YAxisMaxValue = CSng(Me.m_fbYMax.Value)
+            Me.m_sketchpad.YAxisMaxValue = CSng(Me.m_fbYMax.Value)
 
         End Sub
 
@@ -115,10 +114,10 @@ Namespace Controls
             'Initialization of the interface controls
             Me.m_fbYMax = New cEwEFormatProvider(Me.nupYMax, GetType(Single))
 
-            Me.m_cbShowScaleAndTitle.Checked = (Me.m_SketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show)
+            Me.m_cbShowScaleAndTitle.Checked = Me.m_sketchpad.DisplayAxis
 
             ' Rendering method
-            Select Case Me.m_SketchPad.SketchDrawMode
+            Select Case Me.m_sketchpad.SketchDrawMode
                 Case eSketchDrawModeTypes.Fill
                     Me.m_rbFill.Checked = True
                 Case eSketchDrawModeTypes.Line
@@ -128,14 +127,14 @@ Namespace Controls
             End Select
 
             ' Is mediation sketch pad?
-            If (Me.m_SketchPad.ShapeType = eShapeCategoryTypes.Mediation) Then
+            If (Me.m_sketchpad.ShapeType = eShapeCategoryTypes.Mediation) Then
                 ' #Yes: not allowed to rescale
                 Me.cbAutoScale.Enabled = False
                 'Me.cbRightClickAutoScale.Enabled = False
                 Me.m_fbYMax.Enabled = False
             Else
                 ' #No: scale ahead, Wanda!
-                Me.cbAutoScale.Checked = (Me.m_SketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto)
+                Me.cbAutoScale.Checked = (Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto)
                 'Me.cbRightClickAutoScale.Checked = (m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto)
             End If
 

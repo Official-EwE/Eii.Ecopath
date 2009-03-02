@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucTimeSeriesSketchPad.vb,v $
+' Revision 1.3  2009/03/02 17:43:52  jeroens
+' Cleaned up
+'
 ' Revision 1.2  2009/02/12 15:32:21  jeroens
 ' Can add labels to XMark, YMark lines
 '
@@ -43,7 +46,7 @@ Namespace Controls
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            Me.m_SketchDrawMode = eSketchDrawModeTypes.Dots
+            Me.m_sketchDrawMode = eSketchDrawModeTypes.Dots
 
             'Default display as Absolute value
             m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
@@ -75,7 +78,7 @@ Namespace Controls
             End If
 
             ' Draw the axis when this mode is on
-            If m_AxisDisplayMode = eAxisDisplayModeTypes.Show Then
+            If Me.m_bShowAxis Then
 
                 ' Draw Axis
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Bottom), New PointF(rcImage.Right, rcImage.Bottom))

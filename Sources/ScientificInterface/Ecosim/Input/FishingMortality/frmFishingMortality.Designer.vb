@@ -56,7 +56,6 @@ Namespace Ecosim
             'm_sketchPad
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.Color = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.Editable = True

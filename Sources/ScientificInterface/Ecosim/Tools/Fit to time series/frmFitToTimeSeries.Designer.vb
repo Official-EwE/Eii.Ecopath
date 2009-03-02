@@ -454,7 +454,6 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
-            Me.m_sketchPad.AxisDisplayMode = eAxisDisplayModeTypes.Show
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D

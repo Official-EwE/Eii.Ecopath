@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucForcingSketchPad.vb,v $
+' Revision 1.3  2009/03/02 17:43:52  jeroens
+' Cleaned up
+'
 ' Revision 1.2  2009/02/12 15:32:21  jeroens
 ' Can add labels to XMark, YMark lines
 '
@@ -123,7 +126,7 @@ Namespace Controls
                 ShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
 
             ' Draw the axis when this mode is on
-            If m_AxisDisplayMode = eAxisDisplayModeTypes.Show Then
+            If Me.m_bShowAxis Then
 
                 'Draw Axis
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Bottom), New PointF(rcImage.Right, rcImage.Bottom))

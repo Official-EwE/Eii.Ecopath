@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.4  2009/03/02 17:43:52  jeroens
+' Cleaned up
+'
 ' Revision 1.3  2009/03/02 02:03:42  jeroens
 ' Simplified
 '
@@ -57,7 +60,7 @@ Namespace Controls
             Dim strCaption As String = ""
             Dim sg As StyleGuide = StyleGuide.GetInstance()
 
-            sYMax = Me.YAxisMaxValue
+            'sYMax = Me.YAxisMaxValue
             iXMax = Me.Shape.XMax
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
