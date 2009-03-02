@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanzaEwEGrid.vb,v $
+' Revision 1.4  2009/03/02 18:20:18  joeh
+' Take VBK from leading group
+'
 ' Revision 1.3  2009/02/27 07:55:14  jeroens
 ' Changed vbK placement
 '
@@ -473,7 +476,8 @@ Public Class EditMultiStanzaEwEGrid
         Next
 
         ' Core will cascade this
-        source = core.EcoPathGroupInputs(sg.iGroups(1))
+        ' take VBK from leading group
+        source = core.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
         source.VBK = m_CurvParam
 
         If bApplyToCore Then sg.Apply()
