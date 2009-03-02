@@ -470,7 +470,7 @@ Namespace Ecosim
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.NumTSYears = 0
-            Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
+            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.Size = New System.Drawing.Size(523, 386)
             Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill

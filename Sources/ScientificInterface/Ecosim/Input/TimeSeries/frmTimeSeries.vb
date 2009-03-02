@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.5  2009/03/02 01:52:34  jeroens
+' Properly named handlers
+'
 ' Revision 1.4  2009/02/05 17:48:37  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -82,7 +85,7 @@ Namespace Ecosim
         ''' <summary>Reference to the core class.</summary>
         Private m_core As cCore
         ''' <summary></summary>
-        Private m_stbHandler As ShapeGUIHandler = Nothing
+        Private m_stbHandler As cShapeGUIHandler = Nothing
 
 #End Region
 
@@ -95,7 +98,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_core = cCore.GetInstance()
 
-            Me.m_stbHandler = New TimeSeriesShapeGUIHandler(Me.m_core, _
+            Me.m_stbHandler = New cTimeSeriesShapeGUIHandler(Me.m_core, _
                     Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
                     Me.m_sketchPad, Me.m_sketchPadToolbar)
 

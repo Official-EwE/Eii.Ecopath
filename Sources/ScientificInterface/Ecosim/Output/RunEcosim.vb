@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.9  2009/03/02 01:53:18  jeroens
+' Properly named handlers
+'
 ' Revision 1.8  2009/02/24 04:07:11  jeroens
 ' Renamed combo class
 '
@@ -61,7 +64,7 @@ Namespace Ecosim
 
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_Core As cCore = Nothing
-        Private m_shapeGUIHandler As ForcingShapeGUIHandler = Nothing
+        Private m_shapeGUIHandler As cForcingShapeGUIHandler = Nothing
         Private m_BiomassResults(,) As Single
         Private m_EcosimModelParams As cEcoSimModelParameters = Nothing
         Private m_TimeSteps As Integer
@@ -320,7 +323,7 @@ Namespace Ecosim
                     ' #Yes: duplicate this char over the entire shape
                     Try
                         If (Me.m_shapeGUIHandler IsNot Nothing) Then
-                            Me.m_shapeGUIHandler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, CSng(Val(astrEntered(0))))
+                            Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, CSng(Val(astrEntered(0))))
                         End If
                     Catch ex As Exception
                     End Try
@@ -360,7 +363,7 @@ Namespace Ecosim
 
         Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSetTo0.Click
             If Me.m_shapeGUIHandler IsNot Nothing Then
-                Me.m_shapeGUIHandler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, 0.0!)
+                Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, 0.0!)
             End If
         End Sub
 
@@ -382,7 +385,7 @@ Namespace Ecosim
         Private Sub LoadFishingRateShape()
             Dim item As ICoreInterface = Me.GetSelectedTarget()
 
-            Me.m_shapeGUIHandler = New FishingRateShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingRateShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.Selection = DirectCast(item, cFishingRateShape)
             Me.UpdateControls()
         End Sub
@@ -395,7 +398,7 @@ Namespace Ecosim
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
             shape = m_Core.FishMortShapeManager.Item(item.Index - 1)
 
-            m_shapeGUIHandler = New FishingMortalityShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
+            m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
             m_shapeGUIHandler.Selection = shape
             Me.UpdateControls()
         End Sub

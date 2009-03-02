@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.7  2009/03/02 01:52:35  jeroens
+' Properly named handlers
+'
 ' Revision 1.6  2009/02/05 17:48:38  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -62,7 +65,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Class AppliedFFGUIHandler
-            Inherits ForcingShapeGUIHandler
+            Inherits cForcingShapeGUIHandler
 
             ''' ---------------------------------------------------------------
             ''' <summary>

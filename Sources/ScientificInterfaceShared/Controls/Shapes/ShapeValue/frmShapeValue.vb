@@ -1,45 +1,14 @@
 '==============================================================================
 '
 ' $Log: frmShapeValue.vb,v $
+' Revision 1.2  2009/03/02 01:52:34  jeroens
+' Properly named handlers
+'
 ' Revision 1.1  2008/12/15 15:36:39  jeroens
 ' Moved from ScInt
 '
 ' Revision 1.1  2008/09/26 07:31:43  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.13  2008/09/23 16:14:57  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.12  2008/09/19 13:37:17  jeroens
-' Solved crash
-'
-' Revision 1.11  2008/08/02 03:04:20  jeroens
-' Renamed resources
-'
-' Revision 1.10  2008/06/02 00:01:42  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.9  2008/05/29 23:27:15  jeroens
-' Woops
-'
-' Revision 1.8  2008/05/23 02:16:45  jeroens
-' Added Seasonal support
-'
-' Revision 1.7  2008/04/26 10:19:36  sherman
-' Fixed interace bugs and fleet - 1 selection
-'
-' Revision 1.6  2008/04/25 05:20:48  sherman
-' Updated list outputs and cleaned up redundant code
-'
-' Revision 1.5  2008/04/07 02:31:20  jeroens
-' Cleaning up resources
-'
-' Revision 1.4  2008/02/11 03:51:28  jeroens
-' Removed dataset combobox
-'
-' Revision 1.3  2008/02/08 01:16:49  jeroens
-' New time series are auto numbered
-' Current dataset selected for new TS
 '
 '==============================================================================
 
@@ -250,10 +219,6 @@ Namespace Controls
             Me.UpdateControls()
         End Sub
 
-        'Private Sub gridVirtualValue_GettingCell(ByVal sender As System.Object, ByVal e As SourceGrid2.PositionEventArgs) Handles gridVirtualValue.GettingCell
-        '    e.Cell = m_CellSingleArray
-        'End Sub
-
         Private Sub txtWeight_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtWeight.TextChanged, nudNoOfYears.TextChanged
             Me.UpdateControls()
         End Sub
@@ -297,13 +262,17 @@ Namespace Controls
         End Sub
 
         Private Sub LoadForcingDataToGrid()
-            'Dim l_Array As Single(,)
+
             Dim iOffset As Integer = 0
+            Dim bIsMediation As Boolean = (TypeOf (Me.m_shape) Is cMediationFunction)
 
             'Set the plot title
             Me.Text = My.Resources.HEADER_VALUES
-            'txtName.Enabled = False
             txtName.Text = Me.m_shape.Name
+
+            ' Hide seasonal flag for mediation functions
+            Me.lblViewAs.Visible = Not bIsMediation
+            Me.cmbViewAs.Visible = Not bIsMediation
 
             lblWeight.Visible = False
             txtWeight.Visible = False

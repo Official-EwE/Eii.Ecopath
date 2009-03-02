@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEggProduction.vb,v $
+' Revision 1.5  2009/03/02 01:52:38  jeroens
+' Properly named handlers
+'
 ' Revision 1.4  2009/02/05 17:48:36  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -54,7 +57,7 @@ Namespace Ecosim
         ''' <summary>Reference to the core class.</summary>
         Private m_core As cCore
         ''' <summary>Controller for shape-related GUI components in this form.</summary>
-        Private m_shapeguihandler As ShapeGUIHandler = Nothing
+        Private m_shapeguihandler As cShapeGUIHandler = Nothing
 
 #End Region ' Private variables
 
@@ -73,7 +76,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_core = cCore.GetInstance()
 
-            Me.m_shapeguihandler = New EggProductionShapeGUIHandler(Me.m_core, _
+            Me.m_shapeguihandler = New cEggProductionShapeGUIHandler(Me.m_core, _
                     Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                     Me.m_sketchPad, Me.m_sketchPadToolbar)
 

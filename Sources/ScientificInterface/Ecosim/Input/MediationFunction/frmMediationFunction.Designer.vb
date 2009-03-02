@@ -81,7 +81,7 @@ Namespace Ecosim
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
+            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
             Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto

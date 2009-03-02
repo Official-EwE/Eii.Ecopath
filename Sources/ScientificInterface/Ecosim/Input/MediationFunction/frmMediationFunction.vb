@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMediationFunction.vb,v $
+' Revision 1.5  2009/03/02 01:52:35  jeroens
+' Properly named handlers
+'
 ' Revision 1.4  2009/02/05 17:48:37  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -12,22 +15,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:38  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/06/06 16:01:38  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.4  2008/02/07 17:25:18  jeroens
-' Fixed bug 390
-' Fixed placement of mediation toolbox
-'
-' Revision 1.3  2007/11/22 18:15:19  jeroens
-' * Made proper EwEForm
-'
-' Revision 1.2  2007/11/15 15:04:26  jeroens
-' * Fixed bug 339
-'
-' Revision 1.1  2007/10/29 13:29:12  jeroens
-' Renamed, being reworked
 '
 '==============================================================================
 
@@ -61,7 +48,7 @@ Namespace Ecosim
         ''' <summary>Reference to the core class</summary>
         Private m_core As cCore = Nothing
         ''' <summary>Controller for shape-related GUI components in this form.</summary>
-        Private m_shapeguihandler As ShapeGUIHandler = Nothing
+        Private m_shapeguihandler As cShapeGUIHandler = Nothing
 
 #End Region
 
@@ -75,7 +62,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_core = cCore.GetInstance()
 
-            Me.m_shapeguihandler = New MediationShapeGUIHandler(Me.m_core, _
+            Me.m_shapeguihandler = New cMediationShapeGUIHandler(Me.m_core, _
                     Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                     Me.m_sketchPad, Me.m_sketchPadToolbar, _
                     Me.m_bioPercent)

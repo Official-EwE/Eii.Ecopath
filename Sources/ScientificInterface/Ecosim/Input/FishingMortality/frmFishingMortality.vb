@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingMortality.vb,v $
+' Revision 1.5  2009/03/02 01:52:36  jeroens
+' Properly named handlers
+'
 ' Revision 1.4  2009/02/05 17:48:36  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -59,7 +62,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         Private m_Core As cCore = Nothing
-        Private m_handler As FishingMortalityShapeGUIHandler = Nothing
+        Private m_handler As cFishingMortalityShapeGUIHandler = Nothing
 
 #End Region ' Private variables
 
@@ -73,7 +76,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_Core = cCore.GetInstance()
 
-            Me.m_handler = New FishingMortalityShapeGUIHandler(Me.m_Core, _
+            Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.m_Core, _
                     Me.m_shapeToolBox, Me.m_sketchPad, _
                     Me.m_shapeToolboxToolbar, Me.m_sketchPadToolbar)
 

@@ -36,10 +36,10 @@ Namespace Controls
             Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel
             Me.btnSetNoOfYears = New System.Windows.Forms.Button
             Me.pnlValueGrid = New System.Windows.Forms.Panel
-            Me.btnOK = New System.Windows.Forms.Button
-            Me.btnCancel = New System.Windows.Forms.Button
             Me.lblViewAs = New System.Windows.Forms.Label
             Me.cmbViewAs = New System.Windows.Forms.ComboBox
+            Me.btnOK = New System.Windows.Forms.Button
+            Me.btnCancel = New System.Windows.Forms.Button
             CType(Me.nudNoOfYears, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.tlbAll.SuspendLayout()
             Me.tlpNoOfYears.SuspendLayout()
@@ -143,6 +143,19 @@ Namespace Controls
             Me.pnlValueGrid.Name = "pnlValueGrid"
             Me.pnlValueGrid.TabStop = True
             '
+            'lblViewAs
+            '
+            resources.ApplyResources(Me.lblViewAs, "lblViewAs")
+            Me.lblViewAs.Name = "lblViewAs"
+            '
+            'cmbViewAs
+            '
+            resources.ApplyResources(Me.cmbViewAs, "cmbViewAs")
+            Me.cmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.cmbViewAs.FormattingEnabled = True
+            Me.cmbViewAs.Items.AddRange(New Object() {resources.GetString("cmbViewAs.Items"), resources.GetString("cmbViewAs.Items1")})
+            Me.cmbViewAs.Name = "cmbViewAs"
+            '
             'btnOK
             '
             resources.ApplyResources(Me.btnOK, "btnOK")
@@ -156,19 +169,6 @@ Namespace Controls
             Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.btnCancel.Name = "btnCancel"
             Me.btnCancel.UseVisualStyleBackColor = True
-            '
-            'lblViewAs
-            '
-            resources.ApplyResources(Me.lblViewAs, "lblViewAs")
-            Me.lblViewAs.Name = "lblViewAs"
-            '
-            'cmbViewAs
-            '
-            resources.ApplyResources(Me.cmbViewAs, "cmbViewAs")
-            Me.cmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbViewAs.FormattingEnabled = True
-            Me.cmbViewAs.Items.AddRange(New Object() {resources.GetString("cmbViewAs.Items"), resources.GetString("cmbViewAs.Items1")})
-            Me.cmbViewAs.Name = "cmbViewAs"
             '
             'frmShapeValue
             '
