@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.3  2009/03/02 02:03:42  jeroens
+' Simplified
+'
 ' Revision 1.2  2009/02/12 15:32:21  jeroens
 ' Can add labels to XMark, YMark lines
 '
@@ -36,7 +39,8 @@ Namespace Controls
             AxisToolStripMenuItem.Visible = False
         End Sub
 
-        Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles MyBase.Paint
+        Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+            Handles MyBase.Paint
             Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.Color, True, Me.SketchDrawMode, Me.YAxisMaxValue)
         End Sub
 
@@ -49,40 +53,31 @@ Namespace Controls
                 ByVal sYMax As Single)
 
             Dim iXMax As Integer = 0
-            Dim tmpFont As Font = Nothing
-            Dim tmpBrush As SolidBrush = Nothing
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
             Dim sg As StyleGuide = StyleGuide.GetInstance()
 
+            sYMax = Me.YAxisMaxValue
+            iXMax = Me.Shape.XMax
+
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
+            ' Sanity checks
+            If Me.Shape Is Nothing Then Return
             If Not bDrawLabels Then Return
 
-            ' Sanity ceck
-            If Me.Shape Is Nothing Then Return
-
-            iXMax = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            sYMax = Me.YAxisMaxValue
-
-            'g.DrawLine(Pens.Black, _
-            '        ShapeImage.toScreenPoint(New PointF(0, 0.5), rcImage, iXMax, Me.Shape.YMax), _
-            '        ShapeImage.toScreenPoint(New PointF(iXMax, 0.5), rcImage, iXMax, Me.Shape.YMax))
-
-            sfmt = New StringFormat
+            sfmt = New StringFormat()
             sfmt.Alignment = StringAlignment.Center
             sfmt.LineAlignment = StringAlignment.Center
 
-            tmpFont = New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
-            tmpBrush = New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-
             strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (DirectCast(Me.Shape, cMediationFunction).ID + 1), Me.Shape.Name)
-            g.DrawString(strCaption, tmpFont, tmpBrush, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
-            g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, tmpFont, tmpBrush, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
-
-            tmpFont.Dispose()
-            tmpBrush.Dispose()
+            Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
+                Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
+                    g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
+                    g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
+                End Using
+            End Using
 
         End Sub
 
