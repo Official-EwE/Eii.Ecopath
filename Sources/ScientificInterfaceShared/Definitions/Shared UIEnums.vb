@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared UIEnums.vb,v $
+' Revision 1.4  2009/03/02 17:36:16  jeroens
+' Removed ridiculous enum
+'
 ' Revision 1.3  2008/12/15 15:37:44  jeroens
 ' Moved shape enums from ScInt
 '
@@ -101,17 +104,6 @@ Namespace Definitions
         Dots
         ''' <summary>A graph will be rendered as a line, connecting non-zero points only.</summary>
         LineSelective
-    End Enum
-
-    ''' <summary>
-    ''' Enumerated type that states whether a graph will display its axes.
-    ''' </summary>
-    <CLSCompliant(True)> _
-    Public Enum eAxisDisplayModeTypes As Integer
-        ''' <summary>Axes will be displayed.</summary>
-        Show
-        ''' <summary>Axes will not be displayed.</summary>
-        Hide
     End Enum
 
     ''' <summary>
