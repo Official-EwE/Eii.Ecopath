@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.4  2009/03/02 01:45:20  jeroens
+' Removed ecopath mort rate indicator from fishing rate shape manager
+'
 ' Revision 1.3  2009/02/12 15:33:25  jeroens
 ' Fishing rates showing Y mark label
 '
@@ -30,7 +33,7 @@ Namespace Controls
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public MustInherit Class ShapeGUIHandler
+    Public MustInherit Class cShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -196,7 +199,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape"></param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub OnShapeFinalized(ByVal shape As cShapeData)
+        Public MustOverride Sub OnShapeFinalized(ByVal shape As cShapeData, ByVal sketchpad As ucSketchPad)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -472,13 +475,13 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling <see cref="cTimeSeries">Time Series shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class TimeSeriesShapeGUIHandler
-        Inherits ShapeGUIHandler
+    Public Class cTimeSeriesShapeGUIHandler
+        Inherits cShapeGUIHandler
 
         ''' <summary>Flag to prevent update / response loops.</summary>
         Private m_bInUpdate As Boolean = False
@@ -557,26 +560,26 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Dim bHasSelection As Boolean = (Me.Selection IsNot Nothing)
             Select Case cmd
-                Case ShapeGUIHandler.eShapeCommandTypes.Add
+                Case cShapeGUIHandler.eShapeCommandTypes.Add
                     ' Can only add TS when a dataset is loaded
                     Return Me.m_core.HasTimeSeries
-                Case ShapeGUIHandler.eShapeCommandTypes.Weight
+                Case cShapeGUIHandler.eShapeCommandTypes.Weight
                     Return bHasSelection
-                Case ShapeGUIHandler.eShapeCommandTypes.Duplicate
+                Case cShapeGUIHandler.eShapeCommandTypes.Duplicate
                     Return bHasSelection
-                Case ShapeGUIHandler.eShapeCommandTypes.Import
+                Case cShapeGUIHandler.eShapeCommandTypes.Import
                     Return True
                 Case eShapeCommandTypes.Load
                     Return True
                 Case eShapeCommandTypes.Modify
                     Return bHasSelection
-                Case ShapeGUIHandler.eShapeCommandTypes.Remove
+                Case cShapeGUIHandler.eShapeCommandTypes.Remove
                     Return bHasSelection
-                Case ShapeGUIHandler.eShapeCommandTypes.Rename
+                Case cShapeGUIHandler.eShapeCommandTypes.Rename
                     Return bHasSelection
                 Case eShapeCommandTypes.SetWeight
                     Return bHasSelection
@@ -657,7 +660,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
             Debug.Assert(False)
         End Sub
 
@@ -917,13 +920,13 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling generic <see cref="cForcingFunction">forcing functions</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class ForcingShapeGUIHandler
-        : Inherits ShapeGUIHandler
+    Public Class cForcingShapeGUIHandler
+        : Inherits cShapeGUIHandler
 
         ''' <summary>Flag to prevent update / response loops.</summary>
         Private m_bInUpdate As Boolean = False
@@ -1018,7 +1021,7 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Select Case cmd
                 Case eShapeCommandTypes.Add
@@ -1106,7 +1109,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The forcing function that has changed.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
             If Me.m_bInUpdate Then Return
             If shape IsNot Nothing Then
                 Me.m_bInUpdate = True
@@ -1388,13 +1391,13 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling egg production <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class EggProductionShapeGUIHandler
-        Inherits ForcingShapeGUIHandler
+    Public Class cEggProductionShapeGUIHandler
+        Inherits cForcingShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1453,8 +1456,8 @@ Namespace Controls
 #Region " Effort base class "
 
     <CLSCompliant(True)> _
-    Public MustInherit Class EffortShapeGUIHandler
-        : Inherits ForcingShapeGUIHandler
+    Public MustInherit Class cEffortShapeGUIHandler
+        : Inherits cForcingShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1476,7 +1479,7 @@ Namespace Controls
         ''' <param name="cmd">The command that is queried.</param>
         ''' <returns>True if the queried command is supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.SetToZero
                     Return True
@@ -1497,7 +1500,7 @@ Namespace Controls
         ''' <param name="cmd">The command that is queried.</param>
         ''' <returns>True if the queried command may be enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.Defaults, eShapeCommandTypes.Reset
                     Return True
@@ -1516,7 +1519,7 @@ Namespace Controls
         ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes, Optional ByVal shape As EwECore.cShapeData = Nothing, Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, Optional ByVal shape As EwECore.cShapeData = Nothing, Optional ByVal data As Object = Nothing)
             If (shape Is Nothing) Then shape = Me.Selection
             Select Case cmd
                 Case eShapeCommandTypes.Reset
@@ -1622,13 +1625,13 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling fishing rate <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class FishingRateShapeGUIHandler
-        : Inherits EffortShapeGUIHandler
+    Public Class cFishingRateShapeGUIHandler
+        : Inherits cEffortShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1685,13 +1688,13 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling fishing mortality <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class FishingMortalityShapeGUIHandler
-        : Inherits EffortShapeGUIHandler
+    Public Class cFishingMortalityShapeGUIHandler
+        : Inherits cEffortShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1733,29 +1736,6 @@ Namespace Controls
         Protected Overrides Function MinYScale() As Single
             Return 0
         End Function
-
-        Public Overrides Property Selection() As EwECore.cShapeData
-            Get
-                Return MyBase.Selection
-            End Get
-            Set(ByVal value As EwECore.cShapeData)
-
-                Dim sMarkValue As Single = cCore.NULL_VALUE
-                Dim strMarkLabel As String = ""
-
-                If value IsNot Nothing Then
-                    sMarkValue = Me.m_core.EcoPathGroupOutputs(value.Index).MortCoFishRate()
-                    strMarkLabel = "Ecopath mort rate"
-                End If
-
-                Me.SketchPad.YMarkValue = sMarkValue
-                Me.SketchPad.YMarkLabel = strMarkLabel
-
-                ' Back to base
-                MyBase.Selection = value
-
-            End Set
-        End Property
 
     End Class
 
