@@ -1013,13 +1013,6 @@
     <value>The start age for stanza '{0}' has been corrected.</value>
     <comment>{0}: stanza name</comment>
   </data>
-  <data name="ECOSIM_DEFAULT_NEWFORCINGNAME" xml:space="preserve">
-    <value>Forcing shape {0}</value>
-  </data>
-  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
-    <value>Forcing shape {0}</value>
-    <comment>The default name for a new Ecosim forcing shape. {0}: autonumber</comment>
-  </data>
   <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
     <value>Rel. dispersal in bad habitat</value>
   </data>
@@ -1236,7 +1229,7 @@
   </data>
   <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
     <value>Mediation shape {0}</value>
-    <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
+    <comment>The default name for a new Ecosim mediation shape. {0}: autonumber</comment>
   </data>
   <data name="ECOSIM_APPLYFF_CELLFORMAT" xml:space="preserve">
     <value>{0}{1}</value>
