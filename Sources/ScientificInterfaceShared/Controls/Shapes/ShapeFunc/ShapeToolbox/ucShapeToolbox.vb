@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.3  2009/03/02 02:03:59  jeroens
+' Properly named handlers
+'
 ' Revision 1.2  2009/01/16 23:46:21  jeroens
 ' Fixed ApplyTimeSeries outdated name bug
 '
@@ -37,7 +40,7 @@ Namespace Controls
 #Region " Variables "
 
         Private m_iSelectedShapeIndex As Integer = -1
-        Private m_handler As ShapeGUIHandler = Nothing
+        Private m_handler As cShapeGUIHandler = Nothing
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
         Private m_sMinYScale As Single = cCore.NULL_VALUE
@@ -57,11 +60,11 @@ Namespace Controls
 
 #Region " Properties "
 
-        Public Property Handler() As ShapeGUIHandler
+        Public Property Handler() As cShapeGUIHandler
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal handler As ShapeGUIHandler)
+            Set(ByVal handler As cShapeGUIHandler)
                 Me.m_handler = handler
                 Me.UpdateControls()
             End Set
@@ -194,27 +197,27 @@ Namespace Controls
 
             If (Me.m_handler Is Nothing) Then Return
 
-            Me.AddToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Add)
-            Me.AddToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Add)
+            Me.AddToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Add)
+            Me.AddToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Add)
 
-            Me.ApplyToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Weight)
-            Me.ApplyToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Weight)
+            Me.ApplyToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Weight)
+            Me.ApplyToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Weight)
 
-            Me.DuplicateToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Duplicate)
-            Me.DuplicateToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Duplicate)
+            Me.DuplicateToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Duplicate)
+            Me.DuplicateToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Duplicate)
 
-            Me.ImportToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Import)
-            Me.ImportToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Import)
+            Me.ImportToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Import)
+            Me.ImportToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Import)
 
-            Me.RemoveToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Remove)
-            Me.RemoveToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Remove)
+            Me.RemoveToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
+            Me.RemoveToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
 
-            Me.RenameToolStripMenuItem.Visible = Me.CanShowButton(ShapeGUIHandler.eShapeCommandTypes.Rename)
-            Me.RenameToolStripMenuItem.Enabled = Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Rename)
+            Me.RenameToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Rename)
+            Me.RenameToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Rename)
 
         End Sub
 
-        Private Function CanShowButton(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Private Function CanShowButton(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             If (Me.m_handler IsNot Nothing) Then
                 Return Me.m_handler.SupportCommand(cmd)
             Else
@@ -222,7 +225,7 @@ Namespace Controls
             End If
         End Function
 
-        Private Function CanEnableButton(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Private Function CanEnableButton(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             If (Me.m_handler IsNot Nothing) Then
                 Return Me.m_handler.EnableCommand(cmd)
             Else
@@ -336,7 +339,7 @@ Namespace Controls
         End Sub
 
         Private Sub lvShapes_BeforeLabelEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles lvShapes.BeforeLabelEdit
-            e.CancelEdit = (Me.CanEnableButton(ShapeGUIHandler.eShapeCommandTypes.Rename) = False)
+            e.CancelEdit = (Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Rename) = False)
         End Sub
 
         ''' <summary>
@@ -410,7 +413,7 @@ Namespace Controls
                 Return
             End If
 
-            Me.m_handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Rename, Me.Selection, strNewName)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Rename, Me.Selection, strNewName)
 
         End Sub
 
@@ -419,7 +422,7 @@ Namespace Controls
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DuplicateToolStripMenuItem.Click
-            Me.m_handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.Selection)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.Selection)
         End Sub
 
         ''' <summary>
@@ -427,7 +430,7 @@ Namespace Controls
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub RemoveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveToolStripMenuItem.Click
-            Me.m_handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Remove, Me.Selection)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.Selection)
         End Sub
 
         ''' <summary>
@@ -435,7 +438,7 @@ Namespace Controls
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub AddShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddToolStripMenuItem.Click
-            Me.m_handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Add)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
 
         ''' <summary>
@@ -445,7 +448,7 @@ Namespace Controls
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub tsBtnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ImportToolStripMenuItem.Click
-            Me.m_handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Import)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
         End Sub
 
 #End Region ' Event handlers

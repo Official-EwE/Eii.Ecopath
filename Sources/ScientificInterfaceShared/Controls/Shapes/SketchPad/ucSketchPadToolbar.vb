@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPadToolbar.vb,v $
+' Revision 1.2  2009/03/02 02:05:37  jeroens
+' Properly named handlers
+'
 ' Revision 1.1  2008/12/15 15:36:42  jeroens
 ' Moved from ScInt
 '
@@ -35,7 +38,7 @@ Namespace Controls
 
 #Region " Variables "
 
-        Private m_handler As ShapeGUIHandler = Nothing
+        Private m_handler As cShapeGUIHandler = Nothing
 
 #End Region
 
@@ -49,11 +52,11 @@ Namespace Controls
 
 #Region " Properties "
 
-        Public Property Handler() As ShapeGUIHandler
+        Public Property Handler() As cShapeGUIHandler
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal value As ShapeGUIHandler)
+            Set(ByVal value As cShapeGUIHandler)
                 Me.m_handler = value
                 Me.UpdateControls()
             End Set
@@ -88,32 +91,32 @@ Namespace Controls
         End Sub
 
         Private Sub ResetShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnReset.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Reset)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
         End Sub
 
         Private Sub ShapeValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnValue.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Modify)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
         End Sub
 
         Private Sub LoadShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Load)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
         End Sub
 
         Private Sub SaveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnSave.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
         End Sub
 
         Private Sub tsbChangeShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbChangeShape.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.ChangeShape)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
         End Sub
 
         Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnOptions.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
         End Sub
 
         Private Sub tscbbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbbShapeView.SelectedIndexChanged
             If Me.m_bInUpdate Then Return
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, (tscbbShapeView.SelectedIndex = 1))
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, (tscbbShapeView.SelectedIndex = 1))
         End Sub
 
         Private Sub m_tstbWeight_Changed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbWeight.TextChanged
@@ -124,7 +127,7 @@ Namespace Controls
                 Catch ex As Exception
                     sWeight = 1.0!
                 End Try
-                Me.Handler.ExecuteCommand(ShapeGUIHandler.eShapeCommandTypes.SetWeight, Nothing, sWeight)
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Nothing, sWeight)
 
             End If
         End Sub
@@ -141,15 +144,15 @@ Namespace Controls
 
             Dim shapeSelected As cShapeData = Me.Handler.Selection
 
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.tsBtnOptions)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.tsBtnSave)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.tsbChangeShape)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.Reset, Me.tsBtnReset)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.Modify, Me.tsBtnValue)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tscbbShapeView)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tslbShapeView)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
-            Me.UpdateCommand(ShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.tsBtnOptions)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.tsBtnSave)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.tsbChangeShape)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.tsBtnReset)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.tsBtnValue)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tscbbShapeView)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tslbShapeView)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
 
             If ((shapeSelected IsNot Nothing) And (Me.tscbbShapeView.Visible = True)) Then
 
@@ -175,7 +178,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
+        Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
