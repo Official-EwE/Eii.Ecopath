@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.6  2009/03/02 01:44:40  jeroens
+' Changed init order in statusbarhelper
+'
 ' Revision 1.5  2009/03/01 19:32:14  jeroens
 ' Changed data modified indicator
 '
@@ -81,8 +84,6 @@ Partial Public Class AppLauncher
             Me.m_core = core
             Me.m_ss = ss
 
-            ' Hook up to relevant event sources
-            Me.m_csm = core.StateMonitor
             Me.m_tsEcopathModel = ss.Items("m_tsEcopathModel")
             Me.m_tsEcosimScenario = ss.Items("m_tsEcosimScenario")
             Me.m_tsEcospaceScenario = ss.Items("m_tsEcospaceScenario")
@@ -96,7 +97,10 @@ Partial Public Class AppLauncher
             ' Get property selection command
             Me.m_cmd = CType(CommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
 
-            Me.UpdateSelectionPane()
+            ' Hook up to relevant event sources
+            Me.m_csm = core.StateMonitor
+
+            'Me.UpdateSelectionPane()
         End Sub
 
 #Region " Events "
