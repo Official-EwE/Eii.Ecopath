@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.5  2009/03/02 20:08:23  jeroens
+' Implemented FF reset all
+'
 ' Revision 1.4  2009/03/02 01:45:20  jeroens
 ' Removed ecopath mort rate indicator from fishing rate shape manager
 '
@@ -46,7 +49,7 @@ Namespace Controls
             ''' <summary>Change the contour of a shape to a common outline.</summary>
             ChangeShape
             ''' <summary>Set all shapes of a given type to default values.</summary>
-            Defaults
+            ResetAll
             ''' <summary>Duplicte a shape.</summary>
             Duplicate
             ''' <summary>Import shape data.</summary>
@@ -62,7 +65,7 @@ Namespace Controls
             Remove
             ''' <summary>Rename a shape.</summary>
             Rename
-            ''' <summary>Set all values in a shape to specific values.</summary>
+            ''' <summary>Set one shape to specific values.</summary>
             Reset
             ''' <summary>Save shape to an image.</summary>
             SaveAsImage
@@ -271,6 +274,30 @@ Namespace Controls
                 ' Cascade changes properly
                 Me.Selection = shape
             End If
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset all shapes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ResetAllShapes()
+
+            Dim fsm As cForcingFunctionManager = Me.m_core.ForcingShapeManager
+            Dim shape As cForcingFunction = Nothing
+
+            ' For every shape
+            For iShape As Integer = 0 To fsm.Count - 1
+                ' Get the shape
+                shape = fsm.Item(iShape)
+                ' Lock it to prevent noise during this process
+                shape.LockUpdates()
+                ' Reset the shape
+                Me.ResetShape(shape)
+                ' Cheat: force an update on the very last shape to trigger a GUI refresh
+                shape.UnlockUpdates(iShape = fsm.Count - 1)
+            Next
+
         End Sub
 
         Protected Overridable Sub SaveAsImage(ByVal shape As cShapeData, ByVal sp As ucSketchPad)
@@ -1066,6 +1093,8 @@ Namespace Controls
                     Me.RenameFF(shape, CStr(data))
                 Case eShapeCommandTypes.Reset
                     Me.ResetShape(shape)
+                Case eShapeCommandTypes.ResetAll
+                    Me.ResetAllShapes()
                 Case eShapeCommandTypes.SaveAsImage
                     Me.SaveAsImage(shape, Me.SketchPad)
                 Case eShapeCommandTypes.Seasonal
@@ -1485,7 +1514,7 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.SetValue
                     Return True
-                Case eShapeCommandTypes.Reset, eShapeCommandTypes.Defaults
+                Case eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll
                     Return True
                 Case eShapeCommandTypes.Modify
                     Return True
@@ -1502,7 +1531,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.Defaults, eShapeCommandTypes.Reset
+                Case eShapeCommandTypes.ResetAll, eShapeCommandTypes.Reset
                     Return True
                 Case Else
                     Return (Me.Selection IsNot Nothing)
@@ -1529,13 +1558,15 @@ Namespace Controls
                         Me.ResetShapePrompted(shape)
                     End If
 
-                Case eShapeCommandTypes.Defaults
-                    Me.m_core.FishingRateShapeManager.ResetToDefaults()
-                    Me.m_core.FishMortShapeManager.ResetToDefaults()
-
                 Case Else
                     MyBase.ExecuteCommand(cmd, shape, data)
+
             End Select
+        End Sub
+
+        Protected Overrides Sub ResetAllShapes()
+            Me.m_core.FishingRateShapeManager.ResetToDefaults()
+            Me.m_core.FishMortShapeManager.ResetToDefaults()
         End Sub
 
         Protected MustOverride Function ScaleMode() As eAxisTickmarkDisplayModeTypes
