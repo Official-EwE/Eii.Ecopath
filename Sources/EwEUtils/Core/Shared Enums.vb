@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.32  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.31  2009/03/01 19:36:35  jeroens
 ' -- region
 '
@@ -1106,8 +1109,7 @@ Namespace Core
 
         'Joeh
         ''' <summary></summary>
-        VBKInput
-        VBKOutput
+        VBK
         AinLWInput
         AinLWOutput
         BinLWInput

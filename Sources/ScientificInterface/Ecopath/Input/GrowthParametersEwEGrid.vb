@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: GrowthParametersEwEGrid.vb,v $
+' Revision 1.5  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.4  2009/02/28 00:57:11  joeh
 ' Remove syntax error
 '
@@ -121,7 +124,7 @@ Namespace Ecopath.Input
             Me(iRow, 3) = New PropertyCell(group, eVarNameFlags.BinLWInput)
             Me(iRow, 4) = New PropertyCell(group, eVarNameFlags.LooInput)
             Me(iRow, 5) = New PropertyCell(group, eVarNameFlags.WinfInput)
-            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBKInput)
+            Me(iRow, 6) = New PropertyCell(group, eVarNameFlags.VBK)
             Me(iRow, 7) = New PropertyCell(group, eVarNameFlags.t0Input)
             Me(iRow, 8) = New PropertyCell(group, eVarNameFlags.TcatchInput)
             Me(iRow, 9) = New PropertyCell(group, eVarNameFlags.TmaxInput)

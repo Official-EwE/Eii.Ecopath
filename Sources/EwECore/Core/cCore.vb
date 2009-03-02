@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.73  2009/03/02 20:09:35  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.72  2009/03/01 19:59:47  jeroens
 ' Uses plug-in safe prompt from resources
 '
@@ -2413,7 +2416,7 @@ Public Class cCore
                 Input.BioAccumRate = CSng(m_EcoPathData.BaBi(iGroup))
                 Input.Immigration = m_EcoPathData.Immig(iGroup)
                 Input.PP = m_EcoPathData.PP(iGroup)
-                Input.VBK = m_EcoPathData.vbKInput(iGroup)
+                Input.VBK = m_EcoPathData.vbK(iGroup)
                 Input.PoolColor = m_EcoPathData.GroupColor(iGroup)
                 Input.NonMarketValue = m_EcoPathData.Shadow(iGroup)
 
@@ -2443,7 +2446,6 @@ Public Class cCore
                 Input.BinLWInput = m_EcoPathData.BinLWInput(iGroup)
                 Input.LooInput = m_EcoPathData.LooInput(iGroup)
                 Input.WinfInput = m_EcoPathData.WinfInput(iGroup)
-                Input.VBK = m_EcoPathData.vbKInput(iGroup)
                 Input.t0Input = m_EcoPathData.t0Input(iGroup)
                 Input.TcatchInput = m_EcoPathData.TcatchInput(iGroup)
                 Input.TmaxInput = m_EcoPathData.TmaxInput(iGroup)
@@ -2496,12 +2498,11 @@ Public Class cCore
                 m_EcoPathData.PP(iGroup) = Input.PP
 
                 'Joeh
+                m_EcoPathData.vbK(iGroup) = Input.VBK
                 m_EcoPathData.AinLWInput(iGroup) = Input.AinLWInput
                 m_EcoPathData.BinLWInput(iGroup) = Input.BinLWInput
                 m_EcoPathData.LooInput(iGroup) = Input.LooInput
                 m_EcoPathData.WinfInput(iGroup) = Input.WinfInput
-                m_EcoPathData.vbKInput(iGroup) = Input.VBK
-
                 m_EcoPathData.t0Input(iGroup) = Input.t0Input
                 m_EcoPathData.TcatchInput(iGroup) = Input.TcatchInput
                 m_EcoPathData.TmaxInput(iGroup) = Input.TmaxInput
@@ -2648,11 +2649,11 @@ Public Class cCore
                 output.GEOutput = CSng(m_EcoPathData.GE(iGroup))
 
                 'Joeh
+                output.VBK = CSng(m_EcoPathData.vbK(iGroup))
                 output.AinLWOutput = CSng(m_EcoPathData.AinLW(iGroup))
                 output.BinLWOutput = CSng(m_EcoPathData.BinLW(iGroup))
                 output.LooOutput = CSng(m_EcoPathData.Loo(iGroup))
                 output.WinfOutput = CSng(m_EcoPathData.Winf(iGroup))
-                output.KinVBGFOutput = CSng(m_EcoPathData.vbK(iGroup))
                 output.t0Output = CSng(m_EcoPathData.t0(iGroup))
                 output.TcatchOutput = CSng(m_EcoPathData.Tcatch(iGroup))
                 output.TmaxOutput = CSng(m_EcoPathData.Tmax(iGroup))
@@ -3821,14 +3822,14 @@ Public Class cCore
             ' Is leading stanza?
             If bIsLeadingGroup Then
                 ' #Yes: make VBK editable to the user
-                group.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+                group.ClearStatusFlags(eVarNameFlags.VBK, eStatusFlags.NotEditable)
             Else
                 ' #No: make VBK read-only to the user
-                group.SetStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+                group.SetStatusFlags(eVarNameFlags.VBK, eStatusFlags.NotEditable)
             End If
         Else
             ' #No: Make VBK editable to the user
-            group.ClearStatusFlags(eVarNameFlags.VBKInput, eStatusFlags.NotEditable)
+            group.ClearStatusFlags(eVarNameFlags.VBK, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then
@@ -3987,7 +3988,7 @@ Public Class cCore
                 groupCascade.ResetStatusFlags()
                 groupCascade.AllowValidation = bAllowValidationOrg
 
-                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBKInput))
+                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.VBK))
             End If
         Next
 
@@ -9511,7 +9512,7 @@ Public Class cCore
                         ' Add to msg
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.Biomass))
 
-                    Case eVarNameFlags.VBKInput
+                    Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableUpdated?
                         Me.Cascade_VBK(group.VBK, group, msg)
 
@@ -9816,7 +9817,7 @@ Public Class cCore
                         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
                         '  Me.m_FitToTimeSeries.Load()
 
-                    Case eVarNameFlags.VBKInput
+                    Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
 
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration

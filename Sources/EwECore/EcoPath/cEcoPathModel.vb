@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.11  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.10  2009/02/28 00:58:08  joeh
 ' Add PSD estimation
 '
@@ -2984,33 +2987,6 @@ nextJ:
                     m_Data.Winf(i) = CSng(m_Data.AinLW(i) * Math.Pow(m_Data.Loo(i), m_Data.BinLW(i)))
                 End If
             Next
-
-            'K in VBGF
-            'For i As Integer = 1 To m_Data.NumLiving
-            '    If m_Data.StanzaGroup(i) Then
-            '        'Stanza
-            '        'Which stanza group?
-            '        For j As Integer = 0 To core.nStanzas - 1
-            '            sg = core.StanzaGroups(j)
-            '            If m_Data.GroupName(i).Contains(sg.Name) Then Exit For
-            '        Next
-            '        intStanzaNumber = intStanzaNumber + 1
-            '        If intStanzaNumber <> sg.LeadingB() Then
-            '            'Not leading stanza
-            '            'Do nothing
-            '        Else
-            '            'Leading stanza
-            '            'Set KinVBGF of all stanza in the stanza group to that of the leading stanza
-            '            For k As Integer = 1 To sg.NStanzas - 1
-            '                m_Data.KinVBGF(i - k) = m_Data.KinVBGF(i)
-            '            Next
-            '            intStanzaNumber = 0
-            '        End If
-            '    Else
-            '        'Not stanza
-            '        'Do nothing
-            '    End If
-            'Next
 
             't0
             For i As Integer = 1 To m_Data.NumLiving

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.29  2009/03/02 20:09:35  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.28  2009/03/01 19:38:49  jeroens
 ' 'External' data no longer tracked by datasource; it really has no business here
 '
@@ -1637,11 +1640,11 @@ Public Class cDBDataSource
                 ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
 
                 'Joeh
+                ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
                 ecopathDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
                 ecopathDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
                 ecopathDS.LooInput(iGroup) = CSng(reader("Loo"))
                 ecopathDS.WinfInput(iGroup) = CSng(reader("Winf"))
-                ecopathDS.vbKInput(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
                 ecopathDS.t0Input(iGroup) = CSng(reader("t0"))
                 ecopathDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
                 ecopathDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
@@ -1654,7 +1657,6 @@ Public Class cDBDataSource
                 ecopathDS.GEinput(iGroup) = CSng(reader("ProdCons"))
                 ecopathDS.Binput(iGroup) = CSng(reader("Biomass"))
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
-                ecopathDS.vbKInput(iGroup) = CSng(Me.ReadSafe(reader, "vbK", -1))
 
                 ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
@@ -1769,7 +1771,6 @@ Public Class cDBDataSource
                 drow("Immigration") = ecopathDS.Immig(iGroup)
                 drow("Emigration") = ecopathDS.Emigration(iGroup)
                 drow("EmigRate") = ecopathDS.Emig(iGroup)
-                drow("vbK") = ecopathDS.vbKInput(iGroup)
                 drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
                 ' Write overriding values, if any
@@ -1782,11 +1783,11 @@ Public Class cDBDataSource
                 ' drow("Tmax") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.Tmax), ?.Tmax, -1.0)
 
                 'Joeh
+                drow("VBK") = ecopathDS.vbK(iGroup)
                 drow("AinLW") = ecopathDS.AinLWInput(iGroup)
                 drow("BinLW") = ecopathDS.BinLWInput(iGroup)
                 drow("Loo") = ecopathDS.LooInput(iGroup)
                 drow("Winf") = ecopathDS.WinfInput(iGroup)
-                drow("VBK") = ecopathDS.vbKInput(iGroup)
                 drow("t0") = ecopathDS.t0Input(iGroup)
                 drow("Tcatch") = ecopathDS.TcatchInput(iGroup)
                 drow("Tmax") = ecopathDS.TmaxInput(iGroup)

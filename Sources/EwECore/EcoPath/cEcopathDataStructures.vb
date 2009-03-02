@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.7  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.6  2009/02/28 00:16:28  joeh
 ' Added PSD foundation
 '
@@ -259,7 +262,6 @@ Public Class cEcopathDataStructures
     Public Fixed As Single
     Public Variab As Single
 
-    Public vbKInput() As Single 'VBGF curvature parameter K (/year)
     Public vbK() As Single 'VBGF curvature parameter K (/year)
     Public Hlap(,) As Single
     Public Plap(,) As Single
@@ -405,7 +407,6 @@ Public Class cEcopathDataStructures
 
         ReDim SumR(NumGroups)
         ReDim Alpha(NumGroups, NumGroups)
-        ReDim vbKInput(NumGroups)
         ReDim vbK(NumGroups)
 
         'ReDim GrpsToShow(NumGroups + NumFleet + 2)
@@ -906,7 +907,6 @@ Public Class cEcopathDataStructures
             PBinput.CopyTo(PB, 0)
             QBinput.CopyTo(QB, 0)
             GEinput.CopyTo(GE, 0)
-            vbKInput.CopyTo(vbK, 0)
 
             'Joeh
             AinLWInput.CopyTo(AinLW, 0)
@@ -1199,7 +1199,6 @@ Public Class cEcopathDataStructures
             dest.Conn = Conn
             dest.SysOm = SysOm
 
-            vbKInput.CopyTo(dest.vbKInput, 0)
             vbK.CopyTo(dest.vbK, 0)
             dest.Hlap = Hlap.Clone
             dest.Plap = Plap.Clone

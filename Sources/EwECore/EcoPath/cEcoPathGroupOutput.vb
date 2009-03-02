@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.4  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.3  2009/02/28 00:17:51  joeh
 ' Added PSD foundation
 '
@@ -95,9 +98,6 @@ Public Class cEcoPathGroupOutput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer
-    'Joeh
-    Shared intStanzaNumber As Integer = 0
-    'End Joeh
 
     ' m_Area = 'A()
     ' m_Biomass = 'B()
@@ -249,35 +249,6 @@ Public Class cEcoPathGroupOutput
                 Me.ClearStatusFlags(eVarNameFlags.WinfOutput, eStatusFlags.ValueComputed)
             End If
             SetNullFlag(eVarNameFlags.WinfOutput, m_core.m_EcoPathData.Winf(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
-
-            'K in VBGF
-            'If m_core.m_EcoPathData.StanzaGroup(Me.Index) Then
-            '    'Stanza
-            '    'Which stanza group?
-            '    For j As Integer = 0 To m_core.nStanzas - 1
-            '        sg = m_core.StanzaGroups(j)
-            '        If m_core.m_EcoPathData.GroupName(Me.Index).Contains(sg.Name) Then Exit For
-            '    Next
-            '    intStanzaNumber = intStanzaNumber + 1
-            '    If intStanzaNumber <> sg.LeadingB() Then
-            '        'Not leading stanza
-            '        Me.SetStatusFlags(eVarNameFlags.KinVBGFOutput, eStatusFlags.Null)
-            '    Else
-            '        'Leading stanza
-            '        Me.ClearStatusFlags(eVarNameFlags.KinVBGFOutput, eStatusFlags.Null)
-            '        intStanzaNumber = 0
-            '    End If
-            'Else
-            '    'Not stanza
-            '    Me.ClearStatusFlags(eVarNameFlags.KinVBGFOutput, eStatusFlags.Null)
-            'End If
-
-            'If m_core.m_EcoPathData.KinVBGF(Me.Index) <> m_core.m_EcoPathData.KinVBGFInput(Me.Index) Then
-            '    Me.SetStatusFlags(eVarNameFlags.KinVBGFOutput, eStatusFlags.ValueComputed)
-            'Else
-            '    Me.ClearStatusFlags(eVarNameFlags.KinVBGFOutput, eStatusFlags.ValueComputed)
-            'End If
-            SetNullFlag(eVarNameFlags.VBKOutput, m_core.m_EcoPathData.vbK(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             't0
             If m_core.m_EcoPathData.t0(Me.Index) <> m_core.m_EcoPathData.t0Input(Me.Index) Then
@@ -445,6 +416,8 @@ Public Class cEcoPathGroupOutput
         m_values.Add(val.varName, val)
 
         'Joeh
+        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.BinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
@@ -452,8 +425,6 @@ Public Class cEcoPathGroupOutput
         val = New cValue(New Single, eVarNameFlags.LooOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.WinfOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.VBKOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.t0Output, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -588,6 +559,18 @@ Public Class cEcoPathGroupOutput
     End Property
 
     'Joeh
+    Public Property VBK() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.VBK))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.VBK, newValue)
+            End If
+        End Set
+    End Property
+
     Public Property AinLWOutput() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.AinLWOutput))
@@ -635,19 +618,6 @@ Public Class cEcoPathGroupOutput
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.WinfOutput, newValue)
-            End If
-        End Set
-
-    End Property
-
-    Public Property KinVBGFOutput() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.VBKOutput))
-        End Get
-
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.VBKOutput, newValue)
             End If
         End Set
 

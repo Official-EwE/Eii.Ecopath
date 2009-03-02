@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.5  2009/03/02 20:09:36  joeh
+' VBK no longer has input and output pair
+'
 ' Revision 1.4  2009/02/28 00:17:46  joeh
 ' Added PSD foundation
 '
@@ -260,7 +263,7 @@ Public Class cEcoPathGroupInput
 
         'VBK
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.VBKInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBKInput))
+        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBK))
         m_values.Add(val.varName, val)
 
         'Joeh
@@ -665,11 +668,11 @@ Public Class cEcoPathGroupInput
 
     Public Property VBK() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.VBKInput))
+            Return CSng(GetVariable(eVarNameFlags.VBK))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.VBKInput, value)
+            SetVariable(eVarNameFlags.VBK, value)
         End Set
     End Property
 
@@ -1042,14 +1045,85 @@ Public Class cEcoPathGroupInput
 
     Public Property VBKStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.VBKInput)
+            Return GetStatus(eVarNameFlags.VBK)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.VBKInput, value)
+            SetStatus(eVarNameFlags.VBK, value)
         End Set
     End Property
 
+    'Joeh
+    Public Property AinLWInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.AinLWInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.AinLWInput, value)
+        End Set
+    End Property
+
+    Public Property BinLWInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.BinLWInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.BinLWInput, value)
+        End Set
+    End Property
+
+    Public Property LooInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.LooInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.LooInput, value)
+        End Set
+    End Property
+
+    Public Property WinfInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.WinfInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.WinfInput, value)
+        End Set
+    End Property
+
+    Public Property t0InputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.t0Input)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.t0Input, value)
+        End Set
+    End Property
+
+    Public Property TcatchInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.TcatchInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TcatchInput, value)
+        End Set
+    End Property
+
+    Public Property TmaxInputStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.TmaxInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.TmaxInput, value)
+        End Set
+    End Property
+    'End Joeh
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="eStatusFlags">status</see> of the 
