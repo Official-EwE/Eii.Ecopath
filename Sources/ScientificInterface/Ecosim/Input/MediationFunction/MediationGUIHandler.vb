@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.3  2009/03/02 01:58:07  jeroens
+' Connected XMarkValue, YMarkValue
+'
 ' Revision 1.2  2009/02/12 15:32:20  jeroens
 ' Can add labels to XMark, YMark lines
 '
@@ -29,12 +32,12 @@ Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="ShapeGUIHandler">ShapeGUIHandler implementation</see> for 
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
     ''' handling <see cref="cMediationFunction">mediation shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class MediationShapeGUIHandler
-        Inherits ForcingShapeGUIHandler
+    Public Class cMediationShapeGUIHandler
+        Inherits cForcingShapeGUIHandler
 
         ''' <summary>Biomass percent control to handle.</summary>
         Private m_bioPercent As ucBioPercent = Nothing
@@ -133,7 +136,13 @@ Namespace Ecosim
                 If (Me.BioPercent IsNot Nothing) Then Me.BioPercent.Shape = Me.Selection
 
                 If Me.SketchPad IsNot Nothing Then
-                    Me.SketchPad.XMarkValue = CSng(DirectCast(value, cMediationFunction).XBaseIndex)
+                    If (value Is Nothing) Then
+                        Me.SketchPad.XMarkValue = cCore.NULL_VALUE
+                        Me.SketchPad.YMarkValue = cCore.NULL_VALUE
+                    Else
+                        Me.SketchPad.XMarkValue = CSng(DirectCast(value, cMediationFunction).XBaseIndex)
+                        Me.SketchPad.YMarkValue = DirectCast(value, cMediationFunction).YBase
+                    End If
                 End If
             End Set
         End Property
@@ -157,10 +166,15 @@ Namespace Ecosim
         ''' Overridden to suppress Seasonal command
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As ShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             If cmd = eShapeCommandTypes.Seasonal Then Return False
             Return MyBase.SupportCommand(cmd)
         End Function
+
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+            DirectCast(shape, cMediationFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
+            MyBase.OnShapeFinalized(shape, sketchpad)
+        End Sub
 
     End Class
 
