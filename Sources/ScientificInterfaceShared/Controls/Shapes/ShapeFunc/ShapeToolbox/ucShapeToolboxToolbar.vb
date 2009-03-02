@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolboxToolbar.vb,v $
+' Revision 1.3  2009/03/02 20:08:02  jeroens
+' Defaults -> ResetAll
+'
 ' Revision 1.2  2009/03/02 02:04:15  jeroens
 ' Properly named handlers
 '
@@ -117,33 +120,49 @@ Namespace Controls
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Rename)
         End Sub
 
-        Private Sub tsbWeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbWeight.Click
+        Private Sub tsbWeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsbWeight.Click
+
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Weight)
+
         End Sub
 
-        Private Sub tsbLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbLoad.Click
+        Private Sub tsbLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsbLoad.Click
+
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
+
         End Sub
 
-        Private Sub tsbImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImport.Click
+        Private Sub tsbImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsbImport.Click
+
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
+
         End Sub
 
-        Private Sub tsbResetFs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbResetFs.Click
+        Private Sub tsbResetFs_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles tsbResetFs.Click
+
             If (Me.m_handler Is Nothing) Then Return
-            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Defaults)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll)
+
         End Sub
 
-        Private Sub tsbSetTo0_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbSetTo0.Click
+        Private Sub tsbSetTo0_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles tsbSetTo0.Click
+
             If Me.m_handler IsNot Nothing Then
                 Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_handler.Selection, 0.0!)
             End If
+
         End Sub
 
-        Private Sub tsbSetToValue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbSetToValue.Click
+        Private Sub tsbSetToValue_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles tsbSetToValue.Click
 
             Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
             Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
