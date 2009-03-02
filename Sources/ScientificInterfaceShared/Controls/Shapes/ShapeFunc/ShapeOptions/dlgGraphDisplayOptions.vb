@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgGraphDisplayOptions.vb,v $
+' Revision 1.2  2009/03/02 01:49:20  jeroens
+' Removed right-click scaling option
+'
 ' Revision 1.1  2008/12/15 15:36:38  jeroens
 ' Moved from ScInt
 '
@@ -80,12 +83,12 @@ Namespace Controls
                 Me.m_SketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Fixed
             End If
 
-            ' Do we want mouse right click auto scale?
-            If Me.cbRightClickAutoScale.Checked Then
-                Me.m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto
-            Else
-                Me.m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Fixed
-            End If
+            '' Do we want mouse right click auto scale?
+            'If Me.cbRightClickAutoScale.Checked Then
+            '    Me.m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto
+            'Else
+            '    Me.m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Fixed
+            'End If
 
             ' Set display mode
             If Me.m_rbFill.Checked Then Me.m_SketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
@@ -128,12 +131,12 @@ Namespace Controls
             If (Me.m_SketchPad.ShapeType = eShapeCategoryTypes.Mediation) Then
                 ' #Yes: not allowed to rescale
                 Me.cbAutoScale.Enabled = False
-                Me.cbRightClickAutoScale.Enabled = False
+                'Me.cbRightClickAutoScale.Enabled = False
                 Me.m_fbYMax.Enabled = False
             Else
                 ' #No: scale ahead, Wanda!
                 Me.cbAutoScale.Checked = (Me.m_SketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto)
-                Me.cbRightClickAutoScale.Checked = (m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto)
+                'Me.cbRightClickAutoScale.Checked = (m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto)
             End If
 
         End Sub
