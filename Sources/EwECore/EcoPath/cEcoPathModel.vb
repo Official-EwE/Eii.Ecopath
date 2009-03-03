@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.12  2009/03/03 01:16:38  joeh
+' Compute Tmax
+'
 ' Revision 1.11  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -2960,9 +2963,7 @@ nextJ:
         'Joeh
         Private Sub EstimateGrowthParameters()
             Dim sg As cStanzaGroup = Nothing
-            Dim core As cCore = cCore.GetInstance()
             Dim sngTemp As Single
-            Static intStanzaNumber As Integer = 0
 
             'A in LW
             For i As Integer = 1 To m_Data.NumLiving
@@ -2996,18 +2997,20 @@ nextJ:
             Next
 
             'Tmax
+            Dim core As cCore = cCore.GetInstance
             For i As Integer = 1 To m_Data.NumLiving
+                'Is stanza group?
                 If m_Data.StanzaGroup(i) Then
-                    'Stanza
-                    'For isp As Integer = 1 To stanza.Nsplit
-                    '    For ist As Integer = 1 To stanza.Nstanza(isp)
-                    '        If m_Data.GroupName(i) = stanza.StanzaName(isp) Then 'StanzaName(isp, ist) Then 'found the name
-                    '            m_Data.Tmax(i) = CSng(stanza.Age2(isp, ist) / 12)
-                    '        End If
-                    '    Next
-                    'Next
+                    'Yes
+                    For isp As Integer = 1 To core.nStanzas 'No. of split group
+                        For ist As Integer = 1 To core.nStanza(isp) ' No. of stanza in a split group
+                            If core.EcopathCode(isp, ist) = i Then
+                                m_Data.Tmax(i) = CSng(core.Age2(isp, ist) / 12)
+                            End If
+                        Next
+                    Next
                 Else
-                    'Not stanza
+                    'No
                     If m_Data.PBinput(i) > 0 Then
                         sngTemp = m_Data.PBinput(i)
                     Else
