@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.13  2009/03/03 20:17:17  joeh
+' Minor change in the t0 and Tmax computation
+'
 ' Revision 1.12  2009/03/03 01:16:38  joeh
 ' Compute Tmax
 '
@@ -2991,7 +2994,7 @@ nextJ:
 
             't0
             For i As Integer = 1 To m_Data.NumLiving
-                If m_Data.t0(i) < -9998.0 And m_Data.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
+                If m_Data.t0(i) < 0 And m_Data.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
                     m_Data.t0(i) = CSng(-Math.Exp(-0.3922 - 0.2752 * Math.Log10(m_Data.Loo(i)) - 1.038 * Math.Log10(m_Data.vbK(i))))
                 End If
             Next
@@ -3019,8 +3022,8 @@ nextJ:
                     If sngTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
                         sngTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
                     End If
+                    If m_Data.Tmax(i) < 0 And sngTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
                 End If
-                If m_Data.Tmax(i) < 0 And sngTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
             Next
         End Sub
         'End Joeh
