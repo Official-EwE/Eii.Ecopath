@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.74  2009/03/03 01:15:54  joeh
+' Add Set_Tcatch_Flags
+' Add Set_Tmax_Flags
+' Expose Age2, EcopathCode and Nstanza in a split group of cStanzaDataStructure
+'
 ' Revision 1.73  2009/03/02 20:09:35  joeh
 ' VBK no longer has input and output pair
 '
@@ -498,6 +503,26 @@ Public Class cCore
             Return m_TSData.nDatasets
         End Get
     End Property
+
+    'Joeh
+    Public ReadOnly Property nStanza(ByVal isp As Integer) As Integer
+        Get
+            Return m_Stanza.Nstanza(isp)
+        End Get
+    End Property
+
+    Public ReadOnly Property EcopathCode(ByVal isp As Integer, ByVal ist As Integer) As Integer
+        Get
+            Return m_Stanza.EcopathCode(isp, ist)
+        End Get
+    End Property
+
+    Public ReadOnly Property Age2(ByVal isp As Integer, ByVal ist As Integer) As Integer
+        Get
+            Return m_Stanza.Age2(isp, ist)
+        End Get
+    End Property
+    'End Joeh
 
 #End Region 'Public core variables
 
@@ -3830,6 +3855,55 @@ Public Class cCore
         Else
             ' #No: Make VBK editable to the user
             group.ClearStatusFlags(eVarNameFlags.VBK, eStatusFlags.NotEditable)
+        End If
+
+        If bSendMessage Then
+            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+        End If
+
+        group.AllowValidation = True
+    End Function
+
+    Friend Function Set_Tcatch_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+        Dim iGroup As Integer
+        Dim bIsFished As Boolean = False
+
+        group.AllowValidation = False
+
+        'convert the Database ID into an iGroup
+        iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, group.DBID)
+        For iFleet As Integer = 1 To m_EcoPathData.NumFleet
+            If (m_EcoPathData.Landing(iFleet, iGroup) > 0) Then bIsFished = True
+        Next
+
+        ' Is fished?
+        If bIsFished Then
+            ' #Yes: make Tcatch editable to the user
+            group.ClearStatusFlags(eVarNameFlags.TcatchInput, eStatusFlags.NotEditable)
+        Else
+            ' #No: make Tcatch read-only to the user
+            group.SetStatusFlags(eVarNameFlags.TcatchInput, eStatusFlags.NotEditable)
+        End If
+
+        If bSendMessage Then
+            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+        End If
+
+        group.AllowValidation = True
+    End Function
+
+    Friend Function Set_Tmax_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+        group.AllowValidation = False
+
+        ' Is a multi-stanza group?
+        If group.isMultiStanza Then
+            ' #Yes: Make Tmax non-editable to the user
+            group.SetStatusFlags(eVarNameFlags.TmaxInput, eStatusFlags.NotEditable)
+        Else
+            ' #No: Make Tmax editable to the user
+            group.ClearStatusFlags(eVarNameFlags.TmaxInput, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then
