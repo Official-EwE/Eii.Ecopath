@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.6  2009/03/03 01:16:23  joeh
+' Add Set_Tcatch_Flags
+' Add Set_Tmax_Flags
+'
 ' Revision 1.5  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -319,6 +323,8 @@ Public Class cEcoPathGroupInput
 
         'Joeh
         Me.m_core.Set_VBK_Flags(Me, False)
+        Me.m_core.Set_Tcatch_Flags(Me, False)
+        Me.m_core.Set_Tmax_Flags(Me, False)
         'End Joeh
 
     End Function
