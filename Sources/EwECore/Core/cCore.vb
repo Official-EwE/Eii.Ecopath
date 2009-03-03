@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.75  2009/03/03 01:42:55  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.74  2009/03/03 01:15:54  joeh
 ' Add Set_Tcatch_Flags
 ' Add Set_Tmax_Flags
@@ -2467,12 +2470,12 @@ Public Class cCore
                 Input.StanzaID = getStanzaIDForGroup(iGroup)
 
                 'Joeh
+                Input.Tcatch = m_EcoPathData.Tcatch(iGroup)
                 Input.AinLWInput = m_EcoPathData.AinLWInput(iGroup)
                 Input.BinLWInput = m_EcoPathData.BinLWInput(iGroup)
                 Input.LooInput = m_EcoPathData.LooInput(iGroup)
                 Input.WinfInput = m_EcoPathData.WinfInput(iGroup)
                 Input.t0Input = m_EcoPathData.t0Input(iGroup)
-                Input.TcatchInput = m_EcoPathData.TcatchInput(iGroup)
                 Input.TmaxInput = m_EcoPathData.TmaxInput(iGroup)
                 'End Joeh
 
@@ -2524,12 +2527,12 @@ Public Class cCore
 
                 'Joeh
                 m_EcoPathData.vbK(iGroup) = Input.VBK
+                m_EcoPathData.Tcatch(iGroup) = Input.Tcatch
                 m_EcoPathData.AinLWInput(iGroup) = Input.AinLWInput
                 m_EcoPathData.BinLWInput(iGroup) = Input.BinLWInput
                 m_EcoPathData.LooInput(iGroup) = Input.LooInput
                 m_EcoPathData.WinfInput(iGroup) = Input.WinfInput
                 m_EcoPathData.t0Input(iGroup) = Input.t0Input
-                m_EcoPathData.TcatchInput(iGroup) = Input.TcatchInput
                 m_EcoPathData.TmaxInput(iGroup) = Input.TmaxInput
                 'End Joeh
 
@@ -2675,12 +2678,12 @@ Public Class cCore
 
                 'Joeh
                 output.VBK = CSng(m_EcoPathData.vbK(iGroup))
+                output.Tcatch = CSng(m_EcoPathData.Tcatch(iGroup))
                 output.AinLWOutput = CSng(m_EcoPathData.AinLW(iGroup))
                 output.BinLWOutput = CSng(m_EcoPathData.BinLW(iGroup))
                 output.LooOutput = CSng(m_EcoPathData.Loo(iGroup))
                 output.WinfOutput = CSng(m_EcoPathData.Winf(iGroup))
                 output.t0Output = CSng(m_EcoPathData.t0(iGroup))
-                output.TcatchOutput = CSng(m_EcoPathData.Tcatch(iGroup))
                 output.TmaxOutput = CSng(m_EcoPathData.Tmax(iGroup))
                 'End Joeh
 
@@ -3880,10 +3883,10 @@ Public Class cCore
         ' Is fished?
         If bIsFished Then
             ' #Yes: make Tcatch editable to the user
-            group.ClearStatusFlags(eVarNameFlags.TcatchInput, eStatusFlags.NotEditable)
+            group.ClearStatusFlags(eVarNameFlags.Tcatch, eStatusFlags.NotEditable)
         Else
             ' #No: make Tcatch read-only to the user
-            group.SetStatusFlags(eVarNameFlags.TcatchInput, eStatusFlags.NotEditable)
+            group.SetStatusFlags(eVarNameFlags.Tcatch, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then

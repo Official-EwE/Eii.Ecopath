@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.8  2009/03/03 01:42:55  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.7  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -283,12 +286,12 @@ Public Class cEcopathDataStructures
     Public mis() As Integer
 
     'Joeh
+    Public Tcatch() As Single
     Public AinLW() As Single
     Public BinLW() As Single
     Public Loo() As Single
     Public Winf() As Single
     Public t0() As Single
-    Public Tcatch() As Single
     Public Tmax() As Single
 
     Public AinLWInput() As Single
@@ -296,7 +299,6 @@ Public Class cEcopathDataStructures
     Public LooInput() As Single
     Public WinfInput() As Single
     Public t0Input() As Single
-    Public TcatchInput() As Single
     Public TmaxInput() As Single
 
     'End Joeh
@@ -439,12 +441,13 @@ Public Class cEcopathDataStructures
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
 
         'Joeh
+        ReDim Tcatch(NumGroups)
+
         ReDim AinLW(NumGroups)
         ReDim BinLW(NumGroups)
         ReDim Loo(NumGroups)
         ReDim Winf(NumGroups)
         ReDim t0(NumGroups)
-        ReDim Tcatch(NumGroups)
         ReDim Tmax(NumGroups)
 
         ReDim AinLWInput(NumGroups)
@@ -452,7 +455,6 @@ Public Class cEcopathDataStructures
         ReDim LooInput(NumGroups)
         ReDim WinfInput(NumGroups)
         ReDim t0Input(NumGroups)
-        ReDim TcatchInput(NumGroups)
         ReDim TmaxInput(NumGroups)
         'End Joeh
 
@@ -914,7 +916,6 @@ Public Class cEcopathDataStructures
             LooInput.CopyTo(Loo, 0)
             WinfInput.CopyTo(Winf, 0)
             t0Input.CopyTo(t0, 0)
-            TcatchInput.CopyTo(Tcatch, 0)
             TmaxInput.CopyTo(Tmax, 0)
             'End Joeh
 

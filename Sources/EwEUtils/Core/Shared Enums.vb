@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.33  2009/03/03 01:42:56  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.32  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -1110,6 +1113,7 @@ Namespace Core
         'Joeh
         ''' <summary></summary>
         VBK
+        Tcatch
         AinLWInput
         AinLWOutput
         BinLWInput
@@ -1120,8 +1124,6 @@ Namespace Core
         WinfOutput
         t0Input
         t0Output
-        TcatchInput
-        TcatchOutput
         TmaxInput
         TmaxOutput
         'End Joeh

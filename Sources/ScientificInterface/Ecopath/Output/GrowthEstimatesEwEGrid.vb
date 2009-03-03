@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.4  2009/03/03 01:42:56  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.3  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -117,7 +120,7 @@ Namespace Ecopath.Output
             Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.WinfOutput)
             Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.VBK)
             Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.t0Output)
-            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.TcatchOutput)
+            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.Tcatch)
             Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.TmaxOutput)
         End Sub
 

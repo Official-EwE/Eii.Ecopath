@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.30  2009/03/03 01:42:55  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.29  2009/03/02 20:09:35  joeh
 ' VBK no longer has input and output pair
 '
@@ -1641,12 +1644,12 @@ Public Class cDBDataSource
 
                 'Joeh
                 ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
+                ecopathDS.Tcatch(iGroup) = CSng(reader("Tcatch"))
                 ecopathDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
                 ecopathDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
                 ecopathDS.LooInput(iGroup) = CSng(reader("Loo"))
                 ecopathDS.WinfInput(iGroup) = CSng(reader("Winf"))
                 ecopathDS.t0Input(iGroup) = CSng(reader("t0"))
-                ecopathDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
                 ecopathDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
                 'End Joeh
 
@@ -1784,12 +1787,12 @@ Public Class cDBDataSource
 
                 'Joeh
                 drow("VBK") = ecopathDS.vbK(iGroup)
+                drow("Tcatch") = ecopathDS.Tcatch(iGroup)
                 drow("AinLW") = ecopathDS.AinLWInput(iGroup)
                 drow("BinLW") = ecopathDS.BinLWInput(iGroup)
                 drow("Loo") = ecopathDS.LooInput(iGroup)
                 drow("Winf") = ecopathDS.WinfInput(iGroup)
                 drow("t0") = ecopathDS.t0Input(iGroup)
-                drow("Tcatch") = ecopathDS.TcatchInput(iGroup)
                 drow("Tmax") = ecopathDS.TmaxInput(iGroup)
                 'End Joeh
 

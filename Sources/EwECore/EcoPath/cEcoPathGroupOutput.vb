@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.5  2009/03/03 01:42:55  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.4  2009/03/02 20:09:36  joeh
 ' VBK no longer has input and output pair
 '
@@ -418,6 +421,8 @@ Public Class cEcoPathGroupOutput
         'Joeh
         val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+        val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.BinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
@@ -427,8 +432,6 @@ Public Class cEcoPathGroupOutput
         val = New cValue(New Single, eVarNameFlags.WinfOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.t0Output, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.TcatchOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.TmaxOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -571,6 +574,19 @@ Public Class cEcoPathGroupOutput
         End Set
     End Property
 
+    Public Property Tcatch() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.Tcatch))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.Tcatch, newValue)
+            End If
+        End Set
+
+    End Property
+
     Public Property AinLWOutput() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.AinLWOutput))
@@ -631,19 +647,6 @@ Public Class cEcoPathGroupOutput
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.t0Output, newValue)
-            End If
-        End Set
-
-    End Property
-
-    Public Property TcatchOutput() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TcatchOutput))
-        End Get
-
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.TcatchOutput, newValue)
             End If
         End Set
 

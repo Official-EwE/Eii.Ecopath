@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.7  2009/03/03 01:42:55  joeh
+' Tcatch no longer has input and output pair
+'
 ' Revision 1.6  2009/03/03 01:16:23  joeh
 ' Add Set_Tcatch_Flags
 ' Add Set_Tmax_Flags
@@ -271,6 +274,11 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'Joeh
+        'Tcatch
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Tcatch))
+        m_values.Add(val.varName, val)
+
         'A in LW
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.AinLWInput))
@@ -294,11 +302,6 @@ Public Class cEcoPathGroupInput
         't0
         meta = New cVariableMetaData(-1, 0, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.t0Input))
-        m_values.Add(val.varName, val)
-
-        'Tcatch
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.TcatchInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TcatchInput))
         m_values.Add(val.varName, val)
 
         'Tmax
@@ -703,6 +706,16 @@ Public Class cEcoPathGroupInput
     End Property
 
     'Joeh
+    Public Property Tcatch() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.Tcatch))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.Tcatch, value)
+        End Set
+    End Property
+
     Public Property AinLWInput() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.AinLWInput))
@@ -750,16 +763,6 @@ Public Class cEcoPathGroupInput
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.t0Input, value)
-        End Set
-    End Property
-
-    Public Property TcatchInput() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TcatchInput))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TcatchInput, value)
         End Set
     End Property
 
@@ -1110,13 +1113,13 @@ Public Class cEcoPathGroupInput
         End Set
     End Property
 
-    Public Property TcatchInputStatus() As eStatusFlags
+    Public Property TcatchStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.TcatchInput)
+            Return GetStatus(eVarNameFlags.Tcatch)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TcatchInput, value)
+            SetStatus(eVarNameFlags.Tcatch, value)
         End Set
     End Property
 
