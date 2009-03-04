@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.31  2009/03/04 03:58:29  jeroens
+' Fixed major bug: RemoveStanza was reloading group info - bypassing a database lock
+'
 ' Revision 1.30  2009/03/03 01:42:55  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -1502,7 +1505,7 @@ Public Class cDBDataSource
             Implements IEcopathDataSource.RemoveStanza
         Try
             Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iDBID))
-            Return Me.LoadGroupInfo()
+            Return True
         Catch ex As Exception
             ' Kaboom
         End Try
