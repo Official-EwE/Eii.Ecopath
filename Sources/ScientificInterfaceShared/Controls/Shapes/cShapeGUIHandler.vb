@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.6  2009/03/04 06:29:34  jeroens
+' ResetAll uses generic shape manager
+'
 ' Revision 1.5  2009/03/02 20:08:23  jeroens
 ' Implemented FF reset all
 '
@@ -28,6 +31,8 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 Namespace Controls
+
+#Region " Base class "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -276,30 +281,6 @@ Namespace Controls
             End If
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Reset all shapes.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Sub ResetAllShapes()
-
-            Dim fsm As cForcingFunctionManager = Me.m_core.ForcingShapeManager
-            Dim shape As cForcingFunction = Nothing
-
-            ' For every shape
-            For iShape As Integer = 0 To fsm.Count - 1
-                ' Get the shape
-                shape = fsm.Item(iShape)
-                ' Lock it to prevent noise during this process
-                shape.LockUpdates()
-                ' Reset the shape
-                Me.ResetShape(shape)
-                ' Cheat: force an update on the very last shape to trigger a GUI refresh
-                shape.UnlockUpdates(iShape = fsm.Count - 1)
-            Next
-
-        End Sub
-
         Protected Overridable Sub SaveAsImage(ByVal shape As cShapeData, ByVal sp As ucSketchPad)
 
             Dim msg As cMessage = Nothing
@@ -497,6 +478,8 @@ Namespace Controls
 #End Region
 
     End Class
+
+#End Region ' Base class
 
 #Region " Time series "
 
@@ -999,6 +982,31 @@ Namespace Controls
             Return My.Resources.ECOSIM_DEFAULT_NEWFORCINGSHAPE
         End Function
 
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset all shapes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ResetAllShapes()
+
+            Dim sm As cBaseShapeManager = Me.ShapeManager
+            Dim shape As cForcingFunction = Nothing
+
+            ' For every shape
+            For iShape As Integer = 0 To sm.Count - 1
+                ' Get the shape
+                shape = sm.Item(iShape)
+                ' Lock it to prevent noise during this process
+                shape.LockUpdates()
+                ' Reset the shape
+                Me.ResetShape(shape)
+                ' Cheat: force an update on the very last shape to trigger a GUI refresh
+                shape.UnlockUpdates(iShape = sm.Count - 1)
+            Next
+
+        End Sub
+
 #Region " Baseclass overrides "
 
         ''' -------------------------------------------------------------------
@@ -1027,7 +1035,7 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.Rename
                     Return True
-                Case eShapeCommandTypes.Reset
+                Case eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll
                     Return True
                 Case eShapeCommandTypes.SaveAsImage
                     Return True
@@ -1054,7 +1062,7 @@ Namespace Controls
                 Case eShapeCommandTypes.Add
                     Return True
                 Case eShapeCommandTypes.Duplicate, eShapeCommandTypes.Modify, eShapeCommandTypes.DisplayOptions, _
-                     eShapeCommandTypes.Remove, eShapeCommandTypes.Rename, eShapeCommandTypes.Reset, _
+                     eShapeCommandTypes.Remove, eShapeCommandTypes.Rename, eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll, _
                      eShapeCommandTypes.SaveAsImage, eShapeCommandTypes.Seasonal, eShapeCommandTypes.ChangeShape
                     Return (Me.Selection IsNot Nothing)
             End Select
