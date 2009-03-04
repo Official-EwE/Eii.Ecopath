@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.7  2009/03/04 06:31:55  jeroens
+' ResetAll command properly enabled
+'
 ' Revision 1.6  2009/03/04 06:29:34  jeroens
 ' ResetAll uses generic shape manager
 '
@@ -962,6 +965,8 @@ Namespace Controls
 
         End Sub
 
+#Region " Forcing overrides "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.
@@ -981,7 +986,6 @@ Namespace Controls
         Protected Overridable Function NewShapeNameMask() As String
             Return My.Resources.ECOSIM_DEFAULT_NEWFORCINGSHAPE
         End Function
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1006,6 +1010,8 @@ Namespace Controls
             Next
 
         End Sub
+
+#End Region ' Forcing overrides
 
 #Region " Baseclass overrides "
 
@@ -1059,10 +1065,10 @@ Namespace Controls
         Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Select Case cmd
-                Case eShapeCommandTypes.Add
+                Case eShapeCommandTypes.Add, eShapeCommandTypes.ResetAll
                     Return True
                 Case eShapeCommandTypes.Duplicate, eShapeCommandTypes.Modify, eShapeCommandTypes.DisplayOptions, _
-                     eShapeCommandTypes.Remove, eShapeCommandTypes.Rename, eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll, _
+                     eShapeCommandTypes.Remove, eShapeCommandTypes.Rename, eShapeCommandTypes.Reset, _
                      eShapeCommandTypes.SaveAsImage, eShapeCommandTypes.Seasonal, eShapeCommandTypes.ChangeShape
                     Return (Me.Selection IsNot Nothing)
             End Select
