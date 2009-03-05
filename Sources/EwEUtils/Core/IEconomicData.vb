@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: IEconomicData.vb,v $
+' Revision 1.5  2009/03/05 17:27:07  jeroens
+' Added TimeStep
+'
 ' Revision 1.4  2009/03/05 07:27:11  jeroens
 ' Implemented
 '
@@ -24,6 +27,7 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     Public Interface IEconomicData
 
+        ReadOnly Property TimeStep() As Integer
         ReadOnly Property Production() As Single
         ReadOnly Property ProductionLive() As Single
         ReadOnly Property RevenueProductsMain() As Single
