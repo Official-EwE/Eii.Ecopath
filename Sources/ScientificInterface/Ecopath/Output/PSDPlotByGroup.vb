@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.4  2009/03/06 17:54:01  joeh
+' Minor changes in the computation of Weight, Number and Biomass
+'
 ' Revision 1.3  2009/03/06 00:47:57  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -149,20 +152,21 @@ Namespace Ecopath.Output
             'Results data structure
             Dim resultLists As New List(Of PointPairList)
             Dim dXValue As Double = 0
-            Dim grpOutput As cEcoPathGroupOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
+            Dim grpOutput As cEcoPathGroupOutput = Nothing
 
+            grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
             InitLists(resultLists, 3)
 
-            For i As Integer = 1 To grpOutput.EcopathWeight.Length - 1 - 1
+            For iTimeStep As Integer = 1 To m_core.nEcopathTimeSteps
 
-                dXValue = grpOutput.TmaxOutput / 100 * (i - 1)
+                dXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nEcopathTimeSteps - 1)
 
                 'Weight plot
-                resultLists(0).Add(dXValue, grpOutput.EcopathWeight(i))
+                resultLists(0).Add(dXValue, grpOutput.EcopathWeight(iTimeStep))
                 'Number plot
-                resultLists(1).Add(dXValue, grpOutput.EcopathNumber(i))
+                resultLists(1).Add(dXValue, grpOutput.EcopathNumber(iTimeStep))
                 'Biomass plot
-                resultLists(2).Add(dXValue, grpOutput.EcopathBiomass(i))
+                resultLists(2).Add(dXValue, grpOutput.EcopathBiomass(iTimeStep))
             Next
 
             'Set the master pane title

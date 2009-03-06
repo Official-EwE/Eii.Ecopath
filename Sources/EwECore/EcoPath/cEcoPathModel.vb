@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.15  2009/03/06 17:54:01  joeh
+' Minor changes in the computation of Weight, Number and Biomass
+'
 ' Revision 1.14  2009/03/06 00:47:56  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -2967,8 +2970,9 @@ nextJ:
 
         'Joeh
         Private Sub EstimateGrowthParameters()
+            Dim core As cCore = cCore.GetInstance
             Dim sg As cStanzaGroup = Nothing
-            Dim sngTemp As Single
+            Dim sTemp As Single
 
             'A in LW
             For i As Integer = 1 To m_Data.NumLiving
@@ -3002,7 +3006,6 @@ nextJ:
             Next
 
             'Tmax
-            Dim core As cCore = cCore.GetInstance
             For i As Integer = 1 To m_Data.NumLiving
                 'Is stanza group?
                 If m_Data.StanzaGroup(i) Then
@@ -3017,46 +3020,45 @@ nextJ:
                 Else
                     'No
                     If m_Data.PBinput(i) > 0 Then
-                        sngTemp = m_Data.PBinput(i)
+                        sTemp = m_Data.PBinput(i)
                     Else
-                        sngTemp = m_Data.PB(i)
+                        sTemp = m_Data.PB(i)
                     End If
-                    If sngTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
-                        sngTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
+                    If sTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
+                        sTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
                     End If
-                    If m_Data.Tmax(i) < 0 And sngTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
+                    If m_Data.Tmax(i) < 0 And sTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sTemp) - 1.44) / -0.984))
                 End If
             Next
         End Sub
 
         Private Sub EstimatePSD()
-            Dim intTimeStep As Integer = 0
-            Dim sngMortality As Single
+            Dim sTime As Single
+            Dim sMortality As Single
 
             For iGroup As Integer = 1 To m_Data.NumGroups
-                intTimeStep = 0
-                For t As Single = 0 To m_Data.Tmax(iGroup) Step (m_Data.Tmax(iGroup) / 100)
-                    intTimeStep = intTimeStep + 1
+                For iTimeStep As Integer = 1 To m_Data.NTimes
+                    sTime = (iTimeStep - 1) * m_Data.Tmax(iGroup) / (m_Data.NTimes - 1)
 
                     'Weight
-                    m_Data.EcopathWeight(iGroup, intTimeStep) = CSng(m_Data.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
-                                                                (t - m_Data.t0(iGroup))) ^ m_Data.BinLW(iGroup)))
+                    m_Data.EcopathWeight(iGroup, iTimeStep) = CSng(m_Data.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
+                                                                (sTime - m_Data.t0(iGroup))) ^ m_Data.BinLW(iGroup)))
 
                     'Number
                     'If "Group P/B" then
-                    If t < m_Data.Tcatch(iGroup) Then
-                        sngMortality = m_Data.PB(iGroup) - _
+                    If sTime < m_Data.Tcatch(iGroup) Then
+                        sMortality = m_Data.PB(iGroup) - _
                                        m_Data.fCatch(iGroup) / m_Data.B(iGroup)
                     Else
-                        sngMortality = m_Data.PB(iGroup)
+                        sMortality = m_Data.PB(iGroup)
                     End If
                     'Else "Lorenzen-variable"
 
                     'End if
-                    m_Data.EcopathNumber(iGroup, intTimeStep) = CSng(10000 * Math.Exp(-sngMortality * t))
+                    m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-sMortality * sTime))
 
                     'Biomass
-                    m_Data.EcopathBiomass(iGroup, intTimeStep) = m_Data.EcopathWeight(iGroup, intTimeStep) * m_Data.EcopathNumber(iGroup, intTimeStep)
+                    m_Data.EcopathBiomass(iGroup, iTimeStep) = m_Data.EcopathWeight(iGroup, iTimeStep) * m_Data.EcopathNumber(iGroup, iTimeStep)
                 Next
             Next
         End Sub
