@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.34  2009/03/06 00:47:57  joeh
+' Add Ecopath output data (Weight, Number, Biomass) over time
+'
 ' Revision 1.33  2009/03/03 01:42:56  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -733,6 +736,13 @@ Namespace Core
         EcosimAvgWeight
         EcosimAvgPrey
         EcosimAvgPred
+
+        'Joeh
+        ''' <summary>Ecopath ouput data over time</summary>
+        EcopathWeight
+        EcopathNumber
+        EcopathBiomass
+        'End Joeh
 
         ''' <summary>Consumption by Pred of this Prey over time </summary>
         EcosimPredConsumpTime
@@ -1470,7 +1480,9 @@ Namespace Core
         ''' <summary>Number of columns in the Ecospace basemap.</summary>
         nCols
 
-
+        'Joe
+        nEcopathTimeSteps
+        'End Joeh
     End Enum
 
 #End Region ' Core counters

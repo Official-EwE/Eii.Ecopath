@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.14  2009/03/06 00:47:56  joeh
+' Add Ecopath output data (Weight, Number, Biomass) over time
+'
 ' Revision 1.13  2009/03/03 20:17:17  joeh
 ' Minor change in the t0 and Tmax computation
 '
@@ -360,13 +363,7 @@ Namespace Ecopath
                 End If
 
                 If bPluginFailed Then
-
                     Me.EstimateParameters(m_eEstimType, m_EstimStatus)
-
-                    'Joeh
-                    EstimateGrowthParameters()
-                    'End Joeh
-
                 End If
 
                 If m_EstimStatus = eStatusFlags.OK Then
@@ -383,6 +380,11 @@ Namespace Ecopath
                         CalcNichePiankaPred()
                         CalcNichePiankaPrey()
                         Chesson()
+
+                        'Joeh: PSD
+                        EstimateGrowthParameters()
+                        EstimatePSD()
+                        'End Joeh
 
                         m_Data.onPostEcopathRun()
 
@@ -3024,6 +3026,38 @@ nextJ:
                     End If
                     If m_Data.Tmax(i) < 0 And sngTemp > 0 Then m_Data.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
                 End If
+            Next
+        End Sub
+
+        Private Sub EstimatePSD()
+            Dim intTimeStep As Integer = 0
+            Dim sngMortality As Single
+
+            For iGroup As Integer = 1 To m_Data.NumGroups
+                intTimeStep = 0
+                For t As Single = 0 To m_Data.Tmax(iGroup) Step (m_Data.Tmax(iGroup) / 100)
+                    intTimeStep = intTimeStep + 1
+
+                    'Weight
+                    m_Data.EcopathWeight(iGroup, intTimeStep) = CSng(m_Data.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
+                                                                (t - m_Data.t0(iGroup))) ^ m_Data.BinLW(iGroup)))
+
+                    'Number
+                    'If "Group P/B" then
+                    If t < m_Data.Tcatch(iGroup) Then
+                        sngMortality = m_Data.PB(iGroup) - _
+                                       m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+                    Else
+                        sngMortality = m_Data.PB(iGroup)
+                    End If
+                    'Else "Lorenzen-variable"
+
+                    'End if
+                    m_Data.EcopathNumber(iGroup, intTimeStep) = CSng(10000 * Math.Exp(-sngMortality * t))
+
+                    'Biomass
+                    m_Data.EcopathBiomass(iGroup, intTimeStep) = m_Data.EcopathWeight(iGroup, intTimeStep) * m_Data.EcopathNumber(iGroup, intTimeStep)
+                Next
             Next
         End Sub
         'End Joeh

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.6  2009/03/06 00:47:56  joeh
+' Add Ecopath output data (Weight, Number, Biomass) over time
+'
 ' Revision 1.5  2009/03/03 01:42:55  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -101,6 +104,8 @@ Public Class cEcoPathGroupOutput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer
+    Private m_pathData As cEcopathDataStructures
+    Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
 
     ' m_Area = 'A()
     ' m_Biomass = 'B()
@@ -435,6 +440,13 @@ Public Class cEcoPathGroupOutput
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.TmaxOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathWeight, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        m_values.Add(val.varName, val)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathNumber, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        m_values.Add(val.varName, val)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        m_values.Add(val.varName, val)
         'End Joeh
 
     End Sub
@@ -663,6 +675,72 @@ Public Class cEcoPathGroupOutput
             End If
         End Set
 
+    End Property
+
+    Public Property EcopathWeight(ByVal iTimeStep As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathWeight, iTimeStep))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathWeight, newValue, iTimeStep)
+            End If
+        End Set
+    End Property
+
+    Public Property EcopathWeight() As Single()
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.EcopathWeight), Single())
+        End Get
+        Set(ByVal newValue As Single())
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathWeight, newValue)
+            End If
+        End Set
+    End Property
+
+    Public Property EcopathNumber(ByVal iTimeStep As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathNumber, iTimeStep))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathNumber, newValue, iTimeStep)
+            End If
+        End Set
+    End Property
+
+    Public Property EcopathNumber() As Single()
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.EcopathNumber), Single())
+        End Get
+        Set(ByVal newValue As Single())
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathNumber, newValue)
+            End If
+        End Set
+    End Property
+
+    Public Property EcopathBiomass(ByVal iTimeStep As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathBiomass, iTimeStep))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathBiomass, newValue, iTimeStep)
+            End If
+        End Set
+    End Property
+
+    Public Property EcopathBiomass() As Single()
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.EcopathBiomass), Single())
+        End Get
+        Set(ByVal newValue As Single())
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.EcopathBiomass, newValue)
+            End If
+        End Set
     End Property
     'End Joeh
 

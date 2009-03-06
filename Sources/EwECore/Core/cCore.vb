@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.76  2009/03/06 00:47:56  joeh
+' Add Ecopath output data (Weight, Number, Biomass) over time
+'
 ' Revision 1.75  2009/03/03 01:42:55  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -251,6 +254,11 @@ Public Class cCore
                     Else
                         Return 0
                     End If
+
+                    'Joeh
+                Case eCoreCounterTypes.nEcopathTimeSteps
+                    Return Me.nEcopathTimeSteps
+                    'End Joeh
 
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
@@ -523,6 +531,12 @@ Public Class cCore
     Public ReadOnly Property Age2(ByVal isp As Integer, ByVal ist As Integer) As Integer
         Get
             Return m_Stanza.Age2(isp, ist)
+        End Get
+    End Property
+
+    Public ReadOnly Property nEcopathTimeSteps() As Integer
+        Get
+            Return m_EcoPathData.NTimes
         End Get
     End Property
     'End Joeh
@@ -2611,6 +2625,11 @@ Public Class cCore
         Dim Hlap() As Single
         Dim Plap() As Single
         Dim Alpha() As Single
+        'Joeh
+        Dim EcopathWeight() As Single
+        Dim EcopathNumber() As Single
+        Dim EcopathBiomass() As Single
+        'End Joeh
         Dim convalue As Single
         Dim iGroup As Integer
 
@@ -2640,6 +2659,11 @@ Public Class cCore
                 ReDim Hlap(nGroups)
                 ReDim Plap(nGroups)
                 ReDim Alpha(nGroups)
+                'Joeh
+                ReDim EcopathWeight(nEcopathTimeSteps)
+                ReDim EcopathNumber(nEcopathTimeSteps)
+                ReDim EcopathBiomass(nEcopathTimeSteps)
+                'End Joeh
 
                 For iPred As Integer = 1 To m_EcoPathData.NumLiving
                     If m_EcoPathData.B(iGroup) > 0 Then
@@ -2776,9 +2800,31 @@ Public Class cCore
 
                 output.StanzaID = getStanzaIDForGroup(iGroup)
 
+                'Joeh
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                ' Weight
+                For t As Integer = 1 To nEcopathTimeSteps
+                    EcopathWeight(t) = m_EcoPathData.EcopathWeight(iGroup, t)
+                Next
+                output.EcopathWeight = EcopathWeight
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                ' Number
+                For t As Integer = 1 To nEcopathTimeSteps
+                    EcopathNumber(t) = m_EcoPathData.EcopathNumber(iGroup, t)
+                Next
+                output.EcopathNumber = EcopathNumber
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                ' Biomass
+                For t As Integer = 1 To nEcopathTimeSteps
+                    EcopathBiomass(t) = m_EcoPathData.EcopathBiomass(iGroup, t)
+                Next
+                output.EcopathBiomass = EcopathBiomass
+                'End Joeh
+
                 output.m_bReadOnly = True
                 output.ResetStatusFlags()
-
             Next
 
             Return True
@@ -3249,6 +3295,7 @@ Public Class cCore
         Return bsuccess
 
     End Function
+
 
     ' JS 25nov08: disabled, this screwed up the Ecopath output object statuses
     'Private Sub ClearOutputFlags()
@@ -9131,7 +9178,7 @@ Public Class cCore
     End Function
 
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
-        If Me.m_PedigreeManagers.containsKey(varName) Then Return Me.m_PedigreeManagers(varName)
+        If Me.m_PedigreeManagers.ContainsKey(varName) Then Return Me.m_PedigreeManagers(varName)
         Return Nothing
     End Function
 

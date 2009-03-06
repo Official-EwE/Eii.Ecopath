@@ -29,8 +29,8 @@ Namespace Ecopath.Output
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.llbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
+            Me.llbGroups = New ScientificInterfaceShared.Controls.LegendListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -49,24 +49,16 @@ Namespace Ecopath.Output
             'SplitContainer1.Panel2
             '
             Me.SplitContainer1.Panel2.Controls.Add(Me.llbGroups)
-            Me.SplitContainer1.Size = New System.Drawing.Size(557, 463)
-            Me.SplitContainer1.SplitterDistance = 428
+            Me.SplitContainer1.Size = New System.Drawing.Size(588, 463)
+            Me.SplitContainer1.SplitterDistance = 451
             Me.SplitContainer1.TabIndex = 0
-            '
-            'llbGroups
-            '
-            Me.llbGroups.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.llbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.llbGroups.FormattingEnabled = True
-            Me.llbGroups.Location = New System.Drawing.Point(0, 0)
-            Me.llbGroups.Name = "llbGroups"
-            Me.llbGroups.Size = New System.Drawing.Size(125, 459)
-            Me.llbGroups.TabIndex = 0
             '
             'zgcZedGraphCntl
             '
-            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 0)
+            Me.zgcZedGraphCntl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 12)
             Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
             Me.zgcZedGraphCntl.ScrollGrace = 0
             Me.zgcZedGraphCntl.ScrollMaxX = 0
@@ -75,14 +67,26 @@ Namespace Ecopath.Output
             Me.zgcZedGraphCntl.ScrollMinX = 0
             Me.zgcZedGraphCntl.ScrollMinY = 0
             Me.zgcZedGraphCntl.ScrollMinY2 = 0
-            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(428, 463)
+            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(452, 434)
             Me.zgcZedGraphCntl.TabIndex = 0
+            '
+            'llbGroups
+            '
+            Me.llbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.llbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.llbGroups.FormattingEnabled = True
+            Me.llbGroups.Location = New System.Drawing.Point(3, 13)
+            Me.llbGroups.Name = "llbGroups"
+            Me.llbGroups.Size = New System.Drawing.Size(130, 433)
+            Me.llbGroups.TabIndex = 0
             '
             'PSDPlotByGroup
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(557, 463)
+            Me.ClientSize = New System.Drawing.Size(588, 463)
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "PSDPlotByGroup"
             Me.Text = "PSDPlotByGroup"

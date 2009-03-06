@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.9  2009/03/06 00:47:56  joeh
+' Add Ecopath output data (Weight, Number, Biomass) over time
+'
 ' Revision 1.8  2009/03/03 01:42:55  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -301,6 +304,19 @@ Public Class cEcopathDataStructures
     Public t0Input() As Single
     Public TmaxInput() As Single
 
+    Public EcopathWeight(,) As Single
+    Public EcopathNumber(,) As Single
+    Public EcopathBiomass(,) As Single
+    'End Joeh
+#End Region
+
+#Region " Public Properties "
+    'Joeh
+    Public ReadOnly Property NTimes() As Integer
+        Get
+            Return 101
+        End Get
+    End Property
     'End Joeh
 #End Region
 
@@ -456,6 +472,10 @@ Public Class cEcopathDataStructures
         ReDim WinfInput(NumGroups)
         ReDim t0Input(NumGroups)
         ReDim TmaxInput(NumGroups)
+
+        ReDim EcopathWeight(NumGroups, NTimes)
+        ReDim EcopathNumber(NumGroups, NTimes)
+        ReDim EcopathBiomass(NumGroups, NTimes)
         'End Joeh
 
         Return True
@@ -1208,6 +1228,27 @@ Public Class cEcopathDataStructures
             dest.Host = Host.Clone
             mis.CopyTo(dest.mis, 0)
 
+            'Joeh
+            Tcatch.CopyTo(dest.Tcatch, 0)
+
+            AinLW.CopyTo(dest.AinLW, 0)
+            BinLW.CopyTo(dest.BinLW, 0)
+            Loo.CopyTo(dest.Loo, 0)
+            Winf.CopyTo(dest.Winf, 0)
+            t0.CopyTo(dest.t0, 0)
+            Tmax.CopyTo(dest.Tmax, 0)
+
+            AinLWInput.CopyTo(dest.AinLWInput, 0)
+            BinLWInput.CopyTo(dest.BinLWInput, 0)
+            LooInput.CopyTo(dest.LooInput, 0)
+            WinfInput.CopyTo(dest.WinfInput, 0)
+            t0Input.CopyTo(dest.t0Input, 0)
+            TmaxInput.CopyTo(dest.TmaxInput, 0)
+
+            dest.EcopathWeight = EcopathWeight.Clone
+            dest.EcopathNumber = EcopathNumber.Clone
+            dest.EcopathBiomass = EcopathBiomass.Clone
+            'End Joeh
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)
         End Try
