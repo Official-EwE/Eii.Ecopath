@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.8  2009/03/07 04:46:45  jeroens
+' Added a load of comments
+'
 ' Revision 1.7  2009/01/29 16:10:50  jeroens
 ' Moved cEwEDatabase.eAccessTypes to shared enums
 '
@@ -34,7 +37,9 @@ Imports System.Data.SqlClient
 Imports System.Data.Common
 Imports System.Reflection
 Imports System.ComponentModel
+Imports System.Collections.Generic
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -903,18 +908,56 @@ Namespace Database
         <Serializable()> _
         Public MustInherit Class cOOPStorable
 
+#Region " Privates "
+
+            ''' <summary>Default ID for newly created cOOPStorable instances.</summary>
             Friend Shared cDBID_INVALID As Integer = 0
 
+            ''' <summary>Unique ID of an instance of cOOPStorable</summary>
             Private m_iDBID As Integer = cDBID_INVALID ' Key not assigned yet
+
+            ''' <summary>Flag stating whether an cOOPStorabe instance is allowed to 
+            ''' broadcast <see cref="OnChanged">OnChanged</see>events.</summary>
+            Private m_bAllowEvents As Boolean = True
+
+            ''' <summary>Flag preventing looped updates.</summary>
+            Private m_bInUpdate As Boolean = False
+
+#If DEBUG Then
+
+            ''' <summary>Flag stating whether the object is deleted from the database.</summary>
+            ''' <remarks>This flag is deliberately only available at debug time.</remarks>
+            Private m_bDeleted As Boolean = False
+
+#End If
+
+#End Region ' Privates
+
+#Region " Constructor "
 
             Public Sub New()
             End Sub
 
+#End Region ' Constructor
+
+#Region " Public properties "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Event to notify that instance unit has changed
+            ''' </summary>
+            ''' <param name="obj">The <see cref="cOOPStorable">instance</see>
+            ''' that changed</param>
+            ''' ---------------------------------------------------------------
+            Public Event OnChanged(ByVal obj As cOOPStorable)
+
+            ''' ---------------------------------------------------------------
             ''' <summary>
             ''' The unique ID of any object in the database. The database
             ''' manages this property exclusively although public read 
             ''' access is allowed.
             ''' </summary>
+            ''' ---------------------------------------------------------------
             <Browsable(False)> _
             Public Property DBID() As Integer
                 Get
@@ -925,6 +968,33 @@ Namespace Database
                 End Set
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether this instance is allowed to send
+            ''' <see cref="OnChanged">change events</see>.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            <Browsable(False)> _
+            Public Property AllowEvents() As Boolean
+                Get
+                    Return Me.m_bAllowEvents
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bAllowEvents = value
+                    If m_bAllowEvents Then Me.SetChanged()
+                End Set
+            End Property
+
+#End Region ' Public properties
+
+#Region " Public interfaces "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Copy the content of another instance of cOOPStorable.
+            ''' </summary>
+            ''' <param name="objSrc">The source ofject to copy content from.</param>
+            ''' ---------------------------------------------------------------
             Public Overridable Sub CopyFrom(ByVal objSrc As cOOPStorable)
                 Dim apiSrc As PropertyInfo() = Nothing
                 Dim apiTgt As PropertyInfo() = Nothing
@@ -956,31 +1026,17 @@ Namespace Database
                 Next
             End Sub
 
-#Region " Updates "
+#End Region ' Public interfaces
 
+#Region " Internals "
+
+            ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Event to notify that instance unit has changed
+            ''' Helper method, states whether the content of an instance has
+            ''' been modified externally.
             ''' </summary>
-            ''' <param name="obj"></param>
-            Public Event OnChanged(ByVal obj As cOOPStorable)
-
-            ''' <summary>Flag stating whether this unit is allowed to broadcast change events.</summary>
-            Private m_bAllowEvents As Boolean = True
-
+            ''' ---------------------------------------------------------------
             <Browsable(False)> _
-            Public Property AllowEvents() As Boolean
-                Get
-                    Return Me.m_bAllowEvents
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bAllowEvents = value
-                    If m_bAllowEvents Then Me.SetChanged()
-                End Set
-            End Property
-
-            ' Deadlock prevention flag
-            Private m_bInUpdate As Boolean = False
-
             Protected Sub SetChanged()
                 If Me.m_bAllowEvents Then
                     If (Me.m_bInUpdate = False) Then
@@ -994,13 +1050,36 @@ Namespace Database
                 End If
             End Sub
 
-#End Region ' Updates
+#If DEBUG Then
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Helper method, states whether the object has been deleted from 
+            ''' the database and thus cannot be saved.
+            ''' </summary>
+            ''' <remarks>
+            ''' This method is only available at debug time.
+            ''' </remarks>
+            ''' ---------------------------------------------------------------
+            <Browsable(False)> _
+            Friend Property Deleted() As Boolean
+                Get
+                    Return Me.m_bDeleted
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bDeleted = value
+                End Set
+            End Property
+
+#End If
+
+#End Region ' Internals
 
         End Class
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Public class for storing a list of cOOPStorable instances.
+        ''' Strong-typed list for cOOPStorable instances.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cOOPStorableList
@@ -1010,29 +1089,29 @@ Namespace Database
             Private m_list As New List(Of cOOPStorable)
 
             Public Sub Add(ByVal item As cOOPStorable) _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).Add
+                Implements ICollection(Of cOOPStorable).Add
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Add(item)
             End Sub
 
             Public Sub Clear() _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).Clear
+                Implements ICollection(Of cOOPStorable).Clear
                 Me.m_list.Clear()
             End Sub
 
             Public Function Contains(ByVal item As cOOPStorable) As Boolean _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).Contains
+                Implements ICollection(Of cOOPStorable).Contains
                 Return Me.m_list.Contains(item)
             End Function
 
             Public Sub CopyTo(ByVal array() As cOOPStorable, ByVal arrayIndex As Integer) _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).CopyTo
+                Implements ICollection(Of cOOPStorable).CopyTo
                 Me.m_list.CopyTo(array)
             End Sub
 
             <Browsable(False)> _
             Public ReadOnly Property Count() As Integer _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).Count
+                Implements ICollection(Of cOOPStorable).Count
                 Get
                     Return Me.m_list.Count
                 End Get
@@ -1040,37 +1119,37 @@ Namespace Database
 
             <Browsable(False)> _
             Public ReadOnly Property IsReadOnly() As Boolean _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).IsReadOnly
+                Implements ICollection(Of cOOPStorable).IsReadOnly
                 Get
                     Return False
                 End Get
             End Property
 
             Public Function Remove(ByVal item As cOOPStorable) As Boolean _
-                Implements System.Collections.Generic.ICollection(Of cOOPStorable).Remove
+                Implements ICollection(Of cOOPStorable).Remove
                 ' ToDo: remember this to actively erase item from DB?
                 Me.m_list.Remove(item)
             End Function
 
-            Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of cOOPStorable) _
-                Implements System.Collections.Generic.IEnumerable(Of cOOPStorable).GetEnumerator
+            Public Function GetEnumerator() As IEnumerator(Of cOOPStorable) _
+                Implements IEnumerable(Of cOOPStorable).GetEnumerator
                 Return Me.m_list.GetEnumerator()
             End Function
 
             Public Function IndexOf(ByVal item As cOOPStorable) As Integer _
-                Implements System.Collections.Generic.IList(Of cOOPStorable).IndexOf
+                Implements IList(Of cOOPStorable).IndexOf
                 Return Me.m_list.IndexOf(item)
             End Function
 
             Public Sub Insert(ByVal index As Integer, ByVal item As cOOPStorable) _
-                Implements System.Collections.Generic.IList(Of cOOPStorable).Insert
+                Implements IList(Of cOOPStorable).Insert
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Insert(index, item)
             End Sub
 
             <Browsable(False)> _
             Default Public Property Item(ByVal index As Integer) As cOOPStorable _
-                Implements System.Collections.Generic.IList(Of cOOPStorable).Item
+                Implements IList(Of cOOPStorable).Item
                 Get
                     Return Me.m_list.Item(index)
                 End Get
@@ -1080,7 +1159,7 @@ Namespace Database
             End Property
 
             Public Sub RemoveAt(ByVal index As Integer) _
-                Implements System.Collections.Generic.IList(Of cOOPStorable).RemoveAt
+                Implements IList(Of cOOPStorable).RemoveAt
                 Me.m_list.RemoveAt(index)
             End Sub
 
@@ -1093,67 +1172,137 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Class for querying which cOOPStorable instances are stored in the database.
+        ''' Class for querying if cOOPStorable instances are stored in the 
+        ''' database.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cOOPKey
 
-            Private m_tOriginating As Type
-            Private m_iDBID As Integer
+#Region " Privates "
 
+            ''' <summary>The ID for an object in the database</summary>
+            Private m_iDBID As Integer = cOOPStorable.cDBID_INVALID
+            ''' <summary>The runtime type that was used to write the
+            ''' record in the database with this ID.</summary>
+            Private m_tOriginating As Type = Nothing
+
+#End Region ' Privates
+
+#Region " Constructor "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Construct a new cOOPKey instance.
+            ''' </summary>
+            ''' <param name="t">The runtime type to generate the key for.</param>
+            ''' <param name="iDBID">The unique ID that this key is generated for.</param>
+            ''' ---------------------------------------------------------------
             Friend Sub New(ByVal t As Type, ByVal iDBID As Integer)
+
+                ' Sanity checks
+                Debug.Assert(t IsNot Nothing)
+                Debug.Assert(iDBID <> cOOPStorable.cDBID_INVALID)
+
                 Me.m_tOriginating = t
                 Me.m_iDBID = iDBID
+
             End Sub
 
+#End Region ' Constructor
+
+#Region " Properties "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the unique ID for the key.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property DBID() As Integer
+                Get
+                    Return Me.m_iDBID
+                End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the runtime type for the key.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
             Public ReadOnly Property OriginatingType() As Type
                 Get
                     Return Me.m_tOriginating
                 End Get
             End Property
 
-            Public ReadOnly Property DBID() As Integer
-                Get
-                    Return Me.m_iDBID
-                End Get
-            End Property
+#End Region ' Properties
+
         End Class
 
 #End Region ' OOP Public classes
 
 #Region " OOP Read "
 
-        Public Function ReadObjectKey(ByVal iDBID As Integer) As cOOPKey
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read an cOOPKey for a ID in the database. If all goes well a 
+        ''' <see cref="cOOPKey">object key</see> is returned, which links the
+        ''' ID value to the originating runtime type.
+        ''' </summary>
+        ''' <param name="iDBID">
+        ''' The ID to retrieve an <see cref="cOOPKey">object key</see> for.
+        ''' </param>
+        ''' <returns>
+        ''' A <see cref="cOOPKey">object key</see> instance, or null if the ID 
+        ''' was not present in the database, or if the originating runtime
+        ''' type was not present in the current loaded set of assemblies.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ReadObjectKey(ByVal iDBID As Integer) As cOOPKey
+
+            ' Sanity check
             If Not Me.m_bOOPEnabled Then Return Nothing
 
-            Dim strTypeName As String = ""
-            Dim strSQL As String = ""
             Dim reader As IDataReader = Nothing
+            Dim strTypeName As String = ""
+            Dim tOrg As Type = Nothing
+            Dim strSQL As String = ""
             Dim objKey As cOOPKey = Nothing
 
+            ' Construct SQL statement to query the runtime information from the 
+            ' OOP core table 'cOOPStorable'.
             strSQL = String.Format("SELECT {0}, DBID FROM {1} WHERE DBID={2}", OOP_CLASSNAMECOL, Me.OOPGetTableName(GetType(cOOPStorable)), iDBID)
             reader = Me.GetReader(strSQL)
             Try
+                ' Don't try this at home
                 reader.Read()
-                objKey = New cOOPKey(Me.OOPStringToType(CStr(reader(OOP_CLASSNAMECOL))), iDBID)
+                ' Get the original type name from the database
+                strTypeName = CStr(reader(OOP_CLASSNAMECOL))
+                ' Try to find originating type in the set of loaded assemblies
+                tOrg = Me.OOPStringToType(strTypeName)
+                ' Succes?
+                If (tOrg IsNot Nothing) Then objKey = New cOOPKey(tOrg, iDBID)
+                ' Done
                 Me.ReleaseReader(reader)
             Catch ex As Exception
 
             End Try
+            ' Return constructed key, if any
             Return objKey
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Read keys for all objects that are stored in the database.
+        ''' Read keys for all objects of a given type from the database.
         ''' </summary>
         ''' <param name="t">Type to filter by.</param>
-        ''' <param name="bIncludeInherited">States that objects inherited from 
-        ''' <paramref name="t">t</paramref>classes may be returned as well.</param>
-        ''' <returns></returns>
+        ''' <param name="bIncludeInherited">Flag indicating whether objects 
+        ''' inherited from <paramref name="t">t</paramref> are allowed to be 
+        ''' returned as well.</param>
+        ''' <returns>An array of <see cref="cOOPKey">object keys</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ReadObjectKeys(ByVal t As Type, Optional ByVal bIncludeInherited As Boolean = True) As cOOPKey()
+        Protected Function ReadObjectKeys(ByVal t As Type, Optional ByVal bIncludeInherited As Boolean = True) As cOOPKey()
 
+            ' Sanity check
             If Not Me.m_bOOPEnabled Then Return Nothing
 
             Dim strTypeName As String = ""
@@ -1161,7 +1310,7 @@ Namespace Database
             Dim reader As IDataReader = Nothing
             Dim objKey As cOOPKey = Nothing
             Dim lKeys As New List(Of cOOPKey)
-            Dim tData As Type = Nothing
+            Dim tOrg As Type = Nothing
             Dim bInclude As Boolean = True
 
             strSQL = String.Format("SELECT {0}, DBID FROM {1} ORDER BY DBID ASC", OOP_CLASSNAMECOL, Me.OOPGetTableName(GetType(cOOPStorable)))
@@ -1170,55 +1319,91 @@ Namespace Database
             If reader IsNot Nothing Then
                 Try
                     While reader.Read
-                        tData = OOPStringToType(CStr(reader(OOP_CLASSNAMECOL)))
-                        If bIncludeInherited Then
-                            bInclude = t.IsAssignableFrom(tData)
+
+                        ' Get type name
+                        strTypeName = CStr(reader(OOP_CLASSNAMECOL))
+                        ' Try to find orginating type in currently loaded assemblies
+                        tOrg = OOPStringToType(strTypeName)
+
+                        ' Was originating type succesfully located?
+                        If (tOrg IsNot Nothing) Then
+                            ' #Yes: allowed to include inherited classes?
+                            If bIncludeInherited Then
+                                ' #Yes: include when tOrg is inherited - or equals - from t
+                                bInclude = t.IsAssignableFrom(tOrg)
+                            Else
+                                ' #No: include only when t equals tOrg
+                                bInclude = (t Is tOrg)
+                            End If
                         Else
-                            bInclude = t Is tData
+                            ' #No: do not include
+                            bInclude = False
                         End If
+
+                        ' Include?
                         If bInclude Then
-                            objKey = New cOOPKey(tData, CInt(reader("DBID")))
+                            ' #Yes: generate key
+                            objKey = New cOOPKey(tOrg, CInt(reader("DBID")))
+                            ' Add new key to the list to return
                             lKeys.Add(objKey)
                         End If
+
                     End While
                     Me.ReleaseReader(reader)
+
                 Catch ex As Exception
 
                 End Try
             End If
+
+            ' Present results
             Return lKeys.ToArray()
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns an instance of the indicated object type, with the indicated key value, read from the database.
+        ''' Reads an object from the database.
         ''' </summary>
-        ''' <param name="sk"><see cref="cOOPKey">OOP key</see> to read the object for.</param>
-        ''' <returns></returns>
-        Public Function ReadObject(ByVal sk As cOOPKey) As cOOPStorable
-            Return Me.ReadObject(sk.OriginatingType, sk.DBID)
+        ''' <param name="key"><see cref="cOOPKey">Object key</see> to read the 
+        ''' object for.</param>
+        ''' <returns>A <see cref="cOOPStorable">cOOPStorable</see>-derived 
+        ''' instance, or null if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function ReadObject(ByVal key As cOOPKey) As cOOPStorable
+            Return Me.ReadObject(key.OriginatingType, key.DBID)
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns an instance of the indicated object type, with the indicated key value, read from the database.
+        ''' Reads an object from the database.
         ''' </summary>
-        ''' <param name="t"></param>
-        ''' <param name="iDBID"></param>
-        ''' <returns></returns>
+        ''' <param name="t">The type of the object to read.</param>
+        ''' <param name="iDBID">The ID of the object to read.</param>
+        ''' <returns>A <see cref="cOOPStorable">cOOPStorable</see>-derived 
+        ''' instance, or null if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
         Public Function ReadObject(ByVal t As Type, ByVal iDBID As Integer) As cOOPStorable
             If Not Me.m_bOOPEnabled Then Return Nothing
             Dim piKey As PropertyInfo = Me.OOPGetKeyProperty(t)
             Return OOPReadObject(t, iDBID, piKey)
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Reads all objects of a given type
+        ''' Reads all objects of a given type from the database.
         ''' </summary>
-        ''' <param name="t"></param>
-        ''' <param name="bIncludeInherited">States whether objects inherited of <paramref name="t">
-        ''' the indicated type</paramref> may be read as well</param>
-        ''' <returns></returns>
-        Public Function ReadObjects(ByVal t As Type, Optional ByVal bIncludeInherited As Boolean = True) As cOOPStorable()
+        ''' <param name="t">The type to read objects for.</param>
+        ''' <param name="bIncludeInherited">Flag indicating whether objects 
+        ''' inherited from <paramref name="t">t</paramref> are allowed to be 
+        ''' read as well.</param>
+        ''' <returns>
+        ''' An array of <see cref="cOOPStorable">cOOPStorable</see>-derived 
+        ''' instances.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function ReadObjects(ByVal t As Type, _
+                                    Optional ByVal bIncludeInherited As Boolean = True) As cOOPStorable()
 
             Dim aKeys As cOOPKey() = Me.ReadObjectKeys(t, bIncludeInherited)
             Dim lObjs As New List(Of cOOPStorable)
@@ -1230,19 +1415,36 @@ Namespace Database
                 If obj IsNot Nothing Then lObjs.Add(obj)
             Next
             Return lObjs.ToArray()
+
         End Function
 
 #End Region ' OOP Read
 
 #Region " OOP Write "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Write an <see cref="cOOPStorable">OOPstorable-derived</see> instance 
+        ''' to the database.
         ''' </summary>
-        ''' <param name="obj"></param>
+        ''' <param name="obj">The object to save.</param>
+        ''' <remarks>
+        ''' This method will verifuy - and update if  necessary - the database
+        ''' schema for this class of object and its base classes. This check 
+        ''' is performed only the very first time a particular object is written 
+        ''' to the database; consecutive save attempts will bypass the check for
+        ''' performance reasons.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Function WriteObject(ByVal obj As cOOPStorable) As Boolean
 
+            ' Friendly sanity check
             If Not Me.m_bOOPEnabled Then Return False
+
+#If DEBUG Then
+            ' Sanity check
+            Debug.Assert(Not obj.Deleted, "Object is deleted and cannot not be saved.")
+#End If
 
             Dim t As Type = obj.GetType()
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
@@ -1252,30 +1454,37 @@ Namespace Database
             ' Make sure database schema is up to date to accomodate this object
             bSucces = Me.OOPUpdateObjectSchema(t)
 
+            ' Everything well?
             If bSucces Then
 
-                ' Get key prop
+                ' #Yes: get the property that holds the primary key (DBID)
                 piKey = Me.OOPGetKeyProperty(t)
 
-                ' Test DBID value
-                If obj.DBID <= 0 Then
+                ' Does the database already have an ID for this object? 
+                ' cOOPStorable instances that are not saved yet will have an
+                ' invalid database ID, which will need to be properly set
+                ' before the object can be saved to the database.
+                If (obj.DBID = cOOPStorable.cDBID_INVALID) Then
+                    ' #Yes: invalid ID must be set
                     obj.DBID = Me.m_iNextDBID
+                    ' Increment next ID for next object.
                     Me.m_iNextDBID += 1
                 End If
 
                 ' Add to saved object cache to prevent looped saving. Assume all is well
                 Me.m_OOPObjectCache.AddObject(obj)
-                ' Write the object with the primary key
+                ' Write the object
                 bSucces = Me.OOPWriteObjectRecursive(t, obj, piKey)
 
                 ' Failure?!
                 If Not bSucces Then
-                    ' Remove object from the saved object cache
+                    ' #Yes: remove object from the saved object cache
                     Me.m_OOPObjectCache.RemoveObject(obj)
                 End If
             End If
-            Return bSucces
 
+            ' Report outcome
+            Return bSucces
 
         End Function
 
@@ -1283,18 +1492,77 @@ Namespace Database
 
 #Region " OOP Delete "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Delete an <see cref="cOOPStorable">cOOPStorable-derived</see> 
+        ''' instance from the database.
+        ''' </summary>
+        ''' <param name="obj">The object to delete.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function DeleteObject(ByVal obj As cOOPStorable) As Boolean
 
+            Dim bSucces As Boolean = True
+
+            ' Friendly sanity check
             If Not Me.m_bOOPEnabled Then Return False
 
-            Dim strSQL As String = String.Format("DELETE FROM {0} WHERE DBID={1}", _
-                Me.OOPGetTableName(GetType(cOOPStorable)), obj.DBID)
+            ' Delete object recursively
+            bSucces = Me.DeleteObjectRecursive(obj, obj.GetType())
 
-            If Me.Execute(strSQL) Then
+            ' All well?
+            If bSucces Then
+                ' #Yes: remove the object from the saved object cache
                 Me.m_OOPObjectCache.RemoveObject(obj)
-                Return True
             End If
-            Return False
+
+            ' Report outcome
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Delete an cOOPStorable-derived instance from the database, starting
+        ''' at the given class level, and recursively deleting the direct
+        ''' base class instance if applicable.
+        ''' </summary>
+        ''' <param name="obj">The object to delete.</param>
+        ''' <param name="t">The class level to delete from the database.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function DeleteObjectRecursive(ByVal obj As cOOPStorable, ByVal t As Type) As Boolean
+
+            Dim strSQL As String = String.Format("DELETE FROM {0} WHERE DBID={1}", Me.OOPGetTableName(t), obj.DBID)
+            Dim bSucces As Boolean = True
+
+            ' Able to delete object at class level 't' from the database
+            If Me.Execute(strSQL) Then
+                Try
+                    ' #Yes: remove from local cache
+                    Me.m_OOPObjectCache.RemoveObject(obj)
+                Catch ex As Exception
+                    ' #woops: panic
+                    bSucces = False
+                End Try
+            Else
+                ' #woops: panic
+                bSucces = False
+            End If
+
+            ' Not the base class?
+            If Not Me.OOPIsBaseClass(t) Then
+                ' #Good, delete direct base class next
+                bSucces = bSucces And Me.DeleteObjectRecursive(obj, t.BaseType)
+            End If
+
+#If DEBUG Then
+            ' Set debug-mode verification flag
+            obj.Deleted = bSucces
+#End If
+
+            ' Report outcome
+            Return bSucces
 
         End Function
 
@@ -1306,52 +1574,80 @@ Namespace Database
 
 #Region " OOP Admin vars "
 
-
+        ''' <summary>Flag stating whether the database has been prepared 
+        ''' for OOP object access. To prepare the database for OOP access
+        ''' refer to <see cref="OOPEnabled">OOPEnabled</see>.</summary>
         Private m_bOOPEnabled As Boolean = False
+        ''' <summary>The unique ID to assigne to new cOOPStorable instances
+        ''' in the database.</summary>
         Private m_iNextDBID As Integer = -1
+        ''' <summary>Cache of all objects already saved into the database.
+        ''' Keeping a cache is much faster than having to query the database
+        ''' for every potential save.</summary>
         Private m_OOPObjectCache As cOOPObjectCache = Nothing
+        ''' <summary>Cache of all object for which the database schema has
+        ''' already been verifyfied during since the last time the database
+        ''' was opened.</summary>
         Private m_OOPObjectSchemaVerified As List(Of Type) = Nothing
 
 #End Region ' OOP Admin vars
 
 #Region " OOP Amin interfaces "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Turn on or off OOP capabilities
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Property OOPEnabled() As Boolean
             Get
                 Return Me.m_bOOPEnabled
             End Get
             Set(ByVal bEnable As Boolean)
+
+                ' Optimization
+                If (bEnable = Me.m_bOOPEnabled) Then Return
+
+                ' Must turn OOP capabilities on?
                 If bEnable Then
+                    ' #Yes: determine next unique ID
                     Try
                         Me.m_iNextDBID = CInt(Me.GetValue(String.Format("SELECT MAX(DBID) FROM {0}", Me.OOPGetTableName(GetType(cOOPStorable))))) + 1
                     Catch ex As Exception
                         Me.m_iNextDBID = 1
                     End Try
 
+                    ' Create schema verification cache
                     Me.m_OOPObjectSchemaVerified = New List(Of Type)
+                    ' Create saved object cache
                     Me.m_OOPObjectCache = New cOOPObjectCache()
                 Else
+                    ' #No: reset OOP capabilities
+                    Me.m_iNextDBID = 0
                     Me.m_OOPObjectSchemaVerified = Nothing
                     Me.m_OOPObjectCache = Nothing
                 End If
-
+                ' Yo!
                 Me.m_bOOPEnabled = bEnable
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Internal admin helper; clear the saved object cache.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Sub OOPFlushObjectCache()
             Me.m_OOPObjectCache.Clear()
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Internal admin helper; clear the verified schema cache.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Sub OOPFlushSchemaCache()
             Me.m_OOPObjectSchemaVerified.Clear()
-        End Sub
-
-        Protected Sub OOPEndWrite()
-            ' No nothing
         End Sub
 
 #End Region ' OOP Amin interfaces
@@ -1383,7 +1679,7 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Remove an object from the cache
+            ''' Remove an object from the cache.
             ''' </summary>
             ''' <param name="obj">The object to remove.</param>
             ''' ---------------------------------------------------------------
@@ -1520,6 +1816,15 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the database schema for a given type.
+        ''' </summary>
+        ''' <param name="t">The type to update the database schema for.</param>
+        ''' <param name="conn">The database connection to update the database
+        ''' schema.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPUpdateObjectTable(ByVal t As Type, ByVal conn As OleDbConnection) As Boolean
 
             Dim dt As DataTable = Nothing
@@ -1536,6 +1841,7 @@ Namespace Database
             ' Obtain the list of columns for the desired table
             dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, New String() {Nothing, Nothing, strTable, Nothing})
 
+            ' Obtain a list of storable property that do not have a column in the associated schema
             For iProp As Integer = 0 To api.Length - 1
                 strName = Me.OOPGetColumnName(api(iProp))
                 bFound = False
@@ -1545,17 +1851,16 @@ Namespace Database
                 If Not bFound Then lpiMissing.Add(api(iProp))
             Next
 
+            ' No missing columns? #Goody: all done
             If lpiMissing.Count = 0 Then Return True
 
-            ' Add missing properties
+            ' Add missing columns to the database schema
             For Each pi As PropertyInfo In lpiMissing
                 strName = Me.OOPGetColumnName(pi)
                 strType = Me.OOPGetColumnType(pi)
                 If Not String.IsNullOrEmpty(strName) And Not String.IsNullOrEmpty(strType) Then
                     If sbClauses.Length > 0 Then sbClauses.Append(", ")
                     sbClauses.Append(String.Format("{0} {1}", strName, strType))
-                    'strSQL = String.Format("ALTER TABLE {0} ADD {1} {2}", Me.OOPGetTableName(t), strName, strType)
-                    'bSucces = bSucces And Me.Execute(strSQL)
                 End If
             Next
 
@@ -1757,17 +2062,50 @@ Namespace Database
 
 #Region " Helpers "
 
+        ''' <summary>
+        ''' Reserved column name for storing class names in the OOP database schema
+        ''' </summary>
         Private Const OOP_CLASSNAMECOL As String = "xCLASS_NAMEx"
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns a SQL table name for a given class/type.
+        ''' </summary>
+        ''' <param name="t">The class to return the table name for.</param>
+        ''' <returns>A table name for the given class.</returns>
+        ''' <remarks>
+        ''' This method will convert invalid namespace characters into
+        ''' valid SQL table name characters.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Private Function OOPGetTableName(ByVal t As Type) As String
+            ' Get class name (including namespaces)
             Dim strName As String = t.Name()
+            ' Replace invalid SQL characters
             Return strName.Replace(".", "_").Replace("+", "_")
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns a SQL column name for a given property.
+        ''' </summary>
+        ''' <param name="pi">The property info instance to obtain a column
+        ''' name for.</param>
+        ''' <returns>A column name.</returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPGetColumnName(ByVal pi As PropertyInfo) As String
             Return pi.Name()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, states whether a given class is inherited directly 
+        ''' from Object.
+        ''' </summary>
+        ''' <param name="t">The class to test.</param>
+        ''' <returns>True if class <paramref name="t">t</paramref> is directly
+        ''' inherited from Object.</returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPIsBaseClass(ByVal t As Type) As Boolean
             Return t.BaseType Is GetType(Object)
         End Function
@@ -1853,25 +2191,70 @@ Namespace Database
             Return ""
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the default value for a property.
+        ''' </summary>
+        ''' <param name="pi">The property info to get the default value for.</param>
+        ''' <returns>
+        ''' </returns>
+        ''' <remarks>
+        ''' JS 06Mar09: not implemented yet; need to figure out how to get to
+        ''' the actual 'Default' attribute.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Private Function OOPGetPropertyDefaultValue(ByVal pi As PropertyInfo) As Object
-            Dim attrs As Reflection.PropertyAttributes = pi.Attributes
+            Dim pd As PropertyDescriptor = cPropertyConverter.FindOrigPropertyDescriptor(pi)
             Return Nothing
         End Function
 
-        Private Function OOPTypeToString(ByVal t As Type) As String
-            ' Include assembly short name in type name
-            Return t.Assembly.GetName.Name + "!" + t.FullName()
-        End Function
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Assembly name cache, added to optimize the process of relocating types
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private m_dtAssemblyNames As New Dictionary(Of String, Assembly)
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, translats a class/type to a unique string.
+        ''' </summary>
+        ''' <param name="t">The class to convert.</param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' The counterpart of this method, <see cref="OOPStringToType">OOPStringToType</see>,
+        ''' can be used to find the originating type from a string.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private Function OOPTypeToString(ByVal t As Type) As String
+
+            ' Include assembly short name in the type name. This enables
+            ' the OOP database logic to relocate the type from its original
+            ' assembly, even if similar class names exist in similar namespaces
+            ' in different asssemblies. Yes, it's far fetched, but hey...
+            Return t.Assembly.GetName.Name + "!" + t.FullName()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, locates the originating type from a type string.
+        ''' </summary>
+        ''' <param name="strType">The type name to locate the originating type
+        ''' for.</param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' The counterpart of this method, <see cref="OOPTypeToString">OOPTypeToString</see>,
+        ''' can be used to create the string for a type.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Private Function OOPStringToType(ByVal strType As String) As Type
 
             ' Split assembly short name from type name
             Dim astr As String() = strType.Split(CChar("!"))
             Dim ass As Assembly = Nothing
 
-            ' Optimization: cache names
+            ' Optimization: cache assembly names
             If m_dtAssemblyNames.Count = 0 Then
                 For Each ass In AppDomain.CurrentDomain.GetAssemblies()
                     m_dtAssemblyNames.Add(ass.GetName.Name, ass)
@@ -1890,6 +2273,17 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, determines if the value type of a given property 
+        ''' is, or is inherited from, cOOPStorable.
+        ''' </summary>
+        ''' <param name="pi">The property info instance to test.</param>
+        ''' <returns>
+        ''' True if the value type of a given property is, or is inherited from,
+        ''' cOOPStorable.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPIsForeignKeyProperty(ByVal pi As PropertyInfo) As Boolean
             ' Is a ref to another cOOPStorable?
             If GetType(cOOPStorable).IsAssignableFrom(pi.PropertyType) Then
@@ -2061,12 +2455,14 @@ Namespace Database
 
 #Region " Write "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, write contents of list 
+        ''' Helper method, write contents of a list.
         ''' </summary>
         ''' <param name="list"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Function OOPWriteListItems(ByVal list As cOOPStorableList) As Boolean
 
             Dim adapter As IDataAdapter = Nothing
