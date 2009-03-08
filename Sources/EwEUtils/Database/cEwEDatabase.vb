@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.9  2009/03/08 16:30:43  jeroens
+' More comments
+'
 ' Revision 1.8  2009/03/07 04:46:45  jeroens
 ' Added a load of comments
 '
@@ -1818,12 +1821,20 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update the database schema for a given type.
+        ''' Update column definitions for a single given cOOPStorable-derived 
+        ''' type within an existing table.
         ''' </summary>
         ''' <param name="t">The type to update the database schema for.</param>
         ''' <param name="conn">The database connection to update the database
         ''' schema.</param>
         ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' <para>This method does not recurse; a single type is processed for a 
+        ''' single table. To process an enitre object inheritance tree, use
+        ''' <see cref="OOPUpdateObjectSchema">OOPUpdateObjectSchema</see>.</para>
+        ''' <para>Note that this method does not handle column datatype 
+        ''' conversions; only mssing columns are added.</para>
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Function OOPUpdateObjectTable(ByVal t As Type, ByVal conn As OleDbConnection) As Boolean
 
@@ -1880,11 +1891,17 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Update the database schema for storing a class of a given type. The
+        ''' entire inheritance tree of the given type is processed, new tables
+        ''' are created and table columns are added when necessary.
         ''' </summary>
-        ''' <param name="t"></param>
-        ''' <returns></returns>
+        ''' <param name="t">The type to update the database schema for.</param>
+        ''' <returns>
+        ''' True if succesful.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPUpdateObjectSchema(ByVal t As Type) As Boolean
 
             Dim conn As OleDbConnection = DirectCast(Me.GetConnection(), OleDbConnection)
@@ -1928,11 +1945,18 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Single adapter entry in the <see cref="m_dtOOPAdapterCache">adapter cache</see>.
+        ''' Single adapter entry in the 
+        ''' <see cref="m_dtOOPAdapterCache">adapter cache</see>.
         ''' </summary>
+        ''' <remarks>
+        ''' The adapter cache is meant to speed up object access during a single
+        ''' database transaction while writing nested classes to the OOP database.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
         Private Class cOOPAdapterCacheEntry
+
+#Region " Privates "
 
             ''' <summary>Name of the table that an adapter references to.</summary>
             Private m_strTable As String
@@ -1941,35 +1965,81 @@ Namespace Database
             ''' <summary>Number of references to a cached adapater.</summary>
             Private m_iRefCount As Integer = 0
 
+#End Region ' Privates
+
+#Region " Constructor "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Contructs a new cache entry.
+            ''' </summary>
+            ''' <param name="strTable">The table the adapter was obtained for.</param>
+            ''' <param name="adapter">The database adapter that was returned for
+            ''' this table.</param>
+            ''' ---------------------------------------------------------------
             Public Sub New(ByVal strTable As String, ByVal adapter As IDataAdapter)
                 Me.m_strTable = strTable
                 Me.m_adapter = adapter
                 Me.m_iRefCount = 0
             End Sub
 
+#End Region ' Constructor
+
+#Region " Public interfaces "
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Increase adapter usage count.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
             Public Sub AddRef()
                 Me.m_iRefCount += 1
             End Sub
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Decrease adapter usage count.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
             Public Sub RemoveRef()
                 Me.m_iRefCount -= 1
             End Sub
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' States if the adapter is no longer used.
+            ''' </summary>
+            ''' <returns>
+            ''' True if released.
+            ''' </returns>
+            ''' ---------------------------------------------------------------
             Public Function Released() As Boolean
                 Return Me.m_iRefCount = 0
             End Function
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Returns the referenced adapter.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
             Public ReadOnly Property Adapter() As IDataAdapter
                 Get
                     Return Me.m_adapter
                 End Get
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Returns the name of the referenced table.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
             Public ReadOnly Property Table() As String
                 Get
                     Return Me.m_strTable
                 End Get
             End Property
+
+#End Region ' Public interfaces
 
         End Class
 
@@ -2159,6 +2229,17 @@ Namespace Database
             Return lpi.ToArray()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns the SQL data type for a given property.
+        ''' </summary>
+        ''' <param name="pi">The property to obtain the SQL data type for.</param>
+        ''' <returns>
+        ''' An SQL data type name, or an empty string if the property value type
+        ''' was not supported. The list of supported data types can easily be 
+        ''' extended.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPGetColumnType(ByVal pi As PropertyInfo) As String
             Dim strType As String = pi.PropertyType.ToString()
             Select Case strType
@@ -2297,6 +2378,18 @@ Namespace Database
 
 #Region " Read "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read a single cOOPStorable-derived instance from the database.
+        ''' </summary>
+        ''' <param name="t">The class/type of the object to read.</param>
+        ''' <param name="iDBID">The database ID of the object to read.</param>
+        ''' <param name="piKey">The property in the <paramref name="t">given type</paramref> 
+        ''' where the <paramref name="iDBID">database ID</paramref> should be stored.</param>
+        ''' <returns>
+        ''' A cOOPStorable-derived instance, or nothing if an error occurred.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPReadObject(ByVal t As Type, ByVal iDBID As Integer, ByVal piKey As PropertyInfo) As cOOPStorable
 
             Dim objRead As cOOPStorable = Nothing
@@ -2307,22 +2400,31 @@ Namespace Database
                 Return Nothing
             End Try
 
-            ' Read the object with the primary key
+            ' Able to read the object with the primary key?
             If Me.OOPReadObjectRecursive(t, objRead, piKey, iDBID) Then
+                ' #Yes: remember the instance
                 Me.m_OOPObjectCache.AddObject(objRead)
+                ' Return the object that was successfully read
                 Return objRead
             Else
+                ' Report failure
                 Return Nothing
             End If
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Recursively read a single cOOPStorable-derived instance from the 
+        ''' database along the inheritance tree.
         ''' </summary>
-        ''' <param name="objRead">Object to read</param>
-        ''' <param name="piKey"></param>
-        ''' <param name="iDBID"></param>
+        ''' <param name="t">The type in the class hierarchy of instance 
+        ''' <paramref name="objRead">objRead</paramref> to read.</param>
+        ''' <param name="objRead">Object to read.</param>
+        ''' <param name="piKey">Property in the object that holds the database
+        ''' ID.</param>
+        ''' <param name="iDBID">Database ID value of the object being read.</param>
         ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Private Function OOPReadObjectRecursive(ByVal t As Type, ByVal objRead As cOOPStorable, ByVal piKey As PropertyInfo, ByVal iDBID As Integer) As Boolean
 
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
@@ -2341,22 +2443,29 @@ Namespace Database
 
             ' Not the base class?
             If Not Me.OOPIsBaseClass(t) Then
+                ' #Indeed: read base class first
                 bSucces = bSucces And Me.OOPReadObjectRecursive(t.BaseType, objRead, piKey, iDBID)
             End If
 
+            ' All good so far?
             If bSucces Then
-
+                ' #Yes: read this specific class from the database
                 Try
                     strSQL = String.Format("SELECT * FROM {0} WHERE DBID={1}", strTable, iDBID)
                     reader = Me.GetReader(strSQL)
 
+                    ' Grab one single record
                     reader.Read()
+
+                    ' For all properties in the given type
                     For Each pi As PropertyInfo In api
+                        ' Extract database equivalents
                         strColumnName = Me.OOPGetColumnName(pi)
                         strColumnType = Me.OOPGetColumnType(pi)
 
-                        ' Supported type?
+                        ' Is the data type of this particular property supported?
                         If Not String.IsNullOrEmpty(strColumnType) Then
+                            ' Is this NOT the primary key?
                             If String.Compare("DBID", strColumnName) <> 0 Then
                                 ' Is this a foreign key property?
                                 If Me.OOPIsForeignKeyProperty(pi) Then
@@ -2387,7 +2496,7 @@ Namespace Database
                                         Console.WriteLine("Read: failed to read FK {0}.{1}: {2}", strColumnName, strTable, ex.Message)
                                         bSucces = False
                                     End Try
-                                Else
+                                Else ' Me.OOPIsForeignKeyProperty(pi)
                                     ' #No: just read the property value
                                     Try
                                         pi.SetValue(objRead, reader(strColumnName), Nothing)
