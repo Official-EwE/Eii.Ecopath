@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.10  2009/03/08 20:47:13  jeroens
+' cOOPStorable.cDBID_INVALID made public
+'
 ' Revision 1.9  2009/03/08 16:30:43  jeroens
 ' More comments
 '
@@ -913,9 +916,6 @@ Namespace Database
 
 #Region " Privates "
 
-            ''' <summary>Default ID for newly created cOOPStorable instances.</summary>
-            Friend Shared cDBID_INVALID As Integer = 0
-
             ''' <summary>Unique ID of an instance of cOOPStorable</summary>
             Private m_iDBID As Integer = cDBID_INVALID ' Key not assigned yet
 
@@ -938,7 +938,11 @@ Namespace Database
 
 #Region " Constructor "
 
+            ''' <summary>Default ID for newly created cOOPStorable instances.</summary>
+            Public Const cDBID_INVALID As Integer = 0
+
             Public Sub New()
+                Me.m_iDBID = cDBID_INVALID
             End Sub
 
 #End Region ' Constructor
