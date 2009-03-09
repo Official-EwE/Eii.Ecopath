@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.3  2009/03/09 15:05:07  jeroens
+' Split P/B col into P/B (non stanza), Z (stanza)
+'
 ' Revision 1.2  2009/01/16 18:30:09  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -109,17 +112,18 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Me.Redim(1, 10)
+            Me.Redim(1, 11)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
             Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
-            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_UNASSIMILCONSUMPTION)
-            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_DETIMP_UNIT, New StyleGuide.eUnitType() {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time})
+            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
+            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
+            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_UNASSIMILCONSUMPTION)
+            Me(0, 10) = New EwEColumnHeaderCell(My.Resources.HEADER_DETIMP_UNIT, New StyleGuide.eUnitType() {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time})
 
             Me.FixedColumns = 2
 
@@ -129,7 +133,7 @@ Namespace Ecopath.Input
 
             Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim bInStanza(core.nGroups) As Boolean
@@ -175,14 +179,18 @@ Namespace Ecopath.Input
                     cell.SuppressZero = True
                     Me(iRow, 4) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
-                    cell.SuppressZero = True
+                    cell = New EwECell("", GetType(String))
+                    cell.Style = StyleGuide.eStyleFlags.NotEditable
                     Me(iRow, 5) = cell
 
-                    Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.EEInput)
-                    Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.GEInput)
-                    Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.GS)
-                    Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.DetImp)
+                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
+                    cell.SuppressZero = True
+                    Me(iRow, 6) = cell
+
+                    Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.EEInput)
+                    Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.GEInput)
+                    Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.GS)
+                    Me(iRow, 10) = New PropertyCell(source, eVarNameFlags.DetImp)
                 Else 'Group is stanza
                     sg = core.StanzaGroups(intStanza(source.Index))
                     If intStanza(source.Index) <> intStanzaPrev Then 'If stanza group appears the first time Then diplay the + control
@@ -212,21 +220,26 @@ Namespace Ecopath.Input
                     cell.SuppressZero = True
                     Me(iRow, 3) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
+                    cell = New EwECell("", GetType(String))
+                    cell.Style = StyleGuide.eStyleFlags.NotEditable
                     cell.Behaviors.Add(m_bm)
-                    cell.SuppressZero = True
                     Me(iRow, 4) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
+                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
                     cell.Behaviors.Add(m_bm)
                     cell.SuppressZero = True
                     Me(iRow, 5) = cell
 
-                    Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.EEInput)
-                    Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.GEInput)
-                    Me(iRow, 7).Behaviors.Add(m_bm)
-                    Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.GS)
-                    Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.DetImp)
+                    cell = New PropertyCell(source, eVarNameFlags.QBInput)
+                    cell.Behaviors.Add(m_bm)
+                    cell.SuppressZero = True
+                    Me(iRow, 6) = cell
+
+                    Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.EEInput)
+                    Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.GEInput)
+                    Me(iRow, 8).Behaviors.Add(m_bm)
+                    Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.GS)
+                    Me(iRow, 10) = New PropertyCell(source, eVarNameFlags.DetImp)
 
                     hgcStanza.AddChildRow(iRow)
 
@@ -256,14 +269,14 @@ Namespace Ecopath.Input
             Me.Columns(0).Width = 24
             Me.Columns(1).Width = 120
             Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-            Me.Columns(2).Width = 58
-            Me.Columns(3).Width = 59
-            Me.Columns(4).Width = 67
-            Me.Columns(5).Width = 78
-            Me.Columns(6).Width = 66
-            Me.Columns(7).Width = 77
-            Me.Columns(8).Width = 78
-            Me.Columns(9).Width = 69
+            'Me.Columns(2).Width = 58
+            'Me.Columns(3).Width = 59
+            'Me.Columns(4).Width = 67
+            'Me.Columns(5).Width = 78
+            'Me.Columns(6).Width = 66
+            'Me.Columns(7).Width = 77
+            'Me.Columns(8).Width = 78
+            'Me.Columns(9).Width = 69
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
