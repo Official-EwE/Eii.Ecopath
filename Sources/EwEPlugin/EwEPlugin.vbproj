@@ -78,7 +78,11 @@
     <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
     <Compile Include="Plugin templates\Database\IDatabasePlugin.vb" />
     <Compile Include="Plugin templates\Database\IDatabaseUpdatePlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyTimeseriesPlugin.vb" />
@@ -87,6 +91,8 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerExchangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPlugin.vb" />

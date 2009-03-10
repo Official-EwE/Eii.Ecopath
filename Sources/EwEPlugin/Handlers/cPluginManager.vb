@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.15  2009/03/10 18:37:38  jeroens
+' Added post-invoke plugin points
+'
 ' Revision 1.14  2009/03/01 19:59:01  jeroens
 ' GetPlugins can be filtered by assembly
 '
@@ -534,6 +537,8 @@ Public Class cPluginManager
             Return False
         End Try
 
+        Return True
+
     End Function
 
     ''' ---------------------------------------------------------------------------
@@ -565,6 +570,8 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        Return True
 
     End Function
 
@@ -708,7 +715,6 @@ Public Class cPluginManager
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathRunCompletedPlugin))
         Try
-
             ' give every plugin that supports this interface a chance at running
             For Each ip As IPlugin In collPlugins
                 Try 'protect the core from a plugin exploding
@@ -723,6 +729,24 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        collPlugins = Me.GetPlugins(GetType(IEcopathRunCompletedPostPlugin))
+        Try
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcopathRunCompletedPostPlugin).EcopathRunCompletedPost(EcoPathDataStructures)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcopathHasRun() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
 
     End Function
 
@@ -774,7 +798,6 @@ Public Class cPluginManager
 
     End Sub
 
-
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimInitializedPlugin))
@@ -794,6 +817,8 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        Return True
 
     End Function
 
@@ -817,6 +842,8 @@ Public Class cPluginManager
             Return False
         End Try
 
+        Return True
+
     End Function
 
     Public Function EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
@@ -838,6 +865,26 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        collPlugins = Me.GetPlugins(GetType(IEcosimBeginTimestepPostPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcosimBeginTimestepPostPlugin).EcosimBeginTimeStepPost(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcosimBeginTimeStepPost() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
 
     End Function
 
@@ -867,7 +914,6 @@ Public Class cPluginManager
 
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimEndTimestepPlugin))
         Try
-
             ' give every plugin that supports this interface a chance at running
             For Each ip As IPlugin In collPlugins
                 Try 'protect the core from a plugin exploding
@@ -882,6 +928,25 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        collPlugins = Me.GetPlugins(GetType(IEcosimEndTimestepPostPlugin))
+        Try
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcosimEndTimestepPostPlugin).EcosimEndTimeStepPost(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcosimEndTimeStep() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
 
     End Function
 
@@ -905,6 +970,8 @@ Public Class cPluginManager
             Return False
         End Try
 
+        Return True
+
     End Function
 
 
@@ -927,6 +994,26 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        collPlugins = Me.GetPlugins(GetType(IEcosimRunCompletedPostPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcosimRunCompletedPostPlugin).EcosimRunCompletedPost(EcosimDatastructures)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcosimRunCompleted() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
 
     End Function
 
@@ -1028,6 +1115,26 @@ Public Class cPluginManager
             Return False
         End Try
 
+        collPlugins = Me.GetPlugins(GetType(IEcospaceBeginTimestepPostPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceBeginTimestepPostPlugin).EcospaceBeginTimeStepPost(EcospaceDataStructures, iTimeStep)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceBeginTimeStepPost() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
+
     End Function
 
     Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
@@ -1050,6 +1157,8 @@ Public Class cPluginManager
             Return False
         End Try
 
+        Return True
+
     End Function
 
     Public Function EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
@@ -1071,6 +1180,26 @@ Public Class cPluginManager
         Catch ex As Exception
             Return False
         End Try
+
+        collPlugins = Me.GetPlugins(GetType(IEcospaceEndTimestepPostPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcospaceEndTimestepPostPlugin).EcospaceEndTimeStepPost(EcospaceDatastructures, iTimeStep)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStepPost() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
 
     End Function
 
