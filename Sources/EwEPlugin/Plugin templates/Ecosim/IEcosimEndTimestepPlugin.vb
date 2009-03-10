@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEcosimEndTimestepPlugin.vb,v $
+' Revision 1.2  2009/03/10 18:22:17  jeroens
+' Minimal housekeeping
+'
 ' Revision 1.1  2008/09/26 07:31:06  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -15,9 +18,7 @@
 Public Interface IEcosimEndTimestepPlugin
     Inherits IPlugin
 
-
     Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object)
-
 
 End Interface
 
