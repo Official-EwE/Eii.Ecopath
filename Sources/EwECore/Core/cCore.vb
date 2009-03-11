@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.78  2009/03/11 17:18:38  joeb
+' Bug Fix Fishing rate shape not changing on RunEcosim form when predict effort was turned on
+' Loading time series now sets Ecosim run length if time series has less years then Ecosim
+'
 ' Revision 1.77  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -1690,8 +1694,7 @@ Public Class cCore
         Me.m_TSData.loadEnabled()
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
-        Dim nyears As Integer = Math.Max(Me.m_TSData.NdatYear, Me.m_EcoSimData.NumYears)
-        Me.setEcosimRunLength(nyears, False)
+        Me.setEcosimRunLength(Me.m_TSData.NdatYear, False)
 
         Me.m_EcoSim.SetFFromGear()
 
@@ -5293,9 +5296,6 @@ Public Class cCore
             'sets NumYears and NTimes and resize the underlying data to the new number of years
             m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.NdatYear, bOverwriteNewData)
 
-            'jb Ecosim.redimTime() now called at the start of an ecosim run
-            'Me.m_EcoSim.redimTime(False)
-
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
             Me.m_TSData.LoadForcingData(m_EcoSimData, Math.Max(m_TSData.NdatYear, m_EcoSimData.NumYears))
@@ -5570,11 +5570,10 @@ Public Class cCore
 
         'if effort was predicted then reload the shapes
         If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
-            Me.m_ShapeManagers(eDataTypes.FishingRate).Load()
-            Me.m_ShapeManagers(eDataTypes.FishMort).Load()
 
-            Me.m_publisher.AddMessage(New cMessage("Data changed.", eMessageType.DataAddedOrRemoved, _
-             eCoreComponentType.ShapesManager, eMessageImportance.Maintenance))
+            'ShapeChanged will reload the data and send out messages
+            Me.m_ShapeManagers(eDataTypes.FishingRate).ShapeChanged()
+            Me.m_ShapeManagers(eDataTypes.FishMort).ShapeChanged()
 
         End If
 
