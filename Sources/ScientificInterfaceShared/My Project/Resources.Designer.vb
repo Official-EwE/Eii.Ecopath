@@ -149,114 +149,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Apr.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_APRIL() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_APRIL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Aug.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_AUGUST() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_AUGUST", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Dec.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_DECEMBER() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_DECEMBER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Feb.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_FEBRUARY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_FEBRUARY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Jan.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_JANUARY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JANUARY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Jul.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_JULY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JULY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Jun.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_JUNE() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_JUNE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Mar.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_MARCH() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_MARCH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to May.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_MAY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_MAY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Nov.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_NOVEMBER() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_NOVEMBER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Oct.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_OCTOBER() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_OCTOBER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Sep.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_MONTH_ABBR_SEPTEMBER() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_MONTH_ABBR_SEPTEMBER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Cursor.
         '''</summary>
         Friend ReadOnly Property GENERIC_TEXT_CURSOR() As String
@@ -284,11 +176,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Time.
+        '''  Looks up a localized string similar to Index.
         '''</summary>
-        Friend ReadOnly Property HEADER_TIME() As String
+        Friend ReadOnly Property HEADER_INDEX() As String
             Get
-                Return ResourceManager.GetString("HEADER_TIME", resourceCulture)
+                Return ResourceManager.GetString("HEADER_INDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Month.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MONTH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MONTH", resourceCulture)
             End Get
         End Property
         
@@ -307,6 +208,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_VALUES() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Year.
+        '''</summary>
+        Friend ReadOnly Property HEADER_YEAR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_YEAR", resourceCulture)
             End Get
         End Property
         

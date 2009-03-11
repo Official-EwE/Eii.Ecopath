@@ -200,54 +200,6 @@
     <value>'{0}' is succesfully saved to file '{1}'.</value>
     <comment>{0}: item that saved. {1}: file dest</comment>
   </data>
-  <data name="GENERIC_MONTH_ABBR_APRIL" xml:space="preserve">
-    <value>Apr</value>
-    <comment>Short for April</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_AUGUST" xml:space="preserve">
-    <value>Aug</value>
-    <comment>Short for August</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_DECEMBER" xml:space="preserve">
-    <value>Dec</value>
-    <comment>Short for December</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_FEBRUARY" xml:space="preserve">
-    <value>Feb</value>
-    <comment>Short for February</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JANUARY" xml:space="preserve">
-    <value>Jan</value>
-    <comment>Short for January</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JULY" xml:space="preserve">
-    <value>Jul</value>
-    <comment>Short for July</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JUNE" xml:space="preserve">
-    <value>Jun</value>
-    <comment>Short for June</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_MARCH" xml:space="preserve">
-    <value>Mar</value>
-    <comment>Short for March</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_MAY" xml:space="preserve">
-    <value>May</value>
-    <comment>Short for May (how much shorter can you get?)</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_NOVEMBER" xml:space="preserve">
-    <value>Nov</value>
-    <comment>Short for November</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_OCTOBER" xml:space="preserve">
-    <value>Oct</value>
-    <comment>Short for October</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_SEPTEMBER" xml:space="preserve">
-    <value>Sep</value>
-    <comment>Short for September</comment>
-  </data>
   <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
     <value>Mediating group (weighted) biomass</value>
   </data>
@@ -292,9 +244,6 @@
   <data name="HEADER_ADD" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="HEADER_TIME" xml:space="preserve">
-    <value>Time</value>
-  </data>
   <data name="HEADER_VALUE" xml:space="preserve">
     <value>Value</value>
   </data>
@@ -325,5 +274,14 @@
   </data>
   <data name="OptionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OptionsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_INDEX" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="HEADER_MONTH" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="HEADER_YEAR" xml:space="preserve">
+    <value>Year</value>
   </data>
 </root>
