@@ -266,7 +266,7 @@
     <value>Biomass (start)</value>
   </data>
   <data name="HEADER_PBZ" xml:space="preserve">
-    <value>Prod./biom (=Z)</value>
+    <value>Prod/biom or Z</value>
   </data>
   <data name="HEADER_CONSUMER" xml:space="preserve">
     <value>Consumer</value>
