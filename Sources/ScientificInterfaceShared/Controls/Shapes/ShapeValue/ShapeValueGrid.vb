@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeValueGrid.vb,v $
+' Revision 1.3  2009/03/11 18:26:10  jeroens
+' Added Year mode (for time series)
+'
 ' Revision 1.2  2009/03/11 00:31:18  jeroens
 ' Able to show year+month/indexed columns
 '
@@ -28,27 +31,17 @@ Public Class ShapeValueGrid
     Private m_iNumValues As Integer = 50
     Private m_bSuppressZeroes As Boolean = False
     Private m_shape As cShapeData = Nothing
-    Private m_displayMode As eDisplayMode = eDisplayMode.Monthly
+    Private m_displayMode As frmShapeValue.eDisplayMode = frmShapeValue.eDisplayMode.Monthly
 
-    Private Enum eDisplayMode As Integer
-        ''' <summary>Display values per year, month</summary>
-        Monthly
-        ''' <summary>Display values per index</summary>
-        Index
-    End Enum
+    Public Sub SetValues(ByVal iNumValues As Integer, ByVal shape As cShapeData, ByVal displayMode As frmShapeValue.eDisplayMode)
 
-    Public Sub SetValues(ByVal iNumValues As Integer, ByVal shape As cShapeData)
         Me.m_iNumValues = iNumValues
         Me.m_bSuppressZeroes = (TypeOf shape Is cTimeSeries)
         Me.m_shape = shape
+        Me.m_displayMode = displayMode
 
-        ' Determine display mode
-        If TypeOf (shape) Is cMediationFunction Then
-            Me.m_displayMode = eDisplayMode.Index
-        Else
-            Me.m_displayMode = eDisplayMode.Monthly
-        End If
         Me.InitLayout()
+
     End Sub
 
     Public Sub ApplyValues(Optional ByVal shape As cShapeData = Nothing)
@@ -64,7 +57,17 @@ Public Class ShapeValueGrid
         ReDim asNewValues(iNumValues)
 
         For iValue = 1 To shape.XMax
-            cell = DirectCast(Me(iCell, 1), EwECell)
+            Select Case Me.m_displayMode
+
+                Case frmShapeValue.eDisplayMode.Index, _
+                     frmShapeValue.eDisplayMode.Yearly
+                    cell = DirectCast(Me(iCell, 1), EwECell)
+
+                Case frmShapeValue.eDisplayMode.Monthly
+                    cell = DirectCast(Me(iCell, 2), EwECell)
+
+            End Select
+
             asNewValues(iValue) = CSng(cell.Value)
             iCell += 1
             If iCell > Me.m_iNumValues Then iCell = 1
@@ -84,12 +87,17 @@ Public Class ShapeValueGrid
 
         Select Case Me.m_displayMode
 
-            Case eDisplayMode.Index
+            Case frmShapeValue.eDisplayMode.Index
                 Me.Redim(Me.m_iNumValues + 1, 2)
                 Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_INDEX)
                 Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
 
-            Case eDisplayMode.Monthly
+            Case frmShapeValue.eDisplayMode.Yearly
+                Me.Redim(Me.m_iNumValues + 1, 2)
+                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_YEAR)
+                Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
+
+            Case frmShapeValue.eDisplayMode.Monthly
                 Me.Redim(Me.m_iNumValues + 1, 3)
                 Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_YEAR)
                 Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_MONTH)
@@ -122,7 +130,17 @@ Public Class ShapeValueGrid
 
             Select Case Me.m_displayMode
 
-                Case eDisplayMode.Index
+                Case frmShapeValue.eDisplayMode.Index
+
+                    cell = New EwECell(CStr(iValue + 1), GetType(String))
+                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    Me(iValue + 1, 0) = cell
+
+                    cell = New EwECell(sValue, GetType(Single))
+                    cell.SuppressZero = Me.m_bSuppressZeroes
+                    Me(iValue + 1, 1) = cell
+
+                Case frmShapeValue.eDisplayMode.Yearly
 
                     cell = New EwECell(CStr(iValue + iStartIndex + 1), GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
@@ -132,7 +150,7 @@ Public Class ShapeValueGrid
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     Me(iValue + 1, 1) = cell
 
-                Case eDisplayMode.Monthly
+                Case frmShapeValue.eDisplayMode.Monthly
 
                     Dim strLabel0 As String = ""
                     Dim strLabel1 As String = ""
