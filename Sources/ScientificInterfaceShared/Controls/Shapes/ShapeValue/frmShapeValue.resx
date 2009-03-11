@@ -361,7 +361,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbValues.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 139</value>
+    <value>3, 165</value>
   </data>
   <data name="lbValues.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 0</value>
@@ -370,7 +370,7 @@
     <value>42, 13</value>
   </data>
   <data name="lbValues.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="lbValues.Text" xml:space="preserve">
     <value>Va&amp;lues:</value>
@@ -403,7 +403,7 @@
     <value>67, 24</value>
   </data>
   <data name="lbNoOfYears.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="lbNoOfYears.Text" xml:space="preserve">
     <value>No. of &amp;years:</value>
@@ -505,7 +505,7 @@
     <value>205, 24</value>
   </data>
   <data name="tlpNoOfYears.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;tlpNoOfYears.Name" xml:space="preserve">
     <value>tlpNoOfYears</value>
@@ -526,13 +526,13 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="pnlValueGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 136</value>
+    <value>76, 162</value>
   </data>
   <data name="pnlValueGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 350</value>
+    <value>199, 324</value>
   </data>
   <data name="pnlValueGrid.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;pnlValueGrid.Name" xml:space="preserve">
     <value>pnlValueGrid</value>
@@ -556,13 +556,13 @@
     <value>NoControl</value>
   </data>
   <data name="lblViewAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 106</value>
+    <value>3, 132</value>
   </data>
   <data name="lblViewAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 27</value>
   </data>
   <data name="lblViewAs.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>10</value>
   </data>
   <data name="lblViewAs.Text" xml:space="preserve">
     <value>&amp;View as:</value>
@@ -595,13 +595,13 @@
     <value>Seasonal</value>
   </data>
   <data name="cmbViewAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 109</value>
+    <value>76, 135</value>
   </data>
   <data name="cmbViewAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>199, 21</value>
   </data>
   <data name="cmbViewAs.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;cmbViewAs.Name" xml:space="preserve">
     <value>cmbViewAs</value>
@@ -615,17 +615,74 @@
   <data name="&gt;&gt;cmbViewAs.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
+  <data name="lblXBase.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblXBase.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lblXBase.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 106</value>
+  </data>
+  <data name="lblXBase.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 26</value>
+  </data>
+  <data name="lblXBase.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="lblXBase.Text" xml:space="preserve">
+    <value>&amp;X base:</value>
+  </data>
+  <data name="lblXBase.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblXBase.Name" xml:space="preserve">
+    <value>lblXBase</value>
+  </data>
+  <data name="&gt;&gt;lblXBase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblXBase.Parent" xml:space="preserve">
+    <value>tlbAll</value>
+  </data>
+  <data name="&gt;&gt;lblXBase.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="txtXBase.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="txtXBase.Location" type="System.Drawing.Point, System.Drawing">
+    <value>76, 109</value>
+  </data>
+  <data name="txtXBase.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 20</value>
+  </data>
+  <data name="txtXBase.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;txtXBase.Name" xml:space="preserve">
+    <value>txtXBase</value>
+  </data>
+  <data name="&gt;&gt;txtXBase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtXBase.Parent" xml:space="preserve">
+    <value>tlbAll</value>
+  </data>
+  <data name="&gt;&gt;txtXBase.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
   <data name="tlbAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
   <data name="tlbAll.RowCount" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="tlbAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>278, 513</value>
   </data>
   <data name="tlbAll.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tlbAll.Name" xml:space="preserve">
     <value>tlbAll</value>
@@ -640,7 +697,7 @@
     <value>2</value>
   </data>
   <data name="tlbAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbValues" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtWeight" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblWeight" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbNoOfYears" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tlpNoOfYears" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblViewAs" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbViewAs" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbValues" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtWeight" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblWeight" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbNoOfYears" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tlpNoOfYears" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblViewAs" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cmbViewAs" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblXBase" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtXBase" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -652,7 +709,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="btnOK.Text" xml:space="preserve">
     <value>&amp;OK</value>
@@ -679,7 +736,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
