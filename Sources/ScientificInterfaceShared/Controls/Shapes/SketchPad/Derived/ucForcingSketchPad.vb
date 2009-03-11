@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucForcingSketchPad.vb,v $
+' Revision 1.4  2009/03/11 00:30:48  jeroens
+' Removed resources month strings
+'
 ' Revision 1.3  2009/03/02 17:43:52  jeroens
 ' Cleaned up
 '
@@ -69,20 +72,17 @@ Namespace Controls
                     lstrAxis.Add(i.ToString)
                 Next
                 Return lstrAxis.ToArray()
+
             Else
-                Return New String() {My.Resources.GENERIC_MONTH_ABBR_JANUARY, _
-                                    My.Resources.GENERIC_MONTH_ABBR_FEBRUARY, _
-                                    My.Resources.GENERIC_MONTH_ABBR_MARCH, _
-                                    My.Resources.GENERIC_MONTH_ABBR_APRIL, _
-                                    My.Resources.GENERIC_MONTH_ABBR_MAY, _
-                                    My.Resources.GENERIC_MONTH_ABBR_JUNE, _
-                                    My.Resources.GENERIC_MONTH_ABBR_JULY, _
-                                    My.Resources.GENERIC_MONTH_ABBR_AUGUST, _
-                                    My.Resources.GENERIC_MONTH_ABBR_SEPTEMBER, _
-                                    My.Resources.GENERIC_MONTH_ABBR_OCTOBER, _
-                                    My.Resources.GENERIC_MONTH_ABBR_NOVEMBER, _
-                                    My.Resources.GENERIC_MONTH_ABBR_DECEMBER, _
-                                    ""} ' Hack: one extra to center labels under value ranges
+
+                Dim lstrMonths As New List(Of String)
+                For i As Integer = 1 To 12
+                    lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
+                Next
+                ' Hack: one extra to center labels under value ranges
+                lstrMonths.Add("")
+                Return lstrMonths.ToArray()
+
             End If
 
         End Function
