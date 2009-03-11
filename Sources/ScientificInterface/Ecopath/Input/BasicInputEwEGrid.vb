@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.4  2009/03/11 19:32:11  jeroens
+' Switched Z, P/B columns
+'
 ' Revision 1.3  2009/03/09 15:05:07  jeroens
 ' Split P/B col into P/B (non stanza), Z (stanza)
 '
@@ -9,79 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:30  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.32  2008/09/16 01:29:02  jeroens
-' Suppressed a whack of zeroes
-'
-' Revision 1.31  2008/08/11 16:13:55  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.30  2008/08/02 03:04:12  jeroens
-' Renamed resources
-'
-' Revision 1.29  2008/06/02 00:01:27  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.28  2008/05/29 22:22:41  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.27  2008/04/07 02:31:07  jeroens
-' Cleaning up resources
-'
-' Revision 1.26  2008/01/11 12:33:19  jeroens
-' Fixed bug 299
-'
-' Revision 1.25  2007/10/10 02:59:13  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.24  2007/08/03 16:30:25  jeroens
-' * Uses cell-based unit support
-'
-' Revision 1.23  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.22  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.21  2007/06/13 22:04:53  fgao
-' Fixed Bug 67: Relating to Grid cell alignment.
-'
-' Revision 1.20  2007/05/04 23:53:05  fgao
-' Add temporary Unit settings for grid header
-'
-' Revision 1.19  2007/04/29 03:45:11  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.18  2007/04/18 01:06:47  joeh
-' *Fine tune EditMultiStanza UI
-'
-' Revision 1.17  2007/04/14 15:24:14  jeroens
-' - Removed stanza group count diagnostics
-'
-' Revision 1.16  2007/04/14 00:19:53  joeh
-' *add "Edit Multi Stanza" submenu
-'
-' Revision 1.15  2007/04/06 01:04:40  joeh
-' no message
-'
-' Revision 1.14  2007/04/03 23:17:39  joeh
-' *"Edit multi stanza groups" button enabled upfront
-'
-' Revision 1.13  2007/03/31 01:09:06  joeh
-' *First shot to add "Edit Multi Stanza" button at the top of Basic Input grid
-'
-' Revision 1.12  2007/03/30 17:16:45  joeh
-' *Double click, instead of single click, on the cell of Basic Input to invoke the Edit Multi Stanza UI
-'
-' Revision 1.11  2007/03/26 22:04:05  joeh
-' *Second shot at Edit Multi Stanza UI
-'
-' Revision 1.10  2007/03/19 23:13:31  joeh
-' First shot at edit multi stanza ui
-'
-' Revision 1.9  2007/03/09 20:38:54  joeh
-' * Implement second shot at stanza hierarchy
-' * The groups, stanza or not, will be listed in the user's input order
 '
 '==============================================================================
 
@@ -117,8 +47,8 @@ Namespace Ecopath.Input
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
             Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
             Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
             Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
@@ -175,12 +105,12 @@ Namespace Ecopath.Input
                     cell.SuppressZero = True
                     Me(iRow, 3) = cell
 
-                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
-                    cell.SuppressZero = True
-                    Me(iRow, 4) = cell
-
                     cell = New EwECell("", GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    Me(iRow, 4) = cell
+
+                    cell = New PropertyCell(source, eVarNameFlags.PBInput)
+                    cell.SuppressZero = True
                     Me(iRow, 5) = cell
 
                     cell = New PropertyCell(source, eVarNameFlags.QBInput)
@@ -220,14 +150,14 @@ Namespace Ecopath.Input
                     cell.SuppressZero = True
                     Me(iRow, 3) = cell
 
-                    cell = New EwECell("", GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
-                    cell.Behaviors.Add(m_bm)
-                    Me(iRow, 4) = cell
-
                     cell = New PropertyCell(source, eVarNameFlags.PBInput)
                     cell.Behaviors.Add(m_bm)
                     cell.SuppressZero = True
+                    Me(iRow, 4) = cell
+
+                    cell = New EwECell("", GetType(String))
+                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Behaviors.Add(m_bm)
                     Me(iRow, 5) = cell
 
                     cell = New PropertyCell(source, eVarNameFlags.QBInput)
