@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.8  2009/03/11 00:31:54  jeroens
+' Shapes update on reset to make sure changes are committed to the core
+'
 ' Revision 1.7  2009/03/04 06:31:55  jeroens
 ' ResetAll command properly enabled
 '
@@ -276,6 +279,7 @@ Namespace Controls
             For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
                 shape.ShapeData(i) = sDefaultValue
             Next i
+            shape.Update()
             shape.UnlockUpdates()
 
             If (Object.ReferenceEquals(shape, Me.m_shapeSelected)) Then
@@ -1093,26 +1097,37 @@ Namespace Controls
             Select Case cmd
                 Case eShapeCommandTypes.Add
                     Me.AddFF()
+
                 Case eShapeCommandTypes.ChangeShape
                     Me.ChangeFFShape()
+
                 Case eShapeCommandTypes.Duplicate
                     Me.DuplicateFF(shape)
+
                 Case eShapeCommandTypes.Modify
                     Me.ModifyFF(shape)
+
                 Case eShapeCommandTypes.DisplayOptions
                     Me.ShapeOptions()
+
                 Case eShapeCommandTypes.Remove
                     Me.RemoveFF(shape)
+
                 Case eShapeCommandTypes.Rename
                     Me.RenameFF(shape, CStr(data))
+
                 Case eShapeCommandTypes.Reset
                     Me.ResetShape(shape)
+
                 Case eShapeCommandTypes.ResetAll
                     Me.ResetAllShapes()
+
                 Case eShapeCommandTypes.SaveAsImage
                     Me.SaveAsImage(shape, Me.SketchPad)
+
                 Case eShapeCommandTypes.Seasonal
                     Me.SetSeasonal(shape, CBool(data))
+
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
