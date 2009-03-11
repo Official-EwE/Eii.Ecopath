@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.10  2009/03/11 00:14:28  joeh
+' Add PSD calculation
+'
 ' Revision 1.9  2009/03/06 00:47:56  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -307,6 +310,7 @@ Public Class cEcopathDataStructures
     Public EcopathWeight(,) As Single
     Public EcopathNumber(,) As Single
     Public EcopathBiomass(,) As Single
+    Public PSD(,) As Single
     'End Joeh
 #End Region
 
@@ -315,6 +319,18 @@ Public Class cEcopathDataStructures
     Public ReadOnly Property NTimes() As Integer
         Get
             Return 101
+        End Get
+    End Property
+
+    Public ReadOnly Property NWeightClasses() As Integer
+        Get
+            Return 25 'actually a user input variable
+        End Get
+    End Property
+
+    Public ReadOnly Property FirstWeightClass() As Single
+        Get
+            Return 0.125
         End Get
     End Property
     'End Joeh
@@ -476,6 +492,8 @@ Public Class cEcopathDataStructures
         ReDim EcopathWeight(NumGroups, NTimes)
         ReDim EcopathNumber(NumGroups, NTimes)
         ReDim EcopathBiomass(NumGroups, NTimes)
+
+        ReDim PSD(NumGroups, NWeightClasses)
         'End Joeh
 
         Return True
@@ -1248,6 +1266,8 @@ Public Class cEcopathDataStructures
             dest.EcopathWeight = EcopathWeight.Clone
             dest.EcopathNumber = EcopathNumber.Clone
             dest.EcopathBiomass = EcopathBiomass.Clone
+
+            dest.PSD = PSD.Clone
             'End Joeh
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)

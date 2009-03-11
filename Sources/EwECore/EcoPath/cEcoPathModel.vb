@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.16  2009/03/11 00:14:28  joeh
+' Add PSD calculation
+'
 ' Revision 1.15  2009/03/06 17:54:01  joeh
 ' Minor changes in the computation of Weight, Number and Biomass
 '
@@ -3034,34 +3037,157 @@ nextJ:
 
         Private Sub EstimatePSD()
             Dim sTime As Single
-            Dim sMortality As Single
 
-            For iGroup As Integer = 1 To m_Data.NumGroups
+            Dim WeightClass() As Single
+            Dim Time() As Single
+            Dim DeltaTime() As Single
+            Dim Number() As Single
+            Dim Biomass() As Single
+            Dim StartWeightClass As Integer
+            Dim ScaleFactor As Single
+
+            For iGroup As Integer = 1 To m_Data.NumLiving
+
+                '(I) Estimate Weight, Number ad Biomass over time
                 For iTimeStep As Integer = 1 To m_Data.NTimes
                     sTime = (iTimeStep - 1) * m_Data.Tmax(iGroup) / (m_Data.NTimes - 1)
 
                     'Weight
-                    m_Data.EcopathWeight(iGroup, iTimeStep) = CSng(m_Data.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
-                                                                (sTime - m_Data.t0(iGroup))) ^ m_Data.BinLW(iGroup)))
+                    m_Data.EcopathWeight(iGroup, iTimeStep) = CalcWeight(iGroup, sTime)
 
                     'Number
-                    'If "Group P/B" then
-                    If sTime < m_Data.Tcatch(iGroup) Then
-                        sMortality = m_Data.PB(iGroup) - _
-                                       m_Data.fCatch(iGroup) / m_Data.B(iGroup)
-                    Else
-                        sMortality = m_Data.PB(iGroup)
-                    End If
-                    'Else "Lorenzen-variable"
-
-                    'End if
-                    m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-sMortality * sTime))
+                    m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-CalcMortality(iGroup, sTime) * sTime))
 
                     'Biomass
                     m_Data.EcopathBiomass(iGroup, iTimeStep) = m_Data.EcopathWeight(iGroup, iTimeStep) * m_Data.EcopathNumber(iGroup, iTimeStep)
                 Next
+
+                '(II) Estimate PSD as a function of weight class
+                ReDim WeightClass(m_Data.NWeightClasses)
+                ReDim Time(m_Data.NWeightClasses)
+                ReDim DeltaTime(m_Data.NWeightClasses)
+                ReDim Number(m_Data.NWeightClasses)
+                ReDim Biomass(m_Data.NWeightClasses)
+
+                '(1) Find weight classes
+                WeightClass(1) = m_Data.FirstWeightClass
+                For iWtClass As Integer = 2 To m_Data.NWeightClasses
+                    WeightClass(iWtClass) = WeightClass(iWtClass - 1) * 2
+                Next
+
+                '(2) Find times in weight classes
+                't= ln(1-(Wt/Woo)^(1/b)) / (-K) + t0
+                For iWtClass As Integer = 1 To m_Data.NWeightClasses
+                    If WeightClass(iWtClass) < m_Data.Winf(iGroup) Then
+                        Time(iWtClass) = CSng(Math.Log(1 - (WeightClass(iWtClass) / m_Data.Winf(iGroup)) ^ _
+                                         (1 / m_Data.BinLW(iGroup))) / (-m_Data.vbK(iGroup)) + m_Data.t0(iGroup))
+                        If Time(iWtClass) < 0 Then Time(iWtClass) = 0
+                        DeltaTime(iWtClass) = Time(iWtClass) - Time(iWtClass - 1)
+                    Else
+                        Time(iWtClass) = 0
+                    End If
+                Next
+
+                '(3) Find survival(weight class)
+                'Nt+1 = Nt * Exp(-Z * dT)
+                '(a) Get start weight and start weight class
+                For iWtClass As Integer = 0 To m_Data.NWeightClasses - 1
+                    If WeightClass(iWtClass + 1) > CalcStartWeight(iGroup) Then
+                        If iWtClass = 0 Then
+                            StartWeightClass = 1
+                        Else
+                            StartWeightClass = iWtClass
+                            Number(StartWeightClass - 1) = 10000
+                            Exit For
+                        End If
+                    End If
+                Next
+                '(b) Get survival
+                For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                    If Time(iWtClass) <= m_Data.Tmax(iGroup) Then
+                        If iWtClass = 0 Then
+                            Number(iWtClass) = 10000
+                        Else
+                            Number(iWtClass) = CSng(Number(iWtClass - 1) * Math.Exp(-CalcMortality(iGroup, Time(iWtClass)) * DeltaTime(iWtClass)))
+                        End If
+                    ElseIf iWtClass = StartWeightClass Then
+                        Number(iWtClass) = 10000
+                    Else ' Done
+                        Exit For
+                    End If
+                Next
+
+                '(4) Find biomass(weight class)
+                'Is group Winf smaller than StartWeight
+                If WeightClass(1) > m_Data.Winf(iGroup) Then
+                    'Yes
+                    Biomass(1) = m_Data.B(iGroup)
+                Else
+                    'No
+                    ScaleFactor = 0
+                    'The duration in each size group differs, spends more time in larger size group
+                    For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                        Biomass(iWtClass) = Number(iWtClass) * WeightClass(iWtClass) * DeltaTime(iWtClass)
+                        If Biomass(iWtClass) < 0 Then
+                            Biomass(iWtClass) = 0
+                        Else
+                            ScaleFactor = ScaleFactor + Biomass(iWtClass)
+                        End If
+                    Next
+                End If
+                'Now scale the biomass to the Ecopath value
+                If ScaleFactor > 0 Then
+                    For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                        Biomass(iWtClass) = Biomass(iWtClass) * m_Data.B(iGroup) / ScaleFactor
+                    Next
+                End If
+
+                '(5)Assign to group PSD
+                For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                    m_Data.PSD(iGroup, iWtClass) = Biomass(iWtClass)
+                    'm_Data.PSD(0, iWtClass) = m_Data.PSD(0, iWtClass) + Biomass(iWtClass)
+                Next
             Next
         End Sub
+
+        Private Function CalcStartWeight(ByVal iGroup As Integer) As Single
+            Dim core As cCore = cCore.GetInstance
+
+            'Is stanza group?
+            If m_Data.StanzaGroup(iGroup) Then
+                'Yes
+                For isp As Integer = 1 To core.nStanzas 'No. of split group
+                    For ist As Integer = 1 To core.nStanza(isp) ' No. of stanza in a split group
+                        If core.EcopathCode(isp, ist) = iGroup Then
+                            If core.Age1(isp, ist) > 0 Then
+                                Return CalcWeight(iGroup, core.Age1(isp, ist))
+                            End If
+                        End If
+                    Next
+                Next
+            Else
+                'No
+                Return 0
+            End If
+        End Function
+
+        Private Function CalcWeight(ByVal iGroup As Integer, ByVal sTime As Single) As Single
+            'Wt = Woo (1-exp(-K(t-to))^b    where b is the exp of LW
+            Return CSng(m_Data.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
+                        (sTime - m_Data.t0(iGroup))) ^ m_Data.BinLW(iGroup)))
+        End Function
+
+        Private Function CalcMortality(ByVal iGroup As Integer, ByVal sTime As Single) As Single
+            'If "Group P/B" then
+            If sTime < m_Data.Tcatch(iGroup) Then
+                Return m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+            Else
+                Return m_Data.PB(iGroup)
+            End If
+            'Else "Lorenzen-variable"
+
+            'End if
+        End Function
         'End Joeh
 #End Region
 

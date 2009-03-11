@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.77  2009/03/11 00:14:28  joeh
+' Add PSD calculation
+'
 ' Revision 1.76  2009/03/06 00:47:56  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -258,6 +261,9 @@ Public Class cCore
                     'Joeh
                 Case eCoreCounterTypes.nEcopathTimeSteps
                     Return Me.nEcopathTimeSteps
+
+                Case eCoreCounterTypes.nWeightClasses
+                    Return Me.nWeightClasses
                     'End Joeh
 
                 Case Else
@@ -528,6 +534,12 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property Age1(ByVal isp As Integer, ByVal ist As Integer) As Integer
+        Get
+            Return m_Stanza.Age1(isp, ist)
+        End Get
+    End Property
+
     Public ReadOnly Property Age2(ByVal isp As Integer, ByVal ist As Integer) As Integer
         Get
             Return m_Stanza.Age2(isp, ist)
@@ -537,6 +549,18 @@ Public Class cCore
     Public ReadOnly Property nEcopathTimeSteps() As Integer
         Get
             Return m_EcoPathData.NTimes
+        End Get
+    End Property
+
+    Public ReadOnly Property nWeightClasses() As Integer
+        Get
+            Return m_EcoPathData.NWeightClasses
+        End Get
+    End Property
+
+    Public ReadOnly Property FirstWeightClass() As Single
+        Get
+            Return m_EcoPathData.FirstWeightClass
         End Get
     End Property
     'End Joeh
@@ -2629,6 +2653,8 @@ Public Class cCore
         Dim EcopathWeight() As Single
         Dim EcopathNumber() As Single
         Dim EcopathBiomass() As Single
+
+        Dim PSD() As Single
         'End Joeh
         Dim convalue As Single
         Dim iGroup As Integer
@@ -2663,6 +2689,8 @@ Public Class cCore
                 ReDim EcopathWeight(nEcopathTimeSteps)
                 ReDim EcopathNumber(nEcopathTimeSteps)
                 ReDim EcopathBiomass(nEcopathTimeSteps)
+
+                ReDim PSD(nWeightClasses)
                 'End Joeh
 
                 For iPred As Integer = 1 To m_EcoPathData.NumLiving
@@ -2821,6 +2849,13 @@ Public Class cCore
                     EcopathBiomass(t) = m_EcoPathData.EcopathBiomass(iGroup, t)
                 Next
                 output.EcopathBiomass = EcopathBiomass
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                ' PSD
+                For wc As Integer = 1 To nWeightClasses
+                    PSD(wc) = m_EcoPathData.PSD(iGroup, wc)
+                Next
+                output.PSD = PSD
                 'End Joeh
 
                 output.m_bReadOnly = True

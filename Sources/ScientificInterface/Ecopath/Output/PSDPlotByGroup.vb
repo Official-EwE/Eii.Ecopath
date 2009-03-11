@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.5  2009/03/11 00:14:28  joeh
+' Add PSD calculation
+'
 ' Revision 1.4  2009/03/06 17:54:01  joeh
 ' Minor changes in the computation of Weight, Number and Biomass
 '
@@ -193,11 +196,6 @@ Namespace Ecopath.Output
         Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal list As PointPairList, ByVal clr As Color)
             Dim gp As GraphPane = m_MasterPane.PaneList(CInt(paneType))
             gp.AddCurve(gp.Title.Text, list, clr, SymbolType.None)
-        End Sub
-
-        Private Sub UpdateGraphPaneTitle(ByVal paneType As ePaneTypes, ByVal strTitle As String)
-            Dim gp As GraphPane = m_MasterPane.PaneList(CInt(paneType))
-            gp.Title.Text = strTitle
         End Sub
 
         Private Sub UpdatePlots()

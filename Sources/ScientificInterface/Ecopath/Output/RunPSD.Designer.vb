@@ -34,6 +34,8 @@ Namespace Ecopath.Output
             Me.mnuItmGroupPB = New System.Windows.Forms.ToolStripMenuItem
             Me.mnuItmLorenzen = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.btnShowHideGroups = New System.Windows.Forms.ToolStripButton
+            Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
             Me.lblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
             Me.tbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
@@ -43,11 +45,9 @@ Namespace Ecopath.Output
             Me.lblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
             Me.tbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
             Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.btnShowHideGroups = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
             Me.btnRun = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-            Me.ZedGraphControl1 = New ZedGraph.ZedGraphControl
+            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
             Me.ToolStrip1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -89,6 +89,19 @@ Namespace Ecopath.Output
             '
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            '
+            'btnShowHideGroups
+            '
+            Me.btnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.btnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.btnShowHideGroups.Name = "btnShowHideGroups"
+            Me.btnShowHideGroups.Size = New System.Drawing.Size(107, 22)
+            Me.btnShowHideGroups.Text = "Select groups ..."
+            '
+            'ToolStripSeparator6
+            '
+            Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+            Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
             '
             'lblNoOfPointsPSD
             '
@@ -138,19 +151,6 @@ Namespace Ecopath.Output
             Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
             Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
             '
-            'btnShowHideGroups
-            '
-            Me.btnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
-            Me.btnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.btnShowHideGroups.Name = "btnShowHideGroups"
-            Me.btnShowHideGroups.Size = New System.Drawing.Size(107, 22)
-            Me.btnShowHideGroups.Text = "Select groups ..."
-            '
-            'ToolStripSeparator6
-            '
-            Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-            Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
-            '
             'btnRun
             '
             Me.btnRun.AutoSize = False
@@ -166,27 +166,27 @@ Namespace Ecopath.Output
             Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
             Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
             '
-            'ZedGraphControl1
+            'zgcZedGraphCntl
             '
-            Me.ZedGraphControl1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.ZedGraphControl1.Location = New System.Drawing.Point(0, 25)
-            Me.ZedGraphControl1.Name = "ZedGraphControl1"
-            Me.ZedGraphControl1.ScrollGrace = 0
-            Me.ZedGraphControl1.ScrollMaxX = 0
-            Me.ZedGraphControl1.ScrollMaxY = 0
-            Me.ZedGraphControl1.ScrollMaxY2 = 0
-            Me.ZedGraphControl1.ScrollMinX = 0
-            Me.ZedGraphControl1.ScrollMinY = 0
-            Me.ZedGraphControl1.ScrollMinY2 = 0
-            Me.ZedGraphControl1.Size = New System.Drawing.Size(869, 241)
-            Me.ZedGraphControl1.TabIndex = 1
+            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 25)
+            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
+            Me.zgcZedGraphCntl.ScrollGrace = 0
+            Me.zgcZedGraphCntl.ScrollMaxX = 0
+            Me.zgcZedGraphCntl.ScrollMaxY = 0
+            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
+            Me.zgcZedGraphCntl.ScrollMinX = 0
+            Me.zgcZedGraphCntl.ScrollMinY = 0
+            Me.zgcZedGraphCntl.ScrollMinY2 = 0
+            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(869, 241)
+            Me.zgcZedGraphCntl.TabIndex = 1
             '
             'RunPSD
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(869, 266)
-            Me.Controls.Add(Me.ZedGraphControl1)
+            Me.Controls.Add(Me.zgcZedGraphCntl)
             Me.Controls.Add(Me.ToolStrip1)
             Me.Name = "RunPSD"
             Me.Text = "RunParticleSizeDistribution"
@@ -212,7 +212,7 @@ Namespace Ecopath.Output
         Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ZedGraphControl1 As ZedGraph.ZedGraphControl
+        Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
         Friend WithEvents btnShowHideGroups As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     End Class

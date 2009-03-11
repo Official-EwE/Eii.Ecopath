@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.7  2009/03/11 00:14:28  joeh
+' Add PSD calculation
+'
 ' Revision 1.6  2009/03/06 00:47:56  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -447,6 +450,9 @@ Public Class cEcoPathGroupOutput
         m_values.Add(val.varName, val)
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
+
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PSD, eStatusFlags.NotEditable, eCoreCounterTypes.nWeightClasses, AddressOf m_core.GetCoreCounter)
+        m_values.Add(val.varName, val)
         'End Joeh
 
     End Sub
@@ -739,6 +745,28 @@ Public Class cEcoPathGroupOutput
         Set(ByVal newValue As Single())
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.EcopathBiomass, newValue)
+            End If
+        End Set
+    End Property
+
+    Public Property PSD(ByVal iWeightClass As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.PSD, iWeightClass))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.PSD, newValue, iWeightClass)
+            End If
+        End Set
+    End Property
+
+    Public Property PSD() As Single()
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.PSD), Single())
+        End Get
+        Set(ByVal newValue As Single())
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.PSD, newValue)
             End If
         End Set
     End Property

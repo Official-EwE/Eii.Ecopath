@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.35  2009/03/11 00:14:29  joeh
+' Add PSD calculation
+'
 ' Revision 1.34  2009/03/06 00:47:57  joeh
 ' Add Ecopath output data (Weight, Number, Biomass) over time
 '
@@ -742,6 +745,9 @@ Namespace Core
         EcopathWeight
         EcopathNumber
         EcopathBiomass
+
+        ''' <summary>Particle size distribution</summary>
+        PSD
         'End Joeh
 
         ''' <summary>Consumption by Pred of this Prey over time </summary>
@@ -1481,7 +1487,10 @@ Namespace Core
         nCols
 
         'Joe
+        ''' <summary>Number of timesteps in the Ecopath Weight, Number and Biomass</summary>
         nEcopathTimeSteps
+        ''' <summary>Number of weight classes in the particle size distribution</summary>
+        nWeightClasses
         'End Joeh
     End Enum
 
