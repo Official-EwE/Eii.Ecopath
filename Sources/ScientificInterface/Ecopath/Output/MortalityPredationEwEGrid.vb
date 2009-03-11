@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityPredationEwEGrid.vb,v $
+' Revision 1.4  2009/03/11 19:31:51  jeroens
+' Minimal housekeeping
+'
 ' Revision 1.3  2009/01/16 18:30:09  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -9,36 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:33  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.19  2008/08/02 03:04:11  jeroens
-' Renamed resources
-'
-' Revision 1.18  2008/07/29 13:06:43  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.17  2008/06/02 00:01:27  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.16  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.15  2007/10/10 02:59:12  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.14  2007/07/03 07:08:45  jeroens
-' * Fixed member naming inconsistencies
-'
-' Revision 1.13  2007/06/29 04:21:56  jeroens
-' * Revamped clouring logic for values > P/B
-'
-' Revision 1.12  2007/06/22 02:57:58  jeroens
-' * Selection state of cell now considered when drawing background
-'
-' Revision 1.11  2007/06/21 23:57:20  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.10  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
 '
 '==============================================================================
 

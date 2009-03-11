@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityCoefficientsEwEGrid.vb,v $
+' Revision 1.4  2009/03/11 19:31:51  jeroens
+' Minimal housekeeping
+'
 ' Revision 1.3  2009/01/16 18:30:08  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -9,42 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:33  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/08/03 01:03:21  jeroens
-' Fixed issue 178
-'
-' Revision 1.21  2008/08/02 03:04:11  jeroens
-' Renamed resources
-'
-' Revision 1.20  2008/06/02 00:01:26  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.19  2008/05/29 22:22:40  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.18  2008/04/07 02:31:06  jeroens
-' Cleaning up resources
-'
-' Revision 1.17  2008/01/11 12:33:17  jeroens
-' Fixed bug 299
-'
-' Revision 1.16  2007/10/10 02:59:12  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.15  2007/08/10 01:00:15  joeb
-' Fixed BiomassAccum bug
-'
-' Revision 1.14  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.13  2007/06/21 23:57:20  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.12  2007/06/04 23:20:58  fgao
-' Fixed a title display error
-'
-' Revision 1.11  2007/04/29 03:45:10  jeroens
-' * Connected to EwEGridRefresh
 '
 '==============================================================================
 
