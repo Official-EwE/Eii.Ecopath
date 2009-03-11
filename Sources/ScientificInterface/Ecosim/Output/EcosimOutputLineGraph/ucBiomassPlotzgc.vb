@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.27  2009/03/11 21:43:04  joeb
+' Bug Fix EcosimCompletedDelegate() asserts when trying to get EcosimGroupOutput.Biomass is Ecosim has not been run... well duuuhhh
+'
 ' Revision 1.26  2008/12/15 16:00:49  jeroens
 ' no message
 '
@@ -160,6 +163,11 @@ Namespace Ecosim
 
             ' Double check
             If Me.m_ZGHelper Is Nothing Or Me.m_ZGPlotter Is Nothing Then Return
+
+            'jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
+            If Not Me.m_core.StateMonitor.HasEcosimRan Then
+                Return
+            End If
 
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
