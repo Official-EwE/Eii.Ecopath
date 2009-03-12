@@ -1,8 +1,11 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.29  2009/03/12 17:30:08  joeb
+' Another shoot at the EcosimCompletedDelegate() It checks statemonitor again.... hope this is the last time...
+'
 ' Revision 1.28  2009/03/11 21:55:33  joeb
-' Removed the EcosimCompletedDelegate() bug fix because it stop results from drawing HasEcosimRan was allows false????
+' Removed the EcosimCompletedDelegate() bug fix because it stop results from drawing HasEcosimRan was always false????
 '
 ' Revision 1.27  2009/03/11 21:43:04  joeb
 ' Bug Fix EcosimCompletedDelegate() asserts when trying to get EcosimGroupOutput.Biomass is Ecosim has not been run
@@ -167,11 +170,10 @@ Namespace Ecosim
             ' Double check
             If Me.m_ZGHelper Is Nothing Or Me.m_ZGPlotter Is Nothing Then Return
 
-            ''for some reason HasEcosimRan is not getting set when ecosim is run
-            ''jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
-            'If Not Me.m_core.StateMonitor.HasEcosimRan Then
-            '    Return
-            'End If
+            'jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
+            If Not Me.m_core.StateMonitor.HasEcosimRan Then
+                Return
+            End If
 
             ' 1) Parepare dataset
             m_ZGPlotter.PrepareDataset()
