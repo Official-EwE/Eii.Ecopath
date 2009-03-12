@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.5  2009/03/12 01:32:44  jeroens
+' SAVE before you commit! SAVE!
+'
 ' Revision 1.4  2009/03/11 19:32:11  jeroens
 ' Switched Z, P/B columns
 '
@@ -132,7 +135,7 @@ Namespace Ecopath.Input
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
                         ' Complete row with dummy cells. We'll do something fancy here one day
-                        For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To 10 : Me(iRow, i) = New EwERowHeaderCell() : Next
 
                         intStanzaPrev = intStanza(source.Index)
                     Else

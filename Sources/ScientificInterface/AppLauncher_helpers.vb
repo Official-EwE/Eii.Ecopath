@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.8  2009/03/12 01:33:26  jeroens
+' SAVE before you commit! SAVE!
+'
 ' Revision 1.7  2009/03/12 01:31:35  jeroens
 ' ResetVisibleFlags may not distribute event
 '
@@ -541,6 +544,7 @@ Partial Public Class AppLauncher
                 Me.m_propUnitMonetaryText = Nothing
             End If
 
+            Me.m_sg.ResetVisibleFlags(False)
             Me.m_sg.ResumeEvents()
 
         End Sub
