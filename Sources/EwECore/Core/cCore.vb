@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.79  2009/03/12 14:09:40  jeroens
+' Stanza messages originate from Ecopath
+'
 ' Revision 1.78  2009/03/11 17:18:38  joeb
 ' Bug Fix Fishing rate shape not changing on RunEcosim form when predict effort was turned on
 ' Loading time series now sets Ecosim run length if time series has less years then Ecosim
@@ -924,7 +927,7 @@ Public Class cCore
             Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupInput)
             Me.DataAddedOrRemovedMessage("Ecopath number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.EcoPathGroupOutput)
             Me.DataAddedOrRemovedMessage("Fleet number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
-            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.Stanza)
+            Me.DataAddedOrRemovedMessage("Stanza number of groups has changed.", eCoreComponentType.EcoPath, eDataTypes.Stanza)
 
             If m_bEcoSimIsInit And (m_EcoSimData.GroupDBID IsNot Nothing) Then
                 Me.DataAddedOrRemovedMessage("EcoSim number of groups has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimGroupInput)
@@ -8212,7 +8215,7 @@ Public Class cCore
 
             'tell the interface that the stanza object has changed
             m_publisher.AddMessage(New cMessage("New Stanza parameters calculated.", eMessageType.DataModified, _
-                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.Stanza))
+                        eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Stanza))
 
             m_publisher.sendAllMessages()
             Return True
@@ -8220,7 +8223,7 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex)
             m_publisher.AddMessage(New cMessage("Error Calculating Stanza variables. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.Stanza))
+                                    eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.Stanza))
             m_publisher.sendAllMessages()
             Return False
         End Try
