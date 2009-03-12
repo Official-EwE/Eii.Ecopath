@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.7  2009/03/12 01:31:35  jeroens
+' ResetVisibleFlags may not distribute event
+'
 ' Revision 1.6  2009/03/02 01:44:40  jeroens
 ' Changed init order in statusbarhelper
 '
@@ -538,7 +541,6 @@ Partial Public Class AppLauncher
                 Me.m_propUnitMonetaryText = Nothing
             End If
 
-            Me.m_sg.ResetVisibleFlags()
             Me.m_sg.ResumeEvents()
 
         End Sub

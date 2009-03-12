@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.8  2009/03/12 01:31:00  jeroens
+' ResetVisibleFlags may not distribute event
+'
 ' Revision 1.7  2009/02/24 06:04:09  jeroens
 ' Allow 0 decimal digits
 '
@@ -1118,11 +1121,12 @@ Namespace Style
             End Set
         End Property
 
-        Public Sub ResetVisibleFlags()
+        Public Sub ResetVisibleFlags(Optional ByVal bFireChangeEvent As Boolean = True)
             Me.m_lHiddenGroups.Clear()
             Me.m_bHideTotalCatch = False
             Me.m_bHideTotalValue = False
-            Me.FireChangeEvent(eChangeType.GroupVisibility)
+
+            If bFireChangeEvent Then Me.FireChangeEvent(eChangeType.GroupVisibility)
         End Sub
 
 #End Region ' Group visibility
