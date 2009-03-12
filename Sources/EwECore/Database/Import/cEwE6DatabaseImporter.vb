@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.10  2009/03/12 01:24:38  jeroens
+' Fixed vbK import
+'
 ' Revision 1.9  2009/02/27 07:56:12  jeroens
 ' Changed vbK placement
 '
@@ -1423,7 +1426,9 @@ Namespace Database
 
         Public Sub ImportGroupSize(ByVal strModelName As String)
 
+            Dim strGroupName As String = ""
             Dim reader As IDataReader = Nothing
+            Dim readerStanza As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim nGroupID As Integer = 0
             Dim drow As DataRow = Nothing
@@ -1441,15 +1446,15 @@ Namespace Database
 
             While reader.Read()
 
+                strGroupName = CStr(reader("groupName"))
                 ' Get EwE6 GroupID for this record
-                nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, CStr(reader("groupName")))
+                nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strGroupName)
                 ' Find row(s) in GroupInfo that correspond to this GroupID
                 drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
 
                 If (drowSelect.Length = 1) Then
 
                     drow = drowSelect(0)
-
                     drow.BeginEdit()
 
                     ' Import overriding values
@@ -1457,10 +1462,20 @@ Namespace Database
                     drow("BinLW") = Me.FixValue(reader, "BinLW")
                     drow("Loo") = Me.FixValue(reader, "Loo")
                     drow("winf") = Me.FixValue(reader, "winf")
-                    drow("vbK") = Me.FixValue(reader, "vbK", 0.3)
+                    'drow("vbK") = Me.FixValue(reader, "vbK", 0.3)
                     drow("t0") = Me.FixValue(reader, "t0")
                     drow("Tcatch") = Me.FixValue(reader, "Tcatch")
                     drow("Tmax") = Me.FixValue(reader, "Tmax")
+
+                    Try
+                        readerStanza = Me.m_dbEwE5.GetReader(String.Format("SELECT vbK from [Group Stanza] where modelName='{0}' AND groupName='{1}'", strModelName, strGroupName))
+                        readerStanza.Read()
+                        drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.3)
+                        Me.m_dbEwE5.ReleaseReader(readerStanza)
+                    Catch ex As Exception
+                        drow("vbK") = 0.3!
+                    End Try
+
                     drow.EndEdit()
 
                 End If
