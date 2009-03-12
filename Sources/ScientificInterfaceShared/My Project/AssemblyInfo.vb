@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: AssemblyInfo.vb,v $
+' Revision 1.9  2009/03/12 15:45:04  sherman
+' Build 6.0.5.4
+'
 ' Revision 1.8  2009/02/26 16:35:09  sherman
 ' Build 6.0.5.2
 '
@@ -43,5 +46,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.0.5.2")> 
+<Assembly: AssemblyVersion("6.0.5.4")> 
 <Assembly: AssemblyFileVersion("1.0.0.0")> 
