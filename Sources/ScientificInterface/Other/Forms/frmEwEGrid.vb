@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwEGrid.vb,v $
+' Revision 1.4  2009/03/12 14:10:30  jeroens
+' Core message rerouted to the grid
+'
 ' Revision 1.3  2009/02/05 17:48:41  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -9,65 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:32:08  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/02 17:06:58  jeroens
-' Fixed issue 485
-'
-' Revision 1.2  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.1.2.2  2008/07/01 18:36:27  sherman
-' Merged Fix_Ecopat_EcosimUpdate...
-'
-' Revision 1.1  2008/06/04 00:55:48  jeroens
-' Renamed
-'
-' Revision 1.15  2008/05/16 15:26:51  jeroens
-' Added property smartness
-'
-' Revision 1.14  2008/04/07 02:31:18  jeroens
-' Cleaning up resources
-'
-' Revision 1.13  2008/04/03 16:00:57  jeroens
-' Grid no longer auto-docks; needs to be done here
-'
-' Revision 1.12  2008/02/19 13:07:22  jeroens
-' QuickEditHandler Set label and Button follow combo box enabled behaviour
-'
-' Revision 1.11  2008/01/31 03:08:55  jeroens
-' Added Set button
-' Set text box displays homogenous values
-'
-' Revision 1.10  2008/01/18 01:40:02  jeroens
-' Simplified code lock usage
-'
-' Revision 1.9  2008/01/08 11:27:00  jeroens
-' Nitty-gritty
-'
-' Revision 1.8  2007/12/09 22:15:17  jeroens
-' * Simplified
-'
-' Revision 1.7  2007/10/29 14:59:16  jeroens
-' + Added designer paranoia
-'
-' Revision 1.6  2007/10/21 13:08:26  jeroens
-' * Core restructure batch lock can fail; now properly handled througout core and GUI
-'
-' Revision 1.5  2007/10/15 15:23:59  jeroens
-' * Filters incoming messages for DataAddedOrRemoved
-'
-' Revision 1.4  2007/10/14 22:38:05  jeroens
-' * Fixed XML comment warning
-'
-' Revision 1.3  2007/10/12 18:51:13  jeroens
-' * Fixed explosion on missing m_qeHandler
-' * Safeguarded handling of m_qeHandler
-'
-' Revision 1.2  2007/10/12 16:41:30  jeroens
-' + Original message passed to OnCoreDataChanged
-'
-' Revision 1.1  2007/10/10 02:28:31  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -456,13 +400,11 @@ Public Class frmEwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Overridden to refresh the grid.
+    ''' Overridden to pass the message to the grid.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
-        If (msg.Type = eMessageType.DataAddedOrRemoved) Then
-            Me.m_grid.RefreshContent()
-        End If
+        Me.m_grid.OnCoreMessage(msg)
     End Sub
 
 #End Region ' Obligatory overrides

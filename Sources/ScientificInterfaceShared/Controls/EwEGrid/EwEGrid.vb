@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.9  2009/03/12 14:10:51  jeroens
+' Core message rerouted to the grid
+'
 ' Revision 1.8  2009/01/16 18:30:39  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -565,6 +568,12 @@ Namespace Controls.EwEGrid
                 Return New eCoreComponentType() {Me.MessageSource}
             End Get
         End Property
+
+        Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
+            If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                Me.RefreshContent()
+            End If
+        End Sub
 
 #End Region ' Data
 
