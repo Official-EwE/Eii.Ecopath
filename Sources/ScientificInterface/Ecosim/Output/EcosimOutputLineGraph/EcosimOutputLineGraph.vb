@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputLineGraph.vb,v $
+' Revision 1.4  2009/03/12 14:12:37  jeroens
+' Sst!
+'
 ' Revision 1.3  2008/12/15 15:53:25  jeroens
 ' no message
 '
@@ -571,7 +574,7 @@ Namespace Ecosim
             End If
 
             If sYMax <> Me.m_sMaxYAxis Then
-                Console.WriteLine("Adjusting YScale from {0} to {1}", Me.m_sMaxYAxis, sYMax)
+                'Console.WriteLine("Adjusting YScale from {0} to {1}", Me.m_sMaxYAxis, sYMax)
                 Me.m_sMaxYAxis = sYMax
 
                 Debug.Assert(Me.m_sMaxYAxis > 0)
