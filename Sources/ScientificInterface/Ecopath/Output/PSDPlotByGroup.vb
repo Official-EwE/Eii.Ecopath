@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.6  2009/03/12 01:50:29  joeh
+' Add codes for PSD histogram (PSDContributionPlot)
+'
 ' Revision 1.5  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -70,7 +73,6 @@ Namespace Ecopath.Output
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_NUMBER)
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             llbGroups.SelectedIndex = 0
-
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged

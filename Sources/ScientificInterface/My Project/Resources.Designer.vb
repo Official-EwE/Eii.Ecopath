@@ -4668,20 +4668,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass (log interval).
+        '''  Looks up a localized string similar to Particle size distribution.
         '''</summary>
-        Friend ReadOnly Property PSD_AXISLABEL_BIOMASS() As String
+        Friend ReadOnly Property PSD_PLOTCAPTION_PSD() As String
             Get
-                Return ResourceManager.GetString("PSD_AXISLABEL_BIOMASS", resourceCulture)
+                Return ResourceManager.GetString("PSD_PLOTCAPTION_PSD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Particle size distributuin (group contribution).
+        '''</summary>
+        Friend ReadOnly Property PSD_PLOTCAPTION_PSDCONTRIB() As String
+            Get
+                Return ResourceManager.GetString("PSD_PLOTCAPTION_PSDCONTRIB", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Weight class (log interval).
         '''</summary>
-        Friend ReadOnly Property PSD_AXISLABEL_WEIGHTCLASS() As String
+        Friend ReadOnly Property PSD_XAXISLABEL_WEIGHTCLASS() As String
             Get
-                Return ResourceManager.GetString("PSD_AXISLABEL_WEIGHTCLASS", resourceCulture)
+                Return ResourceManager.GetString("PSD_XAXISLABEL_WEIGHTCLASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass (log interval).
+        '''</summary>
+        Friend ReadOnly Property PSD_YAXISLABEL_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("PSD_YAXISLABEL_BIOMASS", resourceCulture)
             End Get
         End Property
         

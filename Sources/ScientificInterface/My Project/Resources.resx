@@ -2268,10 +2268,16 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Group name \ weight (g)</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="PSD_AXISLABEL_BIOMASS" xml:space="preserve">
+  <data name="PSD_YAXISLABEL_BIOMASS" xml:space="preserve">
     <value>Biomass (log interval)</value>
   </data>
-  <data name="PSD_AXISLABEL_WEIGHTCLASS" xml:space="preserve">
+  <data name="PSD_XAXISLABEL_WEIGHTCLASS" xml:space="preserve">
     <value>Weight class (log interval)</value>
+  </data>
+  <data name="PSD_PLOTCAPTION_PSD" xml:space="preserve">
+    <value>Particle size distribution</value>
+  </data>
+  <data name="PSD_PLOTCAPTION_PSDCONTRIB" xml:space="preserve">
+    <value>Particle size distributuin (group contribution)</value>
   </data>
 </root>

@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.4  2009/03/12 01:50:29  joeh
+' Add codes for PSD histogram (PSDContributionPlot)
+'
 ' Revision 1.3  2009/03/11 00:14:29  joeh
 ' Add PSD calculation
 '
@@ -44,7 +47,8 @@ Namespace Ecopath.Output
 
 #Region "Event handlers"
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            AddCurves(CreatePane("PSD", My.Resources.PSD_AXISLABEL_WEIGHTCLASS, My.Resources.PSD_AXISLABEL_BIOMASS))
+            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+                                 My.Resources.PSD_YAXISLABEL_BIOMASS))
             UpdatePlot()
         End Sub
 
@@ -74,32 +78,22 @@ Namespace Ecopath.Output
                                     ByVal strYAxisTitle As String, ByVal pane As GraphPane)
             Pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = False
-            pane.Title.FontSpec.Size = 15
+            pane.Title.FontSpec.Size = 16
 
-            pane.XAxis.Scale.FontSpec.Size = 15
+            pane.XAxis.Scale.IsVisible = False
             pane.XAxis.Title.Text = strXAxisTitle
-            pane.XAxis.Title.FontSpec.Size = 15
+            pane.XAxis.Title.FontSpec.Size = 14
 
-            pane.YAxis.Scale.FontSpec.Size = 15
+            pane.YAxis.Scale.IsVisible = False
             pane.YAxis.Title.Text = strYAxisTitle
-            pane.YAxis.Title.FontSpec.Size = 15
+            pane.YAxis.Title.FontSpec.Size = 14
 
             pane.XAxis.Scale.Min = Math.Log10(m_core.FirstWeightClass)
             pane.XAxis.Scale.Max = Math.Log10(m_core.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
-            'pane.YAxis.Scale.Min = 0
+            pane.YAxis.Scale.Min = 0
 
-            pane.Border.IsVisible = True
-            pane.Legend.IsVisible = True
-
-            pane.Chart.Border.IsVisible = True
-            Pane.YAxis.MajorTic.IsOpposite = False
-            Pane.XAxis.MajorTic.IsOpposite = False
-            Pane.YAxis.MinorTic.IsOpposite = False
-            Pane.XAxis.MinorTic.IsOpposite = False
-            Pane.YAxis.MinorTic.IsAllTics = False
-            Pane.XAxis.MinorTic.IsAllTics = False
-
-            Pane.IsFontsScaled = False
+            pane.YAxis.MinorTic.IsAllTics = False
+            pane.XAxis.MinorTic.IsAllTics = False
 
             'Me.UpdateColors()
         End Sub
@@ -119,7 +113,7 @@ Namespace Ecopath.Output
                     dXValue = m_core.FirstWeightClass * 2 ^ (iWtClass - 1)
 
                     'PSD plot
-                    resultLists(0).Add(Math.Log10(dXValue), Math.Log10(sSystemPSD(iWtClass)))
+                    resultLists(0).Add(Math.Log10(dXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
                     'PSD fit plot
                     'resultLists(1).Add(dXValue, grpOutput.EcopathNumber(iTimeStep))
                 End If
@@ -128,7 +122,7 @@ Namespace Ecopath.Output
             ' Clear pane
             pane.CurveList.Clear()
 
-            AddCurveToGraphPane(pane, resultLists(0), Color.Black)
+            AddCurveToGraphPane(pane, resultLists(0), Color.Transparent, Brushes.Black)
             'AddCurveToGraphPane(pane, resultLists(1), Color.Black)
         End Sub
 
@@ -140,8 +134,15 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal list As PointPairList, ByVal clr As Color)
-            pane.AddCurve("", list, clr, SymbolType.Circle)
+        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal list As PointPairList, _
+                                        ByVal lineClr As Color, ByVal brushClr As Brush)
+            Dim lnItem As LineItem
+
+            lnItem = pane.AddCurve("", list, lineClr, SymbolType.Circle)
+            lnItem.Line.IsVisible = False
+            lnItem.Symbol.Border.IsVisible = False
+            lnItem.Symbol.Fill.IsVisible = True
+            lnItem.Symbol.Fill.Brush = brushClr
         End Sub
 
         Private Sub UpdatePlot()

@@ -27,29 +27,78 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.UcGrowthPlotzgc1 = New ScientificInterface.ucPSDPlotzgc
+            Me.components = New System.ComponentModel.Container
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
+            Me.llbGroups = New ScientificInterfaceShared.Controls.LegendListBox
+            Me.SplitContainer1.Panel1.SuspendLayout()
+            Me.SplitContainer1.Panel2.SuspendLayout()
+            Me.SplitContainer1.SuspendLayout()
             Me.SuspendLayout()
             '
-            'UcGrowthPlotzgc1
+            'SplitContainer1
             '
-            Me.UcGrowthPlotzgc1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.UcGrowthPlotzgc1.Location = New System.Drawing.Point(0, 0)
-            Me.UcGrowthPlotzgc1.Name = "UcGrowthPlotzgc1"
-            Me.UcGrowthPlotzgc1.Size = New System.Drawing.Size(534, 340)
-            Me.UcGrowthPlotzgc1.TabIndex = 0
+            Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
+            Me.SplitContainer1.Name = "SplitContainer1"
+            '
+            'SplitContainer1.Panel1
+            '
+            Me.SplitContainer1.Panel1.Controls.Add(Me.zgcZedGraphCntl)
+            '
+            'SplitContainer1.Panel2
+            '
+            Me.SplitContainer1.Panel2.Controls.Add(Me.llbGroups)
+            Me.SplitContainer1.Size = New System.Drawing.Size(607, 382)
+            Me.SplitContainer1.SplitterDistance = 465
+            Me.SplitContainer1.TabIndex = 0
+            '
+            'zgcZedGraphCntl
+            '
+            Me.zgcZedGraphCntl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 12)
+            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
+            Me.zgcZedGraphCntl.ScrollGrace = 0
+            Me.zgcZedGraphCntl.ScrollMaxX = 0
+            Me.zgcZedGraphCntl.ScrollMaxY = 0
+            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
+            Me.zgcZedGraphCntl.ScrollMinX = 0
+            Me.zgcZedGraphCntl.ScrollMinY = 0
+            Me.zgcZedGraphCntl.ScrollMinY2 = 0
+            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(465, 358)
+            Me.zgcZedGraphCntl.TabIndex = 0
+            '
+            'llbGroups
+            '
+            Me.llbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.llbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.llbGroups.FormattingEnabled = True
+            Me.llbGroups.Location = New System.Drawing.Point(0, 13)
+            Me.llbGroups.Name = "llbGroups"
+            Me.llbGroups.Size = New System.Drawing.Size(138, 355)
+            Me.llbGroups.TabIndex = 0
             '
             'PSDContributionPlot
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(534, 340)
-            Me.Controls.Add(Me.UcGrowthPlotzgc1)
+            Me.ClientSize = New System.Drawing.Size(607, 382)
+            Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "PSDContributionPlot"
             Me.Text = "PSDContributionPlot"
+            Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel2.ResumeLayout(False)
+            Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents UcGrowthPlotzgc1 As ScientificInterface.ucPSDPlotzgc
+        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+        Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
+        Friend WithEvents llbGroups As ScientificInterfaceShared.Controls.LegendListBox
     End Class
 
 End Namespace
