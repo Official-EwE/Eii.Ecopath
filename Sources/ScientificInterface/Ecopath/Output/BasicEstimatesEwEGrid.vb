@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicEstimatesEwEGrid.vb,v $
+' Revision 1.4  2009/03/12 14:11:16  jeroens
+' Implemented Z/PB columns
+'
 ' Revision 1.3  2009/01/16 18:30:07  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -9,57 +12,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:32  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.26  2008/08/02 03:04:10  jeroens
-' Renamed resources
-'
-' Revision 1.25  2008/06/02 00:01:25  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.24  2008/05/29 22:22:39  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.23  2008/04/07 02:31:05  jeroens
-' Cleaning up resources
-'
-' Revision 1.22  2008/01/11 12:33:18  jeroens
-' Fixed bug 299
-'
-' Revision 1.21  2007/10/10 02:59:11  jeroens
-' * Updated to new EwEGrid MessageSource interface
-'
-' Revision 1.20  2007/08/03 17:17:59  jeroens
-' * Uses cell-based unit support
-'
-' Revision 1.19  2007/07/06 20:11:17  jeroens
-' * Core stanza group list no longer exposed
-'
-' Revision 1.18  2007/06/21 23:57:20  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.17  2007/06/21 22:23:36  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.16  2007/06/13 22:36:08  fgao
-' Fixed Bug 67: Relating to Grid cell alignment.
-'
-' Revision 1.15  2007/06/13 22:04:53  fgao
-' Fixed Bug 67: Relating to Grid cell alignment.
-'
-' Revision 1.14  2007/05/04 23:53:05  fgao
-' Add temporary Unit settings for grid header
-'
-' Revision 1.13  2007/04/29 03:45:09  jeroens
-' * Connected to EwEGridRefresh
-'
-' Revision 1.12  2007/04/19 19:19:22  joeh
-' *Fix the first two columns in the grid
-'
-' Revision 1.11  2007/04/18 19:53:07  joeh
-' *Implement stanza heirarchy
-'
-' Revision 1.10  2006/12/01 23:31:15  jeroens
-' + Added Index column again; core messages refer to Group indices
 '
 '==============================================================================
 
@@ -79,6 +31,20 @@ Namespace Ecopath.Output
     Public Class BasicEstimatesEwEGrid
         : Inherits EwEGrid
 
+        Enum eColumnTypes As Integer
+            Index = 0
+            Name
+            TL
+            Area
+            BA
+            B
+            Z
+            PB
+            QB
+            EE
+            GE
+        End Enum
+
         Public Sub New()
             MyBase.new()
         End Sub
@@ -86,17 +52,18 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
-            Me.Redim(1, 10)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_TROPHICLEVEL)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
-            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
+            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(My.Resources.HEADER_TROPHICLEVEL)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, StyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
+            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
 
             Me.FixedColumns = 2
 
@@ -108,20 +75,20 @@ Namespace Ecopath.Output
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
-            Dim intStanzaGroupIndexPrev As Integer = -1
+            Dim aiStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
+            Dim iStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To core.nGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To core.nGroups : aiStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(stanzaGroupIndex)
+            For iStanzaGroup As Integer = 0 To core.nStanzas - 1
+                sg = core.StanzaGroups(iStanzaGroup)
 
                 For iStanza As Integer = 1 To sg.NStanzas
                     source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    intStanzaGroupIndex(source.Index) = stanzaGroupIndex
+                    aiStanzaGroupIndex(source.Index) = iStanzaGroup
                 Next
             Next
 
@@ -132,20 +99,24 @@ Namespace Ecopath.Output
             For groupIndex As Integer = 1 To core.nGroups
                 source = core.EcoPathGroupOutputs(groupIndex)
 
-                If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                If aiStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
                     FillInRows(iRow, source)
                 Else 'Group is stanza
-                    sg = core.StanzaGroups(intStanzaGroupIndex(source.Index))
-                    If intStanzaGroupIndex(source.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+                    sg = core.StanzaGroups(aiStanzaGroupIndex(source.Index))
+                    If aiStanzaGroupIndex(source.Index) <> iStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+
+                        ' Complete row with dummy cells
+                        iRow = Me.AddRow()
+                        For i As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
+
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
-                        iRow = Me.AddRow()
-                        Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
-                        ' Complete row with dummy cells
-                        For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
+                        Me(iRow, eColumnTypes.Index) = hgcStanza
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(sg, eVarNameFlags.Name)
+
+                        iStanzaGroupIndexPrev = aiStanzaGroupIndex(source.Index)
+
                     Else
                         hgcStanza = dtStanzaCells(sg)
                     End If
@@ -158,42 +129,64 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
-            If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
+        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal bIsStanza As Boolean = False)
+
+            Dim cell As EwECellBase = Nothing
+
+            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+            If bIsStanza Then
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
             End If
-            Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.TTLX)
-            Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.Area)
-            Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.BiomassAreaOutput)
-            Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.Biomass)
-            Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.PBOutput)
-            Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.QBOutput)
-            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.EEOutput)
-            Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.GEOutput)
+
+            Me(iRow, eColumnTypes.TL) = New PropertyCell(source, eVarNameFlags.TTLX)
+            Me(iRow, eColumnTypes.Area) = New PropertyCell(source, eVarNameFlags.Area)
+            Me(iRow, eColumnTypes.BA) = New PropertyCell(source, eVarNameFlags.BiomassAreaOutput)
+            Me(iRow, eColumnTypes.B) = New PropertyCell(source, eVarNameFlags.Biomass)
+
+            If bIsStanza Then
+                Me(iRow, eColumnTypes.Z) = New PropertyCell(source, eVarNameFlags.PBOutput)
+            Else
+                cell = New EwECell("", GetType(String))
+                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                Me(iRow, eColumnTypes.Z) = cell
+            End If
+
+            If Not bIsStanza Then
+                Me(iRow, eColumnTypes.PB) = New PropertyCell(source, eVarNameFlags.PBOutput)
+            Else
+                cell = New EwECell("", GetType(String))
+                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                Me(iRow, eColumnTypes.PB) = cell
+            End If
+
+            Me(iRow, eColumnTypes.QB) = New PropertyCell(source, eVarNameFlags.QBOutput)
+            Me(iRow, eColumnTypes.EE) = New PropertyCell(source, eVarNameFlags.EEOutput)
+            Me(iRow, eColumnTypes.GE) = New PropertyCell(source, eVarNameFlags.GEOutput)
+
         End Sub
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
 
+            Dim core As cCore = cCore.GetInstance()
+
             Me.Rows(0).Height = 60
-            Me.Columns(0).Width = 24
-            Me.Columns(1).Width = 120
-            Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-            Me.Columns(2).Width = 52
-            Me.Columns(3).Width = 53
-            Me.Columns(4).Width = 67
-            Me.Columns(5).Width = 58
-            Me.Columns(6).Width = 66
-            Me.Columns(7).Width = 82
-            Me.Columns(8).Width = 69
-            Me.Columns(9).Width = 76
+            Me.Columns(eColumnTypes.Index).Width = 24
+            Me.Columns(eColumnTypes.Name).Width = 120
+            Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
+
+            If (core.nStanzas = 0) Then
+                Me.Columns(eColumnTypes.Z).Width = 0
+            Else
+                Me.Columns(eColumnTypes.Z).Width = Me.Columns(eColumnTypes.PB).Width
+            End If
+
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
