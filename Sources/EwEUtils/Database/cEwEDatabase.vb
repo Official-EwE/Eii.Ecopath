@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.11  2009/03/12 14:11:48  jeroens
+' Added minor sanity check
+'
 ' Revision 1.10  2009/03/08 20:47:13  jeroens
 ' cOOPStorable.cDBID_INVALID made public
 '
@@ -1411,6 +1414,8 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function ReadObjects(ByVal t As Type, _
                                     Optional ByVal bIncludeInherited As Boolean = True) As cOOPStorable()
+
+            If Not Me.m_bOOPEnabled Then Return Nothing
 
             Dim aKeys As cOOPKey() = Me.ReadObjectKeys(t, bIncludeInherited)
             Dim lObjs As New List(Of cOOPStorable)
