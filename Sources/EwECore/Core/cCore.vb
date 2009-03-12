@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.80  2009/03/12 17:28:19  joeb
+' RunEcosim() loads shape managers and sends message if effort is being predicted
+'
 ' Revision 1.79  2009/03/12 14:09:40  jeroens
 ' Stanza messages originate from Ecopath
 '
@@ -5568,15 +5571,17 @@ Public Class cCore
         LoadEcosimFleetOutputs()
         LoadEcosimTimeSeries()
 
-        LoadEcosimStats()
+        'LoadEcosimStats()
         loadEcoTracerResults()
 
-        'if effort was predicted then reload the shapes
         If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
+            'if effort was predicted then reload the shapes
+            m_ShapeManagers.Item(eDataTypes.FishMort).Load()
+            m_ShapeManagers.Item(eDataTypes.FishingRate).Load()
 
-            'ShapeChanged will reload the data and send out messages
-            Me.m_ShapeManagers(eDataTypes.FishingRate).ShapeChanged()
-            Me.m_ShapeManagers(eDataTypes.FishMort).ShapeChanged()
+            'tell the interface that the shapes have changed
+            Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingRate))
+            Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
         End If
 
