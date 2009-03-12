@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.4  2009/03/12 23:51:06  joeh
+' Add codes for tabulation of PSD contribution data
+'
 ' Revision 1.3  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -56,18 +59,18 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
             Dim core As cCore = cCore.GetInstance()
-            Dim source As cEcoPathGroupInput = Nothing
+            Dim source As cCoreGroupBase = Nothing
             Dim iRow As Integer = -1
 
             ' Remove existing rows
             Me.RowsCount = 1
 
             ' Done?
-            If core.nWeightClasses = 0 Then Return
+            'If core.nWeightClasses = 0 Then Return
 
             ' Create rows for all groups and sum values in each row
             For rowIndex As Integer = 1 To core.nLivingGroups
-                source = core.EcoPathGroupInputs(rowIndex)
+                source = core.EcoPathGroupOutputs(rowIndex)
                 iRow = Me.AddRow()
                 FillRows(iRow, source)
             Next rowIndex
@@ -77,68 +80,36 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupInput)
+        Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
             Dim core As cCore = cCore.GetInstance()
-            Dim sourceSec As cCoreInputOutputBase = Nothing
+            Dim sourceSec As cCoreGroupBase = Nothing
             Dim propManager As cPropertyManager = cPropertyManager.GetInstance()
-            Dim propLandings As cProperty = Nothing
-
-            ' Single marketprice property
-            Dim propMarketPrice As cProperty = Nothing
-            Dim alProdLandingsMarketPrice As New ArrayList()
-            Dim opProdLandingsMarketPrice As cMultiOperation = Nothing
-            Dim propProdLandingsMarketPrice As cFormulaProperty = Nothing
-
-            ' Operation to sum landings non-market price
-            Dim alNonMarketValue As New ArrayList()
-            Dim opNonMarketValue As cBinaryOperation = Nothing
-            Dim propProdNonMarketValue As cProperty = Nothing
-
+            Dim propPSD As cProperty = Nothing
             Dim propCell As PropertyCell = Nothing
-            Dim alSumRow As ArrayList = New ArrayList()
-            Dim opSumRow As cMultiOperation = Nothing
-            Dim propSumRow As cFormulaProperty = Nothing
-            Dim opSumMarketValues As cMultiOperation = Nothing
-            Dim propSumMarketValues As cFormulaProperty = Nothing
-
-            ' Total value
-            Dim opTotalValue As cBinaryOperation = Nothing
-            Dim propTotalValue As cFormulaProperty = Nothing
 
             Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
             Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
 
-            alSumRow.Clear()
-            ' For each fleet (each column) 
+            'alSumRow.Clear()
+            ' For each weight class (each column) 
             For wtClassIndex As Integer = 1 To core.nWeightClasses
-                alProdLandingsMarketPrice.Clear()
-                ' Get the fleet object 
-                sourceSec = core.FleetInputs(1) 'fleetIndex)
-                ' Get the index landing property
-                propLandings = propManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
-                alProdLandingsMarketPrice.Add(propLandings)
-                ' Get the index market price property
-                propMarketPrice = propManager.GetProperty(sourceSec, eVarNameFlags.OffVesselPrice, source)
-                alProdLandingsMarketPrice.Add(propMarketPrice)
-                ' Set the property to the cell
-                opProdLandingsMarketPrice = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdLandingsMarketPrice.ToArray())
-                propProdLandingsMarketPrice = New cFormulaProperty(CType(opProdLandingsMarketPrice, cExpression))
-                propCell = New PropertyCell(CType(propProdLandingsMarketPrice, cProperty))
+                sourceSec = core.EcoPathGroupOutputs(wtClassIndex)
+                propPSD = propManager.GetProperty(source, eVarNameFlags.PSD, sourceSec)
+                propCell = New PropertyCell(CType(propPSD, cProperty))
                 ' Configure the cell
                 propCell.SuppressZero = True
-                propCell.Value = 0
                 ' Set the cell
                 Me(iRow, wtClassIndex + 1) = propCell
 
-                'Sum values in a row
-                alSumRow.Add(propProdLandingsMarketPrice)
+                ''Sum values in a row
+                'alSumRow.Add(propProdLandingsMarketPrice)
             Next
 
-            'Display the sum of quantities in a row
-            opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-            propSumRow = New cFormulaProperty(CType(opSumRow, cExpression))
-            propCell = New PropertyCell(CType(propSumRow, cProperty))
-            Me(iRow, Me.ColumnsCount - 1) = propCell
+            ''Display the sum of quantities in a row
+            'opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
+            'propSumRow = New cFormulaProperty(CType(opSumRow, cExpression))
+            'propCell = New PropertyCell(CType(propSumRow, cProperty))
+            'Me(iRow, Me.ColumnsCount - 1) = propCell
         End Sub
 
         'Private Sub FillTotalValueRow()

@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.7  2009/03/12 23:51:06  joeh
+' Add codes for tabulation of PSD contribution data
+'
 ' Revision 1.6  2009/03/12 01:50:29  joeh
 ' Add codes for PSD histogram (PSDContributionPlot)
 '
@@ -158,6 +161,7 @@ Namespace Ecopath.Output
             Dim resultLists As New List(Of PointPairList)
             Dim dXValue As Double = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
 
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
             InitLists(resultLists, 3)
@@ -182,9 +186,9 @@ Namespace Ecopath.Output
                 gp.CurveList.Clear()
             Next
 
-            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), Color.Black)
-            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), Color.Black)
-            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), Color.Black)
+            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)

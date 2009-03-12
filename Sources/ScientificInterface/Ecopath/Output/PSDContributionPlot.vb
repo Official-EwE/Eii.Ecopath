@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.4  2009/03/12 23:51:06  joeh
+' Add codes for tabulation of PSD contribution data
+'
 ' Revision 1.3  2009/03/12 01:50:28  joeh
 ' Add codes for PSD histogram (PSDContributionPlot)
 '
@@ -44,14 +47,13 @@ Namespace Ecopath.Output
         Private Sub PSDContributionPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             PopulateGroupBoxes()
 
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
-                                 My.Resources.PSD_YAXISLABEL_BIOMASS))
-            UpdatePlot()
-
             llbGroups.SelectedIndex = 0
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
+            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+                     My.Resources.PSD_YAXISLABEL_BIOMASS))
+
             'highlight group contribution in the histogram
             UpdatePlot()
         End Sub
@@ -107,6 +109,7 @@ Namespace Ecopath.Output
             Dim dXValue As Double = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(m_core.nWeightClasses) As Single
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
 
             InitLists(resultLists, m_core.nLivingGroups) '3)
 
@@ -117,13 +120,11 @@ Namespace Ecopath.Output
                 grpOutput = m_core.EcoPathGroupOutputs(igroup)
                 For iWtClass As Integer = 1 To m_core.nWeightClasses
                     dXValue = m_core.FirstWeightClass * 2 ^ (iWtClass - 1)
-                    If grpOutput.PSD(iWtClass) > 0 Then
-                        'group PSD > 0
+                    If sSystemPSD(iWtClass) * 100000 > 0 Then
                         'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
                         '* 100000 for plotting purpose
                         resultLists(igroup - 1).Add(Math.Log10(dXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
                     Else
-                        'group PSD = 0
                         resultLists(igroup - 1).Add(Math.Log10(dXValue), 0)
                     End If
                 Next
@@ -133,8 +134,11 @@ Namespace Ecopath.Output
             pane.CurveList.Clear()
 
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                'iGroup -> appropriate color
-                AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), Color.Red)
+                If iGroup = llbGroups.SelectedIndex + 1 Then
+                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Black)
+                Else
+                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
+                End If
             Next
 
             pane.BarSettings.Type = BarType.Stack
@@ -148,11 +152,13 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, ByVal clr As Color)
+        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, _
+                                        ByVal clrFill As Color, ByVal clrBorder As Color)
             Dim brItem As BarItem
 
-            brItem = pane.AddBar(legend, list, clr)
-            brItem.Bar.Fill = New Fill(clr, Color.White, clr)
+            brItem = pane.AddBar(legend, list, clrFill)
+            brItem.Bar.Fill = New Fill(clrFill)
+            brItem.Bar.Border = New Border(clrBorder, 2)
         End Sub
 
         Private Sub UpdatePlot()

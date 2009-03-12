@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.5  2009/03/12 23:51:06  joeh
+' Add codes for tabulation of PSD contribution data
+'
 ' Revision 1.4  2009/03/12 01:50:29  joeh
 ' Add codes for PSD histogram (PSDContributionPlot)
 '
@@ -109,7 +112,7 @@ Namespace Ecopath.Output
             FindSystemPSD(sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
-                If sSystemPSD(iWtClass) > 0 Then
+                If sSystemPSD(iWtClass) * 100000 > 0 Then
                     dXValue = m_core.FirstWeightClass * 2 ^ (iWtClass - 1)
 
                     'PSD plot
