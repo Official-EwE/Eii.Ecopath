@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.8  2009/03/13 21:37:42  joeh
+' Rename nEcopathTimeSteps to nAgeSteps
+'
 ' Revision 1.7  2009/03/12 23:51:06  joeh
 ' Add codes for tabulation of PSD contribution data
 '
@@ -166,9 +169,9 @@ Namespace Ecopath.Output
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
             InitLists(resultLists, 3)
 
-            For iTimeStep As Integer = 1 To m_core.nEcopathTimeSteps
+            For iTimeStep As Integer = 1 To m_core.nAgeSteps
 
-                dXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nEcopathTimeSteps - 1)
+                dXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nAgeSteps - 1)
 
                 'Weight plot
                 resultLists(0).Add(dXValue, grpOutput.EcopathWeight(iTimeStep))
