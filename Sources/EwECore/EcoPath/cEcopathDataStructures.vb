@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.11  2009/03/13 21:37:02  joeh
+' Rename NTimes to NAgeSteps
+'
 ' Revision 1.10  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -316,7 +319,7 @@ Public Class cEcopathDataStructures
 
 #Region " Public Properties "
     'Joeh
-    Public ReadOnly Property NTimes() As Integer
+    Public ReadOnly Property NAgeSteps() As Integer
         Get
             Return 101
         End Get
@@ -489,9 +492,9 @@ Public Class cEcopathDataStructures
         ReDim t0Input(NumGroups)
         ReDim TmaxInput(NumGroups)
 
-        ReDim EcopathWeight(NumGroups, NTimes)
-        ReDim EcopathNumber(NumGroups, NTimes)
-        ReDim EcopathBiomass(NumGroups, NTimes)
+        ReDim EcopathWeight(NumGroups, NAgeSteps)
+        ReDim EcopathNumber(NumGroups, NAgeSteps)
+        ReDim EcopathBiomass(NumGroups, NAgeSteps)
 
         ReDim PSD(NumGroups, NWeightClasses)
         'End Joeh
