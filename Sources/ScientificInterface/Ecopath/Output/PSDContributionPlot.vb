@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.5  2009/03/13 21:39:14  joeh
+' Border only the bars of the selected groups with black border
+'
 ' Revision 1.4  2009/03/12 23:51:06  joeh
 ' Add codes for tabulation of PSD contribution data
 '
@@ -110,6 +113,7 @@ Namespace Ecopath.Output
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim curveSelected As BarItem = Nothing
 
             InitLists(resultLists, m_core.nLivingGroups) '3)
 
@@ -135,12 +139,13 @@ Namespace Ecopath.Output
 
             For iGroup As Integer = 1 To m_core.nLivingGroups
                 If iGroup = llbGroups.SelectedIndex + 1 Then
-                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Black)
+                    curveSelected = AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
                 Else
                     AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
                 End If
             Next
 
+            curveSelected.Bar.Border = New Border(Color.Black, 2)
             pane.BarSettings.Type = BarType.Stack
         End Sub
 
@@ -152,14 +157,16 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, _
-                                        ByVal clrFill As Color, ByVal clrBorder As Color)
+        Private Function AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, _
+                                        ByVal clrFill As Color, ByVal clrBorder As Color) As BarItem
             Dim brItem As BarItem
 
             brItem = pane.AddBar(legend, list, clrFill)
             brItem.Bar.Fill = New Fill(clrFill)
             brItem.Bar.Border = New Border(clrBorder, 2)
-        End Sub
+
+            Return brItem
+        End Function
 
         Private Sub UpdatePlot()
             Me.zgcZedGraphCntl.AxisChange()
