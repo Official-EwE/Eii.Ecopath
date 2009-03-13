@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.81  2009/03/13 21:35:39  joeh
+' In cCore.InitEcopath( ), cCore sets stanza data to cEcoPathModel
+'
 ' Revision 1.80  2009/03/12 17:28:19  joeb
 ' RunEcosim() loads shape managers and sends message if effort is being predicted
 '
@@ -270,7 +273,7 @@ Public Class cCore
 
                     'Joeh
                 Case eCoreCounterTypes.nEcopathTimeSteps
-                    Return Me.nEcopathTimeSteps
+                    Return Me.nAgeSteps
 
                 Case eCoreCounterTypes.nWeightClasses
                     Return Me.nWeightClasses
@@ -532,33 +535,9 @@ Public Class cCore
     End Property
 
     'Joeh
-    Public ReadOnly Property nStanza(ByVal isp As Integer) As Integer
+    Public ReadOnly Property nAgeSteps() As Integer
         Get
-            Return m_Stanza.Nstanza(isp)
-        End Get
-    End Property
-
-    Public ReadOnly Property EcopathCode(ByVal isp As Integer, ByVal ist As Integer) As Integer
-        Get
-            Return m_Stanza.EcopathCode(isp, ist)
-        End Get
-    End Property
-
-    Public ReadOnly Property Age1(ByVal isp As Integer, ByVal ist As Integer) As Integer
-        Get
-            Return m_Stanza.Age1(isp, ist)
-        End Get
-    End Property
-
-    Public ReadOnly Property Age2(ByVal isp As Integer, ByVal ist As Integer) As Integer
-        Get
-            Return m_Stanza.Age2(isp, ist)
-        End Get
-    End Property
-
-    Public ReadOnly Property nEcopathTimeSteps() As Integer
-        Get
-            Return m_EcoPathData.NTimes
+            Return m_EcoPathData.NAgeSteps
         End Get
     End Property
 
@@ -1146,6 +1125,9 @@ Public Class cCore
             m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
             m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
 
+            'Joeh
+            m_EcoPath.m_Stanza = m_Stanza
+            'End Joeh
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
 
@@ -2695,9 +2677,9 @@ Public Class cCore
                 ReDim Plap(nGroups)
                 ReDim Alpha(nGroups)
                 'Joeh
-                ReDim EcopathWeight(nEcopathTimeSteps)
-                ReDim EcopathNumber(nEcopathTimeSteps)
-                ReDim EcopathBiomass(nEcopathTimeSteps)
+                ReDim EcopathWeight(nAgeSteps)
+                ReDim EcopathNumber(nAgeSteps)
+                ReDim EcopathBiomass(nAgeSteps)
 
                 ReDim PSD(nWeightClasses)
                 'End Joeh
@@ -2840,21 +2822,21 @@ Public Class cCore
                 'Joeh
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Weight
-                For t As Integer = 1 To nEcopathTimeSteps
+                For t As Integer = 1 To nAgeSteps
                     EcopathWeight(t) = m_EcoPathData.EcopathWeight(iGroup, t)
                 Next
                 output.EcopathWeight = EcopathWeight
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Number
-                For t As Integer = 1 To nEcopathTimeSteps
+                For t As Integer = 1 To nAgeSteps
                     EcopathNumber(t) = m_EcoPathData.EcopathNumber(iGroup, t)
                 Next
                 output.EcopathNumber = EcopathNumber
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Biomass
-                For t As Integer = 1 To nEcopathTimeSteps
+                For t As Integer = 1 To nAgeSteps
                     EcopathBiomass(t) = m_EcoPathData.EcopathBiomass(iGroup, t)
                 Next
                 output.EcopathBiomass = EcopathBiomass

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.17  2009/03/13 21:35:40  joeh
+' In cCore.InitEcopath( ), cCore sets stanza data to cEcoPathModel
+'
 ' Revision 1.16  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -183,6 +186,10 @@ Namespace Ecopath
         Private NoBQB() As Integer
         Private AUL(,) As Single
         Private bDietsModified As Boolean
+
+        'Joeh
+        Friend m_stanza As cStanzaDatastructures
+        'End Joeh
 
         Public Sub New(ByVal EcoFunctions As cEcoFunctions)
             m_eEstimType = eEstimateParameterFor.ParameterEstimation
@@ -2973,8 +2980,6 @@ nextJ:
 
         'Joeh
         Private Sub EstimateGrowthParameters()
-            Dim core As cCore = cCore.GetInstance
-            Dim sg As cStanzaGroup = Nothing
             Dim sTemp As Single
 
             'A in LW
@@ -3013,10 +3018,10 @@ nextJ:
                 'Is stanza group?
                 If m_Data.StanzaGroup(i) Then
                     'Yes
-                    For isp As Integer = 1 To core.nStanzas 'No. of split group
-                        For ist As Integer = 1 To core.nStanza(isp) ' No. of stanza in a split group
-                            If core.EcopathCode(isp, ist) = i Then
-                                m_Data.Tmax(i) = CSng(core.Age2(isp, ist) / 12)
+                    For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                        For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                            If m_stanza.EcopathCode(isp, ist) = i Then
+                                m_Data.Tmax(i) = CSng(m_stanza.Age2(isp, ist) / 12)
                             End If
                         Next
                     Next
@@ -3049,8 +3054,8 @@ nextJ:
             For iGroup As Integer = 1 To m_Data.NumLiving
 
                 '(I) Estimate Weight, Number ad Biomass over time
-                For iTimeStep As Integer = 1 To m_Data.NTimes
-                    sTime = (iTimeStep - 1) * m_Data.Tmax(iGroup) / (m_Data.NTimes - 1)
+                For iTimeStep As Integer = 1 To m_Data.NAgeSteps
+                    sTime = (iTimeStep - 1) * m_Data.Tmax(iGroup) / (m_Data.NAgeSteps - 1)
 
                     'Weight
                     m_Data.EcopathWeight(iGroup, iTimeStep) = CalcWeight(iGroup, sTime)
@@ -3151,16 +3156,14 @@ nextJ:
         End Sub
 
         Private Function CalcStartWeight(ByVal iGroup As Integer) As Single
-            Dim core As cCore = cCore.GetInstance
-
             'Is stanza group?
             If m_Data.StanzaGroup(iGroup) Then
                 'Yes
-                For isp As Integer = 1 To core.nStanzas 'No. of split group
-                    For ist As Integer = 1 To core.nStanza(isp) ' No. of stanza in a split group
-                        If core.EcopathCode(isp, ist) = iGroup Then
-                            If core.Age1(isp, ist) > 0 Then
-                                Return CalcWeight(iGroup, core.Age1(isp, ist))
+                For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                    For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                        If m_stanza.EcopathCode(isp, ist) = iGroup Then
+                            If m_stanza.Age1(isp, ist) > 0 Then
+                                Return CalcWeight(iGroup, m_stanza.Age1(isp, ist))
                             End If
                         End If
                     Next
