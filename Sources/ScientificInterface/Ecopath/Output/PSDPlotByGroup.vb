@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.9  2009/03/14 18:33:12  joeh
+' Change dXValue of double type to sXValue of single type
+'
 ' Revision 1.8  2009/03/13 21:37:42  joeh
 ' Rename nEcopathTimeSteps to nAgeSteps
 '
@@ -162,7 +165,7 @@ Namespace Ecopath.Output
             'Add single curve into graph first
             'Results data structure
             Dim resultLists As New List(Of PointPairList)
-            Dim dXValue As Double = 0
+            Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
 
@@ -171,14 +174,14 @@ Namespace Ecopath.Output
 
             For iTimeStep As Integer = 1 To m_core.nAgeSteps
 
-                dXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nAgeSteps - 1)
+                sXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nAgeSteps - 1)
 
                 'Weight plot
-                resultLists(0).Add(dXValue, grpOutput.EcopathWeight(iTimeStep))
+                resultLists(0).Add(sXValue, grpOutput.EcopathWeight(iTimeStep))
                 'Number plot
-                resultLists(1).Add(dXValue, grpOutput.EcopathNumber(iTimeStep))
+                resultLists(1).Add(sXValue, grpOutput.EcopathNumber(iTimeStep))
                 'Biomass plot
-                resultLists(2).Add(dXValue, grpOutput.EcopathBiomass(iTimeStep))
+                resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
             Next
 
             'Set the master pane title

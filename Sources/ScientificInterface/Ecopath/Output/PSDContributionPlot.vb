@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.6  2009/03/14 18:32:55  joeh
+' Change dXValue of double type to sXValue of single type
+'
 ' Revision 1.5  2009/03/13 21:39:14  joeh
 ' Border only the bars of the selected groups with black border
 '
@@ -89,11 +92,11 @@ Namespace Ecopath.Output
             pane.Title.FontSpec.IsBold = False
             pane.Title.FontSpec.Size = 16
 
-            pane.XAxis.Scale.IsVisible = False
+            pane.XAxis.Scale.IsVisible = True 'False
             pane.XAxis.Title.Text = strXAxisTitle
             pane.XAxis.Title.FontSpec.Size = 14
 
-            pane.YAxis.Scale.IsVisible = False
+            pane.YAxis.Scale.IsVisible = True 'False
             pane.YAxis.Title.Text = strYAxisTitle
             pane.YAxis.Title.FontSpec.Size = 14
 
@@ -109,7 +112,7 @@ Namespace Ecopath.Output
 
         Private Sub AddCurves(ByVal pane As GraphPane)
             Dim resultLists As New List(Of PointPairList)
-            Dim dXValue As Double = 0
+            Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
@@ -123,13 +126,13 @@ Namespace Ecopath.Output
             For igroup As Integer = 1 To m_core.nLivingGroups
                 grpOutput = m_core.EcoPathGroupOutputs(igroup)
                 For iWtClass As Integer = 1 To m_core.nWeightClasses
-                    dXValue = m_core.FirstWeightClass * 2 ^ (iWtClass - 1)
+                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
                     If sSystemPSD(iWtClass) * 100000 > 0 Then
                         'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
                         '* 100000 for plotting purpose
-                        resultLists(igroup - 1).Add(Math.Log10(dXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
+                        resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
                     Else
-                        resultLists(igroup - 1).Add(Math.Log10(dXValue), 0)
+                        resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
                     End If
                 Next
             Next
