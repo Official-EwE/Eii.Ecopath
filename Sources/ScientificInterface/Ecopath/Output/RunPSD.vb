@@ -1,6 +1,10 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.6  2009/03/14 18:34:07  joeh
+' Change dXValue of double type to sXValue of single type
+' Add linear regression of the system PSD
+'
 ' Revision 1.5  2009/03/12 23:51:06  joeh
 ' Add codes for tabulation of PSD contribution data
 '
@@ -83,11 +87,11 @@ Namespace Ecopath.Output
             pane.Title.FontSpec.IsBold = False
             pane.Title.FontSpec.Size = 16
 
-            pane.XAxis.Scale.IsVisible = False
+            pane.XAxis.Scale.IsVisible = True 'False
             pane.XAxis.Title.Text = strXAxisTitle
             pane.XAxis.Title.FontSpec.Size = 14
 
-            pane.YAxis.Scale.IsVisible = False
+            pane.YAxis.Scale.IsVisible = True 'False
             pane.YAxis.Title.Text = strYAxisTitle
             pane.YAxis.Title.FontSpec.Size = 14
 
@@ -103,30 +107,36 @@ Namespace Ecopath.Output
 
         Private Sub AddCurves(ByVal pane As GraphPane)
             Dim resultLists As New List(Of PointPairList)
-            Dim dXValue As Double = 0
+            Dim sXValue As Single = 0
             Dim sSystemPSD(m_core.nWeightClasses) As Single
+            Dim sSlope As Single
+            Dim sIntercept As Single
 
-            InitLists(resultLists, 1)
+            InitLists(resultLists, 2)
 
-            'Find the system PSD by summing the group PSD
+            'Find system PSD by summing the group PSD
             FindSystemPSD(sSystemPSD)
+
+            'Find regression of the system PSD
+            FindRegression(sSlope, sIntercept, sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
-                    dXValue = m_core.FirstWeightClass * 2 ^ (iWtClass - 1)
+                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     'PSD plot
-                    resultLists(0).Add(Math.Log10(dXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
-                    'PSD fit plot
-                    'resultLists(1).Add(dXValue, grpOutput.EcopathNumber(iTimeStep))
+                    resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
+                    'PSD regression plot
+                    resultLists(1).Add(Math.Log10(sXValue), sSlope * Math.Log10(sXValue) + sIntercept)
                 End If
             Next
 
             ' Clear pane
             pane.CurveList.Clear()
 
-            AddCurveToGraphPane(pane, resultLists(0), Color.Transparent, Brushes.Black)
-            'AddCurveToGraphPane(pane, resultLists(1), Color.Black)
+            AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
+            AddCurveToGraphPane(pane, resultLists(1), "Slope = " & sSlope.ToString("F4") & _
+                                " Intercept = " & sIntercept.ToString("F4"), Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -138,14 +148,22 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal list As PointPairList, _
-                                        ByVal lineClr As Color, ByVal brushClr As Brush)
+                                        ByVal strLabel As String, ByVal lineClr As Color)
             Dim lnItem As LineItem
 
-            lnItem = pane.AddCurve("", list, lineClr, SymbolType.Circle)
-            lnItem.Line.IsVisible = False
-            lnItem.Symbol.Border.IsVisible = False
-            lnItem.Symbol.Fill.IsVisible = True
-            lnItem.Symbol.Fill.Brush = brushClr
+            lnItem = pane.AddCurve(strLabel, list, lineClr)
+
+            If lineClr = Color.Transparent Then
+                lnItem.Line.IsVisible = False
+                lnItem.Symbol.Type = SymbolType.Circle
+                lnItem.Symbol.Border.IsVisible = False
+                lnItem.Symbol.Fill.IsVisible = True
+                lnItem.Symbol.Fill.Brush = Brushes.Black
+            Else
+                lnItem.Line.IsVisible = True
+                lnItem.Symbol.Type = SymbolType.None
+            End If
+
         End Sub
 
         Private Sub UpdatePlot()
@@ -163,6 +181,42 @@ Namespace Ecopath.Output
                     sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                 Next
             Next
+        End Sub
+
+        Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
+                                   ByVal sSystemPSD() As Single)
+            Dim sXValue As Single = 0
+            Dim dSumX As Double = 0
+            Dim dSumY As Double = 0
+            Dim iNum As Integer = 0
+            Dim dXMean As Double
+            Dim dYMean As Double
+            Dim dSumXdevYdev As Double = 0
+            Dim dSumXdevSq As Double = 0
+
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+
+                    dSumX = dSumX + Math.Log10(sXValue)
+                    dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000)
+                    iNum = iNum + 1
+                End If
+            Next
+            dXMean = dSumX / iNum
+            dYMean = dSumY / iNum
+
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+
+                    dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 100000) - dYMean)
+                    dSumXdevSq = dSumXdevSq + (Math.Log10(sXValue) - dXMean) ^ 2
+                End If
+            Next
+
+            sSlope = CSng(dSumXdevYdev / dSumXdevSq)
+            sIntercept = CSng(dYMean - sSlope * dXMean)
         End Sub
 #End Region 'Helper methods
 
