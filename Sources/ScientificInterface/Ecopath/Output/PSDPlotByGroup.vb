@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.10  2009/03/14 20:10:24  joeh
+' Add Contribution To PSD plot to master pane
+'
 ' Revision 1.9  2009/03/14 18:33:12  joeh
 ' Change dXValue of double type to sXValue of single type
 '
@@ -59,6 +62,7 @@ Namespace Ecopath.Output
             Biomass
             PSD
         End Enum
+
 #End Region 'Variables
 
 #Region "Constructor"
@@ -79,8 +83,9 @@ Namespace Ecopath.Output
             InitMasterPane()
 
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT)
-            CreatePane(ePaneTypes.Number, My.Resources.HEADER_NUMBER)
+            CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL)
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
+            CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD)
             llbGroups.SelectedIndex = 0
         End Sub
 
@@ -124,13 +129,13 @@ Namespace Ecopath.Output
 
             Debug.Assert(m_MasterPane.PaneList.Count = PaneNo)
 
-            InitGraphPane(strTitle, pane)
+            InitGraphPane(strTitle, PaneNo, pane)
 
             'Add the graphPane to the masterPane
             m_MasterPane.Add(pane)
         End Sub
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByRef pane As GraphPane)
+        Private Sub InitGraphPane(ByVal strTitle As String, ByVal paneType As ePaneTypes, ByRef pane As GraphPane)
             pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = True
             pane.Title.FontSpec.Size = 12
@@ -141,9 +146,17 @@ Namespace Ecopath.Output
             pane.YAxis.Scale.FontSpec.Size = 12
             pane.YAxis.Title.FontSpec.Size = 12
 
-            pane.XAxis.Scale.Min = 0
-            'pane.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS))
-            pane.YAxis.Scale.Min = 0
+            Select Case paneType
+                Case ePaneTypes.PSD
+                    pane.XAxis.Scale.Min = Math.Log10(m_core.FirstWeightClass)
+                    pane.XAxis.Scale.Max = Math.Log10(m_core.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+                    pane.YAxis.Scale.Min = 0
+                    'pane.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
+                Case Else
+                    pane.XAxis.Scale.Min = 0
+                    'pane.XAxis.Scale.Max = CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS))
+                    pane.YAxis.Scale.Min = 0
+            End Select
 
             pane.Border.IsVisible = False
             pane.Legend.IsVisible = False
@@ -168,9 +181,10 @@ Namespace Ecopath.Output
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim sSystemPSD(m_core.nWeightClasses) As Single
 
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
-            InitLists(resultLists, 3)
+            InitLists(resultLists, 4)
 
             For iTimeStep As Integer = 1 To m_core.nAgeSteps
 
@@ -184,6 +198,20 @@ Namespace Ecopath.Output
                 resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
             Next
 
+            'Find the system PSD by summing the group PSD
+            FindSystemPSD(sSystemPSD)
+
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                    'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
+                    '* 100000 for plotting purpose
+                    resultLists(3).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
+                Else
+                    resultLists(3).Add(Math.Log10(sXValue), 0)
+                End If
+            Next
+
             'Set the master pane title
             m_MasterPane.Title.Text = CStr(llbGroups.SelectedItem.ToString)
 
@@ -195,6 +223,7 @@ Namespace Ecopath.Output
             AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -207,7 +236,15 @@ Namespace Ecopath.Output
 
         Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal list As PointPairList, ByVal clr As Color)
             Dim gp As GraphPane = m_MasterPane.PaneList(CInt(paneType))
-            gp.AddCurve(gp.Title.Text, list, clr, SymbolType.None)
+            Dim brItem As BarItem
+
+            Select Case paneType
+                Case ePaneTypes.PSD
+                    brItem = gp.AddBar(gp.Title.Text, list, clr)
+                    brItem.Bar.Fill = New Fill(clr)
+                Case Else
+                    gp.AddCurve(gp.Title.Text, list, clr, SymbolType.None)
+            End Select
         End Sub
 
         Private Sub UpdatePlots()
@@ -220,6 +257,18 @@ Namespace Ecopath.Output
             g.Dispose()
 
             Me.zgcZedGraphCntl.Refresh()
+        End Sub
+
+        Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+            Dim grpOutput As cEcoPathGroupOutput = Nothing
+
+            'Find the system PSD by summing the group PSD
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                grpOutput = m_core.EcoPathGroupOutputs(iGroup)
+                For iWtClass As Integer = 1 To m_core.nWeightClasses
+                    sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
+                Next
+            Next
         End Sub
 #End Region 'Helper methods
 

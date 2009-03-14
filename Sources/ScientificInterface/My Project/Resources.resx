@@ -487,8 +487,8 @@
     <value>Production / biomass (/{0})</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="HEADER_NUMBER" xml:space="preserve">
-    <value>Number</value>
+  <data name="HEADER_SURVIVAL" xml:space="preserve">
+    <value>Survival</value>
   </data>
   <data name="INVALID_VUL_NUM_ENTERED" xml:space="preserve">
     <value>Value should be &gt;=1. A low (~1) value makes the interactions donor-controlled, while a large (&gt;&gt;1) value leads to top-down control and Lotka-Volterra cyclic dynamics. Intermediate values (~2) leads to mixed control. </value>
@@ -2278,6 +2278,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Particle size distribution</value>
   </data>
   <data name="PSD_PLOTCAPTION_PSDCONTRIB" xml:space="preserve">
-    <value>Particle size distributuin (group contribution)</value>
+    <value>Particle size distribution (group contribution)</value>
+  </data>
+  <data name="HEADER_CONTRIBPSD" xml:space="preserve">
+    <value>Contribution to particle size distribution</value>
+  </data>
+  <data name="HEADER_NUMBER" xml:space="preserve">
+    <value>Number</value>
   </data>
 </root>
