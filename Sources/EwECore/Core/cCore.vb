@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.82  2009/03/16 16:56:45  jeroens
+' Added PSD core objects
+' Added search manager event
+'
 ' Revision 1.81  2009/03/13 21:35:39  joeh
 ' In cCore.InitEcopath( ), cCore sets stanza data to cEcoPathModel
 '
@@ -605,6 +609,7 @@ Public Class cCore
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
+        Me.m_PSDData = New cPSDDatastructures
 
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
@@ -1126,8 +1131,10 @@ Public Class cCore
             m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
 
             'Joeh
-            m_EcoPath.m_Stanza = m_Stanza
+            m_EcoPath.m_stanza = m_Stanza
+            m_EcoPath.m_psd = m_PSDData
             'End Joeh
+
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
 
@@ -2137,6 +2144,8 @@ Public Class cCore
     'Private m_FleetsOutput As New cCoreInputOutputList(Of cFleetOutput)(eDataTypes.FleetOutput, 1)
     Private m_postEcoPathMessage As CoreMessageDelegate
     'Private bEcoPathInitializing As Boolean
+    Friend m_PSDData As cPSDDatastructures
+    Private m_PSDParameters As cPSDParameters
 
 #End Region ' Variables
 
@@ -2245,12 +2254,8 @@ Public Class cCore
                 bsuccess = bsuccess And InitEcospaceScenarios()
                 bsuccess = bsuccess And InitEcotracerScenarios()
 
-                'Joeh
-                ''build the Stanza Groups for the interface
-                'bsuccess = bsuccess And InitStanzas()
-                'End Joeh
-
                 bsuccess = bsuccess And InitPedigreeManagers()
+                bsuccess = bsuccess And InitPSDParameters()
 
                 Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
                 Me.InitSearchManagers()
@@ -3106,6 +3111,40 @@ Public Class cCore
 
 #End Region ' Fleets
 
+#Region " Particle size distribution "
+
+    ''' <summary>
+    ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded datasource.
+    ''' </summary>
+    Public ReadOnly Property ParticleSizeDistributionParameters() As cPSDParameters
+        Get
+            Return Me.m_PSDParameters
+        End Get
+    End Property
+
+    Private Function InitPSDParameters() As Boolean
+        Me.m_PSDParameters = New cPSDParameters(Me)
+        Return Me.LoadPSDParameters()
+    End Function
+
+    Private Function LoadPSDParameters() As Boolean
+
+        Me.m_PSDParameters.AllowValidation = False
+
+        Me.m_PSDParameters.MyFristParameterYippee = Me.m_PSDData.VeryFirstParameterValue
+
+        Me.m_PSDParameters.AllowValidation = True
+        Return True
+    End Function
+
+    Private Function UpdatePSDParameters() As Boolean
+
+        Me.m_PSDData.VeryFirstParameterValue = Me.m_PSDParameters.MyFristParameterYippee
+
+    End Function
+
+#End Region ' Particle size distribution
+
 #Region " Stats "
 
     Friend Sub LoadEcopathStats()
@@ -3304,19 +3343,17 @@ Public Class cCore
         If bsuccess Then
             ' This message serves to allow a user interface to update to new data.
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
-        Else
-            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-        End If
-
-        m_publisher.AddMessage(msg)
-        m_publisher.sendAllMessages()
-
-        ' Update core state monitor
-        If bsuccess Then
+            ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted()
         Else
+            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            ' Update core state monitor
             Me.m_StateMonitor.SetEcopathLoaded(True)
         End If
+
+        ' Unleash all messages after core state monitor is up to date
+        m_publisher.AddMessage(msg)
+        m_publisher.sendAllMessages()
 
         Return bsuccess
 
@@ -5575,7 +5612,7 @@ Public Class cCore
 
         ' Update core state monitor
         Me.m_StateMonitor.SetEcosimCompleted()
-
+        ' Send messages after
         m_publisher.sendAllMessages()
 
         Return True
@@ -9313,6 +9350,9 @@ Public Class cCore
                 Case eDataTypes.Stanza
                     If bValidatedOk Then Me.UpdateStanza(idAffected)
 
+                Case eDataTypes.ParticleSizeDistribution
+                    If bValidatedOk Then Me.UpdatePSDParameters()
+
                 Case eDataTypes.EcoSimGroupInput
                     If bValidatedOk Then Me.UpdateEcoSimGroup(idAffected)
 
@@ -10358,7 +10398,7 @@ Public Class cCore
 
         Dim SearchManager As ISearchObjective
         Me.m_SearchData = New cSearchDatastructures(Me.m_Functions, Me.m_EcoPathData)
-
+        AddHandler Me.m_SearchData.OnSearchStateChanged, AddressOf OnSearchChanged
         ' Sanity check
 
         'Shared Objective manager
@@ -10399,6 +10439,9 @@ Public Class cCore
 
     End Sub
 
+    Private Sub OnSearchChanged(ByVal searchmode As eSearchModes)
+        Me.m_StateMonitor.SetIsSearching(searchmode <> eSearchModes.NotInSearch)
+    End Sub
 
 #Region "Fishing Policy Search"
 
