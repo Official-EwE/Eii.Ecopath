@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.18  2009/03/16 16:58:15  jeroens
+' Ecopath model needs PSD data structures too
+'
 ' Revision 1.17  2009/03/13 21:35:40  joeh
 ' In cCore.InitEcopath( ), cCore sets stanza data to cEcoPathModel
 '
@@ -189,6 +192,7 @@ Namespace Ecopath
 
         'Joeh
         Friend m_stanza As cStanzaDatastructures
+        Friend m_psd As cPSDDatastructures
         'End Joeh
 
         Public Sub New(ByVal EcoFunctions As cEcoFunctions)
