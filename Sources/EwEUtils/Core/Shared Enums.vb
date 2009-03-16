@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.36  2009/03/16 16:58:46  jeroens
+' Added PSD core objects
+'
 ' Revision 1.35  2009/03/11 00:14:29  joeh
 ' Add PSD calculation
 '
@@ -1408,6 +1411,8 @@ Namespace Core
         ''' </summary>
         ''' <remarks></remarks>
         External
+
+        ParticleSizeDistribution
 
     End Enum
 
