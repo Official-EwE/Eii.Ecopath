@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.11  2009/03/16 21:37:19  joeh
+' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
+'
 ' Revision 1.10  2009/03/14 20:10:24  joeh
 ' Add Contribution To PSD plot to master pane
 '
@@ -191,11 +194,17 @@ Namespace Ecopath.Output
                 sXValue = (iTimeStep - 1) * grpOutput.TmaxOutput / (m_core.nAgeSteps - 1)
 
                 'Weight plot
-                resultLists(0).Add(sXValue, grpOutput.EcopathWeight(iTimeStep))
+                If grpOutput.EcopathWeight(iTimeStep) > 0 Then
+                    resultLists(0).Add(sXValue, grpOutput.EcopathWeight(iTimeStep))
+                End If
                 'Number plot
-                resultLists(1).Add(sXValue, grpOutput.EcopathNumber(iTimeStep))
+                If grpOutput.EcopathNumber(iTimeStep) > 0 Then
+                    resultLists(1).Add(sXValue, grpOutput.EcopathNumber(iTimeStep))
+                End If
                 'Biomass plot
-                resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
+                If grpOutput.EcopathBiomass(iTimeStep) > 0 Then
+                    resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
+                End If
             Next
 
             'Find the system PSD by summing the group PSD

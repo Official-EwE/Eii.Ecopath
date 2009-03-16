@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.19  2009/03/16 21:37:19  joeh
+' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
+'
 ' Revision 1.18  2009/03/16 16:58:15  jeroens
 ' Ecopath model needs PSD data structures too
 '
@@ -3052,7 +3055,7 @@ nextJ:
             Dim DeltaTime() As Single
             Dim Number() As Single
             Dim Biomass() As Single
-            Dim StartWeightClass As Integer
+            Dim StartWeightClassNum As Integer
             Dim ScaleFactor As Single
 
             For iGroup As Integer = 1 To m_Data.NumLiving
@@ -3062,13 +3065,25 @@ nextJ:
                     sTime = (iTimeStep - 1) * m_Data.Tmax(iGroup) / (m_Data.NAgeSteps - 1)
 
                     'Weight
-                    m_Data.EcopathWeight(iGroup, iTimeStep) = CalcWeight(iGroup, sTime)
+                    If sTime > CalcStartTime(iGroup) Then
+                        m_Data.EcopathWeight(iGroup, iTimeStep) = CalcWeight(iGroup, sTime)
+                    Else
+                        m_Data.EcopathWeight(iGroup, iTimeStep) = 0
+                    End If
 
                     'Number
-                    m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-CalcMortality(iGroup, sTime) * sTime))
+                    If sTime > CalcStartTime(iGroup) Then
+                        m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-CalcMortality(iGroup, sTime) * sTime))
+                    Else
+                        m_Data.EcopathNumber(iGroup, iTimeStep) = 0
+                    End If
 
                     'Biomass
-                    m_Data.EcopathBiomass(iGroup, iTimeStep) = m_Data.EcopathWeight(iGroup, iTimeStep) * m_Data.EcopathNumber(iGroup, iTimeStep)
+                    If sTime > CalcStartTime(iGroup) Then
+                        m_Data.EcopathBiomass(iGroup, iTimeStep) = m_Data.EcopathWeight(iGroup, iTimeStep) * m_Data.EcopathNumber(iGroup, iTimeStep)
+                    Else
+                        m_Data.EcopathBiomass(iGroup, iTimeStep) = 0
+                    End If
                 Next
 
                 '(II) Estimate PSD as a function of weight class
@@ -3103,23 +3118,23 @@ nextJ:
                 For iWtClass As Integer = 0 To m_Data.NWeightClasses - 1
                     If WeightClass(iWtClass + 1) > CalcStartWeight(iGroup) Then
                         If iWtClass = 0 Then
-                            StartWeightClass = 1
+                            StartWeightClassNum = 1
                         Else
-                            StartWeightClass = iWtClass
-                            Number(StartWeightClass - 1) = 10000
+                            StartWeightClassNum = iWtClass
+                            Number(StartWeightClassNum - 1) = 10000
                             Exit For
                         End If
                     End If
                 Next
                 '(b) Get survival
-                For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                For iWtClass As Integer = StartWeightClassNum To m_Data.NWeightClasses
                     If Time(iWtClass) <= m_Data.Tmax(iGroup) Then
                         If iWtClass = 0 Then
                             Number(iWtClass) = 10000
                         Else
                             Number(iWtClass) = CSng(Number(iWtClass - 1) * Math.Exp(-CalcMortality(iGroup, Time(iWtClass)) * DeltaTime(iWtClass)))
                         End If
-                    ElseIf iWtClass = StartWeightClass Then
+                    ElseIf iWtClass = StartWeightClassNum Then
                         Number(iWtClass) = 10000
                     Else ' Done
                         Exit For
@@ -3135,7 +3150,7 @@ nextJ:
                     'No
                     ScaleFactor = 0
                     'The duration in each size group differs, spends more time in larger size group
-                    For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                    For iWtClass As Integer = StartWeightClassNum To m_Data.NWeightClasses
                         Biomass(iWtClass) = Number(iWtClass) * WeightClass(iWtClass) * DeltaTime(iWtClass)
                         If Biomass(iWtClass) < 0 Then
                             Biomass(iWtClass) = 0
@@ -3146,18 +3161,39 @@ nextJ:
                 End If
                 'Now scale the biomass to the Ecopath value
                 If ScaleFactor > 0 Then
-                    For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                    For iWtClass As Integer = StartWeightClassNum To m_Data.NWeightClasses
                         Biomass(iWtClass) = Biomass(iWtClass) * m_Data.B(iGroup) / ScaleFactor
                     Next
                 End If
 
                 '(5)Assign to group PSD
-                For iWtClass As Integer = StartWeightClass To m_Data.NWeightClasses
+                For iWtClass As Integer = StartWeightClassNum To m_Data.NWeightClasses
                     m_Data.PSD(iGroup, iWtClass) = Biomass(iWtClass)
                     'm_Data.PSD(0, iWtClass) = m_Data.PSD(0, iWtClass) + Biomass(iWtClass)
                 Next
             Next
         End Sub
+
+        Private Function CalcStartTime(ByVal iGroup As Integer) As Single
+            'Is stanza group?
+            If m_Data.StanzaGroup(iGroup) Then
+                'Yes
+                For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                    For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                        If m_stanza.EcopathCode(isp, ist) = iGroup Then
+                            If m_stanza.Age1(isp, ist) > 0 Then
+                                Return m_stanza.Age1(isp, ist)
+                            Else
+                                Return 0
+                            End If
+                        End If
+                    Next
+                Next
+            Else
+                'No
+                Return 0
+            End If
+        End Function
 
         Private Function CalcStartWeight(ByVal iGroup As Integer) As Single
             'Is stanza group?
@@ -3168,6 +3204,8 @@ nextJ:
                         If m_stanza.EcopathCode(isp, ist) = iGroup Then
                             If m_stanza.Age1(isp, ist) > 0 Then
                                 Return CalcWeight(iGroup, m_stanza.Age1(isp, ist))
+                            Else
+                                Return 0
                             End If
                         End If
                     Next
