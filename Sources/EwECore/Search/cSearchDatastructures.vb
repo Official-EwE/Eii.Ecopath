@@ -199,6 +199,11 @@ Public Class cSearchDatastructures
 
 #End Region
 
+#Region " Construction "
+
+
+#End Region ' Construction
+
 #Region "Public properties"
 
     '''' <summary>
@@ -217,13 +222,16 @@ Public Class cSearchDatastructures
     '    End Set
     'End Property
 
+    Friend Event OnSearchStateChanged(ByVal searchMode As eSearchModes)
+
     Public Property SearchMode() As eSearchModes
         Get
             Return m_Searchmode
         End Get
         Set(ByVal value As eSearchModes)
-            m_SearchMode = value
-            InitSearch()
+            Me.m_SearchMode = value
+            Me.InitSearch()
+            RaiseEvent OnSearchStateChanged(Me.m_SearchMode)
         End Set
     End Property
 
@@ -515,7 +523,7 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub New(ByVal EcoFunctions As cEcoFunctions, ByRef EPData As cEcopathDataStructures)
+    Public Sub New(ByVal EcoFunctions As cEcoFunctions, ByVal EPData As cEcopathDataStructures)
 
         m_EcoFunctions = EcoFunctions
 
