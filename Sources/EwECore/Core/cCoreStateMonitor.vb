@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.8  2009/03/16 16:57:19  jeroens
+' Added support for running searches
+'
 ' Revision 1.7  2009/03/01 19:32:40  jeroens
 ' Added plugin modified support
 '
@@ -77,6 +80,9 @@ Public Class cCoreStateMonitor
     Private m_iEcospaceState As eCoreExecutionState = eCoreExecutionState.Idle
     ''' <summary>Ecotracer execution state flag.</summary>
     Private m_iEcotracerState As eCoreExecutionState = eCoreExecutionState.Idle
+
+    ''' <summary>Flag stating that a search is active.</summary>
+    Private m_bIsSearching As Boolean = False
 
     ''' <summary>Flag indicating whether the datasource contains unsaved changes that do not affect the running model and its scenarios.</summary>
     Private m_bDatasourceModified As Boolean = False
@@ -664,6 +670,20 @@ Public Class cCoreStateMonitor
 
 #End Region ' Ecotracer
 
+#Region " Search "
+
+#End Region ' Search
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="bIsSearching"></param>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetIsSearching(ByVal bIsSearching As Boolean)
+        Me.m_bIsSearching = bIsSearching
+    End Sub
+
 #End Region ' Ececution
 
 #End Region ' State configuration
@@ -678,6 +698,15 @@ Public Class cCoreStateMonitor
     Public Function IsModified() As Boolean
         ' OMG
         Return (Me.IsDatasourceModified Or Me.IsEcopathModified Or Me.IsEcosimModified Or Me.IsEcospaceModified Or Me.IsEcotracerModified Or Me.IsPluginModified)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the core is computing.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function IsComputing() As Boolean
+        Return (Me.IsEcopathRunning Or Me.IsEcosimRunning Or Me.IsEcospaceRunning Or Me.IsSearching)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -786,6 +815,15 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcospaceRan() As Boolean
         Return Me.m_iEcospaceState = eCoreExecutionState.EcospaceCompleted
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the core is searching.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function IsSearching() As Boolean
+        Return Me.m_bIsSearching
     End Function
 
     ''' -----------------------------------------------------------------------
