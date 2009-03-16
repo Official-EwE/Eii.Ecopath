@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.17  2009/03/16 17:02:39  jeroens
+' Fixed fishing rate/effort confusion
+'
 ' Revision 1.16  2009/02/28 00:15:11  joeh
 ' Added PSD forms
 '
@@ -160,7 +163,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyFFPrimaryProducer), "Apply forcing function primary.htm")
         m_nodeController.Add("ndEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEggProduction), "Egg production.htm")
         m_nodeController.Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
-        m_nodeController.Add("ndFishingRate", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate)) ' ToDo: connect to help
+        m_nodeController.Add("ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingRate)) ' ToDo: connect to help
         m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
         m_nodeController.Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridRegulatoryOptions)) ' ToDo: connect to help
         m_nodeController.Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas)) ' ToDo: connect to help
