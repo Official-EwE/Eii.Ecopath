@@ -33,6 +33,10 @@ Namespace Ecopath.Output
             Me.drpDwnBtnTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
             Me.mnuItmGroupPB = New System.Windows.Forms.ToolStripMenuItem
             Me.mnuItmLorenzen = New System.Windows.Forms.ToolStripMenuItem
+            Me.mnuItmDummy1 = New System.Windows.Forms.ToolStripMenuItem
+            Me.tbxNWLat = New System.Windows.Forms.ToolStripTextBox
+            Me.mnuItmDummy2 = New System.Windows.Forms.ToolStripMenuItem
+            Me.tbxSELat = New System.Windows.Forms.ToolStripTextBox
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.btnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
@@ -62,7 +66,7 @@ Namespace Ecopath.Output
             '
             'drpDwnBtnTotalMortality
             '
-            Me.drpDwnBtnTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuItmGroupPB, Me.mnuItmLorenzen})
+            Me.drpDwnBtnTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuItmGroupPB, Me.mnuItmLorenzen, Me.mnuItmDummy1, Me.tbxNWLat, Me.mnuItmDummy2, Me.tbxSELat})
             Me.drpDwnBtnTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.drpDwnBtnTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.drpDwnBtnTotalMortality.Name = "drpDwnBtnTotalMortality"
@@ -75,15 +79,43 @@ Namespace Ecopath.Output
             Me.mnuItmGroupPB.CheckOnClick = True
             Me.mnuItmGroupPB.CheckState = System.Windows.Forms.CheckState.Checked
             Me.mnuItmGroupPB.Name = "mnuItmGroupPB"
-            Me.mnuItmGroupPB.Size = New System.Drawing.Size(174, 22)
+            Me.mnuItmGroupPB.Size = New System.Drawing.Size(184, 22)
             Me.mnuItmGroupPB.Text = "Group P/B "
             '
             'mnuItmLorenzen
             '
             Me.mnuItmLorenzen.CheckOnClick = True
             Me.mnuItmLorenzen.Name = "mnuItmLorenzen"
-            Me.mnuItmLorenzen.Size = New System.Drawing.Size(174, 22)
+            Me.mnuItmLorenzen.Size = New System.Drawing.Size(184, 22)
             Me.mnuItmLorenzen.Text = "Lorenzen-variable "
+            '
+            'mnuItmDummy1
+            '
+            Me.mnuItmDummy1.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
+            Me.mnuItmDummy1.Name = "mnuItmDummy1"
+            Me.mnuItmDummy1.Size = New System.Drawing.Size(184, 22)
+            Me.mnuItmDummy1.Text = "NW corner latitudes:"
+            '
+            'tbxNWLat
+            '
+            Me.tbxNWLat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.tbxNWLat.Margin = New System.Windows.Forms.Padding(115, -20, 1, 1)
+            Me.tbxNWLat.Name = "tbxNWLat"
+            Me.tbxNWLat.Size = New System.Drawing.Size(35, 21)
+            '
+            'mnuItmDummy2
+            '
+            Me.mnuItmDummy2.Margin = New System.Windows.Forms.Padding(10, -1, 0, 0)
+            Me.mnuItmDummy2.Name = "mnuItmDummy2"
+            Me.mnuItmDummy2.Size = New System.Drawing.Size(184, 22)
+            Me.mnuItmDummy2.Text = "SE corner latitudes:"
+            '
+            'tbxSELat
+            '
+            Me.tbxSELat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.tbxSELat.Margin = New System.Windows.Forms.Padding(115, -21, 1, 1)
+            Me.tbxSELat.Name = "tbxSELat"
+            Me.tbxSELat.Size = New System.Drawing.Size(35, 21)
             '
             'ToolStripSeparator1
             '
@@ -215,6 +247,10 @@ Namespace Ecopath.Output
         Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
         Friend WithEvents btnShowHideGroups As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents tbxNWLat As System.Windows.Forms.ToolStripTextBox
+        Friend WithEvents mnuItmDummy1 As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents mnuItmDummy2 As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents tbxSELat As System.Windows.Forms.ToolStripTextBox
     End Class
 
 End Namespace

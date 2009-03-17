@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.13  2009/03/17 19:38:07  joeh
+' Add latitudes of NW and SE corners of model
+'
 ' Revision 1.12  2009/03/17 02:25:49  joeh
 ' Add Lorenzen mortality type
 '
@@ -333,6 +336,18 @@ Public Class cEcopathDataStructures
         Get
             'Return ePSDMortalityTypes.GroupZ 'actually a user input variable
             Return ePSDMortalityTypes.Lorenzen 'actually a user input variable
+        End Get
+    End Property
+
+    Public ReadOnly Property LatNWCorner() As Single
+        Get
+            Return 45 'actually a user input variable
+        End Get
+    End Property
+
+    Public ReadOnly Property LatSECorner() As Single
+        Get
+            Return 45 'actually a user input variable
         End Get
     End Property
 

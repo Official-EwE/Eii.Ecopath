@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.22  2009/03/17 19:38:08  joeh
+' Add latitudes of NW and SE corners of model
+'
 ' Revision 1.21  2009/03/17 02:25:49  joeh
 ' Add Lorenzen mortality type
 '
@@ -3232,8 +3235,8 @@ nextJ:
 
         Private Function CalcMortality(ByVal iGroup As Integer, ByVal sTime As Single) As Single
             Dim Wt As Single
-            Dim Mu As Single = 3.13
-            Dim Wb As Single = -0.309
+            Dim Mu As Single
+            Dim Wb As Single
             Dim NatMortality As Single
             Dim FishMortality As Single
 
@@ -3245,16 +3248,38 @@ nextJ:
                         Return m_Data.PB(iGroup)
                     End If
                 Case ePSDMortalityTypes.Lorenzen
+                    'Calculate weight
                     Wt = CalcWeight(iGroup, sTime)
+
+                    'Set Lorenzen parameters
+                    SetLorenzenParameters(Wb, Mu, CSng(Math.Abs(m_Data.LatNWCorner + m_Data.LatSECorner) / 2))
+                    
+                    'Calculate natural mortality
                     NatMortality = CSng(Mu * Wt ^ Wb)
+
+                    'Calculate fishing mortality
                     If sTime < m_Data.Tcatch(iGroup) Then
                         FishMortality = 0
                     Else
                         FishMortality = m_Data.fCatch(iGroup) / m_Data.B(iGroup)
                     End If
+
+                    'Return total mortality
                     Return NatMortality + FishMortality
             End Select
         End Function
+
+        Private Sub SetLorenzenParameters(ByRef Wb As Single, ByRef Mu As Single, ByVal avgLatitude As Single)
+            'weight exponent b	Mortality at unit weight
+            '0-30 o     tropical	-0.21	3.08
+            '30-60 o    temperate	-0.309	3.13
+            '60-90 o    polar	    -0.292	1.69
+            Select Case avgLatitude
+                Case Is < 30 : Wb = -0.21 : Mu = 3.08
+                Case Is < 60 : Wb = -0.309 : Mu = 3.13
+                Case Else : Wb = -0.292 : Mu = 1.69
+            End Select
+        End Sub
         'End Joeh
 #End Region
 

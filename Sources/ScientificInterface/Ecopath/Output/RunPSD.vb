@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.7  2009/03/17 19:38:08  joeh
+' Add latitudes of NW and SE corners of model
+'
 ' Revision 1.6  2009/03/14 18:34:07  joeh
 ' Change dXValue of double type to sXValue of single type
 ' Add linear regression of the system PSD
@@ -67,6 +70,9 @@ Namespace Ecopath.Output
             mnuItmGroupPB.Checked = Not mnuItmLorenzen.Checked
         End Sub
 
+        Private Sub btnShowHideGroups_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowHideGroups.Click
+            '
+        End Sub
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
             'm_core.RunEcoPath()
         End Sub
