@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.29  2009/03/17 18:33:51  jeroens
+' Core terminate -> CloseModel
+'
 ' Revision 1.28  2009/02/26 00:56:11  jeroens
 ' Added DB compact
 '
@@ -1026,7 +1029,7 @@ Public Class AppLauncher
         If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
 
             ' Not allowed to terminate core?
-            If (Not Me.m_core.Terminate()) Then
+            If (Not Me.m_core.CloseModel()) Then
                 ' #Not allowed: abort
                 Return False
             End If
@@ -3100,7 +3103,7 @@ Public Class AppLauncher
     Private Sub AppLaucher_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.m_core.Terminate()
+        e.Cancel = Not Me.m_core.CloseModel()
 
         ' The core does not terminate sucessfully
         If e.Cancel = True Then Return
