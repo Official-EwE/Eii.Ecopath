@@ -65,6 +65,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.tscbTarget, "tscbTarget")
             Me.tscbTarget.DropDownHeight = 1
+            Me.tscbTarget.DropDownStyle = ComboBoxStyle.DropDownList
             Me.tscbTarget.Name = "tscbTarget"
             '
             'ToolStripSeparator1
