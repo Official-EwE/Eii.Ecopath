@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.37  2009/03/17 18:30:58  joeb
+' cleanup removed dead comments and code
+'
 ' Revision 1.36  2009/02/26 18:38:01  joeb
 ' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
 '
@@ -2864,7 +2867,6 @@ Public Property PluginManager() As cPluginManager
                             SSgroup(m_RefData.DatPool(j)) += m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
                         End If
                         m_RefData.Yhat(m_RefData.Iobs) = m_RefData.Yhat(m_RefData.Iobs) + m_RefData.DatQ(j)
-                        '  Debug.Assert(m_RefData.Iobs < 350)
                     End If
 
                 Next

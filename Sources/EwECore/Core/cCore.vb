@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.86  2009/03/17 18:30:55  joeb
+' cleanup removed dead comments and code
+'
 ' Revision 1.85  2009/03/17 18:19:00  jeroens
 ' Time series cleared when ecosim scenario is loaded
 '
@@ -3203,15 +3206,6 @@ Public Class cCore
                     Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
                 End If
 
-                ' JS: This is a display issue, fix in GUI
-                'If currUnitIndex < 7 Then
-                '    SetCellValue(Grid, 2, 12, Format(Totpp - RTZ, GenNum))
-                '    SummaryStats(13) = Totpp - RTZ
-                'Else
-                '    SetCellToDash(Grid, 2, 13)
-                '    SummaryStats(13) = ""
-                'End If
-
                 Me.m_EcopathStats.NetSystemProduction = Me.m_EcoPathData.Totpp - Me.m_EcoPathData.RTZ
                 Me.m_EcopathStats.TotalPB = Me.m_EcoPathData.Totpp / Me.m_EcoPathData.SumBio
             Else
@@ -3220,15 +3214,6 @@ Public Class cCore
                 Else
                     Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
                 End If
-
-                ' JS: This is a display issue, fix in GUI
-                'If currUnitIndex < 7 Then
-                '    SetCellValue(Grid, 2, 13, Format(PProd - RTZ, GenNum))
-                '    SummaryStats(13) = PProd - RTZ
-                'Else
-                '    SetCellToDash(Grid, 2, 13)
-                '    SummaryStats(13) = ""
-                'End If
 
                 Me.m_EcopathStats.NetSystemProduction = Me.m_EcoPathData.PProd - Me.m_EcoPathData.RTZ
                 Me.m_EcopathStats.TotalPB = Me.m_EcoPathData.PProd / Me.m_EcoPathData.SumBio
@@ -3256,7 +3241,6 @@ Public Class cCore
                 Me.m_EcopathStats.OmnivIndex = cCore.NULL_VALUE
             End If
 
-            ' ToDo_JS: use Economic Adapter here - one day...
             Me.m_EcopathStats.TotalMarketValue = Me.m_EcoPathData.LandingValue
             Me.m_EcopathStats.TotalShadowValue = Me.m_EcoPathData.ShadowValue
             Me.m_EcopathStats.TotalValue = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue
@@ -3325,10 +3309,6 @@ Public Class cCore
 
             ' Update core state
             Me.m_StateMonitor.SetEcopathRun()
-
-            ' JS 25Nov08: disabled, this screwed up the output status flags. Inputs were already no longer affected so the call is obsolete
-            ''clear all flags in the Input and Output objects
-            'ClearOutputFlags()
 
             'copy all input data into the modeling arrays 
             m_EcoPathData.CopyInputToModelArrays()
