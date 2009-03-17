@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.7  2009/03/17 18:30:08  joeb
+' LoadForcingData() only loads the forcing data it does not load the enable time series... this fixes a bug that stopped to fish mortality shapes from working
+'
 ' Revision 1.6  2009/03/17 18:19:06  jeroens
 ' Time series cleared when ecosim scenario is loaded
 '
@@ -405,7 +408,9 @@ Public Class cTimeSeriesDataStructures
         'Time series forcing data is stored the same way as other time series data
         'but is applied to fixed arrays i.e. PoolForceBB().....
         Try
-            Me.loadEnabled()
+            'jb do not load the timeseries data 
+            'just the forcing data i.e. PoolForceB
+            ' Me.loadEnabled()
             Me.redimFocingData(nYears)
             Me.DoDatValCalculations(EcosimData)
         Catch ex As Exception
