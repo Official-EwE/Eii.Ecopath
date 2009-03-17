@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.20  2009/03/17 00:01:49  joeh
+' Divide m_stanza.Age1 by 12 to convert from month to year
+'
 ' Revision 1.19  2009/03/16 21:37:19  joeh
 ' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
 '
@@ -3182,7 +3185,7 @@ nextJ:
                     For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                         If m_stanza.EcopathCode(isp, ist) = iGroup Then
                             If m_stanza.Age1(isp, ist) > 0 Then
-                                Return m_stanza.Age1(isp, ist)
+                                Return CSng(m_stanza.Age1(isp, ist) / 12)
                             Else
                                 Return 0
                             End If
@@ -3203,7 +3206,7 @@ nextJ:
                     For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                         If m_stanza.EcopathCode(isp, ist) = iGroup Then
                             If m_stanza.Age1(isp, ist) > 0 Then
-                                Return CalcWeight(iGroup, m_stanza.Age1(isp, ist))
+                                Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / 12))
                             Else
                                 Return 0
                             End If
