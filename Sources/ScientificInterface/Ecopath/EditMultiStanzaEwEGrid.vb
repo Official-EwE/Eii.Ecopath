@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanzaEwEGrid.vb,v $
+' Revision 1.5  2009/03/17 16:09:47  jeroens
+' StanzaID -> iStanza
+'
 ' Revision 1.4  2009/03/02 18:20:18  joeh
 ' Take VBK from leading group
 '
@@ -430,7 +433,7 @@ Public Class EditMultiStanzaEwEGrid
         If m_StanzaClicked Is Nothing Then
             m_ClickedStanzaGroupIndex = 0
         Else
-            m_ClickedStanzaGroupIndex = m_StanzaClicked.StanzaID
+            m_ClickedStanzaGroupIndex = m_StanzaClicked.iStanza
         End If
 
         DetermineClickedStanzaGroup()

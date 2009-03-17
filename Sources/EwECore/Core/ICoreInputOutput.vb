@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.8  2009/03/17 16:07:58  jeroens
+' StanzaID -> iStanza
+'
 ' Revision 1.7  2009/02/02 22:28:59  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -702,7 +705,8 @@ Public Class cCoreGroupBase
     Implements ICoreGroup
 
     'Protected m_isMultiStanza As Boolean = False
-    Protected m_StanzaID As Integer = 0
+    ''' <summary>Zero-based index of the stanza configuration this group belongs to.</summary>
+    Protected m_iStanza As Integer = cCore.NULL_VALUE
 
     ''' <summary>
     ''' Create and populate the Lookup tables 
@@ -726,8 +730,7 @@ Public Class cCoreGroupBase
 
     Public ReadOnly Property isMultiStanza() As Boolean Implements ICoreGroup.isMultiStanza
         Get
-            'Return m_isMultiStanza
-            Return Me.StanzaID <> cCore.NULL_VALUE
+            Return Me.iStanza <> cCore.NULL_VALUE
         End Get
     End Property
 
@@ -746,12 +749,16 @@ Public Class cCoreGroupBase
         End Set
     End Property
 
-    Public Property StanzaID() As Integer Implements ICoreGroup.StanzaID
+    ''' <summary>
+    ''' Get/set the zero-based index of the stanza configuration 
+    ''' this group belongs to.
+    ''' </summary>
+    Public Property iStanza() As Integer Implements ICoreGroup.StanzaID
         Get
-            Return m_StanzaID
+            Return m_iStanza
         End Get
         Set(ByVal value As Integer)
-            m_StanzaID = value
+            m_iStanza = value
             ''if the stanza id is not NULL then this is a multi stanza group
             'If value <> cCore.NULL_VALUE Then
             '    m_isMultiStanza = True
