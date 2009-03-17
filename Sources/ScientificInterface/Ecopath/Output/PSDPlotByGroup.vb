@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.12  2009/03/17 02:25:49  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.11  2009/03/16 21:37:19  joeh
 ' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
 '
@@ -43,6 +46,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Commands
 Imports ZedGraph
+Imports EwEUtils.Core
 
 #End Region
 
@@ -64,6 +68,7 @@ Namespace Ecopath.Output
             Number
             Biomass
             PSD
+            LorenzenMortality
         End Enum
 
 #End Region 'Variables
@@ -89,6 +94,9 @@ Namespace Ecopath.Output
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL)
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD)
+            If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+                CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY)
+            End If
             llbGroups.SelectedIndex = 0
         End Sub
 
@@ -187,7 +195,12 @@ Namespace Ecopath.Output
             Dim sSystemPSD(m_core.nWeightClasses) As Single
 
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
-            InitLists(resultLists, 4)
+            Select Case m_core.PSDMortalityType
+                Case ePSDMortalityTypes.GroupZ
+                    InitLists(resultLists, 4)
+                Case ePSDMortalityTypes.Lorenzen
+                    InitLists(resultLists, 5)
+            End Select
 
             For iTimeStep As Integer = 1 To m_core.nAgeSteps
 
@@ -204,6 +217,12 @@ Namespace Ecopath.Output
                 'Biomass plot
                 If grpOutput.EcopathBiomass(iTimeStep) > 0 Then
                     resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
+                End If
+                'Lorenzen mortality plot if mortality type is Lorenzen
+                If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+                    If grpOutput.LorenzenMortality(iTimeStep) > 0 Then
+                        resultLists(4).Add(sXValue, grpOutput.LorenzenMortality(iTimeStep))
+                    End If
                 End If
             Next
 
@@ -233,6 +252,10 @@ Namespace Ecopath.Output
             AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            'Lorenzen mortality plot if mortality type is Lorenzen
+            If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            End If
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)

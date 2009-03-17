@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.37  2009/03/17 02:25:49  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.36  2009/03/16 16:58:46  jeroens
 ' Added PSD core objects
 '
@@ -748,6 +751,7 @@ Namespace Core
         EcopathWeight
         EcopathNumber
         EcopathBiomass
+        LorenzenMortality
 
         ''' <summary>Particle size distribution</summary>
         PSD
@@ -1493,7 +1497,7 @@ Namespace Core
 
         'Joe
         ''' <summary>Number of timesteps in the Ecopath Weight, Number and Biomass</summary>
-        nEcopathTimeSteps
+        nEcopathAgeSteps
         ''' <summary>Number of weight classes in the particle size distribution</summary>
         nWeightClasses
         'End Joeh
@@ -1751,4 +1755,14 @@ Namespace Core
 
 #End Region ' Datasource types
 
+    'Joeh
+#Region "PSD mortality types"
+    Public Enum ePSDMortalityTypes
+        ''' <summary>Group P/B.</summary>
+        GroupZ = 0
+        ''' <summary>Lorenzen-variable.</summary>
+        Lorenzen
+    End Enum
+#End Region ' PSD mortality types
+    'End Joeh
 End Namespace ' Core

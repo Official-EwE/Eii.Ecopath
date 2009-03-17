@@ -2281,9 +2281,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Particle size distribution (group contribution)</value>
   </data>
   <data name="HEADER_CONTRIBPSD" xml:space="preserve">
-    <value>Contribution to particle size distribution</value>
+    <value>Contribution to PSD</value>
   </data>
   <data name="HEADER_NUMBER" xml:space="preserve">
     <value>Number</value>
+  </data>
+  <data name="HEADER_MORTALITY" xml:space="preserve">
+    <value>Mortality</value>
   </data>
 </root>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.8  2009/03/17 02:25:49  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.7  2009/03/11 00:14:28  joeh
 ' Add PSD calculation
 '
@@ -444,11 +447,13 @@ Public Class cEcoPathGroupOutput
         val = New cValue(New Single, eVarNameFlags.TmaxOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathWeight, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathWeight, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathAgeSteps, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathNumber, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathNumber, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathAgeSteps, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathTimeSteps, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathBiomass, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathAgeSteps, AddressOf m_core.GetCoreCounter)
+        m_values.Add(val.varName, val)
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.LorenzenMortality, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathAgeSteps, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PSD, eStatusFlags.NotEditable, eCoreCounterTypes.nWeightClasses, AddressOf m_core.GetCoreCounter)
@@ -745,6 +750,28 @@ Public Class cEcoPathGroupOutput
         Set(ByVal newValue As Single())
             If Not m_bReadOnly Then
                 SetVariable(eVarNameFlags.EcopathBiomass, newValue)
+            End If
+        End Set
+    End Property
+
+    Public Property LorenzenMortality(ByVal iTimeStep As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.LorenzenMortality, iTimeStep))
+        End Get
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.LorenzenMortality, newValue, iTimeStep)
+            End If
+        End Set
+    End Property
+
+    Public Property LorenzenMortality() As Single()
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.LorenzenMortality), Single())
+        End Get
+        Set(ByVal newValue As Single())
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.LorenzenMortality, newValue)
             End If
         End Set
     End Property

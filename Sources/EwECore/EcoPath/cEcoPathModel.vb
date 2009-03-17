@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.21  2009/03/17 02:25:49  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.20  2009/03/17 00:01:49  joeh
 ' Divide m_stanza.Age1 by 12 to convert from month to year
 '
@@ -3074,10 +3077,12 @@ nextJ:
                         m_Data.EcopathWeight(iGroup, iTimeStep) = 0
                     End If
 
-                    'Number
+                    'Number and Lorenzen Mortality
                     If sTime > CalcStartTime(iGroup) Then
+                        m_Data.LorenzenMortality(iGroup, iTimeStep) = CalcMortality(iGroup, sTime)
                         m_Data.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-CalcMortality(iGroup, sTime) * sTime))
                     Else
+                        m_Data.LorenzenMortality(iGroup, iTimeStep) = 0
                         m_Data.EcopathNumber(iGroup, iTimeStep) = 0
                     End If
 
@@ -3226,15 +3231,29 @@ nextJ:
         End Function
 
         Private Function CalcMortality(ByVal iGroup As Integer, ByVal sTime As Single) As Single
-            'If "Group P/B" then
-            If sTime < m_Data.Tcatch(iGroup) Then
-                Return m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)
-            Else
-                Return m_Data.PB(iGroup)
-            End If
-            'Else "Lorenzen-variable"
+            Dim Wt As Single
+            Dim Mu As Single = 3.13
+            Dim Wb As Single = -0.309
+            Dim NatMortality As Single
+            Dim FishMortality As Single
 
-            'End if
+            Select Case m_Data.PSDMortalityType
+                Case ePSDMortalityTypes.GroupZ
+                    If sTime < m_Data.Tcatch(iGroup) Then
+                        Return m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+                    Else
+                        Return m_Data.PB(iGroup)
+                    End If
+                Case ePSDMortalityTypes.Lorenzen
+                    Wt = CalcWeight(iGroup, sTime)
+                    NatMortality = CSng(Mu * Wt ^ Wb)
+                    If sTime < m_Data.Tcatch(iGroup) Then
+                        FishMortality = 0
+                    Else
+                        FishMortality = m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+                    End If
+                    Return NatMortality + FishMortality
+            End Select
         End Function
         'End Joeh
 #End Region

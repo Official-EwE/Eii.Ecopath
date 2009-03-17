@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.83  2009/03/17 02:25:48  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.82  2009/03/16 16:56:45  jeroens
 ' Added PSD core objects
 ' Added search manager event
@@ -276,7 +279,7 @@ Public Class cCore
                     End If
 
                     'Joeh
-                Case eCoreCounterTypes.nEcopathTimeSteps
+                Case eCoreCounterTypes.nEcopathAgeSteps
                     Return Me.nAgeSteps
 
                 Case eCoreCounterTypes.nWeightClasses
@@ -542,6 +545,12 @@ Public Class cCore
     Public ReadOnly Property nAgeSteps() As Integer
         Get
             Return m_EcoPathData.NAgeSteps
+        End Get
+    End Property
+
+    Public ReadOnly Property PSDMortalityType() As ePSDMortalityTypes
+        Get
+            Return CType(m_EcoPathData.PSDMortalityType, ePSDMortalityTypes)
         End Get
     End Property
 
@@ -2649,6 +2658,7 @@ Public Class cCore
         Dim EcopathWeight() As Single
         Dim EcopathNumber() As Single
         Dim EcopathBiomass() As Single
+        Dim LorenzenMortality() As Single
 
         Dim PSD() As Single
         'End Joeh
@@ -2685,6 +2695,7 @@ Public Class cCore
                 ReDim EcopathWeight(nAgeSteps)
                 ReDim EcopathNumber(nAgeSteps)
                 ReDim EcopathBiomass(nAgeSteps)
+                ReDim LorenzenMortality(nAgeSteps)
 
                 ReDim PSD(nWeightClasses)
                 'End Joeh
@@ -2845,6 +2856,13 @@ Public Class cCore
                     EcopathBiomass(t) = m_EcoPathData.EcopathBiomass(iGroup, t)
                 Next
                 output.EcopathBiomass = EcopathBiomass
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                ' Lorenzen mortality
+                For t As Integer = 1 To nAgeSteps
+                    LorenzenMortality(t) = m_EcoPathData.LorenzenMortality(iGroup, t)
+                Next
+                output.LorenzenMortality = LorenzenMortality
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' PSD

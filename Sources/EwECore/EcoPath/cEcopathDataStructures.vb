@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.12  2009/03/17 02:25:49  joeh
+' Add Lorenzen mortality type
+'
 ' Revision 1.11  2009/03/13 21:37:02  joeh
 ' Rename NTimes to NAgeSteps
 '
@@ -313,6 +316,7 @@ Public Class cEcopathDataStructures
     Public EcopathWeight(,) As Single
     Public EcopathNumber(,) As Single
     Public EcopathBiomass(,) As Single
+    Public LorenzenMortality(,) As Single
     Public PSD(,) As Single
     'End Joeh
 #End Region
@@ -325,6 +329,13 @@ Public Class cEcopathDataStructures
         End Get
     End Property
 
+    Public ReadOnly Property PSDMortalityType() As Integer
+        Get
+            'Return ePSDMortalityTypes.GroupZ 'actually a user input variable
+            Return ePSDMortalityTypes.Lorenzen 'actually a user input variable
+        End Get
+    End Property
+
     Public ReadOnly Property NWeightClasses() As Integer
         Get
             Return 25 'actually a user input variable
@@ -333,7 +344,7 @@ Public Class cEcopathDataStructures
 
     Public ReadOnly Property FirstWeightClass() As Single
         Get
-            Return 0.125
+            Return 0.125 'actually a user input variable 
         End Get
     End Property
     'End Joeh
@@ -495,6 +506,7 @@ Public Class cEcopathDataStructures
         ReDim EcopathWeight(NumGroups, NAgeSteps)
         ReDim EcopathNumber(NumGroups, NAgeSteps)
         ReDim EcopathBiomass(NumGroups, NAgeSteps)
+        ReDim LorenzenMortality(NumGroups, NAgeSteps)
 
         ReDim PSD(NumGroups, NWeightClasses)
         'End Joeh
@@ -1269,6 +1281,7 @@ Public Class cEcopathDataStructures
             dest.EcopathWeight = EcopathWeight.Clone
             dest.EcopathNumber = EcopathNumber.Clone
             dest.EcopathBiomass = EcopathBiomass.Clone
+            dest.LorenzenMortality = LorenzenMortality.Clone
 
             dest.PSD = PSD.Clone
             'End Joeh

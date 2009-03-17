@@ -2673,7 +2673,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Contribution to particle size distribution.
+        '''  Looks up a localized string similar to Contribution to PSD.
         '''</summary>
         Friend ReadOnly Property HEADER_CONTRIBPSD() As String
             Get
@@ -3272,6 +3272,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_MINWEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_MINWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mortality.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MORTALITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITY", resourceCulture)
             End Get
         End Property
         
