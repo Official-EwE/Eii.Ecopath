@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.85  2009/03/17 18:19:00  jeroens
+' Time series cleared when ecosim scenario is loaded
+'
 ' Revision 1.84  2009/03/17 16:08:54  jeroens
 ' Fixed bug in Cascade_vbk
 '
@@ -685,43 +688,6 @@ Public Class cCore
         Return DirectCast(ds, IEcopathDataSource).SaveModel()
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Try to terminate the core
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Function Terminate() As Boolean
-        If Not Me.SaveChanges() Then Return False
-        ' Has datasource?
-        If (DataSource IsNot Nothing) Then
-            ' #Yes: has open connection?
-            If DataSource.Connection IsNot Nothing Then
-                ' #Yes: Close connection
-                DataSource.Close()
-                ' Close plug-in data sources
-                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase()
-            End If
-            ' Release datasource
-            DataSource = Nothing
-        End If
-
-        ' Forget model
-        Me.m_StateMonitor.SetEcopathLoaded(False)
-        Me.m_StateMonitor.UpdateDataState(Nothing)
-
-        ' Reset counters
-        With Me.m_EcoPathData
-            .NumGroups = 0
-            .NumFleet = 0
-            .NumLiving = 0
-            .NumEcosimScenarios = 0
-            .NumEcospaceScenarios = 0
-            .NumEcotracerScenarios = 0
-        End With
-
-        Return True
-    End Function
-
 #Region " Batch operations "
 
     ''' <summary>
@@ -1284,7 +1250,9 @@ Public Class cCore
         Dim tsd As cTimeSeriesDataset = Nothing
 
         Try
+
             Me.m_timeSeriesDatasets.Clear()
+
             For iDS As Integer = 1 To Me.m_TSData.nDatasets
                 tsd = New cTimeSeriesDataset(Me, Me.m_TSData.nDatasetNumTimeSeries(iDS))
 
@@ -1298,8 +1266,9 @@ Public Class cCore
                 Me.m_timeSeriesDatasets.Add(tsd)
 
             Next
-            ' Reset number of loaded time series
-            Me.m_TSData.nNumTimeSeries = 0
+
+            ' Reset number of loaded and applied time series
+            Me.m_TSData.ClearTimeSeries()
             ' Set number of groups
             Me.m_TSData.nGroups = Me.nGroups
 
@@ -2368,6 +2337,43 @@ Public Class cCore
             Return False
         End If
 
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Try to terminate the core
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function CloseModel() As Boolean
+        If Not Me.SaveChanges() Then Return False
+        ' Has datasource?
+        If (DataSource IsNot Nothing) Then
+            ' #Yes: has open connection?
+            If DataSource.Connection IsNot Nothing Then
+                ' #Yes: Close connection
+                DataSource.Close()
+                ' Close plug-in data sources
+                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase()
+            End If
+            ' Release datasource
+            DataSource = Nothing
+        End If
+
+        ' Forget model
+        Me.m_StateMonitor.SetEcopathLoaded(False)
+        Me.m_StateMonitor.UpdateDataState(Nothing)
+
+        ' Reset counters
+        With Me.m_EcoPathData
+            .NumGroups = 0
+            .NumFleet = 0
+            .NumLiving = 0
+            .NumEcosimScenarios = 0
+            .NumEcospaceScenarios = 0
+            .NumEcotracerScenarios = 0
+        End With
+
+        Return True
     End Function
 
 #End Region ' Model
@@ -4556,6 +4562,7 @@ Public Class cCore
             m_EcoSim.SetCounters()
             m_EcoSim.InitStanza()
             m_EcoSim.SetDefaultParameters()
+            Me.m_TSData.ClearTimeSeriesDatasets()
 
             'jb I still need to deal with how to handle these problems
             ds = DirectCast(DataSource, IEcosimDatasource)
@@ -5616,7 +5623,7 @@ Public Class cCore
         LoadEcosimFleetOutputs()
         LoadEcosimTimeSeries()
 
-        'LoadEcosimStats()
+        LoadEcosimStats()
         loadEcoTracerResults()
 
         If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then

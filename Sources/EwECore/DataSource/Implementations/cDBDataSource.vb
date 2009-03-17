@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.32  2009/03/17 18:19:03  jeroens
+' Time series cleared when ecosim scenario is loaded
+'
 ' Revision 1.31  2009/03/04 03:58:29  jeroens
 ' Fixed major bug: RemoveStanza was reloading group info - bypassing a database lock
 '
@@ -5203,10 +5206,7 @@ Public Class cDBDataSource
         Dim iYear As Integer = 0
         Dim bSucces As Boolean = True
 
-        tsDS.nNumTimeSeries = 0
-        tsDS.nMaxYears = 0
-        tsDS.NdatType = 0
-        tsDS.NdatYear = 0
+        tsDS.ClearTimeSeries()
         tsDS.ActiveDatasetIndex = iDataset
         tsDS.nMaxYears = tsDS.nDatasetNumYears(iDataset)
 
@@ -5224,7 +5224,7 @@ Public Class cDBDataSource
         End If
 
         tsDS.RedimTimeSeries()
-        tsDS.RedimAppliedTimeSeries()
+        tsDS.RedimEnabledTimeSeries()
 
         If tsDS.nNumTimeSeries = 0 Then Return bSucces
 

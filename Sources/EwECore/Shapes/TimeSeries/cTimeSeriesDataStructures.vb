@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.6  2009/03/17 18:19:06  jeroens
+' Time series cleared when ecosim scenario is loaded
+'
 ' Revision 1.5  2009/02/26 18:38:01  joeb
 ' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
 '
@@ -209,6 +212,12 @@ Public Class cTimeSeriesDataStructures
     Public Yhat() As Single
     Public Erpred() As Single
 
+    Friend Sub ClearTimeSeriesDatasets()
+        Me.nDatasets = 0
+        Me.RedimTimeSeriesDatasets()
+        Me.ClearTimeSeries()
+    End Sub
+
     Friend Sub RedimTimeSeriesDatasets()
 
         ReDim Me.iDatasetDBID(nDatasets)
@@ -219,6 +228,19 @@ Public Class cTimeSeriesDataStructures
         ReDim Me.nDatasetFirstYear(nDatasets)
         ReDim Me.nDatasetNumYears(nDatasets)
         ReDim Me.nDatasetNumTimeSeries(nDatasets)
+
+    End Sub
+
+    Friend Sub ClearTimeSeries()
+
+        'JS: do not clear datasets, numtimeseries, only clear available and applied TS
+        Me.nNumTimeSeries = 0
+        Me.nMaxYears = 0
+        Me.NdatYear = 0
+        Me.NdatType = 0
+
+        Me.RedimTimeSeries()
+        Me.RedimEnabledTimeSeries()
 
     End Sub
 
@@ -244,7 +266,7 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
-    Public Sub RedimAppliedTimeSeries()
+    Public Sub RedimEnabledTimeSeries()
 
         Debug.Assert(NdatType >= 0, Me.ToString & ".RedimAppliedTimeSeries() NdatType cannot be negative")
         Debug.Assert(NdatYear >= 0, Me.ToString & ".RedimAppliedTimeSeries() NdatYear cannot be negative")
@@ -279,13 +301,13 @@ Public Class cTimeSeriesDataStructures
     Friend Sub loadEnabled(Optional ByVal iTSIndex As Integer = -1)
 
         Dim iTS As Integer = -1
-        Dim iTSApply As Integer = -1
+        Dim iTSEnable As Integer = -1
         Dim bFound As Boolean = False
 
         ' Single TS index given?
         If (iTSIndex > 0) Then
             ' Try to reload applied data for a single TS
-            iTSApply = 0
+            iTSEnable = 0
             iTS = 0
 
             ' Determine Applied index 
@@ -295,7 +317,7 @@ Public Class cTimeSeriesDataStructures
                 ' Is an applied TS?
                 If Me.bEnable(iTS) Then
                     ' #Yes: count it
-                    iTSApply += 1
+                    iTSEnable += 1
                     ' Check if found
                     bFound = (iTSIndex = iTS)
                 End If
@@ -303,32 +325,32 @@ Public Class cTimeSeriesDataStructures
 
             If bFound Then
                 ' Sanity check
-                If (iTSApply <= NdatType) Then
-                    Me.LoadAppliedTS(iTS, iTSApply)
+                If (iTSEnable <= NdatType) Then
+                    Me.LoadEnabledTS(iTS, iTSEnable)
                     Return
                 End If
             End If
         End If
 
-        ' Default: reload all applied
-        Me.LoadAppliedData()
+        ' Default: reload all enabled
+        Me.LoadEnabledTimeSeries()
 
     End Sub
 
-    Protected Sub LoadAppliedData()
+    Protected Sub LoadEnabledTimeSeries()
         Dim iTS As Integer = 0
         Dim iYear As Integer = 0
-        Dim iTSApply As Integer = 0
+        Dim iTSEnable As Integer = 0
 
         NdatType = 0
         NdatYear = nMaxYears
 
-        ' Determine no. of time series to apply
+        ' Determine no. of time series to enable
         For iTS = 1 To nNumTimeSeries
             If Me.bEnable(iTS) Then NdatType += 1
         Next iTS
 
-        RedimAppliedTimeSeries()
+        RedimEnabledTimeSeries()
 
         If nNumTimeSeries > 0 Then
 
@@ -339,8 +361,8 @@ Public Class cTimeSeriesDataStructures
 
             For iTS = 1 To nNumTimeSeries
                 If Me.bEnable(iTS) Then
-                    iTSApply += 1
-                    Me.LoadAppliedTS(iTS, iTSApply)
+                    iTSEnable += 1
+                    Me.LoadEnabledTS(iTS, iTSEnable)
                 End If
             Next iTS
 
@@ -348,27 +370,27 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
-    Private Sub LoadAppliedTS(ByVal iTS As Integer, ByVal iTSApply As Integer)
+    Private Sub LoadEnabledTS(ByVal iTS As Integer, ByVal iTSEnable As Integer)
         Debug.Assert(Me.bEnable(iTS))
 
-        DatPool(iTSApply) = iPool(iTS)
-        DatType(iTSApply) = iType(iTS)
-        WtType(iTSApply) = sWeight(iTS)
+        DatPool(iTSEnable) = iPool(iTS)
+        DatType(iTSEnable) = iType(iTS)
+        WtType(iTSEnable) = sWeight(iTS)
         For iYear As Integer = 0 To NdatYear
-            DatVal(iYear, iTSApply) = sValues(iYear, iTS)
+            DatVal(iYear, iTSEnable) = sValues(iYear, iTS)
         Next iYear
     End Sub
 
     Friend Sub Update()
 
         Dim iTS As Integer = 0
-        Dim iTSapplied As Integer = 0
+        Dim iTSenabled As Integer = 0
 
         For iTS = 1 To nNumTimeSeries
             If Me.bEnable(iTS) Then
-                iTSapplied += 1 'DatSS and DatQ are indexed from one
-                sDatSS(iTS) = DatSS(iTSapplied)
-                sDatQ(iTS) = DatQ(iTSapplied)
+                iTSenabled += 1 'DatSS and DatQ are indexed from one
+                sDatSS(iTS) = DatSS(iTSenabled)
+                sDatQ(iTS) = DatQ(iTSenabled)
 
             Else
                 sDatSS(iTS) = 0.0!
@@ -570,7 +592,7 @@ Public Class cEcospaceTimeSeriesDataStructures
 
 
     Friend Overloads Sub RedimAppliedTimeSeries()
-        MyBase.RedimAppliedTimeSeries()
+        MyBase.RedimEnabledTimeSeries()
 
         ReDim iSPRegion(NdatType)
 
@@ -585,12 +607,12 @@ Public Class cEcospaceTimeSeriesDataStructures
     End Sub
 
     ''' <summary>
-    ''' Apply all flagged time series to the Ecosim model.
+    ''' Enable all flagged time series to the Ecosim model.
     ''' </summary>
     Friend Overloads Sub Apply(ByRef EcospaceData As cEcospaceDataStructures)
 
         'load the the user selected data into the data used by the model
-        MyBase.LoadAppliedData()
+        MyBase.LoadEnabledTimeSeries()
 
         'load the data from datval() into the ecosim data 
         DoDatValCalculations(EcospaceData)
