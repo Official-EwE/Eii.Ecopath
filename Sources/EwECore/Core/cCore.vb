@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.84  2009/03/17 16:08:54  jeroens
+' Fixed bug in Cascade_vbk
+'
 ' Revision 1.83  2009/03/17 02:25:48  joeh
 ' Add Lorenzen mortality type
 '
@@ -2510,7 +2513,7 @@ Public Class cCore
                 Next
 
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
-                Input.StanzaID = getStanzaIDForGroup(iGroup)
+                Input.iStanza = getStanzaIDForGroup(iGroup)
 
                 'Joeh
                 Input.Tcatch = m_EcoPathData.Tcatch(iGroup)
@@ -2833,7 +2836,7 @@ Public Class cCore
                 Next
                 output.Alpha = Alpha
 
-                output.StanzaID = getStanzaIDForGroup(iGroup)
+                output.iStanza = getStanzaIDForGroup(iGroup)
 
                 'Joeh
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -3969,7 +3972,7 @@ Public Class cCore
         ' Is a multi-stanza group?
         If group.isMultiStanza Then
             ' #Yes: configure VBK editable mode
-            sg = Me.StanzaGroups(group.StanzaID)
+            sg = Me.StanzaGroups(group.iStanza)
 
             ' Get the leading group for this stanza config
             groupLeading = Me.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
@@ -4178,14 +4181,19 @@ Public Class cCore
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
-        Dim iStanzaID As Integer = group.StanzaID
+        Dim iStanza As Integer = Me.getStanzaIDForGroup(group.Index)
+
+        Debug.Assert(iStanza = group.iStanza)
 
         ' Is not a stanza life stage?
-        If (iStanzaID = 0) Then Return
+        If (iStanza < 0) Then Return
 
         For iGroup As Integer = 1 To Me.nGroups
             groupCascade = Me.EcoPathGroupInputs(iGroup)
-            If (iGroup <> group.Index) And (groupCascade.StanzaID = iStanzaID) Then
+
+            Debug.Assert(Me.getStanzaIDForGroup(iGroup) = groupCascade.iStanza)
+
+            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) Then
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
@@ -4838,7 +4846,7 @@ Public Class cCore
                 Debug.Assert(False, ex.Message)
             End Try
 
-            group.StanzaID = getStanzaIDForGroup(iGroup)
+            group.iStanza = getStanzaIDForGroup(iGroup)
 
             group.ResetStatusFlags()
 
@@ -5088,7 +5096,7 @@ Public Class cCore
             group.Name = m_EcoPathData.GroupName(iGroup)
 
             'stanza variables setting the stanza id will also set the isMultiStanza Flag
-            group.StanzaID = getStanzaIDForGroup(iGroup)
+            group.iStanza = getStanzaIDForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
             'Biomass
@@ -9992,7 +10000,7 @@ Public Class cCore
                         'PB, QB or GE has been changed in the interface
                         Me.Set_PB_QB_GE_BA_Flags(egi)
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
-                        bRecalcStanza = (egi.StanzaID > 0)
+                        bRecalcStanza = (egi.iStanza > 0)
 
                         If value.varName = eVarNameFlags.PBInput Then
                             'update bgoal from the new PB
@@ -10027,7 +10035,7 @@ Public Class cCore
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
 
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
-                        bRecalcStanza = (egi.StanzaID > 0)
+                        bRecalcStanza = (egi.iStanza > 0)
 
                     Case eVarNameFlags.BioAccum, eVarNameFlags.BioAccumRate
                         Me.set_BioAccumRate_Flags(egi, value.varName)
