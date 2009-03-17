@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.10  2009/03/17 17:18:10  jeroens
+' EcosimCompleteDelegate -> Populate
+'
 ' Revision 1.9  2009/03/02 01:53:18  jeroens
 ' Properly named handlers
 '
@@ -188,7 +191,7 @@ Namespace Ecosim
                             End If
 
                             ' Now plot the graphs.
-                            Me.m_graph.EcosimCompleteDelegate()
+                            Me.m_graph.Populate()
 
                         Catch ex As Exception
                             'make sure the model can be rerun if something goes wrong

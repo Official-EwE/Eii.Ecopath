@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.30  2009/03/17 17:18:22  jeroens
+' EcosimCompleteDelegate -> Populate
+'
 ' Revision 1.29  2009/03/12 17:30:08  joeb
 ' Another shoot at the EcosimCompletedDelegate() It checks statemonitor again.... hope this is the last time...
 '
@@ -161,9 +164,11 @@ Namespace Ecosim
 #Region " Public Interfaces "
 
         ''' -------------------------------------------------------------------
-        ''' <summary> Called when the time stem is finished </summary>
+        ''' <summary>
+        ''' Populate the graph.
+        ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub EcosimCompleteDelegate()
+        Public Sub Populate()
             Dim list1 As New PointPairList()
             Dim listSum As New PointPairList
 
@@ -455,7 +460,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
             RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
-            Me.EcosimCompleteDelegate()
+            Me.Populate()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -463,7 +468,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
             CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
-            Me.EcosimCompleteDelegate()
+            Me.Populate()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -473,7 +478,7 @@ Namespace Ecosim
             CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
             'Set default plot type to relative
             RelativeToolStripMenuItem.Checked = True
-            Me.EcosimCompleteDelegate()
+            Me.Populate()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -483,7 +488,7 @@ Namespace Ecosim
             BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
             'Set default plot type to relative
             RelativeToolStripMenuItem.Checked = True
-            Me.EcosimCompleteDelegate()
+            Me.Populate()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -542,7 +547,7 @@ Namespace Ecosim
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
             Me.InvalidateGraph()
-            Me.EcosimCompleteDelegate()
+            Me.Populate()
         End Sub
 
         ''' -------------------------------------------------------------------
