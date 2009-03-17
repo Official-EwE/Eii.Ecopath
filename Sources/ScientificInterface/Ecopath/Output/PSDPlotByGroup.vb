@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.13  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.12  2009/03/17 02:25:49  joeh
 ' Add Lorenzen mortality type
 '
@@ -113,7 +116,9 @@ Namespace Ecopath.Output
             llbGroups.Items.Clear()
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nLivingGroups
-                llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                If m_core.IsGroupSelected(i) Then
+                    llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                End If
             Next
 
             llbGroups.ResumeLayout()

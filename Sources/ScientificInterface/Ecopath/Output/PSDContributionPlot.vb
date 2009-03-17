@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.7  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.6  2009/03/14 18:32:55  joeh
 ' Change dXValue of double type to sXValue of single type
 '
@@ -72,7 +75,9 @@ Namespace Ecopath.Output
             llbGroups.Items.Clear()
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nLivingGroups
-                llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                If m_core.IsGroupSelected(i) Then
+                    llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                End If
             Next
 
             llbGroups.ResumeLayout()

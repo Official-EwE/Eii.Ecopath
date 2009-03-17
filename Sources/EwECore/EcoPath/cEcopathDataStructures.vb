@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.14  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.13  2009/03/17 19:38:07  joeh
 ' Add latitudes of NW and SE corners of model
 '
@@ -334,8 +337,8 @@ Public Class cEcopathDataStructures
 
     Public ReadOnly Property PSDMortalityType() As Integer
         Get
-            'Return ePSDMortalityTypes.GroupZ 'actually a user input variable
-            Return ePSDMortalityTypes.Lorenzen 'actually a user input variable
+            Return ePSDMortalityTypes.GroupZ 'actually a user input variable
+            'Return ePSDMortalityTypes.Lorenzen 'actually a user input variable
         End Get
     End Property
 
@@ -348,6 +351,23 @@ Public Class cEcopathDataStructures
     Public ReadOnly Property LatSECorner() As Single
         Get
             Return 45 'actually a user input variable
+        End Get
+    End Property
+
+    Public ReadOnly Property IsGroupSelected() As Boolean()
+        Get
+            Dim grpSelected(NumLiving) As Boolean
+
+            For i As Integer = 1 To NumLiving
+                grpSelected(i) = False
+            Next
+            grpSelected(1) = True
+            grpSelected(2) = True
+            grpSelected(3) = True
+            grpSelected(4) = True
+            grpSelected(5) = True
+
+            Return grpSelected
         End Get
     End Property
 

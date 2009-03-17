@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.87  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.86  2009/03/17 18:30:55  joeb
 ' cleanup removed dead comments and code
 '
@@ -560,6 +563,12 @@ Public Class cCore
     Public ReadOnly Property PSDMortalityType() As ePSDMortalityTypes
         Get
             Return CType(m_EcoPathData.PSDMortalityType, ePSDMortalityTypes)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsGroupSelected() As Boolean()
+        Get
+            Return m_EcoPathData.IsGroupSelected
         End Get
     End Property
 

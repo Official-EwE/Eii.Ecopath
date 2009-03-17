@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.8  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.7  2009/03/17 19:38:08  joeh
 ' Add latitudes of NW and SE corners of model
 '
@@ -44,16 +47,36 @@ Namespace Ecopath.Output
         Private m_zgh As ZedGraphHelper = Nothing
 #End Region 'Variables
 
-#Region "Constructor"
+#Region "Constructor/Destructor"
         Public Sub New()
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
+
             ' This call is required by the Windows Form Designer.
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+
+            ' Show/Hide Groups
+            cmd = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.btnShowHideGroups)
+            End If
         End Sub
-#End Region 'Constructor
+
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+
+            ' Show/Hide Groups
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.RemoveControl(Me.btnShowHideGroups)
+            End If
+        End Sub
+#End Region 'Constructor/Destructor
 
 #Region "Event handlers"
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -70,10 +93,13 @@ Namespace Ecopath.Output
             mnuItmGroupPB.Checked = Not mnuItmLorenzen.Checked
         End Sub
 
-        Private Sub btnShowHideGroups_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowHideGroups.Click
-            '
-        End Sub
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                Console.WriteLine(sgStyleGuide.GroupVisible(iGroup))
+            Next
+
             'm_core.RunEcoPath()
         End Sub
 #End Region 'Event handlers

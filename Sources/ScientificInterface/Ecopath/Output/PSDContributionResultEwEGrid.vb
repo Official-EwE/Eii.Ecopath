@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.6  2009/03/17 23:37:34  joeh
+' Add codes for the Selected Group feature
+'
 ' Revision 1.5  2009/03/13 22:52:37  joeh
 ' Add code to sum the PSD values of a row and to sum the PSD values in a column
 '
@@ -64,6 +67,7 @@ Namespace Ecopath.Output
             Dim core As cCore = cCore.GetInstance()
             Dim source As cCoreGroupBase = Nothing
             Dim iRow As Integer = -1
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
 
             ' Remove existing rows
             Me.RowsCount = 1
@@ -71,11 +75,13 @@ Namespace Ecopath.Output
             ' Done?
             'If core.nWeightClasses = 0 Then Return
 
-            ' Create rows for all groups and sum values in each row
+            ' Create rows for groups and sum values in each row
             For rowIndex As Integer = 1 To core.nLivingGroups
-                source = core.EcoPathGroupOutputs(rowIndex)
-                iRow = Me.AddRow()
-                FillRows(iRow, source)
+                If core.IsGroupSelected(rowIndex) Then
+                    source = core.EcoPathGroupOutputs(rowIndex)
+                    iRow = Me.AddRow()
+                    FillRows(iRow, source)
+                End If
             Next rowIndex
 
             'Create "Sum" row (sum values in each column)
@@ -153,15 +159,17 @@ Namespace Ecopath.Output
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To core.nLivingGroups
-                    sourceSec = core.EcoPathGroupOutputs(rowIndex)
-                    ' Get the index PSD property
-                    propPSD = pmPropertyManager.GetProperty(sourceSec, eVarNameFlags.PSD, source)
+                    If core.IsGroupSelected(rowIndex) Then
+                        sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                        ' Get the index PSD property
+                        propPSD = pmPropertyManager.GetProperty(sourceSec, eVarNameFlags.PSD, source)
 
-                    'Sum values in a column
-                    alSumCol.Add(propPSD)
+                        'Sum values in a column
+                        alSumCol.Add(propPSD)
 
-                    'Sum all values
-                    alSumAll.Add(propPSD)
+                        'Sum all values
+                        alSumAll.Add(propPSD)
+                    End If
                 Next
 
                 'Display the sum of values in a column
