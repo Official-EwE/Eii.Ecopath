@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.88  2009/03/18 13:31:32  jeroens
+' Moved PSD data from EcopathDS to PSDDS
+' Moved PSD methods to PSD classes where possible
+'
 ' Revision 1.87  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -556,31 +560,13 @@ Public Class cCore
     'Joeh
     Public ReadOnly Property nAgeSteps() As Integer
         Get
-            Return m_EcoPathData.NAgeSteps
-        End Get
-    End Property
-
-    Public ReadOnly Property PSDMortalityType() As ePSDMortalityTypes
-        Get
-            Return CType(m_EcoPathData.PSDMortalityType, ePSDMortalityTypes)
-        End Get
-    End Property
-
-    Public ReadOnly Property IsGroupSelected() As Boolean()
-        Get
-            Return m_EcoPathData.IsGroupSelected
+            Return m_PSDData.NAgeSteps
         End Get
     End Property
 
     Public ReadOnly Property nWeightClasses() As Integer
         Get
-            Return m_EcoPathData.NWeightClasses
-        End Get
-    End Property
-
-    Public ReadOnly Property FirstWeightClass() As Single
-        Get
-            Return m_EcoPathData.FirstWeightClass
+            Return m_PSDData.NWeightClasses
         End Get
     End Property
     'End Joeh
@@ -2534,13 +2520,14 @@ Public Class cCore
                 Input.iStanza = getStanzaIDForGroup(iGroup)
 
                 'Joeh
-                Input.Tcatch = m_EcoPathData.Tcatch(iGroup)
-                Input.AinLWInput = m_EcoPathData.AinLWInput(iGroup)
-                Input.BinLWInput = m_EcoPathData.BinLWInput(iGroup)
-                Input.LooInput = m_EcoPathData.LooInput(iGroup)
-                Input.WinfInput = m_EcoPathData.WinfInput(iGroup)
-                Input.t0Input = m_EcoPathData.t0Input(iGroup)
-                Input.TmaxInput = m_EcoPathData.TmaxInput(iGroup)
+                Input.Tcatch = m_PSDData.Tcatch(iGroup)
+                Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
+                Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
+                Input.LooInput = m_PSDData.LooInput(iGroup)
+                Input.WinfInput = m_PSDData.WinfInput(iGroup)
+                Input.t0Input = m_PSDData.t0Input(iGroup)
+                Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
+                Input.PSDIncluded = m_PSDData.SelectedGroup(iGroup)
                 'End Joeh
 
                 'set all the status flags to default value
@@ -2591,13 +2578,14 @@ Public Class cCore
 
                 'Joeh
                 m_EcoPathData.vbK(iGroup) = Input.VBK
-                m_EcoPathData.Tcatch(iGroup) = Input.Tcatch
-                m_EcoPathData.AinLWInput(iGroup) = Input.AinLWInput
-                m_EcoPathData.BinLWInput(iGroup) = Input.BinLWInput
-                m_EcoPathData.LooInput(iGroup) = Input.LooInput
-                m_EcoPathData.WinfInput(iGroup) = Input.WinfInput
-                m_EcoPathData.t0Input(iGroup) = Input.t0Input
-                m_EcoPathData.TmaxInput(iGroup) = Input.TmaxInput
+                m_PSDData.Tcatch(iGroup) = Input.Tcatch
+                m_PSDData.AinLWInput(iGroup) = Input.AinLWInput
+                m_PSDData.BinLWInput(iGroup) = Input.BinLWInput
+                m_PSDData.LooInput(iGroup) = Input.LooInput
+                m_PSDData.WinfInput(iGroup) = Input.WinfInput
+                m_PSDData.t0Input(iGroup) = Input.t0Input
+                m_PSDData.TmaxInput(iGroup) = Input.TmaxInput
+                m_PSDData.SelectedGroup(iGroup) = Input.PSDIncluded
                 'End Joeh
 
                 m_EcoPathData.QBinput(iGroup) = Input.QBInput
@@ -2758,13 +2746,13 @@ Public Class cCore
 
                 'Joeh
                 output.VBK = CSng(m_EcoPathData.vbK(iGroup))
-                output.Tcatch = CSng(m_EcoPathData.Tcatch(iGroup))
-                output.AinLWOutput = CSng(m_EcoPathData.AinLW(iGroup))
-                output.BinLWOutput = CSng(m_EcoPathData.BinLW(iGroup))
-                output.LooOutput = CSng(m_EcoPathData.Loo(iGroup))
-                output.WinfOutput = CSng(m_EcoPathData.Winf(iGroup))
-                output.t0Output = CSng(m_EcoPathData.t0(iGroup))
-                output.TmaxOutput = CSng(m_EcoPathData.Tmax(iGroup))
+                output.Tcatch = CSng(m_PSDData.Tcatch(iGroup))
+                output.AinLWOutput = CSng(m_PSDData.AinLW(iGroup))
+                output.BinLWOutput = CSng(m_PSDData.BinLW(iGroup))
+                output.LooOutput = CSng(m_PSDData.Loo(iGroup))
+                output.WinfOutput = CSng(m_PSDData.Winf(iGroup))
+                output.t0Output = CSng(m_PSDData.t0(iGroup))
+                output.TmaxOutput = CSng(m_PSDData.Tmax(iGroup))
                 'End Joeh
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -2860,35 +2848,35 @@ Public Class cCore
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Weight
                 For t As Integer = 1 To nAgeSteps
-                    EcopathWeight(t) = m_EcoPathData.EcopathWeight(iGroup, t)
+                    EcopathWeight(t) = m_PSDData.EcopathWeight(iGroup, t)
                 Next
                 output.EcopathWeight = EcopathWeight
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Number
                 For t As Integer = 1 To nAgeSteps
-                    EcopathNumber(t) = m_EcoPathData.EcopathNumber(iGroup, t)
+                    EcopathNumber(t) = m_PSDData.EcopathNumber(iGroup, t)
                 Next
                 output.EcopathNumber = EcopathNumber
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Biomass
                 For t As Integer = 1 To nAgeSteps
-                    EcopathBiomass(t) = m_EcoPathData.EcopathBiomass(iGroup, t)
+                    EcopathBiomass(t) = m_PSDData.EcopathBiomass(iGroup, t)
                 Next
                 output.EcopathBiomass = EcopathBiomass
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Lorenzen mortality
                 For t As Integer = 1 To nAgeSteps
-                    LorenzenMortality(t) = m_EcoPathData.LorenzenMortality(iGroup, t)
+                    LorenzenMortality(t) = m_PSDData.LorenzenMortality(iGroup, t)
                 Next
                 output.LorenzenMortality = LorenzenMortality
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' PSD
                 For wc As Integer = 1 To nWeightClasses
-                    PSD(wc) = m_EcoPathData.PSD(iGroup, wc)
+                    PSD(wc) = m_PSDData.PSD(iGroup, wc)
                 Next
                 output.PSD = PSD
                 'End Joeh
@@ -3170,7 +3158,8 @@ Public Class cCore
 
         Me.m_PSDParameters.AllowValidation = False
 
-        Me.m_PSDParameters.MyFristParameterYippee = Me.m_PSDData.VeryFirstParameterValue
+        Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
+        Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
 
         Me.m_PSDParameters.AllowValidation = True
         Return True
@@ -3178,7 +3167,8 @@ Public Class cCore
 
     Private Function UpdatePSDParameters() As Boolean
 
-        Me.m_PSDData.VeryFirstParameterValue = Me.m_PSDParameters.MyFristParameterYippee
+        Me.m_PSDData.MortalityType = Me.m_PSDParameters.MortalityType
+        Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
 
     End Function
 
