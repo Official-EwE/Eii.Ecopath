@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.8  2009/03/18 13:28:54  jeroens
+' Added PSDIncluded flag
+'
 ' Revision 1.7  2009/03/03 01:42:55  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -22,69 +25,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:17  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.35  2008/07/24 19:55:24  joeb
-' set_BioAccumRate_Flags changes
-'
-' Revision 1.34  2008/07/23 19:16:58  jeroens
-' Merged Set_GE_BA_Flags into Set_PB_QB_GE_BA_Flags
-'
-' Revision 1.33  2008/07/02 01:55:23  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.32  2008/05/29 22:22:42  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.31  2008/05/06 02:27:15  jeroens
-' Fixed poolcolor metadata min/max bug
-'
-' Revision 1.30  2008/05/05 17:34:47  jeroens
-' Removed PoolColorArgb (eek!)
-'
-' Revision 1.29  2008/05/05 08:33:56  jeroens
-' GroupColor Alpha preserved
-'
-' Revision 1.28  2007/10/05 00:56:53  jeroens
-' * BiomassAccum and BiomassAccumRate accept negative values (Fixes bug 165)
-'
-' Revision 1.27  2007/10/04 15:50:20  jeroens
-' * Fixed potential crash in PoolColorArgb
-'
-' Revision 1.26  2007/09/10 01:40:53  jeroens
-' - Removed SetNotEditableFlags
-'
-' Revision 1.25  2007/08/23 14:50:50  jeroens
-' * Moved NonMarketValue from fleet to groupinput
-'
-' Revision 1.24  2007/06/20 18:09:58  joeb
-' Change some of the meta data objects
-'
-' Revision 1.23  2007/05/30 03:08:48  jeroens
-' * Uses Set_DetImp_Flags
-'
-' Revision 1.22  2007/05/30 02:54:59  jeroens
-' * Sync'ed w cCore status flags logic
-'
-' Revision 1.21  2007/05/22 13:25:37  jeroens
-' * Nitty-gritty
-'
-' Revision 1.20  2007/03/30 04:58:13  jeroens
-' + Added PoolColor for Ecopath group inputs
-'
-' Revision 1.19  2007/03/28 01:16:30  jeroens
-' * Changed all status modification access from Public to Friend
-'
-' Revision 1.18  2007/03/26 03:47:04  jeroens
-' + BiomassArea status initialized
-'
-' Revision 1.17  2007/01/19 18:31:07  joeb
-' Changes to cValueArray constructor
-'
-' Revision 1.16  2007/01/19 00:49:50  joeb
-' Changes to cValueArray Constructor
-'
-' Revision 1.15  2006/12/19 00:20:00  jeroens
-' Added header
 '
 '==============================================================================
 
@@ -273,7 +213,7 @@ Public Class cEcoPathGroupInput
         val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBK))
         m_values.Add(val.varName, val)
 
-        'Joeh
+        'Joeh: PSD
         'Tcatch
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Tcatch))
@@ -308,7 +248,12 @@ Public Class cEcoPathGroupInput
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TmaxInput))
         m_values.Add(val.varName, val)
-        'End Joeh
+
+        'PSDIncluded
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDIncluded))
+        m_values.Add(val.varName, val)
+        'End Joeh: PSD
 
         Me.AllowValidation = True
 
@@ -775,6 +720,17 @@ Public Class cEcoPathGroupInput
             SetVariable(eVarNameFlags.TmaxInput, value)
         End Set
     End Property
+
+    Public Property PSDIncluded() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.PSDIncluded))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.PSDIncluded, value)
+        End Set
+    End Property
+
     'End Joeh
 
 #End Region
