@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.90  2009/03/18 21:08:04  jeroens
+' Woops - forgot to call PSD data CopyInputToModelArrays
+'
 ' Revision 1.89  2009/03/18 15:29:49  jeroens
 ' PSD SelectedGroup -> Include
 '
@@ -2206,6 +2209,7 @@ Public Class cCore
 
                 'copy the input data into the output data this could wait for a model run but it may be safer to do it here
                 m_EcoPathData.CopyInputToModelArrays()
+                m_PSDData.CopyInputToModelArrays()
 
                 'compute the stanza data from the parameters loaded from the model 
                 'this has to come before initializing and loading the ecopath groups because 
@@ -3163,6 +3167,8 @@ Public Class cCore
 
         Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
+        'Me.m_PSDParameters. = Me.m_PSDData.LatNWCorner
+        Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
 
         Me.m_PSDParameters.AllowValidation = True
         Return True
@@ -3314,6 +3320,7 @@ Public Class cCore
 
             'copy all input data into the modeling arrays 
             m_EcoPathData.CopyInputToModelArrays()
+            m_PSDData.CopyInputToModelArrays()
 
             'call EcoPath to estimate the missing parameters
             If (m_EcoPath.Run() = True) Or (bAllowErrors = True) Then
