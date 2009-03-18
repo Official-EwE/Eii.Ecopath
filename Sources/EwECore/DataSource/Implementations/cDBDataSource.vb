@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.34  2009/03/18 15:29:11  jeroens
+' Read/write PSD data
+' Cleaned up invalid code
+'
 ' Revision 1.33  2009/03/18 13:27:07  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 '
@@ -634,6 +638,7 @@ Public Class cDBDataSource
         bSucces = Me.LoadModelInfo()
         bSucces = bSucces And Me.LoadGroupInfo()
         bSucces = bSucces And Me.LoadFleetInfo()
+        bSucces = bSucces And Me.LoadParticleSizeDistribution()
         bSucces = bSucces And Me.LoadAuxillaryData()
 
         ecopathDS.bInitialized = bSucces
@@ -666,6 +671,7 @@ Public Class cDBDataSource
         bSucces = Me.SaveModelInfo()
         bSucces = bSucces And Me.SaveGroupInfo()
         bSucces = bSucces And Me.SaveFleetInfo()
+        bSucces = bSucces And Me.SaveParticleSizeDistribution()
         bSucces = bSucces And Me.SaveAuxillaryData()
         bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
         bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
@@ -1217,6 +1223,98 @@ Public Class cDBDataSource
 
 #End Region ' Pedigree
 
+#Region " PSD "
+
+#Region " Load "
+
+    Private Function LoadParticleSizeDistribution() As Boolean
+
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+        Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathPSD")
+        Dim bSucces As Boolean = True
+
+        If reader IsNot Nothing Then
+
+            reader.Read()
+            Try
+
+                psdDS.NAgeSteps = CInt(Me.ReadSafe(reader, "NumAgeSteps", 101))
+                psdDS.MortalityType = DirectCast(Me.ReadSafe(reader, "MortalityType", 0), ePSDMortalityTypes)
+                psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
+                psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
+                psdDS.LatNWCorner = CSng(Me.ReadSafe(reader, "LatNWCorner", 45))
+                psdDS.LatSECorner = CSng(Me.ReadSafe(reader, "LatSECorner", 45))
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+        End If
+
+        Return bSucces
+    End Function
+
+#End Region ' Load
+
+#Region " Save "
+
+    Public Function SaveParticleSizeDistribution() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim dt As DataTable = Nothing
+        Dim drow As DataRow = Nothing
+        Dim bNewRow As Boolean = False
+        Dim bSucces As Boolean = True
+
+        Try
+            writer = Me.m_db.GetWriter("EcopathPSD")
+            dt = writer.GetDataTable()
+
+            ' Find existing row
+            drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
+            bNewRow = (drow Is Nothing)
+
+            If bNewRow Then
+                drow = dt.NewRow()
+                drow("ModelID") = Me.m_core.m_EwEModelDBID
+            Else
+                drow.BeginEdit()
+            End If
+
+            drow("NumAgeSteps") = psdDS.NAgeSteps
+            drow("MortalityType") = psdDS.MortalityType
+            drow("NumWeightClasses") = psdDS.NWeightClasses
+            drow("FirstWeightClass") = psdDS.FirstWeightClass
+            drow("LatNWCorner") = psdDS.LatNWCorner
+            drow("LatSECorner") = psdDS.LatSECorner
+
+            If bNewRow Then
+                writer.AddRow(drow)
+            Else
+                drow.EndEdit()
+            End If
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while saving PSD", ex.Message))
+            bSucces = False
+        End Try
+
+        ' Save changes
+        Me.m_db.ReleaseWriter(writer, True)
+
+        Return bSucces
+    End Function
+
+#End Region ' Save
+
+#End Region ' PSD
+
 #End Region ' EwEModel
 
 #Region " Stanza "
@@ -1662,7 +1760,7 @@ Public Class cDBDataSource
                 ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
                 ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
 
-                'Joeh
+                ' PSD
                 ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
                 psdDS.Tcatch(iGroup) = CSng(reader("Tcatch"))
                 psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
@@ -1671,7 +1769,8 @@ Public Class cDBDataSource
                 psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
                 psdDS.t0Input(iGroup) = CSng(reader("t0"))
                 psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
-                'End Joeh
+                psdDS.Include(iGroup) = CBool(Me.ReadSafe(reader, "PSDInclude", False))
+                'End PSD
 
                 'variables with input output pairs
                 ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
@@ -1682,38 +1781,6 @@ Public Class cDBDataSource
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
                 ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
-
-                '' Read overriding values, if any
-                'If CSng(reader("AinLW")) > 0 Then
-                '    ' ?? = CSng(reader("AinLW"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.AinLW) = true
-                'End If
-                'If CSng(reader("BinLW")) > 0 Then
-                '    ' ?? = CSng(reader("BinLW"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.BinLW) = true
-                'End If
-                'If CSng(reader("Loo")) > 0 Then
-                '    ' ?? = CSng(reader("Loo"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.Loo) = true
-                'End If
-                'If CSng(reader("winf")) > 0 Then
-                '    ' ?? = CSng(reader("winf"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.winf) = true
-                'End If
-                'If CSng(reader("t0")) > 0 Then
-                '    ' ?? = CSng(reader("t0"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.t0) = true
-                'End If
-                'If CSng(reader("Tcatch")) > 0 Then
-                '    ' ?? = CSng(reader("Tcatch"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.Tcatch) = true
-                'Else
-                '    ' ?.Tcatch = 0
-                'End If
-                'If CSng(reader("Tmax")) > 0 Then
-                '    ' ?? = CSng(reader("Tmax"))
-                '    ' ?.GrowthInput(nGroup, eGrowthInput.Tmax) = true
-                'End If
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
@@ -1797,16 +1864,7 @@ Public Class cDBDataSource
                 drow("EmigRate") = ecopathDS.Emig(iGroup)
                 drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
-                ' Write overriding values, if any
-                ' drow("AinLW") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.AinLW), ?.AinLW, -1.0)
-                ' drow("BinLW") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.BinLW), ?.BinLW, -1.0)
-                ' drow("Loo") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.Loo), ?.Loo, -1.0)
-                ' drow("Winf") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.Winf), ?.Winf, -1.0)
-                ' drow("t0") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.t0), ?.t0, -1.0)
-                ' drow("Tcatch") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.TCatch), ?.TCatch, -1.0)
-                ' drow("Tmax") = CSng(IIf(?.GrowthInput(nGroup, eGrowthInput.Tmax), ?.Tmax, -1.0)
-
-                'Joeh
+                'PSD
                 drow("VBK") = ecopathDS.vbK(iGroup)
                 drow("Tcatch") = psdDS.Tcatch(iGroup)
                 drow("AinLW") = psdDS.AinLWInput(iGroup)
@@ -1815,7 +1873,8 @@ Public Class cDBDataSource
                 drow("Winf") = psdDS.WinfInput(iGroup)
                 drow("t0") = psdDS.t0Input(iGroup)
                 drow("Tmax") = psdDS.TmaxInput(iGroup)
-                'End Joeh
+                drow("PSDInclude") = psdDS.Include(iGroup)
+                'End PSD
 
                 drow.EndEdit()
 
