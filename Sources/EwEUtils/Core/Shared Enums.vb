@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.38  2009/03/18 13:27:24  jeroens
+' Added more PSD vars
+'
 ' Revision 1.37  2009/03/17 02:25:49  joeh
 ' Add Lorenzen mortality type
 '
@@ -1133,8 +1136,7 @@ Namespace Core
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
 
-        'Joeh
-        ''' <summary></summary>
+        'Joeh: PSD
         VBK
         Tcatch
         AinLWInput
@@ -1149,7 +1151,10 @@ Namespace Core
         t0Output
         TmaxInput
         TmaxOutput
-        'End Joeh
+        PSDIncluded
+        PSDMortalityType
+        PSDFirstWeightClass
+        'End Joeh: PSD
 
     End Enum
 
