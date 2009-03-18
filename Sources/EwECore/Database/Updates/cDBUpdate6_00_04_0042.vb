@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_0042.vb,v $
+' Revision 1.2  2009/03/18 15:21:43  jeroens
+' Cleaned up
+'
 ' Revision 1.1  2008/09/26 07:30:16  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -214,44 +217,6 @@ Public Class cDBUpdate6_00_04_00042
         db.Execute("ALTER TABLE EcopathGroup DROP COLUMN Pedigree3")
         db.Execute("ALTER TABLE EcopathGroup DROP COLUMN Pedigree4")
         db.Execute("ALTER TABLE EcopathGroup DROP COLUMN Pedigree5")
-
-        '' Populate PedigreeLevels table with defaults
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 0, 0, 80, 'Estimated by Ecopath')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 1, 0, 80, 'From other model')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 2, 0, 80, 'Guesstimates')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 3, 0.4, 50, 'Approximate or indirect method')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 4, 0.7, 30, 'Sampling based, low precision')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 5, 1, 10, 'Sampling based, high precision')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 6, 0, 0, '')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 7, 0, 0, '')", vnPedigree(0).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 0, 0, 80, 'Estimated by Ecopath')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 1, 0.1, 70, 'Guesstimates')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 2, 0.2, 60, 'From other model')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 3, 0.5, 50, 'Empirical relationships')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 4, 0.6, 40, 'Similar group/species, similar system')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 5, 0.7, 30, 'Similar group/species, same system')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 6, 0.8, 20, 'Same group/species, similar system')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 7, 1, 10, 'Same group/species, same system')", vnPedigree(1).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 0, 0, 80, 'Estimated by Ecopath')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 1, 0.1, 70, 'Guesstimates')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 2, 0.2, 60, 'From other model')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 3, 0.5, 50, 'Empirical relationships')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 4, 0.6, 40, 'Similar group/species, similar system')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 5, 0.7, 30, 'Similar group/species, same system')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 6, 0.8, 20, 'Same group/species, similar system')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 7, 1, 10, 'Same group/species, same system')", vnPedigree(2).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 0, 0, 80, 'General knowledge of related group/species')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 1, 0, 80, 'From other model')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 2, 0.2, 60, 'General knowledge of same group/species')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 3, 0.5, 50, 'Qualitative diet composition study')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 4, 0.7, 30, 'Quantitative but limited diet composition study')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 5, 1, 10, 'Quantitative, detailed, diet composition study')", vnPedigree(3).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 0, 0.1, 70, 'Guesstimates')", vnPedigree(4).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 1, 0.1, 70, 'From other model')", vnPedigree(4).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 2, 0.2, 80, 'FAO statistics')", vnPedigree(4).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 3, 0.5, 50, 'National statistics')", vnPedigree(4).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 4, 0.7, 30, 'Local study, low precision/incomplete')", vnPedigree(4).ToString()))
-        'db.Execute(String.Format("INSERT INTO PedigreeLevel (VariableName, Plevel, Pvalue, Pvar, Description) VALUES('{0}', 5, 1, 10, 'Local study, high precision/complete')", vnPedigree(4).ToString()))
 
         Return bSucces
     End Function
