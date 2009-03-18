@@ -255,6 +255,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_00_05_001.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database\Updates\cDBUpdate6_00_05_005.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\cEcoPathStats.vb" />
