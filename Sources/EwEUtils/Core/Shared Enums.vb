@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.39  2009/03/18 15:08:16  jeroens
+' PSD mort enum values all have hard-coded integer values
+'
 ' Revision 1.38  2009/03/18 13:27:24  jeroens
 ' Added more PSD vars
 '
@@ -1760,14 +1763,15 @@ Namespace Core
 
 #End Region ' Datasource types
 
-    'Joeh
 #Region "PSD mortality types"
+
     Public Enum ePSDMortalityTypes
         ''' <summary>Group P/B.</summary>
         GroupZ = 0
         ''' <summary>Lorenzen-variable.</summary>
-        Lorenzen
+        Lorenzen = 1
     End Enum
+
 #End Region ' PSD mortality types
-    'End Joeh
+
 End Namespace ' Core
