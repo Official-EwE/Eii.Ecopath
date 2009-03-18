@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.3  2009/03/18 15:28:01  jeroens
+' SelectedGroup -> Include
+'
 ' Revision 1.2  2009/03/18 13:25:58  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 '
@@ -25,11 +28,12 @@ Public Class cPSDDatastructures
 
     Public NAgeSteps As Integer = 101
     Public MortalityType As ePSDMortalityTypes = ePSDMortalityTypes.GroupZ
-    Public LatNWCorner As Single = 45
-    Public LatSECorner As Single = 45
-    Public SelectedGroup() As Boolean
     Public NWeightClasses As Integer = 25
     Public FirstWeightClass As Single = 0.125
+    Public LatNWCorner As Single = 45
+    Public LatSECorner As Single = 45
+    ''' <summary>Flag (x group) stating whether groups are included in PSD analysis.</summary>
+    Public Include() As Boolean
 
     Public Tcatch() As Single
     Public AinLW() As Single
@@ -82,7 +86,7 @@ Public Class cPSDDatastructures
         ReDim LorenzenMortality(NumGroups, NAgeSteps)
 
         ReDim PSD(NumGroups, NWeightClasses)
-        ReDim SelectedGroup(NumGroups)
+        ReDim Include(NumGroups)
 
         Return True
 
