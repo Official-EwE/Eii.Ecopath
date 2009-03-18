@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.25  2009/03/18 15:28:27  jeroens
+' PSD SelectedGroup -> Include
+'
 ' Revision 1.24  2009/03/18 13:26:52  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 '
@@ -3074,7 +3077,7 @@ nextJ:
             Dim ScaleFactor As Single
 
             For iGroup As Integer = 1 To m_Data.NumLiving
-                If Me.m_psd.SelectedGroup(iGroup) Then
+                If Me.m_psd.Include(iGroup) Then
                     '(I) Estimate Weight, Number ad Biomass over time
                     For iTimeStep As Integer = 1 To Me.m_psd.NAgeSteps
                         sTime = (iTimeStep - 1) * Me.m_psd.Tmax(iGroup) / (Me.m_psd.NAgeSteps - 1)

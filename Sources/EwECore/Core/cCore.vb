@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.89  2009/03/18 15:29:49  jeroens
+' PSD SelectedGroup -> Include
+'
 ' Revision 1.88  2009/03/18 13:31:32  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 ' Moved PSD methods to PSD classes where possible
@@ -2527,7 +2530,7 @@ Public Class cCore
                 Input.WinfInput = m_PSDData.WinfInput(iGroup)
                 Input.t0Input = m_PSDData.t0Input(iGroup)
                 Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
-                Input.PSDIncluded = m_PSDData.SelectedGroup(iGroup)
+                Input.PSDIncluded = m_PSDData.Include(iGroup)
                 'End Joeh
 
                 'set all the status flags to default value
@@ -2585,7 +2588,7 @@ Public Class cCore
                 m_PSDData.WinfInput(iGroup) = Input.WinfInput
                 m_PSDData.t0Input(iGroup) = Input.t0Input
                 m_PSDData.TmaxInput(iGroup) = Input.TmaxInput
-                m_PSDData.SelectedGroup(iGroup) = Input.PSDIncluded
+                m_PSDData.Include(iGroup) = Input.PSDIncluded
                 'End Joeh
 
                 m_EcoPathData.QBinput(iGroup) = Input.QBInput
