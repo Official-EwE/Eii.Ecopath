@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.40  2009/03/18 15:35:20  joeb
+' Added GameEconomic enums
+'
 ' Revision 1.39  2009/03/18 15:08:16  jeroens
 ' PSD mort enum values all have hard-coded integer values
 '
@@ -1135,6 +1138,10 @@ Namespace Core
 
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
         GameGroupCatch
+
+        'Economic data for the game
+        GameEconomicCost
+        GameEconomicProfit
 
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName
