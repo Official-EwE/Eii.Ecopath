@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.7  2009/03/18 13:32:05  jeroens
+' Uses implemented PSD classes
+'
 ' Revision 1.6  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -47,6 +50,7 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
 
             'Define grid dimensions
+            Dim parms As cPSDParameters = core.ParticleSizeDistributionParameters
             Me.Redim(1, core.nWeightClasses + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
@@ -54,7 +58,7 @@ Namespace Ecopath.Output
 
             ' Dynamic column header - weight class
             For wtClassIndex As Integer = 1 To core.nWeightClasses
-                Me(0, wtClassIndex + 1) = New EwEColumnHeaderCell((core.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
+                Me(0, wtClassIndex + 1) = New EwEColumnHeaderCell((parms.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
             Next
 
             ' Sum value column
@@ -64,10 +68,11 @@ Namespace Ecopath.Output
         End Sub
 
         Protected Overrides Sub FillData()
+
             Dim core As cCore = cCore.GetInstance()
-            Dim source As cCoreGroupBase = Nothing
+            Dim groupInput As cEcoPathGroupInput = Nothing
+            Dim groupOutput As cEcoPathGroupOutput = Nothing
             Dim iRow As Integer = -1
-            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
 
             ' Remove existing rows
             Me.RowsCount = 1
@@ -76,13 +81,15 @@ Namespace Ecopath.Output
             'If core.nWeightClasses = 0 Then Return
 
             ' Create rows for groups and sum values in each row
-            For rowIndex As Integer = 1 To core.nLivingGroups
-                If core.IsGroupSelected(rowIndex) Then
-                    source = core.EcoPathGroupOutputs(rowIndex)
+            For iGroup As Integer = 1 To core.nLivingGroups
+
+                groupInput = core.EcoPathGroupInputs(iGroup)
+                If groupInput.PSDIncluded Then
+                    groupOutput = core.EcoPathGroupOutputs(iGroup)
                     iRow = Me.AddRow()
-                    FillRows(iRow, source)
+                    FillRows(iRow, groupOutput)
                 End If
-            Next rowIndex
+            Next iGroup
 
             'Create "Sum" row (sum values in each column)
             FillTotalValueRow()
@@ -90,6 +97,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
+
             Dim core As cCore = cCore.GetInstance()
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim propManager As cPropertyManager = cPropertyManager.GetInstance()
@@ -127,13 +135,14 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillTotalValueRow()
-            Dim iRow As Integer
+
             Dim core As cCore = cCore.GetInstance()
+            Dim groupInput As cEcoPathGroupInput = Nothing
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
-
             Dim pmPropertyManager As cPropertyManager = cPropertyManager.GetInstance()
             Dim propPSD As cProperty = Nothing
+            Dim iRow As Integer
             '    Dim propMarketPrice As cProperty = Nothing
             '    Dim alProdLandingsMarketPrice As ArrayList = New ArrayList()
             '    Dim opProdLandingsMarketPrice As cMultiOperation = Nothing
@@ -159,7 +168,8 @@ Namespace Ecopath.Output
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To core.nLivingGroups
-                    If core.IsGroupSelected(rowIndex) Then
+                    groupInput = core.EcoPathGroupInputs(rowIndex)
+                    If groupInput.PSDIncluded Then
                         sourceSec = core.EcoPathGroupOutputs(rowIndex)
                         ' Get the index PSD property
                         propPSD = pmPropertyManager.GetProperty(sourceSec, eVarNameFlags.PSD, source)

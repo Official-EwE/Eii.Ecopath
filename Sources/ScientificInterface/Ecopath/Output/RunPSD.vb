@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.9  2009/03/18 13:32:05  jeroens
+' Uses implemented PSD classes
+'
 ' Revision 1.8  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -115,7 +118,10 @@ Namespace Ecopath.Output
 
         Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String, ByVal pane As GraphPane)
-            Pane.Title.Text = strTitle
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
+            pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = False
             pane.Title.FontSpec.Size = 16
 
@@ -127,8 +133,8 @@ Namespace Ecopath.Output
             pane.YAxis.Title.Text = strYAxisTitle
             pane.YAxis.Title.FontSpec.Size = 14
 
-            pane.XAxis.Scale.Min = Math.Log10(m_core.FirstWeightClass)
-            pane.XAxis.Scale.Max = Math.Log10(m_core.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+            pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
+            pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.MinorTic.IsAllTics = False
@@ -138,6 +144,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub AddCurves(ByVal pane As GraphPane)
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim sSystemPSD(m_core.nWeightClasses) As Single
@@ -154,7 +162,7 @@ Namespace Ecopath.Output
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
-                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     'PSD plot
                     resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
@@ -217,6 +225,8 @@ Namespace Ecopath.Output
 
         Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
                                    ByVal sSystemPSD() As Single)
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sXValue As Single = 0
             Dim dSumX As Double = 0
             Dim dSumY As Double = 0
@@ -228,7 +238,7 @@ Namespace Ecopath.Output
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
-                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     dSumX = dSumX + Math.Log10(sXValue)
                     dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000)
@@ -240,7 +250,7 @@ Namespace Ecopath.Output
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
-                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 100000) - dYMean)
                     dSumXdevSq = dSumXdevSq + (Math.Log10(sXValue) - dXMean) ^ 2

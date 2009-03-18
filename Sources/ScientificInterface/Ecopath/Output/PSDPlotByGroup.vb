@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.14  2009/03/18 13:32:05  jeroens
+' Uses implemented PSD classes
+'
 ' Revision 1.13  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -89,15 +92,18 @@ Namespace Ecopath.Output
 #End Region 'Constructor
 
 #Region "Event handlers"
+
         Private Sub PSDPlotByGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             PopulateGroupBoxes()
             InitMasterPane()
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT)
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL)
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
             CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD)
-            If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
                 CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY)
             End If
             llbGroups.SelectedIndex = 0
@@ -111,12 +117,16 @@ Namespace Ecopath.Output
 
 #Region "Helper methods"
         Private Sub PopulateGroupBoxes()
-            llbGroups.SuspendLayout()
 
+            Dim group As cEcoPathGroupInput = Nothing
+
+            llbGroups.SuspendLayout()
             llbGroups.Items.Clear()
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
+
             For i As Integer = 1 To m_core.nLivingGroups
-                If m_core.IsGroupSelected(i) Then
+                group = Me.m_core.EcoPathGroupInputs(i)
+                If group.PSDIncluded Then
                     llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
@@ -152,6 +162,9 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub InitGraphPane(ByVal strTitle As String, ByVal paneType As ePaneTypes, ByRef pane As GraphPane)
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
             pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = True
             pane.Title.FontSpec.Size = 12
@@ -164,8 +177,8 @@ Namespace Ecopath.Output
 
             Select Case paneType
                 Case ePaneTypes.PSD
-                    pane.XAxis.Scale.Min = Math.Log10(m_core.FirstWeightClass)
-                    pane.XAxis.Scale.Max = Math.Log10(m_core.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+                    pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
+                    pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
                     pane.YAxis.Scale.Min = 0
                     'pane.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
                 Case Else
@@ -191,8 +204,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub AddCurves()
+
             'Add single curve into graph first
             'Results data structure
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
@@ -200,7 +216,7 @@ Namespace Ecopath.Output
             Dim sSystemPSD(m_core.nWeightClasses) As Single
 
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
-            Select Case m_core.PSDMortalityType
+            Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
                     InitLists(resultLists, 4)
                 Case ePSDMortalityTypes.Lorenzen
@@ -224,7 +240,7 @@ Namespace Ecopath.Output
                     resultLists(2).Add(sXValue, grpOutput.EcopathBiomass(iTimeStep))
                 End If
                 'Lorenzen mortality plot if mortality type is Lorenzen
-                If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+                If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
                     If grpOutput.LorenzenMortality(iTimeStep) > 0 Then
                         resultLists(4).Add(sXValue, grpOutput.LorenzenMortality(iTimeStep))
                     End If
@@ -235,7 +251,7 @@ Namespace Ecopath.Output
             FindSystemPSD(sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
-                sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
                     'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
                     '* 100000 for plotting purpose
@@ -257,8 +273,9 @@ Namespace Ecopath.Output
             AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+
             'Lorenzen mortality plot if mortality type is Lorenzen
-            If m_core.PSDMortalityType = ePSDMortalityTypes.Lorenzen Then
+            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
                 AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
             End If
         End Sub

@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.8  2009/03/18 13:32:04  jeroens
+' Uses implemented PSD classes
+'
 ' Revision 1.7  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -70,13 +73,17 @@ Namespace Ecopath.Output
 
 #Region "Helper methods"
         Private Sub PopulateGroupBoxes()
-            llbGroups.SuspendLayout()
 
+            Dim group As cEcoPathGroupInput = Nothing
+
+            llbGroups.SuspendLayout()
             llbGroups.Items.Clear()
+
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nLivingGroups
-                If m_core.IsGroupSelected(i) Then
-                    llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                group = Me.m_core.EcoPathGroupInputs(i)
+                If group.PSDIncluded Then
+                    llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(group))
                 End If
             Next
 
@@ -93,6 +100,9 @@ Namespace Ecopath.Output
 
         Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String, ByVal pane As GraphPane)
+
+            Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
             pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = False
             pane.Title.FontSpec.Size = 16
@@ -105,8 +115,8 @@ Namespace Ecopath.Output
             pane.YAxis.Title.Text = strYAxisTitle
             pane.YAxis.Title.FontSpec.Size = 14
 
-            pane.XAxis.Scale.Min = Math.Log10(m_core.FirstWeightClass)
-            pane.XAxis.Scale.Max = Math.Log10(m_core.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+            pane.XAxis.Scale.Min = Math.Log10(psd.FirstWeightClass)
+            pane.XAxis.Scale.Max = Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.MinorTic.IsAllTics = False
@@ -116,6 +126,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub AddCurves(ByVal pane As GraphPane)
+
+            Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
@@ -131,7 +143,7 @@ Namespace Ecopath.Output
             For igroup As Integer = 1 To m_core.nLivingGroups
                 grpOutput = m_core.EcoPathGroupOutputs(igroup)
                 For iWtClass As Integer = 1 To m_core.nWeightClasses
-                    sXValue = CSng(m_core.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
                     If sSystemPSD(iWtClass) * 100000 > 0 Then
                         'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
                         '* 100000 for plotting purpose
