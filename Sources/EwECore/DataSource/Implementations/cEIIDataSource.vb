@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.9  2009/03/18 13:27:09  jeroens
+' Moved PSD data from EcopathDS to PSDDS
+'
 ' Revision 1.8  2009/02/27 07:55:15  jeroens
 ' Changed vbK placement
 '
@@ -215,6 +218,7 @@ Public Class cEIIDataSource
         'read the contents of the eii file into an EcopathParamters object
         'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
         Dim pvar As Single
         Dim i As Integer
         Dim j As Integer
@@ -249,9 +253,9 @@ Public Class cEIIDataSource
         Try
             Input(fnum, ecopathDS.NumGroups) : Input(fnum, ecopathDS.NumLiving) : Input(fnum, Me.m_core.m_EwEModelUnitCurrency) : Input(fnum, ecopathDS.currUnitIndex)
 
-            If Not ecopathDS.redimGroupVariables() Then
+            If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
                 LoadModel = False
-                cLog.Write(Me.ToString + ".LoadEcopath(...) Failed to Re-Dimension EcoPath Parameter arrays.")
+                cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
                 Exit Function
             End If
 
@@ -569,9 +573,11 @@ Public Class cEIIDataSource
             Implements IEcopathDataSource.RemoveGroup
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
 
         ecopathDS.NumGroups -= 1
         ecopathDS.redimGroupVariables()
+        psdDS.redimGroupVariables()
 
         If m_core.m_EcoSimData IsNot Nothing Then
             m_core.m_EcoSimData.nGroups -= 1

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.33  2009/03/18 13:27:07  jeroens
+' Moved PSD data from EcopathDS to PSDDS
+'
 ' Revision 1.32  2009/03/17 18:19:03  jeroens
 ' Time series cleared when ecosim scenario is loaded
 '
@@ -1607,6 +1610,7 @@ Public Class cDBDataSource
     Private Function LoadGroupInfo() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
         Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
         Dim iGroup As Integer = 1
         Dim sTemp As Single = 0.0
@@ -1615,11 +1619,21 @@ Public Class cDBDataSource
 
         ' Init data structure
         ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
+        psdDS.NumGroups = ecopathDS.NumGroups
+
         ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
+        psdDS.NumLiving = ecopathDS.NumLiving
+
         ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
+
 
         ' Allocate space
         If (Not ecopathDS.redimGroupVariables()) Then
+            ' It would be quite remarkable to fail here... log message?
+            Return False
+        End If
+        ' Allocate space
+        If (Not psdDS.redimGroupVariables()) Then
             ' It would be quite remarkable to fail here... log message?
             Return False
         End If
@@ -1650,13 +1664,13 @@ Public Class cDBDataSource
 
                 'Joeh
                 ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
-                ecopathDS.Tcatch(iGroup) = CSng(reader("Tcatch"))
-                ecopathDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
-                ecopathDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
-                ecopathDS.LooInput(iGroup) = CSng(reader("Loo"))
-                ecopathDS.WinfInput(iGroup) = CSng(reader("Winf"))
-                ecopathDS.t0Input(iGroup) = CSng(reader("t0"))
-                ecopathDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
+                psdDS.Tcatch(iGroup) = CSng(reader("Tcatch"))
+                psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
+                psdDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
+                psdDS.LooInput(iGroup) = CSng(reader("Loo"))
+                psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
+                psdDS.t0Input(iGroup) = CSng(reader("t0"))
+                psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
                 'End Joeh
 
                 'variables with input output pairs
@@ -1735,6 +1749,7 @@ Public Class cDBDataSource
     Private Function SaveGroupInfo() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
@@ -1793,13 +1808,13 @@ Public Class cDBDataSource
 
                 'Joeh
                 drow("VBK") = ecopathDS.vbK(iGroup)
-                drow("Tcatch") = ecopathDS.Tcatch(iGroup)
-                drow("AinLW") = ecopathDS.AinLWInput(iGroup)
-                drow("BinLW") = ecopathDS.BinLWInput(iGroup)
-                drow("Loo") = ecopathDS.LooInput(iGroup)
-                drow("Winf") = ecopathDS.WinfInput(iGroup)
-                drow("t0") = ecopathDS.t0Input(iGroup)
-                drow("Tmax") = ecopathDS.TmaxInput(iGroup)
+                drow("Tcatch") = psdDS.Tcatch(iGroup)
+                drow("AinLW") = psdDS.AinLWInput(iGroup)
+                drow("BinLW") = psdDS.BinLWInput(iGroup)
+                drow("Loo") = psdDS.LooInput(iGroup)
+                drow("Winf") = psdDS.WinfInput(iGroup)
+                drow("t0") = psdDS.t0Input(iGroup)
+                drow("Tmax") = psdDS.TmaxInput(iGroup)
                 'End Joeh
 
                 drow.EndEdit()

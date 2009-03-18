@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcopathDataStructures.vb,v $
+' Revision 1.15  2009/03/18 13:26:17  jeroens
+' Moved PSD data from EcopathDS to PSDDS
+'
 ' Revision 1.14  2009/03/17 23:37:34  joeh
 ' Add codes for the Selected Group feature
 '
@@ -303,86 +306,6 @@ Public Class cEcopathDataStructures
     ''' <remarks>These are the variables that need to be computed be Ecopath</remarks>
     Public mis() As Integer
 
-    'Joeh
-    Public Tcatch() As Single
-    Public AinLW() As Single
-    Public BinLW() As Single
-    Public Loo() As Single
-    Public Winf() As Single
-    Public t0() As Single
-    Public Tmax() As Single
-
-    Public AinLWInput() As Single
-    Public BinLWInput() As Single
-    Public LooInput() As Single
-    Public WinfInput() As Single
-    Public t0Input() As Single
-    Public TmaxInput() As Single
-
-    Public EcopathWeight(,) As Single
-    Public EcopathNumber(,) As Single
-    Public EcopathBiomass(,) As Single
-    Public LorenzenMortality(,) As Single
-    Public PSD(,) As Single
-    'End Joeh
-#End Region
-
-#Region " Public Properties "
-    'Joeh
-    Public ReadOnly Property NAgeSteps() As Integer
-        Get
-            Return 101
-        End Get
-    End Property
-
-    Public ReadOnly Property PSDMortalityType() As Integer
-        Get
-            Return ePSDMortalityTypes.GroupZ 'actually a user input variable
-            'Return ePSDMortalityTypes.Lorenzen 'actually a user input variable
-        End Get
-    End Property
-
-    Public ReadOnly Property LatNWCorner() As Single
-        Get
-            Return 45 'actually a user input variable
-        End Get
-    End Property
-
-    Public ReadOnly Property LatSECorner() As Single
-        Get
-            Return 45 'actually a user input variable
-        End Get
-    End Property
-
-    Public ReadOnly Property IsGroupSelected() As Boolean()
-        Get
-            Dim grpSelected(NumLiving) As Boolean
-
-            For i As Integer = 1 To NumLiving
-                grpSelected(i) = False
-            Next
-            grpSelected(1) = True
-            grpSelected(2) = True
-            grpSelected(3) = True
-            grpSelected(4) = True
-            grpSelected(5) = True
-
-            Return grpSelected
-        End Get
-    End Property
-
-    Public ReadOnly Property NWeightClasses() As Integer
-        Get
-            Return 25 'actually a user input variable
-        End Get
-    End Property
-
-    Public ReadOnly Property FirstWeightClass() As Single
-        Get
-            Return 0.125 'actually a user input variable 
-        End Get
-    End Property
-    'End Joeh
 #End Region
 
 #Region " Borrowed from EcoRanger "
@@ -520,31 +443,6 @@ Public Class cEcopathDataStructures
 
         ' GearVariables(True)
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
-
-        'Joeh
-        ReDim Tcatch(NumGroups)
-
-        ReDim AinLW(NumGroups)
-        ReDim BinLW(NumGroups)
-        ReDim Loo(NumGroups)
-        ReDim Winf(NumGroups)
-        ReDim t0(NumGroups)
-        ReDim Tmax(NumGroups)
-
-        ReDim AinLWInput(NumGroups)
-        ReDim BinLWInput(NumGroups)
-        ReDim LooInput(NumGroups)
-        ReDim WinfInput(NumGroups)
-        ReDim t0Input(NumGroups)
-        ReDim TmaxInput(NumGroups)
-
-        ReDim EcopathWeight(NumGroups, NAgeSteps)
-        ReDim EcopathNumber(NumGroups, NAgeSteps)
-        ReDim EcopathBiomass(NumGroups, NAgeSteps)
-        ReDim LorenzenMortality(NumGroups, NAgeSteps)
-
-        ReDim PSD(NumGroups, NWeightClasses)
-        'End Joeh
 
         Return True
     End Function
@@ -998,15 +896,6 @@ Public Class cEcopathDataStructures
             QBinput.CopyTo(QB, 0)
             GEinput.CopyTo(GE, 0)
 
-            'Joeh
-            AinLWInput.CopyTo(AinLW, 0)
-            BinLWInput.CopyTo(BinLW, 0)
-            LooInput.CopyTo(Loo, 0)
-            WinfInput.CopyTo(Winf, 0)
-            t0Input.CopyTo(t0, 0)
-            TmaxInput.CopyTo(Tmax, 0)
-            'End Joeh
-
             ' copy dc
             For i As Integer = 0 To Me.NumGroups
                 For j As Integer = 0 To Me.NumGroups
@@ -1296,30 +1185,6 @@ Public Class cEcopathDataStructures
             dest.Host = Host.Clone
             mis.CopyTo(dest.mis, 0)
 
-            'Joeh
-            Tcatch.CopyTo(dest.Tcatch, 0)
-
-            AinLW.CopyTo(dest.AinLW, 0)
-            BinLW.CopyTo(dest.BinLW, 0)
-            Loo.CopyTo(dest.Loo, 0)
-            Winf.CopyTo(dest.Winf, 0)
-            t0.CopyTo(dest.t0, 0)
-            Tmax.CopyTo(dest.Tmax, 0)
-
-            AinLWInput.CopyTo(dest.AinLWInput, 0)
-            BinLWInput.CopyTo(dest.BinLWInput, 0)
-            LooInput.CopyTo(dest.LooInput, 0)
-            WinfInput.CopyTo(dest.WinfInput, 0)
-            t0Input.CopyTo(dest.t0Input, 0)
-            TmaxInput.CopyTo(dest.TmaxInput, 0)
-
-            dest.EcopathWeight = EcopathWeight.Clone
-            dest.EcopathNumber = EcopathNumber.Clone
-            dest.EcopathBiomass = EcopathBiomass.Clone
-            dest.LorenzenMortality = LorenzenMortality.Clone
-
-            dest.PSD = PSD.Clone
-            'End Joeh
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)
         End Try

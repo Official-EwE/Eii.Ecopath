@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.9  2009/03/18 13:27:50  jeroens
+' Moved PSD data from EcopathDS to PSDDS
+'
 ' Revision 1.8  2009/03/17 02:25:49  joeh
 ' Add Lorenzen mortality type
 '
@@ -233,52 +236,52 @@ Public Class cEcoPathGroupOutput
 
             'Joeh
             'A in LW
-            If m_core.m_EcoPathData.AinLW(Me.Index) <> m_core.m_EcoPathData.AinLWInput(Me.Index) Then
+            If m_core.m_PSDData.AinLW(Me.Index) <> m_core.m_PSDData.AinLWInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.AinLWOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.AinLWOutput, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.AinLWOutput, m_core.m_EcoPathData.AinLW(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.AinLWOutput, m_core.m_PSDData.AinLW(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             'B in LW
-            If m_core.m_EcoPathData.BinLW(Me.Index) <> m_core.m_EcoPathData.BinLWInput(Me.Index) Then
+            If m_core.m_PSDData.BinLW(Me.Index) <> m_core.m_PSDData.BinLWInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.BinLWOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.BinLWOutput, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.BinLWOutput, m_core.m_EcoPathData.BinLW(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.BinLWOutput, m_core.m_PSDData.BinLW(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             'Loo 
-            If m_core.m_EcoPathData.Loo(Me.Index) <> m_core.m_EcoPathData.LooInput(Me.Index) Then
+            If m_core.m_PSDData.Loo(Me.Index) <> m_core.m_PSDData.LooInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.LooOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.LooOutput, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.LooOutput, m_core.m_EcoPathData.Loo(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.LooOutput, m_core.m_PSDData.Loo(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             'Winf 
-            If m_core.m_EcoPathData.Winf(Me.Index) <> m_core.m_EcoPathData.WinfInput(Me.Index) Then
+            If m_core.m_PSDData.Winf(Me.Index) <> m_core.m_PSDData.WinfInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.WinfOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.WinfOutput, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.WinfOutput, m_core.m_EcoPathData.Winf(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.WinfOutput, m_core.m_PSDData.Winf(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             't0
-            If m_core.m_EcoPathData.t0(Me.Index) <> m_core.m_EcoPathData.t0Input(Me.Index) Then
+            If m_core.m_PSDData.t0(Me.Index) <> m_core.m_PSDData.t0Input(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.t0Output, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.t0Output, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.t0Output, m_core.m_EcoPathData.t0(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.t0Output, m_core.m_PSDData.t0(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             'Tmax
-            If m_core.m_EcoPathData.Tmax(Me.Index) <> m_core.m_EcoPathData.TmaxInput(Me.Index) Then
+            If m_core.m_PSDData.Tmax(Me.Index) <> m_core.m_PSDData.TmaxInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.TmaxOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.TmaxOutput, eStatusFlags.ValueComputed)
             End If
-            SetNullFlag(eVarNameFlags.TmaxOutput, m_core.m_EcoPathData.Tmax(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            SetNullFlag(eVarNameFlags.TmaxOutput, m_core.m_PSDData.Tmax(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
             'End Joeh
 
             'test for NULL values in other variables
