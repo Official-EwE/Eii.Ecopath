@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.2  2009/03/18 13:25:22  jeroens
+' Implemented v1.0
+'
 ' Revision 1.1  2009/03/16 16:55:57  jeroens
 ' Initial version
 '
@@ -22,19 +25,28 @@ Public Class cPSDParameters
     Public Sub New(ByRef m_core As cCore)
         MyBase.New(m_core)
 
+        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_dataType = eDataTypes.ParticleSizeDistribution
 
         Try
-            'no data validation at this time
-            Me.AllowValidation = False
-            m_coreComponent = eCoreComponentType.EcoPath
-            m_dataType = eDataTypes.ParticleSizeDistribution
 
             Dim val As cValue
             Dim meta As cVariableMetaData
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, m_coreComponent, Index, cCore.NULL_VALUE)
 
-            ' Define variables here
+            'no data validation at this time
+            Me.AllowValidation = False
+
+            'PSDMortalityType
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.PSDMortalityType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDMortalityType))
+            m_values.Add(val.varName, val)
+
+            'PSDFirstWeightClass
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
+            m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -51,20 +63,25 @@ Public Class cPSDParameters
 
 #Region "Variables via dot (.) operator"
 
-    ''' <summary>
-    ''' </summary>
-    ''' <value></value>
-    Public Property MyFristParameterYippee() As Single
-
+    Public Property MortalityType() As ePSDMortalityTypes
         Get
-            'Return CType(GetVariable(eVarNameFlags.NotSet), Single)
-            Return 42.0!
+            Return DirectCast(GetVariable(eVarNameFlags.PSDMortalityType), ePSDMortalityTypes)
+        End Get
+
+        Set(ByVal value As ePSDMortalityTypes)
+            SetVariable(eVarNameFlags.PSDMortalityType, value)
+        End Set
+    End Property
+
+
+    Public Property FirstWeightClass() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.PSDFirstWeightClass))
         End Get
 
         Set(ByVal value As Single)
-            'SetVariable(eVarNameFlags.NotSet, value)
+            SetVariable(eVarNameFlags.PSDFirstWeightClass, value)
         End Set
-
     End Property
 
 #End Region
