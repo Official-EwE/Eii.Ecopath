@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.3  2009/03/19 22:23:39  jeroens
+' Added Lohrenzen vars
+'
 ' Revision 1.2  2009/03/18 13:25:22  jeroens
 ' Implemented v1.0
 '
@@ -48,6 +51,16 @@ Public Class cPSDParameters
             val = New cValue(New Integer, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
             m_values.Add(val.varName, val)
 
+            'LohrenzenLatNWCorner
+            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0)
+            val = New cValue(New Single, eVarNameFlags.LohrenzenLatNWCorner, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LohrenzenLatNWCorner))
+            m_values.Add(val.varName, val)
+
+            'LohrenzenLatSECorner
+            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0)
+            val = New cValue(New Single, eVarNameFlags.LohrenzenLatSECorner, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LohrenzenLatSECorner))
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -73,7 +86,6 @@ Public Class cPSDParameters
         End Set
     End Property
 
-
     Public Property FirstWeightClass() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.PSDFirstWeightClass))
@@ -81,6 +93,26 @@ Public Class cPSDParameters
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.PSDFirstWeightClass, value)
+        End Set
+    End Property
+
+    Public Property LohrenzenLatNWCorner() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.LohrenzenLatNWCorner))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.LohrenzenLatNWCorner, value)
+        End Set
+    End Property
+
+    Public Property LohrenzenLatSECorner() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.LohrenzenLatSECorner))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.LohrenzenLatSECorner, value)
         End Set
     End Property
 
