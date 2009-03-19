@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.39  2009/03/19 22:58:13  joeb
+' Fixed bug Ecosim results not getting cleared out
+'
 ' Revision 1.38  2009/03/19 18:57:24  joeb
 ' Fix bug in cEcosimResults Catch not computed properly
 '
@@ -1601,6 +1604,8 @@ Public Property PluginManager() As cPluginManager
                 Dim SumEf As Single
                 Dim iflt As Integer
                 Dim igrp As Integer
+
+                Me.m_Results.clear()
 
                 m_Results.CurrentT = iTime
                 'increment the number of time steps in the summary data

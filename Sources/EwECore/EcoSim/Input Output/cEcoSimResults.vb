@@ -76,4 +76,18 @@ Public Class cEcoSimResults
 
     End Sub
 
+
+    Public Sub clear()
+
+        Array.Clear(Me.Biomass, 0, nGroups)
+        Array.Clear(Me.Yield, 0, nGroups)
+        Array.Clear(Me.FishCount, 0, nGroups)
+
+        Array.Clear(Me.BCatch, 0, BCatch.Length)
+        Array.Clear(Me.m_hasSRData, 0, m_hasSRData.Length)
+        Array.Clear(Me.BRecruitment, 0, BRecruitment.Length)
+        Array.Clear(Me.BStock, 0, BStock.Length)
+
+    End Sub
+
 End Class
