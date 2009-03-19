@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.4  2009/03/19 16:13:42  jeroens
+' X mark can be suppressed
+'
 ' Revision 1.3  2009/03/02 01:58:07  jeroens
 ' Connected XMarkValue, YMarkValue
 '
@@ -60,6 +63,7 @@ Namespace Ecosim
 
             MyBase.New(core, stb, stbtb, sp, sptb)
 
+            Me.SketchPad.ShowXMark = True
             Me.BioPercent = bp
         End Sub
 

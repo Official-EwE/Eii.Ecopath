@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.5  2009/03/19 16:13:43  jeroens
+' X mark can be suppressed
+'
 ' Revision 1.4  2009/03/02 17:43:41  jeroens
 ' Cleaned up
 '
@@ -109,6 +112,8 @@ Namespace Controls
         Private m_sXMarkValue As Single = cCore.NULL_VALUE
         ''' <summary>Vertical mark line label.</summary>
         Private m_strXMarkLabel As String = ""
+        ''' <summary></summary>
+        Private m_bShowXMark As Boolean = False
         ''' <summary></summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
 
@@ -316,11 +321,22 @@ Namespace Controls
             End Set
         End Property
 
+        Public Property ShowXMark() As Boolean
+            Get
+                Return Me.m_bShowXMark
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowXMark = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         ''' <summary>
         ''' Value for vertical (X mark) line
         ''' </summary>
         Public Property XMarkValue() As Single
             Get
+                If Not Me.ShowXMark Then Return cCore.NULL_VALUE
                 Return Me.m_sXMarkValue
             End Get
             Set(ByVal value As Single)
@@ -530,6 +546,8 @@ Namespace Controls
         End Sub
 
         Private Function IsNearXMark(ByVal sX As Single) As Boolean
+
+            If Not m_bShowXMark Then Return False
 
             ' Check if x value is near x mark
             Dim sYMax As Single = Me.YAxisMaxValue
