@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.6  2009/03/19 16:56:14  jeroens
+' Uses GroupListBox
+'
 ' Revision 1.5  2009/02/05 17:48:37  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -15,58 +18,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:46  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.37  2008/09/23 16:14:56  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.36  2008/09/09 14:44:51  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.35  2008/08/02 03:04:14  jeroens
-' Renamed resources
-'
-' Revision 1.34  2008/05/16 17:49:05  jeroens
-' Removed time series button
-' Show all fits only enabled when Sim has applied time series
-'
-' Revision 1.33  2008/05/07 01:44:30  jeroens
-' Fixed bug 387
-'
-' Revision 1.32  2008/05/07 01:39:03  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.31  2008/04/07 02:31:10  jeroens
-' Cleaning up resources
-'
-' Revision 1.30  2008/04/01 15:35:24  jeroens
-' Hack-fixed bug 445 (this code was awful but it's too much work to fix this properly)
-'
-' Revision 1.29  2008/02/13 00:06:09  jeroens
-' Uses renamed show all fits form
-'
-' Revision 1.28  2008/02/11 03:54:57  jeroens
-' Years based on Ecosim years, no longer on years stated in first available TS
-'
-' Revision 1.27  2008/02/08 01:07:51  jeroens
-' Fixed issues 364, 376
-'
-' Revision 1.26  2008/02/05 18:27:34  jeroens
-' Fixed bug 411
-'
-' Revision 1.25  2008/01/25 03:09:46  jeroens
-' Woops
-'
-' Revision 1.23  2008/01/21 04:06:39  jeroens
-' Fixed shape max scale issues, once and for all
-'
-' Revision 1.22  2007/12/28 22:30:14  sherman
-' Removed Minor Ticks
-'
-' Revision 1.21  2007/12/10 00:19:47  jeroens
-' * Tweaked and polished even more
-'
-' Revision 1.20  2007/12/09 22:11:09  jeroens
-' * Restyled
 '
 '==============================================================================
 
@@ -141,8 +92,8 @@ Namespace Ecosim
 
             ' Add group names into listbox
             For i As Integer = 1 To m_core.nGroups
-                Dim item As String = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, m_core.EcoSimGroupInputs(i).Name)
-                lbGroups.Items.Add(item)
+                Dim group As cCoreGroupBase = m_core.EcoSimGroupInputs(i)
+                lbGroups.Items.Add(New GroupListBox.GroupItem(group))
             Next
 
             InitMasterPane()
@@ -236,28 +187,28 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Custom draw method to render a group name in a particualr color.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Private Sub lb_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) Handles lbPredRanks.DrawItem, lbPreyRanks.DrawItem
+        '''' <summary>
+        '''' Custom draw method to render a group name in a particualr color.
+        '''' </summary>
+        '''' <param name="sender"></param>
+        '''' <param name="e"></param>
+        '''' <remarks></remarks>
+        'Private Sub lb_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) Handles lbPredRanks.DrawItem, lbPreyRanks.DrawItem
 
-            ' get the sender of this event
-            Dim lb As ListBox = CType(sender, ListBox)
-            Dim group As cEcoPathGroupInput = Nothing
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+        '    ' get the sender of this event
+        '    Dim lb As ListBox = DirectCast(sender, ListBox)
+        '    Dim group As cEcoPathGroupInput = Nothing
+        '    Dim sg As StyleGuide = StyleGuide.GetInstance()
 
-            If lb Is Nothing Then Return
-            If e.Index = -1 Then Return
+        '    If lb Is Nothing Then Return
+        '    If e.Index = -1 Then Return
 
-            If (TypeOf lb.Items(e.Index) Is cEcoPathGroupInput) Then
-                group = DirectCast(lb.Items(e.Index), cEcoPathGroupInput)
-                Me.DrawCustomText(e, group.Name, sg.GroupColor(Me.m_core, group.Index), e.Bounds)
-            End If
+        '    If (TypeOf lb.Items(e.Index) Is cEcoPathGroupInput) Then
+        '        group = DirectCast(lb.Items(e.Index), cEcoPathGroupInput)
+        '        Me.DrawCustomText(e, group.Name, sg.GroupColor(Me.m_core, group.Index), e.Bounds)
+        '    End If
 
-        End Sub
+        'End Sub
 
         Private Sub btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -412,7 +363,8 @@ Namespace Ecosim
             Next
 
             'Set the master pane title
-            m_MasterPane.Title.Text = CStr(lbGroups.SelectedItem)
+            Dim item As GroupListBox.GroupItem = DirectCast(lbGroups.SelectedItem, GroupListBox.GroupItem)
+            m_MasterPane.Title.Text = item.Group.Name
 
             ' Clear all panes
             For Each gp As GraphPane In m_MasterPane.PaneList
@@ -605,7 +557,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub SortRanks(ByRef a() As Single, ByRef b() As Integer)
+        Private Sub SortRanks(ByVal a() As Single, ByVal b() As Integer)
             'Use a simple bubblesort algorithm here
 
             For i As Integer = 0 To a.Length - 2
@@ -630,7 +582,7 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' <remarks></remarks>
-        Private Sub AddItemsToList(ByRef l As ListBox, ByRef aiGroupIndex() As Integer)
+        Private Sub AddItemsToList(ByVal l As GroupListBox, ByVal aiGroupIndex() As Integer)
 
             Dim group As cEcoPathGroupInput = Nothing
 
@@ -640,7 +592,7 @@ Namespace Ecosim
 
                 'Dim item As cColorItem = m_PoolColor(items(i))
                 group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
-                l.Items.Add(group)
+                l.Items.Add(New GroupListBox.GroupItem(group))
             Next
 
         End Sub
@@ -667,8 +619,8 @@ Namespace Ecosim
         ''' <param name="lists">The lists of data points for the multiple curves</param>
         ''' <param name="aclr">Optional lists of colors user wants to render for the curves</param>
         ''' <remarks>Overloaded method with different color options</remarks>
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByRef lists As List(Of PointPairList), _
-                ByVal curveType As eCurveTypes, Optional ByRef aclr As Color() = Nothing)
+        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lists As List(Of PointPairList), _
+                ByVal curveType As eCurveTypes, Optional ByVal aclr As Color() = Nothing)
 
             Dim gp As GraphPane = m_MasterPane.PaneList(CInt(paneType))
             Dim clr As Color = Nothing
@@ -699,26 +651,26 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Helper methods to draw a custom listcontrol item 
-        ''' </summary>
-        ''' <param name="e">DrawItemEventArgs sent by DrawItem event handler</param>
-        ''' <param name="txt">The text beside the colorbox</param>
-        ''' <remarks>This method is called by both Listbox drawItem event handlers</remarks>
-        Private Sub DrawCustomText(ByVal e As System.Windows.Forms.DrawItemEventArgs, ByRef txt As String, ByVal c As Color, ByRef rect As Rectangle)
-            ' Do nothing if there is no data
-            If e.Index = -1 Then Return
+        '''' <summary>
+        '''' Helper methods to draw a custom listcontrol item 
+        '''' </summary>
+        '''' <param name="e">DrawItemEventArgs sent by DrawItem event handler</param>
+        '''' <param name="txt">The text beside the colorbox</param>
+        '''' <remarks>This method is called by both Listbox drawItem event handlers</remarks>
+        'Private Sub DrawCustomText(ByVal e As System.Windows.Forms.DrawItemEventArgs, ByVal txt As String, ByVal c As Color, ByVal rect As Rectangle)
+        '    ' Do nothing if there is no data
+        '    If e.Index = -1 Then Return
 
-            'If the item is selected, draw the correct background color
-            e.DrawBackground()
-            e.DrawFocusRectangle()
+        '    'If the item is selected, draw the correct background color
+        '    e.DrawBackground()
+        '    e.DrawFocusRectangle()
 
-            'Get the listbox's graphics object
-            Dim g As Graphics = e.Graphics
-            'Draw text 
-            g.DrawString(txt, e.Font, New SolidBrush(c), rect)
+        '    'Get the listbox's graphics object
+        '    Dim g As Graphics = e.Graphics
+        '    'Draw text 
+        '    g.DrawString(txt, e.Font, New SolidBrush(c), rect)
 
-        End Sub
+        'End Sub
 
         Private Sub SaveOutputToFile(ByVal strPath As String, ByVal bSaveAnnual As Boolean, ByVal iPlot As Integer)
 
@@ -886,7 +838,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Function SaveDataToFile(ByVal strFileName As String, ByVal bSaveYearly As Boolean, ByRef data As Single(,), ByRef strModelDetails As String, ByRef strGroupNames As String) As Boolean
+        Private Function SaveDataToFile(ByVal strFileName As String, ByVal bSaveYearly As Boolean, ByVal data As Single(,), ByVal strModelDetails As String, ByVal strGroupNames As String) As Boolean
 
             Try
                 'Overwritten the file

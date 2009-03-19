@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared.Controls
+
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -25,10 +27,10 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
             Me.zgcPlots = New ZedGraph.ZedGraphControl
             Me.btnShowAllFits = New System.Windows.Forms.Button
-            Me.lbGroups = New System.Windows.Forms.ListBox
+            Me.lbGroups = New GroupListBox
             Me.btnSave = New System.Windows.Forms.Button
-            Me.lbPredRanks = New System.Windows.Forms.ListBox
-            Me.lbPreyRanks = New System.Windows.Forms.ListBox
+            Me.lbPredRanks = New GroupListBox
+            Me.lbPreyRanks = New GroupListBox
             Me.scMain = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.Panel2 = New System.Windows.Forms.Panel
@@ -196,10 +198,10 @@ Namespace Ecosim
         End Sub
         Friend WithEvents zgcPlots As ZedGraph.ZedGraphControl
         Friend WithEvents btnShowAllFits As System.Windows.Forms.Button
-        Friend WithEvents lbGroups As System.Windows.Forms.ListBox
+        Friend WithEvents lbGroups As GroupListBox
         Friend WithEvents btnSave As System.Windows.Forms.Button
-        Friend WithEvents lbPredRanks As System.Windows.Forms.ListBox
-        Friend WithEvents lbPreyRanks As System.Windows.Forms.ListBox
+        Friend WithEvents lbPredRanks As GroupListBox
+        Friend WithEvents lbPreyRanks As GroupListBox
         Friend WithEvents scMain As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents Panel2 As System.Windows.Forms.Panel
