@@ -30,7 +30,7 @@ Namespace Ecopath.Output
             Me.components = New System.ComponentModel.Container
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
-            Me.llbGroups = New ScientificInterfaceShared.Controls.LegendListBox
+            Me.llbGroups = New ScientificInterfaceShared.Controls.GroupListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -98,7 +98,7 @@ Namespace Ecopath.Output
         End Sub
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
-        Friend WithEvents llbGroups As ScientificInterfaceShared.Controls.LegendListBox
+        Friend WithEvents llbGroups As ScientificInterfaceShared.Controls.GroupListBox
     End Class
 
 End Namespace

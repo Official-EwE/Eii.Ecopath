@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.31  2009/03/19 16:55:57  jeroens
+' Renamed LegendListBox to GroupListBox
+'
 ' Revision 1.30  2009/03/17 17:18:22  jeroens
 ' EcosimCompleteDelegate -> Populate
 '
@@ -591,7 +594,7 @@ Namespace Ecosim
             Next
 
             lbGroups.Items.Clear()
-            lbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
+            lbGroups.Items.Add(New GroupListBox.GroupItem(Nothing))
             For i As Integer = 1 To m_core.nGroups
                 If CatchToolStripMenuItem.Checked Then
                     Dim dblSumDiscardsLandings As Double = 0.0
@@ -601,10 +604,10 @@ Namespace Ecosim
                     If Not dblSumDiscardsLandings > 0 Then
                         Continue For
                     Else
-                        lbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                        lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                     End If
                 Else
-                    lbGroups.Items.Add(New LegendListBox.EcopathGroupItem(m_core.EcoPathGroupInputs(i)))
+                    lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
 

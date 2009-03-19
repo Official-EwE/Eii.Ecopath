@@ -48,7 +48,7 @@ Namespace Ecosim
             Me.OverlayToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ShowLegendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.lbGroups = New ScientificInterfaceShared.Controls.LegendListBox
+            Me.lbGroups = New ScientificInterfaceShared.Controls.GroupListBox
             Me.tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -319,7 +319,7 @@ Namespace Ecosim
         Private WithEvents m_zgc As ZedGraph.ZedGraphControl
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents lbOverlay As System.Windows.Forms.ListBox
-        Private WithEvents lbGroups As ScientificInterfaceShared.Controls.LegendListBox
+        Private WithEvents lbGroups As ScientificInterfaceShared.Controls.GroupListBox
         Private WithEvents tslblSSValue As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsdrpdnbtnGraphOptions As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents AnnualOutputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

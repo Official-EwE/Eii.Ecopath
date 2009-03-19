@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.9  2009/03/19 16:55:56  jeroens
+' Renamed LegendListBox to GroupListBox
+'
 ' Revision 1.8  2009/03/18 13:32:04  jeroens
 ' Uses implemented PSD classes
 '
@@ -83,7 +86,7 @@ Namespace Ecopath.Output
             For i As Integer = 1 To m_core.nLivingGroups
                 group = Me.m_core.EcoPathGroupInputs(i)
                 If group.PSDIncluded Then
-                    llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(group))
+                    llbGroups.Items.Add(New GroupListBox.GroupItem(group))
                 End If
             Next
 

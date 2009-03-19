@@ -138,7 +138,7 @@
     <Compile Include="Controls\ListView\ucIndexedItemListView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ListBox\LegendListBox\LegendListBox.vb">
+    <Compile Include="Controls\ListBox\GroupListBox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ListBox\ListBoxEditProvider.vb" />
