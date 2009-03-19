@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResults.vb,v $
+' Revision 1.6  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.5  2009/02/05 17:48:37  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -81,7 +84,8 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub EcosimResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub EcosimResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             rbGear.Checked = True
 
@@ -104,20 +108,23 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
-        Private Sub EcosimResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Private Sub EcosimResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
+            Me.m_fpEndSum.Release()
+            Me.m_fpNumSteps.Release()
+            Me.m_fpStartSum.Release()
+
             Me.CoreComponents = Nothing
         End Sub
 
-        Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End Sub
-
-        Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGears.SelectedIndexChanged
+        Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles cbGears.SelectedIndexChanged
             m_GridGroup.SelFleetIndex = cbGears.SelectedIndex
         End Sub
 
-        Private Sub rbGear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbGear.CheckedChanged
+        Private Sub rbGear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles rbGear.CheckedChanged
             If rbGear.Checked Then
                 curDisplayMode = eDisplayMode.Fleets
             End If

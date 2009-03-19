@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgChangeShape.vb,v $
+' Revision 1.4  2009/03/19 16:02:25  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2009/02/26 21:41:56  jeroens
 ' Fixed hyperbolic / sigmoid confusion
 '
@@ -77,7 +80,8 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub ForcingShape_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub ForcingShape_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             Me.CenterToParent()
 
@@ -96,6 +100,16 @@ Namespace Controls
             Me.m_lbShape.SelectedIndex = Me.m_shape.eShapeFunctionType
 
             Me.UpdatePreview()
+
+        End Sub
+
+        Private Sub dlgChangeShape_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
+            Me.m_fpSteep.Release()
+            Me.m_fpYBase.Release()
+            Me.m_fpYEnd.Release()
+            Me.m_fpYZero.Release()
 
         End Sub
 

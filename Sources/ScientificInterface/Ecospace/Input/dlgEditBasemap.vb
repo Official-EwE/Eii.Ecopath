@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditBasemap.vb,v $
+' Revision 1.2  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.1  2008/09/26 07:31:56  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -50,7 +53,8 @@ Public Class dlgEditBasemap
 
 #Region " Events "
 
-    Private Sub dlgEditBasemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgEditBasemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles Me.Load
 
         Me.m_fpInCol = New cEwEFormatProvider(Me.nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
         Me.m_fpInCol.Value = Me.m_basemap.InCol
@@ -68,6 +72,17 @@ Public Class dlgEditBasemap
         Me.m_fpCellLength.Value = Me.m_basemap.CellLength
 
         Me.UpdateControls()
+
+    End Sub
+
+    Private Sub dlgEditBasemap_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+        Handles Me.FormClosing
+
+        Me.m_fpCellLength.Release()
+        Me.m_fpInCol.Release()
+        Me.m_fpInRow.Release()
+        Me.m_fpLat.Release()
+        Me.m_fpLon.Release()
 
     End Sub
 

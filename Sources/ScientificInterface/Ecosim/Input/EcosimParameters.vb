@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.6  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.5  2009/02/05 17:48:36  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -68,7 +71,8 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub EcosimParams_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub EcosimParams_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             Dim ecosimModelParams As cEcoSimModelParameters = m_core.EcoSimModelParameters()
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
@@ -97,7 +101,20 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub EcosimParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub EcosimParameters_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.FormClosing
+
+            Me.m_fpScenarioName.Release()
+            Me.m_fpScenarioDescription.Release()
+            Me.m_fpAuthor.Release()
+            Me.m_fpContact.Release()
+            Me.m_fpNumYears.Release()
+            Me.m_fpNutBaseFreeProp.Release()
+            Me.m_fpNutrientForceNumber.Release()
+            Me.m_fpSalinityForceNumber.Release()
+            Me.m_fpPredictEffort.Release()
+            Me.m_fpRegulatoryFeedback.Release()
+            Me.m_fpRelaxation.Release()
 
             ' Clean up
             Me.CoreComponents = Nothing
@@ -107,16 +124,6 @@ Namespace Ecosim
 
             RemoveHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
             Me.m_propPredictEffort = Nothing
-
-            Me.m_fpScenarioName = Nothing
-            Me.m_fpScenarioDescription = Nothing
-            Me.m_fpAuthor = Nothing
-            Me.m_fpContact = Nothing
-            Me.m_fpNumYears = Nothing
-            Me.m_fpNutBaseFreeProp = Nothing
-            Me.m_fpNutrientForceNumber = Nothing
-            Me.m_fpSalinityForceNumber = Nothing
-            Me.m_fpPredictEffort = Nothing
 
         End Sub
 
@@ -178,10 +185,19 @@ Namespace Ecosim
 
         Private Sub RebuildScenarioFormatProviders()
             Dim scenarioDef As cEcoSimScenario = m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex)
+
+            If Me.m_fpScenarioName IsNot Nothing Then Me.m_fpScenarioName.Release()
             Me.m_fpScenarioName = New cPropertyFormatProvider(Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+
+            If Me.m_fpScenarioDescription IsNot Nothing Then Me.m_fpScenarioDescription.Release()
             Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+
+            If Me.m_fpAuthor IsNot Nothing Then Me.m_fpAuthor.Release()
             Me.m_fpAuthor = New cPropertyFormatProvider(Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+
+            If Me.m_fpContact IsNot Nothing Then Me.m_fpContact.Release()
             Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+
         End Sub
 
         Private Sub UpdateFFFormatProviders()

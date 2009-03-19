@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.35  2009/03/19 16:02:28  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.34  2009/02/05 17:48:39  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -319,7 +322,8 @@ Namespace Ecospace
         ''' <summary>
         ''' Cleanup
         ''' </summary>
-        Private Sub frmEcoseed_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub frmEcoseed_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
 
             Dim alays As cLayer() = Me.m_lLayers.ToArray
 
@@ -335,6 +339,17 @@ Namespace Ecospace
 
             Me.CoreComponents = Nothing
 
+            Me.m_fpBaseYear.Release()
+            Me.m_fpBestPercentile.Release()
+            Me.m_fpDiscRate.Release()
+            Me.m_fpEndYear.Release()
+            Me.m_fpGenDiscRate.Release()
+            Me.m_fpIterations.Release()
+            Me.m_fpMaxArea.Release()
+            Me.m_fpMinArea.Release()
+            Me.m_fpMPA.Release()
+            Me.m_fpStartYear.Release()
+            Me.m_fpStepSize.Release()
         End Sub
 
 #End Region ' Form

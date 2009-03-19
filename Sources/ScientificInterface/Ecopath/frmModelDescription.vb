@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmModelDescription.vb,v $
+' Revision 1.4  2009/03/19 16:02:27  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2009/02/05 17:48:35  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -54,7 +57,8 @@ Public Class frmModelDescription
 
     End Sub
 
-    Private Sub frmModelDescription_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmModelDescription_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles MyBase.Load
 
         Dim eweModel As cEwEModel = m_core.EwEModel()
         Dim appl As AppLauncher = AppLauncher.GetInstance()
@@ -107,7 +111,16 @@ Public Class frmModelDescription
 
     End Sub
 
-    Private Sub frmModelDescription_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub frmModelDescription_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles Me.FormClosing
+
+        Me.m_fpArea.Release()
+        Me.m_fpAuthor.Release()
+        Me.m_fpContact.Release()
+        Me.m_fpDescription.Release()
+        Me.m_fpName.Release()
+        Me.m_fpNumDigits.Release()
+
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
 

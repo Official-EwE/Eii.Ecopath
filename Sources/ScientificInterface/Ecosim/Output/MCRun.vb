@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.5  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.4  2009/01/16 23:46:21  jeroens
 ' Fixed ApplyTimeSeries outdated name bug
 '
@@ -164,7 +167,8 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub MCRun_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub MCRun_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             m_BRG.DisplayInputValue = MCRunDisplayInputValue.B
             m_PBRG.DisplayInputValue = MCRunDisplayInputValue.PB
@@ -220,7 +224,9 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub MCRun_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Private Sub MCRun_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
             CommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
             CommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
 
@@ -230,6 +236,14 @@ Namespace Ecosim
 
             ' Disconnect from property
             Me.m_pTS = Nothing
+
+            Me.m_fpERun.Release()
+            Me.m_fpNumTrials.Release()
+            Me.m_fpSS.Release()
+            Me.m_fpSSBest.Release()
+            Me.m_fpSSorg.Release()
+            Me.m_fpTrial.Release()
+
         End Sub
 
         Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated

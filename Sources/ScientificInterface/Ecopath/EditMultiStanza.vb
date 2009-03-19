@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanza.vb,v $
+' Revision 1.3  2009/03/19 16:02:27  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.2  2008/12/15 15:52:27  jeroens
 ' no message
 '
@@ -156,7 +159,8 @@ Namespace Ecopath
 
 #Region "Event handlers "
 
-        Private Sub EditMultiStanza_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub EditMultiStanza_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             ' Create format providers once during load
             Me.m_fpK = New cEwEFormatProvider(Me.txtK, GetType(Single))
@@ -168,14 +172,28 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub EditMultiStanza_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.FormClosing
+
+            ' Clean up
+            Me.m_fpK.Release()
+            Me.m_fpRecPwr.Release()
+            Me.m_fpBab.Release()
+            Me.m_fpWmatWinf.Release()
+
+        End Sub
+
+        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnCancel.Click
+
             m_MultiStanzaGrid.ResetStanzaGroupValues()
 
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub btnCalculate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCalculate.Click
+        Private Sub btnCalculate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnCalculate.Click
 
             Me.SaveChanges(False)
 
@@ -186,7 +204,8 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnOK.Click
 
             Me.SaveChanges(True)
 

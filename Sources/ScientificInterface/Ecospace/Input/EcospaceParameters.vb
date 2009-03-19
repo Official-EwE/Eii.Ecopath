@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.6  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.5  2009/02/05 17:48:39  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -76,35 +79,38 @@ Namespace Ecospace
         ''' Event handler; called when the form is initially loaded.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Load
 
             Me.m_core = cCore.GetInstance()
             Me.InitContent()
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
-        Private Sub EcospaceParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub EcospaceParameters_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.FormClosing
+
             Me.CoreComponents = Nothing
             Me.m_bpUseIBM = Nothing
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
 
-            Me.m_fpScenarioName = Nothing
-            Me.m_fpScenarioDescription = Nothing
-            Me.m_fpAuthor = Nothing
-            Me.m_fpContact = Nothing
+            Me.m_fpScenarioName.Release()
+            Me.m_fpScenarioDescription.Release()
+            Me.m_fpAuthor.Release()
+            Me.m_fpContact.Release()
 
-            Me.m_fpNumThreads = Nothing
-            Me.m_fpNumThreads2 = Nothing
-            Me.m_fpNumPackets = Nothing
-            Me.m_fpTotalTime = Nothing
-            Me.m_fpNumTSpYear = Nothing
-            Me.m_fpTolerance = Nothing
-            Me.m_fpSOR = Nothing
-            Me.m_fpMaxIterations = Nothing
-            Me.m_fpPredictEffort = Nothing
-            Me.m_fpUseExact = Nothing
+            Me.m_fpNumThreads.Release()
+            Me.m_fpNumThreads2.Release()
+            Me.m_fpNumPackets.Release()
+            Me.m_fpTotalTime.Release()
+            Me.m_fpNumTSpYear.Release()
+            Me.m_fpTolerance.Release()
+            Me.m_fpSOR.Release()
+            Me.m_fpMaxIterations.Release()
+            Me.m_fpPredictEffort.Release()
+            Me.m_fpUseExact.Release()
         End Sub
 
         Private Sub InitContent()

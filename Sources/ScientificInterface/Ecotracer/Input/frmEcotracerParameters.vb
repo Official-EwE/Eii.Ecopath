@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerParameters.vb,v $
+' Revision 1.4  2009/03/19 16:02:27  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2009/02/05 17:48:40  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -106,6 +109,11 @@ Namespace Ecotracer
             ' Sanity checks
             Debug.Assert(Not Me.IsConnectedToEcosim())
             Debug.Assert(Not Me.IsConnectedToEcospace())
+
+            Me.m_fpAuthor.Release()
+            Me.m_fpContact.Release()
+            Me.m_fpScenarioDescription.Release()
+            Me.m_fpScenarioName.Release()
 
         End Sub
 

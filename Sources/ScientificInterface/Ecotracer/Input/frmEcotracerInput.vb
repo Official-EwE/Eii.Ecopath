@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerInput.vb,v $
+' Revision 1.4  2009/03/19 16:02:27  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2009/02/05 17:48:40  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -74,7 +77,8 @@ Namespace Ecotracer
 
 #Region " Events "
 
-        Private Sub frmEcotracerInput_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Private Sub frmEcotracerInput_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Load
 
             Dim ecotracerModelParams As cEcotracerModelParameters = m_core.EcotracerModelParameters()
 
@@ -91,8 +95,16 @@ Namespace Ecotracer
 
         End Sub
 
-        Private Sub frmEcotracerInput_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub frmEcotracerInput_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
             Me.CoreComponents = Nothing
+
+            Me.m_fpCDecayEnv.Release()
+            Me.m_fpCInflowEnv.Release()
+            Me.m_fpCOutflowEnv.Release()
+            Me.m_fpCZeroEnv.Release()
+            Me.m_fpInflowForceNumberEnv.Release()
+
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)

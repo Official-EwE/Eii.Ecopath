@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceResults.vb,v $
+' Revision 1.11  2009/03/19 16:02:27  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.10  2009/02/05 17:48:39  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -87,13 +90,15 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub cFormEcospaceResults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.m_fpSumStartTime = Nothing
-            Me.m_fpSumEndTime = Nothing
-            Me.m_fpSumLength = Nothing
+        Private Sub cFormEcospaceResults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
+            Me.m_fpSumStartTime.Release()
+            Me.m_fpSumEndTime.Release()
+            Me.m_fpSumLength.Release()
         End Sub
 
-        Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub EcospaceResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_Core.EcospaceModelParameters()
 

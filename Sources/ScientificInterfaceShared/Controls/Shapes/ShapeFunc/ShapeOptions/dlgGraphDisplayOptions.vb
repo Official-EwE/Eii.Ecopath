@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgGraphDisplayOptions.vb,v $
+' Revision 1.4  2009/03/19 16:02:25  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2009/03/02 17:44:20  jeroens
 ' Cleaned up
 '
@@ -109,7 +112,8 @@ Namespace Controls
         ''' settings from the attached <see cref="ucSketchPad">sketch pad</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub SketchPadOption_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub SketchPadOption_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles MyBase.Load
 
             'Initialization of the interface controls
             Me.m_fbYMax = New cEwEFormatProvider(Me.nupYMax, GetType(Single))
@@ -138,6 +142,12 @@ Namespace Controls
                 'Me.cbRightClickAutoScale.Checked = (m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto)
             End If
 
+        End Sub
+
+        Private Sub dlgGraphDisplayOptions_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
+            Me.m_fbYMax.Release()
         End Sub
 
         ''' -------------------------------------------------------------------

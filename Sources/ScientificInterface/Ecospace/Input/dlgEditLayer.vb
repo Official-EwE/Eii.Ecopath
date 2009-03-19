@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.7  2009/03/19 16:02:26  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.6  2008/11/20 15:18:29  jeroens
 ' Layer ReadOnly state properly handled
 '
@@ -125,13 +128,13 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Local events "
 
-        Private Sub DataLayerDialog_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
+        Private Sub DataLayerDialog_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.FormClosing
 
             RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
-            Me.m_fpName = Nothing
-            Me.m_fpWeight = Nothing
-            Me.m_fpDescription = Nothing
+            Me.m_fpName.Release()
+            Me.m_fpWeight.Release()
+            Me.m_fpDescription.Release()
 
         End Sub
 

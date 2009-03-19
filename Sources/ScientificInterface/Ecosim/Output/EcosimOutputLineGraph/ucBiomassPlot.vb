@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlot.vb,v $
+' Revision 1.4  2009/03/19 16:02:28  jeroens
+' Added FormatProvider.Release
+'
 ' Revision 1.3  2008/12/15 16:00:48  jeroens
 ' no message
 '
@@ -107,7 +110,8 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub ucBiomassPlot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Me.Load
+        Private Sub ucBiomassPlot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles Me.Load
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing
@@ -134,7 +138,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ucBiomassPlot_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucBiomassPlot_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
@@ -142,10 +147,15 @@ Namespace Ecosim
                 cmd.RemoveControl(Me.tsbtnShowHideGroups)
             End If
 
-            Me.m_fpYAxisValue = Nothing
+            If (m_fpYAxisValue IsNot Nothing) Then
+                Me.m_fpYAxisValue.Release()
+                Me.m_fpYAxisValue = Nothing
+            End If
 
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            Me.m_sg = Nothing
+            If (Me.m_sg IsNot Nothing) Then
+                RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                Me.m_sg = Nothing
+            End If
 
             Me.m_core = Nothing
 
