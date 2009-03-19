@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.92  2009/03/19 22:26:05  jeroens
+' Added PSD Lohrenzen vars
+'
 ' Revision 1.91  2009/03/19 21:45:10  joeh
 ' Add two biomass variables for the Size/Weight plot
 '
@@ -3172,8 +3175,8 @@ Public Class cCore
 
         Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
-        'Me.m_PSDParameters. = Me.m_PSDData.LatNWCorner
-        Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
+        Me.m_PSDParameters.LohrenzenLatNWCorner = Me.m_PSDData.LatNWCorner
+        Me.m_PSDParameters.LohrenzenLatSECorner = Me.m_PSDData.LatSECorner
 
         Me.m_PSDParameters.AllowValidation = True
         Return True
@@ -3183,6 +3186,8 @@ Public Class cCore
 
         Me.m_PSDData.MortalityType = Me.m_PSDParameters.MortalityType
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
+        Me.m_PSDData.LatNWCorner = Me.m_PSDParameters.LohrenzenLatNWCorner
+        Me.m_PSDData.LatSECorner = Me.m_PSDParameters.LohrenzenLatSECorner
 
     End Function
 

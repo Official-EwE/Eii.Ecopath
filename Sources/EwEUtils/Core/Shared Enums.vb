@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.42  2009/03/19 22:22:59  jeroens
+' Added PSD Lohrenzen vars
+'
 ' Revision 1.41  2009/03/19 21:45:11  joeh
 ' Add two biomass variables for the Size/Weight plot
 '
@@ -1169,6 +1172,8 @@ Namespace Core
         PSDIncluded
         PSDMortalityType
         PSDFirstWeightClass
+        LohrenzenLatNWCorner
+        LohrenzenLatSECorner
         'End Joeh: PSD
 
     End Enum
