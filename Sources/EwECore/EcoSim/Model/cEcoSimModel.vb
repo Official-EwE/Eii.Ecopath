@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.38  2009/03/19 18:57:24  joeb
+' Fix bug in cEcosimResults Catch not computed properly
+'
 ' Revision 1.37  2009/03/17 18:30:58  joeb
 ' cleanup removed dead comments and code
 '
@@ -1664,7 +1667,7 @@ Public Property PluginManager() As cPluginManager
                                 m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) = m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) + valueCatch
 
                                 ' Catch by group, by fleet
-                                m_Results.BCatch(igrp, iflt) = BB(igrp) * m_Data.FishTime(igrp)
+                                m_Results.BCatch(igrp, iflt) = bioCatch
                             End If
                         Next
 
