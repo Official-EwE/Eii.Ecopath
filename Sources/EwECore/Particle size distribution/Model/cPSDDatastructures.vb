@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.5  2009/03/19 22:23:18  jeroens
+' no message
+'
 ' Revision 1.4  2009/03/19 21:45:11  joeh
 ' Add two biomass variables for the Size/Weight plot
 '
@@ -65,9 +68,7 @@ Public Class cPSDDatastructures
     ''' redimension array variables 
     ''' called when a new model is loaded
     ''' </summary>
-    ''' <returns></returns>
-    ''' True if no error
-    ''' <remarks></remarks>
+    ''' <returns>True if no error</returns>
     Public Function redimGroupVariables() As Boolean
 
         ReDim BiomassAvgSzWt(NumGroups)
