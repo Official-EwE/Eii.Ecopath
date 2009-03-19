@@ -87,8 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
+    <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
-    <Compile Include="Controls\cEwEFormatProvider.vb" />
+    <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.Designer.vb">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>
     </Compile>
