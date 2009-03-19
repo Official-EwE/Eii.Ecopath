@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.91  2009/03/19 21:45:10  joeh
+' Add two biomass variables for the Size/Weight plot
+'
 ' Revision 1.90  2009/03/18 21:08:04  jeroens
 ' Woops - forgot to call PSD data CopyInputToModelArrays
 '
@@ -2753,6 +2756,8 @@ Public Class cCore
 
                 'Joeh
                 output.VBK = CSng(m_EcoPathData.vbK(iGroup))
+                output.BiomassAvgSzWt = CSng(m_PSDData.BiomassAvgSzWt(iGroup))
+                output.BiomassSzWt = CSng(m_PSDData.BiomassSzWt(iGroup))
                 output.Tcatch = CSng(m_PSDData.Tcatch(iGroup))
                 output.AinLWOutput = CSng(m_PSDData.AinLW(iGroup))
                 output.BinLWOutput = CSng(m_PSDData.BinLW(iGroup))

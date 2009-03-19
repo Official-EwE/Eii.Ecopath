@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.10  2009/03/19 21:45:10  joeh
+' Add two biomass variables for the Size/Weight plot
+'
 ' Revision 1.9  2009/03/18 13:27:50  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 '
@@ -435,6 +438,10 @@ Public Class cEcoPathGroupOutput
         'Joeh
         val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+        val = New cValue(New Single, eVarNameFlags.BiomassAvgSzWt, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
+        val = New cValue(New Single, eVarNameFlags.BiomassSzWt, eStatusFlags.NotEditable, eValueTypes.Sng)
+        m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
@@ -598,6 +605,32 @@ Public Class cEcoPathGroupOutput
                 SetVariable(eVarNameFlags.VBK, newValue)
             End If
         End Set
+    End Property
+
+    Public Property BiomassAvgSzWt() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.BiomassAvgSzWt))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.BiomassAvgSzWt, newValue)
+            End If
+        End Set
+
+    End Property
+
+    Public Property BiomassSzWt() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.BiomassSzWt))
+        End Get
+
+        Set(ByVal newValue As Single)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.BiomassSzWt, newValue)
+            End If
+        End Set
+
     End Property
 
     Public Property Tcatch() As Single

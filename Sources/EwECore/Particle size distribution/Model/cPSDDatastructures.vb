@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.4  2009/03/19 21:45:11  joeh
+' Add two biomass variables for the Size/Weight plot
+'
 ' Revision 1.3  2009/03/18 15:28:01  jeroens
 ' SelectedGroup -> Include
 '
@@ -35,6 +38,8 @@ Public Class cPSDDatastructures
     ''' <summary>Flag (x group) stating whether groups are included in PSD analysis.</summary>
     Public Include() As Boolean
 
+    Public BiomassAvgSzWt() As Single
+    Public BiomassSzWt() As Single
     Public Tcatch() As Single
     Public AinLW() As Single
     Public BinLW() As Single
@@ -65,6 +70,8 @@ Public Class cPSDDatastructures
     ''' <remarks></remarks>
     Public Function redimGroupVariables() As Boolean
 
+        ReDim BiomassAvgSzWt(NumGroups)
+        ReDim BiomassSzWt(NumGroups)
         ReDim Tcatch(NumGroups)
         ReDim AinLW(NumGroups)
         ReDim BinLW(NumGroups)
@@ -120,6 +127,8 @@ Public Class cPSDDatastructures
     Friend Sub copyTo(ByRef dest As cPSDDatastructures)
         Try
             'Joeh
+            BiomassAvgSzWt.CopyTo(dest.BiomassAvgSzWt, 0)
+            BiomassSzWt.CopyTo(dest.BiomassSzWt, 0)
             Tcatch.CopyTo(dest.Tcatch, 0)
 
             AinLW.CopyTo(dest.AinLW, 0)

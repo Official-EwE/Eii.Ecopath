@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.41  2009/03/19 21:45:11  joeh
+' Add two biomass variables for the Size/Weight plot
+'
 ' Revision 1.40  2009/03/18 15:35:20  joeb
 ' Added GameEconomic enums
 '
@@ -1148,6 +1151,8 @@ Namespace Core
 
         'Joeh: PSD
         VBK
+        BiomassAvgSzWt
+        BiomassSzWt
         Tcatch
         AinLWInput
         AinLWOutput
