@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.10  2009/03/19 01:14:04  joeh
+' no message
+'
 ' Revision 1.9  2009/03/18 13:32:05  jeroens
 ' Uses implemented PSD classes
 '
@@ -82,10 +85,13 @@ Namespace Ecopath.Output
 #End Region 'Constructor/Destructor
 
 #Region "Event handlers"
+
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
-                                 My.Resources.PSD_YAXISLABEL_BIOMASS))
-            UpdatePlot()
+            PlotCurve()
+            'UpdateToolStrip()
+            'AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+            '                     My.Resources.PSD_YAXISLABEL_BIOMASS))
+            'UpdatePlot()
         End Sub
 
         Private Sub mnuItmGroupPB_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuItmGroupPB.CheckedChanged
@@ -97,14 +103,15 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
-            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                Console.WriteLine(sgStyleGuide.GroupVisible(iGroup))
-            Next
-
+            parms.FirstWeightClass = CSng(tbxMinWeight.Text)
+            If mnuItmGroupPB.Checked Then parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ
+            If mnuItmLorenzen.Checked Then parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.Lorenzen
             'm_core.RunEcoPath()
+            'PlotCurve()
         End Sub
+
 #End Region 'Event handlers
 
 #Region "Helper methods"
@@ -206,9 +213,23 @@ Namespace Ecopath.Output
 
         End Sub
 
+        Private Sub UpdateToolStrip()
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
+            tbxNoOfPointsPSD.Text = CStr(m_core.nWeightClasses)
+            tbxMinWeight.Text = CStr(parms.FirstWeightClass)
+        End Sub
+
         Private Sub UpdatePlot()
             Me.zgcZedGraphCntl.AxisChange()
             Me.zgcZedGraphCntl.Refresh()
+        End Sub
+
+        Private Sub PlotCurve()
+            UpdateToolStrip()
+            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+                                 My.Resources.PSD_YAXISLABEL_BIOMASS))
+            UpdatePlot()
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
