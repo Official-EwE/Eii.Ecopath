@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.7  2009/03/20 22:31:30  jeroens
+' Backcolour responds to selection
+'
 ' Revision 1.6  2009/03/20 17:55:42  jeroens
 ' Shape controls are multiple selection
 '
@@ -192,6 +195,13 @@ Namespace Controls
 
                 ' Store new shape ref
                 Me.m_shape = value
+                Me.Enabled = (Me.Shape IsNot Nothing)
+
+                If Me.Enabled Then
+                    Me.BackColor = SystemColors.Window
+                Else
+                    Me.BackColor = SystemColors.InactiveBorder
+                End If
 
                 ' Broadcast change
                 Me.OnShapeChanged()
