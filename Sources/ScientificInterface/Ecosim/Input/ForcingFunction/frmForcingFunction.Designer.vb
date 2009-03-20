@@ -64,7 +64,6 @@ Namespace Ecosim
             'm_shapeToolbox
             '
             Me.m_shapeToolbox.Color = System.Drawing.Color.Empty
-            Me.m_shapeToolbox.CurSelectedIndex = -1
             resources.ApplyResources(Me.m_shapeToolbox, "m_shapeToolbox")
             Me.m_shapeToolbox.Handler = Nothing
             Me.m_shapeToolbox.Name = "m_shapeToolbox"

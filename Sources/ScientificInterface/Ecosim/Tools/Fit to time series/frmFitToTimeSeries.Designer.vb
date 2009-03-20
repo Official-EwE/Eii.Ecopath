@@ -499,7 +499,6 @@ Namespace Ecosim
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
-            Me.m_shapeToolBox.CurSelectedIndex = -1
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Location = New System.Drawing.Point(0, 23)
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
