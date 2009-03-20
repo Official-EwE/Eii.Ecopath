@@ -284,4 +284,12 @@
   <data name="HEADER_YEAR" xml:space="preserve">
     <value>Year</value>
   </data>
+  <data name="PROMPT_FORCING_DELETE_MULTIPLE" xml:space="preserve">
+    <value>You are about to delete {0} forcing functions'. This action cannot be undone. Are you sure you want to do this?</value>
+    <comment>{0}: delete count</comment>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
+    <value>You are about to delete {0} time series'. This action cannot be undone. Are you sure you want to do this?</value>
+    <comment>{0}: delete count</comment>
+  </data>
 </root>

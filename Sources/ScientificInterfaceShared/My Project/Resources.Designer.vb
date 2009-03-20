@@ -278,11 +278,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to You are about to delete {0} forcing functions&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FORCING_DELETE_MULTIPLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FORCING_DELETE_MULTIPLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Friend ReadOnly Property PROMPT_TIMESERIES_DELETE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to delete {0} time series&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_TIMESERIES_DELETE_MULTIPLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE_MULTIPLE", resourceCulture)
             End Get
         End Property
         
