@@ -1,4 +1,5 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -25,7 +26,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplyEP))
             Me.m_grid = New ScientificInterface.Ecosim.ApplyEPEwEGrid
             Me.m_splitContent = New System.Windows.Forms.SplitContainer
-            Me.m_lvShapes = New ucIndexedItemListView
+            Me.m_lvShapes = New cSmoothListView
             Me.m_lblNoStanza = New System.Windows.Forms.Label
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel
             Me.m_tsSet = New System.Windows.Forms.ToolStrip
@@ -148,15 +149,15 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_grid As ApplyEPEwEGrid
-        Public WithEvents m_lvShapes As ucIndexedItemListView
-        Friend WithEvents m_splitContent As System.Windows.Forms.SplitContainer
-        Friend WithEvents m_lblNoStanza As System.Windows.Forms.Label
-        Friend WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_tsSet As System.Windows.Forms.ToolStrip
-        Friend WithEvents m_tscEggProdShapes As System.Windows.Forms.ToolStripComboBox
-        Friend WithEvents m_tlbSet As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents m_tsbSet As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_grid As ApplyEPEwEGrid
+        Private WithEvents m_lvShapes As cSmoothListView
+        Private WithEvents m_splitContent As System.Windows.Forms.SplitContainer
+        Private WithEvents m_lblNoStanza As System.Windows.Forms.Label
+        Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tsSet As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tscEggProdShapes As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tlbSet As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tsbSet As System.Windows.Forms.ToolStripButton
 
     End Class
 End Namespace
