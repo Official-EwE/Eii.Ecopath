@@ -158,6 +158,10 @@
   <data name="m_tslWeight.Text" xml:space="preserve">
     <value>&amp;Weight:</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tstbWeight.MaxLength" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
   <data name="m_tstbWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
   </data>
@@ -224,7 +228,6 @@
   <data name="tsMenus.Size" type="System.Drawing.Size, System.Drawing">
     <value>1072, 25</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tsMenus.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>

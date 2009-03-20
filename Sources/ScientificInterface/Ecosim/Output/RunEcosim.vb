@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.11  2009/03/20 17:55:41  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.10  2009/03/17 17:18:10  jeroens
 ' EcosimCompleteDelegate -> Populate
 '
@@ -326,7 +329,8 @@ Namespace Ecosim
                     ' #Yes: duplicate this char over the entire shape
                     Try
                         If (Me.m_shapeGUIHandler IsNot Nothing) Then
-                            Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, CSng(Val(astrEntered(0))))
+                            Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
+                                        New cShapeData() {Me.m_sketchPad.Shape}, CSng(Val(astrEntered(0))))
                         End If
                     Catch ex As Exception
                     End Try
@@ -366,7 +370,8 @@ Namespace Ecosim
 
         Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSetTo0.Click
             If Me.m_shapeGUIHandler IsNot Nothing Then
-                Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_sketchPad.Shape, 0.0!)
+                Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
+                            New cShapeData() {Me.m_sketchPad.Shape}, 0.0!)
             End If
         End Sub
 
@@ -389,7 +394,7 @@ Namespace Ecosim
             Dim item As ICoreInterface = Me.GetSelectedTarget()
 
             Me.m_shapeGUIHandler = New cFishingRateShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
-            Me.m_shapeGUIHandler.Selection = DirectCast(item, cFishingRateShape)
+            Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.UpdateControls()
         End Sub
 
@@ -402,7 +407,7 @@ Namespace Ecosim
             shape = m_Core.FishMortShapeManager.Item(item.Index - 1)
 
             m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
-            m_shapeGUIHandler.Selection = shape
+            m_shapeGUIHandler.SelectedShape = shape
             Me.UpdateControls()
         End Sub
 

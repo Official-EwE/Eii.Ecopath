@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.4  2009/03/20 17:55:41  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.3  2009/03/02 02:03:59  jeroens
 ' Properly named handlers
 '
@@ -39,7 +42,6 @@ Namespace Controls
 
 #Region " Variables "
 
-        Private m_iSelectedShapeIndex As Integer = -1
         Private m_handler As cShapeGUIHandler = Nothing
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
@@ -50,10 +52,9 @@ Namespace Controls
 #Region " Constructors "
 
         Public Sub New()
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
-            Me.Selection = Nothing
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.Selection = Nothing
         End Sub
 
 #End Region ' Constructors
@@ -88,12 +89,12 @@ Namespace Controls
             End Set
         End Property
 
-        Public Property CurSelectedIndex() As Integer
+        Public Property AllowCheckboxes() As Boolean
             Get
-                Return m_iSelectedShapeIndex
+                Return Me.lvShapes.CheckBoxes
             End Get
-            Set(ByVal value As Integer)
-                m_iSelectedShapeIndex = value
+            Set(ByVal value As Boolean)
+                Me.lvShapes.CheckBoxes = value
             End Set
         End Property
 
@@ -102,7 +103,6 @@ Namespace Controls
             If Me.m_bInUpdate Then Return
 
             Dim iThumbnailIndex As Integer = Me.m_lShapes.IndexOf(shape)
-            Dim bShowEnabledTick As Boolean = False
             Dim bShowWarning As Boolean = False
 
             If iThumbnailIndex = -1 Then Return
@@ -111,17 +111,16 @@ Namespace Controls
 
                 ' Determine whether to show enabled tick
                 If TypeOf shape Is cTimeSeries Then
-                    bShowEnabledTick = (DirectCast(shape, cTimeSeries).Enabled Or DirectCast(shape, cTimeSeries).WtType > 0)
                     bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
                 End If
 
-                Me.lvShapes.LargeImageList.Images(iThumbnailIndex) = ShapeImage.IconImage(shape, Me.m_clr, cCore.NULL_VALUE, bShowEnabledTick, bShowWarning)
+                Me.lvShapes.LargeImageList.Images(iThumbnailIndex) = ShapeImage.IconImage(shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
                 Me.lvShapes.Refresh()
             End If
 
         End Sub
 
-        Public Sub SetShapes(ByVal lShapes As List(Of cShapeData), ByVal shapeSelect As cShapeData)
+        Public Sub SetShapes(ByVal lShapes As List(Of cShapeData), ByVal ashapeSelect As cShapeData())
 
             Dim shape As cShapeData = Nothing
 
@@ -133,57 +132,46 @@ Namespace Controls
                 Next
             End If
 
-            Me.InitThumbnails()
+            Me.PopulateListViewItems()
 
-            Me.Selection = shapeSelect
+            Me.Selection = ashapeSelect
 
         End Sub
 
-        Public Event OnSelectionChanged(ByVal shape As cShapeData)
+        Public Event OnSelectionChanged(ByVal ashapes As cShapeData())
 
         Private m_bInUpdate As Boolean = False
 
-        Public Property Selection() As cShapeData
+        Public Property Selection() As cShapeData()
             Get
-                If (Me.m_iSelectedShapeIndex < 0) Or (Me.m_iSelectedShapeIndex >= Me.m_lShapes.Count) Then
-                    Return Nothing
-                Else
-                    Return Me.m_lShapes(Me.m_iSelectedShapeIndex)
-                End If
+                Dim lShapes As New List(Of cShapeData)
+                For Each item As ListViewItem In Me.lvShapes.SelectedItems
+                    lShapes.Add(DirectCast(item.Tag, cShapeData))
+                Next
+                Return lShapes.ToArray()
             End Get
-            Set(ByVal shape As cShapeData)
 
-                Dim shapeSelPrev As cShapeData = Me.Selection()
-                Dim iIndex As Integer = -1
+            Set(ByVal ashapes As cShapeData())
 
-                ' Try to find shape with same Index
-                If shape IsNot Nothing Then
-                    For iTest As Integer = 0 To Me.m_lShapes.Count - 1
-                        If Me.m_lShapes(iTest).Index = shape.Index Then
-                            iIndex = iTest
-                            Exit For
-                        End If
+                Me.lvShapes.SuspendLayout()
+
+                If ashapes Is Nothing Then
+                    ' Clear all selections
+                    For Each item As ListViewItem In Me.lvShapes.Items
+                        item.Selected = False
+                    Next
+                Else
+                    For Each item As ListViewItem In Me.lvShapes.Items
+                        Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
+                        item.Selected = (Array.IndexOf(ashapes, shape) > -1)
                     Next
                 End If
-                If ((iIndex = -1) And (Me.m_lShapes.Count > 0)) Then iIndex = 0
 
-                ' Set new selected index
-                Me.m_iSelectedShapeIndex = iIndex
+                Me.lvShapes.ResumeLayout()
 
                 Me.m_bInUpdate = True
-
-                If (Me.m_iSelectedShapeIndex >= 0) Then
-                    Me.lvShapes.Select()
-                    Me.lvShapes.Items(Me.m_iSelectedShapeIndex).EnsureVisible()
-                    Me.lvShapes.Items(Me.m_iSelectedShapeIndex).Selected = True
-
-                    Me.UpdateControls()
-
-                    RaiseEvent OnSelectionChanged(Me.m_lShapes(m_iSelectedShapeIndex))
-                Else
-                    RaiseEvent OnSelectionChanged(Nothing)
-                End If
-
+                Me.UpdateControls()
+                RaiseEvent OnSelectionChanged(ashapes)
                 Me.m_bInUpdate = False
 
             End Set
@@ -212,8 +200,8 @@ Namespace Controls
             Me.RemoveToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
             Me.RemoveToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
 
-            Me.RenameToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Rename)
-            Me.RenameToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Rename)
+            Me.RenameToolStripMenuItem.Visible = False
+            Me.RenameToolStripMenuItem.Enabled = False
 
         End Sub
 
@@ -233,23 +221,16 @@ Namespace Controls
             End If
         End Function
 
-        Private Function GetShapeDataArray(ByRef xData As cShapeData) As Single()
-
-            Dim tmpList As New List(Of Single)
-            tmpList.Add(0)
-            For i As Integer = 1 To xData.XMax
-                tmpList.Add(xData.ShapeData(i))
-            Next
-            Return tmpList.ToArray
-
-        End Function
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load the shapes from the shape manager into this form
+        ''' Load the shapes from the shape manager into this form.
         ''' </summary>
-        ''' <remarks>This reloads all the data from the shape manager and 
-        ''' can be called to load the view the first time or to re-initialize the view</remarks>
-        Private Sub InitThumbnails()
+        ''' <remarks>
+        ''' This reloads all the data from the shape manager and can be called 
+        ''' to load the view the first time or to re-initialize the view.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private Sub PopulateListViewItems()
 
             Dim largeImageList As New ImageList
             Dim item As ListViewItem = Nothing
@@ -258,15 +239,13 @@ Namespace Controls
             Dim bShowWarning As Boolean = False
 
             lvShapes.SuspendLayout()
+            Me.m_bInUpdate = True
 
             'Clear the thumbnail list
             lvShapes.Items.Clear()
 
             'Set up the thumbnail image size
             largeImageList.ImageSize = New Size(ShapeImage.cICON_WIDTH, ShapeImage.cICON_HEIGHT)
-
-            ' Truncate selection, if any
-            Me.m_iSelectedShapeIndex = Math.Min(Math.Max(Me.m_iSelectedShapeIndex, 0), Me.m_lShapes.Count - 1)
 
             If Me.m_lShapes.Count > 0 Then
 
@@ -285,23 +264,27 @@ Namespace Controls
                         End If
                     End If
 
-                    largeImageList.Images.Add(ShapeImage.IconImage(shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), _
-                            bShowApplyTick, bShowWarning))
+                    largeImageList.Images.Add(ShapeImage.IconImage(shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
 
-                    item = New ListViewItem(shape.Name)
+                    item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, shape.Index, shape.Name))
                     item.ImageIndex = i
                     item.Tag = shape
+                    ' Set enabled flag
+                    If (TypeOf shape Is cTimeSeries) Then
+                        item.Checked = DirectCast(shape, cTimeSeries).Enabled
+                    End If
+
                     lvShapes.Items.Add(item)
 
                 Next
 
                 lvShapes.View = View.LargeIcon
                 lvShapes.LargeImageList = largeImageList
-                Me.Selection = Me.m_lShapes(Me.m_iSelectedShapeIndex)
 
             End If
 
             lvShapes.ResumeLayout()
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -321,7 +304,7 @@ Namespace Controls
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If
 
-            Me.InitThumbnails()
+            Me.PopulateListViewItems()
 
         End Sub
 
@@ -338,82 +321,49 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub lvShapes_BeforeLabelEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles lvShapes.BeforeLabelEdit
-            e.CancelEdit = (Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Rename) = False)
+        Private Sub lvShapes_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles lvShapes.ItemCheck
+
+            If m_bInUpdate Then Return
+
+            Dim item As ListViewItem = lvShapes.Items(e.Index)
+            Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
+
+            If (TypeOf shape Is cTimeSeries) Then
+                If e.NewValue = CheckState.Checked Then
+                    If (DirectCast(shape, cTimeSeries).WtType = 0) Then
+                        e.NewValue = CheckState.Unchecked
+                    End If
+                End If
+            End If
+
+        End Sub
+
+        Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
+            Handles lvShapes.ItemChecked
+
+            If m_bInUpdate Then Return
+
+            Dim shape As cShapeData = DirectCast(e.Item.Tag, cShapeData)
+            If (TypeOf shape Is cTimeSeries) Then
+                DirectCast(shape, cTimeSeries).Enabled = e.Item.Checked
+            End If
+
+            ' HACK!!!
+            cCore.GetInstance().UpdateTimeSeries()
+
         End Sub
 
         ''' <summary>
         ''' The event handler when the selected thumbnail changes in the listview
         ''' </summary>
-        Private Sub lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvShapes.SelectedIndexChanged
+        Private Sub lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles lvShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
 
-            Dim selectedIndices As ListView.SelectedIndexCollection = lvShapes.SelectedIndices
-            Dim iSelectedIndex As Integer = -1
-            Dim shapeSelected As cShapeData = Nothing
-
-            If selectedIndices.Count = 1 Then
-                iSelectedIndex = selectedIndices(0)
-                shapeSelected = Me.m_lShapes(iSelectedIndex)
-                Me.Selection = shapeSelected
-            End If
-
-        End Sub
-
-        Private Sub RenameShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenameToolStripMenuItem.Click
-            lvShapes.Items(m_iSelectedShapeIndex).BeginEdit()
-        End Sub
-
-        ''' <summary>
-        ''' The event handler after user types the new name. We need validation here for the same name, empty name etc.
-        ''' </summary>
-        Private Sub lvShapes_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles lvShapes.AfterLabelEdit
-
-            ' The user does not change the name so return directly
-            If e.Label Is Nothing Then
-                Return
-            End If
-
-            ' Get rid of redundant spaces around the name
-            Dim strNewName As String = e.Label.Trim()
-
-            ' The same name as before editing
-            If strNewName.Equals(lvShapes.Items(e.Item).Text) Then
-                e.CancelEdit = True
-                lvShapes.Items(e.Item).BeginEdit()
-                Return
-            End If
-
-            ' Empty name
-            Dim str As String = String.Empty
-            Dim isEmpty As Boolean = strNewName.Equals(String.Empty)
-            If isEmpty Then
-                str = My.Resources.RENAME_FORCING_ERROR_MSG1
-            End If
-
-            ' Validate if the same name exists
-            Dim isFound As Boolean = False
-            For i As Integer = 0 To lvShapes.Items.Count - 1
-                Dim strTmpName As String = lvShapes.Items(i).Text
-                If strNewName.Equals(strTmpName) Then
-                    isFound = True
-                    Exit For
-                End If
-            Next
-
-            If isFound Then
-                str = String.Format(My.Resources.RENAME_FORCING_ERROR_MSG2, lvShapes.Items(e.Item).Text, Environment.NewLine())
-            End If
-
-            If isEmpty Or isFound Then
-                MessageBox.Show(str, My.Resources.RENAME_FORCING_ERROR_MSG3, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                e.CancelEdit = True
-                lvShapes.Items(e.Item).BeginEdit()
-                Return
-            End If
-
-            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Rename, Me.Selection, strNewName)
+            ' Haha
+            Me.Selection = Me.Selection
 
         End Sub
 
@@ -421,8 +371,11 @@ Namespace Controls
         ''' Duplicate a shape data
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DuplicateToolStripMenuItem.Click
+        Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles DuplicateToolStripMenuItem.Click
+
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.Selection)
+
         End Sub
 
         ''' <summary>

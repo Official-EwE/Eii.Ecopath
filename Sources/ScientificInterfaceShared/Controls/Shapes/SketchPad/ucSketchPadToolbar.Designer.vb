@@ -75,8 +75,9 @@ Namespace Controls
             '
             'm_tstbWeight
             '
-            Me.m_tstbWeight.Name = "m_tstbWeight"
+            Me.m_tstbWeight.AcceptsReturn = True
             resources.ApplyResources(Me.m_tstbWeight, "m_tstbWeight")
+            Me.m_tstbWeight.Name = "m_tstbWeight"
             '
             'tsBtnValue
             '
@@ -137,7 +138,7 @@ Namespace Controls
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents tsbChangeShape As System.Windows.Forms.ToolStripButton
         Friend WithEvents m_tslWeight As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents m_tstbWeight As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tstbWeight As System.Windows.Forms.ToolStripTextBox
 
     End Class
 

@@ -30,7 +30,7 @@ Namespace Controls
             Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RenameToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.lvShapes = New ScientificInterfaceShared.Controls.ucIndexedItemListView
+            Me.lvShapes = New cSmoothListView
             Me.lvContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -38,42 +38,42 @@ Namespace Controls
             '
             Me.lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ImportToolStripMenuItem, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem})
             Me.lvContextMenuStrip.Name = "lvContextMenuStrip"
-            Me.lvContextMenuStrip.Size = New System.Drawing.Size(153, 158)
+            Me.lvContextMenuStrip.Size = New System.Drawing.Size(130, 136)
             '
             'AddToolStripMenuItem
             '
             Me.AddToolStripMenuItem.Name = "AddToolStripMenuItem"
-            Me.AddToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.AddToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.AddToolStripMenuItem.Text = "A&dd..."
             '
             'ApplyToolStripMenuItem
             '
             Me.ApplyToolStripMenuItem.Name = "ApplyToolStripMenuItem"
-            Me.ApplyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.ApplyToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.ApplyToolStripMenuItem.Text = "A&pply..."
             '
             'DuplicateToolStripMenuItem
             '
             Me.DuplicateToolStripMenuItem.Name = "DuplicateToolStripMenuItem"
-            Me.DuplicateToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.DuplicateToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.DuplicateToolStripMenuItem.Text = "&Duplicate"
             '
             'ImportToolStripMenuItem
             '
             Me.ImportToolStripMenuItem.Name = "ImportToolStripMenuItem"
-            Me.ImportToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.ImportToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.ImportToolStripMenuItem.Text = "&Import..."
             '
             'RemoveToolStripMenuItem
             '
             Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
-            Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.RemoveToolStripMenuItem.Text = "Re&move"
             '
             'RenameToolStripMenuItem
             '
             Me.RenameToolStripMenuItem.Name = "RenameToolStripMenuItem"
-            Me.RenameToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+            Me.RenameToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
             Me.RenameToolStripMenuItem.Text = "Re&name"
             '
             'lvShapes
@@ -82,9 +82,7 @@ Namespace Controls
             Me.lvShapes.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.lvShapes.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lvShapes.HideSelection = False
-            Me.lvShapes.LabelEdit = True
             Me.lvShapes.Location = New System.Drawing.Point(0, 0)
-            Me.lvShapes.MultiSelect = False
             Me.lvShapes.Name = "lvShapes"
             Me.lvShapes.Size = New System.Drawing.Size(690, 150)
             Me.lvShapes.TabIndex = 0
@@ -102,14 +100,14 @@ Namespace Controls
             Me.ResumeLayout(False)
 
         End Sub
-        Public WithEvents lvShapes As ucIndexedItemListView
-        Friend WithEvents lvContextMenuStrip As System.Windows.Forms.ContextMenuStrip
-        Friend WithEvents AddToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents DuplicateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents RenameToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ApplyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ImportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents lvShapes As cSmoothListView
+        Private WithEvents lvContextMenuStrip As System.Windows.Forms.ContextMenuStrip
+        Private WithEvents AddToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents DuplicateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents RenameToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ApplyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ImportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 

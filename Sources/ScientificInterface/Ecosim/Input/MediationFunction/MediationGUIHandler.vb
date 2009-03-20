@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.5  2009/03/20 17:55:41  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.4  2009/03/19 16:13:42  jeroens
 ' X mark can be suppressed
 '
@@ -130,22 +133,29 @@ Namespace Ecosim
         ''' <see cref="m_bioPercent">BioPercent</see> control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Selection() As EwECore.cShapeData
+        Public Overrides Property SelectedShapes() As EwECore.cShapeData()
             Get
-                Return MyBase.Selection
+                Return MyBase.SelectedShapes
             End Get
-            Set(ByVal value As EwECore.cShapeData)
+            Set(ByVal value As EwECore.cShapeData())
 
-                MyBase.Selection = value
-                If (Me.BioPercent IsNot Nothing) Then Me.BioPercent.Shape = Me.Selection
+                MyBase.SelectedShapes = value
+
+                ' Single selection
+                Dim shapeSelected As cShapeData = Nothing
+                If (value IsNot Nothing) Then
+                    If (value.Length = 1) Then shapeSelected = value(0)
+                End If
+
+                If (Me.BioPercent IsNot Nothing) Then Me.BioPercent.Shape = shapeSelected
 
                 If Me.SketchPad IsNot Nothing Then
-                    If (value Is Nothing) Then
+                    If (shapeSelected Is Nothing) Then
                         Me.SketchPad.XMarkValue = cCore.NULL_VALUE
                         Me.SketchPad.YMarkValue = cCore.NULL_VALUE
                     Else
-                        Me.SketchPad.XMarkValue = CSng(DirectCast(value, cMediationFunction).XBaseIndex)
-                        Me.SketchPad.YMarkValue = DirectCast(value, cMediationFunction).YBase
+                        Me.SketchPad.XMarkValue = CSng(DirectCast(shapeSelected, cMediationFunction).XBaseIndex)
+                        Me.SketchPad.YMarkValue = DirectCast(shapeSelected, cMediationFunction).YBase
                     End If
                 End If
             End Set

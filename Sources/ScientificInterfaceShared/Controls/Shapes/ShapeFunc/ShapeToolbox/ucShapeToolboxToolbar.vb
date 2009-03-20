@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolboxToolbar.vb,v $
+' Revision 1.4  2009/03/20 17:55:42  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.3  2009/03/02 20:08:02  jeroens
 ' Defaults -> ResetAll
 '
@@ -77,7 +80,6 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Load, Me.tsbLoad)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Import, Me.tsbImport)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.tsbRemove)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Rename, Me.tsbRename)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.tsbResetFs)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.tsbSetToValue)
@@ -113,11 +115,6 @@ Namespace Controls
         Private Sub tsbRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemove.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove)
-        End Sub
-
-        Private Sub tsbRename_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRename.Click
-            If (Me.m_handler Is Nothing) Then Return
-            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Rename)
         End Sub
 
         Private Sub tsbWeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -156,7 +153,7 @@ Namespace Controls
             Handles tsbSetTo0.Click
 
             If Me.m_handler IsNot Nothing Then
-                Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_handler.Selection, 0.0!)
+                Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_handler.SelectedShapes, 0.0!)
             End If
 
         End Sub
@@ -172,10 +169,9 @@ Namespace Controls
 
             ' Sanity check
             If Me.m_handler Is Nothing Then Return
-            If Me.m_handler.Selection Is Nothing Then Return
+            If Me.m_handler.SelectedShapes Is Nothing Then Return
 
             strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
-            shape = Me.m_handler.Selection
 
             'User clicks OK
             If strValue.Length <> 0 Then
@@ -186,7 +182,8 @@ Namespace Controls
                 If astrEntered.Length = 1 Then
                     ' #Yes: duplicate this char over the entire shape
                     Try
-                        Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, shape, CSng(Val(astrEntered(0))))
+                        Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
+                            Me.m_handler.SelectedShapes, CSng(Val(astrEntered(0))))
                     Catch ex As Exception
                     End Try
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMediationFunction.vb,v $
+' Revision 1.6  2009/03/20 17:55:41  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.5  2009/03/02 01:52:35  jeroens
 ' Properly named handlers
 '
@@ -83,26 +86,13 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnEditBioPert.Click
-
-            Dim dlgDefBP As New defBioPercent(DirectCast(m_shapeToolBox.Selection, cMediationFunction))
-            If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                _m_bioPercent.LoadGraphData()
-            End If
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Event handler; implemented to make sure that this form receives 
         ''' <see cref="cMessage">messages</see> from specific 
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Load
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
@@ -113,8 +103,24 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub frmForcingFunction_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.FormClosing
             Me.CoreComponents = Nothing
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsBtnEditBioPert.Click
+
+            Dim dlgDefBP As New defBioPercent(DirectCast(Me.m_shapeguihandler.SelectedShape, cMediationFunction))
+            If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                _m_bioPercent.LoadGraphData()
+            End If
+
         End Sub
 
 #End Region ' Events 

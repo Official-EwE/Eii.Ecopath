@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPadToolbar.vb,v $
+' Revision 1.3  2009/03/20 17:55:42  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.2  2009/03/02 02:05:37  jeroens
 ' Properly named handlers
 '
@@ -110,25 +113,35 @@ Namespace Controls
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
         End Sub
 
-        Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnOptions.Click
+        Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsBtnOptions.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
         End Sub
 
-        Private Sub tscbbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbbShapeView.SelectedIndexChanged
+        Private Sub tscbbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tscbbShapeView.SelectedIndexChanged
             If Me.m_bInUpdate Then Return
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, (tscbbShapeView.SelectedIndex = 1))
         End Sub
 
-        Private Sub m_tstbWeight_Changed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbWeight.TextChanged
-            If Me.Handler IsNot Nothing Then
-                Dim sWeight As Single = 1.0!
-                Try
-                    sWeight = Single.Parse(m_tstbWeight.Text)
-                Catch ex As Exception
-                    sWeight = 1.0!
-                End Try
-                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Nothing, sWeight)
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; responds to an [ENTER] key press to apply entered text
+        ''' to the grid selection.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub m_tstbWeight_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_tstbWeight.KeyDown
+            ' Is [ENTER]?
+            If e.KeyCode = Keys.Enter Then
+                If (Me.Handler IsNot Nothing) Then
+                    Dim sWeight As Single = 1.0!
+                    Try
+                        sWeight = Single.Parse(m_tstbWeight.Text)
+                    Catch ex As Exception
+                        sWeight = 1.0!
+                    End Try
+                    Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Nothing, sWeight)
+                End If
             End If
         End Sub
 
@@ -142,7 +155,7 @@ Namespace Controls
 
             If (Me.Handler Is Nothing) Then Return
 
-            Dim shapeSelected As cShapeData = Me.Handler.Selection
+            Dim shapeSelected As cShapeData = Me.Handler.SelectedShape
 
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.tsBtnOptions)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.tsBtnSave)

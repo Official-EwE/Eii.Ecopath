@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.6  2009/03/20 17:55:42  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.5  2009/03/19 16:13:43  jeroens
 ' X mark can be suppressed
 '
@@ -858,7 +861,8 @@ Namespace Controls
             Handles SaveToolStripMenuItem.Click
 
             If Me.Handler IsNot Nothing Then
-                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.Shape, Me)
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, _
+                        New cShapeData() {Me.Shape}, Me)
             End If
         End Sub
 

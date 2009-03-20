@@ -34,8 +34,6 @@ Namespace Controls
             Me.tsbDuplicate = New System.Windows.Forms.ToolStripButton
             Me.tsbRemove = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsbRename = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
             Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
@@ -45,7 +43,7 @@ Namespace Controls
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbImport, Me.tsbLoad, Me.tsbWeight, Me.ToolStripSeparator1, Me.tsbAdd, Me.tsbDuplicate, Me.tsbRemove, Me.ToolStripSeparator2, Me.tsbRename, Me.ToolStripSeparator4, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbImport, Me.tsbLoad, Me.tsbWeight, Me.ToolStripSeparator1, Me.tsbAdd, Me.tsbDuplicate, Me.tsbRemove, Me.ToolStripSeparator2, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -117,20 +115,6 @@ Namespace Controls
             Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
             Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
             '
-            'tsbRename
-            '
-            Me.tsbRename.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.tsbRename.Image = CType(resources.GetObject("tsbRename.Image"), System.Drawing.Image)
-            Me.tsbRename.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.tsbRename.Name = "tsbRename"
-            Me.tsbRename.Size = New System.Drawing.Size(62, 22)
-            Me.tsbRename.Text = "Re&name..."
-            '
-            'ToolStripSeparator4
-            '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
-            '
             'tsbSetTo0
             '
             Me.tsbSetTo0.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -179,9 +163,7 @@ Namespace Controls
         Private WithEvents tsbDuplicate As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbRemove As System.Windows.Forms.ToolStripButton
         Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents tsbRename As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbWeight As System.Windows.Forms.ToolStripButton
-        Private WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton

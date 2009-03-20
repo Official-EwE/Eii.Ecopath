@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.8  2009/03/20 17:55:40  jeroens
+' Shape controls are multiple selection
+'
 ' Revision 1.7  2009/03/02 01:52:35  jeroens
 ' Properly named handlers
 '
@@ -238,7 +241,8 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSearch.Click
+        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSearch.Click
 
             Dim shapeSelected As cShapeData = Nothing
 
@@ -252,7 +256,7 @@ Namespace Ecosim
             ' Update TS
             Me.m_core.UpdateTimeSeries()
 
-            shapeSelected = Me.m_shapeHandler.Selection
+            shapeSelected = Me.m_shapeHandler.SelectedShape
             If shapeSelected Is Nothing Then
                 Me.m_F2TSManager.AnomalySearchShapeNumber = 0
             Else
@@ -360,7 +364,10 @@ Namespace Ecosim
 
         Dim m_shapeSelected As cShapeData = Nothing
 
-        Private Sub m_shapeToolBox_OnSelectionChanged(ByVal shape As EwECore.cShapeData) Handles m_shapeToolBox.OnSelectionChanged
+        Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
+            Handles m_shapeToolBox.OnSelectionChanged
+
+            Dim shape As cShapeData = Me.m_shapeHandler.SelectedShape
 
             ' Reset year range when new shape selected
             If (Not Object.ReferenceEquals(m_shapeSelected, shape)) Then
