@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.26  2009/03/20 00:51:09  joeh
+' Add codes to estimate the two variables for Size/Weight plot
+'
 ' Revision 1.25  2009/03/18 15:28:27  jeroens
 ' PSD SelectedGroup -> Include
 '
@@ -422,6 +425,7 @@ Namespace Ecopath
                         'Joeh: PSD
                         EstimateGrowthParameters()
                         EstimatePSD()
+                        EstimateSizeWeight()
                         'End Joeh
 
                         m_Data.onPostEcopathRun()
@@ -3195,6 +3199,68 @@ nextJ:
             Next
         End Sub
 
+        Private Sub EstimateSizeWeight()
+            Dim AvgWeight() As Single
+            Dim AvgNumber() As Single
+            Dim Used() As Boolean
+            Dim Max As Single
+            Dim Biggest As Integer
+            Dim Sum1 As Single = 0
+            Dim Sum2 As Single = 0
+
+            ReDim AvgWeight(m_Data.NumLiving)
+            ReDim AvgNumber(m_Data.NumLiving)
+            ReDim Used(m_Data.NumLiving)
+
+            For iGroup As Integer = 1 To m_Data.NumLiving
+                If m_psd.Include(iGroup) Then
+                    AvgWeight(iGroup) = CalcAvgWeight(iGroup)
+                    AvgNumber(iGroup) = CalcAvgNumber(iGroup)
+                End If
+            Next
+
+            'For Biomass/(AvgWeight/AvgNumber)
+            For iGroup As Integer = 1 To m_Data.NumLiving
+                If m_psd.Include(iGroup) Then
+                    Max = -1
+                    For iGrp As Integer = 1 To m_Data.NumLiving
+                        If m_psd.Include(iGrp) Then
+                            If AvgNumber(iGrp) > 0 Then
+                                If m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp)) > Max And Used(iGrp) = False Then
+                                    Max = m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp))
+                                    Biggest = iGrp
+                                End If
+                            End If
+                        End If
+                    Next
+                    If Max < 0 Then Max = 0
+                    Sum1 = Sum1 + Max
+                    m_psd.BiomassAvgSzWt(iGroup) = Max
+                    Used(Biggest) = True
+                End If
+            Next
+
+            'Now for biomass
+            ReDim Used(m_Data.NumLiving)
+            For iGroup As Integer = 1 To m_Data.NumLiving
+                If m_psd.Include(iGroup) Then
+                    Max = -1
+                    For iGrp As Integer = 1 To m_Data.NumLiving
+                        If m_psd.Include(iGrp) Then
+                            If m_Data.B(iGrp) > Max And Used(iGrp) = False Then
+                                Max = m_Data.B(iGrp)
+                                Biggest = iGrp
+                            End If
+                        End If
+                    Next
+                    If Max <= 0 Then Max = 0
+                    Sum2 = Sum2 + Max
+                    m_psd.BiomassSzWt(iGroup) = Max
+                    Used(Biggest) = True
+                End If
+            Next
+        End Sub
+
         Private Function CalcStartTime(ByVal iGroup As Integer) As Single
             'Is stanza group?
             If m_Data.StanzaGroup(iGroup) Then
@@ -3290,6 +3356,57 @@ nextJ:
                 Case Else : Wb = -0.292 : Mu = 1.69
             End Select
         End Sub
+
+        Private Function CalcAvgWeight(ByVal iGroup As Integer) As Single
+            Dim Omega(3) As Integer
+            Dim Recr(m_Data.NumLiving) As Single
+            Dim Trec(m_Data.NumLiving) As Single
+            Dim P1 As Single
+            Dim P2 As Single
+            Dim P3 As Single
+            Dim P4 As Single
+            Dim P5 As Single
+            Dim P6 As Single
+            Dim sum As Single = 0
+
+            Omega(0) = 1
+            Omega(1) = -3
+            Omega(2) = 3
+            Omega(3) = -1
+
+            Recr(iGroup) = 1
+            Trec(iGroup) = 0
+
+            If Recr(iGroup) <= 0 Then Recr(iGroup) = 1
+            For n As Integer = 0 To 3
+                P1 = CSng(Omega(n) * Math.Exp(-n * m_Data.vbK(iGroup) * (Trec(iGroup) - m_psd.t0(iGroup))))
+                P2 = CSng(1 - Math.Exp(-((m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+                P3 = (m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)
+                P4 = CSng(Math.Exp(-((m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+                P5 = CSng(1 - Math.Exp(-(m_Data.PB(iGroup) + n * m_Data.vbK(iGroup)) * (m_psd.Tmax(iGroup) - m_psd.Tcatch(iGroup))))
+                P6 = m_Data.PB(iGroup) + n * m_Data.vbK(iGroup)
+                sum = sum + P1 * (P2 / P3 + P4 * P5 / P6)
+            Next
+            Return m_psd.Winf(iGroup) * Recr(iGroup) * sum
+        End Function
+
+        Private Function CalcAvgNumber(ByVal iGroup As Integer) As Single
+            Dim Recr(m_Data.NumLiving) As Single
+            Dim Trec(m_Data.NumLiving) As Single
+            Dim P1 As Single
+            Dim P2 As Single
+            Dim P3 As Single
+
+            Recr(iGroup) = 1
+            Trec(iGroup) = 0
+
+            If Recr(iGroup) <= 0 Then Recr(iGroup) = 1
+            P1 = CSng(1 - Math.Exp(-(m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+            P2 = CSng(Math.Exp(-(m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup)) * _
+                               (1 - Math.Exp(-m_Data.PB(iGroup) * (m_psd.Tmax(iGroup) - m_psd.Tcatch(iGroup))))))
+            P3 = m_Data.PB(iGroup)
+            Return Recr(iGroup) * (P1 / (m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + P2 / P3)
+        End Function
         'End Joeh
 #End Region
 
