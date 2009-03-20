@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.9  2009/03/20 17:53:59  jeroens
+' Multiple selection
+'
 ' Revision 1.8  2009/03/11 00:31:54  jeroens
 ' Shapes update on reset to make sure changes are committed to the core
 '
@@ -74,21 +77,19 @@ Namespace Controls
             DisplayOptions
             ''' <summary>Remove a shape.</summary>
             Remove
-            ''' <summary>Rename a shape.</summary>
-            Rename
             ''' <summary>Set one shape to specific values.</summary>
             Reset
             ''' <summary>Save shape to an image.</summary>
             SaveAsImage
             ''' <summary>Set the seasonal/long-term state of a shape.</summary>
             Seasonal
-            ''' <summary>Set the weight of a time series.</summary>
+            ''' <summary>Set the weight of a single time series.</summary>
             SetWeight
             ''' <summary>Set a shape to a given value.</summary>
             SetValue
             ''' <summary>Set a shape to 0.</summary>
             SetToZero
-            ''' <summary>Weight a time series.</summary>
+            ''' <summary>Weight all time series.</summary>
             Weight
         End Enum
 
@@ -106,8 +107,8 @@ Namespace Controls
         Private m_sketchPadToolbar As ucSketchPadToolbar = Nothing
         ''' <summary>The color to use for rendering <see cref="cShapeData">shapes</see>.</summary>
         Private m_color As Color = Nothing
-        ''' <summary>Selected <see cref="cShapeData">shape</see>.</summary>
-        Private m_shapeSelected As cShapeData = Nothing
+        ''' <summary>Selected <see cref="cShapeData">shapes</see>.</summary>
+        Private m_ashapeSelected() As cShapeData = Nothing
 
 #End Region ' Private variables
 
@@ -179,7 +180,7 @@ Namespace Controls
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
         Public MustOverride Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
-                Optional ByVal shape As cShapeData = Nothing, _
+                Optional ByVal shape As cShapeData() = Nothing, _
                 Optional ByVal data As Object = Nothing)
 
         ''' -------------------------------------------------------------------
@@ -197,7 +198,7 @@ Namespace Controls
         ''' <param name="shape">The newly selected shape, or Nothing when no 
         ''' shape is selected.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub OnShapeSelected(ByVal shape As cShapeData)
+        Public MustOverride Sub OnShapeSelected(ByVal shape() As cShapeData)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -245,16 +246,41 @@ Namespace Controls
         ''' Get/set the selected <see cref="cShapeData">shape</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Selection() As cShapeData
+        Public Overridable Property SelectedShapes() As cShapeData()
             Get
-                Return Me.m_shapeSelected
+                Return Me.m_ashapeSelected
             End Get
-            Set(ByVal value As cShapeData)
-                Me.m_shapeSelected = value
-                If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.Shape = value
+            Set(ByVal value As cShapeData())
+                Me.m_ashapeSelected = value
+
+                ' Single selection
+                Dim shapeSelected As cShapeData = Nothing
+                If (value IsNot Nothing) Then
+                    If (value.Length = 1) Then shapeSelected = value(0)
+                End If
+
+                If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.Shape = shapeSelected
                 If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
+
                 If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
                 If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
+
+            End Set
+        End Property
+
+        Public Property SelectedShape() As cShapeData
+            Get
+                If (Me.SelectedShapes IsNot Nothing) Then
+                    If (Me.SelectedShapes.Length = 1) Then Return Me.SelectedShapes(0)
+                End If
+                Return Nothing
+            End Get
+            Set(ByVal value As cShapeData)
+                If value Is Nothing Then
+                    Me.SelectedShapes = Nothing
+                Else
+                    Me.SelectedShapes = New cShapeData() {value}
+                End If
             End Set
         End Property
 
@@ -266,26 +292,27 @@ Namespace Controls
         ''' <summary>
         ''' Reset a shape to a particular value.
         ''' </summary>
-        ''' <param name="shape">The <see cref="cShapeData">shape</see> to affect.</param>
+        ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
         ''' <param name="sDefaultValue">The value to set.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub ResetShape(ByVal shape As cShapeData, _
+        Protected Overridable Sub ResetShape(ByVal ashapes As cShapeData(), _
                 Optional ByVal sDefaultValue As Single = 1.0!)
 
-            Debug.Assert(shape IsNot Nothing)
+            Debug.Assert(ashapes IsNot Nothing)
 
-            shape.LockUpdates()
-            shape.IsSeasonal = False
-            For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
-                shape.ShapeData(i) = sDefaultValue
-            Next i
-            shape.Update()
-            shape.UnlockUpdates()
+            For Each shape As cShapeData In ashapes
+                If shape IsNot Nothing Then
+                    shape.LockUpdates()
+                    shape.IsSeasonal = False
+                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                        shape.ShapeData(i) = sDefaultValue
+                    Next i
+                    shape.Update()
+                    shape.UnlockUpdates()
+                End If
+            Next
 
-            If (Object.ReferenceEquals(shape, Me.m_shapeSelected)) Then
-                ' Cascade changes properly
-                Me.Selection = shape
-            End If
+            Me.SelectedShapes = Me.SelectedShapes
         End Sub
 
         Protected Overridable Sub SaveAsImage(ByVal shape As cShapeData, ByVal sp As ucSketchPad)
@@ -348,18 +375,18 @@ Namespace Controls
             Debug.Assert(shape IsNot Nothing)
 
             If (bSeasonal = False) Then
-                Me.Selection.IsSeasonal = False
+                Me.SelectedShape.IsSeasonal = False
             Else
-                If Not Me.Selection.IsSeasonal Then
+                If Not Me.SelectedShape.IsSeasonal Then
                     If (MsgBox(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG, _
                              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, _
                              My.Resources.SHAPE_TYPE_TO_SEASONAL_CAPTION) = MsgBoxResult.Yes) Then
-                        Me.Selection.IsSeasonal = True
+                        Me.SelectedShape.IsSeasonal = True
                     End If
                 End If
             End If
             ' Cascade changes properly
-            Me.Selection = Me.m_shapeSelected
+            Me.SelectedShapes = Me.m_ashapeSelected
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -523,8 +550,10 @@ Namespace Controls
 
             ' Cannot draw onto tim series shapes
             Me.SketchPad.Enabled = False
+            ' Add check boxes to the toolbox
+            Me.ShapeToolBox.AllowCheckboxes = True
 
-            Me.UpdateShapeList(sp.Shape)
+            Me.UpdateShapeList(New cShapeData() {sp.Shape})
         End Sub
 
 #Region " Baseclass overrides "
@@ -554,8 +583,6 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.Remove
                     Return True
-                Case eShapeCommandTypes.Rename
-                    Return True
                 Case eShapeCommandTypes.Seasonal
                     Return False
                 Case eShapeCommandTypes.SetWeight
@@ -579,30 +606,30 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
-            Dim bHasSelection As Boolean = (Me.Selection IsNot Nothing)
+            Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
+            Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+
             Select Case cmd
-                Case cShapeGUIHandler.eShapeCommandTypes.Add
-                    ' Can only add TS when a dataset is loaded
+
+                Case cShapeGUIHandler.eShapeCommandTypes.Import, _
+                     eShapeCommandTypes.Load
+                    Return True
+
+                Case cShapeGUIHandler.eShapeCommandTypes.Add, _
+                     eShapeCommandTypes.Weight
                     Return Me.m_core.HasTimeSeries
-                Case cShapeGUIHandler.eShapeCommandTypes.Weight
+
+                Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
+                     cShapeGUIHandler.eShapeCommandTypes.Remove
                     Return bHasSelection
-                Case cShapeGUIHandler.eShapeCommandTypes.Duplicate
-                    Return bHasSelection
-                Case cShapeGUIHandler.eShapeCommandTypes.Import
-                    Return True
-                Case eShapeCommandTypes.Load
-                    Return True
-                Case eShapeCommandTypes.Modify
-                    Return bHasSelection
-                Case cShapeGUIHandler.eShapeCommandTypes.Remove
-                    Return bHasSelection
-                Case cShapeGUIHandler.eShapeCommandTypes.Rename
-                    Return bHasSelection
-                Case eShapeCommandTypes.SetWeight
-                    Return bHasSelection
-                Case eShapeCommandTypes.SaveAsImage
-                    Return True
+
+                Case eShapeCommandTypes.Modify, _
+                     eShapeCommandTypes.SetWeight, _
+                     eShapeCommandTypes.SaveAsImage
+                    Return bHasSingleSelection
+
             End Select
+
             Return False
 
         End Function
@@ -613,35 +640,42 @@ Namespace Controls
         ''' Overridden to implement Time Series commands.
         ''' </summary>
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
-        ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
-             Optional ByVal shape As cShapeData = Nothing, Optional ByVal data As Object = Nothing)
+             Optional ByVal ashapes As cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
 
-            If (shape Is Nothing) Then shape = Me.Selection
+            If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
 
             Select Case cmd
                 Case eShapeCommandTypes.Add
                     Me.AddTimeSeries()
+
                 Case eShapeCommandTypes.Duplicate
-                    Me.DuplicateTimeSeries(shape)
+                    Me.DuplicateTimeSeries(ashapes)
+
                 Case eShapeCommandTypes.Import
                     Me.ImportTimeSeries()
+
                 Case eShapeCommandTypes.Load
                     Me.LoadDatasets()
+
                 Case eShapeCommandTypes.Remove
-                    Me.RemoveDataset(shape)
-                Case eShapeCommandTypes.Modify, eShapeCommandTypes.Rename
-                    Me.ModifyTimeSeries(shape)
-                    'Case eShapeCommandTypes.Seasonal
-                    '    Me.SetSeasonal(shape, CBool(data))
+                    Me.RemoveTimeSeries(ashapes)
+
+                Case eShapeCommandTypes.Modify
+                    Me.ModifyTimeSeries(ashapes(0))
+
                 Case eShapeCommandTypes.SetWeight
-                    Me.SetWeight(shape, CSng(data))
+                    Me.SetWeight(ashapes(0), CSng(data))
+
                 Case eShapeCommandTypes.SaveAsImage
-                    Me.SaveAsImage(shape, Me.SketchPad)
+                    Me.SaveAsImage(ashapes(0), Me.SketchPad)
+
                 Case eShapeCommandTypes.Weight
                     Me.WeightTimeSeries()
+
             End Select
         End Sub
 
@@ -653,7 +687,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
             If Me.m_bInUpdate Then Return
-            Me.UpdateShapeList(Me.Selection)
+            Me.UpdateShapeList(Me.SelectedShapes)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -685,13 +719,13 @@ Namespace Controls
         ''' <summary>
         ''' Cascade a newly selected shape to the managed controls.
         ''' </summary>
-        ''' <param name="shape">The newly selected shape.</param>
+        ''' <param name="ashapes">The newly selected shapes.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(ByVal ashapes As EwECore.cShapeData())
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             If Me.SketchPad IsNot Nothing Then
-                Me.Selection = shape
+                Me.SelectedShapes = ashapes
             End If
             Me.m_bInUpdate = False
         End Sub
@@ -778,9 +812,10 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Duplicate">Duplicate</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub DuplicateTimeSeries(ByVal shape As cShapeData)
+        Private Sub DuplicateTimeSeries(ByVal ashapes As cShapeData())
+
             ' Sanity check
-            Debug.Assert(shape IsNot Nothing, "Need valid TS")
+            Debug.Assert(ashapes IsNot Nothing, "Need valid TS")
 
             Dim strNewTSName As String = ""
             Dim lstrTSNames As New List(Of String)
@@ -788,6 +823,7 @@ Namespace Controls
             Dim ts As cTimeSeries = Nothing
             Dim asValues() As Single
             Dim intDBID As Integer = -1
+            Dim bSucces As Boolean = True
 
             ' Collect all current shape names
             For Each s As cShapeData In Me.m_lShapes
@@ -799,17 +835,23 @@ Namespace Controls
             strNewTSName = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTSNumber)
 
             ' Generate TS data
-            ts = Me.m_core.EcosimTimeSeries(shape.Index)
-            ReDim asValues(ts.ShapeData.Length - 2)
-            For i As Integer = 1 To ts.ShapeData.Length - 1
-                asValues(i - 1) = ts.DatVal(i)
+            For Each shape As cShapeData In ashapes
+                ts = Me.m_core.EcosimTimeSeries(shape.Index)
+                ReDim asValues(ts.ShapeData.Length - 2)
+                For i As Integer = 1 To ts.ShapeData.Length - 1
+                    asValues(i - 1) = ts.DatVal(i)
+                Next
+
+                bSucces = bSucces And (Me.m_core.AddTimeSeries(strNewTSName, _
+                        ts.DataType, DirectCast(ts.TimeSeriesType, eTimeSeriesType), _
+                        ts.WtType, asValues, intDBID))
             Next
 
-            If (Me.m_core.AddTimeSeries(strNewTSName, ts.DataType, DirectCast(ts.TimeSeriesType, eTimeSeriesType), _
-                     ts.WtType, asValues, intDBID)) Then
+            If bSucces Then
                 ' Update shape to select
                 Me.UpdateShapeList(Nothing, eAutoSelectMode.SelectLastShape)
             End If
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -829,15 +871,30 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Remove">Remove</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub RemoveDataset(ByVal shape As cShapeData)
-            ' Sanity check
-            Debug.Assert(shape IsNot Nothing, "Need valid TS")
-            Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
+        Private Sub RemoveTimeSeries(ByVal ashapes As cShapeData())
 
-            If MsgBox(String.Format(My.Resources.PROMPT_TIMESERIES_DELETE, shape.Name), MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                ' Let core messages do the rest
-                Me.m_core.RemoveTimeSeries(shape.DBID)
+            Dim bSucces As Boolean = True
+
+            ' Sanity check
+            Debug.Assert(ashapes IsNot Nothing, "Need valid TS")
+
+            If ashapes.Length = 1 Then
+                If MsgBox(String.Format(My.Resources.PROMPT_TIMESERIES_DELETE, ashapes(0).Name), _
+                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+            Else
+                If MsgBox(String.Format(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length), _
+                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
             End If
+
+            Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            For Each shape As cShapeData In ashapes
+                Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
+                bSucces = bSucces And Me.m_core.RemoveTimeSeries(shape.DBID)
+            Next
+            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+
+            ' Refresh
+            Me.UpdateShapeList()
 
         End Sub
 
@@ -881,18 +938,18 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method; updates the list of Time Series.
+        ''' Helper method; updates the list of time series to manage.
         ''' </summary>
-        ''' <param name="shapeSelect">Shape to select.</param>
+        ''' <param name="ashapeSelect">Shapes to select.</param>
         ''' <param name="selectMode">If shape cannot be selected, or no shape 
         ''' has been provided, this mode indicates how the new selection should 
         ''' be made.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateShapeList(Optional ByVal shapeSelect As cShapeData = Nothing, _
+        Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing, _
                 Optional ByVal selectMode As eAutoSelectMode = eAutoSelectMode.SelectCurrentShape)
 
             Dim ts As cTimeSeries = Nothing
-            Dim shapeSelectCurr As cShapeData = Me.Selection
+            Dim shapeSelectCurr As cShapeData() = Me.SelectedShapes
 
             Me.m_lShapes.Clear()
 
@@ -901,27 +958,27 @@ Namespace Controls
             Next
 
             ' Select a shape
-            If Object.ReferenceEquals(shapeSelect, Nothing) Then
+            If Object.ReferenceEquals(ashapeSelect, Nothing) Then
                 If Me.m_lShapes.Count > 0 Then
                     Select Case selectMode
                         Case eAutoSelectMode.None
                             ' Haha
                         Case eAutoSelectMode.SelectCurrentShape
-                            shapeSelect = shapeSelectCurr
+                            ashapeSelect = shapeSelectCurr
                         Case eAutoSelectMode.SelectFirstShape
-                            shapeSelect = Me.m_lShapes(0)
+                            ashapeSelect = New cShapeData() {Me.m_lShapes(0)}
                         Case eAutoSelectMode.SelectLastShape
-                            shapeSelect = Me.m_lShapes(Me.m_lShapes.Count - 1)
+                            ashapeSelect = New cShapeData() {Me.m_lShapes(Me.m_lShapes.Count - 1)}
                     End Select
                 End If
             End If
 
             If (Me.ShapeToolBox IsNot Nothing) Then
-                Me.ShapeToolBox.SetShapes(Me.m_lShapes, shapeSelect)
-                shapeSelect = Me.ShapeToolBox.Selection
+                Me.ShapeToolBox.SetShapes(Me.m_lShapes, ashapeSelect)
+                ashapeSelect = Me.ShapeToolBox.Selection
             End If
 
-            Me.Selection = shapeSelect
+            Me.SelectedShapes = ashapeSelect
 
         End Sub
 
@@ -1008,7 +1065,7 @@ Namespace Controls
                 ' Lock it to prevent noise during this process
                 shape.LockUpdates()
                 ' Reset the shape
-                Me.ResetShape(shape)
+                Me.ResetShape(New cShapeData() {shape})
                 ' Cheat: force an update on the very last shape to trigger a GUI refresh
                 shape.UnlockUpdates(iShape = sm.Count - 1)
             Next
@@ -1043,8 +1100,6 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.Remove
                     Return True
-                Case eShapeCommandTypes.Rename
-                    Return True
                 Case eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll
                     Return True
                 Case eShapeCommandTypes.SaveAsImage
@@ -1068,13 +1123,27 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
+            Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
+            Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+
             Select Case cmd
-                Case eShapeCommandTypes.Add, eShapeCommandTypes.ResetAll
+
+                Case eShapeCommandTypes.Add
                     Return True
-                Case eShapeCommandTypes.Duplicate, eShapeCommandTypes.Modify, eShapeCommandTypes.DisplayOptions, _
-                     eShapeCommandTypes.Remove, eShapeCommandTypes.Rename, eShapeCommandTypes.Reset, _
-                     eShapeCommandTypes.SaveAsImage, eShapeCommandTypes.Seasonal, eShapeCommandTypes.ChangeShape
-                    Return (Me.Selection IsNot Nothing)
+
+                Case eShapeCommandTypes.Duplicate, _
+                     eShapeCommandTypes.Remove, _
+                     eShapeCommandTypes.Reset, _
+                     eShapeCommandTypes.ResetAll
+                    Return bHasSelection
+
+                Case eShapeCommandTypes.ChangeShape, _
+                     eShapeCommandTypes.Modify, _
+                     eShapeCommandTypes.DisplayOptions, _
+                     eShapeCommandTypes.SaveAsImage, _
+                     eShapeCommandTypes.Seasonal
+                    Return bHasSingleSelection
+
             End Select
             Return False
 
@@ -1086,13 +1155,13 @@ Namespace Controls
         ''' Overridden to implement forcing function commands.
         ''' </summary>
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
-        ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
-                 Optional ByVal shape As EwECore.cShapeData = Nothing, Optional ByVal data As Object = Nothing)
+                 Optional ByVal ashapes As EwECore.cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
 
-            If (shape Is Nothing) Then shape = Me.Selection
+            If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
 
             Select Case cmd
                 Case eShapeCommandTypes.Add
@@ -1102,31 +1171,28 @@ Namespace Controls
                     Me.ChangeFFShape()
 
                 Case eShapeCommandTypes.Duplicate
-                    Me.DuplicateFF(shape)
+                    Me.DuplicateFF(ashapes)
 
                 Case eShapeCommandTypes.Modify
-                    Me.ModifyFF(shape)
+                    Me.ModifyFF(ashapes(0))
 
                 Case eShapeCommandTypes.DisplayOptions
                     Me.ShapeOptions()
 
                 Case eShapeCommandTypes.Remove
-                    Me.RemoveFF(shape)
-
-                Case eShapeCommandTypes.Rename
-                    Me.RenameFF(shape, CStr(data))
+                    Me.RemoveFF(ashapes)
 
                 Case eShapeCommandTypes.Reset
-                    Me.ResetShape(shape)
+                    Me.ResetShape(ashapes)
 
                 Case eShapeCommandTypes.ResetAll
                     Me.ResetAllShapes()
 
                 Case eShapeCommandTypes.SaveAsImage
-                    Me.SaveAsImage(shape, Me.SketchPad)
+                    Me.SaveAsImage(ashapes(0), Me.SketchPad)
 
                 Case eShapeCommandTypes.Seasonal
-                    Me.SetSeasonal(shape, CBool(data))
+                    Me.SetSeasonal(ashapes(0), CBool(data))
 
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
@@ -1141,7 +1207,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
             If Me.m_bInUpdate Then Return
-            Me.UpdateShapeList(Me.Selection)
+            Me.UpdateShapeList(Me.SelectedShapes)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1182,10 +1248,10 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The newly selected shape.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(ByVal shape As EwECore.cShapeData())
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
-            Me.Selection = shape
+            Me.SelectedShapes = shape
             Me.m_bInUpdate = False
         End Sub
 
@@ -1240,7 +1306,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub ChangeFFShape()
-            Dim dlg As New dlgChangeShape(DirectCast(Me.Selection, cForcingFunction))
+            Dim dlg As New dlgChangeShape(DirectCast(Me.SelectedShape, cForcingFunction))
             dlg.ShowDialog()
         End Sub
 
@@ -1249,15 +1315,25 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Duplicate">Duplicate</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub DuplicateFF(ByVal shapeSource As cShapeData)
+        Private Sub DuplicateFF(ByVal ashapes As cShapeData())
 
             ' Sanity check
-            Debug.Assert(shapeSource IsNot Nothing, "Need valid FF")
+            Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
 
             Dim fsm As cBaseShapeManager = Me.ShapeManager
-            Dim ff As cForcingFunction = DirectCast(shapeSource, cForcingFunction)
+            Dim lffNew As New List(Of cForcingFunction)
 
-            Me.UpdateShapeList(fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.eShapeFunctionType))
+            For Each shape As cShapeData In ashapes
+                Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
+                If ff IsNot Nothing Then
+                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.eShapeFunctionType)
+                    If ff IsNot Nothing Then
+                        lffNew.Add(ff)
+                    End If
+                End If
+            Next
+
+            Me.UpdateShapeList(lffNew.ToArray())
 
         End Sub
 
@@ -1279,43 +1355,33 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Implementation of the <see cref="eShapeCommandTypes.Rename">Rename</see> commmand.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub RenameFF(ByVal shape As cShapeData, ByVal strName As String)
-
-            ' Sanity check
-            Debug.Assert(shape IsNot Nothing, "Need valid FF")
-            Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
-
-            shape.Name = strName
-            shape.Update()
-
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Implementation of the <see cref="eShapeCommandTypes.Remove">Remove</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub RemoveFF(ByVal shape As cShapeData)
+        Private Sub RemoveFF(ByVal ashapes As cShapeData())
+
+            Dim bSucces As Boolean = True
 
             ' Sanity check
-            Debug.Assert(shape IsNot Nothing, "Need valid FF")
-            Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
+            Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
 
-            ' To confirm the delete action?
-            Dim iIndex As Integer = m_lShapes.IndexOf(shape)
-
-            If MsgBox(String.Format(My.Resources.PROMPT_FORCING_DELETE, shape.Name), _
-                    MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-
-                ' Remove its information from its internal lists
-                If (Not ShapeManager.Remove(DirectCast(shape, cForcingFunction))) Then Return
-
-                Me.UpdateShapeList()
-
+            If ashapes.Length = 1 Then
+                If MsgBox(String.Format(My.Resources.PROMPT_FORCING_DELETE, ashapes(0).Name), _
+                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+            Else
+                If MsgBox(String.Format(My.Resources.PROMPT_FORCING_DELETE_MULTIPLE, ashapes.Length), _
+                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
             End If
+
+            Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            For Each shape As cShapeData In ashapes
+                Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
+                bSucces = bSucces And ShapeManager.Remove(DirectCast(shape, cForcingFunction))
+            Next
+            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+
+            ' Refresh
+            Me.UpdateShapeList()
 
         End Sub
 
@@ -1389,21 +1455,21 @@ Namespace Controls
             ' Validate
             If Object.ReferenceEquals(shapeNew, Nothing) Then Return
             ' Update 
-            Me.UpdateShapeList(shapeNew)
+            Me.UpdateShapeList(New cShapeData() {shapeNew})
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method; updates the list of forcing functions.
         ''' </summary>
-        ''' <param name="shapeSelect">Forcing function to select.</param>
+        ''' <param name="ashapeSelect">Forcing functions to select.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateShapeList(Optional ByVal shapeSelect As cShapeData = Nothing)
+        Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing)
             Me.m_lShapes = Me.GetShapeList()
             If (Me.ShapeToolBox IsNot Nothing) Then
-                Me.ShapeToolBox.SetShapes(Me.m_lShapes, shapeSelect)
+                Me.ShapeToolBox.SetShapes(Me.m_lShapes, ashapeSelect)
             Else
-                Me.Selection = shapeSelect
+                Me.SelectedShapes = ashapeSelect
             End If
         End Sub
 
@@ -1543,7 +1609,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.SetValue
                     Return True
-                Case eShapeCommandTypes.Reset, eShapeCommandTypes.ResetAll
+                Case eShapeCommandTypes.Reset, _
+                     eShapeCommandTypes.ResetAll
                     Return True
                 Case eShapeCommandTypes.Modify
                     Return True
@@ -1559,11 +1626,21 @@ Namespace Controls
         ''' <returns>True if the queried command may be enabled.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+
+            Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
+            Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+
             Select Case cmd
-                Case eShapeCommandTypes.ResetAll, eShapeCommandTypes.Reset
-                    Return True
-                Case Else
-                    Return (Me.Selection IsNot Nothing)
+
+                Case eShapeCommandTypes.SetValue, _
+                     eShapeCommandTypes.Modify
+                    Return bHasSingleSelection
+
+                Case eShapeCommandTypes.Reset, _
+                     eShapeCommandTypes.ResetAll, _
+                     eShapeCommandTypes.SetToZero
+                    Return bHasSelection
+
             End Select
             Return False
         End Function
@@ -1574,21 +1651,24 @@ Namespace Controls
         ''' Overridden to implement fishing rate forcing function commands.
         ''' </summary>
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
-        ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, Optional ByVal shape As EwECore.cShapeData = Nothing, Optional ByVal data As Object = Nothing)
-            If (shape Is Nothing) Then shape = Me.Selection
+        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
+                    Optional ByVal ashapes As EwECore.cShapeData() = Nothing, _
+                    Optional ByVal data As Object = Nothing)
+
+            If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
             Select Case cmd
                 Case eShapeCommandTypes.Reset
                     If (data IsNot Nothing) Then
-                        MyBase.ResetShape(shape, CSng(data))
+                        MyBase.ResetShape(ashapes, CSng(data))
                     Else
-                        Me.ResetShapePrompted(shape)
+                        Me.ResetShapePrompted(ashapes)
                     End If
 
                 Case Else
-                    MyBase.ExecuteCommand(cmd, shape, data)
+                    MyBase.ExecuteCommand(cmd, ashapes, data)
 
             End Select
         End Sub
@@ -1623,7 +1703,7 @@ Namespace Controls
 
 #Region " Internals "
 
-        Private Sub ResetShapePrompted(ByVal shape As cShapeData)
+        Private Sub ResetShapePrompted(ByVal ashapes As cShapeData())
 
             Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
             Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
@@ -1631,7 +1711,7 @@ Namespace Controls
             Dim strValue As String = String.Empty
 
             ' Sanity check
-            If shape Is Nothing Then Return
+            If ashapes Is Nothing Then Return
 
             strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
 
@@ -1644,7 +1724,7 @@ Namespace Controls
                 If astrEntered.Length = 1 Then
                     ' #Yes: duplicate this char over the entire shape
                     Try
-                        Me.ResetShape(shape, CSng(Val(astrEntered(0))))
+                        Me.ResetShape(ashapes, CSng(Val(astrEntered(0))))
                     Catch ex As Exception
                         Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
                                 eMessageType.NotSet, eCoreComponentType.ShapesManager, eMessageImportance.Warning))
@@ -1652,24 +1732,28 @@ Namespace Controls
 
                 ElseIf astrEntered.Length > 1 Then
 
-                    ' Translate individual values
-                    Dim asValues(shape.XMax) As Single
-                    Dim sValue As Single = 0.0!
+                    For Each shape As cShapeData In ashapes
 
-                    For i As Integer = 0 To shape.XMax
-                        If (i < (astrEntered.Length - 1)) Then
-                            Try
-                                sValue = CSng(Val(astrEntered(i)))
-                            Catch ex As Exception
-                                sValue = -1
-                            End Try
-                        End If
-                        asValues(i) = sValue
+                        ' Translate individual values
+                        Dim asValues(shape.XMax) As Single
+                        Dim sValue As Single = 0.0!
+
+                        For i As Integer = 0 To shape.XMax
+                            If (i < (astrEntered.Length - 1)) Then
+                                Try
+                                    sValue = CSng(Val(astrEntered(i)))
+                                Catch ex As Exception
+                                    sValue = -1
+                                End Try
+                            End If
+                            asValues(i) = sValue
+                        Next
+
+                        shape.LockUpdates()
+                        shape.ShapeData = asValues
+                        shape.UnlockUpdates()
+
                     Next
-
-                    shape.LockUpdates()
-                    shape.ShapeData = asValues
-                    shape.UnlockUpdates()
 
                 End If
             End If
