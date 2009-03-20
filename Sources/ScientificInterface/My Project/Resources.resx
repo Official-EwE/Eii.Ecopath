@@ -2289,4 +2289,16 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_MORTALITY" xml:space="preserve">
     <value>Mortality</value>
   </data>
+  <data name="PSD_PLOTCAPTION_SIZEWT" xml:space="preserve">
+    <value>Size/Weight</value>
+  </data>
+  <data name="PSD_XAXISLABEL_SIZECLASS" xml:space="preserve">
+    <value>Size class</value>
+  </data>
+  <data name="PSD_LINELEGEND_BYBIOMASS" xml:space="preserve">
+    <value>By biomass</value>
+  </data>
+  <data name="PSD_LINELEGEND_BYNUM" xml:space="preserve">
+    <value>By number</value>
+  </data>
 </root>

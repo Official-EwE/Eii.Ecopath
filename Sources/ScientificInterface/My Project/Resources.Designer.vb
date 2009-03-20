@@ -4695,6 +4695,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to By biomass.
+        '''</summary>
+        Friend ReadOnly Property PSD_LINELEGEND_BYBIOMASS() As String
+            Get
+                Return ResourceManager.GetString("PSD_LINELEGEND_BYBIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to By number.
+        '''</summary>
+        Friend ReadOnly Property PSD_LINELEGEND_BYNUM() As String
+            Get
+                Return ResourceManager.GetString("PSD_LINELEGEND_BYNUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Particle size distribution.
         '''</summary>
         Friend ReadOnly Property PSD_PLOTCAPTION_PSD() As String
@@ -4709,6 +4727,24 @@ Namespace My.Resources
         Friend ReadOnly Property PSD_PLOTCAPTION_PSDCONTRIB() As String
             Get
                 Return ResourceManager.GetString("PSD_PLOTCAPTION_PSDCONTRIB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Size/Weight.
+        '''</summary>
+        Friend ReadOnly Property PSD_PLOTCAPTION_SIZEWT() As String
+            Get
+                Return ResourceManager.GetString("PSD_PLOTCAPTION_SIZEWT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Size class.
+        '''</summary>
+        Friend ReadOnly Property PSD_XAXISLABEL_SIZECLASS() As String
+            Get
+                Return ResourceManager.GetString("PSD_XAXISLABEL_SIZECLASS", resourceCulture)
             End Get
         End Property
         
