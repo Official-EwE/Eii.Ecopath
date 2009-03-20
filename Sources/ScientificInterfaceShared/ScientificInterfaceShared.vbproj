@@ -135,9 +135,6 @@
     <Compile Include="Controls\GlyphSelect\ucGlyphSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ListView\ucIndexedItemListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\ListBox\GroupListBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -359,6 +356,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\OptionsHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\ListView\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
