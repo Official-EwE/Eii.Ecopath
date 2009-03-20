@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.10  2009/03/20 18:01:13  joeh
+' Remove some redundant Imports statements
+'
 ' Revision 1.9  2009/03/19 16:55:56  jeroens
 ' Renamed LegendListBox to GroupListBox
 '
@@ -32,9 +35,6 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Commands
 Imports ZedGraph
 #End Region 'Imports
 

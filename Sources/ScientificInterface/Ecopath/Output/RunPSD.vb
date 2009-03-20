@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.11  2009/03/20 18:01:02  joeh
+' Remove some redundant Imports statements
+'
 ' Revision 1.10  2009/03/19 01:14:04  joeh
 ' no message
 '
@@ -37,12 +40,10 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Commands
 Imports ZedGraph
 
-#End Region
+#End Region 'Imports
 
 Namespace Ecopath.Output
 
