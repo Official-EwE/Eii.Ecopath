@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.27  2009/03/20 18:05:44  joeh
+' Add more codes to estimate the two biomass variables for Size/Weight plot
+'
 ' Revision 1.26  2009/03/20 00:51:09  joeh
 ' Add codes to estimate the two variables for Size/Weight plot
 '
@@ -3257,6 +3260,20 @@ nextJ:
                     Sum2 = Sum2 + Max
                     m_psd.BiomassSzWt(iGroup) = Max
                     Used(Biggest) = True
+                End If
+            Next
+
+            For iGroup As Integer = 1 To m_Data.NumLiving
+                If m_psd.Include(iGroup) Then 'might not work
+                    m_psd.BiomassAvgSzWt(iGroup) = m_psd.BiomassAvgSzWt(iGroup - 1) + m_psd.BiomassAvgSzWt(iGroup)
+                    m_psd.BiomassSzWt(iGroup) = m_psd.BiomassSzWt(iGroup - 1) + m_psd.BiomassSzWt(iGroup)
+                End If
+            Next
+
+            For iGroup As Integer = 1 To m_Data.NumLiving
+                If m_psd.Include(iGroup) Then 'might not work
+                    m_psd.BiomassAvgSzWt(iGroup) = 100 * m_psd.BiomassAvgSzWt(iGroup) / Sum1
+                    m_psd.BiomassSzWt(iGroup) = 100 * m_psd.BiomassSzWt(iGroup) / Sum2
                 End If
             Next
         End Sub
