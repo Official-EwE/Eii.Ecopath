@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeImage.vb,v $
+' Revision 1.3  2009/03/20 17:50:12  jeroens
+' Removed warning icon
+'
 ' Revision 1.2  2009/02/12 15:32:20  jeroens
 ' Can add labels to XMark, YMark lines
 '
@@ -336,6 +339,7 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a thumbnail image of a given shape.
         ''' </summary>
@@ -345,16 +349,13 @@ Namespace Controls
         ''' </param>
         ''' <param name="clr">Colour to render the thumbnail image with.</param>
         ''' <param name="sYMax">Y-scale to use for rendering the image.</param>
-        ''' <param name="bShowTick">Flag stating whether a tickmark should be
-        ''' displayed in the lower right corner of the shape (or lower left,
-        ''' depending on locale reading order).</param>
         ''' <param name="bShowWarning">Flag stating whether a warning icon
         ''' should be displayed in the lower left corner of the shape
         ''' (or lower right, depending on locale reading order).</param>
+        ''' -------------------------------------------------------------------
         Public Shared Function IconImage(ByVal shape As cShapeData, _
                 ByVal clr As Color, _
                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
-                Optional ByVal bShowTick As Boolean = False, _
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
             Dim ci As CultureInfo = Nothing
@@ -374,23 +375,6 @@ Namespace Controls
                 g.DrawLine(Pens.Red, 0, 0, bmp.Width, bmp.Height)
                 g.DrawLine(Pens.Red, 0, bmp.Height, bmp.Width, 0)
             End Try
-
-            ' Draw tick mark, if neccessary
-            If bShowTick Then
-                ' Try to get image from resources
-                img = My.Resources.CheckBoxHS
-                If img IsNot Nothing Then
-                    ' Get current locale info to see whether image should be drawn on left or right lower corner
-                    ci = Thread.CurrentThread.CurrentUICulture
-                    If ci.TextInfo.IsRightToLeft Then
-                        ' RtoL reading order: draw image in lower left corner
-                        g.DrawImage(img, 1, bmp.Height - img.Height - 2)
-                    Else
-                        ' LtoR reading order: draw image in lower right corner
-                        g.DrawImage(img, bmp.Width - img.Width - 2, bmp.Height - img.Height - 2)
-                    End If
-                End If
-            End If
 
             ' Draw warning icon, if neccessary
             If bShowWarning Then
