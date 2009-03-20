@@ -142,6 +142,9 @@
     <Compile Include="Controls\ListBox\ListBoxEX.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ListView\cSmoothListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MessageBox\CheckedMessageBox.vb" />
     <Compile Include="Controls\MemoryBox\frmMemoryBox.vb">
       <SubType>Form</SubType>
@@ -356,9 +359,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\OptionsHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\ListView\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
