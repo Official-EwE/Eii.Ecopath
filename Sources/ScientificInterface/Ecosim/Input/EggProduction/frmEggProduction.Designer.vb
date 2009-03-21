@@ -81,7 +81,7 @@ Namespace Ecosim
             'm_sketchPad
             '
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
-            Me.m_sketchPad.Color = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.IsSeasonal = False

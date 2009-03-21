@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.5  2009/03/21 00:30:34  jeroens
+' Fixed unclear parameter names
+'
 ' Revision 1.4  2009/03/02 17:43:52  jeroens
 ' Cleaned up
 '
@@ -44,7 +47,7 @@ Namespace Controls
 
         Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
             Handles MyBase.Paint
-            Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.Color, True, Me.SketchDrawMode, Me.YAxisMaxValue)
+            Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
         End Sub
 
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _

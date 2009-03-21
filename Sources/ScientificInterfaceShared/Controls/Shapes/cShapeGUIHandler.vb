@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.10  2009/03/21 00:30:32  jeroens
+' Fixed unclear parameter names
+'
 ' Revision 1.9  2009/03/20 17:53:59  jeroens
 ' Multiple selection
 '
@@ -425,7 +428,7 @@ Namespace Controls
                 If (Me.m_sketchPad IsNot Nothing) Then
                     AddHandler Me.m_sketchPad.ShapeChanged, AddressOf OnShapeChanged
                     AddHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
-                    Me.m_sketchPad.Color = Me.Color
+                    Me.m_sketchPad.ShapeColor = Me.Color
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
                     Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode
                     Me.m_sketchPad.Handler = Me

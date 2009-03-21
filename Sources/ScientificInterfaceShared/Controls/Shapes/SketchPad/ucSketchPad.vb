@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.8  2009/03/21 00:30:34  jeroens
+' Fixed unclear parameter names
+'
 ' Revision 1.7  2009/03/20 22:31:30  jeroens
 ' Backcolour responds to selection
 '
@@ -166,7 +169,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the handler 
+        ''' Get/set the handler that manages this sketch pad.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Handler() As cShapeGUIHandler
@@ -179,9 +182,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set the shape to display in the sketch pad.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Property Shape() As cShapeData
 
             Get
@@ -209,9 +214,12 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set whether to display the shape as 12-month seasonal data or
+        ''' across the full length of time.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property IsSeasonal() As Boolean
 
             Get
@@ -229,9 +237,11 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the line style used to render the graph.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property SketchDrawMode() As eSketchDrawModeTypes
 
             Get
@@ -245,9 +255,11 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This mode lets the user to hide and show the axis.
+        ''' Get/set whether the sketch pad should display an X and Y axis.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property DisplayAxis() As Boolean
 
             Get
@@ -261,9 +273,12 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This mode lets the user to enable and disable the auto scale using the mouse
+        ''' Get/set whether the sketch pad should automatically scale the Y axis
+        ''' to the range of data in the current shape.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property YAxisAutoScaleMode() As eAxisAutoScaleModeTypes
 
             Get
@@ -277,6 +292,11 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property YAxisMaxValue() As Single
             Get
                 ' Locked for drawing?
@@ -298,6 +318,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property YAxisMinValue() As Single
             Get
                 Return Me.m_sYMin
@@ -308,9 +333,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Value for horizontal (Y mark) line
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property YMarkValue() As Single
             Get
                 Return Me.m_sYMarkValue
@@ -321,9 +348,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Label for horizontal (Y mark) line
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property YMarkLabel() As String
             Get
                 Return Me.m_strYMarkLabel
@@ -334,6 +363,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ShowXMark() As Boolean
             Get
                 Return Me.m_bShowXMark
@@ -344,9 +378,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Value for vertical (X mark) line
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property XMarkValue() As Single
             Get
                 If Not Me.ShowXMark Then Return cCore.NULL_VALUE
@@ -358,9 +394,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Label for vertical (X mark) line
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property XMarkLabel() As String
             Get
                 Return Me.m_strXMarkLabel
@@ -371,10 +409,12 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set the colour used to draw the shape.
         ''' </summary>
-        Public Property Color() As Color
+        ''' -------------------------------------------------------------------
+        Public Property ShapeColor() As Color
 
             Get
                 Return Me.m_color
@@ -387,10 +427,12 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
         ''' </summary>
-        Public ReadOnly Property ShapeType() As eShapeCategoryTypes
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property ShapeCategory() As eShapeCategoryTypes
 
             Get
                 If Me.m_shape Is Nothing Then Return eShapeCategoryTypes.NotSet
@@ -409,6 +451,16 @@ Namespace Controls
 
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the current shape to an image file.
+        ''' </summary>
+        ''' <param name="shape"></param>
+        ''' <param name="strFileName"></param>
+        ''' <param name="imgFormat"></param>
+        ''' <param name="strError"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Overridable Function SaveAsImage(ByVal shape As cShapeData, ByVal strFileName As String, _
                                                 ByVal imgFormat As ImageFormat, _
                                                 ByRef strError As String) As Boolean
@@ -423,7 +475,7 @@ Namespace Controls
             g.Clear(Me.BackColor)
 
             Try
-                Me.DrawShape(shape, rcClient, g, Me.Color, True, Me.SketchDrawMode, Me.YAxisMaxValue)
+                Me.DrawShape(shape, rcClient, g, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -603,7 +655,7 @@ Namespace Controls
 
             Try
                 ' Draw
-                Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.Color, True, Me.SketchDrawMode, sYMax)
+                Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, sYMax)
             Catch ex As Exception
                 ' Woops
             End Try

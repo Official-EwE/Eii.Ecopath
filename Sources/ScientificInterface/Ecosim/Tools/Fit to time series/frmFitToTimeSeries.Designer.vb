@@ -457,7 +457,7 @@ Namespace Ecosim
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_sketchPad.Color = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.FirstYear = 0

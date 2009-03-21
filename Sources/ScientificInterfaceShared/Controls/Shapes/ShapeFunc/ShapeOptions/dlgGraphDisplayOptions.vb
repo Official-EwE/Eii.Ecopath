@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgGraphDisplayOptions.vb,v $
+' Revision 1.5  2009/03/21 00:30:33  jeroens
+' Fixed unclear parameter names
+'
 ' Revision 1.4  2009/03/19 16:02:25  jeroens
 ' Added FormatProvider.Release
 '
@@ -131,7 +134,7 @@ Namespace Controls
             End Select
 
             ' Is mediation sketch pad?
-            If (Me.m_sketchpad.ShapeType = eShapeCategoryTypes.Mediation) Then
+            If (Me.m_sketchpad.ShapeCategory = eShapeCategoryTypes.Mediation) Then
                 ' #Yes: not allowed to rescale
                 Me.cbAutoScale.Enabled = False
                 'Me.cbRightClickAutoScale.Enabled = False
