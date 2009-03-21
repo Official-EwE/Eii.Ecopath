@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.43  2009/03/21 00:31:42  jeroens
+' More PSD
+'
 ' Revision 1.42  2009/03/19 22:22:59  jeroens
 ' Added PSD Lohrenzen vars
 '
@@ -1172,6 +1175,7 @@ Namespace Core
         PSDIncluded
         PSDMortalityType
         PSDFirstWeightClass
+        PSDNumWeightClasses
         LohrenzenLatNWCorner
         LohrenzenLatSECorner
         'End Joeh: PSD
