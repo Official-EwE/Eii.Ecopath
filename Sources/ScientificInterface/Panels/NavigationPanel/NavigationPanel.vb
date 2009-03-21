@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.18  2009/03/21 00:32:09  jeroens
+' RunPSD form changed to EcopathLoaded state
+'
 ' Revision 1.17  2009/03/16 17:02:39  jeroens
 ' Fixed fishing rate/effort confusion
 '
@@ -141,7 +144,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
         m_nodeController.Add("ndGrowthEstimates", eCoreExecutionState.EcopathCompleted, GetType(GrowthEstimatesEwEGrid), "") ' ToDo: connect to help
-        m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathCompleted, GetType(RunPSD), "") ' ToDo: connect to help
+        m_nodeController.Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
         m_nodeController.Add("ndPSDContributionPlot", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
         m_nodeController.Add("ndPSDContributionResult", eCoreExecutionState.EcopathCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
         m_nodeController.Add("ndPSDPlotByGroup", eCoreExecutionState.EcopathCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
