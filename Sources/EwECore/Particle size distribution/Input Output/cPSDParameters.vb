@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.4  2009/03/21 00:31:19  jeroens
+' PSD params exposes nWeightClasses
+'
 ' Revision 1.3  2009/03/19 22:23:39  jeroens
 ' Added Lohrenzen vars
 '
@@ -40,6 +43,11 @@ Public Class cPSDParameters
 
             'no data validation at this time
             Me.AllowValidation = False
+
+            'PSDNumWeightClasses
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDNumWeightClasses))
+            m_values.Add(val.varName, val)
 
             'PSDMortalityType
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
@@ -83,6 +91,16 @@ Public Class cPSDParameters
 
         Set(ByVal value As ePSDMortalityTypes)
             SetVariable(eVarNameFlags.PSDMortalityType, value)
+        End Set
+    End Property
+
+    Public Property NumWeightClasses() As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.PSDNumWeightClasses))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.PSDNumWeightClasses, value)
         End Set
     End Property
 

@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.12  2009/03/21 00:31:19  jeroens
+' PSD params exposes nWeightClasses
+'
 ' Revision 1.11  2009/03/20 18:01:02  joeh
 ' Remove some redundant Imports statements
 '
@@ -40,7 +43,9 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Properties
 Imports ZedGraph
 
 #End Region 'Imports
@@ -50,31 +55,52 @@ Namespace Ecopath.Output
     Public Class RunPSD
 
 #Region "Variables"
+
         Private m_core As cCore = Nothing
         Private m_zgh As ZedGraphHelper = Nothing
+        Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
+
 #End Region 'Variables
 
 #Region "Constructor/Destructor"
+
         Public Sub New()
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
-
-            ' This call is required by the Windows Form Designer.
             InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+        End Sub
+
+#End Region 'Constructor/Destructor
+
+#Region "Event handlers"
+
+        Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Load
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
 
             ' Show/Hide Groups
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.btnShowHideGroups)
             End If
+
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.tbxNoOfPointsPSD.Control, _
+                    Me.m_core.ParticleSizeDistributionParameters, eVarNameFlags.PSDNumWeightClasses)
+
+            Me.PlotCurve()
+
+            'UpdateToolStrip()
+            'AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+            '                     My.Resources.PSD_YAXISLABEL_BIOMASS))
+            'UpdatePlot()
         End Sub
 
-        Protected Overrides Sub Finalize()
-            MyBase.Finalize()
+        Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+            Handles Me.FormClosing
+
+            Me.m_fpNoOfPointsPSD.Release()
 
             ' Show/Hide Groups
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -82,17 +108,7 @@ Namespace Ecopath.Output
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.btnShowHideGroups)
             End If
-        End Sub
-#End Region 'Constructor/Destructor
 
-#Region "Event handlers"
-
-        Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            PlotCurve()
-            'UpdateToolStrip()
-            'AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
-            '                     My.Resources.PSD_YAXISLABEL_BIOMASS))
-            'UpdatePlot()
         End Sub
 
         Private Sub mnuItmGroupPB_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuItmGroupPB.CheckedChanged

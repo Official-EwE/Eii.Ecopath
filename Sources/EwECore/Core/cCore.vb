@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.93  2009/03/21 00:31:15  jeroens
+' PSD params exposes nWeightClasses
+'
 ' Revision 1.92  2009/03/19 22:26:05  jeroens
 ' Added PSD Lohrenzen vars
 '
@@ -3174,6 +3177,7 @@ Public Class cCore
         Me.m_PSDParameters.AllowValidation = False
 
         Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
+        Me.m_PSDParameters.NumWeightClasses = Me.m_PSDData.NWeightClasses
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
         Me.m_PSDParameters.LohrenzenLatNWCorner = Me.m_PSDData.LatNWCorner
         Me.m_PSDParameters.LohrenzenLatSECorner = Me.m_PSDData.LatSECorner
@@ -3185,6 +3189,7 @@ Public Class cCore
     Private Function UpdatePSDParameters() As Boolean
 
         Me.m_PSDData.MortalityType = Me.m_PSDParameters.MortalityType
+        Me.m_PSDData.NWeightClasses = Me.m_PSDParameters.NumWeightClasses
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
         Me.m_PSDData.LatNWCorner = Me.m_PSDParameters.LohrenzenLatNWCorner
         Me.m_PSDData.LatSECorner = Me.m_PSDParameters.LohrenzenLatSECorner
@@ -9529,7 +9534,6 @@ Public Class cCore
         'if this gets to bulky the core can call another routine to do the validation for different variables
         Select Case ValueObject.varName
 
-
             Case eVarNameFlags.MSEFleetWeight
                 'Can not set FleetWeight if this is not a valid fleet
                 Dim iflt As Integer = ValueObject.Index
@@ -9962,6 +9966,14 @@ Public Class cCore
 
                 End Select 'Select Case value.varName
 
+            Case eDataTypes.ParticleSizeDistribution
+
+                Select Case value.varName
+
+                    Case eVarNameFlags.PSDNumWeightClasses
+                        ' ToDo: redim?
+
+                End Select
         End Select
 
         ' Cascade name changes across models
