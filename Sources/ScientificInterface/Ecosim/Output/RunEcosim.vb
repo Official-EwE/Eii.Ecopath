@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.12  2009/03/22 14:01:38  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.11  2009/03/20 17:55:41  jeroens
 ' Shape controls are multiple selection
 '
@@ -255,14 +258,14 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState)
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
             Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
+            Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
 
-            ' Ecosim back to loaded state?
-            If (iState = eCoreExecutionState.EcosimLoaded) Then
+            ' Does not have ecosim results?
+            If (Not bHasEcosimResults) Then
                 ' #Yes: clear run results
-                'Me.m_ucBPlots.Plot.Clear()
                 Me.m_graph.OnCoreExecutionStateChanged()
             End If
 

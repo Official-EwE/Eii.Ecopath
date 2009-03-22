@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.9  2009/03/22 14:01:37  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.8  2009/01/23 03:10:59  jeroens
 ' Removed unused references
 '
@@ -2091,22 +2094,20 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Listen to the core's state monitor to see if Ecopath has been changed
     ''' </summary>
-    ''' <param name="core"></param>
-    ''' <param name="iState"></param>
-    ''' <remarks></remarks>
-    Private Sub CoreStateMonitor_CoreExecutionStateEvent(ByVal core As cCore, ByVal iState As EwEUtils.Core.eCoreExecutionState) Handles CoreStateMonitor.CoreExecutionStateEvent
+    Private Sub CoreStateMonitor_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+        Handles CoreStateMonitor.CoreExecutionStateEvent
 
         'ToDo_jb CoreStateMonitor_CoreExecutionStateEvent() Ecoism loaded does not need to be false if Ecopath is rerun 
 
         'If ecopath has loaded or it has just run 
         'then the network analysis needs to be run or re-run
-        If iState <= EwEUtils.Core.eCoreExecutionState.EcopathCompleted Then
+        If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcopathCompleted) Then
             m_runstate = eRunState.NetworkNeedsToRun
             'System.Console.WriteLine("Network Analysis Plugin state changed. Core state = " & iState.ToString & " Network Analysis plugin state = " & m_runstate.ToString)
         End If
 
         'An ecosim scenario has loaded 
-        If iState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded Then
+        If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcosimLoaded) Then
             m_runstate = eRunState.EcosimIsLoaded
             'System.Console.WriteLine("Network Analysis Plugin state changed. Core state = " & iState.ToString & " Network Analysis plugin state = " & m_runstate.ToString)
         End If

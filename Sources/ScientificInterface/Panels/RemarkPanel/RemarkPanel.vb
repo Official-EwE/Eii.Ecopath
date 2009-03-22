@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RemarkPanel.vb,v $
+' Revision 1.2  2009/03/22 14:01:38  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.1  2008/09/26 07:32:11  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -127,11 +130,13 @@ Public Class RemarkPanel
 
     End Sub
 
-    Private Sub RemarkPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub RemarkPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles Me.Disposed
         Me.m_sm = Nothing
     End Sub
 
-    Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSet.Click
+    Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSet.Click
         Me.ApplyChanges()
     End Sub
 
@@ -215,9 +220,8 @@ Public Class RemarkPanel
     ''' <summary>
     ''' Event handler, responds to core state change events to assess whether this panel should be available.
     ''' </summary>
-    ''' <param name="core"></param>
-    ''' <param name="iState"></param>
-    Private Sub m_sm_CoreExecutionStateEvent(ByVal core As EwECore.cCore, ByVal iState As EwEUtils.Core.eCoreExecutionState) Handles m_sm.CoreExecutionStateEvent
+    Private Sub m_sm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+        Handles m_sm.CoreExecutionStateEvent
         Me.UpdateControls()
     End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.9  2009/03/22 14:01:37  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.8  2009/03/16 16:57:19  jeroens
 ' Added support for running searches
 '
@@ -114,11 +117,10 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>Delegate, invoked to broadcast a core execution state change event.</summary>
-    ''' <param name="core">A reference to the EwE <see cref="cCore">Core</see> which
+    ''' <param name="statemonitor">A reference to the EwE <see cref="cCore">Core</see> which
     ''' execution state changed.</param>
-    ''' <param name="iState">The new <see cref="eCoreExecutionState">Core execution state</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub CoreExecutionStateDelegate(ByVal core As cCore, ByVal iState As eCoreExecutionState)
+    Public Delegate Sub CoreExecutionStateDelegate(ByVal statemonitor As cCoreStateMonitor)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -129,9 +131,9 @@ Public Class cCoreStateMonitor
         AddHandler(ByVal handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Add(handler)
             If m_sync IsNot Nothing Then
-                Me.m_sync.Invoke(handler, New Object() {Me.m_core, Me.m_iExecutionState})
+                Me.m_sync.Invoke(handler, New Object() {Me})
             Else
-                handler.Invoke(Me.m_core, Me.m_iExecutionState)
+                handler.Invoke(Me)
             End If
         End AddHandler
 
@@ -139,12 +141,12 @@ Public Class cCoreStateMonitor
             Me.m_executionStateHandlers.Remove(handler)
         End RemoveHandler
 
-        RaiseEvent(ByVal core As cCore, ByVal iState As eCoreExecutionState)
+        RaiseEvent(ByVal statemonitor As cCoreStateMonitor)
             For Each h As CoreExecutionStateDelegate In Me.m_executionStateHandlers
                 If m_sync IsNot Nothing Then
-                    Me.m_sync.Invoke(h, New Object() {Me.m_core, Me.m_iExecutionState})
+                    Me.m_sync.Invoke(h, New Object() {Me})
                 Else
-                    h.Invoke(Me.m_core, Me.m_iExecutionState)
+                    h.Invoke(Me)
                 End If
             Next
         End RaiseEvent
@@ -264,7 +266,7 @@ Public Class cCoreStateMonitor
         ' No need to suppress update?
         If (tsForceUpdate <> TriState.False) Then
             ' #Yes: Broadcast event
-            RaiseEvent CoreExecutionStateEvent(Me.m_core, Me.m_iExecutionState)
+            RaiseEvent CoreExecutionStateEvent(Me)
         End If
     End Sub
 

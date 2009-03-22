@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.19  2009/03/22 14:01:38  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.18  2009/03/21 00:32:09  jeroens
 ' RunPSD form changed to EcopathLoaded state
 '
@@ -326,9 +329,9 @@ Public Class NavigationPanel
 
     End Sub
 
-    Private Sub OnCoreEcecutionStateChanged(ByVal core As cCore, ByVal state As eCoreExecutionState)
+    Private Sub OnCoreEcecutionStateChanged(ByVal csm As cCoreStateMonitor)
         With Me.m_tvNavigation
-            If core.StateMonitor.HasEcopathLoaded Then
+            If csm.HasEcopathLoaded Then
                 .Visible = True
                 .Dock = DockStyle.Fill
             Else

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.94  2009/03/22 14:01:34  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.93  2009/03/21 00:31:15  jeroens
 ' PSD params exposes nWeightClasses
 '
@@ -10404,11 +10407,14 @@ Public Class cCore
     ''' execution state has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_StateMonitor_CoreExecutionStateEvent(ByVal core As cCore, ByVal iState As EwEUtils.Core.eCoreExecutionState) Handles m_StateMonitor.CoreExecutionStateEvent
+    Private Sub m_StateMonitor_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+        Handles m_StateMonitor.CoreExecutionStateEvent
+
         If Me.m_pluginManager IsNot Nothing Then
             ' Inform the plugin manager of the new core state.
             Me.m_pluginManager.UpdatePluginEnabledStates()
         End If
+
     End Sub
 
 #End Region ' Plugins

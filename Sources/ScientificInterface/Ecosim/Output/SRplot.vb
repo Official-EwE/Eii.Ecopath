@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.6  2009/03/22 14:01:39  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.5  2009/02/24 03:46:58  jeroens
 ' Reorganized
 '
@@ -171,10 +174,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState) Handles m_coreStateMonitor.CoreExecutionStateEvent
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor) _
+            Handles m_coreStateMonitor.CoreExecutionStateEvent
 
             ' Check whether ecosim is running
-            Dim bEcosimRunning As Boolean = (iState = eCoreExecutionState.EcosimRunning)
+            Dim bEcosimRunning As Boolean = (csm.IsEcosimRunning)
+
             ' Is this a state change?
             If (bEcosimRunning <> Me.m_bEcosimRunning) Then
                 ' #Yes: update to new state
@@ -189,9 +194,9 @@ Namespace Ecosim
 
             End If
 
-            If iState = eCoreExecutionState.EcosimLoaded Then
-                ' Config x-axis labels
-            End If
+            'If iState = eCoreExecutionState.EcosimLoaded Then
+            '    ' Config x-axis labels
+            'End If
 
         End Sub
 

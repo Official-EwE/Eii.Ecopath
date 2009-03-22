@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.30  2009/03/22 14:01:33  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.29  2009/03/17 18:33:51  jeroens
 ' Core terminate -> CloseModel
 '
@@ -3205,7 +3208,7 @@ Public Class AppLauncher
         Me.m_cmdLoadModel.Tag = Nothing
     End Sub
 
-    Private Sub OnCoreExecutionStateChanged(ByVal core As cCore, ByVal iState As eCoreExecutionState)
+    Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelControls()
     End Sub
 

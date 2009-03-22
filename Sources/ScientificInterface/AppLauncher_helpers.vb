@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.9  2009/03/22 14:01:34  jeroens
+' Core state monitor exec event parameters simplified
+'
 ' Revision 1.8  2009/03/12 01:33:26  jeroens
 ' SAVE before you commit! SAVE!
 '
@@ -135,7 +138,8 @@ Partial Public Class AppLauncher
         ''' for a detailed description of this event.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Sub m_csm_CoreExecutionStateEvent(ByVal core As EwECore.cCore, ByVal iState As eCoreExecutionState) Handles m_csm.CoreExecutionStateEvent
+        Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+            Handles m_csm.CoreExecutionStateEvent
             UpdateModelPanes()
         End Sub
 
@@ -398,8 +402,9 @@ Partial Public Class AppLauncher
             Me.m_csm = csm
         End Sub
 
-        Private Sub m_csm_CoreExecutionStateEvent(ByVal core As EwECore.cCore, ByVal state As EwEUtils.Core.eCoreExecutionState) Handles m_csm.CoreExecutionStateEvent
-            Me.UpdateFormStates(state)
+        Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+            Handles m_csm.CoreExecutionStateEvent
+            Me.UpdateFormStates()
         End Sub
 
         Public Function OpenEwEForms() As List(Of frmEwE)
@@ -416,8 +421,9 @@ Partial Public Class AppLauncher
             Return l
         End Function
 
-        Private Sub UpdateFormStates(ByVal stateNew As EwEUtils.Core.eCoreExecutionState)
-            Dim stateForm As EwEUtils.Core.eCoreExecutionState = eCoreExecutionState.Idle
+        Private Sub UpdateFormStates()
+
+            Dim stateForm As eCoreExecutionState = eCoreExecutionState.Idle
             Dim bMustCloseForm As Boolean = False
 
             For Each f As frmEwE In Me.OpenEwEForms()
@@ -429,20 +435,6 @@ Partial Public Class AppLauncher
 
                 ' Check if form should be disabled
                 bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) And frmEwE.IsOutputForm(stateForm))
-
-                ' JS 05oct07: Added Ecospace fix. At this moment, Ecospace forms do not correctly respond to Ecopath or Ecosim
-                '             data changes. A thorough solution would be to extend the EwEGridContentPanel idea to a universal
-                '             form base class that would be instructed to refresh on major data changes (which would also make
-                '             this class obsolete, or maybe this class could become the manager of it all?). However, due to
-                '             time and budget restrictions, development of this universal form base class and a rewrite and
-                '             retest of every non-grid form is not feasible. Therefore, the next blunt and pragmatic fix
-                '             closes Ecospace input forms whenever underlying crucial data has changed.
-
-                ' Ecospace hack: close all ecospace input forms when ecopath or ecosim are reloading
-                'jb removed the Ecospace HACK Ecospace forms now deal with this on there own
-                'If (stateForm = eCoreExecutionState.EcospaceLoaded) Then
-                '    bMustCloseForm = bMustCloseForm Or ((Me.m_csm.HasEcosimLoaded = False) Or (Me.m_csm.HasEcopathLoaded = False))
-                'End If
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form
@@ -487,9 +479,9 @@ Partial Public Class AppLauncher
 
         End Sub
 
-        Private Sub OnCoreStateEvent(ByVal core As EwECore.cCore, ByVal iState As EwEUtils.Core.eCoreExecutionState)
-            If Me.m_bIsEcopathLoaded <> Me.m_sm.HasEcopathLoaded Then
-                Me.m_bIsEcopathLoaded = Me.m_sm.HasEcopathLoaded
+        Private Sub OnCoreStateEvent(ByVal csm As cCoreStateMonitor)
+            If Me.m_bIsEcopathLoaded <> csm.HasEcopathLoaded Then
+                Me.m_bIsEcopathLoaded = csm.HasEcopathLoaded
                 Me.Update()
             End If
         End Sub
