@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.9  2009/03/23 20:19:58  jeroens
+' Fixed InitializeComponent crash, ugh
+'
 ' Revision 1.8  2009/03/20 17:55:40  jeroens
 ' Shape controls are multiple selection
 '
@@ -352,20 +355,30 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_nudLastYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_nudLastYear.ValueChanged
+        Private Sub m_nudLastYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudLastYear.ValueChanged
+
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub m_nudSplinePts_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_nudSplinePts.ValueChanged
+        Private Sub m_nudSplinePts_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudSplinePts.ValueChanged
+
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
             Me.UpdateControls()
+
         End Sub
 
         Dim m_shapeSelected As cShapeData = Nothing
 
         Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
+
+            ' Initialize Component will cause this event to be triggered when the form is
+            ' not up and running yet. Here's a sanity check:
+            If (Me.m_shapeHandler Is Nothing) Then Return
 
             Dim shape As cShapeData = Me.m_shapeHandler.SelectedShape
 
