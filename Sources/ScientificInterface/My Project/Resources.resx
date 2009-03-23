@@ -2260,4 +2260,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Overlay {0}</value>
     <comment>{0}: overlay number</comment>
   </data>
+  <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
+    <value>Relative catch</value>
+  </data>
+  <data name="HEADER_RELATIVE_VALUE" xml:space="preserve">
+    <value>Realtive value</value>
+  </data>
+  <data name="HEADER_YEAR" xml:space="preserve">
+    <value>Year</value>
+  </data>
 </root>

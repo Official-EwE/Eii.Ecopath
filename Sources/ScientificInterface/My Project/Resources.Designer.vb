@@ -3537,6 +3537,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Relative catch.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RELATIVE_CATCH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RELATIVE_CATCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Realtive value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RELATIVE_VALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RELATIVE_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Relative biomass.
         '''</summary>
         Friend ReadOnly Property HEADER_RELATIVEBIOMASS() As String
@@ -3965,6 +3983,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_WEIGHT_INFINITY_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_WEIGHT_INFINITY_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Year.
+        '''</summary>
+        Friend ReadOnly Property HEADER_YEAR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_YEAR", resourceCulture)
             End Get
         End Property
         
