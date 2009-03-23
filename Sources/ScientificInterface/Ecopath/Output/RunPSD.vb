@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.13  2009/03/23 20:45:49  joeh
+' Add functionality to the Run button
+'
 ' Revision 1.12  2009/03/21 00:31:19  jeroens
 ' PSD params exposes nWeightClasses
 '
@@ -58,7 +61,10 @@ Namespace Ecopath.Output
 
         Private m_core As cCore = Nothing
         Private m_zgh As ZedGraphHelper = Nothing
+        Private m_fpLorenzenLatNWCorner As cEwEFormatProvider = Nothing
+        Private m_fpLorenzenLatSECorner As cEwEFormatProvider = Nothing
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
+        Private m_fpMinWeight As cEwEFormatProvider = Nothing
 
 #End Region 'Variables
 
@@ -77,21 +83,9 @@ Namespace Ecopath.Output
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
-
-            ' Show/Hide Groups
-            cmd = cmdh.GetCommand("DisplayGroups")
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.AddControl(Me.btnShowHideGroups)
-            End If
-
-            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.tbxNoOfPointsPSD.Control, _
-                    Me.m_core.ParticleSizeDistributionParameters, eVarNameFlags.PSDNumWeightClasses)
-
+            Me.UpdateToolStrip()
             Me.PlotCurve()
 
-            'UpdateToolStrip()
             'AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
             '                     My.Resources.PSD_YAXISLABEL_BIOMASS))
             'UpdatePlot()
@@ -100,7 +94,10 @@ Namespace Ecopath.Output
         Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
 
+            Me.m_fpLorenzenLatNWCorner.Release()
+            Me.m_fpLorenzenLatSECorner.Release()
             Me.m_fpNoOfPointsPSD.Release()
+            Me.m_fpMinWeight.Release()
 
             ' Show/Hide Groups
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -120,13 +117,9 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-
-            parms.FirstWeightClass = CSng(tbxMinWeight.Text)
-            If mnuItmGroupPB.Checked Then parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ
-            If mnuItmLorenzen.Checked Then parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.Lorenzen
-            'm_core.RunEcoPath()
-            'PlotCurve()
+            UpdateVariables()
+            m_core.RunEcoPath()
+            PlotCurve()
         End Sub
 
 #End Region 'Event handlers
@@ -232,9 +225,71 @@ Namespace Ecopath.Output
 
         Private Sub UpdateToolStrip()
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim grpInput As cEcoPathGroupInput = Nothing
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
 
-            tbxNoOfPointsPSD.Text = CStr(m_core.nWeightClasses)
-            tbxMinWeight.Text = CStr(parms.FirstWeightClass)
+            'Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.tbxNoOfPointsPSD.Control, _
+            '        Me.m_core.ParticleSizeDistributionParameters, eVarNameFlags.PSDNumWeightClasses)
+
+            'Mortality type
+            If parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ Then
+                mnuItmGroupPB.Checked = True
+            End If
+            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
+                mnuItmLorenzen.Checked = True
+                Me.m_fpLorenzenLatNWCorner = New cEwEFormatProvider(Me.tbxNWLat.Control, GetType(Single))
+                Me.m_fpLorenzenLatNWCorner.Value = parms.LohrenzenLatNWCorner
+                Me.m_fpLorenzenLatSECorner = New cEwEFormatProvider(Me.tbxSELat.Control, GetType(Single))
+                Me.m_fpLorenzenLatSECorner.Value = parms.LohrenzenLatSECorner
+            End If
+
+            'Group included in PSD
+            cmd = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.btnShowHideGroups)
+            End If
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                grpInput = m_core.EcoPathGroupInputs(iGroup)
+                sgStyleGuide.GroupVisible(iGroup) = grpInput.PSDIncluded
+            Next
+
+            'Number of weight class
+            Me.m_fpNoOfPointsPSD = New cEwEFormatProvider(Me.tbxNoOfPointsPSD.Control, GetType(Integer))
+            Me.m_fpNoOfPointsPSD.Value = parms.NumWeightClasses
+
+            'First weight class
+            Me.m_fpMinWeight = New cEwEFormatProvider(Me.tbxMinWeight.Control, GetType(Single))
+            Me.m_fpMinWeight.Value = parms.FirstWeightClass
+        End Sub
+
+        Private Sub UpdateVariables()
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim grpInput As cEcoPathGroupInput = Nothing
+
+            'Mortality type
+            If mnuItmGroupPB.Checked Then
+                parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ
+            End If
+            If mnuItmLorenzen.Checked Then
+                parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.Lorenzen
+                parms.LohrenzenLatNWCorner = CSng(m_fpLorenzenLatNWCorner.Value)
+                parms.LohrenzenLatSECorner = CSng(m_fpLorenzenLatSECorner.Value)
+            End If
+
+            'Group included in PSD
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                grpInput = m_core.EcoPathGroupInputs(iGroup)
+                grpInput.PSDIncluded = sgStyleGuide.GroupVisible(iGroup)
+            Next
+
+            'Number of weight class
+            parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
+
+            'First weight class
+            parms.FirstWeightClass = CSng(m_fpMinWeight.Value)
         End Sub
 
         Private Sub UpdatePlot()
@@ -243,21 +298,24 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub PlotCurve()
-            UpdateToolStrip()
             AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
                                  My.Resources.PSD_YAXISLABEL_BIOMASS))
             UpdatePlot()
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpOutput = m_core.EcoPathGroupOutputs(iGroup)
-                For iWtClass As Integer = 1 To m_core.nWeightClasses
-                    sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
-                Next
+                grpInput = m_core.EcoPathGroupInputs(iGroup)
+                If grpInput.PSDIncluded Then
+                    grpOutput = m_core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                        sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
+                    Next
+                End If
             Next
         End Sub
 

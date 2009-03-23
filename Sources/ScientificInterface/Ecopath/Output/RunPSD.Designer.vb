@@ -75,9 +75,7 @@ Namespace Ecopath.Output
             '
             'mnuItmGroupPB
             '
-            Me.mnuItmGroupPB.Checked = True
             Me.mnuItmGroupPB.CheckOnClick = True
-            Me.mnuItmGroupPB.CheckState = System.Windows.Forms.CheckState.Checked
             Me.mnuItmGroupPB.Name = "mnuItmGroupPB"
             Me.mnuItmGroupPB.Size = New System.Drawing.Size(184, 22)
             Me.mnuItmGroupPB.Text = "Group P/B "
