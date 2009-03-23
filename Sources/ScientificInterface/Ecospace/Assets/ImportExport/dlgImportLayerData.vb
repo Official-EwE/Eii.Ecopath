@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.5  2009/03/23 02:43:03  jeroens
+' Renamed resources
+'
 ' Revision 1.4  2008/11/12 00:38:14  jeroens
 ' no message
 '
@@ -539,8 +542,8 @@ Public Class gridMapLayerToAttribute
                 Next
             Next
 
-            Me.m_cmbRow.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
-            Me.m_cmbCol.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
+            Me.m_cmbRow.Items.Add(My.Resources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
+            Me.m_cmbCol.Items.Add(My.Resources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
             Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
 
             Return eSpatialFileCompatibility.Compatible
