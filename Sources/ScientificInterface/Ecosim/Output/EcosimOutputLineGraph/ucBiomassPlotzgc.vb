@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.33  2009/03/23 21:13:04  jeroens
+' Fixed issue 598
+'
 ' Revision 1.32  2009/03/23 02:44:09  jeroens
 ' Uses ZGH option to show data under cursor in tooltip
 '
@@ -293,12 +296,12 @@ Namespace Ecosim
             If RelativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
-                    m_zgp.Title = "Relative biomass"
-                    m_zgp.YaxisTitle = "Relative biomass"
+                    m_zgp.Title = My.Resources.HEADER_RELATIVEBIOMASS
+                    m_zgp.YaxisTitle = My.Resources.HEADER_RELATIVEBIOMASS
                 Else
                     'Catch
-                    m_zgp.Title = "Relative catch"
-                    m_zgp.YaxisTitle = "Relative catch"
+                    m_zgp.Title = My.Resources.HEADER_RELATIVE_CATCH
+                    m_zgp.YaxisTitle = My.Resources.HEADER_RELATIVE_CATCH
                 End If
 
                 ' todo: change to groups that listed in group box
@@ -366,7 +369,7 @@ Namespace Ecosim
             If BiomassToolStripMenuItem.Checked And RelativeToolStripMenuItem.Checked Then DrawTimeSeries()
 
             ' Make sure the group boxes say the correct items.
-            PopulateGroupBoxes()
+            PopulateListBoxes()
 
             ' Calculate the Axis Scale Ranges
             Me.m_zgh.RescaleAndRedraw()
@@ -422,7 +425,7 @@ Namespace Ecosim
 
         Public Sub OnCoreExecutionStateChanged()
             Me.m_zgp.PrepareOverlay()
-            Me.PopulateGroupBoxes()
+            Me.PopulateListBoxes()
         End Sub
 
         Public WriteOnly Property SSValue() As Single
@@ -441,7 +444,7 @@ Namespace Ecosim
         Private Sub OverlayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverlayToolStripMenuItem.Click
             OverlayToolStripMenuItem.Checked = Not OverlayToolStripMenuItem.Checked
             m_zgp.Overlay = OverlayToolStripMenuItem.Checked
-            PopulateGroupBoxes()
+            PopulateListBoxes()
             m_zgh.RescaleAndRedraw()
             SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
         End Sub
@@ -452,7 +455,7 @@ Namespace Ecosim
         Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
             AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
             m_zgp.PrepareOverlay(True)
-            PopulateGroupBoxes()
+            PopulateListBoxes()
             m_zgh.RescaleAndRedraw()
         End Sub
 
@@ -536,6 +539,11 @@ Namespace Ecosim
         ' Menu Items Clicks
 
         Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+            ' Design-time bail out
+            If (Me.m_core Is Nothing) Then Return
+            If (Me.m_core.EcoSimModelParameters Is Nothing) Then Return
+
             ' Santa's little helper :)
             Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
 
@@ -543,8 +551,8 @@ Namespace Ecosim
             Me.m_zgh.YScaleMin = 0.0!
             Me.m_zgh.ShowPointValue = True
 
-            ' ToDo_JS: Localize this!
-            Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
+            Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, _
+                    My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS)
             Me.m_zgp.Overlay = OverlayToolStripMenuItem.Selected
 
             ' Set the axis
@@ -589,10 +597,11 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Draws all the names.
+        ''' Populate group and overlay list boxes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupBoxes()
+        Private Sub PopulateListBoxes()
+
             lbOverlay.SuspendLayout()
             lbGroups.SuspendLayout()
 
@@ -601,24 +610,27 @@ Namespace Ecosim
             For i As Integer = 1 To m_zgp.NumOverlays
                 lbOverlay.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_OVERLAY, i))
             Next
+            lbOverlay.SelectedIndex = 0
 
             lbGroups.Items.Clear()
             lbGroups.Items.Add(New GroupListBox.GroupItem(Nothing))
             For i As Integer = 1 To m_core.nGroups
                 If CatchToolStripMenuItem.Checked Then
-                    Dim dblSumDiscardsLandings As Double = 0.0
+                    Dim sSumDiscardsLandings As Double = 0.0
+                    ' Get sum of landings and discards for this group
                     For f As Integer = 1 To m_core.nFleets
-                        dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
+                        sSumDiscardsLandings += (m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i))
                     Next f
-                    If Not dblSumDiscardsLandings > 0 Then
-                        Continue For
-                    Else
+                    ' Has landings and/or discards?
+                    If sSumDiscardsLandings > 0 Then
+                        ' #Yes: add group to the list of options
                         lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                     End If
                 Else
                     lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
+            lbGroups.SelectedIndex = 0
 
             lbOverlay.ResumeLayout()
             lbGroups.ResumeLayout()
