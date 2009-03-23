@@ -167,6 +167,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (All).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VALUE_ALL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (N/A).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Add.
         '''</summary>
         Friend ReadOnly Property HEADER_ADD() As String
@@ -305,34 +323,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The name can not be empty..
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG1() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cannot rename forcing function &quot;{0}&quot; {1}The name you specified already exists. Please specify another name.
-        '''.
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG2() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Renaming mediation function error.
-        '''</summary>
-        Friend ReadOnly Property RENAME_FORCING_ERROR_MSG3() As String
-            Get
-                Return ResourceManager.GetString("RENAME_FORCING_ERROR_MSG3", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Change F.
         '''</summary>
         Friend ReadOnly Property RUN_ECOSIM_F_VALUE_CAPTION() As String
@@ -464,15 +454,6 @@ Namespace My.Resources
         Friend ReadOnly Property UNIT_TIME_YEAR() As String
             Get
                 Return ResourceManager.GetString("UNIT_TIME_YEAR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to (N/A).
-        '''</summary>
-        Friend ReadOnly Property VALUE_NOTAVAILABLE() As String
-            Get
-                Return ResourceManager.GetString("VALUE_NOTAVAILABLE", resourceCulture)
             End Get
         End Property
         

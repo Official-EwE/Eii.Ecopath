@@ -178,7 +178,7 @@
   <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
     <value>(no data)</value>
   </data>
-  <data name="VALUE_NOTAVAILABLE" xml:space="preserve">
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
     <value>(N/A)</value>
   </data>
   <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
@@ -202,17 +202,6 @@
   </data>
   <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
     <value>Mediating group (weighted) biomass</value>
-  </data>
-  <data name="RENAME_FORCING_ERROR_MSG1" xml:space="preserve">
-    <value>The name can not be empty.</value>
-  </data>
-  <data name="RENAME_FORCING_ERROR_MSG2" xml:space="preserve">
-    <value>Cannot rename forcing function "{0}" {1}The name you specified already exists. Please specify another name.
-</value>
-    <comment>{0}: ff name, {1}: newline character</comment>
-  </data>
-  <data name="RENAME_FORCING_ERROR_MSG3" xml:space="preserve">
-    <value>Renaming mediation function error</value>
   </data>
   <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
     <value>Change F</value>
@@ -291,5 +280,8 @@
   <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
     <value>You are about to delete {0} time series'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: delete count</comment>
+  </data>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>(All)</value>
   </data>
 </root>

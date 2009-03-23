@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.10  2009/03/23 18:44:46  jeroens
+' Localized
+'
 ' Revision 1.9  2009/03/12 14:10:51  jeroens
 ' Core message rerouted to the grid
 '
@@ -553,7 +556,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property DataNotAvailable() As String
             Get
-                Return My.Resources.VALUE_NOTAVAILABLE
+                Return My.Resources.GENERIC_VALUE_NOTAVAILABLE
             End Get
         End Property
 

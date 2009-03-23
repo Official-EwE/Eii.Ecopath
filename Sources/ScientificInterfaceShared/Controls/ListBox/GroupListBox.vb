@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupListBox.vb,v $
+' Revision 1.2  2009/03/23 18:44:46  jeroens
+' Localized
+'
 ' Revision 1.1  2009/03/19 16:54:10  jeroens
 ' Moved
 '
@@ -67,8 +70,7 @@ Namespace Controls
             ''' <returns>The formatted item text</returns>
             Public Overrides Function ToString() As String
                 If Me.m_group IsNot Nothing Then Return Me.m_group.Name
-                ' ToDo: globalize this
-                Return "All"
+                Return My.Resources.GENERIC_VALUE_ALL
             End Function
 
             ''' <summary>
