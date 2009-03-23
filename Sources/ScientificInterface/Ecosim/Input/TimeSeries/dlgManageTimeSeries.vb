@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.7  2009/03/23 17:30:45  jeroens
+' Added sketchpad preview
+'
 ' Revision 1.6  2009/02/26 21:41:31  jeroens
 ' Import TS batch lock now level TimeSeries
 '
@@ -92,6 +95,7 @@ Public Class dlgManageTimeSeries
 
     Private m_tr As cTimeSeriesTextReader = New cTimeSeriesCSVReader(cCore.GetInstance())
     Private m_strImportFileName As String = String.Empty
+    Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
 
     Public Sub New(ByVal mode As eModeType)
 
@@ -109,6 +113,8 @@ Public Class dlgManageTimeSeries
         'Me.m_strImportDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator
         Me.m_tbImportAuthor.Text = Me.m_core.EwEModel.Author
         Me.m_tbImportContact.Text = Me.m_core.EwEModel.Contact
+        Me.m_tsh = New cTimeSeriesShapeGUIHandler(Me.m_core, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
+
         Me.FillImportDatasetCombo()
         Me.ReloadTimeSeries()
 
@@ -260,11 +266,31 @@ Public Class dlgManageTimeSeries
         Me.UpdateControls()
     End Sub
 
+    Private Sub m_cmbImportDataset_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbImportDataset.SelectedIndexChanged
+        Me.DatasetName = m_cmbImportDataset.Text
+    End Sub
+
     ' -- Delimiters and separators --
 
     Private Sub OnImportDelimiterOrSeparatorChanged(ByVal sender As Object, ByVal arg As EventArgs) _
             Handles m_tbImportDelimiter.TextChanged, m_tbImportSeparator.TextChanged
         Me.ReloadTimeSeries()
+    End Sub
+
+    ' -- Preview --
+
+    Private Sub OnSelectPreviewTS(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cmbTimeSeriesPreview.SelectedIndexChanged
+
+        Dim iShape As Integer = Me.m_cmbTimeSeriesPreview.SelectedIndex
+
+        If (iShape = -1) Then
+            Me.m_tsh.SelectedShape = Nothing
+        Else
+            Me.m_tsh.SelectedShape = Me.m_tr(iShape)
+        End If
+
     End Sub
 
 #End Region ' Import
@@ -580,6 +606,13 @@ Public Class dlgManageTimeSeries
         Next
         Me.m_dgvImportPreview.ResumeLayout()
 
+        ' Populate TS combo box
+        Me.m_cmbTimeSeriesPreview.Items.Clear()
+        For iTS As Integer = 0 To Me.m_tr.Count - 1
+            Me.m_cmbTimeSeriesPreview.Items.Add(Me.m_tr(iTS).Name)
+        Next
+        Me.m_cmbTimeSeriesPreview.SelectedIndex = Me.m_tr.Count - 1
+
     End Sub
 
     Private Sub ImportDataset()
@@ -612,7 +645,7 @@ Public Class dlgManageTimeSeries
         core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries)
 
         ' Need to apply on load?
-        If (bSucces And Me.m_cbImportApplyOnImport.Checked) Then
+        If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
             ' Start apply process
             appl.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
             Try
@@ -732,7 +765,4 @@ Public Class dlgManageTimeSeries
 
 #End Region ' Public properties
 
-    Private Sub m_cmbImportDataset_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_cmbImportDataset.SelectedIndexChanged
-        Me.DatasetName = m_cmbImportDataset.Text
-    End Sub
 End Class
