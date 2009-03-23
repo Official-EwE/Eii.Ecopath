@@ -1136,6 +1136,7 @@
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ZedGraphBiomassPlotter.vb" />
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
     <Compile Include="Ecosim\Output\SuitabilityPlot.Designer.vb">
       <DependentUpon>SuitabilityPlot.vb</DependentUpon>
