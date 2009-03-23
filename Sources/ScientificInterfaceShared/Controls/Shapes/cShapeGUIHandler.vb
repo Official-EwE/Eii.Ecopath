@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.11  2009/03/23 17:27:42  jeroens
+' Constructors made safe handling missing components
+'
 ' Revision 1.10  2009/03/21 00:30:32  jeroens
 ' Fixed unclear parameter names
 '
@@ -551,10 +554,15 @@ Namespace Controls
 
             MyBase.New(core, stb, stbtb, sp, sptb)
 
-            ' Cannot draw onto tim series shapes
-            Me.SketchPad.Enabled = False
-            ' Add check boxes to the toolbox
-            Me.ShapeToolBox.AllowCheckboxes = True
+            If Me.SketchPad IsNot Nothing Then
+                ' Cannot draw onto time series shapes
+                Me.SketchPad.Enabled = False
+            End If
+
+            If Me.ShapeToolBox IsNot Nothing Then
+                ' Add check boxes to the toolbox
+                Me.ShapeToolBox.AllowCheckboxes = True
+            End If
 
             Me.UpdateShapeList(New cShapeData() {sp.Shape})
         End Sub
