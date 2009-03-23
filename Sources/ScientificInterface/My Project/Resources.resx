@@ -389,7 +389,7 @@
   <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
     <value>(1 - Sum)</value>
   </data>
-  <data name="VALUE_NOTAVAILABLE" xml:space="preserve">
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
     <value>(N/A)</value>
   </data>
   <data name="HomeHS" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -1382,7 +1382,7 @@
     <value>{0}: Input data</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="VALUE_ALLGROUPS" xml:space="preserve">
+  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
     <value>(All groups)</value>
   </data>
   <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
@@ -2049,7 +2049,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_SEARCH_STOPPING" xml:space="preserve">
     <value>Stopping search, please wait...</value>
   </data>
-  <data name="VALUE_CUSTOM" xml:space="preserve">
+  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
     <value>(Custom)</value>
   </data>
   <data name="MPAOPT_AXISLABEL_BESTITERATIONS" xml:space="preserve">
@@ -2177,54 +2177,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSIM_SUITABILITY_PLOT_PRED" xml:space="preserve">
     <value>Predator: </value>
   </data>
-  <data name="GENERIC_MONTH_ABBR_APRIL" xml:space="preserve">
-    <value>Apr</value>
-    <comment>Short for April</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_AUGUST" xml:space="preserve">
-    <value>Aug</value>
-    <comment>Short for August</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_DECEMBER" xml:space="preserve">
-    <value>Dec</value>
-    <comment>Short for December</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_FEBRUARY" xml:space="preserve">
-    <value>Feb</value>
-    <comment>Short for February</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JANUARY" xml:space="preserve">
-    <value>Jan</value>
-    <comment>Short for January</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JULY" xml:space="preserve">
-    <value>Jul</value>
-    <comment>Short for July</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_JUNE" xml:space="preserve">
-    <value>Jun</value>
-    <comment>Short for June</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_MARCH" xml:space="preserve">
-    <value>Mar</value>
-    <comment>Short for March</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_MAY" xml:space="preserve">
-    <value>May</value>
-    <comment>Short for May (how much shorter can you get?)</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_NOVEMBER" xml:space="preserve">
-    <value>Nov</value>
-    <comment>Short for November</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_OCTOBER" xml:space="preserve">
-    <value>Oct</value>
-    <comment>Short for October</comment>
-  </data>
-  <data name="GENERIC_MONTH_ABBR_SEPTEMBER" xml:space="preserve">
-    <value>Sep</value>
-    <comment>Short for September</comment>
-  </data>
   <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
     <value>Change F</value>
   </data>
@@ -2300,5 +2252,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="PSD_LINELEGEND_BYNUM" xml:space="preserve">
     <value>By number</value>
+  </data>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>(All)</value>
+  </data>
+  <data name="ECOSIM_LABEL_OVERLAY" xml:space="preserve">
+    <value>Overlay {0}</value>
+    <comment>{0}: overlay number</comment>
   </data>
 </root>
