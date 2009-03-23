@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.8  2009/03/23 02:43:43  jeroens
+' Added option to show data under cursor in tooltip
+'
 ' Revision 1.7  2009/02/23 03:21:39  jeroens
 ' Cleaned
 ' Left ToDo
@@ -103,10 +106,10 @@ Namespace Controls
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf MyContextMenuBuilder
 
             ' Configure graph control
             Me.InitStyle()
@@ -118,10 +121,10 @@ Namespace Controls
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf MyContextMenuBuilder
 
             Me.m_dtGroupLines.Clear()
             Me.m_sg = Nothing
@@ -130,6 +133,12 @@ Namespace Controls
         End Sub
 
 #End Region ' Construction / destruction
+
+#Region " Selection "
+
+        Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
+
+#End Region ' Selection
 
 #Region " Public interfaces "
 
@@ -418,6 +427,24 @@ Namespace Controls
             End Set
         End Property
 
+#Region " Tooltip "
+
+        Public Property ShowPointValue() As Boolean
+            Get
+                Return Me.m_zgc.IsShowPointValues
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_zgc.IsShowPointValues = value
+            End Set
+        End Property
+
+        Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
+            Dim pp As PointPair = curve(iPoint)
+            Return String.Format("{0}: ({1}, {2})", curve.Label.Text, Me.m_sg.FormatNumber(pp.X), Me.m_sg.FormatNumber(pp.Y))
+        End Function
+
+#End Region ' Tooltip
+
 #Region " Line colour management "
 
         ''' -------------------------------------------------------------------
@@ -625,23 +652,52 @@ Namespace Controls
         End Sub
 
         Private Function OnMouseDownEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
-            Dim iPanel As Integer = GetPaneAtPoint(args.Location)
-            If iPanel > -1 Then
-                If Me.m_bShowCursor(iPanel) Then
+
+            Dim iPane As Integer = GetPaneAtPoint(args.Location)
+            Dim pane As GraphPane = Nothing
+            Dim ciNearest As CurveItem = Nothing
+            Dim iNearest As Integer = -1
+
+            If iPane > -1 Then
+
+                ' Get the clicked pane
+                pane = Me.GetPane(iPane)
+
+                'If (pane.FindNearestPoint(args.Location, ciNearest, iNearest)) Then
+                '    RaiseEvent OnCurveClicked(ciNearest, iNearest)
+                'End If
+
+                ' Cursor?
+                If Me.m_bShowCursor(iPane) Then
                     Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
+
             End If
             Return False
         End Function
 
         Private Function OnMouseMoveEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
-            Dim iPanel As Integer = GetPaneAtPoint(args.Location)
-            If iPanel > -1 Then
-                If Me.m_bShowCursor(iPanel) Then
+
+            Dim iPane As Integer = GetPaneAtPoint(args.Location)
+            Dim ciNearest As CurveItem = Nothing
+            Dim iNearest As Integer = -1
+
+            If iPane > -1 Then
+
+                ' Get the clicked pane
+                Dim pane As GraphPane = Nothing
+
+                'If (pane.FindNearestPoint(args.Location, ciNearest, iNearest)) Then
+                '    Me.m_zgc.
+                'End If
+
+                ' Cursor?
+                If Me.m_bShowCursor(iPane) Then
                     Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
+
             End If
             Return False
         End Function
@@ -809,7 +865,7 @@ Namespace Controls
         ''' <param name="mousePt"></param>
         ''' <param name="objState"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub MyContextMenuBuilder(ByVal control As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState)
+        Private Sub OnBuildContextMenu(ByVal control As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
             'ToDo_JS: globalize this
 
