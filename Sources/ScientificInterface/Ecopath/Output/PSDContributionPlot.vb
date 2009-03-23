@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.11  2009/03/23 20:45:13  joeh
+' Modify codes to plot only those groups included in PSD determination
+'
 ' Revision 1.10  2009/03/20 18:01:13  joeh
 ' Remove some redundant Imports statements
 '
@@ -133,6 +136,7 @@ Namespace Ecopath.Output
             Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
+            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
@@ -144,17 +148,20 @@ Namespace Ecopath.Output
             FindSystemPSD(sSystemPSD)
 
             For igroup As Integer = 1 To m_core.nLivingGroups
-                grpOutput = m_core.EcoPathGroupOutputs(igroup)
-                For iWtClass As Integer = 1 To m_core.nWeightClasses
-                    sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
-                    If sSystemPSD(iWtClass) * 100000 > 0 Then
-                        'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
-                        '* 100000 for plotting purpose
-                        resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
-                    Else
-                        resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
-                    End If
-                Next
+                grpInput = m_core.EcoPathGroupInputs(igroup)
+                If grpInput.PSDIncluded Then
+                    grpOutput = m_core.EcoPathGroupOutputs(igroup)
+                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                        sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
+                        If sSystemPSD(iWtClass) * 100000 > 0 Then
+                            'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
+                            '* 100000 for plotting purpose
+                            resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
+                        Else
+                            resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
+                        End If
+                    Next
+                End If
             Next
 
             ' Clear pane
@@ -197,14 +204,18 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpOutput = m_core.EcoPathGroupOutputs(iGroup)
-                For iWtClass As Integer = 1 To m_core.nWeightClasses
-                    sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
-                Next
+                grpInput = m_core.EcoPathGroupInputs(iGroup)
+                If grpInput.PSDIncluded Then
+                    grpOutput = m_core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                        sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
+                    Next
+                End If
             Next
         End Sub
 #End Region 'Helper method
