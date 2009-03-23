@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.32  2009/03/23 02:44:09  jeroens
+' Uses ZGH option to show data under cursor in tooltip
+'
 ' Revision 1.31  2009/03/19 16:55:57  jeroens
 ' Renamed LegendListBox to GroupListBox
 '
@@ -120,8 +123,8 @@ Namespace Ecosim
     Public Class ucBiomassPlotzgc
 
         Private m_core As cCore = cCore.GetInstance()
-        Private m_ZGHelper As ZedGraphHelper = Nothing
-        Private m_ZGPlotter As ZedGraphPlotter = Nothing
+        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgp As ZedGraphBiomassPlotter = Nothing
         Private m_sg As StyleGuide = Nothing
 
 #Region " Constructor/Destructor "
@@ -162,6 +165,7 @@ Namespace Ecosim
             ' Style guide
             RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
+
 #End Region ' Constructor/Destructor
 
 #Region " Public Interfaces "
@@ -176,7 +180,7 @@ Namespace Ecosim
             Dim listSum As New PointPairList
 
             ' Double check
-            If Me.m_ZGHelper Is Nothing Or Me.m_ZGPlotter Is Nothing Then Return
+            If Me.m_zgh Is Nothing Or Me.m_zgp Is Nothing Then Return
 
             'jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
             If Not Me.m_core.StateMonitor.HasEcosimRan Then
@@ -184,18 +188,18 @@ Namespace Ecosim
             End If
 
             ' 1) Parepare dataset
-            m_ZGPlotter.PrepareDataset()
+            m_zgp.PrepareOverlay()
 
             'Cumulative plot
             If CumulativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
-                    m_ZGPlotter.Title = "Cumulative biomass"
-                    m_ZGPlotter.YaxisTitle = "Cumulative biomass"
+                    m_zgp.Title = "Cumulative biomass"
+                    m_zgp.YaxisTitle = "Cumulative biomass"
                 Else
                     'Catch
-                    m_ZGPlotter.Title = "Cumulative catch"
-                    m_ZGPlotter.YaxisTitle = "Cumulative catch"
+                    m_zgp.Title = "Cumulative catch"
+                    m_zgp.YaxisTitle = "Cumulative catch"
                 End If
 
                 'Initialize listSum.Y=0
@@ -272,14 +276,14 @@ Namespace Ecosim
                         'Biomass
                         If CumulativeToolStripMenuItem.Checked Then
                             'Cumulative highlight
-                            m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeBiomass, list1)
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.CumulativeBiomass, list1)
                         Else
                             'Cumulative selected
-                            m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeSelectedBiomass, list1)
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.CumulativeSelectedBiomass, list1)
                         End If
                     Else
                         'Catch
-                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.CumulativeCatch, list1)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.CumulativeCatch, list1)
                     End If
 
                 Next i
@@ -289,12 +293,12 @@ Namespace Ecosim
             If RelativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
-                    m_ZGPlotter.Title = "Relative biomass"
-                    m_ZGPlotter.YaxisTitle = "Relative biomass"
+                    m_zgp.Title = "Relative biomass"
+                    m_zgp.YaxisTitle = "Relative biomass"
                 Else
                     'Catch
-                    m_ZGPlotter.Title = "Relative catch"
-                    m_ZGPlotter.YaxisTitle = "Relative catch"
+                    m_zgp.Title = "Relative catch"
+                    m_zgp.YaxisTitle = "Relative catch"
                 End If
 
                 ' todo: change to groups that listed in group box
@@ -341,10 +345,10 @@ Namespace Ecosim
                     ' 3) Store the line
                     If BiomassToolStripMenuItem.Checked Then
                         'Biomass
-                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeBiomass, list1)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.RelativeBiomass, list1)
                     Else
                         'Catch
-                        m_ZGPlotter.AddSingleData(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphPlotter.eLineType.RelativeCatch, list1)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.RelativeCatch, list1)
                     End If
 
                 Next i
@@ -352,7 +356,7 @@ Namespace Ecosim
 
 
             ' 4) Tell the plotter it's finished
-            Me.m_ZGPlotter.StoreDataset()
+            Me.m_zgp.StoreOverlay()
 
             ' JS: I'm too impatient to figure out how to make the plotter do this
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
@@ -365,7 +369,7 @@ Namespace Ecosim
             PopulateGroupBoxes()
 
             ' Calculate the Axis Scale Ranges
-            Me.m_ZGHelper.RescaleAndRedraw()
+            Me.m_zgh.RescaleAndRedraw()
             Me.UpdateControls()
             Me.InvalidateGraph()
 
@@ -404,7 +408,7 @@ Namespace Ecosim
 
                             ' Add line to graph.
 
-                            m_ZGPlotter.AddSingleData(ts.Name, gts.GroupIndex, ZedGraphPlotter.eLineType.TimeSeries, list1)
+                            m_zgp.AddLine(ts.Name, gts.GroupIndex, ZedGraphBiomassPlotter.eLineType.TimeSeries, list1)
 
                         End If
 
@@ -417,7 +421,7 @@ Namespace Ecosim
         End Sub
 
         Public Sub OnCoreExecutionStateChanged()
-            Me.m_ZGPlotter.PrepareDataset()
+            Me.m_zgp.PrepareOverlay()
             Me.PopulateGroupBoxes()
         End Sub
 
@@ -436,9 +440,9 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OverlayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverlayToolStripMenuItem.Click
             OverlayToolStripMenuItem.Checked = Not OverlayToolStripMenuItem.Checked
-            m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Checked
+            m_zgp.Overlay = OverlayToolStripMenuItem.Checked
             PopulateGroupBoxes()
-            m_ZGHelper.RescaleAndRedraw()
+            m_zgh.RescaleAndRedraw()
             SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
         End Sub
 
@@ -447,15 +451,15 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
             AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
-            m_ZGPlotter.PrepareDataset(True)
+            m_zgp.PrepareOverlay(True)
             PopulateGroupBoxes()
-            m_ZGHelper.RescaleAndRedraw()
+            m_zgh.RescaleAndRedraw()
         End Sub
 
         Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowLegendToolStripMenuItem.Click
             ShowLegendToolStripMenuItem.Checked = Not ShowLegendToolStripMenuItem.Checked
-            m_ZGPlotter.ShowLegend = ShowLegendToolStripMenuItem.Checked
-            m_ZGHelper.RescaleAndRedraw()
+            m_zgp.ShowLegend = ShowLegendToolStripMenuItem.Checked
+            m_zgh.RescaleAndRedraw()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -498,7 +502,7 @@ Namespace Ecosim
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsAutoScaleToolStripMenuItem.Click
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.UpdateControls()
         End Sub
 
@@ -511,21 +515,21 @@ Namespace Ecosim
         '''' <summary> Upon toggleing of menu item </summary>
         '''' -------------------------------------------------------------------
         Private Sub CustomScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsCustomScaleToolStripMenuItem.Click
-            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_ZGHelper.YScaleMax)
-            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_ZGHelper.YScaleMin)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_zgh.YScaleMax)
+            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_zgh.YScaleMin)
+            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
         End Sub
 
         Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.LostFocus ' m_tstbxSetMax.KeyPress, 
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMax)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMax)
+            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
         End Sub
 
         Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.LostFocus
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_ZGHelper.YScaleMin)
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMin)
+            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
         End Sub
 #End Region
@@ -533,14 +537,15 @@ Namespace Ecosim
 
         Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             ' Santa's little helper :)
-            Me.m_ZGHelper = New ZedGraphHelper(Me.m_zgc)
+            Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
 
-            Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
-            Me.m_ZGHelper.YScaleMin = 0.0!
+            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_zgh.YScaleMin = 0.0!
+            Me.m_zgh.ShowPointValue = True
 
             ' ToDo_JS: Localize this!
-            Me.m_ZGPlotter = New ZedGraphPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
-            Me.m_ZGPlotter.Overlay = OverlayToolStripMenuItem.Selected
+            Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, "Relative biomass", "Year", "Relative biomass")
+            Me.m_zgp.Overlay = OverlayToolStripMenuItem.Selected
 
             ' Set the axis
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
@@ -562,6 +567,7 @@ Namespace Ecosim
 #End Region ' Events
 
 #Region " Private Helpers "
+
         Private Sub InvalidateGraph()
             ' The plotter will set the highlight for this item.
             'm_ZGPlotter.SetHighlight(lbGroups.SelectedIndex, lbOverlay.SelectedIndex - 1)
@@ -576,21 +582,24 @@ Namespace Ecosim
             Next
 
             For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
-                m_ZGPlotter.SetHighlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+                m_zgp.Highlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
             Next
             Me.m_zgc.Invalidate()
         End Sub
+
         ''' -------------------------------------------------------------------
-        ''' <summary> Draws all the names </summary>
+        ''' <summary>
+        ''' Draws all the names.
+        ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub PopulateGroupBoxes()
             lbOverlay.SuspendLayout()
             lbGroups.SuspendLayout()
 
             lbOverlay.Items.Clear()
-            lbOverlay.Items.Add("All")
-            For i As Integer = 1 To m_ZGPlotter.NumOverlays
-                lbOverlay.Items.Add("Overlay " & (i).ToString)
+            lbOverlay.Items.Add(My.Resources.GENERIC_VALUE_ALL)
+            For i As Integer = 1 To m_zgp.NumOverlays
+                lbOverlay.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_OVERLAY, i))
             Next
 
             lbGroups.Items.Clear()
@@ -616,11 +625,12 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateControls()
-            m_tlsAutoScaleToolStripMenuItem.Checked = Me.m_ZGHelper.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            m_tlsAutoScaleToolStripMenuItem.Checked = Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             m_tlsCustomScaleToolStripMenuItem.Checked = Not m_tlsAutoScaleToolStripMenuItem.Checked
-            Me.m_tstbxSetMax.Text = CStr(Me.m_ZGHelper.YScaleMax)
-            Me.m_tstbxSetMin.Text = CStr(Me.m_ZGHelper.YScaleMin)
+            Me.m_tstbxSetMax.Text = CStr(Me.m_zgh.YScaleMax)
+            Me.m_tstbxSetMin.Text = CStr(Me.m_zgh.YScaleMin)
         End Sub
+
 #End Region ' Private helpers
         
     End Class
