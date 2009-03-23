@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucTimeSeriesSketchPad.vb,v $
+' Revision 1.5  2009/03/23 17:29:53  jeroens
+' Made capable of rendering without a dataset
+'
 ' Revision 1.4  2009/03/11 00:30:48  jeroens
 ' Removed resources month strings
 '
@@ -163,7 +166,12 @@ Namespace Controls
         Private Function GetAxisX() As String()
 
             Dim core As cCore = cCore.GetInstance
-            Dim ds As cTimeSeriesDataset = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex)
+            Dim iDS As Integer = core.ActiveTimeSeriesDatasetIndex
+            Dim ds As cTimeSeriesDataset = Nothing
+            Dim ts As cTimeSeries = DirectCast(Me.Shape, cTimeSeries)
+            Dim iTSFinalYear As Integer = 0
+            Dim iTSFirstYear As Integer = 0
+            Dim iStepSize As Integer = 1
             Dim lstrAxis As New List(Of String)
 
             If Me.Shape Is Nothing Then Return lstrAxis.ToArray()
@@ -171,13 +179,17 @@ Namespace Controls
 
             If Not Me.IsSeasonal Then
 
-                Dim iTSFinalYear As Integer
-                Dim iStepSize As Integer
-                Dim ts As cTimeSeries = DirectCast(Me.Shape, cTimeSeries)
+                If iDS >= 0 Then ds = core.TimeSeriesDataset(iDS)
 
-                iTSFinalYear = ds.FirstYear + Me.Shape.XMax
-                iStepSize = Math.Max(1, CInt((iTSFinalYear - ds.FirstYear) / 10))
-                For i As Integer = ds.FirstYear To iTSFinalYear Step iStepSize
+                If ds IsNot Nothing Then
+                    iTSFirstYear = ds.FirstYear
+                Else
+                    iTSFirstYear = 1
+                End If
+
+                iTSFinalYear = iTSFirstYear + Me.Shape.XMax
+                iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
+                For i As Integer = iTSFirstYear To iTSFinalYear Step iStepSize
                     lstrAxis.Add(i.ToString)
                 Next
                 Return lstrAxis.ToArray()
@@ -188,6 +200,7 @@ Namespace Controls
                 For i As Integer = 1 To 12
                     lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
                 Next
+
                 ' Hack: one extra to center labels under value ranges
                 lstrMonths.Add("")
                 Return lstrMonths.ToArray()
