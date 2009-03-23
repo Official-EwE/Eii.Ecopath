@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditMPAs.vb,v $
+' Revision 1.3  2009/03/23 02:25:04  jeroens
+' No longer uses month resource strings; uses OS date formatting options instead
+'
 ' Revision 1.2  2008/12/15 15:55:34  jeroens
 ' no message
 '
@@ -309,18 +312,10 @@ Namespace Ecospace
             Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(My.Resources.HEADER_MPA)
             Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell("Closed")
             'Define column header Jan - Dec
-            Me(0, eColumnTypes.MPAJan) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JANUARY)
-            Me(0, eColumnTypes.MPAFeb) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_FEBRUARY)
-            Me(0, eColumnTypes.MPAMar) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_MARCH)
-            Me(0, eColumnTypes.MPAApr) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_APRIL)
-            Me(0, eColumnTypes.MPAMay) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_MAY)
-            Me(0, eColumnTypes.MPAJun) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JUNE)
-            Me(0, eColumnTypes.MPAJul) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_JULY)
-            Me(0, eColumnTypes.MPAAug) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_AUGUST)
-            Me(0, eColumnTypes.MPASep) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_SEPTEMBER)
-            Me(0, eColumnTypes.MPAOct) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_OCTOBER)
-            Me(0, eColumnTypes.MPANov) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_NOVEMBER)
-            Me(0, eColumnTypes.MPADec) = New EwEColumnHeaderCell(My.Resources.GENERIC_MONTH_ABBR_DECEMBER)
+            For iCol As Integer = eColumnTypes.MPAJan To eColumnTypes.MPADec
+                Dim d As New Date(1, (iCol - eColumnTypes.MPAJan) + 1, 1)
+                Me(0, iCol) = New EwEColumnHeaderCell(d.ToString("MMM"))
+            Next
 
             ' MPA index cell
             Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
