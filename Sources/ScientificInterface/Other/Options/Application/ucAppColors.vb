@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppColors.vb,v $
+' Revision 1.3  2009/03/23 02:34:58  jeroens
+' Renamed resources
+'
 ' Revision 1.2  2008/12/15 15:56:02  jeroens
 ' no message
 '
@@ -286,7 +289,7 @@ Namespace Other
             cb.Items.Clear()
 
             ' Add intial 'custom' item
-            cb.Items.Add(New KnownColorItem(My.Resources.VALUE_CUSTOM, Color.Black))
+            cb.Items.Add(New KnownColorItem(My.Resources.GENERIC_VALUE_CUSTOM, Color.Black))
 
             ' Add all known colours
             For i As Integer = 0 To lColors.Count - 1

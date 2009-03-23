@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlot.vb,v $
+' Revision 1.5  2009/03/23 02:34:36  jeroens
+' Renamed resources
+'
 ' Revision 1.4  2009/03/19 16:02:28  jeroens
 ' Added FormatProvider.Release
 '
@@ -398,7 +401,7 @@ Namespace Ecosim
                 ' Sanity check
                 If iGroup <= Me.m_core.nGroups Then
                     If iGroup = 0 Then
-                        strItemText = My.Resources.VALUE_ALLGROUPS
+                        strItemText = My.Resources.GENERIC_VALUE_ALLGROUPS
                         clr = s.BackColor
                     Else
                         Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
