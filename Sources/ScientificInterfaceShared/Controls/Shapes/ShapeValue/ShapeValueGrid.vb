@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeValueGrid.vb,v $
+' Revision 1.4  2009/03/23 20:21:31  jeroens
+' Fixed issue 599
+'
 ' Revision 1.3  2009/03/11 18:26:10  jeroens
 ' Added Year mode (for time series)
 '
@@ -142,7 +145,7 @@ Public Class ShapeValueGrid
 
                 Case frmShapeValue.eDisplayMode.Yearly
 
-                    cell = New EwECell(CStr(iValue + iStartIndex + 1), GetType(String))
+                    cell = New EwECell(CStr(iValue + iStartIndex), GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
                     Me(iValue + 1, 0) = cell
 
@@ -154,9 +157,9 @@ Public Class ShapeValueGrid
 
                     Dim strLabel0 As String = ""
                     Dim strLabel1 As String = ""
-                    Dim iYear As Integer = iStartIndex + 1 + CInt(Math.Floor(iValue / 12))
+                    Dim iYear As Integer = iStartIndex + CInt(Math.Floor(iValue / 12))
                     Dim iMonth As Integer = 1 + (iValue Mod 12)
-                    Dim d As New Date(iYear, iMonth, 1)
+                    Dim d As New Date(1, iMonth, 1)
 
                     If iMonth = 1 Then strLabel0 = CStr(iYear) Else strLabel0 = ""
                     strLabel1 = d.ToString("MMM")

@@ -34,8 +34,8 @@ Namespace Ecosim
             Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
-            Me.m_sketchPad = New ucForcingSketchPad
-            Me.m_graph = New Ecosim.ucBiomassPlotzgc
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
+            Me.m_graph = New ScientificInterface.Ecosim.ucBiomassPlotzgc
             Me.m_spContainer = New System.Windows.Forms.SplitContainer
             Me.ToolStrip1.SuspendLayout()
             Me.m_spContainer.Panel1.SuspendLayout()
@@ -65,7 +65,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.tscbTarget, "tscbTarget")
             Me.tscbTarget.DropDownHeight = 1
-            Me.tscbTarget.DropDownStyle = ComboBoxStyle.DropDownList
+            Me.tscbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.tscbTarget.Name = "tscbTarget"
             '
             'ToolStripSeparator1
@@ -95,18 +95,23 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
-            Me.m_sketchPad.XMarkValue = 1.0!
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
-            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'm_graph
             '
