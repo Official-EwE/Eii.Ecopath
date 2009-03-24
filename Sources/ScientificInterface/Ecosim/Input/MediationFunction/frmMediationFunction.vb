@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMediationFunction.vb,v $
+' Revision 1.7  2009/03/24 16:34:19  jeroens
+' Fixed crash on Edit w/o shape selection
+'
 ' Revision 1.6  2009/03/20 17:55:41  jeroens
 ' Shape controls are multiple selection
 '
@@ -116,9 +119,11 @@ Namespace Ecosim
         Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles tsBtnEditBioPert.Click
 
-            Dim dlgDefBP As New defBioPercent(DirectCast(Me.m_shapeguihandler.SelectedShape, cMediationFunction))
-            If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                _m_bioPercent.LoadGraphData()
+            If (Me.m_bioPercent.Shape IsNot Nothing) Then
+                Dim dlgDefBP As New defBioPercent(DirectCast(Me.m_bioPercent.Shape, cMediationFunction))
+                If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    _m_bioPercent.LoadGraphData()
+                End If
             End If
 
         End Sub
