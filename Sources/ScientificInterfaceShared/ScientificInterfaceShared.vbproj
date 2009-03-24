@@ -200,6 +200,7 @@
     <Compile Include="Controls\TextBox\ucCharacterTextBox.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Toolstrip\cToolstripUtils.vb" />
     <Compile Include="Controls\Tooltip\cToolTipShared.vb">
       <SubType>Component</SubType>
     </Compile>
