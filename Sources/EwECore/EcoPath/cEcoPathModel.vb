@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.28  2009/03/24 01:07:08  joeh
+' Redim PSD array
+'
 ' Revision 1.27  2009/03/20 18:05:44  joeh
 ' Add more codes to estimate the two biomass variables for Size/Weight plot
 '
@@ -3082,6 +3085,8 @@ nextJ:
             Dim Biomass() As Single
             Dim StartWeightClassNum As Integer
             Dim ScaleFactor As Single
+
+            ReDim Me.m_psd.PSD(m_Data.NumGroups, Me.m_psd.NWeightClasses)
 
             For iGroup As Integer = 1 To m_Data.NumLiving
                 If Me.m_psd.Include(iGroup) Then
