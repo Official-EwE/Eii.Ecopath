@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.6  2009/03/24 02:00:27  jeroens
+' Fixed crash when no shape selected
+'
 ' Revision 1.5  2009/03/21 00:30:34  jeroens
 ' Fixed unclear parameter names
 '
@@ -63,14 +66,14 @@ Namespace Controls
             Dim strCaption As String = ""
             Dim sg As StyleGuide = StyleGuide.GetInstance()
 
-            'sYMax = Me.YAxisMaxValue
-            iXMax = Me.Shape.XMax
-
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
             ' Sanity checks
             If Me.Shape Is Nothing Then Return
             If Not bDrawLabels Then Return
+
+            'sYMax = Me.YAxisMaxValue
+            iXMax = Me.Shape.XMax
 
             sfmt = New StringFormat()
             sfmt.Alignment = StringAlignment.Center
