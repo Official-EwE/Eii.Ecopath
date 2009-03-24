@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.5  2009/03/24 18:58:08  joeh
+' Change PSDFirstWeightClass from integer to single
+'
 ' Revision 1.4  2009/03/21 00:31:19  jeroens
 ' PSD params exposes nWeightClasses
 '
@@ -55,8 +58,8 @@ Public Class cPSDParameters
             m_values.Add(val.varName, val)
 
             'PSDFirstWeightClass
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(New Integer, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
             m_values.Add(val.varName, val)
 
             'LohrenzenLatNWCorner
