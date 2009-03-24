@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.14  2009/03/24 01:05:45  joeh
+' Add OnCoreExecutionStateChanged event handler
+'
 ' Revision 1.13  2009/03/23 20:45:49  joeh
 ' Add functionality to the Run button
 '
@@ -59,12 +62,15 @@ Namespace Ecopath.Output
 
 #Region "Variables"
 
+        Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_core As cCore = Nothing
         Private m_zgh As ZedGraphHelper = Nothing
         Private m_fpLorenzenLatNWCorner As cEwEFormatProvider = Nothing
         Private m_fpLorenzenLatSECorner As cEwEFormatProvider = Nothing
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
         Private m_fpMinWeight As cEwEFormatProvider = Nothing
+        'Private m_psdParms As cPSDParameters = Nothing
+
 
 #End Region 'Variables
 
@@ -73,7 +79,9 @@ Namespace Ecopath.Output
         Public Sub New()
             InitializeComponent()
             Me.m_core = cCore.GetInstance()
+            Me.m_coreStateMonitor = Me.m_core.StateMonitor
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+            'Me.m_psdParms = Me.m_core.ParticleSizeDistributionParameters
         End Sub
 
 #End Region 'Constructor/Destructor
@@ -83,19 +91,20 @@ Namespace Ecopath.Output
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-            Me.UpdateToolStrip()
-            Me.PlotCurve()
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            'AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
-            '                     My.Resources.PSD_YAXISLABEL_BIOMASS))
-            'UpdatePlot()
+            Me.UpdateToolStrip()
+            'Me.PlotCurves() is moved to OnCoreExecutionStateChanged
         End Sub
 
         Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            Me.m_fpLorenzenLatNWCorner.Release()
-            Me.m_fpLorenzenLatSECorner.Release()
+            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
+                Me.m_fpLorenzenLatNWCorner.Release()
+                Me.m_fpLorenzenLatSECorner.Release()
+            End If
             Me.m_fpNoOfPointsPSD.Release()
             Me.m_fpMinWeight.Release()
 
@@ -119,9 +128,39 @@ Namespace Ecopath.Output
         Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
             UpdateVariables()
             m_core.RunEcoPath()
-            PlotCurve()
+            Me.PlotCurves()
         End Sub
 
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+
+            Dim bEcopathRunning As Boolean = m_coreStateMonitor.IsEcopathRunning
+            Dim bHasEcopathResults As Boolean = m_coreStateMonitor.HasEcopathRan
+
+            '' Does not have ecosim results?
+            'If (Not bHasEcosimResults) Then
+            '    ' #Yes: clear run results
+            'Me.m_graph.OnCoreExecutionStateChanged()
+            'End If
+            If bHasEcopathResults Then
+                Me.PlotCurves()
+            End If
+
+
+            '' Check whether ecosim is running
+            '' Is this a state change?
+            'If (bEcosimRunning <> Me.m_bEcosimRunning) Then
+            '    ' #Yes: update to new state
+            '    Me.m_bEcosimRunning = bEcosimRunning
+            '    If Me.m_bEcosimRunning Then
+            '        AppLauncher.GetInstance().SetStatusText("Running Ecosim", TriState.True, 0)
+            '    Else
+            '        AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
+            '    End If
+            '    Me.UpdateControls()
+
+            'End If
+
+        End Sub
 #End Region 'Event handlers
 
 #Region "Helper methods"
@@ -135,7 +174,6 @@ Namespace Ecopath.Output
 
         Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String, ByVal pane As GraphPane)
-
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             pane.Title.Text = strTitle
@@ -162,12 +200,12 @@ Namespace Ecopath.Output
 
         Private Sub AddCurves(ByVal pane As GraphPane)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sSlope As Single
             Dim sIntercept As Single
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             InitLists(resultLists, 2)
 
@@ -224,11 +262,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub UpdateToolStrip()
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             'Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.tbxNoOfPointsPSD.Control, _
             '        Me.m_core.ParticleSizeDistributionParameters, eVarNameFlags.PSDNumWeightClasses)
@@ -265,9 +303,9 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub UpdateVariables()
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
             Dim grpInput As cEcoPathGroupInput = Nothing
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             'Mortality type
             If mnuItmGroupPB.Checked Then
@@ -297,7 +335,7 @@ Namespace Ecopath.Output
             Me.zgcZedGraphCntl.Refresh()
         End Sub
 
-        Private Sub PlotCurve()
+        Private Sub PlotCurves()
             AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
                                  My.Resources.PSD_YAXISLABEL_BIOMASS))
             UpdatePlot()
@@ -322,7 +360,6 @@ Namespace Ecopath.Output
         Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
                                    ByVal sSystemPSD() As Single)
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sXValue As Single = 0
             Dim dSumX As Double = 0
             Dim dSumY As Double = 0
@@ -331,6 +368,7 @@ Namespace Ecopath.Output
             Dim dYMean As Double
             Dim dSumXdevYdev As Double = 0
             Dim dSumXdevSq As Double = 0
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
