@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMediationFunction.vb,v $
+' Revision 1.8  2009/03/24 20:28:35  jeroens
+' Uses mediation tool bar
+'
 ' Revision 1.7  2009/03/24 16:34:19  jeroens
 ' Fixed crash on Edit w/o shape selection
 '
@@ -71,7 +74,7 @@ Namespace Ecosim
             Me.m_shapeguihandler = New cMediationShapeGUIHandler(Me.m_core, _
                     Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                     Me.m_sketchPad, Me.m_sketchPadToolbar, _
-                    Me.m_bioPercent)
+                    Me.m_bioPercent, Me.m_biopercenttoolbar)
 
         End Sub
 
@@ -116,15 +119,9 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsBtnEditBioPert.Click
+        Private Sub tsBtnEditBioPert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-            If (Me.m_bioPercent.Shape IsNot Nothing) Then
-                Dim dlgDefBP As New defBioPercent(DirectCast(Me.m_bioPercent.Shape, cMediationFunction))
-                If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    _m_bioPercent.LoadGraphData()
-                End If
-            End If
+
 
         End Sub
 

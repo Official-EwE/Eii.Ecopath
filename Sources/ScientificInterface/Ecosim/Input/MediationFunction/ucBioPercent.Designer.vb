@@ -26,10 +26,10 @@ Namespace Ecosim
             Me.m_zedgraph = New ZedGraph.ZedGraphControl
             Me.SuspendLayout()
             '
-            'zgBP
+            'm_zedgraph
             '
-            resources.ApplyResources(Me.m_zedgraph, "zgBP")
-            Me.m_zedgraph.Name = "zgBP"
+            resources.ApplyResources(Me.m_zedgraph, "m_zedgraph")
+            Me.m_zedgraph.Name = "m_zedgraph"
             Me.m_zedgraph.ScrollGrace = 0
             Me.m_zedgraph.ScrollMaxX = 0
             Me.m_zedgraph.ScrollMaxY = 0
@@ -47,7 +47,7 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_zedgraph As ZedGraph.ZedGraphControl
+        Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
 
     End Class
 

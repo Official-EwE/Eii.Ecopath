@@ -27,17 +27,16 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
             Me.plSketchPad = New System.Windows.Forms.Panel
             Me.tlpSketchPad = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ucSketchPadToolbar
-            Me.m_sketchPad = New ucMediationSketchPad
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
-            Me.plBiomassPerct = New System.Windows.Forms.Panel
-            Me.m_bioPercent = New ucBioPercent
-            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-            Me.tsBtnEditBioPert = New System.Windows.Forms.ToolStripButton
+            Me.m_tlpBiopercent = New System.Windows.Forms.TableLayoutPanel
+            Me.m_biopercenttoolbar = New ScientificInterface.Ecosim.ucBioPercentToolbar
+            Me.m_bioPercent = New ScientificInterface.Ecosim.ucBioPercent
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolBox = New ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
             Me.plSketchPad.SuspendLayout()
             Me.tlpSketchPad.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -46,8 +45,7 @@ Namespace Ecosim
             Me.SplitContainer2.Panel1.SuspendLayout()
             Me.SplitContainer2.Panel2.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
-            Me.plBiomassPerct.SuspendLayout()
-            Me.ToolStrip1.SuspendLayout()
+            Me.m_tlpBiopercent.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -75,17 +73,22 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
-            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto
-            Me.m_sketchPad.YAxisMaxValue = 1.0!
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'SplitContainer1
             '
@@ -113,34 +116,27 @@ Namespace Ecosim
             '
             'SplitContainer2.Panel2
             '
-            Me.SplitContainer2.Panel2.Controls.Add(Me.plBiomassPerct)
-            Me.SplitContainer2.Panel2.Controls.Add(Me.ToolStrip1)
+            Me.SplitContainer2.Panel2.Controls.Add(Me.m_tlpBiopercent)
             '
-            'plBiomassPerct
+            'm_tlpBiopercent
             '
-            Me.plBiomassPerct.Controls.Add(Me.m_bioPercent)
-            resources.ApplyResources(Me.plBiomassPerct, "plBiomassPerct")
-            Me.plBiomassPerct.Name = "plBiomassPerct"
+            resources.ApplyResources(Me.m_tlpBiopercent, "m_tlpBiopercent")
+            Me.m_tlpBiopercent.Controls.Add(Me.m_biopercenttoolbar, 0, 0)
+            Me.m_tlpBiopercent.Controls.Add(Me.m_bioPercent, 0, 1)
+            Me.m_tlpBiopercent.Name = "m_tlpBiopercent"
+            '
+            'm_biopercenttoolbar
+            '
+            resources.ApplyResources(Me.m_biopercenttoolbar, "m_biopercenttoolbar")
+            Me.m_biopercenttoolbar.BackColor = System.Drawing.SystemColors.Control
+            Me.m_biopercenttoolbar.Handler = Nothing
+            Me.m_biopercenttoolbar.Name = "m_biopercenttoolbar"
             '
             'm_bioPercent
             '
             resources.ApplyResources(Me.m_bioPercent, "m_bioPercent")
             Me.m_bioPercent.Name = "m_bioPercent"
             Me.m_bioPercent.Shape = Nothing
-            '
-            'ToolStrip1
-            '
-            Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnEditBioPert})
-            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-            Me.ToolStrip1.Name = "ToolStrip1"
-            Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'tsBtnEditBioPert
-            '
-            Me.tsBtnEditBioPert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnEditBioPert, "tsBtnEditBioPert")
-            Me.tsBtnEditBioPert.Name = "tsBtnEditBioPert"
             '
             'TableLayoutPanel1
             '
@@ -151,11 +147,12 @@ Namespace Ecosim
             '
             'm_shapeToolBox
             '
+            Me.m_shapeToolBox.AllowCheckboxes = False
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = Nothing
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'm_shapeToolboxToolbar
@@ -177,11 +174,9 @@ Namespace Ecosim
             Me.SplitContainer1.ResumeLayout(False)
             Me.SplitContainer2.Panel1.ResumeLayout(False)
             Me.SplitContainer2.Panel2.ResumeLayout(False)
-            Me.SplitContainer2.Panel2.PerformLayout()
             Me.SplitContainer2.ResumeLayout(False)
-            Me.plBiomassPerct.ResumeLayout(False)
-            Me.ToolStrip1.ResumeLayout(False)
-            Me.ToolStrip1.PerformLayout()
+            Me.m_tlpBiopercent.ResumeLayout(False)
+            Me.m_tlpBiopercent.PerformLayout()
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -189,16 +184,15 @@ Namespace Ecosim
         Friend WithEvents plSketchPad As System.Windows.Forms.Panel
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
-        Friend WithEvents plBiomassPerct As System.Windows.Forms.Panel
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-        Friend WithEvents tsBtnEditBioPert As System.Windows.Forms.ToolStripButton
         Friend WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_sketchPadToolbar As ucSketchPadToolbar
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_shapeToolBox As ucShapeToolbox
         Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
-        Friend WithEvents m_bioPercent As ucBioPercent
         Friend WithEvents m_sketchPad As ucMediationSketchPad
+        Private WithEvents m_bioPercent As ScientificInterface.Ecosim.ucBioPercent
+        Private WithEvents m_biopercenttoolbar As ScientificInterface.Ecosim.ucBioPercentToolbar
+        Friend WithEvents m_tlpBiopercent As System.Windows.Forms.TableLayoutPanel
 
     End Class
 End Namespace

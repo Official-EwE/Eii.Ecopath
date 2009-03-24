@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.4  2009/03/24 20:28:34  jeroens
+' Uses mediation tool bar
+'
 ' Revision 1.3  2009/03/24 16:33:55  jeroens
 ' Made crash-safe
 '
@@ -78,7 +81,7 @@ Namespace Ecosim
 
         Private Sub ucBiomassPercentage_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            Me.Dock = DockStyle.Fill
+            'Me.Dock = DockStyle.Fill
 
             InitGraphPane()
             LoadGraphData()
@@ -92,13 +95,8 @@ Namespace Ecosim
             Me.m_zgh = New ZedGraphHelper(Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
-            'myPane.Border.IsVisible = False
-            'myPane.Chart.Border.IsVisible = False
-            'myPane.YAxis.MajorTic.IsOpposite = False
-            'myPane.XAxis.MajorTic.IsOpposite = False
-            'myPane.YAxis.MinorTic.IsOpposite = False
-            'myPane.XAxis.MinorTic.IsOpposite = False
-            'myPane.XAxis.Scale.IsVisible = False
+            myPane.Border.IsVisible = False
+            myPane.Chart.Border.IsVisible = False
 
             ' Fill the axis background with a color gradient
             myPane.Chart.Fill = New Fill(Color.White, _

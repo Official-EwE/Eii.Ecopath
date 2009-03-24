@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.6  2009/03/24 20:28:35  jeroens
+' Uses mediation tool bar
+'
 ' Revision 1.5  2009/03/20 17:55:41  jeroens
 ' Shape controls are multiple selection
 '
@@ -31,6 +34,7 @@ Imports ScientificInterface.Other
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
@@ -46,7 +50,9 @@ Namespace Ecosim
         Inherits cForcingShapeGUIHandler
 
         ''' <summary>Biomass percent control to handle.</summary>
-        Private m_bioPercent As ucBioPercent = Nothing
+        Private m_bp As ucBioPercent = Nothing
+        ''' <summary>Biomass percent control toolbar to handle.</summary>
+        Private m_bpt As ucBioPercentToolbar = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -62,12 +68,13 @@ Namespace Ecosim
         Public Sub New(ByVal core As cCore, _
                  ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, _
                  ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar, _
-                 ByVal bp As ucBioPercent)
+                 ByVal bp As ucBioPercent, ByVal bpt As ucBioPercentToolbar)
 
             MyBase.New(core, stb, stbtb, sp, sptb)
 
             Me.SketchPad.ShowXMark = True
-            Me.BioPercent = bp
+            Me.BiomassPercent = bp
+            Me.BiomassPercentToolbar = bpt
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -76,7 +83,8 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub Finalize()
-            Me.BioPercent = Nothing
+            Me.BiomassPercent = Nothing
+            Me.BiomassPercentToolbar = Nothing
             MyBase.Finalize()
         End Sub
 
@@ -94,6 +102,44 @@ Namespace Ecosim
         Protected Overrides Function ShapeManager() As cBaseShapeManager
             Return Me.m_core.MediationShapeManager
         End Function
+
+        Public Overridable Property BiomassPercent() As ucBioPercent
+            Get
+                Return Me.m_bp
+            End Get
+            Protected Set(ByVal value As ucBioPercent)
+
+                If (Me.m_bp IsNot Nothing) Then
+                    'Me.m_bp.Handler = Nothing
+                End If
+
+                Me.m_bp = value
+
+                If (Me.m_bp IsNot Nothing) Then
+                    'Me.m_bp.Handler = Me
+                End If
+
+            End Set
+        End Property
+
+        Public Overridable Property BiomassPercentToolbar() As ucBioPercentToolbar
+            Get
+                Return Me.m_bpt
+            End Get
+            Protected Set(ByVal value As ucBioPercentToolbar)
+
+                If (Me.m_bpt IsNot Nothing) Then
+                    Me.m_bpt.Handler = Nothing
+                End If
+
+                Me.m_bpt = value
+
+                If (Me.m_bpt IsNot Nothing) Then
+                    Me.m_bpt.Handler = Me
+                End If
+
+            End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -130,7 +176,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the selected shape in the GUI. Overridden to synchronize the
-        ''' <see cref="m_bioPercent">BioPercent</see> control.
+        ''' BioPercent control.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Property SelectedShapes() As EwECore.cShapeData()
@@ -147,7 +193,7 @@ Namespace Ecosim
                     If (value.Length = 1) Then shapeSelected = value(0)
                 End If
 
-                If (Me.BioPercent IsNot Nothing) Then Me.BioPercent.Shape = shapeSelected
+                If (Me.BiomassPercent IsNot Nothing) Then Me.BiomassPercent.Shape = shapeSelected
 
                 If Me.SketchPad IsNot Nothing Then
                     If (shapeSelected Is Nothing) Then
@@ -158,20 +204,9 @@ Namespace Ecosim
                         Me.SketchPad.YMarkValue = DirectCast(shapeSelected, cMediationFunction).YBase
                     End If
                 End If
-            End Set
-        End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the Biomass percent control to handle.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property BioPercent() As ucBioPercent
-            Get
-                Return Me.m_bioPercent
-            End Get
-            Set(ByVal value As ucBioPercent)
-                Me.m_bioPercent = value
+                If (Me.BiomassPercentToolbar IsNot Nothing) Then Me.BiomassPercentToolbar.Refresh()
+
             End Set
         End Property
 
@@ -181,9 +216,40 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
-            If cmd = eShapeCommandTypes.Seasonal Then Return False
+            Select Case cmd
+                Case eShapeCommandTypes.Seasonal
+                    Return False
+                Case eShapeCommandTypes.Custom
+                    Return True
+            End Select
             Return MyBase.SupportCommand(cmd)
         End Function
+
+        Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
+            Select Case cmd
+                Case eShapeCommandTypes.Custom
+                    Return (Me.SelectedShape IsNot Nothing)
+            End Select
+            Return MyBase.EnableCommand(cmd)
+        End Function
+
+        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
+                                            Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
+                                            Optional ByVal data As Object = Nothing)
+
+            Select Case cmd
+
+                Case eShapeCommandTypes.Custom
+                    Dim dlgDefBP As New defBioPercent(DirectCast(Me.SelectedShape, cMediationFunction))
+                    If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        Me.BiomassPercent.LoadGraphData()
+                    End If
+
+                Case Else
+                    MyBase.ExecuteCommand(cmd, ashapes, data)
+
+            End Select
+        End Sub
 
         Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
             DirectCast(shape, cMediationFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
