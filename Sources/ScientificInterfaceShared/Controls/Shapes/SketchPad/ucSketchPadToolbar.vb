@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPadToolbar.vb,v $
+' Revision 1.4  2009/03/24 14:08:22  jeroens
+' Uses moved cToolstripUtils
+'
 ' Revision 1.3  2009/03/20 17:55:42  jeroens
 ' Shape controls are multiple selection
 '
@@ -20,11 +23,10 @@
 Option Explicit On
 Option Strict On
 
+Imports EwECore
 Imports System.Drawing.Drawing2D
 Imports System.Drawing
-Imports EwECore
 Imports System.ComponentModel
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -187,7 +189,7 @@ Namespace Controls
 
             End If
 
-            ToolstripUtils.HideRepeatingSeparators(Me.tsMenus)
+            cToolstripUtils.HideRepeatingSeparators(Me.tsMenus)
 
         End Sub
 
