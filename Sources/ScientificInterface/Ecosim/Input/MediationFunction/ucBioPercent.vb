@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.3  2009/03/24 16:33:55  jeroens
+' Made crash-safe
+'
 ' Revision 1.2  2008/12/15 16:00:49  jeroens
 ' no message
 '
@@ -46,7 +49,7 @@ Namespace Ecosim
     Public Class ucBioPercent
 
         Private m_core As cCore = Nothing
-        Private m_MedFunc As cMediationFunction = Nothing
+        Private m_medfn As cMediationFunction = Nothing
         Private m_RdmColor As ColorSymbolRotator = Nothing
         Private m_zgh As ZedGraphHelper = Nothing
 
@@ -65,15 +68,11 @@ Namespace Ecosim
 
         Public Property Shape() As cShapeData
             Get
-                Return Me.m_MedFunc
+                Return Me.m_medfn
             End Get
             Set(ByVal value As cShapeData)
-
-                If (TypeOf value Is cMediationFunction) Then
-                    Me.m_MedFunc = DirectCast(value, cMediationFunction)
-                End If
-                LoadGraphData()
-
+                Me.m_medfn = DirectCast(value, cMediationFunction)
+                Me.LoadGraphData()
             End Set
         End Property
 
@@ -88,9 +87,9 @@ Namespace Ecosim
 
         Private Sub InitGraphPane()
 
-            Dim myPane As GraphPane = zgBP.GraphPane
+            Dim myPane As GraphPane = m_zedgraph.GraphPane
 
-            Me.m_zgh = New ZedGraphHelper(Me.zgBP)
+            Me.m_zgh = New ZedGraphHelper(Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
             'myPane.Border.IsVisible = False
@@ -118,7 +117,7 @@ Namespace Ecosim
             Dim medGrp As cMediatingGroup = Nothing
             Dim medFlt As cMediatingFleet = Nothing
             Dim list As PointPairList = Nothing
-            Dim pane As GraphPane = zgBP.GraphPane
+            Dim pane As GraphPane = m_zedgraph.GraphPane
             Dim sg As StyleGuide = StyleGuide.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
@@ -126,11 +125,11 @@ Namespace Ecosim
 
             pane.CurveList.Clear()
 
-            If (Me.m_MedFunc IsNot Nothing) Then
+            If (Me.m_medfn IsNot Nothing) Then
 
-                For i As Integer = 0 To m_MedFunc.CountGroup - 1
+                For i As Integer = 0 To m_medfn.CountGroup - 1
                     list = New PointPairList()
-                    medGrp = m_MedFunc.Group(i)
+                    medGrp = m_medfn.Group(i)
                     list.Add(i + 1, medGrp.Weight)
 
                     ' Get the group
@@ -142,24 +141,27 @@ Namespace Ecosim
 
                 Next
 
-                For i As Integer = 0 To m_MedFunc.CountFleet - 1
+                For i As Integer = 0 To m_medfn.CountFleet - 1
                     list = New PointPairList()
-                    medFlt = m_MedFunc.Fleet(i)
+                    medFlt = m_medfn.Fleet(i)
 
                     ' Get the fleet
                     source = m_core.FleetInputs(medFlt.iFleetIndex)
-                    list.Add(i + 1 + m_MedFunc.CountGroup, medFlt.Weight)
+                    list.Add(i + 1 + m_medfn.CountGroup, medFlt.Weight)
 
                     clr = m_RdmColor.NextColor
                     myCurve = pane.AddBar(source.Name, list, clr)
                     myCurve.Bar.Fill = New Fill(clr)
                 Next
 
+                m_zedgraph.Visible = True
+            Else
+                m_zedgraph.Visible = False
             End If
 
             ' Calculate the Axis Scale Ranges
-            zgBP.AxisChange()
-            zgBP.Refresh()
+            m_zedgraph.AxisChange()
+            m_zedgraph.Refresh()
 
         End Sub
 
@@ -169,7 +171,7 @@ Namespace Ecosim
         ''' <param name="data"></param>
         Public Sub LoadGraphData(ByVal data As Dictionary(Of cCoreInputOutputBase, Single))
 
-            Dim myPane As GraphPane = zgBP.GraphPane
+            Dim myPane As GraphPane = m_zedgraph.GraphPane
             Dim sg As StyleGuide = StyleGuide.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
@@ -201,8 +203,8 @@ Namespace Ecosim
 
             End If
 
-            zgBP.AxisChange()
-            zgBP.Refresh()
+            m_zedgraph.AxisChange()
+            m_zedgraph.Refresh()
 
         End Sub
 
