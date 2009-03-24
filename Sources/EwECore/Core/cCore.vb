@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.95  2009/03/24 13:40:56  jeroens
+' Forgot to call PSD params ResetStatusFlags
+'
 ' Revision 1.94  2009/03/22 14:01:34  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -3184,8 +3187,10 @@ Public Class cCore
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
         Me.m_PSDParameters.LohrenzenLatNWCorner = Me.m_PSDData.LatNWCorner
         Me.m_PSDParameters.LohrenzenLatSECorner = Me.m_PSDData.LatSECorner
+        Me.m_PSDParameters.ResetStatusFlags()
 
         Me.m_PSDParameters.AllowValidation = True
+
         Return True
     End Function
 
