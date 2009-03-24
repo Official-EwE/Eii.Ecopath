@@ -4659,6 +4659,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Slope = {0}, Intercept = {1}.
+        '''</summary>
+        Friend ReadOnly Property PSD_GRAPH_REGRESSION_LABEL() As String
+            Get
+                Return ResourceManager.GetString("PSD_GRAPH_REGRESSION_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to By biomass.
         '''</summary>
         Friend ReadOnly Property PSD_LINELEGEND_BYBIOMASS() As String
