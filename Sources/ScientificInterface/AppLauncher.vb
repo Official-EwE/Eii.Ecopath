@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.31  2009/03/24 15:56:42  jeroens
+' Updated to minor ScIntShared namespace changes
+'
 ' Revision 1.30  2009/03/22 14:01:33  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -115,6 +118,8 @@ Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Other
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
@@ -510,7 +515,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public Sub SetStatusText(Optional ByVal strText As String = "", _
         Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-        Optional ByVal sProgress As Single = 0.0) Implements ScientificInterfaceShared.IApplicationStatusDispatcher.SetStatusText
+        Optional ByVal sProgress As Single = 0.0) Implements IApplicationStatusDispatcher.SetStatusText
 
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 

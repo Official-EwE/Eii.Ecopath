@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.10  2009/03/24 15:56:41  jeroens
+' Updated to minor ScIntShared namespace changes
+'
 ' Revision 1.9  2009/03/22 14:01:34  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -281,7 +284,7 @@ Partial Public Class AppLauncher
         ''' Set the text of the main status strip item.
         ''' </summary>
         ''' <param name="strText">The text to set.</param>
-        ''' <param name="sProgress">Progress to set in a continuous progress bar,
+        ''' <param name="sProgress">Progress ([0, 1] or -1 )to set in a continuous progress bar,
         ''' 0.0 to hide progress bar, or -1 to show a marquee progress bar.</param>
         ''' -------------------------------------------------------------------
         Public Sub SetStatusText(ByVal strText As String, Optional ByVal sProgress As Single = 0.0)
