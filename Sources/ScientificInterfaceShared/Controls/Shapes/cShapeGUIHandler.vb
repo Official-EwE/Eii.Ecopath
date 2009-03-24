@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.12  2009/03/24 20:29:08  jeroens
+' Added Custom command
+'
 ' Revision 1.11  2009/03/23 17:27:42  jeroens
 ' Constructors made safe handling missing components
 '
@@ -97,6 +100,8 @@ Namespace Controls
             SetToZero
             ''' <summary>Weight all time series.</summary>
             Weight
+            ''' <summary>Custom command, can be anything.</summary>
+            Custom
         End Enum
 
 #Region " Private variables "
