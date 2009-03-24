@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.35  2009/03/24 03:12:48  jeroens
+' Fixed model save issues on PSD FK
+'
 ' Revision 1.34  2009/03/18 15:29:11  jeroens
 ' Read/write PSD data
 ' Cleaned up invalid code
@@ -686,6 +689,7 @@ Public Class cDBDataSource
         ' Save succesful?
         If bSucces Then
             ' #Yes: Clear changed flags
+            Me.ClearChanged(eCoreComponentType.Core)
             Me.ClearChanged(eCoreComponentType.EcoPath)
             Me.ClearChanged(eCoreComponentType.DataSource)
         End If
@@ -750,15 +754,26 @@ Public Class cDBDataSource
     Private Function SaveModelInfo() As Boolean
 
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
+        Dim bNewRow As Boolean = False
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute("DELETE * FROM EcopathModel")
+            ' This will no longer work because of tables linking to ModelID
+            'Me.m_db.Execute("DELETE * FROM EcopathModel")
             writer = Me.m_db.GetWriter("EcopathModel")
+            dt = writer.GetDataTable()
 
-            drow = writer.NewRow()
-            drow("ModelID") = Me.m_core.m_EwEModelDBID
+            drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
+
+            bNewRow = (drow Is Nothing)
+            If bNewRow Then
+                drow = writer.NewRow()
+            Else
+                drow.BeginEdit()
+            End If
+
             drow("Name") = Me.m_core.m_EwEModelName
             drow("Description") = Me.m_core.m_EwEModelDescription
             drow("Author") = Me.m_core.m_EwEModelAuthor
@@ -770,9 +785,15 @@ Public Class cDBDataSource
             drow("UnitTime") = Me.m_core.m_EwEModelUnitTime
             drow("UnitTimeCustom") = Me.m_core.m_EwEModelUnitTimeCustom
             drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
-            'drow("UnitMonetaryCustom") = Me.m_core.m_EwEModelUnitMonetaryCustom
             drow("LastSaved") = cDBDataSource.GetJulianDate()
-            writer.AddRow(drow)
+
+            If bNewRow Then
+                writer.AddRow(drow)
+            Else
+                drow.AcceptChanges()
+            End If
+
+            writer.Commit()
 
         Catch ex As Exception
             bSucces = False
