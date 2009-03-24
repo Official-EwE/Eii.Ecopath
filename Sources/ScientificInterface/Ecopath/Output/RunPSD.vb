@@ -1,6 +1,12 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.15  2009/03/24 14:11:52  jeroens
+' Correctly cleans up
+' Uses PropertyFormatProviders instead of FormatProviders
+' Fixed ecopath <-> graph sync logic
+' ZedGraphHelper in charge of formatting graph
+'
 ' Revision 1.14  2009/03/24 01:05:45  joeh
 ' Add OnCoreExecutionStateChanged event handler
 '
@@ -62,141 +68,194 @@ Namespace Ecopath.Output
 
 #Region "Variables"
 
+        ' -- Core connection
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_core As cCore = Nothing
+
+        ' -- To make life easier and a more fun place to be
         Private m_zgh As ZedGraphHelper = Nothing
+
+        ' -- Format providers --
         Private m_fpLorenzenLatNWCorner As cEwEFormatProvider = Nothing
         Private m_fpLorenzenLatSECorner As cEwEFormatProvider = Nothing
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
         Private m_fpMinWeight As cEwEFormatProvider = Nothing
-        'Private m_psdParms As cPSDParameters = Nothing
 
+        ' -- Internal admin --
+        ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
+        Private m_bEcopathResultsPlotted As Boolean = True
 
 #End Region 'Variables
 
 #Region "Constructor/Destructor"
 
         Public Sub New()
-            InitializeComponent()
+
+            Me.InitializeComponent()
+
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
-            'Me.m_psdParms = Me.m_core.ParticleSizeDistributionParameters
+            Me.m_zgh = New ZedGraphHelper(Me.m_zedgraph)
+
         End Sub
 
 #End Region 'Constructor/Destructor
 
-#Region "Event handlers"
+#Region " Event handlers "
 
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
+            ' Connect to show/hide groups command
+            cmd = cmdh.GetCommand("DisplayGroups")
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.m_tsbnShowHideGroups)
+            End If
+
+            ' Connect format providers
+            Me.m_fpLorenzenLatNWCorner = New cPropertyFormatProvider(Me.m_tbxNWLat.Control, parms, eVarNameFlags.LohrenzenLatNWCorner)
+            Me.m_fpLorenzenLatSECorner = New cPropertyFormatProvider(Me.m_tbxSELat.Control, parms, eVarNameFlags.LohrenzenLatSECorner)
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.m_tbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
+            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.m_tbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
+
+            ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            Me.UpdateToolStrip()
-            'Me.PlotCurves() is moved to OnCoreExecutionStateChanged
+            ' Sync controls
+            Me.UpdateToolstrip()
+            ' Neatify
+            cToolstripUtils.HideRepeatingSeparators(Me.m_tsRunPSD)
+
+            ' Synchronize plot with Ecopath results
+            Me.SynchronizePlot()
+
         End Sub
 
         Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                Me.m_fpLorenzenLatNWCorner.Release()
-                Me.m_fpLorenzenLatSECorner.Release()
-            End If
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmd As Command = Nothing
+
+            ' Detach format providers
+            Me.m_fpLorenzenLatNWCorner.Release()
+            Me.m_fpLorenzenLatSECorner.Release()
             Me.m_fpNoOfPointsPSD.Release()
             Me.m_fpMinWeight.Release()
 
-            ' Show/Hide Groups
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
+            ' Detach from show/hide groups command
+            cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.RemoveControl(Me.btnShowHideGroups)
+                cmd.RemoveControl(Me.m_tsbnShowHideGroups)
             End If
 
+            ' Detach from core state monitor events
+            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
         End Sub
 
-        Private Sub mnuItmGroupPB_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuItmGroupPB.CheckedChanged
-            mnuItmLorenzen.Checked = Not mnuItmGroupPB.Checked
+        Private Sub mnuItmGroupPB_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiGroupPB.CheckedChanged
+
+            ' Make sure one checkbox is checked exclusively
+            Me.m_tsmiLorenzen.Checked = Not Me.m_tsmiGroupPB.Checked
+
         End Sub
 
-        Private Sub mnuItmLorenzen_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuItmLorenzen.CheckedChanged
-            mnuItmGroupPB.Checked = Not mnuItmLorenzen.Checked
+        Private Sub mnuItmLorenzen_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiLorenzen.CheckedChanged
+
+            ' Make sure one checkbox is checked exclusively
+            Me.m_tsmiGroupPB.Checked = Not Me.m_tsmiLorenzen.Checked
+
         End Sub
 
-        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
-            UpdateVariables()
-            m_core.RunEcoPath()
-            Me.PlotCurves()
+        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRun.Click
+
+            ' Grab PSD settings from the GUI and stick them in the core
+            Me.UpdateVariables()
+            ' Run Ecopath and PSD
+            Me.m_core.RunEcoPath()
+
+            ' JS 24mar09: OnCoreExecutionStateChanged will take care of this
+            '' Show whatever this run produced
+            'Me.PlotCurves()
+
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-
-            Dim bEcopathRunning As Boolean = m_coreStateMonitor.IsEcopathRunning
-            Dim bHasEcopathResults As Boolean = m_coreStateMonitor.HasEcopathRan
-
-            '' Does not have ecosim results?
-            'If (Not bHasEcosimResults) Then
-            '    ' #Yes: clear run results
-            'Me.m_graph.OnCoreExecutionStateChanged()
-            'End If
-            If bHasEcopathResults Then
-                Me.PlotCurves()
-            End If
-
-
-            '' Check whether ecosim is running
-            '' Is this a state change?
-            'If (bEcosimRunning <> Me.m_bEcosimRunning) Then
-            '    ' #Yes: update to new state
-            '    Me.m_bEcosimRunning = bEcosimRunning
-            '    If Me.m_bEcosimRunning Then
-            '        AppLauncher.GetInstance().SetStatusText("Running Ecosim", TriState.True, 0)
-            '    Else
-            '        AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
-            '    End If
-            '    Me.UpdateControls()
-
-            'End If
-
+            Me.SynchronizePlot()
         End Sub
-#End Region 'Event handlers
+
+#End Region ' Event handlers
 
 #Region "Helper methods"
-        Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String) As GraphPane
-            Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
 
-            InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle, pane)
-            Return pane
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Synchronize the plot area with Ecopath results.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub SynchronizePlot()
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String, ByVal pane As GraphPane)
+            ' This code is optimized to only plot when new results are available
+
+            ' Are Ecopath results available?
+            If Me.m_coreStateMonitor.HasEcopathRan Then
+                ' #Yes: are these results not plotted yet?
+                If Me.m_bEcopathResultsPlotted = False Then
+                    ' #Yes: Plot the curves
+                    Me.PlotCurves()
+                    ' Set flag to remind ourselves that these results are plotted
+                    Me.m_bEcopathResultsPlotted = True
+                End If
+            Else
+                ' #No: Ecopath results have disappeared (or are not yet available)
+                ' Is the plot populated?
+                If Me.m_bEcopathResultsPlotted = True Then
+                    ' #Yes: clear the plot
+                    Me.InitializePane()
+                    ' Set local flag to remind ourselves that the plot is empty
+                    Me.m_bEcopathResultsPlotted = False
+                End If
+            End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the graph pane to look pretty and dandy.
+        ''' </summary>
+        ''' <returns>
+        ''' The graph pane that was initialized.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Private Function InitializePane() As GraphPane
+
+            Dim pane As GraphPane = Me.m_zedgraph.GraphPane
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            pane.Title.Text = strTitle
-            pane.Title.FontSpec.IsBold = False
-            pane.Title.FontSpec.Size = 16
+            pane.CurveList.Clear()
 
-            pane.XAxis.Scale.IsVisible = True 'False
-            pane.XAxis.Title.Text = strXAxisTitle
-            pane.XAxis.Title.FontSpec.Size = 14
-
-            pane.YAxis.Scale.IsVisible = True 'False
-            pane.YAxis.Title.Text = strYAxisTitle
-            pane.YAxis.Title.FontSpec.Size = 14
+            ' JS 23Mar09: Zedgraph helper performs standardized label, axis styling
+            Me.m_zgh.ConfigurePane(My.Resources.PSD_PLOTCAPTION_PSD, _
+                                   My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+                                   My.Resources.PSD_YAXISLABEL_BIOMASS, _
+                                   False)
 
             pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
-            pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+            pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1))
             pane.YAxis.Scale.Min = 0
 
-            pane.YAxis.MinorTic.IsAllTics = False
-            pane.XAxis.MinorTic.IsAllTics = False
+            Return pane
 
-            'Me.UpdateColors()
-        End Sub
+        End Function
 
         Private Sub AddCurves(ByVal pane As GraphPane)
 
@@ -206,14 +265,15 @@ Namespace Ecopath.Output
             Dim sSlope As Single
             Dim sIntercept As Single
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
-            InitLists(resultLists, 2)
+            Me.InitLists(resultLists, 2)
 
             'Find system PSD by summing the group PSD
-            FindSystemPSD(sSystemPSD)
+            Me.FindSystemPSD(sSystemPSD)
 
             'Find regression of the system PSD
-            FindRegression(sSlope, sIntercept, sSystemPSD)
+            Me.FindRegression(sSlope, sIntercept, sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 100000 > 0 Then
@@ -223,15 +283,14 @@ Namespace Ecopath.Output
                     resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
                     'PSD regression plot
                     resultLists(1).Add(Math.Log10(sXValue), sSlope * Math.Log10(sXValue) + sIntercept)
+
                 End If
             Next
 
-            ' Clear pane
-            pane.CurveList.Clear()
-
-            AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
-            AddCurveToGraphPane(pane, resultLists(1), "Slope = " & sSlope.ToString("F4") & _
-                                " Intercept = " & sIntercept.ToString("F4"), Color.Black)
+            Me.AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
+            Me.AddCurveToGraphPane(pane, resultLists(1), _
+                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sIntercept)), _
+                    Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -261,84 +320,86 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub UpdateToolStrip()
-            Dim grpInput As cEcoPathGroupInput = Nothing
-            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-
-            'Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.tbxNoOfPointsPSD.Control, _
-            '        Me.m_core.ParticleSizeDistributionParameters, eVarNameFlags.PSDNumWeightClasses)
-
-            'Mortality type
-            If parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ Then
-                mnuItmGroupPB.Checked = True
-            End If
-            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                mnuItmLorenzen.Checked = True
-                Me.m_fpLorenzenLatNWCorner = New cEwEFormatProvider(Me.tbxNWLat.Control, GetType(Single))
-                Me.m_fpLorenzenLatNWCorner.Value = parms.LohrenzenLatNWCorner
-                Me.m_fpLorenzenLatSECorner = New cEwEFormatProvider(Me.tbxSELat.Control, GetType(Single))
-                Me.m_fpLorenzenLatSECorner.Value = parms.LohrenzenLatSECorner
-            End If
-
-            'Group included in PSD
-            cmd = cmdh.GetCommand("DisplayGroups")
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.AddControl(Me.btnShowHideGroups)
-            End If
-            For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(iGroup)
-                sgStyleGuide.GroupVisible(iGroup) = grpInput.PSDIncluded
-            Next
-
-            'Number of weight class
-            Me.m_fpNoOfPointsPSD = New cEwEFormatProvider(Me.tbxNoOfPointsPSD.Control, GetType(Integer))
-            Me.m_fpNoOfPointsPSD.Value = parms.NumWeightClasses
-
-            'First weight class
-            Me.m_fpMinWeight = New cEwEFormatProvider(Me.tbxMinWeight.Control, GetType(Single))
-            Me.m_fpMinWeight.Value = parms.FirstWeightClass
-        End Sub
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update PSD variables from user settings.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateVariables()
-            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             'Mortality type
-            If mnuItmGroupPB.Checked Then
-                parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.GroupZ
-            End If
-            If mnuItmLorenzen.Checked Then
-                parms.MortalityType = EwEUtils.Core.ePSDMortalityTypes.Lorenzen
-                parms.LohrenzenLatNWCorner = CSng(m_fpLorenzenLatNWCorner.Value)
-                parms.LohrenzenLatSECorner = CSng(m_fpLorenzenLatSECorner.Value)
+            If m_tsmiGroupPB.Checked Then
+                parms.MortalityType = ePSDMortalityTypes.GroupZ
+            ElseIf m_tsmiLorenzen.Checked Then
+                parms.MortalityType = ePSDMortalityTypes.Lorenzen
             End If
 
             'Group included in PSD
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            For iGroup As Integer = 1 To Me.m_core.nLivingGroups
                 grpInput = m_core.EcoPathGroupInputs(iGroup)
-                grpInput.PSDIncluded = sgStyleGuide.GroupVisible(iGroup)
+                grpInput.PSDIncluded = sg.GroupVisible(iGroup)
             Next
 
-            'Number of weight class
-            parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
-
-            'First weight class
-            parms.FirstWeightClass = CSng(m_fpMinWeight.Value)
+            ' JS: the variable values are automatically updated by the property format providers
+            'parms.LohrenzenLatNWCorner = CSng(m_fpLorenzenLatNWCorner.Value)
+            'parms.LohrenzenLatSECorner = CSng(m_fpLorenzenLatSECorner.Value)
+            'parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
+            'parms.FirstWeightClass = CSng(m_fpMinWeight.Value)
         End Sub
 
         Private Sub UpdatePlot()
-            Me.zgcZedGraphCntl.AxisChange()
-            Me.zgcZedGraphCntl.Refresh()
+            Me.m_zedgraph.AxisChange()
+            Me.m_zedgraph.Refresh()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update toolstrip item states.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdateToolstrip()
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim grpInput As cEcoPathGroupInput = Nothing
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+
+            'Mortality type
+            If parms.MortalityType = ePSDMortalityTypes.GroupZ Then
+                Me.m_tsmiGroupPB.Checked = True
+            End If
+
+            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
+                Me.m_tsmiLorenzen.Checked = True
+            End If
+
+            ' ToDo_JS or ToDo_JH: The groupvisible flags are meant solely for showing/hiding groups in graphs.
+            ' The PSD group inclusion settings is separate behaviour, and should perhaps not alter the EwE group 
+            ' visibility settings. 
+            '
+            ' We can solve this by either:
+            '    1. building a different show/hide group interface solely for use with PSD, 
+            '    2. reuse the current show/hide group interface but make it operate on different data,
+            '    3. reuse show/hide groups but do NOT store PSD group inclusion settings in the database.
+            '
+            ' 1) is quite a bit of work
+            ' 2) is possible by passing an array of show/hide flags into the command.Tag, which we could make
+            '    the show/hide dialog operate on. This is pretty hack. Additionally, the hijacked dialog needs to 
+            '    display an alternate caption to distinguish its behaviour from regular show/hide group behaviour.
+            ' 3) is probably the best option
+            'For iGroup As Integer = 1 To m_core.nLivingGroups
+            '    grpInput = m_core.EcoPathGroupInputs(iGroup)
+            '    sgStyleGuide.GroupVisible(iGroup) = grpInput.PSDIncluded
+            'Next
+
         End Sub
 
         Private Sub PlotCurves()
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSD, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
-                                 My.Resources.PSD_YAXISLABEL_BIOMASS))
-            UpdatePlot()
+            Me.AddCurves(Me.InitializePane())
+            Me.UpdatePlot()
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
@@ -375,7 +436,7 @@ Namespace Ecopath.Output
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     dSumX = dSumX + Math.Log10(sXValue)
-                    dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000)
+                    dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000.0!)
                     iNum = iNum + 1
                 End If
             Next
@@ -393,8 +454,10 @@ Namespace Ecopath.Output
 
             sSlope = CSng(dSumXdevYdev / dSumXdevSq)
             sIntercept = CSng(dYMean - sSlope * dXMean)
+
         End Sub
-#End Region 'Helper methods
+
+#End Region ' Helper methods
 
     End Class
 

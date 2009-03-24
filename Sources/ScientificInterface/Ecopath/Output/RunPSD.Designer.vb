@@ -28,227 +28,230 @@ Namespace Ecopath.Output
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim m_tsmiDummy1 As System.Windows.Forms.ToolStripMenuItem
+            Dim m_tsmiDummy2 As System.Windows.Forms.ToolStripMenuItem
+            Dim m_sep1 As System.Windows.Forms.ToolStripSeparator
+            Dim m_sep666 As System.Windows.Forms.ToolStripSeparator
+            Dim m_sep2 As System.Windows.Forms.ToolStripSeparator
+            Dim m_sep3 As System.Windows.Forms.ToolStripSeparator
+            Dim m_sep4 As System.Windows.Forms.ToolStripSeparator
+            Dim m_sep5 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunPSD))
-            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-            Me.drpDwnBtnTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
-            Me.mnuItmGroupPB = New System.Windows.Forms.ToolStripMenuItem
-            Me.mnuItmLorenzen = New System.Windows.Forms.ToolStripMenuItem
-            Me.mnuItmDummy1 = New System.Windows.Forms.ToolStripMenuItem
-            Me.tbxNWLat = New System.Windows.Forms.ToolStripTextBox
-            Me.mnuItmDummy2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.tbxSELat = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.btnShowHideGroups = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
-            Me.lblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
-            Me.tbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.lblMinWeight = New System.Windows.Forms.ToolStripLabel
-            Me.tbxMinWeight = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.lblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
-            Me.tbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.btnRun = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
-            Me.ToolStrip1.SuspendLayout()
+            Me.m_tsRunPSD = New System.Windows.Forms.ToolStrip
+            Me.m_tbddTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsmiGroupPB = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiLorenzen = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tbxNWLat = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tbxSELat = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsbnShowHideGroups = New System.Windows.Forms.ToolStripButton
+            Me.m_lblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
+            Me.m_tbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
+            Me.m_lblMinWeight = New System.Windows.Forms.ToolStripLabel
+            Me.m_tbxMinWeight = New System.Windows.Forms.ToolStripTextBox
+            Me.m_lblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
+            Me.m_tbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
+            Me.m_btnRun = New System.Windows.Forms.ToolStripButton
+            Me.m_zedgraph = New ZedGraph.ZedGraphControl
+            m_tsmiDummy1 = New System.Windows.Forms.ToolStripMenuItem
+            m_tsmiDummy2 = New System.Windows.Forms.ToolStripMenuItem
+            m_sep1 = New System.Windows.Forms.ToolStripSeparator
+            m_sep666 = New System.Windows.Forms.ToolStripSeparator
+            m_sep2 = New System.Windows.Forms.ToolStripSeparator
+            m_sep3 = New System.Windows.Forms.ToolStripSeparator
+            m_sep4 = New System.Windows.Forms.ToolStripSeparator
+            m_sep5 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsRunPSD.SuspendLayout()
             Me.SuspendLayout()
             '
-            'ToolStrip1
+            'm_tsmiDummy1
             '
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.drpDwnBtnTotalMortality, Me.ToolStripSeparator1, Me.btnShowHideGroups, Me.ToolStripSeparator6, Me.lblNoOfPointsPSD, Me.tbxNoOfPointsPSD, Me.ToolStripSeparator2, Me.lblMinWeight, Me.tbxMinWeight, Me.ToolStripSeparator3, Me.lblNoOfPointsMovAvg, Me.tbxNoOfPointsMovAvg, Me.ToolStripSeparator4, Me.btnRun, Me.ToolStripSeparator5})
-            Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
-            Me.ToolStrip1.Name = "ToolStrip1"
-            Me.ToolStrip1.Size = New System.Drawing.Size(869, 25)
-            Me.ToolStrip1.TabIndex = 0
-            Me.ToolStrip1.Text = "ToolStrip1"
+            m_tsmiDummy1.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
+            m_tsmiDummy1.Name = "m_tsmiDummy1"
+            m_tsmiDummy1.Size = New System.Drawing.Size(184, 22)
+            m_tsmiDummy1.Text = "NW corner latitudes:"
             '
-            'drpDwnBtnTotalMortality
+            'm_tsmiDummy2
             '
-            Me.drpDwnBtnTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuItmGroupPB, Me.mnuItmLorenzen, Me.mnuItmDummy1, Me.tbxNWLat, Me.mnuItmDummy2, Me.tbxSELat})
-            Me.drpDwnBtnTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-            Me.drpDwnBtnTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.drpDwnBtnTotalMortality.Name = "drpDwnBtnTotalMortality"
-            Me.drpDwnBtnTotalMortality.Size = New System.Drawing.Size(105, 22)
-            Me.drpDwnBtnTotalMortality.Text = "Total mortality"
+            m_tsmiDummy2.Margin = New System.Windows.Forms.Padding(10, -1, 0, 0)
+            m_tsmiDummy2.Name = "m_tsmiDummy2"
+            m_tsmiDummy2.Size = New System.Drawing.Size(184, 22)
+            m_tsmiDummy2.Text = "SE corner latitudes:"
             '
-            'mnuItmGroupPB
+            'm_sep1
             '
-            Me.mnuItmGroupPB.CheckOnClick = True
-            Me.mnuItmGroupPB.Name = "mnuItmGroupPB"
-            Me.mnuItmGroupPB.Size = New System.Drawing.Size(184, 22)
-            Me.mnuItmGroupPB.Text = "Group P/B "
+            m_sep1.Name = "m_sep1"
+            m_sep1.Size = New System.Drawing.Size(6, 25)
             '
-            'mnuItmLorenzen
+            'm_sep666
             '
-            Me.mnuItmLorenzen.CheckOnClick = True
-            Me.mnuItmLorenzen.Name = "mnuItmLorenzen"
-            Me.mnuItmLorenzen.Size = New System.Drawing.Size(184, 22)
-            Me.mnuItmLorenzen.Text = "Lorenzen-variable "
+            m_sep666.Name = "m_sep666"
+            m_sep666.Size = New System.Drawing.Size(6, 25)
             '
-            'mnuItmDummy1
+            'm_sep2
             '
-            Me.mnuItmDummy1.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
-            Me.mnuItmDummy1.Name = "mnuItmDummy1"
-            Me.mnuItmDummy1.Size = New System.Drawing.Size(184, 22)
-            Me.mnuItmDummy1.Text = "NW corner latitudes:"
+            m_sep2.Name = "m_sep2"
+            m_sep2.Size = New System.Drawing.Size(6, 25)
             '
-            'tbxNWLat
+            'm_sep3
             '
-            Me.tbxNWLat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbxNWLat.Margin = New System.Windows.Forms.Padding(115, -20, 1, 1)
-            Me.tbxNWLat.Name = "tbxNWLat"
-            Me.tbxNWLat.Size = New System.Drawing.Size(35, 21)
+            m_sep3.Name = "m_sep3"
+            m_sep3.Size = New System.Drawing.Size(6, 25)
             '
-            'mnuItmDummy2
+            'm_sep4
             '
-            Me.mnuItmDummy2.Margin = New System.Windows.Forms.Padding(10, -1, 0, 0)
-            Me.mnuItmDummy2.Name = "mnuItmDummy2"
-            Me.mnuItmDummy2.Size = New System.Drawing.Size(184, 22)
-            Me.mnuItmDummy2.Text = "SE corner latitudes:"
+            m_sep4.Name = "m_sep4"
+            m_sep4.Size = New System.Drawing.Size(6, 25)
             '
-            'tbxSELat
+            'm_sep5
             '
-            Me.tbxSELat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.tbxSELat.Margin = New System.Windows.Forms.Padding(115, -21, 1, 1)
-            Me.tbxSELat.Name = "tbxSELat"
-            Me.tbxSELat.Size = New System.Drawing.Size(35, 21)
+            m_sep5.Name = "m_sep5"
+            m_sep5.Size = New System.Drawing.Size(6, 25)
             '
-            'ToolStripSeparator1
+            'm_tsRunPSD
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            Me.m_tsRunPSD.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tbddTotalMortality, m_sep1, Me.m_tsbnShowHideGroups, m_sep666, Me.m_lblNoOfPointsPSD, Me.m_tbxNoOfPointsPSD, m_sep2, Me.m_lblMinWeight, Me.m_tbxMinWeight, m_sep3, Me.m_lblNoOfPointsMovAvg, Me.m_tbxNoOfPointsMovAvg, m_sep4, Me.m_btnRun, m_sep5})
+            Me.m_tsRunPSD.Location = New System.Drawing.Point(0, 0)
+            Me.m_tsRunPSD.Name = "m_tsRunPSD"
+            Me.m_tsRunPSD.Size = New System.Drawing.Size(869, 25)
+            Me.m_tsRunPSD.TabIndex = 0
+            Me.m_tsRunPSD.Text = "ToolStrip1"
             '
-            'btnShowHideGroups
+            'm_tbddTotalMortality
             '
-            Me.btnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
-            Me.btnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.btnShowHideGroups.Name = "btnShowHideGroups"
-            Me.btnShowHideGroups.Size = New System.Drawing.Size(107, 22)
-            Me.btnShowHideGroups.Text = "Select groups ..."
+            Me.m_tbddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, m_tsmiDummy1, Me.m_tbxNWLat, m_tsmiDummy2, Me.m_tbxSELat})
+            Me.m_tbddTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tbddTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tbddTotalMortality.Name = "m_tbddTotalMortality"
+            Me.m_tbddTotalMortality.Size = New System.Drawing.Size(105, 22)
+            Me.m_tbddTotalMortality.Text = "Total mortality"
             '
-            'ToolStripSeparator6
+            'm_tsmiGroupPB
             '
-            Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-            Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 25)
+            Me.m_tsmiGroupPB.CheckOnClick = True
+            Me.m_tsmiGroupPB.Name = "m_tsmiGroupPB"
+            Me.m_tsmiGroupPB.Size = New System.Drawing.Size(184, 22)
+            Me.m_tsmiGroupPB.Text = "Group P/B "
             '
-            'lblNoOfPointsPSD
+            'm_tsmiLorenzen
             '
-            Me.lblNoOfPointsPSD.Name = "lblNoOfPointsPSD"
-            Me.lblNoOfPointsPSD.Size = New System.Drawing.Size(108, 22)
-            Me.lblNoOfPointsPSD.Text = "No. of points for PSD"
+            Me.m_tsmiLorenzen.CheckOnClick = True
+            Me.m_tsmiLorenzen.Name = "m_tsmiLorenzen"
+            Me.m_tsmiLorenzen.Size = New System.Drawing.Size(184, 22)
+            Me.m_tsmiLorenzen.Text = "Lorenzen-variable "
             '
-            'tbxNoOfPointsPSD
+            'm_tbxNWLat
             '
-            Me.tbxNoOfPointsPSD.Name = "tbxNoOfPointsPSD"
-            Me.tbxNoOfPointsPSD.Size = New System.Drawing.Size(50, 25)
+            Me.m_tbxNWLat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tbxNWLat.Margin = New System.Windows.Forms.Padding(115, -20, 1, 1)
+            Me.m_tbxNWLat.Name = "m_tbxNWLat"
+            Me.m_tbxNWLat.Size = New System.Drawing.Size(35, 21)
             '
-            'ToolStripSeparator2
+            'm_tbxSELat
             '
-            Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+            Me.m_tbxSELat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tbxSELat.Margin = New System.Windows.Forms.Padding(115, -21, 1, 1)
+            Me.m_tbxSELat.Name = "m_tbxSELat"
+            Me.m_tbxSELat.Size = New System.Drawing.Size(35, 21)
             '
-            'lblMinWeight
+            'm_tsbnShowHideGroups
             '
-            Me.lblMinWeight.Name = "lblMinWeight"
-            Me.lblMinWeight.Size = New System.Drawing.Size(59, 22)
-            Me.lblMinWeight.Text = "Min. wt (g)"
+            Me.m_tsbnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_tsbnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnShowHideGroups.Name = "m_tsbnShowHideGroups"
+            Me.m_tsbnShowHideGroups.Size = New System.Drawing.Size(107, 22)
+            Me.m_tsbnShowHideGroups.Text = "Select groups ..."
             '
-            'tbxMinWeight
+            'm_lblNoOfPointsPSD
             '
-            Me.tbxMinWeight.Name = "tbxMinWeight"
-            Me.tbxMinWeight.Size = New System.Drawing.Size(50, 25)
+            Me.m_lblNoOfPointsPSD.Name = "m_lblNoOfPointsPSD"
+            Me.m_lblNoOfPointsPSD.Size = New System.Drawing.Size(108, 22)
+            Me.m_lblNoOfPointsPSD.Text = "No. of points for PSD"
             '
-            'ToolStripSeparator3
+            'm_tbxNoOfPointsPSD
             '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+            Me.m_tbxNoOfPointsPSD.Name = "m_tbxNoOfPointsPSD"
+            Me.m_tbxNoOfPointsPSD.Size = New System.Drawing.Size(50, 25)
             '
-            'lblNoOfPointsMovAvg
+            'm_lblMinWeight
             '
-            Me.lblNoOfPointsMovAvg.Name = "lblNoOfPointsMovAvg"
-            Me.lblNoOfPointsMovAvg.Size = New System.Drawing.Size(130, 22)
-            Me.lblNoOfPointsMovAvg.Text = "No. of points for mov avg"
+            Me.m_lblMinWeight.Name = "m_lblMinWeight"
+            Me.m_lblMinWeight.Size = New System.Drawing.Size(59, 22)
+            Me.m_lblMinWeight.Text = "Min. wt (g)"
             '
-            'tbxNoOfPointsMovAvg
+            'm_tbxMinWeight
             '
-            Me.tbxNoOfPointsMovAvg.Name = "tbxNoOfPointsMovAvg"
-            Me.tbxNoOfPointsMovAvg.Size = New System.Drawing.Size(50, 25)
+            Me.m_tbxMinWeight.Name = "m_tbxMinWeight"
+            Me.m_tbxMinWeight.Size = New System.Drawing.Size(50, 25)
             '
-            'ToolStripSeparator4
+            'm_lblNoOfPointsMovAvg
             '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
+            Me.m_lblNoOfPointsMovAvg.Name = "m_lblNoOfPointsMovAvg"
+            Me.m_lblNoOfPointsMovAvg.Size = New System.Drawing.Size(130, 22)
+            Me.m_lblNoOfPointsMovAvg.Text = "No. of points for mov avg"
+            Me.m_lblNoOfPointsMovAvg.Visible = False
             '
-            'btnRun
+            'm_tbxNoOfPointsMovAvg
             '
-            Me.btnRun.AutoSize = False
-            Me.btnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.btnRun.Image = CType(resources.GetObject("btnRun.Image"), System.Drawing.Image)
-            Me.btnRun.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.btnRun.Name = "btnRun"
-            Me.btnRun.Size = New System.Drawing.Size(50, 22)
-            Me.btnRun.Text = "Run"
+            Me.m_tbxNoOfPointsMovAvg.Name = "m_tbxNoOfPointsMovAvg"
+            Me.m_tbxNoOfPointsMovAvg.Size = New System.Drawing.Size(50, 25)
+            Me.m_tbxNoOfPointsMovAvg.Visible = False
             '
-            'ToolStripSeparator5
+            'm_btnRun
             '
-            Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-            Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
+            Me.m_btnRun.AutoSize = False
+            Me.m_btnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_btnRun.Image = CType(resources.GetObject("m_btnRun.Image"), System.Drawing.Image)
+            Me.m_btnRun.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_btnRun.Name = "m_btnRun"
+            Me.m_btnRun.Size = New System.Drawing.Size(50, 22)
+            Me.m_btnRun.Text = "Run"
             '
-            'zgcZedGraphCntl
+            'm_zedgraph
             '
-            Me.zgcZedGraphCntl.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.zgcZedGraphCntl.Location = New System.Drawing.Point(0, 25)
-            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
-            Me.zgcZedGraphCntl.ScrollGrace = 0
-            Me.zgcZedGraphCntl.ScrollMaxX = 0
-            Me.zgcZedGraphCntl.ScrollMaxY = 0
-            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
-            Me.zgcZedGraphCntl.ScrollMinX = 0
-            Me.zgcZedGraphCntl.ScrollMinY = 0
-            Me.zgcZedGraphCntl.ScrollMinY2 = 0
-            Me.zgcZedGraphCntl.Size = New System.Drawing.Size(869, 241)
-            Me.zgcZedGraphCntl.TabIndex = 1
+            Me.m_zedgraph.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_zedgraph.Location = New System.Drawing.Point(0, 25)
+            Me.m_zedgraph.Name = "m_zedgraph"
+            Me.m_zedgraph.ScrollGrace = 0
+            Me.m_zedgraph.ScrollMaxX = 0
+            Me.m_zedgraph.ScrollMaxY = 0
+            Me.m_zedgraph.ScrollMaxY2 = 0
+            Me.m_zedgraph.ScrollMinX = 0
+            Me.m_zedgraph.ScrollMinY = 0
+            Me.m_zedgraph.ScrollMinY2 = 0
+            Me.m_zedgraph.Size = New System.Drawing.Size(869, 241)
+            Me.m_zedgraph.TabIndex = 1
             '
             'RunPSD
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(869, 266)
-            Me.Controls.Add(Me.zgcZedGraphCntl)
-            Me.Controls.Add(Me.ToolStrip1)
+            Me.Controls.Add(Me.m_zedgraph)
+            Me.Controls.Add(Me.m_tsRunPSD)
             Me.Name = "RunPSD"
+            Me.ShowInTaskbar = False
             Me.Text = "RunParticleSizeDistribution"
-            Me.ToolStrip1.ResumeLayout(False)
-            Me.ToolStrip1.PerformLayout()
+            Me.m_tsRunPSD.ResumeLayout(False)
+            Me.m_tsRunPSD.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-        Friend WithEvents drpDwnBtnTotalMortality As System.Windows.Forms.ToolStripDropDownButton
-        Friend WithEvents mnuItmGroupPB As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents mnuItmLorenzen As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents lblNoOfPointsPSD As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents tbxNoOfPointsPSD As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents lblMinWeight As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents tbxMinWeight As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents lblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents tbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents btnRun As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
-        Friend WithEvents btnShowHideGroups As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tbxNWLat As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents mnuItmDummy1 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents mnuItmDummy2 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents tbxSELat As System.Windows.Forms.ToolStripTextBox
+        Friend WithEvents m_tsRunPSD As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_btnRun As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tbddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiGroupPB As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiLorenzen As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tbxNWLat As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tbxSELat As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tsbnShowHideGroups As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_lblNoOfPointsPSD As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tbxNoOfPointsPSD As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_lblMinWeight As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tbxMinWeight As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_lblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
     End Class
 
 End Namespace
