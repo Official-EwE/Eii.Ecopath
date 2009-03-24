@@ -946,6 +946,10 @@
       <DependentUpon>ucBioPercent.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.resx">
+      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\SuitabilityPlot.resx">
       <DependentUpon>SuitabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1115,6 +1119,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\MediationGUIHandler.vb" />
+    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.Designer.vb">
+      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\MediationFunction\ucBioPercentToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
       <DependentUpon>dlgManageTimeSeries.vb</DependentUpon>
     </Compile>
