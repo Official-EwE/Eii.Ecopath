@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.9  2009/03/24 13:44:30  jeroens
+' Tick tock
+'
 ' Revision 1.8  2009/03/23 02:43:43  jeroens
 ' Added option to show data under cursor in tooltip
 '
@@ -187,11 +190,13 @@ Namespace Controls
                 .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
                 .XAxis.Scale.Min = dXAxisMin
                 .XAxis.Scale.Max = dXAxisMax
+                .XAxis.MinorTic.IsAllTics = False
 
                 .YAxis.Title.Text = strYAxisLabel
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.Scale.Min = dYAxisMin
                 .YAxis.Scale.Max = dYAxisMax
+                .YAxis.MinorTic.IsAllTics = False
 
                 .Legend.IsVisible = bShowLegend
                 .Legend.Position = legendPos
@@ -231,9 +236,11 @@ Namespace Controls
                 ' Configure axis
                 .XAxis.Title.Text = strXAxisLabel
                 .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
+                .XAxis.MinorTic.IsAllTics = False
 
                 .YAxis.Title.Text = strYAxisLabel
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
+                .YAxis.MinorTic.IsAllTics = False
 
                 .Legend.IsVisible = bShowLegend
                 .Legend.Position = legendPos
