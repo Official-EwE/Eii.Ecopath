@@ -106,7 +106,6 @@
     <Compile Include="Win32 API\cINIFile.vb" />
     <Compile Include="Utilities\PropertyUtils.vb" />
     <Compile Include="Utilities\StringUtils.vb" />
-    <Compile Include="Utilities\ToolstripUtils.vb" />
     <Compile Include="Utilities\UriBuilder.vb" />
     <Compile Include="Win32 API\ComDlg32.vb" />
     <Compile Include="Win32 API\GDIplus.vb" />
