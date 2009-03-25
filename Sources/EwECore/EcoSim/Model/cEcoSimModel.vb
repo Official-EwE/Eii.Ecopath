@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.40  2009/03/25 21:08:11  joeb
+' Added XBase to Mediation shapes
+'
 ' Revision 1.39  2009/03/19 22:58:13  joeb
 ' Fixed bug Ecosim results not getting cleared out
 '
@@ -2674,35 +2677,38 @@ Public Property PluginManager() As cPluginManager
             Next
 
             For i = 1 To m_Data.MediationShapes
-                If m_Data.MedIsUsed(i) = True Then
+                'jb removed the MedIsUsed() so that all mediation functions get initialized
+                'this is for the Single Player Game it needs to use the mediation functions even if they have not been assigned e.g. MedIsUsed(SinglePlayerMedFunction) = false
+                'this should not matter as all operations on the med function have to check MedIsUsed() before use... I hope...
+                ' If m_Data.MedIsUsed(i) = True Then
 
-                    m_Data.MedXbase(i) = 0
-                    jj = 0
-                    For j = 1 To nGroups + m_EPData.NumFleet
-                        If m_Data.MedWeights(j, i) > 0 Then
-                            jj = jj + 1
-                            If j <= nGroups Then
-                                m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.StartBiomass(j)
-                            Else
-                                m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
-                            End If
-                            m_Data.IMedUsed(jj, i) = j
+                m_Data.MedXbase(i) = 0
+                jj = 0
+                For j = 1 To nGroups + m_EPData.NumFleet
+                    If m_Data.MedWeights(j, i) > 0 Then
+                        jj = jj + 1
+                        If j <= nGroups Then
+                            m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.StartBiomass(j)
+                        Else
+                            m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
                         End If
-                    Next
-
-                    m_Data.NMedXused(i) = jj
-                    m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
-                    If m_Data.MedYbase(i) = 0 Then
-                        Me.m_publisher.AddMessage(New cMessage("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data", _
-                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
-
-                        '   MsgBox("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data")
-                        m_Data.MedIsUsed(i) = False
+                        m_Data.IMedUsed(jj, i) = j
                     End If
-                    If jj = 0 Or m_Data.MedXbase(i) = 0 Then
-                        m_Data.MedIsUsed(i) = False
-                    End If
+                Next
+
+                m_Data.NMedXused(i) = jj
+                m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
+                If m_Data.MedYbase(i) = 0 Then
+                    Me.m_publisher.AddMessage(New cMessage("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data", _
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+
+                    '   MsgBox("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data")
+                    m_Data.MedIsUsed(i) = False
                 End If
+                If jj = 0 Or m_Data.MedXbase(i) = 0 Then
+                    m_Data.MedIsUsed(i) = False
+                End If
+                ' End If
             Next
 
         End Sub

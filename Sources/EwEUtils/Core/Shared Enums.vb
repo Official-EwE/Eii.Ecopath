@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.44  2009/03/25 21:08:18  joeb
+' Added XBase to Mediation shapes
+'
 ' Revision 1.43  2009/03/21 00:31:42  jeroens
 ' More PSD
 '
@@ -1151,6 +1154,8 @@ Namespace Core
         'Economic data for the game
         GameEconomicCost
         GameEconomicProfit
+        GameEconomicJobsTotal
+        GameEconomicProduction
 
         ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
         FleetName

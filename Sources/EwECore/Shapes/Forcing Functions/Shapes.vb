@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shapes.vb,v $
+' Revision 1.4  2009/03/25 21:08:15  joeb
+' Added XBase to Mediation shapes
+'
 ' Revision 1.3  2009/01/16 18:30:34  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -674,6 +677,26 @@ Public Class cMediationFunction
                 cLog.Write(ex)
             End Try
         End Set
+    End Property
+
+
+    ''' <summary>
+    ''' X Axis base value for sum of x biomass
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>This is the vertical green line in the EwE 5 mediation interface</remarks>
+    Public ReadOnly Property XBase() As Single
+        Get
+            Try
+                Return m_data.MedXbase(Array.IndexOf(m_data.MediationDBIDs, m_dbID))
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex)
+            End Try
+
+        End Get
+
     End Property
 
 #End Region
