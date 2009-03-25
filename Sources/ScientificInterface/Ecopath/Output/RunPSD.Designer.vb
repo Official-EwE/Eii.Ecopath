@@ -43,6 +43,8 @@ Namespace Ecopath.Output
             Me.m_tsmiLorenzen = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tbxNWLat = New System.Windows.Forms.ToolStripTextBox
             Me.m_tbxSELat = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsmiDummy3 = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_cbxAvgLat = New System.Windows.Forms.ToolStripComboBox
             Me.m_tsbnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.m_lblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
             Me.m_tbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
@@ -118,7 +120,7 @@ Namespace Ecopath.Output
             '
             'm_tbddTotalMortality
             '
-            Me.m_tbddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, m_tsmiDummy1, Me.m_tbxNWLat, m_tsmiDummy2, Me.m_tbxSELat})
+            Me.m_tbddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, m_tsmiDummy1, Me.m_tbxNWLat, m_tsmiDummy2, Me.m_tbxSELat, Me.m_tsmiDummy3, Me.m_cbxAvgLat})
             Me.m_tbddTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.m_tbddTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tbddTotalMortality.Name = "m_tbddTotalMortality"
@@ -152,6 +154,21 @@ Namespace Ecopath.Output
             Me.m_tbxSELat.Margin = New System.Windows.Forms.Padding(115, -21, 1, 1)
             Me.m_tbxSELat.Name = "m_tbxSELat"
             Me.m_tbxSELat.Size = New System.Drawing.Size(35, 21)
+            '
+            'm_tsmiDummy3
+            '
+            Me.m_tsmiDummy3.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
+            Me.m_tsmiDummy3.Name = "m_tsmiDummy3"
+            Me.m_tsmiDummy3.Size = New System.Drawing.Size(184, 22)
+            Me.m_tsmiDummy3.Text = "Mean lat:"
+            '
+            'm_cbxAvgLat
+            '
+            Me.m_cbxAvgLat.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+            Me.m_cbxAvgLat.Items.AddRange(New Object() {"> 0 and < 30", "> 30 and < 60", "> 60 and < 90"})
+            Me.m_cbxAvgLat.Margin = New System.Windows.Forms.Padding(60, -22, 2, 2)
+            Me.m_cbxAvgLat.Name = "m_cbxAvgLat"
+            Me.m_cbxAvgLat.Size = New System.Drawing.Size(90, 21)
             '
             'm_tsbnShowHideGroups
             '
@@ -252,6 +269,8 @@ Namespace Ecopath.Output
         Private WithEvents m_tbxMinWeight As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_lblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
+        Friend WithEvents m_tsmiDummy3 As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents m_cbxAvgLat As System.Windows.Forms.ToolStripComboBox
     End Class
 
 End Namespace

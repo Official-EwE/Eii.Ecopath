@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.16  2009/03/25 00:03:14  joeh
+' Add tool strip combo box for the latitude input
+'
 ' Revision 1.15  2009/03/24 14:11:52  jeroens
 ' Correctly cleans up
 ' Uses PropertyFormatProviders instead of FormatProviders
@@ -81,9 +84,9 @@ Namespace Ecopath.Output
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
         Private m_fpMinWeight As cEwEFormatProvider = Nothing
 
-        ' -- Internal admin --
-        ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
-        Private m_bEcopathResultsPlotted As Boolean = True
+        '' -- Internal admin --
+        '''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
+        'Private m_bEcopathResultsPlotted As Boolean = False
 
 #End Region 'Variables
 
@@ -204,27 +207,35 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub SynchronizePlot()
 
-            ' This code is optimized to only plot when new results are available
-
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasEcopathRan Then
-                ' #Yes: are these results not plotted yet?
-                If Me.m_bEcopathResultsPlotted = False Then
-                    ' #Yes: Plot the curves
-                    Me.PlotCurves()
-                    ' Set flag to remind ourselves that these results are plotted
-                    Me.m_bEcopathResultsPlotted = True
-                End If
+                ' #Yes: 
+                Me.PlotCurves()
             Else
-                ' #No: Ecopath results have disappeared (or are not yet available)
-                ' Is the plot populated?
-                If Me.m_bEcopathResultsPlotted = True Then
-                    ' #Yes: clear the plot
-                    Me.InitializePane()
-                    ' Set local flag to remind ourselves that the plot is empty
-                    Me.m_bEcopathResultsPlotted = False
-                End If
+                '#No: 
+                Me.InitializePane()
             End If
+
+            '' This code is optimized to only plot when new results are available
+            '' Are Ecopath results available?
+            'If Me.m_coreStateMonitor.HasEcopathRan Then
+            '    ' #Yes: are these results not plotted yet?
+            '    If Me.m_bEcopathResultsPlotted = False Then
+            '        ' #Yes: Plot the curves
+            '        Me.PlotCurves()
+            '        ' Set flag to remind ourselves that these results are plotted
+            '        Me.m_bEcopathResultsPlotted = True
+            '    End If
+            'Else
+            '    '#No: Ecopath results have disappeared (or are not yet available)
+            '    'Is the plot populated?
+            '    If Me.m_bEcopathResultsPlotted = True Then
+            '        ' #Yes: clear the plot
+            '        Me.InitializePane()
+            '        ' Set local flag to remind ourselves that the plot is empty
+            '        Me.m_bEcopathResultsPlotted = False
+            '    End If
+            'End If
 
         End Sub
 
@@ -247,7 +258,7 @@ Namespace Ecopath.Output
             Me.m_zgh.ConfigurePane(My.Resources.PSD_PLOTCAPTION_PSD, _
                                    My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
                                    My.Resources.PSD_YAXISLABEL_BIOMASS, _
-                                   False)
+                                   True)
 
             pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
             pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1))
