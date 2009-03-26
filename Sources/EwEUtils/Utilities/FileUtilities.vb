@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FileUtilities.vb,v $
+' Revision 1.2  2009/03/26 15:51:01  jeroens
+' Added FindFile
+'
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -19,7 +22,6 @@ Imports System.IO
 Namespace Utilities
 
     Public Class FileUtilities
-
 
         Public Shared Function ToValidFileName(ByVal strFileName As String, ByVal bProtectPath As Boolean) As String
 
@@ -52,6 +54,22 @@ Namespace Utilities
             End If
 
             Return strFileName
+        End Function
+
+        Public Shared Function FindFile(ByVal strFile As String, ByVal strStartDir As String, _
+                                        Optional ByVal bRecursive As Boolean = False) As String
+
+            Dim strFullPath As String = Path.Combine(strStartDir, strFile)
+            If File.Exists(strFullPath) Then Return strFullPath
+
+            If bRecursive Then
+                For Each strDirectory As String In Directory.GetDirectories(strStartDir)
+                    strFullPath = FindFile(strFile, strDirectory, bRecursive)
+                    If Not String.IsNullOrEmpty(strFullPath) Then Return strFullPath
+                Next
+            End If
+            Return ""
+
         End Function
 
     End Class
