@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwESettingsProvider.vb,v $
+' Revision 1.3  2009/03/26 17:40:44  jeroens
+' Added null checks, just in case
+'
 ' Revision 1.2  2008/12/15 15:37:54  jeroens
 ' no message
 '
@@ -123,30 +126,37 @@ Public Class cEwESettingsProvider
     End Property
 
     Private Function GetValue(ByVal setting As SettingsProperty) As String
-        Dim ret As String = ""
 
-        Try
-            If IsRoaming(setting) Then
-                ret = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & setting.Name).InnerText
-            Else
-                ret = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & My.Computer.Name & "/" & setting.Name).InnerText
-            End If
+        Dim strValue As String = ""
 
-        Catch ex As Exception
-            If Not setting.DefaultValue Is Nothing Then
-                ret = setting.DefaultValue.ToString
-            Else
-                ret = ""
-            End If
-        End Try
+        If (setting IsNot Nothing) Then
 
-        Return ret
+            Try
+                If IsRoaming(setting) Then
+                    strValue = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & setting.Name).InnerText
+                Else
+                    strValue = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & My.Computer.Name & "/" & setting.Name).InnerText
+                End If
+
+            Catch ex As Exception
+                If Not setting.DefaultValue Is Nothing Then
+                    strValue = setting.DefaultValue.ToString
+                Else
+                    strValue = ""
+                End If
+            End Try
+        End If
+
+        Return strValue
+
     End Function
 
     Private Sub SetValue(ByVal propVal As SettingsPropertyValue)
 
         Dim MachineNode As Xml.XmlElement
         Dim SettingNode As Xml.XmlElement
+
+        If propVal Is Nothing Then Return
 
         'Determine if the setting is roaming.
         'If roaming then the value is stored as an element under the root
