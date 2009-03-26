@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.12  2009/03/26 15:50:47  jeroens
+' Added CanCompact
+'
 ' Revision 1.11  2009/03/12 14:11:48  jeroens
 ' Added minor sanity check
 '
@@ -546,6 +549,10 @@ Namespace Database
 #Region " Maintenance "
 
         Public Overridable Function Compact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
+            Return False
+        End Function
+
+        Public Overridable Function CanCompact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
             Return False
         End Function
 

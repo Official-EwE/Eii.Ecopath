@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.7  2009/03/26 15:49:47  jeroens
+' Added CanCompact
+'
 ' Revision 1.6  2009/02/26 00:57:29  jeroens
 ' Added DB compact
 '
@@ -243,6 +246,7 @@ Namespace DataSources
         Function EndTransaction(ByVal bCommit As Boolean) As Boolean
 
         Function Compact(ByVal strTarget As String) As Boolean
+        Function CanCompact(ByVal strTarget As String) As Boolean
 
 #End Region ' Generic
 

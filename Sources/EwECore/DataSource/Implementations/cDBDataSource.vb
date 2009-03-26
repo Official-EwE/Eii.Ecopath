@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.36  2009/03/26 15:49:48  jeroens
+' Added CanCompact
+'
 ' Revision 1.35  2009/03/24 03:12:48  jeroens
 ' Fixed model save issues on PSD FK
 '
@@ -618,6 +621,11 @@ Public Class cDBDataSource
     Public Function Compact(ByVal strTarget As String) As Boolean _
         Implements DataSources.IEwEDataSource.Compact
         Return Me.m_db.Compact(strTarget, strTarget)
+    End Function
+
+    Public Function CanCompact(ByVal strTarget As String) As Boolean _
+        Implements IEwEDataSource.CanCompact
+        Return Me.m_db.CanCompact(strTarget, strTarget)
     End Function
 
 #End Region ' Cleanup

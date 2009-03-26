@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEAccessDatabase.vb,v $
+' Revision 1.11  2009/03/26 15:50:48  jeroens
+' Added CanCompact
+'
 ' Revision 1.10  2009/02/26 00:57:29  jeroens
 ' Added DB compact
 '
@@ -44,6 +47,7 @@ Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -344,6 +348,53 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConnection() As IDbConnection
             Return Me.m_conn
+        End Function
+
+        Private m_bJROSearched As Boolean = False
+        Private m_bJROFound As Boolean = False
+
+        Private Function IsCorrectJRO(ByVal strFile As String) As Boolean
+
+            If String.IsNullOrEmpty(strFile) Then Return False
+            If Not File.Exists(strFile) Then Return False
+
+            Dim fvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(strFile)
+            ' JRO 2.6 or newer
+            Return ((fvi.FileMajorPart > 2) Or _
+                    (fvi.FileMajorPart = 2) And (fvi.FileMinorPart >= 60))
+
+        End Function
+
+        Private Function FindJRO() As Boolean
+            If Not Me.m_bJROSearched Then
+                Dim strDir As String = ""
+                Dim strFile As String = ""
+
+                strDir = Environment.GetFolderPath(Environment.SpecialFolder.System)
+                strFile = FileUtilities.FindFile("msjro.dll", strDir, False)
+                Me.m_bJROFound = Me.IsCorrectJRO(strFile)
+
+                If Not Me.m_bJROFound Then
+                    strDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles)
+                    strFile = FileUtilities.FindFile("msjro.dll", strDir, True)
+                    Me.m_bJROFound = Me.IsCorrectJRO(strFile)
+                End If
+
+                Me.m_bJROSearched = True
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns if the compact database engine is available.
+        ''' </summary>
+        ''' <param name="strConnectionFrom"></param>
+        ''' <param name="strConnectionTo"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function CanCompact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
+            If Not Me.m_bJROSearched Then Me.m_bJROFound = FindJRO()
+            Return Me.m_bJROFound
         End Function
 
         ''' -------------------------------------------------------------------

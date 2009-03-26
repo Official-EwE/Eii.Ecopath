@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.10  2009/03/26 15:49:48  jeroens
+' Added CanCompact
+'
 ' Revision 1.9  2009/03/18 13:27:09  jeroens
 ' Moved PSD data from EcopathDS to PSDDS
 '
@@ -1202,6 +1205,11 @@ Public Class cEIIDataSource
 
     Public Function Compact(ByVal strTarget As String) As Boolean _
         Implements DataSources.IEwEDataSource.Compact
+        Return False
+    End Function
+
+    Public Function CanCompact(ByVal strTarget As String) As Boolean _
+    Implements IEwEDataSource.CanCompact
         Return False
     End Function
 
