@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.6  2009/03/26 22:48:05  jeroens
+' updated to objective grid changes
+'
 ' Revision 1.5  2009/02/05 17:48:38  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -353,7 +356,7 @@ Namespace Ecosim
         Private Sub RunStartedHandler()
 
             Try
-                Me.m_gridSystemObjectives.ClearData()
+                Me.m_gridSystemObjectives.RemoveDataRows()
 
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
