@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.8  2009/03/26 22:45:07  jeroens
+' Added Dispose() to properly detach event handlers
+'
 ' Revision 1.7  2009/02/20 17:58:01  jeroens
 ' Added support for nominal units
 '
@@ -50,6 +53,7 @@ Namespace Controls.EwEGrid
     ''' -------------------------------------------------------------------
     Public MustInherit Class EwECellBase
         Inherits Cell
+        Implements IDisposable
 
         ' JS 26Jan08: experimental new behaviour for EwECells: trap enter key
         Class CatchEnterPressBehaviour
@@ -64,10 +68,16 @@ Namespace Controls.EwEGrid
 
         End Class
 
-#Region " Construction "
+#Region " Construction and destruction"
 
         ''' <summary>Default visualizer for EwECells</summary>
         Private Shared g_visualizer As New EwECellVisualizer()
+        ''' <summary>StyleGuide instance for subscribing to events</summary>
+        Protected m_sg As StyleGuide = StyleGuide.GetInstance()
+        ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
+        Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
+        ''' <summary>Behaviour model to catch cell resize events.</summary>
+        Private m_bmResize As BehaviorModels.IBehaviorModel = Nothing
 
         Public Sub New(ByVal objVal As Object, ByRef t As Type)
             MyBase.New(Nothing, t)
@@ -75,10 +85,39 @@ Namespace Controls.EwEGrid
             Me.VisualModel = g_visualizer
             ' Configure data model
             Me.DataModel.AllowNull = True
+
             ' Catch ENTER presses
-            Me.Behaviors.Add(New CatchEnterPressBehaviour())
+            Me.m_bmCatchEnter = New CatchEnterPressBehaviour()
+            Me.Behaviors.Add(Me.m_bmCatchEnter)
+
             ' Only resize width, not height of cells
-            Me.Behaviors.Add(New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width))
+            Me.m_bmResize = New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width)
+            Me.Behaviors.Add(Me.m_bmResize)
+
+            AddHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+        End Sub
+
+        Private disposedValue As Boolean = False        ' To detect redundant calls
+
+        ' IDisposable
+        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+            If Not Me.disposedValue Then
+                If disposing Then
+                    Me.Behaviors.Remove(Me.m_bmCatchEnter)
+                    Me.m_bmCatchEnter = Nothing
+
+                    Me.Behaviors.Remove(Me.m_bmResize)
+                    Me.m_bmResize = Nothing
+
+                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                End If
+            End If
+            Me.disposedValue = True
+        End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+            Dispose(True)
+            GC.SuppressFinalize(Me)
         End Sub
 
 #End Region ' Construction
@@ -288,15 +327,12 @@ Namespace Controls.EwEGrid
 
 #Region " Updates (StyleGuide)"
 
-        ''' <summary>StyleGuide instance for subscribing to events</summary>
-        Protected WithEvents m_sg As StyleGuide = StyleGuide.GetInstance()
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' StyleGuide change event handler; makes sure cells are redrawn
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType) Handles m_sg.StyleGuideChanged
+        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
             Me.Invalidate()
         End Sub
 
@@ -561,7 +597,10 @@ Namespace Controls.EwEGrid
     Public Class PropertyCell
         : Inherits EwECellBase
 
-#Region " Construction "
+        ''' <summary>Connected property.</summary>
+        Private m_property As cProperty = Nothing
+
+#Region " Construction and destruction "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -594,15 +633,25 @@ Namespace Controls.EwEGrid
                 Me.ConfigureCell(prop.GetVariableMetadata())
                 ' Fire a change notification
                 Me.onPropertyChanged(prop, cProperty.eChangeFlags.All)
+                ' Register live
+                AddHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
             End If
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+
+            ' Unregister live
+            If Me.m_property IsNot Nothing Then
+                RemoveHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
+            End If
+
+            MyBase.Finalize()
+
         End Sub
 
 #End Region ' Construction 
 
 #Region " Data (property)"
-
-        ''' <summary>Connected property.</summary>
-        Private WithEvents m_property As cProperty = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -699,7 +748,7 @@ Namespace Controls.EwEGrid
         ''' <param name="changeFlags">Bitwise flag that states what <see cref="cProperty.eChangeFlags">aspect</see>
         ''' of the property has changed.</param>
         ''' -------------------------------------------------------------------
-        Private Sub onPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) Handles m_property.PropertyChanged
+        Private Sub onPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
             ' Sanity checks
             Debug.Assert(prop IsNot Nothing, "Invalid event received")
