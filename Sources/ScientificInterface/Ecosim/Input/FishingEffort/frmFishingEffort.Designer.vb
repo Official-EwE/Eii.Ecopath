@@ -2,7 +2,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class frmFishingRate
+    Partial Class frmFishingEffort
         Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingRate))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingEffort))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.m_sketchPad = New ucForcingSketchPad
             Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar

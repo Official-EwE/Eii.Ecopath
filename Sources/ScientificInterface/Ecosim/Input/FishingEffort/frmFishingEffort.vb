@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: frmFishingRate.vb,v $
+' $Log: frmFishingEffort.vb,v $
+' Revision 1.1  2009/03/26 17:52:34  jeroens
+' Fixed confusion between rate and effort shape names - part III
+'
 ' Revision 1.7  2009/03/26 17:49:41  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -22,27 +25,6 @@
 ' Revision 1.1  2008/09/26 07:31:36  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.7  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.6.2.2  2008/07/01 18:36:28  sherman
-' Merged Fix_Ecopat_EcosimUpdate...
-'
-' Revision 1.6  2008/06/06 16:01:38  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.5  2008/05/29 23:43:43  jeroens
-' Added Values dialog
-'
-' Revision 1.4  2008/02/06 21:11:01  jeroens
-' Fixed issue 398
-'
-' Revision 1.3  2007/10/31 16:04:15  jeroens
-' * Respond to shape manager messages
-'
-' Revision 1.2  2007/10/30 02:45:36  jeroens
-' * Debugged
-'
 '==============================================================================
 
 #Region " Imports "
@@ -63,7 +45,7 @@ Namespace Ecosim
 
     ''' <summary>
     ''' </summary>
-    Public Class frmFishingRate
+    Public Class frmFishingEffort
 
 #Region " Private variables "
 
@@ -102,11 +84,11 @@ Namespace Ecosim
 
 #Region " Private event handlers "
 
-        Private Sub frmFishingRate_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub frmFishingEffort_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-        Private Sub frmFishingRate_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub frmFishingEffort_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             Me.CoreComponents = Nothing
         End Sub
 
