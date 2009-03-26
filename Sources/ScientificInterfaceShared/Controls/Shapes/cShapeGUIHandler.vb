@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.14  2009/03/26 17:41:41  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.13  2009/03/26 01:19:05  jeroens
 ' There shall be updates
 '
@@ -1595,12 +1598,12 @@ Namespace Controls
 
 #End Region ' Egg Production
 
-#Region " Effort "
+#Region " Fishing "
 
-#Region " Effort base class "
+#Region " Fishing shape gui handler base class "
 
     <CLSCompliant(True)> _
-    Public MustInherit Class cEffortShapeGUIHandler
+    Public MustInherit Class cFishingBaseShapeGUIHandler
         : Inherits cForcingShapeGUIHandler
 
         ''' -------------------------------------------------------------------
@@ -1640,7 +1643,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to enable fishing rate shape specific commands.
+        ''' Overridden to enable fishing effort shape specific commands.
         ''' </summary>
         ''' <param name="cmd">The command that is queried.</param>
         ''' <returns>True if the queried command may be enabled.</returns>
@@ -1670,7 +1673,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Public interface to execute a given command by this handler. 
-        ''' Overridden to implement fishing rate forcing function commands.
+        ''' Overridden to implement fishing forcing function commands.
         ''' </summary>
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
@@ -1695,8 +1698,38 @@ Namespace Controls
             End Select
         End Sub
 
+        Protected Overrides Sub ResetShapes(ByVal ashapes As cShapeData(), _
+                Optional ByVal sDefaultValue As Single = 1.0!)
+
+            Dim sm As cBaseShapeManager = Nothing
+            Dim shape As cShapeData = Nothing
+            Dim lShapes As List(Of cShapeData) = Nothing
+
+            If (ashapes Is Nothing) Then
+                sm = Me.ShapeManager
+                lShapes = New List(Of cShapeData)
+                For Each shape In sm
+                    lShapes.Add(shape)
+                Next
+                ashapes = lShapes.ToArray()
+            End If
+
+            For iShape As Integer = 0 To ashapes.Length - 1
+                shape = ashapes(iShape)
+                If shape IsNot Nothing Then
+                    shape.LockUpdates()
+                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                        shape.ShapeData(i) = sDefaultValue
+                    Next i
+                    shape.UnlockUpdates(True)
+                End If
+            Next
+
+            Me.SelectedShapes = Me.SelectedShapes
+        End Sub
+
         Protected Overrides Sub ResetAllShapes()
-            Me.m_core.FishingRateShapeManager.ResetToDefaults()
+            Me.m_core.FishingEffortShapeManager.ResetToDefaults()
             Me.m_core.FishMortShapeManager.ResetToDefaults()
         End Sub
 
@@ -1706,7 +1739,7 @@ Namespace Controls
         ''' <summary>
         ''' Get/set the <see cref="ucSketchPad">Sketch pad control</see> to manage
         ''' by this handler. Overridden to fix some behaviours of this control
-        ''' particular to displaying fishing rate shapes.
+        ''' particular to displaying fishing shapes.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Property SketchPad() As ucSketchPad
@@ -1787,17 +1820,17 @@ Namespace Controls
 
 #End Region ' Effort base class
 
-#Region " Fishing rate "
+#Region " Fishing effort shape handler "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
-    ''' handling fishing rate <see cref="cForcingFunction">forcing shapes</see>.
+    ''' handling fishing effort <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class cFishingRateShapeGUIHandler
-        : Inherits cEffortShapeGUIHandler
+    Public Class cFishingEffortShapeGUIHandler
+        : Inherits cFishingBaseShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1814,9 +1847,9 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the colour for rendering fishing rate shapes.
+        ''' Returns the colour for rendering fishing effort shapes.
         ''' </summary>
-        ''' <returns>The color for rendering fishing rate shapes.</returns>
+        ''' <returns>The color for rendering fishing effort shapes.</returns>
         ''' -----------------------------------------------------------------------
         Protected Overrides Function Color() As System.Drawing.Color
             Return Drawing.Color.Coral
@@ -1829,7 +1862,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ShapeManager() As EwECore.cBaseShapeManager
-            Return Me.m_core.FishingRateShapeManager
+            Return Me.m_core.FishingEffortShapeManager
         End Function
 
         Protected Overrides Function ScaleMode() As eAxisTickmarkDisplayModeTypes
@@ -1848,7 +1881,7 @@ Namespace Controls
 
     End Class
 
-#End Region ' Fishing Rate
+#End Region ' Fishing effort
 
 #Region " Fishing mortality "
 
@@ -1860,7 +1893,7 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class cFishingMortalityShapeGUIHandler
-        : Inherits cEffortShapeGUIHandler
+        : Inherits cFishingBaseShapeGUIHandler
 
         ''' -------------------------------------------------------------------
         ''' <summary>

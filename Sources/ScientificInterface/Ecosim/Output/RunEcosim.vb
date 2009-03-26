@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.13  2009/03/26 17:41:39  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.12  2009/03/22 14:01:38  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -367,7 +370,7 @@ Namespace Ecosim
 
         Private Sub OnFReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbResetFs.Click
             ' JS 16May08: bypassed shape handler (which may be 0) to do a mass change
-            Me.m_Core.FishingRateShapeManager.ResetToDefaults()
+            Me.m_Core.FishingEffortShapeManager.ResetToDefaults()
             Me.m_Core.FishMortShapeManager.ResetToDefaults()
         End Sub
 
@@ -396,7 +399,7 @@ Namespace Ecosim
         Private Sub LoadFishingRateShape()
             Dim item As ICoreInterface = Me.GetSelectedTarget()
 
-            Me.m_shapeGUIHandler = New cFishingRateShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.UpdateControls()
         End Sub

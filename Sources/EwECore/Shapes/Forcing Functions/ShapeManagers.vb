@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeManagers.vb,v $
+' Revision 1.4  2009/03/26 17:41:38  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.3  2009/01/16 18:30:34  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -944,9 +947,9 @@ End Class
 
 #Region " Effort shape managers "
 
-#Region " Effort shape manager base class "
+#Region " Fishing shape manager base class "
 
-Public MustInherit Class cEffortShapeManager
+Public MustInherit Class cFishingBaseShapeManager
     : Inherits cBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
@@ -968,8 +971,8 @@ End Class
 
 #Region " Fishing Rate Shape Manager "
 
-Public Class cFishingRateManger
-    : Inherits cEffortShapeManager
+Public Class cFishingEffortManger
+    : Inherits cFishingBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
@@ -1029,8 +1032,8 @@ End Class
 
 #Region " Fish Mortality shape manager "
 
-Public Class cFishMortalityManger
-    : Inherits cEffortShapeManager
+Public Class cFishingMortalityManger
+    : Inherits cFishingBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)

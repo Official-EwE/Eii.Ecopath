@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.97  2009/03/26 17:41:42  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.96  2009/03/26 01:18:36  jeroens
 ' LoadSimScenario performs SaveChanges check
 '
@@ -4405,10 +4408,10 @@ Public Class cCore
             manager = New cEggProductionManager(m_EcoSimData, Me, eDataTypes.EggProd)
             m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cFishingRateManger(m_EcoSimData, Me, eDataTypes.FishingRate)
+            manager = New cFishingEffortManger(m_EcoSimData, Me, eDataTypes.FishingRate)
             m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cFishMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
+            manager = New cFishingMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
             m_ShapeManagers.Add(manager.DataType, manager)
 
             m_PPIManager = New cPPIManager(m_EcoPathData, m_EcoSimData, Me)
@@ -5216,14 +5219,14 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property FishingRateShapeManager() As cFishingRateManger
+    Public ReadOnly Property FishingEffortShapeManager() As cFishingEffortManger
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingRate), cFishingRateManger)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingRate), cFishingEffortManger)
             Catch ex As Exception
-                Debug.Assert(False, "Failed to find Shape Manager")
-                cLog.Write(Me.ToString & ".FishingRateShapeManager() Error: " & ex.Message)
+                Debug.Assert(False, "Failed to find effort shape manager")
+                cLog.Write(Me.ToString & ".FishingEffortShapeManager() Error: " & ex.Message)
                 Return Nothing
             End Try
 
@@ -5231,13 +5234,13 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property FishMortShapeManager() As cFishMortalityManger
+    Public ReadOnly Property FishMortShapeManager() As cFishingMortalityManger
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishMort), cFishMortalityManger)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishMort), cFishingMortalityManger)
             Catch ex As Exception
-                Debug.Assert(False, "Failed to find Shape Manager")
+                Debug.Assert(False, "Failed to find mortality shape manager")
                 cLog.Write(Me.ToString & ".FishMortShapeManager() Error: " & ex.Message)
                 Return Nothing
             End Try

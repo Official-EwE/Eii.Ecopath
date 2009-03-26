@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingRate.vb,v $
+' Revision 1.6  2009/03/26 17:41:40  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.5  2009/03/02 01:52:36  jeroens
 ' Properly named handlers
 '
@@ -62,7 +65,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         Private m_Core As cCore = Nothing
-        Private m_handler As cFishingRateShapeGUIHandler = Nothing
+        Private m_handler As cFishingEffortShapeGUIHandler = Nothing
 
 #End Region ' Private variables
 
@@ -76,7 +79,7 @@ Namespace Ecosim
             ' Get the only core reference
             m_Core = cCore.GetInstance()
 
-            Me.m_handler = New cFishingRateShapeGUIHandler(Me.m_Core, _
+            Me.m_handler = New cFishingEffortShapeGUIHandler(Me.m_Core, _
                     Me.m_shapeToolBox, Me.m_sketchPad, _
                     Me.m_shapeToolboxToolbar, Me.m_sketchPadToolbar)
 

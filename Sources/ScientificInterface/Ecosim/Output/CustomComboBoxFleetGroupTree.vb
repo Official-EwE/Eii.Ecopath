@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CustomComboBoxFleetGroupTree.vb,v $
+' Revision 1.4  2009/03/26 17:41:40  jeroens
+' Fixed confusion between rate and effort shape names
+'
 ' Revision 1.3  2009/02/24 04:06:25  jeroens
 ' Commented
 '
@@ -86,7 +89,7 @@ Public Class cCustomComboBoxFleetGroupTree
 
         'Load the fleet drop down list
         tnParent = Me.Nodes.Add(My.Resources.HEADER_FLEETS)
-        For Each shp As cFishingRateShape In m_core.FishingRateShapeManager
+        For Each shp As cFishingRateShape In m_core.FishingEffortShapeManager
             tnChild = New TreeNode(shp.Name)
             tnChild.Tag = shp
             tnParent.Nodes.Add(tnChild)
