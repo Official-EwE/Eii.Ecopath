@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.32  2009/03/26 01:17:53  jeroens
+' Trying to make compacting more robust
+'
 ' Revision 1.31  2009/03/24 15:56:42  jeroens
 ' Updated to minor ScIntShared namespace changes
 '
@@ -1064,20 +1067,25 @@ Public Class AppLauncher
 
     End Function
 
-    Private Sub CompactModel()
+    Private Function CompactModel() As Boolean
 
         Dim ds As IEwEDataSource = Me.m_core.DataSource
+        Dim bSucces As Boolean = False
         Dim strFileName As String = Me.SelectedFileName()
 
-        If Me.CloseEcopathModel() = False Then Return
+        If Me.CloseEcopathModel() = False Then Return False
 
         Me.SetStatusText("Compacting database...", TriState.True)
-        ds.Compact(strFileName)
+        bSucces = ds.Compact(strFileName)
         Me.SetStatusText("", TriState.False)
 
-        Me.LoadEcopathModel(strFileName)
+        If bSucces = True Then
+            bSucces = bSucces And Me.LoadEcopathModel(strFileName)
+        End If
 
-    End Sub
+        Return bSucces
+
+    End Function
 
     Private Sub UpdateModelControls()
 
@@ -2129,7 +2137,12 @@ Public Class AppLauncher
     ''' Update compact model command state
     ''' </summary>
     Private Sub OnUpdateCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
+        Try
+            Dim jro As New JRO.JetEngine()
+            cmd.Enabled = (Me.m_core.StateMonitor.HasEcopathLoaded) And (jro IsNot Nothing)
+        Catch ex As Exception
+            cmd.Enabled = False
+        End Try
     End Sub
 
     ''' <summary>
