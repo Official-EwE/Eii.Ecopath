@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.11  2009/03/26 22:45:58  jeroens
+' Added ClearData(), ClearRow() to properly detach EwE grid cells
+'
 ' Revision 1.10  2009/03/23 18:44:46  jeroens
 ' Localized
 '
@@ -30,55 +33,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:15  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/08/13 19:54:14  jeroens
-' Minor optimization
-'
-' Revision 1.10  2008/08/11 18:38:38  jeroens
-' Invalidated after paste
-'
-' Revision 1.9  2008/08/11 16:12:00  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.8  2008/08/05 15:37:35  jeroens
-' Prepared for Designer mode
-'
-' Revision 1.7  2008/08/02 03:04:18  jeroens
-' Renamed resources
-'
-' Revision 1.6  2008/07/30 18:35:12  jeroens
-' Added DefaultDockStyle
-'
-' Revision 1.5  2008/07/29 13:06:45  jeroens
-' Propery renamed 'IsStatic' method
-'
-' Revision 1.4  2008/07/18 19:31:09  jeroens
-' Fixed potential crash on selecting irregular cells
-'
-' Revision 1.3  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.2  2008/07/01 13:55:24  jeroens
-' IsStatic works properly
-'
-' Revision 1.1  2008/06/01 23:45:06  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.40  2008/05/06 22:02:27  jeroens
-' Fixed bug 221
-'
-' Revision 1.39  2008/05/04 12:55:21  jeroens
-' Fixed selection bug:
-' Properties only returned for selected cells, not for selected cell RANGE
-'
-' Revision 1.38  2008/04/07 02:31:19  jeroens
-' Cleaning up resources
-'
-' Revision 1.37  2008/04/03 16:00:37  jeroens
-' Grid no longer auto-docks
-'
-' Revision 1.36  2008/03/19 18:45:36  jeroens
-' Added PICell
 '
 '==============================================================================
 
@@ -361,13 +315,18 @@ Namespace Controls.EwEGrid
 
 #Region " System events "
 
-        Private Sub EwEGrid_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub EwEGrid_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
+
+            Me.ClearData()
+
             RemoveHandler m_ceCellClick.Click, Me.m_peh1
             Me.m_peh1 = Nothing
             RemoveHandler m_ceRowSelect.Click, Me.m_peh2
             Me.m_peh2 = Nothing
             RemoveHandler m_ceColSelect.Click, Me.m_peh3
             Me.m_peh3 = Nothing
+
         End Sub
 
 #End Region ' System events
@@ -395,6 +354,7 @@ Namespace Controls.EwEGrid
             MyBase.InitLayout()
 
             Me.SuspendLayoutGrid()
+            Me.ClearData()
             Me.InitStyle()
             Me.FillData()
             Me.FinishStyle()
@@ -535,6 +495,34 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected MustOverride Sub FillData()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Properly releases all EwE cells in the grid.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ClearData()
+            For iRow As Integer = 0 To Me.RowsCount - 1
+                Me.ClearRow(iRow)
+            Next
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Properly releases all EwE cells in a row.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ClearRow(ByVal iRow As Integer)
+            Dim cell As SourceGrid2.Cells.ICell = Nothing
+            For iCol As Integer = 0 To Me.ColumnsCount - 1
+                cell = Me(iRow, iCol)
+                If cell IsNot Nothing Then
+                    If TypeOf (cell) Is EwECellBase Then
+                        DirectCast(cell, EwECellBase).Dispose()
+                    End If
+                End If
+            Next
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
