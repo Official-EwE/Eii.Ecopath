@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFPSResultSystemObjectives.vb,v $
+' Revision 1.6  2009/03/26 22:47:00  jeroens
+' ClearData -> RemoveDataRows, uses new ClearRow method to properly clean up
+'
 ' Revision 1.5  2009/01/31 00:57:02  joeb
 ' Fixed bug Diversity cell missing from output grid
 '
@@ -107,11 +110,14 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub ClearData()
+        Public Sub RemoveDataRows()
 
-            If Me.RowsCount > 1 Then
-                Me.Rows.RemoveRange(1, Me.RowsCount - 1)
-            End If
+            Me.SuspendLayout()
+            While Me.RowsCount > 1
+                Me.ClearRow(1)
+                Me.Rows.Remove(1)
+            End While
+            Me.ResumeLayout()
 
         End Sub
 
