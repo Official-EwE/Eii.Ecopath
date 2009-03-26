@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.33  2009/03/26 15:51:16  jeroens
+' Uses CanCompact
+'
 ' Revision 1.32  2009/03/26 01:17:53  jeroens
 ' Trying to make compacting more robust
 '
@@ -2137,12 +2140,12 @@ Public Class AppLauncher
     ''' Update compact model command state
     ''' </summary>
     Private Sub OnUpdateCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnUpdate
-        Try
-            Dim jro As New JRO.JetEngine()
-            cmd.Enabled = (Me.m_core.StateMonitor.HasEcopathLoaded) And (jro IsNot Nothing)
-        Catch ex As Exception
+        Dim ds As IEwEDataSource = Me.m_core.DataSource
+        If (ds Is Nothing) Then
             cmd.Enabled = False
-        End Try
+        Else
+            cmd.Enabled = (Me.m_core.StateMonitor.HasEcopathLoaded) And ds.CanCompact("")
+        End If
     End Sub
 
     ''' <summary>
