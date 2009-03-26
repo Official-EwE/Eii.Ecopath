@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.13  2009/03/26 01:19:05  jeroens
+' There shall be updates
+'
 ' Revision 1.12  2009/03/24 20:29:08  jeroens
 ' Added Custom command
 '
@@ -298,33 +301,6 @@ Namespace Controls
 #End Region ' Obligatory overrides
 
 #Region " Tools "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Reset a shape to a particular value.
-        ''' </summary>
-        ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
-        ''' <param name="sDefaultValue">The value to set.</param>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Sub ResetShape(ByVal ashapes As cShapeData(), _
-                Optional ByVal sDefaultValue As Single = 1.0!)
-
-            Debug.Assert(ashapes IsNot Nothing)
-
-            For Each shape As cShapeData In ashapes
-                If shape IsNot Nothing Then
-                    shape.LockUpdates()
-                    shape.IsSeasonal = False
-                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
-                        shape.ShapeData(i) = sDefaultValue
-                    Next i
-                    shape.Update()
-                    shape.UnlockUpdates()
-                End If
-            Next
-
-            Me.SelectedShapes = Me.SelectedShapes
-        End Sub
 
         Protected Overridable Sub SaveAsImage(ByVal shape As cShapeData, ByVal sp As ucSketchPad)
 
@@ -1066,26 +1042,54 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Reset a shape to a particular value.
+        ''' </summary>
+        ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
+        ''' <param name="sDefaultValue">The value to set.</param>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub ResetShapes(ByVal ashapes As cShapeData(), _
+                Optional ByVal sDefaultValue As Single = 1.0!)
+
+            Dim sm As cBaseShapeManager = Nothing
+            Dim shape As cShapeData = Nothing
+            Dim lShapes As List(Of cShapeData) = Nothing
+
+            If (ashapes Is Nothing) Then
+                sm = Me.ShapeManager
+                lShapes = New List(Of cShapeData)
+                For Each shape In sm
+                    lShapes.Add(shape)
+                Next
+                ashapes = lShapes.ToArray()
+            End If
+
+            For iShape As Integer = 0 To ashapes.Length - 1
+                shape = ashapes(iShape)
+                If shape IsNot Nothing Then
+                    shape.LockUpdates()
+                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                        shape.ShapeData(i) = sDefaultValue
+                    Next i
+
+                    ' Cheat: update every shape, but only force an update NOTIFICATION
+                    ' on the very last shape
+                    If iShape < (ashapes.Length - 1) Then
+                        shape.Update()
+                    End If
+                    shape.UnlockUpdates(iShape = (ashapes.Length - 1))
+                End If
+            Next
+
+            Me.SelectedShapes = Me.SelectedShapes
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Reset all shapes.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ResetAllShapes()
-
-            Dim sm As cBaseShapeManager = Me.ShapeManager
-            Dim shape As cForcingFunction = Nothing
-
-            ' For every shape
-            For iShape As Integer = 0 To sm.Count - 1
-                ' Get the shape
-                shape = sm.Item(iShape)
-                ' Lock it to prevent noise during this process
-                shape.LockUpdates()
-                ' Reset the shape
-                Me.ResetShape(New cShapeData() {shape})
-                ' Cheat: force an update on the very last shape to trigger a GUI refresh
-                shape.UnlockUpdates(iShape = sm.Count - 1)
-            Next
-
+            Me.ResetShapes(Nothing)
         End Sub
 
 #End Region ' Forcing overrides
@@ -1144,13 +1148,13 @@ Namespace Controls
 
             Select Case cmd
 
-                Case eShapeCommandTypes.Add
+                Case eShapeCommandTypes.Add, _
+                     eShapeCommandTypes.ResetAll
                     Return True
 
                 Case eShapeCommandTypes.Duplicate, _
                      eShapeCommandTypes.Remove, _
-                     eShapeCommandTypes.Reset, _
-                     eShapeCommandTypes.ResetAll
+                     eShapeCommandTypes.Reset
                     Return bHasSelection
 
                 Case eShapeCommandTypes.ChangeShape, _
@@ -1199,7 +1203,7 @@ Namespace Controls
                     Me.RemoveFF(ashapes)
 
                 Case eShapeCommandTypes.Reset
-                    Me.ResetShape(ashapes)
+                    Me.ResetShapes(ashapes)
 
                 Case eShapeCommandTypes.ResetAll
                     Me.ResetAllShapes()
@@ -1648,13 +1652,15 @@ Namespace Controls
 
             Select Case cmd
 
-                Case eShapeCommandTypes.SetValue, _
-                     eShapeCommandTypes.Modify
+                Case eShapeCommandTypes.ResetAll
+                    Return True
+
+                Case eShapeCommandTypes.Modify
                     Return bHasSingleSelection
 
                 Case eShapeCommandTypes.Reset, _
-                     eShapeCommandTypes.ResetAll, _
-                     eShapeCommandTypes.SetToZero
+                     eShapeCommandTypes.SetToZero, _
+                     eShapeCommandTypes.SetValue
                     Return bHasSelection
 
             End Select
@@ -1678,7 +1684,7 @@ Namespace Controls
             Select Case cmd
                 Case eShapeCommandTypes.Reset
                     If (data IsNot Nothing) Then
-                        MyBase.ResetShape(ashapes, CSng(data))
+                        MyBase.ResetShapes(ashapes, CSng(data))
                     Else
                         Me.ResetShapePrompted(ashapes)
                     End If
@@ -1740,7 +1746,7 @@ Namespace Controls
                 If astrEntered.Length = 1 Then
                     ' #Yes: duplicate this char over the entire shape
                     Try
-                        Me.ResetShape(ashapes, CSng(Val(astrEntered(0))))
+                        Me.ResetShapes(ashapes, CSng(Val(astrEntered(0))))
                     Catch ex As Exception
                         Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
                                 eMessageType.NotSet, eCoreComponentType.ShapesManager, eMessageImportance.Warning))
