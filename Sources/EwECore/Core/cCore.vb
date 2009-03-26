@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.96  2009/03/26 01:18:36  jeroens
+' LoadSimScenario performs SaveChanges check
+'
 ' Revision 1.95  2009/03/24 13:40:56  jeroens
 ' Forgot to call PSD params ResetStatusFlags
 '
@@ -4538,6 +4541,8 @@ Public Class cCore
         ' Sanity checks
         If DataSource Is Nothing Then Return False
         If Not TypeOf (DataSource) Is IEcosimDatasource Then Return False
+
+        If Not Me.SaveChanges() Then Return False
 
         Try
 
