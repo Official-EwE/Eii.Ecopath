@@ -80,6 +80,7 @@
     <Compile Include="Plugin templates\Database\IDatabaseUpdatePlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimModifyFGearPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPostPlugin.vb" />

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.41  2009/03/26 02:05:54  sherman
+' Added Plugin point EcosimModifyFGear
+'
 ' Revision 1.40  2009/03/25 21:08:11  joeb
 ' Added XBase to Mediation shapes
 '
@@ -1097,6 +1100,9 @@ Public Property PluginManager() As cPluginManager
                 For iFlt As Integer = 1 To Me.m_EPData.NumFleet
                     Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
                 Next iFlt
+
+                ' PluginManger used to set Fleet
+                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, Me.m_Data)
 
             End If
 

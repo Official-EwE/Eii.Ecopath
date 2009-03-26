@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.16  2009/03/26 02:06:07  sherman
+' Added Plugin point EcosimModifyFGear
+'
 ' Revision 1.15  2009/03/10 18:37:38  jeroens
 ' Added post-invoke plugin points
 '
@@ -831,6 +834,30 @@ Public Class cPluginManager
             For Each ip As IPlugin In collPlugins
                 Try 'protect the core from a plugin exploding
                     DirectCast(ip, IEcosimModifyTimeseriesPlugin).EcosimModifyTimeseries(TimeSeriesDataStructures)
+                Catch ex As Exception
+                    Debug.Assert(False, ip.Name & " EcosimModifyTimeseries() Error: " & ex.Message)
+                    'tell the world
+                    RaiseEvent PluginException(ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
+    Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal EcosimDataStructures As Object) As Boolean
+
+        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimModifyFGearPlugin))
+        Try
+
+            ' give every plugin that supports this interface a chance at running
+            For Each ip As IPlugin In collPlugins
+                Try 'protect the core from a plugin exploding
+                    DirectCast(ip, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, EcosimDataStructures)
                 Catch ex As Exception
                     Debug.Assert(False, ip.Name & " EcosimModifyTimeseries() Error: " & ex.Message)
                     'tell the world
