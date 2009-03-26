@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shapes.vb,v $
+' Revision 1.5  2009/03/26 17:49:38  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.4  2009/03/25 21:08:15  joeb
 ' Added XBase to Mediation shapes
 '
@@ -970,7 +973,7 @@ Public Class cFishingRateShape
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal strFleetName As String)
 
-        MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishingRate)
+        MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishingEffort)
 
         m_bInInit = True
         Me.DBID = DBID

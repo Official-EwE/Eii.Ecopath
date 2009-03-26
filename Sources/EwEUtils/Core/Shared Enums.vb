@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.45  2009/03/26 17:49:33  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.44  2009/03/25 21:08:18  joeb
 ' Added XBase to Mediation shapes
 '
@@ -1260,7 +1263,7 @@ Namespace Core
         ''' <summary>
         ''' Data belongs to an Fishing Rate shape.
         ''' </summary>
-        FishingRate
+        FishingEffort
 
         ''' <summary>
         ''' Data belongs to an Fishing Mortality shape.

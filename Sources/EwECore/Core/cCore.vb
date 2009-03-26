@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.98  2009/03/26 17:50:20  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.97  2009/03/26 17:41:42  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -1703,8 +1706,8 @@ Public Class cCore
 
         'If one of these shapes has changed then reload the objects for the interface
         For i As Integer = 1 To m_TSData.NdatType
-            If m_TSData.DatType(i) = eDataTypes.FishingRate Or m_TSData.DatType(i) = eDataTypes.FishMort Then
-                shpmanager = m_ShapeManagers.Item(eDataTypes.FishingRate)
+            If m_TSData.DatType(i) = eDataTypes.FishingEffort Or m_TSData.DatType(i) = eDataTypes.FishMort Then
+                shpmanager = m_ShapeManagers.Item(eDataTypes.FishingEffort)
                 shpmanager.Load()
                 shpmanager = m_ShapeManagers.Item(eDataTypes.FishMort)
                 shpmanager.Load()
@@ -4408,7 +4411,7 @@ Public Class cCore
             manager = New cEggProductionManager(m_EcoSimData, Me, eDataTypes.EggProd)
             m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cFishingEffortManger(m_EcoSimData, Me, eDataTypes.FishingRate)
+            manager = New cFishingEffortManger(m_EcoSimData, Me, eDataTypes.FishingEffort)
             m_ShapeManagers.Add(manager.DataType, manager)
 
             manager = New cFishingMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
@@ -5223,7 +5226,7 @@ Public Class cCore
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingRate), cFishingEffortManger)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingEffort), cFishingEffortManger)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find effort shape manager")
                 cLog.Write(Me.ToString & ".FishingEffortShapeManager() Error: " & ex.Message)
@@ -5388,7 +5391,7 @@ Public Class cCore
             Dim manager As cBaseShapeManager
             manager = m_ShapeManagers.Item(eDataTypes.FishMort)
             manager.Load()
-            manager = m_ShapeManagers.Item(eDataTypes.FishingRate)
+            manager = m_ShapeManagers.Item(eDataTypes.FishingEffort)
             manager.Load()
 
             Me.m_SearchManagers(eDataTypes.FishingPolicyManager).Load()
@@ -5649,10 +5652,10 @@ Public Class cCore
         If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
             'if effort was predicted then reload the shapes
             m_ShapeManagers.Item(eDataTypes.FishMort).Load()
-            m_ShapeManagers.Item(eDataTypes.FishingRate).Load()
+            m_ShapeManagers.Item(eDataTypes.FishingEffort).Load()
 
             'tell the interface that the shapes have changed
-            Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingRate))
+            Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
             Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
         End If
@@ -9421,7 +9424,7 @@ Public Class cCore
                 Case eDataTypes.Forcing, _
                      eDataTypes.EggProd, _
                      eDataTypes.Mediation, _
-                     eDataTypes.FishingRate, _
+                     eDataTypes.FishingEffort, _
                      eDataTypes.FishMort
                     ' VERIFY_JS: This line of code is never hit?
                     msAffected = eCoreComponentType.ShapesManager
@@ -10245,7 +10248,7 @@ Public Class cCore
 
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
-                Case eDataTypes.FishingRate, eDataTypes.FishingPolicyManager
+                Case eDataTypes.FishingEffort, eDataTypes.FishingPolicyManager
                     'if the FishRate shape manager has changed the data then fishmort was also changed
                     're-load the fishMort shapes
                     manager = m_ShapeManagers.Item(eDataTypes.FishMort)
@@ -10257,10 +10260,10 @@ Public Class cCore
                     'that means all the fishing rate shapes need to be re-loaded
                     'If this becomes an issue we will need a way to tell what shape was edited either here or in the mangers.Load method
                     'brute force is good enough for now
-                    manager = m_ShapeManagers.Item(eDataTypes.FishingRate)
+                    manager = m_ShapeManagers.Item(eDataTypes.FishingEffort)
                     manager.Load()
 
-                    Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingRate))
+                    Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.EcospaceBasemapLayer

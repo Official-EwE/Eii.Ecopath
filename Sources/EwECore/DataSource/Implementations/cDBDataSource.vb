@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.37  2009/03/26 17:49:55  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.36  2009/03/26 15:49:48  jeroens
 ' Added CanCompact
 '
@@ -3351,7 +3354,7 @@ Public Class cDBDataSource
             End Try
 
             If iShapeID <= 0 Then
-                Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingRate, iShapeID, asDummy, 0, 0, 0, 0, eShapeFunctionType.NotSet)
+                Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, 0, 0, 0, 0, eShapeFunctionType.NotSet)
             End If
 
             If iShapeID > -1 Then
@@ -3519,7 +3522,7 @@ Public Class cDBDataSource
                 End If
 
                 ' Write dynamic bit
-                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingRate, ecosimDS.FishRateGearDBID(i))
+                drow("FishRateShapeID") = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(i))
                 drow("MaxEffort") = ecosimDS.MaxEffort(i)
                 drow("QuotaType") = CInt(ecosimDS.QuotaType(i))
 
@@ -3637,7 +3640,7 @@ Public Class cDBDataSource
                         iMediationShape += 1
                         bSucces = bSucces And Me.LoadMediationShape(iShapeID, iMediationShape)
 
-                    Case eDataTypes.FishingRate
+                    Case eDataTypes.FishingEffort
                         ' Shape type loaded from LoadEcosimFleets(); do not handle here
                         'iFishRateShape += 1
                         'bSucces = bSucces And Me.LoadFishingRateShape(iShapeID, iFishRateShape)
@@ -4209,7 +4212,7 @@ Public Class cDBDataSource
                         drow = writer.NewRow()
                         drow("ShapeID") = iShapeID
                     End If
-                    drow("ShapeType") = eDataTypes.FishingRate
+                    drow("ShapeType") = eDataTypes.FishingEffort
                     If adrows.Length = 1 Then
                         drow.EndEdit()
                     Else
@@ -4797,7 +4800,7 @@ Public Class cDBDataSource
                 Case eDataTypes.Mediation
                     writerShape = Me.m_db.GetWriter("EcosimShapeMediation")
 
-                Case eDataTypes.FishingRate
+                Case eDataTypes.FishingEffort
                     writerShape = Me.m_db.GetWriter("EcosimShapeFishRate")
 
                 Case eDataTypes.FishMort
@@ -4830,7 +4833,7 @@ Public Class cDBDataSource
 
             ' Specific bits
             Select Case shapeType
-                Case eDataTypes.FishingRate
+                Case eDataTypes.FishingEffort
                 Case eDataTypes.FishMort
                 Case Else
                     drow("YZero") = sYZero
@@ -8557,7 +8560,7 @@ Public Class cDBDataSource
                         Case eDataTypes.EcoSimScenario
                             drow("EcosimScenarioID") = ad.DBID
                         Case eDataTypes.EggProd, eDataTypes.Forcing, eDataTypes.Mediation, _
-                             eDataTypes.FishMort, eDataTypes.FishingRate
+                             eDataTypes.FishMort, eDataTypes.FishingEffort
                             drow("ShapeID") = ad.DBID
                         Case eDataTypes.EcoSpaceScenario
                             drow("EcospaceScenarioID") = ad.DBID

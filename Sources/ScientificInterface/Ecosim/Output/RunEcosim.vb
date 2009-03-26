@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.14  2009/03/26 17:49:41  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.13  2009/03/26 17:41:39  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -490,7 +493,7 @@ Namespace Ecosim
                     ' Respond to relevant shape changes
                     If (Me.m_shapeGUIHandler Is Nothing) Then Return
 
-                    If (((Me.SelectionMode = eSelectionModeType.Fleets) And (msg.DataType = eDataTypes.FishingRate)) Or _
+                    If (((Me.SelectionMode = eSelectionModeType.Fleets) And (msg.DataType = eDataTypes.FishingEffort)) Or _
                         ((Me.SelectionMode = eSelectionModeType.Groups) And (msg.DataType = eDataTypes.FishMort))) Then
 
                         Me.m_shapeGUIHandler.Refresh()

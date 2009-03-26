@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.11  2009/03/26 17:49:42  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.10  2009/03/12 01:24:38  jeroens
 ' Fixed vbK import
 '
@@ -2063,7 +2066,7 @@ Namespace Database
                 iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, CStr(reader("gearName")))
 
                 ' Check if shape already imported
-                iShapeID = Me.HashKey(eDataTypes.FishingRate, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID)
+                iShapeID = Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID)
                 ' Not imported yet? Signal that import is needed after the fleet has been defined
                 If iShapeID = 0 Then iShapeID = Me.m_iNextShapeID
 
@@ -2078,8 +2081,8 @@ Namespace Database
                 writer.Commit()
 
                 If iShapeID = Me.m_iNextShapeID Then
-                    Me.ImportShape(iEcopathFleetID, iShapeID, eDataTypes.FishingRate, reader)
-                    Me.HashKey(eDataTypes.FishingRate, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
+                    Me.ImportShape(iEcopathFleetID, iShapeID, eDataTypes.FishingEffort, reader)
+                    Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
                     Me.m_iNextShapeID += 1
                 End If
 
@@ -2289,7 +2292,7 @@ Namespace Database
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
-                Case eDataTypes.FishingRate
+                Case eDataTypes.FishingEffort
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeFishRate"))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishRate")
@@ -2376,7 +2379,7 @@ Namespace Database
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
-                Case eDataTypes.FishingRate
+                Case eDataTypes.FishingEffort
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeFishRate"))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeFishRate")
@@ -4091,7 +4094,7 @@ Namespace Database
                 Case eDataTypes.EcoSimScenario
                     drow("EcosimScenarioID") = nID
                 Case eDataTypes.EggProd, eDataTypes.Forcing, eDataTypes.Mediation, _
-                     eDataTypes.FishMort, eDataTypes.FishingRate
+                     eDataTypes.FishMort, eDataTypes.FishingEffort
                     drow("ShapeID") = nID
                 Case eDataTypes.EcoSpaceScenario
                     drow("EcospaceScenarioID") = nID

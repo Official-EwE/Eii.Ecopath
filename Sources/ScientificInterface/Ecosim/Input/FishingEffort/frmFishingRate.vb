@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingRate.vb,v $
+' Revision 1.7  2009/03/26 17:49:41  jeroens
+' Fixed confusion between rate and effort shape names - part II
+'
 ' Revision 1.6  2009/03/26 17:41:40  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -114,7 +117,7 @@ Namespace Ecosim
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             Select Case msg.Source
                 Case eCoreComponentType.ShapesManager
-                    If (msg.DataType = eDataTypes.FishingRate) Then
+                    If (msg.DataType = eDataTypes.FishingEffort) Then
                         Me.m_handler.Refresh()
                     End If
             End Select
