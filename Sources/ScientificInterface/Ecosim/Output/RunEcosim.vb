@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.15  2009/03/27 19:29:51  jeroens
+' Updated to graph interface changes
+'
 ' Revision 1.14  2009/03/26 17:49:41  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -203,7 +206,7 @@ Namespace Ecosim
                             End If
 
                             ' Now plot the graphs.
-                            Me.m_graph.Populate()
+                            Me.m_graph.PopulateGraph()
 
                         Catch ex As Exception
                             'make sure the model can be rerun if something goes wrong
