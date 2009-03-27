@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.9  2009/03/27 00:57:02  jeroens
+' Detach cell from ALL behaviour models on Dispose
+'
 ' Revision 1.8  2009/03/26 22:45:07  jeroens
 ' Added Dispose() to properly detach event handlers
 '
@@ -103,13 +106,17 @@ Namespace Controls.EwEGrid
         Protected Overridable Sub Dispose(ByVal disposing As Boolean)
             If Not Me.disposedValue Then
                 If disposing Then
-                    Me.Behaviors.Remove(Me.m_bmCatchEnter)
-                    Me.m_bmCatchEnter = Nothing
 
-                    Me.Behaviors.Remove(Me.m_bmResize)
+                    ' Release style guide event handler
+                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+
+                    ' Remove all bahaviour models
+                    Me.Behaviors.Clear()
+
+                    ' Release local refs
+                    Me.m_bmCatchEnter = Nothing
                     Me.m_bmResize = Nothing
 
-                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
             End If
             Me.disposedValue = True
