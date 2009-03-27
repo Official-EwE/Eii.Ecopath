@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.5  2009/03/27 13:39:26  jeroens
+' Limited number of status messages
+'
 ' Revision 1.4  2009/02/26 21:41:00  jeroens
 ' Long messages truncated
 ' '\n' substituted for vbNewLine in feedback messages
@@ -13,43 +16,6 @@
 '
 ' Revision 1.1  2008/09/26 07:32:12  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/09/24 00:53:58  jeroens
-' Fixed missing import
-'
-' Revision 1.2  2008/07/23 21:34:00  jeroens
-' Message suppression engine reset when model reloaded
-'
-' Revision 1.1  2008/07/23 21:13:34  jeroens
-' Moved, added message state handler support
-'
-' Revision 1.28  2008/07/22 20:45:44  jeroens
-' Added support for auto-replies
-'
-' Revision 1.27  2008/06/02 00:01:46  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.26  2008/04/07 02:31:21  jeroens
-' Cleaning up resources
-'
-' Revision 1.25  2008/01/27 16:48:29  jeroens
-' Simplified
-'
-' Revision 1.24  2008/01/23 16:20:59  jeroens
-' Child variable messages show up in message box too
-'
-' Revision 1.23  2007/10/16 14:57:23  jeroens
-' - Feedback messages no longer logged in panel
-' * Message handlers properly cleaned up when panel closes
-'
-' Revision 1.22  2007/07/13 22:17:35  jeroens
-' + Added debug pointer for handling cross-thread messages
-'
-' Revision 1.21  2007/07/08 18:22:20  jeroens
-' * Fixing todo's
-'
-' Revision 1.20  2007/06/27 23:41:15  jeroens
-' * Fixed sub-node selected icon index inconsistency
 '
 '==============================================================================
 
@@ -268,8 +234,12 @@ Public Class StatusPanel
             End If
 
             Try
-                ' Add node(s) to the first position
+                ' Add node(s) to the end of the list
                 Me.tvStatus.Nodes.Add(tnMessage)
+                ' Truncate log size
+                While (Me.tvStatus.Nodes.Count > My.Settings.FeedbackMessageLogSize)
+                    Me.tvStatus.Nodes.RemoveAt(0)
+                End While
                 tnMessage.EnsureVisible()
             Catch ex As Exception
                 ' Hmm

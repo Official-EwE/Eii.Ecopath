@@ -24,8 +24,8 @@ Partial Class ucAppGeneral
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAppGeneral))
             Me.GroupBox1 = New System.Windows.Forms.GroupBox
             Me.btnClear = New System.Windows.Forms.Button
-            Me.lblMDB = New System.Windows.Forms.Label
             Me.txbMdbNum = New System.Windows.Forms.TextBox
+            Me.lblMDB = New System.Windows.Forms.Label
             Me.lblTitle = New System.Windows.Forms.Label
             Me.cbSaveLayout = New System.Windows.Forms.CheckBox
             Me.Label1 = New System.Windows.Forms.Label
@@ -40,9 +40,12 @@ Partial Class ucAppGeneral
             Me.lbInformation = New System.Windows.Forms.Label
             Me.lbWarning = New System.Windows.Forms.Label
             Me.lbCritical = New System.Windows.Forms.Label
+            Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
+            Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.GroupBox1.SuspendLayout()
             Me.GroupBox2.SuspendLayout()
             Me.gpbMsg.SuspendLayout()
+            CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'GroupBox1
@@ -60,17 +63,17 @@ Partial Class ucAppGeneral
             Me.btnClear.Name = "btnClear"
             Me.btnClear.UseVisualStyleBackColor = True
             '
-            'lblMDB
-            '
-            resources.ApplyResources(Me.lblMDB, "lblMDB")
-            Me.lblMDB.Name = "lblMDB"
-            '
             'txbMdbNum
             '
             Me.txbMdbNum.DataBindings.Add(New System.Windows.Forms.Binding("Text", Global.ScientificInterface.Settings.Default, "MdbRecentlyUsedCount", True, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged))
             resources.ApplyResources(Me.txbMdbNum, "txbMdbNum")
             Me.txbMdbNum.Name = "txbMdbNum"
             Me.txbMdbNum.Text = Global.ScientificInterface.Settings.Default.MdbRecentlyUsedCount
+            '
+            'lblMDB
+            '
+            resources.ApplyResources(Me.lblMDB, "lblMDB")
+            Me.lblMDB.Name = "lblMDB"
             '
             'lblTitle
             '
@@ -123,6 +126,8 @@ Partial Class ucAppGeneral
             'gpbMsg
             '
             resources.ApplyResources(Me.gpbMsg, "gpbMsg")
+            Me.gpbMsg.Controls.Add(Me.m_nudMaxNumMessages)
+            Me.gpbMsg.Controls.Add(Me.m_lblMaxNumMessages)
             Me.gpbMsg.Controls.Add(Me.cbInformation)
             Me.gpbMsg.Controls.Add(Me.cbWarning)
             Me.gpbMsg.Controls.Add(Me.cbCritical)
@@ -168,6 +173,19 @@ Partial Class ucAppGeneral
             resources.ApplyResources(Me.lbCritical, "lbCritical")
             Me.lbCritical.Name = "lbCritical"
             '
+            'm_nudMaxNumMessages
+            '
+            resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
+            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
+            Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_lblMaxNumMessages
+            '
+            resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
+            Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
+            '
             'ucAppGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -183,6 +201,7 @@ Partial Class ucAppGeneral
             Me.GroupBox2.PerformLayout()
             Me.gpbMsg.ResumeLayout(False)
             Me.gpbMsg.PerformLayout()
+            CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -204,6 +223,8 @@ Partial Class ucAppGeneral
         Friend WithEvents lbInformation As System.Windows.Forms.Label
         Friend WithEvents lbWarning As System.Windows.Forms.Label
         Friend WithEvents lbCritical As System.Windows.Forms.Label
+        Private WithEvents m_nudMaxNumMessages As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
 
     End Class
 

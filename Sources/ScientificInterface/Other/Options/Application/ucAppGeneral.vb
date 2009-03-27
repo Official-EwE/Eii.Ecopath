@@ -1,66 +1,14 @@
 '==============================================================================
 '
 ' $Log: ucAppGeneral.vb,v $
+' Revision 1.3  2009/03/27 13:39:25  jeroens
+' Limited number of status messages
+'
 ' Revision 1.2  2008/12/15 15:56:02  jeroens
 ' no message
 '
 ' Revision 1.1  2008/09/26 07:32:09  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.13  2008/08/14 01:53:24  jeroens
-' Simplified
-'
-' Revision 1.12  2008/08/07 18:19:35  jeroens
-' Woops
-'
-' Revision 1.11  2008/07/29 23:42:06  jeroens
-' Settings not saved here; is job of controlling class
-'
-' Revision 1.10  2008/02/13 16:42:08  jeroens
-' no message
-'
-' Revision 1.9  2007/10/07 13:47:20  jeroens
-' * Fixed incompatibility issue on My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-'
-' Revision 1.8  2007/07/08 07:35:57  jeroens
-' * Localized
-'
-' Revision 1.7  2007/06/14 14:55:26  jeroens
-' * Fixed layout
-'
-' Revision 1.6  2007/05/30 13:21:40  jeroens
-' * Message feedback strings obtained from sc.int resources
-' * Simplified message pop logic
-'
-' Revision 1.5  2007/05/29 16:53:39  jeroens
-' * Set message feedback defaults
-'
-' Revision 1.4  2007/05/22 16:27:33  jeroens
-' no message
-'
-' Revision 1.3  2007/05/22 15:52:15  jeroens
-' * Message display options neatified
-'
-' Revision 1.2  2007/04/17 18:26:05  fgao
-' Reorgazing options structure.
-'
-' Revision 1.1  2007/04/04 23:44:46  fgao
-' Reorganize option folder..Divide into Application and Model settings.
-'
-' Revision 1.6  2006/12/07 00:24:15  fgao
-' 1. Add turn on/off layout setting
-' 2. Add the save layout file location
-' 3. Add RemoveAll layout file option
-'
-' Revision 1.5  2006/11/29 19:26:30  fgao
-' Commented eii related code..
-'
-' Revision 1.4  2006/11/21 00:13:29  fgao
-' Add layout settings
-'
-' Revision 1.3  2006/11/19 04:55:10  jeroens
-' + Added title bar
-' + Controls properly anchored
 '
 '==============================================================================
 
@@ -191,6 +139,8 @@ Namespace Other
             My.Settings.FeedbackInformationPopup = m_bInfoPop
             My.Settings.FeedbackInformationStatusMessage = m_bInfoStat
 
+            My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
+
         End Sub
 
         Private Sub btnSaveLocation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveLocation.Click
@@ -268,6 +218,9 @@ Namespace Other
             ' Information
             If m_bInfoStat Then iIndex = CInt(IIf(m_bInfoPop, 3, 2)) Else iIndex = CInt(IIf(m_bInfoPop, 1, 0))
             Me.cbInformation.SelectedIndex = iIndex
+
+            Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
+                                                Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.FeedbackMessageLogSize)))
 
         End Sub
 
