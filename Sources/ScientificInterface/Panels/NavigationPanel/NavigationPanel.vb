@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.21  2009/03/27 22:03:56  jeroens
+' SelectedNodeName properly responds to invalid nodes
+' SelectedNodeName no longer loops
+'
 ' Revision 1.20  2009/03/26 17:52:33  jeroens
 ' Fixed confusion between rate and effort shape names - part III
 '
@@ -219,31 +223,45 @@ Public Class NavigationPanel
 
 #Region " Properties "
 
+    Private m_bInUpdate As Boolean = False
+
     ''' <summary>
     ''' Get or set the current selected node name in the nav structure
     ''' </summary>
     ''' <remarks>In order to highlight the selection</remarks>
     Public Property SelectedNodeName() As String
+
         Get
             If Me.m_tvNavigation.SelectedNode Is Nothing Then Return ""
             Return Me.m_tvNavigation.SelectedNode.Name
         End Get
-        'This value is the text or tabtext of the form
-        'FG - Nov 22, 2006: This is a bug for passing text as the key for the same names.
-        ' Right now, each form is not designed to have a unique name..To be updated.
+
         Set(ByVal value As String)
+
+            Dim bSelected As Boolean = False
+            Dim nd As TreeNode = Nothing
+
             If m_tvNavigation.Nodes.Count = 0 Then Return
 
-            ' Need to clear selected node?
-            If value = String.Empty Then
-                ' Whoohoo
-                Me.m_tvNavigation.SelectedNode = Nothing
-            Else
-                Dim nd As TreeNode = Me.FindNode(Me.m_tvNavigation.Nodes, value)
-                If Not nd Is Nothing And Not Object.ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
+            If Me.m_bInUpdate Then Return
+            Me.m_bInUpdate = True
+
+            ' Try to find node to select
+            If Not String.IsNullOrEmpty(value) Then
+                nd = Me.FindNode(Me.m_tvNavigation.Nodes, value)
+                If (nd IsNot Nothing) And Not Object.ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
                     Me.m_tvNavigation.SelectedNode = nd
+                    bSelected = True
                 End If
             End If
+
+            ' No node selected?
+            If Not bSelected Then
+                ' #Yep: clear selection, just in case
+                Me.m_tvNavigation.SelectedNode = Nothing
+            End If
+
+            Me.m_bInUpdate = False
 
         End Set
 
