@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmEwEGrid.vb,v $
+' Revision 1.5  2009/03/27 19:24:43  jeroens
+' Cleanup done in overrides
+' Changed all withevents cases to addhandler, removehandler
+'
 ' Revision 1.4  2009/03/12 14:10:30  jeroens
 ' Core message rerouted to the grid
 '
@@ -25,6 +29,7 @@ Imports ScientificInterface.Ecopath.Input
 Imports EwEUtils.Core
 Imports System.Globalization
 Imports System.Threading
+Imports System.Windows.Forms
 
 #End Region
 
@@ -51,17 +56,17 @@ Public Class frmEwEGrid
         ''' <summary>The form that this handler is connected to.</summary>
         Private m_form As frmEwEGrid = Nothing
         ''' <summary>The grid whose selection is monitored.</summary>
-        Private WithEvents m_grid As EwEGrid = Nothing
+        Private m_grid As EwEGrid = Nothing
         ''' <summary>The toolstrip that is managed by this handler.</summary>
         Private m_ts As ToolStrip = Nothing
         ''' <summary>Flag stating whether a toolstrip was created by this handler (true), or whether an existing toolstrip was hijacked (false).</summary>
         Private m_bToolStripCreated As Boolean = False
         ''' <summary>The value edit box that is managed by this handler.</summary>
-        Private WithEvents m_ttbValue As ToolStripTextBox = Nothing
+        Private m_ttbValue As ToolStripTextBox = Nothing
         ''' <summary>The edit box label that is managed by this handler.</summary>
-        Private WithEvents m_lblSet As ToolStripLabel = Nothing
+        Private m_lblSet As ToolStripLabel = Nothing
         ''' <summary>Set button that is managed by this handler.</summary>
-        Private WithEvents m_btnSet As ToolStripButton = Nothing
+        Private m_btnSet As ToolStripButton = Nothing
         ''' <summary>Flag stating whether handler is attached.</summary>
         Private m_bAttached As Boolean = False
 
@@ -92,6 +97,8 @@ Public Class frmEwEGrid
             Me.m_form = frm
             ' Store ref to grid
             Me.m_grid = frm.Grid
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectioChanged
+
             ' Init
             Me.m_bToolStripCreated = False
 
@@ -115,11 +122,16 @@ Public Class frmEwEGrid
 
             ' Create quick edit label
             Me.m_lblSet = New ToolStripLabel(My.Resources.LABEL_SET)
+
             ' Create quick edit text box
             Me.m_ttbValue = New ToolStripTextBox("tsQuickEdit")
             Me.m_ttbValue.AcceptsReturn = True
+            AddHandler Me.m_ttbValue.KeyDown, AddressOf OnTextBoxKeyDown
+
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.NavForward)
+            AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+
             ' Add items to the toolstrip
             If (ci.TextInfo.IsRightToLeft) Then
                 Me.m_lblSet.Alignment = ToolStripItemAlignment.Left
@@ -165,8 +177,19 @@ Public Class frmEwEGrid
                 Me.m_bToolStripCreated = False
             End If
 
-            Me.m_ts = Nothing
+            RemoveHandler Me.m_ttbValue.KeyDown, AddressOf OnTextBoxKeyDown
+            Me.m_ttbValue.Dispose()
             Me.m_ttbValue = Nothing
+
+            RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+            Me.m_btnSet.Dispose()
+            Me.m_btnSet = Nothing
+
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectioChanged
+            Me.m_grid = Nothing
+
+            Me.m_ts = Nothing
+
             Me.m_bAttached = False
 
             ' Re-align content
@@ -184,7 +207,7 @@ Public Class frmEwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnTextBoxKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_ttbValue.KeyDown
+        Private Sub OnTextBoxKeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then Me.ApplyValueToSelection(Me.m_ttbValue.Text)
         End Sub
@@ -195,7 +218,7 @@ Public Class frmEwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnSet.Click
+        Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ApplyValueToSelection(Me.m_ttbValue.Text)
         End Sub
 
@@ -203,7 +226,7 @@ Public Class frmEwEGrid
 
 #Region " Grid events "
 
-        Private Sub OnGridSelectioChanged(ByVal cells As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub OnGridSelectioChanged(ByVal cells As SourceGrid2.CellVirtualCollection)
             Me.UpdateControls()
         End Sub
 
@@ -409,18 +432,22 @@ Public Class frmEwEGrid
 
 #End Region ' Obligatory overrides
 
-#Region " Form event handlers "
+#Region " Form overrides "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler; handles the Load event to finalize this form for usage.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnGridFormLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+
+        MyBase.OnLoad(e)
+
         ' Designer crap
         If (Me.m_grid Is Nothing) Then Return
         ' Connect to message sources
         Me.CoreComponents = Me.m_grid.MessageSources
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -428,14 +455,20 @@ Public Class frmEwEGrid
     ''' Event handler; handles the Disposed event to clear this form after usage.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnGridFormDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+
         ' Release any quick edit handler
         Me.SetQuickEditHandler(False)
         ' Clear any message source links
         Me.CoreComponents = Nothing
+        ' Kill the grid
+        Me.m_grid.Dispose()
+        Me.m_grid = Nothing
+
+        MyBase.OnFormClosing(e)
     End Sub
 
-#End Region ' Form event handlers
+#End Region ' Form overrides
 
 #Region " Public interfaces "
 
