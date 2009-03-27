@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwE.vb,v $
+' Revision 1.7  2009/03/27 19:23:58  jeroens
+' Cleanup done in overrides
+'
 ' Revision 1.6  2009/02/05 21:01:32  jeroens
 ' Fixed XML comment confusion
 '
@@ -19,48 +22,6 @@
 ' Revision 1.1  2008/09/26 07:32:08  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.3  2008/08/14 01:52:40  jeroens
-' Form position stored and restored
-'
-' Revision 1.2  2008/07/16 15:12:59  jeroens
-' Removed obsolete CLS compliancy fixes
-'
-' Revision 1.1  2008/06/04 00:55:48  jeroens
-' Renamed
-'
-' Revision 1.11  2008/04/07 02:31:18  jeroens
-' Cleaning up resources
-'
-' Revision 1.10  2007/12/09 22:15:16  jeroens
-' * Simplified
-'
-' Revision 1.9  2007/11/02 22:20:07  jeroens
-' * Uses StatusPanel-type of message handler registration
-'
-' Revision 1.8  2007/11/02 16:28:51  jeroens
-' * Patched core message source update structure, must change similar to StatusPanel
-'
-' Revision 1.7  2007/10/19 02:19:35  jeroens
-' * Changed abstract methods to overridable, class no longer MustInherit to allow derived forms to be edited in the Form designer.
-'
-' Revision 1.6  2007/10/16 14:22:19  jeroens
-' * Fixed compiler warnings
-'
-' Revision 1.5  2007/10/15 15:17:56  jeroens
-' * Responds to all message types
-'
-' Revision 1.4  2007/10/12 20:20:36  jeroens
-' * Responds to time series messages
-'
-' Revision 1.3  2007/10/12 16:41:30  jeroens
-' + Original message passed to OnCoreDataChanged
-'
-' Revision 1.2  2007/10/10 04:09:00  jeroens
-' * Ok, the idea was brilliant but the execution sucked. Fixed silly bug...
-'
-' Revision 1.1  2007/10/10 02:28:31  jeroens
-' Initial version
-'
 '==============================================================================
 
 #Region " Imports "
@@ -73,6 +34,7 @@ Imports WeifenLuo.WinFormsUI
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
 Imports System.ComponentModel
+Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -312,27 +274,20 @@ Public Class frmEwE
 
 #End Region ' Constructors
 
-#Region " Form events "
+#Region " Form overrides "
 
-    Private Sub frmEwE_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        cFormPositionSettings.GetInstance().Store(Me)
-    End Sub
-
-    Private Sub frmEwE_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
         cFormPositionSettings.GetInstance().Apply(Me)
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Disposed handler, cleans up
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub EwEForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        ' Release message sources
+    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+        cFormPositionSettings.GetInstance().Store(Me)
         Me.CoreComponents = Nothing
+        MyBase.OnFormClosing(e)
     End Sub
 
-#End Region ' Form events
+#End Region ' Form overrides
 
 #Region " Overrides "
 
