@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwEGrid.vb,v $
+' Revision 1.6  2009/03/27 20:49:31  jeroens
+' Safety check on Dispose
+'
 ' Revision 1.5  2009/03/27 19:24:43  jeroens
 ' Cleanup done in overrides
 ' Changed all withevents cases to addhandler, removehandler
@@ -462,8 +465,10 @@ Public Class frmEwEGrid
         ' Clear any message source links
         Me.CoreComponents = Nothing
         ' Kill the grid
-        Me.m_grid.Dispose()
-        Me.m_grid = Nothing
+        If (Me.m_grid IsNot Nothing) Then
+            Me.m_grid.Dispose()
+            Me.m_grid = Nothing
+        End If
 
         MyBase.OnFormClosing(e)
     End Sub
