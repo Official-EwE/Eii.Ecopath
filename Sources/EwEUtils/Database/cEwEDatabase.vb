@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.13  2009/03/27 21:05:57  jeroens
+' Fixed unlikely but possible crash on AddRow sequence logic
+'
 ' Revision 1.12  2009/03/26 15:50:47  jeroens
 ' Added CanCompact
 '
@@ -293,12 +296,19 @@ Namespace Database
 
                     ' Re-align sequence numbers in the table
                     For nRow As Integer = 0 To rowsTemp.Length - 1
+
                         ' Get the row
                         rowTemp = rowsTemp(nRow)
                         ' Is this a valid row?
                         If (rowTemp IsNot Nothing) Then
+
                             ' #Yes: Get sequence number of this row
-                            nSeqTemp = CInt(rowTemp(Me.m_strSequenceField))
+                            If Not Convert.IsDBNull(rowTemp(Me.m_strSequenceField)) Then
+                                nSeqTemp = CInt(rowTemp(Me.m_strSequenceField))
+                            Else
+                                nSeqTemp = nSequence
+                            End If
+
                             ' Is this the spot where the new row should go?
                             If (nSeqTemp = nSequence) Then
                                 ' #Yes: leave a spot in the sequence index
@@ -307,8 +317,10 @@ Namespace Database
                                 ' #No: just increment the sequence index
                                 nSequenceIndex += 1
                             End If
+
                             ' Update row sequence number
                             rowTemp(Me.m_strSequenceField) = nSequenceIndex
+
                         End If ' Is a valid row
                     Next ' Re-align sequence numbers
                 End If ' Need to update sequence field
