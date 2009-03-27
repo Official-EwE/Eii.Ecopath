@@ -26,7 +26,6 @@ Imports WeifenLuo.WinFormsUI.Docking
         Me.cmenuListBox = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Item_Remove = New System.Windows.Forms.ToolStripMenuItem
         Me.Item_RemoveAll = New System.Windows.Forms.ToolStripMenuItem
-        Me.tmStatus = New System.Windows.Forms.Timer(Me.components)
         Me.tvStatus = New System.Windows.Forms.TreeView
         Me.cmenuListBox.SuspendLayout()
         Me.SuspendLayout()
@@ -46,10 +45,6 @@ Imports WeifenLuo.WinFormsUI.Docking
         '
         Me.Item_RemoveAll.Name = "Item_RemoveAll"
         resources.ApplyResources(Me.Item_RemoveAll, "Item_RemoveAll")
-        '
-        'tmStatus
-        '
-        Me.tmStatus.Interval = 5000
         '
         'tvStatus
         '
@@ -71,11 +66,11 @@ Imports WeifenLuo.WinFormsUI.Docking
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents cmenuListBox As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents Item_Remove As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents Item_RemoveAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tmStatus As System.Windows.Forms.Timer
-    Friend WithEvents tvStatus As System.Windows.Forms.TreeView
+
+    Private WithEvents cmenuListBox As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents Item_Remove As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents Item_RemoveAll As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents tvStatus As System.Windows.Forms.TreeView
 
 End Class
 

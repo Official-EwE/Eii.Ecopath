@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.6  2009/03/27 21:37:12  jeroens
+' Status panel slides open temproarily
+'
 ' Revision 1.5  2009/03/27 13:39:26  jeroens
 ' Limited number of status messages
 '
@@ -247,14 +250,10 @@ Public Class StatusPanel
 
         End If
 
-        ' When the core sends out critical or warning message, status panel will dock it automatically 
-        ' if it is auto hidden..
-        If Me.VisibleState = DockState.DockBottomAutoHide Then
-
-            If msg.Importance = eMessageImportance.Critical Or _
-                    msg.Importance = eMessageImportance.Warning Then
-                Me.VisibleState = DockState.DockBottom
-                tmStatus.Enabled = True
+        ' When the core sends out critical or warning message, status panel will slide open temporarily
+        If (msg.Importance = eMessageImportance.Critical) Or (msg.Importance = eMessageImportance.Warning) Then
+            If (Me.DockPanel IsNot Nothing) Then
+                Me.DockPanel.ActiveAutoHideContent = Me
             End If
 
         End If
@@ -566,21 +565,6 @@ Public Class StatusPanel
     Private Sub lbStatus_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvStatus.MouseUp
         ' Clear any highlights
         SetHighlights(Nothing)
-    End Sub
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Event handler; traps the timer event to make the status pane switch
-    ''' its dock state.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub tmStatus_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmStatus.Tick
-        If Me.VisibleState = DockState.DockBottom Then
-            ' Hide panel
-            Me.VisibleState = DockState.DockBottomAutoHide
-            ' Stop timer
-            tmStatus.Enabled = False
-        End If
     End Sub
 
 #End Region ' Message highlighting
