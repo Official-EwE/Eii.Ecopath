@@ -2256,9 +2256,9 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_VALUE_ALL" xml:space="preserve">
     <value>(All)</value>
   </data>
-  <data name="ECOSIM_LABEL_OVERLAY" xml:space="preserve">
-    <value>Overlay {0}</value>
-    <comment>{0}: overlay number</comment>
+  <data name="ECOSIM_LABEL_RUN" xml:space="preserve">
+    <value>Run {0}</value>
+    <comment>{0}: run number</comment>
   </data>
   <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
     <value>Relative catch</value>
@@ -2272,5 +2272,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PSD_GRAPH_REGRESSION_LABEL" xml:space="preserve">
     <value>Slope = {0}, Intercept = {1}</value>
     <comment>{0}: slope value, {1}: intercept value</comment>
+  </data>
+  <data name="ECOSIM_VALUE_ALL_RUNS" xml:space="preserve">
+    <value>(All runs)</value>
   </data>
 </root>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphBiomassPlotter.vb,v $
+' Revision 1.2  2009/03/27 19:29:21  jeroens
+' Overlay -> Run
+'
 ' Revision 1.1  2009/03/23 02:31:55  jeroens
 ' Moved
 '
@@ -75,9 +78,9 @@ Namespace Controls
         Private m_core As cCore = Nothing
         Private m_sg As StyleGuide = StyleGuide.GetInstance()
 
-        Private m_bUseOverlays As Boolean = False
-        Private m_lclOverlays As New List(Of CurveList)
-        Private m_clOverlayCurrent As New CurveList
+        Private m_bShowMultipleRuns As Boolean = False
+        Private m_lclRuns As New List(Of CurveList)
+        Private m_clRunCurrent As New CurveList
         Private m_dicTimeSeriesGroup As New Dictionary(Of Integer, CurveItem)
         Private m_pplSum As New PointPairList
 
@@ -87,13 +90,13 @@ Namespace Controls
 
             Public m_strName As String = ""
             Public m_iIndex As Integer = 0
-            Public m_iOverlay As Integer = 0
+            Public m_iRun As Integer = 0
             Public m_lineType As eLineType = eLineType.CumulativeBiomass
 
-            Public Sub New(ByVal strName As String, ByVal iIndex As Integer, ByVal iOverlay As Integer, ByVal lineType As eLineType)
+            Public Sub New(ByVal strName As String, ByVal iIndex As Integer, ByVal iRun As Integer, ByVal lineType As eLineType)
                 m_strName = strName
                 m_iIndex = iIndex
-                m_iOverlay = iOverlay
+                m_iRun = iRun
                 m_lineType = lineType
             End Sub
         End Class
@@ -144,25 +147,25 @@ Namespace Controls
         ''' Makes sure all the object is set. Cleans up all list if required.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub PrepareOverlay(Optional ByVal bForceClear As Boolean = False)
-            If (Me.m_bUseOverlays = False) Or (bForceClear = True) Then
-                Me.m_lclOverlays.Clear()
+        Public Sub PrepareNewRun(Optional ByVal bForceClear As Boolean = False)
+            If (Me.m_bShowMultipleRuns = False) Or (bForceClear = True) Then
+                Me.m_lclRuns.Clear()
                 Me.m_graphPane.CurveList.Clear()
                 Me.m_dicTimeSeriesGroup.Clear()
             End If
-            Me.m_clOverlayCurrent = New CurveList()
+            Me.m_clRunCurrent = New CurveList()
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Add a single line to the current overlay.
+        ''' Add a single line to the current run.
         ''' </summary>
         ''' <param name="strLabel">Label of the line to add.</param>
         ''' <param name="iGroup">Index of the underlying group.</param>
         ''' -------------------------------------------------------------------
         Public Sub AddLine(ByVal strLabel As String, ByVal iGroup As Integer, ByVal lineType As eLineType, ByVal list As PointPairList)
             Dim crv As LineItem = Nothing
-            Dim crvType As cCurveType = New cCurveType(strLabel, iGroup, m_lclOverlays.Count - 1, lineType)
+            Dim crvType As cCurveType = New cCurveType(strLabel, iGroup, m_lclRuns.Count - 1, lineType)
 
             Select Case crvType.m_lineType
 
@@ -172,13 +175,13 @@ Namespace Controls
                     crv = m_graphPane.AddCurve(strLabel, list, Drawing.Color.LightSlateGray, SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     crv.Line.Fill = New Fill(Me.m_sg.GroupColor(m_core, iGroup))
-                    Me.m_clOverlayCurrent.Add(crv)
+                    Me.m_clRunCurrent.Add(crv)
                     crv.Tag = crvType
 
                 Case eLineType.RelativeBiomass, eLineType.RelativeCatch
                     crv = m_graphPane.AddCurve(strLabel, list, Me.m_sg.GroupColor(m_core, iGroup), SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
-                    Me.m_clOverlayCurrent.Add(crv)
+                    Me.m_clRunCurrent.Add(crv)
                     crv.Tag = crvType
 
                 Case eLineType.TimeSeries
@@ -205,11 +208,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Store the overlay in the archive.
+        ''' Store the run in the archive.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub StoreOverlay()
-            m_lclOverlays.Add(m_clOverlayCurrent)
+        Public Sub StoreRun()
+            m_lclRuns.Add(m_clRunCurrent)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -220,26 +223,24 @@ Namespace Controls
         ''' <param name="i"></param>
         ''' <param name="iCount"></param>
         ''' <param name="iGroup">Group index to select</param>
-        ''' <param name="iOverlay">The overlay to highlight.</param>
+        ''' <param name="iRun">The run to highlight.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Highlight(ByVal i As Integer, ByVal iCount As Integer, ByVal iGroup As Integer, ByVal iOverlay As Integer)
+        Public Sub Highlight(ByVal i As Integer, ByVal iCount As Integer, ByVal iGroup As Integer, ByVal iRun As Integer)
 
             ' This is a tricky situation
-            ' Overlay is one less than overlay index thus
-            ' the need to overlay is <= 0
 
-            If iGroup <= 0 And iOverlay < 0 Then
+            If iGroup <= 0 And iRun < 0 Then
                 ' Set set all to normal color
                 SetAllToColors(True)
 
-            ElseIf iGroup > 0 And iOverlay < 0 Then
-                ' Set only group for all overlays
+            ElseIf iGroup > 0 And iRun < 0 Then
+                ' Set only group for all runs
 
                 'If highlighting the last curve (curve with the highest index in the collection)
                 If i = iCount - 1 Then SetAllToColors(False)
 
-                For iOver As Integer = 0 To m_lclOverlays.Count - 1
-                    Dim crv As CurveItem = m_lclOverlays.Item(iOver).Item(iGroup - 1)
+                For iOver As Integer = 0 To m_lclRuns.Count - 1
+                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iGroup - 1)
                     Dim crvType As cCurveType = DirectCast(crv.Tag, cCurveType)
 
                     'If relative plot then plot line of selected group with highlight
@@ -256,7 +257,7 @@ Namespace Controls
                         SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
                         If iGroup >= 2 Then
-                            crv = m_lclOverlays.Item(iOver).Item(iGroup - 2)
+                            crv = m_lclRuns.Item(iOver).Item(iGroup - 2)
                             SetLine(crv, True, False, True)
                         End If
                         'If needed, plot lines of the remaining groups
@@ -269,21 +270,21 @@ Namespace Controls
 
                 ' Need to set all of the keys individually for all the groups.
 
-            ElseIf iGroup <= 0 And iOverlay >= 0 Then
-                ' Only single Overlay to highlight
+            ElseIf iGroup <= 0 And iRun >= 0 Then
+                ' Only single run to highlight
 
                 SetAllToColors(False)
-                For j As Integer = 1 To m_lclOverlays.Item(iOverlay).Count
-                    Dim crv As CurveItem = m_lclOverlays.Item(iOverlay).Item(j - 1)
+                For j As Integer = 1 To m_lclRuns.Item(iRun).Count
+                    Dim crv As CurveItem = m_lclRuns.Item(iRun).Item(j - 1)
                     SetLine(crv, True, True)
                 Next
 
 
-            ElseIf iGroup > 0 And iOverlay >= 0 Then
+            ElseIf iGroup > 0 And iRun >= 0 Then
                 ' Set only one line
 
                 SetAllToColors(False)
-                Dim crv As CurveItem = m_lclOverlays.Item(iOverlay).Item(iGroup - 1)
+                Dim crv As CurveItem = m_lclRuns.Item(iRun).Item(iGroup - 1)
                 SetLine(crv, True, True)
 
             End If
@@ -295,29 +296,29 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether overlays are enabled.
+        ''' Get/set whether multiple runs should be shown.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Overlay() As Boolean
+        Public Property ShowMultipleRuns() As Boolean
             Get
-                Return m_bUseOverlays
+                Return m_bShowMultipleRuns
             End Get
             Set(ByVal value As Boolean)
                 If value Then
-                    PrepareOverlay()
+                    PrepareNewRun()
                 End If
-                m_bUseOverlays = value
+                m_bShowMultipleRuns = value
             End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Gets the number of overlays.
+        ''' Gets the number of runs.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumOverlays() As Integer
+        Public ReadOnly Property NumRuns() As Integer
             Get
-                Return m_lclOverlays.Count
+                Return m_lclRuns.Count
             End Get
         End Property
 
@@ -368,10 +369,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
             ' Set the lines
-            For iOver As Integer = 0 To m_lclOverlays.Count - 1
-                'For iIndex As Integer = 0 To m_Overlays.Item(iOver).Count - 1
-                For iIndex As Integer = m_lclOverlays.Item(iOver).Count - 1 To 0 Step -1
-                    Dim crv As CurveItem = m_lclOverlays.Item(iOver).Item(iIndex)
+            For iOver As Integer = 0 To m_lclRuns.Count - 1
+                For iIndex As Integer = m_lclRuns.Item(iOver).Count - 1 To 0 Step -1
+                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iIndex)
                     If bUseOriginalColor Then
                         SetLine(crv, True, False)
                     Else
@@ -394,9 +394,9 @@ Namespace Controls
 
         Private Sub SetSomeToColors(ByVal startIndex As Integer)
             ' Set the lines
-            For iOver As Integer = 0 To m_lclOverlays.Count - 1
+            For iOver As Integer = 0 To m_lclRuns.Count - 1
                 For iIndex As Integer = startIndex To 0 Step -1
-                    Dim crv As CurveItem = m_lclOverlays.Item(iOver).Item(iIndex)
+                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iIndex)
                     SetLine(crv, True, False, True)
                 Next iIndex
             Next iOver
