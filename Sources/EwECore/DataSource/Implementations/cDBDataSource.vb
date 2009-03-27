@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.38  2009/03/27 20:48:13  jeroens
+' IncludePSD no longer stored in DB
+'
 ' Revision 1.37  2009/03/26 17:49:55  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -1801,7 +1804,6 @@ Public Class cDBDataSource
                 psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
                 psdDS.t0Input(iGroup) = CSng(reader("t0"))
                 psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
-                psdDS.Include(iGroup) = CBool(Me.ReadSafe(reader, "PSDInclude", False))
                 'End PSD
 
                 'variables with input output pairs
@@ -1905,7 +1907,6 @@ Public Class cDBDataSource
                 drow("Winf") = psdDS.WinfInput(iGroup)
                 drow("t0") = psdDS.t0Input(iGroup)
                 drow("Tmax") = psdDS.TmaxInput(iGroup)
-                drow("PSDInclude") = psdDS.Include(iGroup)
                 'End PSD
 
                 drow.EndEdit()

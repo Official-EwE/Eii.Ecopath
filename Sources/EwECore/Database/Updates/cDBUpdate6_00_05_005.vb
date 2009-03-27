@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_05_005.vb,v $
+' Revision 1.2  2009/03/27 20:48:16  jeroens
+' IncludePSD no longer stored in DB
+'
 ' Revision 1.1  2009/03/18 15:22:25  jeroens
 ' Initial version
 '
@@ -52,16 +55,14 @@ Public Class cDBUpdate6_00_05_005
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
         Get
-            Return "Added PSD parameters table." & vbNewLine & _
-                   "Added PSD fields to groups."
+            Return "Added PSD parameters table."
         End Get
     End Property
 
     Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-        Return Me.AddPSDParameters(db) And _
-               Me.AddPSDFields(db)
+        Return Me.AddPSDParameters(db) 
 
     End Function
 
@@ -80,16 +81,6 @@ Public Class cDBUpdate6_00_05_005
         End Try
 
         Return bSucces
-
-    End Function
-
-    Private Function AddPSDFields(ByVal db As cEwEDatabase) As Boolean
-
-        Try
-            Return db.Execute("ALTER TABLE EcopathGroup ADD COLUMN PSDInclude INTEGER")
-        Catch ex As Exception
-        End Try
-        Return False
 
     End Function
 
