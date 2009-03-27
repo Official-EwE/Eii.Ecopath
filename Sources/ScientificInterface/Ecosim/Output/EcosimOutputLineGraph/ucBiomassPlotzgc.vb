@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.34  2009/03/27 19:36:25  jeroens
+' Overlay -> Run
+' Activated group display flags
+'
 ' Revision 1.33  2009/03/23 21:13:04  jeroens
 ' Fixed issue 598
 '
@@ -178,7 +182,7 @@ Namespace Ecosim
         ''' Populate the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Populate()
+        Public Sub PopulateGraph()
             Dim list1 As New PointPairList()
             Dim listSum As New PointPairList
 
@@ -190,8 +194,8 @@ Namespace Ecosim
                 Return
             End If
 
-            ' 1) Parepare dataset
-            m_zgp.PrepareOverlay()
+            ' 1) Parepare new run
+            m_zgp.PrepareNewRun()
 
             'Cumulative plot
             If CumulativeToolStripMenuItem.Checked Then
@@ -219,7 +223,10 @@ Namespace Ecosim
                 Next t
 
                 ' todo: change to groups that listed in group box
-                For i As Integer = 1 To m_core.nGroups
+                For iLBItem As Integer = 1 To Me.m_lbGroups.Items.Count - 1
+
+                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), GroupListBox.GroupItem).Group.Index
+
                     'Catch
                     If CatchToolStripMenuItem.Checked Then
                         'Find the sum of discard and landing of the group
@@ -289,7 +296,7 @@ Namespace Ecosim
                         m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.CumulativeCatch, list1)
                     End If
 
-                Next i
+                Next
             End If
 
             'Relative plot
@@ -305,17 +312,22 @@ Namespace Ecosim
                 End If
 
                 ' todo: change to groups that listed in group box
-                For i As Integer = 1 To m_core.nGroups
-                    'Catch
-                    If CatchToolStripMenuItem.Checked Then
-                        'Find the sum of discard and landing of the group
-                        Dim dblSumDiscardsLandings As Double = 0.0
-                        For f As Integer = 1 To m_core.nFleets
-                            dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
-                        Next f
-                        'If sum=0 then skip this group
-                        If Not dblSumDiscardsLandings > 0 Then Continue For
-                    End If
+                For j As Integer = 1 To Me.m_lbGroups.Items.Count - 1
+
+                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), GroupListBox.GroupItem).Group.Index
+
+                    ' No need to check; already done in populating group box
+
+                    ''Catch
+                    'If CatchToolStripMenuItem.Checked Then
+                    '    'Find the sum of discard and landing of the group
+                    '    Dim dblSumDiscardsLandings As Double = 0.0
+                    '    For f As Integer = 1 To m_core.nFleets
+                    '        dblSumDiscardsLandings = dblSumDiscardsLandings + m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i)
+                    '    Next f
+                    '    'If sum=0 then skip this group
+                    '    If Not dblSumDiscardsLandings > 0 Then Continue For
+                    'End If
 
                     list1 = New PointPairList
                     list1.Add(0, 1) ' Brute force to make 0 TS 1
@@ -354,12 +366,12 @@ Namespace Ecosim
                         m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.RelativeCatch, list1)
                     End If
 
-                Next i
+                Next j
             End If
 
 
             ' 4) Tell the plotter it's finished
-            Me.m_zgp.StoreOverlay()
+            Me.m_zgp.StoreRun()
 
             ' JS: I'm too impatient to figure out how to make the plotter do this
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
@@ -367,9 +379,6 @@ Namespace Ecosim
 
             ' Draw timeseries 
             If BiomassToolStripMenuItem.Checked And RelativeToolStripMenuItem.Checked Then DrawTimeSeries()
-
-            ' Make sure the group boxes say the correct items.
-            PopulateListBoxes()
 
             ' Calculate the Axis Scale Ranges
             Me.m_zgh.RescaleAndRedraw()
@@ -394,7 +403,7 @@ Namespace Ecosim
                 ts = m_core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
                     If TypeOf ts Is cGroupTimeSeries Then
-                        Dim gts As cGroupTimeSeries = CType(ts, cGroupTimeSeries)
+                        Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
                         If gts.Enabled() Then
                             'm_abHasTSData(gts.GroupIndex) = True
                             Dim da() As Single = gts.ShapeData()
@@ -424,8 +433,9 @@ Namespace Ecosim
         End Sub
 
         Public Sub OnCoreExecutionStateChanged()
-            Me.m_zgp.PrepareOverlay()
-            Me.PopulateListBoxes()
+            Me.m_zgp.PrepareNewRun()
+            Me.PopulateRunsBox()
+            Me.PopulateGroupBox()
         End Sub
 
         Public WriteOnly Property SSValue() As Single
@@ -441,12 +451,12 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary> Upon toggleing of menu item </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OverlayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverlayToolStripMenuItem.Click
-            OverlayToolStripMenuItem.Checked = Not OverlayToolStripMenuItem.Checked
-            m_zgp.Overlay = OverlayToolStripMenuItem.Checked
-            PopulateListBoxes()
+        Private Sub m_tsmShowMultipleRuns_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmShowMultipleRuns.Click
+            m_tsmShowMultipleRuns.Checked = Not m_tsmShowMultipleRuns.Checked
+            m_zgp.ShowMultipleRuns = m_tsmShowMultipleRuns.Checked
+            Me.PopulateRunsBox()
             m_zgh.RescaleAndRedraw()
-            SplitContainer1.Panel1Collapsed = Not OverlayToolStripMenuItem.Checked
+            SplitContainer1.Panel1Collapsed = Not m_tsmShowMultipleRuns.Checked
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -454,8 +464,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
             AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
-            m_zgp.PrepareOverlay(True)
-            PopulateListBoxes()
+            m_zgp.PrepareNewRun(True)
+            Me.PopulateGroupBox()
             m_zgh.RescaleAndRedraw()
         End Sub
 
@@ -470,7 +480,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
             RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
-            Me.Populate()
+            Me.PopulateGraph()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -478,7 +488,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
             CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
-            Me.Populate()
+            Me.PopulateGraph()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -488,7 +498,7 @@ Namespace Ecosim
             CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
             'Set default plot type to relative
             RelativeToolStripMenuItem.Checked = True
-            Me.Populate()
+            Me.PopulateGraph()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -498,7 +508,7 @@ Namespace Ecosim
             BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
             'Set default plot type to relative
             RelativeToolStripMenuItem.Checked = True
-            Me.Populate()
+            Me.PopulateGraph()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -553,7 +563,7 @@ Namespace Ecosim
 
             Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, _
                     My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS)
-            Me.m_zgp.Overlay = OverlayToolStripMenuItem.Selected
+            Me.m_zgp.ShowMultipleRuns = m_tsmShowMultipleRuns.Selected
 
             ' Set the axis
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
@@ -562,14 +572,17 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+
             Me.InvalidateGraph()
-            Me.Populate()
+            Me.PopulateGroupBox()
+            Me.PopulateGraph()
+
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary> When any of the indexes are changed </summary>
         ''' -------------------------------------------------------------------
-        Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbOverlay.SelectedIndexChanged, lbGroups.SelectedIndexChanged
+        Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
             Me.InvalidateGraph()
         End Sub
 #End Region ' Events
@@ -577,63 +590,89 @@ Namespace Ecosim
 #Region " Private Helpers "
 
         Private Sub InvalidateGraph()
-            ' The plotter will set the highlight for this item.
-            'm_ZGPlotter.SetHighlight(lbGroups.SelectedIndex, lbOverlay.SelectedIndex - 1)
             'Check the SelectedIndices collection
-            For i As Integer = 0 To lbGroups.SelectedIndices.Count - 1
+            For i As Integer = 0 To m_lbGroups.SelectedIndices.Count - 1
                 'If "All" is in the SelectedIndices and it is not the only selected index
-                If lbGroups.SelectedIndices(i) = 0 And lbGroups.SelectedIndices.Count > 1 Then
+                If m_lbGroups.SelectedIndices(i) = 0 And m_lbGroups.SelectedIndices.Count > 1 Then
                     'Make sure it cannot be selected
-                    lbGroups.SetSelected(i, False)
+                    m_lbGroups.SetSelected(i, False)
                     Exit For
                 End If
             Next
 
-            For i As Integer = lbGroups.SelectedIndices.Count - 1 To 0 Step -1
-                m_zgp.Highlight(i, lbGroups.SelectedIndices.Count, lbGroups.SelectedIndices(i), lbOverlay.SelectedIndex - 1)
+            For i As Integer = m_lbGroups.SelectedIndices.Count - 1 To 0 Step -1
+                m_zgp.Highlight(i, m_lbGroups.SelectedIndices.Count, m_lbGroups.SelectedIndices(i), m_lbRuns.SelectedIndex - 1)
             Next
             Me.m_zgc.Invalidate()
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Populate group and overlay list boxes.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub PopulateListBoxes()
+        Private Sub PopulateRunsBox()
 
-            lbOverlay.SuspendLayout()
-            lbGroups.SuspendLayout()
+            m_lbRuns.SuspendLayout()
 
-            lbOverlay.Items.Clear()
-            lbOverlay.Items.Add(My.Resources.GENERIC_VALUE_ALL)
-            For i As Integer = 1 To m_zgp.NumOverlays
-                lbOverlay.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_OVERLAY, i))
+            m_lbRuns.Items.Clear()
+            m_lbRuns.Items.Add(My.Resources.GENERIC_VALUE_ALL)
+            For i As Integer = 1 To m_zgp.NumRuns
+                m_lbRuns.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_RUN, i))
             Next
-            lbOverlay.SelectedIndex = 0
+            m_lbRuns.SelectedIndex = 0
+            m_lbRuns.ResumeLayout()
 
-            lbGroups.Items.Clear()
-            lbGroups.Items.Add(New GroupListBox.GroupItem(Nothing))
-            For i As Integer = 1 To m_core.nGroups
+        End Sub
+
+        Private Sub PopulateGroupBox()
+
+            Dim sSumDiscardsLandings As Double = 0.0
+            Dim group As cCoreGroupBase = Nothing
+            Dim gi As GroupListBox.GroupItem = Nothing
+            Dim groupSelected As cCoreGroupBase = Nothing
+            Dim bIncludeGroup As Boolean = False
+
+            If (Me.m_lbGroups.SelectedIndex > 0) Then
+                groupSelected = DirectCast(Me.m_lbGroups.SelectedItem, GroupListBox.GroupItem).Group
+            End If
+
+            Me.m_lbGroups.SuspendLayout()
+            Me.m_lbGroups.Items.Clear()
+            Me.m_lbGroups.Items.Add(New GroupListBox.GroupItem(Nothing))
+
+            For iGroup As Integer = 1 To m_core.nGroups
+
+                ' Include visible groups only
+                bIncludeGroup = Me.m_sg.GroupVisible(iGroup)
+
+                ' Displaying catch and discards?
                 If CatchToolStripMenuItem.Checked Then
-                    Dim sSumDiscardsLandings As Double = 0.0
-                    ' Get sum of landings and discards for this group
-                    For f As Integer = 1 To m_core.nFleets
-                        sSumDiscardsLandings += (m_core.FleetInputs(f).Discards(i) + m_core.FleetInputs(f).Landings(i))
-                    Next f
-                    ' Has landings and/or discards?
-                    If sSumDiscardsLandings > 0 Then
-                        ' #Yes: add group to the list of options
-                        lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
-                    End If
-                Else
-                    lbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
-                End If
-            Next
-            lbGroups.SelectedIndex = 0
 
-            lbOverlay.ResumeLayout()
-            lbGroups.ResumeLayout()
+                    ' Get sum of landings and discards for this group
+                    sSumDiscardsLandings = 0
+                    For f As Integer = 1 To m_core.nFleets
+                        sSumDiscardsLandings += (Me.m_core.FleetInputs(f).Discards(iGroup) + Me.m_core.FleetInputs(f).Landings(iGroup))
+                    Next f
+
+                    ' Include when group has landings and/or discards
+                    bIncludeGroup = bIncludeGroup And (sSumDiscardsLandings > 0)
+                End If
+
+                ' Include group?
+                If bIncludeGroup Then
+                    ' #Yes: add group to the list of options
+                    group = Me.m_core.EcoPathGroupInputs(iGroup)
+                    gi = New GroupListBox.GroupItem(group)
+                    Me.m_lbGroups.Items.Add(gi)
+
+                    If Object.ReferenceEquals(group, groupSelected) Then
+                        Me.m_lbGroups.SelectedItem = gi
+                    End If
+                End If
+
+            Next
+
+            If Me.m_lbGroups.SelectedItem Is Nothing Then
+                Me.m_lbGroups.SelectedIndex = 0
+            End If
+
+            m_lbGroups.ResumeLayout()
         End Sub
 
         Private Sub UpdateControls()
