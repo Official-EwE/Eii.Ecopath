@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridCell.vb,v $
+' Revision 1.10  2009/03/27 19:37:10  jeroens
+' Further cleaning up
+'
 ' Revision 1.9  2009/03/27 00:57:02  jeroens
 ' Detach cell from ALL behaviour models on Dispose
 '
@@ -75,6 +78,7 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Default visualizer for EwECells</summary>
         Private Shared g_visualizer As New EwECellVisualizer()
+
         ''' <summary>StyleGuide instance for subscribing to events</summary>
         Protected m_sg As StyleGuide = StyleGuide.GetInstance()
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
@@ -100,26 +104,27 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
         End Sub
 
-        Private disposedValue As Boolean = False        ' To detect redundant calls
+        Private m_bIsThrashed As Boolean = False
 
         ' IDisposable
-        Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-            If Not Me.disposedValue Then
-                If disposing Then
+        Protected Overridable Sub Dispose(ByVal bThrashing As Boolean)
+            If Not Me.m_bIsThrashed Then
+                If bThrashing Then
 
                     ' Release style guide event handler
                     RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                    Me.m_sg = Nothing
 
                     ' Remove all bahaviour models
-                    Me.Behaviors.Clear()
-
-                    ' Release local refs
+                    Me.Behaviors.Remove(m_bmCatchEnter)
                     Me.m_bmCatchEnter = Nothing
+
+                    Me.Behaviors.Remove(m_bmResize)
                     Me.m_bmResize = Nothing
 
                 End If
             End If
-            Me.disposedValue = True
+            Me.m_bIsThrashed = True
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
@@ -640,19 +645,20 @@ Namespace Controls.EwEGrid
                 Me.ConfigureCell(prop.GetVariableMetadata())
                 ' Fire a change notification
                 Me.onPropertyChanged(prop, cProperty.eChangeFlags.All)
-                ' Register live
+                ' Register property
                 AddHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
             End If
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 
-            ' Unregister live
-            If Me.m_property IsNot Nothing Then
+            ' Unregister property
+            If (Me.m_property IsNot Nothing) Then
                 RemoveHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
+                Me.m_property = Nothing
             End If
 
-            MyBase.Finalize()
+            MyBase.Dispose(disposing)
 
         End Sub
 

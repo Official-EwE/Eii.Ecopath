@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.12  2009/03/27 19:40:06  jeroens
+' Further cleaning up
+'
 ' Revision 1.11  2009/03/26 22:45:58  jeroens
 ' Added ClearData(), ClearRow() to properly detach EwE grid cells
 '
@@ -309,15 +312,10 @@ Namespace Controls.EwEGrid
             AddHandler m_ceRowSelect.Click, Me.m_peh2
             Me.m_peh3 = New SourceGrid2.PositionEventHandler(AddressOf bm_colSelectClick)
             AddHandler m_ceColSelect.Click, Me.m_peh3
+
         End Sub
 
-#End Region ' Constructor
-
-#Region " System events "
-
-        Private Sub EwEGrid_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
-
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Me.ClearData()
 
             RemoveHandler m_ceCellClick.Click, Me.m_peh1
@@ -327,9 +325,10 @@ Namespace Controls.EwEGrid
             RemoveHandler m_ceColSelect.Click, Me.m_peh3
             Me.m_peh3 = Nothing
 
+            MyBase.Dispose(disposing)
         End Sub
 
-#End Region ' System events
+#End Region ' Constructor
 
 #Region " EwE events "
 
