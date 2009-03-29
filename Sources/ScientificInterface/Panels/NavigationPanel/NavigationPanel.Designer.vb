@@ -60,6 +60,7 @@ Partial Class NavigationPanel
         Me.Controls.Add(Me.m_tvNavigation)
         Me.HideOnClose = True
         Me.Name = "NavigationPanel"
+        Me.TabText = "Navigator"
         Me.ResumeLayout(False)
 
     End Sub
