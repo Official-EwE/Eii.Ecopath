@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Foundation library for implementing Ecopath with Ecosim plugins")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2006-2009")> 
+<Assembly: AssemblyCopyright("Copyright 2006-2009")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
 

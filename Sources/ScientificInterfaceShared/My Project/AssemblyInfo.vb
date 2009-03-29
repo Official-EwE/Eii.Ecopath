@@ -1,30 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: AssemblyInfo.vb,v $
-' Revision 1.13  2009/03/26 04:53:41  sherman
-' Build 6.0.5.9
-'
-' Revision 1.12  2009/03/24 16:10:51  sherman
-' Build 6.0.5.8
-'
-' Revision 1.11  2009/03/23 21:07:38  sherman
-' Build 6.0.5.7
-'
-' Revision 1.10  2009/03/23 18:30:48  sherman
-' Build 6.0.5.6
-'
-' Revision 1.9  2009/03/12 15:45:04  sherman
-' Build 6.0.5.4
-'
-' Revision 1.8  2009/02/26 16:35:09  sherman
-' Build 6.0.5.2
-'
-' Revision 1.7  2009/01/23 03:08:33  jeroens
-' Fixed assembly descriptions
-'
-'==============================================================================
-
-Imports System
+﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -38,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Foundation library with Ecopath with Ecosim Scientific User Interface elements")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("ScientificInterfaceShared")> 
-<Assembly: AssemblyCopyright("Copyright © 2008-2009")> 
+<Assembly: AssemblyCopyright("Copyright 2008-2009")> 
 
 ' JS 22jan09: setting this to true will validate the entire project for CLS complicancy - kewl!
 ' <Assembly: CLSCompliant(True)> 
