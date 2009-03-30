@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicEstimatesEwEGrid.vb,v $
+' Revision 1.5  2009/03/30 19:01:56  jeroens
+' Z-column now properly hidden
+'
 ' Revision 1.4  2009/03/12 14:11:16  jeroens
 ' Implemented Z/PB columns
 '
@@ -22,6 +25,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SourceGrid2
 
 #End Region
 
@@ -171,6 +175,7 @@ Namespace Ecopath.Output
             MyBase.FinishStyle()
 
             Dim core As cCore = cCore.GetInstance()
+            Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Z)
 
             Me.Rows(0).Height = 60
             Me.Columns(eColumnTypes.Index).Width = 24
@@ -181,11 +186,7 @@ Namespace Ecopath.Output
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
 
-            If (core.nStanzas = 0) Then
-                Me.Columns(eColumnTypes.Z).Width = 0
-            Else
-                Me.Columns(eColumnTypes.Z).Width = Me.Columns(eColumnTypes.PB).Width
-            End If
+            ci.Visible = (core.nStanzas > 0)
 
         End Sub
 

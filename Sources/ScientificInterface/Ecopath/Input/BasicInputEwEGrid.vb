@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.7  2009/03/30 19:01:57  jeroens
+' Z-column now properly hidden
+'
 ' Revision 1.6  2009/03/12 14:11:16  jeroens
 ' Implemented Z/PB columns
 '
@@ -219,17 +222,14 @@ Namespace Ecopath.Input
             MyBase.FinishStyle()
 
             Dim core As cCore = cCore.GetInstance()
+            Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Z)
 
             Me.Rows(0).Height = 60
             Me.Columns(0).Width = 24
             Me.Columns(1).Width = 120
             Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
 
-            If (core.nStanzas = 0) Then
-                Me.Columns(eColumnTypes.Z).Width = 0
-            Else
-                Me.Columns(eColumnTypes.Z).Width = Me.Columns(eColumnTypes.PB).Width
-            End If
+            ci.Visible = (core.nStanzas > 0)
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
