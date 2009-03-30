@@ -154,7 +154,7 @@
     <value>0</value>
   </data>
   <data name="txbMdbNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 19</value>
+    <value>178, 20</value>
   </data>
   <data name="txbMdbNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 20</value>
@@ -430,7 +430,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 104</value>
+    <value>178, 104</value>
   </data>
   <data name="m_nudMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 20</value>
@@ -460,13 +460,13 @@
     <value>12, 106</value>
   </data>
   <data name="m_lblMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 13</value>
+    <value>160, 13</value>
   </data>
   <data name="m_lblMaxNumMessages.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblMaxNumMessages.Text" xml:space="preserve">
-    <value>Max. number of messages:</value>
+    <value>Status panel message maximum:</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
     <value>m_lblMaxNumMessages</value>
@@ -484,10 +484,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="cbInformation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 77</value>
+    <value>178, 77</value>
   </data>
   <data name="cbInformation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 21</value>
+    <value>192, 21</value>
   </data>
   <data name="cbInformation.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -508,10 +508,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="cbWarning.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 50</value>
+    <value>177, 50</value>
   </data>
   <data name="cbWarning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 21</value>
+    <value>193, 21</value>
   </data>
   <data name="cbWarning.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -532,10 +532,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="cbCritical.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 23</value>
+    <value>177, 23</value>
   </data>
   <data name="cbCritical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 21</value>
+    <value>193, 21</value>
   </data>
   <data name="cbCritical.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

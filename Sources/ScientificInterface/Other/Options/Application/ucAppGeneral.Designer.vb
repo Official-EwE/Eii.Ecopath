@@ -34,14 +34,14 @@ Partial Class ucAppGeneral
             Me.GroupBox2 = New System.Windows.Forms.GroupBox
             Me.btnRemoveAll = New System.Windows.Forms.Button
             Me.gpbMsg = New System.Windows.Forms.GroupBox
+            Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
+            Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.cbInformation = New System.Windows.Forms.ComboBox
             Me.cbWarning = New System.Windows.Forms.ComboBox
             Me.cbCritical = New System.Windows.Forms.ComboBox
             Me.lbInformation = New System.Windows.Forms.Label
             Me.lbWarning = New System.Windows.Forms.Label
             Me.lbCritical = New System.Windows.Forms.Label
-            Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
-            Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.GroupBox1.SuspendLayout()
             Me.GroupBox2.SuspendLayout()
             Me.gpbMsg.SuspendLayout()
@@ -137,6 +137,19 @@ Partial Class ucAppGeneral
             Me.gpbMsg.Name = "gpbMsg"
             Me.gpbMsg.TabStop = False
             '
+            'm_nudMaxNumMessages
+            '
+            resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
+            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
+            Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_lblMaxNumMessages
+            '
+            resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
+            Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
+            '
             'cbInformation
             '
             resources.ApplyResources(Me.cbInformation, "cbInformation")
@@ -172,19 +185,6 @@ Partial Class ucAppGeneral
             '
             resources.ApplyResources(Me.lbCritical, "lbCritical")
             Me.lbCritical.Name = "lbCritical"
-            '
-            'm_nudMaxNumMessages
-            '
-            resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
-            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
-            Me.m_nudMaxNumMessages.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
-            Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
-            Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
-            '
-            'm_lblMaxNumMessages
-            '
-            resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
-            Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
             '
             'ucAppGeneral
             '
