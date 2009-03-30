@@ -87,6 +87,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyRowHeaderChildCell.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyRowHeaderParentCell.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwEUnitCell.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyColumnHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyRowHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\PropertyHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwEColumnHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwERowHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwEHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwEGridCell.vb" />
     <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />
@@ -119,7 +130,7 @@
     <Compile Include="Controls\EwEGrid\EwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\EwEGrid\EwEGridCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwECellBase.vb" />
     <Compile Include="Controls\EwEGrid\EwEGridVisualizers.vb" />
     <Compile Include="Controls\EwEGrid\EwEHierarchyGridCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEHierarchyGridVisualizers.vb" />
@@ -358,6 +369,9 @@
     <None Include="Resources\WarningHS.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Controls\EwEGrid\_Visualizers_.cd" />
+    <None Include="Controls\EwEGrid\_Cells_.cd" />
+    <None Include="Controls\EwEGrid\_Grid_.cd" />
     <None Include="Resources\OptionsHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
