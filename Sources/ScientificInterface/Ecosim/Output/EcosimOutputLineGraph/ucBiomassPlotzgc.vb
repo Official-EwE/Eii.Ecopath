@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.35  2009/03/30 19:03:20  jeroens
+' Fixed memory leak due to dispose/finalize confusion
+'
 ' Revision 1.34  2009/03/27 19:36:25  jeroens
 ' Overlay -> Run
 ' Activated group display flags
@@ -155,8 +158,18 @@ Namespace Ecosim
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
-        Protected Overrides Sub Finalize()
-            MyBase.Finalize()
+        ''' <summary>
+        ''' Clean up!
+        ''' </summary>
+        Private Sub ucBiomassPlotzgc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+
+            ' Style guide
+            RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.m_sg = Nothing
+
+            Me.m_zgp.Clear()
+            Me.m_zgp = Nothing
+            Me.m_zgh = Nothing
 
             ' Show/Hide Groups
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
@@ -165,12 +178,6 @@ Namespace Ecosim
                 cmd.RemoveControl(Me.tsbtnShowHideGroups)
             End If
 
-        End Sub
-
-        ''' <summary>Disposes of the form is called before Finalize</summary>
-        Private Sub ucBiomassPlotzgc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            ' Style guide
-            RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
 #End Region ' Constructor/Destructor
@@ -201,12 +208,12 @@ Namespace Ecosim
             If CumulativeToolStripMenuItem.Checked Then
                 If BiomassToolStripMenuItem.Checked Then
                     'Biomass
-                    m_zgp.Title = "Cumulative biomass"
-                    m_zgp.YaxisTitle = "Cumulative biomass"
+                    m_zgp.Title = My.Resources.HEADER_BIOMASS_CUMULATIVE
+                    m_zgp.YaxisTitle = My.Resources.HEADER_BIOMASS_CUMULATIVE
                 Else
                     'Catch
-                    m_zgp.Title = "Cumulative catch"
-                    m_zgp.YaxisTitle = "Cumulative catch"
+                    m_zgp.Title = My.Resources.HEADER_CATCH_CUMULATIVE
+                    m_zgp.YaxisTitle = My.Resources.HEADER_CATCH_CUMULATIVE
                 End If
 
                 'Initialize listSum.Y=0
@@ -585,6 +592,7 @@ Namespace Ecosim
         Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
             Me.InvalidateGraph()
         End Sub
+
 #End Region ' Events
 
 #Region " Private Helpers "
@@ -683,7 +691,7 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Private helpers
-        
+
     End Class
     
 End Namespace
