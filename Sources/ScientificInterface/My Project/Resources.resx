@@ -2276,4 +2276,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSIM_VALUE_ALL_RUNS" xml:space="preserve">
     <value>(All runs)</value>
   </data>
+  <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative biomass</value>
+  </data>
+  <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative catch</value>
+  </data>
 </root>
