@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphBiomassPlotter.vb,v $
+' Revision 1.3  2009/03/30 19:02:41  jeroens
+' Added Clear()
+'
 ' Revision 1.2  2009/03/27 19:29:21  jeroens
 ' Overlay -> Run
 '
@@ -142,6 +145,13 @@ Namespace Controls
 
 #Region " Public Properties "
 
+        Public Sub Clear()
+            Me.m_lclRuns.Clear()
+            Me.m_graphPane.CurveList.Clear()
+            Me.m_dicTimeSeriesGroup.Clear()
+            Me.m_clRunCurrent = Nothing
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Makes sure all the object is set. Cleans up all list if required.
@@ -149,9 +159,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Sub PrepareNewRun(Optional ByVal bForceClear As Boolean = False)
             If (Me.m_bShowMultipleRuns = False) Or (bForceClear = True) Then
-                Me.m_lclRuns.Clear()
-                Me.m_graphPane.CurveList.Clear()
-                Me.m_dicTimeSeriesGroup.Clear()
+                Me.Clear()
             End If
             Me.m_clRunCurrent = New CurveList()
         End Sub
@@ -495,4 +503,5 @@ Namespace Controls
 #End Region ' Private Helpers
 
     End Class
+
 End Namespace
