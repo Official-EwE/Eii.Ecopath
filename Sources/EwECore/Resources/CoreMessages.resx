@@ -726,4 +726,8 @@ System Error: {0}</value>
   <data name="PLUGIN_SAVE_PROMPT" xml:space="preserve">
     <value>One or more plug-ins contain changes that have not been saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - possibly loose changes\nCancel - abort this operation.</value>
   </data>
+  <data name="PLUGIN_PROMPT_DISABLE" xml:space="preserve">
+    <value>{0}{1}{1}Do you wish to disable this plug-in?</value>
+    <comment>{0}=plug-in error, {1}=newline</comment>
+  </data>
 </root>
