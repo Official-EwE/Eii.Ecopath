@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.100  2009/03/31 17:03:06  jeroens
+' Problem plug-ins can be disabled via feedback message
+'
 ' Revision 1.99  2009/03/31 02:33:00  jeroens
 ' Fixed plug-in exception
 '
@@ -10382,8 +10385,9 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) Handles m_pluginManager.AssemblyAdded
-        m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
+    Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) _
+        Handles m_pluginManager.AssemblyAdded
+        m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10392,8 +10396,9 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paRemoved">A removed <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) Handles m_pluginManager.AssemblyRemoved
-        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Information))
+    Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
+        Handles m_pluginManager.AssemblyRemoved
+        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10402,8 +10407,19 @@ Public Class cCore
     ''' </summary>
     ''' <param name="PluginException"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_PluginException(ByVal PluginException As System.Exception) Handles m_pluginManager.PluginException
-        m_publisher.SendMessage(New cMessage("A plugin has thrown an error: " & PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
+    Private Sub m_pluginManager_PluginException(ByVal PluginException As cPluginException) _
+        Handles m_pluginManager.PluginException
+
+        If PluginException.Assembly.AlwaysEnabled Then
+            Dim msg As cMessage = New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Warning)
+            m_publisher.SendMessage(msg)
+        Else
+            ' ToDo: localize this
+            Dim fmsg As New cFeedbackMessage(PluginException.Message & vbNewLine & vbNewLine & "Do you wish to keep using this plug-in?", eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+            m_publisher.SendMessage(fmsg)
+            PluginException.Assembly.Enabled = (fmsg.Reply = cFeedbackMessage.eReply.YES)
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
