@@ -121,4 +121,16 @@
   <data name="pluginicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pluginicon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PLUGIN_ERROR_GENERIC" xml:space="preserve">
+    <value>Plug-in assembly '{0}' has caused error '{1}'</value>
+    <comment>{0}: assembly name, {1}: error text</comment>
+  </data>
+  <data name="PLUGIN_ERROR_POINT" xml:space="preserve">
+    <value>Plug-in '{0}', module '{1}', method '{2}' reports the following error: '{3}'</value>
+    <comment>{0}: assembly name, {1}: plug-in name, {2}: method name, {3}: error text</comment>
+  </data>
+  <data name="PLUGIN_EXCEPTION_DUPLICATE" xml:space="preserve">
+    <value>Duplicate plug-in name '{1}' encountered in '{0}'; this plug-in should not be used.</value>
+    <comment>{0}</comment>
+  </data>
 </root>
