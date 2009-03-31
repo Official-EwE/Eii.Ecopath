@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.20  2009/03/31 17:01:08  jeroens
+' Only initialize compatible plug-ins
+'
 ' Revision 1.19  2009/03/31 16:09:36  jeroens
 ' Delegate distributes cPluginExceptions only
 '
@@ -240,16 +243,21 @@ Public Class cPluginManager
                             Catch ex As cPluginException
                                 'Me.RaiseException()
                             End Try
-                            ' Core assigned?
-                            If (Me.m_core IsNot Nothing) Then
-                                Try
-                                    ' Initialize plugin
-                                    ip.Initialize(Me.m_core)
-                                Catch ex As Exception
-                                    ' Disable the plugin entirely
-                                    plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-                                End Try
+
+                            ' Is assembly compatible to run?
+                            If (plugAssem.IsCompatibleToRun) Then
+                                ' Is core assigned?
+                                If (Me.m_core IsNot Nothing) Then
+                                    Try
+                                        ' Initialize plugin
+                                        ip.Initialize(Me.m_core)
+                                    Catch ex As Exception
+                                        ' Disable the plugin entirely
+                                        plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+                                    End Try
+                                End If
                             End If
+
                             ' Yeah, got info allright
                             bHasPlugins = True
                         End If
