@@ -1,8 +1,8 @@
 '==============================================================================
 '
 ' $Log: cPluginException.vb,v $
-' Revision 1.1  2008/09/26 07:31:04  sherman
-' --== DELETED HISTORY ==--
+' Revision 1.2  2009/03/31 14:54:08  jeroens
+' Now really used
 '
 ' Revision 1.1  2006/08/31 15:20:33  jeroens
 ' * Moved
@@ -22,51 +22,37 @@ Option Strict On
 Public Class cPluginException
     Inherits Exception
 
-    ''' <summary>Assembly where the exception occurred.</summary>
-    Private m_ass As cPluginAssembly = Nothing
-    ''' <summary>Plugin where the exception occurred.</summary>
-    Private m_ip As IPlugin = Nothing
+    Private m_bEnabled As Boolean = True
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Constructor, initializes a new instance of a cPluginException.
     ''' </summary>
-    ''' <param name="strMessage">Message</param>
-    ''' <param name="ass"><see cref="cPluginAssembly">Assembly</see> where
-    ''' this exception occurred.</param>
-    ''' <param name="ip"><see cref="IPlugin">Plugin</see> where the exception
-    ''' occurred.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal strMessage As String, _
-        ByRef ass As cPluginAssembly, ByRef ip As IPlugin)
+    Public Sub New(ByVal strMessage As String)
+        Me.New(strMessage, Nothing)
+    End Sub
 
-        MyBase.New(strMessage)
+    Public Sub New(ByVal strMessage As String, ByVal exception As Exception)
+        MyBase.New(strMessage, exception)
+    End Sub
 
-        Me.m_ass = ass
-        Me.m_ip = ip
+    Public Sub New(ByVal exception As Exception)
+        Me.New(exception.Message)
     End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Gets the <see cref="cPluginAssembly">Plugin assembly</see> where the
-    ''' exception occurred.
+    ''' Gets whether the plug-in assembly enabled state after processing the exception.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public ReadOnly Property Assembly() As cPluginAssembly
+    Public Property Enabled() As Boolean
         Get
-            Return Me.m_ass
+            Return Me.m_bEnabled
         End Get
-    End Property
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Gets the <see cref="IPlugin">Plugin</see> where the exception occurred.
-    ''' </summary>
-    ''' ---------------------------------------------------------------------------
-    Public ReadOnly Property Plugin() As IPlugin
-        Get
-            Return Me.m_ip
-        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bEnabled = value
+        End Set
     End Property
 
 End Class
