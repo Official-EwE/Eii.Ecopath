@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.39  2009/03/31 21:34:23  joeh
+' Remove LatNWCorner and LatSECorner. Add ClimateType
+'
 ' Revision 1.38  2009/03/27 20:48:13  jeroens
 ' IncludePSD no longer stored in DB
 '
@@ -1277,8 +1280,7 @@ Public Class cDBDataSource
                 psdDS.MortalityType = DirectCast(Me.ReadSafe(reader, "MortalityType", 0), ePSDMortalityTypes)
                 psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
                 psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
-                psdDS.LatNWCorner = CSng(Me.ReadSafe(reader, "LatNWCorner", 45))
-                psdDS.LatSECorner = CSng(Me.ReadSafe(reader, "LatSECorner", 45))
+                psdDS.ClimateType = DirectCast(Me.ReadSafe(reader, "ClimateType", 0), eClimateTypes)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
@@ -1326,8 +1328,7 @@ Public Class cDBDataSource
             drow("MortalityType") = psdDS.MortalityType
             drow("NumWeightClasses") = psdDS.NWeightClasses
             drow("FirstWeightClass") = psdDS.FirstWeightClass
-            drow("LatNWCorner") = psdDS.LatNWCorner
-            drow("LatSECorner") = psdDS.LatSECorner
+            drow("ClimateType") = psdDS.ClimateType
 
             If bNewRow Then
                 writer.AddRow(drow)
@@ -1804,7 +1805,7 @@ Public Class cDBDataSource
                 psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
                 psdDS.t0Input(iGroup) = CSng(reader("t0"))
                 psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
-                'End PSD
+
 
                 'variables with input output pairs
                 ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
@@ -1907,7 +1908,6 @@ Public Class cDBDataSource
                 drow("Winf") = psdDS.WinfInput(iGroup)
                 drow("t0") = psdDS.t0Input(iGroup)
                 drow("Tmax") = psdDS.TmaxInput(iGroup)
-                'End PSD
 
                 drow.EndEdit()
 
