@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.5  2009/03/31 14:52:09  jeroens
+' Localized
+'
 ' Revision 1.4  2008/12/07 20:44:23  jeroens
 ' Add IsCompatible
 '
@@ -103,7 +106,7 @@ Public Class cPluginAssembly
         Set(ByVal ip As IPlugin)
             strName = strName.ToLower()
             If Me.m_dictPlugins.ContainsKey(strName) Then
-                Throw New cPluginException("Duplicate plugin found in assembly", Me, ip)
+                Throw New cPluginException(String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
             Else
                 Me.m_dictPlugins.Add(strName, ip)
             End If
