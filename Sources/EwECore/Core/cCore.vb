@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.101  2009/03/31 19:23:56  jeroens
+' Plug-in prompt localized
+'
 ' Revision 1.100  2009/03/31 17:03:06  jeroens
 ' Problem plug-ins can be disabled via feedback message
 '
@@ -10414,10 +10417,13 @@ Public Class cCore
             Dim msg As cMessage = New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.External, eMessageImportance.Warning)
             m_publisher.SendMessage(msg)
         Else
-            ' ToDo: localize this
-            Dim fmsg As New cFeedbackMessage(PluginException.Message & vbNewLine & vbNewLine & "Do you wish to keep using this plug-in?", eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+            Dim fmsg As New cFeedbackMessage( _
+                    String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, vbNewLine), _
+                    eCoreComponentType.External, eMessageImportance.Warning, _
+                    cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+
             m_publisher.SendMessage(fmsg)
-            PluginException.Assembly.Enabled = (fmsg.Reply = cFeedbackMessage.eReply.YES)
+            PluginException.Assembly.Enabled = (fmsg.Reply = cFeedbackMessage.eReply.NO)
         End If
 
     End Sub
