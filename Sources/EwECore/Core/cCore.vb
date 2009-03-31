@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.99  2009/03/31 02:33:00  jeroens
+' Fixed plug-in exception
+'
 ' Revision 1.98  2009/03/26 17:50:20  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -10400,7 +10403,7 @@ Public Class cCore
     ''' <param name="PluginException"></param>
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_PluginException(ByVal PluginException As System.Exception) Handles m_pluginManager.PluginException
-        m_publisher.SendMessage(New cMessage(PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
+        m_publisher.SendMessage(New cMessage("A plugin has thrown an error: " & PluginException.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
     End Sub
 
     ''' -----------------------------------------------------------------------
