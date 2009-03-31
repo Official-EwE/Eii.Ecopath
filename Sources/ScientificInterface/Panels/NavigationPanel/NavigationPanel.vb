@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.22  2009/03/31 02:30:24  jeroens
+' Fixed bug that prevented selection of already open nodes
+'
 ' Revision 1.21  2009/03/27 22:03:56  jeroens
 ' SelectedNodeName properly responds to invalid nodes
 ' SelectedNodeName no longer loops
@@ -223,8 +226,6 @@ Public Class NavigationPanel
 
 #Region " Properties "
 
-    Private m_bInUpdate As Boolean = False
-
     ''' <summary>
     ''' Get or set the current selected node name in the nav structure
     ''' </summary>
@@ -243,25 +244,14 @@ Public Class NavigationPanel
 
             If m_tvNavigation.Nodes.Count = 0 Then Return
 
-            If Me.m_bInUpdate Then Return
-            Me.m_bInUpdate = True
-
             ' Try to find node to select
             If Not String.IsNullOrEmpty(value) Then
                 nd = Me.FindNode(Me.m_tvNavigation.Nodes, value)
-                If (nd IsNot Nothing) And Not Object.ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
-                    Me.m_tvNavigation.SelectedNode = nd
-                    bSelected = True
-                End If
             End If
 
-            ' No node selected?
-            If Not bSelected Then
-                ' #Yep: clear selection, just in case
-                Me.m_tvNavigation.SelectedNode = Nothing
+            If Not Object.ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
+                Me.m_tvNavigation.SelectedNode = nd
             End If
-
-            Me.m_bInUpdate = False
 
         End Set
 
