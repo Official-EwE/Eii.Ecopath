@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.18  2009/03/31 14:55:40  jeroens
+' All plug-in calls pretected by try/catch
+' Plug errors all reported as cPluginExceptions via events
+'
 ' Revision 1.17  2009/03/31 02:17:55  jeroens
 ' All plug-in calls try/caught
 '
@@ -72,13 +76,44 @@ Imports EwEPlugin.Data
 Public Class cPluginManager
     Implements IDataBroadcaster
 
-#Region " Initialization "
+#Region " Helper class "
+
+    Friend Class cPluginContext
+
+        Private g_plugin As IPlugin = Nothing
+        Private g_assembly As cPluginAssembly = Nothing
+
+        Public Sub New(ByVal plugin As IPlugin, ByVal assembly As cPluginAssembly)
+            Me.g_plugin = plugin
+            Me.g_assembly = assembly
+        End Sub
+
+        Public ReadOnly Property Plugin() As IPlugin
+            Get
+                Return Me.g_plugin
+            End Get
+        End Property
+
+        Public ReadOnly Property Assembly() As cPluginAssembly
+            Get
+                Return Me.g_assembly
+            End Get
+        End Property
+    End Class
+
+#End Region ' Helper class
+
+#Region " Private variables "
 
     ''' <summary>The one core for this plugin manager.</summary>
     Private m_core As Object = Nothing
     ''' <summary>Delegate that this class can use to check whether the current core
     ''' execution state allows a plug-in to run.</summary>
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
+
+#End Region ' Private variables
+
+#Region " Initialization "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -196,8 +231,12 @@ Public Class cPluginManager
                         If Not (clsInterface Is Nothing) Then
                             ' Get the plugin
                             ip = LoadPlugin(strFileName, clsType.FullName)
-                            ' Stick it up
-                            plugAssem.Plugin(ip.Name) = ip
+                            Try
+                                ' Stick it up
+                                plugAssem.Plugin(ip.Name) = ip
+                            Catch ex As cPluginException
+                                'Me.RaiseException()
+                            End Try
                             ' Core assigned?
                             If (Me.m_core IsNot Nothing) Then
                                 Try
@@ -254,7 +293,7 @@ Public Class cPluginManager
             For Each ex As Exception In loaderEX.LoaderExceptions
                 System.Console.WriteLine(ex.Message)
             Next
-            RaiseEvent PluginException(loaderEX)
+            Me.RaisePluginException(plugAssem, loaderEX)
 
             ' JS 29nov08: only assert when this is a confirmed plug-in.
             '             (which will not be the case since the manager could not access 
@@ -266,7 +305,7 @@ Public Class cPluginManager
         Catch ex As Exception
 
             'catch any generic exceptions
-            RaiseEvent PluginException(ex)
+            Me.RaisePluginException(plugAssem, ex)
             Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & ex.Message)
 
         End Try
@@ -410,7 +449,7 @@ Public Class cPluginManager
     Public Function InvokeMethod(ByVal typePlugin As Type, ByVal strMethod As String, _
             ByVal aArgTypes() As Type, ByVal aArgs() As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(typePlugin)
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(typePlugin)
         Dim mi As MethodInfo = Nothing
 
         ' Try to get the method
@@ -422,9 +461,9 @@ Public Class cPluginManager
         If (mi Is Nothing) Then Return False
 
         ' Invoke method on each plugin
-        For Each ip As IPlugin In collPlugins
-            mi.Invoke(ip, aArgs)
-        Next ip
+        For Each ipc As cPluginContext In collPlugins
+            mi.Invoke(ipc.Plugin, aArgs)
+        Next ipc
 
     End Function
 
@@ -432,19 +471,21 @@ Public Class cPluginManager
 
 #Region " Database Plugin "
 
-    Private Class IDatabaseUpdatePluginSort
-        Implements IComparer(Of IDatabaseUpdatePlugin)
+    Private Class IDatabaseUpdatePluginContextSort
+        Implements IComparer(Of cPluginContext)
 
-        Public Function Compare(ByVal x As IDatabaseUpdatePlugin, ByVal y As IDatabaseUpdatePlugin) As Integer _
-                Implements System.Collections.Generic.IComparer(Of IDatabaseUpdatePlugin).Compare
-            Return CInt(IIf(x.UpdateVersion < y.UpdateVersion, -1, 1))
+        Public Function Compare(ByVal x As cPluginContext, ByVal y As cPluginContext) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cPluginContext).Compare
+            Return CInt(IIf(DirectCast(x.Plugin, IDatabaseUpdatePlugin).UpdateVersion < DirectCast(y.Plugin, IDatabaseUpdatePlugin).UpdateVersion, -1, 1))
         End Function
 
     End Class
 
     Public Sub UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single)
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of IDatabaseUpdatePlugin)
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
+        Dim lPlugins As New List(Of cPluginContext)
+        Dim ip As IDatabaseUpdatePlugin = Nothing
         Dim strDescription As String = ""
 
         ' Sanity checks
@@ -452,13 +493,16 @@ Public Class cPluginManager
         If db.GetVersion() < sBaselineVersion Then Return
 
         ' Transform collection into list (there must be a better way?)
-        For Each ip As IPlugin In collPlugins
-            lPlugins.Add(DirectCast(ip, IDatabaseUpdatePlugin))
+        For Each ipc As cPluginContext In collPlugins
+            lPlugins.Add(ipc)
         Next
 
-        lPlugins.Sort(New IDatabaseUpdatePluginSort())
+        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
 
-        For Each ip As IDatabaseUpdatePlugin In lPlugins
+        For Each ipc As cPluginContext In lPlugins
+            ' Get plugin
+            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
+            ' Check
             If (ip.UpdateVersion > db.GetVersion() Or ip.UpdateVersion = -9999) Then
                 Try
                     If ip.ApplyUpdate(db) Then
@@ -475,18 +519,22 @@ Public Class cPluginManager
                         Next
                         db.SetVersion(ip.UpdateVersion, sbDescription.ToString())
                     Else
-                        Console.WriteLine("Failed to run plug-in {0}", ip.Description)
+                        Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", New Exception("(generic failure)"))
                     End If
+
                 Catch ex As Exception
-                    Debug.Assert(False, String.Format("Failed to run database plugin {0}, reason {1}", ip.Description, ex.Message))
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IDatabaseUpdatePlugin.ApplyUpdate", ex)
                 End Try
+
             End If
         Next
     End Sub
 
     Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
-        Dim lPlugins As New List(Of IDatabaseUpdatePlugin)
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabaseUpdatePlugin))
+        Dim lPlugins As New List(Of cPluginContext)
+        Dim ip As IDatabaseUpdatePlugin = Nothing
         Dim sVerDB As Single = db.GetVersion()
 
         ' Sanity checks
@@ -494,13 +542,14 @@ Public Class cPluginManager
         If sVerDB < sBaselineVersion Then Return False
 
         ' Transform collection into list (there must be a better way?)
-        For Each ip As IPlugin In collPlugins
-            lPlugins.Add(DirectCast(ip, IDatabaseUpdatePlugin))
+        For Each ipc As cPluginContext In collPlugins
+            lPlugins.Add(ipc)
         Next
 
-        lPlugins.Sort(New IDatabaseUpdatePluginSort())
+        lPlugins.Sort(New IDatabaseUpdatePluginContextSort())
 
-        For Each ip As IDatabaseUpdatePlugin In lPlugins
+        For Each ipc As cPluginContext In lPlugins
+            ip = DirectCast(ipc.Plugin, IDatabaseUpdatePlugin)
             If (ip.UpdateVersion > sVerDB) Or (ip.UpdateVersion = -9999) Then
                 Return True
             End If
@@ -525,17 +574,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function CoreInitialized(ByVal objEcoPath As Object, ByVal objEcoSim As Object, ByVal objEcoSpace As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(ICorePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ICorePlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, ICorePlugin).CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, ICorePlugin).CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " CoreInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CoreInitialized", ex)
                 End Try
             Next
 
@@ -559,17 +605,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function DataValidated(ByVal varname As eVarNameFlags, ByVal datatype As eDataTypes) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataValidatedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataValidatedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IDataValidatedPlugin).DataValidated(varname, datatype)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IDataValidatedPlugin).DataValidated(varname, datatype)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " DataValidated() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "DataValidated", ex)
                 End Try
             Next
 
@@ -594,16 +637,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function LoadModel(ByVal dataSource As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathPlugin))
         Dim bSucces As Boolean = True
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                bSucces = bSucces And DirectCast(ip, IEcopathPlugin).LoadModel(dataSource)
+                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathPlugin).LoadModel(dataSource)
             Catch ex As Exception
-                ' tell the world
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadModel", ex)
             End Try
         Next
 
@@ -624,16 +665,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function SaveModel(ByVal dataSource As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathPlugin))
         Dim bSucces As Boolean = True
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                bSucces = bSucces And DirectCast(ip, IEcopathPlugin).SaveModel(dataSource)
+                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathPlugin).SaveModel(dataSource)
             Catch ex As Exception
-                'tell the world
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveModel", ex)
             End Try
         Next
 
@@ -648,15 +687,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function OpenDatabase(ByVal strName As String) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin))
         Dim bSucces As Boolean = True
 
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                bSucces = bSucces And DirectCast(ip, IDatabasePlugin).Open(strName)
+                bSucces = bSucces And DirectCast(ipc.Plugin, IDatabasePlugin).Open(strName)
             Catch ex As Exception
-                'tell the world
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "Open", ex)
             End Try
         Next
 
@@ -672,15 +710,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin), pa)
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin), pa)
         Dim bIsChanged As Boolean = False
 
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                bIsChanged = bIsChanged Or DirectCast(ip, IDatabasePlugin).IsModified()
+                bIsChanged = bIsChanged Or DirectCast(ipc.Plugin, IDatabasePlugin).IsModified()
             Catch ex As Exception
-                'tell the world
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "IsModified", ex)
             End Try
         Next
 
@@ -695,14 +732,13 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub CloseDatabase()
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin))
 
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                DirectCast(ip, IDatabasePlugin).Close()
+                DirectCast(ipc.Plugin, IDatabasePlugin).Close()
             Catch ex As Exception
-                'tell the world
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CloseDatabase", ex)
             End Try
         Next
 
@@ -730,16 +766,15 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function MassBalance(ByVal EcoPathDataStructures As Object, ByVal EstimateFor As Integer, ByRef iResult As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathMassBalancePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathMassBalancePlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                If DirectCast(ip, IEcopathMassBalancePlugin).EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult) = True Then
+                If DirectCast(ipc.Plugin, IEcopathMassBalancePlugin).EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult) = True Then
                     Return True
                 End If
             Catch ex As Exception
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathMassBalance", ex)
             End Try
         Next
         Return False
@@ -748,16 +783,13 @@ Public Class cPluginManager
 
     Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcopathRunCompletedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathRunCompletedPlugin))
         Try
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcopathRunCompletedPlugin).EcopathRunCompleted(EcoPathDataStructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcopathRunCompletedPlugin).EcopathRunCompleted(EcoPathDataStructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcopathHasRun() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathRunCompleted", ex)
                 End Try
             Next
 
@@ -767,13 +799,11 @@ Public Class cPluginManager
 
         collPlugins = Me.GetPlugins(GetType(IEcopathRunCompletedPostPlugin))
         Try
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcopathRunCompletedPostPlugin).EcopathRunCompletedPost(EcoPathDataStructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcopathRunCompletedPostPlugin).EcopathRunCompletedPost(EcoPathDataStructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcopathHasRun() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcopathRunCompletedPost", ex)
                 End Try
             Next
 
@@ -802,11 +832,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcosimScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimPlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcosimPlugin).LoadEcosimScenario(dataSource)
+        For Each ipc As cPluginContext In collPlugins
+            Try
+                DirectCast(ipc.Plugin, IEcosimPlugin).LoadEcosimScenario(dataSource)
+            Catch ex As Exception
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcosimScenario", ex)
+            End Try
         Next
 
     End Sub
@@ -824,28 +857,28 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcosimScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimPlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcosimPlugin).SaveEcosimScenario(dataSource)
+        For Each ipc As cPluginContext In collPlugins
+            Try
+                DirectCast(ipc.Plugin, IEcosimPlugin).SaveEcosimScenario(dataSource)
+            Catch ex As Exception
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcosimScenario", ex)
+            End Try
         Next
 
     End Sub
 
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimInitializedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimInitializedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimInitializedPlugin).EcosimInitialized(EcosimDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimInitializedPlugin).EcosimInitialized(EcosimDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimInitialized", ex)
                 End Try
             Next
 
@@ -859,17 +892,14 @@ Public Class cPluginManager
 
     Public Function EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimModifyTimeseriesPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimModifyTimeseriesPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimModifyTimeseriesPlugin).EcosimModifyTimeseries(TimeSeriesDataStructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimModifyTimeseriesPlugin).EcosimModifyTimeseries(TimeSeriesDataStructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimModifyTimeseries() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimModifyTimeseries", ex)
                 End Try
             Next
 
@@ -883,17 +913,14 @@ Public Class cPluginManager
 
     Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal EcosimDataStructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimModifyFGearPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimModifyFGearPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, EcosimDataStructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, EcosimDataStructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimModifyTimeseries() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimModifyTimeseries", ex)
                 End Try
             Next
 
@@ -905,19 +932,18 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
+    Public Function EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, _
+                                        ByVal EcosimDataStructures As Object, _
+                                        ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimBeginTimestepPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimBeginTimestepPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimBeginTimestepPlugin).EcosimBeginTimeStep(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimBeginTimestepPlugin).EcosimBeginTimeStep(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimBeginTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimBeginTimeStep", ex)
                 End Try
             Next
 
@@ -928,14 +954,11 @@ Public Class cPluginManager
         collPlugins = Me.GetPlugins(GetType(IEcosimBeginTimestepPostPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimBeginTimestepPostPlugin).EcosimBeginTimeStepPost(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimBeginTimestepPostPlugin).EcosimBeginTimeStepPost(BiomassAtTimestep, EcosimDataStructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimBeginTimeStepPost() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimBeginTimeStepPost", ex)
                 End Try
             Next
 
@@ -949,17 +972,16 @@ Public Class cPluginManager
 
     'Public Function EcosimEndTimeStepStats(ByVal EcosimIndicies As Object) As Boolean
 
-    '    Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimEndTimestepStatsPlugin))
+    '    Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepStatsPlugin))
     '    Try
 
     '        ' give every plugin that supports this interface a chance at running
-    '        For Each ip As IPlugin In collPlugins
-    '            Try 'protect the core from a plugin exploding
-    '                DirectCast(ip, IEcosimEndTimestepStatsPlugin).EcosimEndTimestepStatsPlugin(EcosimIndicies)
+    '        For Each ipc As cPluginContext In collPlugins
+    '            Try 
+    '                DirectCast(ipc.Plugin, IEcosimEndTimestepStatsPlugin).EcosimEndTimestepStatsPlugin(EcosimIndicies)
     '            Catch ex As Exception
-    '                Debug.Assert(False, ip.Name & " EcosimEndTimeStatsStep() Error: " & ex.Message)
-    '                'tell the world
-    '                RaiseEvent PluginException(ex)
+    '                Debug.Assert(False, ipc.Plugin.Name & " EcosimEndTimeStatsStep() Error: " & ex.Message)
+    '                Me.RaiseException(ipc.Assembly, ipc.Plugin, ex)
     '            End Try
     '        Next
 
@@ -969,18 +991,18 @@ Public Class cPluginManager
 
     'End Function
 
-    Public Function EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTimeStep As Integer, ByVal Ecosimresults As Object) As Boolean
+    Public Function EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, _
+                                      ByVal EcosimDatastructures As Object, _
+                                      ByVal iTimeStep As Integer, _
+                                      ByVal Ecosimresults As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimEndTimestepPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepPlugin))
         Try
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimEndTimestepPlugin).EcosimEndTimeStep(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimEndTimestepPlugin).EcosimEndTimeStep(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimEndTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimEndTimeStep", ex)
                 End Try
             Next
 
@@ -990,14 +1012,11 @@ Public Class cPluginManager
 
         collPlugins = Me.GetPlugins(GetType(IEcosimEndTimestepPostPlugin))
         Try
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimEndTimestepPostPlugin).EcosimEndTimeStepPost(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimEndTimestepPostPlugin).EcosimEndTimeStepPost(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimEndTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimEndTimeStepPost", ex)
                 End Try
             Next
 
@@ -1011,17 +1030,14 @@ Public Class cPluginManager
 
     Public Function EcosimRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimRunInitializedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimRunInitializedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimRunInitializedPlugin).EcosimRunInitialized(EcosimDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimRunInitializedPlugin).EcosimRunInitialized(EcosimDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunInitialized", ex)
                 End Try
             Next
 
@@ -1036,17 +1052,14 @@ Public Class cPluginManager
 
     Public Function EcosimRunCompleted(ByVal EcosimDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcosimRunCompletedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimRunCompletedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimRunCompletedPlugin).EcosimRunCompleted(EcosimDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimRunCompletedPlugin).EcosimRunCompleted(EcosimDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimRunCompleted() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunCompleted", ex)
                 End Try
             Next
 
@@ -1057,14 +1070,11 @@ Public Class cPluginManager
         collPlugins = Me.GetPlugins(GetType(IEcosimRunCompletedPostPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcosimRunCompletedPostPlugin).EcosimRunCompletedPost(EcosimDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcosimRunCompletedPostPlugin).EcosimRunCompletedPost(EcosimDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcosimRunCompleted() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimRunCompletedPost", ex)
                 End Try
             Next
 
@@ -1093,14 +1103,13 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcospaceScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospacePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                DirectCast(ip, IEcospacePlugin).LoadEcospaceScenario(dataSource)
+                DirectCast(ipc.Plugin, IEcospacePlugin).LoadEcospaceScenario(dataSource)
             Catch ex As Exception
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcospaceScenario", ex)
             End Try
         Next
 
@@ -1116,17 +1125,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function EcospaceInitialized(ByVal EcospaceDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceInitializedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceInitializedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceInitializedPlugin).EcospaceInitialized(EcospaceDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospaceInitializedPlugin).EcospaceInitialized(EcospaceDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceInitialized", ex)
                 End Try
             Next
 
@@ -1149,14 +1155,13 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcospaceScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospacePlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                DirectCast(ip, IEcospacePlugin).SaveEcospaceScenario(dataSource)
+                DirectCast(ipc.Plugin, IEcospacePlugin).SaveEcospaceScenario(dataSource)
             Catch ex As Exception
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcospaceScenario", ex)
             End Try
         Next
 
@@ -1164,17 +1169,14 @@ Public Class cPluginManager
 
     Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceBeginTimestepPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceBeginTimestepPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceBeginTimestepPlugin).EcospaceBeginTimeStep(EcospaceDataStructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospaceBeginTimestepPlugin).EcospaceBeginTimeStep(EcospaceDataStructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceBeginTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceBeginTimeStep", ex)
                 End Try
             Next
 
@@ -1185,14 +1187,11 @@ Public Class cPluginManager
         collPlugins = Me.GetPlugins(GetType(IEcospaceBeginTimestepPostPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceBeginTimestepPostPlugin).EcospaceBeginTimeStepPost(EcospaceDataStructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospaceBeginTimestepPostPlugin).EcospaceBeginTimeStepPost(EcospaceDataStructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceBeginTimeStepPost() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceBeginTimeStepPost", ex)
                 End Try
             Next
 
@@ -1206,17 +1205,14 @@ Public Class cPluginManager
 
     Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospacePostFishingEffortModTimestepPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospacePostFishingEffortModTimestepPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospacePostFishingEffortModTimestepPlugin).EcospacePostFishingEffortModTimestep(EcospaceDatastructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospacePostFishingEffortModTimestepPlugin).EcospacePostFishingEffortModTimestep(EcospaceDatastructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospacePostFishingEffortModTimestep", ex)
                 End Try
             Next
 
@@ -1230,17 +1226,14 @@ Public Class cPluginManager
 
     Public Function EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceEndTimestepPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcospaceEndTimestepPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceEndTimestepPlugin).EcospaceEndTimeStep(EcospaceDatastructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospaceEndTimestepPlugin).EcospaceEndTimeStep(EcospaceDatastructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceEndTimeStep", ex)
                 End Try
             Next
 
@@ -1251,14 +1244,11 @@ Public Class cPluginManager
         collPlugins = Me.GetPlugins(GetType(IEcospaceEndTimestepPostPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceEndTimestepPostPlugin).EcospaceEndTimeStepPost(EcospaceDatastructures, iTimeStep)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcospaceEndTimestepPostPlugin).EcospaceEndTimeStepPost(EcospaceDatastructures, iTimeStep)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStepPost() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcospaceEndTimeStepPost", ex)
                 End Try
             Next
 
@@ -1269,99 +1259,6 @@ Public Class cPluginManager
         Return True
 
     End Function
-
-#If 0 Then
-    ' JS: disabled, exchanging layer data is NOT trivial and needs to be thought out very well
-
-    Public Function EcospaceLayerExchangeStartRun(ByVal layer As Object) As Boolean
-
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
-        Try
-
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceStartRun(layer)
-                Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceLayerExchangeStartRun() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
-
-    Public Function EcospaceLayerExchangeBeginTimeStep(ByVal layer As Object, ByVal iTimeStep As Integer) As Boolean
-
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
-        Try
-
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceBeginTimeStep(layer, iTimeStep)
-                Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceBeginTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
-
-    Public Function EcospaceLayerExchangeEndTimeStep(ByVal layer As Object, ByVal iTimeStep As Integer) As Boolean
-
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
-        Try
-
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceEndTimeStep(layer, iTimeStep)
-                Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceEndTimeStep() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
-
-    Public Function EcospaceLayerExchangeEndRun(ByVal layer As Object) As Boolean
-
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcospaceLayerExchangePlugin))
-        Try
-
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcospaceLayerExchangePlugin).EcospaceEndRun(layer)
-                Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcospaceEndRun() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
-                End Try
-            Next
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
-
-#End If
 
 #End Region ' Ecospace Plugins
 
@@ -1380,14 +1277,13 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub LoadEcotracerScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcotracerPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerPlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                DirectCast(ip, IEcotracerPlugin).LoadEcotracerScenario(dataSource)
+                DirectCast(ipc.Plugin, IEcotracerPlugin).LoadEcotracerScenario(dataSource)
             Catch ex As Exception
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "LoadEcotracerScenario", ex)
             End Try
         Next
 
@@ -1403,17 +1299,14 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Function EcotracerInitialized(ByVal EcotracerDatastructures As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcotracerInitializedPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerInitializedPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IEcotracerInitializedPlugin).EcotracerInitialized(EcotracerDatastructures)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IEcotracerInitializedPlugin).EcotracerInitialized(EcotracerDatastructures)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " EcotracerInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcotracerInitialized", ex)
                 End Try
             Next
 
@@ -1436,14 +1329,13 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub SaveEcotracerScenario(ByVal dataSource As Object)
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IEcotracerPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcotracerPlugin))
 
-        ' Find first available plugin that implements a datasource save plugin point
-        For Each ip As IPlugin In collPlugins
+        For Each ipc As cPluginContext In collPlugins
             Try
-                DirectCast(ip, IEcotracerPlugin).SaveEcotracerScenario(dataSource)
+                DirectCast(ipc.Plugin, IEcotracerPlugin).SaveEcotracerScenario(dataSource)
             Catch ex As Exception
-                RaiseEvent PluginException(ex)
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveEcotracerScenario", ex)
             End Try
         Next
 
@@ -1464,18 +1356,16 @@ Public Class cPluginManager
     Public Function BroadcastData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean _
             Implements IDataBroadcaster.BroadcastData
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataConsumerPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataConsumerPlugin))
         Dim bHandled As Boolean = False
 
         Try
 
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    bHandled = bHandled Or DirectCast(ip, IDataConsumerPlugin).ReceiveData(strDataName, data)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    bHandled = bHandled Or DirectCast(ipc.Plugin, IDataConsumerPlugin).ReceiveData(strDataName, data)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " BroadcastData() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "ReceiveData", ex)
                 End Try
             Next
 
@@ -1497,24 +1387,25 @@ Public Class cPluginManager
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal strDataName As String) As IPluginData()
-        Dim coll As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataProducerPlugin))
+
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
         Dim data As IPluginData = Nothing
         Dim lData As New List(Of IPluginData)
-        Try
-            For Each pi As IPlugin In coll
 
+        Try
+            For Each ipc As cPluginContext In coll
                 Try
-                    If DirectCast(pi, IDataProducerPlugin).GetDataByName(strDataName, data) Then
+                    If DirectCast(ipc.Plugin, IDataProducerPlugin).GetDataByName(strDataName, data) Then
                         lData.Add(data)
                     End If
                 Catch ex As Exception
-                    Debug.Assert(False, pi.Name & " GetData(" & strDataName & ") Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "GetDataByName", ex)
                 End Try
             Next
+
         Catch ex As Exception
         End Try
+
         Return lData.ToArray()
     End Function
 
@@ -1529,25 +1420,30 @@ Public Class cPluginManager
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal dataType As Type) As IPluginData()
-        Dim coll As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDataProducerPlugin))
+
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
         Dim data As IPluginData = Nothing
         Dim lData As New List(Of IPluginData)
+
         Try
-            For Each pi As IPlugin In coll
+
+            For Each ipc As cPluginContext In coll
 
                 Try
-                    If DirectCast(pi, IDataProducerPlugin).GetDataByType(dataType, data) Then
+                    If DirectCast(ipc.Plugin, IDataProducerPlugin).GetDataByType(dataType, data) Then
                         lData.Add(data)
                     End If
                 Catch ex As Exception
-                    Debug.Assert(False, pi.Name & " GetData(" & dataType.ToString() & ") Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "GetDataByType", ex)
                 End Try
+
             Next
+
         Catch ex As Exception
         End Try
+
         Return lData.ToArray()
+
     End Function
 
 #End Region ' Data Exchange Plugins 
@@ -1556,17 +1452,14 @@ Public Class cPluginManager
 
     Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IFishingPolicySearchPlugin).SearchInitialized(SearchDS)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IFishingPolicySearchPlugin).SearchInitialized(SearchDS)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchInitialized", ex)
                 End Try
             Next
 
@@ -1578,17 +1471,14 @@ Public Class cPluginManager
 
     Public Function SearchFunctionCall(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IFishingPolicySearchPlugin).SearchFunctionCall(SearchDS)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc, IFishingPolicySearchPlugin).SearchFunctionCall(SearchDS)
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchFunctionCall", ex)
                 End Try
             Next
 
@@ -1600,17 +1490,14 @@ Public Class cPluginManager
 
     Public Function SearchIterationsStarting() As Boolean
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
         Try
 
-            ' give every plugin that supports this interface a chance at running
-            For Each ip As IPlugin In collPlugins
-                Try 'protect the core from a plugin exploding
-                    DirectCast(ip, IFishingPolicySearchPlugin).SearchIterationsStarting()
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc, IFishingPolicySearchPlugin).SearchIterationsStarting()
                 Catch ex As Exception
-                    Debug.Assert(False, ip.Name & " SearchInitialized() Error: " & ex.Message)
-                    'tell the world
-                    RaiseEvent PluginException(ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchIterationsStarting", ex)
                 End Try
             Next
 
@@ -1634,38 +1521,41 @@ Public Class cPluginManager
     ''' <param name="t">The <see cref="Type">Type</see> of the plugins to retrieve.</param>
     ''' <param name="pa">The <see cref="cPluginAssembly">plug-in assembly</see> to search.
     ''' If not specified, all plug-in assemblies will be searched.</param>
-    ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> of the given type.</returns>
+    ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
+    ''' linking to plug-ins of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function GetPlugins(ByVal t As Type, _
-                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+    Friend Function GetPlugins(ByVal t As Type, _
+                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
 
-        Dim collPlugins As New List(Of IPlugin)
+        Dim collPlugins As New List(Of cPluginContext)
         Dim lpa As New List(Of cPluginAssembly)
 
         If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
-
         For Each pa In lpa
-            collPlugins.AddRange(pa.Plugins(t))
-        Next
-
+            For Each pi As IPlugin In pa.Plugins(t)
+                collPlugins.Add(New cPluginContext(pi, pa))
+            Next pi
+        Next pa
         Return collPlugins
+
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a <see cref="IPlugin">plug-in</see> with a given name.
+    ''' Returns all <see cref="IPlugin">plug-ins</see> with a given name.
     ''' </summary>
     ''' <param name="strName">Name of the plugin to return. Names are
     ''' case insensitive.</param>
+    ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> with the 
+    ''' given name.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetPlugin(ByVal strName As String, _
+    Public Function GetPlugins(ByVal strName As String, _
                                Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
 
         Dim collPlugins As New List(Of IPlugin)
         Dim lpa As New List(Of cPluginAssembly)
 
         If (pa IsNot Nothing) Then lpa.Add(pa) Else lpa.AddRange(Me.PluginAssemblies)
-
         For Each pa In lpa
             Dim pi As IPlugin = pa.Plugin(strName)
             If pi IsNot Nothing Then
@@ -1673,6 +1563,7 @@ Public Class cPluginManager
             End If
         Next
         Return collPlugins
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1700,7 +1591,6 @@ Public Class cPluginManager
                         bFound = ver.Equals(an.Version)
                     End If
                 End If
-
                 If bFound Then Return pa
             Next
             Return Nothing
@@ -1776,7 +1666,7 @@ Public Class cPluginManager
 
         If Me.m_dlgtCoreState = Nothing Then Return
 
-        Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IGUIPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Nothing
         Dim bEnable As Boolean = True
 
         If ip IsNot Nothing Then
@@ -1786,17 +1676,43 @@ Public Class cPluginManager
             RaiseEvent PluginEnabled(DirectCast(ip, IGUIPlugin), bEnable)
         Else
             'For all GUI plugins
-            For Each ip In collPlugins
+            collPlugins = Me.GetPlugins(GetType(IGUIPlugin))
+            For Each ipc As cPluginContext In collPlugins
                 ' Check if plugin can execute
-                bEnable = Me.m_dlgtCoreState.Invoke(DirectCast(ip, IGUIPlugin).EnabledState)
+                bEnable = Me.m_dlgtCoreState.Invoke(DirectCast(ipc.Plugin, IGUIPlugin).EnabledState)
                 ' Broadcast plugin enabled state event
-                RaiseEvent PluginEnabled(DirectCast(ip, IGUIPlugin), bEnable)
+                RaiseEvent PluginEnabled(DirectCast(ipc.Plugin, IGUIPlugin), bEnable)
             Next
         End If
 
     End Sub
 
 #End Region ' Plugin core state response
+
+#Region " Plugin exception "
+
+    Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
+
+        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_GENERIC, assembly.Filename, ex.Message)
+        Dim pex As New cPluginException(strMessage, ex)
+
+        Debug.Assert(False, strMessage & vbNewLine & ex.Message)
+        RaiseEvent PluginException(pex)
+
+    End Sub
+
+    Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal plugin As IPlugin, _
+                                    ByVal strMethodName As String, ByVal ex As Exception)
+
+        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_POINT, assembly.Filename, plugin.Name, strMethodName, ex.Message)
+        Dim pex As New cPluginException(strMessage, ex)
+
+        Debug.Assert(False, strMessage & vbNewLine & ex.Message)
+        RaiseEvent PluginException(pex)
+
+    End Sub
+
+#End Region ' Plugin exception
 
 #Region " Private helper methods "
 
