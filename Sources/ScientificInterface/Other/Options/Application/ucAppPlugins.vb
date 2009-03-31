@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.7  2009/03/31 17:03:36  jeroens
+' fixed image order
+'
 ' Revision 1.6  2009/03/31 16:13:47  jeroens
 ' Conflicts now clearly shown
 ' Conflicting assemblies cannot be loaded anymore
@@ -222,14 +225,9 @@ Namespace Other
         End Sub
 
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
-            ' Order of state images:
-            '    1. Disabled state
-            '    2. Conflict state
-            '    3. Always enabled state
-            '    4. Normal enabled state
-            If (pa.IsCompatible = False) Then Return cIMAGE_CONFLICT
-            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
+            If (pa.IsCompatibleToRun = False) Then Return cIMAGE_CONFLICT
             If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
+            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
             Return cIMAGE_ENABLED
         End Function
 
