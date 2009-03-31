@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.19  2009/03/31 16:09:36  jeroens
+' Delegate distributes cPluginExceptions only
+'
 ' Revision 1.18  2009/03/31 14:55:40  jeroens
 ' All plug-in calls pretected by try/catch
 ' Plug errors all reported as cPluginExceptions via events
@@ -375,7 +378,7 @@ Public Class cPluginManager
     ''' A plugin has thrown an exception delegate.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub PluginExceptionHandler(ByVal PluginException As Exception)
+    Public Delegate Sub PluginExceptionHandler(ByVal PluginException As cPluginException)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1693,8 +1696,11 @@ Public Class cPluginManager
 
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
 
-        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_GENERIC, assembly.Filename, ex.Message)
-        Dim pex As New cPluginException(strMessage, ex)
+        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_GENERIC, _
+                                                 Path.GetFileNameWithoutExtension(assembly.Filename), _
+                                                 ex.Message)
+
+        Dim pex As New cPluginException(assembly, strMessage, ex)
 
         Debug.Assert(False, strMessage & vbNewLine & ex.Message)
         RaiseEvent PluginException(pex)
@@ -1704,8 +1710,13 @@ Public Class cPluginManager
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal plugin As IPlugin, _
                                     ByVal strMethodName As String, ByVal ex As Exception)
 
-        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_POINT, assembly.Filename, plugin.Name, strMethodName, ex.Message)
-        Dim pex As New cPluginException(strMessage, ex)
+        Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_POINT, _
+                                                 Path.GetFileNameWithoutExtension(assembly.Filename), _
+                                                 plugin.Name, _
+                                                 strMethodName, _
+                                                 ex.Message)
+
+        Dim pex As New cPluginException(assembly, strMessage, ex)
 
         Debug.Assert(False, strMessage & vbNewLine & ex.Message)
         RaiseEvent PluginException(pex)
