@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.6  2009/03/31 16:13:47  jeroens
+' Conflicts now clearly shown
+' Conflicting assemblies cannot be loaded anymore
+'
 ' Revision 1.5  2008/12/15 15:56:03  jeroens
 ' no message
 '
@@ -15,23 +19,6 @@
 '
 ' Revision 1.1  2008/09/26 07:32:10  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/07/29 23:45:52  jeroens
-' Plug-ins enabled state stored in settings
-' Plug-in detail page also has option to disable assembly
-'
-' Revision 1.4  2008/07/16 13:55:48  jeroens
-' Plug-in Assembly enabled state when dialog is cancelled
-' Implemented Apply
-'
-' Revision 1.3  2008/07/15 20:22:57  jeroens
-' Uses neater info pages
-'
-' Revision 1.2  2007/11/24 18:43:58  jeroens
-' * Added splitter
-'
-' Revision 1.1  2007/11/23 19:57:26  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -91,24 +78,24 @@ Namespace Other
 
         End Class
 
-        Private Class cPluginInfo
+        'Private Class cPluginInfo
 
-            Private m_pi As IPlugin = Nothing
-            Private m_iImageIndex As Integer = cIMAGE_ENABLED
+        '    Private m_pi As IPlugin = Nothing
+        '    Private m_iImageIndex As Integer = cIMAGE_ENABLED
 
-            Public Sub New(ByVal pi As IPlugin)
-                Me.m_pi = pi
-            End Sub
+        '    Public Sub New(ByVal pi As IPlugin)
+        '        Me.m_pi = pi
+        '    End Sub
 
-            Public Property ImageIndex() As Integer
-                Get
-                    Return Me.m_iImageIndex
-                End Get
-                Set(ByVal iIndex As Integer)
-                    Me.m_iImageIndex = iIndex
-                End Set
-            End Property
-        End Class
+        '    Public Property ImageIndex() As Integer
+        '        Get
+        '            Return Me.m_iImageIndex
+        '        End Get
+        '        Set(ByVal iIndex As Integer)
+        '            Me.m_iImageIndex = iIndex
+        '        End Set
+        '    End Property
+        'End Class
 
 #End Region ' Helper classes
 
@@ -118,7 +105,7 @@ Namespace Other
         Private m_pm As cPluginManager = Nothing
         ''' <summary></summary>
         Private m_dictPluginAssemblyInfo As New Dictionary(Of cPluginAssembly, cPluginAssemblyInfo)
-        Private m_dictPluginInfo As New Dictionary(Of IPlugin, cPluginInfo)
+        'Private m_dictPluginInfo As New Dictionary(Of IPlugin, cPluginInfo)
 
 #End Region ' Private variables
 
@@ -155,7 +142,7 @@ Namespace Other
             Dim tnPA As TreeNode = Nothing
             Dim p As IPlugin = Nothing
             Dim tnP As TreeNode = Nothing
-            Dim infoPI As cPluginInfo = Nothing
+            'Dim infoPI As cPluginInfo = Nothing
 
             Me.m_pm = cCore.GetInstance().PluginManager
 
@@ -175,19 +162,22 @@ Namespace Other
                     tnP = New TreeNode(p.Name)
                     tnP.Tag = p
 
-                    infoPI = New cPluginInfo(p)
+                    'infoPI = New cPluginInfo(p)
 
-                    ' Determine image
-                    If (TypeOf p Is IGUIPlugin) Then
-                        Dim pui As IGUIPlugin = DirectCast(p, IGUIPlugin)
-                        If pui.ControlImage IsNot Nothing Then
-                            infoPI.ImageIndex = Me.m_ilPlugins.Images.Count
-                            Me.m_ilPlugins.Images.Add(pui.ControlImage)
-                        End If
-                    End If
-                    tnP.ImageIndex = infoPI.ImageIndex
-                    tnP.SelectedImageIndex = infoPI.ImageIndex
-                    Me.m_dictPluginInfo(p) = infoPI
+                    '' Determine image
+                    'If (TypeOf p Is IGUIPlugin) Then
+                    '    Dim pui As IGUIPlugin = DirectCast(p, IGUIPlugin)
+                    '    If pui.ControlImage IsNot Nothing Then
+                    '        infoPI.ImageIndex = Me.m_ilPlugins.Images.Count
+                    '        Me.m_ilPlugins.Images.Add(pui.ControlImage)
+                    '    Else
+                    '        infoPI.ImageIndex = cIMAGE_ENABLED
+                    '    End If
+                    'End If
+
+                    tnP.ImageIndex = Me.GetPluginAssemblyImageIndex(pa)
+                    tnP.SelectedImageIndex = Me.GetPluginAssemblyImageIndex(pa)
+                    'Me.m_dictPluginInfo(p) = p
 
                     tnPA.Nodes.Add(tnP)
                 Next
@@ -202,7 +192,8 @@ Namespace Other
 
         End Sub
 
-        Private Sub ucAppPlugins_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucAppPlugins_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
 
             For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
                 ' Stop listening to plugin assembly
@@ -212,7 +203,7 @@ Namespace Other
             Next
 
             Me.m_dictPluginAssemblyInfo.Clear()
-            Me.m_dictPluginInfo.Clear()
+            'Me.m_dictPluginInfo.Clear()
 
         End Sub
 
@@ -236,8 +227,8 @@ Namespace Other
             '    2. Conflict state
             '    3. Always enabled state
             '    4. Normal enabled state
-            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
             If (pa.IsCompatible = False) Then Return cIMAGE_CONFLICT
+            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
             If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
             Return cIMAGE_ENABLED
         End Function
