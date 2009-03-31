@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.6  2009/03/31 16:22:34  jeroens
+' Added Assembly back in :p
+'
 ' Revision 1.5  2009/03/31 14:52:09  jeroens
 ' Localized
 '
@@ -106,7 +109,7 @@ Public Class cPluginAssembly
         Set(ByVal ip As IPlugin)
             strName = strName.ToLower()
             If Me.m_dictPlugins.ContainsKey(strName) Then
-                Throw New cPluginException(String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
+                Throw New cPluginException(Me, String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
             Else
                 Me.m_dictPlugins.Add(strName, ip)
             End If
