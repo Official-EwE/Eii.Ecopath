@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.7  2009/03/31 16:59:17  jeroens
+' Only return plug-ins from Enabled assemblies
+'
 ' Revision 1.6  2009/03/31 16:22:34  jeroens
 ' Added Assembly back in :p
 '
@@ -125,17 +128,21 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing) As ICollection(Of IPlugin)
         Get
-            If t Is Nothing Then
-                Return Me.m_dictPlugins.Values
-            Else
-                Dim collPlugins As New List(Of IPlugin)
-                For Each ip As IPlugin In Me.m_dictPlugins.Values
-                    If t.IsInstanceOfType(ip) Then
-                        collPlugins.Add(ip)
-                    End If
-                Next
-                Return collPlugins
+            Dim collPlugins As New List(Of IPlugin)
+
+            If Me.Enabled Then
+                If t Is Nothing Then
+                    Return Me.m_dictPlugins.Values
+                Else
+                    For Each ip As IPlugin In Me.m_dictPlugins.Values
+                        If t.IsInstanceOfType(ip) Then
+                            collPlugins.Add(ip)
+                        End If
+                    Next
+                End If
             End If
+            Return collPlugins
+
         End Get
     End Property
 
