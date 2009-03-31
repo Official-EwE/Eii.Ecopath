@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.46  2009/03/31 21:18:09  joeh
+' Add Enum eClimateTypes
+'
 ' Revision 1.45  2009/03/26 17:49:33  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -1184,8 +1187,8 @@ Namespace Core
         PSDMortalityType
         PSDFirstWeightClass
         PSDNumWeightClasses
-        LohrenzenLatNWCorner
-        LohrenzenLatSECorner
+        ClimateType
+        NumPtsMovAvg
         'End Joeh: PSD
 
     End Enum
@@ -1794,13 +1797,30 @@ Namespace Core
 
 #Region "PSD mortality types"
 
+    'Joeh
     Public Enum ePSDMortalityTypes
         ''' <summary>Group P/B.</summary>
         GroupZ = 0
         ''' <summary>Lorenzen-variable.</summary>
         Lorenzen = 1
     End Enum
+    'End Joeh
 
 #End Region ' PSD mortality types
+
+#Region "Climate types"
+    'Joe
+    Public Enum eClimateTypes
+        ''' <summary>
+        ''' Tropical climate''' </summary>
+        Tropical = 0
+        ''' <summary>
+        ''' Temperate climate''' </summary>
+        Temperate = 1
+        ''' <summary>
+        ''' Polar climate''' </summary>
+        Polar = 2
+    End Enum
+#End Region
 
 End Namespace ' Core
