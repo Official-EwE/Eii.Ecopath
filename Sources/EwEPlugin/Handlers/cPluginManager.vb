@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.17  2009/03/31 02:17:55  jeroens
+' All plug-in calls try/caught
+'
 ' Revision 1.16  2009/03/26 02:06:07  sherman
 ' Added Plugin point EcosimModifyFGear
 '
@@ -596,7 +599,12 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            bSucces = bSucces And DirectCast(ip, IEcopathPlugin).LoadModel(dataSource)
+            Try
+                bSucces = bSucces And DirectCast(ip, IEcopathPlugin).LoadModel(dataSource)
+            Catch ex As Exception
+                ' tell the world
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
         Return bSucces
@@ -621,7 +629,12 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            bSucces = bSucces And DirectCast(ip, IEcopathPlugin).SaveModel(dataSource)
+            Try
+                bSucces = bSucces And DirectCast(ip, IEcopathPlugin).SaveModel(dataSource)
+            Catch ex As Exception
+                'tell the world
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
         Return bSucces
@@ -639,7 +652,12 @@ Public Class cPluginManager
         Dim bSucces As Boolean = True
 
         For Each ip As IPlugin In collPlugins
-            bSucces = bSucces And DirectCast(ip, IDatabasePlugin).Open(strName)
+            Try
+                bSucces = bSucces And DirectCast(ip, IDatabasePlugin).Open(strName)
+            Catch ex As Exception
+                'tell the world
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
         Return bSucces
@@ -658,7 +676,12 @@ Public Class cPluginManager
         Dim bIsChanged As Boolean = False
 
         For Each ip As IPlugin In collPlugins
-            bIsChanged = bIsChanged Or DirectCast(ip, IDatabasePlugin).IsModified()
+            Try
+                bIsChanged = bIsChanged Or DirectCast(ip, IDatabasePlugin).IsModified()
+            Catch ex As Exception
+                'tell the world
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
         Return bIsChanged
@@ -675,7 +698,12 @@ Public Class cPluginManager
         Dim collPlugins As ICollection(Of IPlugin) = Me.GetPlugins(GetType(IDatabasePlugin))
 
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IDatabasePlugin).Close()
+            Try
+                DirectCast(ip, IDatabasePlugin).Close()
+            Catch ex As Exception
+                'tell the world
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
     End Sub
@@ -706,9 +734,13 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            If DirectCast(ip, IEcopathMassBalancePlugin).EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult) = True Then
-                Return True
-            End If
+            Try
+                If DirectCast(ip, IEcopathMassBalancePlugin).EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult) = True Then
+                    Return True
+                End If
+            Catch ex As Exception
+                RaiseEvent PluginException(ex)
+            End Try
         Next
         Return False
 
@@ -1065,7 +1097,11 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcospacePlugin).LoadEcospaceScenario(dataSource)
+            Try
+                DirectCast(ip, IEcospacePlugin).LoadEcospaceScenario(dataSource)
+            Catch ex As Exception
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
     End Sub
@@ -1117,7 +1153,11 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcospacePlugin).SaveEcospaceScenario(dataSource)
+            Try
+                DirectCast(ip, IEcospacePlugin).SaveEcospaceScenario(dataSource)
+            Catch ex As Exception
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
     End Sub
@@ -1344,7 +1384,11 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcotracerPlugin).LoadEcotracerScenario(dataSource)
+            Try
+                DirectCast(ip, IEcotracerPlugin).LoadEcotracerScenario(dataSource)
+            Catch ex As Exception
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
     End Sub
@@ -1396,7 +1440,11 @@ Public Class cPluginManager
 
         ' Find first available plugin that implements a datasource save plugin point
         For Each ip As IPlugin In collPlugins
-            DirectCast(ip, IEcotracerPlugin).SaveEcotracerScenario(dataSource)
+            Try
+                DirectCast(ip, IEcotracerPlugin).SaveEcotracerScenario(dataSource)
+            Catch ex As Exception
+                RaiseEvent PluginException(ex)
+            End Try
         Next
 
     End Sub
