@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.102  2009/03/31 20:49:17  jeroens
+' Added ResetEcopathGroupOutputs, ResetEcosimGroupOutputs to entirely clear status flags before a run
+'
 ' Revision 1.101  2009/03/31 19:23:56  jeroens
 ' Plug-in prompt localized
 '
@@ -2694,6 +2697,15 @@ Public Class cCore
 
     End Property
 
+    ''' <summary>
+    ''' Clear all status flags on Ecopath group outputs
+    ''' </summary>
+    Private Sub ResetEcopathGroupOutputs()
+        For Each group As cEcoPathGroupOutput In Me.m_EcoPathOutputs
+            group.ResetStatusFlags(True)
+        Next
+    End Sub
+
     Private Function LoadEcopathOutputs() As Boolean
 
         Dim predmort() As Single
@@ -3338,7 +3350,7 @@ Public Class cCore
     ''' <remarks>
     ''' InitEcoPath() must be called before this can be called
     ''' </remarks>
-    Public Function RunEcoPath(Optional ByVal bAllowErrors As Boolean = False) As Boolean
+    Public Function RunEcoPath() As Boolean
         Dim bsuccess As Boolean = True
         Dim msg As cMessage
 
@@ -3363,8 +3375,10 @@ Public Class cCore
             m_EcoPathData.CopyInputToModelArrays()
             m_PSDData.CopyInputToModelArrays()
 
+            Me.ResetEcopathGroupOutputs()
+
             'call EcoPath to estimate the missing parameters
-            If (m_EcoPath.Run() = True) Or (bAllowErrors = True) Then
+            If (m_EcoPath.Run() = True) Then
 
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
@@ -4261,7 +4275,7 @@ Public Class cCore
     Private m_EcoSimRun As cEcoSimModelParameters 'private copy of EcoSim model parameters. Public access will through a reference to this object
     Friend m_EcoSimGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupInput, 1)
     '   Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cEcosimGroupOutput)(eDataTypes.EcoSimGroupOutput, 1)
-    Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
+    Friend m_EcoSimGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
     'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
@@ -4912,9 +4926,9 @@ Public Class cCore
         Get
 
             Try
-                If m_EcoSimGroupOuputs IsNot Nothing Then
-                    If m_EcoSimGroupOuputs.Count > 0 Then
-                        Return DirectCast(m_EcoSimGroupOuputs(iGroup), cEcosimGroupOutput)
+                If m_EcoSimGroupOutputs IsNot Nothing Then
+                    If m_EcoSimGroupOutputs.Count > 0 Then
+                        Return DirectCast(m_EcoSimGroupOutputs(iGroup), cEcosimGroupOutput)
                     End If
                 End If
                 Return Nothing
@@ -5102,15 +5116,24 @@ Public Class cCore
 
     Private Function InitEcosimGroupOutput() As Boolean
 
-        m_EcoSimGroupOuputs.Clear()
+        m_EcoSimGroupOutputs.Clear()
 
         'populate the list of cEcoSimGroupInfo objects that the user will interact with 
         'to change group related parameters from the interface see EcosimGroupOutputs(iGroup)
         For i As Integer = 1 To nGroups
-            m_EcoSimGroupOuputs.Add(New cEcosimGroupOutput(Me, Me.m_EcoSimData, i))
+            m_EcoSimGroupOutputs.Add(New cEcosimGroupOutput(Me, Me.m_EcoSimData, i))
         Next i
 
     End Function
+
+    ''' <summary>
+    ''' Clear all status flags on Ecosim group outputs
+    ''' </summary>
+    Private Sub ResetEcosimGroupOutputs()
+        For Each group As cEcosimGroupOutput In Me.m_EcoSimGroupOutputs
+            group.ResetStatusFlags(True)
+        Next
+    End Sub
 
     Private Function LoadEcosimGroupOutputs() As Boolean
         Dim iGroup As Integer
@@ -5118,7 +5141,7 @@ Public Class cCore
         Dim sVal As Single, endVal As Single
 
 
-        For Each group As cEcosimGroupOutput In m_EcoSimGroupOuputs
+        For Each group As cEcosimGroupOutput In m_EcoSimGroupOutputs
 
             'reset the reference to the sim results arrays
             group.Init()
@@ -5645,6 +5668,8 @@ Public Class cCore
 
         'make sure all the searches are turned off
         m_EcoSim.setSearchOff()
+
+        Me.ResetEcosimGroupOutputs()
 
         m_EcoSim.bStopRunning = False
         m_EcoSim.Run()
