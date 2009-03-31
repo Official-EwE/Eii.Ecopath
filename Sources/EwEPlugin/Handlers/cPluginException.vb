@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginException.vb,v $
+' Revision 1.3  2009/03/31 16:09:01  jeroens
+' Added Assembly back in :p
+'
 ' Revision 1.2  2009/03/31 14:54:08  jeroens
 ' Now really used
 '
@@ -22,37 +25,52 @@ Option Strict On
 Public Class cPluginException
     Inherits Exception
 
-    Private m_bEnabled As Boolean = True
+    Private m_assembly As cPluginAssembly = Nothing
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Constructor, initializes a new instance of a cPluginException.
     ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="exception"></param>
+    ''' <param name="assembly"></param>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal strMessage As String)
-        Me.New(strMessage, Nothing)
-    End Sub
-
-    Public Sub New(ByVal strMessage As String, ByVal exception As Exception)
+    Public Sub New(ByVal assembly As cPluginAssembly, ByVal strMessage As String, ByVal exception As Exception)
         MyBase.New(strMessage, exception)
-    End Sub
-
-    Public Sub New(ByVal exception As Exception)
-        Me.New(exception.Message)
+        Me.m_assembly = assembly
     End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Gets whether the plug-in assembly enabled state after processing the exception.
+    ''' Constructor, initializes a new instance of a cPluginException.
+    ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="assembly"></param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub New(ByVal assembly As cPluginAssembly, ByVal strMessage As String)
+        Me.New(assembly, strMessage, Nothing)
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor, initializes a new instance of a cPluginException.
+    ''' </summary>
+    ''' <param name="exception"></param>
+    ''' <param name="assembly"></param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub New(ByVal assembly As cPluginAssembly, ByVal exception As Exception)
+        Me.New(assembly, exception.Message)
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the assembly that caused the exception.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Property Enabled() As Boolean
+    Public ReadOnly Property Assembly() As cPluginAssembly
         Get
-            Return Me.m_bEnabled
+            Return Me.m_assembly
         End Get
-        Set(ByVal value As Boolean)
-            Me.m_bEnabled = value
-        End Set
     End Property
 
 End Class
