@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.6  2009/03/31 21:36:14  joeh
+' Move all PSD computation routines to a new class cPSDModel
+'
 ' Revision 1.5  2009/03/24 18:58:08  joeh
 ' Change PSDFirstWeightClass from integer to single
 '
@@ -62,14 +65,14 @@ Public Class cPSDParameters
             val = New cValue(New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
             m_values.Add(val.varName, val)
 
-            'LohrenzenLatNWCorner
-            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0)
-            val = New cValue(New Single, eVarNameFlags.LohrenzenLatNWCorner, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LohrenzenLatNWCorner))
+            'ClimateType
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.ClimateType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ClimateType))
             m_values.Add(val.varName, val)
 
-            'LohrenzenLatSECorner
-            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0)
-            val = New cValue(New Single, eVarNameFlags.LohrenzenLatSECorner, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LohrenzenLatSECorner))
+            'Number of points used in moving average
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumPtsMovAvg))
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
@@ -117,23 +120,23 @@ Public Class cPSDParameters
         End Set
     End Property
 
-    Public Property LohrenzenLatNWCorner() As Single
+    Public Property ClimateType() As eClimateTypes
         Get
-            Return CSng(GetVariable(eVarNameFlags.LohrenzenLatNWCorner))
+            Return DirectCast(GetVariable(eVarNameFlags.ClimateType), eClimateTypes)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.LohrenzenLatNWCorner, value)
+        Set(ByVal value As eClimateTypes)
+            SetVariable(eVarNameFlags.ClimateType, value)
         End Set
     End Property
 
-    Public Property LohrenzenLatSECorner() As Single
+    Public Property NumPtsMovAvg() As Integer
         Get
-            Return CSng(GetVariable(eVarNameFlags.LohrenzenLatSECorner))
+            Return CInt(GetVariable(eVarNameFlags.NumPtsMovAvg))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.LohrenzenLatSECorner, value)
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.NumPtsMovAvg, value)
         End Set
     End Property
 

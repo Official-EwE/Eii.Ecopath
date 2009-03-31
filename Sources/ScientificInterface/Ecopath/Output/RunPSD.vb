@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.17  2009/03/31 21:36:15  joeh
+' Move all PSD computation routines to a new class cPSDModel
+'
 ' Revision 1.16  2009/03/25 00:03:14  joeh
 ' Add tool strip combo box for the latitude input
 '
@@ -79,10 +82,9 @@ Namespace Ecopath.Output
         Private m_zgh As ZedGraphHelper = Nothing
 
         ' -- Format providers --
-        Private m_fpLorenzenLatNWCorner As cEwEFormatProvider = Nothing
-        Private m_fpLorenzenLatSECorner As cEwEFormatProvider = Nothing
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
         Private m_fpMinWeight As cEwEFormatProvider = Nothing
+        Private m_fpNoOfPointsMovAvg As cEwEFormatProvider = Nothing
 
         '' -- Internal admin --
         '''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
@@ -112,6 +114,7 @@ Namespace Ecopath.Output
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             ' Connect to show/hide groups command
             cmd = cmdh.GetCommand("DisplayGroups")
@@ -119,11 +122,13 @@ Namespace Ecopath.Output
                 cmd.AddControl(Me.m_tsbnShowHideGroups)
             End If
 
+            ' Style guide
+            AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
             ' Connect format providers
-            Me.m_fpLorenzenLatNWCorner = New cPropertyFormatProvider(Me.m_tbxNWLat.Control, parms, eVarNameFlags.LohrenzenLatNWCorner)
-            Me.m_fpLorenzenLatSECorner = New cPropertyFormatProvider(Me.m_tbxSELat.Control, parms, eVarNameFlags.LohrenzenLatSECorner)
-            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.m_tbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
-            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.m_tbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
+            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
+            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
 
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -142,14 +147,14 @@ Namespace Ecopath.Output
             Handles Me.FormClosing
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing
 
             ' Detach format providers
-            Me.m_fpLorenzenLatNWCorner.Release()
-            Me.m_fpLorenzenLatSECorner.Release()
             Me.m_fpNoOfPointsPSD.Release()
             Me.m_fpMinWeight.Release()
+            Me.m_fpNoOfPointsMovAvg.Release()
 
             ' Detach from show/hide groups command
             cmd = cmdh.GetCommand("DisplayGroups")
@@ -160,40 +165,59 @@ Namespace Ecopath.Output
             ' Detach from core state monitor events
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
+            'Style guide
+            RemoveHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
-        Private Sub mnuItmGroupPB_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiGroupPB.CheckedChanged
-
+        Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsmiGroupPB.Click
             ' Make sure one checkbox is checked exclusively
+            Me.m_tsmiGroupPB.Checked = True
             Me.m_tsmiLorenzen.Checked = Not Me.m_tsmiGroupPB.Checked
-
+            'Disable MeanLat label and combo box
+            m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
+            m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
         End Sub
 
-        Private Sub mnuItmLorenzen_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiLorenzen.CheckedChanged
-
+        Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsmiLorenzen.Click
             ' Make sure one checkbox is checked exclusively
+            Me.m_tsmiLorenzen.Checked = True
             Me.m_tsmiGroupPB.Checked = Not Me.m_tsmiLorenzen.Checked
-
+            'Enable MeanLat label and combo box
+            m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
+            m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
         End Sub
 
-        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnRun.Click
+        Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbtnRun.Click
 
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
-            ' Run Ecopath and PSD
-            Me.m_core.RunEcoPath()
 
-            ' JS 24mar09: OnCoreExecutionStateChanged will take care of this
-            '' Show whatever this run produced
-            'Me.PlotCurves()
+            ' Are Ecopath results available?
+            If Me.m_coreStateMonitor.HasEcopathRan Then
+                ' #Yes: 
+                Me.m_core.RunPSD()
+                Me.PlotCurves()
+            Else
+                '#No: 
+                Me.m_core.RunEcoPath()
+                'OnCoreExecutionStateChanged will take care of these:
+                'Me.m_core.RunPSD()
+                'Me.PlotCurves()
+            End If
+
+            
 
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
             Me.SynchronizePlot()
+        End Sub
+
+        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+            Me.UpdateVariables()
+            Me.m_core.RunEcoPath()
         End Sub
 
 #End Region ' Event handlers
@@ -210,6 +234,7 @@ Namespace Ecopath.Output
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasEcopathRan Then
                 ' #Yes: 
+                Me.m_core.RunPSD()
                 Me.PlotCurves()
             Else
                 '#No: 
@@ -349,15 +374,21 @@ Namespace Ecopath.Output
                 parms.MortalityType = ePSDMortalityTypes.Lorenzen
             End If
 
-            'Group included in PSD
+            'Climate type
+            If m_tsmiLorenzen.Checked Then
+                parms.ClimateType = CType(m_tscbxMeanLat.SelectedIndex, eClimateTypes)
+            End If
+
+            'Group included in PSD 
+            '(Need this to tell which group is included in the PSD calculation.
+            'Not saying we need to save to db. But grpInput.PSDIncluded triggers
+            'cCore.OnValidated)
             For iGroup As Integer = 1 To Me.m_core.nLivingGroups
                 grpInput = m_core.EcoPathGroupInputs(iGroup)
                 grpInput.PSDIncluded = sg.GroupVisible(iGroup)
             Next
 
             ' JS: the variable values are automatically updated by the property format providers
-            'parms.LohrenzenLatNWCorner = CSng(m_fpLorenzenLatNWCorner.Value)
-            'parms.LohrenzenLatSECorner = CSng(m_fpLorenzenLatSECorner.Value)
             'parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
             'parms.FirstWeightClass = CSng(m_fpMinWeight.Value)
         End Sub
@@ -379,14 +410,20 @@ Namespace Ecopath.Output
             Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             'Mortality type
-            If parms.MortalityType = ePSDMortalityTypes.GroupZ Then
-                Me.m_tsmiGroupPB.Checked = True
-            End If
+            Select Case parms.MortalityType
+                Case ePSDMortalityTypes.GroupZ
+                    Me.m_tsmiGroupPB.Checked = True
+                Case ePSDMortalityTypes.Lorenzen
+                    Me.m_tsmiLorenzen.Checked = True
+            End Select
 
+            'Climate type
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                Me.m_tsmiLorenzen.Checked = True
+                Me.m_tscbxMeanLat.Enabled = True
+                Me.m_tscbxMeanLat.SelectedIndex = parms.ClimateType
             End If
 
+            'Group included in PSD
             ' ToDo_JS or ToDo_JH: The groupvisible flags are meant solely for showing/hiding groups in graphs.
             ' The PSD group inclusion settings is separate behaviour, and should perhaps not alter the EwE group 
             ' visibility settings. 
@@ -403,7 +440,7 @@ Namespace Ecopath.Output
             ' 3) is probably the best option
             'For iGroup As Integer = 1 To m_core.nLivingGroups
             '    grpInput = m_core.EcoPathGroupInputs(iGroup)
-            '    sgStyleGuide.GroupVisible(iGroup) = grpInput.PSDIncluded
+            '    sg.GroupVisible(iGroup) = grpInput.PSDIncluded
             'Next
 
         End Sub

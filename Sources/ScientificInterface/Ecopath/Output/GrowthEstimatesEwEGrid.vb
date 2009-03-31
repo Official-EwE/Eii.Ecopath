@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.5  2009/03/31 21:36:15  joeh
+' Move all PSD computation routines to a new class cPSDModel
+'
 ' Revision 1.4  2009/03/03 01:42:56  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -27,8 +30,12 @@ Namespace Ecopath.Output
     Public Class GrowthEstimatesEwEGrid
         : Inherits EwEGrid
 
+
         Public Sub New()
             MyBase.new()
+
+            Dim core As cCore = cCore.GetInstance()
+            core.RunPSD()
         End Sub
 
         Protected Overrides Sub InitStyle()

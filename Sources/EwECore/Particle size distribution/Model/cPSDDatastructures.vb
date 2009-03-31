@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.6  2009/03/31 21:36:14  joeh
+' Move all PSD computation routines to a new class cPSDModel
+'
 ' Revision 1.5  2009/03/19 22:23:18  jeroens
 ' no message
 '
@@ -34,10 +37,10 @@ Public Class cPSDDatastructures
 
     Public NAgeSteps As Integer = 101
     Public MortalityType As ePSDMortalityTypes = ePSDMortalityTypes.GroupZ
+    Public ClimateType As eClimateTypes = eClimateTypes.Tropical
     Public NWeightClasses As Integer = 25
     Public FirstWeightClass As Single = 0.125
-    Public LatNWCorner As Single = 45
-    Public LatSECorner As Single = 45
+    Public NPtsMovAvg As Integer = 0
     ''' <summary>Flag (x group) stating whether groups are included in PSD analysis.</summary>
     Public Include() As Boolean
 
@@ -95,6 +98,9 @@ Public Class cPSDDatastructures
 
         ReDim PSD(NumGroups, NWeightClasses)
         ReDim Include(NumGroups)
+        For i As Integer = 1 To NumGroups
+            Include(i) = True
+        Next
 
         Return True
 

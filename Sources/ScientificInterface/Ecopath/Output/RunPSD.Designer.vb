@@ -28,8 +28,6 @@ Namespace Ecopath.Output
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim m_tsmiDummy1 As System.Windows.Forms.ToolStripMenuItem
-            Dim m_tsmiDummy2 As System.Windows.Forms.ToolStripMenuItem
             Dim m_sep1 As System.Windows.Forms.ToolStripSeparator
             Dim m_sep666 As System.Windows.Forms.ToolStripSeparator
             Dim m_sep2 As System.Windows.Forms.ToolStripSeparator
@@ -38,24 +36,20 @@ Namespace Ecopath.Output
             Dim m_sep5 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunPSD))
             Me.m_tsRunPSD = New System.Windows.Forms.ToolStrip
-            Me.m_tbddTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsddTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmiGroupPB = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiLorenzen = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tbxNWLat = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tbxSELat = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tsmiDummy3 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_cbxAvgLat = New System.Windows.Forms.ToolStripComboBox
+            Me.m_tsmiMeanLat = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tscbxMeanLat = New System.Windows.Forms.ToolStripComboBox
             Me.m_tsbnShowHideGroups = New System.Windows.Forms.ToolStripButton
-            Me.m_lblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
-            Me.m_tbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
-            Me.m_lblMinWeight = New System.Windows.Forms.ToolStripLabel
-            Me.m_tbxMinWeight = New System.Windows.Forms.ToolStripTextBox
-            Me.m_lblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
-            Me.m_tbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
-            Me.m_btnRun = New System.Windows.Forms.ToolStripButton
+            Me.m_tslblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
+            Me.m_tstbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tslblMinWeight = New System.Windows.Forms.ToolStripLabel
+            Me.m_tstbxMinWeight = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tslblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
+            Me.m_tstbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsbtnRun = New System.Windows.Forms.ToolStripButton
             Me.m_zedgraph = New ZedGraph.ZedGraphControl
-            m_tsmiDummy1 = New System.Windows.Forms.ToolStripMenuItem
-            m_tsmiDummy2 = New System.Windows.Forms.ToolStripMenuItem
             m_sep1 = New System.Windows.Forms.ToolStripSeparator
             m_sep666 = New System.Windows.Forms.ToolStripSeparator
             m_sep2 = New System.Windows.Forms.ToolStripSeparator
@@ -64,20 +58,6 @@ Namespace Ecopath.Output
             m_sep5 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsRunPSD.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'm_tsmiDummy1
-            '
-            m_tsmiDummy1.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
-            m_tsmiDummy1.Name = "m_tsmiDummy1"
-            m_tsmiDummy1.Size = New System.Drawing.Size(184, 22)
-            m_tsmiDummy1.Text = "NW corner latitudes:"
-            '
-            'm_tsmiDummy2
-            '
-            m_tsmiDummy2.Margin = New System.Windows.Forms.Padding(10, -1, 0, 0)
-            m_tsmiDummy2.Name = "m_tsmiDummy2"
-            m_tsmiDummy2.Size = New System.Drawing.Size(184, 22)
-            m_tsmiDummy2.Text = "SE corner latitudes:"
             '
             'm_sep1
             '
@@ -111,64 +91,51 @@ Namespace Ecopath.Output
             '
             'm_tsRunPSD
             '
-            Me.m_tsRunPSD.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tbddTotalMortality, m_sep1, Me.m_tsbnShowHideGroups, m_sep666, Me.m_lblNoOfPointsPSD, Me.m_tbxNoOfPointsPSD, m_sep2, Me.m_lblMinWeight, Me.m_tbxMinWeight, m_sep3, Me.m_lblNoOfPointsMovAvg, Me.m_tbxNoOfPointsMovAvg, m_sep4, Me.m_btnRun, m_sep5})
+            Me.m_tsRunPSD.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddTotalMortality, m_sep1, Me.m_tsbnShowHideGroups, m_sep666, Me.m_tslblNoOfPointsPSD, Me.m_tstbxNoOfPointsPSD, m_sep2, Me.m_tslblMinWeight, Me.m_tstbxMinWeight, m_sep3, Me.m_tslblNoOfPointsMovAvg, Me.m_tstbxNoOfPointsMovAvg, m_sep4, Me.m_tsbtnRun, m_sep5})
             Me.m_tsRunPSD.Location = New System.Drawing.Point(0, 0)
             Me.m_tsRunPSD.Name = "m_tsRunPSD"
             Me.m_tsRunPSD.Size = New System.Drawing.Size(869, 25)
             Me.m_tsRunPSD.TabIndex = 0
             Me.m_tsRunPSD.Text = "ToolStrip1"
             '
-            'm_tbddTotalMortality
+            'm_tsddTotalMortality
             '
-            Me.m_tbddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, m_tsmiDummy1, Me.m_tbxNWLat, m_tsmiDummy2, Me.m_tbxSELat, Me.m_tsmiDummy3, Me.m_cbxAvgLat})
-            Me.m_tbddTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-            Me.m_tbddTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tbddTotalMortality.Name = "m_tbddTotalMortality"
-            Me.m_tbddTotalMortality.Size = New System.Drawing.Size(105, 22)
-            Me.m_tbddTotalMortality.Text = "Total mortality"
+            Me.m_tsddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, Me.m_tsmiMeanLat, Me.m_tscbxMeanLat})
+            Me.m_tsddTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsddTotalMortality.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsddTotalMortality.Name = "m_tsddTotalMortality"
+            Me.m_tsddTotalMortality.Size = New System.Drawing.Size(105, 22)
+            Me.m_tsddTotalMortality.Text = "Total mortality"
             '
             'm_tsmiGroupPB
             '
             Me.m_tsmiGroupPB.CheckOnClick = True
             Me.m_tsmiGroupPB.Name = "m_tsmiGroupPB"
-            Me.m_tsmiGroupPB.Size = New System.Drawing.Size(184, 22)
+            Me.m_tsmiGroupPB.Size = New System.Drawing.Size(174, 22)
             Me.m_tsmiGroupPB.Text = "Group P/B "
             '
             'm_tsmiLorenzen
             '
             Me.m_tsmiLorenzen.CheckOnClick = True
             Me.m_tsmiLorenzen.Name = "m_tsmiLorenzen"
-            Me.m_tsmiLorenzen.Size = New System.Drawing.Size(184, 22)
+            Me.m_tsmiLorenzen.Size = New System.Drawing.Size(174, 22)
             Me.m_tsmiLorenzen.Text = "Lorenzen-variable "
             '
-            'm_tbxNWLat
+            'm_tsmiMeanLat
             '
-            Me.m_tbxNWLat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tbxNWLat.Margin = New System.Windows.Forms.Padding(115, -20, 1, 1)
-            Me.m_tbxNWLat.Name = "m_tbxNWLat"
-            Me.m_tbxNWLat.Size = New System.Drawing.Size(35, 21)
+            Me.m_tsmiMeanLat.Margin = New System.Windows.Forms.Padding(5, 0, 0, 0)
+            Me.m_tsmiMeanLat.Name = "m_tsmiMeanLat"
+            Me.m_tsmiMeanLat.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiMeanLat.Text = "Mean lat:"
             '
-            'm_tbxSELat
+            'm_tscbxMeanLat
             '
-            Me.m_tbxSELat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tbxSELat.Margin = New System.Windows.Forms.Padding(115, -21, 1, 1)
-            Me.m_tbxSELat.Name = "m_tbxSELat"
-            Me.m_tbxSELat.Size = New System.Drawing.Size(35, 21)
-            '
-            'm_tsmiDummy3
-            '
-            Me.m_tsmiDummy3.Margin = New System.Windows.Forms.Padding(10, 0, 0, 0)
-            Me.m_tsmiDummy3.Name = "m_tsmiDummy3"
-            Me.m_tsmiDummy3.Size = New System.Drawing.Size(184, 22)
-            Me.m_tsmiDummy3.Text = "Mean lat:"
-            '
-            'm_cbxAvgLat
-            '
-            Me.m_cbxAvgLat.FlatStyle = System.Windows.Forms.FlatStyle.Standard
-            Me.m_cbxAvgLat.Items.AddRange(New Object() {"> 0 and < 30", "> 30 and < 60", "> 60 and < 90"})
-            Me.m_cbxAvgLat.Margin = New System.Windows.Forms.Padding(60, -22, 2, 2)
-            Me.m_cbxAvgLat.Name = "m_cbxAvgLat"
-            Me.m_cbxAvgLat.Size = New System.Drawing.Size(90, 21)
+            Me.m_tscbxMeanLat.Enabled = False
+            Me.m_tscbxMeanLat.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+            Me.m_tscbxMeanLat.Items.AddRange(New Object() {">0 and <30", ">30 and <60", ">60 and <90"})
+            Me.m_tscbxMeanLat.Margin = New System.Windows.Forms.Padding(55, -22, 2, 2)
+            Me.m_tscbxMeanLat.Name = "m_tscbxMeanLat"
+            Me.m_tscbxMeanLat.Size = New System.Drawing.Size(86, 21)
             '
             'm_tsbnShowHideGroups
             '
@@ -178,50 +145,48 @@ Namespace Ecopath.Output
             Me.m_tsbnShowHideGroups.Size = New System.Drawing.Size(107, 22)
             Me.m_tsbnShowHideGroups.Text = "Select groups ..."
             '
-            'm_lblNoOfPointsPSD
+            'm_tslblNoOfPointsPSD
             '
-            Me.m_lblNoOfPointsPSD.Name = "m_lblNoOfPointsPSD"
-            Me.m_lblNoOfPointsPSD.Size = New System.Drawing.Size(108, 22)
-            Me.m_lblNoOfPointsPSD.Text = "No. of points for PSD"
+            Me.m_tslblNoOfPointsPSD.Name = "m_tslblNoOfPointsPSD"
+            Me.m_tslblNoOfPointsPSD.Size = New System.Drawing.Size(112, 22)
+            Me.m_tslblNoOfPointsPSD.Text = "No. of points for PSD:"
             '
-            'm_tbxNoOfPointsPSD
+            'm_tstbxNoOfPointsPSD
             '
-            Me.m_tbxNoOfPointsPSD.Name = "m_tbxNoOfPointsPSD"
-            Me.m_tbxNoOfPointsPSD.Size = New System.Drawing.Size(50, 25)
+            Me.m_tstbxNoOfPointsPSD.Name = "m_tstbxNoOfPointsPSD"
+            Me.m_tstbxNoOfPointsPSD.Size = New System.Drawing.Size(30, 25)
             '
-            'm_lblMinWeight
+            'm_tslblMinWeight
             '
-            Me.m_lblMinWeight.Name = "m_lblMinWeight"
-            Me.m_lblMinWeight.Size = New System.Drawing.Size(59, 22)
-            Me.m_lblMinWeight.Text = "Min. wt (g)"
+            Me.m_tslblMinWeight.Name = "m_tslblMinWeight"
+            Me.m_tslblMinWeight.Size = New System.Drawing.Size(63, 22)
+            Me.m_tslblMinWeight.Text = "Min. wt (g):"
             '
-            'm_tbxMinWeight
+            'm_tstbxMinWeight
             '
-            Me.m_tbxMinWeight.Name = "m_tbxMinWeight"
-            Me.m_tbxMinWeight.Size = New System.Drawing.Size(50, 25)
+            Me.m_tstbxMinWeight.Name = "m_tstbxMinWeight"
+            Me.m_tstbxMinWeight.Size = New System.Drawing.Size(40, 25)
             '
-            'm_lblNoOfPointsMovAvg
+            'm_tslblNoOfPointsMovAvg
             '
-            Me.m_lblNoOfPointsMovAvg.Name = "m_lblNoOfPointsMovAvg"
-            Me.m_lblNoOfPointsMovAvg.Size = New System.Drawing.Size(130, 22)
-            Me.m_lblNoOfPointsMovAvg.Text = "No. of points for mov avg"
-            Me.m_lblNoOfPointsMovAvg.Visible = False
+            Me.m_tslblNoOfPointsMovAvg.Name = "m_tslblNoOfPointsMovAvg"
+            Me.m_tslblNoOfPointsMovAvg.Size = New System.Drawing.Size(134, 22)
+            Me.m_tslblNoOfPointsMovAvg.Text = "No. of points for mov avg:"
             '
-            'm_tbxNoOfPointsMovAvg
+            'm_tstbxNoOfPointsMovAvg
             '
-            Me.m_tbxNoOfPointsMovAvg.Name = "m_tbxNoOfPointsMovAvg"
-            Me.m_tbxNoOfPointsMovAvg.Size = New System.Drawing.Size(50, 25)
-            Me.m_tbxNoOfPointsMovAvg.Visible = False
+            Me.m_tstbxNoOfPointsMovAvg.Name = "m_tstbxNoOfPointsMovAvg"
+            Me.m_tstbxNoOfPointsMovAvg.Size = New System.Drawing.Size(30, 25)
             '
-            'm_btnRun
+            'm_tsbtnRun
             '
-            Me.m_btnRun.AutoSize = False
-            Me.m_btnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_btnRun.Image = CType(resources.GetObject("m_btnRun.Image"), System.Drawing.Image)
-            Me.m_btnRun.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_btnRun.Name = "m_btnRun"
-            Me.m_btnRun.Size = New System.Drawing.Size(50, 22)
-            Me.m_btnRun.Text = "Run"
+            Me.m_tsbtnRun.AutoSize = False
+            Me.m_tsbtnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbtnRun.Image = CType(resources.GetObject("m_tsbtnRun.Image"), System.Drawing.Image)
+            Me.m_tsbtnRun.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbtnRun.Name = "m_tsbtnRun"
+            Me.m_tsbtnRun.Size = New System.Drawing.Size(50, 22)
+            Me.m_tsbtnRun.Text = "Run"
             '
             'm_zedgraph
             '
@@ -255,22 +220,20 @@ Namespace Ecopath.Output
 
         End Sub
         Friend WithEvents m_tsRunPSD As System.Windows.Forms.ToolStrip
-        Private WithEvents m_tbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_btnRun As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tbddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tstbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tsbtnRun As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmiGroupPB As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiLorenzen As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tbxNWLat As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_tbxSELat As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsbnShowHideGroups As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_lblNoOfPointsPSD As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tbxNoOfPointsPSD As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_lblMinWeight As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tbxMinWeight As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_lblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tslblNoOfPointsPSD As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tstbxNoOfPointsPSD As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tslblMinWeight As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tstbxMinWeight As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tslblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
-        Friend WithEvents m_tsmiDummy3 As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_cbxAvgLat As System.Windows.Forms.ToolStripComboBox
+        Friend WithEvents m_tsmiMeanLat As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents m_tscbxMeanLat As System.Windows.Forms.ToolStripComboBox
     End Class
 
 End Namespace

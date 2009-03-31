@@ -1,0 +1,500 @@
+﻿Option Strict On
+Option Explicit On
+
+Imports EwEUtils.Core
+
+Public Class cPSDModel
+
+    Private Shared uniqueInstances As cPSDModel = Nothing
+    Friend m_Data As cEcopathDataStructures
+    Friend m_stanza As cStanzaDatastructures
+    Friend m_psd As cPSDDatastructures
+
+#Region "Public methods"
+
+    Public Shared Function GetInstance() As cPSDModel
+        If uniqueInstances Is Nothing Then
+            uniqueInstances = New cPSDModel
+        End If
+        Return uniqueInstances
+    End Function
+
+    Public Sub Run() 'Function Run() As Boolean
+        EstimateGrowthParameters()
+        EstimatePSD()
+        EstimateSizeWeight()
+        If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
+    End Sub
+
+#End Region 'Public method
+
+#Region "Helper methods"
+
+    Private Sub EstimateGrowthParameters()
+        Dim sTemp As Single
+
+        'A in LW
+        For i As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.AinLW(i) < 0 Then Me.m_psd.AinLW(i) = 0.01
+        Next
+
+        'B in LW
+        For i As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.BinLW(i) < 0 Then Me.m_psd.BinLW(i) = 3
+        Next
+
+        'Loo
+        For i As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.Loo(i) < 0 And Me.m_psd.Winf(i) > 0 And Me.m_psd.AinLW(i) > 0 And Me.m_psd.BinLW(i) > 0 Then
+                Me.m_psd.Loo(i) = CSng(Math.Pow(10.0, (Math.Log10(Me.m_psd.Winf(i)) - Math.Log10(Me.m_psd.AinLW(i))) / Me.m_psd.BinLW(i)))
+            End If
+        Next
+
+        'Winf
+        For i As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.Winf(i) < 0 And Me.m_psd.Loo(i) > 0 And Me.m_psd.AinLW(i) > 0 And Me.m_psd.BinLW(i) > 0 Then
+                Me.m_psd.Winf(i) = CSng(Me.m_psd.AinLW(i) * Math.Pow(Me.m_psd.Loo(i), Me.m_psd.BinLW(i)))
+            End If
+        Next
+
+        't0
+        For i As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.t0(i) < 0 And Me.m_psd.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
+                Me.m_psd.t0(i) = CSng(-Math.Exp(-0.3922 - 0.2752 * Math.Log10(Me.m_psd.Loo(i)) - 1.038 * Math.Log10(m_Data.vbK(i))))
+            End If
+        Next
+
+        'Tmax
+        For i As Integer = 1 To m_Data.NumLiving
+            'Is stanza group?
+            If m_Data.StanzaGroup(i) Then
+                'Yes
+                For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                    For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                        If m_stanza.EcopathCode(isp, ist) = i Then
+                            Me.m_psd.Tmax(i) = CSng(m_stanza.Age2(isp, ist) / 12)
+                        End If
+                    Next
+                Next
+            Else
+                'No
+                If m_Data.PBinput(i) > 0 Then
+                    sTemp = m_Data.PBinput(i)
+                Else
+                    sTemp = m_Data.PB(i)
+                End If
+                If sTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
+                    sTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
+                End If
+                If Me.m_psd.Tmax(i) < 0 And sTemp > 0 Then Me.m_psd.Tmax(i) = CSng(Math.Exp((Math.Log(sTemp) - 1.44) / -0.984))
+            End If
+        Next
+    End Sub
+
+    Private Sub EstimatePSD()
+        Dim sTime As Single
+
+        Dim WeightClass() As Single
+        Dim Time() As Single
+        Dim DeltaTime() As Single
+        Dim Number() As Single
+        Dim Biomass() As Single
+        Dim StartWeightClassNum As Integer
+        Dim ScaleFactor As Single
+
+        ReDim Me.m_psd.PSD(m_Data.NumGroups, Me.m_psd.NWeightClasses)
+
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If Me.m_psd.Include(iGroup) Then
+                '(I) Estimate Weight, Number ad Biomass over time
+                For iTimeStep As Integer = 1 To Me.m_psd.NAgeSteps
+                    sTime = (iTimeStep - 1) * Me.m_psd.Tmax(iGroup) / (Me.m_psd.NAgeSteps - 1)
+
+                    'Weight
+                    If sTime > CalcStartTime(iGroup) Then
+                        Me.m_psd.EcopathWeight(iGroup, iTimeStep) = CalcWeight(iGroup, sTime)
+                    Else
+                        Me.m_psd.EcopathWeight(iGroup, iTimeStep) = 0
+                    End If
+
+                    'Number and Lorenzen Mortality
+                    If sTime > CalcStartTime(iGroup) Then
+                        Me.m_psd.LorenzenMortality(iGroup, iTimeStep) = CalcMortality(iGroup, sTime)
+                        Me.m_psd.EcopathNumber(iGroup, iTimeStep) = CSng(10000 * Math.Exp(-CalcMortality(iGroup, sTime) * sTime))
+                    Else
+                        Me.m_psd.LorenzenMortality(iGroup, iTimeStep) = 0
+                        Me.m_psd.EcopathNumber(iGroup, iTimeStep) = 0
+                    End If
+
+                    'Biomass
+                    If sTime > CalcStartTime(iGroup) Then
+                        Me.m_psd.EcopathBiomass(iGroup, iTimeStep) = Me.m_psd.EcopathWeight(iGroup, iTimeStep) * Me.m_psd.EcopathNumber(iGroup, iTimeStep)
+                    Else
+                        Me.m_psd.EcopathBiomass(iGroup, iTimeStep) = 0
+                    End If
+                Next
+
+                '(II) Estimate PSD as a function of weight class
+                ReDim WeightClass(Me.m_psd.NWeightClasses)
+                ReDim Time(Me.m_psd.NWeightClasses)
+                ReDim DeltaTime(Me.m_psd.NWeightClasses)
+                ReDim Number(Me.m_psd.NWeightClasses)
+                ReDim Biomass(Me.m_psd.NWeightClasses)
+
+                '(1) Find weight classes
+                WeightClass(1) = Me.m_psd.FirstWeightClass
+                For iWtClass As Integer = 2 To Me.m_psd.NWeightClasses
+                    WeightClass(iWtClass) = WeightClass(iWtClass - 1) * 2
+                Next
+
+                '(2) Find times in weight classes
+                't= ln(1-(Wt/Woo)^(1/b)) / (-K) + t0
+                For iWtClass As Integer = 1 To Me.m_psd.NWeightClasses
+                    If WeightClass(iWtClass) < Me.m_psd.Winf(iGroup) Then
+                        Time(iWtClass) = CSng(Math.Log(1 - (WeightClass(iWtClass) / Me.m_psd.Winf(iGroup)) ^ _
+                                         (1 / Me.m_psd.BinLW(iGroup))) / (-m_Data.vbK(iGroup)) + Me.m_psd.t0(iGroup))
+                        If Time(iWtClass) < 0 Then Time(iWtClass) = 0
+                        DeltaTime(iWtClass) = Time(iWtClass) - Time(iWtClass - 1)
+                    Else
+                        Time(iWtClass) = 0
+                    End If
+                Next
+
+                '(3) Find survival(weight class)
+                'Nt+1 = Nt * Exp(-Z * dT)
+                '(a) Get start weight and start weight class
+                For iWtClass As Integer = 0 To Me.m_psd.NWeightClasses - 1
+                    If WeightClass(iWtClass + 1) > CalcStartWeight(iGroup) Then
+                        If iWtClass = 0 Then
+                            StartWeightClassNum = 1
+                        Else
+                            StartWeightClassNum = iWtClass
+                            Number(StartWeightClassNum - 1) = 10000
+                            Exit For
+                        End If
+                    End If
+                Next
+                '(b) Get survival
+                For iWtClass As Integer = StartWeightClassNum To Me.m_psd.NWeightClasses
+                    If Time(iWtClass) <= Me.m_psd.Tmax(iGroup) Then
+                        If iWtClass = 0 Then
+                            Number(iWtClass) = 10000
+                        Else
+                            Number(iWtClass) = CSng(Number(iWtClass - 1) * Math.Exp(-CalcMortality(iGroup, Time(iWtClass)) * DeltaTime(iWtClass)))
+                        End If
+                    ElseIf iWtClass = StartWeightClassNum Then
+                        Number(iWtClass) = 10000
+                    Else ' Done
+                        Exit For
+                    End If
+                Next
+
+                '(4) Find biomass(weight class)
+                'Is group Winf smaller than StartWeight
+                If WeightClass(1) > Me.m_psd.Winf(iGroup) Then
+                    'Yes
+                    Biomass(1) = m_Data.B(iGroup)
+                Else
+                    'No
+                    ScaleFactor = 0
+                    'The duration in each size group differs, spends more time in larger size group
+                    For iWtClass As Integer = StartWeightClassNum To Me.m_psd.NWeightClasses
+                        Biomass(iWtClass) = Number(iWtClass) * WeightClass(iWtClass) * DeltaTime(iWtClass)
+                        If Biomass(iWtClass) < 0 Then
+                            Biomass(iWtClass) = 0
+                        Else
+                            ScaleFactor = ScaleFactor + Biomass(iWtClass)
+                        End If
+                    Next
+                End If
+                'Now scale the biomass to the Ecopath value
+                If ScaleFactor > 0 Then
+                    For iWtClass As Integer = StartWeightClassNum To Me.m_psd.NWeightClasses
+                        Biomass(iWtClass) = Biomass(iWtClass) * m_Data.B(iGroup) / ScaleFactor
+                    Next
+                End If
+
+                '(5)Assign to group PSD
+                For iWtClass As Integer = StartWeightClassNum To Me.m_psd.NWeightClasses
+                    Me.m_psd.PSD(iGroup, iWtClass) = Biomass(iWtClass)
+                    'm_Data.PSD(0, iWtClass) = m_Data.PSD(0, iWtClass) + Biomass(iWtClass)
+                Next
+            End If
+        Next
+    End Sub
+
+    Private Sub EstimatePSDMovAvg()
+        Dim sSystemPSD(m_psd.NWeightClasses) As Single
+        Dim sTempPSD(m_psd.NWeightClasses) As Single
+        Dim iUpperLimit As Integer
+        Dim iPoints As Integer
+
+        CalcSystemPSD(sSystemPSD)
+
+        For i As Integer = 1 To m_psd.NWeightClasses
+            sTempPSD(i) = sSystemPSD(i)
+            If sTempPSD(i) > 0 Then iUpperLimit = i
+            sSystemPSD(i) = 0
+        Next
+
+        'if 3 make it 1; if 5 make it 2:
+        iPoints = CInt((m_psd.NPtsMovAvg - 1) / 2)
+        For i As Integer = iPoints + 1 To iUpperLimit - iPoints - 1 'halfway
+            For j As Integer = -iPoints To iPoints     'fullway
+                sSystemPSD(i) = sSystemPSD(i) + sTempPSD(i + j)
+            Next
+        Next
+
+        For i As Integer = iPoints To m_psd.NWeightClasses - iPoints   'halfway
+            sSystemPSD(i) = sSystemPSD(i) / m_psd.NPtsMovAvg
+        Next
+
+        For i As Integer = 1 To m_psd.NWeightClasses
+            m_psd.PSD(1, i) = sSystemPSD(i)
+            For j As Integer = 2 To m_Data.NumLiving
+                m_psd.PSD(j, i) = 0
+            Next
+        Next
+    End Sub
+
+    Private Sub EstimateSizeWeight()
+        Dim AvgWeight() As Single
+        Dim AvgNumber() As Single
+        Dim Used() As Boolean
+        Dim Max As Single
+        Dim Biggest As Integer
+        Dim Sum1 As Single = 0
+        Dim Sum2 As Single = 0
+
+        ReDim AvgWeight(m_Data.NumLiving)
+        ReDim AvgNumber(m_Data.NumLiving)
+        ReDim Used(m_Data.NumLiving)
+
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then
+                AvgWeight(iGroup) = CalcAvgWeight(iGroup)
+                AvgNumber(iGroup) = CalcAvgNumber(iGroup)
+            End If
+        Next
+
+        'For Biomass/(AvgWeight/AvgNumber)
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then
+                Max = -1
+                For iGrp As Integer = 1 To m_Data.NumLiving
+                    If m_psd.Include(iGrp) Then
+                        If AvgNumber(iGrp) > 0 Then
+                            If m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp)) > Max And Used(iGrp) = False Then
+                                Max = m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp))
+                                Biggest = iGrp
+                            End If
+                        End If
+                    End If
+                Next
+                If Max < 0 Then Max = 0
+                Sum1 = Sum1 + Max
+                m_psd.BiomassAvgSzWt(iGroup) = Max
+                Used(Biggest) = True
+            End If
+        Next
+
+        'Now for biomass
+        ReDim Used(m_Data.NumLiving)
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then
+                Max = -1
+                For iGrp As Integer = 1 To m_Data.NumLiving
+                    If m_psd.Include(iGrp) Then
+                        If m_Data.B(iGrp) > Max And Used(iGrp) = False Then
+                            Max = m_Data.B(iGrp)
+                            Biggest = iGrp
+                        End If
+                    End If
+                Next
+                If Max <= 0 Then Max = 0
+                Sum2 = Sum2 + Max
+                m_psd.BiomassSzWt(iGroup) = Max
+                Used(Biggest) = True
+            End If
+        Next
+
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then 'might not work
+                m_psd.BiomassAvgSzWt(iGroup) = m_psd.BiomassAvgSzWt(iGroup - 1) + m_psd.BiomassAvgSzWt(iGroup)
+                m_psd.BiomassSzWt(iGroup) = m_psd.BiomassSzWt(iGroup - 1) + m_psd.BiomassSzWt(iGroup)
+            End If
+        Next
+
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then 'might not work
+                m_psd.BiomassAvgSzWt(iGroup) = 100 * m_psd.BiomassAvgSzWt(iGroup) / Sum1
+                m_psd.BiomassSzWt(iGroup) = 100 * m_psd.BiomassSzWt(iGroup) / Sum2
+            End If
+        Next
+    End Sub
+
+    Private Function CalcStartTime(ByVal iGroup As Integer) As Single
+        'Is stanza group?
+        If m_Data.StanzaGroup(iGroup) Then
+            'Yes
+            For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                    If m_stanza.EcopathCode(isp, ist) = iGroup Then
+                        If m_stanza.Age1(isp, ist) > 0 Then
+                            Return CSng(m_stanza.Age1(isp, ist) / 12)
+                        Else
+                            Return 0
+                        End If
+                    End If
+                Next
+            Next
+        Else
+            'No
+            Return 0
+        End If
+    End Function
+
+    Private Function CalcStartWeight(ByVal iGroup As Integer) As Single
+        'Is stanza group?
+        If m_Data.StanzaGroup(iGroup) Then
+            'Yes
+            For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                    If m_stanza.EcopathCode(isp, ist) = iGroup Then
+                        If m_stanza.Age1(isp, ist) > 0 Then
+                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / 12))
+                        Else
+                            Return 0
+                        End If
+                    End If
+                Next
+            Next
+        Else
+            'No
+            Return 0
+        End If
+    End Function
+
+    Private Function CalcWeight(ByVal iGroup As Integer, ByVal sTime As Single) As Single
+        'Wt = Woo (1-exp(-K(t-to))^b    where b is the exp of LW
+        Return CSng(Me.m_psd.Winf(iGroup) * (1 - Math.Exp(-m_Data.vbK(iGroup) * _
+                    (sTime - Me.m_psd.t0(iGroup))) ^ Me.m_psd.BinLW(iGroup)))
+    End Function
+
+    Private Function CalcMortality(ByVal iGroup As Integer, ByVal sTime As Single) As Single
+        Dim Wt As Single
+        Dim Mu As Single
+        Dim Wb As Single
+        Dim NatMortality As Single
+        Dim FishMortality As Single
+
+        Select Case Me.m_psd.MortalityType
+            Case ePSDMortalityTypes.GroupZ
+                If sTime < Me.m_psd.Tcatch(iGroup) Then
+                    Return m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+                Else
+                    Return m_Data.PB(iGroup)
+                End If
+            Case ePSDMortalityTypes.Lorenzen
+                'Calculate weight
+                Wt = CalcWeight(iGroup, sTime)
+
+                'Set Lorenzen parameters
+                SetLorenzenParameters(Wb, Mu, Me.m_psd.ClimateType)
+
+                'Calculate natural mortality
+                NatMortality = CSng(Mu * Wt ^ Wb)
+
+                'Calculate fishing mortality
+                If sTime < Me.m_psd.Tcatch(iGroup) Then
+                    FishMortality = 0
+                Else
+                    FishMortality = m_Data.fCatch(iGroup) / m_Data.B(iGroup)
+                End If
+
+                'Return total mortality
+                Return NatMortality + FishMortality
+        End Select
+    End Function
+
+    Private Sub SetLorenzenParameters(ByRef Wb As Single, ByRef Mu As Single, ByVal ClimateType As eClimateTypes)
+        '0-30 o     tropical	-0.21	3.08
+        '30-60 o    temperate	-0.309	3.13
+        '60-90 o    polar	    -0.292	1.69
+        Select Case ClimateType
+            Case eClimateTypes.Tropical
+                Wb = -0.21
+                Mu = 3.08
+            Case eClimateTypes.Temperate
+                Wb = -0.309
+                Mu = 3.13
+            Case eClimateTypes.Polar
+                Wb = -0.292
+                Mu = 1.69
+        End Select
+    End Sub
+
+    Private Function CalcAvgWeight(ByVal iGroup As Integer) As Single
+        Dim Omega(3) As Integer
+        Dim Recr(m_Data.NumLiving) As Single
+        Dim Trec(m_Data.NumLiving) As Single
+        Dim P1 As Single
+        Dim P2 As Single
+        Dim P3 As Single
+        Dim P4 As Single
+        Dim P5 As Single
+        Dim P6 As Single
+        Dim sum As Single = 0
+
+        Omega(0) = 1
+        Omega(1) = -3
+        Omega(2) = 3
+        Omega(3) = -1
+
+        Recr(iGroup) = 1
+        Trec(iGroup) = 0
+
+        If Recr(iGroup) <= 0 Then Recr(iGroup) = 1
+        For n As Integer = 0 To 3
+            P1 = CSng(Omega(n) * Math.Exp(-n * m_Data.vbK(iGroup) * (Trec(iGroup) - m_psd.t0(iGroup))))
+            P2 = CSng(1 - Math.Exp(-((m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+            P3 = (m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)
+            P4 = CSng(Math.Exp(-((m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + n * m_Data.vbK(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+            P5 = CSng(1 - Math.Exp(-(m_Data.PB(iGroup) + n * m_Data.vbK(iGroup)) * (m_psd.Tmax(iGroup) - m_psd.Tcatch(iGroup))))
+            P6 = m_Data.PB(iGroup) + n * m_Data.vbK(iGroup)
+            sum = sum + P1 * (P2 / P3 + P4 * P5 / P6)
+        Next
+        Return m_psd.Winf(iGroup) * Recr(iGroup) * sum
+    End Function
+
+    Private Function CalcAvgNumber(ByVal iGroup As Integer) As Single
+        Dim Recr(m_Data.NumLiving) As Single
+        Dim Trec(m_Data.NumLiving) As Single
+        Dim P1 As Single
+        Dim P2 As Single
+        Dim P3 As Single
+
+        Recr(iGroup) = 1
+        Trec(iGroup) = 0
+
+        If Recr(iGroup) <= 0 Then Recr(iGroup) = 1
+        P1 = CSng(1 - Math.Exp(-(m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup))))
+        P2 = CSng(Math.Exp(-(m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) * (m_psd.Tcatch(iGroup) - Trec(iGroup)) * _
+                           (1 - Math.Exp(-m_Data.PB(iGroup) * (m_psd.Tmax(iGroup) - m_psd.Tcatch(iGroup))))))
+        P3 = m_Data.PB(iGroup)
+        Return Recr(iGroup) * (P1 / (m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + P2 / P3)
+    End Function
+
+    Private Sub CalcSystemPSD(ByVal sSystemPSD() As Single)
+        For iGroup As Integer = 1 To m_Data.NumLiving
+            If m_psd.Include(iGroup) Then
+                For iWtClass As Integer = 1 To m_psd.NWeightClasses
+                    sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + m_psd.PSD(iGroup, iWtClass)
+                Next
+            End If
+        Next
+    End Sub
+
+#End Region 'Helper methods
+
+End Class

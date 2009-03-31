@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.103  2009/03/31 21:36:12  joeh
+' Move all PSD computation routines to a new class cPSDModel
+'
 ' Revision 1.102  2009/03/31 20:49:17  jeroens
 ' Added ResetEcopathGroupOutputs, ResetEcosimGroupOutputs to entirely clear status flags before a run
 '
@@ -1156,6 +1159,10 @@ Public Class cCore
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
 
+            'Joeh
+            m_EcoPath.InitPSDModel()
+            'End Joeh
+
             'protect against error loading the validators
             Try
                 m_validators = New cValidatorManager(Me)
@@ -2167,6 +2174,7 @@ Public Class cCore
     'Private bEcoPathInitializing As Boolean
     Friend m_PSDData As cPSDDatastructures
     Private m_PSDParameters As cPSDParameters
+    Private m_psdModel As cPSDModel
 
 #End Region ' Variables
 
@@ -2267,6 +2275,11 @@ Public Class cCore
                 bsuccess = bsuccess And LoadEcopathInputs()
                 'populate output objects
                 bsuccess = bsuccess And LoadEcopathOutputs()
+
+                'JoeH
+                bsuccess = bsuccess And LoadPSDInputs()
+                bsuccess = bsuccess And LoadPSDOutputs()
+                'End Joeh
 
                 'build the fleets
                 bsuccess = bsuccess And InitFleets()
@@ -2503,6 +2516,24 @@ Public Class cCore
 
     End Function
 
+    'Joeh
+    Friend Function LoadPSDInputs() As Boolean
+        Try
+
+            For Each Input As cEcoPathGroupInput In m_EcoPathInputs
+                Me.LoadPSDInput(Input)
+            Next
+
+            Return True
+        Catch ex As Exception
+            'ToDo_jb LoadEcopathInputs some kind of error handling
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+    End Function
+    'End Joeh
+
     Private Function LoadEcopathInput(ByVal Input As cEcoPathGroupInput) As Boolean
         Dim iGroup As Integer
         Try
@@ -2562,7 +2593,40 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.iStanza = getStanzaIDForGroup(iGroup)
 
-                'Joeh
+                'set all the status flags to default value
+                Input.ResetStatusFlags()
+
+                Input.AllowValidation = True
+            Else
+                Debug.Assert(False)
+            End If
+
+            Return True
+        Catch ex As Exception
+            'ToDo_jb LoadEcopathInputs some kind of error handling
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+    End Function
+
+    'Joeh
+    Private Function LoadPSDInput(ByVal Input As cEcoPathGroupInput) As Boolean
+        Dim iGroup As Integer
+        Try
+
+            'do not run the data validation when the object is populated
+            Input.AllowValidation = False
+
+            'convert the Database ID into an iGroup
+            iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, Input.DBID)
+
+            If iGroup >= 0 And iGroup <= m_EcoPathData.NumGroups Then
+
+                Input.Resize()
+
+                Input.Index = iGroup
+              
                 Input.Tcatch = m_PSDData.Tcatch(iGroup)
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
@@ -2571,7 +2635,6 @@ Public Class cCore
                 Input.t0Input = m_PSDData.t0Input(iGroup)
                 Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
                 Input.PSDIncluded = m_PSDData.Include(iGroup)
-                'End Joeh
 
                 'set all the status flags to default value
                 Input.ResetStatusFlags()
@@ -2589,6 +2652,7 @@ Public Class cCore
         End Try
 
     End Function
+    'End Joeh
 
     ''' <summary>
     ''' Update the underlying Ecopath Data with the values in EcoPath inputs list
@@ -2715,14 +2779,7 @@ Public Class cCore
         Dim Hlap() As Single
         Dim Plap() As Single
         Dim Alpha() As Single
-        'Joeh
-        Dim EcopathWeight() As Single
-        Dim EcopathNumber() As Single
-        Dim EcopathBiomass() As Single
-        Dim LorenzenMortality() As Single
-
-        Dim PSD() As Single
-        'End Joeh
+        
         Dim convalue As Single
         Dim iGroup As Integer
 
@@ -2752,14 +2809,6 @@ Public Class cCore
                 ReDim Hlap(nGroups)
                 ReDim Plap(nGroups)
                 ReDim Alpha(nGroups)
-                'Joeh
-                ReDim EcopathWeight(nAgeSteps)
-                ReDim EcopathNumber(nAgeSteps)
-                ReDim EcopathBiomass(nAgeSteps)
-                ReDim LorenzenMortality(nAgeSteps)
-
-                ReDim PSD(nWeightClasses)
-                'End Joeh
 
                 For iPred As Integer = 1 To m_EcoPathData.NumLiving
                     If m_EcoPathData.B(iGroup) > 0 Then
@@ -2796,18 +2845,6 @@ Public Class cCore
                 output.EEOutput = CSng(m_EcoPathData.EE(iGroup))
                 output.GEOutput = CSng(m_EcoPathData.GE(iGroup))
 
-                'Joeh
-                output.VBK = CSng(m_EcoPathData.vbK(iGroup))
-                output.BiomassAvgSzWt = CSng(m_PSDData.BiomassAvgSzWt(iGroup))
-                output.BiomassSzWt = CSng(m_PSDData.BiomassSzWt(iGroup))
-                output.Tcatch = CSng(m_PSDData.Tcatch(iGroup))
-                output.AinLWOutput = CSng(m_PSDData.AinLW(iGroup))
-                output.BinLWOutput = CSng(m_PSDData.BinLW(iGroup))
-                output.LooOutput = CSng(m_PSDData.Loo(iGroup))
-                output.WinfOutput = CSng(m_PSDData.Winf(iGroup))
-                output.t0Output = CSng(m_PSDData.t0(iGroup))
-                output.TmaxOutput = CSng(m_PSDData.Tmax(iGroup))
-                'End Joeh
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'mortality coefficients are computed when they are needed
@@ -2898,7 +2935,70 @@ Public Class cCore
 
                 output.iStanza = getStanzaIDForGroup(iGroup)
 
-                'Joeh
+                output.m_bReadOnly = True
+                output.ResetStatusFlags()
+            Next
+
+            Return True
+
+        Catch ex As Exception
+
+            cLog.Write(ex)
+            Return False
+
+        End Try
+
+    End Function
+
+    Private Function LoadPSDOutputs() As Boolean
+        Dim EcopathWeight() As Single
+        Dim EcopathNumber() As Single
+        Dim EcopathBiomass() As Single
+        Dim LorenzenMortality() As Single
+
+        Dim PSD() As Single
+        Dim iGroup As Integer
+
+        Try
+
+            For Each output As cEcoPathGroupOutput In m_EcoPathOutputs
+                'convert the DBID into an iGroup
+                iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, output.DBID)
+
+                'set the size of any array data
+                output.Resize()
+
+                'iGroup out of bounds
+                If (iGroup > nGroups Or iGroup < 0) And iGroup <> NULL_VALUE Then
+                    cLog.Write(Me.ToString & ".PopulateEcoPathOutput() iGroup out of bounds.")
+                    'ToDo LoadEcopathOutputs() failed to find iGroup do something better than exiting
+                    Return False
+                End If
+
+                'set output readonly to false so the values can be set
+                output.m_bReadOnly = False
+
+                output.Index = iGroup
+
+
+                ReDim EcopathWeight(nAgeSteps)
+                ReDim EcopathNumber(nAgeSteps)
+                ReDim EcopathBiomass(nAgeSteps)
+                ReDim LorenzenMortality(nAgeSteps)
+
+                ReDim PSD(nWeightClasses)
+
+                output.VBK = CSng(m_EcoPathData.vbK(iGroup))
+                output.BiomassAvgSzWt = CSng(m_PSDData.BiomassAvgSzWt(iGroup))
+                output.BiomassSzWt = CSng(m_PSDData.BiomassSzWt(iGroup))
+                output.Tcatch = CSng(m_PSDData.Tcatch(iGroup))
+                output.AinLWOutput = CSng(m_PSDData.AinLW(iGroup))
+                output.BinLWOutput = CSng(m_PSDData.BinLW(iGroup))
+                output.LooOutput = CSng(m_PSDData.Loo(iGroup))
+                output.WinfOutput = CSng(m_PSDData.Winf(iGroup))
+                output.t0Output = CSng(m_PSDData.t0(iGroup))
+                output.TmaxOutput = CSng(m_PSDData.Tmax(iGroup))
+
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 ' Weight
                 For t As Integer = 1 To nAgeSteps
@@ -2933,7 +3033,6 @@ Public Class cCore
                     PSD(wc) = m_PSDData.PSD(iGroup, wc)
                 Next
                 output.PSD = PSD
-                'End Joeh
 
                 output.m_bReadOnly = True
                 output.ResetStatusFlags()
@@ -2947,7 +3046,6 @@ Public Class cCore
             Return False
 
         End Try
-
     End Function
 
 #End Region ' Groups
@@ -3215,8 +3313,8 @@ Public Class cCore
         Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
         Me.m_PSDParameters.NumWeightClasses = Me.m_PSDData.NWeightClasses
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
-        Me.m_PSDParameters.LohrenzenLatNWCorner = Me.m_PSDData.LatNWCorner
-        Me.m_PSDParameters.LohrenzenLatSECorner = Me.m_PSDData.LatSECorner
+        Me.m_PSDParameters.ClimateType = Me.m_PSDData.ClimateType
+        Me.m_PSDParameters.NumPtsMovAvg = Me.m_PSDData.NPtsMovAvg
         Me.m_PSDParameters.ResetStatusFlags()
 
         Me.m_PSDParameters.AllowValidation = True
@@ -3229,8 +3327,8 @@ Public Class cCore
         Me.m_PSDData.MortalityType = Me.m_PSDParameters.MortalityType
         Me.m_PSDData.NWeightClasses = Me.m_PSDParameters.NumWeightClasses
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
-        Me.m_PSDData.LatNWCorner = Me.m_PSDParameters.LohrenzenLatNWCorner
-        Me.m_PSDData.LatSECorner = Me.m_PSDParameters.LohrenzenLatSECorner
+        Me.m_PSDData.ClimateType = Me.m_PSDParameters.ClimateType
+        Me.m_PSDData.NPtsMovAvg = Me.m_PSDParameters.NumPtsMovAvg
 
     End Function
 
@@ -3430,6 +3528,14 @@ Public Class cCore
 
     End Function
 
+    'Joeh
+    Public Sub RunPSD()
+        m_psdModel = cPSDModel.GetInstance
+
+        m_psdModel.Run()
+        LoadPSDOutputs()
+    End Sub
+    'End Joeh
 
     ' JS 25nov08: disabled, this screwed up the Ecopath output object statuses
     'Private Sub ClearOutputFlags()
