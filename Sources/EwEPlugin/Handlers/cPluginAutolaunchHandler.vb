@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAutolaunchHandler.vb,v $
+' Revision 1.3  2009/03/31 14:53:04  jeroens
+' Updated to GetPlugins interface changes
+'
 ' Revision 1.2  2008/11/17 13:05:59  jeroens
 ' Fixed auto-launch behaviour
 '
@@ -64,10 +67,12 @@ Public Class cPluginAutolaunchHandler
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub LaunchPlugins()
-        Dim collPlugins As ICollection(Of IPlugin) = Me.PluginManager.GetPlugins(GetType(IAutolaunchPlugin))
+        Dim collPlugins As ICollection(Of cPluginManager.cPluginContext) = Me.PluginManager.GetPlugins(GetType(IAutolaunchPlugin))
         For Each ip As IPlugin In collPlugins
             Dim ipc As IAutolaunchPlugin = DirectCast(ip, IAutolaunchPlugin)
-            If ipc.Autolaunch Then Me.RunPlugin(ipc, Nothing, Nothing)
+            If ipc.Autolaunch Then
+                Me.RunPlugin(ipc, Nothing, Nothing)
+            End If
         Next
     End Sub
 
