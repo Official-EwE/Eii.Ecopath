@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.106  2009/04/01 17:28:23  joeh
+' Initialize PSD in core and cPSDModel is no longer a Singleton
+'
 ' Revision 1.105  2009/04/01 16:38:11  joeh
 ' Add comment
 '
@@ -1133,6 +1136,9 @@ Public Class cCore
         'each models initialization will handle its own messages and flags
         Dim bsuccess As Boolean
         bsuccess = InitEcopath()
+        'Joeh
+        bsuccess = bsuccess And InitPSDModel()
+        'End Joeh
         bsuccess = bsuccess And InitEcoSim()
         bsuccess = bsuccess And InitEcoSpace()
 
@@ -1165,10 +1171,6 @@ Public Class cCore
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             m_EcoPath.ModelingData = m_EcoPathData
 
-            'Joeh
-            m_EcoPath.InitPSDModel()
-            'End Joeh
-
             'protect against error loading the validators
             Try
                 m_validators = New cValidatorManager(Me)
@@ -1195,6 +1197,21 @@ Public Class cCore
         Return True
 
     End Function
+
+    'Joeh
+    Private Function InitPSDModel() As Boolean
+        Try
+            m_psdModel = New cPSDModel
+
+            m_psdModel.m_Data = m_EcoPathData
+            m_psdModel.m_stanza = m_Stanza
+            m_psdModel.m_psd = m_PSDData
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+    'End Joeh
 
     ''' <summary>
     ''' Send a Data Changed message
@@ -3538,8 +3555,6 @@ Public Class cCore
     'Joeh
     Public Sub RunPSD()
         Dim msg As cMessage
-
-        m_psdModel = cPSDModel.GetInstance
 
         'Is Run successful?
         If m_psdModel.Run() Then

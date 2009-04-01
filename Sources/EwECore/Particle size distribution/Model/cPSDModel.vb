@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.5  2009/04/01 17:28:24  joeh
+' Initialize PSD in core and cPSDModel is no longer a Singleton
+'
 ' Revision 1.4  2009/04/01 16:17:10  joeh
 ' Initial version
 '
@@ -17,7 +20,6 @@ Public Class cPSDModel
 
 #Region "Variables"
 
-    Private Shared uniqueInstances As cPSDModel = Nothing
     Private m_bSuppressMsgs As Boolean
     Private m_msgPub As New cMessagePublisher
 
@@ -28,13 +30,6 @@ Public Class cPSDModel
 #End Region 'Variables
 
 #Region "Public methods"
-
-    Public Shared Function GetInstance() As cPSDModel
-        If uniqueInstances Is Nothing Then
-            uniqueInstances = New cPSDModel
-        End If
-        Return uniqueInstances
-    End Function
 
     Public Function Run() As Boolean
         'Is there any missing input
