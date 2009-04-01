@@ -4652,7 +4652,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; is incompatible with this version of EwE6, and has been disabled..
+        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; uses outdated EwE components, and is likely to be imcompatible with this version of EwE6. Do you wish to disable this plug-in?.
         '''</summary>
         Friend ReadOnly Property PROMPT_PLUGIN_INCOMPATIBLE() As String
             Get
@@ -4661,7 +4661,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; cannot be diagnosed for compatibility with EwE6, and has been disabled as a precaution..
+        '''  Looks up a localized string similar to The plug-in &apos;{0}&apos; cannot be diagnosed for compatibility with EwE6. It is advisable not to use this plug-in. Do you wish to disable this plug-in?.
         '''</summary>
         Friend ReadOnly Property PROMPT_PLUGIN_UNDETERMINED() As String
             Get

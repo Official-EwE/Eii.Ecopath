@@ -2149,11 +2149,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
-    <value>The plug-in '{0}' is incompatible with this version of EwE6, and has been disabled.</value>
+    <value>The plug-in '{0}' uses outdated EwE components, and is likely to be imcompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="PROMPT_PLUGIN_UNDETERMINED" xml:space="preserve">
-    <value>The plug-in '{0}' cannot be diagnosed for compatibility with EwE6, and has been disabled as a precaution.</value>
+    <value>The plug-in '{0}' cannot be diagnosed for compatibility with EwE6. It is advisable not to use this plug-in. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY" xml:space="preserve">
