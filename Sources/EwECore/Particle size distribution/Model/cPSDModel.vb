@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.6  2009/04/01 19:17:21  joeh
+' Exposes the MessagePublisher instance in cPSDModel so that the core can add message handlers
+'
 ' Revision 1.5  2009/04/01 17:28:24  joeh
 ' Initialize PSD in core and cPSDModel is no longer a Singleton
 '
@@ -46,6 +49,17 @@ Public Class cPSDModel
         End If
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Exposes the MessagePublisher instance so that the core can add message handlers
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Messages() As cMessagePublisher
+        Get
+            Return m_msgPub
+        End Get
+    End Property
+
 #End Region 'Public method
 
 #Region "Helper methods"
@@ -67,14 +81,10 @@ Public Class cPSDModel
         Dim strMsg As String
         Dim msg As cMessage = Nothing
 
-        strMsg = "The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. "
-        strMsg = strMsg & "Here, more than one of these are unknown for "
+        strMsg = "The PSD estimation routine can work only with either L at infinity or W at infinity as unknown per group. K in VBGF must be known for each group. "
+        strMsg = strMsg & "Here, one or more of these are unknown."
         strMsg = strMsg & vbCrLf & vbCrLf
-        strMsg = strMsg & "In addition, the Q/B may be unknown for a given predator, i.e., IF: "
-        strMsg = strMsg & "B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on "
-        strMsg = strMsg & "these two groups have known B and QB."
-        strMsg = strMsg & vbCrLf & vbCrLf
-        strMsg = strMsg & "Please re-edit the input parameters."
+        strMsg = strMsg & "Please re-edit the growth input parameters."
 
         msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
         msg.Suppressable = False
