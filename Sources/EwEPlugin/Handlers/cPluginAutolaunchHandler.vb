@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAutolaunchHandler.vb,v $
+' Revision 1.4  2009/04/01 12:50:07  jeroens
+' Fixed incomplete port, woops
+'
 ' Revision 1.3  2009/03/31 14:53:04  jeroens
 ' Updated to GetPlugins interface changes
 '
@@ -68,10 +71,10 @@ Public Class cPluginAutolaunchHandler
     ''' -----------------------------------------------------------------------
     Private Sub LaunchPlugins()
         Dim collPlugins As ICollection(Of cPluginManager.cPluginContext) = Me.PluginManager.GetPlugins(GetType(IAutolaunchPlugin))
-        For Each ip As IPlugin In collPlugins
-            Dim ipc As IAutolaunchPlugin = DirectCast(ip, IAutolaunchPlugin)
-            If ipc.Autolaunch Then
-                Me.RunPlugin(ipc, Nothing, Nothing)
+        For Each ipc As cPluginManager.cPluginContext In collPlugins
+            Dim ip As IAutolaunchPlugin = DirectCast(ipc.Plugin, IAutolaunchPlugin)
+            If ip.Autolaunch Then
+                Me.RunPlugin(ip, Nothing, Nothing)
             End If
         Next
     End Sub
