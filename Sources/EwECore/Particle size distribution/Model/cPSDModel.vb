@@ -1,13 +1,14 @@
-﻿' $Log: cPSDModel.vb,v $
-﻿' Revision 1.3  2009/04/01 16:08:36  joeh
-﻿' Initial version
-﻿'
+﻿'==============================================================================
+'
+' $Log: cPSDModel.vb,v $
+' Revision 1.4  2009/04/01 16:17:10  joeh
+' Initial version
+'
 
 #Region "Imports"
 
 Option Strict On
 Option Explicit On
-
 Imports EwEUtils.Core
 
 #End Region 'Imports
