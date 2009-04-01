@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.9  2009/04/01 20:24:49  jeroens
+' Show any plug-in conflict, not only run incompatibilities
+'
 ' Revision 1.8  2009/04/01 17:38:46  jeroens
 ' Disabled first picked icon state
 '
@@ -229,7 +232,7 @@ Namespace Other
 
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
             If (pa.Enabled = False) Then Return cIMAGE_DISABLED
-            If (pa.IsCompatibleToRun = False) Then Return cIMAGE_CONFLICT
+            If (pa.IsCompatible = False) Then Return cIMAGE_CONFLICT
             If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
             Return cIMAGE_ENABLED
         End Function
