@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.21  2009/04/01 17:35:55  jeroens
+' Separated Enabled state and Incompatibility
+' Relaxed compatibility tests
+' Commented compatibility tests
+'
 ' Revision 1.20  2009/03/31 17:01:08  jeroens
 ' Only initialize compatible plug-ins
 '
@@ -245,7 +250,7 @@ Public Class cPluginManager
                             End Try
 
                             ' Is assembly compatible to run?
-                            If (plugAssem.IsCompatibleToRun) Then
+                            If (plugAssem.Enabled) Then
                                 ' Is core assigned?
                                 If (Me.m_core IsNot Nothing) Then
                                     Try
@@ -1803,19 +1808,32 @@ Public Class cPluginManager
                 anameLoaded = asLoaded.GetName()
                 ' Found a match?
                 If String.Compare(anExpected.Name, anameLoaded.Name, True) = 0 Then
-                    ' #Yep: test if versions match
+                    ' #Yep: test if versions (a.b.c.d) as (major.minor.build.revision) match:
+
+                    ' Revision difference?
                     If anExpected.Version.Revision <> anameLoaded.Version.Revision Then
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
+                        ' #Yes: assume compatible
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible), cPluginAssembly.ePluginCompatibilityTypes)
                     End If
+
+                    ' Build difference?
                     If anExpected.Version.Build <> anameLoaded.Version.Build Then
+                        ' #Yes: take caution
                         compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
                     End If
+
+                    ' Minor version number difference?
                     If anExpected.Version.Minor <> anameLoaded.Version.Minor Then
-                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible), cPluginAssembly.ePluginCompatibilityTypes)
+                        ' #Yes: take caution
+                        compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution), cPluginAssembly.ePluginCompatibilityTypes)
                     End If
+
+                    ' Major version number difference?
                     If anExpected.Version.Major <> anameLoaded.Version.Major Then
+                        ' #Yes: assume incompatible
                         compatibility = DirectCast(Math.Max(compatibility, cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible), cPluginAssembly.ePluginCompatibilityTypes)
                     End If
+
                 End If
             Next
         Next
