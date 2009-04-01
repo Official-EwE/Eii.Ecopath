@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.34  2009/04/01 17:40:56  jeroens
+' Added plug-in disable prompts
+'
 ' Revision 1.33  2009/03/26 15:51:16  jeroens
 ' Uses CanCompact
 '
@@ -861,26 +864,41 @@ Public Class AppLauncher
             ' Check for enabled and incompatible plug-ins
             If pa.Enabled Then
 
+                msg = Nothing
+
                 Select Case pa.Compatibility
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatible
-                        msg = Nothing
+                        ' NOP
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionCompatibleCaution
                         msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_CAUTION, pa.Filename), _
                                            eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.VersionIncompatible
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
-                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+                        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_INCOMPATIBLE, pa.Filename), _
+                                           eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
 
                     Case cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
-                                           eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+                        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_PLUGIN_UNDETERMINED, pa.Filename), _
+                                           eCoreComponentType.External, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
 
                 End Select
 
-                If msg IsNot Nothing Then Me.m_core.Messages.SendMessage(msg)
+                ' Has a message to send?
+                If msg IsNot Nothing Then
+                    ' #Yes: Send message
+                    Me.m_core.Messages.SendMessage(msg)
+                    ' Feedback required?
+                    If TypeOf (msg) Is cFeedbackMessage Then
+                        ' #Yes: if replied with 'yes'
+                        If DirectCast(msg, cFeedbackMessage).Reply = cFeedbackMessage.eReply.YES Then
+                            ' #Yes: disable the plug-in
+                            pa.Enabled = False
+                        End If
+                    End If
+                End If
+
             End If
 
         Next
