@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.104  2009/04/01 00:06:23  joeh
+' Add codes to handle missing growth input data
+'
 ' Revision 1.103  2009/03/31 21:36:12  joeh
 ' Move all PSD computation routines to a new class cPSDModel
 '
@@ -3530,10 +3533,21 @@ Public Class cCore
 
     'Joeh
     Public Sub RunPSD()
+        Dim msg As cMessage
+
         m_psdModel = cPSDModel.GetInstance
 
-        m_psdModel.Run()
-        LoadPSDOutputs()
+        'Is Run successful?
+        If m_psdModel.Run() Then
+            'Yes: reload the output list with the new outputs from PSD model
+            LoadPSDOutputs()
+        Else
+            'No: send error messages
+            msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            m_publisher.AddMessage(msg)
+            m_publisher.sendAllMessages()
+        End If
+
     End Sub
     'End Joeh
 

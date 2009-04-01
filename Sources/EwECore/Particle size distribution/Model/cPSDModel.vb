@@ -6,6 +6,8 @@ Imports EwEUtils.Core
 Public Class cPSDModel
 
     Private Shared uniqueInstances As cPSDModel = Nothing
+    Private m_bSuppressMsgs As Boolean
+    Private m_msgPub As New cMessagePublisher
     Friend m_Data As cEcopathDataStructures
     Friend m_stanza As cStanzaDatastructures
     Friend m_psd As cPSDDatastructures
@@ -19,16 +21,73 @@ Public Class cPSDModel
         Return uniqueInstances
     End Function
 
-    Public Sub Run() 'Function Run() As Boolean
-        EstimateGrowthParameters()
-        EstimatePSD()
-        EstimateSizeWeight()
-        If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
-    End Sub
+    Public Function Run() As Boolean
+        'Is there any missing input
+        If CheckMissingInputParameters() Then
+            'Yes: return failure
+            Return False
+        Else
+            'No: do estimattion and return success
+            EstimateGrowthParameters()
+            EstimatePSD()
+            EstimateSizeWeight()
+            If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
+            Return True
+        End If
+    End Function
 
 #End Region 'Public method
 
 #Region "Helper methods"
+    Private Function CheckMissingInputParameters() As Boolean
+        Dim bResult As Boolean = False 'No missing data
+
+        For i As Integer = 1 To m_Data.NumLiving
+            If m_Data.vbK(i) <= 0 Then
+                MsgMissingPar()
+                bResult = True
+                Exit For
+            End If
+            'If m_Data.PB(i) < 0 Then MsgMissingPar()
+            'If m_Data.EE(i) < 0 Then MsgMissingPar()
+        Next
+        Return bResult
+    End Function
+
+    Private Sub MsgMissingPar()
+        Dim strMsg As String
+        Dim msg As cMessage = Nothing
+
+        strMsg = "The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. "
+        strMsg = strMsg & "Here, more than one of these are unknown for "
+        strMsg = strMsg & vbCrLf & vbCrLf
+        strMsg = strMsg & "In addition, the Q/B may be unknown for a given predator, i.e., IF: "
+        strMsg = strMsg & "B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on "
+        strMsg = strMsg & "these two groups have known B and QB."
+        strMsg = strMsg & vbCrLf & vbCrLf
+        strMsg = strMsg & "Please re-edit the input parameters."
+
+        msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+        msg.Suppressable = False
+        NotifyCore(msg)
+    End Sub
+
+    Private Sub NotifyCore(ByVal msg As cMessage)
+
+        If msg Is Nothing Then Return
+
+        Try
+            'messages can be turned off be a user
+            'to speed up the running of the model as in the case of the Monte Carlo which run the model multiple times
+            'this puts the model into a 'silent' mode
+            If Not m_bSuppressMsgs Then
+                m_msgPub.SendMessage(msg)
+            End If
+        Catch ex As Exception
+            cLog.Write(String.Format("cEcoPathModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
+        End Try
+
+    End Sub
 
     Private Sub EstimateGrowthParameters()
         Dim sTemp As Single
