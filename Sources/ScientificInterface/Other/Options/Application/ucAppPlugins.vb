@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.8  2009/04/01 17:38:46  jeroens
+' Disabled first picked icon state
+'
 ' Revision 1.7  2009/03/31 17:03:36  jeroens
 ' fixed image order
 '
@@ -225,9 +228,9 @@ Namespace Other
         End Sub
 
         Private Function GetPluginAssemblyImageIndex(ByVal pa As cPluginAssembly) As Integer
+            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
             If (pa.IsCompatibleToRun = False) Then Return cIMAGE_CONFLICT
             If (pa.AlwaysEnabled = True) Then Return cIMAGE_CORE
-            If (pa.Enabled = False) Then Return cIMAGE_DISABLED
             Return cIMAGE_ENABLED
         End Function
 
