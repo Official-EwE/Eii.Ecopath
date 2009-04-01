@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.30  2009/04/01 17:27:15  joeh
+' Remove codes related to PSD
+'
 ' Revision 1.29  2009/03/31 21:36:13  joeh
 ' Move all PSD computation routines to a new class cPSDModel
 '
@@ -224,7 +227,6 @@ Namespace Ecopath
         Private bDietsModified As Boolean
 
         'Joeh
-        Friend m_psdModel As cPSDModel
         Friend m_stanza As cStanzaDatastructures
         Friend m_psd As cPSDDatastructures
         'End Joeh
@@ -3010,17 +3012,6 @@ nextJ:
             End Try
 
         End Function
-
-        'Joeh
-        Public Sub InitPSDModel()
-            m_psdModel = cPSDModel.GetInstance
-            'm_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Nothing))
-
-            m_psdModel.m_Data = m_Data
-            m_psdModel.m_stanza = m_stanza
-            m_psdModel.m_psd = m_psd
-        End Sub
-        'End Joeh
 
 #End Region
 
