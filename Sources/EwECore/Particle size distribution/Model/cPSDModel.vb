@@ -1,16 +1,30 @@
-﻿Option Strict On
+﻿' $Log: cPSDModel.vb,v $
+﻿' Revision 1.3  2009/04/01 16:08:36  joeh
+﻿' Initial version
+﻿'
+
+#Region "Imports"
+
+Option Strict On
 Option Explicit On
 
 Imports EwEUtils.Core
 
+#End Region 'Imports
+
 Public Class cPSDModel
+
+#Region "Variables"
 
     Private Shared uniqueInstances As cPSDModel = Nothing
     Private m_bSuppressMsgs As Boolean
     Private m_msgPub As New cMessagePublisher
+
     Friend m_Data As cEcopathDataStructures
     Friend m_stanza As cStanzaDatastructures
     Friend m_psd As cPSDDatastructures
+
+#End Region 'Variables
 
 #Region "Public methods"
 
@@ -43,13 +57,12 @@ Public Class cPSDModel
         Dim bResult As Boolean = False 'No missing data
 
         For i As Integer = 1 To m_Data.NumLiving
-            If m_Data.vbK(i) <= 0 Then
+            If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Or m_Data.vbK(i) <= 0 Then
                 MsgMissingPar()
                 bResult = True
                 Exit For
             End If
-            'If m_Data.PB(i) < 0 Then MsgMissingPar()
-            'If m_Data.EE(i) < 0 Then MsgMissingPar()
+            'If m_Data.vbK(i) < 0 Then MsgMissingPar()
         Next
         Return bResult
     End Function
