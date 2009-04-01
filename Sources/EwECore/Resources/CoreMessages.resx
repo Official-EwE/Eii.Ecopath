@@ -730,4 +730,7 @@ System Error: {0}</value>
     <value>{0}{1}{1}Do you wish to disable this plug-in?</value>
     <comment>{0}=plug-in error, {1}=newline</comment>
   </data>
+  <data name="PSD_RUN_ERROR" xml:space="preserve">
+    <value>PSD failed to run.</value>
+  </data>
 </root>
