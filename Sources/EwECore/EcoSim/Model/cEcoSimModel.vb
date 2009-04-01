@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.42  2009/04/01 18:39:25  sherman
+' Moved EcosimModifyFgearPlugin to end of function.
+'
 ' Revision 1.41  2009/03/26 02:05:54  sherman
 ' Added Plugin point EcosimModifyFGear
 '
@@ -1101,10 +1104,11 @@ Public Property PluginManager() As cPluginManager
                     Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
                 Next iFlt
 
-                ' PluginManger used to set Fleet
-                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, Me.m_Data)
-
             End If
+
+            ' PluginManger used to set Fleet
+            ' IMPORTANT (SL Apr09): Fgear will not be used if Me.m_search.bInSearch is not true. 
+            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, Me.m_Data)
 
         End Sub
 
