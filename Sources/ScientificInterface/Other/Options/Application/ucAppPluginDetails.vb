@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPluginDetails.vb,v $
+' Revision 1.7  2009/04/01 17:38:14  jeroens
+' Separated Enabled state and Incompatibility
+'
 ' Revision 1.6  2009/03/31 16:13:47  jeroens
 ' Conflicts now clearly shown
 ' Conflicting assemblies cannot be loaded anymore
@@ -49,7 +52,7 @@ Public Class ucAppPluginDetails
 
         Me.m_pa = pa
         Me.m_cbEnabled.Checked = pa.Enabled
-        Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False) And (pa.IsCompatibleToRun() = True)
+        Me.m_cbEnabled.Enabled = (pa.AlwaysEnabled = False)
 
     End Sub
 

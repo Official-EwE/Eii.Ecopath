@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.8  2009/04/01 17:33:33  jeroens
+' Separated Enabled state and Incompatibility
+'
 ' Revision 1.7  2009/03/31 16:59:17  jeroens
 ' Only return plug-ins from Enabled assemblies
 '
@@ -173,7 +176,7 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return Me.m_bEnabled And Me.IsCompatibleToRun()
+            Return Me.m_bEnabled
         End Get
         Set(ByVal bEnabled As Boolean)
             ' Abort when enabled state will not change
