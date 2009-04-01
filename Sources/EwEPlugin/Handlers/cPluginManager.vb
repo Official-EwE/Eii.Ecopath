@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.22  2009/04/01 20:24:17  jeroens
+' Removed assert when plug-in complained
+'
 ' Revision 1.21  2009/04/01 17:35:55  jeroens
 ' Separated Enabled state and Incompatibility
 ' Relaxed compatibility tests
@@ -1713,10 +1716,7 @@ Public Class cPluginManager
                                                  Path.GetFileNameWithoutExtension(assembly.Filename), _
                                                  ex.Message)
 
-        Dim pex As New cPluginException(assembly, strMessage, ex)
-
-        Debug.Assert(False, strMessage & vbNewLine & ex.Message)
-        RaiseEvent PluginException(pex)
+        Me.RaisePluginException(New cPluginException(assembly, strMessage, ex))
 
     End Sub
 
@@ -1728,10 +1728,13 @@ Public Class cPluginManager
                                                  plugin.Name, _
                                                  strMethodName, _
                                                  ex.Message)
+        Me.RaisePluginException(New cPluginException(assembly, strMessage, ex))
 
-        Dim pex As New cPluginException(assembly, strMessage, ex)
+    End Sub
 
-        Debug.Assert(False, strMessage & vbNewLine & ex.Message)
+    Friend Sub RaisePluginException(ByVal pex As cPluginException)
+
+        'Debug.Assert(False, strMessage & vbNewLine & ex.Message)
         RaiseEvent PluginException(pex)
 
     End Sub
