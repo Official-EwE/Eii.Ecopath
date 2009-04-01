@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.4  2009/04/01 15:21:49  joeh
+' Call core.RunPSD() in the Constructor
+'
 ' Revision 1.3  2009/03/20 18:06:18  joeh
 ' Add codes to plot Size/Weight plot
 '
@@ -37,6 +40,9 @@ Namespace Ecopath.Output
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+
+            Dim core As cCore = cCore.GetInstance()
+            core.RunPSD()
         End Sub
 #End Region 'Constructor
 

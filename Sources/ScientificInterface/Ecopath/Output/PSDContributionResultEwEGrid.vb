@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.8  2009/04/01 15:21:17  joeh
+' Call core.RunPSD() in the Constructor
+'
 ' Revision 1.7  2009/03/18 13:32:05  jeroens
 ' Uses implemented PSD classes
 '
@@ -42,6 +45,9 @@ Namespace Ecopath.Output
 
         Public Sub New()
             MyBase.new()
+
+            Dim core As cCore = cCore.GetInstance()
+            core.RunPSD()
         End Sub
 
         Protected Overrides Sub InitStyle()

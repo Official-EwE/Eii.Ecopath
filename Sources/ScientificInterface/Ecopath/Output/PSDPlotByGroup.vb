@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.17  2009/04/01 15:21:30  joeh
+' Call core.RunPSD() in the Constructor
+'
 ' Revision 1.16  2009/03/20 18:01:25  joeh
 ' Remove some redundant Imports statements
 '
@@ -91,6 +94,9 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_MasterPane = New MasterPane
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+
+            Dim core As cCore = cCore.GetInstance()
+            core.RunPSD()
         End Sub
 #End Region 'Constructor
 

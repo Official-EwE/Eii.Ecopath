@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.12  2009/04/01 15:21:03  joeh
+' Call core.RunPSD() in the Constructor
+'
 ' Revision 1.11  2009/03/23 20:45:13  joeh
 ' Modify codes to plot only those groups included in PSD determination
 '
@@ -58,6 +61,9 @@ Namespace Ecopath.Output
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+
+            Dim core As cCore = cCore.GetInstance()
+            core.RunPSD()
         End Sub
 #End Region 'Constructor
 
