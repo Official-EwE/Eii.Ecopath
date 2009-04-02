@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.12  2009/04/02 17:53:53  jeroens
+' Uses all generic search plug-in points
+'
 ' Revision 1.11  2009/01/31 00:57:43  joeb
 ' Added Plugin points to FPS
 '
@@ -126,8 +129,6 @@ Namespace FishingPolicy
         Private VlocalPenalty As Double
         Private MaxNoOfIterations As Integer
         Private ifn As Integer
-        Private CritValu() As Single
-
 
         Dim ncom As Integer, pcom(50) As Double, xicom(50) As Double
 
@@ -176,6 +177,11 @@ Namespace FishingPolicy
                 Throw New ApplicationException(Me.ToString & ".init(cCore) Failed to initialize.", ex)
             End Try
 
+            ' Fire plug-in point
+            If Me.m_pluginManager IsNot Nothing Then
+                Me.m_pluginManager.SearchInitialized(Me.m_searchData)
+            End If
+
         End Sub
 
 #End Region
@@ -207,8 +213,6 @@ Namespace FishingPolicy
             Try
 
                 Dim nBlocksUsed As Integer
-
-                ReDim CritValu(4)
 
                 SearchFailed = False
                 StopEstimation = False
@@ -278,8 +282,6 @@ Namespace FishingPolicy
                 'get the base values for the objective function by running ecosim 
                 getBaseValues(nBlocksUsed)
 
-                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.SearchIterationsStarting()
-
                 For Iter As Integer = 1 To m_searchData.nRuns
                     If SearchFailed Or StopEstimation Then
                         Exit For
@@ -310,12 +312,18 @@ Namespace FishingPolicy
 
         End Sub
 
-
-
         Private Sub getBaseValues(ByVal nBlocksUsed As Integer)
+
+            If Me.m_pluginManager IsNot Nothing Then
+                Me.m_pluginManager.SearchIterationsStarting()
+            End If
 
             'get the base values used by FUNC to tell the change between the current run and the base run
             m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
+
+            If Me.m_pluginManager IsNot Nothing Then
+                Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
+            End If
 
             TotValBase = m_searchData.totval
             EmployBase = m_searchData.Employ
@@ -1075,7 +1083,7 @@ Ptc:        If PrintOn = True Then
                 'MsgBox("fletch hessian not positive definate")
             End If
 
-endline:    '
+endline:    ' '
 
 
         End Sub
@@ -1100,7 +1108,9 @@ endline:    '
 
                 m_ecosim.RunModelValue(TotalTime, X, n)
 
-                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.SearchFunctionCall(Me.m_searchData)
+                If Me.m_pluginManager IsNot Nothing Then
+                    Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
+                End If
 
                 VlocalPenalty = 0
                 For i = 1 To n
