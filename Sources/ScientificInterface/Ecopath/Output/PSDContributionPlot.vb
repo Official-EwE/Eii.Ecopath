@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.14  2009/04/02 16:24:53  jeroens
+' PSD run integrated w Ecopath
+'
 ' Revision 1.13  2009/04/02 01:47:44  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -65,7 +68,8 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
-            m_core.RunPSD(IsGroupSelected)
+            'Don't manually run! The core execution states take care of this!
+            'm_core.RunPSD(IsGroupSelected)
         End Sub
 #End Region 'Constructor
 

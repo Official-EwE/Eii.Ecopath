@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.6  2009/04/02 16:24:54  jeroens
+' PSD run integrated w Ecopath
+'
 ' Revision 1.5  2009/04/02 01:47:44  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -44,7 +47,8 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
-            m_core.RunPSD(IsGroupSelected)
+            'Don't manually run! The core execution states take care of this!
+            'm_core.RunPSD(IsGroupSelected)
         End Sub
 #End Region 'Constructor
 

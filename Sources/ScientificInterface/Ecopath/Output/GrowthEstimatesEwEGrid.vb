@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.7  2009/04/02 16:24:53  jeroens
+' PSD run integrated w Ecopath
+'
 ' Revision 1.6  2009/04/02 01:47:43  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -39,7 +42,9 @@ Namespace Ecopath.Output
             MyBase.new()
 
             m_core = cCore.GetInstance
-            m_core.RunPSD(IsGroupSelected)
+
+            'Don't manually run! The core execution states take care of this!
+            'm_core.RunPSD(IsGroupSelected)
         End Sub
 
         Protected Overrides Sub InitStyle()
