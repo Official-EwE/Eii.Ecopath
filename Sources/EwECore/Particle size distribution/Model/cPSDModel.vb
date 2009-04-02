@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.8  2009/04/02 14:42:24  jeroens
+' Missing params message includes VariableStatuses
+'
 ' Revision 1.7  2009/04/02 01:47:43  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -13,6 +16,7 @@
 ' Revision 1.4  2009/04/01 16:17:10  joeh
 ' Initial version
 '
+'==============================================================================
 
 #Region "Imports"
 
@@ -65,34 +69,58 @@ Public Class cPSDModel
 
 #End Region 'Public method
 
-#Region "Helper methods"
+#Region " Helper methods "
+
     Private Function CheckMissingInputParameters() As Boolean
-        Dim bResult As Boolean = False 'No missing data
 
-        For i As Integer = 1 To m_Data.NumLiving
-            If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Or m_Data.vbK(i) <= 0 Then
-                MsgMissingPar()
-                bResult = True
-                Exit For
-            End If
-            'If m_Data.vbK(i) < 0 Then MsgMissingPar()
-        Next
-        Return bResult
-    End Function
-
-    Private Sub MsgMissingPar()
-        Dim strMsg As String
+        Dim str As String = ""
         Dim msg As cMessage = Nothing
+        Dim vs As cVariableStatus = Nothing
+        Dim bMissing As Boolean = False 'No missing data
 
-        strMsg = "The PSD estimation routine can work only with either L at infinity or W at infinity as unknown per group. K in VBGF must be known for each group. "
-        strMsg = strMsg & "Here, one or more of these are unknown."
-        strMsg = strMsg & vbCrLf & vbCrLf
-        strMsg = strMsg & "Please re-edit the growth input parameters."
+        ' Check each group
+        For i As Integer = 1 To m_Data.NumLiving
+            ' Found an error?
+            If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Or m_Data.vbK(i) <= 0 Then
 
-        msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-        msg.Suppressable = False
-        NotifyCore(msg)
-    End Sub
+                ' #Yes: generate - or append to - message
+                If (msg Is Nothing) Then
+                    ' ToDo_JH: localize this
+                    str = "The PSD estimation routine can work only with either 'L at infinity' or 'W at infinity' as unknown per group. 'K in VBGF' must be known for each group."
+                    str = str & "Here, one or more of these are unknown:"
+                    'str = str & vbCrLf & vbCrLf
+                    'str = str & "Please re-edit the growth input parameters."
+                    msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                    msg.Suppressable = False
+                End If
+                bMissing = True
+
+                ' JS: add variable status to report missing L or W 
+                If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Then
+                    ' ToDo_JH: localize this
+                    str = String.Format("Required 'L at infinity' or 'W at infinity' missing for group {0}", Me.m_Data.GroupName(i))
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                    msg.AddVariable(vs)
+                End If
+
+                ' JS: add variable status to report missing K in VGBF
+                If (m_Data.vbK(i) <= 0) Then
+                    ' ToDo_JH: localize this
+                    str = String.Format("Required 'K in VBGF' missing for group {0}", Me.m_Data.GroupName(i))
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                    msg.AddVariable(vs)
+                End If
+
+                ' JS: do not exit For; keep going to add variable statuses
+                'Exit For
+            End If
+        Next
+
+        Me.NotifyCore(msg)
+
+        Return bMissing
+
+    End Function
 
     Private Sub NotifyCore(ByVal msg As cMessage)
 
@@ -576,6 +604,6 @@ Public Class cPSDModel
         Next
     End Sub
 
-#End Region 'Helper methods
+#End Region ' Helper methods
 
 End Class
