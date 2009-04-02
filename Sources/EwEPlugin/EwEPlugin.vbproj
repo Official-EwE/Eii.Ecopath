@@ -133,7 +133,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Plugin templates\GUI\IHelpPlugin.vb" />
-    <Compile Include="Plugin templates\Search\IFishingPolicySearchPlugin.vb" />
+    <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

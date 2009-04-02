@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.24  2009/04/02 17:48:10  jeroens
+' IFishingPolicySearchPlugin -> ISearchPlugin
+'
 ' Revision 1.23  2009/04/02 01:30:23  sherman
 ' Passed BB into ModifyFGearPlugin
 '
@@ -1474,12 +1477,12 @@ Public Class cPluginManager
 
     Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
         Try
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc.Plugin, IFishingPolicySearchPlugin).SearchInitialized(SearchDS)
+                    DirectCast(ipc.Plugin, ISearchPlugin).SearchInitialized(SearchDS)
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchInitialized", ex)
                 End Try
@@ -1491,16 +1494,25 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function SearchFunctionCall(ByVal SearchDS As Object) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point, called whenever search objective results have been 
+    ''' calculated.
+    ''' </summary>
+    ''' <param name="SearchDS">Search data structures holding the 
+    ''' search results.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function PostRunSearchResults(ByVal SearchDS As Object) As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
         Try
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc, IFishingPolicySearchPlugin).SearchFunctionCall(SearchDS)
+                    DirectCast(ipc, ISearchPlugin).PostRunSearchResults(SearchDS)
                 Catch ex As Exception
-                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchFunctionCall", ex)
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "PostRunSearchResults", ex)
                 End Try
             Next
 
@@ -1512,12 +1524,12 @@ Public Class cPluginManager
 
     Public Function SearchIterationsStarting() As Boolean
 
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IFishingPolicySearchPlugin))
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(ISearchPlugin))
         Try
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc, IFishingPolicySearchPlugin).SearchIterationsStarting()
+                    DirectCast(ipc, ISearchPlugin).SearchIterationsStarting()
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchIterationsStarting", ex)
                 End Try
