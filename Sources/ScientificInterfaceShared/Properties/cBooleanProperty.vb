@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cBooleanProperty.vb,v $
+' Revision 1.2  2009/04/02 15:50:53  jeroens
+' Removed assert on set_Value
+'
 ' Revision 1.1  2009/04/02 13:22:08  jeroens
 ' Separated derived classes out of cProperty.vb
 '
@@ -83,7 +86,6 @@ Namespace Properties
         Protected Overrides Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
             Get
                 ' Is this a NULL value?
-                ' Is this a NULL value?
                 If bHonourNull And ((Me.m_Style And StyleGuide.eStyleFlags.Null) = StyleGuide.eStyleFlags.Null) Then
                     ' #Yes: return nothing (NOT 0.0)
                     Return Nothing
@@ -91,12 +93,14 @@ Namespace Properties
                 Return m_bValue
             End Get
             Set(ByVal value As Object)
+                Dim bValue As Boolean = False
                 Try
                     ' Try to convert to boolean
-                    Me.m_bValue = Convert.ToBoolean(value)
+                    bValue = Convert.ToBoolean(value)
                 Catch ex As Exception
-                    Debug.Assert(False, "Unable to convert value to Boolean")
+                    'Debug.Assert(False, "Unable to convert value to Boolean")
                 End Try
+                Me.m_bValue = bValue
             End Set
         End Property
 

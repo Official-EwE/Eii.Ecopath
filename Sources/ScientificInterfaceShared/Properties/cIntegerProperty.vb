@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIntegerProperty.vb,v $
+' Revision 1.2  2009/04/02 15:50:38  jeroens
+' Removed assert on set_Value
+'
 ' Revision 1.1  2009/04/02 13:22:09  jeroens
 ' Separated derived classes out of cProperty.vb
 '
@@ -91,12 +94,14 @@ Namespace Properties
                 Return Me.m_iValue
             End Get
             Set(ByVal value As Object)
+                Dim i As Integer = 0
                 Try
                     ' Try to convert to integer
-                    Me.m_iValue = Convert.ToInt32(value)
+                    i = Convert.ToInt32(value)
                 Catch ex As Exception
-                    Debug.Assert(False, "Unable to convert value to Integer")
+                    'Debug.Assert(False, "Unable to convert value to Integer")
                 End Try
+                Me.m_iValue = i
             End Set
         End Property
 

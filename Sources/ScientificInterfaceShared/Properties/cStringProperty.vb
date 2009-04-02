@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStringProperty.vb,v $
+' Revision 1.2  2009/04/02 15:50:38  jeroens
+' Removed assert on set_Value
+'
 ' Revision 1.1  2009/04/02 13:22:09  jeroens
 ' Separated derived classes out of cProperty.vb
 '
@@ -92,10 +95,10 @@ Namespace Properties
                 Try
                     ' Try to convert to string
                     str = Convert.ToString(value)
-                    Me.m_strValue = str
                 Catch ex As Exception
-                    Debug.Assert(False, "Unable to convert value to String")
+                    'Debug.Assert(False, "Unable to convert value to String")
                 End Try
+                Me.m_strValue = str
             End Set
         End Property
 
