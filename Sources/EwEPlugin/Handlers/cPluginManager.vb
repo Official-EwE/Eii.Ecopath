@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.23  2009/04/02 01:30:23  sherman
+' Passed BB into ModifyFGearPlugin
+'
 ' Revision 1.22  2009/04/01 20:24:17  jeroens
 ' Removed assert when plug-in complained
 '
@@ -930,14 +933,14 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal EcosimDataStructures As Object) As Boolean
+    Public Function EcosimModifyFGear(ByVal FGear As Object, ByVal BB As Object, ByVal EcosimDataStructures As Object, ByVal CurrentTime As Object) As Boolean
 
         Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimModifyFGearPlugin))
         Try
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc.Plugin, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, EcosimDataStructures)
+                    DirectCast(ipc.Plugin, IEcosimModifyFGearPlugin).EcosimModifyFGear(FGear, BB, EcosimDataStructures, CurrentTime)
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "EcosimModifyTimeseries", ex)
                 End Try

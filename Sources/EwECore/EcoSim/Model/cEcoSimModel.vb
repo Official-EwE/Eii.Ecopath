@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.43  2009/04/02 01:30:23  sherman
+' Passed BB into ModifyFGearPlugin
+'
 ' Revision 1.42  2009/04/01 18:39:25  sherman
 ' Moved EcosimModifyFgearPlugin to end of function.
 '
@@ -1108,7 +1111,7 @@ Public Property PluginManager() As cPluginManager
 
             ' PluginManger used to set Fleet
             ' IMPORTANT (SL Apr09): Fgear will not be used if Me.m_search.bInSearch is not true. 
-            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, Me.m_Data)
+            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, BB, Me.m_Data, TimeNow)
 
         End Sub
 
