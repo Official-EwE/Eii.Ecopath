@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSingleProperty.vb,v $
+' Revision 1.2  2009/04/02 19:14:43  jeroens
+' Invalid values set vars to meta NULL
+'
 ' Revision 1.1  2009/04/02 13:22:09  jeroens
 ' Separated derived classes out of cProperty.vb
 '
@@ -91,15 +94,21 @@ Namespace Properties
                 ' Yes: return true value
                 Return Me.m_sValue
             End Get
+
             Set(ByVal value As Object)
-                Dim s As Single = 0.0
+
+                Dim meta As cVariableMetaData = Me.ValueDescriptor.Metadata
+                Dim s As Single = CSng(IIf(meta Is Nothing, 0, meta.NullValue))
+
                 Try
                     ' Try to convert to single
                     s = Convert.ToSingle(value)
                 Catch ex As Exception
                     'Debug.Assert(False, "Unable to convert value to Single")
                 End Try
+
                 Me.m_sValue = s
+
             End Set
         End Property
 

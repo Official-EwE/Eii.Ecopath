@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIntegerProperty.vb,v $
+' Revision 1.3  2009/04/02 19:14:42  jeroens
+' Invalid values set vars to meta NULL
+'
 ' Revision 1.2  2009/04/02 15:50:38  jeroens
 ' Removed assert on set_Value
 '
@@ -94,14 +97,19 @@ Namespace Properties
                 Return Me.m_iValue
             End Get
             Set(ByVal value As Object)
-                Dim i As Integer = 0
+
+                Dim meta As cVariableMetaData = Me.ValueDescriptor.Metadata
+                Dim i As Integer = CInt(IIf(meta Is Nothing, 0, meta.NullValue))
+
                 Try
                     ' Try to convert to integer
                     i = Convert.ToInt32(value)
                 Catch ex As Exception
                     'Debug.Assert(False, "Unable to convert value to Integer")
                 End Try
+
                 Me.m_iValue = i
+
             End Set
         End Property
 
