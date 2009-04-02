@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.9  2009/04/02 14:30:53  jeroens
+' Base reset status flags incorporates ReadOnly check
+'
 ' Revision 1.8  2009/03/17 16:07:58  jeroens
 ' StanzaID -> iStanza
 '
@@ -400,10 +403,14 @@ Public MustInherit Class cCoreInputOutputBase
     ''' objects will need to provide their own implementation due to the 
     ''' absence of validators.</remarks>
     Friend Overridable Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
-        Dim i As Integer
 
+        Dim i As Integer
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
         Dim value As cValue
+        Dim status As eStatusFlags = 0
+
+        If Me.m_bReadOnly Then status = eStatusFlags.NotEditable
+
         For Each keyvalue In m_values
             Try
                 value = keyvalue.Value
@@ -412,14 +419,14 @@ Public MustInherit Class cCoreInputOutputBase
                     Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray
                         For i = 0 To value.Length
                             If bForceReset Then
-                                value.Status(i) = 0
+                                value.Status(i) = status
                             Else
                                 value.setStatusFlag(i)
                             End If
                         Next i
                     Case Else
                         If bForceReset Then
-                            value.Status = 0
+                            value.Status = status
                         Else
                             value.setStatusFlag()
                         End If
