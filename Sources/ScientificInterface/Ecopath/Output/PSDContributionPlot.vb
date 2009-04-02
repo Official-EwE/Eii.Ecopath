@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.13  2009/04/02 01:47:44  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.12  2009/04/01 15:21:03  joeh
 ' Call core.RunPSD() in the Constructor
 '
@@ -62,8 +65,7 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
-            Dim core As cCore = cCore.GetInstance()
-            core.RunPSD()
+            m_core.RunPSD(IsGroupSelected)
         End Sub
 #End Region 'Constructor
 
@@ -86,16 +88,15 @@ Namespace Ecopath.Output
 #Region "Helper methods"
         Private Sub PopulateGroupBoxes()
 
-            Dim group As cEcoPathGroupInput = Nothing
+            'Dim group As cEcoPathGroupInput = Nothing
 
             llbGroups.SuspendLayout()
             llbGroups.Items.Clear()
 
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nLivingGroups
-                group = Me.m_core.EcoPathGroupInputs(i)
-                If group.PSDIncluded Then
-                    llbGroups.Items.Add(New GroupListBox.GroupItem(group))
+                If IsGroupSelected(i) Then
+                    llbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
 
@@ -142,7 +143,6 @@ Namespace Ecopath.Output
             Dim psd As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
-            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
@@ -154,8 +154,7 @@ Namespace Ecopath.Output
             FindSystemPSD(sSystemPSD)
 
             For igroup As Integer = 1 To m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(igroup)
-                If grpInput.PSDIncluded Then
+                If IsGroupSelected(igroup) Then
                     grpOutput = m_core.EcoPathGroupOutputs(igroup)
                     For iWtClass As Integer = 1 To m_core.nWeightClasses
                         sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
@@ -210,13 +209,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
-            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(iGroup)
-                If grpInput.PSDIncluded Then
+                If IsGroupSelected(iGroup) Then
                     grpOutput = m_core.EcoPathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To m_core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
@@ -224,6 +221,16 @@ Namespace Ecopath.Output
                 End If
             Next
         End Sub
+
+        Private Function IsGroupSelected() As Boolean()
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+
+            For i As Integer = 1 To m_core.nLivingGroups
+                bGroupSelected(i) = sg.GroupVisible(i)
+            Next
+            Return bGroupSelected
+        End Function
 #End Region 'Helper method
 
     End Class

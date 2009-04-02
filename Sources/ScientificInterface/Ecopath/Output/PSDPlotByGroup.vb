@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.18  2009/04/02 01:47:44  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.17  2009/04/01 15:21:30  joeh
 ' Call core.RunPSD() in the Constructor
 '
@@ -95,8 +98,7 @@ Namespace Ecopath.Output
             Me.m_MasterPane = New MasterPane
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
-            Dim core As cCore = cCore.GetInstance()
-            core.RunPSD()
+            m_core.RunPSD(IsGroupSelected)
         End Sub
 #End Region 'Constructor
 
@@ -127,15 +129,14 @@ Namespace Ecopath.Output
 #Region "Helper methods"
         Private Sub PopulateGroupBoxes()
 
-            Dim group As cEcoPathGroupInput = Nothing
+            'Dim group As cEcoPathGroupInput = Nothing
 
             llbGroups.SuspendLayout()
             llbGroups.Items.Clear()
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
 
             For i As Integer = 1 To m_core.nLivingGroups
-                group = Me.m_core.EcoPathGroupInputs(i)
-                If group.PSDIncluded Then
+                If IsGroupSelected(i) Then
                     llbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
@@ -333,6 +334,16 @@ Namespace Ecopath.Output
                 Next
             Next
         End Sub
+
+        Private Function IsGroupSelected() As Boolean()
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+
+            For i As Integer = 1 To m_core.nLivingGroups
+                bGroupSelected(i) = sg.GroupVisible(i)
+            Next
+            Return bGroupSelected
+        End Function
 #End Region 'Helper methods
 
     End Class

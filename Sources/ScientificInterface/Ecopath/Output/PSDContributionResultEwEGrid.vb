@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.9  2009/04/02 01:47:44  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.8  2009/04/01 15:21:17  joeh
 ' Call core.RunPSD() in the Constructor
 '
@@ -43,40 +46,39 @@ Namespace Ecopath.Output
     Public Class PSDContributionResult
         : Inherits EwEGrid
 
+        Private m_core As cCore = Nothing
+
         Public Sub New()
             MyBase.new()
 
-            Dim core As cCore = cCore.GetInstance()
-            core.RunPSD()
+            m_core = cCore.GetInstance
+            m_core.RunPSD(IsGroupSelected)
         End Sub
 
         Protected Overrides Sub InitStyle()
-            Dim core As cCore = cCore.GetInstance()
 
             MyBase.InitStyle()
 
             'Define grid dimensions
-            Dim parms As cPSDParameters = core.ParticleSizeDistributionParameters
-            Me.Redim(1, core.nWeightClasses + 3)
+            Dim parms As cPSDParameters = m_core.ParticleSizeDistributionParameters
+            Me.Redim(1, m_core.nWeightClasses + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAMEWEIGHT_UNIT)
 
             ' Dynamic column header - weight class
-            For wtClassIndex As Integer = 1 To core.nWeightClasses
+            For wtClassIndex As Integer = 1 To m_core.nWeightClasses
                 Me(0, wtClassIndex + 1) = New EwEColumnHeaderCell((parms.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
             Next
 
             ' Sum value column
-            Me(0, core.nWeightClasses + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, m_core.nWeightClasses + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
 
             Me.FixedColumns = 2
         End Sub
 
         Protected Overrides Sub FillData()
 
-            Dim core As cCore = cCore.GetInstance()
-            Dim groupInput As cEcoPathGroupInput = Nothing
             Dim groupOutput As cEcoPathGroupOutput = Nothing
             Dim iRow As Integer = -1
 
@@ -87,11 +89,9 @@ Namespace Ecopath.Output
             'If core.nWeightClasses = 0 Then Return
 
             ' Create rows for groups and sum values in each row
-            For iGroup As Integer = 1 To core.nLivingGroups
-
-                groupInput = core.EcoPathGroupInputs(iGroup)
-                If groupInput.PSDIncluded Then
-                    groupOutput = core.EcoPathGroupOutputs(iGroup)
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                If IsGroupSelected(iGroup) Then
+                    groupOutput = m_core.EcoPathGroupOutputs(iGroup)
                     iRow = Me.AddRow()
                     FillRows(iRow, groupOutput)
                 End If
@@ -104,7 +104,6 @@ Namespace Ecopath.Output
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
 
-            Dim core As cCore = cCore.GetInstance()
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim propManager As cPropertyManager = cPropertyManager.GetInstance()
             Dim propPSD As cProperty = Nothing
@@ -119,8 +118,8 @@ Namespace Ecopath.Output
 
             alSumRow.Clear()
             ' For each weight class (each column) 
-            For wtClassIndex As Integer = 1 To core.nWeightClasses
-                sourceSec = core.EcoPathGroupOutputs(wtClassIndex)
+            For wtClassIndex As Integer = 1 To m_core.nWeightClasses
+                sourceSec = m_core.EcoPathGroupOutputs(wtClassIndex)
                 propPSD = propManager.GetProperty(source, eVarNameFlags.PSD, sourceSec)
                 propCell = New PropertyCell(CType(propPSD, cProperty))
                 ' Configure the cell
@@ -142,7 +141,6 @@ Namespace Ecopath.Output
 
         Private Sub FillTotalValueRow()
 
-            Dim core As cCore = cCore.GetInstance()
             Dim groupInput As cEcoPathGroupInput = Nothing
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
@@ -169,14 +167,13 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New EwERowHeaderCell("Sum") 'My.Resources.HEADER_TOTALVALUE, StyleGuide.eUnitType.Monetary)
 
             alSumAll.Clear()
-            For wtClassIndex As Integer = 1 To core.nWeightClasses
-                source = core.EcoPathGroupOutputs(wtClassIndex)
+            For wtClassIndex As Integer = 1 To m_core.nWeightClasses
+                source = m_core.EcoPathGroupOutputs(wtClassIndex)
                 alSumCol.Clear()
 
-                For rowIndex As Integer = 1 To core.nLivingGroups
-                    groupInput = core.EcoPathGroupInputs(rowIndex)
-                    If groupInput.PSDIncluded Then
-                        sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                For rowIndex As Integer = 1 To m_core.nLivingGroups
+                    If IsGroupSelected(rowIndex) Then
+                        sourceSec = m_core.EcoPathGroupOutputs(rowIndex)
                         ' Get the index PSD property
                         propPSD = pmPropertyManager.GetProperty(sourceSec, eVarNameFlags.PSD, source)
 
@@ -204,6 +201,16 @@ Namespace Ecopath.Output
             Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = propCell
 
         End Sub
+
+        Private Function IsGroupSelected() As Boolean()
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+
+            For i As Integer = 1 To m_core.nLivingGroups
+                bGroupSelected(i) = sg.GroupVisible(i)
+            Next
+            Return bGroupSelected
+        End Function
 
         Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
             Get

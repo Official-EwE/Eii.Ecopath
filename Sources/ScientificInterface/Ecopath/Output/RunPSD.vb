@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.18  2009/04/02 01:47:44  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.17  2009/03/31 21:36:15  joeh
 ' Move all PSD computation routines to a new class cPSDModel
 '
@@ -197,7 +200,7 @@ Namespace Ecopath.Output
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasEcopathRan Then
                 ' #Yes: 
-                Me.m_core.RunPSD()
+                Me.m_core.RunPSD(IsGroupSelected)
                 Me.PlotCurves()
             Else
                 '#No: 
@@ -207,7 +210,7 @@ Namespace Ecopath.Output
                 'Me.PlotCurves()
             End If
 
-            
+
 
         End Sub
 
@@ -234,7 +237,7 @@ Namespace Ecopath.Output
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasEcopathRan Then
                 ' #Yes: 
-                Me.m_core.RunPSD()
+                Me.m_core.RunPSD(IsGroupSelected)
                 Me.PlotCurves()
             Else
                 '#No: 
@@ -383,10 +386,10 @@ Namespace Ecopath.Output
             '(Need this to tell which group is included in the PSD calculation.
             'Not saying we need to save to db. But grpInput.PSDIncluded triggers
             'cCore.OnValidated)
-            For iGroup As Integer = 1 To Me.m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(iGroup)
-                grpInput.PSDIncluded = sg.GroupVisible(iGroup)
-            Next
+            'For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+            '    grpInput = m_core.EcoPathGroupInputs(iGroup)
+            '    grpInput.PSDIncluded = sg.GroupVisible(iGroup)
+            'Next
 
             ' JS: the variable values are automatically updated by the property format providers
             'parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
@@ -451,13 +454,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
-            Dim grpInput As cEcoPathGroupInput = Nothing
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                grpInput = m_core.EcoPathGroupInputs(iGroup)
-                If grpInput.PSDIncluded Then
+                If IsGroupSelected(iGroup) Then
                     grpOutput = m_core.EcoPathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To m_core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
@@ -504,6 +505,16 @@ Namespace Ecopath.Output
             sIntercept = CSng(dYMean - sSlope * dXMean)
 
         End Sub
+
+        Private Function IsGroupSelected() As Boolean()
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+
+            For i As Integer = 1 To m_core.nLivingGroups
+                bGroupSelected(i) = sg.GroupVisible(i)
+            Next
+            Return bGroupSelected
+        End Function
 
 #End Region ' Helper methods
 

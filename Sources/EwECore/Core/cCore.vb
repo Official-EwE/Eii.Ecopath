@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.108  2009/04/02 01:47:42  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.107  2009/04/01 19:17:20  joeh
 ' Exposes the MessagePublisher instance in cPSDModel so that the core can add message handlers
 '
@@ -3556,14 +3559,14 @@ Public Class cCore
     End Function
 
     'Joeh
-    Public Sub RunPSD()
+    Public Sub RunPSD(ByVal bGroupSelected() As Boolean)
         Dim msg As cMessage
 
         'copy all PSD data into the modeling arrays 
         m_PSDData.CopyInputToModelArrays()
 
         'Is Run successful?
-        If m_psdModel.Run() Then
+        If m_psdModel.Run(bGroupSelected) Then
             'Yes: reload the output list with the new outputs from PSD model
             LoadPSDOutputs()
         Else

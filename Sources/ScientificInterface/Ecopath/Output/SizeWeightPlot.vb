@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.5  2009/04/02 01:47:44  joeh
+' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
+'
 ' Revision 1.4  2009/04/01 15:21:49  joeh
 ' Call core.RunPSD() in the Constructor
 '
@@ -41,8 +44,7 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
 
-            Dim core As cCore = cCore.GetInstance()
-            core.RunPSD()
+            m_core.RunPSD(IsGroupSelected)
         End Sub
 #End Region 'Constructor
 
@@ -123,6 +125,16 @@ Namespace Ecopath.Output
             Me.zgcZedGraphCntl.AxisChange()
             Me.zgcZedGraphCntl.Refresh()
         End Sub
+
+        Private Function IsGroupSelected() As Boolean()
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
+
+            For i As Integer = 1 To m_core.nLivingGroups
+                bGroupSelected(i) = sg.GroupVisible(i)
+            Next
+            Return bGroupSelected
+        End Function
 #End Region 'Helper methods
 
     End Class
