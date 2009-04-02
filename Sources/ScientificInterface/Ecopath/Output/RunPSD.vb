@@ -1,6 +1,10 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.19  2009/04/02 16:32:28  jeroens
+' PSD run integrated w Ecopath
+' Reinstated use of params variables
+'
 ' Revision 1.18  2009/04/02 01:47:44  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -89,13 +93,13 @@ Namespace Ecopath.Output
         Private m_fpMinWeight As cEwEFormatProvider = Nothing
         Private m_fpNoOfPointsMovAvg As cEwEFormatProvider = Nothing
 
-        '' -- Internal admin --
-        '''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
-        'Private m_bEcopathResultsPlotted As Boolean = False
+        ' -- Internal admin --
+        ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
+        Private m_bEcopathResultsPlotted As Boolean = False
 
 #End Region 'Variables
 
-#Region "Constructor/Destructor"
+#Region " Constructor/Destructor "
 
         Public Sub New()
 
@@ -107,7 +111,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-#End Region 'Constructor/Destructor
+#End Region ' Constructor/Destructor
 
 #Region " Event handlers "
 
@@ -194,23 +198,15 @@ Namespace Ecopath.Output
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbtnRun.Click
 
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
+            parms.PSDEnabled = True
+
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
 
-            ' Are Ecopath results available?
-            If Me.m_coreStateMonitor.HasEcopathRan Then
-                ' #Yes: 
-                Me.m_core.RunPSD(IsGroupSelected)
-                Me.PlotCurves()
-            Else
-                '#No: 
-                Me.m_core.RunEcoPath()
-                'OnCoreExecutionStateChanged will take care of these:
-                'Me.m_core.RunPSD()
-                'Me.PlotCurves()
-            End If
-
-
+            Me.m_core.RunEcoPath()
+            Me.PlotCurves()
 
         End Sub
 
@@ -234,36 +230,26 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub SynchronizePlot()
 
+            ' This code is optimized to only plot when new results are available
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasEcopathRan Then
-                ' #Yes: 
-                Me.m_core.RunPSD(IsGroupSelected)
-                Me.PlotCurves()
+                ' #Yes: are these results not plotted yet?
+                If Me.m_bEcopathResultsPlotted = False Then
+                    ' #Yes: Plot the curves
+                    Me.PlotCurves()
+                    ' Set flag to remind ourselves that these results are plotted
+                    Me.m_bEcopathResultsPlotted = True
+                End If
             Else
-                '#No: 
-                Me.InitializePane()
+                '#No: Ecopath results have disappeared (or are not yet available)
+                'Is the plot populated?
+                If Me.m_bEcopathResultsPlotted = True Then
+                    ' #Yes: clear the plot
+                    Me.InitializePane()
+                    ' Set local flag to remind ourselves that the plot is empty
+                    Me.m_bEcopathResultsPlotted = False
+                End If
             End If
-
-            '' This code is optimized to only plot when new results are available
-            '' Are Ecopath results available?
-            'If Me.m_coreStateMonitor.HasEcopathRan Then
-            '    ' #Yes: are these results not plotted yet?
-            '    If Me.m_bEcopathResultsPlotted = False Then
-            '        ' #Yes: Plot the curves
-            '        Me.PlotCurves()
-            '        ' Set flag to remind ourselves that these results are plotted
-            '        Me.m_bEcopathResultsPlotted = True
-            '    End If
-            'Else
-            '    '#No: Ecopath results have disappeared (or are not yet available)
-            '    'Is the plot populated?
-            '    If Me.m_bEcopathResultsPlotted = True Then
-            '        ' #Yes: clear the plot
-            '        Me.InitializePane()
-            '        ' Set local flag to remind ourselves that the plot is empty
-            '        Me.m_bEcopathResultsPlotted = False
-            '    End If
-            'End If
 
         End Sub
 
@@ -383,13 +369,10 @@ Namespace Ecopath.Output
             End If
 
             'Group included in PSD 
-            '(Need this to tell which group is included in the PSD calculation.
-            'Not saying we need to save to db. But grpInput.PSDIncluded triggers
-            'cCore.OnValidated)
-            'For iGroup As Integer = 1 To Me.m_core.nLivingGroups
-            '    grpInput = m_core.EcoPathGroupInputs(iGroup)
-            '    grpInput.PSDIncluded = sg.GroupVisible(iGroup)
-            'Next
+            For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                grpInput = m_core.EcoPathGroupInputs(iGroup)
+                parms.GroupIncluded(iGroup) = sg.GroupVisible(iGroup)
+            Next
 
             ' JS: the variable values are automatically updated by the property format providers
             'parms.NumWeightClasses = CInt(m_fpNoOfPointsPSD.Value)
@@ -454,17 +437,20 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                If IsGroupSelected(iGroup) Then
+                If parms.GroupIncluded(iGroup) Then
                     grpOutput = m_core.EcoPathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To m_core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next
                 End If
             Next
+
         End Sub
 
         Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
@@ -505,16 +491,6 @@ Namespace Ecopath.Output
             sIntercept = CSng(dYMean - sSlope * dXMean)
 
         End Sub
-
-        Private Function IsGroupSelected() As Boolean()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
-            Dim bGroupSelected(m_core.nLivingGroups) As Boolean
-
-            For i As Integer = 1 To m_core.nLivingGroups
-                bGroupSelected(i) = sg.GroupVisible(i)
-            Next
-            Return bGroupSelected
-        End Function
 
 #End Region ' Helper methods
 
