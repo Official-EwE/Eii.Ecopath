@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.48  2009/04/02 20:51:10  jeroens
+' Added eSearchResultCriteriaTypes
+'
 ' Revision 1.47  2009/04/02 15:52:17  jeroens
 ' Added PSD enabled flag
 '
@@ -1799,32 +1802,55 @@ Namespace Core
 
 #End Region ' Datasource types
 
-#Region "PSD mortality types"
+#Region " PSD mortality types "
 
-    'Joeh
-    Public Enum ePSDMortalityTypes
-        ''' <summary>Group P/B.</summary>
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Mortality types for PSD analysis
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum ePSDMortalityTypes As Integer
+        ''' <summary>Group P/B</summary>
         GroupZ = 0
-        ''' <summary>Lorenzen-variable.</summary>
+        ''' <summary>Lorenzen-variable</summary>
         Lorenzen = 1
     End Enum
-    'End Joeh
 
 #End Region ' PSD mortality types
 
-#Region "Climate types"
-    'Joe
+#Region " PSD climate types "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' The three climate zones for PSD analysis.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eClimateTypes
-        ''' <summary>
-        ''' Tropical climate''' </summary>
+        ''' <summary>Tropical climate</summary>
         Tropical = 0
-        ''' <summary>
-        ''' Temperate climate''' </summary>
+        ''' <summary>Temperate climate</summary>
         Temperate = 1
-        ''' <summary>
-        ''' Polar climate''' </summary>
+        ''' <summary>Polar climate</summary>
         Polar = 2
     End Enum
-#End Region
+
+#End Region ' PSD climate types
+
+#Region " Search criteria results "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Search criteria result types
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eSearchCriteriaResultTypes As Integer
+        TotalValue = 1
+        Employment = 2
+        MandateReb = 3
+        Ecological = 4
+        BioDiversity = 5
+    End Enum
+
+#End Region ' Search criteria results
 
 End Namespace ' Core
