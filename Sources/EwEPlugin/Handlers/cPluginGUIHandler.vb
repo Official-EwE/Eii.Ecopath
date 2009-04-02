@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginGUIHandler.vb,v $
+' Revision 1.2  2009/04/02 19:00:44  jeroens
+' Minor changes
+'
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -142,7 +145,7 @@ Public MustInherit Class cPluginGUIHandler
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyEnabled(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
         Dim ctrl As Control = Nothing
-        For Each ip As IPlugin In pa.Plugins(GetType(IGUIPlugin))
+        For Each ip As IPlugin In pa.Plugins(GetType(IGUIPlugin), True)
             ' Position the plugin
             Me.PlacePlugin(DirectCast(ip, IGUIPlugin), bEnabled)
             ' Update its enabled state
