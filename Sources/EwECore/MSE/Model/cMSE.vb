@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.5  2009/04/02 20:54:38  jeroens
+' Uses eSearchResultCriteriaTypes
+'
 ' Revision 1.4  2008/12/09 19:49:17  joeb
 ' Ouput objects now use core data instead of buffering data
 '
@@ -13,39 +16,11 @@
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.15  2008/08/12 16:23:55  joeb
-' Replaced PlotOn with SearchMode = MSE
-'
-' Revision 1.14  2008/08/11 21:10:59  joeb
-' Changes for Bug Fix 459 Added Search Modes
-'
-' Revision 1.13  2008/06/25 17:38:43  joeb
-' Fix bug 491 Initialization of Ecosim overwriting fishing mort with default
-'
-' Revision 1.12  2008/05/27 18:44:45  joeb
-' Removed ToDo's
-'
-' Revision 1.11  2008/05/26 18:06:09  joeb
-' Test
-'
-' Revision 1.10  2008/05/05 16:20:50  joeb
-' Added population of Output object
-'
-' Revision 1.9  2008/05/01 20:34:32  joeb
-' BioRisk and moved summary variables to datastructures
-'
-' Revision 1.8  2008/04/29 19:31:31  joeb
-' Added clearing of BaseYearCost to Run() this will have to change again
-'
-' Revision 1.7  2008/04/28 17:59:32  joeb
-' Model initialization
-'
-' Revision 1.6  2008/04/24 14:50:56  joeb
-' Added mean results code
-'
+'==============================================================================
 
 Imports EwECore
 Imports EwECore.Ecosim
+Imports EwEUtils.Core
 
 Namespace MSE
 
@@ -203,10 +178,11 @@ Namespace MSE
             m_data.MeanVal += TotalValue
             m_data.MeanManVal += ManValue
             m_data.MeanEcoVal += EcoValue
-            m_data.MeanTotalValue = m_data.MeanTotalValue + m_Search.ValWeight(1) * TotalValue / TotValBase + _
-                    m_Search.ValWeight(2) * EmployValue / EmployBase + _
-                    m_Search.ValWeight(3) * ManValue / ManValueBase + _
-                    m_Search.ValWeight(4) * EcoValue / EcoValueBase
+            m_data.MeanTotalValue = m_data.MeanTotalValue + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotalValue / TotValBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployValue / EmployBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValue / ManValueBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValue / EcoValueBase
 
         End Sub
 
@@ -216,10 +192,11 @@ Namespace MSE
 
                 m_Ecosim.RunModelValue(m_esData.NumYears, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseEcoVal, Nothing, 0)
 
-                Me.m_data.BestTotalValue = Me.m_Search.ValWeight(1) * m_data.BaseTotalVal / TotValBase + _
-                                 Me.m_Search.ValWeight(2) * m_data.BaseTotalVal / EmployBase + _
-                                 Me.m_Search.ValWeight(3) * m_data.BaseTotalVal / ManValueBase + _
-                                 Me.m_Search.ValWeight(4) * m_data.BaseEcoVal / EcoValueBase
+                ' JS 02apr09: 3 x m_data.BaseTotalVal correct here?
+                Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_data.BaseTotalVal / TotValBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_data.BaseTotalVal / EmployBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_data.BaseTotalVal / ManValueBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_data.BaseEcoVal / EcoValueBase
 
             Catch ex As Exception
                 cLog.Write(ex)

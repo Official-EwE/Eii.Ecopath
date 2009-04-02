@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMPARandomSearch.vb,v $
+' Revision 1.20  2009/04/02 20:54:36  jeroens
+' Uses eSearchResultCriteriaTypes
+'
 ' Revision 1.19  2009/01/16 18:30:32  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -58,104 +61,11 @@
 ' Revision 1.1  2008/09/26 07:30:26  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.36  2008/09/24 00:11:04  villyc
-' f limits and others
-'
-' Revision 1.35  2008/08/26 19:42:09  villyc
-' add trap for negative cell weightings in importance layers
-'
-' Revision 1.34  2008/08/19 19:23:44  joeb
-' Quiting a search is quicker
-'
-' Revision 1.33  2008/08/19 17:07:38  joeb
-' Changed TotWeightedValueBase
-'
-' Revision 1.32  2008/08/18 17:49:39  joeb
-' Added WeightedTotal to Search data
-'
-' Revision 1.31  2008/08/17 16:55:22  joeb
-' MPA Optimization default data directory
-'
-' Revision 1.30  2008/08/15 22:07:07  joeb
-' Percentage in Results()
-'
-' Revision 1.29  2008/08/15 21:11:17  joeb
-' Changed RunStates to Initializing and Searching
-'
-' Revision 1.28  2008/08/15 17:31:55  joeb
-' Last commit was missing some code Oppsssss
-'
-' Revision 1.27  2008/08/15 16:47:43  joeb
-' Fixed Random not selecting cells if not importance layer(s)
-'
-' Revision 1.26  2008/08/14 18:07:05  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.25  2008/08/13 15:22:03  joeb
-' Removed dead code
-'
-' Revision 1.24  2008/08/11 21:10:20  joeb
-' *** empty log message ***
-'
-' Revision 1.23  2008/08/07 19:41:24  sherman
-' Exposed LayerImportance from the Core
-'
-' Revision 1.22  2008/08/07 18:17:34  sherman
-' Added Importance Layer to Ecospace Datastructures
-'
-' Revision 1.21  2008/08/06 22:35:14  villyc
-' small edits
-'
-' Revision 1.20  2008/08/06 21:13:43  villyc
-' Adding computations for 'importance layers' in random mpa
-'
-' Revision 1.19  2008/06/26 14:07:15  joeb
-' *** empty log message ***
-'
-' Revision 1.18  2008/06/26 05:56:51  villyc
-' Adding cost of sailing calculation, not tested yet
-'
-' Revision 1.17  2008/06/25 21:04:16  villyc
-' *** empty log message ***
-'
-' Revision 1.16  2008/06/25 20:25:24  joeb
-' Added results list
-'
-' Revision 1.15  2008/06/25 19:00:57  joeb
-' Sorting of results
-'
-' Revision 1.14  2008/06/25 18:25:00  villyc
-' Removing VC's wy of storing best runs
-'
-' Revision 1.13  2008/06/24 21:56:41  joeb
-' Added bUseCellWeight
-'
-' Revision 1.12  2008/06/24 00:44:13  villyc
-' VC random mpa top 1% implementation
-'
-' Revision 1.11  2008/06/23 16:39:08  villyc
-' VC updating mpa optim
-'
-' Revision 1.10  2008/06/20 21:27:13  joeb
-' Changing output for both Ecoseed and Random search
-'
-' Revision 1.9  2008/06/19 20:53:33  villyc
-' VC small fixes
-'
-' Revision 1.8  2008/06/19 18:05:12  joeb
-' Random search clears out old ecoseed results
-'
-' Revision 1.7  2008/06/19 16:52:33  joeb
-' File output
-' Added Cells(List of cMPACell)
-'
-' Revision 1.6  2008/06/18 18:41:26  villyc
-' fixed counting of cells
-'
 '==============================================================================
 
 Option Strict On
 Imports System.Math
+Imports EwEUtils.Core
 'VC hack:
 Imports System.IO
 
@@ -641,11 +551,11 @@ Public Class cMPARandomSearch
 
         Try
 
-            curSum = m_search.ValWeight(1) * m_search.totval / TotValBase + _
-                     m_search.ValWeight(2) * m_search.Employ / EmployBase + _
-                     m_search.ValWeight(3) * m_search.manvalue / ManValueBase + _
-                     m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase + _
-                     m_search.ValWeight(5) * m_search.KemptonQ / KemptonsBase
+            curSum = m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase + _
+                     m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
+                     m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
+                     m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
+                     m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / KemptonsBase
 
 
             'Calculate boundary length/area ratio
@@ -892,9 +802,12 @@ Public Class cMPARandomSearch
         If AreaBoundBase = 0 Then AreaBoundBase = 1
         If KemptonsBase = 0 Then KemptonsBase = 1
 
-        TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                        m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
-                        m_search.ValWeight(5) * KemptonsBase + m_data.BoundaryWeight * AreaBoundBase
+        TotWeightedValueBase = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotValBase + _
+                        m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployBase + _
+                        m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValueBase + _
+                        m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValueBase + _
+                        m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * KemptonsBase + _
+                        m_data.BoundaryWeight * AreaBoundBase
 
     End Sub
 
@@ -1124,7 +1037,12 @@ Public Class cMPARandomSearch
         sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")
 
         sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
-                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_search.ValWeight(5), m_data.BoundaryWeight))
+                m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue), _
+                m_search.ValWeight(eSearchCriteriaResultTypes.Employment), _
+                m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb), _
+                m_search.ValWeight(eSearchCriteriaResultTypes.Ecological), _
+                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity), _
+                m_data.BoundaryWeight))
 
         sb.AppendLine("<Base Values>")
         sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")

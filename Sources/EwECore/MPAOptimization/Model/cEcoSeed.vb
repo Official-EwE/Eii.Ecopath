@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSeed.vb,v $
+' Revision 1.11  2009/04/02 20:54:35  jeroens
+' Uses eSearchResultCriteriaTypes
+'
 ' Revision 1.10  2008/11/18 21:23:14  villyc
 ' spatial optim seems to be working now, just a few interface troubles left
 '
@@ -37,6 +40,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwECore.cEcoSpace
+Imports EwEUtils.Core
 
 Namespace EcoSeed
 
@@ -413,11 +417,11 @@ Namespace EcoSeed
                             m_EcoSpace.Run()
                             If m_data.StopRun Then Exit Do
 
-                            CurSum = 0 + m_search.ValWeight(1) * m_search.totval / TotValBase + _
-                            m_search.ValWeight(2) * m_search.Employ / EmployBase + _
-                            m_search.ValWeight(3) * m_search.manvalue / ManValueBase + _
-                            m_search.ValWeight(4) * m_search.ecovalue / EcoValueBase + _
-                             m_search.ValWeight(5) * m_search.KemptonQ / BioDiversityBase
+                            CurSum = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase + _
+                                m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
+                                m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
+                                m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
+                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / BioDiversityBase
 
                             'Calculate boundary length/area ratio
                             AreaBordary = CalculateAreaOverBondaryLength()
@@ -986,9 +990,12 @@ Namespace EcoSeed
             If EcoValueBase = 0 Then EcoValueBase = 1
             If BioDiversityBase = 0 Then BioDiversityBase = 1
 
-            TotWeightedValueBase = 0 + m_search.ValWeight(1) * TotValBase + m_search.ValWeight(2) * EmployBase + _
-                                    m_search.ValWeight(3) * ManValueBase + m_search.ValWeight(4) * EcoValueBase + _
-                                    m_search.ValWeight(5) * BioDiversityBase + m_data.BoundaryWeight * areaBoundBase
+            TotWeightedValueBase = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotValBase + _
+                                    m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployBase + _
+                                    m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValueBase + _
+                                    m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValueBase + _
+                                    m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * BioDiversityBase + _
+                                    m_data.BoundaryWeight * areaBoundBase
 
             '   System.Console.WriteLine("EcoSeed weighted base value = " & TotWeightedValueBase.ToString)
 
@@ -1053,17 +1060,20 @@ Namespace EcoSeed
             sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
 
             sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
-                    m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_search.ValWeight(5), m_data.BoundaryWeight))
+                    m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue), _
+                    m_search.ValWeight(eSearchCriteriaResultTypes.Employment), _
+                    m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb), _
+                    m_search.ValWeight(eSearchCriteriaResultTypes.Ecological), _
+                    m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity), _
+                    m_data.BoundaryWeight))
 
             sb.AppendLine("<Base Values>")
             sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
             sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
                     TotValBase, EmployBase, ManValueBase, EcoValueBase, BioDiversityBase, areaBoundBase))
 
-
             sb.AppendLine("<Data Format>")
             sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
-
 
             'this will create a new file each time
             cLog.WriteTextToFile(Me.m_filename, sb, False)

@@ -1,4 +1,13 @@
+'==============================================================================
+'
+' $Log: cSearchDatastructures.vb,v $
+' Revision 1.20  2009/04/02 20:54:39  jeroens
+' Uses eSearchResultCriteriaTypes
+'
+'==============================================================================
+
 Option Strict On
+Imports EwEUtils.Core
 Imports EwECore.Ecosim
 
 Public Enum eSearchModes
@@ -17,6 +26,8 @@ End Enum
 Public Class cSearchDatastructures
 
 #Region "Public data"
+
+    Public Shared N_CRIT_RESULTS As Integer = [Enum].GetValues(GetType(eSearchCriteriaResultTypes)).Length
 
     '''' <summary>
     '''' Turn the Fishing Policy Search On or Off.
@@ -90,7 +101,7 @@ Public Class cSearchDatastructures
     Public ParNumber() As Integer
     Public BlockNumber() As Integer 'Number of a FblockCode() see setFletchPars()
     Public FcodeIsSet As Boolean, LastTotalTime As Integer
-    Public ValWeight(5) As Single, Jobs() As Single
+    Public ValWeight(N_CRIT_RESULTS) As Single, Jobs() As Single
 
     ''' <summary>Structure rel weight </summary>
     Public BGoalValue() As Single
@@ -297,13 +308,11 @@ Public Class cSearchDatastructures
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
-            Dim tot As Single
-            tot = Me.ValWeight(1) * Me.totval + _
-                Me.ValWeight(2) * Me.Employ + _
-                Me.ValWeight(3) * Me.manvalue + _
-                Me.ValWeight(4) * Me.ecovalue + _
-                Me.ValWeight(5) * Me.KemptonQ
-            Return tot
+            Return Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval + _
+                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ + _
+                Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue + _
+                Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue + _
+                Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.KemptonQ
         End Get
     End Property
 

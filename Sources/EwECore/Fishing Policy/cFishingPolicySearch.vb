@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.13  2009/04/02 20:54:37  jeroens
+' Uses eSearchResultCriteriaTypes
+'
 ' Revision 1.12  2009/04/02 17:53:53  jeroens
 ' Uses all generic search plug-in points
 '
@@ -81,7 +84,6 @@ Namespace FishingPolicy
 
         'ToDo_jb cFishingPolicySearch What is the message from EwE5 in UseCostPenalty() should this change the InitOption if it fails the test
 
-        Public Const N_CRIT_RESULTS As Integer = 5
 
 #Region "Public variables"
 
@@ -119,7 +121,7 @@ Namespace FishingPolicy
 
 
         Private Resline As Integer
-        Private CritValue(N_CRIT_RESULTS) As Single
+        Private CritValue(cSearchDatastructures.N_CRIT_RESULTS) As Single
         'Dim X() As Double
         Private G() As Double, Xm() As Double ', Nam$(Nmax)
         Private H() As Single, W() As Double    'was 1000 when nmax was 100
@@ -392,6 +394,7 @@ Namespace FishingPolicy
             End Try
 
         End Sub
+
         Sub printstats(ByVal Xtime As Double, ByVal itn As Integer, ByVal ifn As Integer, ByVal F As Double, ByVal n As Integer, ByVal X() As Double, ByVal G() As Double)
 
             Try
@@ -408,6 +411,14 @@ Namespace FishingPolicy
                 Next
 
                 Dim WeightCorrection As Single
+
+                '' JS 02apr09: should this be made dynamic? Now, ValWeight(5) is ignored
+                'Dim sWeight = 0
+                'For iWeight As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
+                '    sWeight += m_searchData.ValWeight(iWeight)
+                'Next
+                'If (sWeight > 0) Then WeightCorrection = sWeight
+
                 If m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4) > 0 Then
                     WeightCorrection = m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4)
                 End If
@@ -415,7 +426,7 @@ Namespace FishingPolicy
 
                 Results.Totals = (-F + VlocalPenalty) / WeightCorrection
 
-                For icrit As Integer = 1 To N_CRIT_RESULTS
+                For icrit As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
                     Results.CriteriaValues(icrit) = CritValue(icrit)
                 Next
 
@@ -426,7 +437,7 @@ Namespace FishingPolicy
 #If DEBUG Then
                 'debuging output
                 System.Console.WriteLine("FPS iterations: " & Results.nCalls.ToString)
-                For icr As Integer = 1 To 5
+                For icr As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
                     System.Console.Write(Results.CriteriaValues(icr).ToString & ", ")
                 Next
 
@@ -1117,17 +1128,17 @@ endline:    ' '
                     VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(1) = m_searchData.totval / TotValBase
-                If EmployBase <> 0 Then CritValue(2) = m_searchData.Employ / EmployBase
-                If ManValueBase <> 0 Then CritValue(3) = m_searchData.manvalue / ManValueBase
-                If EcoValueBase <> 0 Then CritValue(4) = m_searchData.ecovalue / EcoValueBase
-                If BioDivBase <> 0 Then CritValue(5) = m_searchData.KemptonQ / BioDivBase
+                If TotValBase <> 0 Then CritValue(eSearchCriteriaResultTypes.TotalValue) = m_searchData.totval / TotValBase
+                If EmployBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Employment) = m_searchData.Employ / EmployBase
+                If ManValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.MandateReb) = m_searchData.manvalue / ManValueBase
+                If EcoValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Ecological) = m_searchData.ecovalue / EcoValueBase
+                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = m_searchData.KemptonQ / BioDivBase
 
-                returnvalue = VlocalPenalty - m_searchData.ValWeight(1) * m_searchData.totval / TotValBase - _
-                        m_searchData.ValWeight(2) * m_searchData.Employ / EmployBase - _
-                        m_searchData.ValWeight(3) * m_searchData.manvalue / ManValueBase - _
-                        m_searchData.ValWeight(4) * m_searchData.ecovalue / EcoValueBase - _
-                        m_searchData.ValWeight(5) * m_searchData.KemptonQ / BioDivBase
+                returnvalue = VlocalPenalty - m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_searchData.totval / TotValBase - _
+                        m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Employ / EmployBase - _
+                        m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_searchData.manvalue / ManValueBase - _
+                        m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_searchData.ecovalue / EcoValueBase - _
+                        m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_searchData.KemptonQ / BioDivBase
 
                 If m_searchData.MinimizeEffortChange Then
                     If returnvalue < 0 Then
@@ -1147,7 +1158,9 @@ endline:    ' '
                     Else
                         LogUtil = Math.Log(0.5) + 1 / 0.5 * (CritValue(1) + 1 - 0.5) - 1 / 0.25 * (CritValue(1) + 1 - 0.5) ^ 2
                     End If
-                    returnvalue = -m_searchData.ValWeight(1) * LogUtil + m_searchData.ValWeight(2) * m_searchData.Ecodistance - m_searchData.ValWeight(3) * ExistValue
+                    returnvalue = -m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil + _
+                                   m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Ecodistance - _
+                                   m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ExistValue
                 End If
 
                 'System.Console.WriteLine("FUNC=" & returnvalue.ToString)
@@ -1740,7 +1753,7 @@ Next
         Public BlockResults() As Single
         Public BlockNumber() As Integer
 
-        Public CriteriaValues(5) As Single
+        Public CriteriaValues(cSearchDatastructures.N_CRIT_RESULTS) As Single
         Public Totals As Single
         Public nCalls As Integer
 
