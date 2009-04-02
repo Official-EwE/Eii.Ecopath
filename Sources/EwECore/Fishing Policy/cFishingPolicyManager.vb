@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.6  2009/04/02 16:18:41  jeroens
+' Strict on
+'
 ' Revision 1.5  2009/01/31 00:57:42  joeb
 ' Added Plugin points to FPS
 '
@@ -134,7 +137,7 @@
 '==============================================================================
 
 
-
+Option Strict On
 Imports EwECore.Ecosim
 Imports System.Threading
 Imports EwECore.SearchObjectives
@@ -167,6 +170,7 @@ Namespace FishingPolicy
         Private m_ProgressDelegate As ProgressDelegate
         Private m_StartRunDelegate As RunStartedDelegate
 
+        'Private m_PluginManager As c
         Private Delegate Sub CallingThreadDelegate()
 
 #End Region
@@ -337,7 +341,7 @@ Namespace FishingPolicy
 
             coreData.PortFolio = Me.m_parameters.MaxPortUtil
 
-            coreData.nInterations = m_parameters.MaxNumEval
+            coreData.nInterations = CInt(m_parameters.MaxNumEval)
             coreData.nRuns = m_parameters.nRuns
 
 
@@ -513,7 +517,7 @@ Namespace FishingPolicy
         ''' Count of the current search run
         ''' </summary>
         ''' <remarks>if isRunning = True then iRun will be the count of the current run out of ModelParameters.nRuns</remarks>
-        Public ReadOnly Property iRun() As Boolean
+        Public ReadOnly Property iRun() As Integer
             Get
                 Return Me.m_FPsearch.iRun
             End Get
