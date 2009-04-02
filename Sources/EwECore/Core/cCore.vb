@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.109  2009/04/02 14:30:22  jeroens
+' group input, output loading of PSD variables must be part of regular group loading logic
+'
 ' Revision 1.108  2009/04/02 01:47:42  joeh
 ' Pass GroupSelected boolean array to cCore.RunPSD and psdModel.Run
 '
@@ -2306,11 +2309,6 @@ Public Class cCore
                 'populate output objects
                 bsuccess = bsuccess And LoadEcopathOutputs()
 
-                'JoeH
-                bsuccess = bsuccess And LoadPSDInputs()
-                bsuccess = bsuccess And LoadPSDOutputs()
-                'End Joeh
-
                 'build the fleets
                 bsuccess = bsuccess And InitFleets()
 
@@ -2546,24 +2544,6 @@ Public Class cCore
 
     End Function
 
-    'Joeh
-    Friend Function LoadPSDInputs() As Boolean
-        Try
-
-            For Each Input As cEcoPathGroupInput In m_EcoPathInputs
-                Me.LoadPSDInput(Input)
-            Next
-
-            Return True
-        Catch ex As Exception
-            'ToDo_jb LoadEcopathInputs some kind of error handling
-            Debug.Assert(False, ex.Message)
-            Return False
-        End Try
-
-    End Function
-    'End Joeh
-
     Private Function LoadEcopathInput(ByVal Input As cEcoPathGroupInput) As Boolean
         Dim iGroup As Integer
         Try
@@ -2623,40 +2603,7 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.iStanza = getStanzaIDForGroup(iGroup)
 
-                'set all the status flags to default value
-                Input.ResetStatusFlags()
-
-                Input.AllowValidation = True
-            Else
-                Debug.Assert(False)
-            End If
-
-            Return True
-        Catch ex As Exception
-            'ToDo_jb LoadEcopathInputs some kind of error handling
-            Debug.Assert(False, ex.Message)
-            Return False
-        End Try
-
-    End Function
-
-    'Joeh
-    Private Function LoadPSDInput(ByVal Input As cEcoPathGroupInput) As Boolean
-        Dim iGroup As Integer
-        Try
-
-            'do not run the data validation when the object is populated
-            Input.AllowValidation = False
-
-            'convert the Database ID into an iGroup
-            iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, Input.DBID)
-
-            If iGroup >= 0 And iGroup <= m_EcoPathData.NumGroups Then
-
-                Input.Resize()
-
-                Input.Index = iGroup
-              
+                ' === PSD ===
                 Input.Tcatch = m_PSDData.Tcatch(iGroup)
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
@@ -2665,6 +2612,7 @@ Public Class cCore
                 Input.t0Input = m_PSDData.t0Input(iGroup)
                 Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
                 Input.PSDIncluded = m_PSDData.Include(iGroup)
+                ' === END PSD ===
 
                 'set all the status flags to default value
                 Input.ResetStatusFlags()
@@ -2682,7 +2630,6 @@ Public Class cCore
         End Try
 
     End Function
-    'End Joeh
 
     ''' <summary>
     ''' Update the underlying Ecopath Data with the values in EcoPath inputs list
@@ -2809,7 +2756,12 @@ Public Class cCore
         Dim Hlap() As Single
         Dim Plap() As Single
         Dim Alpha() As Single
-        
+        Dim EcopathWeight() As Single
+        Dim EcopathNumber() As Single
+        Dim EcopathBiomass() As Single
+        Dim LorenzenMortality() As Single
+        Dim PSD() As Single
+
         Dim convalue As Single
         Dim iGroup As Integer
 
@@ -2965,58 +2917,12 @@ Public Class cCore
 
                 output.iStanza = getStanzaIDForGroup(iGroup)
 
-                output.m_bReadOnly = True
-                output.ResetStatusFlags()
-            Next
-
-            Return True
-
-        Catch ex As Exception
-
-            cLog.Write(ex)
-            Return False
-
-        End Try
-
-    End Function
-
-    'Joeh
-    Private Function LoadPSDOutputs() As Boolean
-        Dim EcopathWeight() As Single
-        Dim EcopathNumber() As Single
-        Dim EcopathBiomass() As Single
-        Dim LorenzenMortality() As Single
-
-        Dim PSD() As Single
-        Dim iGroup As Integer
-
-        Try
-
-            For Each output As cEcoPathGroupOutput In m_EcoPathOutputs
-                'convert the DBID into an iGroup
-                iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, output.DBID)
-
-                'set the size of any array data
-                output.Resize()
-
-                'iGroup out of bounds
-                If (iGroup > nGroups Or iGroup < 0) And iGroup <> NULL_VALUE Then
-                    cLog.Write(Me.ToString & ".PopulateEcoPathOutput() iGroup out of bounds.")
-                    'ToDo LoadEcopathOutputs() failed to find iGroup do something better than exiting
-                    Return False
-                End If
-
-                'set output readonly to false so the values can be set
-                output.m_bReadOnly = False
-
-                output.Index = iGroup
-
+                ' === PSD ===
 
                 ReDim EcopathWeight(nAgeSteps)
                 ReDim EcopathNumber(nAgeSteps)
                 ReDim EcopathBiomass(nAgeSteps)
                 ReDim LorenzenMortality(nAgeSteps)
-
                 ReDim PSD(nWeightClasses)
 
                 output.VBK = CSng(m_EcoPathData.vbK(iGroup))
@@ -3065,6 +2971,8 @@ Public Class cCore
                 Next
                 output.PSD = PSD
 
+                ' === END PSD ===
+
                 output.m_bReadOnly = True
                 output.ResetStatusFlags()
             Next
@@ -3077,6 +2985,7 @@ Public Class cCore
             Return False
 
         End Try
+
     End Function
     'End Joeh
 #End Region ' Groups
@@ -3568,7 +3477,7 @@ Public Class cCore
         'Is Run successful?
         If m_psdModel.Run(bGroupSelected) Then
             'Yes: reload the output list with the new outputs from PSD model
-            LoadPSDOutputs()
+            LoadEcopathOutputs()
         Else
             'No: send error messages
             msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
@@ -3578,20 +3487,6 @@ Public Class cCore
 
     End Sub
     'End Joeh
-
-    ' JS 25nov08: disabled, this screwed up the Ecopath output object statuses
-    'Private Sub ClearOutputFlags()
-    '    'Dim input As cEcoPathGroupInputs
-    '    Dim output As cEcoPathGroupOutput
-
-    '    'For Each input In m_EcoPathInputs
-    '    '    input.ResetStatusFlags()
-    '    'Next input
-
-    '    For Each output In m_EcoPathOutputs
-    '        output.ResetStatusFlags(True)
-    '    Next output
-    'End Sub
 
     ''' <summary>
     ''' Take a cMessage object generated by EcoPath and set any flags in the input or output 
