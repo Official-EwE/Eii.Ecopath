@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.7  2009/04/02 15:53:36  jeroens
+' Added PSD enabled, group included
+'
 ' Revision 1.6  2009/03/31 21:36:14  joeh
 ' Move all PSD computation routines to a new class cPSDModel
 '
@@ -50,6 +53,12 @@ Public Class cPSDParameters
             'no data validation at this time
             Me.AllowValidation = False
 
+            'PSDEnabled
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             'PSDNumWeightClasses
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0)
             val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDNumWeightClasses))
@@ -75,6 +84,13 @@ Public Class cPSDParameters
             val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumPtsMovAvg))
             m_values.Add(val.varName, val)
 
+            ' == ARRAY VARS ==
+            'PSDIncluded
+            meta = New cVariableMetaData()
+            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -89,6 +105,21 @@ Public Class cPSDParameters
 #End Region
 
 #Region "Variables via dot (.) operator"
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the PSD model is enabled in EwE.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property PSDEnabled() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.PSDEnabled))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.PSDEnabled, value)
+        End Set
+    End Property
 
     Public Property MortalityType() As ePSDMortalityTypes
         Get
@@ -137,6 +168,22 @@ Public Class cPSDParameters
 
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.NumPtsMovAvg, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a given group is included in the PSD analysis.
+    ''' </summary>
+    ''' <param name="iGroup">Index of the group.</param>
+    ''' -----------------------------------------------------------------------
+    Public Property GroupIncluded(ByVal iGroup As Integer) As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.PSDIncluded, iGroup))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.PSDIncluded, value, iGroup)
         End Set
     End Property
 
