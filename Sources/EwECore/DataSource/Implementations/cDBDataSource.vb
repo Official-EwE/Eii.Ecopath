@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.40  2009/04/02 18:50:26  jeroens
+' PSD not saved for now
+'
 ' Revision 1.39  2009/03/31 21:34:23  joeh
 ' Remove LatNWCorner and LatSECorner. Add ClimateType
 '
@@ -691,7 +694,7 @@ Public Class cDBDataSource
         bSucces = Me.SaveModelInfo()
         bSucces = bSucces And Me.SaveGroupInfo()
         bSucces = bSucces And Me.SaveFleetInfo()
-        bSucces = bSucces And Me.SaveParticleSizeDistribution()
+        'bSucces = bSucces And Me.SaveParticleSizeDistribution()
         bSucces = bSucces And Me.SaveAuxillaryData()
         bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
         bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
