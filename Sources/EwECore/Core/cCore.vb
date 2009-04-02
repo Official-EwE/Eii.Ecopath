@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.112  2009/04/02 17:54:43  jeroens
+' Does no longer call generic search init plug-in point; this will be the responsibility of search managers
+'
 ' Revision 1.111  2009/04/02 16:40:35  jeroens
 ' PSD enabled correctly passed around
 '
@@ -10636,11 +10639,6 @@ Public Class cCore
         If Not Me.m_SearchManagers.ContainsKey(eDataTypes.FitToTimeSeries) Then
             SearchManager = New cF2TSManager(Me)
             Me.m_SearchManagers.Add(eDataTypes.FitToTimeSeries, SearchManager)
-        End If
-
-        ' Fire plug-in point
-        If Me.m_pluginManager IsNot Nothing Then
-            Me.m_pluginManager.SearchInitialized(Me.m_SearchData)
         End If
 
     End Sub
