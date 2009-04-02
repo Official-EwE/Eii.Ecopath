@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.41  2009/04/02 18:53:14  jeroens
+' Ok, just disabled climate type saving until a DB update is available
+'
 ' Revision 1.40  2009/04/02 18:50:26  jeroens
 ' PSD not saved for now
 '
@@ -694,7 +697,7 @@ Public Class cDBDataSource
         bSucces = Me.SaveModelInfo()
         bSucces = bSucces And Me.SaveGroupInfo()
         bSucces = bSucces And Me.SaveFleetInfo()
-        'bSucces = bSucces And Me.SaveParticleSizeDistribution()
+        bSucces = bSucces And Me.SaveParticleSizeDistribution()
         bSucces = bSucces And Me.SaveAuxillaryData()
         bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
         bSucces = bSucces And Me.SaveEcospaceScenarioDefinitions()
@@ -1331,7 +1334,7 @@ Public Class cDBDataSource
             drow("MortalityType") = psdDS.MortalityType
             drow("NumWeightClasses") = psdDS.NWeightClasses
             drow("FirstWeightClass") = psdDS.FirstWeightClass
-            drow("ClimateType") = psdDS.ClimateType
+            'drow("ClimateType") = psdDS.ClimateType
 
             If bNewRow Then
                 writer.AddRow(drow)
