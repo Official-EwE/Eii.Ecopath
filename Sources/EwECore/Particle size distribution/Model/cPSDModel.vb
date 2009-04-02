@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.9  2009/04/02 16:21:55  jeroens
+' Group included flags obtained from PSD parameters
+'
 ' Revision 1.8  2009/04/02 14:42:24  jeroens
 ' Missing params message includes VariableStatuses
 '
@@ -41,7 +44,11 @@ Public Class cPSDModel
 
 #Region "Public methods"
 
-    Public Function Run(ByVal bGroupSelected() As Boolean) As Boolean
+    Public Function Run() As Boolean
+
+        ' Sanity check
+        If Not Me.m_psd.Enabled Then Return False
+
         'Is there any missing input
         If CheckMissingInputParameters() Then
             'Yes: return failure
@@ -49,9 +56,9 @@ Public Class cPSDModel
         Else
             'No: do estimattion and return success
             EstimateGrowthParameters()
-            EstimatePSD(bGroupSelected)
-            EstimateSizeWeight(bGroupSelected)
-            If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg(bGroupSelected)
+            EstimatePSD()
+            EstimateSizeWeight()
+            If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
             Return True
         End If
     End Function
@@ -200,7 +207,7 @@ Public Class cPSDModel
         Next
     End Sub
 
-    Private Sub EstimatePSD(ByVal bGroupSelected() As Boolean)
+    Private Sub EstimatePSD()
         Dim sTime As Single
 
         Dim WeightClass() As Single
@@ -214,7 +221,7 @@ Public Class cPSDModel
         ReDim Me.m_psd.PSD(m_Data.NumGroups, Me.m_psd.NWeightClasses)
 
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then
+            If Me.m_psd.Include(iGroup) Then
                 '(I) Estimate Weight, Number ad Biomass over time
                 For iTimeStep As Integer = 1 To Me.m_psd.NAgeSteps
                     sTime = (iTimeStep - 1) * Me.m_psd.Tmax(iGroup) / (Me.m_psd.NAgeSteps - 1)
@@ -332,13 +339,13 @@ Public Class cPSDModel
         Next
     End Sub
 
-    Private Sub EstimatePSDMovAvg(ByVal bGroupSelected() As Boolean)
+    Private Sub EstimatePSDMovAvg()
         Dim sSystemPSD(m_psd.NWeightClasses) As Single
         Dim sTempPSD(m_psd.NWeightClasses) As Single
         Dim iUpperLimit As Integer
         Dim iPoints As Integer
 
-        CalcSystemPSD(bGroupSelected, sSystemPSD)
+        CalcSystemPSD(sSystemPSD)
 
         For i As Integer = 1 To m_psd.NWeightClasses
             sTempPSD(i) = sSystemPSD(i)
@@ -366,7 +373,7 @@ Public Class cPSDModel
         Next
     End Sub
 
-    Private Sub EstimateSizeWeight(ByVal bGroupSelected() As Boolean)
+    Private Sub EstimateSizeWeight()
         Dim AvgWeight() As Single
         Dim AvgNumber() As Single
         Dim Used() As Boolean
@@ -380,7 +387,7 @@ Public Class cPSDModel
         ReDim Used(m_Data.NumLiving)
 
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then
+            If Me.m_psd.Include(iGroup) Then
                 AvgWeight(iGroup) = CalcAvgWeight(iGroup)
                 AvgNumber(iGroup) = CalcAvgNumber(iGroup)
             End If
@@ -388,10 +395,10 @@ Public Class cPSDModel
 
         'For Biomass/(AvgWeight/AvgNumber)
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then
+            If Me.m_psd.Include(iGroup) Then
                 Max = -1
                 For iGrp As Integer = 1 To m_Data.NumLiving
-                    If bGroupSelected(iGrp) Then
+                    If Me.m_psd.Include(iGrp) Then
                         If AvgNumber(iGrp) > 0 Then
                             If m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp)) > Max And Used(iGrp) = False Then
                                 Max = m_Data.B(iGrp) / (AvgWeight(iGrp) / AvgNumber(iGrp))
@@ -410,10 +417,10 @@ Public Class cPSDModel
         'Now for biomass
         ReDim Used(m_Data.NumLiving)
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then
+            If Me.m_psd.Include(iGroup) Then
                 Max = -1
                 For iGrp As Integer = 1 To m_Data.NumLiving
-                    If bGroupSelected(iGrp) Then
+                    If Me.m_psd.Include(iGrp) Then
                         If m_Data.B(iGrp) > Max And Used(iGrp) = False Then
                             Max = m_Data.B(iGrp)
                             Biggest = iGrp
@@ -428,14 +435,14 @@ Public Class cPSDModel
         Next
 
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then 'might not work
+            If Me.m_psd.Include(iGroup) Then 'might not work
                 m_psd.BiomassAvgSzWt(iGroup) = m_psd.BiomassAvgSzWt(iGroup - 1) + m_psd.BiomassAvgSzWt(iGroup)
                 m_psd.BiomassSzWt(iGroup) = m_psd.BiomassSzWt(iGroup - 1) + m_psd.BiomassSzWt(iGroup)
             End If
         Next
 
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then 'might not work
+            If Me.m_psd.Include(iGroup) Then 'might not work
                 m_psd.BiomassAvgSzWt(iGroup) = 100 * m_psd.BiomassAvgSzWt(iGroup) / Sum1
                 m_psd.BiomassSzWt(iGroup) = 100 * m_psd.BiomassSzWt(iGroup) / Sum2
             End If
@@ -594,9 +601,9 @@ Public Class cPSDModel
         Return Recr(iGroup) * (P1 / (m_Data.PB(iGroup) - m_Data.fCatch(iGroup) / m_Data.B(iGroup)) + P2 / P3)
     End Function
 
-    Private Sub CalcSystemPSD(ByVal bGroupSelected() As Boolean, ByVal sSystemPSD() As Single)
+    Private Sub CalcSystemPSD(ByVal sSystemPSD() As Single)
         For iGroup As Integer = 1 To m_Data.NumLiving
-            If bGroupSelected(iGroup) Then
+            If Me.m_psd.Include(iGroup) Then
                 For iWtClass As Integer = 1 To m_psd.NWeightClasses
                     sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + m_psd.PSD(iGroup, iWtClass)
                 Next
