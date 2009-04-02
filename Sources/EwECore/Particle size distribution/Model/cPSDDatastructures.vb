@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.9  2009/04/02 21:50:35  sherman
+' Changed PSD back to False
+'
 ' Revision 1.8  2009/04/02 19:52:03  joeh
 ' Change the Enabled boolean to True
 '
@@ -37,7 +40,7 @@ Imports EwEUtils.Core
 Public Class cPSDDatastructures
 
     ''' <summary>States whether PSD model is enabled.</summary>
-    Public Enabled As Boolean = True
+    Public Enabled As Boolean = False
 
     ''' <summary>Total number of groups (living and detritus)</summary>
     Public NumGroups As Integer
