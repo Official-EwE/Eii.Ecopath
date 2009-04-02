@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.10  2009/04/02 22:08:01  joeh
+' Age1 is no longer divided by 12 for the internal PSD build. Might fall back after Daniel and Villy testing
+'
 ' Revision 1.9  2009/04/02 16:21:55  jeroens
 ' Group included flags obtained from PSD parameters
 '
@@ -457,7 +460,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CSng(m_stanza.Age1(isp, ist) / 12)
+                            Return CSng(m_stanza.Age1(isp, ist)) ' / 12)
                         Else
                             Return 0
                         End If
@@ -478,7 +481,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / 12))
+                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist))) '/ 12))
                         Else
                             Return 0
                         End If
