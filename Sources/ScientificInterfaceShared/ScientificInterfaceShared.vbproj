@@ -265,8 +265,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Properties\cFormulaProperty.vb" />
+    <Compile Include="Properties\cStringProperty.vb" />
+    <Compile Include="Properties\cBooleanProperty.vb" />
+    <Compile Include="Properties\cIntegerProperty.vb" />
+    <Compile Include="Properties\cSingleProperty.vb" />
     <Compile Include="Properties\cProperty.vb" />
     <Compile Include="Properties\cPropertyManager.vb" />
+    <Compile Include="Properties\Formula expressions\cExpression.vb" />
+    <Compile Include="Properties\Formula expressions\cStaticOperand.vb" />
+    <Compile Include="Properties\Formula expressions\cPropertyOperand.vb" />
+    <Compile Include="Properties\Formula expressions\cUnaryOperation.vb" />
+    <Compile Include="Properties\Formula expressions\cBinaryOperation.vb" />
+    <Compile Include="Properties\Formula expressions\cMultiOperation.vb" />
+    <Compile Include="Properties\Formula expressions\cBooleanOperand.vb" />
+    <Compile Include="Properties\Formula expressions\cConditionalOperation.vb" />
     <Compile Include="Properties\PropertySelectionCommand.vb" />
     <Compile Include="Settings\cFormPositionSetting.vb" />
     <Compile Include="Settings\cEwESettingsProvider.vb" />
@@ -372,6 +384,8 @@
     <None Include="Controls\EwEGrid\_Visualizers_.cd" />
     <None Include="Controls\EwEGrid\_Cells_.cd" />
     <None Include="Controls\EwEGrid\_Grid_.cd" />
+    <None Include="Properties\Formula expressions\_expressions overview_.cd" />
+    <None Include="Properties\_properties overview_.cd" />
     <None Include="Resources\OptionsHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
