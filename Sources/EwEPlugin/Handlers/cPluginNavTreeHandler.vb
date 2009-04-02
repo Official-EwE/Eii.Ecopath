@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginNavTreeHandler.vb,v $
+' Revision 1.6  2009/04/02 20:52:01  jeroens
+' No comment. Really
+'
 ' Revision 1.5  2009/04/02 18:54:46  jeroens
 ' Minor changes
 '
@@ -66,7 +69,7 @@ Public Class cPluginNavTreeHandler
     ''' <summary>
     ''' Place or remove a plug-in tree item.
     ''' </summary>
-    ''' <param name="p_ip">The <see cref="INavigationTreeItemPlugin">INavigationTreeItemPlugin</see> to place.</param>
+    ''' <param name="ip">The <see cref="INavigationTreeItemPlugin">INavigationTreeItemPlugin</see> to place.</param>
     ''' <param name="bPlace">States whether the tree item should be placed (True)
     ''' or removed (False).</param>
     ''' -----------------------------------------------------------------------
