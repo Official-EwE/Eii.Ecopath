@@ -130,7 +130,7 @@ Public Class cSearchDatastructures
     Public Employ As Single
     Public manvalue As Single
     Public ecovalue As Single
-
+    Public profit As Single
 
     ''' <summary>Value of Catch</summary>
     ''' <remarks>By (fleet, livingGroup)
@@ -734,6 +734,7 @@ Public Class cSearchDatastructures
         ExistValue = 0
         ecovalue = 0
         totval = 0
+        profit = 0
         Employ = 0
         manvalue = 0
         KemptonQ = 0
@@ -1034,6 +1035,7 @@ Public Class cSearchDatastructures
 
         totval = 0
         Employ = 0
+        profit = 0
 
         KemptonQ = KemptonQ / ModelRunLength
 
