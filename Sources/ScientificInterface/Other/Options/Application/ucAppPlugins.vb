@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.10  2009/04/02 19:15:15  jeroens
+' Shows plug-in icons again
+'
 ' Revision 1.9  2009/04/01 20:24:49  jeroens
 ' Show any plug-in conflict, not only run incompatibilities
 '
@@ -87,25 +90,6 @@ Namespace Other
 
         End Class
 
-        'Private Class cPluginInfo
-
-        '    Private m_pi As IPlugin = Nothing
-        '    Private m_iImageIndex As Integer = cIMAGE_ENABLED
-
-        '    Public Sub New(ByVal pi As IPlugin)
-        '        Me.m_pi = pi
-        '    End Sub
-
-        '    Public Property ImageIndex() As Integer
-        '        Get
-        '            Return Me.m_iImageIndex
-        '        End Get
-        '        Set(ByVal iIndex As Integer)
-        '            Me.m_iImageIndex = iIndex
-        '        End Set
-        '    End Property
-        'End Class
-
 #End Region ' Helper classes
 
 #Region " Private variables "
@@ -114,7 +98,6 @@ Namespace Other
         Private m_pm As cPluginManager = Nothing
         ''' <summary></summary>
         Private m_dictPluginAssemblyInfo As New Dictionary(Of cPluginAssembly, cPluginAssemblyInfo)
-        'Private m_dictPluginInfo As New Dictionary(Of IPlugin, cPluginInfo)
 
 #End Region ' Private variables
 
@@ -151,7 +134,6 @@ Namespace Other
             Dim tnPA As TreeNode = Nothing
             Dim p As IPlugin = Nothing
             Dim tnP As TreeNode = Nothing
-            'Dim infoPI As cPluginInfo = Nothing
 
             Me.m_pm = cCore.GetInstance().PluginManager
 
@@ -167,26 +149,22 @@ Namespace Other
                 AddHandler pa.AssemblyEnabled, AddressOf OnHandlePluginAssemblyEnabled
                 Me.m_dictPluginAssemblyInfo(pa) = New cPluginAssemblyInfo(pa)
 
-                For Each p In pa.Plugins
+                For Each p In pa.Plugins(Nothing, True)
                     tnP = New TreeNode(p.Name)
                     tnP.Tag = p
 
-                    'infoPI = New cPluginInfo(p)
-
-                    '' Determine image
-                    'If (TypeOf p Is IGUIPlugin) Then
-                    '    Dim pui As IGUIPlugin = DirectCast(p, IGUIPlugin)
-                    '    If pui.ControlImage IsNot Nothing Then
-                    '        infoPI.ImageIndex = Me.m_ilPlugins.Images.Count
-                    '        Me.m_ilPlugins.Images.Add(pui.ControlImage)
-                    '    Else
-                    '        infoPI.ImageIndex = cIMAGE_ENABLED
-                    '    End If
-                    'End If
-
-                    tnP.ImageIndex = Me.GetPluginAssemblyImageIndex(pa)
-                    tnP.SelectedImageIndex = Me.GetPluginAssemblyImageIndex(pa)
-                    'Me.m_dictPluginInfo(p) = p
+                    ' Determine (static) image
+                    If (TypeOf p Is IGUIPlugin) Then
+                        Dim pui As IGUIPlugin = DirectCast(p, IGUIPlugin)
+                        If pui.ControlImage IsNot Nothing Then
+                            tnP.ImageIndex = Me.m_ilPlugins.Images.Count
+                            tnP.SelectedImageIndex = Me.m_ilPlugins.Images.Count
+                            Me.m_ilPlugins.Images.Add(pui.ControlImage)
+                        Else
+                            tnP.ImageIndex = cIMAGE_ENABLED
+                            tnP.SelectedImageIndex = cIMAGE_ENABLED
+                        End If
+                    End If
 
                     tnPA.Nodes.Add(tnP)
                 Next
@@ -212,7 +190,6 @@ Namespace Other
             Next
 
             Me.m_dictPluginAssemblyInfo.Clear()
-            'Me.m_dictPluginInfo.Clear()
 
         End Sub
 
