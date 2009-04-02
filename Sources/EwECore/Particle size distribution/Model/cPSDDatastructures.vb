@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.7  2009/04/02 16:21:05  jeroens
+' Added Enabled flag
+'
 ' Revision 1.6  2009/03/31 21:36:14  joeh
 ' Move all PSD computation routines to a new class cPSDModel
 '
@@ -29,6 +32,9 @@ Imports EwEUtils.Core
 ''' This class wraps the underlying particle size distribution data structures
 ''' </summary>
 Public Class cPSDDatastructures
+
+    ''' <summary>States whether PSD model is enabled.</summary>
+    Public Enabled As Boolean = False
 
     ''' <summary>Total number of groups (living and detritus)</summary>
     Public NumGroups As Integer
