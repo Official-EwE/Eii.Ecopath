@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.47  2009/04/02 15:52:17  jeroens
+' Added PSD enabled flag
+'
 ' Revision 1.46  2009/03/31 21:18:09  joeh
 ' Add Enum eClimateTypes
 '
@@ -1167,6 +1170,7 @@ Namespace Core
         FleetName
 
         'Joeh: PSD
+        PSDEnabled
         VBK
         BiomassAvgSzWt
         BiomassSzWt
