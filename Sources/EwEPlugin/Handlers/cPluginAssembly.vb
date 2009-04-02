@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.9  2009/04/02 19:01:13  jeroens
+' Assemblies optionally return disalbed plug-ins
+'
 ' Revision 1.8  2009/04/01 17:33:33  jeroens
 ' Separated Enabled state and Incompatibility
 '
@@ -25,24 +28,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:03  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/07/16 13:27:47  jeroens
-' Added AlwaysEnabled flag
-'
-' Revision 1.3  2007/10/10 16:52:10  jeroens
-' + Added link to AssemblyName
-'
-' Revision 1.2  2007/03/17 01:57:34  jeroens
-' * Plugins() property has gained the option to filter by class type
-'
-' Revision 1.1  2006/08/31 15:20:33  jeroens
-' * Moved
-'
-' Revision 1.2  2006/08/24 02:47:36  jeroens
-' + Added comments
-'
-' Revision 1.1  2006/08/08 14:11:50  jeroens
-' + Initial version
 '
 '==============================================================================
 
@@ -97,15 +82,17 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' <param name="strName">The <see cref="IPlugin.Name">name</see>
     ''' of the plugin.</param>
+    ''' <param name="bAllowDisabled">Flag stating if plug-ins from disabled 
+    ''' assemblies can be aquired as well.</param>
     ''' <remarks>An exception will be thrown when adding a plugin
     ''' with a duplicate name.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Property Plugin(ByVal strName As String) As IPlugin
+    Public Property Plugin(ByVal strName As String, Optional ByVal bAllowDisabled As Boolean = False) As IPlugin
         Get
             Dim ip As IPlugin = Nothing
 
             strName = strName.ToLower()
-            If Me.Enabled Then
+            If (Me.Enabled Or bAllowDisabled) Then
                 If Me.m_dictPlugins.ContainsKey(strName) Then
                     ip = Me.m_dictPlugins(strName)
                 End If
@@ -128,12 +115,15 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' <param name="t">The <see cref="Type">Type</see> of the plugins to retrieve,
     ''' or Nothing to return all plugins in this Assembly.</param>
+    ''' <param name="bAllowDisabled">Flag stating if plug-ins from disabled 
+    ''' assemblies can be aquired as well.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing) As ICollection(Of IPlugin)
+    Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing, _
+                                     Optional ByVal bAllowDisabled As Boolean = False) As ICollection(Of IPlugin)
         Get
             Dim collPlugins As New List(Of IPlugin)
 
-            If Me.Enabled Then
+            If (Me.Enabled Or bAllowDisabled) Then
                 If t Is Nothing Then
                     Return Me.m_dictPlugins.Values
                 Else
