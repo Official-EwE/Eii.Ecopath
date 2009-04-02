@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginNavTreeHandler.vb,v $
+' Revision 1.5  2009/04/02 18:54:46  jeroens
+' Minor changes
+'
 ' Revision 1.4  2009/02/27 08:10:24  sherman
 ' Changed Plugin Icon
 '
@@ -12,30 +15,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/09/05 16:13:40  jeroens
-' PluginManager set/get via Property
-'
-' Revision 1.7  2008/07/16 13:28:09  jeroens
-' Fixed plugin removal bug
-'
-' Revision 1.6  2007/06/29 20:33:54  jeroens
-' * Tree nodes use regular font
-'
-' Revision 1.5  2007/04/26 13:39:54  jeroens
-' * Fixed plugin placement logic bugs
-'
-' Revision 1.4  2007/04/25 16:21:47  joeb
-' Added Trim  to Treenode name and plugin location string matching
-'
-' Revision 1.3  2007/03/19 02:32:23  jeroens
-' * Plugin invoked locally
-'
-' Revision 1.2  2007/03/14 00:53:37  jeroens
-' * Uses plug-in tooltip text
-'
-' Revision 1.1  2006/09/06 16:55:30  jeroens
-' + Initial version
 '
 '==============================================================================
 
@@ -91,11 +70,11 @@ Public Class cPluginNavTreeHandler
     ''' <param name="bPlace">States whether the tree item should be placed (True)
     ''' or removed (False).</param>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub PlacePlugin(ByVal p_ip As IGUIPlugin, ByVal bPlace As Boolean)
+    Protected Overrides Sub PlacePlugin(ByVal ip As IGUIPlugin, ByVal bPlace As Boolean)
 
         Dim tnc As TreeNodeCollection = Me.m_tv.Nodes
         Dim tn As TreeNode = Nothing
-        Dim ip As INavigationTreeItemPlugin = Nothing
+        Dim ipNavTree As INavigationTreeItemPlugin = Nothing
         Dim strLocation As String = Nothing
         Dim aLocations() As String = Nothing
         Dim iLocation As Integer = 0
@@ -104,12 +83,12 @@ Public Class cPluginNavTreeHandler
         Dim bFound As Boolean = False
 
         ' Sanity check
-        If Not TypeOf p_ip Is INavigationTreeItemPlugin Then Return
+        If Not TypeOf ip Is INavigationTreeItemPlugin Then Return
 
         ' Get the real node
-        ip = DirectCast(p_ip, INavigationTreeItemPlugin)
+        ipNavTree = DirectCast(ip, INavigationTreeItemPlugin)
         ' Get node location
-        strLocation = ip.NavigationTreeItemLocation
+        strLocation = ipNavTree.NavigationTreeItemLocation
         ' Split locations by pipe char '|'
         aLocations = strLocation.Split("|"c)
         ' Already there?
@@ -144,18 +123,18 @@ Public Class cPluginNavTreeHandler
                 ' Adding or removing an item?
                 If (bPlace) Then
                     ' #Adding: create new node
-                    tn = New TreeNode(ip.ControlText)
+                    tn = New TreeNode(ipNavTree.ControlText)
                     ' Set name
-                    tn.Name = ip.Name
+                    tn.Name = ipNavTree.Name
                     ' Set tooltip text
-                    tn.ToolTipText = ip.ControlTooltipText
+                    tn.ToolTipText = ipNavTree.ControlTooltipText
                     ' Attach plugin info to node tag
-                    tn.Tag = ip
+                    tn.Tag = ipNavTree
                     ' Attach an image, if any
-                    If ip.ControlImage IsNot Nothing Then
+                    If ipNavTree.ControlImage IsNot Nothing Then
                         tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                         tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
-                        Me.m_tv.ImageList.Images.Add(ip.ControlImage)
+                        Me.m_tv.ImageList.Images.Add(ipNavTree.ControlImage)
                     Else
                         tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                         tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
@@ -168,7 +147,7 @@ Public Class cPluginNavTreeHandler
                     tnc.Add(tn)
                 Else
                     ' #Removing: try to remove the node
-                    tn = tnc.Item(ip.Name)
+                    tn = tnc.Item(ipNavTree.Name)
                     If (tn IsNot Nothing) Then tnc.Remove(tn)
                 End If
             End If
@@ -185,7 +164,8 @@ Public Class cPluginNavTreeHandler
 
 #End Region ' Tree item handling
 
-    Private Sub tvNavigation_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tv.AfterSelect
+    Private Sub tvNavigation_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tv.AfterSelect
 
         ' Sanity checks
         If Not (TypeOf e.Node.Tag Is INavigationTreeItemPlugin) Then Return
