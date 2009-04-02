@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.9  2009/04/02 16:20:40  jeroens
+' PSDIncluded moved to PSD model
+'
 ' Revision 1.8  2009/03/18 13:28:54  jeroens
 ' Added PSDIncluded flag
 '
@@ -247,11 +250,6 @@ Public Class cEcoPathGroupInput
         'Tmax
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TmaxInput))
-        m_values.Add(val.varName, val)
-
-        'PSDIncluded
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDIncluded))
         m_values.Add(val.varName, val)
         'End Joeh: PSD
 
@@ -718,16 +716,6 @@ Public Class cEcoPathGroupInput
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.TmaxInput, value)
-        End Set
-    End Property
-
-    Public Property PSDIncluded() As Boolean
-        Get
-            Return CBool(GetVariable(eVarNameFlags.PSDIncluded))
-        End Get
-
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.PSDIncluded, value)
         End Set
     End Property
 
