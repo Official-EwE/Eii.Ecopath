@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.42  2009/04/02 21:03:27  jeroens
+' Reworked PSD
+'
 ' Revision 1.41  2009/04/02 18:53:14  jeroens
 ' Ok, just disabled climate type saving until a DB update is available
 '
@@ -1334,7 +1337,7 @@ Public Class cDBDataSource
             drow("MortalityType") = psdDS.MortalityType
             drow("NumWeightClasses") = psdDS.NWeightClasses
             drow("FirstWeightClass") = psdDS.FirstWeightClass
-            'drow("ClimateType") = psdDS.ClimateType
+            drow("ClimateType") = psdDS.ClimateType
 
             If bNewRow Then
                 writer.AddRow(drow)
