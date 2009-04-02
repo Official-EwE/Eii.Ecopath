@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.111  2009/04/02 16:40:35  jeroens
+' PSD enabled correctly passed around
+'
 ' Revision 1.110  2009/04/02 16:23:04  jeroens
 ' PSD run connected to Ecopath
 '
@@ -3251,6 +3254,7 @@ Public Class cCore
 
         Me.m_PSDParameters.AllowValidation = False
 
+        Me.m_PSDParameters.PSDEnabled = Me.m_PSDData.Enabled
         Me.m_PSDParameters.MortalityType = Me.m_PSDData.MortalityType
         Me.m_PSDParameters.NumWeightClasses = Me.m_PSDData.NWeightClasses
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
@@ -3270,6 +3274,7 @@ Public Class cCore
 
     Private Function UpdatePSDParameters() As Boolean
 
+        Me.m_PSDData.Enabled = Me.m_PSDParameters.PSDEnabled
         Me.m_PSDData.MortalityType = Me.m_PSDParameters.MortalityType
         Me.m_PSDData.NWeightClasses = Me.m_PSDParameters.NumWeightClasses
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
