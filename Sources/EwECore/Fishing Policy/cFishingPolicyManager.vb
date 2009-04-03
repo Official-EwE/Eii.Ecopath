@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.7  2009/04/03 19:54:56  jeroens
+' Requires Ecosim to produce time step results
+'
 ' Revision 1.6  2009/04/02 16:18:41  jeroens
 ' Strict on
 '
@@ -672,7 +675,7 @@ Namespace FishingPolicy
                 Me.setWait()
 
                 search.SearchMode = eSearchModes.FishingPolicy
-                Me.m_core.m_EcoSimData.bTimestepOutput = False
+                Me.m_core.m_EcoSimData.bTimestepOutput = True
                 Me.Update(Me.DataType)
 
                 thrdMC = New Thread(AddressOf Me.m_FPsearch.Run)
