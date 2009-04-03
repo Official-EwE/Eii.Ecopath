@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.12  2009/04/03 14:31:07  jeroens
+' Forcing TS imported per month
+'
 ' Revision 1.11  2009/03/26 17:49:42  jeroens
 ' Fixed confusion between rate and effort shape names - part II
 '
@@ -754,10 +757,14 @@ Namespace Database
         ''' <param name="nDefaultNumberLen">When interpreting a string without
         ''' separators, this value indicates the number of characters that each
         ''' number occupies in the memo string.</param>
+        ''' <param name="nRepetition">Optional field, indicating the number of
+        ''' times a value for the source string should be repeated.</param>
         ''' <returns>A smaller string representing the same numbers.</returns>
         ''' -------------------------------------------------------------------
-        Private Function RebuildNumberListString(ByVal strMemo As String, Optional ByVal cSplitChar As Char = CChar(" "), _
-                Optional ByVal nDefaultNumberLen As Integer = 7) As String
+        Private Function RebuildNumberListString(ByVal strMemo As String, _
+                Optional ByVal cSplitChar As Char = CChar(" "), _
+                Optional ByVal nDefaultNumberLen As Integer = 7, _
+                Optional ByVal nRepetition As Integer = 1) As String
 
             Dim astrMemoBits() As String
             Dim sb As New Text.StringBuilder
@@ -770,10 +777,12 @@ Namespace Database
 
             ' Now remodel the memo string using real numbers
             For i As Integer = 0 To astrMemoBits.Length - 1
-                ' Separate numbers with a single space
-                If i > 0 Then sb.Append(CChar(" "))
-                ' Add the number
-                sb.Append(astrMemoBits(i))
+                For j As Integer = 1 To nRepetition
+                    ' Separate numbers with a single space
+                    If sb.Length > 0 Then sb.Append(CChar(" "))
+                    ' Add the number
+                    sb.Append(astrMemoBits(i))
+                Next
             Next
             ' There
             Return sb.ToString()
@@ -2933,7 +2942,7 @@ Namespace Database
                         drow("FunctionType") = eShapeFunctionType.NotSet
 
                         strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                        drow("Zscale") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
+                        drow("Zscale") = Me.RebuildNumberListString(strMemo, CChar(" "), 10, cCore.N_MONTHS)
                         writerShapeTime.AddRow(drow)
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
