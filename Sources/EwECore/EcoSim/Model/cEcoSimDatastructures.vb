@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.16  2009/04/03 19:55:19  jeroens
+' Fixed result redim bug
+'
 ' Revision 1.15  2009/01/30 18:43:54  joeb
 ' Removed DataAdapters
 '
@@ -1132,7 +1135,7 @@ Public Class cEcosimDatastructures
 
         'fisheries data
         ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
-        ReDim ResultsSumCatchByGear(nGear, NTimes)
+        ReDim ResultsSumCatchByGear(nGear, nt)
         ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumValueByGear(nGear, nt)
         ReDim ResultsEffort(nGear, nt)
