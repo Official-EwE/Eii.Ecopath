@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanza.vb,v $
+' Revision 1.4  2009/04/03 18:00:23  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.3  2009/03/19 16:02:27  jeroens
 ' Added FormatProvider.Release
 '
@@ -155,6 +158,13 @@ Namespace Ecopath
 
             Me.m_MultiStanzaGrid = New EditMultiStanzaEwEGrid(objStanzaClicked)
         End Sub
+
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
+            MyBase.OnFormClosing(e)
+        End Sub
+
 #End Region
 
 #Region "Event handlers "
