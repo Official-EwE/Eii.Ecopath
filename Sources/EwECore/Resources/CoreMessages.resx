@@ -733,4 +733,12 @@ System Error: {0}</value>
   <data name="PSD_RUN_ERROR" xml:space="preserve">
     <value>PSD failed to run.</value>
   </data>
+  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
+    <value>Trophic mediation function '{0}' has zero value at Ecopath base and cannot be used. Please edit your data</value>
+    <comment>{0}=med fn name</comment>
+  </data>
+  <data name="STANZA_KinVGBF_MISSING" xml:space="preserve">
+    <value>Missing K of VBGF for multi stanza group '{0}'.</value>
+    <comment>{0}=stanza group name</comment>
+  </data>
 </root>
