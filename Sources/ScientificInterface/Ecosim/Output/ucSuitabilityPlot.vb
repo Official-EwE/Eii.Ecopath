@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.6  2009/04/03 18:21:53  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.5  2009/01/14 17:48:44  jeroens
 ' Fixed compiler warning
 '
@@ -56,14 +59,12 @@ Public Class ucSuitabilityPlot
     Private m_zgh As ZedGraphHelper = Nothing
     Private m_core As cCore = cCore.GetInstance()
     Private m_sg As StyleGuide = StyleGuide.GetInstance()
-    'Private m_manager As cNetworkManager = Nothing
 
 #End Region ' Private variables
 
 #Region " Constructor "
 
-    Public Sub New() 'ByVal manager As cNetworkManager)
-        'Me.m_manager = manager
+    Public Sub New()
         Me.InitializeComponent()
     End Sub
 
@@ -86,6 +87,7 @@ Public Class ucSuitabilityPlot
     Private Sub ucSuitabilityPlot_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Disposed
 
+        Me.m_zgh.Detach()
         Me.m_zgh = Nothing
 
         RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -97,11 +99,6 @@ Public Class ucSuitabilityPlot
             Handles m_tscmbPlotType.SelectedIndexChanged
         Me.UpdateGraph()
     End Sub
-
-    'Private Sub m_cmbPredator_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    '        Handles m_cmbPredator.SelectedIndexChanged
-    '    Me.UpdateGraph()
-    'End Sub
 
     Private Sub m_tscmbPredator_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tscmbPredator.SelectedIndexChanged

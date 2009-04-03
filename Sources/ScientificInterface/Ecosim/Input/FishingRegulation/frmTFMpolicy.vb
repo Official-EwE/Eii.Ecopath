@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: frmTFMpolicy.vb,v $
+' Revision 1.4  2009/04/03 18:21:54  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.3  2008/10/08 22:14:16  jeroens
 ' Drag w SHIFT
 '
@@ -72,6 +75,7 @@ Namespace Ecosim
         Private Sub HandleFormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
             ' Clean up
             Me.Group = Nothing
+            Me.m_zgh.Detach()
             Me.m_zgh = Nothing
         End Sub
 

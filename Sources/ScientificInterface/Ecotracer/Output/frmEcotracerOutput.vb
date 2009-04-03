@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.5  2009/04/03 18:21:53  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.4  2009/02/05 17:48:40  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -125,11 +128,11 @@ Public Class frmEcotracerOutput
     ''' <summary></summary>
     Private m_core As cCore = Nothing
     ''' <summary></summary>
-    Private m_ZedGraphHelper As ZedGraphHelper = Nothing
+    Private m_zgh As ZedGraphHelper = Nothing
     ''' <summary></summary>
     Private m_curDisplayMode As eDisplayModeTypes = eDisplayModeTypes.NotInitialized
     ''' <summary></summary>
-    Private WithEvents m_sg As StyleGuide = Nothing
+    Private m_sg As StyleGuide = Nothing
 
     ''' <summary></summary>
     Private m_asScaling() As Single
@@ -155,16 +158,21 @@ Public Class frmEcotracerOutput
 
         Me.m_core = cCore.GetInstance()
         Me.m_sg = StyleGuide.GetInstance()
-        Me.m_ZedGraphHelper = New ZedGraphHelper(m_zgc)
+        Me.m_zgh = New ZedGraphHelper(m_zgc)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
+        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
     End Sub
 
     Private Sub frmEcotracerOutput_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        Me.m_core = Nothing
-        Me.m_ZedGraphHelper = Nothing
+        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         Me.m_sg = Nothing
+
+        Me.m_zgh.Detach()
+        Me.m_zgh = Nothing
+
+        Me.m_core = Nothing
     End Sub
 
     Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbGroups.SelectedIndexChanged
@@ -194,7 +202,7 @@ Public Class frmEcotracerOutput
         PlotGroup()
     End Sub
 
-    Private Sub m_sg_StyleGuideChanged(ByVal changeType As StyleGuide.eChangeType) Handles m_sg.StyleGuideChanged
+    Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
         If ((changeType And StyleGuide.eChangeType.Colours) > 0) Then
             ' Respond to group colour changes
             Me.PlotGroup()
@@ -440,7 +448,7 @@ Public Class frmEcotracerOutput
 
                 Debug.Assert(lines IsNot Nothing, Me.ToString, ".PlotGroup() Me.m_DisplayHelper.GetGroupLines() failed!")
 
-                m_ZedGraphHelper.PlotLines(lines)
+                m_zgh.PlotLines(lines)
 
             End If 'If Me.m_DisplayHelper.bCanPlot Then
 

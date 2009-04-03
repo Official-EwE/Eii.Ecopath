@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.20  2009/04/03 18:21:55  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.19  2009/04/02 16:32:28  jeroens
 ' PSD run integrated w Ecopath
 ' Reinstated use of params variables
@@ -162,6 +165,9 @@ Namespace Ecopath.Output
             Me.m_fpNoOfPointsPSD.Release()
             Me.m_fpMinWeight.Release()
             Me.m_fpNoOfPointsMovAvg.Release()
+
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
 
             ' Detach from show/hide groups command
             cmd = cmdh.GetCommand("DisplayGroups")

@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.20  2009/04/03 18:21:55  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.19  2009/04/02 16:24:54  jeroens
 ' PSD run integrated w Ecopath
 '
@@ -128,6 +131,13 @@ Namespace Ecopath.Output
             AddCurves()
             UpdatePlots()
         End Sub
+
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
+            MyBase.OnFormClosing(e)
+        End Sub
+
 #End Region 'Event handlers
 
 #Region "Helper methods"

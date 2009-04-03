@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.7  2009/04/03 18:21:54  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.6  2009/03/26 22:48:05  jeroens
 ' updated to objective grid changes
 '
@@ -114,9 +117,14 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub FishingPolicySearch_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            MyBase.OnFormClosing(e)
+
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
+
+            Me.m_zghResults.Detach()
+            Me.m_zghResults = Nothing
 
             Me.CoreComponents = Nothing
         End Sub

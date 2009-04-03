@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.15  2009/04/03 18:21:55  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.14  2009/04/02 16:24:53  jeroens
 ' PSD run integrated w Ecopath
 '
@@ -71,9 +74,11 @@ Namespace Ecopath.Output
             'Don't manually run! The core execution states take care of this!
             'm_core.RunPSD(IsGroupSelected)
         End Sub
+
 #End Region 'Constructor
 
 #Region "Event handlers"
+
         Private Sub PSDContributionPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             PopulateGroupBoxes()
 
@@ -87,6 +92,13 @@ Namespace Ecopath.Output
             'highlight group contribution in the histogram
             UpdatePlot()
         End Sub
+
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
+            MyBase.OnFormClosing(e)
+        End Sub
+
 #End Region 'Event handlers
 
 #Region "Helper methods"

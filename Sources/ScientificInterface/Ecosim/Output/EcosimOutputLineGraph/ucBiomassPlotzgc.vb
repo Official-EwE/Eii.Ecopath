@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.36  2009/04/03 18:21:56  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.35  2009/03/30 19:03:20  jeroens
 ' Fixed memory leak due to dispose/finalize confusion
 '
@@ -156,12 +159,16 @@ Namespace Ecosim
 
             ' Style guide
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
+
         End Sub
 
         ''' <summary>
         ''' Clean up!
         ''' </summary>
-        Private Sub ucBiomassPlotzgc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucBiomassPlotzgc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
 
             ' Style guide
             RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -169,6 +176,8 @@ Namespace Ecosim
 
             Me.m_zgp.Clear()
             Me.m_zgp = Nothing
+
+            Me.m_zgh.Detach()
             Me.m_zgh = Nothing
 
             ' Show/Hide Groups
@@ -560,9 +569,6 @@ Namespace Ecosim
             ' Design-time bail out
             If (Me.m_core Is Nothing) Then Return
             If (Me.m_core.EcoSimModelParameters Is Nothing) Then Return
-
-            ' Santa's little helper :)
-            Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
 
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.m_zgh.YScaleMin = 0.0!

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.5  2009/04/03 18:21:57  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.4  2009/03/24 20:28:34  jeroens
 ' Uses mediation tool bar
 '
@@ -86,6 +89,11 @@ Namespace Ecosim
             InitGraphPane()
             LoadGraphData()
 
+        End Sub
+
+        Protected Overrides Sub DestroyHandle()
+            Me.m_zgh.Detach()
+            MyBase.DestroyHandle()
         End Sub
 
         Private Sub InitGraphPane()

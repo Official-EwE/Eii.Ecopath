@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.7  2009/04/03 18:21:56  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.6  2009/04/02 16:24:54  jeroens
 ' PSD run integrated w Ecopath
 '
@@ -58,6 +61,13 @@ Namespace Ecopath.Output
 
             UpdatePlot()
         End Sub
+
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
+            MyBase.OnFormClosing(e)
+        End Sub
+
 #End Region 'Event handlers
 
 #Region "Helper methods"

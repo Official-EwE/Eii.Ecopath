@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.7  2009/04/03 18:21:52  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.6  2009/03/19 16:56:14  jeroens
 ' Uses GroupListBox
 '
@@ -120,8 +123,13 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub EcosimOutputPlots_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.m_sg = Nothing
+
+            Me.m_zgh.Detach()
+            Me.m_zgh = Nothing
+
             Me.CoreComponents = Nothing
         End Sub
 
