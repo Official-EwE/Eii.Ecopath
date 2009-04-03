@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.31  2009/04/03 20:27:44  jeroens
+' checkDietsSumToOne uses only one message
+'
 ' Revision 1.30  2009/04/01 17:27:15  joeh
 ' Remove codes related to PSD
 '
@@ -90,87 +93,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:18  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.73  2008/09/24 16:57:56  jeroens
-' Localized all existing Ecopath Model messages
-'
-' Revision 1.72  2008/09/24 15:53:18  jeroens
-' EcopathMassBalance once again able to send messages via the core
-'
-' Revision 1.71  2008/09/24 00:11:03  villyc
-' f limits and others
-'
-' Revision 1.70  2008/09/17 01:23:52  jeroens
-' Currency units used correctly by Ecopath
-'
-' Revision 1.69  2008/07/23 21:12:45  jeroens
-' Converting more messages
-'
-' Revision 1.68  2008/07/23 19:17:41  jeroens
-' Added suppressable message
-'
-' Revision 1.67  2008/07/22 20:46:00  jeroens
-' Added more suppressable messages
-'
-' Revision 1.66  2008/05/29 22:22:42  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.65  2008/04/11 15:06:35  joeb
-' Replaced MessageBoxes with AddMessage
-'
-' Revision 1.64  2008/01/23 16:23:36  jeroens
-' Fixed ecopath parameter estimation messages
-'
-' Revision 1.63  2008/01/17 16:45:48  joeb
-' Removed FindCyclesWhenEstimatingBiomass
-'
-' Revision 1.62  2008/01/17 16:29:22  joeb
-' Activated MassBalance plugin
-'
-' Revision 1.61  2008/01/17 16:12:54  joeb
-' Fixed bug in MissingParameterMessage() BA not set
-'
-' Revision 1.60  2007/09/07 15:24:51  joeb
-' Minor changes
-'
-' Revision 1.59  2007/08/06 19:28:39  joeb
-' Pile of stuff to do failed runs and how to tell the interface.
-'
-' Revision 1.58  2007/08/02 15:10:35  joeb
-' Fixed Bug in EE test EE can now be = 0
-'
-' Revision 1.57  2007/07/13 00:08:33  joeb
-' Bug fixes for the Monte Carlo simulation
-'
-' Revision 1.56  2007/07/08 18:23:26  jeroens
-' * Fixing globalization todo's
-'
-' Revision 1.55  2007/06/28 16:55:10  joeb
-' Changes to allow the Monte Carlo to call Ecopath
-'
-' Revision 1.54  2007/06/26 22:24:36  joeb
-' Added suppressMessages to stop ecopath from sending messages
-'
-' Revision 1.53  2007/06/20 12:41:26  jeroens
-' * Fixed message formatting crash
-'
-' Revision 1.52  2007/06/20 11:43:38  jeroens
-' + Missing param message provides Fleet name
-'
-' Revision 1.51  2007/05/23 17:21:53  joeb
-' Added Comments
-'
-' Revision 1.50  2007/04/30 16:32:58  jeroens
-' * Ecopath messages arrive in core again
-'
-' Revision 1.49  2007/03/02 19:25:49  joeb
-' Added ToDo's
-'
-' Revision 1.48  2007/02/28 21:42:27  joeb
-' Update how messages are sent to the core
-'
-' Revision 1.47  2007/01/29 17:55:57  jeroens
-' + Ecospace basemap revamped
 '
 '==============================================================================
 
@@ -2181,75 +2103,96 @@ nextJ:
 exitSub:
         End Function
 
-        Private Function checkDietsSumToOne(ByVal NoQuestionsAsked As Boolean) As Boolean
-            Dim pred As Integer
-            Dim prey As Integer
-            Dim Sum As Single
-            Dim RetVal As cFeedbackMessage.eReply = cFeedbackMessage.eReply.CANCEL
-            Dim briefQuestion As Boolean
-            Dim tolerance As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="bQuiet">Flag stating whether the user should be asked
+        ''' what to do if diets do not sum to one. If true, this method executes
+        ''' quietly and no questions will be asked. If False, the user will be
+        ''' prompted.</param>
+        ''' <returns>True if diets do sum to one.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function checkDietsSumToOne(ByVal bQuiet As Boolean) As Boolean
+
+            Dim iPred As Integer
+            Dim iPrey As Integer
+            Dim sSum As Single
+            Dim sTolerance As Single
             Dim msg As cFeedbackMessage = Nothing
+            Dim vs As cVariableStatus = Nothing
+            Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES
+            Dim bSumToOne As Boolean = True
 
-            briefQuestion = True
-            tolerance = 0.001
-            checkDietsSumToOne = True
-            For pred = 1 To m_Data.NumLiving Step 1
-                If m_Data.PP(pred) < 1 Then    'a consumer
-                    Sum = 0
-                    For prey = 0 To m_Data.NumGroups Step 1
-                        Sum = Sum + m_Data.DC(pred, prey)
+            sTolerance = 0.001
+
+            ' Check all diets
+            For iPred = 1 To m_Data.NumLiving Step 1
+                ' Is consumer?
+                If m_Data.PP(iPred) < 1 Then
+                    ' #Yes: determine diet sum
+                    sSum = 0
+                    For iPrey = 0 To m_Data.NumGroups Step 1
+                        sSum = sSum + m_Data.DC(iPred, iPrey)
                     Next
-                    If Sum <> 0 And Math.Abs(Sum - 1) > tolerance Then
-                        If NoQuestionsAsked Then    'just do it
-                            RetVal = cFeedbackMessage.eReply.OK
-                        ElseIf briefQuestion Then
-                            '    ' first time only
-                            '    briefQuestion = False
-                            ' ToDo_JS: globalize this
-                            msg = New cFeedbackMessage(My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
-                                    eCoreComponentType.EcoPath, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO)
-                            msg.Suppressable = True
-                            NotifyCore(msg)
-                            RetVal = msg.Reply
+                    ' Found diet sum <> 0?
+                    If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
+                        ' #Yes: does not sum to one!
+                        bSumToOne = False
 
-                            '    If RetVal = cFeedbackMessage.eReply.Yes Then
-                            '        NoQuestionsAsked = True
-                            '    Else
+                        ' No message ready?
+                        If (msg Is Nothing) Then
 
-                            '        ' check rest individually
-                            '        msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_NORMALIZE_DIET, Pred, Sum), _
-                            '                 eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
-                            '        notifyCore(msg)
-                            '        RetVal = msg.Reply
-
-                            '    End If
-                            'Else
-                            '    ' dialog for each group (slow way)
-                            '    msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_NORMALIZE_DIET, Pred, Sum), _
-                            '             eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
-                            '    notifyCore(msg)
-                            '    RetVal = msg.Reply
-
-                            '    'Text = Text & vbNewLine & vbNewLine & "Raising will only affect the calculations, not change the input. "
-                            '    'Text = Text & vbNewLine & "To change your input data, select 'No' below, open the"
-                            '    'Text = Text & vbNewLine & "diet input form, and select the button for raising. "
+                            ' #Yes: prepare message
+                            msg = New cFeedbackMessage( _
+                                    My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
+                                    eCoreComponentType.EcoPath, eMessageImportance.Warning, _
+                                    cFeedbackMessage.eReplyStyle.YES_NO)
 
                         End If
 
-                        'Normalize the diet for pred
-                        If RetVal = cFeedbackMessage.eReply.YES Then
-                            For prey = 0 To m_Data.NumGroups Step 1
-                                m_Data.DC(pred, prey) = m_Data.DC(pred, prey) / Sum
-                            Next
-                            m_Data.DietsModified = True
-                        Else
-                            checkDietsSumToOne = False
-                            GoTo EndOfFunction  'OK to abort now as diets need editing
-                        End If
+                        ' Attach variable status
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                String.Format(My.Resources.CoreMessages.DIETCOMP_SUMTOONE_PRED, Me.m_Data.GroupName(iPred)), _
+                                eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iPred)
+                        msg.AddVariable(vs)
+
                     End If
                 End If
             Next
-EndOfFunction:
+
+            ' Found any diets that did not sum to 1?
+            If (bSumToOne = False) Then
+                ' #Yes: has message to send?
+                If (msg IsNot Nothing) Then
+                    ' #Yes: send message and grab reply
+                    Me.NotifyCore(msg)
+                    reply = msg.Reply
+                End If
+            End If
+
+            ' Any diets that did not sum, and needing to fix?
+            If (bSumToOne = False) And (reply = cFeedbackMessage.eReply.YES) Then
+                ' #Yes: make diets sum to one
+                For iPred = 1 To m_Data.NumLiving Step 1
+                    If m_Data.PP(iPred) < 1 Then
+                        sSum = 0
+                        For iPrey = 0 To m_Data.NumGroups Step 1
+                            sSum = sSum + m_Data.DC(iPred, iPrey)
+                        Next
+                        If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
+                            For iPrey = 0 To m_Data.NumGroups Step 1
+                                m_Data.DC(iPred, iPrey) = m_Data.DC(iPred, iPrey) / sSum
+                            Next
+                            m_Data.DietsModified = True
+                        End If
+                    End If
+                Next
+                bSumToOne = True
+            End If
+
+            Return bSumToOne
+
         End Function
 
 
