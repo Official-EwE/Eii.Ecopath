@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.25  2009/04/03 15:31:29  jeroens
+' Fixed remaining shielded calls
+'
 ' Revision 1.24  2009/04/02 17:48:10  jeroens
 ' IFishingPolicySearchPlugin -> ISearchPlugin
 '
@@ -1510,7 +1513,7 @@ Public Class cPluginManager
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc, ISearchPlugin).PostRunSearchResults(SearchDS)
+                    DirectCast(ipc.Plugin, ISearchPlugin).PostRunSearchResults(SearchDS)
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "PostRunSearchResults", ex)
                 End Try
@@ -1529,7 +1532,7 @@ Public Class cPluginManager
 
             For Each ipc As cPluginContext In collPlugins
                 Try
-                    DirectCast(ipc, ISearchPlugin).SearchIterationsStarting()
+                    DirectCast(ipc.Plugin, ISearchPlugin).SearchIterationsStarting()
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SearchIterationsStarting", ex)
                 End Try
