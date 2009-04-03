@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.43  2009/04/03 14:32:04  jeroens
+' Forcing TS added per month
+'
 ' Revision 1.42  2009/04/02 21:03:27  jeroens
 ' Reworked PSD
 '
@@ -5032,11 +5035,15 @@ Public Class cDBDataSource
             drow("Steep") = 0
             drow("FunctionType") = eShapeFunctionType.NotSet
 
-            ' Assemble Zscale
+            ' Assemble Zscale. 
+            ' JS 04april09: Time Series are ANNUAL, FFs are MONTHLY: repeat values 12 times.
             For iYear As Integer = 0 To ts.XMax - 1
-                If (iYear > 0) Then sbZScale.Append(" ")
-                sbZScale.Append(ts.ShapeData(iYear))
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    If sbZScale.Length > 0 Then sbZScale.Append(" ")
+                    sbZScale.Append(ts.ShapeData(iYear))
+                Next
             Next
+
             drow("Zscale") = sbZScale.ToString()
             writer.AddRow(drow)
 
