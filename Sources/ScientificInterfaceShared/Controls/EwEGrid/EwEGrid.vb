@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.13  2009/04/03 14:55:47  jeroens
+' Fixed crash on invoking disposed cells
+'
 ' Revision 1.12  2009/03/27 19:40:06  jeroens
 ' Further cleaning up
 '
@@ -517,7 +520,10 @@ Namespace Controls.EwEGrid
                 cell = Me(iRow, iCol)
                 If cell IsNot Nothing Then
                     If TypeOf (cell) Is EwECellBase Then
+                        ' Clear the cell
                         DirectCast(cell, EwECellBase).Dispose()
+                        ' ..and get rid of it
+                        Me(iRow, iCol) = Nothing
                     End If
                 End If
             Next
