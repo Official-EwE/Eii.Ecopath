@@ -741,4 +741,8 @@ System Error: {0}</value>
     <value>Missing K of VBGF for multi stanza group '{0}'.</value>
     <comment>{0}=stanza group name</comment>
   </data>
+  <data name="DIETCOMP_SUMTOONE_PRED" xml:space="preserve">
+    <value>Diet for predator '{0}' does not sum to 1</value>
+    <comment>{0}=group name</comment>
+  </data>
 </root>

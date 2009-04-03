@@ -191,6 +191,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Diet for predator &apos;{0}&apos; does not sum to 1.
+        '''</summary>
+        Friend Shared ReadOnly Property DIETCOMP_SUMTOONE_PRED() As String
+            Get
+                Return ResourceManager.GetString("DIETCOMP_SUMTOONE_PRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Error during validation of &apos;DietComp&apos;. &apos;DietComp&apos; will not be valid..
         '''</summary>
         Friend Shared ReadOnly Property DIETCOMP_VALIDATION_ERROR() As String
