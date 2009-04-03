@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.8  2009/04/03 14:56:27  jeroens
+' Fixed issue that prevented FF time series from showing up at end of import
+'
 ' Revision 1.7  2009/03/23 17:30:45  jeroens
 ' Added sketchpad preview
 '
@@ -619,8 +622,9 @@ Public Class dlgManageTimeSeries
 
         Dim core As cCore = cCore.GetInstance()
         Dim ds As cTimeSeriesDataset = Nothing
-        Dim bSucces As Boolean = True
         Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim clf As cCore.eBatchChangeLevelFlags = cCore.eBatchChangeLevelFlags.TimeSeries
+        Dim bSucces As Boolean = True
 
         If Not core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
@@ -634,7 +638,20 @@ Public Class dlgManageTimeSeries
             appl.SetStatusText(String.Format(My.Resources.STATUS_IMPORTINGDATASET, Me.DatasetName), TriState.True)
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
-                    bSucces = bSucces And core.ImportEcosimTimeSeries(ts, core.ActiveTimeSeriesDatasetIndex)
+                    If core.ImportEcosimTimeSeries(ts, core.ActiveTimeSeriesDatasetIndex) Then
+                        Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+
+                            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
+                                clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
+
+                            Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group, _
+                                 cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
+                                clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
+
+                        End Select
+                    Else
+                        bSucces = False
+                    End If
                 Next
             Catch ex As Exception
                 bSucces = False
@@ -642,7 +659,8 @@ Public Class dlgManageTimeSeries
             appl.SetStatusText("", TriState.False)
         End If
 
-        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.TimeSeries)
+        ' Release appropriate level
+        core.ReleaseBatchLock(clf)
 
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
