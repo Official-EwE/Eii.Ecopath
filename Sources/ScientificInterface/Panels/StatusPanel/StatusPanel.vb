@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.7  2009/04/03 20:29:09  jeroens
+' FeedbackMessages logged in status panel (to be improved)
+' All pop-ups share same message breakdown logic
+'
 ' Revision 1.6  2009/03/27 21:37:12  jeroens
 ' Status panel slides open temproarily
 '
@@ -137,14 +141,6 @@ Public Class StatusPanel
 
         If String.IsNullOrEmpty(msg.Message) Then Return
 
-        ' Requires feedback (overrules popup settings)
-        If (TypeOf msg Is cFeedbackMessage) Then
-            ' #Yes: handle it
-            Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
-            ' ..and run away
-            Return
-        End If
-
         ' Check settings
         Select Case msg.Importance
             Case eMessageImportance.Critical
@@ -169,6 +165,14 @@ Public Class StatusPanel
                 bPopup = False
         End Select
 
+        ' Requires feedback (overrules popup settings)
+        If (TypeOf msg Is cFeedbackMessage) Then
+            ' #Yes: handle it
+            Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
+            ' Disable popup
+            bPopup = False
+        End If
+
         ' Need to show a popup for this message?
         If bPopup Then
             ' #Yes: go ahead, Jimmy
@@ -180,11 +184,18 @@ Public Class StatusPanel
         If bStatus Then
             ' #Yes: add message
 
+            Dim strMessage As String = msg.Message
+
+            ' Hack: add feedback reply
+            If TypeOf (msg) Is cFeedbackMessage Then
+                strMessage = strMessage & ": " & CStr(DirectCast(msg, cFeedbackMessage).Reply)
+            End If
+
             ' A message with one var and the same text for msg and var should not display a child node?
             Dim bSuppressVarMessage As Boolean = False
 
             ' Prepare treenode
-            Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(msg.Message))
+            Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(strMessage))
             ' Set image index
             tnMessage.ImageIndex = CInt(msg.Importance) - 1
             ' Set selected image to equal image index
@@ -311,6 +322,44 @@ Public Class StatusPanel
         Return strText.Replace(vbNewLine, " ")
     End Function
 
+    Private Function ToMessageBoxText(ByVal msg As cMessage, ByRef strMessage As String) As Boolean
+
+        Dim sb As New StringBuilder(msg.Message)
+        Dim iNumSubLines As Integer = 0
+        Dim strTmp As String = ""
+        Dim bError As Boolean = False
+
+        ' Sanity check
+        If msg IsNot Nothing Then
+
+            ' Concatenate all child messages
+            For Each vs As cVariableStatus In msg.Variables
+                Select Case iNumSubLines
+
+                    Case 0 To 9
+                        strTmp = vs.Message
+                        If Not String.IsNullOrEmpty(strTmp) Then
+                            sb.AppendLine()
+                            sb.Append(strTmp)
+                            iNumSubLines += 1
+                        End If
+
+                    Case 10
+                        sb.AppendLine()
+                        sb.Append("...")
+                        sb.Append("(for further details refer to the status panel)")
+                        bError = True
+                        Exit For
+
+                End Select
+            Next
+        End If
+
+        strMessage = sb.ToString().Replace("\n", vbNewLine)
+        Return bError
+
+    End Function
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Helper method; handles a feedback message by presenting the user with
@@ -324,6 +373,7 @@ Public Class StatusPanel
         Dim mbs As MessageBoxButtons = MessageBoxButtons.YesNo
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
         Dim dlr As DialogResult = Windows.Forms.DialogResult.No
+        Dim strMessage As String = ""
 
         If (msg Is Nothing) Then Return
 
@@ -349,6 +399,7 @@ Public Class StatusPanel
         ' ToDo_JS: (LOW) Consider how to handle a list of choices in the message. This will require dynamic dialog construction, ouch!
 
         ' Pop the question
+        Me.ToMessageBoxText(msg, strMessage)
 
         ' Is message suppressable?
         If msg.Suppressable Then
@@ -367,7 +418,7 @@ Public Class StatusPanel
                 ' Assume to repeat the question
                 Dim bChecked As Boolean = False
                 ' Show dialog
-                dlr = CheckedMessageBox.Show(msg.Message, AppLauncher.GetInstance().Text, mbs, mbi, _
+                dlr = CheckedMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbs, mbi, _
                     bChecked, My.Resources.GENERIC_PROMPT_USEANSWERAGAIN)
                 ' Auto-reply requested?
                 If bChecked Then
@@ -376,8 +427,7 @@ Public Class StatusPanel
                 End If
             End If
         Else
-            Dim strMsg As String = msg.Message.Replace("\n", vbNewLine)
-            dlr = MessageBox.Show(strMsg, AppLauncher.GetInstance().Text, mbs, mbi)
+            dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbs, mbi)
         End If
 
         ' Translate .NET MessageBox result into reply
@@ -409,38 +459,16 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Private Function ShowMessageBox(ByVal msg As cMessage) As Boolean
 
-        Dim sb As New StringBuilder(msg.Message)
+        Dim strMessage As String = ""
         Dim mbb As MessageBoxButtons = MessageBoxButtons.OK
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Information
-        Dim strTmp As String = ""
-        Dim iNumSubLines As Integer = 0
         Dim bError As Boolean = False
 
         ' Sanity check
         If msg IsNot Nothing Then
 
-            ' Concatenate all child messages
-            For Each vs As cVariableStatus In msg.Variables
-                Select Case iNumSubLines
-
-                    Case 0 To 9
-                        strTmp = vs.Message
-                        If Not String.IsNullOrEmpty(strTmp) Then
-                            sb.AppendLine()
-                            sb.Append(strTmp)
-                            iNumSubLines += 1
-                        End If
-
-                    Case 10
-                        sb.AppendLine()
-                        sb.Append("...")
-                        sb.Append("(for further details refer to the status panel)")
-                        bError = True
-                        Exit For
-
-                End Select
-            Next
-
+            bError = ToMessageBoxText(msg, strMessage)
+ 
             ' Resolve what icon to show
             Select Case msg.Importance
                 Case eMessageImportance.Critical
@@ -466,7 +494,7 @@ Public Class StatusPanel
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    CheckedMessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, _
+                    CheckedMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, _
                             bSuppress, My.Resources.GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN, _
                             MessageBoxDefaultButton.Button1)
                     ' User wants to suppress the message?
@@ -477,7 +505,7 @@ Public Class StatusPanel
                 End If
             Else
                 ' #No: show the message
-                MessageBox.Show(sb.ToString(), AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
         End If
 
