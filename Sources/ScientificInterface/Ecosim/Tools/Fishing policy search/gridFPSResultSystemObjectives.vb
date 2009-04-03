@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridFPSResultSystemObjectives.vb,v $
+' Revision 1.7  2009/04/03 20:27:10  jeroens
+' Prepared for more objective results
+'
 ' Revision 1.6  2009/03/26 22:47:00  jeroens
 ' ClearData -> RemoveDataRows, uses new ClearRow method to properly clean up
 '
@@ -32,6 +35,7 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.FishingPolicy
 Imports SourceGrid2.Cells.Real
+Imports EwEUtils.Core
 
 #End Region
 
@@ -50,28 +54,25 @@ Namespace Ecosim
         Private m_iColDynamic As Integer = 0
 
         Private Enum eColumnTypes As Integer
-            Iteration
+            Iteration = 0
             Total
-            NetEconomicValue
-            Social
-            MandatedRebuilding
-            EcosystemStructure
-            BiomssDiversity
         End Enum
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
             ' Add dynamic cols manually
-            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length + _
+                        [Enum].GetValues(GetType(eSearchCriteriaResultTypes)).Length)
 
             Me(0, eColumnTypes.Iteration) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMCALLS)
             Me(0, eColumnTypes.Total) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTAL)
-            Me(0, eColumnTypes.NetEconomicValue) = New EwEColumnHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE_ABBR)
-            Me(0, eColumnTypes.Social) = New EwEColumnHeaderCell(My.Resources.HEADER_SOCIAL)
-            Me(0, eColumnTypes.MandatedRebuilding) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_ABBR)
-            Me(0, eColumnTypes.EcosystemStructure) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
-            Me(0, eColumnTypes.BiomssDiversity) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY_ABBR)
+
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New EwEColumnHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New EwEColumnHeaderCell(My.Resources.HEADER_SOCIAL)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY_ABBR)
 
         End Sub
 
@@ -90,8 +91,9 @@ Namespace Ecosim
             Me.Rows.Insert(cnt)
             Me(cnt, 0) = New EwERowHeaderCell(CStr(results.nCalls))
             Me(cnt, 1) = New Cell(CStr(results.Totals))
-            For iResult As Integer = 1 To results.CriteriaValues.Length - 1 '4 ' Hmm, hard-coded?
-                Me(cnt, 1 + iResult) = New Cell(results.CriteriaValues(iResult).ToString)
+
+            For Each result As eSearchCriteriaResultTypes In [Enum].GetValues(GetType(eSearchCriteriaResultTypes))
+                Me(cnt, eColumnTypes.Total + result) = New Cell(results.CriteriaValues(result).ToString)
             Next
 
             For i As Integer = 1 To aiBlocks.Length - 1
