@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesTextReader.vb,v $
+' Revision 1.6  2009/04/03 14:56:51  jeroens
+' Hm
+'
 ' Revision 1.5  2009/01/16 18:30:37  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -467,10 +470,12 @@ Public MustInherit Class cTimeSeriesTextReader
         Try
 
             For i As Integer = 1 To iNumSeries
-                aiType(i - 1) = CType(Integer.Parse(astrCols(i), ni), eTimeSeriesType)
+
+                ' Extract time series type
+                aiType(i - 1) = DirectCast(Integer.Parse(astrCols(i), ni), eTimeSeriesType)
 
                 ' Validate if encountered pool code fits the corresponding core counter
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(aiType(i - 1), eTimeSeriesType))
+                Select Case cTimeSeriesFactory.TimeSeriesCategory(aiType(i - 1))
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
                         ' Group index cannot exceed core nGroups
