@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIntegerProperty.vb,v $
+' Revision 1.4  2009/04/03 12:08:51  jeroens
+' Fixed crash on trying to access non-existing meta data
+'
 ' Revision 1.3  2009/04/02 19:14:42  jeroens
 ' Invalid values set vars to meta NULL
 '
@@ -98,8 +101,16 @@ Namespace Properties
             End Get
             Set(ByVal value As Object)
 
-                Dim meta As cVariableMetaData = Me.ValueDescriptor.Metadata
-                Dim i As Integer = CInt(IIf(meta Is Nothing, 0, meta.NullValue))
+                Dim val As cValue = Me.ValueDescriptor
+                Dim meta As cVariableMetaData = Nothing
+                Dim i As Integer = 0
+
+                If val IsNot Nothing Then
+                    meta = val.Metadata
+                    If meta IsNot Nothing Then
+                        i = CInt(meta.NullValue)
+                    End If
+                End If
 
                 Try
                     ' Try to convert to integer

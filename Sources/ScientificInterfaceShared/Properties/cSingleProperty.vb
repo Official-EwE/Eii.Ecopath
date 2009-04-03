@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSingleProperty.vb,v $
+' Revision 1.3  2009/04/03 12:08:52  jeroens
+' Fixed crash on trying to access non-existing meta data
+'
 ' Revision 1.2  2009/04/02 19:14:43  jeroens
 ' Invalid values set vars to meta NULL
 '
@@ -97,8 +100,16 @@ Namespace Properties
 
             Set(ByVal value As Object)
 
-                Dim meta As cVariableMetaData = Me.ValueDescriptor.Metadata
-                Dim s As Single = CSng(IIf(meta Is Nothing, 0, meta.NullValue))
+                Dim val As cValue = Me.ValueDescriptor
+                Dim meta As cVariableMetaData = Nothing
+                Dim s As Single = 0
+
+                If val IsNot Nothing Then
+                    meta = val.Metadata
+                    If meta IsNot Nothing Then
+                        s = CSng(meta.NullValue)
+                    End If
+                End If
 
                 Try
                     ' Try to convert to single
