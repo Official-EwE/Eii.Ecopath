@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.10  2009/04/03 18:21:24  jeroens
+' Added Attach, Detach
+'
 ' Revision 1.9  2009/03/24 13:44:30  jeroens
 ' Tick tock
 '
@@ -97,6 +100,27 @@ Namespace Controls
         ''' <param name="iNumPanels">The number of panels to initialize on the graph.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+            Me.Attach(zgc, iNumPanels)
+        End Sub
+
+        Protected Overrides Sub Finalize()
+            Me.Detach()
+            MyBase.Finalize()
+        End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Selection "
+
+        Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
+
+#End Region ' Selection
+
+#Region " Public interfaces "
+
+        Public Sub Attach(ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+
+            If Me.m_zgc IsNot Nothing Then Me.Detach()
 
             Me.m_zgc = zgc
             Me.m_sg = StyleGuide.GetInstance()
@@ -119,7 +143,9 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub Finalize()
+        Public Sub Detach()
+
+            If Me.m_zgc Is Nothing Then Return
 
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
@@ -132,18 +158,8 @@ Namespace Controls
             Me.m_dtGroupLines.Clear()
             Me.m_sg = Nothing
             Me.m_zgc = Nothing
-            MyBase.Finalize()
+
         End Sub
-
-#End Region ' Construction / destruction
-
-#Region " Selection "
-
-        Public Event OnCurveClicked(ByVal curve As CurveItem, ByVal iPoint As Integer)
-
-#End Region ' Selection
-
-#Region " Public interfaces "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -799,8 +815,16 @@ Namespace Controls
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
-            If Me.m_nPanels = 1 Then Return Me.m_zgc.GraphPane
-            Return Me.m_zgc.MasterPane.PaneList(iPane - 1)
+
+            Dim pane As GraphPane = Nothing
+
+            If Me.m_nPanels = 1 Then pane = Me.m_zgc.GraphPane
+            pane = Me.m_zgc.MasterPane.PaneList(iPane - 1)
+
+            Debug.Assert(pane IsNot Nothing, "ZedGraphHelper already disconnected")
+
+            Return pane
+
         End Function
 
         ''' -------------------------------------------------------------------
