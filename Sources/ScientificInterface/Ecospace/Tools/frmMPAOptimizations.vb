@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.36  2009/04/03 18:14:38  jeroens
+' Deliberately detached zedgraphhelper
+'
 ' Revision 1.35  2009/03/19 16:02:28  jeroens
 ' Added FormatProvider.Release
 '
@@ -333,6 +336,8 @@ Namespace Ecospace
             Me.m_lLayers = Nothing
 
             RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+            Me.m_zghResults.Detach()
+            Me.m_zghProgress.Detach()
 
             RemoveHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
             Me.m_propSearchType = Nothing
