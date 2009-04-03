@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.44  2009/04/03 14:28:39  jeroens
+' Localized more messages
+'
 ' Revision 1.43  2009/04/02 01:30:23  sherman
 ' Passed BB into ModifyFGearPlugin
 '
@@ -2712,10 +2715,8 @@ Public Property PluginManager() As cPluginManager
                 m_Data.NMedXused(i) = jj
                 m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
                 If m_Data.MedYbase(i) = 0 Then
-                    Me.m_publisher.AddMessage(New cMessage("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data", _
+                    Me.m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, Me.m_Data.MediationTitles(i)), _
                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
-
-                    '   MsgBox("Trophic mediation function " + Str(i) + " has zero value at Ecopath base, cannot be used--edit data")
                     m_Data.MedIsUsed(i) = False
                 End If
                 If jj = 0 Or m_Data.MedXbase(i) = 0 Then
@@ -3245,7 +3246,9 @@ Public Property PluginManager() As cPluginManager
 
                 If vbK = 0 Then
                     '  MsgBox("Enter K of VBGF") : Exit Sub
-                    Me.m_publisher.SendMessage(New cMessage("Missing K of VBGF for multi stanza group " & isp.ToString, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
+                    Me.m_publisher.SendMessage( _
+                            New cMessage(String.Format(My.Resources.CoreMessages.STANZA_KinVGBF_MISSING, Me.m_stanza.StanzaName(isp)), _
+                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
                     Exit Sub
                 End If
 
