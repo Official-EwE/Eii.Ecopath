@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModelParameters.vb,v $
+' Revision 1.6  2009/04/04 14:10:21  jeroens
+' VarPQ no longer stored
+'
 ' Revision 1.5  2009/04/04 14:09:30  jeroens
 ' Added header
 '
@@ -94,6 +97,7 @@ Public Class cEcoSimModelParameters
             'UseVarPQ
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.UseVarPQ))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'BiomassOn
