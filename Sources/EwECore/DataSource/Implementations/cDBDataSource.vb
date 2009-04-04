@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.44  2009/04/04 01:40:08  villyc
+' varPQ was being set to true when loading Ecosim scenario, should be false.
+'
 ' Revision 1.43  2009/04/03 14:32:04  jeroens
 ' Forcing TS added per month
 '
@@ -2830,7 +2833,10 @@ Public Class cDBDataSource
 
             ecosimDS.NutBaseFreeProp = CSng(reader("NutBaseFreeProp"))
             ecosimDS.NutPBmax = CSng(reader("NutPBmax"))
+
             ecosimDS.UseVarPQ = CBool(reader("UseVarPQ"))
+            'VC090403: the var P/Q was being set to true by default, It shouldn't be, this should be done in interface only
+            ecosimDS.UseVarPQ = False
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while reading Scenario {1}", ex.Message, iDBID))
