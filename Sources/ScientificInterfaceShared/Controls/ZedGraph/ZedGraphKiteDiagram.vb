@@ -1,5 +1,9 @@
 ﻿'==============================================================================
-' $ Log: $
+'
+' $Log: ZedGraphKiteDiagram.vb,v $
+' Revision 1.2  2009/04/04 22:49:03  jeroens
+' Assessed state of code, identified ToDo's
+' Cleaned-up code
 '
 '==============================================================================
 
@@ -8,61 +12,188 @@
 Option Strict On
 
 Imports ZedGraph
+Imports EwECore
+
 #End Region ' Imports
 
 Namespace Controls
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Exploratory kite diagram in a ZedGraph. Class is not finished yet.
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>ToDo apr0404:</para>
+    ''' <list type="bullet">
+    ''' <item>Allow curves to be labeled, custom coloured, etc.</item>
+    ''' <item>Use highlight index properly.</item>
+    ''' <item>Use max scales to render control.</item>
+    ''' </list>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Class ZedGraphKiteDiagram
 
-        Private m_noOfScaleCircles As Integer = 3
+        Private m_iNumScaleCircles As Integer = 3
+        Private m_sAutoScaleMax As Single = cCore.NULL_VALUE
+        Private m_sCustomScaleMax As Single = 35
+        Private m_iNumVariables As Integer = 4
+        Private m_iHighlight As Integer = -1
+        Private m_lsValues As New List(Of Single())
+        Private m_bAutoscale As Boolean = False
 
-        Private m_maxScaleValue As Single = 35
-        Private m_numVaraibles As Integer = 4
-        Private m_hightLightIndex As Integer = -1
-        Private m_Values As New List(Of Single())
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a single curve.
+        ''' </summary>
+        ''' <param name="asValues"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub AddCurve(ByVal asValues() As Single)
 
-        ''' <summary> Adds a single curve and removes the rest </summary>
-        Public Sub AddOneCurve(ByVal arr() As Single)
-            m_Values.Clear()
-            findMaxValue(arr, True)
-            m_Values.Add(arr)
+            ' Sanity checks
+            Debug.Assert(asValues IsNot Nothing)
+            Debug.Assert(asValues.Length > 0)
+
+            ' Add curve
+            Me.m_lsValues.Add(asValues)
+            ' Invalidate cached max
+            Me.InvalidateMaxValue()
+
         End Sub
 
-        ''' <summary> Appends to the rest of the curves.  Use ClearCurves to remove all. </summary>
-        Public Sub AddCurve(ByVal arrs As List(Of Single()))
-            For Each ar As Single() In arrs
-                findMaxValue(ar)
-                m_Values.Add(ar)
-            Next
-        End Sub
-
-        ''' <summary> Highlights index curve </summary>
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clears all curves.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub ClearCurves()
-            m_maxScaleValue = -1
-            m_Values.Clear()
+
+            ' Invalidate cached max
+            Me.InvalidateMaxValue()
+            ' Kill! Kill! Kill!
+            Me.m_lsValues.Clear()
+
         End Sub
 
-        Public Sub Repaint(ByVal zgc As ZedGraphControl)
-            CreateGraph(zgc)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh the graph.
+        ''' </summary>
+        ''' <param name="zgc"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub Refresh(ByVal zgc As ZedGraphControl)
+            Me.CreateGraph(zgc)
         End Sub
 
-        Private Sub findMaxValue(ByVal arr As Single(), Optional ByVal reset As Boolean = False)
-            If reset = True Then m_maxScaleValue = -1
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the index of the curve to highlight.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property HiglightIndex() As Integer
+            Get
+                Return Me.m_iHighlight
+            End Get
+            Set(ByVal value As Integer)
+                If value < Me.m_lsValues.Count - 1 Then
+                    Me.m_iHighlight = value
+                Else
+                    Debug.Assert(False, "Highlight index out of bounds")
+                End If
+            End Set
+        End Property
 
-            For i As Integer = 0 To arr.Length - 1
-                If m_maxScaleValue < arr(i) * 1.2 Then m_maxScaleValue = CSng(arr(i) * 1.2)
-            Next
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the graphs auto-scales.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property AutoScale() As Boolean
+            Get
+                Return Me.m_bAutoscale
+            End Get
+            Set(ByVal bAutoscale As Boolean)
+                Me.m_bAutoscale = bAutoscale
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the user-defined scale max value.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property MaxScaleValue() As Single
+            Get
+                Return Me.m_sCustomScaleMax
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sCustomScaleMax = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the auto-scale max value.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property AutoMaxScaleValue() As Single
+            Get
+                If (Me.m_sAutoScaleMax = cCore.NULL_VALUE) Then
+                    For Each asData As Single() In Me.m_lsValues
+                        If asData IsNot Nothing Then
+                            For i As Integer = 0 To asData.Length - 1
+                                Me.m_sAutoScaleMax = CSng(Math.Max(Me.m_sAutoScaleMax, asData(i)))
+                            Next
+                        End If
+                    Next
+                End If
+                Return Me.m_sAutoScaleMax
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the number of scales for legend to render.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property NumScaleCircles() As Integer
+            Get
+                Return Me.m_iNumScaleCircles
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iNumScaleCircles = value
+            End Set
+        End Property
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Invalidate the auto-scale max value.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub InvalidateMaxValue()
+            Me.m_sAutoScaleMax = cCore.NULL_VALUE
         End Sub
 
-        '  Call this method from the Form_Load method, passing your ZedGraphControl
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Call this method from the Form_Load method, passing your ZedGraphControl
+        ''' </summary>
+        ''' <param name="zgc"></param>
+        ''' -------------------------------------------------------------------
         Private Sub CreateGraph(ByVal zgc As ZedGraphControl)
 
             '  get a reference to the GraphPane
             Dim myPane As GraphPane = zgc.GraphPane
+            Dim sScale As Single = cCore.NULL_VALUE 'CSng(MaxScaleValue) * CSng(0.8)
 
-            Dim scaleDiam As Single = CSng(MaxScaleValue) * CSng(0.8)
+            If Me.m_bAutoscale Then
+                sScale = Me.MaxScaleValue
+            Else
+                sScale = Me.AutoMaxScaleValue
+            End If
 
             '  Set the Titles and axis proprieties
-
             myPane.Title.Text = "My Polar Graph"
             myPane.XAxis.Title.Text = ""
             myPane.YAxis.Title.Text = ""
@@ -81,48 +212,12 @@ Namespace Controls
             myPane.YAxis.Scale.Max = MaxScaleValue
             myPane.YAxis.Scale.Min = -MaxScaleValue
 
-            '  Render the simulated polar decorations:
-            Dim scaleCircleList As RadarPointList()
-            Dim scaleCircle As LineItem()
-            Dim delta As Double = CDbl(scaleDiam / NumScaleCircles)
-
-            ReDim scaleCircle(NumScaleCircles)
-            ReDim scaleCircleList(NumScaleCircles)
-
-            '' Calculate the scales
-            'For j As Integer = 0 To NumScaleCircles - 1
-
-            '    scaleCircleList(j) = New RadarPointList()
-            '    For i As Integer = 0 To CInt(MaxScaleValue * 0.8) - 1
-            '        scaleCircleList(j).Add(scaleDiam, 1)
-            '    Next
-
-            '    scaleCircle(j) = myPane.AddCurve("", scaleCircleList(j), Color.Black, SymbolType.None)
-            '    scaleCircle(j).Line.IsSmooth = True
-            '    scaleCircle(j).Line.SmoothTension = 0.6F
-            '    scaleCircle(j).Line.Style = Drawing2D.DashStyle.Custom
-            '    scaleCircle(j).Line.DashOff = 2
-            '    scaleCircle(j).Line.DashOn = 4
-
-            '    scaleDiam = scaleDiam - delta
-
-            'Next
-
-            ''  Render the "rays" from the center
-            'For j As Integer = 0 To 20 - 1
-            '    Dim line As LineObj = New ArrowObj(Color.Black, 0, 0, 0, CSng(scaleCircleList(0)(j).X), CSng(scaleCircleList(0)(j).Y))
-            '    line.Line.Style = Drawing2D.DashStyle.Custom
-            '    line.Line.DashOn = 1
-            '    line.Line.DashOff = 4
-            '    myPane.GraphObjList.Add(line)
-            'Next
-
-            For Each val As Single() In m_Values
+            For Each asData As Single() In m_lsValues
 
                 Dim dataList As RadarPointList = New RadarPointList()
-                For i As Integer = 0 To val.Length - 1
+                For i As Integer = 0 To asData.Length - 1
 
-                    Dim x As Double = val(i)
+                    Dim x As Double = asData(i)
                     dataList.Add(x, 1)
                 Next
 
@@ -135,42 +230,7 @@ Namespace Controls
             zgc.AxisChange()
         End Sub
 
+#End Region ' Internals
 
-        ''' <summary> Sets the highlight index </summary>
-        Public Property HiglightIndex() As Integer
-            Get
-                Return m_hightLightIndex
-            End Get
-            Set(ByVal value As Integer)
-                If value < m_Values.Count - 1 Then
-                    m_hightLightIndex = value
-                Else
-                    Debug.Assert(False, "Attempted to set a highlight value greater than size of list")
-                End If
-            End Set
-        End Property
-
-        ''' <summary> Sets the scale value </summary>
-        Public Property MaxScaleValue() As Single
-            Get
-                Return m_maxScaleValue
-            End Get
-            Set(ByVal value As Single)
-                m_maxScaleValue = value
-            End Set
-        End Property
-
-
-        ''' <summary>
-        ''' Draws the number of scales for ledgend
-        ''' </summary>
-        Public Property NumScaleCircles() As Integer
-            Get
-                Return m_noOfScaleCircles
-            End Get
-            Set(ByVal value As Integer)
-                m_noOfScaleCircles = value
-            End Set
-        End Property
     End Class
 End Namespace
