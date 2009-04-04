@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cProperty.vb,v $
+' Revision 1.3  2009/04/04 22:48:20  jeroens
+' Hm
+'
 ' Revision 1.2  2009/04/02 13:22:09  jeroens
 ' Separated derived classes out of cProperty.vb
 '
@@ -272,7 +275,7 @@ Namespace Properties
         ''' <summary>
         ''' Set a value in the property and commit it to the EwE core.
         ''' </summary>
-        ''' <param name="newValue">The value to set</param>
+        ''' <param name="newValue">The value to set.</param>
         ''' <param name="notify">Flag that states whether a change notification must be
         ''' sent out. Possible values are:
         ''' <list type="bullet">
@@ -319,6 +322,7 @@ Namespace Properties
                 'jb 16/mar/06 setVariable() now returns boolean so get the Style object from CurrentStyle
                 ' Set new value
                 m_Source.SetVariable(Me.m_VarName, newValue, iIndex)
+
                 ' Get the status of this operation
                 vs = m_Source.ValidationStatus
 
