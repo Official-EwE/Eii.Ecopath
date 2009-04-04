@@ -1,3 +1,11 @@
+'==============================================================================
+'
+' $Log: cEcoSimModelParameters.vb,v $
+' Revision 1.5  2009/04/04 14:09:30  jeroens
+' Added header
+'
+'==============================================================================
+
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
