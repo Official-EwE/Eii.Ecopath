@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppPlugins.vb,v $
+' Revision 1.11  2009/04/04 14:06:20  jeroens
+' Properly set disabled plugins to the settings
+'
 ' Revision 1.10  2009/04/02 19:15:15  jeroens
 ' Shows plug-in icons again
 '
@@ -105,15 +108,7 @@ Namespace Other
 
         Public Sub Apply()
 
-            Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
-
-            If alDisabledPlugins Is Nothing Then
-                alDisabledPlugins = New ArrayList()
-                My.Settings.DisabledPlugins = alDisabledPlugins
-            Else
-                alDisabledPlugins.Clear()
-            End If
-
+            Dim alDisabledPlugins As New ArrayList()
             For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
                 info.Enabled = info.PluginAssembly.Enabled
 
@@ -121,6 +116,11 @@ Namespace Other
                     alDisabledPlugins.Add(info.PluginAssembly.Filename)
                 End If
             Next
+            My.Settings.DisabledPlugins = alDisabledPlugins
+
+            ' Do not save settings; the master options dialog will take care of this
+            'My.Settings.Save()
+
         End Sub
 
 #End Region ' Public interfaces

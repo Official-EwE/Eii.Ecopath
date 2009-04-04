@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.35  2009/04/04 14:06:41  jeroens
+' Properly set disabled plugins to the settings
+'
 ' Revision 1.34  2009/04/01 17:40:56  jeroens
 ' Added plug-in disable prompts
 '
@@ -850,7 +853,6 @@ Public Class AppLauncher
         ' Set up settings for disabling plug-ins
         If alDisabledPlugins Is Nothing Then
             alDisabledPlugins = New ArrayList()
-            My.Settings.DisabledPlugins = alDisabledPlugins
         End If
 
         ' For every plug-in
@@ -895,6 +897,7 @@ Public Class AppLauncher
                         If DirectCast(msg, cFeedbackMessage).Reply = cFeedbackMessage.eReply.YES Then
                             ' #Yes: disable the plug-in
                             pa.Enabled = False
+                            alDisabledPlugins.Add(pa.Filename)
                         End If
                     End If
                 End If
@@ -902,6 +905,10 @@ Public Class AppLauncher
             End If
 
         Next
+
+        My.Settings.DisabledPlugins = alDisabledPlugins
+        My.Settings.Save()
+
     End Sub
 
     Private Sub InitEventHandlers()
