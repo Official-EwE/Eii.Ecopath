@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFormatProvider.vb,v $
+' Revision 1.2  2009/04/04 14:08:12  jeroens
+' Type cast BEFORE checking for value changes in SetValue
+'
 ' Revision 1.1  2009/03/19 16:00:32  jeroens
 ' Split files
 '
@@ -484,9 +487,11 @@ Namespace Controls
             ''' </summary>
             ''' -----------------------------------------------------------------------
             Private Sub OnControlValidated(ByVal sender As Object, ByVal e As System.EventArgs)
+
                 ' Update internal value
                 Me.m_provider.Value = Me.m_ud.Value
                 Me.UpdateContent()
+
             End Sub
 
 #End Region ' NumericUpDown events
@@ -1044,34 +1049,41 @@ Namespace Controls
             End Get
             Set(ByVal objValue As Object)
 
-                ' Optimization: check for changes
+                Dim objValueConverted As Object = Nothing
+
+                Try
+                    ' First convert value
+                    If Me.m_tValue Is GetType(String) Then
+                        objValueConverted = CStr(objValue)
+                    ElseIf Me.m_tValue Is GetType(Integer) Then
+                        objValueConverted = Convert.ToInt32(objValue)
+                    ElseIf Me.m_tValue Is GetType(Single) Then
+                        objValueConverted = Convert.ToSingle(objValue)
+                    ElseIf Me.m_tValue Is GetType(Double) Then
+                        objValueConverted = Convert.ToDouble(objValue)
+                    Else
+                        objValueConverted = objValue
+                    End If
+
+                Catch ex As Exception
+                    ' Decline!
+                    Return
+                End Try
+
+                ' Check for changes
                 If Not Object.ReferenceEquals(Me.m_objValue, Nothing) Then
-                    If Me.m_objValue.Equals(objValue) Then
+                    If Me.m_objValue.Equals(objValueConverted) Then
                         ' No changes: do not set value
                         Return
                     End If
                 End If
 
-                Try
-                    ' Store new value
-                    If Me.m_tValue Is GetType(String) Then
-                        Me.m_objValue = CStr(objValue)
-                    ElseIf Me.m_tValue Is GetType(Integer) Then
-                        Me.m_objValue = Convert.ToInt32(objValue)
-                    ElseIf Me.m_tValue Is GetType(Single) Then
-                        Me.m_objValue = Convert.ToSingle(objValue)
-                    ElseIf Me.m_tValue Is GetType(Double) Then
-                        Me.m_objValue = Convert.ToDouble(objValue)
-                    Else
-                        Me.m_objValue = objValue
-                    End If
-
-                Catch ex As Exception
-                    ' Decline!
-                End Try
+                ' Set value
+                Me.m_objValue = objValueConverted
 
                 ' Update
                 Me.UpdateContent()
+
             End Set
         End Property
 
