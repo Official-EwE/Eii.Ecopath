@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.7  2009/04/04 14:08:41  jeroens
+' Added Use Variable P/Q check box
+'
 ' Revision 1.6  2009/03/19 16:02:26  jeroens
 ' Added FormatProvider.Release
 '
@@ -48,6 +51,7 @@ Namespace Ecosim
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpRegulatoryFeedback As cEwEFormatProvider = Nothing
         Private m_fpRelaxation As cEwEFormatProvider = Nothing
+        Private m_fpUseVarPQ As cEwEFormatProvider = Nothing
 
         Private m_propConTracing As cBooleanProperty = Nothing
         Private m_propPredictEffort As cBooleanProperty = Nothing
@@ -85,6 +89,7 @@ Namespace Ecosim
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpRegulatoryFeedback = New cPropertyFormatProvider(Me.chkRegulatoryFeedbackLoop, ecosimModelParams, eVarNameFlags.RegFeedback)
             Me.m_fpRelaxation = New cPropertyFormatProvider(Me.m_nudRelaxation, ecosimModelParams, eVarNameFlags.Relaxation)
+            Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
 
             Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
@@ -115,6 +120,7 @@ Namespace Ecosim
             Me.m_fpPredictEffort.Release()
             Me.m_fpRegulatoryFeedback.Release()
             Me.m_fpRelaxation.Release()
+            Me.m_fpUseVarPQ.Release()
 
             ' Clean up
             Me.CoreComponents = Nothing
@@ -129,7 +135,7 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, chkRegulatoryFeedbackLoop.Click
+        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkConTracing.Click, chkRegulatoryFeedbackLoop.Click, m_chkUseVarPQ.Click
 
             If m_bInUpdate = True Then Return
 

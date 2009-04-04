@@ -24,13 +24,13 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimParameters))
-            Me.gpbBasicParams = New System.Windows.Forms.GroupBox
             Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
             Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
             Me.m_nudRelaxation = New System.Windows.Forms.NumericUpDown
             Me.cmbSalinityForcing = New System.Windows.Forms.ComboBox
             Me.cmbNutForcing = New System.Windows.Forms.ComboBox
             Me.chkPredictEffort = New System.Windows.Forms.CheckBox
+            Me.chkRegulatoryFeedbackLoop = New System.Windows.Forms.CheckBox
             Me.chkConTracing = New System.Windows.Forms.CheckBox
             Me.m_lblRelaxation = New System.Windows.Forms.Label
             Me.Label2 = New System.Windows.Forms.Label
@@ -39,7 +39,6 @@ Namespace Ecosim
             Me.Label1 = New System.Windows.Forms.Label
             Me.lblInitializationHeader = New System.Windows.Forms.Label
             Me.lblScenario = New System.Windows.Forms.Label
-            Me.gbDetails = New System.Windows.Forms.GroupBox
             Me.m_tbContact = New System.Windows.Forms.TextBox
             Me.m_tbAuthor = New System.Windows.Forms.TextBox
             Me.m_lbContact = New System.Windows.Forms.Label
@@ -48,32 +47,11 @@ Namespace Ecosim
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.lblDescription = New System.Windows.Forms.Label
             Me.lbScenarioName = New System.Windows.Forms.Label
-            Me.chkRegulatoryFeedbackLoop = New System.Windows.Forms.CheckBox
-            Me.gpbBasicParams.SuspendLayout()
+            Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.gbDetails.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'gpbBasicParams
-            '
-            resources.ApplyResources(Me.gpbBasicParams, "gpbBasicParams")
-            Me.gpbBasicParams.Controls.Add(Me.m_nudNutBaseFreeProp)
-            Me.gpbBasicParams.Controls.Add(Me.m_nudNumberYears)
-            Me.gpbBasicParams.Controls.Add(Me.m_nudRelaxation)
-            Me.gpbBasicParams.Controls.Add(Me.cmbSalinityForcing)
-            Me.gpbBasicParams.Controls.Add(Me.cmbNutForcing)
-            Me.gpbBasicParams.Controls.Add(Me.chkPredictEffort)
-            Me.gpbBasicParams.Controls.Add(Me.chkRegulatoryFeedbackLoop)
-            Me.gpbBasicParams.Controls.Add(Me.chkConTracing)
-            Me.gpbBasicParams.Controls.Add(Me.m_lblRelaxation)
-            Me.gpbBasicParams.Controls.Add(Me.Label2)
-            Me.gpbBasicParams.Controls.Add(Me.Label7)
-            Me.gpbBasicParams.Controls.Add(Me.Label6)
-            Me.gpbBasicParams.Controls.Add(Me.Label1)
-            Me.gpbBasicParams.Name = "gpbBasicParams"
-            Me.gpbBasicParams.TabStop = False
             '
             'm_nudNutBaseFreeProp
             '
@@ -109,6 +87,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.chkPredictEffort, "chkPredictEffort")
             Me.chkPredictEffort.Name = "chkPredictEffort"
             Me.chkPredictEffort.UseVisualStyleBackColor = True
+            '
+            'chkRegulatoryFeedbackLoop
+            '
+            resources.ApplyResources(Me.chkRegulatoryFeedbackLoop, "chkRegulatoryFeedbackLoop")
+            Me.chkRegulatoryFeedbackLoop.Name = "chkRegulatoryFeedbackLoop"
+            Me.chkRegulatoryFeedbackLoop.UseVisualStyleBackColor = True
             '
             'chkConTracing
             '
@@ -155,20 +139,6 @@ Namespace Ecosim
             Me.lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.lblScenario.Name = "lblScenario"
             '
-            'gbDetails
-            '
-            resources.ApplyResources(Me.gbDetails, "gbDetails")
-            Me.gbDetails.Controls.Add(Me.m_tbContact)
-            Me.gbDetails.Controls.Add(Me.m_tbAuthor)
-            Me.gbDetails.Controls.Add(Me.m_lbContact)
-            Me.gbDetails.Controls.Add(Me.m_lbAuthor)
-            Me.gbDetails.Controls.Add(Me.m_tbName)
-            Me.gbDetails.Controls.Add(Me.m_tbDescription)
-            Me.gbDetails.Controls.Add(Me.lblDescription)
-            Me.gbDetails.Controls.Add(Me.lbScenarioName)
-            Me.gbDetails.Name = "gbDetails"
-            Me.gbDetails.TabStop = False
-            '
             'm_tbContact
             '
             resources.ApplyResources(Me.m_tbContact, "m_tbContact")
@@ -209,42 +179,56 @@ Namespace Ecosim
             resources.ApplyResources(Me.lbScenarioName, "lbScenarioName")
             Me.lbScenarioName.Name = "lbScenarioName"
             '
-            'chkRegulatoryFeedbackLoop
+            'm_chkUseVarPQ
             '
-            resources.ApplyResources(Me.chkRegulatoryFeedbackLoop, "chkRegulatoryFeedbackLoop")
-            Me.chkRegulatoryFeedbackLoop.Name = "chkRegulatoryFeedbackLoop"
-            Me.chkRegulatoryFeedbackLoop.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_chkUseVarPQ, "m_chkUseVarPQ")
+            Me.m_chkUseVarPQ.Name = "m_chkUseVarPQ"
+            Me.m_chkUseVarPQ.UseVisualStyleBackColor = True
             '
             'EcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.gbDetails)
+            Me.Controls.Add(Me.m_nudNutBaseFreeProp)
+            Me.Controls.Add(Me.m_tbContact)
+            Me.Controls.Add(Me.m_nudNumberYears)
+            Me.Controls.Add(Me.m_tbAuthor)
+            Me.Controls.Add(Me.m_nudRelaxation)
             Me.Controls.Add(Me.lblScenario)
+            Me.Controls.Add(Me.cmbSalinityForcing)
+            Me.Controls.Add(Me.m_lbContact)
+            Me.Controls.Add(Me.cmbNutForcing)
             Me.Controls.Add(Me.lblInitializationHeader)
-            Me.Controls.Add(Me.gpbBasicParams)
+            Me.Controls.Add(Me.chkPredictEffort)
+            Me.Controls.Add(Me.m_lbAuthor)
+            Me.Controls.Add(Me.chkRegulatoryFeedbackLoop)
+            Me.Controls.Add(Me.m_chkUseVarPQ)
+            Me.Controls.Add(Me.chkConTracing)
+            Me.Controls.Add(Me.m_tbName)
+            Me.Controls.Add(Me.m_lblRelaxation)
+            Me.Controls.Add(Me.lbScenarioName)
+            Me.Controls.Add(Me.Label2)
+            Me.Controls.Add(Me.m_tbDescription)
+            Me.Controls.Add(Me.Label7)
+            Me.Controls.Add(Me.lblDescription)
+            Me.Controls.Add(Me.Label6)
+            Me.Controls.Add(Me.Label1)
             Me.Name = "EcosimParameters"
-            Me.gpbBasicParams.ResumeLayout(False)
-            Me.gpbBasicParams.PerformLayout()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudRelaxation, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.gbDetails.ResumeLayout(False)
-            Me.gbDetails.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
-        Friend WithEvents gpbBasicParams As System.Windows.Forms.GroupBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents Label7 As System.Windows.Forms.Label
         Friend WithEvents Label6 As System.Windows.Forms.Label
         Friend WithEvents chkConTracing As System.Windows.Forms.CheckBox
         Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
         Friend WithEvents lblScenario As System.Windows.Forms.Label
-        Friend WithEvents gbDetails As System.Windows.Forms.GroupBox
         Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Friend WithEvents lblDescription As System.Windows.Forms.Label
-        Friend WithEvents lbScenarioName As System.Windows.Forms.Label
         Friend WithEvents chkPredictEffort As System.Windows.Forms.CheckBox
         Friend WithEvents cmbNutForcing As System.Windows.Forms.ComboBox
         Friend WithEvents m_tbName As System.Windows.Forms.TextBox
@@ -259,6 +243,8 @@ Namespace Ecosim
         Friend WithEvents m_nudNumberYears As System.Windows.Forms.NumericUpDown
         Friend WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
         Private WithEvents chkRegulatoryFeedbackLoop As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
+        Private WithEvents lbScenarioName As System.Windows.Forms.Label
 
     End Class
 End Namespace
