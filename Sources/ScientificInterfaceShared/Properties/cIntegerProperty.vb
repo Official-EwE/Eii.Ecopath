@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIntegerProperty.vb,v $
+' Revision 1.5  2009/04/04 14:07:26  jeroens
+' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
+'
 ' Revision 1.4  2009/04/03 12:08:51  jeroens
 ' Fixed crash on trying to access non-existing meta data
 '
@@ -15,11 +18,16 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports Microsoft.VisualBasic
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -99,30 +107,51 @@ Namespace Properties
                 ' Yes: return true value
                 Return Me.m_iValue
             End Get
-            Set(ByVal value As Object)
-
-                Dim val As cValue = Me.ValueDescriptor
-                Dim meta As cVariableMetaData = Nothing
-                Dim i As Integer = 0
-
-                If val IsNot Nothing Then
-                    meta = val.Metadata
-                    If meta IsNot Nothing Then
-                        i = CInt(meta.NullValue)
-                    End If
-                End If
-
+            Set(ByVal objValue As Object)
                 Try
-                    ' Try to convert to integer
-                    i = Convert.ToInt32(value)
+                    Me.m_iValue = CInt(objValue)
                 Catch ex As Exception
-                    'Debug.Assert(False, "Unable to convert value to Integer")
+
                 End Try
-
-                Me.m_iValue = i
-
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set an Integer value in the property and commit it to the EwE core.
+        ''' </summary>
+        ''' <param name="newValue">The value to set.</param>
+        ''' <param name="notify">Flag that states whether a change notification
+        ''' must be sent out. For an detailed description of values see 
+        ''' <see cref="cProperty.SetValue">cProperty.SetValue</see>.</param>
+        ''' <returns>An Integer value</returns>
+        ''' <remarks>
+        ''' Overridden to make sure a value is passed to the core as a true Integer.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function SetValue(ByVal newValue As Object, _
+                                           Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+
+            Dim val As cValue = Me.ValueDescriptor
+            Dim meta As cVariableMetaData = Nothing
+            Dim i As Integer = 0
+
+            If val IsNot Nothing Then
+                meta = val.Metadata
+                If meta IsNot Nothing Then
+                    i = CInt(meta.NullValue)
+                End If
+            End If
+
+            Try
+                ' Try to convert to integer
+                i = Convert.ToInt32(newValue)
+            Catch ex As Exception
+                'Debug.Assert(False, "Unable to convert value to Integer")
+            End Try
+
+            Return MyBase.SetValue(i, notify)
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

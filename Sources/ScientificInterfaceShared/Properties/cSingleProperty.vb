@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSingleProperty.vb,v $
+' Revision 1.4  2009/04/04 14:07:25  jeroens
+' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
+'
 ' Revision 1.3  2009/04/03 12:08:52  jeroens
 ' Fixed crash on trying to access non-existing meta data
 '
@@ -12,11 +15,16 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports Microsoft.VisualBasic
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -94,34 +102,56 @@ Namespace Properties
                     ' #Yes: return nothing (NOT 0.0)
                     Return Nothing
                 End If
-                ' Yes: return true value
+                ' Return true value
                 Return Me.m_sValue
             End Get
 
-            Set(ByVal value As Object)
-
-                Dim val As cValue = Me.ValueDescriptor
-                Dim meta As cVariableMetaData = Nothing
-                Dim s As Single = 0
-
-                If val IsNot Nothing Then
-                    meta = val.Metadata
-                    If meta IsNot Nothing Then
-                        s = CSng(meta.NullValue)
-                    End If
-                End If
-
+            Set(ByVal objValue As Object)
                 Try
-                    ' Try to convert to single
-                    s = Convert.ToSingle(value)
+                    Me.m_sValue = CSng(objValue)
                 Catch ex As Exception
-                    'Debug.Assert(False, "Unable to convert value to Single")
+
                 End Try
-
-                Me.m_sValue = s
-
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set a Single value in the property and commit it to the EwE core.
+        ''' </summary>
+        ''' <param name="newValue">The value to set.</param>
+        ''' <param name="notify">Flag that states whether a change notification
+        ''' must be sent out. For an detailed description of values see 
+        ''' <see cref="cProperty.SetValue">cProperty.SetValue</see>.</param>
+        ''' <returns>A Single value</returns>
+        ''' <remarks>
+        ''' Overridden to make sure a value is passed to the core as a true Single.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function SetValue(ByVal newValue As Object, _
+                Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+
+            Dim val As cValue = Me.ValueDescriptor
+            Dim meta As cVariableMetaData = Nothing
+            Dim s As Single = 0
+
+            If val IsNot Nothing Then
+                meta = val.Metadata
+                If meta IsNot Nothing Then
+                    s = CSng(meta.NullValue)
+                End If
+            End If
+
+            Try
+                ' Try to convert to single
+                s = Convert.ToSingle(newValue)
+            Catch ex As Exception
+                'Debug.Assert(False, "Unable to convert value to Single")
+            End Try
+
+            Return MyBase.SetValue(s, notify)
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

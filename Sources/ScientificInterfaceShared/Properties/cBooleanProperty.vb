@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cBooleanProperty.vb,v $
+' Revision 1.3  2009/04/04 14:07:26  jeroens
+' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
+'
 ' Revision 1.2  2009/04/02 15:50:53  jeroens
 ' Removed assert on set_Value
 '
@@ -9,11 +12,16 @@
 '
 '==============================================================================
 
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports Microsoft.VisualBasic
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -92,17 +100,41 @@ Namespace Properties
                 End If
                 Return m_bValue
             End Get
-            Set(ByVal value As Object)
-                Dim bValue As Boolean = False
+            Set(ByVal objValue As Object)
                 Try
-                    ' Try to convert to boolean
-                    bValue = Convert.ToBoolean(value)
+                    Me.m_bValue = CBool(objValue)
                 Catch ex As Exception
-                    'Debug.Assert(False, "Unable to convert value to Boolean")
+
                 End Try
-                Me.m_bValue = bValue
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set a Boolean value in the property and commit it to the EwE core.
+        ''' </summary>
+        ''' <param name="newValue">The value to set.</param>
+        ''' <param name="notify">Flag that states whether a change notification
+        ''' must be sent out. For an detailed description of values see 
+        ''' <see cref="cProperty.SetValue">cProperty.SetValue</see>.</param>
+        ''' <returns>A Single value</returns>
+        ''' <remarks>
+        ''' Overridden to make sure a value is passed to the core as a true Boolean.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function SetValue(ByVal newValue As Object, _
+                                           Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+
+            Dim bValue As Boolean = False
+            Try
+                ' Try to convert to boolean
+                bValue = Convert.ToBoolean(newValue)
+            Catch ex As Exception
+                'Debug.Assert(False, "Unable to convert value to Boolean")
+            End Try
+
+            Return MyBase.SetValue(bValue, notify)
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
