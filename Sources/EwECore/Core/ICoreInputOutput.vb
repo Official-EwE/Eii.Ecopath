@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.10  2009/04/04 14:05:54  jeroens
+' Fixed documentation
+'
 ' Revision 1.9  2009/04/02 14:30:53  jeroens
 ' Base reset status flags incorporates ReadOnly check
 '
@@ -534,6 +537,8 @@ Public MustInherit Class cCoreInputOutputBase
         End Try
 
     End Function
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the value of a variable.
     ''' </summary>
@@ -543,7 +548,12 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <returns>True if a variable is succesfully changed.</returns>
     ''' <remarks>The outcome of the SetVariable call can be examined via 
     ''' <see cref="cValue.ValidationStatus">cValue.ValidationStatus</see>.</remarks>
-    Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetVariable
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags, _
+            ByVal newValue As Object, _
+            Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean _
+            Implements ICoreInputOutput.SetVariable
+
         Dim bSucces As Boolean = True
         Dim valueobject As cValue
 
@@ -600,8 +610,18 @@ Public MustInherit Class cCoreInputOutputBase
 
 #End Region ' Get/set variable
 
-#Region " Experimental "
+#Region " Metadata "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return <see cref="cVariableMetaData">metadata</see> associated with a 
+    ''' variable. Note that not every variable my have metadata associated with 
+    ''' it.
+    ''' </summary>
+    ''' <param name="varName">The variable to return metadata for.</param>
+    ''' <returns>A <see cref="cVariableMetaData">metadata</see> instance, or
+    ''' Null if a variable does not have associated metadata.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
 
         Dim objValue As cValue = Nothing
@@ -614,7 +634,7 @@ Public MustInherit Class cCoreInputOutputBase
         Return Nothing
     End Function
 
-#End Region ' Experimental
+#End Region ' Metadata
 
 #Region " Properties by dot(.) operator "
 
