@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.45  2009/04/05 17:58:37  jeroens
+' useVarPQ no longer stored
+'
 ' Revision 1.44  2009/04/04 01:40:08  villyc
 ' varPQ was being set to true when loading Ecosim scenario, should be false.
 '
@@ -2834,7 +2837,7 @@ Public Class cDBDataSource
             ecosimDS.NutBaseFreeProp = CSng(reader("NutBaseFreeProp"))
             ecosimDS.NutPBmax = CSng(reader("NutPBmax"))
 
-            ecosimDS.UseVarPQ = CBool(reader("UseVarPQ"))
+            'ecosimDS.UseVarPQ = CBool(reader("UseVarPQ"))
             'VC090403: the var P/Q was being set to true by default, It shouldn't be, this should be done in interface only
             ecosimDS.UseVarPQ = False
 
@@ -2957,7 +2960,7 @@ Public Class cDBDataSource
             drow("NutForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.NutForceNumber)
             drow("SalinityForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.SalinityForceNo)
             drow("NutPBmax") = ecosimDS.NutPBmax
-            drow("UseVarPQ") = ecosimDS.UseVarPQ
+            'drow("UseVarPQ") = ecosimDS.UseVarPQ
             drow("LastSaved") = cDBDataSource.GetJulianDate()
 
             ' Save changes
