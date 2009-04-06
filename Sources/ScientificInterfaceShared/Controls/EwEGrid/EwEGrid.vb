@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.14  2009/04/06 15:56:18  jeroens
+' Fixed possible mem leaks on Selection handling
+'
 ' Revision 1.13  2009/04/03 14:55:47  jeroens
 ' Fixed crash on invoking disposed cells
 '
@@ -304,7 +307,7 @@ Namespace Controls.EwEGrid
 
 #End Region ' Variables
 
-#Region " Constructor "
+#Region " Constructor / destructor "
 
         Public Sub New()
             MyBase.New()
@@ -316,19 +319,35 @@ Namespace Controls.EwEGrid
             Me.m_peh3 = New SourceGrid2.PositionEventHandler(AddressOf bm_colSelectClick)
             AddHandler m_ceColSelect.Click, Me.m_peh3
 
+            AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
+            AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
+            AddHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
+            AddHandler Me.Selection.ClearCells, AddressOf OnClearCells
+            AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
             Me.ClearData()
 
-            RemoveHandler m_ceCellClick.Click, Me.m_peh1
-            Me.m_peh1 = Nothing
-            RemoveHandler m_ceRowSelect.Click, Me.m_peh2
-            Me.m_peh2 = Nothing
-            RemoveHandler m_ceColSelect.Click, Me.m_peh3
-            Me.m_peh3 = Nothing
+            If Me.m_peh1 IsNot Nothing Then
 
-            MyBase.Dispose(disposing)
+                RemoveHandler m_ceCellClick.Click, Me.m_peh1
+                Me.m_peh1 = Nothing
+                RemoveHandler m_ceRowSelect.Click, Me.m_peh2
+                Me.m_peh2 = Nothing
+                RemoveHandler m_ceColSelect.Click, Me.m_peh3
+                Me.m_peh3 = Nothing
+
+                RemoveHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
+                RemoveHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
+                RemoveHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
+                RemoveHandler Me.Selection.ClearCells, AddressOf OnClearCells
+                RemoveHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+
+            End If
+
+            MyBase.Dispose(bDisposing)
         End Sub
 
 #End Region ' Constructor
@@ -609,16 +628,16 @@ Namespace Controls.EwEGrid
             Me.Selection.AddRange(New Range(0, iFirstCol, Me.RowsCount - 1, iLastCol))
         End Sub
 
-        Private WithEvents m_sel As Selection = Me.Selection
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_sel_ClearCells(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_sel.ClearCells
+        Private Sub OnClearCells(ByVal sender As Object, ByVal e As System.EventArgs)
+
             Dim cell As SourceGrid2.Cells.ICell = Nothing
-            For Each pos As Position In Me.m_sel.GetCellsPositions()
+
+            For Each pos As Position In Me.Selection.GetCellsPositions()
                 cell = Me(pos.Row, pos.Column)
                 If cell.DataModel.EditableMode <> EditableMode.None And cell.DataModel.EnableEdit = True Then
                     cell.SetValue(pos, Nothing)
@@ -632,9 +651,9 @@ Namespace Controls.EwEGrid
         ''' style-masked values in the clipboard text.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_sel_ClipboardCopy(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_sel.ClipboardCopy
+        Private Sub OnClipboardCopy(ByVal sender As Object, ByVal e As System.EventArgs)
 
-            Dim r As Range = Me.m_sel.GetRange()
+            Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
             Dim prop As cProperty = Nothing
             Dim sbClipText As New StringBuilder
@@ -656,7 +675,7 @@ Namespace Controls.EwEGrid
                     pos = New Position(iRow, iCol)
                     strValue = ""
 
-                    If (Me.m_sel.Contains(pos) Or bIgnoreSelection) Then
+                    If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
                         cell = Me(iRow, iCol)
                         If cell IsNot Nothing Then
                             If TypeOf cell Is PropertyCell Then
@@ -687,9 +706,11 @@ Namespace Controls.EwEGrid
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_sel_ClipboardCut(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_sel.ClipboardCut
-            Me.m_sel_ClipboardCopy(sender, e)
-            Me.m_sel_ClearCells(sender, e)
+        Private Sub OnClipboardCut(ByVal sender As Object, ByVal e As System.EventArgs)
+
+            Me.OnClipboardCopy(sender, e)
+            Me.OnClearCells(sender, e)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -697,7 +718,7 @@ Namespace Controls.EwEGrid
         ''' Clipboard paste
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_sel_ClipboardPaste(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_sel.ClipboardPaste
+        Private Sub OnClipboardPaste(ByVal sender As Object, ByVal e As System.EventArgs)
 
             Dim dtObj As IDataObject = Clipboard.GetDataObject()
 
@@ -705,7 +726,7 @@ Namespace Controls.EwEGrid
 
             Dim strData As String = CStr(dtObj.GetData(DataFormats.Text)).Replace(CStr(vbCr + vbLf), CStr(vbLf))
             Dim astrLines() As String = strData.Split(New Char() {CChar(vbCr), CChar(vbLf)})
-            Dim r As Range = Me.m_sel.GetRange()
+            Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
             Dim strValue As String = ""
@@ -732,7 +753,7 @@ Namespace Controls.EwEGrid
                             ' Is cell enabled for editing?
                             If (cell.DataModel.EnableEdit) Then
                                 ' Is cell either part of a selection OR should selections be ignored?
-                                If (Me.m_sel.Contains(pos) Or bIgnoreSelection) Then
+                                If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
                                     ' #Yes: attempt to set value
                                     strValue = astrCols(iCol - r.Start.Column)
 
@@ -758,7 +779,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="PropertySelectionCommand">PropertySelectCommand</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs) Handles m_sel.SelectionChange
+        Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
@@ -768,7 +789,7 @@ Namespace Controls.EwEGrid
             Me.m_lpropertySelected.Clear()
 
             ' Get properties from selected cells
-            For Each p As Position In Me.m_sel.GetCellsPositions
+            For Each p As Position In Me.Selection.GetCellsPositions
                 c = Me(p.Row, p.Column)
                 If c IsNot Nothing Then
                     ' Is property cell?
