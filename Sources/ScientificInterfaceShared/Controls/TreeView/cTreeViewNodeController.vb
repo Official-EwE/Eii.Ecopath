@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTreeViewNodeController.vb,v $
+' Revision 1.3  2009/04/06 15:31:50  jeroens
+' Fixed withevents mem leak
+'
 ' Revision 1.2  2008/12/15 15:37:27  jeroens
 ' no message
 '
@@ -43,16 +46,41 @@ Namespace Controls
         Private m_NodeInfoNodes As New List(Of cNodeInfo)
         ''' <summary>TreeView that is being controlled.</summary>
         ''' <remarks>M_TV? haha</remarks>
-        Private WithEvents m_tv As TreeView = Nothing
+        Private m_tv As TreeView = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Cosntructor, initializes a new instance of this class.
+        ''' Connects an instance to a tree view.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal tv As TreeView)
+        Public Sub Attach(ByVal tv As TreeView)
+
+            Debug.Assert(Me.m_tv Is Nothing)
+            Debug.Assert(tv IsNot Nothing)
+
             ' Store ref
             Me.m_tv = tv
+
+            AddHandler Me.m_tv.AfterSelect, AddressOf OnAfterSelect
+            AddHandler Me.m_tv.AfterExpand, AddressOf OnAfterExpand
+            AddHandler Me.m_tv.VisibleChanged, AddressOf OnVisibleChanged
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Connects an instance to a tree view.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Sub Detach()
+
+            Debug.Assert(Me.m_tv IsNot Nothing)
+
+            RemoveHandler Me.m_tv.AfterSelect, AddressOf OnAfterSelect
+            RemoveHandler Me.m_tv.AfterExpand, AddressOf OnAfterExpand
+            RemoveHandler Me.m_tv.VisibleChanged, AddressOf OnVisibleChanged
+
+            Me.m_tv = Nothing
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -134,7 +162,7 @@ Namespace Controls
         ''' <param name="sender">The tree</param>
         ''' <param name="e">Event info</param>
         ''' -------------------------------------------------------------------------------------------
-        Private Sub EmTeeVee_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tv.AfterSelect
+        Private Sub OnAfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
 
             Dim ni As cNodeInfo = Me.SearchNodeByName(e.Node.Name)
             Dim cmdH As CommandHandler = Nothing
@@ -165,7 +193,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub EmTeeVee_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles m_tv.AfterExpand
+        Private Sub OnAfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
             ExpandCollapseNodes(e.Node)
         End Sub
 
@@ -177,7 +205,7 @@ Namespace Controls
         ''' <param name="sender">The tree</param>
         ''' <param name="e">Event info</param>
         ''' -------------------------------------------------------------------------------------------
-        Private Sub EmTeeVee_VisibleChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tv.VisibleChanged
+        Private Sub OnVisibleChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
             If m_tv.Visible Then
 
@@ -188,6 +216,7 @@ Namespace Controls
                     selNd.EnsureVisible()
                 End If
             End If
+
         End Sub
 
     End Class
