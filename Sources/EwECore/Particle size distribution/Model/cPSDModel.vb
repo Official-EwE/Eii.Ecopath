@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.11  2009/04/06 22:17:27  joeh
+' Change Me.m_psd.t0(i) < 0 to Me.m_psd.t0(i) < -9998
+'
 ' Revision 1.10  2009/04/02 22:08:01  joeh
 ' Age1 is no longer divided by 12 for the internal PSD build. Might fall back after Daniel and Villy testing
 '
@@ -178,7 +181,7 @@ Public Class cPSDModel
 
         't0
         For i As Integer = 1 To m_Data.NumLiving
-            If Me.m_psd.t0(i) < 0 And Me.m_psd.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
+            If Me.m_psd.t0(i) < -9998 And Me.m_psd.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
                 Me.m_psd.t0(i) = CSng(-Math.Exp(-0.3922 - 0.2752 * Math.Log10(Me.m_psd.Loo(i)) - 1.038 * Math.Log10(m_Data.vbK(i))))
             End If
         Next
