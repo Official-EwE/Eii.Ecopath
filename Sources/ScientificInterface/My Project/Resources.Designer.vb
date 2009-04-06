@@ -1837,6 +1837,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to You cancelled the operation.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_REPLY_CANCEL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REPLY_CANCEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You answered &apos;No&apos;.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_REPLY_NO() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REPLY_NO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You approved the operation.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_REPLY_OK() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REPLY_OK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You answered &apos;Yes&apos;.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_REPLY_YES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REPLY_YES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Applying changes....
         '''</summary>
         Friend ReadOnly Property GENERIC_STATUS_APPLYCHANGES() As String

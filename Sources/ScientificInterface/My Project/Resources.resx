@@ -2282,4 +2282,16 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
     <value>Cumulative catch</value>
   </data>
+  <data name="GENERIC_REPLY_CANCEL" xml:space="preserve">
+    <value>You cancelled the operation</value>
+  </data>
+  <data name="GENERIC_REPLY_NO" xml:space="preserve">
+    <value>You answered 'No'</value>
+  </data>
+  <data name="GENERIC_REPLY_OK" xml:space="preserve">
+    <value>You approved the operation</value>
+  </data>
+  <data name="GENERIC_REPLY_YES" xml:space="preserve">
+    <value>You answered 'Yes'</value>
+  </data>
 </root>
