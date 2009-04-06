@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.8  2009/04/06 15:14:31  jeroens
+' Added feedback message reply to nodes
+'
 ' Revision 1.7  2009/04/03 20:29:09  jeroens
 ' FeedbackMessages logged in status panel (to be improved)
 ' All pop-ups share same message breakdown logic
@@ -54,6 +57,7 @@ Public Class StatusPanel
         InitializeComponent()
         ' Set tab label
         Me.TabText = My.Resources.HEADER_STATUS
+
         ' Prepare image list
         m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
         m_il.Images.Add(New Icon(SystemIcons.Warning, 40, 40))
@@ -69,7 +73,7 @@ Public Class StatusPanel
         Me.ConfigMessageHandlers(True)
     End Sub
 
-    Private Sub StatusPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         ' Stop listening to core messages
         Me.ConfigMessageHandlers(False)
     End Sub
@@ -183,15 +187,7 @@ Public Class StatusPanel
         ' Must show message?
         If bStatus Then
             ' #Yes: add message
-
             Dim strMessage As String = msg.Message
-
-            ' Hack: add feedback reply
-            If TypeOf (msg) Is cFeedbackMessage Then
-                strMessage = strMessage & ": " & CStr(DirectCast(msg, cFeedbackMessage).Reply)
-            End If
-
-            ' A message with one var and the same text for msg and var should not display a child node?
             Dim bSuppressVarMessage As Boolean = False
 
             ' Prepare treenode
@@ -227,7 +223,7 @@ Public Class StatusPanel
                 ' Create subnodes for each variable status entry in the message
                 For Each vs As cVariableStatus In msg.Variables
                     ' Prepare child node
-                    Dim tnVariable As TreeNode = New TreeNode(Me.ToTreeNodeText(vs.Message))
+                    Dim tnVariable As New TreeNode(Me.ToTreeNodeText(vs.Message))
                     ' Set same image as parent node
                     tnVariable.ImageIndex = tnMessage.ImageIndex
                     tnVariable.SelectedImageIndex = tnMessage.ImageIndex
@@ -245,6 +241,45 @@ Public Class StatusPanel
                     ' Now add the variable child node to the message parent node
                     tnMessage.Nodes.Add(tnVariable)
                 Next
+
+                ' Add feedback reply
+                If (TypeOf (msg) Is cFeedbackMessage) Then
+
+                    Dim fmsg As cFeedbackMessage = DirectCast(msg, cFeedbackMessage)
+                    Dim tnReply As New TreeNode()
+
+                    Select Case fmsg.ReplyStyle
+
+                        Case cFeedbackMessage.eReplyStyle.OK_CANCEL
+                            Select Case fmsg.Reply
+                                Case cFeedbackMessage.eReply.OK
+                                    tnReply.Text = My.Resources.GENERIC_REPLY_OK
+                                Case cFeedbackMessage.eReply.CANCEL
+                                    tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
+                            End Select
+
+                        Case cFeedbackMessage.eReplyStyle.YES_NO, _
+                             cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
+
+                            Select Case fmsg.Reply
+                                Case cFeedbackMessage.eReply.YES
+                                    tnReply.Text = My.Resources.GENERIC_REPLY_YES
+                                Case cFeedbackMessage.eReply.NO
+                                    tnReply.Text = My.Resources.GENERIC_REPLY_NO
+                                Case cFeedbackMessage.eReply.CANCEL
+                                    tnReply.Text = My.Resources.GENERIC_REPLY_CANCEL
+
+                            End Select
+
+                    End Select
+
+                    tnReply.ImageIndex = tnMessage.ImageIndex
+                    tnReply.SelectedImageIndex = tnMessage.ImageIndex
+                    tnReply.ToolTipText = tnReply.Text
+
+                    tnMessage.Nodes.Add(tnReply)
+
+                End If
             End If
 
             Try
@@ -294,10 +329,12 @@ Public Class StatusPanel
         ' If no node clicked then return an empty list
         If Object.ReferenceEquals(tn, Nothing) Then Return lp
 
-        If TypeOf (tn.Tag) Is cVariableStatus Then
-            prop = cPropertyManager.GetInstance().ExtractProperty(DirectCast(tn.Tag, cVariableStatus))
-            If Not Object.ReferenceEquals(prop, Nothing) Then
-                lp.Add(prop)
+        If Not Object.ReferenceEquals(tn.Tag, Nothing) Then
+            If TypeOf (tn.Tag) Is cVariableStatus Then
+                prop = cPropertyManager.GetInstance().ExtractProperty(DirectCast(tn.Tag, cVariableStatus))
+                If Not Object.ReferenceEquals(prop, Nothing) Then
+                    lp.Add(prop)
+                End If
             End If
         End If
 
