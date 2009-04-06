@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.46  2009/04/06 15:53:39  jeroens
+' PSD data types safe casted
+'
 ' Revision 1.45  2009/04/05 17:58:37  jeroens
 ' useVarPQ no longer stored
 '
@@ -1295,10 +1298,10 @@ Public Class cDBDataSource
             Try
 
                 psdDS.NAgeSteps = CInt(Me.ReadSafe(reader, "NumAgeSteps", 101))
-                psdDS.MortalityType = DirectCast(Me.ReadSafe(reader, "MortalityType", 0), ePSDMortalityTypes)
+                psdDS.MortalityType = CType(CInt(Me.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
                 psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
                 psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
-                psdDS.ClimateType = DirectCast(Me.ReadSafe(reader, "ClimateType", 0), eClimateTypes)
+                psdDS.ClimateType = CType(CInt(Me.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
