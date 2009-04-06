@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RemarkPanel.vb,v $
+' Revision 1.3  2009/04/06 14:47:26  jeroens
+' Reworked WithEvents to prevent crashes on improper clean-up
+'
 ' Revision 1.2  2009/03/22 14:01:38  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -103,11 +106,11 @@ Imports System.Text
 Public Class RemarkPanel
 
     ''' <summary>The property selection command to listen to.</summary>
-    Private WithEvents m_cmd As PropertySelectionCommand = Nothing
+    Private m_cmd As PropertySelectionCommand = Nothing
     ''' <summary>The currently selected property.</summary>
     Private m_aprop() As cProperty = Nothing
     ''' <summary>State monitor to observe.</summary>
-    Private WithEvents m_sm As cCoreStateMonitor = Nothing
+    Private m_sm As cCoreStateMonitor = Nothing
     ''' <summary>Flag stating whether the user has made any textual changes.</summary>
     Private m_bTextChanged As Boolean = False
 
@@ -117,22 +120,36 @@ Public Class RemarkPanel
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
+
         ' Do the .NET stuff
-        InitializeComponent()
+        Me.InitializeComponent()
 
         ' Create property selection command
-        m_cmd = CType(CommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_cmd = CType(CommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        AddHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
+
         ' Hook up to core state monitor
-        m_sm = cCore.GetInstance().StateMonitor
+        Me.m_sm = cCore.GetInstance().StateMonitor
+        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
 
         ' Init panel
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub RemarkPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles Me.Disposed
-        Me.m_sm = Nothing
+
+        ' Clean up
+        If Me.m_cmd IsNot Nothing Then
+
+            RemoveHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
+            Me.m_cmd = Nothing
+
+            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+            Me.m_sm = Nothing
+        End If
+
     End Sub
 
     Private Sub m_btnSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -149,7 +166,7 @@ Public Class RemarkPanel
     ''' </summary>
     ''' <param name="cmd">The <see cref="Command">Command</see> that was invoked.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnInvoke(ByVal cmd As Command) Handles m_cmd.OnInvoke
+    Private Sub OnInvoke(ByVal cmd As Command)
 
         ' Sanity check
         If Not (cmd Is m_cmd) Then Return
@@ -217,11 +234,12 @@ Public Class RemarkPanel
 
 #Region " Core state response "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler, responds to core state change events to assess whether this panel should be available.
     ''' </summary>
-    Private Sub m_sm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
-        Handles m_sm.CoreExecutionStateEvent
+    ''' -----------------------------------------------------------------------
+    Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
         Me.UpdateControls()
     End Sub
 
