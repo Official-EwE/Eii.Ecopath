@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.23  2009/04/06 15:31:31  jeroens
+' Uses attach, detach on node controller
+'
 ' Revision 1.22  2009/03/31 02:30:24  jeroens
 ' Fixed bug that prevented selection of already open nodes
 '
@@ -114,19 +117,20 @@ Public Class NavigationPanel
 
 #Region " Constructors "
 
-    Public Sub New(ByRef p_core As cCore, ByRef p_pluginManager As EwEPlugin.cPluginManager)
+    Public Sub New(ByRef core As cCore, ByRef pluginManager As EwEPlugin.cPluginManager)
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Me.m_core = p_core
-        Me.m_pluginManager = p_pluginManager
+        Me.m_core = core
+        Me.m_pluginManager = pluginManager
 
         AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
 
         ' Put all the list here
-        Me.m_nodeController = New cTreeViewNodeController(Me.m_tvNavigation)
+        Me.m_nodeController = New cTreeViewNodeController()
+        Me.m_nodeController.Attach(Me.m_tvNavigation)
 
         'Basic Parameters
         m_nodeController.Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelDescription), "Model description.htm")
@@ -218,8 +222,13 @@ Public Class NavigationPanel
 
     End Sub
 
-    Private Sub NavigationPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub NavigationPanel_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles Me.Disposed
+
         RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+        Me.m_nodeController.Detach()
+        Me.m_nodeController = Nothing
+
     End Sub
 
 #End Region ' Constructors
