@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.49  2009/04/06 15:51:00  jeroens
+' eClimateType defined as Short
+'
 ' Revision 1.48  2009/04/02 20:51:10  jeroens
 ' Added eSearchResultCriteriaTypes
 '
@@ -1825,7 +1828,7 @@ Namespace Core
     ''' The three climate zones for PSD analysis.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Enum eClimateTypes
+    Public Enum eClimateTypes As Short
         ''' <summary>Tropical climate</summary>
         Tropical = 0
         ''' <summary>Temperate climate</summary>
