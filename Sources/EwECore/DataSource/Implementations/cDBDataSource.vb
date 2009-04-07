@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.47  2009/04/07 13:15:34  jeroens
+' Fixed bug in storing applied med fn / forcing fn
+'
 ' Revision 1.46  2009/04/06 15:53:39  jeroens
 ' PSD data types safe casted
 '
@@ -4518,7 +4521,7 @@ Public Class cDBDataSource
                                 drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
                                 drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
                                 drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
-                                If (ecosimDS.IsMedFunction(iPredator, iPrey, iShapeNo)) Then
+                                If (ecosimDS.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
                                     drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
                                 Else
                                     drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
