@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.7  2009/04/07 20:02:11  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.6  2009/04/03 18:21:53  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -75,7 +78,8 @@ Public Class ucSuitabilityPlot
     Private Sub ucSuitabilityPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-        Me.m_zgh = New ZedGraphHelper(Me.m_graph)
+        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh.Attach(Me.m_core, Me.m_graph)
 
         Me.UpdatePlotTypeDropdown()
         Me.UpdatePredatorDropdown()

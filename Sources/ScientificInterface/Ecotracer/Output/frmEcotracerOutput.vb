@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.6  2009/04/07 20:02:06  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.5  2009/04/03 18:21:53  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -158,7 +161,8 @@ Public Class frmEcotracerOutput
 
         Me.m_core = cCore.GetInstance()
         Me.m_sg = StyleGuide.GetInstance()
-        Me.m_zgh = New ZedGraphHelper(m_zgc)
+        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: frmTFMpolicy.vb,v $
+' Revision 1.5  2009/04/07 20:02:09  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.4  2009/04/03 18:21:54  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -58,7 +61,8 @@ Namespace Ecosim
 
             Dim core As cCore = cCore.GetInstance()
 
-            Me.m_zgh = New ZedGraphHelper(Me.m_graph, 1)
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(core, Me.m_graph)
             Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_TFM, True)
 
             Me.m_zgh.AllowZoom = False

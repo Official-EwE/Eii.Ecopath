@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.37  2009/04/07 20:02:10  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.36  2009/04/03 18:21:56  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -160,7 +163,8 @@ Namespace Ecosim
             ' Style guide
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
 
         End Sub
 

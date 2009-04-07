@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.6  2009/04/07 20:02:11  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.5  2009/04/03 18:21:57  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -98,22 +101,18 @@ Namespace Ecosim
 
         Private Sub InitGraphPane()
 
-            Dim myPane As GraphPane = m_zedgraph.GraphPane
-
-            Me.m_zgh = New ZedGraphHelper(Me.m_zedgraph)
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
-            myPane.Border.IsVisible = False
-            myPane.Chart.Border.IsVisible = False
+            'Dim pane As GraphPane = m_zedgraph.GraphPane
 
-            ' Fill the axis background with a color gradient
-            myPane.Chart.Fill = New Fill(Color.White, _
-               Color.LightGray, 90.0F)
-            ' Fill the legend background with a color gradient
-            myPane.Legend.Fill = New Fill(Color.White, _
-               Color.FromArgb(255, 255, 250), 90.0F)
-            ' Fill the pane background with a solid color
-            myPane.Fill = New Fill(Color.FromArgb(250, 250, 255))
+            '' Fill the axis background with a color gradient
+            'pane.Chart.Fill = New Fill(Color.White, Color.LightGray, 90.0F)
+            '' Fill the legend background with a color gradient
+            'pane.Legend.Fill = New Fill(Color.White, Color.FromArgb(255, 255, 250), 90.0F)
+            '' Fill the pane background with a solid color
+            'pane.Fill = New Fill(Color.FromArgb(250, 250, 255))
 
         End Sub
 

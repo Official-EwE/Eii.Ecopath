@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanza.vb,v $
+' Revision 1.5  2009/04/07 20:02:06  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.4  2009/04/03 18:00:23  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -139,7 +142,7 @@ Namespace Ecopath
 
 #Region "Private variables"
         Private m_MultiStanzaGrid As EditMultiStanzaEwEGrid = Nothing
-        Private m_Core As cCore = Nothing
+        Private m_core As cCore = Nothing
         Private m_fpK As cEwEFormatProvider = Nothing
         Private m_fpRecPwr As cEwEFormatProvider = Nothing
         Private m_fpBab As cEwEFormatProvider = Nothing
@@ -153,8 +156,10 @@ Namespace Ecopath
         Public Sub New(Optional ByVal objStanzaClicked As cEcoPathGroupInput = Nothing)
             InitializeComponent()
 
-            Me.m_Core = cCore.GetInstance()
-            Me.m_zgh = New ZedGraphHelper(Me.m_zgc)
+            Me.m_core = cCore.GetInstance()
+
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
 
             Me.m_MultiStanzaGrid = New EditMultiStanzaEwEGrid(objStanzaClicked)
         End Sub
@@ -294,7 +299,7 @@ Namespace Ecopath
         End Sub
 
         Private Sub LoadEditMultiStanza()
-            Dim bEcosimLoaded As Boolean = Me.m_Core.StateMonitor.HasEcosimLoaded()
+            Dim bEcosimLoaded As Boolean = Me.m_core.StateMonitor.HasEcosimLoaded()
 
             plMultiStanzaGrid.Controls.Add(m_MultiStanzaGrid)
             m_MultiStanzaGrid.Dock = DockStyle.Fill
@@ -362,7 +367,7 @@ Namespace Ecopath
 
         Private Sub SaveChanges(ByVal bApplyToCore As Boolean)
             ' Check ecosim status
-            Dim bEcosimLoaded As Boolean = Me.m_Core.StateMonitor.HasEcosimLoaded()
+            Dim bEcosimLoaded As Boolean = Me.m_core.StateMonitor.HasEcosimLoaded()
 
             'm_MultiStanzaGrid.ClickedStanzaGroupName = cmbSpeciesName.Text
             m_MultiStanzaGrid.CurvParam = CSng(Me.m_fpK.Value)

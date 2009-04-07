@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.21  2009/04/07 20:02:09  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.20  2009/04/03 18:21:55  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -108,10 +111,6 @@ Namespace Ecopath.Output
 
             Me.InitializeComponent()
 
-            Me.m_core = cCore.GetInstance()
-            Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_zgh = New ZedGraphHelper(Me.m_zedgraph)
-
         End Sub
 
 #End Region ' Constructor/Destructor
@@ -120,6 +119,11 @@ Namespace Ecopath.Output
 
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
+
+            Me.m_core = cCore.GetInstance()
+            Me.m_coreStateMonitor = Me.m_core.StateMonitor
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
 
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = Nothing

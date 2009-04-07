@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.21  2009/04/07 20:02:09  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.20  2009/04/03 18:21:55  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -102,7 +105,9 @@ Namespace Ecopath.Output
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
             Me.m_MasterPane = New MasterPane
-            Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
 
             'Don't manually run! The core execution states take care of this!
             'm_core.RunPSD(IsGroupSelected)

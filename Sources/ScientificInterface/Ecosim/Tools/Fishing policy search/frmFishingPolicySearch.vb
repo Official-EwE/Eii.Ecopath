@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.8  2009/04/07 20:02:07  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.7  2009/04/03 18:21:54  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -497,7 +500,8 @@ Namespace Ecosim
 
         Private Sub InitResultsPlot()
 
-            Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
+            Me.m_zghResults = New ZedGraphHelper()
+            Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = False
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos

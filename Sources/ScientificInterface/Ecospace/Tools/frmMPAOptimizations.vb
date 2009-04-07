@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.37  2009/04/07 20:02:08  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.36  2009/04/03 18:14:38  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -647,7 +650,8 @@ Namespace Ecospace
             ' Flush first color to make sure that the two graps (progress and output) use the same colour scheme
             Dim clrFlush As Color = zgcr.NextColor
 
-            Me.m_zghProgress = New ZedGraphHelper(Me.m_graphProgress)
+            Me.m_zghProgress = New ZedGraphHelper()
+            Me.m_zghProgress.Attach(Me.m_core, Me.m_graphProgress)
 
             Me.m_graphProgress.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
             Me.m_graphProgress.GraphPane.Title.IsVisible = False
@@ -680,7 +684,8 @@ Namespace Ecospace
 
             Dim zgcr As New ZedGraph.ColorSymbolRotator
 
-            Me.m_zghResults = New ZedGraphHelper(Me.m_graphResults)
+            Me.m_zghResults = New ZedGraphHelper()
+            Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
 
             AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos

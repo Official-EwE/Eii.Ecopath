@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.9  2009/04/07 20:05:08  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.8  2009/04/07 15:39:06  jeroens
 ' Uses zedgraph helper
 '
@@ -68,11 +71,6 @@ Namespace Ecosim
             AvgWeightOrProdCons
         End Enum
 
-        Private Enum eCurveTypes As Integer
-            EcosimOutput
-            TimeSeries
-        End Enum
-
 #End Region ' Variables
 
 #Region " Constructors "
@@ -95,25 +93,29 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
+            Dim group As cCoreGroupBase = Nothing
+
             ' Add group names into listbox
-            For i As Integer = 1 To m_core.nGroups
-                Dim group As cCoreGroupBase = m_core.EcoSimGroupInputs(i)
+            For i As Integer = 1 To Me.m_core.nGroups
+                group = Me.m_core.EcoSimGroupInputs(i)
                 lbGroups.Items.Add(New GroupListBox.GroupItem(group))
             Next
 
             Me.m_paneMaster = Me.zgcPlots.MasterPane
-            Me.m_zgh = New ZedGraphHelper(Me.zgcPlots, 8)
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.zgcPlots, [Enum].GetValues(GetType(ePaneTypes)).Length)
+            Me.m_zgh.ShowPointValue = True
 
-            ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
-            ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
-            ConfigurePane(ePaneTypes.PredationMortality, My.Resources.ECOSIM_PLOT_CAPTION_PREDMORT)
-            ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT)
-            ConfigurePane(ePaneTypes.FeedingTime, My.Resources.HEADER_FEEDINGTIME)
-            ConfigurePane(ePaneTypes.Prey, My.Resources.ECOSIM_PLOT_CAPTION_PREYPERC)
-            ConfigurePane(ePaneTypes.Yield, My.Resources.HEADER_YIELD)
+            Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
+            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
+            Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.ECOSIM_PLOT_CAPTION_PREDMORT)
+            Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT)
+            Me.ConfigurePane(ePaneTypes.FeedingTime, My.Resources.HEADER_FEEDINGTIME)
+            Me.ConfigurePane(ePaneTypes.Prey, My.Resources.ECOSIM_PLOT_CAPTION_PREYPERC)
+            Me.ConfigurePane(ePaneTypes.Yield, My.Resources.HEADER_YIELD)
             ' Need to test StanZaGroup..Sometimes displayed as Average weight
             ' update it in the actual rendering.
-            ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
+            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
 
             'Me.m_zgh = New ZedGraphHelper(Me.zgcPlots, 8)
             lbGroups.SelectedIndex = 0
@@ -156,11 +158,11 @@ Namespace Ecosim
         Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles lbGroups.SelectedIndexChanged
 
-            AddCurves()
-            UpdatePlots()
+            Me.AddCurves()
+            Me.m_zgh.RescaleAndRedraw()
 
             'Display pred and prey ranks
-            DisplayRanks()
+            Me.DisplayRanks()
 
         End Sub
 
@@ -271,125 +273,128 @@ Namespace Ecosim
         Private Sub AddCurves()
 
             ' ToDo_JS: Find way to update colours in existing curves [CurveList.Item(x).Color = ...]
+            '          Use zedgraphhelper for this
+            ' ToDo_JS: Localize this method
 
-            'Add single curve into graph first
-            'Results data structure
-            'Dim resultLists As New List(Of PointPairList)
-            Dim mortResultLists As New List(Of PointPairList)
+            Dim iCount As Integer = 0
             Dim dXValue As Double = 0
-            Dim iGroup As Integer = lbGroups.SelectedIndex + 1
-            Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
-            Dim colors As Color() = {Color.Black, Color.Red, Color.Blue}
-
-            'resultLists = Me.InitLists(5)
-            mortResultLists = Me.InitLists(3)
+            Dim item As GroupListBox.GroupItem = DirectCast(lbGroups.SelectedItem, GroupListBox.GroupItem)
+            Dim iGroup As Integer = item.Group.Index
+            Dim groupSimOut As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
 
             Dim pplB As New PointPairList()
             Dim pplConsB As New PointPairList()
             Dim pplFeedTime As New PointPairList()
             Dim pplYield As New PointPairList()
-            Dim pplAvgWorProdCons As New PointPairList
+            Dim pplAvgWorProdCons As New PointPairList()
+
+            Dim pplMortTotal As New PointPairList()
+            Dim pplMortPredation As New PointPairList()
+            Dim pplMortFishing As New PointPairList()
+
+            Dim rotator As New ColorSymbolRotator()
+
+            'Set the master pane title
+            Me.m_zgh.Configure(item.Group.Name)
 
             For i As Integer = 1 To m_core.nEcosimTimeSteps
 
                 dXValue = Me.m_core.EcosimFirstYear + (i / cCore.N_MONTHS)
 
                 'Biomass results
-                pplB.Add(dXValue, grpOutput.Biomass(i))
+                pplB.Add(dXValue, groupSimOut.Biomass(i))
 
                 'Consumption/biomass 
-                pplConsB.Add(dXValue, grpOutput.ConsumpBiomass(i))
+                pplConsB.Add(dXValue, groupSimOut.ConsumpBiomass(i))
 
                 'Feeding time
-                pplFeedTime.Add(dXValue, grpOutput.FeedingTime(i))
+                pplFeedTime.Add(dXValue, groupSimOut.FeedingTime(i))
 
                 'Yield 
-                pplYield.Add(dXValue, grpOutput.Yield(i))
+                pplYield.Add(dXValue, groupSimOut.Yield(i))
 
-                If grpOutput.isMultiStanza() Then
+                If groupSimOut.isMultiStanza() Then
                     'Average weight
-                    pplAvgWorProdCons.Add(dXValue, grpOutput.AvgWeight(i))
+                    pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
                 Else
                     'Prod/Cons
-                    pplAvgWorProdCons.Add(dXValue, grpOutput.ProdConsump(i))
+                    pplAvgWorProdCons.Add(dXValue, groupSimOut.ProdConsump(i))
                 End If
 
-                'Mortality plot
-                mortResultLists(0).Add(dXValue, grpOutput.TotalMort(i))
-                mortResultLists(1).Add(dXValue, grpOutput.PredMort(i))
-                mortResultLists(2).Add(dXValue, grpOutput.FishMort(i))
+                'Mortality 
+                pplMortTotal.Add(dXValue, groupSimOut.TotalMort(i))
+                pplMortPredation.Add(dXValue, groupSimOut.PredMort(i))
+                pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
             Next
 
-            'Set the master pane title
-            Dim item As GroupListBox.GroupItem = DirectCast(lbGroups.SelectedItem, GroupListBox.GroupItem)
-            m_paneMaster.Title.Text = item.Group.Name
+            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.BiomassRel)
+                Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
+            Next ppl
 
-            AddCurveToGraphPane(ePaneTypes.Biomass, pplB, eCurveTypes.EcosimOutput, Color.Black)
-            AddCurvesToGraphPane(ePaneTypes.Biomass, GetTSData(eTimeSeriesType.BiomassRel), eCurveTypes.TimeSeries, Nothing, False)
+            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
+            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
-            AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, pplConsB, eCurveTypes.EcosimOutput, Color.Black)
-            AddCurveToGraphPane(ePaneTypes.FeedingTime, pplFeedTime, eCurveTypes.EcosimOutput, Color.Black)
+            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
+            For Each ppl As PointPairList In GetTSData(eTimeSeriesType.Catches)
+                Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("Catches", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
+            Next ppl
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.CatchesForcing)
+                Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("CatchesForcing", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
+            Next ppl
 
-            AddCurveToGraphPane(ePaneTypes.Yield, pplYield, eCurveTypes.EcosimOutput, Color.Black)
-            AddCurvesToGraphPane(ePaneTypes.Yield, GetTSData(eTimeSeriesType.Catches), eCurveTypes.TimeSeries, Nothing, False)
-            AddCurvesToGraphPane(ePaneTypes.Yield, GetTSData(eTimeSeriesType.CatchesForcing), eCurveTypes.TimeSeries, Nothing, False)
+            If groupSimOut.isMultiStanza() Then
 
-            If grpOutput.isMultiStanza() Then
-                UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
-                AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, pplAvgWorProdCons, eCurveTypes.EcosimOutput, Color.Black)
-                AddCurvesToGraphPane(ePaneTypes.AvgWeightOrProdCons, GetTSData(eTimeSeriesType.AverageWeight), eCurveTypes.TimeSeries, Nothing, False)
+                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
+
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(My.Resources.HEADER_AVGERAGEWEIGHT, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+                For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.AverageWeight)
+                    Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
+                Next ppl
+
             Else
-                UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
-                AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, pplAvgWorProdCons, eCurveTypes.EcosimOutput, Color.Black)
+
+                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+
             End If
 
-            AddCurvesToGraphPane(ePaneTypes.Mortality, mortResultLists, eCurveTypes.EcosimOutput, colors)
-            AddCurvesToGraphPane(ePaneTypes.Mortality, GetTSData(eTimeSeriesType.TotalMortality), eCurveTypes.TimeSeries, New Color() {Color.Green}, False)
-            AddCurvesToGraphPane(ePaneTypes.Mortality, GetTSData(eTimeSeriesType.FishingMortality), eCurveTypes.TimeSeries, New Color() {Color.Red}, False)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Total", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal), True)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Predation", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation), False)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing), False)
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.TotalMortality)
+                Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Total", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Green, ppl), False)
+            Next ppl
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.FishingMortality)
+                Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Red, ppl), False)
+            Next ppl
 
-            'Dynamic size depending on the Prey number
-            Dim predResultsLists As New List(Of PointPairList)
-            Dim cnt As Integer = 0
-            Dim predColor As New List(Of Color)
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
-
-            'Predation mortality plot
+            'Predation mortality 
             For i As Integer = 1 To m_core.nLivingGroups
-                If grpOutput.isPred(i) Then
-                    Dim list As New PointPairList
-                    predResultsLists.Add(list)
-                    predColor.Add(sg.GroupColor(Me.m_core, i))
+                If groupSimOut.isPred(i) Then
+                    Dim ppl As New PointPairList
                     For j As Integer = 1 To m_core.nEcosimTimeSteps
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
-                        predResultsLists(cnt).Add(dXValue, grpOutput.Predation(i, j))
+                        ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
-                    cnt += 1
+                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    iCount += 1
                 End If
             Next
 
-            AddCurvesToGraphPane(ePaneTypes.PredationMortality, predResultsLists, eCurveTypes.EcosimOutput, predColor.ToArray())
-
-            'Dynamic size depending on the Predator number
-            Dim preyPercResultsLists As New List(Of PointPairList)
-            cnt = 0
-            Dim preyColor As New List(Of Color)
-
+            iCount = 0
             'Prey %
             For i As Integer = 1 To m_core.nLivingGroups
-                If grpOutput.isPrey(i) Then
-                    Dim list As New PointPairList
-                    preyPercResultsLists.Add(list)
-                    preyColor.Add(sg.GroupColor(Me.m_core, i))
+                If groupSimOut.isPrey(i) Then
+                    Dim ppl As New PointPairList
                     For j As Integer = 1 To m_core.nEcosimTimeSteps
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
-                        preyPercResultsLists(cnt).Add(dXValue, grpOutput.PreyPercentage(i, j) * 100)
+                        ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
-                    cnt += 1
+                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    iCount += 1
                 End If
             Next
-
-            'For the prey percentage
-            AddCurvesToGraphPane(ePaneTypes.Prey, preyPercResultsLists, eCurveTypes.EcosimOutput, preyColor.ToArray())
 
         End Sub
 
@@ -443,19 +448,6 @@ Namespace Ecosim
         End Function
 
 #End Region ' Time series
-
-        Private Sub UpdatePlots()
-            zgcPlots.AxisChange()
-
-            'Tell ZedGraph to auto layout the new GraphPanes
-            'Cannot move that part up to the InitMasterPane, Title is dynamic here..??
-            Dim g As Graphics = Me.CreateGraphics()
-            m_paneMaster.SetLayout(g, PaneLayout.SquareColPreferred)
-            g.Dispose()
-
-            zgcPlots.Refresh()
-
-        End Sub
 
         Private Sub DisplayRanks()
 
@@ -546,15 +538,14 @@ Namespace Ecosim
         ''' Add one curve into the graph pane
         ''' </summary>
         ''' <param name="paneType">Index of the graph pane</param>
-        ''' <param name="list">The data points for the curve</param>
+        ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal list As PointPairList, _
-                                        ByVal curveType As eCurveTypes, ByVal clr As Color, _
+        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal li As LineItem, _
                                         Optional ByVal bClearExistingCurves As Boolean = True)
 
-            Dim lLists As New List(Of ZedGraph.PointPairList)
-            lLists.Add(list)
-            Me.AddCurvesToGraphPane(paneType, lLists, curveType, New Color() {clr})
+            Dim lli As New List(Of ZedGraph.LineItem)
+            lli.Add(li)
+            Me.AddCurvesToGraphPane(paneType, lli, bClearExistingCurves)
 
         End Sub
 
@@ -562,43 +553,41 @@ Namespace Ecosim
         ''' Add multiple curves into the graph pane
         ''' </summary>
         ''' <param name="paneType">The idnex of the graph pane</param>
-        ''' <param name="lists">The lists of data points for the multiple curves</param>
-        ''' <param name="aclr">Optional lists of colors user wants to render for the curves</param>
+        ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options</remarks>
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lists As List(Of PointPairList), _
-                                         ByVal curveType As eCurveTypes, Optional ByVal aclr As Color() = Nothing, _
+        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lli As List(Of LineItem), _
                                          Optional ByVal bClearExistingCurves As Boolean = True)
 
-            Dim lLineItems As New List(Of ZedGraph.LineItem)
-            Dim clr As Color = Nothing
-            Dim rotator As New ColorSymbolRotator
+            'Dim lLineItems As New List(Of ZedGraph.LineItem)
+            'Dim clr As Color = Nothing
+            'Dim rotator As New ColorSymbolRotator
 
-            For i As Integer = 0 To lists.Count - 1
+            'For i As Integer = 0 To lli.Count - 1
 
-                If Object.ReferenceEquals(aclr, Nothing) Then
-                    clr = rotator.NextColor
-                Else
-                    If (i >= aclr.Length) Then
-                        clr = rotator.NextColor
-                    Else
-                        clr = aclr(i)
-                    End If
-                End If
+            '    If Object.ReferenceEquals(aclr, Nothing) Then
+            '        clr = rotator.NextColor
+            '    Else
+            '        If (i >= aclr.Length) Then
+            '            clr = rotator.NextColor
+            '        Else
+            '            clr = aclr(i)
+            '        End If
+            '    End If
 
-                Select Case curveType
-                    Case eCurveTypes.EcosimOutput
-                        lLineItems.Add(New ZedGraph.LineItem("", lists(i), clr, SymbolType.None))
+            '    Select Case curveType
+            '        Case eCurveTypes.EcosimOutput
+            '            lLineItems.Add(New ZedGraph.LineItem("", lli(i), clr, SymbolType.None))
 
-                    Case eCurveTypes.TimeSeries
-                        Dim curve As LineItem = New ZedGraph.LineItem("", lists(i), clr, SymbolType.Circle)
-                        curve.Line.IsVisible = False
-                        curve.Symbol.Size = 4.0
-                        lLineItems.Add(curve)
+            '        Case eCurveTypes.TimeSeries
+            '            Dim curve As LineItem = New ZedGraph.LineItem("", lli(i), clr, SymbolType.Circle)
+            '            curve.Line.IsVisible = False
+            '            curve.Symbol.Size = 4.0
+            '            lLineItems.Add(curve)
 
-                End Select
-            Next
+            '    End Select
+            'Next
 
-            Me.m_zgh.PlotLines(lLineItems, CInt(paneType), True, bClearExistingCurves)
+            Me.m_zgh.PlotLines(lli, CInt(paneType), True, bClearExistingCurves)
 
         End Sub
 

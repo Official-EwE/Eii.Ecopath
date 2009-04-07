@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.8  2009/04/07 20:02:10  jeroens
+' Updated to use ZedGraphHelper Attach
+'
 ' Revision 1.7  2009/04/03 18:21:56  jeroens
 ' Deliberately detached zedgraphhelper
 '
@@ -48,7 +51,9 @@ Namespace Ecopath.Output
 
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
-            Me.m_zgh = New ZedGraphHelper(Me.zgcZedGraphCntl)
+            Me.m_zgh = New ZedGraphHelper()
+
+            Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
 
             'Don't manually run! The core execution states take care of this!
             'm_core.RunPSD(IsGroupSelected)
