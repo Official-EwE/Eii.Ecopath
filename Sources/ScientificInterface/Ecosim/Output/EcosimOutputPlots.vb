@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.11  2009/04/07 22:06:38  jeroens
+' Fixed issue 604
+'
 ' Revision 1.10  2009/04/07 21:04:17  jeroens
 ' Simplified a little
 '
@@ -331,19 +334,23 @@ Namespace Ecosim
             Next
 
             Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
-            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.BiomassRel)
-                Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.BiomassRel, iGroup)
+                Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("Relative", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Blue, ppl), False)
+            Next ppl
+            ' Absolute biomasses (type = 1) are not being plotted, they should be. 
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.BiomassAbs, iGroup)
+                Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("Absolute", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Green, ppl), False)
             Next ppl
 
             Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
             Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
             Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
-            For Each ppl As PointPairList In GetTSData(eTimeSeriesType.Catches)
+            For Each ppl As PointPairList In GetTSData(eTimeSeriesType.Catches, iGroup)
                 Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("Catches", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
             Next ppl
-            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.CatchesForcing)
-                Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("CatchesForcing", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.CatchesForcing, iGroup)
+                Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("Catches forcing", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
             Next ppl
 
             If groupSimOut.isMultiStanza() Then
@@ -351,7 +358,7 @@ Namespace Ecosim
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
 
                 Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
-                For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.AverageWeight)
+                For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.AverageWeight, iGroup)
                     Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
                 Next ppl
 
@@ -365,12 +372,14 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Total", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal), True)
             Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Predation", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation), False)
             Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing), False)
-            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.TotalMortality)
+            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.TotalMortality, iGroup)
                 Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Total", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Green, ppl), False)
             Next ppl
-            For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.FishingMortality)
-                Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Red, ppl), False)
-            Next ppl
+
+            'VC 07apr09: F values (type = 4) should not be plotted as they are used to drive the model
+            'For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.FishingMortality)
+            '    Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Red, ppl), False)
+            'Next ppl
 
             'Predation mortality 
             For i As Integer = 1 To m_core.nLivingGroups
@@ -403,21 +412,19 @@ Namespace Ecosim
 
 #Region " Time series "
 
-        Private Function GetTSData(ByVal TSType As eTimeSeriesType) As List(Of PointPairList)
+        Private Function GetTSData(ByVal TSType As eTimeSeriesType, ByVal iGroup As Integer) As List(Of PointPairList)
 
             Dim listTS As New List(Of PointPairList)
-            Dim iGroup As Integer = lbGroups.SelectedIndex + 1
-
             Dim ts As cTimeSeries = Nothing
 
             For i As Integer = 1 To m_core.nTimeSeries
-                ts = m_core.EcosimTimeSeries(i)
+                ts = Me.m_core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = TSType Then
                     If TypeOf ts Is cGroupTimeSeries Then
-                        Dim gts As cGroupTimeSeries = CType(ts, cGroupTimeSeries)
+                        Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
                         If gts.GroupIndex = iGroup Then
                             If gts.Enabled() Then
-                                listTS.Add(TStoPointPair(ts))
+                                listTS.Add(Me.TStoPointPair(ts))
                             End If
                         End If
                     End If
