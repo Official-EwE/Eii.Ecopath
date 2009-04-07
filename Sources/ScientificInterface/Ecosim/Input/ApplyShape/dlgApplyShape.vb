@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgApplyShape.vb,v $
+' Revision 1.2  2009/04/07 13:58:15  jeroens
+' Fixed bug 609
+'
 ' Revision 1.1  2008/12/15 19:54:04  jeroens
 ' *** empty log message ***
 '
@@ -65,7 +68,7 @@ Namespace Ecosim
         Private Const SMALL_ICON_HEIGHT As Integer = 16
 
         Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
-        Private m_targetMode As eApplyTargetTypes = eApplyTargetTypes.NotSet
+        Private m_targetType As eApplyTargetTypes = eApplyTargetTypes.NotSet
 
         Public Sub New(ByVal iPrey As Integer, ByVal iPred As Integer, _
                 ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
@@ -156,7 +159,7 @@ Namespace Ecosim
 
         Private Sub Init(ByVal editMode As eEditMode, ByVal shapeType As eApplyShapeTypes, ByVal targetType As eApplyTargetTypes)
 
-            InitializeComponent()
+            Me.InitializeComponent()
 
             ' Get the only core reference
             Me.m_core = cCore.GetInstance()
@@ -165,7 +168,7 @@ Namespace Ecosim
 
             Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
-            Me.m_targetMode = targetType
+            Me.m_targetType = targetType
 
             ' Set title
             Select Case Me.m_shapeMode
@@ -535,23 +538,25 @@ Namespace Ecosim
 
         Private Sub LoadMultiplierOption()
 
-            If (m_shapeMode And eApplyTargetTypes.PrimaryProducer) = eApplyTargetTypes.PrimaryProducer Then
+            Select Case Me.m_targetType
+                Case eApplyTargetTypes.Consumer
+                    rbProdRate.Visible = False : rbProdRate.Enabled = False : rbProdRate.Checked = False
+                    rbSearchRate.Visible = True : rbSearchRate.Enabled = True : rbSearchRate.Checked = True
+                    rbVul.Visible = True : rbVul.Enabled = True
+                    rbVulArea.Visible = True : rbVulArea.Enabled = True
+                    rbArea.Visible = True : rbArea.Enabled = True
 
-                rbProdRate.Visible = True : rbProdRate.Enabled = True : rbProdRate.Checked = True
-                rbSearchRate.Visible = False : rbSearchRate.Enabled = False
-                rbVul.Visible = False : rbVul.Enabled = False
-                rbVulArea.Visible = False : rbVulArea.Enabled = False
-                rbArea.Visible = False : rbArea.Enabled = False
+                Case eApplyTargetTypes.PrimaryProducer
+                    rbProdRate.Visible = True : rbProdRate.Enabled = True : rbProdRate.Checked = True
+                    rbSearchRate.Visible = False : rbSearchRate.Enabled = False
+                    rbVul.Visible = False : rbVul.Enabled = False
+                    rbVulArea.Visible = False : rbVulArea.Enabled = False
+                    rbArea.Visible = False : rbArea.Enabled = False
 
-            ElseIf (m_shapeMode And eApplyTargetTypes.Consumer) = eApplyTargetTypes.Consumer Then
+                Case eApplyTargetTypes.NotSet
+                    Debug.Assert(False)
 
-                rbProdRate.Visible = False : rbProdRate.Enabled = False : rbProdRate.Checked = False
-                rbSearchRate.Visible = True : rbSearchRate.Enabled = True : rbSearchRate.Checked = True
-                rbVul.Visible = True : rbVul.Enabled = True
-                rbVulArea.Visible = True : rbVulArea.Enabled = True
-                rbArea.Visible = True : rbArea.Enabled = True
-
-            End If
+            End Select
 
         End Sub
 
