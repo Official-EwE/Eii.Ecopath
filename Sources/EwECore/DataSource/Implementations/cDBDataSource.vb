@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.48  2009/04/07 13:58:56  jeroens
+' Fixed issue 608
+'
 ' Revision 1.47  2009/04/07 13:15:34  jeroens
 ' Fixed bug in storing applied med fn / forcing fn
 '
@@ -2421,7 +2424,7 @@ Public Class cDBDataSource
                     ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
                     ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
                     ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
-                    '       ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
+                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
                 Else
                     Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False
