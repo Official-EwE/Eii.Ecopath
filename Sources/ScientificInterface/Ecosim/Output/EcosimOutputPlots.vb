@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.10  2009/04/07 21:04:17  jeroens
+' Simplified a little
+'
 ' Revision 1.9  2009/04/07 20:05:08  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -327,15 +330,15 @@ Namespace Ecosim
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
             Next
 
-            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
+            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
             For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.BiomassRel)
                 Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
             Next ppl
 
-            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
-            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
+            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
+            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
-            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem(item.Group.Name, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
+            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
             For Each ppl As PointPairList In GetTSData(eTimeSeriesType.Catches)
                 Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("Catches", ZedGraphHelper.eCurveTypes.TimeSeries, rotator.NextColor, ppl), False)
             Next ppl
@@ -347,7 +350,7 @@ Namespace Ecosim
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
 
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(My.Resources.HEADER_AVGERAGEWEIGHT, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
                 For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.AverageWeight)
                     Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.TimeSeries, item.Group.Index, ppl), False)
                 Next ppl
@@ -355,7 +358,7 @@ Namespace Ecosim
             Else
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
 
             End If
 
@@ -549,43 +552,16 @@ Namespace Ecosim
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add multiple curves into the graph pane
         ''' </summary>
         ''' <param name="paneType">The idnex of the graph pane</param>
         ''' <param name="lli">The lists of data points for the multiple curves</param>
-        ''' <remarks>Overloaded method with different color options</remarks>
+        ''' <remarks>Overloaded method with different color options.</remarks>
+        ''' -------------------------------------------------------------------
         Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, ByVal lli As List(Of LineItem), _
                                          Optional ByVal bClearExistingCurves As Boolean = True)
-
-            'Dim lLineItems As New List(Of ZedGraph.LineItem)
-            'Dim clr As Color = Nothing
-            'Dim rotator As New ColorSymbolRotator
-
-            'For i As Integer = 0 To lli.Count - 1
-
-            '    If Object.ReferenceEquals(aclr, Nothing) Then
-            '        clr = rotator.NextColor
-            '    Else
-            '        If (i >= aclr.Length) Then
-            '            clr = rotator.NextColor
-            '        Else
-            '            clr = aclr(i)
-            '        End If
-            '    End If
-
-            '    Select Case curveType
-            '        Case eCurveTypes.EcosimOutput
-            '            lLineItems.Add(New ZedGraph.LineItem("", lli(i), clr, SymbolType.None))
-
-            '        Case eCurveTypes.TimeSeries
-            '            Dim curve As LineItem = New ZedGraph.LineItem("", lli(i), clr, SymbolType.Circle)
-            '            curve.Line.IsVisible = False
-            '            curve.Symbol.Size = 4.0
-            '            lLineItems.Add(curve)
-
-            '    End Select
-            'Next
 
             Me.m_zgh.PlotLines(lli, CInt(paneType), True, bClearExistingCurves)
 
