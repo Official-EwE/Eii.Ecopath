@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.12  2009/04/07 20:55:53  jeroens
+' FIxed time series line style
+' Added line items directly
+'
 ' Revision 1.11  2009/04/07 20:01:14  jeroens
 ' Added preformatted line support
 ' Changed constructor; need to use Attach and Detach explicitly
@@ -318,9 +322,13 @@ Namespace Controls
                     If bClear Then .CurveList.Clear()
 
                     If lines IsNot Nothing Then
-                        For Each line As LineItem In lines
-                            .AddCurve(line.Label.Text, line.Points, line.Color, line.Symbol.Type)
-                        Next
+                        For Each li As LineItem In lines
+                            ' If not provided, use pane title
+                            If String.IsNullOrEmpty(li.Label.Text) Then li.Label.Text = .Title.Text
+                            ' Add the curve
+                            .CurveList.Add(li)
+                        Next li
+
                     End If
                 End With
 
@@ -518,9 +526,19 @@ Namespace Controls
 
                 Case eCurveTypes.TimeSeries
                     li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.Circle, 1)
+
+                    li.Line.Color = Color.Transparent
                     li.Line.IsVisible = False
+
                     ' ToDo_JS: obtain symbol size from style guide
+                    li.Symbol.Border.Color = clr
+
                     li.Symbol.Size = 4
+                    li.Symbol.Fill.Color = Color.Transparent
+                    li.Symbol.Border.IsVisible = True
+                    li.Symbol.Fill.IsVisible = False
+                    li.Symbol.IsVisible = True
+
 
                 Case eCurveTypes.EcosimOutput
                     li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.None, 1)
