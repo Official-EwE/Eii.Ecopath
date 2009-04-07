@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.11  2009/04/07 20:01:14  jeroens
+' Added preformatted line support
+' Changed constructor; need to use Attach and Detach explicitly
+'
 ' Revision 1.10  2009/04/03 18:21:24  jeroens
 ' Added Attach, Detach
 '
@@ -90,17 +94,18 @@ Namespace Controls
 
 #End Region ' Private vars
 
+#Region " Public enums "
+
+        Public Enum eCurveTypes As Integer
+            EcosimOutput
+            TimeSeries
+        End Enum
+
+#End Region ' Public enums
+
 #Region " Construction / destruction "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Wrap and initialize a <see cref="ZedGraph">ZedGraph</see> control.
-        ''' </summary>
-        ''' <param name="zgc">The <see cref="ZedGraph">ZedGraph</see> to wrap.</param>
-        ''' <param name="iNumPanels">The number of panels to initialize on the graph.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
-            Me.Attach(zgc, iNumPanels)
+         Public Sub New()
         End Sub
 
         Protected Overrides Sub Finalize()
@@ -118,13 +123,22 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Sub Attach(ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+        Public Sub Attach(ByVal core As cCore, ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
 
             If Me.m_zgc IsNot Nothing Then Me.Detach()
 
+            Me.m_core = core
             Me.m_zgc = zgc
             Me.m_sg = StyleGuide.GetInstance()
             Me.m_nPanels = iNumPanels
+
+            While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
+                Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
+            End While
+
+            While Me.m_zgc.MasterPane.PaneList.Count > iNumPanels
+                Me.m_zgc.MasterPane.PaneList.RemoveAt(iNumPanels)
+            End While
 
             ReDim Me.m_bShowCursor(iNumPanels)
             ReDim Me.m_liCursor(iNumPanels)
@@ -158,6 +172,7 @@ Namespace Controls
             Me.m_dtGroupLines.Clear()
             Me.m_sg = Nothing
             Me.m_zgc = Nothing
+            Me.m_core = Nothing
 
         End Sub
 
@@ -171,6 +186,21 @@ Namespace Controls
                 Return Me.m_nPanels
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure main panel
+        ''' </summary>
+        ''' <param name="strTitle">The title to set to the master pane.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub Configure(ByVal strTitle As String)
+
+            With Me.m_zgc.MasterPane
+                .Title.Text = strTitle
+                .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
+            End With
+
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -195,27 +225,16 @@ Namespace Controls
             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
             Optional ByVal iPane As Integer = 1) As GraphPane
 
+            Me.ConfigurePane(strTitle, strXAxisLabel, strYAxisLabel, bShowLegend, legendPos, iPane)
+
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
-                ' Set title
-                .Title.Text = strTitle
-                .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
 
-                ' Configure axis
-                .XAxis.Title.Text = strXAxisLabel
-                .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
                 .XAxis.Scale.Min = dXAxisMin
-                .XAxis.Scale.Max = dXAxisMax
-                .XAxis.MinorTic.IsAllTics = False
+                If dXAxisMin <> dXAxisMax Then .XAxis.Scale.Max = dXAxisMax
 
-                .YAxis.Title.Text = strYAxisLabel
-                .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.Scale.Min = dYAxisMin
-                .YAxis.Scale.Max = dYAxisMax
-                .YAxis.MinorTic.IsAllTics = False
-
-                .Legend.IsVisible = bShowLegend
-                .Legend.Position = legendPos
+                If dYAxisMin <> dYAxisMax Then .YAxis.Scale.Max = dYAxisMax
 
             End With
 
@@ -245,6 +264,7 @@ Namespace Controls
 
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
+
                 ' Set title
                 .Title.Text = strTitle
                 .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
@@ -253,14 +273,20 @@ Namespace Controls
                 .XAxis.Title.Text = strXAxisLabel
                 .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
                 .XAxis.MinorTic.IsAllTics = False
+                .XAxis.MinorTic.IsOpposite = False
+                .XAxis.MajorTic.IsOpposite = False
 
                 .YAxis.Title.Text = strYAxisLabel
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.MinorTic.IsAllTics = False
+                .YAxis.MinorTic.IsOpposite = False
+                .YAxis.MajorTic.IsOpposite = False
 
                 .Legend.IsVisible = bShowLegend
                 .Legend.Position = legendPos
 
+                .Border.IsVisible = False
+                .Chart.Border.IsVisible = True
             End With
 
             Me.RescaleAndRedraw()
@@ -282,12 +308,15 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Sub PlotLines(ByVal lines As List(Of LineItem), _
                              Optional ByVal iPane As Integer = 1, _
-                             Optional ByVal bRescale As Boolean = True)
+                             Optional ByVal bRescale As Boolean = True, _
+                             Optional ByVal bClear As Boolean = True)
             Try
 
                 With Me.GetPane(iPane)
 
-                    .CurveList.Clear()
+                    ' ToDo_JS: auto-unregister group lines
+                    If bClear Then .CurveList.Clear()
+
                     If lines IsNot Nothing Then
                         For Each line As LineItem In lines
                             .AddCurve(line.Label.Text, line.Points, line.Color, line.Symbol.Type)
@@ -295,7 +324,7 @@ Namespace Controls
                     End If
                 End With
 
-                If bRescale Then Me.RescaleAndRedraw() Else Me.Redraw()
+                If bRescale Then Me.RescaleAndRedraw(iPane) Else Me.Redraw()
 
             Catch ex As Exception
                 EwECore.cLog.Write(ex)
@@ -450,6 +479,58 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an EwE-styled line
+        ''' </summary>
+        ''' <param name="curveType"></param>
+        ''' <param name="iGroup"></param>
+        ''' <param name="ppl"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function CreateLineItem(ByVal curveType As eCurveTypes, _
+                                        ByVal iGroup As Integer, _
+                                        ByVal ppl As PointPairList) As LineItem
+
+            Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+            Return Me.CreateLineItem(group.Name, curveType, Me.m_sg.GroupColor(Me.m_core, group.Index), ppl)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strName"></param>
+        ''' <param name="curveType"></param>
+        ''' <param name="clr"></param>
+        ''' <param name="ppl"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function CreateLineItem(ByVal strName As String, _
+                                        ByVal curveType As eCurveTypes, _
+                                        ByVal clr As Color, _
+                                        ByVal ppl As PointPairList) As LineItem
+
+            Dim li As LineItem = Nothing
+
+            Select Case curveType
+
+                Case eCurveTypes.TimeSeries
+                    li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.Circle, 1)
+                    li.Line.IsVisible = False
+                    ' ToDo_JS: obtain symbol size from style guide
+                    li.Symbol.Size = 4
+
+                Case eCurveTypes.EcosimOutput
+                    li = New ZedGraph.LineItem(strName, ppl, clr, SymbolType.None, 1)
+
+            End Select
+
+            Return li
+
+        End Function
+
 #Region " Tooltip "
 
         Public Property ShowPointValue() As Boolean
@@ -486,7 +567,7 @@ Namespace Controls
         ''' <para>Note that the line should already exist in the graph. This is 
         ''' not enforced, but it makes sense, doesn't it?</para>
         ''' </remarks>
-
+        ''' -------------------------------------------------------------------
         Public Sub RegisterGroupLine(ByVal line As LineItem, ByVal iGroup As Integer)
             Me.m_dtGroupLines(line) = iGroup
         End Sub
@@ -800,6 +881,20 @@ Namespace Controls
             For Each l As LineItem In Me.m_dtGroupLines.Keys
                 l.Color = Me.m_sg.GroupColor(Me.m_core, Me.m_dtGroupLines(l))
             Next
+
+
+            With Me.m_zgc.MasterPane
+                .Border.IsVisible = False
+                .Title.FontSpec.Family = Me.m_sg.GraphFontFamilyName
+                .Title.FontSpec.Size = Me.m_sg.GraphCaptionFontSize
+                .Title.FontSpec.IsBold = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Bold) = FontStyle.Bold)
+                .Title.FontSpec.IsItalic = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Italic) = FontStyle.Italic)
+                .Title.FontSpec.IsUnderline = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Underline) = FontStyle.Underline)
+
+                Using g As Graphics = Me.m_zgc.CreateGraphics()
+                    .SetLayout(g, PaneLayout.SquareColPreferred)
+                End Using
+            End With
 
             ' Redraw at your convenience
             Me.m_zgc.Invalidate()
