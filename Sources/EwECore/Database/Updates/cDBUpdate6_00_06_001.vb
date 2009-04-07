@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_06_001.vb,v $
+' Revision 1.2  2009/04/07 17:27:18  jeroens
+' Fixed exsiting t0 defaults
+'
 ' Revision 1.1  2009/04/02 20:58:17  jeroens
 ' Initial version
 '
@@ -58,7 +61,7 @@ Public Class cDBUpdate6_00_06_001
     Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
             Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
 
-        Return Me.AddPSDParameters(db)
+        Return Me.AddPSDParameters(db) And Me.FixPSDDefaults(db)
 
     End Function
 
@@ -72,6 +75,22 @@ Public Class cDBUpdate6_00_06_001
             ' No need to convert Lat corners to climate zones since PSD logic has not made it 'live' yet
             bSucces = bSucces And db.Execute("ALTER TABLE EcopathPSD DROP COLUMN LatNWCorner")
             bSucces = bSucces And db.Execute("ALTER TABLE EcopathPSD DROP COLUMN LatSECorner")
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function FixPSDDefaults(ByVal db As cEwEDatabase) As Boolean
+
+        Dim bSucces As Boolean = True
+
+        Try
+
+            bSucces = db.Execute("UPDATE EcopathGroup SET t0=-9999 WHERE t0>1")
 
         Catch ex As Exception
             bSucces = False

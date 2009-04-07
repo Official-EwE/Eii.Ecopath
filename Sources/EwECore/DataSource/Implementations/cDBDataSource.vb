@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.49  2009/04/07 17:27:38  jeroens
+' Fixed exsiting t0 defaults
+'
 ' Revision 1.48  2009/04/07 13:58:56  jeroens
 ' Fixed issue 608
 '
@@ -834,7 +837,7 @@ Public Class cDBDataSource
             If bNewRow Then
                 writer.AddRow(drow)
             Else
-                drow.AcceptChanges()
+                drow.EndEdit()
             End If
 
             writer.Commit()
@@ -2000,6 +2003,7 @@ Public Class cDBDataSource
             drow("GroupName") = strGroupName
             drow("Type") = sPP
             drow("vbK") = sVBK
+            drow("t0") = -9999 ' Fix default
             drow("Sequence") = iPosition
 
             ' Commit to db

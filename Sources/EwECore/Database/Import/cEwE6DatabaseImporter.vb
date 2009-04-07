@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.13  2009/04/07 17:27:41  jeroens
+' Fixed exsiting t0 defaults
+'
 ' Revision 1.12  2009/04/03 14:31:07  jeroens
 ' Forcing TS imported per month
 '
@@ -1475,7 +1478,7 @@ Namespace Database
                     drow("Loo") = Me.FixValue(reader, "Loo")
                     drow("winf") = Me.FixValue(reader, "winf")
                     'drow("vbK") = Me.FixValue(reader, "vbK", 0.3)
-                    drow("t0") = Me.FixValue(reader, "t0")
+                    drow("t0") = Me.FixValue(reader, "t0", -9999)
                     drow("Tcatch") = Me.FixValue(reader, "Tcatch")
                     drow("Tmax") = Me.FixValue(reader, "Tmax")
 
