@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.9  2009/04/07 19:58:11  jeroens
+' Changed default fonts
+'
 ' Revision 1.8  2009/03/12 01:31:00  jeroens
 ' ResetVisibleFlags may not distribute event
 '
@@ -87,11 +90,11 @@ Namespace Style
         ''' <summary></summary>
         Private m_strGraphFontFamilyName As String = "Microsoft Sans serif"
         ''' <summary></summary>
-        Private m_sGraphCaptionFontSize As Single = 16
+        Private m_sGraphCaptionFontSize As Single = 12
         ''' <summary></summary>
         Private m_fsGraphCaptionFontStye As FontStyle = FontStyle.Regular
         ''' <summary></summary>
-        Private m_sGraphAxisLabelFontSize As Single = 12
+        Private m_sGraphAxisLabelFontSize As Single = 10
         ''' <summary></summary>
         Private m_fsGraphAxisLabelFontStye As FontStyle = FontStyle.Regular
         ''' <summary></summary>
@@ -99,7 +102,7 @@ Namespace Style
         ''' <summary></summary>
         Private m_fsGraphAxisScaleFontStye As FontStyle = FontStyle.Regular
         ''' <summary></summary>
-        Private m_sGraphLegendFontSize As Single = 10
+        Private m_sGraphLegendFontSize As Single = 8.25
         ''' <summary></summary>
         Private m_fsGraphLegendFontStye As FontStyle = FontStyle.Regular
 
