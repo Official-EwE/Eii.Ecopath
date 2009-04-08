@@ -27,10 +27,10 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
             Me.zgcPlots = New ZedGraph.ZedGraphControl
             Me.btnShowAllFits = New System.Windows.Forms.Button
-            Me.lbGroups = New GroupListBox
+            Me.lbGroups = New cGroupListBox
             Me.btnSave = New System.Windows.Forms.Button
-            Me.lbPredRanks = New GroupListBox
-            Me.lbPreyRanks = New GroupListBox
+            Me.lbPredRanks = New cGroupListBox
+            Me.lbPreyRanks = New cGroupListBox
             Me.scMain = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.Panel2 = New System.Windows.Forms.Panel
@@ -198,10 +198,10 @@ Namespace Ecosim
         End Sub
         Friend WithEvents zgcPlots As ZedGraph.ZedGraphControl
         Friend WithEvents btnShowAllFits As System.Windows.Forms.Button
-        Friend WithEvents lbGroups As GroupListBox
+        Friend WithEvents lbGroups As cGroupListBox
         Friend WithEvents btnSave As System.Windows.Forms.Button
-        Friend WithEvents lbPredRanks As GroupListBox
-        Friend WithEvents lbPreyRanks As GroupListBox
+        Friend WithEvents lbPredRanks As cGroupListBox
+        Friend WithEvents lbPreyRanks As cGroupListBox
         Friend WithEvents scMain As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents Panel2 As System.Windows.Forms.Panel

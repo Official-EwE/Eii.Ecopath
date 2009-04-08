@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.38  2009/04/08 15:09:11  jeroens
+' GroupListBox -> cGroupListBox
+'
 ' Revision 1.37  2009/04/07 20:02:10  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -245,7 +248,7 @@ Namespace Ecosim
                 ' todo: change to groups that listed in group box
                 For iLBItem As Integer = 1 To Me.m_lbGroups.Items.Count - 1
 
-                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), GroupListBox.GroupItem).Group.Index
+                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), cGroupListBox.cGroupItem).Group.Index
 
                     'Catch
                     If CatchToolStripMenuItem.Checked Then
@@ -334,7 +337,7 @@ Namespace Ecosim
                 ' todo: change to groups that listed in group box
                 For j As Integer = 1 To Me.m_lbGroups.Items.Count - 1
 
-                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), GroupListBox.GroupItem).Group.Index
+                    Dim i As Integer = DirectCast(Me.m_lbGroups.Items(j), cGroupListBox.cGroupItem).Group.Index
 
                     ' No need to check; already done in populating group box
 
@@ -638,21 +641,130 @@ Namespace Ecosim
 
         End Sub
 
+#Region " EwE5"
+#If 0 Then
+
+        Private Sub DisplayGroupsWithDeviations(ByVal pic As PictureBox, ByVal K As Integer)
+            Dim i As Integer
+            Dim BigGrp As Integer
+            Dim BigVal As Single
+            Dim DisplayYes() As Boolean
+            Dim Finished As Boolean
+            Dim FoundOne As Boolean
+            Dim upper As Integer
+            Dim LineNow As Boolean
+            Dim ZeroVal As Single
+            Dim keep As Single
+            ReDim DisplayYes(NumGroups + 3)
+            ZeroVal = IIf(frmSim1.chk(3) = Checked, 1, 0)
+            pic.Cls()
+            pic.CurrentX = 0
+            pic.ForeColor = FishColor
+            pic.CurrentY = 3.2
+
+            If frmSim1.tabPrepareRun.Tab = 7 Then   'Ecosim
+                upper = NumGroups + 2
+            Else    'Equilibrium
+                upper = NumGroups + 3
+                GrpsToShow(NumGroups + 3) = True
+            End If
+            'For the equilibrium also display catch of the selected gear in numgroups + 3
+            For i = 1 To upper  'NumGroups + 2
+                If frmSim1.chkCatch And i <= NumLiving Then
+                    If Landing(0, i) + Discard(0, i) > 0 Then   'There is a catch
+                        If GrpsToShow(i) Then DisplayYes(i) = IIf(Abs(Save(i) - LinScale) > 0.1, True, False)
+                    End If
+                Else
+                    If GrpsToShow(i) Then DisplayYes(i) = IIf(Abs(Save(i) - LinScale) > 0.1, True, False)
+                End If
+            Next
+            'Now sort the values in Save()
+            BigVal = -9
+            Finished = False
+            Do While Finished = False
+                FoundOne = False
+                For i = 1 To upper      'NumGroups + 2
+                    If DisplayYes(i) And Save(i) > BigVal Then
+                        BigVal = Save(i)
+                        BigGrp = i
+                        FoundOne = True
+                    End If
+                Next
+                If FoundOne = False Then
+                    Finished = True
+                Else     'The biggest one is BigGrp
+                    'When it chagnes from bigger to smaller
+                    If keep > ZeroVal And BigVal < ZeroVal Then
+                        pic.ForeColor = QBColor(0)
+                        pic.Print("--:p----------")
+                        K = K + 1
+                    End If
+                    keep = BigVal
+                    Select Case BigGrp
+                        Case Is <= NumGroups    'picbox(4) was grouplabel
+                            'pic.CurrentY = 3.2 - 0.4 * k
+                            pic.ForeColor = PoolColor(BigGrp)
+                            pic.Print(Specie$(BigGrp))
+                            K = K + 1
+                        Case NumGroups + 1
+                            If BiomassOn Or YieldOn Or frmSim1.tabPrepareRun.Tab = 8 Then
+                                'pic.CurrentY = 3.2 - 0.4 * k
+                                pic.ForeColor = X1Color
+                                pic.Print("Total catch")
+                                K = K + 1
+                            End If
+                        Case NumGroups + 2
+                            If BiomassOn Or YieldOn Or frmSim1.tabPrepareRun.Tab = 8 Then
+                                'pic.CurrentY = 3.2 - 0.4 * k
+                                pic.ForeColor = QBColor(0)  'Black    FishColor
+                                pic.Print("Total value")
+                                K = K + 1
+                            End If
+                        Case NumGroups + 3 'Display the catch of the target group
+                            'If lastharvest > 0 And j = poolshow Then
+                            'frmSim1.picbox(3).CurrentY = 3.2 - 0.4 * k
+                            frmSim1.picbox(3).ForeColor = X1Color
+                            frmSim1.picbox(3).Print("Catch, " & Specie$(PoolShow))
+                            K = K + 1
+                            'End If
+                    End Select
+                    DisplayYes(BigGrp) = False
+                    BigVal = -9
+                End If
+            Loop
+
+        End Sub
+#End If
+#End Region ' EwE5
+
+        Private Function SortResultsAtTimestep(ByVal iTimeStep As Integer) As cCoreGroupBase()
+
+            Dim lGroups As New List(Of cCoreGroupBase)
+
+            For Each gi As cGroupListBox.cGroupItem In Me.m_lbGroups.Items
+
+            Next
+
+            ' Get groups from list box
+
+            Return lGroups.ToArray()
+        End Function
+
         Private Sub PopulateGroupBox()
 
             Dim sSumDiscardsLandings As Double = 0.0
             Dim group As cCoreGroupBase = Nothing
-            Dim gi As GroupListBox.GroupItem = Nothing
+            Dim gi As cGroupListBox.cGroupItem = Nothing
             Dim groupSelected As cCoreGroupBase = Nothing
             Dim bIncludeGroup As Boolean = False
 
             If (Me.m_lbGroups.SelectedIndex > 0) Then
-                groupSelected = DirectCast(Me.m_lbGroups.SelectedItem, GroupListBox.GroupItem).Group
+                groupSelected = DirectCast(Me.m_lbGroups.SelectedItem, cGroupListBox.cGroupItem).Group
             End If
 
             Me.m_lbGroups.SuspendLayout()
             Me.m_lbGroups.Items.Clear()
-            Me.m_lbGroups.Items.Add(New GroupListBox.GroupItem(Nothing))
+            Me.m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(Nothing))
 
             For iGroup As Integer = 1 To m_core.nGroups
 
@@ -676,7 +788,7 @@ Namespace Ecosim
                 If bIncludeGroup Then
                     ' #Yes: add group to the list of options
                     group = Me.m_core.EcoPathGroupInputs(iGroup)
-                    gi = New GroupListBox.GroupItem(group)
+                    gi = New cGroupListBox.cGroupItem(group)
                     Me.m_lbGroups.Items.Add(gi)
 
                     If Object.ReferenceEquals(group, groupSelected) Then
@@ -703,7 +815,7 @@ Namespace Ecosim
 #End Region ' Private helpers
 
     End Class
-    
+
 End Namespace
 
 

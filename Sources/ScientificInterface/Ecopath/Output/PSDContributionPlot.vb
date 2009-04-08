@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.17  2009/04/08 15:09:10  jeroens
+' GroupListBox -> cGroupListBox
+'
 ' Revision 1.16  2009/04/07 20:02:09  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -116,7 +119,7 @@ Namespace Ecopath.Output
             'llbGroups.Items.Add(New LegendListBox.EcopathGroupItem(Nothing))
             For i As Integer = 1 To m_core.nLivingGroups
                 If IsGroupSelected(i) Then
-                    llbGroups.Items.Add(New GroupListBox.GroupItem(m_core.EcoPathGroupInputs(i)))
+                    llbGroups.Items.Add(New cGroupListBox.cGroupItem(m_core.EcoPathGroupInputs(i)))
                 End If
             Next
 

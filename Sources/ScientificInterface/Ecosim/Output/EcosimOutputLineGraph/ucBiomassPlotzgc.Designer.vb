@@ -24,7 +24,7 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.m_lbRuns = New System.Windows.Forms.ListBox
-            Me.m_lbGroups = New ScientificInterfaceShared.Controls.GroupListBox
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
@@ -318,7 +318,7 @@ Namespace Ecosim
         Private WithEvents m_zgc As ZedGraph.ZedGraphControl
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbRuns As System.Windows.Forms.ListBox
-        Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.GroupListBox
+        Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents tslblSSValue As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsdrpdnbtnGraphOptions As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents AnnualOutputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

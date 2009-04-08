@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.13  2009/04/08 15:09:09  jeroens
+' GroupListBox -> cGroupListBox
+'
 ' Revision 1.12  2009/04/08 00:35:14  jeroens
 ' TS lines are labeled with TS name
 '
@@ -107,7 +110,7 @@ Namespace Ecosim
             ' Add group names into listbox
             For i As Integer = 1 To Me.m_core.nGroups
                 group = Me.m_core.EcoSimGroupInputs(i)
-                lbGroups.Items.Add(New GroupListBox.GroupItem(group))
+                lbGroups.Items.Add(New cGroupListBox.cGroupItem(group))
             Next
 
             Me.m_paneMaster = Me.zgcPlots.MasterPane
@@ -286,7 +289,7 @@ Namespace Ecosim
 
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
-            Dim item As GroupListBox.GroupItem = DirectCast(lbGroups.SelectedItem, GroupListBox.GroupItem)
+            Dim item As cGroupListBox.cGroupItem = DirectCast(lbGroups.SelectedItem, cGroupListBox.cGroupItem)
             Dim iGroup As Integer = item.Group.Index
             Dim groupSimOut As cEcosimGroupOutput = Me.m_core.EcoSimGroupOutputs(iGroup)
 
@@ -513,7 +516,7 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupListBox(ByVal l As GroupListBox, ByVal aiGroupIndex() As Integer)
+        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox, ByVal aiGroupIndex() As Integer)
 
             Dim group As cEcoPathGroupInput = Nothing
 
@@ -523,7 +526,7 @@ Namespace Ecosim
 
                 'Dim item As cColorItem = m_PoolColor(items(i))
                 group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
-                l.Items.Add(New GroupListBox.GroupItem(group))
+                l.Items.Add(New cGroupListBox.cGroupItem(group))
             Next
 
         End Sub
