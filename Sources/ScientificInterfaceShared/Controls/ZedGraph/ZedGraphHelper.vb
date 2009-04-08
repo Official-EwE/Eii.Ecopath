@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.13  2009/04/08 17:40:29  jeroens
+' Cursor properly set and removed in ShowCursor
+'
 ' Revision 1.12  2009/04/07 20:55:53  jeroens
 ' FIxed time series line style
 ' Added line items directly
@@ -644,7 +647,9 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 Dim gp As GraphPane = Me.GetPane(iPane)
                 If (value <> Me.m_bShowCursor(iPane)) Then
+                    Me.RemoveCursor(iPane)
                     Me.m_bShowCursor(iPane) = value
+                    Me.SetCursor(iPane)
                 End If
                 Me.m_zgc.IsEnableZoom = (Me.m_bShowCursor(iPane) = False)
                 Me.m_zgc.Cursor = DirectCast(IIf(value, Cursors.Hand, Cursors.Default), Cursor)
