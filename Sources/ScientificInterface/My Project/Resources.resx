@@ -2294,4 +2294,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_REPLY_YES" xml:space="preserve">
     <value>You answered 'Yes'</value>
   </data>
+  <data name="HEADER_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="HEADER_PREDATION" xml:space="preserve">
+    <value>Predation</value>
+  </data>
 </root>

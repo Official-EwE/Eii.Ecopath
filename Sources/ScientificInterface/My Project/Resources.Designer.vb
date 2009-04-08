@@ -2907,6 +2907,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fishing.
+        '''</summary>
+        Friend ReadOnly Property HEADER_FISHING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet/gear effort.
         '''</summary>
         Friend ReadOnly Property HEADER_FISHINGEFFORT_NAME() As String
@@ -3470,6 +3479,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_PP_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_PP_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predation.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PREDATION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PREDATION", resourceCulture)
             End Get
         End Property
         
