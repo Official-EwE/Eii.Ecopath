@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: GroupListBox.vb,v $
+' Revision 1.5  2009/04/08 17:42:28  jeroens
+' Optimized sort behaviour
+' Overridden Refresh()
+' Items below sort threshold are rendered with hatched legend
+'
 ' Revision 1.4  2009/04/08 16:01:52  jeroens
 ' Made sortable
 '
@@ -186,8 +191,10 @@ Namespace Controls
                 Return Me.m_sortType
             End Get
             Set(ByVal sortType As eSortType)
-                Me.m_sortType = sortType
-                Me.Sort()
+                If (Me.m_sortType <> sortType) Then
+                    Me.m_sortType = sortType
+                    Me.Refresh()
+                End If
             End Set
         End Property
 
@@ -201,10 +208,17 @@ Namespace Controls
                 Return Me.m_sSortThreshold
             End Get
             Set(ByVal sSortThreshold As Single)
-                Me.m_sSortThreshold = sSortThreshold
-                Me.Sort()
+                If (Me.m_sSortThreshold <> sSortThreshold) Then
+                    Me.m_sSortThreshold = sSortThreshold
+                    Me.Refresh()
+                End If
             End Set
         End Property
+
+        Public Overrides Sub Refresh()
+            If Me.Sorted Then Me.Sort()
+            MyBase.Refresh()
+        End Sub
 
 #Region " Internals "
 
@@ -222,6 +236,7 @@ Namespace Controls
             Dim gi As cGroupListBox.cGroupItem = Nothing
             Dim clrLegend As Color = Color.Transparent
             Dim clrText As Color = e.ForeColor
+            Dim bItemValid As Boolean = True
 
             ' Attempt to get item colour if it is a cGroupItem
             If (TypeOf item Is cGroupListBox.cGroupItem) Then
@@ -230,13 +245,15 @@ Namespace Controls
                 ' Has a group attached?
                 If (gi.Group IsNot Nothing) Then
                     ' #Yes: use dimmed colours
-                    clrLegend = SystemColors.Control
-                    clrText = SystemColors.ControlDark
+                    clrLegend = Me.m_sg.GroupColor(Me.m_core, gi.Group.Index)
                     ' Allowed to display and colour group?
                     If Me.m_sg.GroupVisible(gi.Group.Index) And gi.SortValue >= Me.SortThreshold Then
                         ' #Yes: display group in full color
                         clrText = e.ForeColor
-                        clrLegend = Me.m_sg.GroupColor(Me.m_core, gi.Group.Index)
+                    Else
+                        ' #No: use dimmed text colour
+                        clrText = SystemColors.ControlDark
+                        bItemValid = False
                     End If
                 End If
             End If
@@ -250,10 +267,16 @@ Namespace Controls
             e.Graphics.DrawString(item.ToString(), e.Font, New SolidBrush(clrText), e.Bounds.X + 22, e.Bounds.Y)
 
             If (clrLegend.A > 0) Then
-                ' Render colour box
-                Using br As New SolidBrush(clrLegend)
-                    e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                End Using
+                ' Render colour fill
+                If bItemValid Then
+                    Using br As New SolidBrush(clrLegend)
+                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                    End Using
+                Else
+                    Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.BackwardDiagonal, clrLegend, Color.Transparent)
+                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                    End Using
+                End If
                 ' Render colour box border
                 Using p As New Pen(clrText, 1)
                     e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
