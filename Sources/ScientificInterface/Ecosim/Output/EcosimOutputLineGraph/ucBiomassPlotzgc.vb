@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.40  2009/04/08 19:14:03  jeroens
+' Explore mode now fixed set to RelBiomass, needs to be extended
+'
 ' Revision 1.39  2009/04/08 17:43:21  jeroens
 ' Renamed a whack of controls to proper names
 ' Added 'Explore' option
@@ -642,7 +645,9 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnSyncCursor(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            Me.SortGroupsAtTimestep(CInt(Math.Round(sPos * cCore.N_MONTHS)))
+            If Me.m_tsbExplore.Checked Then
+                Me.SortGroupsAtTimestep(CInt(Math.Round(sPos * cCore.N_MONTHS)))
+            End If
         End Sub
 
 #End Region ' Events
@@ -668,25 +673,34 @@ Namespace Ecosim
 
         Private Sub PopulateRunsBox()
 
-            m_lbRuns.SuspendLayout()
+            Me.m_lbRuns.SuspendLayout()
 
-            m_lbRuns.Items.Clear()
-            m_lbRuns.Items.Add(My.Resources.GENERIC_VALUE_ALL)
-            For i As Integer = 1 To m_zgp.NumRuns
-                m_lbRuns.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_RUN, i))
+            Me.m_lbRuns.Items.Clear()
+            Me.m_lbRuns.Items.Add(My.Resources.GENERIC_VALUE_ALL)
+            For i As Integer = 1 To Me.m_zgp.NumRuns
+                Me.m_lbRuns.Items.Add(String.Format(My.Resources.ECOSIM_LABEL_RUN, i))
             Next
-            m_lbRuns.SelectedIndex = 0
-            m_lbRuns.ResumeLayout()
+            Me.m_lbRuns.SelectedIndex = 0
+            Me.m_lbRuns.ResumeLayout()
 
         End Sub
 
         Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
 
+            Dim sValue As Single = 0.0
+
             If Me.m_zgp.NumRuns < 1 Then Return
+
+            ' ToDo: Set threshold depending on what is being displayed
+            Me.m_lbGroups.SortThreshold = 0.1
 
             For Each gi As cGroupListBox.cGroupItem In Me.m_lbGroups.Items
                 If gi.Group IsNot Nothing Then
-                    gi.SortValue = CSng(Me.m_zgp.GetValueAt(gi.Group.Index, Me.m_zgp.NumRuns - 1, iTimeStep))
+                    sValue = CSng(Me.m_zgp.GetValueAt(gi.Group.Index, Me.m_zgp.NumRuns - 1, iTimeStep))
+
+                    ' ToDo: Handle value depending on what is being displayed
+                    gi.SortValue = CSng(Math.Abs(sValue - 1.0))
+
                 End If
             Next
             Me.m_lbGroups.Refresh()
@@ -760,7 +774,6 @@ Namespace Ecosim
             Me.m_tstbMin.Text = CStr(Me.m_zgh.YScaleMin)
 
             If Me.m_tsbExplore.Checked Then
-                Me.m_lbGroups.SortThreshold = 1.0
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
             Else
                 Me.m_lbGroups.SortThreshold = cCore.NULL_VALUE
