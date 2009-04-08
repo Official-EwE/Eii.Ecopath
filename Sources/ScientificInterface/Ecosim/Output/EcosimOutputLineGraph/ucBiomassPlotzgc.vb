@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.39  2009/04/08 17:43:21  jeroens
+' Renamed a whack of controls to proper names
+' Added 'Explore' option
+'
 ' Revision 1.38  2009/04/08 15:09:11  jeroens
 ' GroupListBox -> cGroupListBox
 '
@@ -160,7 +164,7 @@ Namespace Ecosim
             ' Show/Hide Groups
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.AddControl(Me.tsbtnShowHideGroups)
+                cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
 
             ' Style guide
@@ -184,6 +188,7 @@ Namespace Ecosim
             Me.m_zgp.Clear()
             Me.m_zgp = Nothing
 
+            RemoveHandler Me.m_zgh.OnCursorPos, AddressOf OnSyncCursor
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
 
@@ -191,7 +196,7 @@ Namespace Ecosim
             Dim cmdh As CommandHandler = CommandHandler.GetInstance()
             Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.RemoveControl(Me.tsbtnShowHideGroups)
+                cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
 
         End Sub
@@ -221,8 +226,8 @@ Namespace Ecosim
             m_zgp.PrepareNewRun()
 
             'Cumulative plot
-            If CumulativeToolStripMenuItem.Checked Then
-                If BiomassToolStripMenuItem.Checked Then
+            If m_tsmiCumulative.Checked Then
+                If m_tsmiBiomass.Checked Then
                     'Biomass
                     m_zgp.Title = My.Resources.HEADER_BIOMASS_CUMULATIVE
                     m_zgp.YaxisTitle = My.Resources.HEADER_BIOMASS_CUMULATIVE
@@ -235,7 +240,7 @@ Namespace Ecosim
                 'Initialize listSum.Y=0
                 listSum.Add(0, 0)
                 For t As Integer = 1 To m_core.nEcosimTimeSteps
-                    If AnnualOutputToolStripMenuItem.Checked Then
+                    If m_tsmiShowAnnualOutput.Checked Then
                         If t Mod cCore.N_MONTHS = 0 Then
                             listSum.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, 0.0)
                         End If
@@ -251,7 +256,7 @@ Namespace Ecosim
                     Dim i As Integer = DirectCast(Me.m_lbGroups.Items(iLBItem), cGroupListBox.cGroupItem).Group.Index
 
                     'Catch
-                    If CatchToolStripMenuItem.Checked Then
+                    If m_tsmiCatch.Checked Then
                         'Find the sum of discard and landing of the group
                         Dim dblSumDiscardsLandings As Double = 0.0
                         For f As Integer = 1 To m_core.nFleets
@@ -263,7 +268,7 @@ Namespace Ecosim
 
 
                     list1 = New PointPairList
-                    If BiomassToolStripMenuItem.Checked Then
+                    If m_tsmiBiomass.Checked Then
                         'Biomass
                         list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass())
                     Else
@@ -271,9 +276,9 @@ Namespace Ecosim
                         list1.Add(0, m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())
                     End If
                     For t As Integer = 1 To m_core.nEcosimTimeSteps
-                        If AnnualOutputToolStripMenuItem.Checked Then
+                        If m_tsmiShowAnnualOutput.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
-                                If BiomassToolStripMenuItem.Checked Then
+                                If m_tsmiBiomass.Checked Then
                                     'Biomass
                                     list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
                                 Else
@@ -284,7 +289,7 @@ Namespace Ecosim
                             End If
                         Else
                             ' 2) Add a single point to temp list
-                            If BiomassToolStripMenuItem.Checked Then
+                            If m_tsmiBiomass.Checked Then
                                 'Biomass
                                 list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
                             Else
@@ -305,9 +310,9 @@ Namespace Ecosim
                     Next
 
                     ' 3) Store the line
-                    If BiomassToolStripMenuItem.Checked Then
+                    If m_tsmiBiomass.Checked Then
                         'Biomass
-                        If CumulativeToolStripMenuItem.Checked Then
+                        If m_tsmiCumulative.Checked Then
                             'Cumulative highlight
                             m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.CumulativeBiomass, list1)
                         Else
@@ -323,8 +328,8 @@ Namespace Ecosim
             End If
 
             'Relative plot
-            If RelativeToolStripMenuItem.Checked Then
-                If BiomassToolStripMenuItem.Checked Then
+            If m_tsmiRelative.Checked Then
+                If m_tsmiBiomass.Checked Then
                     'Biomass
                     m_zgp.Title = My.Resources.HEADER_RELATIVEBIOMASS
                     m_zgp.YaxisTitle = My.Resources.HEADER_RELATIVEBIOMASS
@@ -355,9 +360,9 @@ Namespace Ecosim
                     list1 = New PointPairList
                     list1.Add(0, 1) ' Brute force to make 0 TS 1
                     For t As Integer = 1 To m_core.nEcosimTimeSteps
-                        If AnnualOutputToolStripMenuItem.Checked Then
+                        If m_tsmiShowAnnualOutput.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
-                                If BiomassToolStripMenuItem.Checked Then
+                                If m_tsmiBiomass.Checked Then
                                     'Biomass
                                     list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
                                 Else
@@ -368,7 +373,7 @@ Namespace Ecosim
                             End If
                         Else
                             ' 2) Add a single point to temp list
-                            If BiomassToolStripMenuItem.Checked Then
+                            If m_tsmiBiomass.Checked Then
                                 'Biomass
                                 list1.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
                             Else
@@ -381,7 +386,7 @@ Namespace Ecosim
                     Next t
 
                     ' 3) Store the line
-                    If BiomassToolStripMenuItem.Checked Then
+                    If m_tsmiBiomass.Checked Then
                         'Biomass
                         m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, ZedGraphBiomassPlotter.eLineType.RelativeBiomass, list1)
                     Else
@@ -401,7 +406,7 @@ Namespace Ecosim
             Me.m_zgc.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
 
             ' Draw timeseries 
-            If BiomassToolStripMenuItem.Checked And RelativeToolStripMenuItem.Checked Then DrawTimeSeries()
+            If m_tsmiBiomass.Checked And m_tsmiRelative.Checked Then DrawTimeSeries()
 
             ' Calculate the Axis Scale Ranges
             Me.m_zgh.RescaleAndRedraw()
@@ -471,107 +476,122 @@ Namespace Ecosim
 #Region " Events "
 
 #Region " Menu Item Clicks "
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub m_tsmShowMultipleRuns_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmShowMultipleRuns.Click
-            m_tsmShowMultipleRuns.Checked = Not m_tsmShowMultipleRuns.Checked
-            m_zgp.ShowMultipleRuns = m_tsmShowMultipleRuns.Checked
+
+        Private Sub m_tsmShowMultipleRuns_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmShowMultipleRuns.Click
+
+            Me.m_tsmShowMultipleRuns.Checked = Not Me.m_tsmShowMultipleRuns.Checked
+            Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Checked
+
             Me.PopulateRunsBox()
-            m_zgh.RescaleAndRedraw()
-            SplitContainer1.Panel1Collapsed = Not m_tsmShowMultipleRuns.Checked
+            Me.m_zgh.RescaleAndRedraw()
+            Me.SplitContainer1.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AnnualOutputToolStripMenuItem.Click
-            AnnualOutputToolStripMenuItem.Checked = Not AnnualOutputToolStripMenuItem.Checked
-            m_zgp.PrepareNewRun(True)
+        Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiShowAnnualOutput.Click
+
+            Me.m_tsmiShowAnnualOutput.Checked = Not Me.m_tsmiShowAnnualOutput.Checked
+            Me.m_zgp.PrepareNewRun(True)
             Me.PopulateGroupBox()
-            m_zgh.RescaleAndRedraw()
+            Me.m_zgh.RescaleAndRedraw()
+
         End Sub
 
-        Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShowLegendToolStripMenuItem.Click
-            ShowLegendToolStripMenuItem.Checked = Not ShowLegendToolStripMenuItem.Checked
-            m_zgp.ShowLegend = ShowLegendToolStripMenuItem.Checked
-            m_zgh.RescaleAndRedraw()
+        Private Sub ShowLegendToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiShowLegend.Click
+
+            Me.m_tsmiShowLegend.Checked = Not Me.m_tsmiShowLegend.Checked
+            Me.m_zgp.ShowLegend = Me.m_tsmiShowLegend.Checked
+            Me.m_zgh.RescaleAndRedraw()
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CumulativeToolStripMenuItem.Click, CumulativeToolStripMenuItem.CheckedChanged
-            RelativeToolStripMenuItem.Checked = Not CumulativeToolStripMenuItem.Checked
+        Private Sub CumulativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiCumulative.Click, m_tsmiCumulative.CheckedChanged
+
+            Me.m_tsmiRelative.Checked = Not Me.m_tsmiCumulative.Checked
             Me.PopulateGraph()
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RelativeToolStripMenuItem.Click, RelativeToolStripMenuItem.CheckedChanged
-            CumulativeToolStripMenuItem.Checked = Not RelativeToolStripMenuItem.Checked
+        Private Sub RelativeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiRelative.Click, m_tsmiRelative.CheckedChanged
+
+            Me.m_tsmiCumulative.Checked = Not Me.m_tsmiRelative.Checked
             Me.PopulateGraph()
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BiomassToolStripMenuItem.Click
-            CatchToolStripMenuItem.Checked = Not BiomassToolStripMenuItem.Checked
+        Private Sub BiomassToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiBiomass.Click
+
+            Me.m_tsmiCatch.Checked = Not Me.m_tsmiBiomass.Checked
             'Set default plot type to relative
-            RelativeToolStripMenuItem.Checked = True
+            Me.m_tsmiRelative.Checked = True
             Me.PopulateGraph()
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CatchToolStripMenuItem.Click
-            BiomassToolStripMenuItem.Checked = Not CatchToolStripMenuItem.Checked
+        Private Sub CatchToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiCatch.Click
+
+            Me.m_tsmiBiomass.Checked = Not Me.m_tsmiCatch.Checked
             'Set default plot type to relative
-            RelativeToolStripMenuItem.Checked = True
+            Me.m_tsmiRelative.Checked = True
             Me.PopulateGraph()
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary> Upon toggleing of menu item </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsAutoScaleToolStripMenuItem.Click
+        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiAutoscale.Click
+
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.Click, m_tstbxSetMax.Click
-            m_tlsAutoScaleToolStripMenuItem.Checked = False
-            m_tlsCustomScaleToolStripMenuItem.Checked = True
+        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tstbMin.Click, m_tstbMax.Click, m_tstbMax.Click
+
+            m_tsmiAutoscale.Checked = False
+            m_tsmiCustomScaleLabel.Checked = True
         End Sub
 
-        '''' -------------------------------------------------------------------
-        '''' <summary> Upon toggleing of menu item </summary>
-        '''' -------------------------------------------------------------------
-        Private Sub CustomScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tlsCustomScaleToolStripMenuItem.Click
-            Double.TryParse(Me.m_tstbxSetMax.Text, Me.m_zgh.YScaleMax)
-            Double.TryParse(Me.m_tstbxSetMin.Text, Me.m_zgh.YScaleMin)
+        Private Sub OnCustomScale(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiCustomScaleLabel.Click
+
+            Double.TryParse(Me.m_tstbMax.Text, Me.m_zgh.YScaleMax)
+            Double.TryParse(Me.m_tstbMin.Text, Me.m_zgh.YScaleMin)
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMax.LostFocus ' m_tstbxSetMax.KeyPress, 
+        Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tstbMax.LostFocus
+
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMax)
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tstbxSetMin.LostFocus
+        Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tstbMin.LostFocus
+
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMin)
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
-        End Sub
-#End Region
-        ' Menu Items Clicks
 
-        Private Sub ucBiomassPlotzgc_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        End Sub
+
+#End Region ' Menu Items Clicks
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             ' Design-time bail out
             If (Me.m_core Is Nothing) Then Return
@@ -580,6 +600,8 @@ Namespace Ecosim
             Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.m_zgh.YScaleMin = 0.0!
             Me.m_zgh.ShowPointValue = True
+
+            AddHandler Me.m_zgh.OnCursorPos, AddressOf OnSyncCursor
 
             Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, _
                     My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS)
@@ -602,8 +624,25 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <summary> When any of the indexes are changed </summary>
         ''' -------------------------------------------------------------------
-        Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
+        Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
+
             Me.InvalidateGraph()
+
+        End Sub
+
+        Private Sub m_tsbExplore_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbExplore.Click
+
+            ' Show or hide cursor
+            Me.m_zgh.ShowCursor = Me.m_tsbExplore.Checked
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnSyncCursor(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+            Me.SortGroupsAtTimestep(CInt(Math.Round(sPos * cCore.N_MONTHS)))
         End Sub
 
 #End Region ' Events
@@ -641,114 +680,18 @@ Namespace Ecosim
 
         End Sub
 
-#Region " EwE5"
-#If 0 Then
+        Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
 
-        Private Sub DisplayGroupsWithDeviations(ByVal pic As PictureBox, ByVal K As Integer)
-            Dim i As Integer
-            Dim BigGrp As Integer
-            Dim BigVal As Single
-            Dim DisplayYes() As Boolean
-            Dim Finished As Boolean
-            Dim FoundOne As Boolean
-            Dim upper As Integer
-            Dim LineNow As Boolean
-            Dim ZeroVal As Single
-            Dim keep As Single
-            ReDim DisplayYes(NumGroups + 3)
-            ZeroVal = IIf(frmSim1.chk(3) = Checked, 1, 0)
-            pic.Cls()
-            pic.CurrentX = 0
-            pic.ForeColor = FishColor
-            pic.CurrentY = 3.2
-
-            If frmSim1.tabPrepareRun.Tab = 7 Then   'Ecosim
-                upper = NumGroups + 2
-            Else    'Equilibrium
-                upper = NumGroups + 3
-                GrpsToShow(NumGroups + 3) = True
-            End If
-            'For the equilibrium also display catch of the selected gear in numgroups + 3
-            For i = 1 To upper  'NumGroups + 2
-                If frmSim1.chkCatch And i <= NumLiving Then
-                    If Landing(0, i) + Discard(0, i) > 0 Then   'There is a catch
-                        If GrpsToShow(i) Then DisplayYes(i) = IIf(Abs(Save(i) - LinScale) > 0.1, True, False)
-                    End If
-                Else
-                    If GrpsToShow(i) Then DisplayYes(i) = IIf(Abs(Save(i) - LinScale) > 0.1, True, False)
-                End If
-            Next
-            'Now sort the values in Save()
-            BigVal = -9
-            Finished = False
-            Do While Finished = False
-                FoundOne = False
-                For i = 1 To upper      'NumGroups + 2
-                    If DisplayYes(i) And Save(i) > BigVal Then
-                        BigVal = Save(i)
-                        BigGrp = i
-                        FoundOne = True
-                    End If
-                Next
-                If FoundOne = False Then
-                    Finished = True
-                Else     'The biggest one is BigGrp
-                    'When it chagnes from bigger to smaller
-                    If keep > ZeroVal And BigVal < ZeroVal Then
-                        pic.ForeColor = QBColor(0)
-                        pic.Print("--:p----------")
-                        K = K + 1
-                    End If
-                    keep = BigVal
-                    Select Case BigGrp
-                        Case Is <= NumGroups    'picbox(4) was grouplabel
-                            'pic.CurrentY = 3.2 - 0.4 * k
-                            pic.ForeColor = PoolColor(BigGrp)
-                            pic.Print(Specie$(BigGrp))
-                            K = K + 1
-                        Case NumGroups + 1
-                            If BiomassOn Or YieldOn Or frmSim1.tabPrepareRun.Tab = 8 Then
-                                'pic.CurrentY = 3.2 - 0.4 * k
-                                pic.ForeColor = X1Color
-                                pic.Print("Total catch")
-                                K = K + 1
-                            End If
-                        Case NumGroups + 2
-                            If BiomassOn Or YieldOn Or frmSim1.tabPrepareRun.Tab = 8 Then
-                                'pic.CurrentY = 3.2 - 0.4 * k
-                                pic.ForeColor = QBColor(0)  'Black    FishColor
-                                pic.Print("Total value")
-                                K = K + 1
-                            End If
-                        Case NumGroups + 3 'Display the catch of the target group
-                            'If lastharvest > 0 And j = poolshow Then
-                            'frmSim1.picbox(3).CurrentY = 3.2 - 0.4 * k
-                            frmSim1.picbox(3).ForeColor = X1Color
-                            frmSim1.picbox(3).Print("Catch, " & Specie$(PoolShow))
-                            K = K + 1
-                            'End If
-                    End Select
-                    DisplayYes(BigGrp) = False
-                    BigVal = -9
-                End If
-            Loop
-
-        End Sub
-#End If
-#End Region ' EwE5
-
-        Private Function SortResultsAtTimestep(ByVal iTimeStep As Integer) As cCoreGroupBase()
-
-            Dim lGroups As New List(Of cCoreGroupBase)
+            If Me.m_zgp.NumRuns < 1 Then Return
 
             For Each gi As cGroupListBox.cGroupItem In Me.m_lbGroups.Items
-
+                If gi.Group IsNot Nothing Then
+                    gi.SortValue = CSng(Me.m_zgp.GetValueAt(gi.Group.Index, Me.m_zgp.NumRuns - 1, iTimeStep))
+                End If
             Next
+            Me.m_lbGroups.Refresh()
 
-            ' Get groups from list box
-
-            Return lGroups.ToArray()
-        End Function
+        End Sub
 
         Private Sub PopulateGroupBox()
 
@@ -763,6 +706,8 @@ Namespace Ecosim
             End If
 
             Me.m_lbGroups.SuspendLayout()
+
+            Me.m_lbGroups.Sorted = False
             Me.m_lbGroups.Items.Clear()
             Me.m_lbGroups.Items.Add(New cGroupListBox.cGroupItem(Nothing))
 
@@ -772,7 +717,7 @@ Namespace Ecosim
                 bIncludeGroup = Me.m_sg.GroupVisible(iGroup)
 
                 ' Displaying catch and discards?
-                If CatchToolStripMenuItem.Checked Then
+                If m_tsmiCatch.Checked Then
 
                     ' Get sum of landings and discards for this group
                     sSumDiscardsLandings = 0
@@ -802,19 +747,32 @@ Namespace Ecosim
                 Me.m_lbGroups.SelectedIndex = 0
             End If
 
-            m_lbGroups.ResumeLayout()
+            Me.m_lbGroups.Sorted = True
+            Me.m_lbGroups.ResumeLayout()
+
         End Sub
 
         Private Sub UpdateControls()
-            m_tlsAutoScaleToolStripMenuItem.Checked = Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
-            m_tlsCustomScaleToolStripMenuItem.Checked = Not m_tlsAutoScaleToolStripMenuItem.Checked
-            Me.m_tstbxSetMax.Text = CStr(Me.m_zgh.YScaleMax)
-            Me.m_tstbxSetMin.Text = CStr(Me.m_zgh.YScaleMin)
+
+            Me.m_tsmiAutoscale.Checked = Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked
+            Me.m_tstbMax.Text = CStr(Me.m_zgh.YScaleMax)
+            Me.m_tstbMin.Text = CStr(Me.m_zgh.YScaleMin)
+
+            If Me.m_tsbExplore.Checked Then
+                Me.m_lbGroups.SortThreshold = 1.0
+                Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
+            Else
+                Me.m_lbGroups.SortThreshold = cCore.NULL_VALUE
+                Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
+            End If
+            Me.m_lbGroups.Refresh()
+
         End Sub
 
 #End Region ' Private helpers
 
-    End Class
+     End Class
 
 End Namespace
 

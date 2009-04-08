@@ -22,40 +22,58 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
+            Dim ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+            Dim ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+            Dim ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucBiomassPlotzgc))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.m_lbRuns = New System.Windows.Forms.ListBox
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
             Me.m_ts = New System.Windows.Forms.ToolStrip
-            Me.tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
             Me.tsblbSS = New System.Windows.Forms.ToolStripLabel
-            Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsdrpdnbtnBiomassCatch = New System.Windows.Forms.ToolStripDropDownButton
-            Me.BiomassToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.CatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsdrpdnbtnPlotType = New System.Windows.Forms.ToolStripDropDownButton
-            Me.CumulativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.RelativeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsdrpdnbtnGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tlsAutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tlsCustomScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.SetMaxToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tstbxSetMax = New System.Windows.Forms.ToolStripTextBox
-            Me.SetMinToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tstbxSetMin = New System.Windows.Forms.ToolStripTextBox
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.AnnualOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiBiomass = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiCatch = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsddPlotType = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsmiCumulative = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiRelative = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
+            Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiMax = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tstbMax = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox
+            Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmShowMultipleRuns = New System.Windows.Forms.ToolStripMenuItem
-            Me.ShowLegendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsbExplore = New System.Windows.Forms.ToolStripButton
+            ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
+            ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
+            ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'ToolStripSeparator5
+            '
+            ToolStripSeparator5.Name = "ToolStripSeparator5"
+            ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
+            '
+            'ToolStripSeparator2
+            '
+            ToolStripSeparator2.Name = "ToolStripSeparator2"
+            ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+            '
+            'ToolStripSeparator4
+            '
+            ToolStripSeparator4.Name = "ToolStripSeparator4"
+            ToolStripSeparator4.Size = New System.Drawing.Size(171, 6)
             '
             'SplitContainer1
             '
@@ -98,6 +116,9 @@ Namespace Ecosim
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             Me.m_lbGroups.Size = New System.Drawing.Size(119, 261)
+            Me.m_lbGroups.Sorted = True
+            Me.m_lbGroups.SortThreshold = -9999.0!
+            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             Me.m_lbGroups.TabIndex = 1
             '
             'm_zgc
@@ -119,20 +140,20 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, Me.ToolStripSeparator5, Me.m_tsdrpdnbtnBiomassCatch, Me.ToolStripSeparator3, Me.m_tsdrpdnbtnPlotType, Me.ToolStripSeparator2, Me.m_tsdrpdnbtnGraphOptions, Me.ToolStripSeparator1})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnBiomassCatch, Me.m_tsddPlotType, ToolStripSeparator2, Me.m_tsddGraphOptions, Me.m_tsbExplore})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.Size = New System.Drawing.Size(860, 25)
             Me.m_ts.TabIndex = 10
             Me.m_ts.Text = "ToolStrip1"
             '
-            'tsbtnShowHideGroups
+            'm_tsbtnShowHideGroups
             '
-            Me.tsbtnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
-            Me.tsbtnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.tsbtnShowHideGroups.Name = "tsbtnShowHideGroups"
-            Me.tsbtnShowHideGroups.Size = New System.Drawing.Size(101, 22)
-            Me.tsbtnShowHideGroups.Text = "Show &groups..."
+            Me.m_tsbtnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_tsbtnShowHideGroups.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
+            Me.m_tsbtnShowHideGroups.Size = New System.Drawing.Size(101, 22)
+            Me.m_tsbtnShowHideGroups.Text = "Show &groups..."
             '
             'tslblSSValue
             '
@@ -148,134 +169,114 @@ Namespace Ecosim
             Me.tsblbSS.Size = New System.Drawing.Size(86, 22)
             Me.tsblbSS.Text = "Sum of Squares:"
             '
-            'ToolStripSeparator5
-            '
-            Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-            Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
-            '
             'm_tsdrpdnbtnBiomassCatch
             '
-            Me.m_tsdrpdnbtnBiomassCatch.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BiomassToolStripMenuItem, Me.CatchToolStripMenuItem})
+            Me.m_tsdrpdnbtnBiomassCatch.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiBiomass, Me.m_tsmiCatch})
             Me.m_tsdrpdnbtnBiomassCatch.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
             Me.m_tsdrpdnbtnBiomassCatch.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsdrpdnbtnBiomassCatch.Name = "m_tsdrpdnbtnBiomassCatch"
             Me.m_tsdrpdnbtnBiomassCatch.Size = New System.Drawing.Size(116, 22)
             Me.m_tsdrpdnbtnBiomassCatch.Text = "&Biomass or catch"
             '
-            'BiomassToolStripMenuItem
+            'm_tsmiBiomass
             '
-            Me.BiomassToolStripMenuItem.Checked = True
-            Me.BiomassToolStripMenuItem.CheckOnClick = True
-            Me.BiomassToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.BiomassToolStripMenuItem.Name = "BiomassToolStripMenuItem"
-            Me.BiomassToolStripMenuItem.Size = New System.Drawing.Size(123, 22)
-            Me.BiomassToolStripMenuItem.Text = "&Biomass"
+            Me.m_tsmiBiomass.Checked = True
+            Me.m_tsmiBiomass.CheckOnClick = True
+            Me.m_tsmiBiomass.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsmiBiomass.Name = "m_tsmiBiomass"
+            Me.m_tsmiBiomass.Size = New System.Drawing.Size(123, 22)
+            Me.m_tsmiBiomass.Text = "&Biomass"
             '
-            'CatchToolStripMenuItem
+            'm_tsmiCatch
             '
-            Me.CatchToolStripMenuItem.CheckOnClick = True
-            Me.CatchToolStripMenuItem.Name = "CatchToolStripMenuItem"
-            Me.CatchToolStripMenuItem.Size = New System.Drawing.Size(123, 22)
-            Me.CatchToolStripMenuItem.Text = "&Catch"
+            Me.m_tsmiCatch.CheckOnClick = True
+            Me.m_tsmiCatch.Name = "m_tsmiCatch"
+            Me.m_tsmiCatch.Size = New System.Drawing.Size(123, 22)
+            Me.m_tsmiCatch.Text = "&Catch"
             '
-            'ToolStripSeparator3
+            'm_tsddPlotType
             '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+            Me.m_tsddPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiCumulative, Me.m_tsmiRelative})
+            Me.m_tsddPlotType.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsddPlotType.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsddPlotType.Name = "m_tsddPlotType"
+            Me.m_tsddPlotType.Size = New System.Drawing.Size(84, 22)
+            Me.m_tsddPlotType.Text = "&Plot types"
             '
-            'm_tsdrpdnbtnPlotType
+            'm_tsmiCumulative
             '
-            Me.m_tsdrpdnbtnPlotType.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CumulativeToolStripMenuItem, Me.RelativeToolStripMenuItem})
-            Me.m_tsdrpdnbtnPlotType.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-            Me.m_tsdrpdnbtnPlotType.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsdrpdnbtnPlotType.Name = "m_tsdrpdnbtnPlotType"
-            Me.m_tsdrpdnbtnPlotType.Size = New System.Drawing.Size(84, 22)
-            Me.m_tsdrpdnbtnPlotType.Text = "&Plot types"
+            Me.m_tsmiCumulative.CheckOnClick = True
+            Me.m_tsmiCumulative.Name = "m_tsmiCumulative"
+            Me.m_tsmiCumulative.Size = New System.Drawing.Size(138, 22)
+            Me.m_tsmiCumulative.Text = "&Cumulative"
             '
-            'CumulativeToolStripMenuItem
+            'm_tsmiRelative
             '
-            Me.CumulativeToolStripMenuItem.CheckOnClick = True
-            Me.CumulativeToolStripMenuItem.Name = "CumulativeToolStripMenuItem"
-            Me.CumulativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
-            Me.CumulativeToolStripMenuItem.Text = "&Cumulative"
+            Me.m_tsmiRelative.Checked = True
+            Me.m_tsmiRelative.CheckOnClick = True
+            Me.m_tsmiRelative.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsmiRelative.Name = "m_tsmiRelative"
+            Me.m_tsmiRelative.Size = New System.Drawing.Size(138, 22)
+            Me.m_tsmiRelative.Text = "&Relative"
             '
-            'RelativeToolStripMenuItem
+            'm_tsddGraphOptions
             '
-            Me.RelativeToolStripMenuItem.Checked = True
-            Me.RelativeToolStripMenuItem.CheckOnClick = True
-            Me.RelativeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.RelativeToolStripMenuItem.Name = "RelativeToolStripMenuItem"
-            Me.RelativeToolStripMenuItem.Size = New System.Drawing.Size(138, 22)
-            Me.RelativeToolStripMenuItem.Text = "&Relative"
+            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend})
+            Me.m_tsddGraphOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsddGraphOptions.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
+            Me.m_tsddGraphOptions.Size = New System.Drawing.Size(103, 22)
+            Me.m_tsddGraphOptions.Text = "Graph &options"
             '
-            'ToolStripSeparator2
+            'm_tsmiAutoscale
             '
-            Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+            Me.m_tsmiAutoscale.Checked = True
+            Me.m_tsmiAutoscale.CheckOnClick = True
+            Me.m_tsmiAutoscale.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsmiAutoscale.Name = "m_tsmiAutoscale"
+            Me.m_tsmiAutoscale.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiAutoscale.Text = "&Auto scale"
             '
-            'm_tsdrpdnbtnGraphOptions
+            'm_tsmiCustomScaleLabel
             '
-            Me.m_tsdrpdnbtnGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tlsAutoScaleToolStripMenuItem, Me.m_tlsCustomScaleToolStripMenuItem, Me.SetMaxToolStripMenuItem, Me.m_tstbxSetMax, Me.SetMinToolStripMenuItem, Me.m_tstbxSetMin, Me.ToolStripSeparator4, Me.AnnualOutputToolStripMenuItem, Me.m_tsmShowMultipleRuns, Me.ShowLegendToolStripMenuItem})
-            Me.m_tsdrpdnbtnGraphOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-            Me.m_tsdrpdnbtnGraphOptions.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsdrpdnbtnGraphOptions.Name = "m_tsdrpdnbtnGraphOptions"
-            Me.m_tsdrpdnbtnGraphOptions.Size = New System.Drawing.Size(103, 22)
-            Me.m_tsdrpdnbtnGraphOptions.Text = "Graph &options"
+            Me.m_tsmiCustomScaleLabel.CheckOnClick = True
+            Me.m_tsmiCustomScaleLabel.Name = "m_tsmiCustomScaleLabel"
+            Me.m_tsmiCustomScaleLabel.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiCustomScaleLabel.Text = "Custom &scale"
             '
-            'm_tlsAutoScaleToolStripMenuItem
+            'm_tsmiMax
             '
-            Me.m_tlsAutoScaleToolStripMenuItem.Checked = True
-            Me.m_tlsAutoScaleToolStripMenuItem.CheckOnClick = True
-            Me.m_tlsAutoScaleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tlsAutoScaleToolStripMenuItem.Name = "m_tlsAutoScaleToolStripMenuItem"
-            Me.m_tlsAutoScaleToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.m_tlsAutoScaleToolStripMenuItem.Text = "&Auto scale"
+            Me.m_tsmiMax.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tsmiMax.Name = "m_tsmiMax"
+            Me.m_tsmiMax.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiMax.Text = "M&ax:"
             '
-            'm_tlsCustomScaleToolStripMenuItem
+            'm_tstbMax
             '
-            Me.m_tlsCustomScaleToolStripMenuItem.CheckOnClick = True
-            Me.m_tlsCustomScaleToolStripMenuItem.Name = "m_tlsCustomScaleToolStripMenuItem"
-            Me.m_tlsCustomScaleToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.m_tlsCustomScaleToolStripMenuItem.Text = "Custom &scale"
+            Me.m_tstbMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tstbMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
+            Me.m_tstbMax.Name = "m_tstbMax"
+            Me.m_tstbMax.Size = New System.Drawing.Size(50, 21)
             '
-            'SetMaxToolStripMenuItem
+            'm_tsmiMin
             '
-            Me.SetMaxToolStripMenuItem.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.SetMaxToolStripMenuItem.Name = "SetMaxToolStripMenuItem"
-            Me.SetMaxToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.SetMaxToolStripMenuItem.Text = "M&ax:"
+            Me.m_tsmiMin.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tsmiMin.Name = "m_tsmiMin"
+            Me.m_tsmiMin.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiMin.Text = "M&in:"
             '
-            'm_tstbxSetMax
+            'm_tstbMin
             '
-            Me.m_tstbxSetMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbxSetMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
-            Me.m_tstbxSetMax.Name = "m_tstbxSetMax"
-            Me.m_tstbxSetMax.Size = New System.Drawing.Size(50, 21)
+            Me.m_tstbMin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tstbMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
+            Me.m_tstbMin.Name = "m_tstbMin"
+            Me.m_tstbMin.Size = New System.Drawing.Size(50, 21)
             '
-            'SetMinToolStripMenuItem
+            'm_tsmiShowAnnualOutput
             '
-            Me.SetMinToolStripMenuItem.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.SetMinToolStripMenuItem.Name = "SetMinToolStripMenuItem"
-            Me.SetMinToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.SetMinToolStripMenuItem.Text = "M&in:"
-            '
-            'm_tstbxSetMin
-            '
-            Me.m_tstbxSetMin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbxSetMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
-            Me.m_tstbxSetMin.Name = "m_tstbxSetMin"
-            Me.m_tstbxSetMin.Size = New System.Drawing.Size(50, 21)
-            '
-            'ToolStripSeparator4
-            '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            Me.ToolStripSeparator4.Size = New System.Drawing.Size(171, 6)
-            '
-            'AnnualOutputToolStripMenuItem
-            '
-            Me.AnnualOutputToolStripMenuItem.Name = "AnnualOutputToolStripMenuItem"
-            Me.AnnualOutputToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.AnnualOutputToolStripMenuItem.Text = "&Annual output"
+            Me.m_tsmiShowAnnualOutput.Name = "m_tsmiShowAnnualOutput"
+            Me.m_tsmiShowAnnualOutput.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiShowAnnualOutput.Text = "&Annual output"
             '
             'm_tsmShowMultipleRuns
             '
@@ -283,16 +284,22 @@ Namespace Ecosim
             Me.m_tsmShowMultipleRuns.Size = New System.Drawing.Size(174, 22)
             Me.m_tsmShowMultipleRuns.Text = "Show &multiple runs"
             '
-            'ShowLegendToolStripMenuItem
+            'm_tsmiShowLegend
             '
-            Me.ShowLegendToolStripMenuItem.Name = "ShowLegendToolStripMenuItem"
-            Me.ShowLegendToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
-            Me.ShowLegendToolStripMenuItem.Text = "Show &legend"
+            Me.m_tsmiShowLegend.Name = "m_tsmiShowLegend"
+            Me.m_tsmiShowLegend.Size = New System.Drawing.Size(174, 22)
+            Me.m_tsmiShowLegend.Text = "Show &legend"
             '
-            'ToolStripSeparator1
+            'm_tsbExplore
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            Me.m_tsbExplore.CheckOnClick = True
+            Me.m_tsbExplore.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbExplore.Image = CType(resources.GetObject("m_tsbExplore.Image"), System.Drawing.Image)
+            Me.m_tsbExplore.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbExplore.Name = "m_tsbExplore"
+            Me.m_tsbExplore.Size = New System.Drawing.Size(82, 22)
+            Me.m_tsbExplore.Text = "Explore results"
+            Me.m_tsbExplore.ToolTipText = "Check to explore the Ecosim results graph with a cursor"
             '
             'ucBiomassPlotzgc
             '
@@ -320,28 +327,24 @@ Namespace Ecosim
         Private WithEvents m_lbRuns As System.Windows.Forms.ListBox
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents tslblSSValue As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tsdrpdnbtnGraphOptions As System.Windows.Forms.ToolStripDropDownButton
-        Private WithEvents AnnualOutputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsddGraphOptions As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiShowAnnualOutput As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmShowMultipleRuns As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents ShowLegendToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents m_tsdrpdnbtnPlotType As System.Windows.Forms.ToolStripDropDownButton
-        Friend WithEvents CumulativeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents RelativeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents m_tsdrpdnbtnBiomassCatch As System.Windows.Forms.ToolStripDropDownButton
-        Friend WithEvents BiomassToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents CatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents m_tlsAutoScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tlsCustomScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tstbxSetMax As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents m_tstbxSetMin As System.Windows.Forms.ToolStripTextBox
-        Friend WithEvents SetMaxToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents SetMinToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsmiShowLegend As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsbExplore As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsdrpdnbtnBiomassCatch As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsmiBiomass As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsddPlotType As System.Windows.Forms.ToolStripDropDownButton
+        Private WithEvents m_tsmiCatch As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiCumulative As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiRelative As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiAutoscale As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiCustomScaleLabel As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tstbMax As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tsmiMax As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiMin As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tstbMin As System.Windows.Forms.ToolStripTextBox
 
     End Class
 
