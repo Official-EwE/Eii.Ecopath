@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cEwESettingsProvider.vb,v $
+' Revision 1.4  2009/04/08 13:11:19  jeroens
+' Try! Catch! Aargh!
+' Hopefully this class is robust enough now
+'
 ' Revision 1.3  2009/03/26 17:40:44  jeroens
 ' Added null checks, just in case
 '
@@ -38,19 +42,41 @@ Imports System.Xml
 Public Class cEwESettingsProvider
     Inherits SettingsProvider
 
-    Private Const SETTINGSROOT As String = "Settings" 'XML Root Node
-    Private m_SettingsXML As Xml.XmlDocument = Nothing
+#Region " Private parts "
 
-    Public Overrides Sub Initialize(ByVal name As String, ByVal col As NameValueCollection)
+    Private Const cSETTINGSROOT As String = "Settings" 'XML Root Node
+    Private m_xmldocSettings As Xml.XmlDocument = Nothing
+
+#End Region ' Private parts
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Initialization. Overridden to stop .NET from trying to be too smart.
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <param name="col"></param>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub Initialize(ByVal strName As String, ByVal col As NameValueCollection)
         MyBase.Initialize(Me.ApplicationName, col)
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' I have no idea who uses this, but hey, I'll override anything you'll
+    ''' tell me to.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property Name() As String
         Get
             Return "EwEProgramSettingsProvider"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Who are you?
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Overrides Property ApplicationName() As String
         Get
             Return Path.GetFileNameWithoutExtension(Application.ExecutablePath)
@@ -60,87 +86,169 @@ Public Class cEwESettingsProvider
         End Set
     End Property
 
-    Overridable Function GetAppSettingsPath() As String
-        'Used to determine where to store the settings
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Store the values of all properties.
+    ''' </summary>
+    ''' <param name="context"></param>
+    ''' <param name="propvals"></param>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub SetPropertyValues(ByVal context As SettingsContext, ByVal propvals As SettingsPropertyValueCollection)
+
+        ' Sanity check
+        If propvals Is Nothing Then Return
+
+        Try
+            'Iterate through the settings to be stored
+            'Only dirty settings are included in propvals, and only ones relevant to this provider
+            For Each propval As SettingsPropertyValue In propvals
+                StoreValue(propval)
+            Next
+
+            ' Save the document
+            SettingsDoc.Save(IO.Path.Combine(GetAppSettingsPath, GetAppSettingsFilename))
+
+        Catch ex As Exception
+            'Ignore if can't save
+        End Try
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the values of all properties.
+    ''' </summary>
+    ''' <param name="context"></param>
+    ''' <param name="props"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function GetPropertyValues(ByVal context As SettingsContext, ByVal props As SettingsPropertyCollection) As SettingsPropertyValueCollection
+
+        Dim values As SettingsPropertyValueCollection = New SettingsPropertyValueCollection()
+        Dim value As SettingsPropertyValue = Nothing
+
+        If props IsNot Nothing Then
+            'Iterate through the settings to be retrieved
+            For Each setting As SettingsProperty In props
+                Try
+                    value = New SettingsPropertyValue(setting)
+                    value.IsDirty = False
+                    value.SerializedValue = GetValue(setting)
+                    values.Add(value)
+                Catch ex As Exception
+                    ' Yohoho
+                End Try
+            Next
+        End If
+
+        Return values
+
+    End Function
+
+#Region " Internal overridables "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get location where to store settings file.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' .NET uses the ApplicationData structure for this. EwE6 instead stores this value 
+    ''' in the application directory.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function GetAppSettingsPath() As String
         Dim fi As New System.IO.FileInfo(Application.ExecutablePath)
         Return fi.DirectoryName
     End Function
 
-    Overridable Function GetAppSettingsFilename() As String
-        'Used to determine the filename to store the settings
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get name of settings file.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' .NET commonly tries to do very fancy things here, pertaining to merging
+    ''' different versions of settings, and managing local and roaming settings.
+    ''' EwE6 does not need any of that stuff; let's keep it simple.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function GetAppSettingsFilename() As String
         Return Me.ApplicationName & ".settings"
     End Function
 
-    Public Overrides Sub SetPropertyValues(ByVal context As SettingsContext, ByVal propvals As SettingsPropertyValueCollection)
-        'Iterate through the settings to be stored
-        'Only dirty settings are included in propvals, and only ones relevant to this provider
-        For Each propval As SettingsPropertyValue In propvals
-            SetValue(propval)
-        Next
-
-        Try
-            SettingsXML.Save(IO.Path.Combine(GetAppSettingsPath, GetAppSettingsFilename))
-        Catch ex As Exception
-            'Ignore if cant save, device been ejected
-        End Try
-    End Sub
-
-    Public Overrides Function GetPropertyValues(ByVal context As SettingsContext, ByVal props As SettingsPropertyCollection) As SettingsPropertyValueCollection
-        'Create new collection of values
-        Dim values As SettingsPropertyValueCollection = New SettingsPropertyValueCollection()
-
-        'Iterate through the settings to be retrieved
-        For Each setting As SettingsProperty In props
-
-            Dim value As SettingsPropertyValue = New SettingsPropertyValue(setting)
-            value.IsDirty = False
-            value.SerializedValue = GetValue(setting)
-            values.Add(value)
-        Next
-        Return values
-    End Function
-
-    Private ReadOnly Property SettingsXML() As Xml.XmlDocument
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the XML document to operate on.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable ReadOnly Property SettingsDoc() As Xml.XmlDocument
         Get
-            'If we dont hold an xml document, try opening one.  
-            'If it doesnt exist then create a new one ready.
-            If m_SettingsXML Is Nothing Then
-                m_SettingsXML = New Xml.XmlDocument
 
-                Try
-                    m_SettingsXML.Load(IO.Path.Combine(GetAppSettingsPath, GetAppSettingsFilename))
-                Catch ex As Exception
-                    'Create new document
-                    Dim dec As XmlDeclaration = m_SettingsXML.CreateXmlDeclaration("1.0", "utf-8", String.Empty)
-                    m_SettingsXML.AppendChild(dec)
+            Dim strSettingsDocPath As String = IO.Path.Combine(GetAppSettingsPath, GetAppSettingsFilename)
+            Dim bFileRead As Boolean = False
+            Dim decl As XmlDeclaration = Nothing
+            Dim node As XmlNode = Nothing
 
-                    Dim nodeRoot As XmlNode
+            ' Is XML doc present?
+            If (Me.m_xmldocSettings Is Nothing) Then
+                ' #No: make one
+                Me.m_xmldocSettings = New Xml.XmlDocument
+                ' Does file exist?
+                If File.Exists(strSettingsDocPath) Then
+                    ' #Yes: try to read it
+                    Try
+                        ' Load file
+                        Me.m_xmldocSettings.Load(strSettingsDocPath)
+                        ' All good
+                        bFileRead = True
+                    Catch ex As Exception
+                        ' Kaboom
+                        bFileRead = False
+                    End Try
+                End If
 
-                    nodeRoot = m_SettingsXML.CreateNode(XmlNodeType.Element, SETTINGSROOT, "")
-                    m_SettingsXML.AppendChild(nodeRoot)
-                End Try
+                ' File not read yet?
+                If (Not bFileRead) Then
+                    ' #Yes: create new document
+                    decl = Me.m_xmldocSettings.CreateXmlDeclaration("1.0", "utf-8", String.Empty)
+                    Me.m_xmldocSettings.AppendChild(decl)
+
+                    node = Me.m_xmldocSettings.CreateNode(XmlNodeType.Element, cSETTINGSROOT, "")
+                    Me.m_xmldocSettings.AppendChild(node)
+                End If
             End If
 
-            Return m_SettingsXML
+            ' Return prepared (and hopefully read) document
+            Return Me.m_xmldocSettings
+
         End Get
     End Property
 
-    Private Function GetValue(ByVal setting As SettingsProperty) As String
+#End Region ' Internal overridables
+
+#Region " Internal bits "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return a single value from the settings.
+    ''' </summary>
+    ''' <param name="sp"></param>
+    ''' <returns>
+    ''' A value in the form of a string, or an emtpy string if an error occurred.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Private Function GetValue(ByVal sp As SettingsProperty) As String
 
         Dim strValue As String = ""
 
-        If (setting IsNot Nothing) Then
+        If (sp IsNot Nothing) Then
 
             Try
-                If IsRoaming(setting) Then
-                    strValue = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & setting.Name).InnerText
-                Else
-                    strValue = SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & My.Computer.Name & "/" & setting.Name).InnerText
-                End If
-
+                strValue = SettingsDoc.SelectSingleNode(cSETTINGSROOT & "/" & sp.Name).InnerText
             Catch ex As Exception
-                If Not setting.DefaultValue Is Nothing Then
-                    strValue = setting.DefaultValue.ToString
+                If (sp.DefaultValue IsNot Nothing) Then
+                    strValue = sp.DefaultValue.ToString
                 Else
                     strValue = ""
                 End If
@@ -151,67 +259,45 @@ Public Class cEwESettingsProvider
 
     End Function
 
-    Private Sub SetValue(ByVal propVal As SettingsPropertyValue)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Store a single value into the settings.
+    ''' </summary>
+    ''' <param name="propVal"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub StoreValue(ByVal propVal As SettingsPropertyValue)
 
-        Dim MachineNode As Xml.XmlElement
-        Dim SettingNode As Xml.XmlElement
+        Dim elem As Xml.XmlElement
 
-        If propVal Is Nothing Then Return
+        If (propVal Is Nothing) Then Return
 
         'Determine if the setting is roaming.
         'If roaming then the value is stored as an element under the root
         'Otherwise it is stored under a machine name node 
         Try
-            If IsRoaming(propVal.Property) Then
-                SettingNode = DirectCast(SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & propVal.Name), XmlElement)
-            Else
-                SettingNode = DirectCast(SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & My.Computer.Name & "/" & propVal.Name), XmlElement)
-            End If
+            elem = DirectCast(SettingsDoc.SelectSingleNode(cSETTINGSROOT & "/" & propVal.Name), XmlElement)
         Catch ex As Exception
-            SettingNode = Nothing
+            elem = Nothing
         End Try
 
-        'Check to see if the node exists, if so then set its new value
-        If Not SettingNode Is Nothing Then
-            SettingNode.InnerText = propVal.SerializedValue.ToString
-        Else
-            If IsRoaming(propVal.Property) Then
-                'Store the value as an element of the Settings Root Node
-                SettingNode = SettingsXML.CreateElement(propVal.Name)
-                SettingNode.InnerText = propVal.SerializedValue.ToString
-                SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(SettingNode)
+        Try
+
+            'Check to see if the node exists, if so then set its new value
+            If (elem IsNot Nothing) Then
+                elem.InnerText = propVal.SerializedValue.ToString
             Else
-                'Its machine specific, store as an element of the machine name node,
-                'creating a new machine name node if one doesnt exist.
-                Try
-                    MachineNode = DirectCast(SettingsXML.SelectSingleNode(SETTINGSROOT & "/" & My.Computer.Name), XmlElement)
-                Catch ex As Exception
-                    MachineNode = SettingsXML.CreateElement(My.Computer.Name)
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode)
-                End Try
-
-                If MachineNode Is Nothing Then
-                    MachineNode = SettingsXML.CreateElement(My.Computer.Name)
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode)
-                End If
-
-                SettingNode = SettingsXML.CreateElement(propVal.Name)
-                SettingNode.InnerText = propVal.SerializedValue.ToString
-                MachineNode.AppendChild(SettingNode)
+                'Store the value as an element of the Settings Root Node
+                elem = SettingsDoc.CreateElement(propVal.Name)
+                elem.InnerText = propVal.SerializedValue.ToString
+                SettingsDoc.SelectSingleNode(cSETTINGSROOT).AppendChild(elem)
             End If
-        End If
+        Catch ex As Exception
+            ' Value not set
+        End Try
+
     End Sub
 
-    Private Function IsRoaming(ByVal prop As SettingsProperty) As Boolean
-        'Determine if the setting is marked as Roaming
-        For Each d As DictionaryEntry In prop.Attributes
-            Dim a As Attribute = DirectCast(d.Value, Attribute)
-            If TypeOf a Is System.Configuration.SettingsManageabilityAttribute Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
+#End Region ' Internal bits
 
 End Class
 
