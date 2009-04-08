@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphBiomassPlotter.vb,v $
+' Revision 1.4  2009/04/08 17:41:21  jeroens
+' iOver -> iRunTest
+'
 ' Revision 1.3  2009/03/30 19:02:41  jeroens
 ' Added Clear()
 '
@@ -114,6 +117,8 @@ Namespace Controls
             CumulativeSelectedCatch
             RelativeCatch
             TimeSeries
+            Value
+            CummulativeValue
         End Enum
 
 #Region " Constructor "
@@ -214,6 +219,15 @@ Namespace Controls
 
         End Sub
 
+        Public Function GetValueAt(ByVal iGroup As Integer, ByVal iRun As Integer, ByVal iTimeStep As Integer) As Double
+            ' Wow, speaking about running into a brick wall at full tilt...
+            Try
+                Return m_lclRuns.Item(iRun).Item(iGroup - 1).Item(iTimeStep).Y
+            Catch ex As Exception
+                Return 0.0
+            End Try
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Store the run in the archive.
@@ -247,8 +261,8 @@ Namespace Controls
                 'If highlighting the last curve (curve with the highest index in the collection)
                 If i = iCount - 1 Then SetAllToColors(False)
 
-                For iOver As Integer = 0 To m_lclRuns.Count - 1
-                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iGroup - 1)
+                For iRunTest As Integer = 0 To m_lclRuns.Count - 1
+                    Dim crv As CurveItem = m_lclRuns.Item(iRunTest).Item(iGroup - 1)
                     Dim crvType As cCurveType = DirectCast(crv.Tag, cCurveType)
 
                     'If relative plot then plot line of selected group with highlight
@@ -265,7 +279,7 @@ Namespace Controls
                         SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
                         If iGroup >= 2 Then
-                            crv = m_lclRuns.Item(iOver).Item(iGroup - 2)
+                            crv = m_lclRuns.Item(iRunTest).Item(iGroup - 2)
                             SetLine(crv, True, False, True)
                         End If
                         'If needed, plot lines of the remaining groups
@@ -274,7 +288,7 @@ Namespace Controls
                         End If
                     End If
                     'SetSomeToColors(index - 3, False)
-                Next iOver
+                Next iRunTest
 
                 ' Need to set all of the keys individually for all the groups.
 
