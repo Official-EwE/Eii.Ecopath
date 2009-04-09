@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupListBox.vb,v $
+' Revision 1.6  2009/04/09 01:34:22  jeroens
+' Not sorted by default
+'
 ' Revision 1.5  2009/04/08 17:42:28  jeroens
 ' Optimized sort behaviour
 ' Overridden Refresh()
@@ -160,8 +163,6 @@ Namespace Controls
 
             ' This box draws its own items
             Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            ' This control always sorts
-            Me.Sorted = True
 
         End Sub
 
