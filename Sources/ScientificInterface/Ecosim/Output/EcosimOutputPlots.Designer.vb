@@ -196,22 +196,22 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents zgcPlots As ZedGraph.ZedGraphControl
-        Friend WithEvents btnShowAllFits As System.Windows.Forms.Button
-        Friend WithEvents lbGroups As cGroupListBox
-        Friend WithEvents btnSave As System.Windows.Forms.Button
-        Friend WithEvents lbPredRanks As cGroupListBox
-        Friend WithEvents lbPreyRanks As cGroupListBox
-        Friend WithEvents scMain As System.Windows.Forms.SplitContainer
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents Panel2 As System.Windows.Forms.Panel
-        Friend WithEvents Panel1 As System.Windows.Forms.Panel
-        Friend WithEvents Panel3 As System.Windows.Forms.Panel
-        Friend WithEvents Panel4 As System.Windows.Forms.Panel
-        Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_lblGroup As System.Windows.Forms.Label
-        Friend WithEvents m_lblPredRank As System.Windows.Forms.Label
-        Friend WithEvents m_lblPreyRank As System.Windows.Forms.Label
+        Private WithEvents zgcPlots As ZedGraph.ZedGraphControl
+        Private WithEvents btnShowAllFits As System.Windows.Forms.Button
+        Private WithEvents lbGroups As cGroupListBox
+        Private WithEvents btnSave As System.Windows.Forms.Button
+        Private WithEvents lbPredRanks As cGroupListBox
+        Private WithEvents lbPreyRanks As cGroupListBox
+        Private WithEvents scMain As System.Windows.Forms.SplitContainer
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents Panel2 As System.Windows.Forms.Panel
+        Private WithEvents Panel1 As System.Windows.Forms.Panel
+        Private WithEvents Panel3 As System.Windows.Forms.Panel
+        Private WithEvents Panel4 As System.Windows.Forms.Panel
+        Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblGroup As System.Windows.Forms.Label
+        Private WithEvents m_lblPredRank As System.Windows.Forms.Label
+        Private WithEvents m_lblPreyRank As System.Windows.Forms.Label
     End Class
 
 End Namespace
