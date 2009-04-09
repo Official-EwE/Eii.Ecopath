@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwESettingsProvider.vb,v $
+' Revision 1.5  2009/04/09 13:43:08  jeroens
+' Avoided null ref exception
+'
 ' Revision 1.4  2009/04/08 13:11:19  jeroens
 ' Try! Catch! Aargh!
 ' Hopefully this class is robust enough now
@@ -241,18 +244,23 @@ Public Class cEwESettingsProvider
     Private Function GetValue(ByVal sp As SettingsProperty) As String
 
         Dim strValue As String = ""
+        Dim node As XmlNode = Nothing
 
         If (sp IsNot Nothing) Then
 
             Try
-                strValue = SettingsDoc.SelectSingleNode(cSETTINGSROOT & "/" & sp.Name).InnerText
-            Catch ex As Exception
-                If (sp.DefaultValue IsNot Nothing) Then
-                    strValue = sp.DefaultValue.ToString
+                node = SettingsDoc.SelectSingleNode(cSETTINGSROOT & "/" & sp.Name)
+                If (node IsNot Nothing) Then
+                    strValue = node.InnerText
                 Else
-                    strValue = ""
+                    If (sp.DefaultValue IsNot Nothing) Then
+                        strValue = sp.DefaultValue.ToString
+                    End If
                 End If
+            Catch ex As Exception
+                ' Yippee
             End Try
+
         End If
 
         Return strValue
