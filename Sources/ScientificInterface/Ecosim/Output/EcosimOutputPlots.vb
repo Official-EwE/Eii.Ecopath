@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.14  2009/04/09 01:34:46  jeroens
+' Hmmm, nice and fresh...
+'
 ' Revision 1.13  2009/04/08 15:09:09  jeroens
 ' GroupListBox -> cGroupListBox
 '
@@ -112,6 +115,7 @@ Namespace Ecosim
                 group = Me.m_core.EcoSimGroupInputs(i)
                 lbGroups.Items.Add(New cGroupListBox.cGroupItem(group))
             Next
+            Me.lbGroups.Refresh()
 
             Me.m_paneMaster = Me.zgcPlots.MasterPane
             Me.m_zgh = New ZedGraphHelper()
@@ -528,6 +532,7 @@ Namespace Ecosim
                 group = Me.m_core.EcoPathGroupInputs(aiGroupIndex(i))
                 l.Items.Add(New cGroupListBox.cGroupItem(group))
             Next
+            l.Refresh()
 
         End Sub
 
