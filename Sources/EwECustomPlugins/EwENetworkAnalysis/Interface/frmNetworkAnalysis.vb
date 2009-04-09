@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.10  2009/04/09 20:04:49  joeh
+' Add "Bar graph" button to plot bar graph for MTI
+'
 ' Revision 1.9  2008/12/10 20:56:19  joeh
 ' Finalize the Suitability Plot
 '
@@ -109,7 +112,7 @@ Public Class frmNetworkAnalysis
     Private m_ForHarvestOfAllGp As cForHarvestOfAllGp
 
     Private m_ImpactData As cImpactData
-    'Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
+    Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
     Private WithEvents m_PlotOfMixedTrophicImpact As cPlotOfMixedTrophicImpact
     Private m_HideGroupsClass As cHideGroups
     Private m_HideGroupsForm As frmHideGroups
@@ -317,7 +320,7 @@ Public Class frmNetworkAnalysis
                 End If
                 m_ImpactData = cImpactData.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_ImpactData.DisplayData()
-            Case My.Resources.TREE_NODE_GRAPH_MTI
+            Case My.Resources.TREE_NODE_PLOT_MTI 'MTI graph with circles
                 If Not m_NetworkManager.IsMainNetworkRun Then
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
@@ -325,7 +328,7 @@ Public Class frmNetworkAnalysis
                 m_PlotOfMixedTrophicImpact = cPlotOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_PlotOfMixedTrophicImpact.SetUpPanel()
                 m_PlotOfMixedTrophicImpact.CreatePlot()
-                'Case My.Resources.TREE_NODE_GRAPH_MTI
+                'Case My.Resources.TREE_NODE_GRAPH_MTI 'MTI graph with bars
                 '    If Not m_NetworkManager.IsMainNetworkRun Then
                 '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 '        m_NetworkAnalysis.RunNetworkAnalysis()
@@ -334,11 +337,11 @@ Public Class frmNetworkAnalysis
                 '    m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
                 '    m_GraphOfMixedTrophicImpact.SetUpPanel()
                 '    m_GraphOfMixedTrophicImpact.CreatePlot()
-                'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
-                '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
-                '    m_HideGroupsClass.SetUpPanel()
-                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                '    m_HideGroupsForm.ShowDialog()
+            Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
+                m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
+                m_HideGroupsClass.SetUpPanel()
+                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
+                m_HideGroupsForm.ShowDialog()
             Case My.Resources.TREE_NODE_TOTAL
                 If Not m_NetworkManager.IsMainNetworkRun Then
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
@@ -614,6 +617,14 @@ Public Class frmNetworkAnalysis
         m_PlotOfMixedTrophicImpact.SaveToEMF()
     End Sub
 
+    Private Sub tsbtnGraphMTI_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnGraphMTI.Click
+        'MTI graph with bars
+        m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
+        m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+        m_GraphOfMixedTrophicImpact.SetUpPanel()
+        m_GraphOfMixedTrophicImpact.CreatePlot()
+    End Sub
+
     Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tscmbSelection1.SelectedIndexChanged
         Dim strSelection1 As String
         Dim intSelection1 As Integer
@@ -781,4 +792,7 @@ Public Class frmNetworkAnalysis
 
     'End Sub
 
+    Private Sub frmNetworkAnalysis_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

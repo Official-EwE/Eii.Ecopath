@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.5  2009/04/09 20:04:48  joeh
+' Add "Bar graph" button to plot bar graph for MTI
+'
 ' Revision 1.4  2008/12/02 23:31:55  joeh
 ' Remove Zed graph control from the parameters of CreatePlot( )
 '
@@ -191,6 +194,7 @@ Public Class cIndicesWithPPREst
         Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
         Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
         Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+        Dim ToolStripButton5 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
 
         RemoveToolStrip()
 
@@ -208,6 +212,7 @@ Public Class cIndicesWithPPREst
             ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
             ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
             ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
+            ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), Windows.Forms.ToolStripButton)
 
             ToolStripLabel1.Visible = False
             ToolStripCombo1.Visible = False
@@ -221,6 +226,7 @@ Public Class cIndicesWithPPREst
             ToolStripButton2.Visible = True
             ToolStripButton3.Visible = False
             ToolStripButton4.Visible = False
+            ToolStripButton5.Visible = False
 
             ToolStrip.Refresh()
         End If

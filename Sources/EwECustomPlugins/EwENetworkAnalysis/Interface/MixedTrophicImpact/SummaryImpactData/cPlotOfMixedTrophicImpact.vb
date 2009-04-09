@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.10  2009/04/09 20:04:47  joeh
+' Add "Bar graph" button to plot bar graph for MTI
+'
 ' Revision 1.9  2008/12/10 20:56:19  joeh
 ' Finalize the Suitability Plot
 '
@@ -38,6 +41,7 @@ Imports System.Drawing.Imaging
 
 #End Region ' Imports
 
+'MTI graph with circles
 Public Class cPlotOfMixedTrophicImpact
     Public Event AddToolStrip()
 
@@ -153,6 +157,7 @@ Public Class cPlotOfMixedTrophicImpact
         Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
         Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
         Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+        Dim ToolStripButton5 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
 
         RemoveToolStrip()
 
@@ -169,6 +174,7 @@ Public Class cPlotOfMixedTrophicImpact
         ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
         ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
         ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
+        ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), Windows.Forms.ToolStripButton)
 
         ToolStripLabel1.Visible = False
         ToolStripCombo1.Visible = False
@@ -182,6 +188,7 @@ Public Class cPlotOfMixedTrophicImpact
         ToolStripButton2.Visible = False
         ToolStripButton3.Visible = True
         ToolStripButton4.Visible = False
+        ToolStripButton5.Visible = True
 
         ToolStrip.Refresh()
     End Sub

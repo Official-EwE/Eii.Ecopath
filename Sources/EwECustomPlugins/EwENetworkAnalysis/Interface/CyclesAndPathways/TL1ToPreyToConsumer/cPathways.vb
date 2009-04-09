@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.4  2009/04/09 20:04:49  joeh
+' Add "Bar graph" button to plot bar graph for MTI
+'
 ' Revision 1.3  2008/11/28 01:58:33  joeh
 ' Implement new MTI plot and save MTI plot as emf file
 '
@@ -130,6 +133,7 @@ Namespace TL1ToPreyToConsumer
             Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
             Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
             Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+            Dim ToolStripButton5 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
 
             RemoveToolStrip()
             RaiseEvent AddToolStrip()
@@ -145,6 +149,7 @@ Namespace TL1ToPreyToConsumer
             ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
             ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
             ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
+            ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), Windows.Forms.ToolStripButton)
 
             ToolStripLabel1.Visible = True
             ToolStripLabel1.Text = My.Resources.LBL_PATH_TO
@@ -172,6 +177,7 @@ Namespace TL1ToPreyToConsumer
             ToolStripButton2.Visible = False
             ToolStripButton3.Visible = False
             ToolStripButton4.Visible = False
+            ToolStripButton5.Visible = False
 
             ToolStrip.Refresh()
         End Sub

@@ -40,7 +40,7 @@ Partial Class frmNetworkAnalysis
         Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("For consumption of all groups", 1, 1)
         Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Primary production required", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode16})
         Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Impact data", 1, 1)
-        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Graph of mixed trophic impact", 1, 1)
+        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Plot of mixed trophic impact")
         Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Mixed trophic impact", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode18, TreeNode19})
         Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Total", 1, 1)
         Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("By group", 1, 1)
@@ -82,6 +82,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
         Me.tsbtnPrintGraph = New System.Windows.Forms.ToolStripButton
+        Me.tsbtnGraphMTI = New System.Windows.Forms.ToolStripButton
         Me.dgvNetworkAnalysis = New System.Windows.Forms.DataGridView
         Me.tlpNetworkAnalysis = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -198,10 +199,11 @@ Partial Class frmNetworkAnalysis
         TreeNode18.Name = "ndImpactData"
         TreeNode18.SelectedImageIndex = 1
         TreeNode18.Text = "Impact data"
-        TreeNode19.ImageIndex = 1
-        TreeNode19.Name = "ndGraphOfMixedTrophicImpacts"
-        TreeNode19.SelectedImageIndex = 1
-        TreeNode19.Text = "Graph of mixed trophic impact"
+        TreeNode19.ImageKey = "application_put.png"
+        TreeNode19.Name = "ndGraphOfMixedTrophicImpact"
+        TreeNode19.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode19.SelectedImageKey = "application_put.png"
+        TreeNode19.Text = "Plot of mixed trophic impact"
         TreeNode20.ImageIndex = 5
         TreeNode20.Name = "ndMixedTrophicImpact"
         TreeNode20.SelectedImageIndex = 5
@@ -340,7 +342,7 @@ Partial Class frmNetworkAnalysis
         'tsNetworkAnalysis
         '
         Me.tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph})
+        Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tsbtnGraphMTI})
         Me.tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
         Me.tsNetworkAnalysis.Name = "tsNetworkAnalysis"
         Me.tsNetworkAnalysis.Size = New System.Drawing.Size(621, 25)
@@ -419,6 +421,15 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnPrintGraph.Size = New System.Drawing.Size(64, 17)
         Me.tsbtnPrintGraph.Text = "Print graph"
         '
+        'tsbtnGraphMTI
+        '
+        Me.tsbtnGraphMTI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tsbtnGraphMTI.Image = CType(resources.GetObject("tsbtnGraphMTI.Image"), System.Drawing.Image)
+        Me.tsbtnGraphMTI.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbtnGraphMTI.Name = "tsbtnGraphMTI"
+        Me.tsbtnGraphMTI.Size = New System.Drawing.Size(58, 17)
+        Me.tsbtnGraphMTI.Text = "Bar graph"
+        '
         'dgvNetworkAnalysis
         '
         Me.dgvNetworkAnalysis.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -476,6 +487,7 @@ Partial Class frmNetworkAnalysis
         Me.ClientSize = New System.Drawing.Size(906, 510)
         Me.Controls.Add(Me.lblNetworkAnalysis)
         Me.Controls.Add(Me.scNetworkAnalysis)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmNetworkAnalysis"
         Me.TabText = "Network analysis plug-in"
@@ -512,4 +524,5 @@ Partial Class frmNetworkAnalysis
     Friend WithEvents zgcNetworkAnalysis As ZedGraph.ZedGraphControl
     Friend WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbtnGraphMTI As System.Windows.Forms.ToolStripButton
 End Class

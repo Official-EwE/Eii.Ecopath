@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.4  2009/04/09 20:04:47  joeh
+' Add "Bar graph" button to plot bar graph for MTI
+'
 ' Revision 1.3  2008/12/10 20:56:19  joeh
 ' Finalize the Suitability Plot
 '
@@ -55,6 +58,7 @@ Imports ZedGraph
 Imports System.IO
 Imports System.Globalization
 
+'MTI graph with bars
 Public Class cGraphOfMixedTrophicImpact
     Private Shared m_GraphOfMixedTrophicImpactInstance As cGraphOfMixedTrophicImpact
 
@@ -163,7 +167,7 @@ Public Class cGraphOfMixedTrophicImpact
     End Sub
 
     Public Sub SetUpPanel()
-        RemoveToolStrip()
+        'RemoveToolStrip()
 
         SetUpGrid()
     End Sub

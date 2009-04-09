@@ -1443,6 +1443,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Plot of mixed trophic impact.
+        '''</summary>
+        Friend ReadOnly Property TREE_NODE_PLOT_MTI() As String
+            Get
+                Return ResourceManager.GetString("TREE_NODE_PLOT_MTI", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Top predator &lt;- prey.
         '''</summary>
         Friend ReadOnly Property TREE_NODE_PRED_PREY() As String

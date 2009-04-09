@@ -598,4 +598,7 @@
   <data name="LBL_IMPACTING_GP" xml:space="preserve">
     <value>Impacting group</value>
   </data>
+  <data name="TREE_NODE_PLOT_MTI" xml:space="preserve">
+    <value>Plot of mixed trophic impact</value>
+  </data>
 </root>
