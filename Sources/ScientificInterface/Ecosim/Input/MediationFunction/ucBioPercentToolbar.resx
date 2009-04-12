@@ -132,7 +132,7 @@
     <value>85, 22</value>
   </data>
   <data name="m_tsbnDefineXAxis.Text" xml:space="preserve">
-    <value>Define &amp;X axis...</value>
+    <value>Define &amp;X-axis...</value>
   </data>
   <data name="tsMenus.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
