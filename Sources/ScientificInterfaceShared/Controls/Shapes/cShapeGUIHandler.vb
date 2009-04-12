@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.15  2009/04/12 21:20:28  jeroens
+' Custom -> DefineXAxis
+'
 ' Revision 1.14  2009/03/26 17:41:41  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -106,8 +109,8 @@ Namespace Controls
             SetToZero
             ''' <summary>Weight all time series.</summary>
             Weight
-            ''' <summary>Custom command, can be anything.</summary>
-            Custom
+            ''' <summary>Mediation define X-axis.</summary>
+            DefineXAxis
         End Enum
 
 #Region " Private variables "
