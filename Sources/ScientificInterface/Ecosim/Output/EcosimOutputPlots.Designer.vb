@@ -27,10 +27,10 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
             Me.zgcPlots = New ZedGraph.ZedGraphControl
             Me.btnShowAllFits = New System.Windows.Forms.Button
-            Me.lbGroups = New cGroupListBox
+            Me.lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.btnSave = New System.Windows.Forms.Button
-            Me.lbPredRanks = New cGroupListBox
-            Me.lbPreyRanks = New cGroupListBox
+            Me.lbPredRanks = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.lbPreyRanks = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.scMain = New System.Windows.Forms.SplitContainer
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.Panel2 = New System.Windows.Forms.Panel
@@ -74,8 +74,11 @@ Namespace Ecosim
             'lbGroups
             '
             resources.ApplyResources(Me.lbGroups, "lbGroups")
+            Me.lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.lbGroups.FormattingEnabled = True
             Me.lbGroups.Name = "lbGroups"
+            Me.lbGroups.SortThreshold = -9999.0!
+            Me.lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
             'btnSave
             '
@@ -90,6 +93,8 @@ Namespace Ecosim
             Me.lbPredRanks.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.lbPredRanks.FormattingEnabled = True
             Me.lbPredRanks.Name = "lbPredRanks"
+            Me.lbPredRanks.SortThreshold = -9999.0!
+            Me.lbPredRanks.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
             'lbPreyRanks
             '
@@ -98,6 +103,8 @@ Namespace Ecosim
             Me.lbPreyRanks.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.lbPreyRanks.FormattingEnabled = True
             Me.lbPreyRanks.Name = "lbPreyRanks"
+            Me.lbPreyRanks.SortThreshold = -9999.0!
+            Me.lbPreyRanks.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
             '
             'scMain
             '
@@ -131,8 +138,8 @@ Namespace Ecosim
             '
             'm_lblGroup
             '
-            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
             Me.m_lblGroup.BackColor = System.Drawing.SystemColors.ButtonShadow
+            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
             Me.m_lblGroup.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblGroup.Name = "m_lblGroup"
             '

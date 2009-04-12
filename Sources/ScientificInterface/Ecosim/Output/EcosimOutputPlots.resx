@@ -199,7 +199,7 @@
     <value>lbGroups</value>
   </data>
   <data name="&gt;&gt;lbGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbGroups.Parent" xml:space="preserve">
     <value>Panel2</value>
@@ -259,7 +259,7 @@
     <value>lbPredRanks</value>
   </data>
   <data name="&gt;&gt;lbPredRanks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbPredRanks.Parent" xml:space="preserve">
     <value>Panel3</value>
@@ -289,7 +289,7 @@
     <value>lbPreyRanks</value>
   </data>
   <data name="&gt;&gt;lbPreyRanks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbPreyRanks.Parent" xml:space="preserve">
     <value>Panel4</value>
@@ -321,9 +321,6 @@
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_lblGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="m_lblGroup.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
@@ -331,10 +328,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, -1</value>
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 18</value>
+    <value>190, 18</value>
   </data>
   <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -454,10 +454,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblPredRank.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, -3</value>
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblPredRank.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblPredRank.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 18</value>
+    <value>190, 18</value>
   </data>
   <data name="m_lblPredRank.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -514,10 +517,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblPreyRank.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, -2</value>
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblPreyRank.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblPreyRank.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 18</value>
+    <value>187, 18</value>
   </data>
   <data name="m_lblPreyRank.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -636,6 +642,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>944, 628</value>
   </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>300, 300</value>
   </data>
@@ -649,6 +658,6 @@
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.4.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
