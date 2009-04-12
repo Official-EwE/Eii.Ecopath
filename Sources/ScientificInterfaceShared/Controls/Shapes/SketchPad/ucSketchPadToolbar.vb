@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPadToolbar.vb,v $
+' Revision 1.5  2009/04/12 22:14:18  jeroens
+' Initial state correctly processed
+'
 ' Revision 1.4  2009/03/24 14:08:22  jeroens
 ' Uses moved cToolstripUtils
 '
@@ -86,7 +89,11 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Private Sub SketchPadWithMenus_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnVisibleChanged(ByVal e As System.EventArgs)
+            Me.UpdateControls()
+        End Sub
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             Me.UpdateControls()
         End Sub
 

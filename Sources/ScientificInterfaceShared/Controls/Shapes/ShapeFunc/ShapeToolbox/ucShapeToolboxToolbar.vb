@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolboxToolbar.vb,v $
+' Revision 1.6  2009/04/12 22:14:18  jeroens
+' Initial state correctly processed
+'
 ' Revision 1.5  2009/03/24 14:08:23  jeroens
 ' Uses moved cToolstripUtils
 '
@@ -70,6 +73,10 @@ Namespace Controls
 #End Region ' Public interfaces
 
 #Region " Helper methods "
+
+        Protected Overrides Sub OnVisibleChanged(ByVal e As System.EventArgs)
+            Me.UpdateControls()
+        End Sub
 
         Private Sub UpdateControls()
 
