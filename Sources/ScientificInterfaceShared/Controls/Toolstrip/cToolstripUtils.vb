@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cToolstripUtils.vb,v $
+' Revision 1.2  2009/04/12 22:13:47  jeroens
+' Initial separator now also hidden
+'
 ' Revision 1.1  2009/03/24 14:06:53  jeroens
 ' Moved, why not again. Renamed class as well
 '
@@ -23,7 +26,7 @@ Namespace Controls
         Shared Sub HideRepeatingSeparators(ByVal ts As ToolStrip)
 
             Dim tsi As ToolStripItem = Nothing
-            Dim tsiLastSeparator As ToolStripItem = Nothing
+            Dim bAllInvisibleControls As Boolean = True
 
             ts.SuspendLayout()
             ' For all toolbar items
@@ -33,18 +36,13 @@ Namespace Controls
                 ' Is a separator?
                 If (TypeOf tsi Is ToolStripSeparator) Then
                     ' #Yes: ok, show it
-                    tsi.Visible = True
-                    ' Was previous separator visible?
-                    If tsiLastSeparator IsNot Nothing Then
-                        tsiLastSeparator.Visible = False
-                    End If
-                    ' Remember last separator
-                    tsiLastSeparator = tsi
+                    tsi.Visible = (bAllInvisibleControls = False)
+                    bAllInvisibleControls = True
                 Else
                     ' #No: regular control. Is this control visible?
                     If tsi.Visible = True Then
                         ' #Yes: forget last separator since it separates a visible control
-                        tsiLastSeparator = Nothing
+                        bAllInvisibleControls = False
                     End If
                 End If
             Next
