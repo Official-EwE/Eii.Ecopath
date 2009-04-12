@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.7  2009/04/12 21:20:52  jeroens
+' Custom -> DefineXAxis (issue 611)
+'
 ' Revision 1.6  2009/03/24 20:28:35  jeroens
 ' Uses mediation tool bar
 '
@@ -219,7 +222,7 @@ Namespace Ecosim
             Select Case cmd
                 Case eShapeCommandTypes.Seasonal
                     Return False
-                Case eShapeCommandTypes.Custom
+                Case eShapeCommandTypes.DefineXAxis
                     Return True
             End Select
             Return MyBase.SupportCommand(cmd)
@@ -227,7 +230,7 @@ Namespace Ecosim
 
         Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.Custom
+                Case eShapeCommandTypes.DefineXAxis
                     Return (Me.SelectedShape IsNot Nothing)
             End Select
             Return MyBase.EnableCommand(cmd)
@@ -239,7 +242,7 @@ Namespace Ecosim
 
             Select Case cmd
 
-                Case eShapeCommandTypes.Custom
+                Case eShapeCommandTypes.DefineXAxis
                     Dim dlgDefBP As New defBioPercent(DirectCast(Me.SelectedShape, cMediationFunction))
                     If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                         Me.BiomassPercent.LoadGraphData()

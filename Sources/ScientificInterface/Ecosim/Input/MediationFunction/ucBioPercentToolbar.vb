@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercentToolbar.vb,v $
+' Revision 1.2  2009/04/12 21:20:53  jeroens
+' Custom -> DefineXAxis (issue 611)
+'
 ' Revision 1.1  2009/03/24 20:23:58  jeroens
 ' Initial version
 '
@@ -89,8 +92,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnEdit(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnEdit.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Custom)
+        Private Sub OnDefineXAxis(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnDefineXAxis.Click
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DefineXAxis)
         End Sub
 
 #End Region ' Event handlers
@@ -103,7 +106,7 @@ Namespace Ecosim
 
             If (Me.Handler Is Nothing) Then Return
 
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Custom, m_tsbnEdit)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineXAxis, m_tsbnDefineXAxis)
 
             cToolstripUtils.HideRepeatingSeparators(Me.tsMenus)
 

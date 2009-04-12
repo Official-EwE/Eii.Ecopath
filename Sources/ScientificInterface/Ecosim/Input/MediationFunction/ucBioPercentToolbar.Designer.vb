@@ -23,7 +23,7 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucBioPercentToolbar))
             Me.tsMenus = New System.Windows.Forms.ToolStrip
-            Me.m_tsbnEdit = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnDefineXAxis = New System.Windows.Forms.ToolStripButton
             Me.tsMenus.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -31,15 +31,15 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.tsMenus, "tsMenus")
             Me.tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEdit})
+            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineXAxis})
             Me.tsMenus.Name = "tsMenus"
             Me.tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnEdit
+            'm_tsbnDefineXAxis
             '
-            Me.m_tsbnEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnEdit, "m_tsbnEdit")
-            Me.m_tsbnEdit.Name = "m_tsbnEdit"
+            Me.m_tsbnDefineXAxis.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnDefineXAxis, "m_tsbnDefineXAxis")
+            Me.m_tsbnDefineXAxis.Name = "m_tsbnDefineXAxis"
             '
             'ucBioPercentToolbar
             '
@@ -54,7 +54,7 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsbnEdit As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnDefineXAxis As System.Windows.Forms.ToolStripButton
         Private WithEvents tsMenus As System.Windows.Forms.ToolStrip
 
     End Class
