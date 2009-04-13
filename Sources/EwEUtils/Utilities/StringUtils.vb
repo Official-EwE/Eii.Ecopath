@@ -1,44 +1,22 @@
 '==============================================================================
 '
 ' $Log: StringUtils.vb,v $
+' Revision 1.3  2009/04/13 14:14:02  jeroens
+' Added path trim option
+'
 ' Revision 1.2  2008/10/20 23:35:39  jeroens
 ' Added shift
 '
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.9  2008/07/16 13:27:27  jeroens
-' Added EndsWith
-'
-' Revision 1.8  2008/07/01 19:13:12  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.7  2008/07/01 13:55:50  jeroens
-' Added BeginsWithOneOf
-'
-' Revision 1.6  2008/04/22 08:23:45  jeroens
-' Added BeginsWith
-'
-' Revision 1.5  2007/12/08 18:41:16  jeroens
-' * Made GetNextNumber robust to any type of wrong input
-'
-' Revision 1.4  2007/12/08 15:09:34  jeroens
-' + Added GetNextNumber
-'
-' Revision 1.3  2007/09/27 18:01:25  jeroens
-' Changed namespace
-'
-' Revision 1.2  2007/05/16 04:31:01  jeroens
-' * Renamed the one method
-'
-' Revision 1.1  2007/05/16 04:28:08  jeroens
-' Intial version
-'
 '==============================================================================
 
 Option Strict On
 
 Imports System.Text.RegularExpressions
+Imports System.Drawing
+Imports System.Windows.Forms
 
 Namespace Utilities
 
@@ -199,6 +177,54 @@ Namespace Utilities
             Next
             Return strOut
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' method for truncating a path with elipses
+        ''' </summary>
+        ''' <param name="strPath">The path to truncate.</param>
+        ''' <param name="font">The font to trucate with.</param>
+        ''' <returns>
+        ''' The truncated path
+        ''' </returns>
+        ''' <remarks>
+        ''' Taken from http://www.dreamincode.net/code/snippet3281.htm
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function TruncatePath(ByVal strPath As String, _
+                                            ByVal font As Font, _
+                                            ByVal iMaxWidth As Integer) As String
+
+            Dim strPathTruncated As String = ""
+            Dim bmp As Bitmap = Nothing
+            Dim g As Graphics = Nothing
+            Dim szfText As SizeF = Nothing
+
+            ' First trim and copy the path
+            strPathTruncated = String.Copy(strPath.Trim())
+            ' Create graphics to measure with
+            bmp = New Bitmap(1, 1)
+            g = Graphics.FromImage(bmp)
+            ' Measure the text in its current form
+            szfText = g.MeasureString(strPathTruncated, font)
+
+            ' Replace the center of the path with elipses
+            TextRenderer.MeasureText(strPathTruncated, font, _
+                                     New Size(Math.Min(iMaxWidth, CInt(szfText.Width)), CInt(szfText.Height)), _
+                                     TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
+
+            ' Clean up
+            g.Dispose()
+            bmp.Dispose()
+
+            ' Return the modified path
+            Return strPathTruncated
+
+        End Function
+
+
+
+
     End Class
 
 End Namespace ' Utilities
