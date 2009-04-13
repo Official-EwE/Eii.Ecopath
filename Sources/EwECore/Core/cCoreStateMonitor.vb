@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCoreStateMonitor.vb,v $
+' Revision 1.10  2009/04/13 14:13:26  jeroens
+' Event broadcast protected by try/catch to handle unstable GUI actions
+'
 ' Revision 1.9  2009/03/22 14:01:37  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -130,11 +133,15 @@ Public Class cCoreStateMonitor
     Public Custom Event CoreExecutionStateEvent As CoreExecutionStateDelegate
         AddHandler(ByVal handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Add(handler)
-            If m_sync IsNot Nothing Then
-                Me.m_sync.Invoke(handler, New Object() {Me})
-            Else
-                handler.Invoke(Me)
-            End If
+            Try
+                If m_sync IsNot Nothing Then
+                    Me.m_sync.Invoke(handler, New Object() {Me})
+                Else
+                    handler.Invoke(Me)
+                End If
+            Catch ex As Exception
+
+            End Try
         End AddHandler
 
         RemoveHandler(ByVal handler As CoreExecutionStateDelegate)
@@ -143,11 +150,15 @@ Public Class cCoreStateMonitor
 
         RaiseEvent(ByVal statemonitor As cCoreStateMonitor)
             For Each h As CoreExecutionStateDelegate In Me.m_executionStateHandlers
-                If m_sync IsNot Nothing Then
-                    Me.m_sync.Invoke(h, New Object() {Me})
-                Else
-                    h.Invoke(Me)
-                End If
+                Try
+                    If m_sync IsNot Nothing Then
+                        Me.m_sync.Invoke(h, New Object() {Me})
+                    Else
+                        h.Invoke(Me)
+                    End If
+                Catch ex As Exception
+
+                End Try
             Next
         End RaiseEvent
     End Event
