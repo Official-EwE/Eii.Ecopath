@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEDatabase.vb,v $
+' Revision 1.14  2009/04/13 17:47:24  jeroens
+' OOPStorable can handle boolean fields
+'
 ' Revision 1.13  2009/03/27 21:05:57  jeroens
 ' Fixed unlikely but possible crash on AddRow sequence logic
 '
@@ -2283,9 +2286,9 @@ Namespace Database
                     Return "SHORT" ' SMALLINT?
                     'Case "System.Byte"
                     '    Return "SHORT"
-                    'Case "System.Boolean"
-                    '    ' I'm refusing to use Access 'YESNO' because it's not portable
-                    '    Return "SMALLINT"
+                Case "System.Boolean"
+                    ' I'm refusing to use Access 'YESNO' because it's not portable
+                    Return "SHORT"
                 Case "System.String"
                     ' Perform property browsable attribute length check?
                     Return "TEXT(255)"
@@ -2527,7 +2530,12 @@ Namespace Database
                                 Else ' Me.OOPIsForeignKeyProperty(pi)
                                     ' #No: just read the property value
                                     Try
-                                        pi.SetValue(objRead, reader(strColumnName), Nothing)
+                                        ' Special cases
+                                        If pi.PropertyType Is GetType(Boolean) Then
+                                            pi.SetValue(objRead, Convert.ToBoolean(reader(strColumnName)), Nothing)
+                                        Else
+                                            pi.SetValue(objRead, reader(strColumnName), Nothing)
+                                        End If
                                     Catch ex As Exception
                                         ' ToDo: assign property default value (which can be obtained from pi.Attributes
                                         'pi.SetValue(objRead, pi.Attributes, Nothing)
