@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.26  2009/04/13 17:48:37  jeroens
+' Discontinued OpenDatabase plug-in point
+'
 ' Revision 1.25  2009/04/03 15:31:29  jeroens
 ' Fixed remaining shielded calls
 '
@@ -701,28 +704,6 @@ Public Class cPluginManager
                 bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathPlugin).SaveModel(dataSource)
             Catch ex As Exception
                 Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "SaveModel", ex)
-            End Try
-        Next
-
-        Return bSucces
-
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Bridge, open a plug-in database link.
-    ''' </summary>
-    ''' ---------------------------------------------------------------------------
-    Public Function OpenDatabase(ByVal strName As String) As Boolean
-
-        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDatabasePlugin))
-        Dim bSucces As Boolean = True
-
-        For Each ipc As cPluginContext In collPlugins
-            Try
-                bSucces = bSucces And DirectCast(ipc.Plugin, IDatabasePlugin).Open(strName)
-            Catch ex As Exception
-                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "Open", ex)
             End Try
         Next
 
