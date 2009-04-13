@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.37  2009/04/13 21:02:47  jeroens
+' Hmm, rather not
+'
 ' Revision 1.36  2009/04/13 14:15:20  jeroens
 ' Using path trim option
 ' Renamed controls
@@ -1161,7 +1164,7 @@ Public Class AppLauncher
 
     Private Sub UpdateModelPathText(ByVal strText As String)
         Me.m_tsbModel.ToolTipText = strText
-        Me.m_tsbModel.Text = StringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
+        Me.m_tsbModel.Text = strText ' StringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
         Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(strText)
     End Sub
 
