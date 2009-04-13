@@ -20,15 +20,29 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim m_tss As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssModel1 As System.Windows.Forms.ToolStripSeparator
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AppLauncher))
+        Dim m_tssHelp2 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssFile1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssFile2 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssFile3 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssFile4 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssView1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcosim1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcosim2 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcosim3 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcospace1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcospace2 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcospace3 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcospace4 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssHelp1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelp = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiHelpBugReport = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiWindows = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem
@@ -42,27 +56,23 @@
         Me.m_tsEcosimScenario = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsEcospaceScenario = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsEcotracerScenario = New System.Windows.Forms.ToolStripStatusLabel
+        Me.m_tsiModified = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsmiFileExit = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFile = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileOpen = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiFileClose = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiFileSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileSaveAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileCompact = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiFileRecent = New System.Windows.Forms.ToolStripMenuItem
-        Me.NoneToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
+        Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem
         Me.m_menuMain = New System.Windows.Forms.MenuStrip
         Me.m_tsmiView = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStartPage = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewNavigation = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatus = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewRemarks = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiViewModelBar = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatusBar = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopath = New System.Windows.Forms.ToolStripMenuItem
@@ -72,57 +82,141 @@
         Me.m_tsmiEcosim = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcosimSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimSaveAs = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiTimeSeriesImport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesReloadLast = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiExportBiomassToCSV = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospace = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceSaveAs = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceEditMap = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditHabitats = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditMPAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceEditRegions = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator16 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceEditImportanceLayers = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator17 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceImportLayers = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTools = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcotracer = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerLoad = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator
-        Me.ToolBarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsModel = New System.Windows.Forms.ToolStrip
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
-        Me.m_tsiModified = New System.Windows.Forms.ToolStripStatusLabel
-        m_tss = New System.Windows.Forms.ToolStripSeparator
+        m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
+        m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssFile2 = New System.Windows.Forms.ToolStripSeparator
+        m_tssFile3 = New System.Windows.Forms.ToolStripSeparator
+        m_tssFile4 = New System.Windows.Forms.ToolStripSeparator
+        m_tssView1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcosim1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcosim2 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcosim3 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcospace1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcospace2 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcospace3 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator
+        m_tssTools1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssHelp1 = New System.Windows.Forms.ToolStripSeparator
+        m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_ssMain.SuspendLayout()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
         '
-        'm_tss
+        'm_tssModel1
         '
-        m_tss.Name = "m_tss"
-        resources.ApplyResources(m_tss, "m_tss")
+        m_tssModel1.Name = "m_tssModel1"
+        resources.ApplyResources(m_tssModel1, "m_tssModel1")
+        '
+        'm_tssHelp2
+        '
+        m_tssHelp2.Name = "m_tssHelp2"
+        resources.ApplyResources(m_tssHelp2, "m_tssHelp2")
+        '
+        'm_tssFile1
+        '
+        m_tssFile1.Name = "m_tssFile1"
+        resources.ApplyResources(m_tssFile1, "m_tssFile1")
+        '
+        'm_tssFile2
+        '
+        m_tssFile2.Name = "m_tssFile2"
+        resources.ApplyResources(m_tssFile2, "m_tssFile2")
+        '
+        'm_tssFile3
+        '
+        m_tssFile3.Name = "m_tssFile3"
+        resources.ApplyResources(m_tssFile3, "m_tssFile3")
+        '
+        'm_tssFile4
+        '
+        m_tssFile4.Name = "m_tssFile4"
+        resources.ApplyResources(m_tssFile4, "m_tssFile4")
+        '
+        'm_tssView1
+        '
+        m_tssView1.Name = "m_tssView1"
+        resources.ApplyResources(m_tssView1, "m_tssView1")
+        '
+        'm_tssEcosim1
+        '
+        m_tssEcosim1.Name = "m_tssEcosim1"
+        resources.ApplyResources(m_tssEcosim1, "m_tssEcosim1")
+        '
+        'm_tssEcosim2
+        '
+        m_tssEcosim2.Name = "m_tssEcosim2"
+        resources.ApplyResources(m_tssEcosim2, "m_tssEcosim2")
+        '
+        'm_tssEcosim3
+        '
+        m_tssEcosim3.Name = "m_tssEcosim3"
+        resources.ApplyResources(m_tssEcosim3, "m_tssEcosim3")
+        '
+        'm_tssEcospace1
+        '
+        m_tssEcospace1.Name = "m_tssEcospace1"
+        resources.ApplyResources(m_tssEcospace1, "m_tssEcospace1")
+        '
+        'm_tssEcospace2
+        '
+        m_tssEcospace2.Name = "m_tssEcospace2"
+        resources.ApplyResources(m_tssEcospace2, "m_tssEcospace2")
+        '
+        'm_tssEcospace3
+        '
+        m_tssEcospace3.Name = "m_tssEcospace3"
+        resources.ApplyResources(m_tssEcospace3, "m_tssEcospace3")
+        '
+        'm_tssEcospace4
+        '
+        m_tssEcospace4.Name = "m_tssEcospace4"
+        resources.ApplyResources(m_tssEcospace4, "m_tssEcospace4")
+        '
+        'm_tssTools1
+        '
+        m_tssTools1.Name = "m_tssTools1"
+        resources.ApplyResources(m_tssTools1, "m_tssTools1")
+        '
+        'm_tssHelp1
+        '
+        m_tssHelp1.Name = "m_tssHelp1"
+        resources.ApplyResources(m_tssHelp1, "m_tssHelp1")
+        '
+        'm_tssEcotracer1
+        '
+        m_tssEcotracer1.Name = "m_tssEcotracer1"
+        resources.ApplyResources(m_tssEcotracer1, "m_tssEcotracer1")
         '
         'm_tsmiHelpContents
         '
@@ -131,7 +225,7 @@
         '
         'm_tsmiHelp
         '
-        Me.m_tsmiHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, Me.ToolStripSeparator12, Me.m_tsmiHelpBugReport, Me.ToolStripSeparator8, Me.m_tsmiHelpAbout})
+        Me.m_tsmiHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpBugReport, m_tssHelp2, Me.m_tsmiHelpAbout})
         Me.m_tsmiHelp.Name = "m_tsmiHelp"
         resources.ApplyResources(Me.m_tsmiHelp, "m_tsmiHelp")
         '
@@ -145,20 +239,10 @@
         resources.ApplyResources(Me.m_tsmiHelpSearch, "m_tsmiHelpSearch")
         Me.m_tsmiHelpSearch.Name = "m_tsmiHelpSearch"
         '
-        'ToolStripSeparator12
-        '
-        Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        resources.ApplyResources(Me.ToolStripSeparator12, "ToolStripSeparator12")
-        '
         'm_tsmiHelpBugReport
         '
         Me.m_tsmiHelpBugReport.Name = "m_tsmiHelpBugReport"
         resources.ApplyResources(Me.m_tsmiHelpBugReport, "m_tsmiHelpBugReport")
-        '
-        'ToolStripSeparator8
-        '
-        Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        resources.ApplyResources(Me.ToolStripSeparator8, "ToolStripSeparator8")
         '
         'm_tsmiHelpAbout
         '
@@ -250,6 +334,13 @@
         Me.m_tsEcotracerScenario.Name = "m_tsEcotracerScenario"
         resources.ApplyResources(Me.m_tsEcotracerScenario, "m_tsEcotracerScenario")
         '
+        'm_tsiModified
+        '
+        Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsiModified.Image = Global.ScientificInterface.My.Resources.Resources.Modified
+        Me.m_tsiModified.Name = "m_tsiModified"
+        resources.ApplyResources(Me.m_tsiModified, "m_tsiModified")
+        '
         'm_tsmiFileExit
         '
         Me.m_tsmiFileExit.Name = "m_tsmiFileExit"
@@ -257,7 +348,7 @@
         '
         'm_tsmiFile
         '
-        Me.m_tsmiFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.ToolStripSeparator5, Me.m_tsmiFileClose, Me.ToolStripSeparator1, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, Me.ToolStripSeparator9, Me.m_tsmiFileRecent, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
+        Me.m_tsmiFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiFileRecent, m_tssFile4, Me.m_tsmiFileExit})
         resources.ApplyResources(Me.m_tsmiFile, "m_tsmiFile")
         Me.m_tsmiFile.Name = "m_tsmiFile"
         '
@@ -273,20 +364,10 @@
         resources.ApplyResources(Me.m_tsmiFileOpen, "m_tsmiFileOpen")
         Me.m_tsmiFileOpen.Name = "m_tsmiFileOpen"
         '
-        'ToolStripSeparator5
-        '
-        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        resources.ApplyResources(Me.ToolStripSeparator5, "ToolStripSeparator5")
-        '
         'm_tsmiFileClose
         '
         Me.m_tsmiFileClose.Name = "m_tsmiFileClose"
         resources.ApplyResources(Me.m_tsmiFileClose, "m_tsmiFileClose")
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
         '
         'm_tsmiFileSave
         '
@@ -304,26 +385,16 @@
         Me.m_tsmiFileCompact.Name = "m_tsmiFileCompact"
         resources.ApplyResources(Me.m_tsmiFileCompact, "m_tsmiFileCompact")
         '
-        'ToolStripSeparator9
-        '
-        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        resources.ApplyResources(Me.ToolStripSeparator9, "ToolStripSeparator9")
-        '
         'm_tsmiFileRecent
         '
-        Me.m_tsmiFileRecent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NoneToolStripMenuItem})
+        Me.m_tsmiFileRecent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone})
         Me.m_tsmiFileRecent.Name = "m_tsmiFileRecent"
         resources.ApplyResources(Me.m_tsmiFileRecent, "m_tsmiFileRecent")
         '
-        'NoneToolStripMenuItem
+        'm_tsmiNone
         '
-        resources.ApplyResources(Me.NoneToolStripMenuItem, "NoneToolStripMenuItem")
-        Me.NoneToolStripMenuItem.Name = "NoneToolStripMenuItem"
-        '
-        'ToolStripSeparator4
-        '
-        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        resources.ApplyResources(Me.ToolStripSeparator4, "ToolStripSeparator4")
+        resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
+        Me.m_tsmiNone.Name = "m_tsmiNone"
         '
         'm_menuMain
         '
@@ -335,7 +406,7 @@
         '
         'm_tsmiView
         '
-        Me.m_tsmiView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, Me.ToolStripSeparator10, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar})
+        Me.m_tsmiView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar})
         Me.m_tsmiView.Name = "m_tsmiView"
         resources.ApplyResources(Me.m_tsmiView, "m_tsmiView")
         '
@@ -358,11 +429,6 @@
         '
         Me.m_tsmiViewRemarks.Name = "m_tsmiViewRemarks"
         resources.ApplyResources(Me.m_tsmiViewRemarks, "m_tsmiViewRemarks")
-        '
-        'ToolStripSeparator10
-        '
-        Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        resources.ApplyResources(Me.ToolStripSeparator10, "ToolStripSeparator10")
         '
         'm_tsmiViewModelBar
         '
@@ -403,7 +469,7 @@
         '
         'm_tsmiEcosim
         '
-        Me.m_tsmiEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, Me.ToolStripSeparator2, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.ToolStripSeparator6, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, Me.m_tsmiTimeSeriesReloadLast, Me.ToolStripSeparator3, Me.m_tsmiExportBiomassToCSV})
+        Me.m_tsmiEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, Me.m_tsmiTimeSeriesReloadLast, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV})
         Me.m_tsmiEcosim.Name = "m_tsmiEcosim"
         resources.ApplyResources(Me.m_tsmiEcosim, "m_tsmiEcosim")
         '
@@ -419,11 +485,6 @@
         Me.m_tsmiEcosimLoad.Name = "m_tsmiEcosimLoad"
         resources.ApplyResources(Me.m_tsmiEcosimLoad, "m_tsmiEcosimLoad")
         '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
-        '
         'm_tsmiEcosimSave
         '
         Me.m_tsmiEcosimSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
@@ -434,11 +495,6 @@
         '
         Me.m_tsmiEcosimSaveAs.Name = "m_tsmiEcosimSaveAs"
         resources.ApplyResources(Me.m_tsmiEcosimSaveAs, "m_tsmiEcosimSaveAs")
-        '
-        'ToolStripSeparator6
-        '
-        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        resources.ApplyResources(Me.ToolStripSeparator6, "ToolStripSeparator6")
         '
         'm_tsmiTimeSeriesImport
         '
@@ -462,11 +518,6 @@
         Me.m_tsmiTimeSeriesReloadLast.Name = "m_tsmiTimeSeriesReloadLast"
         resources.ApplyResources(Me.m_tsmiTimeSeriesReloadLast, "m_tsmiTimeSeriesReloadLast")
         '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
-        '
         'm_tsmiExportBiomassToCSV
         '
         Me.m_tsmiExportBiomassToCSV.Name = "m_tsmiExportBiomassToCSV"
@@ -474,7 +525,7 @@
         '
         'm_tsmiEcospace
         '
-        Me.m_tsmiEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.ToolStripSeparator7, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.ToolStripSeparator11, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceEditHabitats, Me.m_tsmiEcospaceEditMPAs, Me.m_tsmiEcospaceEditRegions, Me.ToolStripSeparator16, Me.m_tsmiEcospaceEditImportanceLayers, Me.ToolStripSeparator17, Me.m_tsmiEcospaceImportLayers})
+        Me.m_tsmiEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceEditHabitats, Me.m_tsmiEcospaceEditMPAs, Me.m_tsmiEcospaceEditRegions, m_tssEcospace3, Me.m_tsmiEcospaceEditImportanceLayers, m_tssEcospace4, Me.m_tsmiEcospaceImportLayers})
         Me.m_tsmiEcospace.Name = "m_tsmiEcospace"
         resources.ApplyResources(Me.m_tsmiEcospace, "m_tsmiEcospace")
         '
@@ -490,11 +541,6 @@
         Me.m_tsmiEcospaceLoad.Name = "m_tsmiEcospaceLoad"
         resources.ApplyResources(Me.m_tsmiEcospaceLoad, "m_tsmiEcospaceLoad")
         '
-        'ToolStripSeparator7
-        '
-        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        resources.ApplyResources(Me.ToolStripSeparator7, "ToolStripSeparator7")
-        '
         'm_tsmiEcospaceSave
         '
         Me.m_tsmiEcospaceSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
@@ -505,11 +551,6 @@
         '
         Me.m_tsmiEcospaceSaveAs.Name = "m_tsmiEcospaceSaveAs"
         resources.ApplyResources(Me.m_tsmiEcospaceSaveAs, "m_tsmiEcospaceSaveAs")
-        '
-        'ToolStripSeparator11
-        '
-        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        resources.ApplyResources(Me.ToolStripSeparator11, "ToolStripSeparator11")
         '
         'm_tsmiEcospaceEditMap
         '
@@ -535,20 +576,10 @@
         Me.m_tsmiEcospaceEditRegions.Name = "m_tsmiEcospaceEditRegions"
         resources.ApplyResources(Me.m_tsmiEcospaceEditRegions, "m_tsmiEcospaceEditRegions")
         '
-        'ToolStripSeparator16
-        '
-        Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
-        resources.ApplyResources(Me.ToolStripSeparator16, "ToolStripSeparator16")
-        '
         'm_tsmiEcospaceEditImportanceLayers
         '
         Me.m_tsmiEcospaceEditImportanceLayers.Name = "m_tsmiEcospaceEditImportanceLayers"
         resources.ApplyResources(Me.m_tsmiEcospaceEditImportanceLayers, "m_tsmiEcospaceEditImportanceLayers")
-        '
-        'ToolStripSeparator17
-        '
-        Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
-        resources.ApplyResources(Me.ToolStripSeparator17, "ToolStripSeparator17")
         '
         'm_tsmiEcospaceImportLayers
         '
@@ -557,18 +588,13 @@
         '
         'm_tsmiTools
         '
-        Me.m_tsmiTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.ToolStripSeparator15, Me.m_tsmiEcotracer})
+        Me.m_tsmiTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, m_tssTools1, Me.m_tsmiEcotracer})
         Me.m_tsmiTools.Name = "m_tsmiTools"
         resources.ApplyResources(Me.m_tsmiTools, "m_tsmiTools")
         '
-        'ToolStripSeparator15
-        '
-        Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
-        resources.ApplyResources(Me.ToolStripSeparator15, "ToolStripSeparator15")
-        '
         'm_tsmiEcotracer
         '
-        Me.m_tsmiEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, Me.ToolStripSeparator14, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs})
+        Me.m_tsmiEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs})
         Me.m_tsmiEcotracer.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
         Me.m_tsmiEcotracer.Name = "m_tsmiEcotracer"
         resources.ApplyResources(Me.m_tsmiEcotracer, "m_tsmiEcotracer")
@@ -585,11 +611,6 @@
         Me.m_tsmiEcotracerLoad.Name = "m_tsmiEcotracerLoad"
         resources.ApplyResources(Me.m_tsmiEcotracerLoad, "m_tsmiEcotracerLoad")
         '
-        'ToolStripSeparator14
-        '
-        Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
-        resources.ApplyResources(Me.ToolStripSeparator14, "ToolStripSeparator14")
-        '
         'm_tsmiEcotracerSave
         '
         Me.m_tsmiEcotracerSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
@@ -601,20 +622,10 @@
         Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
         resources.ApplyResources(Me.m_tsmiEcotracerSaveAs, "m_tsmiEcotracerSaveAs")
         '
-        'ToolStripSeparator13
-        '
-        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
-        resources.ApplyResources(Me.ToolStripSeparator13, "ToolStripSeparator13")
-        '
-        'ToolBarToolStripMenuItem
-        '
-        Me.ToolBarToolStripMenuItem.Name = "ToolBarToolStripMenuItem"
-        resources.ApplyResources(Me.ToolBarToolStripMenuItem, "ToolBarToolStripMenuItem")
-        '
         'm_tsModel
         '
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, m_tss, Me.m_tsbModel})
-        Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
+        Me.m_tsModel.CanOverflow = False
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, m_tssModel1, Me.m_tsbModel})
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.Name = "m_tsModel"
         '
@@ -646,13 +657,7 @@
         Me.m_tsbModel.ForeColor = System.Drawing.SystemColors.ControlDark
         resources.ApplyResources(Me.m_tsbModel, "m_tsbModel")
         Me.m_tsbModel.Name = "m_tsbModel"
-        '
-        'm_tsiModified
-        '
-        Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsiModified.Image = Global.ScientificInterface.My.Resources.Resources.Modified
-        Me.m_tsiModified.Name = "m_tsiModified"
-        resources.ApplyResources(Me.m_tsiModified, "m_tsiModified")
+        Me.m_tsbModel.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
         '
         'AppLauncher
         '
@@ -674,70 +679,47 @@
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents m_tsmiHelpContents As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiHelp As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiHelpIndex As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiHelpSearch As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiHelpAbout As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ArrangeIconsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiWindows As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents CascadeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TileVerticalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TileHorizontalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_ssMain As System.Windows.Forms.StatusStrip
-    Friend WithEvents m_menuMain As System.Windows.Forms.MenuStrip
-    Friend WithEvents ToolBarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiTools As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiWindowsCloseAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcosim As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcosimLoad As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcosimSave As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiTimeSeriesImport As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents NoneToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsModel As System.Windows.Forms.ToolStrip
-    Friend WithEvents m_tsmiEcospace As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceLoad As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceSave As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiWindowsClose As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiEcosimSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcosimNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiEcospaceNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiEcospaceEditHabitats As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceEditMPAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceEditRegions As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcospaceEditMap As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiTimeSeriesLoad As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator13 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsmiEcotracer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcotracerLoad As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator14 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripSeparator15 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_tsSelection As System.Windows.Forms.ToolStripStatusLabel
-    Friend WithEvents m_tsmiTimeSeriesReloadLast As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpContents As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelp As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpIndex As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpSearch As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpAbout As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiWindows As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_ssMain As System.Windows.Forms.StatusStrip
+    Private WithEvents m_menuMain As System.Windows.Forms.MenuStrip
+    Private WithEvents ToolBarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiTools As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiWindowsCloseAll As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimLoad As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimSave As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiTimeSeriesImport As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsModel As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsmiEcospaceLoad As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceSave As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiWindowsClose As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimSaveAs As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceSaveAs As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcosimNew As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceNew As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceEditHabitats As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceEditMPAs As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceEditRegions As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospaceEditMap As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiTimeSeriesLoad As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracer As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerLoad As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsSelection As System.Windows.Forms.ToolStripStatusLabel
+    Private WithEvents m_tsmiTimeSeriesReloadLast As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbModel As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsbEcospace As System.Windows.Forms.ToolStripSplitButton
-    Friend WithEvents ToolStripSeparator16 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiTimeSeriesEditWeights As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator17 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiEcospaceImportLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceEditImportanceLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsStatus As System.Windows.Forms.ToolStripStatusLabel
@@ -769,6 +751,8 @@
     Private WithEvents m_tsmiFileExit As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsiModified As System.Windows.Forms.ToolStripStatusLabel
+    Private WithEvents m_tsmiEcosim As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcospace As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

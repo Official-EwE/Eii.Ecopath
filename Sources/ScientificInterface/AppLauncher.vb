@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.36  2009/04/13 14:15:20  jeroens
+' Using path trim option
+' Renamed controls
+' Removed unused controls
+'
 ' Revision 1.35  2009/04/04 14:06:41  jeroens
 ' Properly set disabled plugins to the settings
 '
@@ -1148,15 +1153,19 @@ Public Class AppLauncher
             End If
         End If
 
-        Me.m_tsbModel.Text = Me.SelectedFileName
-        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(Me.m_tsbModel.Text)
+        Me.UpdateModelPathText(Me.SelectedFileName)
 
         Me.Text = GetApplicationCaption()
 
     End Sub
 
+    Private Sub UpdateModelPathText(ByVal strText As String)
+        Me.m_tsbModel.ToolTipText = strText
+        Me.m_tsbModel.Text = StringUtils.TruncatePath(strText, Me.m_tsbModel.Font, Me.m_tsbModel.Width)
+        Me.m_tsbModel.Visible = Not String.IsNullOrEmpty(strText)
+    End Sub
+
     Private Function GetApplicationCaption() As String
-        Dim an As Reflection.AssemblyName = Reflection.Assembly.GetExecutingAssembly().GetName()
         If String.IsNullOrEmpty(Me.SelectedFileName) Then
             Return String.Format(My.Resources.GENERIC_CAPTION)
         Else
@@ -3149,7 +3158,7 @@ Public Class AppLauncher
     ''' Event handler, catches the form closing event to make sure the core is finalized.
     ''' Application shut-down is cancelled if the core does not finalize correctly.
     ''' </summary>
-    Private Sub AppLaucher_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
         ' Cancel application shut down if the core does not terminate succesfully.
         e.Cancel = Not Me.m_core.CloseModel()
@@ -3160,7 +3169,14 @@ Public Class AppLauncher
         ' Save form settings
         Me.SaveMainFormSettings()
 
+        MyBase.OnFormClosing(e)
+
     End Sub
+
+    Protected Overrides Sub OnResizeEnd(ByVal e As System.EventArgs)
+        Me.UpdateModelPathText(Me.SelectedFileName)
+    End Sub
+
 
     Private Sub RecentFileClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
