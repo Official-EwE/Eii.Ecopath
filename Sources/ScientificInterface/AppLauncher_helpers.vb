@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.11  2009/04/13 14:14:36  jeroens
+' Update selection pane at startup
+'
 ' Revision 1.10  2009/03/24 15:56:41  jeroens
 ' Updated to minor ScIntShared namespace changes
 '
@@ -112,7 +115,7 @@ Partial Public Class AppLauncher
             ' Hook up to relevant event sources
             Me.m_csm = core.StateMonitor
 
-            'Me.UpdateSelectionPane()
+            Me.UpdateSelectionPane()
         End Sub
 
 #Region " Events "
