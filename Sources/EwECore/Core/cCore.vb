@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.113  2009/04/14 20:40:32  jeroens
+' SaveModel updated core state monitor data state
+'
 ' Revision 1.112  2009/04/02 17:54:43  jeroens
 ' Does no longer call generic search init plug-in point; this will be the responsibility of search managers
 '
@@ -2388,16 +2391,16 @@ Public Class cCore
         If (Not String.IsNullOrEmpty(strFileName)) Then
             ' #Yes: First save current database to a new location
             If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Created Then
-                ' #Succes! The datasource has been changed this new location, now save data in memory 
-                '          to the new datasource.
-                If Me.SaveChanges(True) Then
-                    ' Force an update since datasources have been switched
-                    Me.m_StateMonitor.UpdateDataState(DataSource, TriState.True)
-                End If
+                ' #Succes! The datasource has been changed this new location, now save data in memory to the new datasource.
+                bSucces = Me.SaveChanges(True)
             End If
         Else
-            Return SaveChanges(True)
+            bSucces = Me.SaveChanges(True)
         End If
+
+        ' Force an update since datasources have been switched
+        Me.m_StateMonitor.UpdateDataState(DataSource, TriState.True)
+
         Return bSucces
 
     End Function
