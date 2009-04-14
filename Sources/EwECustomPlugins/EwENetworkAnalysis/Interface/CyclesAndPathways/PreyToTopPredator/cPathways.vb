@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.5  2009/04/14 18:21:11  joeh
+' Add separator to tool strip
+'
 ' Revision 1.4  2009/04/09 20:04:48  joeh
 ' Add "Bar graph" button to plot bar graph for MTI
 '
@@ -134,6 +137,7 @@ Namespace PreyToPredator
             Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
             Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
             Dim ToolStripButton5 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
+            Dim ToolStripSep1 As Windows.Forms.ToolStripSeparator = New Windows.Forms.ToolStripSeparator
 
             RemoveToolStrip()
             RaiseEvent AddToolStrip()
@@ -150,6 +154,7 @@ Namespace PreyToPredator
             ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
             ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
             ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), Windows.Forms.ToolStripButton)
+            ToolStripSep1 = CType(ToolStrip.Items("tssepGraphMTI"), Windows.Forms.ToolStripSeparator)
 
             ToolStripLabel1.Visible = True
             ToolStripLabel1.Text = My.Resources.LBL_PATH_FROM
@@ -171,6 +176,8 @@ Namespace PreyToPredator
             ToolStripButton3.Visible = False
             ToolStripButton4.Visible = False
             ToolStripButton5.Visible = False
+
+            ToolStripSep1.Visible = False
 
             ToolStrip.Refresh()
         End Sub

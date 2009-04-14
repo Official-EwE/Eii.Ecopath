@@ -87,6 +87,7 @@ Partial Class frmNetworkAnalysis
         Me.tlpNetworkAnalysis = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblNetworkAnalysis = New System.Windows.Forms.Label
+        Me.tssepGraphMTI = New System.Windows.Forms.ToolStripSeparator
         Me.scNetworkAnalysis.Panel1.SuspendLayout()
         Me.scNetworkAnalysis.Panel2.SuspendLayout()
         Me.scNetworkAnalysis.SuspendLayout()
@@ -342,7 +343,7 @@ Partial Class frmNetworkAnalysis
         'tsNetworkAnalysis
         '
         Me.tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tsbtnGraphMTI})
+        Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tssepGraphMTI, Me.tsbtnGraphMTI})
         Me.tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
         Me.tsNetworkAnalysis.Name = "tsNetworkAnalysis"
         Me.tsNetworkAnalysis.Size = New System.Drawing.Size(621, 25)
@@ -479,6 +480,11 @@ Partial Class frmNetworkAnalysis
         Me.lblNetworkAnalysis.TabIndex = 4
         Me.lblNetworkAnalysis.Text = "Network analysis plug-in"
         '
+        'tssepGraphMTI
+        '
+        Me.tssepGraphMTI.Name = "tssepGraphMTI"
+        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 6)
+        '
         'frmNetworkAnalysis
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -525,4 +531,5 @@ Partial Class frmNetworkAnalysis
     Friend WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbtnGraphMTI As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tssepGraphMTI As System.Windows.Forms.ToolStripSeparator
 End Class
