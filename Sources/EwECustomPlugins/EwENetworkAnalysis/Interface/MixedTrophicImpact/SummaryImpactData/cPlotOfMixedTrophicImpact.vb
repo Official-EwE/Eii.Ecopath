@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.12  2009/04/15 18:13:53  joeh
+' Make plot re-sizable
+'
 ' Revision 1.11  2009/04/14 18:21:13  joeh
 ' Add separator to tool strip
 '
@@ -87,6 +90,9 @@ Public Class cPlotOfMixedTrophicImpact
                 m_asData(i, j) = m_NetworkManager.MixedTrophicImpacts(j, i)
             Next j
         Next i
+
+       
+
     End Sub
 
     Public Sub SetUpPanel()
@@ -105,7 +111,7 @@ Public Class cPlotOfMixedTrophicImpact
             MixedTrophicImpactUC = New ucPlotOfMixedTrophicImpact
             MixedTrophicImpactUC.Name = "ucPlotOfMixedTrophicImpact"
             MixedTrophicImpactUC.Location = New Point(0, ToolStrip.Height)
-            MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Height - ToolStrip.Height)
+            MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
             m_Panel.Controls.Add(MixedTrophicImpactUC) 'MixedTrophicImpactVisible is defaulted to True
             'g = MixedTrophicImpactUC.CreateGraphics 'm_Panel.CreateGraphics
             'PlotToScreen(MixedTrophicImpactUC, g)
@@ -114,7 +120,7 @@ Public Class cPlotOfMixedTrophicImpact
         End If
 
         AddHandler MixedTrophicImpactUC.Paint, AddressOf PaintUC
-        AddHandler MixedTrophicImpactUC.Resize, AddressOf ResizeUC
+        AddHandler m_Panel.Resize, AddressOf ResizeUC
     End Sub
 
     Public Sub SaveToEMF()
@@ -207,13 +213,11 @@ Public Class cPlotOfMixedTrophicImpact
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
-        'Dim FunctRespUC As ucFunctionalResponse = _
-        '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
+        m_Panel.AutoScroll = True
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        'If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()
@@ -245,6 +249,7 @@ Public Class cPlotOfMixedTrophicImpact
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
 
         MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+        MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
         MixedTrophicImpactUC.Invalidate() 'm_Panel.Invalidate()
     End Sub
 
@@ -258,7 +263,6 @@ Public Class cPlotOfMixedTrophicImpact
         r.Y = 0
         r.Width = MixedTrophicImpactUC.ClientRectangle.Width
         r.Height = MixedTrophicImpactUC.ClientRectangle.Height - r.Y
-        ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY)
     End Sub
 
