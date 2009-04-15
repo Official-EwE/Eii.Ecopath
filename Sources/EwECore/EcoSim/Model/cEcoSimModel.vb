@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.45  2009/04/15 15:21:56  joeb
+' Fixed bug 612 by resizing iLink() and jLink() at the begining of Init()
+'
 ' Revision 1.44  2009/04/03 14:28:39  jeroens
 ' Localized more messages
 '
@@ -536,13 +539,15 @@ Public Property PluginManager() As cPluginManager
         ''' Was called StartEcoSim() in original code
         ''' </remarks>
         Public Function Init(ByVal bFullInitialization As Boolean) As Boolean
-            'jb this is still bogus but it will do for now
+
             Try
                 'jb this may need to be called every time Ecosim is Run 
                 'to make sure any edits made in Ecosim are used for the initialization
                 m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
 
                 RedimEcoSimVars()
+
+                SetInlinks()
 
                 'redim and load any time series forcing data 
                 'PoolForceBB, PoolForceCatch and PoolForceZ
@@ -2972,7 +2977,6 @@ Public Property PluginManager() As cPluginManager
             ReDim m_Data.Ftime(nGroups)
             ReDim m_Data.Hden(nGroups)
 
-
             ReDim A(nGroups, nGroups)
             ReDim m_Data.AssimEff(nGroups)
             ReDim RiskRate(nGroups)
@@ -2987,7 +2991,6 @@ Public Property PluginManager() As cPluginManager
             'ReDim GearIncludeInEquil(m_EPData.NumFleet)
 
             ReDim IadCode(nGroups), IjuCode(nGroups), IecoCode(nGroups)
-            '  NutForceNumber = 0
             NutPBmax = 1.5
 
             ReDim Qopt(nGroups)
@@ -3026,53 +3029,9 @@ Public Property PluginManager() As cPluginManager
             ReDim Mtotal(nGroups)
             ReDim StartEatenBy(nGroups)
             ReDim m_Data.StartBiomass(nGroups)
-
-            'PoolForceCatch() and PoolForceZ() get the max size these can be
-            'this allows use to change the number of years on the fly
-            'Dim n As Integer = Math.Max(m_Data.NumYears + 1, Me.m_RefData.NdatYear)
-            'ReDim m_RefData.PoolForceCatch(m_EPData.NumGroups, n)
-            'ReDim m_RefData.PoolForceZ(m_EPData.NumGroups, n)
-
-            'ReDim m_RefData.PoolForceCatch(m_EPData.NumGroups, m_Data.NumYears + 1)
-            'ReDim m_RefData.PoolForceZ(m_EPData.NumGroups, m_Data.NumYears + 1)
-
             ReDim SimQB(nGroups)
 
-            '  ReDim m_Data.DCMean(m_EPData.NumGroups, m_EPData.NumGroups)
-
         End Sub
-
-
-
-        'Private Sub PrepareSimSpace()
-        '    'Set_pbm_pbbiomass()       'VC added this line 270398 to set pbm(consumers)=0
-        '    'RedimVariabs2()
-        '    'CalcEatenOfBy()
-        '    'Calc_nvar()
-        '    'CalcTimeJuv()
-        '    'CalcNumbersInGroups()
-
-        '    'jb from original code 
-
-        '    'setpred(StartBiomass)
-
-        'End Sub
-
-
-        'Private Sub RedimCSVvariables()
-
-        '    ReDim DatName(m_refData.NdatType)
-        '    ReDim m_refData.DatPool(m_refData.NdatType)
-        '    ReDim DatType(m_refData.NdatType)
-        '    ReDim WtType(m_refData.NdatType)
-        '    ReDim m_refData.DatVal(m_refData.NdatYear + 1, m_refData.NdatType)
-        '    ReDim m_refData.DatYear(m_refData.NdatYear)
-        '    ReDim m_refData.PoolForceBB(nGroups, m_refData.NdatYear)
-        '    ReDim m_refData.PoolForceCatch(nGroups, m_refData.NdatYear)
-        '    ReDim m_refData.PoolForceZ(nGroups, m_refData.NdatYear)
-        '    '  ReDim IsDatShown(m_refData.NdatType) As Boolean
-
-        'End Sub
 
         Private Sub BaseValueOfHarvest()
             Dim i As Integer
@@ -3110,9 +3069,6 @@ Public Property PluginManager() As cPluginManager
             'Next
 
         End Sub
-
-
-
 
         Public Function InitStanza() As Boolean
             ' call calculatestanzaparameters whenever going from ecopath to ecosim
@@ -4464,6 +4420,36 @@ Public Property PluginManager() As cPluginManager
                 cLog.Write(ex)
                 Debug.Assert(False, Me.ToString & ".calcFunctionalResponse() Error: " & ex.Message)
             End Try
+
+        End Sub
+
+
+        Public Sub SetInlinks()
+            Dim i As Integer, j As Integer
+
+            'count the links
+            Me.m_Data.inlinks = 0
+            For j = 1 To Me.m_EPData.NumLiving      'Pred = all living groups; consumers
+                For i = 1 To Me.m_EPData.NumGroups  'prey
+                    If Me.m_EPData.DC(j, i) > 0 And Me.m_EPData.QB(j) > 0 Then
+                        Me.m_Data.inlinks = Me.m_Data.inlinks + 1
+                    End If
+                Next i
+            Next j
+
+            'redim the link array
+            ReDim Me.m_Data.ilink(Me.m_Data.inlinks)
+            ReDim Me.m_Data.jlink(Me.m_Data.inlinks)
+
+            'set the prey pred links
+            For j = 1 To Me.m_EPData.NumLiving      'Pred = all living groups; consumers
+                For i = 1 To Me.m_EPData.NumGroups  'prey
+                    If Me.m_EPData.DC(j, i) > 0 And Me.m_EPData.QB(j) > 0 Then
+                        Me.m_Data.ilink(Me.m_Data.inlinks) = i
+                        Me.m_Data.jlink(Me.m_Data.inlinks) = j
+                    End If
+                Next i
+            Next j
 
         End Sub
 
