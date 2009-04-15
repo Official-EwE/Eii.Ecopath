@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFlowFromDetritus.vb,v $
+' Revision 1.3  2009/04/15 18:14:51  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.2  2008/11/25 23:14:03  joeh
 ' Copy and paste in cells of data grid view
 '
@@ -109,6 +112,7 @@ Public Class cFlowFromDetritus
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
 
+        m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         GraphPane.Visible = False
         DataGrid.ReadOnly = True

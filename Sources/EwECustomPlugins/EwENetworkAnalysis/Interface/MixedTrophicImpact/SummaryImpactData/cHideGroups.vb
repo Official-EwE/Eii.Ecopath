@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.5  2009/04/15 18:14:54  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.4  2008/12/10 20:56:19  joeh
 ' Finalize the Suitability Plot
 '
@@ -78,6 +81,7 @@ Public Class cHideGroups
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
             CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
+        m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False

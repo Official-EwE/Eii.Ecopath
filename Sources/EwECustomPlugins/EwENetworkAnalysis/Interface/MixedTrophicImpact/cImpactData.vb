@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cImpactData.vb,v $
+' Revision 1.4  2009/04/15 18:14:54  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.3  2008/12/04 01:14:15  joeh
 ' Add ucPlotOfMixedTrophicImpact
 '
@@ -126,6 +129,7 @@ Public Class cImpactData
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
 
+        m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         GraphPane.Visible = False
         DataGrid.ReadOnly = True

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.6  2009/04/15 18:14:58  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.5  2009/04/14 18:21:12  joeh
 ' Add separator to tool strip
 '
@@ -108,6 +111,7 @@ Namespace TL1ToPreyToConsumer
             Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
                 CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
 
+            m_Panel.AutoScroll = False
             LogoPanel.Visible = False
             GraphPane.Visible = False
             DataGrid.ReadOnly = True

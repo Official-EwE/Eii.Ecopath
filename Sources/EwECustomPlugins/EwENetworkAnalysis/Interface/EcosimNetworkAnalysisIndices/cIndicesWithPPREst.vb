@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.7  2009/04/15 18:14:55  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.6  2009/04/14 18:21:11  joeh
 ' Add separator to tool strip
 '
@@ -174,6 +177,7 @@ Public Class cIndicesWithPPREst
         Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
 
+        m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
 

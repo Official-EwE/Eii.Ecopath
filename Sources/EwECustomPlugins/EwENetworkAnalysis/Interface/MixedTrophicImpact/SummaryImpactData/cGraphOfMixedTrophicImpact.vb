@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.5  2009/04/15 18:14:53  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.4  2009/04/09 20:04:47  joeh
 ' Add "Bar graph" button to plot bar graph for MTI
 '
@@ -182,6 +185,7 @@ Public Class cGraphOfMixedTrophicImpact
         'Dim FunctRespUC As ucFunctionalResponse = _
         '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
+        m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False

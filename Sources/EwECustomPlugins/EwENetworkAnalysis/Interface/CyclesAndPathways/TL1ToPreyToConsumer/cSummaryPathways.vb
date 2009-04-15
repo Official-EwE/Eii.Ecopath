@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSummaryPathways.vb,v $
+' Revision 1.3  2009/04/15 18:14:58  joeh
+' Set m_Panel.AutoScroll = False
+'
 ' Revision 1.2  2008/11/25 23:14:04  joeh
 ' Copy and paste in cells of data grid view
 '
@@ -122,6 +125,7 @@ Namespace TL1ToPreyToConsumer
             Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
                 CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
 
+            m_Panel.AutoScroll = False
             LogoPanel.Visible = False
             GraphPane.Visible = False
             DataGrid.ReadOnly = True
