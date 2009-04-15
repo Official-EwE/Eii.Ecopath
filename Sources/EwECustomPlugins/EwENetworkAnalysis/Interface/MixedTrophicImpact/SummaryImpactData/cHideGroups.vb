@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.6  2009/04/15 23:37:38  joeh
+' Add "Imports System.Windows.Forms" statement
+'
 ' Revision 1.5  2009/04/15 18:14:54  joeh
 ' Set m_Panel.AutoScroll = False
 '
@@ -40,12 +43,13 @@ Option Strict On
 Option Explicit On
 
 Imports ZedGraph
+Imports System.Windows.Forms
 
 Public Class cHideGroups
     Private Shared m_HideGroupsClassInstance As cHideGroups
 
     'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Windows.Forms.Panel
+    Private Shared m_Panel As Panel
 
 
     Public Shared Function GetInstance(ByVal Panel As Windows.Forms.Panel) As cHideGroups
@@ -70,12 +74,12 @@ Public Class cHideGroups
     End Sub
 
     Private Sub SetUpGrid()
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+        Dim LogoPanel As TableLayoutPanel = _
+            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
         'Dim FunctRespUC As ucFunctionalResponse = _
         '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
@@ -90,14 +94,14 @@ Public Class cHideGroups
     End Sub
 
     Private Sub RemoveToolStrip()
-        Dim ToolStrip As Windows.Forms.ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim ToolStrip As ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
 
         If Not ToolStrip Is Nothing Then
             m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = Windows.Forms.DockStyle.Fill
+            DataGrid.Dock = DockStyle.Fill
         End If
     End Sub
 

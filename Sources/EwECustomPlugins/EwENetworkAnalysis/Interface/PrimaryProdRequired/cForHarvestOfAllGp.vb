@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForHarvestOfAllGp.vb,v $
+' Revision 1.4  2009/04/15 23:37:37  joeh
+' Add "Imports System.Windows.Forms" statement
+'
 ' Revision 1.3  2009/04/15 18:14:52  joeh
 ' Set m_Panel.AutoScroll = False
 '
@@ -51,7 +54,7 @@ Public Class cForHarvestOfAllGp
 
     Private m_NetworkManager As cNetworkManager
     'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Windows.Forms.Panel
+    Private Shared m_Panel As Panel
 
     Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cForHarvestOfAllGp
         m_Panel = Panel
@@ -74,10 +77,10 @@ Public Class cForHarvestOfAllGp
 
     Public Sub DisplayData()
         Dim core As cCore = cCore.GetInstance
-        'Dim ToolStrip As Windows.Forms.ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        'Dim ToolStrip As ToolStrip = _
+        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim strRowContent() As String
         Dim lngSumPath As Long
 
@@ -175,12 +178,12 @@ Public Class cForHarvestOfAllGp
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+        Dim LogoPanel As TableLayoutPanel = _
+            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
@@ -196,21 +199,21 @@ Public Class cForHarvestOfAllGp
         DataGrid.Columns(0).Frozen = True
         DataGrid.Columns(0).Width = ID_COL_WIDTH
 
-        DataGrid.Columns(1).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
     End Sub
 
     Private Sub RemoveToolStrip()
-        Dim ToolStrip As Windows.Forms.ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim ToolStrip As ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
 
         If Not ToolStrip Is Nothing Then
             m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = Windows.Forms.DockStyle.Fill
+            DataGrid.Dock = DockStyle.Fill
         End If
     End Sub
 
