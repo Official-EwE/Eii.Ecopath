@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.10  2009/04/15 17:58:13  joeh
+' Do not call DumResultsToStream to speed up the system
+'
 ' Revision 1.9  2009/01/23 03:10:35  jeroens
 ' Removed unused references
 '
@@ -481,8 +484,8 @@ Public Class cEcoNetwork
 
             'activate the textStream to save the output to file
             'Dim textStream As New System.IO.StreamWriter(System.AppDomain.CurrentDomain.BaseDirectory() & "NetworkOutput.csv")
-            DumpResultsToStream(Nothing)
-            Me.m_manager.UpdateNetworkAnalysis(6)
+            'DumpResultsToStream(Nothing)
+            'Me.m_manager.UpdateNetworkAnalysis(6)
 
         Catch ex As Exception
             ' Debug.Assert(False, ex.Message)
