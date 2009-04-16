@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolboxToolbar.vb,v $
+' Revision 1.7  2009/04/16 17:49:00  jeroens
+' m_!
+'
 ' Revision 1.6  2009/04/12 22:14:18  jeroens
 ' Initial state correctly processed
 '
@@ -82,15 +85,15 @@ Namespace Controls
 
             If (Me.m_handler Is Nothing) Then Return
 
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Add, Me.tsbAdd)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Weight, Me.tsbWeight)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.tsbDuplicate)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Load, Me.tsbLoad)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Import, Me.tsbImport)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.tsbRemove)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.tsbResetFs)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.tsbSetTo0)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.tsbSetToValue)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Add, Me.m_tsbAdd)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Weight, Me.m_tsbWeight)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.m_tsbDuplicate)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Load, Me.m_tsbLoad)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Import, Me.m_tsbImport)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.m_tsbRemove)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll, Me.m_tsbResetAll)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.m_tsbSetToValue)
 
             cToolstripUtils.HideRepeatingSeparators(Me.m_ts)
 
@@ -110,23 +113,23 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Private Sub tsbAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbAdd.Click
+        Private Sub tsbAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbAdd.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
 
-        Private Sub tsbDuplicate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDuplicate.Click
+        Private Sub tsbDuplicate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbDuplicate.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate)
         End Sub
 
-        Private Sub tsbRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemove.Click
+        Private Sub tsbRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbRemove.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove)
         End Sub
 
         Private Sub tsbWeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsbWeight.Click
+            Handles m_tsbWeight.Click
 
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Weight)
@@ -134,7 +137,7 @@ Namespace Controls
         End Sub
 
         Private Sub tsbLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsbLoad.Click
+            Handles m_tsbLoad.Click
 
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
@@ -142,15 +145,15 @@ Namespace Controls
         End Sub
 
         Private Sub tsbImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsbImport.Click
+            Handles m_tsbImport.Click
 
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
 
         End Sub
 
-        Private Sub tsbResetFs_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles tsbResetFs.Click
+        Private Sub m_tsbResetAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsbResetAll.Click
 
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll)
@@ -158,7 +161,7 @@ Namespace Controls
         End Sub
 
         Private Sub tsbSetTo0_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles tsbSetTo0.Click
+            Handles m_tsbSetTo0.Click
 
             If Me.m_handler IsNot Nothing Then
                 Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_handler.SelectedShapes, 0.0!)
@@ -167,7 +170,7 @@ Namespace Controls
         End Sub
 
         Private Sub tsbSetToValue_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles tsbSetToValue.Click
+            Handles m_tsbSetToValue.Click
 
             Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
             Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
