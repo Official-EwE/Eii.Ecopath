@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.9  2009/04/16 17:38:25  jeroens
+' --
+'
 ' Revision 1.8  2009/04/03 14:56:27  jeroens
 ' Fixed issue that prevented FF time series from showing up at end of import
 '
@@ -24,23 +27,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:44  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/09/23 16:10:35  jeroens
-' Renamed Apply to Enable
-' Terminology changed to Weighting time series (applying means preciously little)
-'
-' Revision 1.4  2008/09/09 14:44:50  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.3  2008/08/02 03:04:14  jeroens
-' Renamed resources
-'
-' Revision 1.2  2008/07/30 17:51:53  jeroens
-' Disabled TS export
-' Fixed issue 499
-'
-' Revision 1.1  2008/07/14 17:08:44  jeroens
-' Initial version, merged load/apply + import dialogs
 '
 '==============================================================================
 
@@ -471,9 +457,7 @@ Public Class dlgManageTimeSeries
 
 #End Region ' Load
 
-#Region " Apply "
-
-
+#Region " Weight "
 
     Private Function UpdateWeightsPage(Optional ByVal bAutoApply As Boolean = False) As Boolean
         Me.m_gridEnableTS.ResetData()
@@ -489,7 +473,7 @@ Public Class dlgManageTimeSeries
         Me.m_gridEnableTS.Apply(bApplyAll)
     End Function
 
-#End Region ' Apply
+#End Region ' Weight
 
 #Region " Import "
 
