@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.16  2009/04/16 17:46:31  jeroens
+' :)
+'
 ' Revision 1.15  2009/03/27 19:29:51  jeroens
 ' Updated to graph interface changes
 '
@@ -81,18 +84,17 @@ Namespace Ecosim
 #Region " Variables "
 
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
-        Private m_Core As cCore = Nothing
+        Private m_core As cCore = Nothing
         Private m_shapeGUIHandler As cForcingShapeGUIHandler = Nothing
-        Private m_BiomassResults(,) As Single
-        Private m_EcosimModelParams As cEcoSimModelParameters = Nothing
-        Private m_TimeSteps As Integer
+        Private m_asBiomassResults(,) As Single
+        Private m_params As cEcoSimModelParameters = Nothing
+        Private m_iTimeSteps As Integer
 
         ''' <summary>
         ''' True when this interface is running ecosim. False otherwise
         ''' </summary>
         ''' <remarks>This is to stop this interface from responding to Ecosim messages if it did not start the ecosim run </remarks>
         Private m_bEcosimRunning As Boolean = False
-        Private m_iRenderSpeed As Integer = 60
 
         Private m_simStats As cEcosimStats
 
@@ -108,9 +110,9 @@ Namespace Ecosim
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
-            Me.m_Core = cCore.GetInstance()
-            Me.m_coreStateMonitor = Me.m_Core.StateMonitor
-            Me.m_EcosimModelParams = m_Core.EcoSimModelParameters()
+            Me.m_core = cCore.GetInstance()
+            Me.m_coreStateMonitor = Me.m_core.StateMonitor
+            Me.m_params = m_core.EcoSimModelParameters()
 
             '' Get the fishing rate shape manager 
             'm_FishingRateManager = m_Core.FishingRateShapeManager
@@ -118,7 +120,7 @@ Namespace Ecosim
             '' Get the fish mortality manager
             'm_FishMortalityManager = m_Core.FishMortShapeManager
 
-            m_simStats = m_Core.EcosimStats
+            m_simStats = m_core.EcosimStats
 
         End Sub
 
@@ -139,7 +141,7 @@ Namespace Ecosim
 
         Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_Core, Me.tscbTarget)
+            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             ' Track core monitor changes
@@ -160,17 +162,17 @@ Namespace Ecosim
 
             If Not m_bEcosimRunning Then
 
-                m_TimeSteps = m_Core.nEcosimTimeSteps
+                m_iTimeSteps = m_core.nEcosimTimeSteps
 
                 'jb clear the graph
                 'Me.m_ucBPlots.Plot.Clear()
                 'm_ucBPlots.ProgressVisible = True
                 Me.m_graph.Refresh()
 
-                ReDim m_BiomassResults(m_Core.nGroups, m_TimeSteps)
-                m_Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+                ReDim m_asBiomassResults(m_core.nGroups, m_iTimeSteps)
+                m_core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
             Else
-                m_Core.StopEcoSim()
+                m_core.StopEcoSim()
             End If
 
         End Sub
@@ -197,10 +199,10 @@ Namespace Ecosim
 
                         Try
                             'jb if Ecosim was not run by this interface ignore this message
-                            If m_BiomassResults IsNot Nothing Then
+                            If m_asBiomassResults IsNot Nothing Then
                                 'm_ucBPlots.ProgressVisible = False
                                 'm_ucBPlots.AddValues(m_BiomassResults)
-                                Me.m_graph.SSValue = Me.m_Core.EcosimStats.SS
+                                Me.m_graph.SSValue = Me.m_core.EcosimStats.SS
 
 
                             End If
@@ -249,12 +251,12 @@ Namespace Ecosim
             Try
 
                 For groupIndex As Integer = 1 To results.nGroups
-                    m_BiomassResults(groupIndex, CInt(iTime)) = results.Biomass(groupIndex)
+                    m_asBiomassResults(groupIndex, CInt(iTime)) = results.Biomass(groupIndex)
                 Next
 
 
 
-                AppLauncher.GetInstance().SetStatusText("Running Ecosim...", TriState.UseDefault, CSng(iTime / m_TimeSteps))
+                AppLauncher.GetInstance().SetStatusText("Running Ecosim...", TriState.UseDefault, CSng(iTime / m_iTimeSteps))
                 'If iTime Mod m_iRenderSpeed = 0 Then
                 '    m_ucBPlots.RenderSpeed = CInt(iTime * 100 / m_TimeSteps)
                 'End If
@@ -375,15 +377,25 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnFReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbResetFs.Click
+
+            Dim ts As cTimeSeries = Nothing
+
             ' JS 16May08: bypassed shape handler (which may be 0) to do a mass change
-            Me.m_Core.FishingEffortShapeManager.ResetToDefaults()
-            Me.m_Core.FishMortShapeManager.ResetToDefaults()
+            Me.m_core.FishingEffortShapeManager.ResetToDefaults()
+            Me.m_core.FishMortShapeManager.ResetToDefaults()
+
+            ' JS 16Apr09: also disable time series
+            For iTS As Integer = 1 To Me.m_core.nTimeSeries
+                Me.m_core.EcosimTimeSeries(iTS).Enabled = False
+            Next
+            Me.m_core.UpdateTimeSeries()
+
         End Sub
 
         Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSetTo0.Click
             If Me.m_shapeGUIHandler IsNot Nothing Then
                 Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
-                            New cShapeData() {Me.m_sketchPad.Shape}, 0.0!)
+                                                    New cShapeData() {Me.m_sketchPad.Shape}, 0.0!)
             End If
         End Sub
 
@@ -405,7 +417,7 @@ Namespace Ecosim
         Private Sub LoadFishingRateShape()
             Dim item As ICoreInterface = Me.GetSelectedTarget()
 
-            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
             Me.UpdateControls()
         End Sub
@@ -416,9 +428,9 @@ Namespace Ecosim
             Dim shape As cShapeData = Nothing
 
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
-            shape = m_Core.FishMortShapeManager.Item(item.Index - 1)
+            shape = m_core.FishMortShapeManager.Item(item.Index - 1)
 
-            m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_Core, Nothing, Me.m_sketchPad)
+            m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
             m_shapeGUIHandler.SelectedShape = shape
             Me.UpdateControls()
         End Sub
