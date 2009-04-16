@@ -71,6 +71,10 @@
     <Compile Include="Handlers\cPluginGUIHandler.vb" />
     <Compile Include="Handlers\cPluginNavTreeHandler.vb" />
     <Compile Include="Plugin templates\Core\ICorePlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcopathRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcosimRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcospaceRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cFishingPolicySearchRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\IDataConsumerPlugin.vb" />
     <Compile Include="Plugin templates\Core\IDataValidatedPlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\IDataBroadcaster.vb" />
