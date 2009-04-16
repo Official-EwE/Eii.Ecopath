@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.5  2009/04/16 17:48:01  jeroens
+' Added sanity checks that are somehow necessary when tearing the containing form away from its master dockpanel
+'
 ' Revision 1.4  2009/03/20 17:55:41  jeroens
 ' Shape controls are multiple selection
 '
@@ -327,6 +330,10 @@ Namespace Controls
             If m_bInUpdate Then Return
 
             Dim item As ListViewItem = lvShapes.Items(e.Index)
+
+            ' Sanity check
+            If (item Is Nothing) Then Return
+
             Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
 
             If (TypeOf shape Is cTimeSeries) Then
@@ -342,7 +349,10 @@ Namespace Controls
         Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
             Handles lvShapes.ItemChecked
 
-            If m_bInUpdate Then Return
+            If (m_bInUpdate) Then Return
+
+            ' Sanity check
+            If (e.Item Is Nothing) Then Return
 
             Dim shape As cShapeData = DirectCast(e.Item.Tag, cShapeData)
             If (TypeOf shape Is cTimeSeries) Then
