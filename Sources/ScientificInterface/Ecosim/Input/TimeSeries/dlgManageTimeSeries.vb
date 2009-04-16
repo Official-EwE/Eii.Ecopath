@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.10  2009/04/16 20:12:09  jeroens
+' Cannot import TS when there are errors
+'
 ' Revision 1.9  2009/04/16 17:38:25  jeroens
 ' --
 '
@@ -327,7 +330,7 @@ Public Class dlgManageTimeSeries
                     '    Me.m_tcMain.SelectedIndex = 4
             End Select
 
-            Me.m_btnOk.Text = Me.m_tcMain.SelectedTab().Text
+            'Me.m_btnOk.Text = Me.m_tcMain.SelectedTab().Text
             Me.UpdateControls()
 
         End Set
@@ -338,11 +341,13 @@ Public Class dlgManageTimeSeries
         Dim bCanPerformAction As Boolean = False
 
         ' -- APPLY --
-        'Me.m_cbLoadApplyOnLoad.Enabled = (Me.m_lvLoadDatasets.SelectedItems.Count > 0)
 
         ' -- IMPORT --
         Dim bHasPreview As Boolean = Not (Object.ReferenceEquals(Me.m_tr.Preview(), Nothing))
         Dim bHasDataset As Boolean = Not (String.IsNullOrEmpty(Me.m_cmbImportDataset.Text))
+        Dim bHasErrors As Boolean = False
+
+        If bHasPreview Then bHasErrors = Me.m_tr.Preview().HasErrors
 
         ' Update file name control
         Me.m_tbImportFileName.Text = Me.m_strImportFileName
@@ -354,9 +359,6 @@ Public Class dlgManageTimeSeries
             Me.m_rbImportSourceClipboard.Checked = True
         End If
 
-        'Me.m_tbImportDelimiter.Character = CChar(Me.m_strImportDelimiter)
-        'Me.m_tbImportSeparator.Character = CChar(Me.m_strImportDecimalSeparator)
-
         ' Update preview controls
         Me.m_dgvImportPreview.Enabled = bHasPreview
         Me.m_lblImportPreview.Enabled = bHasPreview
@@ -364,7 +366,7 @@ Public Class dlgManageTimeSeries
         Select Case Me.Mode
             Case eModeType.Load : bCanPerformAction = (Me.m_lvLoadDatasets.SelectedItems.Count > 0)
             Case eModeType.Weight : bCanPerformAction = True
-            Case eModeType.Import : bCanPerformAction = bHasPreview And bHasDataset
+            Case eModeType.Import : bCanPerformAction = bHasPreview And bHasDataset And (Not bHasErrors)
                 'Case eModeType.Export : bCanPerformAction = False
             Case eModeType.Delete : bCanPerformAction = (Me.GetDeleteSelectedDatasets.Length > 0)
         End Select
