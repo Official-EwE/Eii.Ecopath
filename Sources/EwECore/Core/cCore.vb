@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.114  2009/04/16 01:43:28  jeroens
+' Hatch code preserved when calculating stanza parameters
+'
 ' Revision 1.113  2009/04/14 20:40:32  jeroens
 ' SaveModel updated core state monitor data state
 '
@@ -422,6 +425,7 @@ Public Class cCore
         End Select
 
     End Function
+
     ''' <summary>
     ''' Total number of groups across all models.
     ''' </summary>
@@ -3379,6 +3383,20 @@ Public Class cCore
 
 #End Region ' Stats
 
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return a <see cref="cStanzaGroup">stanza group</see> from the core.
+    ''' </summary>
+    ''' <param name="iIndex">Zero-based index of the group.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property StanzaGroups(ByVal iIndex As Integer) As cStanzaGroup
+        Get
+            Return m_stanzaGroups(iIndex)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the Stanza ID for this iGroup. This is the Index of the stanza grouping it is one based.
     ''' This can be 
@@ -3386,6 +3404,7 @@ Public Class cCore
     ''' <param name="iGroup"></param>
     ''' <returns>Gets Stanza ID if this group is a stanza group. NULL_VALUE if this group does not belong to a stanza</returns>
     ''' <remarks>This is truly HACK</remarks>
+    ''' -----------------------------------------------------------------------
     Private Function getStanzaIDForGroup(ByVal iGroup As Integer) As Integer
 
         For i As Integer = 1 To m_Stanza.Nsplit
@@ -3654,12 +3673,6 @@ Public Class cCore
 
     End Sub
     'End Joeh
-
-    Public ReadOnly Property StanzaGroups(ByVal iIndex As Integer) As cStanzaGroup
-        Get
-            Return m_stanzaGroups(iIndex)
-        End Get
-    End Property
 
     ''' <summary>
     ''' Normalize ecopath input values
@@ -4739,6 +4752,9 @@ Public Class cCore
             InitAndLoadEcosimTimeSeriesDatasets()
             InitEcosimTimeSeries()
             LoadEcosimTimeSeries()
+
+            ' Reload stanzas
+            Me.LoadStanzas()
 
             m_EcosimStats = New cEcosimStats(Me, cCore.NULL_VALUE)
 
@@ -8258,7 +8274,7 @@ Public Class cCore
     ''' <param name="stanza">cStanzaGroup object to populate.</param>
     ''' <returns>True is successfull. False otherwise.</returns>
     ''' <remarks>Call to populate a single cStanzaGroup object with the core data from the Ecopath and Stanza data structures</remarks>
-    Friend Function LoadStanza(ByRef stanza As cStanzaGroup) As Boolean
+    Friend Function LoadStanza(ByVal stanza As cStanzaGroup) As Boolean
         Try
             Dim iStanza As Integer = 0
             'iStanza is the index in the Ecosim stanza arrays that this cStanzaGroup object belongs to
@@ -8335,15 +8351,17 @@ Public Class cCore
     ''' <returns>True if successfull. False otherwise.</returns>
     ''' <remarks>Calculates Biomass for all non leading stanzas, CB for non leading stanzas, WeightAtAge, NumberAtAge and BiomassAtAge.
     '''  It does not save the values or update the Ecopath variables that were affected. That is done via cStanzaGroup.Apply() </remarks>
-    Friend Function CalculateStanza(ByRef StanzaGrp As cStanzaGroup) As Boolean
+    Friend Function CalculateStanza(ByVal stanza As cStanzaGroup) As Boolean
         Dim FirstAge() As Integer, SecondAge() As Integer
         Dim Bio() As Single, Z() As Single, cb() As Single, Bat() As Single
 
         Try
-            Dim iStanza As Integer = StanzaGrp.Index
-            Dim nStanzas As Integer = StanzaGrp.NStanzas
+            Dim iStanza As Integer = stanza.Index
+            Dim nStanzas As Integer = stanza.NStanzas
             Dim i As Integer
-            Dim orgVBK As Single = Me.EcoPathGroupInputs(StanzaGrp.iGroups(1)).VBK
+            Dim orgVBK As Single = Me.EcoPathGroupInputs(stanza.iGroups(1)).VBK
+            Dim iHatchCode As Integer = stanza.HatchCode
+            Dim bFixedFecundity As Boolean = stanza.FixedFecundity
 
             Dim wmatwinf As Single
             Dim rp As Single
@@ -8357,25 +8375,25 @@ Public Class cCore
             ReDim FirstAge(nStanzas)
             ReDim SecondAge(nStanzas) 'last month of age by spp, stanza (set in ecopath)
 
-            If Not StanzaGrp.OkToCalculate Then
+            If Not stanza.OkToCalculate Then
                 'this stanza group has not had it parameters set B CB and Mort
                 'Stanza parameters can not be calculated until this has been done by the interface
                 ' ToDo_JS: Add cVariableStatuses for missing vars
-                Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, StanzaGrp.Name), _
+                Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
                                             eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza))
                 'maybe not the correct messagetype but it seems to work
                 Return False
             End If
 
-            wmatwinf = StanzaGrp.WmatWinf
-            rp = StanzaGrp.RecruitmentPower
-            ba = StanzaGrp.BiomassAccumulationRate
+            wmatwinf = stanza.WmatWinf
+            rp = stanza.RecruitmentPower
+            ba = stanza.BiomassAccumulationRate
 
             For i = 1 To nStanzas
-                Bio(i) = StanzaGrp.Biomass(i)
-                Z(i) = StanzaGrp.Mortality(i)
-                cb(i) = StanzaGrp.CB(i)
-                FirstAge(i) = StanzaGrp.StartAge(i)
+                Bio(i) = stanza.Biomass(i)
+                Z(i) = stanza.Mortality(i)
+                cb(i) = stanza.CB(i)
+                FirstAge(i) = stanza.StartAge(i)
             Next
 
             If SecondAge(nStanzas) = 0 Then
@@ -8387,8 +8405,8 @@ Public Class cCore
             End If
 
             'CalculateStanzaParameters() will update cStanzaDatastructure.SplitWage() and SplitNo() for this iStanza (as well a a bunch of other variables)
-            m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, StanzaGrp.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
-                                                StanzaGrp.LeadingCB, cb, StanzaGrp.BiomassAccumulationRate, Bat)
+            m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
+                                                stanza.LeadingCB, cb, stanza.BiomassAccumulationRate, Bat)
 
             'set Age2() for the last life stage of this stanza group to the value calculated here and CalculateStanzaParameters() (why not just once in CalculateStanzaParameters?) 
             'In EwE5 this only happens in InitStanza here we need the value from Age2() for the interface EwE5 uses SecondAge()
@@ -8398,7 +8416,7 @@ Public Class cCore
             'LoadStanza() will update WeightAtAge (SplitWage), NumberAtAge (SplitNo), BiomassAtAge (SplitWage*SplitNo)
             'with the new values computed by CalculateStanzaParameters() above
             'It will also overwrite variables entered by the user with the values from Ecopath
-            LoadStanza(StanzaGrp)
+            LoadStanza(stanza)
 
             're-populate the variables that the user entered as arguments to CalculateStanzaParameters() 
             'that were over written by loadStanza()
@@ -8406,16 +8424,23 @@ Public Class cCore
             ' JS 25feb09: vbk stored in groups, unaffected by stanza calculations
             'StanzaGrp.VBGF = orgVBK
 
+            ' Restore group
+            stanza.AllowValidation = False
+
             For i = 1 To nStanzas
-                StanzaGrp.Biomass(i) = Bio(i)
-                StanzaGrp.Mortality(i) = Z(i)
-                StanzaGrp.CB(i) = cb(i)
-                StanzaGrp.StartAge(i) = FirstAge(i)
+                stanza.Biomass(i) = Bio(i)
+                stanza.Mortality(i) = Z(i)
+                stanza.CB(i) = cb(i)
+                stanza.StartAge(i) = FirstAge(i)
             Next
 
-            StanzaGrp.WmatWinf = wmatwinf
-            StanzaGrp.RecruitmentPower = rp
-            StanzaGrp.BiomassAccumulationRate = ba
+            stanza.WmatWinf = wmatwinf
+            stanza.RecruitmentPower = rp
+            stanza.BiomassAccumulationRate = ba
+            stanza.HatchCode = iHatchCode
+            stanza.FixedFecundity = bFixedFecundity
+
+            stanza.AllowValidation = True
 
             'this does not update the Ecopath variables that were also changed 
             'this is handled by OnChanged()
