@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.8  2009/04/16 00:11:56  joeh
+' Add "Imports System.Windows.Forms" statement
+'
 ' Revision 1.7  2009/04/15 18:14:55  joeh
 ' Set m_Panel.AutoScroll = False
 '
@@ -79,7 +82,7 @@ Public Class cIndicesWithPPREst
     Private Shared m_IndicesWithPPREstInstance As cIndicesWithPPREst
     Private m_NetworkManager As cNetworkManager
     'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Windows.Forms.Panel
+    Private Shared m_Panel As Panel
 
     Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cIndicesWithPPREst
         m_Panel = Panel
@@ -159,7 +162,7 @@ Public Class cIndicesWithPPREst
 
         cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
 
-        If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+        If cmdFS.Result = DialogResult.OK Then
             m_Panel.Refresh()
             myStream = New StreamWriter(cmdFS.FileName)
             If (myStream IsNot Nothing) Then
@@ -170,12 +173,12 @@ Public Class cIndicesWithPPREst
     End Sub
 
     Private Sub SetUpGrid(ByVal IsEcosimNetworkAnalysisSuccess As Boolean)
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As Windows.Forms.TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), Windows.Forms.TableLayoutPanel)
+        Dim LogoPanel As TableLayoutPanel = _
+            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
@@ -189,39 +192,39 @@ Public Class cIndicesWithPPREst
     End Sub
 
     Private Sub SetUpToolStrip(ByVal IsEcosimNetworkAnalysisSuccess As Boolean)
-        Dim ToolStrip As Windows.Forms.ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-        Dim ToolStripLabel1 As Windows.Forms.ToolStripLabel = New Windows.Forms.ToolStripLabel
-        Dim ToolStripLabel2 As Windows.Forms.ToolStripLabel = New Windows.Forms.ToolStripLabel
-        Dim ToolStripLabel3 As Windows.Forms.ToolStripLabel = New Windows.Forms.ToolStripLabel
-        Dim ToolStripCombo1 As Windows.Forms.ToolStripComboBox = New Windows.Forms.ToolStripComboBox
-        Dim ToolStripCombo2 As Windows.Forms.ToolStripComboBox = New Windows.Forms.ToolStripComboBox
-        Dim ToolStripPrgBar As Windows.Forms.ToolStripProgressBar = New Windows.Forms.ToolStripProgressBar
-        Dim ToolStripButton1 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
-        Dim ToolStripButton2 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
-        Dim ToolStripButton3 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
-        Dim ToolStripButton4 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
-        Dim ToolStripButton5 As Windows.Forms.ToolStripButton = New Windows.Forms.ToolStripButton
-        Dim ToolStripSep1 As Windows.Forms.ToolStripSeparator = New Windows.Forms.ToolStripSeparator
+        Dim ToolStrip As ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+        Dim ToolStripLabel1 As ToolStripLabel = New ToolStripLabel
+        Dim ToolStripLabel2 As ToolStripLabel = New ToolStripLabel
+        Dim ToolStripLabel3 As ToolStripLabel = New ToolStripLabel
+        Dim ToolStripCombo1 As ToolStripComboBox = New ToolStripComboBox
+        Dim ToolStripCombo2 As ToolStripComboBox = New ToolStripComboBox
+        Dim ToolStripPrgBar As ToolStripProgressBar = New ToolStripProgressBar
+        Dim ToolStripButton1 As ToolStripButton = New ToolStripButton
+        Dim ToolStripButton2 As ToolStripButton = New ToolStripButton
+        Dim ToolStripButton3 As ToolStripButton = New ToolStripButton
+        Dim ToolStripButton4 As ToolStripButton = New ToolStripButton
+        Dim ToolStripButton5 As ToolStripButton = New ToolStripButton
+        Dim ToolStripSep1 As ToolStripSeparator = New ToolStripSeparator
 
         RemoveToolStrip()
 
         If IsEcosimNetworkAnalysisSuccess = True Then
             RaiseEvent AddToolStrip()
 
-            ToolStrip = CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-            ToolStripLabel1 = CType(ToolStrip.Items("tslblSelection1"), Windows.Forms.ToolStripLabel)
-            ToolStripLabel2 = CType(ToolStrip.Items("tslblSelection2"), Windows.Forms.ToolStripLabel)
-            ToolStripLabel3 = CType(ToolStrip.Items("tslblProgressBar"), Windows.Forms.ToolStripLabel)
-            ToolStripCombo1 = CType(ToolStrip.Items("tscmbSelection1"), Windows.Forms.ToolStripComboBox)
-            ToolStripCombo2 = CType(ToolStrip.Items("tscmbSelection2"), Windows.Forms.ToolStripComboBox)
-            ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), Windows.Forms.ToolStripProgressBar)
-            ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), Windows.Forms.ToolStripButton)
-            ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), Windows.Forms.ToolStripButton)
-            ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), Windows.Forms.ToolStripButton)
-            ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), Windows.Forms.ToolStripButton)
-            ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), Windows.Forms.ToolStripButton)
-            ToolStripSep1 = CType(ToolStrip.Items("tssepGraphMTI"), Windows.Forms.ToolStripSeparator)
+            ToolStrip = CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+            ToolStripLabel1 = CType(ToolStrip.Items("tslblSelection1"), ToolStripLabel)
+            ToolStripLabel2 = CType(ToolStrip.Items("tslblSelection2"), ToolStripLabel)
+            ToolStripLabel3 = CType(ToolStrip.Items("tslblProgressBar"), ToolStripLabel)
+            ToolStripCombo1 = CType(ToolStrip.Items("tscmbSelection1"), ToolStripComboBox)
+            ToolStripCombo2 = CType(ToolStrip.Items("tscmbSelection2"), ToolStripComboBox)
+            ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), ToolStripProgressBar)
+            ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), ToolStripButton)
+            ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), ToolStripButton)
+            ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), ToolStripButton)
+            ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), ToolStripButton)
+            ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), ToolStripButton)
+            ToolStripSep1 = CType(ToolStrip.Items("tssepGraphMTI"), ToolStripSeparator)
 
             ToolStripLabel1.Visible = False
             ToolStripCombo1.Visible = False
@@ -244,16 +247,16 @@ Public Class cIndicesWithPPREst
     End Sub
 
     Private Sub RemoveToolStrip()
-        Dim ToolStrip As Windows.Forms.ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), Windows.Forms.ToolStrip)
-        Dim DataGrid As Windows.Forms.DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), Windows.Forms.DataGridView)
+        Dim ToolStrip As ToolStrip = _
+            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+        Dim DataGrid As DataGridView = _
+            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
                     CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
 
         If Not ToolStrip Is Nothing Then
             m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = Windows.Forms.DockStyle.Fill
+            DataGrid.Dock = DockStyle.Fill
             GraphPane.Dock = DockStyle.Fill
         End If
     End Sub
