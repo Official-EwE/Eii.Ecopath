@@ -1,6 +1,10 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.16  2009/04/16 17:45:56  jeroens
+' Added TimeSeries reset all
+' Added Fishing rate, mort reset all
+'
 ' Revision 1.15  2009/04/12 21:20:28  jeroens
 ' Custom -> DefineXAxis
 '
@@ -587,6 +591,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.SaveAsImage
                     Return True
+                Case eShapeCommandTypes.ResetAll
+                    Return True
                 Case Else
                     ' Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
@@ -614,7 +620,8 @@ Namespace Controls
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
-                     eShapeCommandTypes.Weight
+                     eShapeCommandTypes.Weight, _
+                     eShapeCommandTypes.ResetAll
                     Return Me.m_core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
@@ -673,6 +680,9 @@ Namespace Controls
 
                 Case eShapeCommandTypes.Weight
                     Me.WeightTimeSeries()
+
+                Case eShapeCommandTypes.ResetAll
+                    Me.ResetAll(False)
 
             End Select
         End Sub
@@ -789,6 +799,21 @@ Namespace Controls
             If cmd IsNot Nothing Then
                 cmd.Invoke()
             End If
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Enable or disable all time series.
+        ''' </summary>
+        ''' <param name="bEnable">
+        ''' Flag indicating the enabled state of all time series.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Private Sub ResetAll(ByVal bEnable As Boolean)
+            For Each s As cShapeData In Me.m_lShapes
+                DirectCast(s, cTimeSeries).Enabled = bEnable
+            Next
+            Me.m_core.UpdateTimeSeries()
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1688,7 +1713,9 @@ Namespace Controls
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
             Select Case cmd
+
                 Case eShapeCommandTypes.Reset
+
                     If (data IsNot Nothing) Then
                         MyBase.ResetShapes(ashapes, CSng(data))
                     Else
@@ -1882,6 +1909,28 @@ Namespace Controls
             Return cCore.NULL_VALUE
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public interface to execute a given command by this handler. 
+        ''' Overridden to implement fishing forcing function commands.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
+        ''' <param name="data">Optional data to accompany the command.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
+                                                Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
+                                                Optional ByVal data As Object = Nothing)
+
+            Select Case cmd
+                Case eShapeCommandTypes.ResetAll
+                    Me.m_core.FishingEffortShapeManager.ResetToDefaults()
+                Case Else
+                    MyBase.ExecuteCommand(cmd, ashapes, data)
+            End Select
+
+        End Sub
+
     End Class
 
 #End Region ' Fishing effort
@@ -1938,6 +1987,28 @@ Namespace Controls
         Protected Overrides Function MinYScale() As Single
             Return 0
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Public interface to execute a given command by this handler. 
+        ''' Overridden to implement fishing forcing function commands.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
+        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
+        ''' <param name="data">Optional data to accompany the command.</param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
+                                                Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
+                                                Optional ByVal data As Object = Nothing)
+
+            Select Case cmd
+                Case eShapeCommandTypes.ResetAll
+                    Me.m_core.FishMortShapeManager.ResetToDefaults()
+                Case Else
+                    MyBase.ExecuteCommand(cmd, ashapes, data)
+            End Select
+
+        End Sub
 
     End Class
 
