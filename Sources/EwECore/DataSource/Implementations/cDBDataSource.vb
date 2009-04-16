@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.50  2009/04/16 01:47:49  jeroens
+' Stanza brute delete eradicated Stanza hatchery forcing assignments
+'
 ' Revision 1.49  2009/04/07 17:27:38  jeroens
 ' Fixed exsiting t0 defaults
 '
@@ -1527,27 +1530,47 @@ Public Class cDBDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
+        Dim bNewRow As Boolean = False
         Dim iGroupID As Integer = 0
         Dim iGroup As Integer = 1
 
         Try
-            Me.m_db.Execute("DELETE * FROM Stanza")
+            '' This will delete Ecosim stanza shape assignments
+            'Me.m_db.Execute("DELETE * FROM Stanza")
 
             writer = Me.m_db.GetWriter("Stanza")
+            dt = writer.GetDataTable()
+
             For iStanza As Integer = 1 To stanzaDS.Nsplit
 
                 ' Sanity check: has life stages?
                 If (stanzaDS.Nstanza(iStanza) > 0) Then
-                    drow = writer.NewRow()
-                    drow("StanzaID") = stanzaDS.StanzaDBID(iStanza)
+
+                    drow = dt.Rows.Find(stanzaDS.StanzaDBID(iStanza))
+                    bNewRow = (drow Is Nothing)
+
+                    If bNewRow Then
+                        drow = writer.NewRow()
+                        drow("StanzaID") = stanzaDS.StanzaDBID(iStanza)
+                    Else
+                        drow.BeginEdit()
+                    End If
+
                     drow("StanzaName") = stanzaDS.StanzaName(iStanza)
                     drow("RecPower") = stanzaDS.RecPowerSplit(iStanza)
                     drow("BabSplit") = stanzaDS.BABsplit(iStanza)
                     drow("WMatWinf") = stanzaDS.WmatWinf(iStanza)
                     drow("FixedFecundity") = stanzaDS.FixedFecundity(iStanza)
+
                     ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
-                    writer.AddRow(drow)
+
+                    If bNewRow Then
+                        writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
+                    End If
                 Else
                     ' Hmm, something is very wrong here. This stanza group should not have existed!
                     Debug.Assert(False)
@@ -1559,6 +1582,7 @@ Public Class cDBDataSource
         End Try
 
         Try
+            ' This is ok since no other objects link to the life stages
             Me.m_db.Execute("DELETE * FROM StanzaLifeStage")
 
             writer = Me.m_db.GetWriter("StanzaLifeStage")
@@ -4168,9 +4192,8 @@ Public Class cDBDataSource
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim iShape As Integer = 0
-        Dim adrows() As DataRow = Nothing
         Dim drow As DataRow = Nothing
-        Dim iShapeID As Integer = 0
+        Dim bNewRow As Boolean = False
         Dim bSucces As Boolean = True
 
         Try
@@ -4181,26 +4204,21 @@ Public Class cDBDataSource
             For iShape = 1 To ecosimDS.ForcingShapes
                 ' JS 10aug07: this should be an assert
                 If (ecosimDS.ForcingDBIDs(iShape) > 0) Then
-                    Select Case ecosimDS.ForcingShapeType(iShape)
-                        Case eDataTypes.EggProd
-                            adrows = dt.Select(String.Format("ShapeID={0}", ecosimDS.ForcingDBIDs(iShape)))
-                        Case eDataTypes.Forcing
-                            adrows = dt.Select(String.Format("ShapeID={0}", ecosimDS.ForcingDBIDs(iShape)))
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
-                    If adrows.Length = 1 Then
-                        drow = adrows(0)
-                    Else
+                    drow = dt.Rows.Find(ecosimDS.ForcingDBIDs(iShape))
+                    bNewRow = (drow Is Nothing)
+
+                    If bNewRow Then
                         drow = writer.NewRow()
                         drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
+                    Else
+                        drow.BeginEdit()
                     End If
                     drow("ShapeType") = ecosimDS.ForcingShapeType(iShape)
                     drow("IsSeasonal") = ecosimDS.isSeasonal(iShape)
-                    If adrows.Length = 1 Then
-                        drow.EndEdit()
-                    Else
+                    If bNewRow Then
                         writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
                     End If
                     writer.Commit()
 
@@ -4218,19 +4236,22 @@ Public Class cDBDataSource
 
             For iShape = 1 To ecosimDS.MediationShapes
                 If (ecosimDS.MediationDBIDs(iShape) > 0) Then
-                    iShapeID = ecosimDS.MediationDBIDs(iShape)
-                    adrows = dt.Select(String.Format("ShapeID={0}", iShapeID))
-                    If adrows.Length = 1 Then
-                        drow = adrows(0)
-                    Else
+                    drow = dt.Rows.Find(ecosimDS.MediationDBIDs(iShape))
+                    bNewRow = (drow Is Nothing)
+
+                    If bNewRow Then
                         drow = writer.NewRow()
-                        drow("ShapeID") = iShapeID
-                    End If
-                    drow("ShapeType") = eDataTypes.Mediation
-                    If adrows.Length = 1 Then
-                        drow.EndEdit()
+                        drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
                     Else
+                        drow.BeginEdit()
+                    End If
+
+                    drow("ShapeType") = eDataTypes.Mediation
+
+                    If bNewRow Then
                         writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
                     End If
                     writer.Commit()
                     bSucces = bSucces And SaveMediationShape(iShape)
@@ -4239,20 +4260,24 @@ Public Class cDBDataSource
 
             For iShape = 1 To ecosimDS.FishRateGearDBID.Length - 1
                 If (ecosimDS.FishRateGearDBID(iShape) > 0) Then
-                    iShapeID = ecosimDS.FishRateGearDBID(iShape)
-                    adrows = dt.Select(String.Format("ShapeID={0}", iShapeID))
-                    If adrows.Length = 1 Then
-                        drow = adrows(0)
-                    Else
+
+                    drow = dt.Rows.Find(ecosimDS.FishRateGearDBID(iShape))
+                    bNewRow = (drow Is Nothing)
+
+                    If bNewRow Then
                         drow = writer.NewRow()
-                        drow("ShapeID") = iShapeID
-                    End If
-                    drow("ShapeType") = eDataTypes.FishingEffort
-                    If adrows.Length = 1 Then
-                        drow.EndEdit()
+                        drow("ShapeID") = ecosimDS.FishRateGearDBID(iShape)
                     Else
+                        drow.BeginEdit()
+                    End If
+
+                    drow("ShapeType") = eDataTypes.FishingEffort
+
+                    If bNewRow Then
                         writer.AddRow(drow)
                         writer.Commit()
+                    Else
+                        drow.EndEdit()
                     End If
                     bSucces = bSucces And Me.SaveFishingRateShape(iShape)
                 End If
@@ -4260,20 +4285,24 @@ Public Class cDBDataSource
 
             For iShape = 1 To ecosimDS.FishRateNoDBID.Length - 1
                 If (ecosimDS.FishRateNoDBID(iShape) > 0) Then
-                    iShapeID = ecosimDS.FishRateNoDBID(iShape)
-                    adrows = dt.Select(String.Format("ShapeID={0}", iShapeID))
-                    If adrows.Length = 1 Then
-                        drow = adrows(0)
-                    Else
+
+                    drow = dt.Rows.Find(ecosimDS.FishRateNoDBID(iShape))
+                    bNewRow = (drow Is Nothing)
+
+                    If bNewRow Then
                         drow = writer.NewRow()
-                        drow("ShapeID") = iShapeID
-                    End If
-                    drow("ShapeType") = eDataTypes.FishMort
-                    If adrows.Length = 1 Then
-                        drow.EndEdit()
+                        drow("ShapeID") = ecosimDS.FishRateNoDBID(iShape)
                     Else
+                        drow.BeginEdit()
+                    End If
+
+                    drow("ShapeType") = eDataTypes.FishMort
+
+                    If bNewRow Then
                         writer.AddRow(drow)
                         writer.Commit()
+                    Else
+                        drow.EndEdit()
                     End If
                     bSucces = bSucces And Me.SaveFishMortShape(iShape)
                 End If
@@ -4299,14 +4328,16 @@ Public Class cDBDataSource
 
     Private Function SaveEggShape(ByVal iShape As Integer) As Boolean
 
+        ' ToDo: see if passing in an adapter and a datatable may speed up the save process significantly
+
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim iDBID As Integer = ecosimDS.ForcingDBIDs(iShape)
         Dim shapeParms As cEcosimDatastructures.ShapeParameters = ecosimDS.ForcingShapeParams(iShape)
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim sbZScale As New Text.StringBuilder()
-        Dim adrows() As DataRow = Nothing
         Dim drow As DataRow = Nothing
+        Dim bNewRow As Boolean = False
         Dim bSucces As Boolean = True
 
         ' Sanity check
@@ -4315,13 +4346,14 @@ Public Class cDBDataSource
         Try
             writer = Me.m_db.GetWriter("EcosimShapeEggProd")
             dt = writer.GetDataTable()
-            adrows = dt.Select(String.Format("ShapeID={0}", iDBID))
-            If adrows.Length = 1 Then
-                drow = adrows(0)
-                drow.BeginEdit()
-            Else
+            drow = dt.Rows.Find(iDBID)
+            bNewRow = (drow Is Nothing)
+
+            If bNewRow Then
                 drow = writer.NewRow()
                 drow("ShapeID") = iDBID
+            Else
+                drow.BeginEdit()
             End If
 
             drow("Title") = ecosimDS.ForcingTitles(iShape)
@@ -4337,10 +4369,10 @@ Public Class cDBDataSource
             Next
             drow("Zscale") = sbZScale.ToString()
 
-            If adrows.Length = 1 Then
-                drow.EndEdit()
-            Else
+            If bNewRow Then
                 writer.AddRow(drow)
+            Else
+                drow.EndEdit()
             End If
 
             Me.m_db.ReleaseWriter(writer, True)
@@ -4633,12 +4665,16 @@ Public Class cDBDataSource
                     ' to leave the field at DBNull
                     If (stanzaDS.EggProdShapeSplit(iStanza) > 0) Then
                         drow("EggprodShapeID") = ecosimDS.ForcingDBIDs(CInt(stanzaDS.EggProdShapeSplit(iStanza)))
+                    Else
+                        ' For missing shape this value MUST BE set to DBNull (not 0)
                     End If
 
                     ' HatchCodeShapeID identifies the egg prod shape assigned. Do not specify anything
                     ' to leave the field at DBNull
                     If (stanzaDS.HatchCode(iStanza) > 0) Then
                         drow("HatchCodeShapeID") = ecosimDS.ForcingDBIDs(CInt(stanzaDS.HatchCode(iStanza)))
+                    Else
+                        ' For missing shape this value MUST BE set to DBNull (not 0)
                     End If
 
                     ' Done
