@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: IPluginData.vb,v $
+' Revision 1.2  2009/04/16 19:29:08  jeroens
+' Added RunType
+'
 ' Revision 1.1  2009/01/21 19:08:12  jeroens
 ' Moved and split into separate files
 '
@@ -36,6 +39,13 @@ Namespace Data
         ''' </summary>
         ''' -----------------------------------------------------------------------
         ReadOnly Property PluginName() As String
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' The <see cref="IRunType">run type</see> that this data was produced with.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        ReadOnly Property RunType() As IRunType
 
     End Interface
 
