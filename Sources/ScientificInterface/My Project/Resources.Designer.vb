@@ -759,6 +759,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to ({0}, {1}): slope={2}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_SR_SLOPELABEL() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_SR_SLOPELABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Chesson&apos;s electivity.
         '''</summary>
         Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY() As String

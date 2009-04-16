@@ -2300,4 +2300,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_PREDATION" xml:space="preserve">
     <value>Predation</value>
   </data>
+  <data name="ECOSIM_SR_SLOPELABEL" xml:space="preserve">
+    <value>({0}, {1}): slope={2}</value>
+    <comment>{0}: x coord, {1}: y coord, {2}:slope</comment>
+  </data>
 </root>
