@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStanzaGroup.vb,v $
+' Revision 1.4  2009/04/16 01:45:12  jeroens
+' Added missing VariableStatus
+'
 ' Revision 1.3  2009/02/27 07:55:15  jeroens
 ' Changed vbK placement
 '
@@ -51,6 +54,8 @@ Public Class cStanzaGroup
         m_core = core
         m_dataType = eDataTypes.Stanza
         m_coreComponent = eCoreComponentType.EcoPath
+
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
 
         'get the core counter interface for the MaxAge (max age) and NStanza (number of stanza) counters
         m_CoreCounter = AddressOf m_core.GetCoreCounter
