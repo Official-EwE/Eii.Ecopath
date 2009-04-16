@@ -79,6 +79,7 @@
     <Compile Include="Commands\ControlHandler.vb" />
     <Compile Include="Core\INetworkAnalysisAscendancyData.vb" />
     <Compile Include="Core\IEconomicData.vb" />
+    <Compile Include="Core\IRunType.vb" />
     <Compile Include="Core\Shared Enums.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
     <Compile Include="Drawing\DIBitmap32.vb" />
