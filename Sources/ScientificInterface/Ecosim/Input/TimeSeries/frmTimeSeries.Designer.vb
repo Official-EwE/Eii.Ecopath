@@ -24,15 +24,16 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTimeSeries))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.plSketchPad = New System.Windows.Forms.Panel
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ucSketchPadToolbar
-            Me.m_sketchPad = New ucTimeSeriesSketchPad
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucTimeSeriesSketchPad
             Me.m_tlbShapeToolBox = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolbox = New ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
+            Me.m_shapeToolbox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -71,14 +72,31 @@ Namespace Ecosim
             '
             'm_sketchPadToolbar
             '
+            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
             resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
+            Me.m_sketchPadToolbar.Handler = Nothing
             Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
             '
             'm_sketchPad
             '
+            Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.DisplayAxis = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.Editable = False
+            Me.m_sketchPad.Handler = Nothing
+            Me.m_sketchPad.IsSeasonal = False
+            Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.Shape = Nothing
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Dots
+            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMinValue = -9999.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'm_tlbShapeToolBox
             '
@@ -89,12 +107,18 @@ Namespace Ecosim
             '
             'm_shapeToolbox
             '
+            Me.m_shapeToolbox.AllowCheckboxes = False
+            Me.m_shapeToolbox.Color = System.Drawing.Color.Empty
             resources.ApplyResources(Me.m_shapeToolbox, "m_shapeToolbox")
+            Me.m_shapeToolbox.Handler = Nothing
             Me.m_shapeToolbox.Name = "m_shapeToolbox"
+            Me.m_shapeToolbox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolbox.YAxisMinValue = -9999.0!
             '
             'm_shapeToolboxToolbar
             '
             resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+            Me.m_shapeToolboxToolbar.Handler = Nothing
             Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
             'frmTimeSeries
@@ -103,6 +127,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "frmTimeSeries"
+            Me.TabText = ""
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
