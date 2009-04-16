@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesTextReader.vb,v $
+' Revision 1.7  2009/04/16 20:07:23  jeroens
+' Added HasErrors
+'
 ' Revision 1.6  2009/04/03 14:56:51  jeroens
 ' Hm
 '
@@ -185,6 +188,20 @@ Public MustInherit Class cTimeSeriesTextReader
                 End If
             End Set
         End Property
+
+        Public Function HasErrors() As Boolean
+
+            Dim sb As StringBuilder = Nothing
+            Dim bHasErrors As Boolean = False
+
+            For iRow As Integer = 1 To Me.RowCount
+                sb = Me.RowError(iRow)
+                If (sb IsNot Nothing) Then
+                    bHasErrors = bHasErrors Or (sb.Length > 0)
+                End If
+            Next
+            Return bHasErrors
+        End Function
 
     End Class
 
