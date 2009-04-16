@@ -118,369 +118,369 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnCalculate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnCalculate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnCalculate.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnCalculate.Location" type="System.Drawing.Point, System.Drawing">
     <value>491, 383</value>
   </data>
-  <data name="btnCalculate.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnCalculate.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnCalculate.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnCalculate.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="btnCalculate.Text" xml:space="preserve">
+  <data name="m_btnCalculate.Text" xml:space="preserve">
     <value>Calculate</value>
   </data>
-  <data name="&gt;&gt;btnCalculate.Name" xml:space="preserve">
-    <value>btnCalculate</value>
+  <data name="&gt;&gt;m_btnCalculate.Name" xml:space="preserve">
+    <value>m_btnCalculate</value>
   </data>
-  <data name="&gt;&gt;btnCalculate.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCalculate.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnCalculate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCalculate.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnCalculate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCalculate.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>572, 383</value>
   </data>
-  <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
-  <data name="btnOK.Text" xml:space="preserve">
+  <data name="m_btnOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;btnOK.Name" xml:space="preserve">
-    <value>btnOK</value>
+  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
+    <value>m_btnOK</value>
   </data>
-  <data name="&gt;&gt;btnOK.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnOK.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>653, 383</value>
   </data>
-  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve">
+  <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
+  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
+    <value>m_btnCancel</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="plMultiStanzaGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="plMultiStanzaGrid.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 248</value>
   </data>
-  <data name="plMultiStanzaGrid.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 129</value>
   </data>
-  <data name="plMultiStanzaGrid.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="&gt;&gt;plMultiStanzaGrid.Name" xml:space="preserve">
-    <value>plMultiStanzaGrid</value>
+  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
+    <value>m_grid</value>
   </data>
-  <data name="&gt;&gt;plMultiStanzaGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
+    <value>ScientificInterface.EditMultiStanzaEwEGrid, EwE6, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;plMultiStanzaGrid.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;plMultiStanzaGrid.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblStanzaGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblStanzaGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 13</value>
+  <data name="m_lblStanzaGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 13</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblStanzaGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
-    <value>&amp;Name of species/functional group:</value>
+  <data name="m_lblStanzaGroups.Text" xml:space="preserve">
+    <value>&amp;Stanza group:</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="&gt;&gt;m_lblStanzaGroups.Name" xml:space="preserve">
+    <value>m_lblStanzaGroups</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblStanzaGroups.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblStanzaGroups.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblStanzaGroups.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblK.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblK.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 39</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblK.Size" type="System.Drawing.Size, System.Drawing">
     <value>217, 13</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblK.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="m_lblK.Text" xml:space="preserve">
     <value>&amp;Curvature parameter, K (annual), from VBGF:</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
+  <data name="&gt;&gt;m_lblK.Name" xml:space="preserve">
+    <value>m_lblK</value>
   </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblK.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblK.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblRecPwr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblRecPwr.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 65</value>
   </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblRecPwr.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 13</value>
   </data>
-  <data name="Label4.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblRecPwr.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
+  <data name="m_lblRecPwr.Text" xml:space="preserve">
     <value>&amp;Recruitment power:</value>
   </data>
-  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
-    <value>Label4</value>
+  <data name="&gt;&gt;m_lblRecPwr.Name" xml:space="preserve">
+    <value>m_lblRecPwr</value>
   </data>
-  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRecPwr.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRecPwr.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRecPwr.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblBAB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblBAB.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 91</value>
   </data>
-  <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblBAB.Size" type="System.Drawing.Size, System.Drawing">
     <value>212, 13</value>
   </data>
-  <data name="Label5.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblBAB.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="Label5.Text" xml:space="preserve">
+  <data name="m_lblBAB.Text" xml:space="preserve">
     <value>R&amp;elative biomass accumulation rate (BA/B):</value>
   </data>
-  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
-    <value>Label5</value>
+  <data name="&gt;&gt;m_lblBAB.Name" xml:space="preserve">
+    <value>m_lblBAB</value>
   </data>
-  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBAB.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBAB.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBAB.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblWmatWinf.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblWmatWinf.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 117</value>
   </data>
-  <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblWmatWinf.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 13</value>
   </data>
-  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblWmatWinf.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="Label6.Text" xml:space="preserve">
+  <data name="m_lblWmatWinf.Text" xml:space="preserve">
     <value>&amp;Wmaturity/Winf:</value>
   </data>
-  <data name="&gt;&gt;Label6.Name" xml:space="preserve">
-    <value>Label6</value>
+  <data name="&gt;&gt;m_lblWmatWinf.Name" xml:space="preserve">
+    <value>m_lblWmatWinf</value>
   </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWmatWinf.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWmatWinf.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblWmatWinf.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblFF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label7.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblFF.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 143</value>
   </data>
-  <data name="Label7.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 13</value>
   </data>
-  <data name="Label7.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblFF.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="Label7.Text" xml:space="preserve">
+  <data name="m_lblFF.Text" xml:space="preserve">
     <value>&amp;Forcing function for hatchery stocking:</value>
   </data>
-  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
-    <value>Label7</value>
+  <data name="&gt;&gt;m_lblFF.Name" xml:space="preserve">
+    <value>m_lblFF</value>
   </data>
-  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFF.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label7.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFF.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFF.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="txtK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_txtK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="txtK.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txtK.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 36</value>
   </data>
-  <data name="txtK.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txtK.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 20</value>
   </data>
-  <data name="txtK.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txtK.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;txtK.Name" xml:space="preserve">
-    <value>txtK</value>
+  <data name="&gt;&gt;m_txtK.Name" xml:space="preserve">
+    <value>m_txtK</value>
   </data>
-  <data name="&gt;&gt;txtK.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txtK.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtK.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txtK.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txtK.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_txtK.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="txtRecPwr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_txtRecPwr.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="txtRecPwr.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txtRecPwr.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 62</value>
   </data>
-  <data name="txtRecPwr.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txtRecPwr.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 20</value>
   </data>
-  <data name="txtRecPwr.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txtRecPwr.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;txtRecPwr.Name" xml:space="preserve">
-    <value>txtRecPwr</value>
+  <data name="&gt;&gt;m_txtRecPwr.Name" xml:space="preserve">
+    <value>m_txtRecPwr</value>
   </data>
-  <data name="&gt;&gt;txtRecPwr.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txtRecPwr.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtRecPwr.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txtRecPwr.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txtRecPwr.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_txtRecPwr.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="txtBAB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_txtBAB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="txtBAB.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txtBAB.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 88</value>
   </data>
-  <data name="txtBAB.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txtBAB.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 20</value>
   </data>
-  <data name="txtBAB.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txtBAB.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;txtBAB.Name" xml:space="preserve">
-    <value>txtBAB</value>
+  <data name="&gt;&gt;m_txtBAB.Name" xml:space="preserve">
+    <value>m_txtBAB</value>
   </data>
-  <data name="&gt;&gt;txtBAB.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txtBAB.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtBAB.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txtBAB.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txtBAB.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_txtBAB.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="txtWmatWinf.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_txtWmatWinf.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="txtWmatWinf.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txtWmatWinf.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 114</value>
   </data>
-  <data name="txtWmatWinf.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txtWmatWinf.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 20</value>
   </data>
-  <data name="txtWmatWinf.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_txtWmatWinf.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;txtWmatWinf.Name" xml:space="preserve">
-    <value>txtWmatWinf</value>
+  <data name="&gt;&gt;m_txtWmatWinf.Name" xml:space="preserve">
+    <value>m_txtWmatWinf</value>
   </data>
-  <data name="&gt;&gt;txtWmatWinf.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_txtWmatWinf.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txtWmatWinf.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_txtWmatWinf.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;txtWmatWinf.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_txtWmatWinf.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="m_zgc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -507,82 +507,82 @@
   <data name="&gt;&gt;m_zgc.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="chkFFecun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_cbFFecun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="chkFFecun.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbFFecun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="chkFFecun.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cbFFecun.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 167</value>
   </data>
-  <data name="chkFFecun.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cbFFecun.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 17</value>
   </data>
-  <data name="chkFFecun.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbFFecun.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="chkFFecun.Text" xml:space="preserve">
+  <data name="m_cbFFecun.Text" xml:space="preserve">
     <value>F&amp;ixed fecundity</value>
   </data>
-  <data name="&gt;&gt;chkFFecun.Name" xml:space="preserve">
-    <value>chkFFecun</value>
+  <data name="&gt;&gt;m_cbFFecun.Name" xml:space="preserve">
+    <value>m_cbFFecun</value>
   </data>
-  <data name="&gt;&gt;chkFFecun.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cbFFecun.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chkFFecun.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbFFecun.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;chkFFecun.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cbFFecun.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cmbSpeciesName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_cmbStanzaGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="cmbSpeciesName.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cmbStanzaGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 9</value>
   </data>
-  <data name="cmbSpeciesName.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cmbStanzaGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 21</value>
   </data>
-  <data name="cmbSpeciesName.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cmbStanzaGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;cmbSpeciesName.Name" xml:space="preserve">
-    <value>cmbSpeciesName</value>
+  <data name="&gt;&gt;m_cmbStanzaGroups.Name" xml:space="preserve">
+    <value>m_cmbStanzaGroups</value>
   </data>
-  <data name="&gt;&gt;cmbSpeciesName.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbStanzaGroups.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmbSpeciesName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbStanzaGroups.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmbSpeciesName.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbStanzaGroups.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="cmbFF.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_cmbFF.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="cmbFF.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cmbFF.Location" type="System.Drawing.Point, System.Drawing">
     <value>235, 140</value>
   </data>
-  <data name="cmbFF.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cmbFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 21</value>
   </data>
-  <data name="cmbFF.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cmbFF.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;cmbFF.Name" xml:space="preserve">
-    <value>cmbFF</value>
+  <data name="&gt;&gt;m_cmbFF.Name" xml:space="preserve">
+    <value>m_cmbFF</value>
   </data>
-  <data name="&gt;&gt;cmbFF.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbFF.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmbFF.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbFF.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmbFF.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbFF.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

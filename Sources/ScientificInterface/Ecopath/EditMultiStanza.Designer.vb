@@ -23,105 +23,129 @@ Namespace Ecopath
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditMultiStanza))
-            Me.btnCalculate = New System.Windows.Forms.Button
-            Me.btnOK = New System.Windows.Forms.Button
-            Me.btnCancel = New System.Windows.Forms.Button
-            Me.plMultiStanzaGrid = New System.Windows.Forms.Panel
-            Me.Label2 = New System.Windows.Forms.Label
-            Me.Label3 = New System.Windows.Forms.Label
-            Me.Label4 = New System.Windows.Forms.Label
-            Me.Label5 = New System.Windows.Forms.Label
-            Me.Label6 = New System.Windows.Forms.Label
-            Me.Label7 = New System.Windows.Forms.Label
-            Me.txtK = New System.Windows.Forms.TextBox
-            Me.txtRecPwr = New System.Windows.Forms.TextBox
-            Me.txtBAB = New System.Windows.Forms.TextBox
-            Me.txtWmatWinf = New System.Windows.Forms.TextBox
+            Me.m_btnCalculate = New System.Windows.Forms.Button
+            Me.m_btnOK = New System.Windows.Forms.Button
+            Me.m_btnCancel = New System.Windows.Forms.Button
+            Me.m_grid = New ScientificInterface.EditMultiStanzaEwEGrid
+            Me.m_lblStanzaGroups = New System.Windows.Forms.Label
+            Me.m_lblK = New System.Windows.Forms.Label
+            Me.m_lblRecPwr = New System.Windows.Forms.Label
+            Me.m_lblBAB = New System.Windows.Forms.Label
+            Me.m_lblWmatWinf = New System.Windows.Forms.Label
+            Me.m_lblFF = New System.Windows.Forms.Label
+            Me.m_txtK = New System.Windows.Forms.TextBox
+            Me.m_txtRecPwr = New System.Windows.Forms.TextBox
+            Me.m_txtBAB = New System.Windows.Forms.TextBox
+            Me.m_txtWmatWinf = New System.Windows.Forms.TextBox
             Me.m_zgc = New ZedGraph.ZedGraphControl
-            Me.chkFFecun = New System.Windows.Forms.CheckBox
-            Me.cmbSpeciesName = New System.Windows.Forms.ComboBox
-            Me.cmbFF = New System.Windows.Forms.ComboBox
+            Me.m_cbFFecun = New System.Windows.Forms.CheckBox
+            Me.m_cmbStanzaGroups = New System.Windows.Forms.ComboBox
+            Me.m_cmbFF = New System.Windows.Forms.ComboBox
             Me.SuspendLayout()
             '
-            'btnCalculate
+            'm_btnCalculate
             '
-            resources.ApplyResources(Me.btnCalculate, "btnCalculate")
-            Me.btnCalculate.Name = "btnCalculate"
-            Me.btnCalculate.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnCalculate, "m_btnCalculate")
+            Me.m_btnCalculate.Name = "m_btnCalculate"
+            Me.m_btnCalculate.UseVisualStyleBackColor = True
             '
-            'btnOK
+            'm_btnOK
             '
-            resources.ApplyResources(Me.btnOK, "btnOK")
-            Me.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.btnOK.Name = "btnOK"
-            Me.btnOK.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+            Me.m_btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.m_btnOK.Name = "m_btnOK"
+            Me.m_btnOK.UseVisualStyleBackColor = True
             '
-            'btnCancel
+            'm_btnCancel
             '
-            resources.ApplyResources(Me.btnCancel, "btnCancel")
-            Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.btnCancel.Name = "btnCancel"
-            Me.btnCancel.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_btnCancel.Name = "m_btnCancel"
+            Me.m_btnCancel.UseVisualStyleBackColor = True
             '
-            'plMultiStanzaGrid
+            'm_grid
             '
-            resources.ApplyResources(Me.plMultiStanzaGrid, "plMultiStanzaGrid")
-            Me.plMultiStanzaGrid.Name = "plMultiStanzaGrid"
-            Me.plMultiStanzaGrid.TabStop = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = True
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.StanzaGroup = Nothing
+            Me.m_grid.TabStop = True
             '
-            'Label2
+            'm_lblStanzaGroups
             '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
+            resources.ApplyResources(Me.m_lblStanzaGroups, "m_lblStanzaGroups")
+            Me.m_lblStanzaGroups.Name = "m_lblStanzaGroups"
             '
-            'Label3
+            'm_lblK
             '
-            resources.ApplyResources(Me.Label3, "Label3")
-            Me.Label3.Name = "Label3"
+            resources.ApplyResources(Me.m_lblK, "m_lblK")
+            Me.m_lblK.Name = "m_lblK"
             '
-            'Label4
+            'm_lblRecPwr
             '
-            resources.ApplyResources(Me.Label4, "Label4")
-            Me.Label4.Name = "Label4"
+            resources.ApplyResources(Me.m_lblRecPwr, "m_lblRecPwr")
+            Me.m_lblRecPwr.Name = "m_lblRecPwr"
             '
-            'Label5
+            'm_lblBAB
             '
-            resources.ApplyResources(Me.Label5, "Label5")
-            Me.Label5.Name = "Label5"
+            resources.ApplyResources(Me.m_lblBAB, "m_lblBAB")
+            Me.m_lblBAB.Name = "m_lblBAB"
             '
-            'Label6
+            'm_lblWmatWinf
             '
-            resources.ApplyResources(Me.Label6, "Label6")
-            Me.Label6.Name = "Label6"
+            resources.ApplyResources(Me.m_lblWmatWinf, "m_lblWmatWinf")
+            Me.m_lblWmatWinf.Name = "m_lblWmatWinf"
             '
-            'Label7
+            'm_lblFF
             '
-            resources.ApplyResources(Me.Label7, "Label7")
-            Me.Label7.Name = "Label7"
+            resources.ApplyResources(Me.m_lblFF, "m_lblFF")
+            Me.m_lblFF.Name = "m_lblFF"
             '
-            'txtK
+            'm_txtK
             '
-            resources.ApplyResources(Me.txtK, "txtK")
-            Me.txtK.Name = "txtK"
+            resources.ApplyResources(Me.m_txtK, "m_txtK")
+            Me.m_txtK.Name = "m_txtK"
             '
-            'txtRecPwr
+            'm_txtRecPwr
             '
-            resources.ApplyResources(Me.txtRecPwr, "txtRecPwr")
-            Me.txtRecPwr.Name = "txtRecPwr"
+            resources.ApplyResources(Me.m_txtRecPwr, "m_txtRecPwr")
+            Me.m_txtRecPwr.Name = "m_txtRecPwr"
             '
-            'txtBAB
+            'm_txtBAB
             '
-            resources.ApplyResources(Me.txtBAB, "txtBAB")
-            Me.txtBAB.Name = "txtBAB"
+            resources.ApplyResources(Me.m_txtBAB, "m_txtBAB")
+            Me.m_txtBAB.Name = "m_txtBAB"
             '
-            'txtWmatWinf
+            'm_txtWmatWinf
             '
-            resources.ApplyResources(Me.txtWmatWinf, "txtWmatWinf")
-            Me.txtWmatWinf.Name = "txtWmatWinf"
+            resources.ApplyResources(Me.m_txtWmatWinf, "m_txtWmatWinf")
+            Me.m_txtWmatWinf.Name = "m_txtWmatWinf"
             '
             'm_zgc
             '
             resources.ApplyResources(Me.m_zgc, "m_zgc")
+            Me.m_zgc.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zgc.Name = "m_zgc"
             Me.m_zgc.ScrollGrace = 0
             Me.m_zgc.ScrollMaxX = 0
@@ -132,47 +156,49 @@ Namespace Ecopath
             Me.m_zgc.ScrollMinY2 = 0
             Me.m_zgc.TabStop = False
             '
-            'chkFFecun
+            'm_cbFFecun
             '
-            resources.ApplyResources(Me.chkFFecun, "chkFFecun")
-            Me.chkFFecun.Name = "chkFFecun"
-            Me.chkFFecun.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbFFecun, "m_cbFFecun")
+            Me.m_cbFFecun.Name = "m_cbFFecun"
+            Me.m_cbFFecun.UseVisualStyleBackColor = True
             '
-            'cmbSpeciesName
+            'm_cmbStanzaGroups
             '
-            resources.ApplyResources(Me.cmbSpeciesName, "cmbSpeciesName")
-            Me.cmbSpeciesName.FormattingEnabled = True
-            Me.cmbSpeciesName.Name = "cmbSpeciesName"
+            resources.ApplyResources(Me.m_cmbStanzaGroups, "m_cmbStanzaGroups")
+            Me.m_cmbStanzaGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbStanzaGroups.FormattingEnabled = True
+            Me.m_cmbStanzaGroups.Name = "m_cmbStanzaGroups"
             '
-            'cmbFF
+            'm_cmbFF
             '
-            resources.ApplyResources(Me.cmbFF, "cmbFF")
-            Me.cmbFF.FormattingEnabled = True
-            Me.cmbFF.Name = "cmbFF"
+            resources.ApplyResources(Me.m_cmbFF, "m_cmbFF")
+            Me.m_cmbFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbFF.FormattingEnabled = True
+            Me.m_cmbFF.Name = "m_cmbFF"
             '
             'EditMultiStanza
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.CancelButton = Me.btnCancel
-            Me.Controls.Add(Me.cmbFF)
-            Me.Controls.Add(Me.cmbSpeciesName)
-            Me.Controls.Add(Me.chkFFecun)
+            Me.CancelButton = Me.m_btnCancel
+            Me.Controls.Add(Me.m_cmbFF)
+            Me.Controls.Add(Me.m_cmbStanzaGroups)
+            Me.Controls.Add(Me.m_cbFFecun)
             Me.Controls.Add(Me.m_zgc)
-            Me.Controls.Add(Me.txtWmatWinf)
-            Me.Controls.Add(Me.txtBAB)
-            Me.Controls.Add(Me.txtRecPwr)
-            Me.Controls.Add(Me.txtK)
-            Me.Controls.Add(Me.Label7)
-            Me.Controls.Add(Me.Label6)
-            Me.Controls.Add(Me.Label5)
-            Me.Controls.Add(Me.Label4)
-            Me.Controls.Add(Me.Label3)
-            Me.Controls.Add(Me.Label2)
-            Me.Controls.Add(Me.plMultiStanzaGrid)
-            Me.Controls.Add(Me.btnCancel)
-            Me.Controls.Add(Me.btnOK)
-            Me.Controls.Add(Me.btnCalculate)
+            Me.Controls.Add(Me.m_txtWmatWinf)
+            Me.Controls.Add(Me.m_txtBAB)
+            Me.Controls.Add(Me.m_txtRecPwr)
+            Me.Controls.Add(Me.m_txtK)
+            Me.Controls.Add(Me.m_lblFF)
+            Me.Controls.Add(Me.m_lblWmatWinf)
+            Me.Controls.Add(Me.m_lblBAB)
+            Me.Controls.Add(Me.m_lblRecPwr)
+            Me.Controls.Add(Me.m_lblK)
+            Me.Controls.Add(Me.m_lblStanzaGroups)
+            Me.Controls.Add(Me.m_grid)
+            Me.Controls.Add(Me.m_btnCancel)
+            Me.Controls.Add(Me.m_btnOK)
+            Me.Controls.Add(Me.m_btnCalculate)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "EditMultiStanza"
@@ -182,24 +208,24 @@ Namespace Ecopath
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents btnCalculate As System.Windows.Forms.Button
-        Friend WithEvents btnOK As System.Windows.Forms.Button
-        Friend WithEvents btnCancel As System.Windows.Forms.Button
-        Friend WithEvents plMultiStanzaGrid As System.Windows.Forms.Panel
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents Label3 As System.Windows.Forms.Label
-        Friend WithEvents Label4 As System.Windows.Forms.Label
-        Friend WithEvents Label5 As System.Windows.Forms.Label
-        Friend WithEvents Label6 As System.Windows.Forms.Label
-        Friend WithEvents Label7 As System.Windows.Forms.Label
-        Friend WithEvents cmbSpeciesName As System.Windows.Forms.ComboBox
-        Friend WithEvents txtK As TextBox
-        Friend WithEvents txtRecPwr As TextBox
-        Friend WithEvents txtBAB As TextBox
-        Friend WithEvents txtWmatWinf As TextBox
-        Friend WithEvents m_zgc As ZedGraph.ZedGraphControl
-        Friend WithEvents chkFFecun As System.Windows.Forms.CheckBox
-        Friend WithEvents cmbFF As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbStanzaGroups As System.Windows.Forms.ComboBox
+        Private WithEvents m_txtK As System.Windows.Forms.TextBox
+        Private WithEvents m_txtRecPwr As System.Windows.Forms.TextBox
+        Private WithEvents m_txtBAB As System.Windows.Forms.TextBox
+        Private WithEvents m_txtWmatWinf As System.Windows.Forms.TextBox
+        Private WithEvents m_cmbFF As System.Windows.Forms.ComboBox
+        Private WithEvents m_zgc As ZedGraph.ZedGraphControl
+        Private WithEvents m_cbFFecun As System.Windows.Forms.CheckBox
+        Private WithEvents m_grid As EditMultiStanzaEwEGrid
+        Private WithEvents m_btnCalculate As System.Windows.Forms.Button
+        Private WithEvents m_btnOK As System.Windows.Forms.Button
+        Private WithEvents m_btnCancel As System.Windows.Forms.Button
+        Private WithEvents m_lblStanzaGroups As System.Windows.Forms.Label
+        Private WithEvents m_lblK As System.Windows.Forms.Label
+        Private WithEvents m_lblRecPwr As System.Windows.Forms.Label
+        Private WithEvents m_lblBAB As System.Windows.Forms.Label
+        Private WithEvents m_lblWmatWinf As System.Windows.Forms.Label
+        Private WithEvents m_lblFF As System.Windows.Forms.Label
     End Class
 
 End Namespace
