@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.6  2009/04/16 21:45:00  jeroens
+' Commented
+' 0-weight TS can be enabled
+'
 ' Revision 1.5  2009/04/16 17:48:01  jeroens
 ' Added sanity checks that are somehow necessary when tearing the containing form away from its master dockpanel
 '
@@ -40,6 +44,12 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' ListView-based control with icons representing EwE
+    ''' <see cref="cShapeData">shapes</see>.
+    ''' </summary>
+    ''' ------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class ucShapeToolbox
 
@@ -55,7 +65,7 @@ Namespace Controls
 #Region " Constructors "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
             Me.Selection = Nothing
         End Sub
@@ -64,6 +74,12 @@ Namespace Controls
 
 #Region " Properties "
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cShapeGUIHandler">Shape GUI Handler</see>
+        ''' maintaining this toolbox.
+        ''' </summary>
+        ''' ------------------------------------------------------------------
         Public Property Handler() As cShapeGUIHandler
             Get
                 Return Me.m_handler
@@ -74,6 +90,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the colour that should be used to render the shapes.
+        ''' </summary>
+        ''' ------------------------------------------------------------------
         Public Property Color() As Color
             Get
                 Return Me.m_clr
@@ -83,6 +104,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the min Y-scale value for rendering thumbnails.
+        ''' </summary>
+        ''' ------------------------------------------------------------------
         Public Property YAxisMinValue() As Single
             Get
                 Return Me.m_sMinYScale
@@ -92,6 +118,11 @@ Namespace Controls
             End Set
         End Property
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether item icons should be accompanied by check boxes.
+        ''' </summary>
+        ''' ------------------------------------------------------------------
         Public Property AllowCheckboxes() As Boolean
             Get
                 Return Me.lvShapes.CheckBoxes
@@ -101,6 +132,12 @@ Namespace Controls
             End Set
         End Property
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the thumbnail image for a given shape.
+        ''' </summary>
+        ''' <param name="shape">The shape to update the image for.</param>
+        ''' ------------------------------------------------------------------
         Public Sub UpdateThumbnail(ByVal shape As cShapeData)
 
             If Me.m_bInUpdate Then Return
@@ -123,6 +160,14 @@ Namespace Controls
 
         End Sub
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Sets the list of shapes to display in the toolbox, and an optional
+        ''' list of shapes to select.
+        ''' </summary>
+        ''' <param name="lShapes"></param>
+        ''' <param name="ashapeSelect"></param>
+        ''' ------------------------------------------------------------------
         Public Sub SetShapes(ByVal lShapes As List(Of cShapeData), ByVal ashapeSelect As cShapeData())
 
             Dim shape As cShapeData = Nothing
@@ -141,10 +186,23 @@ Namespace Controls
 
         End Sub
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Public event, notifying that the selection of shapes in the toolbox
+        ''' has changed.
+        ''' </summary>
+        ''' <param name="ashapes">The list of selected shapes.</param>
+        ''' ------------------------------------------------------------------
         Public Event OnSelectionChanged(ByVal ashapes As cShapeData())
 
+        ''' <summary>Helper flag to prevent selection loops.</summary>
         Private m_bInUpdate As Boolean = False
 
+        ''' ------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the list of selected shapes in the tool box.
+        ''' </summary>
+        ''' ------------------------------------------------------------------
         Public Property Selection() As cShapeData()
             Get
                 Dim lShapes As New List(Of cShapeData)
@@ -324,25 +382,29 @@ Namespace Controls
             End If
         End Sub
 
+
         Private Sub lvShapes_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
             Handles lvShapes.ItemCheck
 
-            If m_bInUpdate Then Return
+            ' JS 19april 09: it is perfectly legitimate to enable a 0-weighted time series
+            Return
 
-            Dim item As ListViewItem = lvShapes.Items(e.Index)
+            'If m_bInUpdate Then Return
 
-            ' Sanity check
-            If (item Is Nothing) Then Return
+            'Dim item As ListViewItem = lvShapes.Items(e.Index)
 
-            Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
+            '' Sanity check
+            'If (item Is Nothing) Then Return
 
-            If (TypeOf shape Is cTimeSeries) Then
-                If e.NewValue = CheckState.Checked Then
-                    If (DirectCast(shape, cTimeSeries).WtType = 0) Then
-                        e.NewValue = CheckState.Unchecked
-                    End If
-                End If
-            End If
+            'Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
+
+            'If (TypeOf shape Is cTimeSeries) Then
+            '    If e.NewValue = CheckState.Checked Then
+            '        If (DirectCast(shape, cTimeSeries).WtType = 0) Then
+            '            e.NewValue = CheckState.Unchecked
+            '        End If
+            '    End If
+            'End If
 
         End Sub
 
