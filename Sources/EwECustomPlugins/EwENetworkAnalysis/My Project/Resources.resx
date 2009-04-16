@@ -601,4 +601,10 @@
   <data name="TREE_NODE_PLOT_MTI" xml:space="preserve">
     <value>Plot of mixed trophic impact</value>
   </data>
+  <data name="LBL_NEGATIVE" xml:space="preserve">
+    <value>Negative</value>
+  </data>
+  <data name="LBL_POSITIVE" xml:space="preserve">
+    <value>Positive</value>
+  </data>
 </root>

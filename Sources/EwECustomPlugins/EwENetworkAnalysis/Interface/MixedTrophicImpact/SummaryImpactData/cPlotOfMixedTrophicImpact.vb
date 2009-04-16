@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.14  2009/04/16 21:52:37  joeh
+' Add Legends to the MTI plot
+'
 ' Revision 1.13  2009/04/15 23:22:27  joeh
 ' Add "Imports System.Windows.Forms" statement
 '
@@ -256,13 +259,15 @@ Public Class cPlotOfMixedTrophicImpact
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+        Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
         MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
         r.X = MixedTrophicImpactUC.ClientRectangle.X
         r.Y = 0
         r.Width = MixedTrophicImpactUC.ClientRectangle.Width
         r.Height = MixedTrophicImpactUC.ClientRectangle.Height - r.Y
-        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY)
+        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
+                astrLegends)
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
@@ -270,6 +275,7 @@ Public Class cPlotOfMixedTrophicImpact
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+        Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
         MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
         r.X = MixedTrophicImpactUC.ClientRectangle.X
@@ -277,6 +283,7 @@ Public Class cPlotOfMixedTrophicImpact
         r.Width = MixedTrophicImpactUC.ClientRectangle.Width ' * 3
         r.Height = (MixedTrophicImpactUC.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY)
+        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
+                astrLegends)
     End Sub
 End Class

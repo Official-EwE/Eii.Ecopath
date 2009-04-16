@@ -806,6 +806,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Negative.
+        '''</summary>
+        Friend ReadOnly Property LBL_NEGATIVE() As String
+            Get
+                Return ResourceManager.GetString("LBL_NEGATIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Pathways &amp;from:.
         '''</summary>
         Friend ReadOnly Property LBL_PATH_FROM() As String
@@ -829,6 +838,15 @@ Namespace My.Resources
         Friend ReadOnly Property LBL_PATH_VIA() As String
             Get
                 Return ResourceManager.GetString("LBL_PATH_VIA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Positive.
+        '''</summary>
+        Friend ReadOnly Property LBL_POSITIVE() As String
+            Get
+                Return ResourceManager.GetString("LBL_POSITIVE", resourceCulture)
             End Get
         End Property
         
