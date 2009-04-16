@@ -218,7 +218,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tpData.Location = New System.Drawing.Point(4, 22)
         Me.m_tpData.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tpData.Name = "m_tpData"
-        Me.m_tpData.Size = New System.Drawing.Size(414, 236)
+        Me.m_tpData.Size = New System.Drawing.Size(407, 234)
         Me.m_tpData.TabIndex = 0
         Me.m_tpData.Text = "Preview data"
         Me.m_tpData.UseVisualStyleBackColor = True
@@ -237,7 +237,7 @@ Partial Class dlgManageTimeSeries
         Me.m_dgvImportPreview.Name = "m_dgvImportPreview"
         Me.m_dgvImportPreview.ReadOnly = True
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
-        Me.m_dgvImportPreview.Size = New System.Drawing.Size(414, 236)
+        Me.m_dgvImportPreview.Size = New System.Drawing.Size(407, 234)
         Me.m_dgvImportPreview.TabIndex = 0
         '
         'm_tpGraph
@@ -529,10 +529,12 @@ Partial Class dlgManageTimeSeries
         '
         'm_plEnableTimeSeries
         '
-        Me.m_plEnableTimeSeries.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plEnableTimeSeries.Location = New System.Drawing.Point(0, 3)
+        Me.m_plEnableTimeSeries.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_plEnableTimeSeries.Location = New System.Drawing.Point(3, 3)
         Me.m_plEnableTimeSeries.Name = "m_plEnableTimeSeries"
-        Me.m_plEnableTimeSeries.Size = New System.Drawing.Size(499, 513)
+        Me.m_plEnableTimeSeries.Size = New System.Drawing.Size(420, 510)
         Me.m_plEnableTimeSeries.TabIndex = 0
         '
         'm_btnApplyCheckNone
