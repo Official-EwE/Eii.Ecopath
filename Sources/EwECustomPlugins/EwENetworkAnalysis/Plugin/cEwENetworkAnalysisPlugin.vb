@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.5  2009/04/16 19:31:32  jeroens
+' Added IsDataAvailable
+'
 ' Revision 1.4  2009/01/21 19:11:01  jeroens
 ' Uses changed plug-in data exchange structure
 '
@@ -33,7 +36,7 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.Data.IDataProducerPlugin
+    Implements IDataProducerPlugin
     'at this time we do not need these plugin points
     'Implements EwEPlugin.IEcosimRunCompletedPlugin
     'Implements EwEPlugin.IEcosimBeginTimestepPlugin
@@ -245,9 +248,9 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcopathCompleted
+            Return eCoreExecutionState.EcopathCompleted
         End Get
     End Property
 
@@ -372,9 +375,16 @@ Public Class cEwENetworkAnalysisPlugin
         End Property
 
         Public ReadOnly Property Ascendancy() As Single(,) _
-            Implements EwEUtils.Core.INetworkAnalysisData.Ascendancy
+            Implements INetworkAnalysisData.Ascendancy
             Get
                 Return Me.m_assAscendancy
+            End Get
+        End Property
+
+        Public ReadOnly Property RunType() As IRunType _
+            Implements IPluginData.RunType
+            Get
+                Return Nothing
             End Get
         End Property
 
@@ -388,6 +398,16 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_broadcaster = broadcaster
 
     End Sub
+
+    Public Function ProducesData(ByVal strDataName As String, ByVal runType As IRunType) As Boolean _
+        Implements IDataProducerPlugin.IsDataAvailable
+        Return (strDataName = "AscendancyTotal")
+    End Function
+
+    Public Function ProducesData(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
+        Implements IDataProducerPlugin.IsDataAvailable
+        Return (typeData Is GetType(INetworkAnalysisData))
+    End Function
 
     Public Function GetDataByName(ByVal strDataName As String, ByRef data As IPluginData) As Boolean _
             Implements IDataProducerPlugin.GetDataByName
@@ -405,7 +425,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Function
 
-    Public Function GetDataByType(ByVal typeData As System.Type, ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
+    Public Function GetDataByType(ByVal typeData As System.Type, ByRef data As IPluginData) As Boolean _
         Implements IDataProducerPlugin.GetDataByType
 
         Try

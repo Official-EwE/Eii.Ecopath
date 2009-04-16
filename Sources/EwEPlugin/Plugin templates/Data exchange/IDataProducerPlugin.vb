@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: IDataProducerPlugin.vb,v $
+' Revision 1.2  2009/04/16 19:29:35  jeroens
+' Added IsDataAvailable
+'
 ' Revision 1.1  2009/01/21 19:08:12  jeroens
 ' Moved and split into separate files
 '
@@ -17,7 +20,7 @@ Namespace Data
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for implementing a plugin point that want to broadcast its data.
+    ''' Interface for implementing a plugin point that can broadcast data.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Interface IDataProducerPlugin
@@ -35,9 +38,37 @@ Namespace Data
         ''' from where any <see cref="IDataConsumerPlugin">IDataConsumerPlugin</see>
         ''' -derived class gets a chance to consume the data by implementing
         ''' <see cref="IDataConsumerPlugin.ReceiveData">ReceiveData</see>.
+        ''' <param name="runType">Run type that the data is requested for, or
+        ''' Null if the run type is irrelevant.</param>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Sub Broadcaster(ByVal broadcaster As IDataBroadcaster)
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Requests whether data with a given <see cref="Type">Type</see> and
+        ''' <see cref="IRunType">run type</see> is provided by this plug-in.
+        ''' </summary>
+        ''' <param name="typeData">
+        ''' <see cref="Type">Type</see> of the data to request.
+        ''' </param>
+        ''' <param name="runType">
+        ''' <see cref="IRunType">Run type</see> of the data to request.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Function IsDataAvailable(ByVal typeData As Type, ByVal runType As IRunType) As Boolean
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Requests whether data with a given <see cref="Type">Type</see> and
+        ''' <see cref="IRunType">run type</see> is provided by this plug-in.
+        ''' </summary>
+        ''' <param name="strDataName">Name of the data to request.</param>
+        ''' <param name="runType">
+        ''' <see cref="IRunType">Run type</see> of the data to request.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Function IsDataAvailable(ByVal strDataName As String, ByVal runType As IRunType) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

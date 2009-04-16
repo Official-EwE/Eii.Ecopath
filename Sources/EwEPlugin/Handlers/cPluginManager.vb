@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.27  2009/04/16 19:30:05  jeroens
+' Added IsDataAvailable
+'
 ' Revision 1.26  2009/04/13 17:48:37  jeroens
 ' Discontinued OpenDatabase plug-in point
 '
@@ -1388,6 +1391,67 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Query whether any loaded <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
+    ''' exposes <see cref="IPluginData">plug-in data</see> under a given name.
+    ''' </summary>
+    ''' <param name="strDataName">The name of the data to match.</param>
+    ''' <param name="runType">Run type that the data is requested for, or
+    ''' Null if the run type is irrelevant.</param>
+    ''' <returns>True if the requested data is available.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean
+
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim bIsDataAvailable As Boolean = False
+
+        Try
+            For Each ipc As cPluginContext In coll
+                Try
+                    bIsDataAvailable = bIsDataAvailable Or DirectCast(ipc.Plugin, IDataProducerPlugin).IsDataAvailable(strDataName, runType)
+                Catch ex As Exception
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "HasData", ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+        End Try
+
+        Return bIsDataAvailable
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Query whether any loaded <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
+    ''' exposes <see cref="IPluginData">plug-in data</see> of a given type.
+    ''' </summary>
+    ''' <param name="dataType">The type of the data to match.</param>
+    ''' <param name="runType">Run type that the data is requested for, or
+    ''' Null if the run type is irrelevant.</param>
+    ''' <returns>True if the requested data is available.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsDataAvailable(ByVal dataType As Type, Optional ByVal runType As IRunType = Nothing) As Boolean
+
+        Dim coll As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IDataProducerPlugin))
+        Dim bIsDataAvailable As Boolean = False
+
+        Try
+            For Each ipc As cPluginContext In coll
+                Try
+                    bIsDataAvailable = bIsDataAvailable Or DirectCast(ipc.Plugin, IDataProducerPlugin).IsDataAvailable(dataType, runType)
+                Catch ex As Exception
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "HasData", ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+        End Try
+
+        Return bIsDataAvailable
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get all <see cref="IPluginData">plug-in data</see> from loaded
     ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
     ''' instances that expose data under a given name.
@@ -1405,7 +1469,9 @@ Public Class cPluginManager
             For Each ipc As cPluginContext In coll
                 Try
                     If DirectCast(ipc.Plugin, IDataProducerPlugin).GetDataByName(strDataName, data) Then
-                        lData.Add(data)
+                        If (data IsNot Nothing) Then
+                            lData.Add(data)
+                        End If
                     End If
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "GetDataByName", ex)
@@ -1424,8 +1490,7 @@ Public Class cPluginManager
     ''' <see cref="IDataProducerPlugin">IDataProducerPlugin</see>
     ''' instances that expose data of a given <see cref="Type">Type</see>.
     ''' </summary>
-    ''' <param name="dataType">The <see cref="Type">Type</see> of the data to
-    ''' obtain.</param>
+    ''' <param name="dataType">The type of the data to match.</param>
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
     Public Function GetData(ByVal dataType As Type) As IPluginData()
@@ -1440,7 +1505,9 @@ Public Class cPluginManager
 
                 Try
                     If DirectCast(ipc.Plugin, IDataProducerPlugin).GetDataByType(dataType, data) Then
-                        lData.Add(data)
+                        If (data IsNot Nothing) Then
+                            lData.Add(data)
+                        End If
                     End If
                 Catch ex As Exception
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "GetDataByType", ex)
