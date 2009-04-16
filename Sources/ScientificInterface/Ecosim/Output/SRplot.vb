@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.7  2009/04/16 04:16:09  jeroens
+' Fixed crash, cleaned up
+'
 ' Revision 1.6  2009/03/22 14:01:39  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -19,24 +22,6 @@
 ' Revision 1.1  2008/09/26 07:31:48  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.14  2008/08/02 03:04:15  jeroens
-' Renamed resources
-'
-' Revision 1.13  2008/02/05 18:26:57  jeroens
-' Neatified
-'
-' Revision 1.12  2007/12/10 00:19:48  jeroens
-' * Tweaked and polished even more
-'
-' Revision 1.11  2007/12/09 22:11:10  jeroens
-' * Restyled
-'
-' Revision 1.10  2007/12/05 03:46:17  jeroens
-' - Removed links to specialized core state events; generic core state event suffices
-'
-' Revision 1.9  2007/09/24 17:57:54  sherman
-' Added header log
-'
 '==============================================================================
 
 #Region " Imports "
@@ -52,42 +37,65 @@ Imports ZedGraph
 
 Namespace Ecosim
 
+    ''' =======================================================================
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' =======================================================================
     Public Class SRplot
 
-        Class SRData
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        Private Class SRData
             Public Stock As Single
             Public recrt As Single
         End Class
 
-        Class SRLine
-            Public pts As List(Of SRData)
-            Public title As String
-            Public iStanza As Integer
-            Public iGrpStart As Integer
-            Public iGrpEnd As Integer
-            Public isShown As Boolean
-            Public isDefault As Boolean
-            Public sGrpName As String
-            Public eGrpName As String
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        Private Class SRLine
+
+            Public StanzaGroup As cStanzaGroup
+            Public GroupStart As cEcoPathGroupInput
+            Public GroupEnd As cEcoPathGroupInput
+
+            Public SRDataList As List(Of SRData)
+            Public Title As String
+            Public IsVisible As Boolean
+            Public IsDefault As Boolean
+
+            'Public GroupStartName As String
+            'Public GroupEndName As String
+            'Public StanzaIndex As Integer
+            'Public GrpStart As Integer
+            'Public NumLifeStages As Integer
         End Class
 
-        Private m_core As cCore
-        Private m_graphpane As GraphPane
+#Region " Private vars "
+
+        Private m_core As cCore = Nothing
+        Private m_graphpane As GraphPane = Nothing
         Private m_bEcosimRunning As Boolean = False
-        Private WithEvents m_coreStateMonitor As cCoreStateMonitor = Nothing
-        Private m_SRResults As List(Of SRLine)
-        Private m_SlopeCurve As CurveItem = Nothing
+        Private m_coreStateMonitor As cCoreStateMonitor = Nothing
+        Private m_curveSlope As CurveItem = Nothing
         Private m_mhEcosim As cMessageHandler = Nothing
+        Private m_SRResults As List(Of SRLine)
+        Private m_sg As StyleGuide = Nothing
+
+#End Region ' Private vars
 
 #Region " Constructors "
 
         Public Sub New()
 
-            InitializeComponent()
+            Me.InitializeComponent()
 
             Me.m_core = cCore.GetInstance()
+            Me.m_sg = StyleGuide.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_graphpane = zgSRPlot.GraphPane
+            Me.m_graphpane = Me.m_plot.GraphPane
             Me.m_SRResults = New List(Of SRLine)
 
         End Sub
@@ -107,33 +115,36 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub SRplot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Me.LoadGrps()
-            Me.InitGraphPane(m_graphpane)
+            Me.LoadGroups()
+            Me.InitGraphPane(Me.m_graphpane)
 
             ' Start listening for core messages
             Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me)
             Me.m_core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
 
-        Private Sub SRplot_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
 
-            ' Stop listening for core messages
             Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing
 
+            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
         End Sub
 
-        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRun.Click
+        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRun.Click
             If Not m_bEcosimRunning Then
 
                 For i As Integer = 0 To m_SRResults.Count - 1
-                    m_SRResults(i).pts.Clear()
+                    m_SRResults(i).SRDataList.Clear()
                 Next
                 m_core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
             Else
@@ -144,38 +155,44 @@ Namespace Ecosim
 
         Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
 
+            Dim stanza As cStanzaGroup = Nothing
+            Dim group As cEcoPathGroupInput = Nothing
+            Dim tmpSR As SRData = Nothing
+
             If results.hasSRData Then
 
-                Dim sGrp As cStanzaGroup = Nothing
-
                 For i As Integer = 1 To results.nStanza
+                    stanza = m_core.StanzaGroups(i - 1)
 
-                    sGrp = m_core.StanzaGroups(i - 1)
+                    For j As Integer = 1 To stanza.NStanzas - 1
 
-                    For j As Integer = 1 To sGrp.NStanzas - 1
-
+                        group = Me.m_core.EcoPathGroupInputs(stanza.iGroups(j))
+                        tmpSR = New SRData()
                         If results.hasSRData(i, j) Then
-                            Dim tmpSR As New SRData
 
                             tmpSR.Stock = results.BStock(i, j)
                             tmpSR.recrt = results.BRecruitment(i, j)
+
                             For k As Integer = 0 To m_SRResults.Count - 1
-                                If (i - 1) = m_SRResults(k).iStanza And sGrp.iGroups(j) = m_SRResults(k).iGrpStart Then
-                                    m_SRResults(k).pts.Add(tmpSR)
+                                If (Object.ReferenceEquals(stanza, m_SRResults(k).StanzaGroup)) And _
+                                   (Object.ReferenceEquals(group, m_SRResults(k).GroupStart)) Then
+
+                                    m_SRResults(k).SRDataList.Add(tmpSR)
                                     Exit For
+
                                 End If
                             Next
                         End If
 
                     Next
                 Next
-                AddCurves(m_graphpane)
+
+                Me.AddCurves(Me.m_graphpane)
             End If
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor) _
-            Handles m_coreStateMonitor.CoreExecutionStateEvent
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
             ' Check whether ecosim is running
             Dim bEcosimRunning As Boolean = (csm.IsEcosimRunning)
@@ -186,18 +203,21 @@ Namespace Ecosim
                 Me.m_bEcosimRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                ' ToDo_JS: Use two different buttons
-                Me.btnRun.Text = CStr(IIf(Me.m_bEcosimRunning, "&Stop", "&Run"))
-                Me.btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
+                ' ToDo_JS: Use two different buttons; this cannot be localized
+                Me.m_btnRun.Text = CStr(IIf(Me.m_bEcosimRunning, "&Stop", "&Run"))
+                Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
-                Me.btnRun.Update()
+                Me.m_btnRun.Update()
 
             End If
 
-            'If iState = eCoreExecutionState.EcosimLoaded Then
-            '    ' Config x-axis labels
-            'End If
+        End Sub
 
+        Private Sub OnStyleGuideChanged(ByVal change As StyleGuide.eChangeType)
+            If (change And StyleGuide.eChangeType.Colours) > 0 Then
+                ' Add the curves again
+                Me.AddCurves(Me.m_graphpane, False)
+            End If
         End Sub
 
         Private Sub EcosimMessageHandler(ByRef msg As cMessage)
@@ -217,108 +237,144 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub tvGroups_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvGroups.AfterSelect
+        Private Sub tvGroups_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
+            Handles m_tvGroups.AfterSelect
+
             Dim iLevel As Integer = e.Node.Level
             Select Case iLevel
+
                 Case 0
-                    SetDefaultDisplay()
+                    Me.SetDefaultDisplay()
+
                 Case 1
-                    SetAllStanzaGrpsDisplay(e.Node.Index)
+                    Me.SetAllStanzaGrpsDisplay(DirectCast(e.Node.Tag, cStanzaGroup))
+
                 Case 2
-                    Dim tmp() As String = CStr(e.Node.Tag).Split(New [Char]() {","c})
-                    Dim iStart As Integer = CInt(tmp(0))
-                    Dim iEnd As Integer = CInt(tmp(1))
-                    SetOneGrpDisplay(iStart, iEnd)
+                    ' JS 15apr09: split by spaces instead of the potential dangerous comma 
+                    '             for this can conflict with locale number settings
+                    Dim astrTmp() As String = CStr(e.Node.Tag).Split(New [Char]() {" "c})
+                    Dim iStart As Integer = CInt(astrTmp(0))
+                    Dim iEnd As Integer = CInt(astrTmp(1))
+                    Me.SetOneGroupDisplay(iStart, iEnd)
+
             End Select
 
         End Sub
 
-        Private Function zgSRPlot_MouseDownEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseDownEvent
+        Private Function zgSRPlot_MouseDownEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As MouseEventArgs) As System.Boolean _
+            Handles m_plot.MouseDownEvent
 
-            Dim mousePt As New PointF(e.X, e.Y)
-            Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
+            Dim ptMouse As New PointF(e.X, e.Y)
+            Dim pane As GraphPane = sender.MasterPane.FindChartRect(ptMouse)
+            Dim x, y As Double
+            Dim item As CurveItem = Nothing
+            Dim sg As StyleGuide = StyleGuide.GetInstance()
 
             If Not pane Is Nothing Then
 
-                Dim x, y As Double
-                pane.ReverseTransform(mousePt, x, y)
-                Dim item As CurveItem = pane.AddCurve(String.Empty, New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
-                lblPt.Text = String.Format("({0} , {1}) slope of line is: {2} ", x.ToString("f2"), y.ToString("f2"), (y / x).ToString("f2"))
+                pane.ReverseTransform(ptMouse, x, y)
+                item = pane.AddCurve("", New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
+                m_lblPt.Text = String.Format(My.Resources.ECOSIM_SR_SLOPELABEL, _
+                                           sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)), _
+                                           sg.FormatNumber(CSng(y / x)))
                 RemoveSlopeCurve(pane, item)
-                'Else
-                '    lblPt.Text = String.Empty
-                '    RemoveSlopeCurve(m_GraphPane, Nothing)
             End If
 
             Return False
         End Function
 
-        Private Function zgSRPlot_MouseMoveEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As System.Windows.Forms.MouseEventArgs) As System.Boolean Handles zgSRPlot.MouseMoveEvent
+        Private Function zgSRPlot_MouseMoveEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As MouseEventArgs) As System.Boolean _
+            Handles m_plot.MouseMoveEvent
+
             Dim mousePt As New PointF(e.X, e.Y)
             Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
 
             If pane Is Nothing Then
-                lblPt.Text = String.Empty
+                m_lblPt.Text = String.Empty
                 RemoveSlopeCurve(m_graphpane, Nothing)
             End If
+
         End Function
 
 #End Region ' Events
 
 #Region " Internals "
 
-        Private Sub LoadGrps()
+        Private Sub LoadGroups()
 
-            tvGroups.BeginUpdate()
+            Dim strTitle As String = ""
+            Dim stanza As cStanzaGroup = Nothing
+            Dim groupStart As cEcoPathGroupInput = Nothing
+            Dim groupEnd As cEcoPathGroupInput = Nothing
+            Dim node As TreeNode = Nothing
+            Dim iGroupLast As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim srl As SRLine = Nothing
 
-            tvGroups.Nodes.Clear()
+            m_tvGroups.BeginUpdate()
+            m_tvGroups.Nodes.Clear()
 
             m_SRResults.Clear()
 
             If m_core.nStanzas > 0 Then
-                tvGroups.Nodes.Add(My.Resources.HEADER_SHOWALL)
+                m_tvGroups.Nodes.Add(My.Resources.HEADER_SHOWALL)
 
-                Dim sGrp As cStanzaGroup = Nothing
-                Dim source As cCoreGroupBase = Nothing
-
-                'Stanza group Index is Zero-based.
+                'Stanza group index is Zero-based.
                 For i As Integer = 0 To m_core.nStanzas - 1
-                    sGrp = m_core.StanzaGroups(i)
+                    ' Get stanza group
+                    stanza = m_core.StanzaGroups(i)
+                    ' Add stanza node
+                    node = New TreeNode(stanza.Name)
+                    node.Tag = stanza
+                    m_tvGroups.Nodes(0).Nodes.Add(node)
 
-                    tvGroups.Nodes(0).Nodes.Add(sGrp.Name)
-                    Dim ilGrp As Integer = sGrp.iGroups(sGrp.NStanzas)
-                    Dim lGrpName As String = m_core.EcoPathGroupInputs(ilGrp).Name
-                    For j As Integer = 1 To sGrp.NStanzas - 1
-                        Dim isGrp As Integer = sGrp.iGroups(j)
-                        source = m_core.EcoPathGroupInputs(isGrp)
-                        Dim srl As New SRLine
-                        srl.title = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, source.Name, lGrpName)
-                        srl.iStanza = i
-                        srl.iGrpStart = isGrp
-                        srl.iGrpEnd = ilGrp
-                        srl.sGrpName = source.Name
-                        srl.eGrpName = lGrpName
-                        If j = 1 Then srl.isDefault = True Else srl.isDefault = False
-                        If srl.isDefault Then srl.isShown = True Else srl.isShown = False
-                        Dim ndTmp As New TreeNode(srl.title)
-                        ndTmp.Tag = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, isGrp, ilGrp)
-                        tvGroups.Nodes(0).Nodes(i).Nodes.Add(ndTmp)
-                        srl.pts = New List(Of SRData)
+                    ' Add subnodes for life stages
+                    iGroupLast = stanza.iGroups(stanza.NStanzas)
+                    groupEnd = m_core.EcoPathGroupInputs(iGroupLast)
+
+                    For j As Integer = 1 To stanza.NStanzas - 1
+
+                        iGroup = stanza.iGroups(j)
+                        groupStart = m_core.EcoPathGroupInputs(iGroup)
+
+                        strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, groupStart.Name, groupEnd.Name)
+                        srl = New SRLine()
+                        srl.Title = strTitle
+                        srl.StanzaGroup = stanza
+                        srl.GroupStart = groupStart
+                        srl.GroupEnd = groupEnd
+                        srl.IsDefault = (j = 1)
+                        srl.IsVisible = srl.IsDefault
+
+                        'srl.StanzaIndex = i
+                        'srl.GrpStart = iGroup
+                        'srl.NumLifeStages = iNumLifeStages
+                        'srl.GroupStartName = group.Name
+                        'srl.GroupEndName = strName
+
+                        node = New TreeNode(strTitle)
+                        node.Tag = String.Format("{0} {1}", iGroup, iGroupLast)
+                        m_tvGroups.Nodes(0).Nodes(i).Nodes.Add(node) ' Wow, here's to having some good faith....
+
+                        srl.SRDataList = New List(Of SRData)
                         m_SRResults.Add(srl)
+
                     Next
                 Next
-                btnRun.Enabled = True
+                m_btnRun.Enabled = True
             Else
-                tvGroups.Nodes.Add(My.Resources.SR_PLOT_NO_STANZA_GROUP)
-                btnRun.Enabled = False
+                m_tvGroups.Nodes.Add(My.Resources.SR_PLOT_NO_STANZA_GROUP)
+                m_btnRun.Enabled = False
             End If
 
-            tvGroups.EndUpdate()
-            tvGroups.ExpandAll()
+            m_tvGroups.EndUpdate()
+            m_tvGroups.ExpandAll()
 
         End Sub
 
         Private Sub InitGraphPane(ByRef pane As GraphPane)
+
+            ' ToDo: use zedgraph helper here
             pane.Title.Text = My.Resources.SR_PLOT_TITLE
             pane.Title.FontSpec.Size = 16
 
@@ -332,95 +388,117 @@ Namespace Ecosim
 
             pane.Legend.IsVisible = False
             pane.IsFontsScaled = False
+
         End Sub
 
-        Private Sub AddCurves(ByRef pane As GraphPane, Optional ByVal bChangeAxis As Boolean = False)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add the curves to the pane.
+        ''' </summary>
+        ''' <param name="pane"></param>
+        ''' <param name="bRescale"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub AddCurves(ByRef pane As GraphPane, Optional ByVal bRescale As Boolean = False)
 
             pane.CurveList.Clear()
 
-            Dim rotator As New ColorSymbolRotator
+            Dim curve As CurveItem = Nothing
+            Dim ppl As PointPairList = Nothing
+            Dim srl As SRLine = Nothing
+
             For i As Integer = 0 To m_SRResults.Count - 1
-                Dim srl As SRLine = m_SRResults(i)
-                Dim data As New PointPairList
-                For j As Integer = 0 To m_SRResults(i).pts.Count - 1
-                    data.Add(srl.pts(j).Stock, srl.pts(j).recrt)
+
+                srl = m_SRResults(i)
+                ppl = New PointPairList()
+
+                For j As Integer = 0 To m_SRResults(i).SRDataList.Count - 1
+                    ppl.Add(srl.SRDataList(j).Stock, srl.SRDataList(j).recrt)
                 Next
-                Dim item As CurveItem = pane.AddCurve(srl.title, data, rotator.NextColor, SymbolType.Circle)
-                If srl.isShown Then
-                    item.IsVisible = True
-                Else
-                    item.IsVisible = False
-                End If
+
+                curve = pane.AddCurve(srl.Title, ppl, _
+                                      Me.m_sg.GroupColor(Me.m_core, srl.GroupStart.Index), _
+                                      SymbolType.Circle)
+
+                curve.IsVisible = srl.IsVisible
+
             Next
-            If bChangeAxis Then zgSRPlot.AxisChange()
-            zgSRPlot.Refresh()
+
+            If bRescale Then Me.m_plot.AxisChange()
+            Me.m_plot.Refresh()
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="pane"></param>
+        ''' <param name="strTitleX"></param>
+        ''' <param name="strTitleY"></param>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateCurves(ByRef pane As GraphPane, ByVal strTitleX As String, ByVal strTitleY As String)
 
+            Dim line As SRLine = Nothing
+            Dim curve As CurveItem = Nothing
+
             For i As Integer = 0 To m_SRResults.Count - 1
-                Dim tmp As SRLine = m_SRResults(i)
-                Dim item As CurveItem = pane.CurveList(tmp.title)
-                If Not item Is Nothing Then
-                    item.IsVisible = tmp.isShown
+                line = m_SRResults(i)
+                curve = pane.CurveList(line.Title)
+
+                If (curve IsNot Nothing) Then
+                    curve.IsVisible = line.IsVisible
                 End If
             Next
-            m_graphpane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            m_graphpane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, strTitleY)
 
-            zgSRPlot.AxisChange()
-            zgSRPlot.Refresh()
+            Me.m_graphpane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
+            Me.m_graphpane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, strTitleY)
+
+            Me.m_plot.AxisChange()
+            Me.m_plot.Refresh()
+
         End Sub
 
         Private Sub SetDefaultDisplay()
             For i As Integer = 0 To m_SRResults.Count - 1
-                If m_SRResults(i).isDefault Then
-                    m_SRResults(i).isShown = True
+                If Me.m_SRResults(i).IsDefault Then
+                    Me.m_SRResults(i).IsVisible = True
                 Else
-                    m_SRResults(i).isShown = False
+                    Me.m_SRResults(i).IsVisible = False
                 End If
             Next
-
-            UpdateCurves(m_graphpane, String.Empty, String.Empty)
-
+            Me.UpdateCurves(m_graphpane, "", "")
         End Sub
 
-        Private Sub SetAllStanzaGrpsDisplay(ByVal iStanza As Integer)
+        Private Sub SetAllStanzaGrpsDisplay(ByVal stanzaGroup As cStanzaGroup)
             For i As Integer = 0 To m_SRResults.Count - 1
-                If m_SRResults(i).iStanza = iStanza Then
-                    m_SRResults(i).isShown = True
-                Else
-                    m_SRResults(i).isShown = False
-                End If
+                m_SRResults(i).IsVisible = Object.ReferenceEquals(m_SRResults(i).StanzaGroup, stanzaGroup)
             Next
-
-            UpdateCurves(m_graphpane, String.Empty, String.Empty)
-
+            Me.UpdateCurves(Me.m_graphpane, "", "")
         End Sub
 
-        Private Sub SetOneGrpDisplay(ByVal iStart As Integer, ByVal iEnd As Integer)
-            Dim xTitle As String = String.Empty
-            Dim yTitle As String = String.Empty
+        Private Sub SetOneGroupDisplay(ByVal iStart As Integer, ByVal iEnd As Integer)
+            Dim strTitleX As String = ""
+            Dim strTitleY As String = ""
+
             For i As Integer = 0 To m_SRResults.Count - 1
-                If m_SRResults(i).iGrpStart = iStart And m_SRResults(i).iGrpEnd = iEnd Then
-                    m_SRResults(i).isShown = True
-                    xTitle = m_SRResults(i).eGrpName
-                    yTitle = m_SRResults(i).sGrpName
+                If m_SRResults(i).GroupStart.Index = iStart And m_SRResults(i).GroupEnd.Index = iEnd Then
+                    m_SRResults(i).IsVisible = True
+                    strTitleX = Me.m_SRResults(i).GroupEnd.Name
+                    strTitleY = Me.m_SRResults(i).GroupStart.Name
                 Else
-                    m_SRResults(i).isShown = False
+                    Me.m_SRResults(i).IsVisible = False
                 End If
             Next
-            UpdateCurves(m_graphpane, xTitle, yTitle)
+            Me.UpdateCurves(Me.m_graphpane, strTitleX, strTitleY)
         End Sub
 
         Private Sub RemoveSlopeCurve(ByRef pane As GraphPane, ByRef item As CurveItem)
 
-            If Not m_SlopeCurve Is Nothing Then
-                pane.CurveList.Remove(m_SlopeCurve)
+            If Not m_curveSlope Is Nothing Then
+                pane.CurveList.Remove(Me.m_curveSlope)
             End If
-            m_SlopeCurve = item
-            zgSRPlot.Refresh()
+            Me.m_curveSlope = item
+            Me.m_plot.Refresh()
 
         End Sub
 

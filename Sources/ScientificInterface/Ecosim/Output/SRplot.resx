@@ -118,57 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="zgSRPlot.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_plot.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="zgSRPlot.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plot.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
   </data>
-  <data name="zgSRPlot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_plot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="zgSRPlot.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plot.Size" type="System.Drawing.Size, System.Drawing">
     <value>532, 505</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="zgSRPlot.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plot.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;zgSRPlot.Name" xml:space="preserve">
-    <value>zgSRPlot</value>
+  <data name="&gt;&gt;m_plot.Name" xml:space="preserve">
+    <value>m_plot</value>
   </data>
-  <data name="&gt;&gt;zgSRPlot.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
-  <data name="&gt;&gt;zgSRPlot.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
   </data>
-  <data name="&gt;&gt;zgSRPlot.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_plot.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tvGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tvGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="tvGroups.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tvGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="tvGroups.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tvGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 534</value>
   </data>
-  <data name="tvGroups.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tvGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tvGroups.Name" xml:space="preserve">
-    <value>tvGroups</value>
+  <data name="&gt;&gt;m_tvGroups.Name" xml:space="preserve">
+    <value>m_tvGroups</value>
   </data>
-  <data name="&gt;&gt;tvGroups.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tvGroups.Type" xml:space="preserve">
     <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tvGroups.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tvGroups.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
   </data>
-  <data name="&gt;&gt;tvGroups.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tvGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="SplitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -189,55 +189,55 @@
   <data name="&gt;&gt;SplitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lblPt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblPt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="lblPt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 519</value>
+  <data name="m_lblPt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 516</value>
   </data>
-  <data name="lblPt.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblPt.Size" type="System.Drawing.Size, System.Drawing">
     <value>451, 18</value>
   </data>
-  <data name="lblPt.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblPt.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;lblPt.Name" xml:space="preserve">
-    <value>lblPt</value>
+  <data name="&gt;&gt;m_lblPt.Name" xml:space="preserve">
+    <value>m_lblPt</value>
   </data>
-  <data name="&gt;&gt;lblPt.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPt.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblPt.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPt.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblPt.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblPt.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>460, 514</value>
+  <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
+    <value>457, 511</value>
   </data>
-  <data name="btnRun.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="btnRun.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btnRun.Text" xml:space="preserve">
+  <data name="m_btnRun.Text" xml:space="preserve">
     <value>&amp;Run</value>
   </data>
-  <data name="&gt;&gt;btnRun.Name" xml:space="preserve">
-    <value>btnRun</value>
+  <data name="&gt;&gt;m_btnRun.Name" xml:space="preserve">
+    <value>m_btnRun</value>
   </data>
-  <data name="&gt;&gt;btnRun.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRun.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnRun.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
   </data>
-  <data name="&gt;&gt;btnRun.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
@@ -282,8 +282,8 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>745, 537</value>
   </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>S/R plot</value>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>S/R plot</value>
@@ -292,6 +292,6 @@
     <value>SRplot</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.EwEForm, EwE6, Version=6.0.3.6, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
