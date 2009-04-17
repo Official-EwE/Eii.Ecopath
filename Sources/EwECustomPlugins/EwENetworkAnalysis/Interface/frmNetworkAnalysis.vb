@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.11  2009/04/17 01:08:00  joeh
+' Remove MixedTrophicImpactUC when necessary
+'
 ' Revision 1.10  2009/04/09 20:04:49  joeh
 ' Add "Bar graph" button to plot bar graph for MTI
 '
@@ -163,6 +166,7 @@ Public Class frmNetworkAnalysis
         'End If
         If m_FormActivatedCounter = 1 Then
             scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
+            scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
             dgvNetworkAnalysis.Visible = False
             zgcNetworkAnalysis.Visible = False
             tlpNetworkAnalysis.Visible = True
@@ -412,8 +416,10 @@ Public Class frmNetworkAnalysis
                             m_CyclesAllPathways.DisplayData()
                         Else
                             scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
+                            scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
                             dgvNetworkAnalysis.Visible = False
                             zgcNetworkAnalysis.Visible = False
+                            tlpNetworkAnalysis.Visible = False
                         End If
                     Case Else
                 End Select
@@ -481,8 +487,10 @@ Public Class frmNetworkAnalysis
                                 m_CyclesAllPathways.DisplayData()
                             Else
                                 scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
+                                scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
                                 dgvNetworkAnalysis.Visible = False
                                 zgcNetworkAnalysis.Visible = False
+                                tlpNetworkAnalysis.Visible = False
                                 Exit Select
                             End If
                         End If
@@ -548,8 +556,10 @@ Public Class frmNetworkAnalysis
                     End If
                 Else
                     scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
+                    scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
                     dgvNetworkAnalysis.Visible = False
                     zgcNetworkAnalysis.Visible = False
+                    tlpNetworkAnalysis.Visible = False
                 End If
                 'Case My.Resources.TREE_NODE_FUNCT_RESP
                 '    If Not m_NetworkManager.IsMainNetworkRun Then
