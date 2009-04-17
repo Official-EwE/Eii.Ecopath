@@ -607,4 +607,8 @@
   <data name="LBL_POSITIVE" xml:space="preserve">
     <value>Positive</value>
   </data>
+  <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
+    <value>Failed to launch application {0}. The file does not seem to exist in any of the expected locations: {1}</value>
+    <comment>{0}: application name. {1}: locations</comment>
+  </data>
 </root>
