@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.8  2009/04/17 03:17:06  jeroens
+' Removed global message box
+'
 ' Revision 1.7  2009/04/17 01:07:04  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -22,44 +25,10 @@
 ' Revision 1.1  2008/09/26 07:30:53  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.20  2008/09/09 14:44:48  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.19  2008/08/20 23:30:29  sherman
-' Used Updated System.Utilitis to launch 16bit applications
-'
-' Revision 1.18  2008/07/17 23:52:39  joeh
-' Add comments
-'
-' Revision 1.17  2008/07/15 21:26:17  joeh
-' Fix bug 452 - use en-US locale when writing numerical data to mti.txt, flow.txt, biomass.txt and catch.txt.
-'
-' Revision 1.16  2008/06/25 01:53:41  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.15  2008/06/24 00:52:27  joeh
-' Ecosim NA indice plots are no longer displayed in a pop up form, rather they are displayed in the same form where  we have the NA tree view
-'
-' Revision 1.14  2008/06/05 19:56:10  sherman
-' Moved Plugins to \Plugins\EwENetworkAnalysis\
-'
-' Revision 1.13  2007/09/25 19:01:33  joeb
-' Fixed bug that cause IsGroupShown(strKey) to explode.
-'
-' Revision 1.12  2007/06/23 00:05:21  joeh
-' Change the OutputFileDir to System.IO.Path.GetTempPath
-'
-' Revision 1.11  2007/06/22 19:12:46  joeh
-' Modify GetInstance()
-'
-' Revision 1.10  2007/06/22 00:35:30  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.9  2007/06/20 18:13:58  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
+
+#Region " Imports "
+
 Option Strict On
 Option Explicit On
 
@@ -67,21 +36,28 @@ Imports ZedGraph
 Imports System.IO
 Imports System.Globalization
 Imports System.Windows.Forms
+Imports System.Text
+Imports EwECore
+
+#End Region ' Imports
 
 'MTI graph with bars
 Public Class cGraphOfMixedTrophicImpact
-    Private Shared m_GraphOfMixedTrophicImpactInstance As cGraphOfMixedTrophicImpact
+
+    Private Shared g_GraphOfMixedTrophicImpactInstance As cGraphOfMixedTrophicImpact
+    Private Shared g_Panel As Panel
 
     Private m_NetworkManager As cNetworkManager
     Private m_HideGroups As frmHideGroups
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
+    Private m_core As cCore = Nothing
 
     Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal HideGroups As frmHideGroups, ByVal Panel As Windows.Forms.Panel) As cGraphOfMixedTrophicImpact
-        m_Panel = Panel
 
-        If m_GraphOfMixedTrophicImpactInstance Is Nothing Then m_GraphOfMixedTrophicImpactInstance = New cGraphOfMixedTrophicImpact(NetworkManager, HideGroups, Panel)
-        Return m_GraphOfMixedTrophicImpactInstance
+        cGraphOfMixedTrophicImpact.g_Panel = Panel
+        If g_GraphOfMixedTrophicImpactInstance Is Nothing Then
+            g_GraphOfMixedTrophicImpactInstance = New cGraphOfMixedTrophicImpact(NetworkManager, HideGroups, Panel)
+        End If
+        Return g_GraphOfMixedTrophicImpactInstance
     End Function
 
     Private Sub New()
@@ -92,7 +68,8 @@ Public Class cGraphOfMixedTrophicImpact
         Me.New()
         m_NetworkManager = NetworkManager
         m_HideGroups = HideGroups
-        m_Panel = Panel
+        g_Panel = Panel
+        Me.m_core = cCore.GetInstance()
     End Sub
 
     Public Sub CreatePlot()
@@ -172,7 +149,13 @@ Public Class cGraphOfMixedTrophicImpact
 
         'Execute the external application through the general function on EwEUtils
         If Not EwEUtils.SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
-            EwEUtils.SystemUtilities.PrintFileNotFoundError()
+            Dim sb As New StringBuilder
+            For Each str As String In EwEUtils.SystemUtilities.ApplicationLaunchLocations
+                sb.AppendLine(str)
+            Next
+            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "impacts.exe", sb.ToString), _
+                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+            Me.m_core.Messages.SendMessage(msg)
         End If
     End Sub
 
@@ -184,13 +167,13 @@ Public Class cGraphOfMixedTrophicImpact
 
     Private Sub SetUpGrid()
         Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+            CType(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
+            CType(g_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
+            CType(g_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
 
-        m_Panel.AutoScroll = False
+        g_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
@@ -199,12 +182,12 @@ Public Class cGraphOfMixedTrophicImpact
 
     Private Sub RemoveToolStrip()
         Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+            CType(g_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
         Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+            CType(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
 
         If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
+            g_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
             DataGrid.Dock = DockStyle.Fill
         End If
     End Sub

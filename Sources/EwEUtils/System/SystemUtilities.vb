@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SystemUtilities.vb,v $
+' Revision 1.3  2009/04/17 03:15:58  jeroens
+' Removed global message box
+'
 ' Revision 1.2  2008/10/07 21:58:05  jeroens
 ' Added Is64Bit
 '
@@ -44,86 +47,103 @@ Imports EwEUtils.Win32Api
 #End Region ' Imports
 
 Public Class SystemUtilities
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the current username
+    ''' Get the username for the active logged-in user.
     ''' </summary>
-    ''' <returns>current username</returns>
-    ''' <remarks></remarks>
+    ''' <returns>The username for the active logged-in user.</returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function GetUserName() As String
         Return System.Security.Principal.WindowsIdentity.GetCurrent.Name
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Function that execute external applications for all plug-ins
     ''' </summary>
-    ''' <param name="PlugInDir">PlugInDir point to the plug-in folder</param>
-    ''' <param name="App">App point to application file with extension</param>
-    ''' <param name="OutPutParam">OutPutParam point filename with extension to use as a paramater to the external application</param>
-    ''' <param name="SecondaryOutputDirectory">OutPutFildeDir point to the folder of the external application should read the parameter file</param>
-    Public Shared Function AppExec(ByVal App As String, ByVal OutPutParam As String, Optional ByVal PlugInDir As String = "", Optional ByVal SecondaryOutputDirectory As String = "") As Boolean
-        Dim retVal As Boolean = False
+    ''' <param name="strAppName">Name of the executable to execute (including extension)</param>
+    ''' <param name="strPath">Application path to use. Provide an empty string
+    ''' here to detect the application file in all possible locations.</param>
+    ''' <param name="strOutputParameters">Arguments to pass to the executable.</param>
+    ''' <param name="strSecondaryOutputDirectory">Working directory</param>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function AppExec(ByVal strAppName As String, ByVal strOutputParameters As String, _
+                                   Optional ByVal strPath As String = "", _
+                                   Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
 
         ' Check if Directory is forced 
-        If PlugInDir <> "" Then
-            Return ExecuteApplication(PlugInDir, App, SecondaryOutputDirectory, OutPutParam)
+        If Not String.IsNullOrEmpty(strPath) Then
+            Return ExecuteApplication(strPath, strAppName, strSecondaryOutputDirectory, strOutputParameters)
         Else
             ' Loop through all the file locations to find the files
-            For Each location As String In ApplicationLaunchLocations()
+            For Each strLocation As String In ApplicationLaunchLocations()
                 ' Execute with directory parameter
-                If ExecuteApplication(location, App, OutPutParam, SecondaryOutputDirectory) Then Return True
+                If ExecuteApplication(strLocation, strAppName, strOutputParameters, strSecondaryOutputDirectory) Then Return True
                 ' Execute without directory parameter
-                If ExecuteApplication(location, App, OutPutParam) Then Return True
+                If ExecuteApplication(strLocation, strAppName, strOutputParameters) Then Return True
             Next
         End If
-
         Return False
+
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' [to document]
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function ApplicationLaunchLocations() As String()
         Return New String() {Mid(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), 7), _
-                                     Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles) & "\Ecopath"}
+                             Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles) & "\Ecopath"}
     End Function
 
-    Public Shared Sub PrintFileNotFoundError()
-        Dim errorMessage As String = "Failed to load application.  Application may not exist.  Please check the following locations then contact your application vendor: "
-        For Each str As String In EwEUtils.SystemUtilities.ApplicationLaunchLocations
-            errorMessage = errorMessage & " " & str & ";"
-        Next
-        MsgBox(errorMessage)
-    End Sub
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' [to document]
+    ''' </summary>
+    ''' <param name="strLocationDir"></param>
+    ''' <param name="strAppName"></param>
+    ''' <param name="strOutputFileName"></param>
+    ''' <param name="strSecondaryOutputDirectory"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Shared Function ExecuteApplication(ByVal strLocationDir As String, _
+                                               ByVal strAppName As String, _
+                                               ByVal strOutputFileName As String, _
+                                               Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
+        Dim bSuccess As Boolean = False
+        Dim strFullAppPath As String = ""
 
-    Private Shared Function ExecuteApplication(ByVal LocationDir As String, ByVal App As String, ByVal OutPutFileName As String, Optional ByVal SecondaryOutputDirectory As String = "") As Boolean
-        Dim retVal As Boolean = False
-        Dim FullAppPath As String
-
-        ' Set the current directory
-        Dim tempCurrentDirectory As String = Environment.CurrentDirectory
-        Environment.CurrentDirectory = LocationDir
-        FullAppPath = Path.Combine(Path.Combine(LocationDir, SecondaryOutputDirectory), App)
+        ' Preserve the current directory
+        Dim strTemDir As String = Environment.CurrentDirectory
 
         Try
+            Environment.CurrentDirectory = strLocationDir
+            strFullAppPath = Path.Combine(Path.Combine(strLocationDir, strSecondaryOutputDirectory), strAppName)
             'Check if the application EcoPath install this application or it was deleted
-            If Not File.Exists(FullAppPath) Then
-                retVal = False
-            ElseIf Not File.Exists(OutPutFileName) Then
-                Throw New Exception("The parameter file " & OutPutFileName & " can not be accessed in " & FullAppPath & OutPutFileName & "\ .")
-                retVal = False
+            If Not File.Exists(strFullAppPath) Then
+                bSuccess = False
+            ElseIf Not File.Exists(strOutputFileName) Then
+                Throw New Exception("The parameter file " & strOutputFileName & " can not be accessed in " & strFullAppPath & strOutputFileName & "\ .")
+                bSuccess = False
             Else
                 'Execute external application
-                Shell(FullAppPath & " " & OutPutFileName, AppWinStyle.NormalFocus)
-                retVal = True
+                Shell(strFullAppPath & " " & strOutputFileName, AppWinStyle.NormalFocus)
+                bSuccess = True
             End If
 
         Catch ex As Exception
             Throw New Exception(String.Format("Failed to load {0} with parameters {1}.  Please check if the application exist and reinstall the application.  If the issue still persist contact your application vendor.  Error: {2}.", _
-                                                FullAppPath, OutPutFileName, ex.ToString))
-            retVal = False
+                                               strFullAppPath, strOutputFileName, ex.ToString))
+            bSuccess = False
         End Try
 
-        ' Set the app diretory back
-        Environment.CurrentDirectory = tempCurrentDirectory
+        ' Restore the current directory
+        Environment.CurrentDirectory = strTemDir
 
-        Return retVal
+        Return bSuccess
     End Function
 
     Public Shared Function MakeTempFile(ByVal strFileName As String) As String
@@ -138,6 +158,12 @@ Public Class SystemUtilities
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether this application is executing in 64 bit mode.
+    ''' </summary>
+    ''' <returns>True if executing in 64 bit mode.</returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function Is64Bit() As Boolean
 
         Dim hFN As Long = 0L
