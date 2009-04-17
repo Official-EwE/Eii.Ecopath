@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.12  2009/04/17 18:51:18  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.11  2009/04/17 01:08:00  joeh
 ' Remove MixedTrophicImpactUC when necessary
 '
@@ -159,6 +162,8 @@ Public Class frmNetworkAnalysis
     End Sub
 
     Private Sub frmNetworkNav_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+
         m_FormActivatedCounter = m_FormActivatedCounter + 1
         'If Not ndRelativeFlows Is Nothing Then
         '    tvNetworkAnalysis.SelectedNode = ndRelativeFlows
@@ -166,7 +171,8 @@ Public Class frmNetworkAnalysis
         'End If
         If m_FormActivatedCounter = 1 Then
             scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-            scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
+            MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+            If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
             dgvNetworkAnalysis.Visible = False
             zgcNetworkAnalysis.Visible = False
             tlpNetworkAnalysis.Visible = True
@@ -211,6 +217,8 @@ Public Class frmNetworkAnalysis
 
 
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvNetworkAnalysis.AfterSelect
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+
         Select Case e.Node.Text
             Case My.Resources.TREE_NODE_REL_FLOWS
                 If Not m_NetworkManager.IsMainNetworkRun Then
@@ -416,7 +424,8 @@ Public Class frmNetworkAnalysis
                             m_CyclesAllPathways.DisplayData()
                         Else
                             scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                            scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
+                            MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+                            If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
                             dgvNetworkAnalysis.Visible = False
                             zgcNetworkAnalysis.Visible = False
                             tlpNetworkAnalysis.Visible = False
@@ -487,7 +496,8 @@ Public Class frmNetworkAnalysis
                                 m_CyclesAllPathways.DisplayData()
                             Else
                                 scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                                scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
+                                MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+                                If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
                                 dgvNetworkAnalysis.Visible = False
                                 zgcNetworkAnalysis.Visible = False
                                 tlpNetworkAnalysis.Visible = False
@@ -556,7 +566,8 @@ Public Class frmNetworkAnalysis
                     End If
                 Else
                     scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                    scNetworkAnalysis.Panel2.Controls.RemoveByKey("ucPlotOfMixedTrophicImpact")
+                    MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+                    If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
                     dgvNetworkAnalysis.Visible = False
                     zgcNetworkAnalysis.Visible = False
                     tlpNetworkAnalysis.Visible = False
