@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.7  2009/04/17 01:07:04  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.6  2009/04/15 23:37:38  joeh
 ' Add "Imports System.Windows.Forms" statement
 '
@@ -186,14 +189,12 @@ Public Class cGraphOfMixedTrophicImpact
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        'Dim FunctRespUC As ucFunctionalResponse = _
-        '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        'If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
+        'No need to set MixedTrophicImpactUC.Visible = False
     End Sub
 
     Private Sub RemoveToolStrip()

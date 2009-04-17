@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.9  2009/04/17 01:07:05  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.8  2009/04/16 00:11:56  joeh
 ' Add "Imports System.Windows.Forms" statement
 '
@@ -234,10 +237,13 @@ Public Class cIndicesWithoutPPREst
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
+            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         DataGrid.Visible = False
+        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
 
         If IsEcosimNetworkAnalysisSuccess = True Then
             GraphPane.Visible = True

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.15  2009/04/17 01:07:04  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.14  2009/04/16 21:52:37  joeh
 ' Add Legends to the MTI plot
 '
@@ -251,8 +254,10 @@ Public Class cPlotOfMixedTrophicImpact
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
 
         MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
-        MixedTrophicImpactUC.Invalidate() 'm_Panel.Invalidate()
+        If Not MixedTrophicImpactUC Is Nothing Then
+            MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
+            MixedTrophicImpactUC.Invalidate() 'm_Panel.Invalidate()
+        End If
     End Sub
 
     Private Sub PlotToScreen(ByVal uc As ucPlotOfMixedTrophicImpact, ByVal g As Graphics)

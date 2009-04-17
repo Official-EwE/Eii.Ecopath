@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cHideGroups.vb,v $
+' Revision 1.7  2009/04/17 01:07:04  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.6  2009/04/15 23:37:38  joeh
 ' Add "Imports System.Windows.Forms" statement
 '
@@ -80,8 +83,6 @@ Public Class cHideGroups
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        'Dim FunctRespUC As ucFunctionalResponse = _
-        '    CType(m_Panel.Controls("ucFUnctionalResponse"), ucFunctionalResponse)
         Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
             CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
@@ -89,7 +90,6 @@ Public Class cHideGroups
         LogoPanel.Visible = False
         DataGrid.Visible = False
         GraphPane.Visible = False
-        'If Not FunctRespUC Is Nothing Then FunctRespUC.Visible = False
         If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
     End Sub
 

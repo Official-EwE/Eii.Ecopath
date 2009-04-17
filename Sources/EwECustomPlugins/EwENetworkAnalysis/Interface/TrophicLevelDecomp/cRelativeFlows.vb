@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cRelativeFlows.vb,v $
+' Revision 1.6  2009/04/17 01:06:59  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.5  2009/04/15 23:22:25  joeh
 ' Add "Imports System.Windows.Forms" statement
 '
@@ -124,10 +127,13 @@ Public Class cRelativeFlows
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
+            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         GraphPane.Visible = False
+        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
         DataGrid.Visible = True
         'DataGrid.RowCount = 1

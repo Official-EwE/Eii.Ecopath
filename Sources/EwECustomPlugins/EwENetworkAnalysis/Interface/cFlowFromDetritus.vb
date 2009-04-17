@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFlowFromDetritus.vb,v $
+' Revision 1.5  2009/04/17 01:07:03  joeh
+' Make MixedTrophicImpactUC not visible when needed
+'
 ' Revision 1.4  2009/04/16 00:29:49  joeh
 ' Add "Import.System.Windows.Forms" statement
 '
@@ -114,10 +117,13 @@ Public Class cFlowFromDetritus
             CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
             CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
+        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
+            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
         m_Panel.AutoScroll = False
         LogoPanel.Visible = False
         GraphPane.Visible = False
+        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
         DataGrid.Visible = True
         'DataGrid.RowCount = 1
