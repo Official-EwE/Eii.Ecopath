@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.17  2009/04/18 13:48:28  jeroens
+' 9 dummy MedFNs screwed up the database, and Ecosim runs OK without
+'
 ' Revision 1.16  2009/04/03 19:55:19  jeroens
 ' Fixed result redim bug
 '
@@ -912,7 +915,7 @@ Public Class cEcosimDatastructures
         Dim i, j As Integer
         'following is for Mediation:
         NMedPoints = 1200
-        If MediationShapes <= 0 Then MediationShapes = 9
+        'If MediationShapes <= 0 Then MediationShapes = 9
         ReDim Medpoints(NMedPoints, MediationShapes)
         ReDim MedWeights(nGroups + nGear, MediationShapes)
         ReDim NMedXused(MediationShapes)
