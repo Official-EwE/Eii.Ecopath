@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.10  2009/04/19 14:14:29  jeroens
+' Update on style change
+'
 ' Revision 1.9  2009/04/19 13:48:56  jeroens
 ' Added Style
 '
@@ -202,6 +205,7 @@ Namespace Controls
             End Get
             Set(ByVal value As StyleGuide.eStyleFlags)
                 Me.m_style = value
+                Me.UpdateControl()
             End Set
         End Property
 
