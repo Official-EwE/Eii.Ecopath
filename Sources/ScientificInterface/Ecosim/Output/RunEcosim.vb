@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.17  2009/04/19 13:46:07  jeroens
+' F not editable
+'
 ' Revision 1.16  2009/04/16 17:46:31  jeroens
 ' :)
 '
@@ -419,6 +422,7 @@ Namespace Ecosim
 
             Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
+            Me.m_sketchPad.Style = StyleGuide.eStyleFlags.OK
             Me.UpdateControls()
         End Sub
 
@@ -430,8 +434,10 @@ Namespace Ecosim
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
             shape = m_core.FishMortShapeManager.Item(item.Index - 1)
 
-            m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
-            m_shapeGUIHandler.SelectedShape = shape
+            Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
+            Me.m_shapeGUIHandler.SelectedShape = shape
+            ' Cannot edit Fs anymore
+            Me.m_sketchPad.Style = StyleGuide.eStyleFlags.NotEditable
             Me.UpdateControls()
         End Sub
 
