@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.9  2009/04/19 13:48:56  jeroens
+' Added Style
+'
 ' Revision 1.8  2009/03/21 00:30:34  jeroens
 ' Fixed unclear parameter names
 '
@@ -51,6 +54,7 @@ Imports EwECore
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -88,8 +92,10 @@ Namespace Controls
 
 #Region " Variables "
 
-        ''' <summary></summary>
+        ''' <summary>The one core</summary>
         Private m_core As cCore = Nothing
+        ''' <summary>Styleguide to listen to.</summary>
+        Private m_sg As StyleGuide = Nothing
         ''' <summary>The manager of this control.</summary>
         Private m_handler As cShapeGUIHandler = Nothing
         ''' <summary>The shape shown in this control.</summary>
@@ -125,6 +131,8 @@ Namespace Controls
         Private m_bShowXMark As Boolean = False
         ''' <summary></summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
+        ''' <summary>Style of the control.</summary>
+        Private m_style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
 
         ''' <summary></summary>
         Public Delegate Sub ShapeChangedDelegate(ByVal shape As cShapeData)
@@ -156,6 +164,7 @@ Namespace Controls
             Me.Dock = DockStyle.Fill
 
             Me.m_core = cCore.GetInstance()
+            Me.m_sg = StyleGuide.GetInstance()
 
             ' Default rendering mode
             Me.m_sketchDrawMode = eSketchDrawModeTypes.Fill
@@ -184,6 +193,20 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the style of the control to override data styles.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Style() As StyleGuide.eStyleFlags
+            Get
+                Return Me.m_style
+            End Get
+            Set(ByVal value As StyleGuide.eStyleFlags)
+                Me.m_style = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the shape to display in the sketch pad.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -194,20 +217,10 @@ Namespace Controls
             End Get
 
             Set(ByVal value As cShapeData)
-
-                ' Enable mouse input when a shape is selected
-                Me.Enabled = Not Object.ReferenceEquals(value, Nothing)
-
                 ' Store new shape ref
                 Me.m_shape = value
-                Me.Enabled = (Me.Shape IsNot Nothing)
-
-                If Me.Enabled Then
-                    Me.BackColor = SystemColors.Window
-                Else
-                    Me.BackColor = SystemColors.InactiveBorder
-                End If
-
+                ' Respond to this major event
+                Me.UpdateControl()
                 ' Broadcast change
                 Me.OnShapeChanged()
             End Set
@@ -533,6 +546,18 @@ Namespace Controls
 #End Region ' Public access
 
 #Region " Private Methods "
+
+        Private Sub UpdateControl()
+
+            If ((Me.Style And StyleGuide.eStyleFlags.NotEditable) = 0) And (Me.m_shape IsNot Nothing) Then
+                Me.Enabled = True
+                Me.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+            Else
+                Me.Enabled = False
+                Me.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+            End If
+
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
