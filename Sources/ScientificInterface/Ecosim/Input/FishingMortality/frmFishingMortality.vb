@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingMortality.vb,v $
+' Revision 1.6  2009/04/19 13:40:40  jeroens
+' Removed sketchpad toolbar
+'
 ' Revision 1.5  2009/03/02 01:52:36  jeroens
 ' Properly named handlers
 '
@@ -15,27 +18,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:36  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/07/01 19:13:10  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.5.2.2  2008/07/01 18:36:28  sherman
-' Merged Fix_Ecopat_EcosimUpdate...
-'
-' Revision 1.5  2008/06/06 16:01:38  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.4  2008/05/29 23:43:43  jeroens
-' Added Values dialog
-'
-' Revision 1.3  2008/02/06 21:11:01  jeroens
-' Fixed issue 398
-'
-' Revision 1.2  2007/10/31 16:04:15  jeroens
-' * Respond to shape manager messages
-'
-' Revision 1.1  2007/10/30 02:46:07  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -78,7 +60,7 @@ Namespace Ecosim
 
             Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.m_Core, _
                     Me.m_shapeToolBox, Me.m_sketchPad, _
-                    Me.m_shapeToolboxToolbar, Me.m_sketchPadToolbar)
+                    Nothing, Me.m_sketchPadToolbar)
 
         End Sub
 
