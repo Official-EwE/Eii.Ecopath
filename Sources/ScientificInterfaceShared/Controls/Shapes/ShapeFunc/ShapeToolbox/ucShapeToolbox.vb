@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.7  2009/04/19 13:44:21  jeroens
+' Stripped selection to match available shapes
+'
 ' Revision 1.6  2009/04/16 21:45:00  jeroens
 ' Commented
 ' 0-weight TS can be enabled
@@ -214,6 +217,8 @@ Namespace Controls
 
             Set(ByVal ashapes As cShapeData())
 
+                Dim lShapes As New List(Of cShapeData)
+
                 Me.lvShapes.SuspendLayout()
 
                 If ashapes Is Nothing Then
@@ -223,8 +228,19 @@ Namespace Controls
                     Next
                 Else
                     For Each item As ListViewItem In Me.lvShapes.Items
+                        ' Get item shape
                         Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
-                        item.Selected = (Array.IndexOf(ashapes, shape) > -1)
+                        ' Get index in selection, if any
+                        Dim iIndex As Integer = Array.IndexOf(ashapes, shape)
+                        ' Exists in selection?
+                        If (iIndex > -1) Then
+                            ' #Yes: select the item
+                            item.Selected = True
+                            ' Shape still exists: add to selection to broadcast
+                            lShapes.Add(shape)
+                        Else
+                            item.Selected = False
+                        End If
                     Next
                 End If
 
@@ -232,7 +248,7 @@ Namespace Controls
 
                 Me.m_bInUpdate = True
                 Me.UpdateControls()
-                RaiseEvent OnSelectionChanged(ashapes)
+                RaiseEvent OnSelectionChanged(lShapes.ToArray())
                 Me.m_bInUpdate = False
 
             End Set
