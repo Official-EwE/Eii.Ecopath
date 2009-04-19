@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.9  2009/04/19 13:30:07  jeroens
+' Formatted app launch error
+'
 ' Revision 1.8  2009/04/17 03:17:06  jeroens
 ' Removed global message box
 '
@@ -151,7 +154,8 @@ Public Class cGraphOfMixedTrophicImpact
         If Not EwEUtils.SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
             Dim sb As New StringBuilder
             For Each str As String In EwEUtils.SystemUtilities.ApplicationLaunchLocations
-                sb.AppendLine(str)
+                If sb.Length > 0 Then sb.Append(", ")
+                sb.Append(str)
             Next
             Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "impacts.exe", sb.ToString), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
