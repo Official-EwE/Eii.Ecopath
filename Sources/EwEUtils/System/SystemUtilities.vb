@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SystemUtilities.vb,v $
+' Revision 1.4  2009/04/19 13:52:59  jeroens
+' Don't throw execptions on errors
+'
 ' Revision 1.3  2009/04/17 03:15:58  jeroens
 ' Removed global message box
 '
@@ -126,7 +129,8 @@ Public Class SystemUtilities
             If Not File.Exists(strFullAppPath) Then
                 bSuccess = False
             ElseIf Not File.Exists(strOutputFileName) Then
-                Throw New Exception("The parameter file " & strOutputFileName & " can not be accessed in " & strFullAppPath & strOutputFileName & "\ .")
+                ' JS 19ap09 (happy 4th birthday Sascha!) do not throw exception; the calling code is not ready for this
+                'Throw New Exception("The parameter file " & strOutputFileName & " can not be accessed in " & strFullAppPath & strOutputFileName & "\ .")
                 bSuccess = False
             Else
                 'Execute external application
@@ -135,8 +139,9 @@ Public Class SystemUtilities
             End If
 
         Catch ex As Exception
-            Throw New Exception(String.Format("Failed to load {0} with parameters {1}.  Please check if the application exist and reinstall the application.  If the issue still persist contact your application vendor.  Error: {2}.", _
-                                               strFullAppPath, strOutputFileName, ex.ToString))
+            ' JS 19ap09 (happy 4th birthday Sascha!) do not throw exception; the calling code is not ready for this
+            'Throw New Exception(String.Format("Failed to load {0} with parameters {1}.  Please check if the application exist and reinstall the application.  If the issue still persist contact your application vendor.  Error: {2}.", _
+            '                                   strFullAppPath, strOutputFileName, ex.ToString))
             bSuccess = False
         End Try
 
