@@ -27,10 +27,9 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingMortality))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New ucForcingSketchPad
-            Me.m_shapeToolboxToolbar = New ucShapeToolboxToolbar
-            Me.m_shapeToolBox = New ucShapeToolbox
-            Me.m_sketchPadToolbar = New ucSketchPadToolbar
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -50,39 +49,7 @@ Namespace Ecosim
             'SplitContainer1.Panel2
             '
             resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
-            Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolboxToolbar)
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolBox)
-            '
-            'm_sketchPad
-            '
-            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
-            Me.m_sketchPad.Editable = True
-            Me.m_sketchPad.Handler = Nothing
-            Me.m_sketchPad.IsSeasonal = False
-            Me.m_sketchPad.Name = "m_sketchPad"
-            'Me.m_sketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.SketchDrawMode = eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
-            Me.m_sketchPad.YAxisMinValue = -9999.0!
-            '
-            'm_shapeToolboxToolbar
-            '
-            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
-            Me.m_shapeToolboxToolbar.Handler = Nothing
-            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
-            '
-            'm_shapeToolBox
-            '
-            resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
-            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
-            Me.m_shapeToolBox.Handler = Nothing
-            Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = Nothing
-            Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'm_sketchPadToolbar
             '
@@ -90,6 +57,38 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
             Me.m_sketchPadToolbar.Handler = Nothing
             Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
+            '
+            'm_sketchPad
+            '
+            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
+            Me.m_sketchPad.DisplayAxis = True
+            Me.m_sketchPad.Editable = True
+            Me.m_sketchPad.Handler = Nothing
+            Me.m_sketchPad.IsSeasonal = False
+            Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.Shape = Nothing
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.Style = ScientificInterfaceShared.Style.StyleGuide.eStyleFlags.NotEditable
+            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMinValue = -9999.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
+            '
+            'm_shapeToolBox
+            '
+            Me.m_shapeToolBox.AllowCheckboxes = False
+            resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
+            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
+            Me.m_shapeToolBox.Handler = Nothing
+            Me.m_shapeToolBox.Name = "m_shapeToolBox"
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'frmFishingMortality
             '
@@ -106,7 +105,6 @@ Namespace Ecosim
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_sketchPad As ucForcingSketchPad
-        Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
         Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
 
     End Class

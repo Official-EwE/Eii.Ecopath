@@ -148,7 +148,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucSketchPadToolbar, EwE6, Version=6.0.3.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -175,7 +175,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucForcingSketchPad, EwE6, Version=6.0.3.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -198,41 +198,17 @@
   <data name="SplitContainer1.Panel2.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_shapeToolboxToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>699, 25</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
-    <value>m_shapeToolboxToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucShapeToolboxToolbar, EwE6, Version=6.0.3.14, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_shapeToolBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_shapeToolBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 0</value>
   </data>
   <data name="m_shapeToolBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_shapeToolBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>699, 116</value>
+    <value>699, 141</value>
   </data>
   <data name="m_shapeToolBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -241,13 +217,13 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucShapeToolbox, EwE6, Version=6.0.3.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
@@ -291,10 +267,13 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>703, 505</value>
   </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmFishingMortality</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.EwEForm, EwE6, Version=6.0.3.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
