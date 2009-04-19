@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.18  2009/04/19 14:26:35  jeroens
+' Documented 9 dummy MedFNs fix
+'
 ' Revision 1.17  2009/04/18 13:48:28  jeroens
 ' 9 dummy MedFNs screwed up the database, and Ecosim runs OK without
 '
@@ -915,6 +918,8 @@ Public Class cEcosimDatastructures
         Dim i, j As Integer
         'following is for Mediation:
         NMedPoints = 1200
+        ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
+        '            I tested Ecosim without mediation shapes and both core and GUI behave well
         'If MediationShapes <= 0 Then MediationShapes = 9
         ReDim Medpoints(NMedPoints, MediationShapes)
         ReDim MedWeights(nGroups + nGear, MediationShapes)
