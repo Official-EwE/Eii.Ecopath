@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.7  2009/04/20 13:57:13  jeroens
+' no message
+'
 ' Revision 1.6  2009/03/24 02:00:27  jeroens
 ' Fixed crash when no shape selected
 '
@@ -45,7 +48,7 @@ Namespace Controls
 
             Me.InitializeComponent()
             'No axis info in the mediation sketchpad right now. 
-            AxisToolStripMenuItem.Visible = False
+            m_tsmiShowMarks.Visible = False
         End Sub
 
         Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
