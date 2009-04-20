@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.38  2009/04/20 14:09:42  jeroens
+' no message
+'
 ' Revision 1.37  2009/04/13 21:02:47  jeroens
 ' Hmm, rather not
 '
@@ -164,9 +167,6 @@ Public Class AppLauncher
     Private m_coreController As EwECoreController = Nothing
     Private m_FormStateHelper As EwEFormStateHelper = Nothing
     Private m_StatusStripHelper As StatusStripHelper = Nothing
-    ''' <summary>Style guide updater.</summary>
-    Private m_sgu As StyleGuideUpdater = Nothing
-    Private m_asn As cApplicationStatusNotifier = Nothing
 
     Private m_strLastSelectedPath As String = ""
     ''' <summary>Active wait cursor count.</summary>
@@ -231,6 +231,9 @@ Public Class AppLauncher
     Private WithEvents m_cmdDisplayGroups As Command = Nothing
     Private WithEvents m_cmdEnableEcotracer As Command = Nothing
 
+    ''' <summary>Style guide updater.</summary>
+    Private m_styleguideupdater As StyleGuideUpdater = Nothing
+    Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
     Private m_applicationComponents As ApplicationComponents = Nothing
 
 #End Region ' Variables
@@ -255,7 +258,8 @@ Public Class AppLauncher
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
 
-        Me.m_asn = New cApplicationStatusNotifier(Me)
+        Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me)
+
     End Sub
 
 #End Region ' Constructors
@@ -535,7 +539,8 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public Sub SetStatusText(Optional ByVal strText As String = "", _
         Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-        Optional ByVal sProgress As Single = 0.0) Implements IApplicationStatusDispatcher.SetStatusText
+        Optional ByVal sProgress As Single = 0.0) _
+        Implements IApplicationStatusDispatcher.SetStatusText
 
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
@@ -847,7 +852,7 @@ Public Class AppLauncher
         ' Initialize core controller
         Me.m_coreController = New EwECoreController(Me.m_core.StateMonitor, Me.m_core.StateManager)
         ' Initialize style guide updated
-        Me.m_sgu = New StyleGuideUpdater(m_core, StyleGuide.GetInstance())
+        Me.m_styleguideupdater = New StyleGuideUpdater(m_core, StyleGuide.GetInstance())
 
     End Sub
 
@@ -1286,7 +1291,7 @@ Public Class AppLauncher
         fs.Store(Me, False)
 
         Me.SaveDockPanelLayout()
-        Me.m_sgu.Save()
+        Me.m_styleguideupdater.Save()
 
         My.Settings.FormPositions = fs.Setting
         My.Settings.Save()
