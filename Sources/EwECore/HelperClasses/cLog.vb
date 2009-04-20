@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLog.vb,v $
+' Revision 1.4  2009/04/20 21:29:47  joeb
+' Made thread locking in more robust.
+'
 ' Revision 1.3  2008/10/08 17:56:32  jeroens
 ' Reactivated
 '
@@ -106,7 +109,10 @@ Public Class cLog
         Try
 
             'make this thread safe
-            m_lock.AcquireWriterLock(1000)
+            If Not AcquireWriterLock() Then
+                'failed to get a lock on the file... just skip the file write
+                Exit Sub
+            End If
 
             xmlStrm = getWriter()
 
@@ -137,15 +143,13 @@ Public Class cLog
 
         Catch ex As Exception
 
-            m_lock.ReleaseWriterLock()
-
             Debug.Assert(False, ex.Message)
             If Not xmlStrm Is Nothing Then
                 xmlStrm.Close()
             End If
         End Try
 
-        m_lock.ReleaseWriterLock()
+        ReleaseWriterLock()
 
     End Sub
 
@@ -158,7 +162,10 @@ Public Class cLog
         Dim xmlStrm As cXMLLogWriter
 
         Try
-            m_lock.AcquireWriterLock(1000)
+            If Not AcquireWriterLock() Then
+                'failed to get a lock on the file... just skip the file write
+                Exit Sub
+            End If
 
             xmlStrm = getWriter()
 
@@ -179,8 +186,6 @@ Public Class cLog
 
         Catch ex As Exception
 
-            m_lock.ReleaseWriterLock()
-
             Debug.Assert(False, ex.Message)
             If Not xmlStrm Is Nothing Then
                 xmlStrm.Close()
@@ -188,7 +193,7 @@ Public Class cLog
 
         End Try
 
-        m_lock.ReleaseWriterLock()
+        ReleaseWriterLock()
 
     End Sub
 
@@ -201,7 +206,11 @@ Public Class cLog
         Dim xmlStrm As cXMLLogWriter
 
         Try
-            m_lock.AcquireWriterLock(1000)
+
+            If Not AcquireWriterLock() Then
+                'failed to get a lock on the file... just skip the file write
+                Exit Sub
+            End If
 
             xmlStrm = getWriter()
 
@@ -218,7 +227,6 @@ Public Class cLog
             End If
 
         Catch ex As Exception
-            m_lock.ReleaseWriterLock()
 
             Debug.Assert(False, ex.Message)
             If Not xmlStrm Is Nothing Then
@@ -226,9 +234,32 @@ Public Class cLog
             End If
         End Try
 
-        m_lock.ReleaseWriterLock()
+        ReleaseWriterLock()
 
     End Sub
+
+    ''' <summary>
+    ''' ReaderWriterLock.AcquireWriterLock() will throw an exception if it times out! Bitch... this keeps the exception handling out of the main code
+    ''' </summary>
+    ''' <returns>True if a lock was acquired.</returns>
+    ''' <remarks></remarks>
+    Private Shared Function AcquireWriterLock() As Boolean
+        Try
+            m_lock.AcquireWriterLock(1000)
+            Return True
+        Catch ex As Exception
+            System.Console.WriteLine("Error trying to lock the Log file for writting! " & ex.Message)
+            Return False
+        End Try
+    End Function
+    Private Shared Sub ReleaseWriterLock()
+        Try
+            m_lock.ReleaseWriterLock()
+        Catch ex As Exception
+            System.Console.WriteLine("Error trying to unlock the Log file after writting! " & ex.Message)
+        End Try
+    End Sub
+
 
 #End Region
 
