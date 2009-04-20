@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.17  2009/04/20 12:39:42  jeroens
+' All fleets edit will update all shapes
+'
 ' Revision 1.16  2009/04/16 17:45:56  jeroens
 ' Added TimeSeries reset all
 ' Added Fishing rate, mort reset all
@@ -1885,6 +1888,17 @@ Namespace Controls
             Return Drawing.Color.Coral
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden to refresh all shapes when the 'all fleet' shape was changed.
+        ''' </summary>
+        ''' <param name="shape"></param>
+        ''' <param name="sketchpad"></param>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+            MyBase.OnShapeFinalized(shape, sketchpad)
+            Me.Refresh()
+        End Sub
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.
