@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.24  2009/04/20 14:10:48  jeroens
+' Moved F form to Sim outputs
+'
 ' Revision 1.23  2009/04/06 15:31:31  jeroens
 ' Uses attach, detach on node controller
 '
@@ -184,7 +187,6 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEggProduction), "Egg production.htm")
         m_nodeController.Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
         m_nodeController.Add("ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingEffort)) ' ToDo: connect to help
-        m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
         m_nodeController.Add("ndRegulatoryOptions", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridRegulatoryOptions)) ' ToDo: connect to help
         m_nodeController.Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridFishingQuotas)) ' ToDo: connect to help
         m_nodeController.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
@@ -196,6 +198,7 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
         m_nodeController.Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SRplot), "Stock recruitment S R plot.htm")
         m_nodeController.Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
+        m_nodeController.Add("ndFishingMortality", eCoreExecutionState.EcosimCompleted, GetType(frmFishingMortality)) ' ToDo: connect to help
 
         ' Ecosim Tools
         m_nodeController.Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
