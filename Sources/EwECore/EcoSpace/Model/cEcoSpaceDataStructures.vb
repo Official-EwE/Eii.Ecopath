@@ -1,8 +1,11 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.10  2009/04/20 19:43:14  joeb
+' typo fix
+'
 ' Revision 1.9  2009/04/20 19:41:54  joeb
-' Bug Fix Ecospace slowed down after running have a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
+' Bug Fix Ecospace slowed down after running half a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
 '
 ' Revision 1.8  2009/02/02 22:29:08  joeb
 ' Added more output vars to EcoSpace fleets
