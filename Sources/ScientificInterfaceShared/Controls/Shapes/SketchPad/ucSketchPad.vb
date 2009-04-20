@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.11  2009/04/20 13:56:11  jeroens
+' Fixed cursor feedback
+'
 ' Revision 1.10  2009/04/19 14:14:29  jeroens
 ' Update on style change
 '
@@ -561,6 +564,33 @@ Namespace Controls
                 Me.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.READONLY_BACKGROUND)
             End If
 
+            Me.UpdateCursor()
+
+        End Sub
+
+        Private Sub UpdateCursor(Optional ByVal editMode As eMouseInteractionMode = eMouseInteractionMode.None)
+
+            If Me.Enabled Then
+
+                If editMode = eMouseInteractionMode.None Then editMode = Me.m_editMode
+
+                Select Case Me.m_editMode
+
+                    Case eMouseInteractionMode.DragXMark
+                        Me.Cursor = Cursors.SizeWE
+
+                    Case eMouseInteractionMode.DragYMark
+                        Me.Cursor = Cursors.SizeNS
+
+                    Case eMouseInteractionMode.DrawShape, _
+                         eMouseInteractionMode.None
+                        Me.Cursor = Cursors.Hand
+
+                End Select
+            Else
+                Me.Cursor = Cursors.Default
+            End If
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -744,9 +774,36 @@ Namespace Controls
 #Region " Mouse events "
 
         ''' <summary>
+        ''' Mouse move handler; draws the shape when the mouse input is captured.
+        ''' </summary>
+        Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
+
+            If Not Me.Editable Then Return
+
+            ' Determine interaction mode only when not capturing input
+            If Not Me.Capture Then
+
+                If Me.IsNearXMark(e.X) Then
+                    Me.m_editMode = eMouseInteractionMode.DragXMark
+                Else
+                    Me.m_editMode = eMouseInteractionMode.DrawShape
+                End If
+
+                ' Update cursor to provide feedback
+                Me.UpdateCursor()
+
+                ' Not capturing: OUT
+                Return
+            End If
+
+            Me.ProcessMouseInput(e)
+
+        End Sub
+
+        ''' <summary>
         ''' Mouse click handler; starts mouse capture and initiates shape drawing.
         ''' </summary>
-        Private Sub SketchPad_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Private Sub SketchPad_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseDown
 
             Dim bShiftPressed As Boolean = (User32.GetAsyncKeyState(&H10) < 0)
             If Not Me.Editable Then Return
@@ -760,31 +817,6 @@ Namespace Controls
 
             Me.m_sYMaxLock = Me.YAxisMaxValue
             If Me.m_sYMaxLock = 0 Then Me.m_sYMaxLock = 2.0
-
-            If Me.IsNearXMark(e.X) Then
-                Me.m_editMode = eMouseInteractionMode.DragXMark
-            Else
-                Me.m_editMode = eMouseInteractionMode.DrawShape
-            End If
-
-            Me.ProcessMouseInput(e)
-
-        End Sub
-
-        ''' <summary>
-        ''' Mouse move handler; draws the shape when the mouse input is captured.
-        ''' </summary>
-        Private Sub SketchPad_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseMove
-
-            If Not Me.Editable Then Return
-
-            If Me.IsNearXMark(e.X) Then
-                Me.Cursor = Cursors.SizeWE
-            Else
-                Me.Cursor = Cursors.Default
-            End If
-
-            If Not Me.Capture Then Return
 
             Me.ProcessMouseInput(e)
 
@@ -802,7 +834,6 @@ Namespace Controls
             ' Clear lock
             Me.m_sYMaxLock = 0.0!
             Me.Capture = False
-            Me.m_editMode = eMouseInteractionMode.None
 
             ' Test auto scale
             If (Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Auto) Then
@@ -847,31 +878,31 @@ Namespace Controls
 
         Private Sub UpdateMenuItemStates()
 
-            Me.LineToolStripMenuItem.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Line)
-            Me.FillToolStripMenuItem.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Fill)
-            Me.DotsToolStripMenuItem.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Dots)
+            Me.m_tsmiLine.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Line)
+            Me.m_tsmiFill.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Fill)
+            Me.m_tsmiDots.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Dots)
 
             If Me.Handler IsNot Nothing Then
-                Me.OptionsToolStripMenuItem.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
-                Me.OptionsToolStripMenuItem.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
+                Me.m_tsmiOptions.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
+                Me.m_tsmiOptions.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
 
                 Me.LoadToolStripMenuItem.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
                 Me.LoadToolStripMenuItem.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
 
-                Me.ValueToolStripMenuItem.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
-                Me.ValueToolStripMenuItem.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
+                Me.m_tsmiValue.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
+                Me.m_tsmiValue.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
 
-                Me.ResetToolStripMenuItem.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
-                Me.ResetToolStripMenuItem.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
+                Me.m_tsmiReset.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
+                Me.m_tsmiReset.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
 
-                Me.SaveToolStripMenuItem.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
-                Me.SaveToolStripMenuItem.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
+                Me.m_tsmiSave.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
+                Me.m_tsmiSave.Enabled = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
             End If
 
         End Sub
 
         Private Sub LineOnlyToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles LineToolStripMenuItem.Click
+            Handles m_tsmiLine.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.Line
             Me.UpdateMenuItemStates()
@@ -879,7 +910,7 @@ Namespace Controls
         End Sub
 
         Private Sub FillToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles FillToolStripMenuItem.Click
+            Handles m_tsmiFill.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.Fill
             Me.UpdateMenuItemStates()
@@ -887,7 +918,7 @@ Namespace Controls
         End Sub
 
         Private Sub DotsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles DotsToolStripMenuItem.Click
+            Handles m_tsmiDots.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.Dots
             Me.UpdateMenuItemStates()
@@ -895,18 +926,17 @@ Namespace Controls
         End Sub
 
         Private Sub AxisToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles AxisToolStripMenuItem.Click
+            Handles m_tsmiShowMarks.Click
 
-            AxisToolStripMenuItem.Checked = Not AxisToolStripMenuItem.Checked
-            Me.m_bShowAxis = AxisToolStripMenuItem.Checked
+            Me.m_tsmiShowMarks.Checked = Not Me.m_tsmiShowMarks.Checked
+            Me.m_bShowAxis = m_tsmiShowMarks.Checked
 
         End Sub
 
-        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles AutoScaleToolStripMenuItem.Click
+        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-            AutoScaleToolStripMenuItem.Checked = Not AutoScaleToolStripMenuItem.Checked
-            If AutoScaleToolStripMenuItem.Checked Then
+            Me.m_tsmiAutoScaleYAxis.Checked = Not Me.m_tsmiAutoScaleYAxis.Checked
+            If Me.m_tsmiAutoScaleYAxis.Checked Then
                 Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Auto
             Else
                 Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Fixed
@@ -915,10 +945,10 @@ Namespace Controls
         End Sub
 
         Private Sub spContextMenuStrip_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) _
-            Handles spContextMenuStrip.Opening
+            Handles m_spContextMenuStrip.Opening
 
-            Me.AxisToolStripMenuItem.Checked = Me.m_bShowAxis
-            Me.AutoScaleToolStripMenuItem.Checked = (Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Auto)
+            Me.m_tsmiShowMarks.Checked = Me.m_bShowAxis
+            Me.m_tsmiAutoScaleYAxis.Checked = (Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Auto)
 
             Me.UpdateMenuItemStates()
         End Sub
@@ -927,7 +957,7 @@ Namespace Controls
         ''' The event handler; handles a Reset toolstrip button click.
         ''' </summary>
         Private Sub OnResetShapeClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles ResetToolStripMenuItem.Click
+            Handles m_tsmiReset.Click
 
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
@@ -938,7 +968,7 @@ Namespace Controls
         ''' Event handler; handles a Options toolstrip menu click 
         ''' </summary>
         Private Sub OnOptionClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles OptionsToolStripMenuItem.Click
+            Handles m_tsmiOptions.Click
 
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
@@ -949,7 +979,7 @@ Namespace Controls
         ''' Event handler; handles a Save image value toolstrip item click
         ''' </summary>
         Private Sub OnSaveImageClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles SaveToolStripMenuItem.Click
+            Handles m_tsmiSave.Click
 
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, _
@@ -961,7 +991,7 @@ Namespace Controls
         ''' Event handler; handles a Shape value toolstrip item click
         ''' </summary>
         Private Sub OnShapeValueClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles ValueToolStripMenuItem.Click
+            Handles m_tsmiValue.Click
 
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)

@@ -22,135 +22,121 @@ Namespace Controls
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPad))
-            Me.spContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.DrawModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.FillToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.LineToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.AxisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ScaleYAxisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.AutoScaleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.RightMouseButtonToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.ResetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ValueToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Dim m_tss1 As System.Windows.Forms.ToolStripSeparator
+            Me.m_spContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.m_tsmiDrawMode = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiFill = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiLine = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiDots = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiShowMarks = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiAutoScaleYAxis = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiReset = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiValue = New System.Windows.Forms.ToolStripMenuItem
             Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.DotsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.spContextMenuStrip.SuspendLayout()
+            Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripMenuItem
+            m_tss1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_spContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
-            'spContextMenuStrip
+            'm_spContextMenuStrip
             '
-            Me.spContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DrawModeToolStripMenuItem, Me.AxisToolStripMenuItem, Me.ScaleYAxisToolStripMenuItem, Me.ToolStripSeparator1, Me.ResetToolStripMenuItem, Me.ValueToolStripMenuItem, Me.LoadToolStripMenuItem, Me.SaveToolStripMenuItem, Me.ToolStripSeparator2, Me.OptionsToolStripMenuItem})
-            Me.spContextMenuStrip.Name = "ContextMenuStrip1"
-            resources.ApplyResources(Me.spContextMenuStrip, "spContextMenuStrip")
+            Me.m_spContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiDrawMode, Me.m_tsmiShowMarks, Me.m_tsmiAutoScaleYAxis, m_tss1, Me.m_tsmiReset, Me.m_tsmiValue, Me.LoadToolStripMenuItem, Me.m_tsmiSave, Me.m_tss2, Me.m_tsmiOptions})
+            Me.m_spContextMenuStrip.Name = "ContextMenuStrip1"
+            resources.ApplyResources(Me.m_spContextMenuStrip, "m_spContextMenuStrip")
             '
-            'DrawModeToolStripMenuItem
+            'm_tsmiDrawMode
             '
-            Me.DrawModeToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FillToolStripMenuItem, Me.LineToolStripMenuItem, Me.DotsToolStripMenuItem})
-            Me.DrawModeToolStripMenuItem.Name = "DrawModeToolStripMenuItem"
-            resources.ApplyResources(Me.DrawModeToolStripMenuItem, "DrawModeToolStripMenuItem")
+            Me.m_tsmiDrawMode.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFill, Me.m_tsmiLine, Me.m_tsmiDots})
+            Me.m_tsmiDrawMode.Name = "m_tsmiDrawMode"
+            resources.ApplyResources(Me.m_tsmiDrawMode, "m_tsmiDrawMode")
             '
-            'FillToolStripMenuItem
+            'm_tsmiFill
             '
-            Me.FillToolStripMenuItem.Name = "FillToolStripMenuItem"
-            resources.ApplyResources(Me.FillToolStripMenuItem, "FillToolStripMenuItem")
+            Me.m_tsmiFill.Name = "m_tsmiFill"
+            resources.ApplyResources(Me.m_tsmiFill, "m_tsmiFill")
             '
-            'LineToolStripMenuItem
+            'm_tsmiLine
             '
-            Me.LineToolStripMenuItem.Name = "LineToolStripMenuItem"
-            resources.ApplyResources(Me.LineToolStripMenuItem, "LineToolStripMenuItem")
+            Me.m_tsmiLine.Name = "m_tsmiLine"
+            resources.ApplyResources(Me.m_tsmiLine, "m_tsmiLine")
             '
-            'AxisToolStripMenuItem
+            'm_tsmiDots
             '
-            Me.AxisToolStripMenuItem.Name = "AxisToolStripMenuItem"
-            resources.ApplyResources(Me.AxisToolStripMenuItem, "AxisToolStripMenuItem")
+            Me.m_tsmiDots.Name = "m_tsmiDots"
+            resources.ApplyResources(Me.m_tsmiDots, "m_tsmiDots")
             '
-            'ScaleYAxisToolStripMenuItem
+            'm_tsmiShowMarks
             '
-            Me.ScaleYAxisToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutoScaleToolStripMenuItem, Me.RightMouseButtonToolStripMenuItem})
-            Me.ScaleYAxisToolStripMenuItem.Name = "ScaleYAxisToolStripMenuItem"
-            resources.ApplyResources(Me.ScaleYAxisToolStripMenuItem, "ScaleYAxisToolStripMenuItem")
+            Me.m_tsmiShowMarks.Name = "m_tsmiShowMarks"
+            resources.ApplyResources(Me.m_tsmiShowMarks, "m_tsmiShowMarks")
             '
-            'AutoScaleToolStripMenuItem
+            'm_tsmiAutoScaleYAxis
             '
-            Me.AutoScaleToolStripMenuItem.Name = "AutoScaleToolStripMenuItem"
-            resources.ApplyResources(Me.AutoScaleToolStripMenuItem, "AutoScaleToolStripMenuItem")
+            Me.m_tsmiAutoScaleYAxis.Name = "m_tsmiAutoScaleYAxis"
+            resources.ApplyResources(Me.m_tsmiAutoScaleYAxis, "m_tsmiAutoScaleYAxis")
             '
-            'RightMouseButtonToolStripMenuItem
+            'm_tss1
             '
-            Me.RightMouseButtonToolStripMenuItem.Name = "RightMouseButtonToolStripMenuItem"
-            resources.ApplyResources(Me.RightMouseButtonToolStripMenuItem, "RightMouseButtonToolStripMenuItem")
+            m_tss1.Name = "m_tss1"
+            resources.ApplyResources(m_tss1, "m_tss1")
             '
-            'ToolStripSeparator1
+            'm_tsmiReset
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            Me.m_tsmiReset.Name = "m_tsmiReset"
+            resources.ApplyResources(Me.m_tsmiReset, "m_tsmiReset")
             '
-            'ResetToolStripMenuItem
+            'm_tsmiValue
             '
-            Me.ResetToolStripMenuItem.Name = "ResetToolStripMenuItem"
-            resources.ApplyResources(Me.ResetToolStripMenuItem, "ResetToolStripMenuItem")
-            '
-            'ValueToolStripMenuItem
-            '
-            Me.ValueToolStripMenuItem.Name = "ValueToolStripMenuItem"
-            resources.ApplyResources(Me.ValueToolStripMenuItem, "ValueToolStripMenuItem")
+            Me.m_tsmiValue.Name = "m_tsmiValue"
+            resources.ApplyResources(Me.m_tsmiValue, "m_tsmiValue")
             '
             'LoadToolStripMenuItem
             '
             resources.ApplyResources(Me.LoadToolStripMenuItem, "LoadToolStripMenuItem")
             Me.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
             '
-            'SaveToolStripMenuItem
+            'm_tsmiSave
             '
-            Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-            resources.ApplyResources(Me.SaveToolStripMenuItem, "SaveToolStripMenuItem")
+            Me.m_tsmiSave.Name = "m_tsmiSave"
+            resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             '
-            'ToolStripSeparator2
+            'm_tss2
             '
-            Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
+            Me.m_tss2.Name = "m_tss2"
+            resources.ApplyResources(Me.m_tss2, "m_tss2")
             '
-            'OptionsToolStripMenuItem
+            'm_tsmiOptions
             '
-            Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-            resources.ApplyResources(Me.OptionsToolStripMenuItem, "OptionsToolStripMenuItem")
+            Me.m_tsmiOptions.Name = "m_tsmiOptions"
+            resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
             '
-            'DotsToolStripMenuItem
-            '
-            Me.DotsToolStripMenuItem.Name = "DotsToolStripMenuItem"
-            resources.ApplyResources(Me.DotsToolStripMenuItem, "DotsToolStripMenuItem")
-            '
-            'SketchPad
+            'ucSketchPad
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.SystemColors.Window
-            Me.ContextMenuStrip = Me.spContextMenuStrip
-            Me.Name = "SketchPad"
-            Me.spContextMenuStrip.ResumeLayout(False)
+            Me.ContextMenuStrip = Me.m_spContextMenuStrip
+            Me.Cursor = System.Windows.Forms.Cursors.Cross
+            Me.Name = "ucSketchPad"
+            Me.m_spContextMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents spContextMenuStrip As System.Windows.Forms.ContextMenuStrip
-        Friend WithEvents DrawModeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents FillToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents LineToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents AxisToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ScaleYAxisToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents AutoScaleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents RightMouseButtonToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ResetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ValueToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents LoadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents OptionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents DotsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_spContextMenuStrip As System.Windows.Forms.ContextMenuStrip
+        Private WithEvents m_tsmiDrawMode As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiFill As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiLine As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiDots As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiAutoScaleYAxis As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiReset As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiValue As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
+        Protected WithEvents m_tsmiShowMarks As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 
