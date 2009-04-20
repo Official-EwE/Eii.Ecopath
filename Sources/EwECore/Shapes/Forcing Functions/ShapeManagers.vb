@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeManagers.vb,v $
+' Revision 1.5  2009/04/20 12:35:48  jeroens
+' Localized
+'
 ' Revision 1.4  2009/03/26 17:41:38  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -1008,9 +1011,7 @@ Public Class cFishingEffortManger
             'Its iFleet index is m_Data.nGear + 1 
             'this is critical as that is how the shape itself decides that it the Combined Fleets shape
             'the Combined Fleets shape updates all the other fleets as well as the FishMort shapes
-
-            ' ToDo_JS: Globalize this
-            shape = New cFishingRateShape(m_Data, Me, cCore.NULL_VALUE, "All Fleets")
+            shape = New cFishingRateShape(m_Data, Me, cCore.NULL_VALUE, My.Resources.CoreDefaults.CORE_ALL_FLEETS)
             shape.ID = m_shapes.Count
             shape.Index = m_Data.nGear + 1
             m_shapes.Add(shape)
