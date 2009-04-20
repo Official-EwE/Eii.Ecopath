@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpaceDataStructures.vb,v $
+' Revision 1.9  2009/04/20 19:41:54  joeb
+' Bug Fix Ecospace slowed down after running have a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
+'
 ' Revision 1.8  2009/02/02 22:29:08  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -1541,7 +1544,7 @@ Public Class cEcospaceDataStructures
         Dim SailEffort As Single, FishEffort As Single
         Dim cost As Single, value As Single
 
-        Debug.Assert(nSumTimeSteps < ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
+        Debug.Assert(nSumTimeSteps <= ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
 
         'number of years the model actually ran for, computed in case the model run was stopped by the user
         Dim nYears As Single = Me.nSumTimeSteps / (1 / TimeStep)

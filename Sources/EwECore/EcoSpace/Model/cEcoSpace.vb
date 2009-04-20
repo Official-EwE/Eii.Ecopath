@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.21  2009/04/20 19:41:45  joeb
+' Bug Fix Ecospace slowed down after running have a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
+'
 ' Revision 1.20  2009/02/02 22:29:04  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -3736,7 +3739,7 @@ exitline:
                 'needs to be set from ecospace, but not references
                 ' solver.Tn = Tn
                 solver.nvar2 = nvar2
-                solver.itt = its 'itimestep index to data stored by month
+                solver.itt = itt 'itimestep index to data stored by month
                 solver.PPScale = PPScale
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
@@ -3845,7 +3848,7 @@ exitline:
 
             For Each solver In m_spaceSolvers
                 solver.nvar2 = nvar2
-                solver.itt = its 'itimestep index to data stored by month
+                solver.itt = itt 'itimestep index to data stored by month
                 solver.PPScale = PPScale
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
