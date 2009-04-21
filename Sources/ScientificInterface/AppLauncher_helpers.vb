@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.13  2009/04/21 15:48:22  jeroens
+' Fixed TS index issue
+'
 ' Revision 1.12  2009/04/21 14:45:16  jeroens
 ' Time series shown in Sim label
 ' Simpliefied modified display in tool tips
@@ -217,7 +220,7 @@ Partial Public Class AppLauncher
                 If Me.m_core.ActiveEcosimScenarioIndex >= 0 Then
                     simScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
 
-                    If Me.m_core.ActiveTimeSeriesDatasetIndex >= 0 Then
+                    If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
                         tsds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
                         strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                    vbNewLine, _
