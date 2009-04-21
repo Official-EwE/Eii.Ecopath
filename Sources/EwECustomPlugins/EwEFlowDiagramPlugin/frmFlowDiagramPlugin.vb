@@ -1,39 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmFlowDiagramPlugin.vb,v $
+' Revision 1.2  2009/04/21 20:41:49  jeroens
+' Thou shalst compile!
+'
 ' Revision 1.1  2008/09/26 07:30:45  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/08/20 23:07:40  sherman
-' error handing for missing 16bit applications
-'
-' Revision 1.10  2008/08/20 00:08:47  sherman
-' Allowed Flow diagram to execute programs from different locations
-'
-' Revision 1.9  2008/08/11 23:08:49  sherman
-' Launched 16bit exe from CommonFiles folder
-'
-' Revision 1.8  2008/08/02 01:45:55  antonior
-' *** empty log message ***
-'
-' Revision 1.7  2008/08/01 21:27:10  antonior
-' *** empty log message ***
-'
-' Revision 1.6  2008/08/01 21:25:58  antonior
-' *** empty log message ***
-'
-' Revision 1.5  2008/07/30 00:33:18  antonior
-' *** empty log message ***
-'
-' Revision 1.4  2008/07/29 19:32:30  antonior
-' *** empty log message ***
-'
-' Revision 1.3  2008/07/25 17:35:59  antonior
-' *** empty log message ***
-'
-' Revision 1.2  2008/07/23 19:46:41  antonior
-' - Flow Diagram
-' - App execution function
 '
 '==============================================================================
 
@@ -45,8 +17,9 @@ Option Explicit On
 Imports EwECore
 Imports System
 Imports System.IO
-#End Region ' Imports
+Imports System.Text
 
+#End Region ' Imports
 
 Public Class frmFlowDiagramPlugin
     'Public Overridable Property NewLine() As String
@@ -61,14 +34,14 @@ Public Class frmFlowDiagramPlugin
     ''' <remarks></remarks>
     Public Sub CreateAsciiFlw(ByVal flowfile As String, Optional ByVal CreateFile As Boolean = True)  '(EiiFile As String)
 
-        Dim m_core As cCore = cCore.GetInstance()
+        Dim core As cCore = cCore.GetInstance()
 
         Dim GrpName As String
         Dim impVal As Single
         Dim fi(,) As Single
         Dim aStreamWriter As TextWriter
         Dim breakline As String
-        ReDim fi(m_core.nGroups, m_core.nGroups)
+        ReDim fi(core.nGroups, core.nGroups)
 
         'Check if the extra necessery information is avaiable
         If (m_Parent.EcoPathDs IsNot Nothing) Then
@@ -78,55 +51,55 @@ Public Class frmFlowDiagramPlugin
 
                 breakline = aStreamWriter.NewLine()
 
-                aStreamWriter.WriteLine(Format$(m_core.nGroups, "00"))
-                aStreamWriter.Write(Format$(m_core.nLivingGroups, "00") & vbCrLf)
+                aStreamWriter.WriteLine(Format$(core.nGroups, "00"))
+                aStreamWriter.Write(Format$(core.nLivingGroups, "00") & vbCrLf)
                 aStreamWriter.NewLine = breakline
 
                 'compute food index
-                For i As Integer = 1 To m_core.nGroups
-                    For j As Integer = 1 To m_core.nGroups
-                        fi(i, j) = m_core.EcoPathGroupOutputs(i).Biomass * m_core.EcoPathGroupOutputs(i).QBOutput * m_core.EcoPathGroupInputs(i).DietComp(j)
+                For i As Integer = 1 To core.nGroups
+                    For j As Integer = 1 To core.nGroups
+                        fi(i, j) = core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).QBOutput * core.EcoPathGroupInputs(i).DietComp(j)
                     Next j
                 Next i
 
-                For i As Integer = 1 To m_core.nGroups 'To 1 Step -1
+                For i As Integer = 1 To core.nGroups 'To 1 Step -1
                     GrpName = New String(" "c, 20)
-                    Mid$(GrpName, 1, 15) = Trim(m_core.EcoPathGroupInputs(i).Name) 'Specie(i)
+                    Mid$(GrpName, 1, 15) = Trim(core.EcoPathGroupInputs(i).Name) 'Specie(i)
 
                     aStreamWriter.Write(GrpName)
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(m_core.EcoPathGroupOutputs(i).TTLX), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_core.EcoPathGroupOutputs(i).Biomass), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(m_core.EcoPathGroupOutputs(i).Biomass * m_core.EcoPathGroupOutputs(i).PBOutput), 3)), 12))
+                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupOutputs(i).TTLX), 3)), 12))
+                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).Biomass), 3)), 12))
+                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).PBOutput), 3)), 12))
                     aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_Parent.EcoPathDs.fCatch(i)), 3)), 12))
                     aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_Parent.EcoPathDs.Ex(i)), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_core.EcoPathGroupOutputs(i).FlowToDet), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_core.EcoPathGroupOutputs(i).Respiration), 3)), 12))
+                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).FlowToDet), 3)), 12))
+                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).Respiration), 3)), 12))
                     aStreamWriter.Write(Stuff(Trim(MakeAmerican((fi(i, i)), 3)), 12))
 
-                    If i > m_core.nLivingGroups Then
-                        impVal = m_core.EcoPathGroupInputs(i).DetImport
+                    If i > core.nLivingGroups Then
+                        impVal = core.EcoPathGroupInputs(i).DetImport
                     Else
-                        impVal = m_core.EcoPathGroupOutputs(i).Biomass * m_core.EcoPathGroupOutputs(i).QBOutput * m_core.EcoPathGroupInputs(i).DietComp(0)
+                        impVal = core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).QBOutput * core.EcoPathGroupInputs(i).DietComp(0)
                     End If
 
                     aStreamWriter.WriteLine(Stuff(Trim(MakeAmerican(impVal, 3)), 12))
                 Next i
 
                 'save food index => nt% = 21
-                For i As Integer = 1 To m_core.nGroups
+                For i As Integer = 1 To core.nGroups
                     aStreamWriter.Write("                    ")
-                    For j As Integer = 1 To m_core.nGroups
+                    For j As Integer = 1 To core.nGroups
                         aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(fi(i, j)), 3)), 12))
                     Next j
                     aStreamWriter.WriteLine("")
                 Next i
 
                 'saves the Det() matrix for multiple det 121895 eli.
-                For i As Integer = 1 To m_core.nGroups
+                For i As Integer = 1 To core.nGroups
                     aStreamWriter.Write("                    ")
                     'm_core.nLivingGroups +1 
-                    For z As Integer = 1 To m_core.nDetritusGroups '+ 1 To m_core.nGroups
-                        aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(m_core.EcoPathGroupInputs(i).DetritusFate(z)), 3)), 12) & vbCrLf)
+                    For z As Integer = 1 To core.nDetritusGroups '+ 1 To m_core.nGroups
+                        aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupInputs(i).DetritusFate(z)), 3)), 12) & vbCrLf)
                     Next z
                     aStreamWriter.Write("")
                 Next i
@@ -136,7 +109,9 @@ Public Class frmFlowDiagramPlugin
 
             'Execute the external application through the general function on EwEUtils
             If Not EwEUtils.SystemUtilities.AppExec("fd.exe", flowfile, "", "EwEFlowDiagramPlugin") Then
-                EwEUtils.SystemUtilities.PrintFileNotFoundError()
+                Dim msg As New cMessage("Unable to run application 'fd.exe'", _
+                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+                core.Messages.SendMessage(msg)
             End If
         Else
             Throw New Exception("EwEFlowDiagramPlugin: Ecopath data Structure was not initialized properly.")
