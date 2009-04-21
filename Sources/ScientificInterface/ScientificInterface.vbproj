@@ -1226,6 +1226,9 @@
     <Compile Include="Ecospace\Input\gridEditImportanceLayers.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Output\cEcospaceZedGraphPlotDrawer.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Ecospace\Output\cPlotDrawer.vb" />
     <Compile Include="Ecospace\Tools\gridMPAOptimizations.vb">
       <SubType>Component</SubType>
