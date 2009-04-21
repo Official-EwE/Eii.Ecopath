@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.115  2009/04/21 17:14:57  jeroens
+' Unloading TS will force out an update for the GUI
+'
 ' Revision 1.114  2009/04/16 01:43:28  jeroens
 ' Hatch code preserved when calculating stanza parameters
 '
@@ -1680,7 +1683,7 @@ Public Class cCore
                     End If
                 End If
                 ' Invalidate Ecosim outputs
-                Me.m_StateMonitor.SetEcoSimLoaded(True)
+                Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             End If
         End If
         Return bSucces
