@@ -160,7 +160,7 @@
     <value>22, 72</value>
   </data>
   <data name="m_cbDisplayGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 21</value>
+    <value>164, 21</value>
   </data>
   <data name="m_cbDisplayGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -268,7 +268,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbOverlay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 436</value>
+    <value>3, 279</value>
   </data>
   <data name="m_cbOverlay.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -289,7 +289,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_cbOverlay.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="m_rbDisplayCoverB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -435,30 +435,6 @@
   <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_pbSmallPlot.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_pbSmallPlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 279</value>
-  </data>
-  <data name="m_pbSmallPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 151</value>
-  </data>
-  <data name="m_pbSmallPlot.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_pbSmallPlot.Name" xml:space="preserve">
-    <value>m_pbSmallPlot</value>
-  </data>
-  <data name="&gt;&gt;m_pbSmallPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbSmallPlot.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbSmallPlot.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_pbMap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -466,7 +442,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pbMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>535, 572</value>
+    <value>550, 576</value>
   </data>
   <data name="m_pbMap.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -487,7 +463,7 @@
     <value>Top, Bottom, Right</value>
   </data>
   <data name="m_pbColors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>541, 16</value>
+    <value>556, 16</value>
   </data>
   <data name="m_pbColors.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 540</value>
@@ -511,7 +487,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_lblHigh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>540, -3</value>
+    <value>553, -3</value>
   </data>
   <data name="m_lblHigh.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 16</value>
@@ -541,7 +517,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_lblLow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>539, 559</value>
+    <value>551, 560</value>
   </data>
   <data name="m_lblLow.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -571,7 +547,7 @@
     <value>True</value>
   </data>
   <data name="m_lbPlotTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 456</value>
+    <value>0, 299</value>
   </data>
   <data name="m_lbPlotTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
@@ -592,88 +568,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lbPlotTime.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_lblLargePoolName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblLargePoolName.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.25pt</value>
-  </data>
-  <data name="m_lblLargePoolName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="m_lblLargePoolName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 17</value>
-  </data>
-  <data name="m_lblLargePoolName.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblLargePoolName.Text" xml:space="preserve">
-    <value>PoolName</value>
-  </data>
-  <data name="&gt;&gt;m_lblLargePoolName.Name" xml:space="preserve">
-    <value>m_lblLargePoolName</value>
-  </data>
-  <data name="&gt;&gt;m_lblLargePoolName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblLargePoolName.Parent" xml:space="preserve">
-    <value>m_tabPlot</value>
-  </data>
-  <data name="&gt;&gt;m_lblLargePoolName.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_pbLargePlot.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_pbLargePlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 0</value>
-  </data>
-  <data name="m_pbLargePlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>570, 685</value>
-  </data>
-  <data name="m_pbLargePlot.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_pbLargePlot.Name" xml:space="preserve">
-    <value>m_pbLargePlot</value>
-  </data>
-  <data name="&gt;&gt;m_pbLargePlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbLargePlot.Parent" xml:space="preserve">
-    <value>m_tabPlot</value>
-  </data>
-  <data name="&gt;&gt;m_pbLargePlot.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblPoolName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPoolName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 309</value>
-  </data>
-  <data name="m_lblPoolName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
-  </data>
-  <data name="m_lblPoolName.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lblPoolName.Text" xml:space="preserve">
-    <value>PoolName</value>
-  </data>
-  <data name="&gt;&gt;m_lblPoolName.Name" xml:space="preserve">
-    <value>m_lblPoolName</value>
-  </data>
-  <data name="&gt;&gt;m_lblPoolName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPoolName.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblPoolName.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -835,7 +730,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabSmallMultiples.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 576</value>
+    <value>582, 576</value>
   </data>
   <data name="m_tabSmallMultiples.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -855,6 +750,30 @@
   <data name="&gt;&gt;m_tabSmallMultiples.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_zgPlotLarge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_zgPlotLarge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>576, 570</value>
+  </data>
+  <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Name" xml:space="preserve">
+    <value>m_zgPlotLarge</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.Parent" xml:space="preserve">
+    <value>m_tabPlot</value>
+  </data>
+  <data name="&gt;&gt;m_zgPlotLarge.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_tabPlot.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
@@ -862,7 +781,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>563, 685</value>
+    <value>582, 576</value>
   </data>
   <data name="m_tabPlot.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -886,7 +805,7 @@
     <value>3, 5</value>
   </data>
   <data name="m_tcOutputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>584, 605</value>
+    <value>590, 605</value>
   </data>
   <data name="m_tcOutputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -945,8 +864,8 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>800, 611</value>
   </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>Run Ecospace</value>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Run Ecospace</value>
@@ -955,6 +874,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.9  2009/04/21 17:16:24  jeroens
+' Plot -> ZedGraph
+'
 ' Revision 1.8  2009/02/05 17:48:39  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -55,12 +58,12 @@ Namespace Ecospace
 
 #Region " Variables "
 
-        'The core reference
+        ''' <summary>The core reference.</summary>
         Private m_core As cCore = Nothing
 
-        'The previous number of timesteps UI has drawn
+        ''' <summary>The previous number of timesteps UI has drawn.</summary>
         Private m_iTimeStepPrev As Integer
-        ' The current number of timesteps available to draw.
+        ''' <summary>The current number of timesteps available to draw.</summary>
         Private m_iTimeStepCur As Integer
 
         ' === Timestep and derived values ===
@@ -74,22 +77,23 @@ Namespace Ecospace
 
         'The ref to hold the ecospace basemap
         ' ToDo: change this to a snapshot layer obtained from time step results
-        Private m_BaseMapDepthLayer As cEcospaceLayer
+        Private m_layerDepth As cEcospaceLayer
 
-        ' The speed of the plotting. 1 is the slowest, 10 is the fastest
+        ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
         Private m_iPlotStepSize As Integer
 
-        ' The row and col number of Biomass map plot
+        ''' <summary>The row and col number of Biomass map plot.</summary>
         Private m_iNumGroupPlotsVert As Integer, m_iNumGroupPlotsHorz As Integer
-        ' The row and col number of Fleet map plot
+        ''' <summary>The row and col number of Fleet map plot.</summary>
         Private m_iNumFleetPlotsVert As Integer, m_iNumFleetPlotsHorz As Integer
-        'Number of rows and columns if basen
+        ''' <summary>Number of rows and columns if basen</summary>
+        ''' <remarks>???</remarks>
         Private m_iInRow As Integer, m_iInCol As Integer
 
         Private m_drawers As List(Of cMapDrawer)
         Private m_nMapsPerThread As Integer
 
-        Private m_pdBiomass As cPlotDrawer = Nothing
+        Private m_pdBiomass As cEcospaceZedGraphPlotDrawer = Nothing
 
         Private m_bmpBiomassMap As Bitmap
 
@@ -103,11 +107,12 @@ Namespace Ecospace
         Private m_sg As StyleGuide = StyleGuide.GetInstance()
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = 0
+        Private m_zgh As ZedGraphHelper = Nothing
 
         'Legend colors for the Effort map
         Private m_nEffortBins As Single = 100 'number of legend bins is arbitrary
-        'Exposing m_MaxEffort to the interface would allow the user to set the Effort legend sensitivity
-        Private m_MaxEffort As Single = 5 '
+        'Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity
+        Private m_sMaxEffort As Single = 5 '
 
 #End Region ' Variables
 
@@ -146,7 +151,7 @@ Namespace Ecospace
             Me.m_core = cCore.GetInstance()
 
             'Get the basemap
-            Me.m_BaseMapDepthLayer = Me.m_core.EcospaceBasemap.LayerDepth
+            Me.m_layerDepth = Me.m_core.EcospaceBasemap.LayerDepth
 
             'Redim relative biomass results array
             ReDim Me.m_as2RelBiomassResults(Me.m_core.nGroups, Me.m_core.nEcospaceTimeSteps)
@@ -177,9 +182,6 @@ Namespace Ecospace
             Me.m_cbDisplayGroup.SelectedIndex = 0
             Me.m_iGroupToShow = 0
 
-            Me.m_lblPoolName.Visible = False
-            Me.m_lblLargePoolName.Visible = False
-
         End Sub
 
         Private Sub InitMapPlot()
@@ -195,8 +197,6 @@ Namespace Ecospace
 
             Me.CalcMapDimension(Me.m_core.nGroups, Me.m_iNumGroupPlotsVert, Me.m_iNumGroupPlotsHorz)
             Me.CalcMapDimension(Me.m_core.nFleets, Me.m_iNumFleetPlotsVert, Me.m_iNumFleetPlotsHorz)
-
-            Me.m_pdBiomass = New cPlotDrawer(Me.m_core)
 
         End Sub
 
@@ -248,15 +248,13 @@ Namespace Ecospace
 
         Private Sub UpdateStyleColors()
             Me.m_pbMap.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            Me.m_pbSmallPlot.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
-            Me.m_pbLargePlot.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
         End Sub
 
 #End Region ' Initialization and Updating
 
 #Region " Events "
 
-        Private Sub RunEcospace_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
 
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
@@ -270,14 +268,20 @@ Namespace Ecospace
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
+            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh.Attach(Me.m_core, Me.m_zgPlotLarge)
+            Me.m_pdBiomass = New cEcospaceZedGraphPlotDrawer(Me.m_core, Me.m_zgh)
+
             Me.UpdateStyleColors()
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub RunEcospace_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
             Me.m_core.StopEcospace()
+
+            Me.m_zgh.Detach()
 
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.m_sg = Nothing
@@ -313,57 +317,7 @@ Namespace Ecospace
                     Me.m_pdBiomass.AddValue(iGroup, Me.m_iTimeStepCur, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
                 Next
             Next
-        End Sub
-
-        ''' <summary>
-        ''' Display the group name when mouse moves over the rendered line
-        ''' </summary>
-        Private Sub pbBioPlot_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles m_pbSmallPlot.MouseMove
-            Me.DisplayPoolName(Me.m_lblPoolName, DirectCast(Me.m_pbSmallPlot.Image, Bitmap), Me.m_pbSmallPlot, e.X, e.Y)
-        End Sub
-
-        ''' <summary>
-        ''' Display the group name when mouse moves over the rendered line
-        ''' </summary>       
-        Private Sub pbLargeBioPlot_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles m_pbLargePlot.MouseMove
-            Me.DisplayPoolName(m_lblLargePoolName, DirectCast(Me.m_pbLargePlot.Image, Bitmap), Me.m_pbLargePlot, e.X, e.Y)
-        End Sub
-
-        Private Sub DisplayPoolName(ByRef lbl As Label, ByRef img As Bitmap, ByRef pb As PictureBox, _
-                                    ByVal x As Integer, ByVal y As Integer)
-
-            'Dim imgX As Integer = CInt(x * img.Width / pb.Width)
-            'Dim imgY As Integer = CInt(y * img.Height / pb.Height)
-            'Dim sg As StyleGuide = StyleGuide.GetInstance()
-            'Dim group As cEcoPathGroupInput = Nothing
-
-            'If imgX >= img.Width Or imgY >= img.Height Then lbl.Visible = False : Return
-
-            'Dim clr As Color = img.GetPixel(imgX, imgY)
-
-            'Dim iGroup As Integer = sg.GetGroupColorIndex(Me.m_core, clr)
-            'If iGroup <= 0 Then lbl.Visible = False : Return
-
-            'group = Me.m_core.EcoPathGroupInputs(iGroup)
-
-            'lbl.Visible = True
-            'lbl.ForeColor = clr
-            'lbl.Text = group.Name
-
-        End Sub
-
-        ''' <summary>
-        ''' When mouse double click the image, we will save the image.
-        ''' </summary>
-        Private Sub pbBioPlot_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_pbSmallPlot.DoubleClick
-            Me.SaveImage(m_pbSmallPlot.Image)
-        End Sub
-
-        ''' <summary>
-        ''' When mouse double click the image, we will save the image.
-        ''' </summary>
-        Private Sub pbLargeBioPlot_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_pbLargePlot.DoubleClick
-            Me.SaveImage(m_pbLargePlot.Image)
+            Me.m_zgh.RescaleAndRedraw()
         End Sub
 
         Private Sub SaveImage(ByRef img As Image)
@@ -517,7 +471,21 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub pbMapPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles m_pbMap.Paint
+        Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_pbMap.DoubleClick
+            Me.SaveImage(Me.m_pbMap.Image)
+        End Sub
+
+        Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
+            Handles m_pbMap.MouseClick
+
+            If e.Button = Windows.Forms.MouseButtons.Right Then
+                Me.SaveImage(Me.m_pbMap.Image)
+            End If
+        End Sub
+
+        Private Sub pbMapPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
+            Handles m_pbMap.Paint
 
             Dim g As Graphics = e.Graphics
 
@@ -528,6 +496,7 @@ Namespace Ecospace
             End If
 
         End Sub
+
 
         Private Sub PlotFishingEffortMap(ByRef g As Graphics)
 
@@ -560,7 +529,7 @@ Namespace Ecospace
 
             Dim sg As StyleGuide = StyleGuide.GetInstance()
             Dim lColors As List(Of Color) = sg.GetColorRamp(CInt(Me.m_nEffortBins))
-            Dim cScaler As Single = Me.m_nEffortBins / Me.m_MaxEffort
+            Dim cScaler As Single = Me.m_nEffortBins / Me.m_sMaxEffort
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -573,7 +542,7 @@ Namespace Ecospace
 
                     Dim tmpBrush As SolidBrush = Nothing
                     'If it is water
-                    If CInt(m_BaseMapDepthLayer.Cell(i, j)) > 0 Then
+                    If CInt(m_layerDepth.Cell(i, j)) > 0 Then
                         ' #Water
                         tmpBrush = New SolidBrush(lColors(CInt(icc)))
                     Else
@@ -638,6 +607,8 @@ Namespace Ecospace
 
             Me.m_iTimeStepCur = 0
 
+            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True, 0)
+
             Me.m_core.RunEcoSpace(AddressOf onEcospaceTimeStep)
 
             Me.m_cbOverlay.Enabled = True
@@ -660,12 +631,12 @@ Namespace Ecospace
 
         Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
                 Handles m_cbDisplayGroup.GotFocus
+
             Me.m_showGroupMode = eShowGroupType.ShowSingle
             Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
             Me.UpdateControls()
+            Me.RefreshPlot()
             Me.m_pbMap.Refresh()
-            Me.m_pbLargePlot.Refresh()
-            Me.m_pbSmallPlot.Refresh()
         End Sub
 
         Private Sub cbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
@@ -674,8 +645,7 @@ Namespace Ecospace
             If (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
                 Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
                 Me.m_pbMap.Refresh()
-                Me.m_pbLargePlot.Refresh()
-                Me.m_pbSmallPlot.Refresh()
+                Me.RefreshPlot()
             End If
         End Sub
 
@@ -687,9 +657,8 @@ Namespace Ecospace
             If Me.m_rbShowSingle.Checked Then Me.m_showGroupMode = eShowGroupType.ShowSingle
             Me.UpdateControls()
 
+            Me.RefreshPlot()
             Me.m_pbMap.Refresh()
-            Me.m_pbLargePlot.Refresh()
-            Me.m_pbSmallPlot.Refresh()
         End Sub
 
         Private Sub rbShowMapOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
@@ -698,21 +667,18 @@ Namespace Ecospace
             Me.m_pbMap.Refresh()
         End Sub
 
-        Private Sub m_pbLargePlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
-                Handles m_pbLargePlot.Paint
-            Me.m_pdBiomass.Draw(e.Graphics, Me.m_pbLargePlot.ClientRectangle)
-        End Sub
-
-        Private Sub m_pbSmallPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
-                Handles m_pbSmallPlot.Paint
-
-            Me.m_pdBiomass.GroupShowMode = Me.m_showGroupMode
-            Me.m_pdBiomass.GroupToShow = Me.m_iGroupToShow
-            Me.m_pdBiomass.Draw(e.Graphics, Me.m_pbSmallPlot.ClientRectangle)
-
-        End Sub
-
 #End Region ' Events
+
+        Private Sub RefreshPlot()
+
+            If (Me.m_pdBiomass IsNot Nothing) Then
+
+                Me.m_pdBiomass.GroupShowMode = Me.m_showGroupMode
+                Me.m_pdBiomass.GroupToShow = Me.m_iGroupToShow
+
+            End If
+
+        End Sub
 
 #Region " Ecospace Events/Delegates "
 
@@ -747,8 +713,10 @@ Namespace Ecospace
             m_iTimeStepCur = dataTimeStep.iTimeStep
 
             'Update the running simulation years progress label.
-            ' ToDo_JS: Localize this
-            m_lbPlotTime.Text = String.Format("{0:f2} of {1} years", m_iTimeStepCur * m_core.nEcospaceYears / m_core.nEcospaceTimeSteps, m_core.nEcospaceYears)
+            m_lbPlotTime.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
+                                              Me.m_sg.FormatNumber(CSng(Me.m_iTimeStepCur * Me.m_core.nEcospaceYears / Me.m_core.nEcospaceTimeSteps)), _
+                                              Me.m_core.nEcospaceYears)
+            AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
 
             ' Store time step data
             Me.m_dataTimeStep = dataTimeStep
@@ -780,11 +748,7 @@ Namespace Ecospace
 
 
             Me.UpdateBiomassPlot()
-
             m_pbMap.Invalidate()
-            m_pbLargePlot.Invalidate()
-            Me.m_pbSmallPlot.Invalidate()
-
             Me.UpdateControls()
 
             Application.DoEvents()
@@ -803,6 +767,7 @@ Namespace Ecospace
                     'the Ecospace run has completed
                     'this message will be sent before RunEcospace has returned!!!!
                     Me.UpdateControls()
+                    AppLauncher.GetInstance().SetStatusText("", TriState.False)
 
                 Case eMessageType.EcosimNYearsChanged
                     Me.InitUIParams()

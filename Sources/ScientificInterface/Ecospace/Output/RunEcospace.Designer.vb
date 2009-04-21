@@ -1,4 +1,5 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ZedGraph
 
 Namespace Ecospace
 
@@ -24,6 +25,7 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcospace))
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_cbDisplayGroup = New System.Windows.Forms.ComboBox
@@ -36,15 +38,11 @@ Namespace Ecospace
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
             Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_pbSmallPlot = New System.Windows.Forms.PictureBox
             Me.m_pbMap = New System.Windows.Forms.PictureBox
             Me.m_pbColors = New System.Windows.Forms.PictureBox
             Me.m_lblHigh = New System.Windows.Forms.Label
             Me.m_lblLow = New System.Windows.Forms.Label
             Me.m_lbPlotTime = New System.Windows.Forms.Label
-            Me.m_lblLargePoolName = New System.Windows.Forms.Label
-            Me.m_pbLargePlot = New System.Windows.Forms.PictureBox
-            Me.m_lblPoolName = New System.Windows.Forms.Label
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_pnDisplayOptions = New System.Windows.Forms.Panel
             Me.m_lblDispOpt = New System.Windows.Forms.Label
@@ -53,10 +51,9 @@ Namespace Ecospace
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
-            CType(Me.m_pbSmallPlot, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbLargePlot, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -138,14 +135,6 @@ Namespace Ecospace
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
-            'm_pbSmallPlot
-            '
-            resources.ApplyResources(Me.m_pbSmallPlot, "m_pbSmallPlot")
-            Me.m_pbSmallPlot.BackColor = System.Drawing.Color.White
-            Me.m_pbSmallPlot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbSmallPlot.Name = "m_pbSmallPlot"
-            Me.m_pbSmallPlot.TabStop = False
-            '
             'm_pbMap
             '
             resources.ApplyResources(Me.m_pbMap, "m_pbMap")
@@ -179,26 +168,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_lbPlotTime, "m_lbPlotTime")
             Me.m_lbPlotTime.Name = "m_lbPlotTime"
             '
-            'm_lblLargePoolName
-            '
-            resources.ApplyResources(Me.m_lblLargePoolName, "m_lblLargePoolName")
-            Me.m_lblLargePoolName.BackColor = System.Drawing.Color.White
-            Me.m_lblLargePoolName.Name = "m_lblLargePoolName"
-            '
-            'm_pbLargePlot
-            '
-            resources.ApplyResources(Me.m_pbLargePlot, "m_pbLargePlot")
-            Me.m_pbLargePlot.BackColor = System.Drawing.Color.White
-            Me.m_pbLargePlot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbLargePlot.Name = "m_pbLargePlot"
-            Me.m_pbLargePlot.TabStop = False
-            '
-            'm_lblPoolName
-            '
-            resources.ApplyResources(Me.m_lblPoolName, "m_lblPoolName")
-            Me.m_lblPoolName.BackColor = System.Drawing.Color.White
-            Me.m_lblPoolName.Name = "m_lblPoolName"
-            '
             'm_scMain
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -215,10 +184,8 @@ Namespace Ecospace
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDispOpt)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDist)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblPoolName)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbOverlay)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lbPlotTime)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_pbSmallPlot)
             '
             'm_scMain.Panel2
             '
@@ -274,11 +241,22 @@ Namespace Ecospace
             '
             'm_tabPlot
             '
-            Me.m_tabPlot.Controls.Add(Me.m_lblLargePoolName)
-            Me.m_tabPlot.Controls.Add(Me.m_pbLargePlot)
+            Me.m_tabPlot.Controls.Add(Me.m_zgPlotLarge)
             resources.ApplyResources(Me.m_tabPlot, "m_tabPlot")
             Me.m_tabPlot.Name = "m_tabPlot"
             Me.m_tabPlot.UseVisualStyleBackColor = True
+            '
+            'm_zgPlotLarge
+            '
+            resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
+            Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
+            Me.m_zgPlotLarge.ScrollGrace = 0
+            Me.m_zgPlotLarge.ScrollMaxX = 0
+            Me.m_zgPlotLarge.ScrollMaxY = 0
+            Me.m_zgPlotLarge.ScrollMaxY2 = 0
+            Me.m_zgPlotLarge.ScrollMinX = 0
+            Me.m_zgPlotLarge.ScrollMinY = 0
+            Me.m_zgPlotLarge.ScrollMinY2 = 0
             '
             'RunEcospace
             '
@@ -286,10 +264,9 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "RunEcospace"
-            CType(Me.m_pbSmallPlot, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.TabText = "Run Ecospace"
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbLargePlot, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
@@ -300,38 +277,34 @@ Namespace Ecospace
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabSmallMultiples.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
-            Me.m_tabPlot.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_btnRun As System.Windows.Forms.Button
-        Friend WithEvents m_cbDisplayGroup As System.Windows.Forms.ComboBox
-        Friend WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbShowNonHidden As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbDisplayFishingEffort As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbDisplayRelBiomass As System.Windows.Forms.RadioButton
-        Friend WithEvents m_btnStop As System.Windows.Forms.Button
-        Friend WithEvents m_pbSmallPlot As System.Windows.Forms.PictureBox
-        Friend WithEvents m_pbMap As System.Windows.Forms.PictureBox
-        Friend WithEvents m_pbColors As System.Windows.Forms.PictureBox
-        Friend WithEvents m_lblHigh As System.Windows.Forms.Label
-        Friend WithEvents m_lblLow As System.Windows.Forms.Label
-        Friend WithEvents m_lbPlotTime As System.Windows.Forms.Label
-        Friend WithEvents m_pbLargePlot As System.Windows.Forms.PictureBox
-        Friend WithEvents m_lblPoolName As System.Windows.Forms.Label
-        Friend WithEvents m_lblLargePoolName As System.Windows.Forms.Label
-        Friend WithEvents m_cbOverlay As System.Windows.Forms.CheckBox
-        Friend WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        Friend WithEvents m_tcOutputs As System.Windows.Forms.TabControl
-        Friend WithEvents m_tabSmallMultiples As System.Windows.Forms.TabPage
-        Friend WithEvents m_tabPlot As System.Windows.Forms.TabPage
-        Friend WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
-        Friend WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_lblDispOpt As System.Windows.Forms.Label
-        Friend WithEvents m_lblDist As System.Windows.Forms.Label
-        Friend WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
+        Private WithEvents m_btnRun As System.Windows.Forms.Button
+        Private WithEvents m_cbDisplayGroup As System.Windows.Forms.ComboBox
+        Private WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbShowNonHidden As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayFishingEffort As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayRelBiomass As System.Windows.Forms.RadioButton
+        Private WithEvents m_btnStop As System.Windows.Forms.Button
+        Private WithEvents m_pbMap As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbColors As System.Windows.Forms.PictureBox
+        Private WithEvents m_lblHigh As System.Windows.Forms.Label
+        Private WithEvents m_lblLow As System.Windows.Forms.Label
+        Private WithEvents m_lbPlotTime As System.Windows.Forms.Label
+        Private WithEvents m_cbOverlay As System.Windows.Forms.CheckBox
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tcOutputs As System.Windows.Forms.TabControl
+        Private WithEvents m_tabSmallMultiples As System.Windows.Forms.TabPage
+        Private WithEvents m_tabPlot As System.Windows.Forms.TabPage
+        Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
+        Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblDispOpt As System.Windows.Forms.Label
+        Private WithEvents m_lblDist As System.Windows.Forms.Label
+        Private WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
+        Private WithEvents m_zgPlotLarge As ZedGraphControl
 
  
     End Class
