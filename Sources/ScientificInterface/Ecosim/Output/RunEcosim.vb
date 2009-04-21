@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.18  2009/04/21 19:42:31  jeroens
+' Localized
+'
 ' Revision 1.17  2009/04/19 13:46:07  jeroens
 ' F not editable
 '
@@ -259,7 +262,7 @@ Namespace Ecosim
 
 
 
-                AppLauncher.GetInstance().SetStatusText("Running Ecosim...", TriState.UseDefault, CSng(iTime / m_iTimeSteps))
+                AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.UseDefault, CSng(iTime / m_iTimeSteps))
                 'If iTime Mod m_iRenderSpeed = 0 Then
                 '    m_ucBPlots.RenderSpeed = CInt(iTime * 100 / m_TimeSteps)
                 'End If
@@ -289,7 +292,7 @@ Namespace Ecosim
                 ' #Yes: update to new state
                 Me.m_bEcosimRunning = bEcosimRunning
                 If Me.m_bEcosimRunning Then
-                    AppLauncher.GetInstance().SetStatusText("Running Ecosim", TriState.True, 0)
+                    AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
                     AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
                 End If
@@ -474,8 +477,7 @@ Namespace Ecosim
         Private Sub UpdateControls()
 
             ' Configure run/stop button
-            ' ToDo_JS: globalize this
-            Me.btnRunOrStop.Text = CStr(IIf(Me.m_bEcosimRunning, "&Stop", "&Run"))
+            Me.btnRunOrStop.Text = CStr(IIf(Me.m_bEcosimRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
             Me.btnRunOrStop.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
             ' Reflect change immediately
             Me.btnRunOrStop.Update()

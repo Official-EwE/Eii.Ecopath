@@ -136,7 +136,7 @@
   <data name="credits" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\credits.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
   </data>
-  <data name="IMPORT_ERROR_CONVERSION" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
     <value>Failed to convert Ewe5 database to EwE6.</value>
   </data>
   <data name="HEADER_VALUESTART" xml:space="preserve">
@@ -181,7 +181,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="IMPORT_ERROR_NOSELECTION" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORT_NOSELECTION" xml:space="preserve">
     <value>Please select a model to convert to EwE6.</value>
   </data>
   <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
@@ -518,7 +518,7 @@
     <value>Ecotrophic efficiency</value>
   </data>
   <data name="INVALID_NUMBER_ENTERED" xml:space="preserve">
-    <value>The number entered is not valid!</value>
+    <value>The number entered is not valid</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_NSCONT" xml:space="preserve">
     <value>North/south concentration</value>
@@ -946,11 +946,11 @@
     <value>Creating Ecosim scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="IMPORT_PROMPT_UPDATEBACKUP" xml:space="preserve">
+  <data name="PROMPT_IMPORT_UPDATEBACKUP" xml:space="preserve">
     <value>This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?</value>
   </data>
-  <data name="LABEL_DATASET_INFORMATION" xml:space="preserve">
-    <value>{0} - {1} Time Series</value>
+  <data name="GENERIC_VALUE_DATASET_INFORMATION" xml:space="preserve">
+    <value>{0} ({1} time series)</value>
     <comment>{0}: dataset name. {1}: time series count</comment>
   </data>
   <data name="Ecopath_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -972,10 +972,6 @@
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS" xml:space="preserve">
     <value>There must be at least one detritus group. Please edit your data.</value>
-  </data>
-  <data name="ECOPATH_OUTPUT_CAPTION" xml:space="preserve">
-    <value>{0}: Parameter estimates</value>
-    <comment>{0}: ??? unit</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_ADVECTED" xml:space="preserve">
     <value>Advected?</value>
@@ -1186,7 +1182,7 @@
   <data name="HEADER_MPA" xml:space="preserve">
     <value>MPA</value>
   </data>
-  <data name="IMPORT_PROMPT_SUMMARY" xml:space="preserve">
+  <data name="PROMPT_IMPORT_SUMMARY" xml:space="preserve">
     <value>Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}</value>
     <comment>{0}: newline, {1}: database name, {2}: model name, {3} target file path</comment>
   </data>
@@ -1343,8 +1339,9 @@
   <data name="HEADER_BIOMASS_DIVERSITY_ABBR" xml:space="preserve">
     <value>Divers.</value>
   </data>
-  <data name="LABEL_LAYER_NUMBERED" xml:space="preserve">
+  <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
     <value>Layer {0}</value>
+    <comment>{0}: layer number or name</comment>
   </data>
   <data name="HEADER_QB_UNIT" xml:space="preserve">
     <value>Consumption / biomass (/{0})</value>
@@ -1377,10 +1374,6 @@
   </data>
   <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
     <value>Save averaged annual values?</value>
-  </data>
-  <data name="ECOPATH_INPUT_CAPTION" xml:space="preserve">
-    <value>{0}: Input data</value>
-    <comment>{0}: ??? unit</comment>
   </data>
   <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
     <value>(All groups)</value>
@@ -1516,7 +1509,7 @@
     <value>Enter new vulnerability setting for {0} as predator</value>
     <comment>{0}: group name</comment>
   </data>
-  <data name="IMPORT_ERROR_INVALIDDB" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
   </data>
   <data name="Habitat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -1738,17 +1731,17 @@
     <value>Relative PP</value>
     <comment>Layer Relative Prim Prod</comment>
   </data>
-  <data name="IMPORT_ERROR_EWE5_TOO_NEW" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
     <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/</value>
   </data>
-  <data name="IMPORT_ERROR_EWE5_TOO_OLD" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD" xml:space="preserve">
     <value>This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
 
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
 Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.</value>
   </data>
-  <data name="IMPORT_ERROR_EWE7_OR_NEWER" xml:space="preserve">
+  <data name="PROMPT_ERROR_IMPORT_EWE7_OR_NEWER" xml:space="preserve">
     <value>This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6.</value>
   </data>
   <data name="HEADER_FLEETS" xml:space="preserve">
@@ -1788,7 +1781,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="sautxt_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\sautxt_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IMPORT_ERROR_INVALIDIMAGEFORGLYPH" xml:space="preserve">
+  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
     <value>The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height.</value>
   </data>
   <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
@@ -2313,5 +2306,44 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
     <value>Running Ecospace...</value>
+  </data>
+  <data name="LABEL_RUN" xml:space="preserve">
+    <value>&amp;Run</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>&amp;Stop</value>
+  </data>
+  <data name="PROMPT_BACKUPFAILED" xml:space="preserve">
+    <value>Failed to backup model '{0}': {1}</value>
+    <comment>{0}: model path, {1}: error text</comment>
+  </data>
+  <data name="PROMPT_CREATE_GENERICERROR" xml:space="preserve">
+    <value>A generic error occurred while trying to create an EwE6 model at '{0}'</value>
+    <comment>{0}: model path</comment>
+  </data>
+  <data name="PROMPT_DRIVERERROR" xml:space="preserve">
+    <value>This system does not have to required drivers installed to work with files of this type</value>
+  </data>
+  <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
+    <value>This type of file is no longer supported in EwE6</value>
+  </data>
+  <data name="PROMPT_INVALIDFILE" xml:space="preserve">
+    <value>This type of file is not supported by EwE6</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
+    <value>'{0}' does not seem to be a valid Ecopath model</value>
+    <comment>{0}: model path</comment>
+  </data>
+  <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
+    <value>Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use</value>
+    <comment>{0}: model path</comment>
+  </data>
+  <data name="PROMPT_MODELCREATED" xml:space="preserve">
+    <value>New EwE6 model  '{0}' successfully created</value>
+    <comment>{0}: model path</comment>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
+    <value>Model '{0}' cannot be found</value>
+    <comment>{0}: model path</comment>
   </data>
 </root>

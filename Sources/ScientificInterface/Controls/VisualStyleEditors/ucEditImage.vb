@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucEditImage.vb,v $
+' Revision 1.3  2009/04/21 19:42:32  jeroens
+' Localized
+'
 ' Revision 1.2  2008/11/08 23:50:53  jeroens
 ' Renamed file commands
 '
@@ -78,7 +81,7 @@ Namespace Controls
                         Me.m_glyphSelect.SelectedImage = img
                     Else
                         ' Warn user
-                        MsgBox(My.Resources.IMPORT_ERROR_INVALIDIMAGEFORGLYPH, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
+                        MsgBox(My.Resources.PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
                     End If
                 Catch ex As Exception
                     ' Neh

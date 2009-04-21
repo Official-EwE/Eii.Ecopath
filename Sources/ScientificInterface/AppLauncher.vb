@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.39  2009/04/21 19:42:23  jeroens
+' Localized
+'
 ' Revision 1.38  2009/04/20 14:09:42  jeroens
 ' no message
 '
@@ -230,6 +233,8 @@ Public Class AppLauncher
     Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
     Private WithEvents m_cmdDisplayGroups As Command = Nothing
     Private WithEvents m_cmdEnableEcotracer As Command = Nothing
+    ' ToDo_JS: Discontinue, move to Ecosim UI
+    Private WithEvents m_cmdExportBiomassToCSV As Command = Nothing
 
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
@@ -307,9 +312,11 @@ Public Class AppLauncher
 
         ' Check if target file exists at all before affecting anything
         If Not File.Exists(strFileName) Then
-            ' ToDo_JS: globalize this
             If Not bQuiet Then
-                Me.m_core.Messages.SendMessage(New cMessage(String.Format("Model {0} cannot be found", strFileName), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
+                Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                                                            eMessageType.Any, _
+                                                            eCoreComponentType.DataSource, _
+                                                            eMessageImportance.Information))
             End If
             Me.RemoveRecentFilesSetting(strFileName)
             Return False
@@ -337,8 +344,7 @@ Public Class AppLauncher
 
         If (ds Is Nothing) Then
             If Not bQuiet Then
-                ' ToDo_JS: globalize this
-                Me.m_core.Messages.SendMessage(New cMessage(String.Format("File {0} does not seem to be a valid Ecopath model", strFileName), _
+                Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
                         eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
             End If
             Me.RemoveRecentFilesSetting(strFileName)
@@ -436,8 +442,6 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Public Function CreateEcopathModel(ByVal strFileName As String, ByVal strModelName As String) As cEwEDatabase
 
-        ' ToDo_JS: Globalize this method!
-
         Dim db As cEwEDatabase = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim msg As cMessage = Nothing
@@ -458,7 +462,7 @@ Public Class AppLauncher
         Select Case atResult
 
             Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened
-                msg = New cMessage(String.Format("New EwE6 model successfully created at '{0}'", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.PROMPT_MODELCREATED, strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, eMessageImportance.Information)
 
@@ -474,34 +478,34 @@ Public Class AppLauncher
                 End Try
 
             Case eDatasourceAccessType.Failed_CannotSave
-                msg = New cMessage(String.Format("Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use.", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.PROMPT_INVALIDTARGETPATH, strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case eDatasourceAccessType.Failed_OSUnsupported
-                msg = New cMessage("This system does not have to required drivers installed to work with files of this type.", _
+                msg = New cMessage(My.Resources.PROMPT_DRIVERERROR, _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case eDatasourceAccessType.Failed_UnknownType
-                msg = New cMessage("This type of file is not supported by EwE6.", _
+                msg = New cMessage(My.Resources.PROMPT_INVALIDFILE, _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
                 db = Nothing
 
             Case eDatasourceAccessType.Failed_DeprecatedOperation
-                msg = New cMessage("This type of model belonged to an older version of Ecopath, and cannot be created in EwE6.", _
+                msg = New cMessage(My.Resources.PROMPT_FILETYPEDEPRECATED, _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Critical)
 
             Case eDatasourceAccessType.Failed_Unknown
-                msg = New cMessage(String.Format("A generic error occurred while trying to create an EwE6 model at '{0}'.", strFileName), _
+                msg = New cMessage(String.Format(My.Resources.PROMPT_CREATE_GENERICERROR, strFileName), _
                     eMessageType.Any, _
                     eCoreComponentType.DataSource, _
                     eMessageImportance.Warning)
@@ -799,6 +803,9 @@ Public Class AppLauncher
 
         Me.m_cmdEnableEcotracer = New Command("EnableEcotracer")
         cmdh.Add(Me.m_cmdEnableEcotracer)
+
+        Me.m_cmdExportBiomassToCSV = New Command("ExportEcosimBiomassToCSV")
+        cmdh.Add(Me.m_cmdExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
@@ -1204,7 +1211,7 @@ Public Class AppLauncher
             Select Case cEwE6DatabaseImporter.EstimateVersion(db.GetVersion())
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooOld
-                    MsgBox(My.Resources.IMPORT_ERROR_EWE5_TOO_OLD, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5Supported
@@ -1220,14 +1227,14 @@ Public Class AppLauncher
                     End If
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE5TooNew
-                    MsgBox(My.Resources.IMPORT_ERROR_EWE5_TOO_NEW, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE6
                     ' Check if updates available
                     If pm.HasDatabaseUpdates(db, 6.0) Then
 
-                        Select Case MsgBox(My.Resources.IMPORT_PROMPT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+                        Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
                             Case MsgBoxResult.Yes
                                 Try
                                     Dim strDir As String = Path.GetDirectoryName(strFileName)
@@ -1239,8 +1246,11 @@ Public Class AppLauncher
                                     ' Create backup copy
                                     File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
                                 Catch ex As Exception
-                                    ' Todo_JS: globalize this
-                                    Me.m_core.Messages.SendMessage(New cMessage(String.Format("Failed to backup model {0}: {1}", strFileName, ex.Message), eMessageType.DataImport, eCoreComponentType.Core, eMessageImportance.Warning))
+                                    Me.m_core.Messages.SendMessage( _
+                                        New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
+                                                     eMessageType.DataImport, _
+                                                     eCoreComponentType.Core, _
+                                                     eMessageImportance.Warning))
                                     Return False
                                 End Try
                                 ' Fall through
@@ -1261,11 +1271,11 @@ Public Class AppLauncher
                     bSucces = True
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.UnknownFuture
-                    MsgBox(My.Resources.IMPORT_ERROR_EWE7_OR_NEWER, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.Unknown
-                    MsgBox(My.Resources.IMPORT_ERROR_INVALIDDB, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+                    MsgBox(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
                     bSucces = False
 
                 Case Else
@@ -1901,10 +1911,6 @@ Public Class AppLauncher
 
     End Sub
 
-#End Region ' Generic commands
-
-#Region " Main Menu - File "
-
     ''' <summary>
     ''' Create new Ecopath model
     ''' </summary>
@@ -2284,69 +2290,13 @@ Public Class AppLauncher
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
     End Sub
 
-    ''' <summary>
-    ''' Command handler; invokes the import time series dialog.
-    ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnInvoke
-        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
+    Private Sub OnDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnInvoke
+        Dim dlg As New dlgDisplayGroups()
+        dlg.ShowDialog()
     End Sub
 
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
-    ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the apply time series dialog.
-    ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnInvoke
-        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdWeightTimeSeries">Apply TimeSeries command</see>.
-    ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnUpdate
-        ' JS 23sept08: dialog will switch to load mode if no ts present
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() ' And Me.m_core.HasTimeSeries()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the load time series dialog.
-    ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnInvoke
-        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
-    ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the reload time series dialog.
-    ''' </summary>
-    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnInvoke
-        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
-            If (String.Compare(Me.m_core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
-                Me.m_core.LoadTimeSeries(iDS, True)
-                Exit For
-            End If
-        Next
-    End Sub
-
-    ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdLoadWeightTimeSeries">Load and weight TimeSeries command</see>.
-    ''' </summary>
-    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
-        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
+    Private Sub OnUpdateDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     ''' <summary>
@@ -2675,13 +2625,85 @@ Public Class AppLauncher
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded
     End Sub
 
-    Private Sub OnDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnInvoke
-        Dim dlg As New dlgDisplayGroups()
-        dlg.ShowDialog()
+    ''' <summary>
+    ''' Command handler; invokes the import time series dialog.
+    ''' </summary>
+    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnInvoke
+        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
     End Sub
 
-    Private Sub OnUpdateDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnUpdate
-        cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the apply time series dialog.
+    ''' </summary>
+    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnInvoke
+        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdWeightTimeSeries">Apply TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnUpdate
+        ' JS 23sept08: dialog will switch to load mode if no ts present
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() ' And Me.m_core.HasTimeSeries()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the load time series dialog.
+    ''' </summary>
+    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnInvoke
+        Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the reload time series dialog.
+    ''' </summary>
+    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnInvoke
+        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
+        For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
+            If (String.Compare(Me.m_core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
+                Me.m_core.LoadTimeSeries(iDS, True)
+                Exit For
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdLoadWeightTimeSeries">Load and weight TimeSeries command</see>.
+    ''' </summary>
+    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
+        Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
+    End Sub
+
+    Private Sub OnExportBiomassToCSV(ByVal cmd As Command) Handles m_cmdExportBiomassToCSV.OnInvoke
+        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+
+        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
+
+        If cmdFS.Result = DialogResult.OK Then
+            ' Save the Ecosim model result to .csv files
+            Me.m_core.dumpEcosimModelResults(cmdFS.FileName)
+        End If
+    End Sub
+
+    Private Sub OnExportBiomassToCSVs(ByVal cmd As Command) Handles m_cmdExportBiomassToCSV.OnUpdate
+        cmd.Enabled = Me.m_core.StateMonitor.HasEcosimRan
     End Sub
 
 #End Region ' Ecosim commands
@@ -3356,33 +3378,6 @@ Public Class AppLauncher
                 Case dlgManageTimeSeries.eModeType.Delete
                     ' NOP
             End Select
-        End If
-    End Sub
-
-    Private Sub ExportBiomassToFileToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiExportBiomassToCSV.Click
-
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-
-        cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
-
-        If cmdFS.Result = DialogResult.OK Then
-            ' Save the Ecosim model result to .csv files
-            Me.m_core.dumpEcosimModelResults(cmdFS.FileName)
-        End If
-
-    End Sub
-
-    Private Sub EcosimToolStripMenuItem_DropDownOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiEcosim.DropDownOpening
-
-        ' ToDo_JS: Implement via central command
-
-        If m_core.StateMonitor.HasEcosimRan Then
-            m_tsmiExportBiomassToCSV.Enabled = True
-        Else
-            m_tsmiExportBiomassToCSV.Enabled = False
         End If
     End Sub
 

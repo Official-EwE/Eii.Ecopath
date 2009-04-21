@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlot.vb,v $
+' Revision 1.6  2009/04/21 19:42:31  jeroens
+' Localized
+'
 ' Revision 1.5  2009/03/23 02:34:36  jeroens
 ' Renamed resources
 '
@@ -343,7 +346,7 @@ Namespace Ecosim
             clbLayers.Items.Clear()
 
             For i As Integer = 0 To m_Graph.Layers.Count - 1
-                Dim n As String = String.Format(My.Resources.LABEL_LAYER_NUMBERED, (i + 1).ToString)
+                Dim n As String = String.Format(My.Resources.HEADER_LAYER_INDEXED, (i + 1).ToString)
                 clbLayers.Items.Add(n, m_Graph.Layers(i).IsShown)
             Next
 

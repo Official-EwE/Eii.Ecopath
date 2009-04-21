@@ -382,24 +382,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to {0}: Input data.
-        '''</summary>
-        Friend ReadOnly Property ECOPATH_INPUT_CAPTION() As String
-            Get
-                Return ResourceManager.GetString("ECOPATH_INPUT_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0}: Parameter estimates.
-        '''</summary>
-        Friend ReadOnly Property ECOPATH_OUTPUT_CAPTION() As String
-            Get
-                Return ResourceManager.GetString("ECOPATH_OUTPUT_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Ecosim_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecosim_32x32", resourceCulture)
@@ -1990,6 +1972,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} time series).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VALUE_DATASET_INFORMATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_DATASET_INFORMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
         Friend ReadOnly Property GENERIC_VALUE_NAMEANDSEQUENCE() As String
@@ -3168,6 +3159,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Layer {0}.
+        '''</summary>
+        Friend ReadOnly Property HEADER_LAYER_INDEXED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LAYER_INDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Leading biomass.
         '''</summary>
         Friend ReadOnly Property HEADER_LEADING_BIOMASS() As String
@@ -4126,91 +4126,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to Failed to convert Ewe5 database to EwE6..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_CONVERSION() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_CONVERSION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/.
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_EWE5_TOO_NEW() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_EWE5_TOO_NEW", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
-        '''
-        '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
-        '''
-        '''Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_EWE5_TOO_OLD() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_EWE5_TOO_OLD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_EWE7_OR_NEWER() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_EWE7_OR_NEWER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to The selected database does not appear to be a valid EwE5 or EwE6 database..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_INVALIDDB() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_INVALIDDB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_INVALIDIMAGEFORGLYPH() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_INVALIDIMAGEFORGLYPH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Please select a model to convert to EwE6..
-        '''</summary>
-        Friend ReadOnly Property IMPORT_ERROR_NOSELECTION() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_ERROR_NOSELECTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}.
-        '''</summary>
-        Friend ReadOnly Property IMPORT_PROMPT_SUMMARY() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_PROMPT_SUMMARY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
-        '''</summary>
-        Friend ReadOnly Property IMPORT_PROMPT_UPDATEBACKUP() As String
-            Get
-                Return ResourceManager.GetString("IMPORT_PROMPT_UPDATEBACKUP", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Importance() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Importance", resourceCulture)
@@ -4226,7 +4141,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The number entered is not valid!.
+        '''  Looks up a localized string similar to The number entered is not valid.
         '''</summary>
         Friend ReadOnly Property INVALID_NUMBER_ENTERED() As String
             Get
@@ -4262,15 +4177,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} - {1} Time Series.
-        '''</summary>
-        Friend ReadOnly Property LABEL_DATASET_INFORMATION() As String
-            Get
-                Return ResourceManager.GetString("LABEL_DATASET_INFORMATION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to &amp;Fleet:.
         '''</summary>
         Friend ReadOnly Property LABEL_FLEET() As String
@@ -4289,15 +4195,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Layer {0}.
-        '''</summary>
-        Friend ReadOnly Property LABEL_LAYER_NUMBERED() As String
-            Get
-                Return ResourceManager.GetString("LABEL_LAYER_NUMBERED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to &amp;Load.
         '''</summary>
         Friend ReadOnly Property LABEL_LOAD() As String
@@ -4307,11 +4204,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to &amp;Run.
+        '''</summary>
+        Friend ReadOnly Property LABEL_RUN() As String
+            Get
+                Return ResourceManager.GetString("LABEL_RUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Set:.
         '''</summary>
         Friend ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Stop.
+        '''</summary>
+        Friend ReadOnly Property LABEL_STOP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_STOP", resourceCulture)
             End Get
         End Property
         
@@ -4679,6 +4594,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to backup model &apos;{0}&apos;: {1}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_BACKUPFAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_BACKUPFAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to A generic error occurred while trying to create an EwE6 model at &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_CREATE_GENERICERROR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_CREATE_GENERICERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This system does not have to required drivers installed to work with files of this type.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DRIVERERROR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DRIVERERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to All detritus groups will be moved to the end of the list of groups..
         '''</summary>
         Friend ReadOnly Property PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND() As String
@@ -4688,11 +4630,150 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_NEW() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE5_TOO_NEW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
+        '''
+        '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
+        '''
+        '''Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE5_TOO_OLD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE7_OR_NEWER() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE7_OR_NEWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The selected database does not appear to be a valid EwE5 or EwE6 database..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_INVALIDDB() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_INVALIDDB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please select a model to convert to EwE6..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_NOSELECTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_NOSELECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to convert Ewe5 database to EwE6..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_IMPORTFAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORTFAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This type of file is no longer supported in EwE6.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_FILETYPEDEPRECATED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FILETYPEDEPRECATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Friend ReadOnly Property PROMPT_FORCING_DELETE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_FORCING_DELETE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_IMPORT_SUMMARY() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_IMPORT_SUMMARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_IMPORT_UPDATEBACKUP() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_IMPORT_UPDATEBACKUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This type of file is not supported by EwE6.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_INVALIDFILE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_INVALIDFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &apos;{0}&apos; does not seem to be a valid Ecopath model.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_INVALIDMODEL() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_INVALIDMODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to create EwE6 model at &apos;{0}&apos;. Please check if you have access rights to write to this location, or whether a file at this location is still in use.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_INVALIDTARGETPATH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_INVALIDTARGETPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New EwE6 model  &apos;{0}&apos; successfully created.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MODELCREATED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MODELCREATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; cannot be found.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MODELNOTFOUND() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MODELNOTFOUND", resourceCulture)
             End Get
         End Property
         

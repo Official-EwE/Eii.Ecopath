@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: DatabaseConversionWizard.vb,v $
+' Revision 1.6  2009/04/21 19:42:29  jeroens
+' Localized
+'
 ' Revision 1.5  2009/01/19 18:07:25  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -170,7 +173,7 @@ Namespace Wizard
                     Next
 
                 Case 2 ' summary
-                    Me.txbSummary.Text = String.Format(My.Resources.IMPORT_PROMPT_SUMMARY, vbNewLine, _
+                    Me.txbSummary.Text = String.Format(My.Resources.PROMPT_IMPORT_SUMMARY, vbNewLine, _
                         Me.m_strFileName, lbModels.SelectedItem.ToString, txbSaveModelName.Text)
                     Me.txbSummary.Select(1, 0)
 
@@ -203,7 +206,7 @@ Namespace Wizard
                     End Try
 
                     If Not bSuccess Then
-                        MessageBox.Show(My.Resources.IMPORT_ERROR_CONVERSION, My.Resources.IMPORT_ERROR_CAPTION, _
+                        MessageBox.Show(My.Resources.PROMPT_ERROR_IMPORTFAILED, My.Resources.IMPORT_ERROR_CAPTION, _
                             MessageBoxButtons.OK, MessageBoxIcon.Information)
                         Me.ImportState = eImportState.Preparing
                     Else
