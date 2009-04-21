@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.12  2009/04/21 14:45:16  jeroens
+' Time series shown in Sim label
+' Simpliefied modified display in tool tips
+'
 ' Revision 1.11  2009/04/13 14:14:36  jeroens
 ' Update selection pane at startup
 '
@@ -188,37 +192,62 @@ Partial Public Class AppLauncher
             Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim eweModel As cEwEModel = Me.m_core.EwEModel
             Dim simScenario As cEcoSimScenario = Nothing
+            Dim tsds As cTimeSeriesDataset = Nothing
             Dim spaceScenario As cEcospaceScenario = Nothing
             Dim tracerScenario As cEcotracerScenario = Nothing
+            Dim strName As String = ""
+            Dim strTooltip As String = ""
 
             ' Is Ecopath model loaded?
-            If m_csm.IsExecutionStateSuperceded(eCoreExecutionState.EcopathLoaded) Then
+            If Me.m_csm.IsExecutionStateSuperceded(eCoreExecutionState.EcopathLoaded) Then
                 ' #Yes: set content for status panes
 
                 ' ----------------------
                 ' Datasource and Ecopath
                 ' ----------------------
-                Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, _
-                        FormatTooltipText(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, eweModel.Name, appl.SelectedFileName, m_csm.IsEcopathModified Or m_csm.IsDatasourceModified))
+                strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, _
+                                           vbNewLine, _
+                                           eweModel.Name, _
+                                           appl.SelectedFileName)
+                Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
 
                 ' -------
                 ' Ecosim
                 ' -------
                 If Me.m_core.ActiveEcosimScenarioIndex >= 0 Then
                     simScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
-                    Me.UpdateToolstripItem(Me.m_tsEcosimScenario, simScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, simScenario.Name, simScenario.Description, m_csm.IsEcosimModified))
+
+                    If Me.m_core.ActiveTimeSeriesDatasetIndex >= 0 Then
+                        tsds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+                        strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
+                                                   vbNewLine, _
+                                                   simScenario.Name, _
+                                                   tsds.Name, _
+                                                   Me.ToTooltipLabel(simScenario.Description))
+                        strName = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, simScenario.Name, tsds.Name)
+                    Else
+                        strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
+                                                   vbNewLine, _
+                                                   simScenario.Name, _
+                                                   Me.ToTooltipLabel(""), _
+                                                   Me.ToTooltipLabel(simScenario.Description))
+                        strName = simScenario.Name
+                    End If
+                    Me.UpdateToolstripItem(Me.m_tsEcosimScenario, strName, strTooltip)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcosimScenario)
                 End If
 
                 ' -------
-                ' Ecosim
+                ' Ecospace
                 ' -------
                 If (Me.m_core.ActiveEcospaceScenarioIndex >= 0) Then
                     spaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
-                    Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, spaceScenario.Name, spaceScenario.Description, m_csm.IsEcospaceModified))
+                    strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, _
+                                               vbNewLine, _
+                                               spaceScenario.Name, _
+                                               Me.ToTooltipLabel(spaceScenario.Description))
+                    Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, strTooltip)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
                 End If
@@ -228,8 +257,10 @@ Partial Public Class AppLauncher
                 ' -------
                 If (Me.m_core.ActiveEcotracerScenarioIndex >= 0) Then
                     tracerScenario = Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex)
-                    Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, _
-                           FormatTooltipText(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, tracerScenario.Name, tracerScenario.Description, m_csm.IsEcotracerModified))
+                    strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, _
+                                               tracerScenario.Name, _
+                                               Me.ToTooltipLabel(tracerScenario.Description))
+                    Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, strTooltip)
                 Else
                     Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
                 End If
@@ -247,12 +278,14 @@ Partial Public Class AppLauncher
 
         End Sub
 
-        Private Function FormatTooltipText(ByVal strFormat As String, ByVal strName As String, ByVal strDescription As String, Optional ByVal bIsModified As Boolean = False) As String
-            Dim strModified As String = ""
+        Private Function ToTooltipLabel(ByVal str As String) As String
+            If String.IsNullOrEmpty(str) Then Return My.Resources.GENERIC_VALUE_NONE
+            Return str
+        End Function
 
-            If String.IsNullOrEmpty(strDescription) Then strDescription = My.Resources.GENERIC_VALUE_NONE
-            If bIsModified Then strModified = My.Resources.STATUSSTRIP_MODIFIED
-            Return String.Format(strFormat, vbNewLine, strName, strDescription, strModified)
+        Private Function ToTooltipNameLabel(ByVal strName As String, ByVal bModified As Boolean) As String
+            If bModified Then Return String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, strName, My.Resources.STATUSSTRIP_MODIFIED)
+            Return strName
         End Function
 
         ''' -----------------------------------------------------------------------
