@@ -5201,6 +5201,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Running Ecosim....
+        '''</summary>
+        Friend ReadOnly Property STATUS_ECOSIM_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOSIM_RUNNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saving Ecosim scenario &apos;{0}&apos;....
         '''</summary>
         Friend ReadOnly Property STATUS_ECOSIM_SAVING() As String
@@ -5224,6 +5233,24 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_ECOSPACE_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_ECOSPACE_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed {0} of {1} years.
+        '''</summary>
+        Friend ReadOnly Property STATUS_ECOSPACE_PROGRESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOSPACE_PROGRESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Ecospace....
+        '''</summary>
+        Friend ReadOnly Property STATUS_ECOSPACE_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOSPACE_RUNNING", resourceCulture)
             End Get
         End Property
         
@@ -5345,7 +5372,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath model{0}Name: {1}{3}{0}Path: {2}.
+        '''  Looks up a localized string similar to Ecopath model{0}Name: {1}{0}Path: {2}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOPATH_TOOLTIP() As String
             Get
@@ -5354,7 +5381,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosim scenario{0}Name: {1}{3}{0}Description: {2}.
+        '''  Looks up a localized string similar to Ecosim scenario{0}Name: {1}{0}Time series: {2}{0}Description: {3}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOSIM_TOOLTIP() As String
             Get
@@ -5363,7 +5390,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace scenario{0}Name: {1}{3}{0}Description: {2}.
+        '''  Looks up a localized string similar to Ecospace scenario{0}Name: {1}{0}Description: {2}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOSPACE_TOOLTIP() As String
             Get
@@ -5372,7 +5399,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecotracer scenario{0}Name: {1}{3}{0}Description: {2}.
+        '''  Looks up a localized string similar to Ecotracer scenario{0}Name: {1}{0}Description: {2}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOTRACER_TOOLTIP() As String
             Get
