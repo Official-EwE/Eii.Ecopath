@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.13  2009/04/22 22:29:23  joeh
+' Check tsNetworkAnalysis has items before using tspgProgressBar
+'
 ' Revision 1.12  2009/04/17 18:51:18  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -680,42 +683,49 @@ Public Class frmNetworkAnalysis
     End Sub
 
     Private Sub m_NetworkManager_FindCyclesProgress(ByVal iCycle As Integer) Handles m_NetworkManager.FindCyclesProgress
-        tspgbProgressBar.Maximum = 50 '500
-        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-            tspgbProgressBar.Value += 1
-        Else
-            tspgbProgressBar.Value = 0
+        If tsNetworkAnalysis.Items.Count > 0 Then
+            tspgbProgressBar.Maximum = 50 '500
+            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+                tspgbProgressBar.Value += 1
+            Else
+                tspgbProgressBar.Value = 0
+            End If
         End If
     End Sub
 
     Private Sub m_NetworkManager_RunMainNetworkProgress(ByVal iProgress As Integer) Handles m_NetworkManager.RunMainNetworkProgress
-        tspgbProgressBar.Maximum = 10 '20000
-        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-            tspgbProgressBar.Value += 1
-        Else
-            tspgbProgressBar.Value = 0
+        If tsNetworkAnalysis.Items.Count > 0 Then
+            tspgbProgressBar.Maximum = 10 '20000
+            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+                tspgbProgressBar.Value += 1
+            Else
+                tspgbProgressBar.Value = 0
+            End If
         End If
     End Sub
 
     Private Sub m_NetworkManager_CalculateRequiredPPProgress(ByVal nPaths As Integer) Handles m_NetworkManager.CalculateRequiredPPProgress
-        tspgbProgressBar.Maximum = 5000 '50000
-        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-            tspgbProgressBar.Value += 1
-        Else
-            tspgbProgressBar.Value = 0
-        End If
+        If tsNetworkAnalysis.Items.Count > 0 Then
+            tspgbProgressBar.Maximum = 5000 '50000
+            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+                tspgbProgressBar.Value += 1
+            Else
+                tspgbProgressBar.Value = 0
+            End If
 
-        m_AlgorithmRunning = My.Resources.LBL_PPR_CAL_PRGR
+            m_AlgorithmRunning = My.Resources.LBL_PPR_CAL_PRGR
+        End If
         'tsbtnCancel.PerformClick()
     End Sub
 
     Private Sub m_NetworkManager_EcosimNetworkProgress(ByVal iTime As Integer) Handles m_NetworkManager.EcosimNetworkProgress
-        'pbProgress.PerformStep()
-        tspgbProgressBar.Maximum = m_NetworkManager.nEcosimTimesteps  '100
-        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-            tspgbProgressBar.Value += 1
-        Else
-            tspgbProgressBar.Value = 0
+        If tsNetworkAnalysis.Items.Count > 0 Then
+            tspgbProgressBar.Maximum = m_NetworkManager.nEcosimTimesteps  '100
+            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+                tspgbProgressBar.Value += 1
+            Else
+                tspgbProgressBar.Value = 0
+            End If
         End If
     End Sub
 
