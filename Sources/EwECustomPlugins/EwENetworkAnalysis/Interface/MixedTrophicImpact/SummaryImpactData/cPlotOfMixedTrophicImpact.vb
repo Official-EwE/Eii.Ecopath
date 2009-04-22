@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.17  2009/04/22 22:27:28  joeh
+' Move MTI data assignment from New to CreatePlot
+'
 ' Revision 1.16  2009/04/17 18:53:00  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -87,21 +90,6 @@ Public Class cPlotOfMixedTrophicImpact
         Me.New()
         m_NetworkManager = NetworkManager
         m_Panel = Panel
-
-        ReDim m_asData(m_NetworkManager.nGroups + m_NetworkManager.nFleets, m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        ReDim m_astrLabelsX(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        ReDim m_astrLabelsY(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-            For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-                If j <= m_NetworkManager.nGroups Then
-                    m_astrLabelsX(j) = m_NetworkManager.GroupName(j)
-                Else
-                    m_astrLabelsX(j) = m_NetworkManager.FleetName(j - m_NetworkManager.nGroups)
-                End If
-                m_astrLabelsY(j) = m_astrLabelsX(j)
-                m_asData(i, j) = m_NetworkManager.MixedTrophicImpacts(j, i)
-            Next j
-        Next i
     End Sub
 
     Public Sub SetUpPanel()
@@ -127,6 +115,21 @@ Public Class cPlotOfMixedTrophicImpact
         Else
             MixedTrophicImpactUC.Visible = True
         End If
+
+        ReDim m_asData(m_NetworkManager.nGroups + m_NetworkManager.nFleets, m_NetworkManager.nGroups + m_NetworkManager.nFleets)
+        ReDim m_astrLabelsX(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
+        ReDim m_astrLabelsY(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
+        For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
+            For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
+                If j <= m_NetworkManager.nGroups Then
+                    m_astrLabelsX(j) = m_NetworkManager.GroupName(j)
+                Else
+                    m_astrLabelsX(j) = m_NetworkManager.FleetName(j - m_NetworkManager.nGroups)
+                End If
+                m_astrLabelsY(j) = m_astrLabelsX(j)
+                m_asData(i, j) = m_NetworkManager.MixedTrophicImpacts(j, i)
+            Next j
+        Next i
 
         AddHandler MixedTrophicImpactUC.Paint, AddressOf PaintUC
         AddHandler m_Panel.Resize, AddressOf ResizeUC
