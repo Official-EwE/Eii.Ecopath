@@ -52,6 +52,7 @@ Namespace Ecospace
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
+            Me.m_btnDisplayGroups = New System.Windows.Forms.Button
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -194,6 +195,7 @@ Namespace Ecospace
             'm_pnDisplayOptions
             '
             resources.ApplyResources(Me.m_pnDisplayOptions, "m_pnDisplayOptions")
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowAll)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowSingle)
@@ -258,6 +260,13 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0
             Me.m_zgPlotLarge.ScrollMinY2 = 0
             '
+            'm_btnDisplayGroups
+            '
+            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
+            Me.m_btnDisplayGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
+            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
+            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -305,6 +314,7 @@ Namespace Ecospace
         Private WithEvents m_lblDist As System.Windows.Forms.Label
         Private WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
         Private WithEvents m_zgPlotLarge As ZedGraphControl
+        Private WithEvents m_btnDisplayGroups As System.Windows.Forms.Button
 
  
     End Class

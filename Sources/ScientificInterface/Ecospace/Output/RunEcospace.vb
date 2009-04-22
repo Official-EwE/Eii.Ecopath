@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.10  2009/04/22 00:56:48  jeroens
+' Getting pretty
+'
 ' Revision 1.9  2009/04/21 17:16:24  jeroens
 ' Plot -> ZedGraph
 '
@@ -244,6 +247,9 @@ Namespace Ecospace
             If ((changeType And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
                 Me.UpdateStyleColors()
             End If
+            If ((changeType And StyleGuide.eChangeType.GroupVisibility) = StyleGuide.eChangeType.GroupVisibility) Then
+                Me.RefreshPlot()
+            End If
         End Sub
 
         Private Sub UpdateStyleColors()
@@ -256,6 +262,8 @@ Namespace Ecospace
 
         Protected Overrides Sub OnLoad(ByVal e As EventArgs)
 
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdDisplayGroups As Command = Nothing
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
@@ -270,7 +278,11 @@ Namespace Ecospace
 
             Me.m_zgh = New ZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zgPlotLarge)
+            Me.m_zgh.ShowPointValue = True
             Me.m_pdBiomass = New cEcospaceZedGraphPlotDrawer(Me.m_core, Me.m_zgh)
+
+            cmdDisplayGroups = cmdh.GetCommand("DisplayGroups")
+            If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
 
             Me.UpdateStyleColors()
             Me.UpdateControls()
@@ -278,6 +290,10 @@ Namespace Ecospace
         End Sub
 
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdDisplayGroups As Command = cmdh.GetCommand("DisplayGroups")
+            If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
 
             Me.m_core.StopEcospace()
 
@@ -675,6 +691,8 @@ Namespace Ecospace
 
                 Me.m_pdBiomass.GroupShowMode = Me.m_showGroupMode
                 Me.m_pdBiomass.GroupToShow = Me.m_iGroupToShow
+                Me.m_pdBiomass.UpodateCurveVisibility()
+                Me.m_zgh.Redraw()
 
             End If
 

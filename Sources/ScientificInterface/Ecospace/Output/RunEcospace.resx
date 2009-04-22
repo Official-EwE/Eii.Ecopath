@@ -175,7 +175,7 @@
     <value>m_pnDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_rbShowSingle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,7 +202,7 @@
     <value>m_pnDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_rbShowNonHidden.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -229,7 +229,7 @@
     <value>m_pnDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbShowAll.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -256,7 +256,7 @@
     <value>m_pnDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowAll.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_cbOverlay.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -579,6 +579,33 @@
   <data name="m_pnDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_btnDisplayGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnDisplayGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnDisplayGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 23</value>
+  </data>
+  <data name="m_btnDisplayGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 23</value>
+  </data>
+  <data name="m_btnDisplayGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisplayGroups.Name" xml:space="preserve">
+    <value>m_btnDisplayGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisplayGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisplayGroups.Parent" xml:space="preserve">
+    <value>m_pnDisplayOptions</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisplayGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_pnDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 149</value>
   </data>
@@ -874,6 +901,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.418, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.421, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

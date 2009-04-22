@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceZedGraphPlotDrawer.vb,v $
+' Revision 1.2  2009/04/22 00:56:48  jeroens
+' Getting pretty
+'
 ' Revision 1.1  2009/04/21 17:59:50  jeroens
 ' Initial version
 '
@@ -77,7 +80,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Update()
+        Public Sub UpodateCurveVisibility()
 
             Dim li As CurveItem = Nothing
             Dim bShowGroup As Boolean = True
@@ -108,10 +111,7 @@ Namespace Ecospace
                 Return Me.m_showGroupMode
             End Get
             Set(ByVal value As RunEcospace.eShowGroupType)
-                If (value <> Me.m_showGroupMode) Then
-                    Me.m_showGroupMode = value
-                    Me.Update()
-                End If
+                Me.m_showGroupMode = value
             End Set
         End Property
 
@@ -120,10 +120,7 @@ Namespace Ecospace
                 Return Me.m_iGroupToShow
             End Get
             Set(ByVal value As Integer)
-                If (value <> Me.m_iGroupToShow) Then
-                    Me.m_iGroupToShow = value
-                    Me.Update()
-                End If
+                Me.m_iGroupToShow = value
             End Set
         End Property
 
