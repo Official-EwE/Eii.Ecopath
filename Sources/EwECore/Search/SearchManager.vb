@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SearchManager.vb,v $
+' Revision 1.5  2009/04/22 20:53:17  joeb
+' made Load() and Update() return the correct values
+'
 ' Revision 1.4  2009/04/02 21:01:15  jeroens
 ' Added header
 '
@@ -175,8 +178,10 @@ Namespace SearchObjectives
 
                 Next
 
-            Catch ex As Exception
+                Return True
 
+            Catch ex As Exception
+                Return False
             End Try
 
         End Function
@@ -239,6 +244,8 @@ Namespace SearchObjectives
                     End If
 
             End Select
+
+            Return True
 
         End Function
 
