@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: MortalityPredationEwEGrid.vb,v $
+' Revision 1.5  2009/04/23 13:08:55  jeroens
+' Cell: fixed instability in UpdateStyle
+' Cell: style updated when either source proerpty changes
+' Cell: inherits dispose to clean up
+'
 ' Revision 1.4  2009/03/11 19:31:51  jeroens
 ' Minimal housekeeping
 '
@@ -22,6 +27,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Properties
 
 #End Region
 
@@ -45,22 +51,16 @@ Namespace Ecopath.Output
         Public Class MortalityGridCell
             : Inherits PropertyCell
 
-            Private WithEvents m_propPB As cProperty = Nothing
+            ''' <summary>PB value to monitor.</summary>
+            Private m_propPB As cSingleProperty = Nothing
 
-            ''' -----------------------------------------------------------------------
-            ''' <summary>
-            ''' Constructor.
-            ''' </summary>
-            ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source.</param>
-            ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
-            ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
-            ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                    Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-                MyBase.New(Source, VarName, SourceSec)
-                ConnectToPB()
+            Public Sub New(ByVal source As cCoreInputOutputBase, ByVal varname As eVarNameFlags, _
+                Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+                MyBase.New(source, varname, sourceSec)
+
+                Dim pm As cPropertyManager = cPropertyManager.GetInstance()
+                Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
             End Sub
-
             ''' -----------------------------------------------------------------------
             ''' <summary>
             ''' Constructor.
@@ -70,29 +70,64 @@ Namespace Ecopath.Output
             Public Sub New(ByVal prop As cProperty)
                 ' Call baseclass constructor
                 MyBase.New(prop)
-                ConnectToPB()
-            End Sub
 
-            Private Sub ConnectToPB()
                 Dim pm As cPropertyManager = cPropertyManager.GetInstance()
-                Dim prop As cProperty = Me.GetProperty()
-                Me.m_propPB = pm.GetProperty(prop.Source, eVarNameFlags.PBOutput, prop.SourceSec)
-                Me.UpdateStyle()
+                Me.PB = DirectCast(pm.GetProperty(prop.Source, eVarNameFlags.PBOutput, prop.SourceSec), cSingleProperty)
             End Sub
 
-            Private Sub m_propPB_PropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) Handles m_propPB.PropertyChanged
-                Me.UpdateStyle()
+            Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+                Me.PB = Nothing
+                MyBase.Dispose(disposing)
             End Sub
+
+            Private Property PB() As cSingleProperty
+                Get
+                    Return Me.m_propPB
+                End Get
+                Set(ByVal value As cSingleProperty)
+
+                    If (Me.m_propPB IsNot Nothing) Then
+                        RemoveHandler Me.m_propPB.PropertyChanged, AddressOf OnPBChanged
+                    End If
+
+                    Me.m_propPB = value
+
+                    If (Me.m_propPB IsNot Nothing) Then
+                        AddHandler Me.m_propPB.PropertyChanged, AddressOf OnPBChanged
+                        Me.UpdateStyle()
+                    End If
+
+                End Set
+            End Property
 
             Private Sub UpdateStyle()
-                Dim style As StyleGuide.eStyleFlags = Me.GetProperty().GetStyle()
-                Dim sPB As Single = CSng(m_propPB.GetValue())
-                Dim sPmort As Single = CSng(Me.GetProperty().GetValue())
+
+                Dim prop As cProperty = Me.GetProperty()
+                Dim style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.Null
+                Dim sPB As Single = 0
+                Dim sPmort As Single = 0
+
+                If (prop IsNot Nothing) And (Me.m_propPB IsNot Nothing) Then
+                    style = prop.GetStyle()
+                    sPB = CSng(Me.m_propPB.GetValue())
+                    sPmort = CSng(prop.GetValue())
+                End If
 
                 If (sPmort > sPB) Then
                     style = style Or StyleGuide.eStyleFlags.Checked
                 End If
                 Me.Style = style
+
+            End Sub
+
+            Protected Overridable Sub OnPBChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+                Me.UpdateStyle()
+                Me.Invalidate()
+            End Sub
+
+            Protected Overrides Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+                Me.UpdateStyle()
+                MyBase.OnPropertyChanged(prop, changeFlags)
             End Sub
 
         End Class
