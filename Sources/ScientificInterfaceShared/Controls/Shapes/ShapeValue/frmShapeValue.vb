@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmShapeValue.vb,v $
+' Revision 1.4  2009/04/23 14:11:16  jeroens
+' nudYears now simple label; we'll need a new GUI to manage time series dataset #years
+'
 ' Revision 1.3  2009/03/11 18:25:47  jeroens
 ' Added mediation x-baseline
 '
@@ -91,7 +94,7 @@ Public Class frmShapeValue
         End Get
         Protected Set(ByVal iNumpoints As Integer)
             Me.m_iNumPoints = iNumpoints
-            Me.nudNoOfYears.Value = Me.m_iNumPoints
+            Me.m_lblNumYears.Text = CStr(Me.m_iNumPoints)
         End Set
     End Property
 
@@ -182,7 +185,8 @@ Public Class frmShapeValue
 
 #Region " Events "
 
-    Private Sub ShapeValue_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
         ' Kick off
         If Me.m_shape Is Nothing Then
             Me.NumPoints = cNUMROWS_EMTPY
@@ -195,14 +199,19 @@ Public Class frmShapeValue
         End If
         Me.FillDataGrid()
         Me.UpdateControls()
+
     End Sub
 
-    Private Sub btnSetYears_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNoOfYears.Click
-        Me.NumPoints = Integer.Parse(Me.nudNoOfYears.Text)
-        Me.m_grid.SetEmpty(Me.NumPoints, 1, (Me.m_editMode = eDialogEditModeType.AddTimeSeries Or Me.m_editMode = eDialogEditModeType.EditTimeSeries))
-    End Sub
+    'Private Sub btnSetYears_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles btnSetNoOfYears.Click
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    '    Me.NumPoints = Integer.Parse(Me.m_lblNumYears.Text)
+    '    Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
+
+    'End Sub
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnOK.Click
 
         Dim bSucces As Boolean = False
 
@@ -225,13 +234,18 @@ Public Class frmShapeValue
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles btnCancel.Click
+
         ' Done
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
+
     End Sub
 
-    Private Sub cmbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbType.SelectedIndexChanged
+    Private Sub cmbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmbType.SelectedIndexChanged
+
         Dim core As cCore = cCore.GetInstance()
 
         Me.FillPoolCodeComboBox()
@@ -241,15 +255,17 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles txtWeight.TextChanged, nudNoOfYears.TextChanged, txtName.TextChanged
+        Handles txtWeight.TextChanged, m_lblNumYears.TextChanged, txtName.TextChanged
         Me.UpdateControls()
     End Sub
 
-    Private Sub cmbPoolCode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbPoolCode.SelectedIndexChanged
+    Private Sub cmbPoolCode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmbPoolCode.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
 
-    Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbViewAs.SelectedIndexChanged
+    Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmbViewAs.SelectedIndexChanged
         Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
         Me.m_grid.SetValues(Me.NumPoints, Me.m_shape, Me.m_displayMode)
     End Sub
@@ -304,7 +320,7 @@ Public Class frmShapeValue
         cmbPoolCode.Visible = False
 
         lbNoOfYears.Visible = False
-        nudNoOfYears.Visible = False
+        m_lblNumYears.Visible = False
         btnSetNoOfYears.Visible = False
 
         lblXBase.Visible = bIsMediation
@@ -653,4 +669,4 @@ Public Class frmShapeValue
 
 #End Region 'Internal implementation
 
-End Class
+ End Class

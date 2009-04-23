@@ -30,18 +30,17 @@
         Me.txtWeight = New System.Windows.Forms.TextBox
         Me.lbValues = New System.Windows.Forms.Label
         Me.lbNoOfYears = New System.Windows.Forms.Label
-        Me.nudNoOfYears = New System.Windows.Forms.NumericUpDown
+        Me.m_lblNumYears = New System.Windows.Forms.Label
         Me.tlbAll = New System.Windows.Forms.TableLayoutPanel
         Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel
         Me.btnSetNoOfYears = New System.Windows.Forms.Button
         Me.pnlValueGrid = New System.Windows.Forms.Panel
         Me.lblViewAs = New System.Windows.Forms.Label
         Me.cmbViewAs = New System.Windows.Forms.ComboBox
-        Me.btnOK = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
         Me.lblXBase = New System.Windows.Forms.Label
         Me.txtXBase = New System.Windows.Forms.TextBox
-        CType(Me.nudNoOfYears, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.btnOK = New System.Windows.Forms.Button
+        Me.btnCancel = New System.Windows.Forms.Button
         Me.tlbAll.SuspendLayout()
         Me.tlpNoOfYears.SuspendLayout()
         Me.SuspendLayout()
@@ -98,13 +97,10 @@
         resources.ApplyResources(Me.lbNoOfYears, "lbNoOfYears")
         Me.lbNoOfYears.Name = "lbNoOfYears"
         '
-        'nudNoOfYears
+        'm_lblNumYears
         '
-        resources.ApplyResources(Me.nudNoOfYears, "nudNoOfYears")
-        Me.nudNoOfYears.Maximum = New Decimal(New Integer() {9000, 0, 0, 0})
-        Me.nudNoOfYears.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudNoOfYears.Name = "nudNoOfYears"
-        Me.nudNoOfYears.Value = New Decimal(New Integer() {50, 0, 0, 0})
+        resources.ApplyResources(Me.m_lblNumYears, "m_lblNumYears")
+        Me.m_lblNumYears.Name = "m_lblNumYears"
         '
         'tlbAll
         '
@@ -130,7 +126,7 @@
         'tlpNoOfYears
         '
         resources.ApplyResources(Me.tlpNoOfYears, "tlpNoOfYears")
-        Me.tlpNoOfYears.Controls.Add(Me.nudNoOfYears, 0, 0)
+        Me.tlpNoOfYears.Controls.Add(Me.m_lblNumYears, 0, 0)
         Me.tlpNoOfYears.Controls.Add(Me.btnSetNoOfYears, 1, 0)
         Me.tlpNoOfYears.Name = "tlpNoOfYears"
         '
@@ -159,6 +155,16 @@
         Me.cmbViewAs.Items.AddRange(New Object() {resources.GetString("cmbViewAs.Items"), resources.GetString("cmbViewAs.Items1")})
         Me.cmbViewAs.Name = "cmbViewAs"
         '
+        'lblXBase
+        '
+        resources.ApplyResources(Me.lblXBase, "lblXBase")
+        Me.lblXBase.Name = "lblXBase"
+        '
+        'txtXBase
+        '
+        resources.ApplyResources(Me.txtXBase, "txtXBase")
+        Me.txtXBase.Name = "txtXBase"
+        '
         'btnOK
         '
         resources.ApplyResources(Me.btnOK, "btnOK")
@@ -172,16 +178,6 @@
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'lblXBase
-        '
-        resources.ApplyResources(Me.lblXBase, "lblXBase")
-        Me.lblXBase.Name = "lblXBase"
-        '
-        'txtXBase
-        '
-        resources.ApplyResources(Me.txtXBase, "txtXBase")
-        Me.txtXBase.Name = "txtXBase"
         '
         'frmShapeValue
         '
@@ -197,7 +193,6 @@
         Me.Name = "frmShapeValue"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        CType(Me.nudNoOfYears, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tlbAll.ResumeLayout(False)
         Me.tlbAll.PerformLayout()
         Me.tlpNoOfYears.ResumeLayout(False)
@@ -214,10 +209,9 @@
     Private WithEvents txtWeight As System.Windows.Forms.TextBox
     Private WithEvents lbValues As System.Windows.Forms.Label
     Private WithEvents lbNoOfYears As System.Windows.Forms.Label
-    Private WithEvents nudNoOfYears As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblNumYears As Label
     Private WithEvents tlbAll As System.Windows.Forms.TableLayoutPanel
     Private WithEvents tlpNoOfYears As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents btnSetNoOfYears As System.Windows.Forms.Button
     Private WithEvents pnlValueGrid As System.Windows.Forms.Panel
     Private WithEvents btnOK As System.Windows.Forms.Button
     Private WithEvents btnCancel As System.Windows.Forms.Button
@@ -225,6 +219,7 @@
     Private WithEvents cmbViewAs As System.Windows.Forms.ComboBox
     Private WithEvents lblXBase As System.Windows.Forms.Label
     Private WithEvents txtXBase As System.Windows.Forms.TextBox
+    Private WithEvents btnSetNoOfYears As System.Windows.Forms.Button
 
 End Class
 

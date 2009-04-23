@@ -423,28 +423,31 @@
   <data name="&gt;&gt;lbNoOfYears.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="nudNoOfYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblNumYears.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="nudNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="m_lblNumYears.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
   </data>
-  <data name="nudNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 20</value>
+  <data name="m_lblNumYears.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 24</value>
   </data>
-  <data name="nudNoOfYears.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblNumYears.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;nudNoOfYears.Name" xml:space="preserve">
-    <value>nudNoOfYears</value>
+  <data name="m_lblNumYears.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;nudNoOfYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_lblNumYears.Name" xml:space="preserve">
+    <value>m_lblNumYears</value>
   </data>
-  <data name="&gt;&gt;nudNoOfYears.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumYears.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblNumYears.Parent" xml:space="preserve">
     <value>tlpNoOfYears</value>
   </data>
-  <data name="&gt;&gt;nudNoOfYears.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumYears.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tlbAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -462,6 +465,9 @@
   <data name="btnSetNoOfYears.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
+  <data name="btnSetNoOfYears.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="btnSetNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>130, 0</value>
   </data>
@@ -476,6 +482,9 @@
   </data>
   <data name="btnSetNoOfYears.Text" xml:space="preserve">
     <value>&amp;Set</value>
+  </data>
+  <data name="btnSetNoOfYears.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;btnSetNoOfYears.Name" xml:space="preserve">
     <value>btnSetNoOfYears</value>
@@ -520,7 +529,7 @@
     <value>10</value>
   </data>
   <data name="tlpNoOfYears.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="nudNoOfYears" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnSetNoOfYears" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblNumYears" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnSetNoOfYears" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="pnlValueGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
