@@ -62,6 +62,7 @@ Partial Class frmModelDescription
         Me.lbNote = New System.Windows.Forms.Label
         Me.m_lblMonetaryUnit = New System.Windows.Forms.Label
         Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
+        Me.m_chkPSD = New System.Windows.Forms.CheckBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -506,12 +507,23 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.TabIndex = 18
         Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.Custom
         '
+        'm_chkPSD
+        '
+        Me.m_chkPSD.AutoSize = True
+        Me.m_chkPSD.Location = New System.Drawing.Point(15, 606)
+        Me.m_chkPSD.Name = "m_chkPSD"
+        Me.m_chkPSD.Size = New System.Drawing.Size(262, 17)
+        Me.m_chkPSD.TabIndex = 20
+        Me.m_chkPSD.Text = "Include particle size distribution calculations (&PSD)"
+        Me.m_chkPSD.UseVisualStyleBackColor = True
+        '
         'frmModelDescription
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(671, 633)
+        Me.Controls.Add(Me.m_chkPSD)
         Me.Controls.Add(Me.m_cmbMonetaryUnit)
         Me.Controls.Add(Me.m_lblMonetaryUnit)
         Me.Controls.Add(Me.m_tlpUnits)
@@ -532,6 +544,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lbDescription)
         Me.Controls.Add(Me.lbScenarioName)
         Me.Controls.Add(Me.m_lbAuthor)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmModelDescription"
         Me.Text = "frmModelParameters"
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
@@ -584,4 +597,5 @@ Partial Class frmModelDescription
     Private WithEvents m_cmbMonetaryUnit As ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
     Private WithEvents rbNutrientOther As System.Windows.Forms.RadioButton
     Friend WithEvents tbCurrencyNutrientOther As System.Windows.Forms.TextBox
+    Private WithEvents m_chkPSD As System.Windows.Forms.CheckBox
 End Class

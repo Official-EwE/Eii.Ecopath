@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmModelDescription.vb,v $
+' Revision 1.5  2009/04/23 20:11:07  jeroens
+' Added PSD enable check box
+'
 ' Revision 1.4  2009/03/19 16:02:27  jeroens
 ' Added FormatProvider.Release
 '
@@ -28,6 +31,7 @@ Public Class frmModelDescription
     Private m_fpContact As cEwEFormatProvider = Nothing
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNumDigits As cEwEFormatProvider = Nothing
+    Private m_fpPSD As cEwEFormatProvider = Nothing
     Private m_core As cCore = Nothing
 
     ' Unit properties
@@ -61,6 +65,7 @@ Public Class frmModelDescription
         Handles MyBase.Load
 
         Dim eweModel As cEwEModel = m_core.EwEModel()
+        Dim psdParms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters()
         Dim appl As AppLauncher = AppLauncher.GetInstance()
         Dim pm As cPropertyManager = cPropertyManager.GetInstance()
 
@@ -70,6 +75,7 @@ Public Class frmModelDescription
         Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, eweModel, eVarNameFlags.Contact)
         Me.m_fpArea = New cPropertyFormatProvider(Me.m_tbArea, eweModel, eVarNameFlags.Area)
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
+        Me.m_fpPSD = New cPropertyFormatProvider(Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
         Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
         AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
@@ -120,6 +126,7 @@ Public Class frmModelDescription
         Me.m_fpDescription.Release()
         Me.m_fpName.Release()
         Me.m_fpNumDigits.Release()
+        Me.m_fpPSD.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
