@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.40  2009/04/23 17:06:44  jeroens
+' Fixed issue 615
+'
 ' Revision 1.39  2009/04/21 19:42:23  jeroens
 ' Localized
 '
@@ -168,7 +171,7 @@ Public Class AppLauncher
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
     Private m_coreController As EwECoreController = Nothing
-    Private m_FormStateHelper As EwEFormStateHelper = Nothing
+    Private m_FormStateHelper As cEwEFormStateHelper = Nothing
     Private m_StatusStripHelper As StatusStripHelper = Nothing
 
     Private m_strLastSelectedPath As String = ""
@@ -3163,7 +3166,7 @@ Public Class AppLauncher
         ' Start controlling the status strip
         Me.m_StatusStripHelper = New StatusStripHelper(Me.m_core, Me.m_ssMain)
         ' Start controlling forms
-        Me.m_FormStateHelper = New EwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
+        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
 
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()

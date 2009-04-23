@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.14  2009/04/23 17:06:49  jeroens
+' Fixed issue 615
+'
 ' Revision 1.13  2009/04/21 15:48:22  jeroens
 ' Fixed TS index issue
 '
@@ -434,7 +437,7 @@ Partial Public Class AppLauncher
     ''' Helper class; maintains form enabled / availability states in the AppLauncher.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Class EwEFormStateHelper
+    Private Class cEwEFormStateHelper
 
         Private WithEvents m_csm As cCoreStateMonitor
         Private m_dp As DockPanel
@@ -450,17 +453,36 @@ Partial Public Class AppLauncher
         End Sub
 
         Public Function OpenEwEForms() As List(Of frmEwE)
-            Dim l As New List(Of frmEwE)
 
+            Dim l As New List(Of frmEwE)
+            Dim f As frmEwE = Nothing
+
+            ' Assess all docked windows
             If (Me.m_dp IsNot Nothing) Then
                 For Each idc As IDockContent In Me.m_dp.Documents
                     If (TypeOf idc Is frmEwE) Then
-                        l.Add(DirectCast(idc, frmEwE))
+                        f = DirectCast(idc, frmEwE)
+                        l.Add(f)
                     End If
                 Next
             End If
 
+            ' Assess all floating windows
+            For Each fw As FloatWindow In Me.m_dp.FloatWindows
+                For iPane As Integer = 0 To fw.VisibleNestedPanes.Count - 1
+                    For Each idc As IDockContent In fw.VisibleNestedPanes(iPane).Contents
+                        If (TypeOf idc Is frmEwE) Then
+                            f = DirectCast(idc, frmEwE)
+                            If (l.IndexOf(f) = -1) Then
+                                l.Add(f)
+                            End If
+                        End If
+                    Next
+                Next
+            Next
+
             Return l
+
         End Function
 
         Private Sub UpdateFormStates()
