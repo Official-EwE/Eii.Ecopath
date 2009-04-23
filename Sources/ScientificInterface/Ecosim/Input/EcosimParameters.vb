@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.8  2009/04/23 13:46:33  jeroens
+' Fixed crash on deleting scenarios while params form is open
+'
 ' Revision 1.7  2009/04/04 14:08:41  jeroens
 ' Added Use Variable P/Q check box
 '
@@ -190,19 +193,24 @@ Namespace Ecosim
 #Region " Internals "
 
         Private Sub RebuildScenarioFormatProviders()
-            Dim scenarioDef As cEcoSimScenario = m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex)
+
+            Dim scenarioDef As cEcoSimScenario = Nothing
+
+            If (m_core.ActiveEcosimScenarioIndex > 0) Then
+                scenarioDef = m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex)
+            End If
 
             If Me.m_fpScenarioName IsNot Nothing Then Me.m_fpScenarioName.Release()
-            Me.m_fpScenarioName = New cPropertyFormatProvider(Me.m_tbName, scenarioDef, eVarNameFlags.Name)
-
             If Me.m_fpScenarioDescription IsNot Nothing Then Me.m_fpScenarioDescription.Release()
-            Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
-
             If Me.m_fpAuthor IsNot Nothing Then Me.m_fpAuthor.Release()
-            Me.m_fpAuthor = New cPropertyFormatProvider(Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
-
             If Me.m_fpContact IsNot Nothing Then Me.m_fpContact.Release()
-            Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+
+            If (scenarioDef IsNot Nothing) Then
+                Me.m_fpScenarioName = New cPropertyFormatProvider(Me.m_tbName, scenarioDef, eVarNameFlags.Name)
+                Me.m_fpScenarioDescription = New cPropertyFormatProvider(Me.m_tbDescription, scenarioDef, eVarNameFlags.Description)
+                Me.m_fpAuthor = New cPropertyFormatProvider(Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
+                Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
+            End If
 
         End Sub
 
