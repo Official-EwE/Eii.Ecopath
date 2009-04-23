@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: PropertyCell.vb,v $
+' Revision 1.2  2009/04/23 13:11:17  jeroens
+' OnPropertyChanged overridable
+'
 ' Revision 1.1  2009/03/30 16:59:25  jeroens
 ' Split
 '
@@ -43,9 +46,9 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec))
+        Public Sub New(ByVal source As cCoreInputOutputBase, ByVal varname As eVarNameFlags, _
+                Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+            Me.New(cPropertyManager.GetInstance().GetProperty(source, varname, sourceSec))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -65,9 +68,9 @@ Namespace Controls.EwEGrid
                 ' Configure the cell
                 Me.ConfigureCell(prop.GetVariableMetadata())
                 ' Fire a change notification
-                Me.onPropertyChanged(prop, cProperty.eChangeFlags.All)
+                Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
                 ' Register property
-                AddHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
+                AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
             End If
         End Sub
 
@@ -75,7 +78,7 @@ Namespace Controls.EwEGrid
 
             ' Unregister property
             If (Me.m_property IsNot Nothing) Then
-                RemoveHandler Me.m_property.PropertyChanged, AddressOf Me.onPropertyChanged
+                RemoveHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.m_property = Nothing
             End If
 
@@ -182,7 +185,7 @@ Namespace Controls.EwEGrid
         ''' <param name="changeFlags">Bitwise flag that states what <see cref="cProperty.eChangeFlags">aspect</see>
         ''' of the property has changed.</param>
         ''' -------------------------------------------------------------------
-        Private Sub onPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Protected Overridable Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
             ' Sanity checks
             Debug.Assert(prop IsNot Nothing, "Invalid event received")
