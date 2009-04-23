@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.10  2009/04/23 23:06:16  joeb
+' Fix bug when updating from AnomalySearch() shape was null
+'
 ' Revision 1.9  2009/03/23 20:19:58  jeroens
 ' Fixed InitializeComponent crash, ugh
 '
@@ -467,7 +470,9 @@ Namespace Ecosim
                     If Me.m_F2TSManager.AnomalySearch Then
                         Me.m_core.ForcingShapeManager.Load()
                         ' Ugh, there must be a better way to do this
-                        Me.m_sketchPad.Shape.Update()
+                        Me.m_shapeHandler.SketchPad.Shape.Update()
+
+                        ' Me.m_sketchPad.Shape.Update()
                     End If
 
                 Case eRunType.SensitivitySS2VByPredPrey, eRunType.SensitivitySS2VByPredator
