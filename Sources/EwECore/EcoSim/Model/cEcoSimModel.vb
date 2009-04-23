@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.46  2009/04/23 15:07:23  joeb
+' Fishcount now set to a TEMP value
+'
 ' Revision 1.45  2009/04/15 15:21:56  joeb
 ' Fixed bug 612 by resizing iLink() and jLink() at the begining of Init()
 '
@@ -1642,8 +1645,8 @@ Public Property PluginManager() As cPluginManager
                     'StartBiomass() is the input to EcoSim which is the output from EcoPath
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
                     m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / (m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp))
-                    'ToDo_jb Compute fish count
-                    'm_Results.FishCount(igrp) = BB(igrp) '
+                    'ToDo_jb Compute fish count for real not pretend like this
+                    m_Results.FishCount(igrp) = BB(igrp) * 100 '
 
                     'save results over time for output
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
