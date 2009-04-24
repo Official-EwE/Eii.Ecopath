@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.11  2009/04/24 15:47:36  jeroens
+' Anomaly search will not run if no FF selected
+'
 ' Revision 1.10  2009/04/23 23:06:16  joeb
 ' Fix bug when updating from AnomalySearch() shape was null
 '
@@ -135,7 +138,9 @@ Namespace Ecosim
 
 #Region " Private form event handlers "
 
-        Private Sub FitTimeSeries_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             Me.m_core = EwECore.cCore.GetInstance
 
@@ -161,6 +166,7 @@ Namespace Ecosim
             Me.m_plGrid.Controls.Clear()
             Me.m_plGrid.Controls.Add(m_gridGroupMaxFishingMortality)
             Me.m_gridGroupMaxFishingMortality.Dock = DockStyle.Fill
+
             Me.m_shapeHandler = New AppliedFFGUIHandler(Me.m_core, Me.m_shapeToolBox, Me.m_sketchPad)
 
             Me.m_cmdTSWeights = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
@@ -172,25 +178,30 @@ Namespace Ecosim
                 Me.ReloadControls()
             End If
 
-            Me.m_F2TSManager.Connect(Me, AddressOf m_F2TSManager_OnRunStarted, AddressOf m_F2TSManager_OnRunStep, AddressOf m_F2TSManager_OnRunStopped, AddressOf m_F2TSManager_OnModelRun)
+            Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub FitToTimeSeries_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-            Me.m_F2TSManager.Disconnect(AddressOf m_F2TSManager_OnRunStarted, AddressOf m_F2TSManager_OnRunStep, _
-                                        AddressOf m_F2TSManager_OnRunStopped, AddressOf Me.m_F2TSManager_OnModelRun)
+            Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
+                                        AddressOf OnRunStopped, AddressOf Me.OnModelRun)
 
             ' Detach from event handlers
             Me.m_vulnerabilityBlockCodeSelector = Nothing
             Me.m_F2TSManager = Nothing
 
+            Me.m_shapeHandler = Nothing
+
             If (Me.m_cmdTSWeights IsNot Nothing) Then
                 RemoveHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
                 Me.m_cmdTSWeights = Nothing
             End If
+
+            MyBase.OnFormClosing(e)
 
         End Sub
 
@@ -426,6 +437,11 @@ Namespace Ecosim
             End If
         End Sub
 
+        Private Sub OnAnomalySearchChecked(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cbAnomalySearch.CheckedChanged
+            Me.UpdateControls()
+        End Sub
+
 #End Region ' Private control event handlers
 
 #Region " Private manager event handlers "
@@ -437,7 +453,7 @@ Namespace Ecosim
         ''' <param name="runType"></param>
         ''' <param name="nSteps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub m_F2TSManager_OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
+        Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
 
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
             Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS), False)
@@ -453,7 +469,7 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_F2TSManager_OnRunStep()
+        Private Sub OnRunStep()
 
             'get the results of this iteration from the manager
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
@@ -470,9 +486,9 @@ Namespace Ecosim
                     If Me.m_F2TSManager.AnomalySearch Then
                         Me.m_core.ForcingShapeManager.Load()
                         ' Ugh, there must be a better way to do this
-                        Me.m_shapeHandler.SketchPad.Shape.Update()
-
-                        ' Me.m_sketchPad.Shape.Update()
+                        For Each shape As cShapeData In Me.m_shapeHandler.SelectedShapes
+                            shape.Update()
+                        Next
                     End If
 
                 Case eRunType.SensitivitySS2VByPredPrey, eRunType.SensitivitySS2VByPredator
@@ -491,7 +507,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="runType"></param>
         ''' -------------------------------------------------------------------
-        Private Sub m_F2TSManager_OnRunStopped(ByVal runType As eRunType)
+        Private Sub OnRunStopped(ByVal runType As eRunType)
             Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStopped(runType)
@@ -506,8 +522,14 @@ Namespace Ecosim
         ''' <param name="iCurrentIterationStep"></param>
         ''' <param name="nTotalInterationSteps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub m_F2TSManager_OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
+        Private Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
             '    System.Console.WriteLine("Ecosim run " & iCurrentIterationStep.ToString & " of " & nTotalInterationSteps.ToString)
+        End Sub
+
+        Private Sub m_cbFishingMortalityPenalty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbFishingMortalityPenalty.CheckedChanged
+            Me.m_plGrid.Enabled = Me.m_cbFishingMortalityPenalty.Checked
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Private search event handlers
@@ -530,7 +552,7 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Update state of main controls based on user selections.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
@@ -538,14 +560,21 @@ Namespace Ecosim
             If (Me.m_F2TSManager Is Nothing) Then Return
             If (Me.m_sketchPad Is Nothing) Then Return
 
+            Dim bInputsValid As Boolean = True
             Dim bIsRunning As Boolean = Me.m_F2TSManager.IsRunning()
+
+            If Me.m_cbAnomalySearch.Checked Then
+                bInputsValid = (Me.m_shapeHandler.SelectedShape IsNot Nothing)
+            Else
+
+            End If
             'Dim bHasAppliedTS As Boolean = Me.m_core.HasAppliedTimeSeries()
 
             'Me.Enabled = bHasAppliedTS
 
             ' Search button enabled when ts loaded and not running
             Me.m_btnStop.Enabled = bIsRunning
-            Me.m_btnSearch.Enabled = (Not bIsRunning)
+            Me.m_btnSearch.Enabled = (Not bIsRunning) And bInputsValid
 
             'constrain the number of years to the number of years in the time series data
             If Me.m_nudLastYear.Value > Me.m_F2TSManager.nTimeSeriesYears Then
@@ -571,9 +600,6 @@ Namespace Ecosim
 
 #End Region ' Internal implementation
 
-        Private Sub m_cbFishingMortalityPenalty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_cbFishingMortalityPenalty.CheckedChanged
-            m_plGrid.Enabled = m_cbFishingMortalityPenalty.Checked
-        End Sub
     End Class
 
 End Namespace
