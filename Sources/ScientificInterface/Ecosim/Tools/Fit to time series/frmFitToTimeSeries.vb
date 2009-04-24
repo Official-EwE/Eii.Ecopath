@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.12  2009/04/24 16:04:19  jeroens
+' Anomaly search added year check
+'
 ' Revision 1.11  2009/04/24 15:47:36  jeroens
 ' Anomaly search will not run if no FF selected
 '
@@ -560,17 +563,16 @@ Namespace Ecosim
             If (Me.m_F2TSManager Is Nothing) Then Return
             If (Me.m_sketchPad Is Nothing) Then Return
 
-            Dim bInputsValid As Boolean = True
+            Dim bInputsValid As Boolean = Me.m_core.HasAppliedTimeSeries()
             Dim bIsRunning As Boolean = Me.m_F2TSManager.IsRunning()
 
             If Me.m_cbAnomalySearch.Checked Then
-                bInputsValid = (Me.m_shapeHandler.SelectedShape IsNot Nothing)
+                bInputsValid = bInputsValid And _
+                               (Me.m_shapeHandler.SelectedShape IsNot Nothing) And _
+                               (Me.m_nudLastYear.Value > Me.m_nudFirstYear.Value)
             Else
-
+                'bInputsValid = True
             End If
-            'Dim bHasAppliedTS As Boolean = Me.m_core.HasAppliedTimeSeries()
-
-            'Me.Enabled = bHasAppliedTS
 
             ' Search button enabled when ts loaded and not running
             Me.m_btnStop.Enabled = bIsRunning
