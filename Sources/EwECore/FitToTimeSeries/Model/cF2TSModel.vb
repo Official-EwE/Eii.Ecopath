@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.7  2009/04/24 16:06:20  joeb
+' Added text for proper initialization
+'
 ' Revision 1.6  2009/01/16 18:30:28  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -914,7 +917,7 @@ Namespace FitToTimeSeries
                     'message
 
                     AddMessage(New cMessage("Nothing to estimate, sketch interactions, exiting search", eMessageType.ErrorEncountered, _
-                                                eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
+                                                eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
                     '   MsgBox("Nothing to estimate, sketch interactions, exiting search")
                     Exit Sub
                 End If
@@ -952,7 +955,7 @@ Namespace FitToTimeSeries
                 If m_estIter > 500 Then GoTo 250
 
                 If StopIndex > 0 Then
-                    fbmsg = New cFeedbackMessage("More Iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
+                    fbmsg = New cFeedbackMessage("More Iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO)
                     sendMessage(fbmsg)
                     If fbmsg.Reply = cFeedbackMessage.eReply.NO Then GoTo 250
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
@@ -987,7 +990,7 @@ Namespace FitToTimeSeries
                 sub900()
                 MatInv(n, amat, det)
 
-                fbmsg = New cFeedbackMessage("Estimates converged. Do you want to do more iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO)
+                fbmsg = New cFeedbackMessage("Estimates converged. Do you want to do more iterations (y/n)?", eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO)
                 sendMessage(fbmsg)
                 If fbmsg.Reply = cFeedbackMessage.eReply.YES Then GoTo 220
 

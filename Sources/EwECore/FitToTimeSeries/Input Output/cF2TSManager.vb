@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSManager.vb,v $
+' Revision 1.4  2009/04/24 16:06:18  joeb
+' Added text for proper initialization
+'
 ' Revision 1.3  2009/01/16 18:30:27  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -442,16 +445,28 @@ Public Class cF2TSManager
     ''' -----------------------------------------------------------------------
     Public Function CanRun() As Boolean
         ' Check all pre-run states
+
         ' jb replaced the is running check with a semaphore
         Dim bCanRun As Boolean '= Not Me.IsRunning
-        bCanRun = Me.m_core.StateMonitor.HasEcosimLoaded
-        'isRefDataLoaded() will send a message if there is not data loaded
-        bCanRun = bCanRun And isRefDataLoaded()
-        bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
+
+        Try
+
+            bCanRun = Me.m_core.StateMonitor.HasEcosimLoaded
+            bCanRun = bCanRun And (Me.AnomalySearch And (Me.AnomalySearchShapeNumber > 0))
+            'isRefDataLoaded() will send a message if there is not data loaded
+            bCanRun = bCanRun And isRefDataLoaded()
+            bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & " Error not properly initialized.")
+            bCanRun = False
+        End Try
+
         If Not bCanRun Then
-            m_core.Messages.SendMessage(New cMessage("Fit to Time Series can not be run.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End If
+
         Return bCanRun
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -644,12 +659,12 @@ Public Class cF2TSManager
         Dim iPPYear2 As Integer = 0
         Dim bret As Boolean
 
+        ' Safety check
+        If Not CanRun() Then Return False
+
         Me.m_runSilent = RunSilent
 
         Try
-
-            ' Safety check
-            If Not CanRun() Then Return False
 
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()
@@ -673,7 +688,7 @@ Public Class cF2TSManager
             Me.m_SignalState.Set()
             Me.m_runSilent = False
             cLog.Write(ex)
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
+            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
                          eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
 
             Return False
