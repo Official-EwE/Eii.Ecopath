@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.9  2009/04/24 14:00:18  jeroens
+' Fixed potential crash on auto-animation
+'
 ' Revision 1.8  2009/04/06 15:14:31  jeroens
 ' Added feedback message reply to nodes
 '
@@ -298,8 +301,17 @@ Public Class StatusPanel
 
         ' When the core sends out critical or warning message, status panel will slide open temporarily
         If (msg.Importance = eMessageImportance.Critical) Or (msg.Importance = eMessageImportance.Warning) Then
-            If (Me.DockPanel IsNot Nothing) Then
-                Me.DockPanel.ActiveAutoHideContent = Me
+            ' Is dockable AND is in auto-hinding state?
+            If (Me.DockPanel IsNot Nothing) And _
+               ((Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide) Or _
+                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide) Or _
+                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide) Or _
+                (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide)) Then
+                Try
+                    Me.DockPanel.ActiveAutoHideContent = Me
+                Catch ex As Exception
+                    ' Nou ja, zeg
+                End Try
             End If
 
         End If
