@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.51  2009/04/27 02:39:57  jeroens
+' Discard unsaved changes when switching scenarios
+'
 ' Revision 1.50  2009/04/16 01:47:49  jeroens
 ' Stanza brute delete eradicated Stanza hatchery forcing assignments
 '
@@ -2896,6 +2899,8 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadShapes()
         bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
+        Me.ClearChanged(eCoreComponentType.EcoSim)
+
         Return bSucces
     End Function
 
@@ -3081,6 +3086,8 @@ Public Class cDBDataSource
 
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
+
+            Me.ClearChanged(eCoreComponentType.EcoSim)
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
@@ -5814,6 +5821,8 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.LoadEcospaceBasemap(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
 
+        Me.ClearChanged(eCoreComponentType.EcoSpace)
+
         Return bSucces
     End Function
 
@@ -6109,6 +6118,8 @@ Public Class cDBDataSource
 
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
+
+            Me.ClearChanged(eCoreComponentType.EcoSpace)
 
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
@@ -8155,6 +8166,8 @@ Public Class cDBDataSource
         ' Load additional data
         bSucces = bSucces And Me.LoadEcotracerGroups(iScenarioID)
 
+        Me.ClearChanged(eCoreComponentType.Ecotracer)
+
         Return bSucces
 
     End Function
@@ -8416,6 +8429,8 @@ Public Class cDBDataSource
 
             ' Reload scenario definitions
             bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
+
+            Me.ClearChanged(eCoreComponentType.Ecotracer)
 
         Catch ex As Exception
             Me.m_db.RollbackTransaction()
