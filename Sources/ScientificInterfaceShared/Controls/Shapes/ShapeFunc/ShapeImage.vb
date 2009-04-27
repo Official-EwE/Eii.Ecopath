@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeImage.vb,v $
+' Revision 1.4  2009/04/27 20:31:12  joeb
+' Changed shape drawing to draw data as a discreet chunck instead of a sloping line
+'
 ' Revision 1.3  2009/03/20 17:50:12  jeroens
 ' Removed warning icon
 '
@@ -66,26 +69,25 @@ Namespace Controls
             ' Division by zero prevention
             If (sXMax = 0.0!) Then sXMax = 1.0!
             If (sYMax = 0.0!) Then sYMax = 1.0!
-
             ptImage = New PointF(ptModel.X * rcClip.Width / sXMax, rcClip.Height - ptModel.Y * rcClip.Height / sYMax)
             Return ptImage
 
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' This helper method transforms the underlying point value to the screen point value
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Shared Function ToScreenPoint(ByVal ptModel As PointF, _
-                                    ByVal rcClip As Rectangle, _
-                                    ByVal sXMax As Single, ByVal sYMax As Single) As PointF
+        '''' -------------------------------------------------------------------
+        '''' <summary>
+        '''' This helper method transforms the underlying point value to the screen point value
+        '''' </summary>
+        '''' -------------------------------------------------------------------
+        'Public Shared Function ToScreenPoint(ByVal ptModel As PointF, _
+        '                            ByVal rcClip As Rectangle, _
+        '                            ByVal sXMax As Single, ByVal sYMax As Single) As PointF
 
-            Dim ptScreen As New PointF(ptModel.X * rcClip.Width / sXMax + rcClip.Left, _
-                            rcClip.Height + rcClip.Top - ptModel.Y * rcClip.Height / sYMax)
-            Return ptScreen
+        '    Dim ptScreen As New PointF(ptModel.X * rcClip.Width / sXMax + rcClip.Left, _
+        '                    rcClip.Height + rcClip.Top - ptModel.Y * rcClip.Height / sYMax)
+        '    Return ptScreen
 
-        End Function
+        'End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -168,15 +170,44 @@ Namespace Controls
                     Dim pt2 As PointF = Nothing
 
                     If bIsSeasonal Then
+                        nPoints = cCore.N_MONTHS
+                    End If
+
+                    'jb 27-04-09
+                    'new drawing method draws data as discreet line from x-1 to x
+                    'same logic for both seasonal and complete time series
+
+                    pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
+                    For i As Integer = 1 To nPoints
+                        pt1 = pt2
+                        pt2 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                        gp.AddLine(pt1, pt2)
+
+                        pt1 = pt2
+                        pt2 = ShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
+                        gp.AddLine(pt1, pt2)
+                    Next
+
+                    pt1 = pt2
+                    pt2 = ShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
+                    gp.AddLine(pt1, pt2)
+
+
+#If 0 Then
+                    'jb 27-04-09 old drawing routine uses different logic to draw seasonal and complete time series data 
+                    'new method above uses the same logic drawing each data point as a discreet line from x-1 to x
+                    'once we are satisfied with the new logic we can remove this code
+                    If bIsSeasonal Then
 
                         nPoints = cCore.N_MONTHS
 
                         pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
                         For i As Integer = 1 To nPoints
                             pt1 = pt2
+                            'x-1 point
                             pt2 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                             gp.AddLine(pt1, pt2)
-
+                            'x point
                             pt1 = pt2
                             pt2 = ShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
                             gp.AddLine(pt1, pt2)
@@ -189,6 +220,7 @@ Namespace Controls
                     Else
 
                         pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
+
                         For i As Integer = 1 To nPoints
                             pt1 = pt2
                             pt2 = ShapeImage.ToImagePoint(New PointF(i - 1, asData(i)), rcImage, nPoints, sYMax)
@@ -199,7 +231,7 @@ Namespace Controls
                         gp.AddLine(pt1, pt2)
 
                     End If
-
+#End If
                     Try
                         Select Case drawMode
                             Case eSketchDrawModeTypes.Line
