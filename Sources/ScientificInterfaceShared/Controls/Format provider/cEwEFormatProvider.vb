@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFormatProvider.vb,v $
+' Revision 1.3  2009/04/27 03:53:02  jeroens
+' Fixed issue 616
+'
 ' Revision 1.2  2009/04/04 14:08:12  jeroens
 ' Type cast BEFORE checking for value changes in SetValue
 '
@@ -393,7 +396,8 @@ Namespace Controls
                 Try
                     ' Store ref to control
                     Me.m_ud = DirectCast(ctrl, NumericUpDown)
-                    AddHandler Me.m_ud.Validated, AddressOf OnControlValidated
+                    AddHandler Me.m_ud.Validated, AddressOf OnSaveValue
+                    AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
 
                     Me.m_sg = StyleGuide.GetInstance()
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -427,7 +431,8 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_ud IsNot Nothing) Then
-                    RemoveHandler Me.m_ud.Validated, AddressOf OnControlValidated
+                    RemoveHandler Me.m_ud.Validated, AddressOf OnSaveValue
+                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
                     Me.m_ud = Nothing
                 End If
 
@@ -486,11 +491,13 @@ Namespace Controls
             ''' control value back into the parent <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnControlValidated(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnSaveValue(ByVal sender As Object, ByVal e As System.EventArgs)
 
                 ' Update internal value
-                Me.m_provider.Value = Me.m_ud.Value
-                Me.UpdateContent()
+                If Not Decimal.Equals(Me.m_provider.Value, Me.m_ud.Value) Then
+                    Me.m_provider.Value = Me.m_ud.Value
+                    Me.UpdateContent()
+                End If
 
             End Sub
 
