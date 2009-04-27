@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanza.vb,v $
+' Revision 1.7  2009/04/27 01:32:30  jeroens
+' Fixed potential exception in UpdateGraph
+'
 ' Revision 1.6  2009/04/16 02:09:11  jeroens
 ' Removed all locally cached stanza variables
 ' Stanza group and hatchery FF kept as original objects
@@ -203,7 +206,7 @@ Namespace Ecopath
             Dim pplNumber As New PointPairList()
             Dim pplWeight As New PointPairList()
             Dim pplB As New PointPairList()
-            Dim applSeparator(Me.m_core.nStanzas) As PointPairList
+            Dim applSeparator(sg.NStanzas) As PointPairList
             Dim strLabel As String = ""
 
             Dim sMaxNumber As Single = 0.0
