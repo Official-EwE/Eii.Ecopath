@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.116  2009/04/27 02:38:08  jeroens
+' Core sate monitor should update its data state when switching to appended scenarios
+'
 ' Revision 1.115  2009/04/21 17:14:57  jeroens
 ' Unloading TS will force out an update for the GUI
 '
@@ -4654,6 +4657,7 @@ Public Class cCore
             ds = DirectCast(DataSource, IEcosimDatasource)
             If (ds.AppendEcosimScenario(strName, strDescription, strAuthor, strContact, iScenarioID)) Then
 
+                Me.StateMonitor.UpdateDataState(Me.m_DataSource)
                 Me.InitEcosimScenarios()
                 DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
@@ -6708,6 +6712,8 @@ Public Class cCore
                     iNumRows, iNumCols, _
                     sLat, sLon, sCellSize, iScenarioID)) Then
                 ds.EndTransaction(True)
+
+                Me.StateMonitor.UpdateDataState(Me.m_DataSource)
                 Me.InitEcospaceScenarios()
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
                 Return Me.LoadEcospaceScenario(iScenario)
@@ -8725,6 +8731,7 @@ Public Class cCore
 
             ds = DirectCast(DataSource, IEcotracerDatasource)
             If (ds.AppendEcotracerScenario(strName, strDescription, strAuthor, strContact, iScenarioID)) Then
+                Me.StateMonitor.UpdateDataState(Me.m_DataSource)
                 Me.InitEcotracerScenarios()
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
                 Return Me.LoadEcotracerScenario(iScenario)
