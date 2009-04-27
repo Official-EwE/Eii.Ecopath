@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.15  2009/04/27 02:42:49  jeroens
+' Commented a bit more
+'
 ' Revision 1.14  2009/04/23 17:06:49  jeroens
 ' Fixed issue 615
 '
@@ -452,7 +455,14 @@ Partial Public Class AppLauncher
             Me.UpdateFormStates()
         End Sub
 
-        Public Function OpenEwEForms() As List(Of frmEwE)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a list of all currently opened 
+        ''' <see cref="frmEwE">frmEwE-derived forms</see>.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetEwEForms() As List(Of frmEwE)
 
             Dim l As New List(Of frmEwE)
             Dim f As frmEwE = Nothing
@@ -490,7 +500,7 @@ Partial Public Class AppLauncher
             Dim stateForm As eCoreExecutionState = eCoreExecutionState.Idle
             Dim bMustCloseForm As Boolean = False
 
-            For Each f As frmEwE In Me.OpenEwEForms()
+            For Each f As frmEwE In Me.GetEwEForms()
                 ' Think positive
                 bMustCloseForm = False
 
