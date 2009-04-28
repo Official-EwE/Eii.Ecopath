@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6385C388-96F0-40F5-90A6-2B4838E0610E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -107,14 +107,7 @@
     </Compile>
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cHideGroups.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cPlotOfMixedTrophicImpact.vb" />
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.Designer.vb">
-      <DependentUpon>frmHideGroups.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMixedTrophicImpact.Designer.vb">
       <DependentUpon>ucPlotOfMixedTrophicImpact.vb</DependentUpon>
     </Compile>
@@ -155,10 +148,6 @@
     <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\frmHideGroups.resx">
-      <DependentUpon>frmHideGroups.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
