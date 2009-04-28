@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.10  2009/04/28 14:21:59  jeroens
+' Added Fleet visibility
+'
 ' Revision 1.9  2009/04/07 19:58:11  jeroens
 ' Changed default fonts
 '
@@ -109,6 +112,8 @@ Namespace Style
         ' -- group visibility --
         ''' <summary>List of indexes of groups to hide.</summary>
         Private m_lHiddenGroups As New List(Of Integer)
+        ''' <summary>List of indexes of fleets to hide.</summary>
+        Private m_lHiddenFleets As New List(Of Integer)
         Private m_bHideTotalCatch As Boolean = False
         Private m_bHideTotalValue As Boolean = False
 
@@ -647,6 +652,7 @@ Namespace Style
             Units = &H4
             Fonts = &H8
             GroupVisibility = &H10
+            FleetVisibility = &H20
             All = &HFFFFFFFF
         End Enum
 
@@ -1106,6 +1112,33 @@ Namespace Style
             End Set
         End Property
 
+        Public Property FleetVisible(ByVal iFleet As Integer) As Boolean
+            Get
+                ' Return whether fleet is not hidden
+                Return (Me.m_lHiddenFleets.IndexOf(iFleet) = -1)
+            End Get
+            Set(ByVal bVisible As Boolean)
+
+                Dim bChanged As Boolean = False
+
+                If bVisible Then
+                    ' Remove fleet from hidden list, if applicable
+                    If (Me.m_lHiddenFleets.IndexOf(iFleet) <> -1) Then
+                        Me.m_lHiddenFleets.Remove(iFleet)
+                        bChanged = True
+                    End If
+                Else
+                    ' Add fleet to hidden list, if applicable
+                    If (Me.m_lHiddenFleets.IndexOf(iFleet) = -1) Then
+                        Me.m_lHiddenFleets.Add(iFleet)
+                        bChanged = True
+                    End If
+                End If
+
+                If bChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
+            End Set
+        End Property
+
         Public Property TotalCatchVisible() As Boolean
             Get
                 Return (Me.m_bHideTotalCatch = False)
@@ -1126,13 +1159,14 @@ Namespace Style
 
         Public Sub ResetVisibleFlags(Optional ByVal bFireChangeEvent As Boolean = True)
             Me.m_lHiddenGroups.Clear()
+            Me.m_lHiddenFleets.Clear()
             Me.m_bHideTotalCatch = False
             Me.m_bHideTotalValue = False
 
-            If bFireChangeEvent Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+            If bFireChangeEvent Then Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
         End Sub
 
-#End Region ' Group visibility
+#End Region ' Item visibility
 
 #End Region ' Public access
 
