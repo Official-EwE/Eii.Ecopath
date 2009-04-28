@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: CustomComboBoxFleetGroupTree.vb,v $
+' Revision 1.5  2009/04/28 15:22:02  jeroens
+' Fleets - > Effort
+' Groups -> Mortality
+'
 ' Revision 1.4  2009/03/26 17:41:40  jeroens
 ' Fixed confusion between rate and effort shape names
 '
@@ -88,7 +92,7 @@ Public Class cCustomComboBoxFleetGroupTree
         Me.Nodes.Clear()
 
         'Load the fleet drop down list
-        tnParent = Me.Nodes.Add(My.Resources.HEADER_FLEETS)
+        tnParent = Me.Nodes.Add(My.Resources.HEADER_FISHINGEFFORT)
         For Each shp As cFishingRateShape In m_core.FishingEffortShapeManager
             tnChild = New TreeNode(shp.Name)
             tnChild.Tag = shp
@@ -96,7 +100,7 @@ Public Class cCustomComboBoxFleetGroupTree
         Next
 
         'Load the group drop down list
-        tnParent = Me.Nodes.Add(My.Resources.HEADER_GROUPS)
+        tnParent = Me.Nodes.Add(My.Resources.HEADER_FISHINGMORTALITY)
         For i As Integer = 1 To m_core.nGroups
             Dim group As cEcoPathGroupInput = m_core.EcoPathGroupInputs(i)
             tnChild = New TreeNode(group.Name)

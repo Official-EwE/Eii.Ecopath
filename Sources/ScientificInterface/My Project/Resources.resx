@@ -535,8 +535,8 @@
   <data name="OPTIONS_COLORDLG_PROMPT_READONLY" xml:space="preserve">
     <value>Read-only values|Values that cannot be edited by you, the user</value>
   </data>
-  <data name="HEADER_FISHINGEFFORT_NAME" xml:space="preserve">
-    <value>Fleet/gear effort</value>
+  <data name="HEADER_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
   </data>
   <data name="ECOSIM_PROMPT_APPLY_SHAPES_ALL" xml:space="preserve">
     <value>For all prey predator pairs</value>
@@ -1159,7 +1159,7 @@
     <comment>{0}: scenario name</comment>
   </data>
   <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
-    <value>F(Fishing mortality)</value>
+    <value>F (fishing mortality)</value>
   </data>
   <data name="HEADER_GROUPNAME" xml:space="preserve">
     <value>Group name</value>
