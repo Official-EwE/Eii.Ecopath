@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.9  2009/04/28 19:15:01  joeh
+' Remove val.Stored = False for PSDEnable
+'
 ' Revision 1.8  2009/04/02 19:51:18  joeh
 ' Change the minimum value of PSDNumWeightClasses to 1
 '
@@ -59,7 +62,6 @@ Public Class cPSDParameters
             'PSDEnabled
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
-            val.Stored = False
             m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses
