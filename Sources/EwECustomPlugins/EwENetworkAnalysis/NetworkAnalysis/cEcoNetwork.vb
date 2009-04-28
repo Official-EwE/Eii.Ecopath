@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.11  2009/04/28 19:00:27  jeroens
+' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
+'
 ' Revision 1.10  2009/04/15 17:58:13  joeh
 ' Do not call DumResultsToStream to speed up the system
 '
@@ -54,16 +57,13 @@
 Option Explicit On
 Option Strict On
 Imports EwECore
+Imports ScientificInterfaceShared.Style
 
 Public Class cEcoNetwork
 
 #Region "Private data"
 
     Private m_manager As cNetworkManager
-
-    Private m_HideGroups As frmHideGroups  'joeh
-
-    ' Private m_publisher As cMessagePublisher
 
     Private m_epdata As cEcopathDataStructures
     Private m_esdata As cEcosimDatastructures
@@ -160,6 +160,7 @@ Public Class cEcoNetwork
     'Private NumLivPath As Integer
     Private NumOfPaths As Integer
     Private Sel As Integer 'jb I don't think this is used anymore In EwE5 it is set from PrepareReqPPDetails()
+    Private GrpsToShow() As Boolean
 
 #Region "Private Ecosim Data"
 
@@ -370,7 +371,6 @@ Public Class cEcoNetwork
 
 #Region "Constructors"
 
-    'Public Sub New(ByRef Manager As cNetworkManager)
     Public Sub New(ByRef Manager As cNetworkManager) 'joeh
         m_manager = Manager
         Me.m_core = m_manager.Core
@@ -381,34 +381,23 @@ Public Class cEcoNetwork
 
 #Region "Public Properties"
 
+    Public WriteOnly Property GroupsToShow() As Boolean()
+        Set(ByVal value As Boolean())
+            Me.GrpsToShow = value
+        End Set
+    End Property
+
     Public WriteOnly Property EcopathData() As cEcopathDataStructures
         Set(ByVal value As cEcopathDataStructures)
             m_epdata = value
         End Set
     End Property
 
-
     Public WriteOnly Property EcosimData() As cEcosimDatastructures
         Set(ByVal value As cEcosimDatastructures)
             m_esdata = value
         End Set
     End Property
-
-
-    Public WriteOnly Property HideGroupsForm() As frmHideGroups
-        Set(ByVal value As frmHideGroups)
-            m_HideGroups = value
-        End Set
-    End Property
-
-
-
-
-    'Public ReadOnly Property MessagePublisher() As cMessagePublisher
-    '    Get
-    '        Return m_publisher
-    '    End Get
-    'End Property
 
 #End Region
 
@@ -950,8 +939,7 @@ Public Class cEcoNetwork
                 If APj(j) > 0 Then
                     Predat(i) = Predat(i) + PredNoC(j) * Ap(i, j)
                     TRP(i) = TRP(i) + HNoC(j) * Ap(i, j)
-                    'If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j)
-                    If m_HideGroups.IsGroupShown(m_manager.GroupName(j)) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j) 'joeh
+                    If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j)
                     'TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j) 'joeh
                     Impo(i) = Impo(i) + im(j) * Ap(i, j)
                     CA(i) = CA(i) + m_epdata.fCatch(j) * Ap(i, j)
@@ -988,8 +976,7 @@ Public Class cEcoNetwork
                     PredatD(i) = PredatD(i) + PredNoC(j) * Ad(i, j)
                     TRPD(i) = TRPD(i) + HNoC(j) * Ad(i, j)
 
-                    ' If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j)
-                    If m_HideGroups.IsGroupShown(m_manager.GroupName(j)) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j) 'joeh
+                    If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j)
                     'TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j) 'joeh
                     ImpD(i) = ImpD(i) + im(j) * Ad(i, j)
                     CAD(i) = CAD(i) + m_epdata.fCatch(j) * Ad(i, j)

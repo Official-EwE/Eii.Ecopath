@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.10  2009/04/28 19:00:31  jeroens
+' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
+'
 ' Revision 1.9  2009/04/19 13:30:07  jeroens
 ' Formatted app launch error
 '
@@ -41,6 +44,7 @@ Imports System.Globalization
 Imports System.Windows.Forms
 Imports System.Text
 Imports EwECore
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -51,14 +55,13 @@ Public Class cGraphOfMixedTrophicImpact
     Private Shared g_Panel As Panel
 
     Private m_NetworkManager As cNetworkManager
-    Private m_HideGroups As frmHideGroups
     Private m_core As cCore = Nothing
 
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal HideGroups As frmHideGroups, ByVal Panel As Windows.Forms.Panel) As cGraphOfMixedTrophicImpact
+    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cGraphOfMixedTrophicImpact
 
         cGraphOfMixedTrophicImpact.g_Panel = Panel
         If g_GraphOfMixedTrophicImpactInstance Is Nothing Then
-            g_GraphOfMixedTrophicImpactInstance = New cGraphOfMixedTrophicImpact(NetworkManager, HideGroups, Panel)
+            g_GraphOfMixedTrophicImpactInstance = New cGraphOfMixedTrophicImpact(NetworkManager, Panel)
         End If
         Return g_GraphOfMixedTrophicImpactInstance
     End Function
@@ -67,10 +70,9 @@ Public Class cGraphOfMixedTrophicImpact
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal HideGroups As frmHideGroups, ByVal Panel As Windows.Forms.Panel)
+    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
         Me.New()
         m_NetworkManager = NetworkManager
-        m_HideGroups = HideGroups
         g_Panel = Panel
         Me.m_core = cCore.GetInstance()
     End Sub
@@ -83,6 +85,8 @@ Public Class cGraphOfMixedTrophicImpact
         Dim ZeroString As String
         Dim NoDisplay As Integer
         Dim EnUSLocale As New CultureInfo("en-US")
+        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim bShowItem As Boolean = True
 
         'Write data to file
         strOutputFileDir = System.IO.Path.GetTempPath
@@ -93,24 +97,26 @@ Public Class cGraphOfMixedTrophicImpact
 
         NoDisplay = 0
         For i As Integer = 1 To m_NetworkManager.nGroups
-            If m_HideGroups.IsGroupShown(m_NetworkManager.GroupName(i)) Then NoDisplay = NoDisplay + 1
+            ' JS: group hiding has not yet been enabled
+            'bShowItem = sg.GroupVisible(i)
+            If bShowItem Then NoDisplay += 1
         Next
         For i As Integer = 1 To m_NetworkManager.nFleets
-            'add the fleet prefix the the fleet name so that the correct fleet will be found in the dictionary
-            If m_HideGroups.IsGroupShown(frmHideGroups.FLEET_PREFIX & m_NetworkManager.FleetName(i)) Then NoDisplay = NoDisplay + 1
+            ' JS: fleet hiding has not yet been enabled
+            'bShowItem = sg.FleetVisible(i)
+            If bShowItem Then NoDisplay += 1
         Next
         PrintLine(FileNumber, Format(NoDisplay, "00"))
 
         For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-            Dim strKey As String
-            Dim intKey As Integer
             If i <= m_NetworkManager.nGroups Then
-                strKey = m_NetworkManager.GroupName(i)
+                ' JS: group hiding has not yet been enabled
+                'bShowItem = sg.GroupVisible(i)
             Else
-                intKey = i - m_NetworkManager.nGroups
-                strKey = frmHideGroups.FLEET_PREFIX & m_NetworkManager.FleetName(intKey)
+                ' JS: group hiding has not yet been enabled
+                'bShowItem = sg.FleetVisible(i - m_NetworkManager.nGroups)
             End If
-            If m_HideGroups.IsGroupShown(strKey) Then
+            If bShowItem Then
                 ZeroString = "                    "
                 If i <= m_NetworkManager.nGroups Then
                     Mid$(ZeroString, 1) = m_NetworkManager.GroupName(i)
@@ -120,13 +126,14 @@ Public Class cGraphOfMixedTrophicImpact
                 Print(FileNumber, ZeroString)
 
                 For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-                    If j <= m_NetworkManager.nGroups Then
-                        strKey = m_NetworkManager.GroupName(j)
+                    If i <= m_NetworkManager.nGroups Then
+                        ' JS: group hiding has not yet been enabled
+                        'bShowItem = sg.GroupVisible(i)
                     Else
-                        intKey = j - m_NetworkManager.nGroups
-                        strKey = frmHideGroups.FLEET_PREFIX & m_NetworkManager.FleetName(intKey)
+                        ' JS: fleet hiding has not yet been enabled
+                        'bShowItem = sg.FleetVisible(i - m_NetworkManager.nGroups)
                     End If
-                    If m_HideGroups.IsGroupShown(strKey) Then
+                    If bShowItem Then
                         If m_NetworkManager.MixedTrophicImpacts(i, j) >= 0.0 Then
                             Print(FileNumber, m_NetworkManager.MixedTrophicImpacts(i, j).ToString("000.00", EnUSLocale))
                         Else
@@ -171,11 +178,11 @@ Public Class cGraphOfMixedTrophicImpact
 
     Private Sub SetUpGrid()
         Dim DataGrid As DataGridView = _
-            CType(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+            DirectCast(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
         Dim GraphPane As ZedGraphControl = _
-            CType(g_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
+            DirectCast(g_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
         Dim LogoPanel As TableLayoutPanel = _
-            CType(g_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
+            DirectCast(g_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
 
         g_Panel.AutoScroll = False
         LogoPanel.Visible = False
@@ -186,9 +193,9 @@ Public Class cGraphOfMixedTrophicImpact
 
     Private Sub RemoveToolStrip()
         Dim ToolStrip As ToolStrip = _
-            CType(g_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
+            DirectCast(g_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
         Dim DataGrid As DataGridView = _
-            CType(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+            DirectCast(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
 
         If Not ToolStrip Is Nothing Then
             g_Panel.Controls.RemoveByKey("tsNetworkAnalysis")

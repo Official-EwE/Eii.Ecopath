@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.11  2009/04/28 19:00:30  jeroens
+' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
+'
 ' Revision 1.10  2009/04/28 16:37:29  jeroens
 ' Fixed issue 617
 '
@@ -35,6 +38,7 @@
 
 Option Strict On
 Option Explicit On
+Imports ScientificInterfaceShared.Style
 
 Imports EwECore
 
@@ -88,8 +92,6 @@ Public Class cNetworkManager
 #End Region
 
 #Region "Private data"
-
-    Private m_HideGroupsForm As frmHideGroups  'joeh
 
     Private Enum ePathways
         ''' <summary>TL1->Consumer </summary>
@@ -212,6 +214,9 @@ Public Class cNetworkManager
     Public Function RunMainNetwork() As Boolean
 
         Dim breturn As Boolean
+        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim abGroupsToShow(Me.m_core.nGroups) As Boolean
+
         Debug.Assert(m_econetwork IsNot Nothing)
 
         m_runstate = eRunState.NetworkNeedsToRun
@@ -224,13 +229,14 @@ Public Class cNetworkManager
 
         If m_runstate <> eRunState.CoreNotReady Then
             Try
+                For iGroup As Integer = 1 To Me.m_core.nGroups
+                    abGroupsToShow(iGroup) = True
+                    ' JS: group hiding has not yet been enabled
+                    'abGroupsToShow(iGroup) = sg.GroupVisible(iGroup)
+                Next
 
                 m_runstate = eRunState.NetworkNeedsToRun
-                'jb probable don't need to reset the instance each time but this is robust
-                Dim frmHide As frmHideGroups = frmHideGroups.GetInstance(Me)
-                frmHide.Init() 'load the groupname and fleetname
-                m_econetwork.HideGroupsForm() = frmHide
-
+                m_econetwork.GroupsToShow = abGroupsToShow
 
                 'Make sure the network analysis object has the latest data computed by the core
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 

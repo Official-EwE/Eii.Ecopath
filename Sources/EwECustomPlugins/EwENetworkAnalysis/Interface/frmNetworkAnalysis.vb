@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.16  2009/04/28 19:00:31  jeroens
+' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
+'
 ' Revision 1.15  2009/04/28 16:46:04  jeroens
 ' Removed obsolete class
 '
@@ -130,7 +133,6 @@ Public Class frmNetworkAnalysis
     Private m_ImpactData As cImpactData
     Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
     Private WithEvents m_PlotOfMixedTrophicImpact As cPlotOfMixedTrophicImpact
-    Private m_HideGroupsForm As frmHideGroups
 
     Private m_AscendencyByGroup As cByGroup
     Private m_AscendencyTotal As cTotal
@@ -258,8 +260,7 @@ Public Class frmNetworkAnalysis
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
                 End If
-                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                m_FlowPyramid = cFlowPyramid.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+                m_FlowPyramid = cFlowPyramid.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_FlowPyramid.SetUpPanel()
                 m_FlowPyramid.CreatePlot()
             Case "ndBiomassByTrophicLevel" ' My.Resources.TREE_NODE_BIOMASS_TRP_LVL
@@ -267,8 +268,7 @@ Public Class frmNetworkAnalysis
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
                 End If
-                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                m_BiomassByTrophicLevel = cBiomassByTrophicLevel.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+                m_BiomassByTrophicLevel = cBiomassByTrophicLevel.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_BiomassByTrophicLevel.DisplayData()
             Case "ndBiomassPyramid" ' My.Resources.TREE_NODE_BIOMASS_PYR
                 If Not m_NetworkManager.IsMainNetworkRun Then
@@ -283,8 +283,7 @@ Public Class frmNetworkAnalysis
                     m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                     m_NetworkAnalysis.RunNetworkAnalysis()
                 End If
-                m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                m_CatchByTrophicLevel = cCatchByTrophicLevel.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+                m_CatchByTrophicLevel = cCatchByTrophicLevel.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 m_CatchByTrophicLevel.DisplayData()
             Case "ndCatchPyramid" ' My.Resources.TREE_NODE_CATCH_PYR
                 If Not m_NetworkManager.IsMainNetworkRun Then
@@ -358,7 +357,7 @@ Public Class frmNetworkAnalysis
                 '        m_NetworkAnalysis.RunNetworkAnalysis()
                 '    End If
                 '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                '    m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+                '    m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
                 '    m_GraphOfMixedTrophicImpact.SetUpPanel()
                 '    m_GraphOfMixedTrophicImpact.CreatePlot()
                 'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
@@ -640,8 +639,7 @@ Public Class frmNetworkAnalysis
 
     Private Sub tsbtnGraphMTI_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnGraphMTI.Click
         'MTI graph with bars
-        m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-        m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, m_HideGroupsForm, scNetworkAnalysis.Panel2)
+        m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
         m_GraphOfMixedTrophicImpact.SetUpPanel()
         m_GraphOfMixedTrophicImpact.CreatePlot()
     End Sub
