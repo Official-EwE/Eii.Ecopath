@@ -1,30 +1,11 @@
 '==============================================================================
 '
 ' $Log: frmHideGroups.vb,v $
+' Revision 1.2  2009/04/28 16:40:01  jeroens
+' ToDo: use the Scientific Interface show/hide groups interface for this?
+'
 ' Revision 1.1  2008/09/26 07:30:54  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.12  2007/09/27 17:31:14  joeh
-' Fix bug 251
-'
-' Revision 1.11  2007/09/27 00:51:50  joeh
-' Fix bug 251
-'
-' Revision 1.10  2007/09/25 19:01:33  joeb
-' Fixed bug that cause IsGroupShown(strKey) to explode.
-'
-' Revision 1.9  2007/06/28 19:26:04  joeh
-' Allow ony the first two fleet names to be hidden
-'
-' Revision 1.8  2007/06/22 00:35:30  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.7  2007/06/21 00:14:40  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.6  2007/06/20 18:13:58  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
 '
 '==============================================================================
 Option Strict On
@@ -32,6 +13,12 @@ Option Explicit On
 
 Imports EwECore
 
+''' <summary>
+''' 
+''' </summary>
+''' <remarks>
+''' ToDo: use the Scientific Interface show/hide groups interface for this?
+''' </remarks>
 Public Class frmHideGroups
 
     Public Const FLEET_PREFIX As String = "Fleet-"
