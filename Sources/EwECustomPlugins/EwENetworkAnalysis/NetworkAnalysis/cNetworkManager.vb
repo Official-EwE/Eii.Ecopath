@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.10  2009/04/28 16:37:29  jeroens
+' Fixed issue 617
+'
 ' Revision 1.9  2009/03/22 14:01:37  jeroens
 ' Core state monitor exec event parameters simplified
 '
@@ -122,32 +125,36 @@ Public Class cNetworkManager
 
     End Enum
 
-    Private m_EcoNetwork As cEcoNetwork
-    Private m_core As cCore
+    Private m_econetwork As cEcoNetwork = Nothing
+    Private m_core As cCore = Nothing
+    Private m_corestatemonitor As cCoreStateMonitor = Nothing
     Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
     Private m_runstate As eRunState
     Private m_epdata As cEcopathDataStructures
     Private m_esdata As cEcosimDatastructures
 
-    Private m_IsMainNetworkRun As Boolean
-    Private m_IsRequiredPrimaryProdRun As Boolean
-    Private m_IsEcosimNetworkWithoutPPREstRun As Boolean
-    Private m_IsEcosimNetworkWithPPREstRun As Boolean
+    ''' <summary>Flag stating whether the main N/A network has ran.</summary>
+    Private m_bIsMainNetworkRun As Boolean
+    ''' <summary>To comment</summary>
+    Private m_bIsRequiredPrimaryProdRun As Boolean
+    ''' <summary>Flag stating whether the Ecosim N/A network has ran without PPR estimation.</summary>
+    Private m_bIsEcosimNetworkWithoutPPREstRun As Boolean
+    ''' <summary>Flag stating whether the Ecosim N/A network has ran with PPR estimation.</summary>
+    Private m_bIsEcosimNetworkWithPPREstRun As Boolean
+    ''' <summary>To comment</summary>
+    Private m_bCancelRequiredPrimaryProdRun As Boolean
 
-    Private m_CancelRequiredPrimaryProdRun As Boolean
-
-    ''' <summary>
-    ''' Run network analysis for ecosim
-    ''' </summary>
-    ''' <remarks>in EwE5 this is called IndicesOn</remarks>
+    ''' <summary>Flag stating whether Run network analysis for ecosim should be ran.</summary>
+    ''' <remarks>In EwE5 this is called IndicesOn</remarks>
     Private m_bEcosimNetwork As Boolean
 
     ''' <summary>List of iGroups that have fish catch </summary>
     Dim lstCatch As New List(Of Integer)
 
-    Private m_publisher As cMessagePublisher
+    ''' <summary><see cref="cMessagePublisher">Core message publisher</see> for
+    ''' sending messages through the EwE core system.</summary>
+    Private m_publisher As cMessagePublisher = Nothing
 
-    Private WithEvents CoreStateMonitor As cCoreStateMonitor
 
 #End Region
 
@@ -156,13 +163,18 @@ Public Class cNetworkManager
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
         m_core = theCore
-        CoreStateMonitor = m_core.StateMonitor
+        m_corestatemonitor = m_core.StateMonitor
         m_publisher = theCore.Messages
-        m_EcoNetwork = New cEcoNetwork(Me)
+        m_econetwork = New cEcoNetwork(Me)
+
+        AddHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Return True
 
     End Function
 
+    Friend Sub Clear()
+        RemoveHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+    End Sub
 
     Public Sub New()
         m_runstate = eRunState.CoreNotReady
@@ -200,11 +212,11 @@ Public Class cNetworkManager
     Public Function RunMainNetwork() As Boolean
 
         Dim breturn As Boolean
-        Debug.Assert(m_EcoNetwork IsNot Nothing)
+        Debug.Assert(m_econetwork IsNot Nothing)
 
         m_runstate = eRunState.NetworkNeedsToRun
 
-        If m_EcoNetwork Is Nothing Then
+        If m_econetwork Is Nothing Then
             'message of some sort
             m_publisher.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
             Return False
@@ -217,19 +229,19 @@ Public Class cNetworkManager
                 'jb probable don't need to reset the instance each time but this is robust
                 Dim frmHide As frmHideGroups = frmHideGroups.GetInstance(Me)
                 frmHide.Init() 'load the groupname and fleetname
-                m_EcoNetwork.HideGroupsForm() = frmHide
+                m_econetwork.HideGroupsForm() = frmHide
 
 
                 'Make sure the network analysis object has the latest data computed by the core
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
                 'However, this is more robust, incase the core has created a new m_EcoPathData object.
-                m_EcoNetwork.EcopathData = m_epdata
-                m_EcoNetwork.RunNetworkAnalysis()
+                m_econetwork.EcopathData = m_epdata
+                m_econetwork.RunNetworkAnalysis()
 
                 m_runstate = eRunState.NetworkHasRun
 
                 breturn = True
-                m_IsMainNetworkRun = True
+                m_bIsMainNetworkRun = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -255,10 +267,10 @@ Public Class cNetworkManager
     'End Function
     Public Property IsMainNetworkRun() As Boolean
         Get
-            Return m_IsMainNetworkRun
+            Return m_bIsMainNetworkRun
         End Get
         Set(ByVal value As Boolean)
-            m_IsMainNetworkRun = value
+            m_bIsMainNetworkRun = value
         End Set
     End Property
     'End Change
@@ -272,9 +284,9 @@ Public Class cNetworkManager
     ''' <remarks>This popluates data for the EwE5 tabs 'Primary prod. required'-'For harvest of all groups' and 'For consumption of all groups'</remarks>
     Public Function RunRequiredPrimaryProd() As Boolean
         Dim breturn As Boolean
-        Debug.Assert(m_EcoNetwork IsNot Nothing)
+        Debug.Assert(m_econetwork IsNot Nothing)
 
-        If m_EcoNetwork Is Nothing Then
+        If m_econetwork Is Nothing Then
             'message of some sort
             m_core.Messages.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
             Return False
@@ -295,12 +307,12 @@ Public Class cNetworkManager
 
                 'Debug.Assert(m_runstate = eRunState.NetworkHasRun)
 
-                m_EcoNetwork.CalculateRequiredPP()
+                m_econetwork.CalculateRequiredPP()
 
                 m_runstate = eRunState.RequirePPHasRun
 
                 breturn = True
-                m_IsRequiredPrimaryProdRun = True
+                m_bIsRequiredPrimaryProdRun = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -326,10 +338,10 @@ Public Class cNetworkManager
     'End Function
     Public Property IsRequiredPrimaryProdRun() As Boolean
         Get
-            Return m_IsRequiredPrimaryProdRun
+            Return m_bIsRequiredPrimaryProdRun
         End Get
         Set(ByVal value As Boolean)
-            m_IsRequiredPrimaryProdRun = value
+            m_bIsRequiredPrimaryProdRun = value
         End Set
     End Property
     'End change
@@ -348,7 +360,7 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         Try
-            m_EcoNetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
+            m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
             Return True
         Catch ex As Exception
             cLog.Write(ex)
@@ -369,7 +381,7 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         Try
-            m_EcoNetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
+            m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
             Return True
         Catch ex As Exception
             cLog.Write(ex)
@@ -388,7 +400,7 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         Try
-            m_EcoNetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
+            m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
             Return True
         Catch ex As Exception
             cLog.Write(ex)
@@ -407,7 +419,7 @@ Public Class cNetworkManager
 
         Try
             'ToDo_jb FindPathwaysCycles EwE5 calls InitCyclesList ????? I can not find this again
-            m_EcoNetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
+            m_econetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
             Return True
         Catch ex As Exception
             cLog.Write(ex)
@@ -426,7 +438,7 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         Try
-            m_EcoNetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
+            m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
             Return True
         Catch ex As Exception
             cLog.Write(ex)
@@ -478,9 +490,9 @@ Public Class cNetworkManager
             m_core.RunEcoSim()
 
             If bEcosimPPR Then
-                m_IsEcosimNetworkWithPPREstRun = True
+                m_bIsEcosimNetworkWithPPREstRun = True
             Else
-                m_IsEcosimNetworkWithoutPPREstRun = True
+                m_bIsEcosimNetworkWithoutPPREstRun = True
             End If
 
             m_bEcosimNetwork = False
@@ -504,10 +516,10 @@ Public Class cNetworkManager
     'End Function
     Public Property IsEcosimNetworkWithPPREstRun() As Boolean
         Get
-            Return m_IsEcosimNetworkWithPPREstRun
+            Return m_bIsEcosimNetworkWithPPREstRun
         End Get
         Set(ByVal value As Boolean)
-            m_IsEcosimNetworkWithPPREstRun = value
+            m_bIsEcosimNetworkWithPPREstRun = value
         End Set
     End Property
     'End change
@@ -519,10 +531,10 @@ Public Class cNetworkManager
     'End Function
     Public Property IsEcosimNetworkWithoutPPREstRun() As Boolean
         Get
-            Return m_IsEcosimNetworkWithoutPPREstRun
+            Return Me.m_bIsEcosimNetworkWithoutPPREstRun
         End Get
         Set(ByVal value As Boolean)
-            m_IsEcosimNetworkWithoutPPREstRun = value
+            Me.m_bIsEcosimNetworkWithoutPPREstRun = value
         End Set
     End Property
     'End change
@@ -559,10 +571,10 @@ Public Class cNetworkManager
                 End If
             End If
 
-            m_EcoNetwork.EcopathData = m_epdata
-            m_EcoNetwork.EcosimData = m_esdata
+            m_econetwork.EcopathData = m_epdata
+            m_econetwork.EcosimData = m_esdata
 
-            m_EcoNetwork.InitForEcosim()
+            m_econetwork.InitForEcosim()
             m_runstate = eRunState.EcosimNetworkInitialized
 
 
@@ -599,7 +611,7 @@ Public Class cNetworkManager
             End If
 
             'do ecosim network calculation for this time step
-            m_EcoNetwork.EcosimTimestep(BiomassAtTimestep, EcosimDatastructures, iTime)
+            m_econetwork.EcosimTimestep(BiomassAtTimestep, EcosimDatastructures, iTime)
             'tell the world that a time step has been computed
             'If (iTime Mod 10) = 0 Then RaiseEvent EcosimNetworkProgress(iTime)
             RaiseEvent EcosimNetworkProgress(iTime)
@@ -673,10 +685,10 @@ Public Class cNetworkManager
     ''' <remarks>This is very time consuming</remarks>
     Public Property bEcosimPPR() As Boolean
         Get
-            Return Me.m_EcoNetwork.PPRon
+            Return Me.m_econetwork.PPRon
         End Get
         Set(ByVal value As Boolean)
-            Me.m_EcoNetwork.PPRon = value
+            Me.m_econetwork.PPRon = value
         End Set
     End Property
 
@@ -695,7 +707,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property nTrophicLevels() As Integer
         Get
-            Return Me.m_EcoNetwork.NoTL
+            Return Me.m_econetwork.NoTL
         End Get
     End Property
 
@@ -742,7 +754,7 @@ Public Class cNetworkManager
     ''' <remarks>PathWays will contain new data on each call to FindPathwaysxxxxxx</remarks>
     Public ReadOnly Property PathWays() As List(Of String)
         Get
-            Return Me.m_EcoNetwork.lstPathways
+            Return Me.m_econetwork.lstPathways
         End Get
     End Property
 
@@ -752,7 +764,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property NumArrows() As Integer
         Get
-            Return Me.m_EcoNetwork.NumberArrows
+            Return Me.m_econetwork.NumberArrows
         End Get
     End Property
 
@@ -765,7 +777,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property RelativeFlow(ByVal iGroup As Integer, ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.AM(iTrophicLevel, iGroup)
+            Return m_econetwork.AM(iTrophicLevel, iGroup)
         End Get
     End Property
 
@@ -774,7 +786,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AbsoluteFlow(ByVal iGroup As Integer, ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.AM_Abs(iTrophicLevel, iGroup)
+            Return m_econetwork.AM_Abs(iTrophicLevel, iGroup)
         End Get
     End Property
 
@@ -783,7 +795,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AbsoluteFlowTotal(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.QTL(iTrophicLevel)
+            Return m_econetwork.QTL(iTrophicLevel)
         End Get
     End Property
 
@@ -792,7 +804,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CA(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.CA(iTrophicLevel)
+            Return m_econetwork.CA(iTrophicLevel)
         End Get
     End Property
 
@@ -801,7 +813,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CatchDetritus(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.CAD(iTrophicLevel)
+            Return m_econetwork.CAD(iTrophicLevel)
         End Get
     End Property
 
@@ -810,7 +822,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property FlowFromDetritus() As Single
         Get
-            Return m_EcoNetwork.DetIndex
+            Return m_econetwork.DetIndex
         End Get
     End Property
 
@@ -819,7 +831,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property BiomassByTrophicLevel(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.BbyTL(iTrophicLevel)
+            Return m_econetwork.BbyTL(iTrophicLevel)
         End Get
     End Property
 
@@ -837,7 +849,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CatchByTrophicLevel(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.CbyTL(iTrophicLevel)
+            Return m_econetwork.CbyTL(iTrophicLevel)
         End Get
     End Property
 
@@ -855,7 +867,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property MixedTrophicImpacts(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
         Get
-            Return m_EcoNetwork.MTI(iPred, iPrey)
+            Return m_econetwork.MTI(iPred, iPrey)
         End Get
     End Property
 
@@ -865,8 +877,8 @@ Public Class cNetworkManager
     Public ReadOnly Property FlowFromDetritus(ByVal iGroup As Integer) As Single
         Get
             Dim sumad As Single
-            For itl As Integer = 1 To m_EcoNetwork.NoTL
-                sumad += m_EcoNetwork.Ad(itl, iGroup)
+            For itl As Integer = 1 To m_econetwork.NoTL
+                sumad += m_econetwork.Ad(itl, iGroup)
             Next
             Return sumad
         End Get
@@ -879,26 +891,26 @@ Public Class cNetworkManager
 
     Public ReadOnly Property AscendancyByGroup(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.Ac(iGroup)
+            Return m_econetwork.Ac(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property OverheadByGroup(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.Ec(iGroup)
+            Return m_econetwork.Ec(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property CapacityByGroup(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.CC(iGroup)
+            Return m_econetwork.CC(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property InformationByGroup(ByVal iGroup As Integer) As Single
         Get
-            If m_EcoNetwork.TruPut > 0 Then
-                Return m_EcoNetwork.Ac(iGroup) / m_EcoNetwork.TruPut
+            If m_econetwork.TruPut > 0 Then
+                Return m_econetwork.Ac(iGroup) / m_econetwork.TruPut
             Else
                 Return cCore.NULL_VALUE
             End If
@@ -907,61 +919,61 @@ Public Class cNetworkManager
 
     Public ReadOnly Property ThroughputByGroup(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.Q(iGroup)
+            Return m_econetwork.Q(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property AscendencyTotal() As Single
         Get
-            Return m_EcoNetwork.SumAc
+            Return m_econetwork.SumAc
         End Get
     End Property
 
     Public ReadOnly Property OverheadTotal() As Single
         Get
-            Return m_EcoNetwork.SumEc
+            Return m_econetwork.SumEc
         End Get
     End Property
 
     Public ReadOnly Property CapacityTotal() As Single
         Get
-            Return m_EcoNetwork.SumCc
+            Return m_econetwork.SumCc
         End Get
     End Property
 
     Public ReadOnly Property ThroughputTotal() As Single
         Get
-            Return m_EcoNetwork.TruPut
+            Return m_econetwork.TruPut
         End Get
     End Property
 
     Public ReadOnly Property ThroughputCycledLiving() As Single
         Get
-            Return m_EcoNetwork.Tc
+            Return m_econetwork.Tc
         End Get
     End Property
 
     Public ReadOnly Property ThroughputCycledPredatory() As Single
         Get
-            Return m_EcoNetwork.TCyc
+            Return m_econetwork.TCyc
         End Get
     End Property
 
     Public ReadOnly Property ThroughputCycledAll() As Single
         Get
-            Return m_EcoNetwork.TcD
+            Return m_econetwork.TcD
         End Get
     End Property
 
     Public ReadOnly Property ThroughputExport() As Single
         Get
-            Return m_EcoNetwork.SumEx
+            Return m_econetwork.SumEx
         End Get
     End Property
 
     Public ReadOnly Property ThroughputResp() As Single
         Get
-            Return m_EcoNetwork.SumResp
+            Return m_econetwork.SumResp
         End Get
     End Property
 
@@ -981,7 +993,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyInternalFlowTotal() As Single
         Get
-            Return m_EcoNetwork.Ai
+            Return m_econetwork.Ai
         End Get
     End Property
 
@@ -990,7 +1002,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyInternalFlowPer() As Single
         Get
-            Return m_EcoNetwork.Aip
+            Return m_econetwork.Aip
         End Get
     End Property
 
@@ -1000,7 +1012,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyImportTotal() As Single
         Get
-            Return m_EcoNetwork.Ao
+            Return m_econetwork.Ao
         End Get
     End Property
 
@@ -1009,7 +1021,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyImportPer() As Single
         Get
-            Return m_EcoNetwork.Aop
+            Return m_econetwork.Aop
         End Get
     End Property
 
@@ -1019,7 +1031,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyExportTotal() As Single
         Get
-            Return m_EcoNetwork.Ae
+            Return m_econetwork.Ae
         End Get
     End Property
 
@@ -1028,7 +1040,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyExportPer() As Single
         Get
-            Return m_EcoNetwork.Aep
+            Return m_econetwork.Aep
         End Get
     End Property
 
@@ -1037,7 +1049,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyRespTotal() As Single
         Get
-            Return m_EcoNetwork.Ar
+            Return m_econetwork.Ar
         End Get
     End Property
 
@@ -1046,7 +1058,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyRespPer() As Single
         Get
-            Return m_EcoNetwork.Arp
+            Return m_econetwork.Arp
         End Get
     End Property
 
@@ -1055,7 +1067,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyTotalsTotal() As Single
         Get
-            Return m_EcoNetwork.Ascen
+            Return m_econetwork.Ascen
         End Get
     End Property
 
@@ -1064,7 +1076,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property AscendancyTotalsPer() As Single
         Get
-            Return m_EcoNetwork.Ascp
+            Return m_econetwork.Ascp
         End Get
     End Property
 
@@ -1077,7 +1089,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadFlowTotal() As Single
         Get
-            Return m_EcoNetwork.Ei
+            Return m_econetwork.Ei
         End Get
     End Property
 
@@ -1086,7 +1098,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadFlowPer() As Single
         Get
-            Return m_EcoNetwork.Eip
+            Return m_econetwork.Eip
         End Get
     End Property
 
@@ -1096,7 +1108,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadImportTotal() As Single
         Get
-            Return m_EcoNetwork.Eo
+            Return m_econetwork.Eo
         End Get
     End Property
 
@@ -1105,7 +1117,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadImportPer() As Single
         Get
-            Return m_EcoNetwork.Eop
+            Return m_econetwork.Eop
         End Get
     End Property
 
@@ -1114,7 +1126,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadExportTotal() As Single
         Get
-            Return m_EcoNetwork.Eee
+            Return m_econetwork.Eee
         End Get
     End Property
 
@@ -1123,7 +1135,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadExportPer() As Single
         Get
-            Return m_EcoNetwork.Eep
+            Return m_econetwork.Eep
         End Get
     End Property
 
@@ -1132,7 +1144,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadRespTotal() As Single
         Get
-            Return m_EcoNetwork.er
+            Return m_econetwork.er
         End Get
     End Property
 
@@ -1141,7 +1153,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadRespPer() As Single
         Get
-            Return m_EcoNetwork.Erp
+            Return m_econetwork.Erp
         End Get
     End Property
 
@@ -1150,7 +1162,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadTotalsTotal() As Single
         Get
-            Return m_EcoNetwork.Overhead
+            Return m_econetwork.Overhead
         End Get
     End Property
 
@@ -1159,7 +1171,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property OverheadTotalsPer() As Single
         Get
-            Return m_EcoNetwork.Overp
+            Return m_econetwork.Overp
         End Get
     End Property
 
@@ -1172,7 +1184,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityFlowTotal() As Single
         Get
-            Return m_EcoNetwork.Ci
+            Return m_econetwork.Ci
         End Get
     End Property
 
@@ -1181,7 +1193,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityFlowPer() As Single
         Get
-            Return m_EcoNetwork.Cip
+            Return m_econetwork.Cip
         End Get
     End Property
 
@@ -1191,7 +1203,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityImportTotal() As Single
         Get
-            Return m_EcoNetwork.Co
+            Return m_econetwork.Co
         End Get
     End Property
 
@@ -1200,7 +1212,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityImportPer() As Single
         Get
-            Return m_EcoNetwork.Cop
+            Return m_econetwork.Cop
         End Get
     End Property
 
@@ -1209,7 +1221,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityExportTotal() As Single
         Get
-            Return m_EcoNetwork.Ce
+            Return m_econetwork.Ce
         End Get
     End Property
 
@@ -1218,7 +1230,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityExportPer() As Single
         Get
-            Return m_EcoNetwork.Cep
+            Return m_econetwork.Cep
         End Get
     End Property
 
@@ -1227,7 +1239,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityRespTotal() As Single
         Get
-            Return m_EcoNetwork.Cr
+            Return m_econetwork.Cr
         End Get
     End Property
 
@@ -1236,7 +1248,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityRespPer() As Single
         Get
-            Return m_EcoNetwork.Crp
+            Return m_econetwork.Crp
         End Get
     End Property
 
@@ -1245,7 +1257,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityTotalsTotal() As Single
         Get
-            Return m_EcoNetwork.Capacity
+            Return m_econetwork.Capacity
         End Get
     End Property
 
@@ -1254,7 +1266,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property CapacityTotalsPer() As Single
         Get
-            Return m_EcoNetwork.Capp
+            Return m_econetwork.Capp
         End Get
     End Property
 
@@ -1270,7 +1282,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPImport(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.Impo(iTrophicLevel)
+            Return m_econetwork.Impo(iTrophicLevel)
         End Get
     End Property
 
@@ -1279,7 +1291,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPConsByPred(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.Predat(iTrophicLevel)
+            Return m_econetwork.Predat(iTrophicLevel)
         End Get
     End Property
 
@@ -1288,7 +1300,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPExport(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.EXA(iTrophicLevel)
+            Return m_econetwork.EXA(iTrophicLevel)
         End Get
     End Property
 
@@ -1298,7 +1310,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPToDetritus(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.DTA(iTrophicLevel)
+            Return m_econetwork.DTA(iTrophicLevel)
         End Get
     End Property
 
@@ -1307,7 +1319,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRespiration(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.RSP(iTrophicLevel)
+            Return m_econetwork.RSP(iTrophicLevel)
         End Get
     End Property
 
@@ -1317,7 +1329,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPThroughtput(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.TRP(iTrophicLevel)
+            Return m_econetwork.TRP(iTrophicLevel)
         End Get
     End Property
 
@@ -1326,7 +1338,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetImport(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.ImpD(iTrophicLevel)
+            Return m_econetwork.ImpD(iTrophicLevel)
         End Get
     End Property
 
@@ -1335,7 +1347,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetConsByPred(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.PredatD(iTrophicLevel)
+            Return m_econetwork.PredatD(iTrophicLevel)
         End Get
     End Property
 
@@ -1344,7 +1356,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetExport(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.EXAD(iTrophicLevel)
+            Return m_econetwork.EXAD(iTrophicLevel)
         End Get
     End Property
 
@@ -1354,7 +1366,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetToDetritus(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.DTAD(iTrophicLevel)
+            Return m_econetwork.DTAD(iTrophicLevel)
         End Get
     End Property
 
@@ -1363,7 +1375,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetRespiration(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.RSPD(iTrophicLevel)
+            Return m_econetwork.RSPD(iTrophicLevel)
         End Get
     End Property
 
@@ -1373,7 +1385,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property DetThroughtput(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.TRPD(iTrophicLevel)
+            Return m_econetwork.TRPD(iTrophicLevel)
         End Get
     End Property
 
@@ -1382,7 +1394,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property ThroughtputShow(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.TrpShow(iTrophicLevel)
+            Return m_econetwork.TrpShow(iTrophicLevel)
         End Get
     End Property
 
@@ -1391,10 +1403,10 @@ Public Class cNetworkManager
     ''' </summary>
     Public Property TrEm1(ByVal iTrophicLevel As Integer) As Single
         Get
-            Return m_EcoNetwork.TrEm1(iTrophicLevel)
+            Return m_econetwork.TrEm1(iTrophicLevel)
         End Get
         Set(ByVal value As Single)
-            m_EcoNetwork.TrEm1(iTrophicLevel) = value
+            m_econetwork.TrEm1(iTrophicLevel) = value
         End Set
     End Property
 
@@ -1403,7 +1415,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property ExtractedToBreakCycles() As Single
         Get
-            Return m_EcoNetwork.AmCyc
+            Return m_econetwork.AmCyc
         End Get
     End Property
 
@@ -1412,7 +1424,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property InputTLIIPlus() As Single
         Get
-            Return m_EcoNetwork.SumIm
+            Return m_econetwork.SumIm
         End Get
     End Property
 
@@ -1421,7 +1433,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property TotalThroughput() As Single
         Get
-            Return m_EcoNetwork.TotalTrp
+            Return m_econetwork.TotalTrp
         End Get
     End Property
 #End Region
@@ -1430,7 +1442,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Electivity(ByVal iSel As Integer, ByVal iPrey As Integer, ByVal iTime As Integer) As Single
         Get
-            Return Me.m_EcoNetwork.Elect(iSel, iPrey, iTime)
+            Return Me.m_econetwork.Elect(iSel, iPrey, iTime)
         End Get
     End Property
 
@@ -1477,7 +1489,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property NumerPaths(ByVal iGroup As Integer) As Integer
         Get
-            Return m_EcoNetwork.NumPath(iGroup)
+            Return m_econetwork.NumPath(iGroup)
         End Get
     End Property
 
@@ -1495,7 +1507,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property TotalPrimaryProduction() As Single
         Get
-            Return m_EcoNetwork.totalPP
+            Return m_econetwork.totalPP
         End Get
     End Property
 
@@ -1507,7 +1519,7 @@ Public Class cNetworkManager
     Public ReadOnly Property PPRRequired(ByVal iGroup As Integer) As Single
         Get
             'Return m_epdata.TTLX(iGroup)
-            Return m_EcoNetwork.SumPPRequired(1, iGroup)
+            Return m_econetwork.SumPPRequired(1, iGroup)
         End Get
     End Property
 
@@ -1516,7 +1528,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRRequiredDet(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.SumDetRequired(1, iGroup)
+            Return m_econetwork.SumDetRequired(1, iGroup)
         End Get
     End Property
 
@@ -1552,7 +1564,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRTotPP(ByVal iGroup As Integer) As Single
         Get
-            Return CSng(100.0 * PPRRequiredSum(iGroup) / (m_EcoNetwork.totalPP + m_EcoNetwork.TRPD(1)))
+            Return CSng(100.0 * PPRRequiredSum(iGroup) / (m_econetwork.totalPP + m_econetwork.TRPD(1)))
         End Get
     End Property
 
@@ -1561,7 +1573,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRU(ByVal iGroup As Integer) As Single
         Get
-            Return PPRRequiredSum(iGroup) / (m_EcoNetwork.totalPP + m_EcoNetwork.TRPD(1)) / m_epdata.B(iGroup)
+            Return PPRRequiredSum(iGroup) / (m_econetwork.totalPP + m_econetwork.TRPD(1)) / m_epdata.B(iGroup)
         End Get
     End Property
 
@@ -1570,7 +1582,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property NumLivPath() As Single
         Get
-            Return m_EcoNetwork.NumLivPath
+            Return m_econetwork.NumLivPath
         End Get
     End Property
 
@@ -1579,7 +1591,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property NumDetPath() As Single
         Get
-            Return m_EcoNetwork.NumDetPath
+            Return m_econetwork.NumDetPath
         End Get
     End Property
 
@@ -1591,7 +1603,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRRequiredHarvest(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.SumPPRequired(0, iGroup)
+            Return m_econetwork.SumPPRequired(0, iGroup)
         End Get
     End Property
 
@@ -1600,7 +1612,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRRequiredDetHarvest(ByVal iGroup As Integer) As Single
         Get
-            Return m_EcoNetwork.SumDetRequired(0, iGroup)
+            Return m_econetwork.SumDetRequired(0, iGroup)
         End Get
     End Property
 
@@ -1636,7 +1648,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRTotPPHarvest(ByVal iGroup As Integer) As Single
         Get
-            Return CSng(100.0 * PPRRequiredSumHarvest(iGroup) / (m_EcoNetwork.totalPP + m_EcoNetwork.TRPD(1)))
+            Return CSng(100.0 * PPRRequiredSumHarvest(iGroup) / (m_econetwork.totalPP + m_econetwork.TRPD(1)))
         End Get
     End Property
 
@@ -1645,7 +1657,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property PPRUHarvest(ByVal iGroup As Integer) As Single
         Get
-            Return PPRRequiredSumHarvest(iGroup) / (m_EcoNetwork.totalPP + m_EcoNetwork.TRPD(1)) / m_epdata.fCatch(iGroup)
+            Return PPRRequiredSumHarvest(iGroup) / (m_econetwork.totalPP + m_econetwork.TRPD(1)) / m_epdata.fCatch(iGroup)
         End Get
     End Property
 
@@ -1663,7 +1675,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property TotalPPRPP() As Single
         Get
-            Return m_EcoNetwork.RaiseToPP(0)
+            Return m_econetwork.RaiseToPP(0)
         End Get
     End Property
 
@@ -1672,7 +1684,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property TotalPPRDet() As Single
         Get
-            Return m_EcoNetwork.RaiseToDet(0)
+            Return m_econetwork.RaiseToDet(0)
         End Get
     End Property
 
@@ -1681,7 +1693,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property TotalCatch() As Single
         Get
-            Return m_EcoNetwork.totalCatch
+            Return m_econetwork.totalCatch
         End Get
     End Property
 
@@ -1705,7 +1717,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property FIB() As Single()
         Get
-            Return Me.m_EcoNetwork.FIB
+            Return Me.m_econetwork.FIB
         End Get
     End Property
 
@@ -1717,7 +1729,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property RelativeSumOfCatchPlot() As Single()
         Get
-            Return Me.m_EcoNetwork.RelativeSumOfCatchPlot
+            Return Me.m_econetwork.RelativeSumOfCatchPlot
         End Get
     End Property
 
@@ -1730,7 +1742,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property RelativeKemptonsPlot() As Single()
         Get
-            Return Me.m_EcoNetwork.RelativeKemptonsPlot
+            Return Me.m_econetwork.RelativeKemptonsPlot
         End Get
     End Property
 
@@ -1742,7 +1754,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property TLCatchPlot() As Single()
         Get
-            Return Me.m_EcoNetwork.TLCatchPlot
+            Return Me.m_econetwork.TLCatchPlot
         End Get
     End Property
 
@@ -1754,7 +1766,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property TLSimPlot(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
         Get
-            Return Me.m_EcoNetwork.TLSimPlot(iGroup, iTime)
+            Return Me.m_econetwork.TLSimPlot(iGroup, iTime)
         End Get
     End Property
 
@@ -1767,7 +1779,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property RelativeCatchPPRPlot() As Single()
         Get
-            Return Me.m_EcoNetwork.RelativeCatchPPR
+            Return Me.m_econetwork.RelativeCatchPPR
         End Get
     End Property
 
@@ -1779,7 +1791,7 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property RelativeDetritusReqPlot() As Single()
         Get
-            Return Me.m_EcoNetwork.RelativeCatchDetReq
+            Return Me.m_econetwork.RelativeCatchDetReq
         End Get
     End Property
 
@@ -1791,151 +1803,151 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public ReadOnly Property ThroughputEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Throughput
+            Return Me.m_econetwork.Throughput
         End Get
     End Property
 
     Public ReadOnly Property CapacityEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.CapacityEcosim
+            Return Me.m_econetwork.CapacityEcosim
         End Get
     End Property
 
     Public ReadOnly Property AscendImportEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AscendImport
+            Return Me.m_econetwork.AscendImport
         End Get
     End Property
 
     Public ReadOnly Property AscendFlowEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AscendFlow
+            Return Me.m_econetwork.AscendFlow
         End Get
     End Property
 
     Public ReadOnly Property AscendExportEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AscendExport
+            Return Me.m_econetwork.AscendExport
         End Get
     End Property
 
     Public ReadOnly Property AscendRespEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AscendResp
+            Return Me.m_econetwork.AscendResp
         End Get
     End Property
 
     Public ReadOnly Property OverheadImportEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.OverheadImport
+            Return Me.m_econetwork.OverheadImport
         End Get
     End Property
 
     Public ReadOnly Property OverheadFlowEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.OverheadFlow
+            Return Me.m_econetwork.OverheadFlow
         End Get
     End Property
 
     Public ReadOnly Property OverheadExportEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.OverheadExport
+            Return Me.m_econetwork.OverheadExport
         End Get
     End Property
 
     Public ReadOnly Property OverheadRespEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.OverheadResp
+            Return Me.m_econetwork.OverheadResp
         End Get
     End Property
 
     Public ReadOnly Property PCIEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.PCI
+            Return Me.m_econetwork.PCI
         End Get
     End Property
 
     Public ReadOnly Property FCIEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.FCI
+            Return Me.m_econetwork.FCI
         End Get
     End Property
 
     Public ReadOnly Property PathLengthEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.PathLength
+            Return Me.m_econetwork.PathLength
         End Get
     End Property
 
     Public ReadOnly Property ExportEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Export
+            Return Me.m_econetwork.Export
         End Get
     End Property
 
     Public ReadOnly Property RespEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Resp
+            Return Me.m_econetwork.Resp
         End Get
     End Property
 
     Public ReadOnly Property PrimaryProdEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.PrimaryProd
+            Return Me.m_econetwork.PrimaryProd
         End Get
     End Property
 
     Public ReadOnly Property ProdEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Prod
+            Return Me.m_econetwork.Prod
         End Get
     End Property
 
     Public ReadOnly Property BiomassEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Biomass
+            Return Me.m_econetwork.Biomass
         End Get
     End Property
 
     Public ReadOnly Property CatchEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.CatchEcosim
+            Return Me.m_econetwork.CatchEcosim
         End Get
     End Property
 
     Public ReadOnly Property PropFlowDetEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.PropFlowDet
+            Return Me.m_econetwork.PropFlowDet
         End Get
     End Property
 
     Public ReadOnly Property RaiseToPPEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.RaiseToPPEcosim
+            Return Me.m_econetwork.RaiseToPPEcosim
         End Get
     End Property
 
     Public ReadOnly Property RaiseToDetEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.RaiseToDetEcosim
+            Return Me.m_econetwork.RaiseToDetEcosim
         End Get
     End Property
 
     Public ReadOnly Property AscendTotalEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Ascendency
+            Return Me.m_econetwork.Ascendency
         End Get
     End Property
 
     Public ReadOnly Property AMIEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.AMI
+            Return Me.m_econetwork.AMI
         End Get
     End Property
 
     Public ReadOnly Property EntropyEcosim() As Single()
         Get
-            Return Me.m_EcoNetwork.Entropy
+            Return Me.m_econetwork.Entropy
         End Get
     End Property
 
@@ -2082,10 +2094,10 @@ Public Class cNetworkManager
 
     Public Property CancelRequiredPrimaryProdRun() As Boolean
         Get
-            Return m_CancelRequiredPrimaryProdRun
+            Return m_bCancelRequiredPrimaryProdRun
         End Get
         Set(ByVal value As Boolean)
-            m_CancelRequiredPrimaryProdRun = value
+            m_bCancelRequiredPrimaryProdRun = value
         End Set
     End Property
 
@@ -2094,8 +2106,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Listen to the core's state monitor to see if Ecopath has been changed
     ''' </summary>
-    Private Sub CoreStateMonitor_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
-        Handles CoreStateMonitor.CoreExecutionStateEvent
+    Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
         'ToDo_jb CoreStateMonitor_CoreExecutionStateEvent() Ecoism loaded does not need to be false if Ecopath is rerun 
 
@@ -2112,6 +2123,16 @@ Public Class cNetworkManager
             'System.Console.WriteLine("Network Analysis Plugin state changed. Core state = " & iState.ToString & " Network Analysis plugin state = " & m_runstate.ToString)
         End If
 
+        ' Invalidate results when core states dictate 
+        ' Fixes bug 617
+        If Not csm.HasEcopathRan Then
+            Me.m_bIsMainNetworkRun = False
+        End If
+
+        If Not csm.HasEcosimRan Then
+            Me.m_bIsEcosimNetworkWithoutPPREstRun = False
+            Me.m_bIsEcosimNetworkWithPPREstRun = False
+        End If
 
     End Sub
 
