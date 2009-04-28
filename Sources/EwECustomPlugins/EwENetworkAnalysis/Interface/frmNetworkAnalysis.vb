@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.15  2009/04/28 16:46:04  jeroens
+' Removed obsolete class
+'
 ' Revision 1.14  2009/04/28 16:36:00  jeroens
 ' Tree node navigation done based on node names, no longer node texts
 '
@@ -127,7 +130,6 @@ Public Class frmNetworkAnalysis
     Private m_ImpactData As cImpactData
     Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
     Private WithEvents m_PlotOfMixedTrophicImpact As cPlotOfMixedTrophicImpact
-    Private m_HideGroupsClass As cHideGroups
     Private m_HideGroupsForm As frmHideGroups
 
     Private m_AscendencyByGroup As cByGroup
