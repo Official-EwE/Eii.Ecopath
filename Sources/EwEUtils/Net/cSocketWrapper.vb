@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.8  2009/04/28 13:15:34  jeroens
+' Events marshalled
+'
 ' Revision 1.7  2009/01/16 18:30:35  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -22,36 +25,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.31  2008/09/16 16:40:35  jeroens
-' Added send queue verbose bits
-'
-' Revision 1.30  2008/09/12 16:48:26  jeroens
-' Pruned history
-'
-' Revision 1.29  2008/09/12 16:47:01  jeroens
-' Verbose_level 1 will dump out major status updates and transmitted/received object IDs
-'
-' Revision 1.28  2008/09/11 21:41:29  jeroens
-' Console output contains name of socket (which is derived from IP)
-'
-' Revision 1.27  2008/09/09 18:55:53  jeroens
-' Streamlined ReceiveCallBack
-'
-' Revision 1.26  2008/09/09 16:51:45  jeroens
-' Fixed handshake vs. Client ID bug
-'
-' Revision 1.25  2008/09/05 14:30:30  jeroens
-' Handshake event sent outside synclock
-'
-' Revision 1.24  2008/09/04 14:57:41  joeb
-' Replace the Semaphore SendLock
-'
-' Revision 1.23  2008/09/03 18:30:18  joeb
-' Removed the Send Semaphore
-'
-' Revision 1.22  2008/09/03 14:38:35  jeroens
-' Added verbose levels
 '
 '==============================================================================
 
@@ -196,8 +169,8 @@ Namespace NetUtilities
         Private m_readState As eReadStates = eReadStates.ReadingSize
 
         Private m_readlock As New System.Threading.Semaphore(1, 1)
-        Private m_pendingSend As Integer
-
+        Private m_iNumPendingSend As Integer = 0
+        Private m_syncObject As SynchronizationContext = Nothing
 
 #End Region ' Privates
 
@@ -225,6 +198,12 @@ Namespace NetUtilities
 
             Me.m_iID = iID
             Me.m_socket = s
+
+            ' Get sync object
+            Me.m_syncObject = SynchronizationContext.Current
+            If (Me.m_syncObject Is Nothing) Then
+                Me.m_syncObject = New SynchronizationContext()
+            End If
 
             If Me.Connected Then
                 Me.StartListening()
@@ -272,6 +251,39 @@ Namespace NetUtilities
         ''' that was received.</param>
         ''' -------------------------------------------------------------------
         Public Event OnData(ByVal sw As cSocketWrapper, ByVal data As cSerializableObject)
+
+        Private Class cEventInfo
+
+            Public Enum eEventType As Integer
+                Status
+                Data
+            End Enum
+
+            Public Sub New(ByVal eventType As eEventType, ByVal data As Object)
+                Me.EventType = eventType
+                Me.Data = data
+            End Sub
+
+            Public EventType As eEventType = eEventType.Data
+            Public Data As Object = Nothing
+
+        End Class
+
+        Private Sub SendEvent(ByVal obj As Object)
+
+            Dim info As cEventInfo = DirectCast(obj, cEventInfo)
+
+            Select Case info.EventType
+
+                Case cEventInfo.eEventType.Data
+                    RaiseEvent OnData(Me, DirectCast(info.Data, cSerializableObject))
+
+                Case cEventInfo.eEventType.Status
+                    RaiseEvent OnStatus(Me, DirectCast(info.Data, eStatusTypes), "")
+
+            End Select
+
+        End Sub
 
 #End Region ' Events 
 
@@ -342,7 +354,8 @@ Namespace NetUtilities
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("sw {0} failed to connect to {1}:{2}", Me.ToString(), ip.ToString(), iPort)
 #End If
-                RaiseEvent OnStatus(Me, eStatusTypes.Disconnected, String.Format("Failed to connect to {0}:{1}", ip.ToString, iPort))
+                Me.m_syncObject.Send(New SendOrPostCallback(AddressOf SendEvent), _
+                                     New cEventInfo(cEventInfo.eEventType.Status, eStatusTypes.Disconnected))
                 Return False
             End If
 
@@ -350,7 +363,8 @@ Namespace NetUtilities
 #If VERBOSE_LEVEL >= 1 Then
             Console.WriteLine("sw {0} connected", Me.ToString())
 #End If
-            RaiseEvent OnStatus(Me, eStatusTypes.Connected, String.Format("Connected to server {0}:{1}", ip.ToString, iPort))
+            Me.m_syncObject.Send(New SendOrPostCallback(AddressOf SendEvent), _
+                                 New cEventInfo(cEventInfo.eEventType.Status, eStatusTypes.Connected))
             Me.StartListening()
 
             Return True
@@ -461,7 +475,7 @@ Namespace NetUtilities
 
             'Block all other calls to Send until this Send has finished (SendCallback)
 
-            m_pendingSend += 1
+            m_iNumPendingSend += 1
             bf.Serialize(ms, obj)
             ' Reset position in stream
             ms.Seek(0, 0)
@@ -475,7 +489,7 @@ Namespace NetUtilities
 
                 bSucces = False
             End Try
-            m_pendingSend -= 1
+            m_iNumPendingSend -= 1
             ' Cleanup
             ms.Close()
             ms = Nothing
@@ -570,7 +584,6 @@ Namespace NetUtilities
         ''' <param name="iNumBytes">The number of bytes that were received.</param>
         ''' -------------------------------------------------------------------
         Private Function ReadBuffer(ByVal iNumBytes As Integer) As List(Of cSerializableObject)
-            'Private Function ReadBuffer(ByVal iNumBytes As Integer) As cSerializableObject
 
             Dim objData As cSerializableObject = Nothing
             Dim bf As BinaryFormatter = Nothing
@@ -758,13 +771,13 @@ Namespace NetUtilities
 
                     ' #No: not a handshake but a valid object
 
-                    'is this connection Authorized
+                    ' Is this connection Authorized?
                     If sw.Authorized Then
-                        'Yes connection is Authorized 
-                        ' Broadcast new data
+                        ' #Yes: connection is Authorized, broadcast new data
                         Try
                             ' Send event
-                            RaiseEvent OnData(Me, objRead)
+                            Me.m_syncObject.Send(New SendOrPostCallback(AddressOf SendEvent), _
+                                                 New cEventInfo(cEventInfo.eEventType.Data, objRead))
 
                         Catch ex As Exception
 #If VERBOSE_LEVEL >= 1 Then
@@ -796,19 +809,18 @@ Namespace NetUtilities
         ''' Process a Handshake object received by the socket callback ReceiveCallBack(IAsyncResult)
         ''' </summary>
         ''' <param name="sw">SocketWrapper object the handshake was recieved on</param>
-        ''' <param name="Handshake">Handshake to process</param>
+        ''' <param name="handshake">cHandshake to process</param>
         ''' <remarks></remarks>
-        Private Sub ReceiveHandShake(ByVal sw As cSocketWrapper, ByVal Handshake As cHandShake)
+        Private Sub ReceiveHandShake(ByVal sw As cSocketWrapper, ByVal handshake As cHandShake)
             Dim bSendAuthorization As Boolean
 
-
 #If VERBOSE_LEVEL >= 2 Then
-                                Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), hs.ToString())
+            Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), handshake.ToString())
 #End If
             ' Is the socket wrapper not authorized?
             If (sw.Authorized = False) Then
                 ' #Yes: is the incoming handshake designated for the socket wrapper?
-                If sw.IsHandshake(Handshake.HandshakeID) Then
+                If sw.IsHandshake(handshake.HandshakeID) Then
                     ' #Yes: Authorized
                     sw.Authorized = True
                     bSendAuthorization = True
@@ -817,16 +829,16 @@ Namespace NetUtilities
 #End If
                 Else
 #If VERBOSE_LEVEL >= 1 Then
-                    Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), Handshake.HandshakeID, sw.m_iHandshake)
+                    Console.WriteLine(">> sw {0} received handshake {1}, expecting {2}", Me.ToString(), handshake.HandshakeID, sw.m_iHandshake)
 #End If
                 End If
             Else
 #If VERBOSE_LEVEL >= 2 Then
-                                    Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
+                Console.WriteLine(">> sw {0} already authorized!", Me.ToString())
 #End If
             End If
             ' First relay handshake
-            sw.RelayHandshake(Handshake)
+            sw.RelayHandshake(handshake)
             ' Then raise authorization event
             If bSendAuthorization Then
                 Try
@@ -911,7 +923,7 @@ Namespace NetUtilities
                 If s Is Nothing Then Return
                 If Not s.Connected Then Return
                 nb = s.EndSend(ar)
-                m_pendingSend -= 1
+                m_iNumPendingSend -= 1
 
 #If VERBOSE_LEVEL >= 1 Then
                 Me.m_iQueue -= (nb)
