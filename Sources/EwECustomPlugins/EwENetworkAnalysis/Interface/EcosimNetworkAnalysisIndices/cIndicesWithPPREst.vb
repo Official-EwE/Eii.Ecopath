@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.10  2009/04/28 16:24:25  jeroens
+' Fixed graph max axis
+' Graph styling done with ZedGraphHelper
+'
 ' Revision 1.9  2009/04/17 01:07:05  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -76,6 +80,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.IO
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -111,49 +116,48 @@ Public Class cIndicesWithPPREst
     End Sub
 
     Public Sub CreatePlot(ByVal Frm As Form) ', ByVal Zgc As ZedGraphControl)
-        Dim Zgc As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim Panes As MasterPane = Zgc.MasterPane
-        Dim Pane1 As GraphPane = New ZedGraph.GraphPane
-        Dim Pane2 As GraphPane = New ZedGraph.GraphPane
-        Dim Graphic As Graphics
+        Dim zgc As ZedGraphControl = DirectCast(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
+        Dim zgh As New ZedGraphHelper()
+        Dim paneMaster As MasterPane = zgc.MasterPane
+        Dim pane As GraphPane = Nothing
+        Dim g As Graphics = Nothing
 
-        Panes.PaneList.Clear()
-        Panes.Add(Pane1)
-        Panes.Add(Pane2)
+        zgh.Attach(Me.m_NetworkManager.Core, zgc, 2)
 
         'Pane1
-        InitializePane(Pane1, My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC)
+        pane = zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
         'Add curves
-        Zgc.MasterPane(0).CurveList.Clear()
+        pane.CurveList.Clear()
         'FIB
-        AddCurve(My.Resources.LBL_FIB_INDX, m_NetworkManager.FIB, Pane1, Color.Green)
+        AddCurve(My.Resources.LBL_FIB_INDX, m_NetworkManager.FIB, pane, Color.Green)
         'Relative sum of catch
-        AddCurve(My.Resources.LBL_TOTAL_CATCH, m_NetworkManager.RelativeSumOfCatchPlot, Pane1, Color.Red)
+        AddCurve(My.Resources.LBL_TOTAL_CATCH, m_NetworkManager.RelativeSumOfCatchPlot, pane, Color.Red)
         'Relative Kemptons
-        AddCurve(My.Resources.LBL_KEMPTONS_Q, m_NetworkManager.RelativeKemptonsPlot, Pane1, Color.Blue)
+        AddCurve(My.Resources.LBL_KEMPTONS_Q, m_NetworkManager.RelativeKemptonsPlot, pane, Color.Blue)
         'TL catch
-        AddCurve(My.Resources.LBL_TL_CATCH, m_NetworkManager.TLCatchPlot, Pane1, Color.Black)
+        AddCurve(My.Resources.LBL_TL_CATCH, m_NetworkManager.TLCatchPlot, pane, Color.Black)
         'FCI
-        AddCurve(My.Resources.LBL_FCI, m_NetworkManager.FCIEcosim, Pane1, Color.Brown)
+        AddCurve(My.Resources.LBL_FCI, m_NetworkManager.FCIEcosim, pane, Color.Brown)
         'Catch PPR
-        AddCurve(My.Resources.LBL_CATCH_PPR, m_NetworkManager.RelativeCatchPPRPlot, Pane1, Color.Violet)
+        AddCurve(My.Resources.LBL_CATCH_PPR, m_NetworkManager.RelativeCatchPPRPlot, pane, Color.Violet)
         'Catch detritus required
-        AddCurve(My.Resources.LBL_CATCH_DET_REQ, m_NetworkManager.RelativeDetritusReqPlot, Pane1, Color.Orange)
+        AddCurve(My.Resources.LBL_CATCH_DET_REQ, m_NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
 
         'Pane2
-        InitializePane(Pane2, My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC)
+        pane = zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
         'Add curves
-        Zgc.MasterPane(1).CurveList.Clear()
+        pane.CurveList.Clear()
         'Ascendency on flow
-        AddCurve(My.Resources.LBL_ASCEND_FLOW, m_NetworkManager.AscendFlowEcosim, Pane2, Color.Gold)
+        AddCurve(My.Resources.LBL_ASCEND_FLOW, m_NetworkManager.AscendFlowEcosim, pane, Color.Gold)
 
-        Zgc.AxisChange()
-        Zgc.Refresh()
+        zgc.AxisChange()
+        zgc.Refresh()
 
-        Graphic = Frm.CreateGraphics
-        Panes.AxisChange(Graphic)
-        Panes.SetLayout(Graphic, PaneLayout.SingleColumn)
+        g = Frm.CreateGraphics
+        paneMaster.AxisChange(g)
+        paneMaster.SetLayout(g, PaneLayout.SingleColumn)
+
+        zgh.Detach()
 
         Cursor.Current = Cursors.Default
     End Sub
