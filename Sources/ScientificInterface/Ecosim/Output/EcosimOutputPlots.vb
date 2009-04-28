@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.15  2009/04/28 13:07:27  jeroens
+' Commented
+'
 ' Revision 1.14  2009/04/09 01:34:46  jeroens
 ' Hmmm, nice and fresh...
 '
@@ -256,12 +259,12 @@ Namespace Ecosim
         ''' Configure a plot on the main graph
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(ByVal pane As ePaneTypes, ByVal strTitle As String)
+        Private Sub ConfigurePane(ByVal iPane As ePaneTypes, ByVal strTitle As String)
 
             Me.m_zgh.ConfigurePane(strTitle, _
                        "", CDbl(Me.m_core.EcosimFirstYear), CDbl(Me.m_core.EcosimFirstYear + (m_core.nEcosimTimeSteps / cCore.N_MONTHS)), _
                        "", 0, 0, _
-                       False, LegendPos.Top, CInt(pane))
+                       False, LegendPos.Top, CInt(iPane))
 
         End Sub
 
@@ -482,31 +485,35 @@ Namespace Ecosim
             Next
 
             Dim iAvgPred() As Integer = avgPredIndex.ToArray
+            Me.SortRanks(avgPredConsumption.ToArray, iAvgPred)
+            Me.PopulateGroupListBox(Me.lbPredRanks, iAvgPred)
 
-            SortRanks(avgPredConsumption.ToArray, iAvgPred)
-
-            PopulateGroupListBox(lbPredRanks, iAvgPred)
-
-            Dim iAvgPrey() As Integer = avgpreyIndex.ToArray
-            SortRanks(avgPreyConsumption.ToArray, iAvgPrey)
-
-            PopulateGroupListBox(lbPreyRanks, iAvgPrey)
+            Dim aiAvgPrey() As Integer = avgpreyIndex.ToArray
+            Me.SortRanks(avgPreyConsumption.ToArray, aiAvgPrey)
+            Me.PopulateGroupListBox(Me.lbPreyRanks, aiAvgPrey)
 
         End Sub
 
-        Private Sub SortRanks(ByVal a() As Single, ByVal b() As Integer)
-            'Use a simple bubblesort algorithm here
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="asPredConsumption"></param>
+        ''' <param name="aiGroups"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub SortRanks(ByVal asPredConsumption() As Single, ByVal aiGroups() As Integer)
 
-            For i As Integer = 0 To a.Length - 2
-                For j As Integer = a.Length - 1 To i + 1 Step -1
-                    If a(j) > a(j - 1) Then
+            'Use a simple bubblesort algorithm here
+            For i As Integer = 0 To asPredConsumption.Length - 2
+                For j As Integer = asPredConsumption.Length - 1 To i + 1 Step -1
+                    If asPredConsumption(j) > asPredConsumption(j - 1) Then
                         ' swap 
-                        Dim sTmp As Single = a(j)
-                        a(j) = a(j - 1)
-                        a(j - 1) = sTmp
-                        Dim iTmp As Integer = b(j)
-                        b(j) = b(j - 1)
-                        b(j - 1) = iTmp
+                        Dim sTmp As Single = asPredConsumption(j)
+                        asPredConsumption(j) = asPredConsumption(j - 1)
+                        asPredConsumption(j - 1) = sTmp
+                        Dim iTmp As Integer = aiGroups(j)
+                        aiGroups(j) = aiGroups(j - 1)
+                        aiGroups(j - 1) = iTmp
                     End If
                 Next
             Next
