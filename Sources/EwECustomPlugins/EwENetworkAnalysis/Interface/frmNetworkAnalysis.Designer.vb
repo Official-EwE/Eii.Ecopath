@@ -82,12 +82,12 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
         Me.tsbtnPrintGraph = New System.Windows.Forms.ToolStripButton
+        Me.tssepGraphMTI = New System.Windows.Forms.ToolStripSeparator
         Me.tsbtnGraphMTI = New System.Windows.Forms.ToolStripButton
         Me.dgvNetworkAnalysis = New System.Windows.Forms.DataGridView
         Me.tlpNetworkAnalysis = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblNetworkAnalysis = New System.Windows.Forms.Label
-        Me.tssepGraphMTI = New System.Windows.Forms.ToolStripSeparator
         Me.scNetworkAnalysis.Panel1.SuspendLayout()
         Me.scNetworkAnalysis.Panel2.SuspendLayout()
         Me.scNetworkAnalysis.SuspendLayout()
@@ -226,11 +226,11 @@ Partial Class frmNetworkAnalysis
         TreeNode24.SelectedImageIndex = 1
         TreeNode24.Text = "Flow from detritus"
         TreeNode25.ImageIndex = 1
-        TreeNode25.Name = "ndPathway"
+        TreeNode25.Name = "ndPathway_cons_tl1"
         TreeNode25.SelectedImageIndex = 1
         TreeNode25.Text = "Pathway"
         TreeNode26.ImageIndex = 1
-        TreeNode26.Name = "ndSummaryOfPathways"
+        TreeNode26.Name = "ndSummaryOfPathways_cons_tl1"
         TreeNode26.SelectedImageIndex = 1
         TreeNode26.Text = "Summary of pathways"
         TreeNode27.ImageIndex = 5
@@ -238,11 +238,11 @@ Partial Class frmNetworkAnalysis
         TreeNode27.SelectedImageIndex = 5
         TreeNode27.Text = "Consumer <- TL1"
         TreeNode28.ImageIndex = 1
-        TreeNode28.Name = "ndPathway"
+        TreeNode28.Name = "ndPathway_cons_prey_tl1"
         TreeNode28.SelectedImageIndex = 1
         TreeNode28.Text = "Pathway"
         TreeNode29.ImageIndex = 1
-        TreeNode29.Name = "ndSummaryOfPathways"
+        TreeNode29.Name = "ndSummaryOfPathways_cons_prey_tl1"
         TreeNode29.SelectedImageIndex = 1
         TreeNode29.Text = "Summary of pathways"
         TreeNode30.ImageIndex = 5
@@ -250,11 +250,11 @@ Partial Class frmNetworkAnalysis
         TreeNode30.SelectedImageIndex = 5
         TreeNode30.Text = "Consumer <- prey <- TL1"
         TreeNode31.ImageIndex = 1
-        TreeNode31.Name = "ndPathway"
+        TreeNode31.Name = "ndPathway_pred_prey"
         TreeNode31.SelectedImageIndex = 1
         TreeNode31.Text = "Pathway"
         TreeNode32.ImageIndex = 1
-        TreeNode32.Name = "ndSummaryOfPathways"
+        TreeNode32.Name = "ndSummaryOfPathways_pred_prey"
         TreeNode32.SelectedImageIndex = 1
         TreeNode32.Text = "Summary of pathways"
         TreeNode33.ImageIndex = 5
@@ -262,11 +262,11 @@ Partial Class frmNetworkAnalysis
         TreeNode33.SelectedImageIndex = 5
         TreeNode33.Text = "Top predator <- prey"
         TreeNode34.ImageIndex = 1
-        TreeNode34.Name = "ndPathway"
+        TreeNode34.Name = "ndPathway_living"
         TreeNode34.SelectedImageIndex = 1
         TreeNode34.Text = "Pathway"
         TreeNode35.ImageIndex = 1
-        TreeNode35.Name = "ndSummaryOfPathways"
+        TreeNode35.Name = "ndSummaryOfPathways_living"
         TreeNode35.SelectedImageIndex = 1
         TreeNode35.Text = "Summary of pathways"
         TreeNode36.ImageIndex = 5
@@ -274,11 +274,11 @@ Partial Class frmNetworkAnalysis
         TreeNode36.SelectedImageIndex = 5
         TreeNode36.Text = "Cycles (living)"
         TreeNode37.ImageIndex = 1
-        TreeNode37.Name = "ndPathway"
+        TreeNode37.Name = "ndPathway_all"
         TreeNode37.SelectedImageIndex = 1
         TreeNode37.Text = "Pathway"
         TreeNode38.ImageIndex = 1
-        TreeNode38.Name = "ndSummaryOfPathways"
+        TreeNode38.Name = "ndSummaryOfPathways_all"
         TreeNode38.SelectedImageIndex = 1
         TreeNode38.Text = "Summary of pathways"
         TreeNode39.ImageIndex = 5
@@ -359,6 +359,7 @@ Partial Class frmNetworkAnalysis
         'tscmbSelection1
         '
         Me.tscmbSelection1.BackColor = System.Drawing.SystemColors.Window
+        Me.tscmbSelection1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.tscmbSelection1.Name = "tscmbSelection1"
         Me.tscmbSelection1.Size = New System.Drawing.Size(121, 25)
         '
@@ -370,6 +371,7 @@ Partial Class frmNetworkAnalysis
         '
         'tscmbSelection2
         '
+        Me.tscmbSelection2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.tscmbSelection2.Name = "tscmbSelection2"
         Me.tscmbSelection2.Size = New System.Drawing.Size(121, 25)
         '
@@ -422,6 +424,11 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnPrintGraph.Size = New System.Drawing.Size(64, 17)
         Me.tsbtnPrintGraph.Text = "Print graph"
         '
+        'tssepGraphMTI
+        '
+        Me.tssepGraphMTI.Name = "tssepGraphMTI"
+        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 6)
+        '
         'tsbtnGraphMTI
         '
         Me.tsbtnGraphMTI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -437,6 +444,7 @@ Partial Class frmNetworkAnalysis
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvNetworkAnalysis.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
+        Me.dgvNetworkAnalysis.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvNetworkAnalysis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvNetworkAnalysis.Location = New System.Drawing.Point(0, 28)
         Me.dgvNetworkAnalysis.Name = "dgvNetworkAnalysis"
@@ -479,11 +487,6 @@ Partial Class frmNetworkAnalysis
         Me.lblNetworkAnalysis.Size = New System.Drawing.Size(202, 20)
         Me.lblNetworkAnalysis.TabIndex = 4
         Me.lblNetworkAnalysis.Text = "Network analysis plug-in"
-        '
-        'tssepGraphMTI
-        '
-        Me.tssepGraphMTI.Name = "tssepGraphMTI"
-        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 6)
         '
         'frmNetworkAnalysis
         '
