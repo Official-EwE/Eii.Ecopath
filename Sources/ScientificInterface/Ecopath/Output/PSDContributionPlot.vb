@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.18  2009/04/28 00:22:07  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.17  2009/04/08 15:09:10  jeroens
 ' GroupListBox -> cGroupListBox
 '
@@ -87,9 +90,27 @@ Namespace Ecopath.Output
 #Region "Event handlers"
 
         Private Sub PSDContributionPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
+
             PopulateGroupBoxes()
 
             llbGroups.SelectedIndex = 0
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+        Private Sub PSDContributionPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
@@ -254,6 +275,7 @@ Namespace Ecopath.Output
             Next
             Return bGroupSelected
         End Function
+
 #End Region 'Helper method
 
     End Class

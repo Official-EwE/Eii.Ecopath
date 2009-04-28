@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.23  2009/04/28 00:25:27  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.22  2009/04/08 15:09:11  jeroens
 ' GroupListBox -> cGroupListBox
 '
@@ -120,11 +123,14 @@ Namespace Ecopath.Output
 #Region "Event handlers"
 
         Private Sub PSDPlotByGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
+
             PopulateGroupBoxes()
             InitMasterPane()
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-
+            parms = Me.m_core.ParticleSizeDistributionParameters
             CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT)
             CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL)
             CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
@@ -133,6 +139,19 @@ Namespace Ecopath.Output
                 CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY)
             End If
             llbGroups.SelectedIndex = 0
+
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+        Private Sub PSDPlotByGroup_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged

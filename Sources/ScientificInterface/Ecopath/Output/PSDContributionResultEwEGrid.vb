@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.11  2009/04/28 00:24:17  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.10  2009/04/02 16:24:54  jeroens
 ' PSD run integrated w Ecopath
 '
@@ -50,6 +53,7 @@ Namespace Ecopath.Output
         : Inherits EwEGrid
 
         Private m_core As cCore = Nothing
+        Private m_frm As Form = Nothing
 
         Public Sub New()
             MyBase.new()
@@ -79,12 +83,19 @@ Namespace Ecopath.Output
             Me(0, m_core.nWeightClasses + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
 
             Me.FixedColumns = 2
+
+            m_frm = CType(Me.Parent, Form)
+            AddHandler m_frm.Shown, AddressOf OnFormShown
+
         End Sub
 
         Protected Overrides Sub FillData()
 
             Dim groupOutput As cEcoPathGroupOutput = Nothing
             Dim iRow As Integer = -1
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
 
             ' Remove existing rows
             Me.RowsCount = 1
@@ -104,6 +115,12 @@ Namespace Ecopath.Output
             'Create "Sum" row (sum values in each column)
             FillTotalValueRow()
 
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
         End Sub
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
@@ -221,6 +238,13 @@ Namespace Ecopath.Output
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
+
+        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then m_frm.Close()
+        End Sub
 
     End Class
 

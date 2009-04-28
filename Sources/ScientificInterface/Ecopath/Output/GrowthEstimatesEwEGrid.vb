@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.8  2009/04/28 00:19:25  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.7  2009/04/02 16:24:53  jeroens
 ' PSD run integrated w Ecopath
 '
@@ -37,6 +40,7 @@ Namespace Ecopath.Output
         : Inherits EwEGrid
 
         Private m_core As cCore = Nothing
+        Private m_frm As Form = Nothing
 
         Public Sub New()
             MyBase.new()
@@ -65,6 +69,9 @@ Namespace Ecopath.Output
 
             Me.FixedColumns = 2
 
+            m_frm = CType(Me.Parent, Form)
+            AddHandler m_frm.Shown, AddressOf OnFormShown
+
         End Sub
 
         Protected Overrides Sub FillData()
@@ -76,6 +83,9 @@ Namespace Ecopath.Output
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
 
             For i As Integer = 1 To m_core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -120,15 +130,24 @@ Namespace Ecopath.Output
                 End If
             Next groupIndex
 
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+
             Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
+
             If isIndented Then
                 Me(iRow, 1) = New PropertyRowHeaderChildCell(source, eVarNameFlags.Name)
             Else
                 Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
             End If
+
             Me(iRow, 2) = New PropertyCell(source, eVarNameFlags.AinLWOutput)
             Me(iRow, 3) = New PropertyCell(source, eVarNameFlags.BinLWOutput)
             Me(iRow, 4) = New PropertyCell(source, eVarNameFlags.LooOutput)
@@ -137,9 +156,11 @@ Namespace Ecopath.Output
             Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.t0Output)
             Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.Tcatch)
             Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.TmaxOutput)
+
         End Sub
 
         Protected Overrides Sub FinishStyle()
+
             MyBase.FinishStyle()
 
             Me.Rows(0).Height = 60
@@ -155,9 +176,10 @@ Namespace Ecopath.Output
             'Me.Columns(8).Width = 69
             'Me.Columns(9).Width = 76
 
-            For i As Integer = 2 To Me.ColumnsCount - 1
-                Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
+            For iCol As Integer = 2 To Me.ColumnsCount - 1
+                Me(0, iCol).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
+
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
@@ -175,6 +197,13 @@ Namespace Ecopath.Output
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
+
+        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then m_frm.Close()
+        End Sub
 
     End Class
 

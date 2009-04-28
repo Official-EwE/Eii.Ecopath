@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: GrowthParametersEwEGrid.vb,v $
+' Revision 1.7  2009/04/28 00:21:15  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.6  2009/03/03 01:42:56  joeh
 ' Tcatch no longer has input and output pair
 '
@@ -31,8 +34,14 @@ Namespace Ecopath.Input
     Public Class GrowthParametersEwEGrid
         : Inherits EwEGrid
 
+        Private m_core As cCore = Nothing
+        Private m_frm As Form = Nothing
+
         Public Sub New()
             MyBase.new()
+
+            m_core = cCore.GetInstance
+
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -53,6 +62,9 @@ Namespace Ecopath.Input
 
             Me.FixedColumns = 2
 
+            m_frm = CType(Me.Parent, Form)
+            AddHandler m_frm.Shown, AddressOf OnFormShown
+
         End Sub
 
         Protected Overrides Sub FillData()
@@ -65,6 +77,9 @@ Namespace Ecopath.Input
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
 
             For i As Integer = 1 To core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -111,9 +126,16 @@ Namespace Ecopath.Input
                 End If
             Next
 
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
+
             ' Get the group name from EcopathInput
             Me(iRow, 0) = New PropertyRowHeaderCell(group, eVarNameFlags.Index)
 
@@ -135,10 +157,11 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub FinishStyle()
+
             MyBase.FinishStyle()
 
-            For i As Integer = 2 To Me.ColumnsCount - 1
-                Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
+            For iCol As Integer = 2 To Me.ColumnsCount - 1
+                Me(0, iCol).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
 
         End Sub
@@ -148,6 +171,13 @@ Namespace Ecopath.Input
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
+
+        Private Sub OnFormShown(ByVal sender As Object, ByVal e As System.EventArgs)
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then m_frm.Close()
+        End Sub
 
     End Class
 

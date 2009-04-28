@@ -2346,4 +2346,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Model '{0}' cannot be found</value>
     <comment>{0}: model path</comment>
   </data>
+  <data name="PSD_MSG_PSDDISABLED" xml:space="preserve">
+    <value>PSD is disabled. Please, enable in model description</value>
+  </data>
 </root>

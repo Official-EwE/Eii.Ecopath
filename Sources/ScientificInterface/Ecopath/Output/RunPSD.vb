@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.22  2009/04/28 00:28:53  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.21  2009/04/07 20:02:09  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -108,7 +111,7 @@ Namespace Ecopath.Output
 #Region " Constructor/Destructor "
 
         Public Sub New()
-
+            
             Me.InitializeComponent()
 
         End Sub
@@ -119,27 +122,31 @@ Namespace Ecopath.Output
 
         Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
+            Dim cmdh As CommandHandler = Nothing
+            Dim cmd As Command = Nothing
+            Dim sg As StyleGuide = Nothing
 
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
             Me.m_zgh = New ZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
-
             ' Connect to show/hide groups command
+            cmdh = CommandHandler.GetInstance()
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbnShowHideGroups)
             End If
 
             ' Style guide
+            sg = StyleGuide.GetInstance()
             AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Connect format providers
+            parms = Me.m_core.ParticleSizeDistributionParameters
             Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
             Me.m_fpMinWeight = New cPropertyFormatProvider(Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
             Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
@@ -155,6 +162,18 @@ Namespace Ecopath.Output
             ' Synchronize plot with Ecopath results
             Me.SynchronizePlot()
 
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+        Private Sub RunPSD_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
@@ -208,16 +227,11 @@ Namespace Ecopath.Output
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbtnRun.Click
 
-            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-
-            parms.PSDEnabled = True
-
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
 
             Me.m_core.RunEcoPath()
             Me.PlotCurves()
-
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)

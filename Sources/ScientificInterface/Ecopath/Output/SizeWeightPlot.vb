@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.9  2009/04/28 00:29:58  joeh
+' Add handling if PSDEnabled is false
+'
 ' Revision 1.8  2009/04/07 20:02:10  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -62,9 +65,27 @@ Namespace Ecopath.Output
 
 #Region "Event handlers"
         Private Sub SizeWeightPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Dim parms As cPSDParameters = Nothing
+            Dim str As String = ""
+            Dim msg As cMessage = Nothing
+
             AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_SIZEWT, My.Resources.PSD_XAXISLABEL_SIZECLASS, ""))
 
             UpdatePlot()
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then
+                str = My.Resources.PSD_MSG_PSDDISABLED
+                msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+        Private Sub SizeWeightPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then Me.Close()
         End Sub
 
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
