@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.50  2009/04/29 15:40:49  joeb
+' Added Relative Biomass
+'
 ' Revision 1.49  2009/04/06 15:51:00  jeroens
 ' eClimateType defined as Short
 '
@@ -769,7 +772,10 @@ Namespace Core
         ''' <summary>Ecospace maximum number of iterations.</summary>
         MaxIterations
 
-        ''' <summary>Ecosim ouput data over time</summary>
+        ''''''''''''''''''''''''''''
+        ' Ecosim ouput data over time
+        '''''''''''''''''''''
+        ''' <summary>Ecosim absolute biomass over time</summary>
         EcosimBiomass
         EcosimYield
         EcosimTotalMort
@@ -1150,6 +1156,11 @@ Namespace Core
         ' EcosimResults
         GameSimulationTimeStep
         GameBiomass
+        ''' <summary>Game generic relative biomass over time (no specific source)</summary>
+        GameBiomassRel
+        ''' <summary>Game Ecosim relative biomass over time</summary>
+        GameEcosimBiomassRel
+
         GameBiomassByRegion
         GameCatchRegionFleetGroup
         GameGroupValue

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.117  2009/04/29 15:40:45  joeb
+' Added Relative Biomass
+'
 ' Revision 1.116  2009/04/27 02:38:08  jeroens
 ' Core sate monitor should update its data state when switching to appended scenarios
 '
@@ -10208,6 +10211,7 @@ Public Class cCore
                             'update bgoal from the new PB
                             Me.m_SearchData.setDefaultBGoal(Me.m_EcoPathData.PBinput) 'use PBInput because PB has not been update at this time
                             'load the values into the search manager
+                            'if Ecosim has not been loaded SearchObjectiveManager.Load() will do nothing
                             Me.m_SearchManagers(eDataTypes.SearchObjectiveManager).Load()
 
                             Dim msg As New cMessage("Search Structure rel. weight changed.", eMessageType.DataModified, _
