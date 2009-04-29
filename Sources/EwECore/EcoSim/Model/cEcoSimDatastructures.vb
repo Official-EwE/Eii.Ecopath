@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimDatastructures.vb,v $
+' Revision 1.19  2009/04/29 17:43:36  joeb
+' Added Relative Biomass to cEcosimGroupOutputs
+'
 ' Revision 1.18  2009/04/19 14:26:35  jeroens
 ' Documented 9 dummy MedFNs fix
 '
@@ -73,7 +76,7 @@ Public Class cEcosimDatastructures
     ''' Number of Ecosim results variables stored in ResultsOverTime(N_TIME_RESULTS,groups,time)
     ''' </summary>
     ''' <remarks> Used in <see>cEcosimModel.dimResults() </see>to size ResultsOverTime()</remarks>
-    Public Const N_TIME_RESULTS As Integer = 9
+    Public Const N_TIME_RESULTS As Integer = 10
     Public Const DEFAULT_N_FORCINGPOINTS As Integer = 1200 'min number of forcing point 100 years * FORCING_POINTS_PER_YEAR
     Public Const FORCING_POINTS_PER_YEAR As Integer = 12
 
@@ -83,6 +86,7 @@ Public Class cEcosimDatastructures
     ''' <remarks>This is the index to the first element in ResultsOverTime(eEcosimResults, igroup, itime) that specifies the data being saved at each time step across groups</remarks>
     Public Enum eEcosimResults
         Biomass
+        BiomassRel
         Yield
         FeedingTime
         ConsumpBiomass

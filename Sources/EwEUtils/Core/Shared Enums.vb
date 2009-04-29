@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.52  2009/04/29 17:43:40  joeb
+' Added Relative Biomass to cEcosimGroupOutputs
+'
 ' Revision 1.51  2009/04/29 16:19:56  joeb
 ' Renamed GameGroupFishingRates to GameGroupFishingMortRates
 '
@@ -780,6 +783,8 @@ Namespace Core
         '''''''''''''''''''''
         ''' <summary>Ecosim absolute biomass over time</summary>
         EcosimBiomass
+        ''' <summary>Ecosim relative biomass over time</summary>
+        EcosimBiomassRel
         EcosimYield
         EcosimTotalMort
         EcosimConsumpBiomass
@@ -1161,8 +1166,6 @@ Namespace Core
         GameBiomass
         ''' <summary>Game generic relative biomass over time (no specific source)</summary>
         GameBiomassRel
-        ''' <summary>Game Ecosim relative biomass over time</summary>
-        GameEcosimBiomassRel
 
         GameBiomassByRegion
         GameCatchRegionFleetGroup
