@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.51  2009/04/29 16:19:56  joeb
+' Renamed GameGroupFishingRates to GameGroupFishingMortRates
+'
 ' Revision 1.50  2009/04/29 15:40:49  joeb
 ' Added Relative Biomass
 '
@@ -1151,7 +1154,7 @@ Namespace Core
         ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
-        GameGroupFishingRates
+        GameGroupFishingMortRates
 
         ' EcosimResults
         GameSimulationTimeStep
