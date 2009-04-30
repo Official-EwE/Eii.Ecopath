@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.23  2009/04/30 22:33:52  joeh
+' V.5 regression analysis is comment in for future comparison
+'
 ' Revision 1.22  2009/04/28 00:28:53  joeh
 ' Add handling if PSDEnabled is false
 '
@@ -496,6 +499,13 @@ Namespace Ecopath.Output
 
                     dSumX = dSumX + Math.Log10(sXValue)
                     dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000.0!)
+
+                    'v.5
+                    'sXValue = iWtClass
+
+                    'dSumX = dSumX + sXValue
+                    'dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass))
+                    'End v.5
                     iNum = iNum + 1
                 End If
             Next
@@ -508,6 +518,13 @@ Namespace Ecopath.Output
 
                     dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 100000) - dYMean)
                     dSumXdevSq = dSumXdevSq + (Math.Log10(sXValue) - dXMean) ^ 2
+
+                    'v.5
+                    'sXValue = iWtClass
+
+                    'dSumXdevYdev = dSumXdevYdev + ((sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass)) - dYMean)
+                    'dSumXdevSq = dSumXdevSq + ((sXValue) - dXMean) ^ 2
+                    'End v.5
                 End If
             Next
 
