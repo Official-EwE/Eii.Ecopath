@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.12  2009/05/01 17:46:40  jeroens
+' Simplified run state management
+' Uses central status feedback
+'
 ' Revision 1.11  2009/04/28 19:00:30  jeroens
 ' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
 '
@@ -39,8 +43,11 @@
 Option Strict On
 Option Explicit On
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 Imports EwECore
+
+' ToDo_JS: localize this class
 
 ''' <summary>
 ''' Manager for the Network Analysis
@@ -50,44 +57,43 @@ Public Class cNetworkManager
 
 #Region "Events"
 
-    ''' <summary>
-    ''' Progress of the RunMainNetwork() method. The total number of time this will be fired is not known in advance. 
-    ''' So it simmply indicates progress.
-    ''' </summary>
-    ''' <param name="iProgress"></param>
-    ''' <remarks></remarks>
-    Public Event RunMainNetworkProgress(ByVal iProgress As Integer)
+    '''' <summary>
+    '''' Progress of the RunMainNetwork() method. The total number of time this will be fired is not known in advance. 
+    '''' So it simmply indicates progress.
+    '''' </summary>
+    '''' <param name="iProgress"></param>
+    '''' <remarks></remarks>
+    'Public Event RunMainNetworkProgress(ByVal iProgress As Integer)
 
-    ''' <summary>
-    ''' Progress of the RunMainNetwork() method. A cycle has been found.
-    ''' </summary>
-    ''' <param name="iCycle"></param>
-    ''' <remarks>The number of cycles is not known in advance</remarks>
-    Public Event CycleFound(ByVal iCycle As Integer)
+    '''' <summary>
+    '''' Progress of the RunMainNetwork() method. A cycle has been found.
+    '''' </summary>
+    '''' <param name="iCycle"></param>
+    '''' <remarks>The number of cycles is not known in advance</remarks>
+    'Public Event CycleFound(ByVal iCycle As Integer)
 
-    ''' <summary>
-    ''' Progress from one of the FindPathwaysxxx() methods
-    ''' </summary>
-    ''' <param name="iPath"></param>
-    ''' <remarks>The number of pathways is not known in advance.</remarks>
-    Public Event FindPathwaysProgress(ByVal iPath As Integer)
+    '''' <summary>
+    '''' Progress from one of the FindPathwaysxxx() methods
+    '''' </summary>
+    '''' <param name="iPath"></param>
+    '''' <remarks>The number of pathways is not known in advance.</remarks>
+    'Public Event FindPathwaysProgress(ByVal iPath As Integer)
 
-    ''' <summary>
-    ''' Progress from one of the FindPathwaysxxx() methods
-    ''' </summary>
-    ''' <param name="iCycle"></param>
-    ''' <remarks>The number of pathways is not known in advance.</remarks>
-    Public Event FindCyclesProgress(ByVal iCycle As Integer)
+    '''' <summary>
+    '''' Progress from one of the FindPathwaysxxx() methods
+    '''' </summary>
+    '''' <param name="iCycle"></param>
+    '''' <remarks>The number of pathways is not known in advance.</remarks>
+    'Public Event FindCyclesProgress(ByVal iCycle As Integer)
 
-    Public Event CalculateRequiredPPProgress(ByVal nPaths As Integer)
+    'Public Event CalculateRequiredPPProgress(ByVal nPaths As Integer)
 
-    ''' <summary>
-    ''' Progress of Network Analysis for Ecosim
-    ''' </summary>
-    ''' <param name="iTime">Time step</param>
-    ''' <remarks>The total number of time steps </remarks>
-    Public Event EcosimNetworkProgress(ByVal iTime As Integer)
-
+    '''' <summary>
+    '''' Progress of Network Analysis for Ecosim
+    '''' </summary>
+    '''' <param name="iTime">Time step</param>
+    '''' <remarks>The total number of time steps </remarks>
+    'Public Event EcosimNetworkProgress(ByVal iTime As Integer)
 
 #End Region
 
@@ -114,7 +120,7 @@ Public Class cNetworkManager
     ''' This is the state of the core as it relates to the Network Analysis. 
     ''' It is hierarchical
     ''' </remarks>
-    Private Enum eRunState
+    Private Enum eRunState As Byte
         CoreNotReady
         NetworkNeedsToRun
         NetworkHasRun
@@ -132,23 +138,18 @@ Public Class cNetworkManager
     Private m_corestatemonitor As cCoreStateMonitor = Nothing
     Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
     Private m_runstate As eRunState
-    Private m_epdata As cEcopathDataStructures
-    Private m_esdata As cEcosimDatastructures
+    Private m_epdata As cEcopathDataStructures = Nothing
+    Private m_esdata As cEcosimDatastructures = Nothing
+
+    ''' <summary>Flag stating whether Ecosim NA should run with Ecosim.</summary>
+    Private m_bUseEcosimNetwork As Boolean = True
 
     ''' <summary>Flag stating whether the main N/A network has ran.</summary>
-    Private m_bIsMainNetworkRun As Boolean
+    Private m_bIsMainNetworkRun As Boolean = False
+    ''' <summary>Flag stating whether the Ecosin N/A network has ran.</summary>
+    Private m_bIsEcosimNetworkRun As Boolean = False
     ''' <summary>To comment</summary>
-    Private m_bIsRequiredPrimaryProdRun As Boolean
-    ''' <summary>Flag stating whether the Ecosim N/A network has ran without PPR estimation.</summary>
-    Private m_bIsEcosimNetworkWithoutPPREstRun As Boolean
-    ''' <summary>Flag stating whether the Ecosim N/A network has ran with PPR estimation.</summary>
-    Private m_bIsEcosimNetworkWithPPREstRun As Boolean
-    ''' <summary>To comment</summary>
-    Private m_bCancelRequiredPrimaryProdRun As Boolean
-
-    ''' <summary>Flag stating whether Run network analysis for ecosim should be ran.</summary>
-    ''' <remarks>In EwE5 this is called IndicesOn</remarks>
-    Private m_bEcosimNetwork As Boolean
+    Private m_bIsRequiredPrimaryProdRun As Boolean = False
 
     ''' <summary>List of iGroups that have fish catch </summary>
     Dim lstCatch As New List(Of Integer)
@@ -213,7 +214,7 @@ Public Class cNetworkManager
     ''' <remarks>This populates the data for EwE5 'Trophic level decomposition', 'Flow and biomass', 'Mixed Trophic impact', 'Acendency' and 'Flow form detritus' tabs</remarks>
     Public Function RunMainNetwork() As Boolean
 
-        Dim breturn As Boolean
+        Dim bSucces As Boolean = True
         Dim sg As StyleGuide = StyleGuide.GetInstance()
         Dim abGroupsToShow(Me.m_core.nGroups) As Boolean
 
@@ -224,10 +225,10 @@ Public Class cNetworkManager
         If m_econetwork Is Nothing Then
             'message of some sort
             m_publisher.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
-            Return False
+            bSucces = False
         End If
 
-        If m_runstate <> eRunState.CoreNotReady Then
+        If bSucces And (m_runstate <> eRunState.CoreNotReady) Then
             Try
                 For iGroup As Integer = 1 To Me.m_core.nGroups
                     abGroupsToShow(iGroup) = True
@@ -246,7 +247,7 @@ Public Class cNetworkManager
 
                 m_runstate = eRunState.NetworkHasRun
 
-                breturn = True
+                bSucces = True
                 m_bIsMainNetworkRun = True
 
             Catch ex As Exception
@@ -254,15 +255,15 @@ Public Class cNetworkManager
                 Dim msg As String = Me.unravelExceptionMessage(ex)
                 m_publisher.SendMessage(New cMessage(Me.ToString & ".RunMainNetwork() Error " & msg, eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
                 'Debug.Assert(False, msg)
-                breturn = False
+                bSucces = False
             End Try
         Else
             ''message of some sort
             m_publisher.SendMessage(New cMessage("Network Analysis can not be run before Ecopath.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
-            breturn = False
+            bSucces = False
         End If
 
-        Return breturn
+        Return bSucces
 
     End Function
 
@@ -283,13 +284,20 @@ Public Class cNetworkManager
 #End Region
 
 #Region "Required PP"
+
     ''' <summary>
     ''' Run the Require Primary Procuction models
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This popluates data for the EwE5 tabs 'Primary prod. required'-'For harvest of all groups' and 'For consumption of all groups'</remarks>
     Public Function RunRequiredPrimaryProd() As Boolean
-        Dim breturn As Boolean
+
+        Dim bSuccess As Boolean = True
+
+        If (m_bIsRequiredPrimaryProdRun = True) Then
+            Return bSuccess
+        End If
+
         Debug.Assert(m_econetwork IsNot Nothing)
 
         If m_econetwork Is Nothing Then
@@ -306,7 +314,8 @@ Public Class cNetworkManager
                     'implicitly run the network analysis if it has not been run
                     If Not Me.RunMainNetwork() Then
                         'ooopssss........
-                        m_core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
+                        m_core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", _
+                                                                 eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                         Return False
                     End If
                 End If
@@ -317,7 +326,7 @@ Public Class cNetworkManager
 
                 m_runstate = eRunState.RequirePPHasRun
 
-                breturn = True
+                bSuccess = True
                 m_bIsRequiredPrimaryProdRun = True
 
             Catch ex As Exception
@@ -325,15 +334,15 @@ Public Class cNetworkManager
                 Dim msg As String = Me.unravelExceptionMessage(ex)
                 m_core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
 
-                breturn = False
+                bSuccess = False
             End Try
         Else
             'message of some sort
             m_core.Messages.SendMessage(New cMessage("Required Primary Production can not be run.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
-            breturn = False
+            bSuccess = False
         End If
 
-        Return breturn
+        Return bSuccess
 
     End Function
 
@@ -363,16 +372,21 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function FindPathwaysToConsumer(ByVal iToGroup As Integer) As Boolean
-        Dim nPaths As Integer, nArrows As Integer
 
+        Dim nPaths As Integer, nArrows As Integer
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        asn.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, _
+                                        Me.GroupName(iToGroup)), TriState.True)
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
-            Return True
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
 
+        asn.SetStatusText("", TriState.False)
+        Return True
 
     End Function
 
@@ -384,15 +398,23 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function FindPathwaysToConsumerViaPrey(ByVal iToGroup As Integer, ByVal iViaGroup As Integer) As Boolean
+
         Dim nPaths As Integer, nArrows As Integer
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        asn.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
+                                        Me.GroupName(iToGroup), _
+                                        Me.GroupName(iViaGroup)), TriState.True)
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
-            Return True
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
+
+        asn.SetStatusText("", TriState.False)
+        Return True
 
     End Function
 
@@ -403,15 +425,22 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function FindPathwaysFromPrey(ByVal iFromGroup As Integer) As Boolean
+
         Dim nPaths As Integer, nArrows As Integer
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        asn.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_PREY, _
+                                        Me.GroupName(iFromGroup)), TriState.True)
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
-            Return True
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
+
+        asn.SetStatusText("", TriState.False)
+        Return True
 
     End Function
 
@@ -421,19 +450,24 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function FindPathwaysCycles() As Boolean
+
         Dim nPaths As Integer, nArrows As Integer
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        asn.SetStatusText(My.Resources.STATUS_FINDING_PATHWAYS, TriState.True)
 
         Try
             'ToDo_jb FindPathwaysCycles EwE5 calls InitCyclesList ????? I can not find this again
             m_econetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
-            Return True
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
 
-    End Function
+        asn.SetStatusText("", TriState.False)
+        Return True
 
+    End Function
 
     ''' <summary>
     ''' All cycles
@@ -441,15 +475,21 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function FindPathwaysCyclesAll() As Boolean
+
         Dim nPaths As Integer, nArrows As Integer
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        asn.SetStatusText(My.Resources.STATUS_FINDING_PATHWAYS, TriState.True)
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
-            Return True
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
+
+        asn.SetStatusText("", TriState.False)
+        Return True
 
     End Function
 
@@ -479,33 +519,28 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public Function RunEcosimNetwork() As Boolean
 
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
         Try
 
-            m_bEcosimNetwork = True
+            If Not Me.m_bUseEcosimNetwork Then Return False
 
             If Not m_core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded the Ecosim network analysis can not be run
                 m_core.Messages.SendMessage(New cMessage("Please load an Ecosim scenario before running Network Analysis for Ecosim.", _
-                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
-
-                m_bEcosimNetwork = False
+                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
 
                 Return False
             End If
 
-            m_core.RunEcoSim()
+            If Me.m_bIsEcosimNetworkRun Then Return True
 
-            If bEcosimPPR Then
-                m_bIsEcosimNetworkWithPPREstRun = True
-            Else
-                m_bIsEcosimNetworkWithoutPPREstRun = True
-            End If
-
-            m_bEcosimNetwork = False
+            asn.SetStatusText(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, TriState.True)
+            Me.m_bIsEcosimNetworkRun = Me.m_core.RunEcoSim()
+            asn.SetStatusText("", TriState.False)
 
         Catch ex As Exception
             cLog.Write(ex)
-            m_bEcosimNetwork = False
             m_core.Messages.SendMessage(New cMessage("Error while running Network Analysis for Ecosim. " & ex.Message, _
                                             eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False
@@ -514,36 +549,6 @@ Public Class cNetworkManager
         Return True
 
     End Function
-
-    'Bug 252 fix by joeh
-    'Change
-    'Public Function IsEcosimNetworkWithPPREstRun() As Boolean
-    '    Return m_IsEcosimNetworkWithPPREstRun
-    'End Function
-    Public Property IsEcosimNetworkWithPPREstRun() As Boolean
-        Get
-            Return m_bIsEcosimNetworkWithPPREstRun
-        End Get
-        Set(ByVal value As Boolean)
-            m_bIsEcosimNetworkWithPPREstRun = value
-        End Set
-    End Property
-    'End change
-
-    'Bug 252 fix by joeh
-    'Change
-    'Public Function IsEcosimNetworkWithoutPPREstRun() As Boolean
-    '    Return m_IsEcosimNetworkWithoutPPREstRun
-    'End Function
-    Public Property IsEcosimNetworkWithoutPPREstRun() As Boolean
-        Get
-            Return Me.m_bIsEcosimNetworkWithoutPPREstRun
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bIsEcosimNetworkWithoutPPREstRun = value
-        End Set
-    End Property
-    'End change
 
     ''' <summary>
     ''' Initialize Ecosim Network Analysis
@@ -555,7 +560,7 @@ Public Class cNetworkManager
         Try
 
             'don't do anything if the Ecosim Network Analysis is turned off
-            If Not m_bEcosimNetwork Then
+            If Not Me.m_bUseEcosimNetwork Then
                 Return False
             End If
 
@@ -563,7 +568,7 @@ Public Class cNetworkManager
             If Not m_core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded this can not be initialized
                 m_core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because an Ecosim scenario has not been loaded.", _
-                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
+                         eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
                 Return False
             End If
 
@@ -587,9 +592,9 @@ Public Class cNetworkManager
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".InitNetworkForEcosim " & ex.Message)
-            Throw New ApplicationException(Me.ToString & ".InitNetworkForEcosim() Error: " & ex.Message, ex)
+            Return False
         End Try
-
+        Return True
 
     End Function
 
@@ -603,10 +608,11 @@ Public Class cNetworkManager
     ''' <remarks></remarks>
     Public Function EcosimTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As cEcosimDatastructures, ByVal iTime As Integer) As Boolean
 
+        Dim bSucces As Boolean = True
         Try
 
             'don't do anything if the Ecosim Network Analysis is turned off
-            If Not m_bEcosimNetwork Then
+            If Not Me.UseEcosimNetwork Then
                 Return False
             End If
 
@@ -620,18 +626,17 @@ Public Class cNetworkManager
             m_econetwork.EcosimTimestep(BiomassAtTimestep, EcosimDatastructures, iTime)
             'tell the world that a time step has been computed
             'If (iTime Mod 10) = 0 Then RaiseEvent EcosimNetworkProgress(iTime)
-            RaiseEvent EcosimNetworkProgress(iTime)
-
+            Me.UpdateProgress(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, CSng(iTime / Me.m_esdata.NTimes))
 
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.ToString)
-            Throw New ApplicationException(Me.ToString & ".EcosimTimeStep() Error: " & ex.Message, ex)
+            bSucces = False
         End Try
 
+        Return bSucces
+
     End Function
-
-
 
 #End Region
 
@@ -674,12 +679,26 @@ Public Class cNetworkManager
     ''' <returns></returns>
     ''' <remarks>IndicesOn in EwE5. This is set implicitly by RunEcosimNetwork.
     '''  If this flag is false the plugin will not responed to the EcosimEndTimeStep() plugin point.</remarks>
-    Public Property bEcosimNetwork() As Boolean
+    Public Property UseEcosimNetwork() As Boolean
         Get
-            Return m_bEcosimNetwork
+            Return m_bUseEcosimNetwork
         End Get
         Set(ByVal value As Boolean)
-            m_bEcosimNetwork = value
+            m_bUseEcosimNetwork = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Run whether network analysis for Ecosim has ran
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    Public Property IsEcosimNetworkRan() As Boolean
+        Get
+            Return m_bIsEcosimNetworkRun
+        End Get
+        Set(ByVal value As Boolean)
+            m_bIsEcosimNetworkRun = value
         End Set
     End Property
 
@@ -689,12 +708,17 @@ Public Class cNetworkManager
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>This is very time consuming</remarks>
-    Public Property bEcosimPPR() As Boolean
+    Public Property EcosimPPROn() As Boolean
         Get
             Return Me.m_econetwork.PPRon
         End Get
         Set(ByVal value As Boolean)
-            Me.m_econetwork.PPRon = value
+            If (value <> Me.m_econetwork.PPRon) Then
+                ' Update flag
+                Me.m_econetwork.PPRon = value
+                ' Void ecosim run
+                Me.m_bIsEcosimNetworkRun = False
+            End If
         End Set
     End Property
 
@@ -720,6 +744,12 @@ Public Class cNetworkManager
     Public ReadOnly Property nGroups() As Integer
         Get
             Return Me.m_core.nGroups
+        End Get
+    End Property
+
+    Public ReadOnly Property nDetrituesGroups() As Integer
+        Get
+            Return Me.m_core.nDetritusGroups
         End Get
     End Property
 
@@ -1997,115 +2027,18 @@ Public Class cNetworkManager
 
 #Region "Methods used by Network Analysis to update the Manager about progress."
 
-
+    ''' ------------------------------------------------------------------------
     ''' <summary>
-    ''' Called by the network analysis to update on progress from FindCycles
+    ''' Notify the world of our progress.
     ''' </summary>
-    ''' <param name="iCounter"></param>
-    ''' <remarks></remarks>
-    Friend Sub updateProgressFindCycle(ByVal iCounter As Integer)
-        'Tell the world
+    ''' ------------------------------------------------------------------------
+    Friend Sub UpdateProgress(ByVal strText As String, ByVal sProgress As Single)
         Try
-            RaiseEvent RunMainNetworkProgress(iCounter)
+            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+            asn.SetStatusText(strText, TriState.UseDefault, sProgress)
         Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
         End Try
-
     End Sub
-
-    ''' <summary>
-    ''' Called from RunNetworkAnalysis
-    ''' </summary>
-    ''' <param name="iCounter"></param>
-    ''' <remarks></remarks>
-    Friend Sub UpdateNetworkAnalysis(ByVal iCounter As Integer)
-        'Tell the world
-        Try
-            RaiseEvent RunMainNetworkProgress(iCounter)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    Friend Sub updateFoundCycle(ByVal iCycle As Integer)
-        'Tell the world
-        Try
-            RaiseEvent CycleFound(iCycle)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    ''' <summary>
-    ''' Called from PrintPath()
-    ''' </summary>
-    ''' <param name="iPath"></param>
-    ''' <remarks></remarks>
-    Friend Sub UpdatePrintPath(ByVal iPath As Integer)
-        'Tell the world
-        Try
-            RaiseEvent FindPathwaysProgress(iPath)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    ''' <summary>
-    ''' Called from PrintCycle()
-    ''' </summary>
-    ''' <param name="iCycle"></param>
-    ''' <remarks></remarks>
-    Friend Sub UpdatePrintCycle(ByVal iCycle As Integer)
-        'Tell the world
-        Try
-            If (iCycle Mod 100) = 0 Then RaiseEvent FindCyclesProgress(iCycle)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    ''' <summary>
-    ''' Called from FindPaths()
-    ''' </summary>
-    Friend Sub UpdateCalculateRequiredPP(ByVal nPathsFound As Integer)
-        'Tell the world
-        Try
-            If (nPathsFound Mod 1000) = 0 Then RaiseEvent CalculateRequiredPPProgress(nPathsFound)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    Friend Sub UpdateEcosimNetwork(ByVal iTime As Integer)
-        'Tell the world
-        Try
-            RaiseEvent EcosimNetworkProgress(iTime)
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False)
-        End Try
-
-    End Sub
-
-    Public Property CancelRequiredPrimaryProdRun() As Boolean
-        Get
-            Return m_bCancelRequiredPrimaryProdRun
-        End Get
-        Set(ByVal value As Boolean)
-            m_bCancelRequiredPrimaryProdRun = value
-        End Set
-    End Property
 
 #End Region
 
@@ -2136,8 +2069,7 @@ Public Class cNetworkManager
         End If
 
         If Not csm.HasEcosimRan Then
-            Me.m_bIsEcosimNetworkWithoutPPREstRun = False
-            Me.m_bIsEcosimNetworkWithPPREstRun = False
+            Me.m_bIsEcosimNetworkRun = False
         End If
 
     End Sub
