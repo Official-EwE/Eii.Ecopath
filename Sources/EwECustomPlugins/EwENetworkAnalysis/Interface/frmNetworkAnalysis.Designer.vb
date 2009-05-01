@@ -41,59 +41,60 @@ Partial Class frmNetworkAnalysis
         Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Primary production required", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode16})
         Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Impact data", 1, 1)
         Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Plot of mixed trophic impact")
-        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Mixed trophic impact", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode18, TreeNode19})
-        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Total", 1, 1)
-        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("By group", 1, 1)
-        Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ascendency", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode21, TreeNode22})
-        Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Flow from detritus", 1, 1)
-        Dim TreeNode25 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
-        Dim TreeNode26 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
-        Dim TreeNode27 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Consumer <- TL1", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode25, TreeNode26})
-        Dim TreeNode28 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
-        Dim TreeNode29 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
-        Dim TreeNode30 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Consumer <- prey <- TL1", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode28, TreeNode29})
-        Dim TreeNode31 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
-        Dim TreeNode32 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
-        Dim TreeNode33 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Top predator <- prey", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode31, TreeNode32})
-        Dim TreeNode34 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
-        Dim TreeNode35 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
-        Dim TreeNode36 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles (living)", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode34, TreeNode35})
-        Dim TreeNode37 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
-        Dim TreeNode38 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
-        Dim TreeNode39 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles (all)", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode37, TreeNode38})
-        Dim TreeNode40 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycling and path length", 1, 1)
-        Dim TreeNode41 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles and pathways", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode27, TreeNode30, TreeNode33, TreeNode36, TreeNode39, TreeNode40})
-        Dim TreeNode42 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices without primary production required estimate", 1, 1)
-        Dim TreeNode43 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices with primary production required estimate", 1, 1)
-        Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode42, TreeNode43})
+        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecopath5 plot of mixed trophic impact", 1, 1)
+        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Mixed trophic impact", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode18, TreeNode19, TreeNode20})
+        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Total", 1, 1)
+        Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("By group", 1, 1)
+        Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ascendency", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode22, TreeNode23})
+        Dim TreeNode25 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Flow from detritus", 1, 1)
+        Dim TreeNode26 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
+        Dim TreeNode27 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
+        Dim TreeNode28 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Consumer <- TL1", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode26, TreeNode27})
+        Dim TreeNode29 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
+        Dim TreeNode30 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
+        Dim TreeNode31 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Consumer <- prey <- TL1", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode29, TreeNode30})
+        Dim TreeNode32 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
+        Dim TreeNode33 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
+        Dim TreeNode34 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Top predator <- prey", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode32, TreeNode33})
+        Dim TreeNode35 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
+        Dim TreeNode36 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
+        Dim TreeNode37 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles (living)", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode35, TreeNode36})
+        Dim TreeNode38 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pathway", 1, 1)
+        Dim TreeNode39 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Summary of pathways", 1, 1)
+        Dim TreeNode40 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles (all)", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode38, TreeNode39})
+        Dim TreeNode41 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycling and path length", 1, 1)
+        Dim TreeNode42 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Cycles and pathways", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode28, TreeNode31, TreeNode34, TreeNode37, TreeNode40, TreeNode41})
+        Dim TreeNode43 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices without primary production required estimate", 1, 1)
+        Dim TreeNode44 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Indices with primary production required estimate", 1, 1)
+        Dim TreeNode45 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Ecosim network analysis ", 5, 5, New System.Windows.Forms.TreeNode() {TreeNode43, TreeNode44})
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
         Me.imglstNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
-        Me.zgcNetworkAnalysis = New ZedGraph.ZedGraphControl
-        Me.tsNetworkAnalysis = New System.Windows.Forms.ToolStrip
+        Me.m_graph = New ZedGraph.ZedGraphControl
+        Me.m_plot = New EwENetworkAnalysis.ucPlot
+        Me.m_tsNetworkAnalysis = New System.Windows.Forms.ToolStrip
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection1 = New System.Windows.Forms.ToolStripComboBox
         Me.tslblSelection2 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection2 = New System.Windows.Forms.ToolStripComboBox
         Me.tslblProgressBar = New System.Windows.Forms.ToolStripLabel
-        Me.tspgbProgressBar = New System.Windows.Forms.ToolStripProgressBar
         Me.tsbtnCancel = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
         Me.tsbtnPrintGraph = New System.Windows.Forms.ToolStripButton
         Me.tssepGraphMTI = New System.Windows.Forms.ToolStripSeparator
         Me.tsbtnGraphMTI = New System.Windows.Forms.ToolStripButton
-        Me.dgvNetworkAnalysis = New System.Windows.Forms.DataGridView
-        Me.tlpNetworkAnalysis = New System.Windows.Forms.TableLayoutPanel
+        Me.m_datagrid = New System.Windows.Forms.DataGridView
+        Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblNetworkAnalysis = New System.Windows.Forms.Label
         Me.scNetworkAnalysis.Panel1.SuspendLayout()
         Me.scNetworkAnalysis.Panel2.SuspendLayout()
         Me.scNetworkAnalysis.SuspendLayout()
-        Me.tsNetworkAnalysis.SuspendLayout()
-        CType(Me.dgvNetworkAnalysis, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tlpNetworkAnalysis.SuspendLayout()
+        Me.m_tsNetworkAnalysis.SuspendLayout()
+        CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpInfo.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -112,12 +113,13 @@ Partial Class frmNetworkAnalysis
         'scNetworkAnalysis.Panel2
         '
         Me.scNetworkAnalysis.Panel2.BackColor = System.Drawing.Color.White
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.zgcNetworkAnalysis)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.tsNetworkAnalysis)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.dgvNetworkAnalysis)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.tlpNetworkAnalysis)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_graph)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_plot)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tsNetworkAnalysis)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
         Me.scNetworkAnalysis.Size = New System.Drawing.Size(895, 467)
-        Me.scNetworkAnalysis.SplitterDistance = 270
+        Me.scNetworkAnalysis.SplitterDistance = 226
         Me.scNetworkAnalysis.TabIndex = 3
         '
         'tvNetworkAnalysis
@@ -205,109 +207,114 @@ Partial Class frmNetworkAnalysis
         TreeNode19.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode19.SelectedImageKey = "application_put.png"
         TreeNode19.Text = "Plot of mixed trophic impact"
-        TreeNode20.ImageIndex = 5
-        TreeNode20.Name = "ndMixedTrophicImpact"
-        TreeNode20.SelectedImageIndex = 5
-        TreeNode20.Text = "Mixed trophic impact"
-        TreeNode21.ImageIndex = 1
-        TreeNode21.Name = "ndTotal"
-        TreeNode21.SelectedImageIndex = 1
-        TreeNode21.Text = "Total"
+        TreeNode20.ImageIndex = 1
+        TreeNode20.Name = "ndGraphOfMixedTrophicImpactEwE5"
+        TreeNode20.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode20.SelectedImageIndex = 1
+        TreeNode20.Text = "Ecopath5 plot of mixed trophic impact"
+        TreeNode21.ImageIndex = 5
+        TreeNode21.Name = "ndMixedTrophicImpact"
+        TreeNode21.SelectedImageIndex = 5
+        TreeNode21.Text = "Mixed trophic impact"
         TreeNode22.ImageIndex = 1
-        TreeNode22.Name = "ndByGroup"
+        TreeNode22.Name = "ndTotal"
         TreeNode22.SelectedImageIndex = 1
-        TreeNode22.Text = "By group"
-        TreeNode23.ImageIndex = 5
-        TreeNode23.Name = "ndAscendency"
-        TreeNode23.SelectedImageIndex = 5
-        TreeNode23.Text = "Ascendency"
-        TreeNode24.ImageIndex = 1
-        TreeNode24.Name = "ndFlowFromDetritus"
-        TreeNode24.SelectedImageIndex = 1
-        TreeNode24.Text = "Flow from detritus"
+        TreeNode22.Text = "Total"
+        TreeNode23.ImageIndex = 1
+        TreeNode23.Name = "ndByGroup"
+        TreeNode23.SelectedImageIndex = 1
+        TreeNode23.Text = "By group"
+        TreeNode24.ImageIndex = 5
+        TreeNode24.Name = "ndAscendency"
+        TreeNode24.SelectedImageIndex = 5
+        TreeNode24.Text = "Ascendency"
         TreeNode25.ImageIndex = 1
-        TreeNode25.Name = "ndPathway_cons_tl1"
+        TreeNode25.Name = "ndFlowFromDetritus"
         TreeNode25.SelectedImageIndex = 1
-        TreeNode25.Text = "Pathway"
+        TreeNode25.Text = "Flow from detritus"
         TreeNode26.ImageIndex = 1
-        TreeNode26.Name = "ndSummaryOfPathways_cons_tl1"
+        TreeNode26.Name = "ndPathway_cons_tl1"
         TreeNode26.SelectedImageIndex = 1
-        TreeNode26.Text = "Summary of pathways"
-        TreeNode27.ImageIndex = 5
-        TreeNode27.Name = "ndConsumer<-TL1"
-        TreeNode27.SelectedImageIndex = 5
-        TreeNode27.Text = "Consumer <- TL1"
-        TreeNode28.ImageIndex = 1
-        TreeNode28.Name = "ndPathway_cons_prey_tl1"
-        TreeNode28.SelectedImageIndex = 1
-        TreeNode28.Text = "Pathway"
+        TreeNode26.Text = "Pathway"
+        TreeNode27.ImageIndex = 1
+        TreeNode27.Name = "ndSummaryOfPathways_cons_tl1"
+        TreeNode27.SelectedImageIndex = 1
+        TreeNode27.Text = "Summary of pathways"
+        TreeNode28.ImageIndex = 5
+        TreeNode28.Name = "ndConsumer<-TL1"
+        TreeNode28.SelectedImageIndex = 5
+        TreeNode28.Text = "Consumer <- TL1"
         TreeNode29.ImageIndex = 1
-        TreeNode29.Name = "ndSummaryOfPathways_cons_prey_tl1"
+        TreeNode29.Name = "ndPathway_cons_prey_tl1"
         TreeNode29.SelectedImageIndex = 1
-        TreeNode29.Text = "Summary of pathways"
-        TreeNode30.ImageIndex = 5
-        TreeNode30.Name = "ndConsumer<-Prey<-TL1"
-        TreeNode30.SelectedImageIndex = 5
-        TreeNode30.Text = "Consumer <- prey <- TL1"
-        TreeNode31.ImageIndex = 1
-        TreeNode31.Name = "ndPathway_pred_prey"
-        TreeNode31.SelectedImageIndex = 1
-        TreeNode31.Text = "Pathway"
+        TreeNode29.Text = "Pathway"
+        TreeNode30.ImageIndex = 1
+        TreeNode30.Name = "ndSummaryOfPathways_cons_prey_tl1"
+        TreeNode30.SelectedImageIndex = 1
+        TreeNode30.Text = "Summary of pathways"
+        TreeNode31.ImageIndex = 5
+        TreeNode31.Name = "ndConsumer<-Prey<-TL1"
+        TreeNode31.SelectedImageIndex = 5
+        TreeNode31.Text = "Consumer <- prey <- TL1"
         TreeNode32.ImageIndex = 1
-        TreeNode32.Name = "ndSummaryOfPathways_pred_prey"
+        TreeNode32.Name = "ndPathway_pred_prey"
         TreeNode32.SelectedImageIndex = 1
-        TreeNode32.Text = "Summary of pathways"
-        TreeNode33.ImageIndex = 5
-        TreeNode33.Name = "ndTopPredator<-Prey"
-        TreeNode33.SelectedImageIndex = 5
-        TreeNode33.Text = "Top predator <- prey"
-        TreeNode34.ImageIndex = 1
-        TreeNode34.Name = "ndPathway_living"
-        TreeNode34.SelectedImageIndex = 1
-        TreeNode34.Text = "Pathway"
+        TreeNode32.Text = "Pathway"
+        TreeNode33.ImageIndex = 1
+        TreeNode33.Name = "ndSummaryOfPathways_pred_prey"
+        TreeNode33.SelectedImageIndex = 1
+        TreeNode33.Text = "Summary of pathways"
+        TreeNode34.ImageIndex = 5
+        TreeNode34.Name = "ndTopPredator<-Prey"
+        TreeNode34.SelectedImageIndex = 5
+        TreeNode34.Text = "Top predator <- prey"
         TreeNode35.ImageIndex = 1
-        TreeNode35.Name = "ndSummaryOfPathways_living"
+        TreeNode35.Name = "ndPathway_living"
         TreeNode35.SelectedImageIndex = 1
-        TreeNode35.Text = "Summary of pathways"
-        TreeNode36.ImageIndex = 5
-        TreeNode36.Name = "ndCycles(living)"
-        TreeNode36.SelectedImageIndex = 5
-        TreeNode36.Text = "Cycles (living)"
-        TreeNode37.ImageIndex = 1
-        TreeNode37.Name = "ndPathway_all"
-        TreeNode37.SelectedImageIndex = 1
-        TreeNode37.Text = "Pathway"
+        TreeNode35.Text = "Pathway"
+        TreeNode36.ImageIndex = 1
+        TreeNode36.Name = "ndSummaryOfPathways_living"
+        TreeNode36.SelectedImageIndex = 1
+        TreeNode36.Text = "Summary of pathways"
+        TreeNode37.ImageIndex = 5
+        TreeNode37.Name = "ndCycles(living)"
+        TreeNode37.SelectedImageIndex = 5
+        TreeNode37.Text = "Cycles (living)"
         TreeNode38.ImageIndex = 1
-        TreeNode38.Name = "ndSummaryOfPathways_all"
+        TreeNode38.Name = "ndPathway_all"
         TreeNode38.SelectedImageIndex = 1
-        TreeNode38.Text = "Summary of pathways"
-        TreeNode39.ImageIndex = 5
-        TreeNode39.Name = "ndCycles(all)"
-        TreeNode39.SelectedImageIndex = 5
-        TreeNode39.Text = "Cycles (all)"
-        TreeNode40.ImageIndex = 1
-        TreeNode40.Name = "ndCyclingAndPathLength"
-        TreeNode40.SelectedImageIndex = 1
-        TreeNode40.Text = "Cycling and path length"
-        TreeNode41.ImageIndex = 5
-        TreeNode41.Name = "ndCyclesAndPathways"
-        TreeNode41.SelectedImageIndex = 5
-        TreeNode41.Text = "Cycles and pathways"
-        TreeNode42.ImageIndex = 1
-        TreeNode42.Name = "ndWithoutPrimaryProductionRequiredEstimate"
-        TreeNode42.SelectedImageIndex = 1
-        TreeNode42.Text = "Indices without primary production required estimate"
+        TreeNode38.Text = "Pathway"
+        TreeNode39.ImageIndex = 1
+        TreeNode39.Name = "ndSummaryOfPathways_all"
+        TreeNode39.SelectedImageIndex = 1
+        TreeNode39.Text = "Summary of pathways"
+        TreeNode40.ImageIndex = 5
+        TreeNode40.Name = "ndCycles(all)"
+        TreeNode40.SelectedImageIndex = 5
+        TreeNode40.Text = "Cycles (all)"
+        TreeNode41.ImageIndex = 1
+        TreeNode41.Name = "ndCyclingAndPathLength"
+        TreeNode41.SelectedImageIndex = 1
+        TreeNode41.Text = "Cycling and path length"
+        TreeNode42.ImageIndex = 5
+        TreeNode42.Name = "ndCyclesAndPathways"
+        TreeNode42.SelectedImageIndex = 5
+        TreeNode42.Text = "Cycles and pathways"
         TreeNode43.ImageIndex = 1
-        TreeNode43.Name = "ndWithPrimaryProductionRequiredEstimate"
+        TreeNode43.Name = "ndWithoutPrimaryProductionRequiredEstimate"
         TreeNode43.SelectedImageIndex = 1
-        TreeNode43.Text = "Indices with primary production required estimate"
-        TreeNode44.ImageIndex = 5
-        TreeNode44.Name = "ndEcosim network analysis indices"
-        TreeNode44.SelectedImageIndex = 5
-        TreeNode44.Text = "Ecosim network analysis "
-        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode20, TreeNode23, TreeNode24, TreeNode41, TreeNode44})
+        TreeNode43.Text = "Indices without primary production required estimate"
+        TreeNode44.ImageIndex = 1
+        TreeNode44.Name = "ndWithPrimaryProductionRequiredEstimate"
+        TreeNode44.SelectedImageIndex = 1
+        TreeNode44.Text = "Indices with primary production required estimate"
+        TreeNode45.ImageIndex = 5
+        TreeNode45.Name = "ndEcosim network analysis indices"
+        TreeNode45.SelectedImageIndex = 5
+        TreeNode45.Text = "Ecosim network analysis "
+        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode21, TreeNode24, TreeNode25, TreeNode42, TreeNode45})
         Me.tvNetworkAnalysis.SelectedImageIndex = 0
-        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(270, 467)
+        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(226, 467)
         Me.tvNetworkAnalysis.TabIndex = 2
         '
         'imglstNetworkAnalysis
@@ -326,29 +333,36 @@ Partial Class frmNetworkAnalysis
         Me.imglstNetworkAnalysis.Images.SetKeyName(9, "wi0122-16.ico")
         Me.imglstNetworkAnalysis.Images.SetKeyName(10, "wi0054-16.ico")
         '
-        'zgcNetworkAnalysis
+        'm_graph
         '
-        Me.zgcNetworkAnalysis.Location = New System.Drawing.Point(3, 36)
-        Me.zgcNetworkAnalysis.Name = "zgcNetworkAnalysis"
-        Me.zgcNetworkAnalysis.ScrollGrace = 0
-        Me.zgcNetworkAnalysis.ScrollMaxX = 0
-        Me.zgcNetworkAnalysis.ScrollMaxY = 0
-        Me.zgcNetworkAnalysis.ScrollMaxY2 = 0
-        Me.zgcNetworkAnalysis.ScrollMinX = 0
-        Me.zgcNetworkAnalysis.ScrollMinY = 0
-        Me.zgcNetworkAnalysis.ScrollMinY2 = 0
-        Me.zgcNetworkAnalysis.Size = New System.Drawing.Size(574, 425)
-        Me.zgcNetworkAnalysis.TabIndex = 7
+        Me.m_graph.Location = New System.Drawing.Point(114, 28)
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0
+        Me.m_graph.ScrollMaxX = 0
+        Me.m_graph.ScrollMaxY = 0
+        Me.m_graph.ScrollMaxY2 = 0
+        Me.m_graph.ScrollMinX = 0
+        Me.m_graph.ScrollMinY = 0
+        Me.m_graph.ScrollMinY2 = 0
+        Me.m_graph.Size = New System.Drawing.Size(164, 433)
+        Me.m_graph.TabIndex = 7
         '
-        'tsNetworkAnalysis
+        'm_plot
         '
-        Me.tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tspgbProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tssepGraphMTI, Me.tsbtnGraphMTI})
-        Me.tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
-        Me.tsNetworkAnalysis.Name = "tsNetworkAnalysis"
-        Me.tsNetworkAnalysis.Size = New System.Drawing.Size(621, 25)
-        Me.tsNetworkAnalysis.TabIndex = 4
-        Me.tsNetworkAnalysis.Text = "ToolStrip1"
+        Me.m_plot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_plot.Location = New System.Drawing.Point(3, 28)
+        Me.m_plot.Name = "m_plot"
+        Me.m_plot.Size = New System.Drawing.Size(105, 167)
+        Me.m_plot.TabIndex = 1
+        '
+        'm_tsNetworkAnalysis
+        '
+        Me.m_tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.m_tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tssepGraphMTI, Me.tsbtnGraphMTI})
+        Me.m_tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
+        Me.m_tsNetworkAnalysis.Name = "m_tsNetworkAnalysis"
+        Me.m_tsNetworkAnalysis.Size = New System.Drawing.Size(665, 25)
+        Me.m_tsNetworkAnalysis.TabIndex = 4
         '
         'tslblSelection1
         '
@@ -381,11 +395,6 @@ Partial Class frmNetworkAnalysis
         Me.tslblProgressBar.Size = New System.Drawing.Size(80, 22)
         Me.tslblProgressBar.Text = "ToolStripLabel3"
         '
-        'tspgbProgressBar
-        '
-        Me.tspgbProgressBar.Name = "tspgbProgressBar"
-        Me.tspgbProgressBar.Size = New System.Drawing.Size(100, 22)
-        '
         'tsbtnCancel
         '
         Me.tsbtnCancel.BackColor = System.Drawing.Color.DarkSeaGreen
@@ -393,7 +402,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnCancel.Image = CType(resources.GetObject("tsbtnCancel.Image"), System.Drawing.Image)
         Me.tsbtnCancel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnCancel.Name = "tsbtnCancel"
-        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 17)
+        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 22)
         Me.tsbtnCancel.Text = "Cancel"
         '
         'tsbtnOutputIndicesCSV
@@ -427,7 +436,7 @@ Partial Class frmNetworkAnalysis
         'tssepGraphMTI
         '
         Me.tssepGraphMTI.Name = "tssepGraphMTI"
-        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 6)
+        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 25)
         '
         'tsbtnGraphMTI
         '
@@ -438,41 +447,39 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnGraphMTI.Size = New System.Drawing.Size(58, 17)
         Me.tsbtnGraphMTI.Text = "Bar graph"
         '
-        'dgvNetworkAnalysis
+        'm_datagrid
         '
-        Me.dgvNetworkAnalysis.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvNetworkAnalysis.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
-        Me.dgvNetworkAnalysis.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
-        Me.dgvNetworkAnalysis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvNetworkAnalysis.Location = New System.Drawing.Point(0, 28)
-        Me.dgvNetworkAnalysis.Name = "dgvNetworkAnalysis"
-        Me.dgvNetworkAnalysis.Size = New System.Drawing.Size(565, 439)
-        Me.dgvNetworkAnalysis.TabIndex = 3
+        Me.m_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
+        Me.m_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_datagrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.m_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.m_datagrid.Location = New System.Drawing.Point(3, 201)
+        Me.m_datagrid.Name = "m_datagrid"
+        Me.m_datagrid.ReadOnly = True
+        Me.m_datagrid.Size = New System.Drawing.Size(105, 260)
+        Me.m_datagrid.TabIndex = 3
         '
-        'tlpNetworkAnalysis
+        'm_tlpInfo
         '
-        Me.tlpNetworkAnalysis.ColumnCount = 3
-        Me.tlpNetworkAnalysis.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpNetworkAnalysis.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210.0!))
-        Me.tlpNetworkAnalysis.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpNetworkAnalysis.Controls.Add(Me.PictureBox1, 1, 1)
-        Me.tlpNetworkAnalysis.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tlpNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
-        Me.tlpNetworkAnalysis.Name = "tlpNetworkAnalysis"
-        Me.tlpNetworkAnalysis.RowCount = 3
-        Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400.0!))
-        Me.tlpNetworkAnalysis.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpNetworkAnalysis.Size = New System.Drawing.Size(621, 467)
-        Me.tlpNetworkAnalysis.TabIndex = 5
+        Me.m_tlpInfo.ColumnCount = 3
+        Me.m_tlpInfo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpInfo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210.0!))
+        Me.m_tlpInfo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpInfo.Controls.Add(Me.PictureBox1, 1, 1)
+        Me.m_tlpInfo.Location = New System.Drawing.Point(284, 28)
+        Me.m_tlpInfo.Name = "m_tlpInfo"
+        Me.m_tlpInfo.RowCount = 3
+        Me.m_tlpInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400.0!))
+        Me.m_tlpInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpInfo.Size = New System.Drawing.Size(373, 433)
+        Me.m_tlpInfo.TabIndex = 5
         '
         'PictureBox1
         '
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
-        Me.PictureBox1.Location = New System.Drawing.Point(208, 36)
+        Me.PictureBox1.Location = New System.Drawing.Point(84, 19)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(204, 394)
         Me.PictureBox1.TabIndex = 0
@@ -505,34 +512,34 @@ Partial Class frmNetworkAnalysis
         Me.scNetworkAnalysis.Panel2.ResumeLayout(False)
         Me.scNetworkAnalysis.Panel2.PerformLayout()
         Me.scNetworkAnalysis.ResumeLayout(False)
-        Me.tsNetworkAnalysis.ResumeLayout(False)
-        Me.tsNetworkAnalysis.PerformLayout()
-        CType(Me.dgvNetworkAnalysis, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tlpNetworkAnalysis.ResumeLayout(False)
+        Me.m_tsNetworkAnalysis.ResumeLayout(False)
+        Me.m_tsNetworkAnalysis.PerformLayout()
+        CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpInfo.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
-    Friend WithEvents tvNetworkAnalysis As System.Windows.Forms.TreeView
-    Friend WithEvents dgvNetworkAnalysis As System.Windows.Forms.DataGridView
-    Friend WithEvents lblNetworkAnalysis As System.Windows.Forms.Label
-    Friend WithEvents tsNetworkAnalysis As System.Windows.Forms.ToolStrip
-    Friend WithEvents imglstNetworkAnalysis As System.Windows.Forms.ImageList
-    Friend WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
-    Friend WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
-    Friend WithEvents tslblProgressBar As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents tspgbProgressBar As System.Windows.Forms.ToolStripProgressBar
-    Friend WithEvents tslblSelection1 As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents tsbtnCancel As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tlpNetworkAnalysis As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
-    Friend WithEvents zgcNetworkAnalysis As ZedGraph.ZedGraphControl
-    Friend WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tsbtnGraphMTI As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tssepGraphMTI As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
+    Private WithEvents tvNetworkAnalysis As System.Windows.Forms.TreeView
+    Private WithEvents lblNetworkAnalysis As System.Windows.Forms.Label
+    Private WithEvents imglstNetworkAnalysis As System.Windows.Forms.ImageList
+    Private WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
+    Private WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents tslblProgressBar As System.Windows.Forms.ToolStripLabel
+    Private WithEvents tslblSelection1 As System.Windows.Forms.ToolStripLabel
+    Private WithEvents tsbtnCancel As System.Windows.Forms.ToolStripButton
+    Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Private WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
+    Private WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
+    Private WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
+    Private WithEvents tsbtnGraphMTI As System.Windows.Forms.ToolStripButton
+    Private WithEvents tssepGraphMTI As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsNetworkAnalysis As System.Windows.Forms.ToolStrip
+    Private WithEvents m_datagrid As System.Windows.Forms.DataGridView
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
+    Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plot As ucPlot
 End Class

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.17  2009/05/01 17:44:47  jeroens
+' Greatly simplified content management
+'
 ' Revision 1.16  2009/04/28 19:00:31  jeroens
 ' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
 '
@@ -49,55 +52,6 @@
 ' Revision 1.1  2008/09/26 07:30:57  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.39  2008/07/01 19:13:11  sherman
-' Merged branch - Fix_Ecopat_EcosimUpdateBug
-'
-' Revision 1.38  2008/06/30 23:53:25  joeh
-' Call RunRequiredPrimaryProd() of cRequiredPrimaryProduction when computing Ecosim NA indices with PPR
-'
-' Revision 1.37  2008/06/25 01:53:40  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.36  2008/06/24 18:08:38  joeh
-' Ecosim NA indice plots are displayed in the same form where  we have the NA tree view - Take 2
-'
-' Revision 1.35  2008/06/24 00:52:28  joeh
-' Ecosim NA indice plots are no longer displayed in a pop up form, rather they are displayed in the same form where  we have the NA tree view
-'
-' Revision 1.34  2007/09/13 04:15:19  sherman
-' Updated sponsors, try #2
-'
-' Revision 1.32  2007/07/09 23:05:48  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.31  2007/07/09 19:44:45  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.30  2007/06/28 19:28:30  joeh
-' Add tool strip button Cancel
-'
-' Revision 1.29  2007/06/22 00:35:32  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.28  2007/06/21 00:14:38  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.27  2007/06/20 23:33:13  joeh
-' Add cEcosimNetworkAnalysis
-'
-' Revision 1.26  2007/06/20 18:52:56  joeh
-' Rename SetUpPanel() to RunRequiredPrimaryProd()
-'
-' Revision 1.25  2007/06/20 18:49:08  joeh
-' Rename SetUpPanel() to RunFindPathwaysCyclesAll()
-'
-' Revision 1.24  2007/06/20 18:45:40  joeh
-' Rename SetUpPanel() to RunNetworkAnalysis()
-'
-' Revision 1.23  2007/06/20 18:13:56  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
 
 Option Strict On
@@ -105,472 +59,199 @@ Option Explicit On
 
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Commands
 
 Public Class frmNetworkAnalysis
     Private WithEvents m_NetworkManager As cNetworkManager
 
-    Private WithEvents m_NetworkAnalysis As cNetworkAnalysis
-    Private WithEvents m_FindPathwaysCyclesAll As cFindPathwaysCyclesAll
-    Private WithEvents m_RequiredPrimaryProduction As cRequiredPrimaryProduction
-    Private WithEvents m_EcosimNetworkAnalysis As cEcosimNetworkAnalysis
-
-    Private m_AbsoluteFlows As cAbsoluteFlows
-    Private m_RelativeFlows As cRelativeFlows
-    Private m_TransferEfficiency As cTransferEfficiency
-    Private m_FlowPyramid As cFlowPyramid
-    Private m_BiomassByTrophicLevel As cBiomassByTrophicLevel
-    Private m_BiomassPyramid As cBiomassPyramid
-    Private m_CatchByTrophicLevel As cCatchByTrophicLevel
-    Private m_CatchPyramid As cCatchPyramid
-
-    Private m_FromAllCombined As cFromAllCombined
-    Private m_FromDetritus As cFromDetritus
-    Private m_FromPrimaryProd As cFromPrimaryProd
-
-    Private m_ForConsumpOfAllGp As cForConsumpOfAllGp
-    Private m_ForHarvestOfAllGp As cForHarvestOfAllGp
-
-    Private m_ImpactData As cImpactData
-    Private m_GraphOfMixedTrophicImpact As cGraphOfMixedTrophicImpact
-    Private WithEvents m_PlotOfMixedTrophicImpact As cPlotOfMixedTrophicImpact
-
-    Private m_AscendencyByGroup As cByGroup
-    Private m_AscendencyTotal As cTotal
-
-    Private m_FlowFromDetritus As cFlowFromDetritus
-
-    Private WithEvents m_TL1ToConsumerPathways As TL1ToConsumer.cPathways
-    Private m_TL1ToConsumerSummaryPathways As TL1ToConsumer.cSummaryPathways
-    Private WithEvents m_TL1ToPreyToConsumerPathways As TL1ToPreyToConsumer.cPathways
-    Private m_TL1ToPreyToConsumerSummaryPathways As TL1ToPreyToConsumer.cSummaryPathways
-    Private WithEvents m_PreyToPredatorPathways As PreyToPredator.cPathways
-    Private m_PreyToPredatorSummaryPathways As PreyToPredator.cSummaryPathways
-    Private m_CyclesLivingPathways As CyclesLiving.cPathways
-    Private m_CyclesLivingSummaryPathways As CyclesLiving.cSummaryPathways
-    Private m_CyclesAllPathways As CyclesAll.cPathways
-    Private m_CyclesAllSummaryPathways As CyclesAll.cSummaryPathways
-    Private m_CyclingAndPathLen As cCyclingAndPathLen
-
-    Private WithEvents m_IndicesWithoutPPREstClass As cIndicesWithoutPPREst
-    'Private m_IndicesWithoutPPREstForm As frmIndicesWithoutPPREst
-    Private WithEvents m_IndicesWithPPREstClass As cIndicesWithPPREst
-    'Private m_IndicesWithPPREstForm As frmIndicesWithPPREst
-    'Private m_FunctionalResponse As cFunctionalResponse
-
     Private m_AlgorithmRunning As String
-    Private m_strSelectedNodeName As String
+    Private m_strSelectedNodeName As String = ""
     Private m_SelectionOfComboBox1 As Integer
     Private m_SelectionOfComboBox2 As Integer
     Private m_FormActivatedCounter As Integer
-    Private m_zgh As ZedGraphHelper = Nothing
 
     Public Sub New(ByRef theNetworkManager As cNetworkManager)
         Me.InitializeComponent()
 
         m_NetworkManager = theNetworkManager
-        Me.m_zgh = New ZedGraphHelper()
 
         'm_NetworkManager.RunMainNetwork()
         'm_NetworkManager.RunRequiredPrimaryProd()
 
     End Sub
 
-    Private Sub frmNetworkNav_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+    Private m_contentmanager As cContentManager = Nothing
 
-        m_FormActivatedCounter = m_FormActivatedCounter + 1
-        'If Not ndRelativeFlows Is Nothing Then
-        '    tvNetworkAnalysis.SelectedNode = ndRelativeFlows
-        '    tvNetworkAnalysis.SelectedNode.BackColor = Drawing.Color.SkyBlue
-        'End If
-        If m_FormActivatedCounter = 1 Then
-            scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-            MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-            If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-            dgvNetworkAnalysis.Visible = False
-            zgcNetworkAnalysis.Visible = False
-            tlpNetworkAnalysis.Visible = True
-        End If
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        Me.m_graph.Visible = False
+        Me.m_graph.Dock = DockStyle.Fill
+
+        Me.m_plot.Visible = False
+        Me.m_plot.Dock = DockStyle.Fill
+
+        Me.m_datagrid.Visible = False
+        Me.m_datagrid.Dock = DockStyle.Fill
+
+        Me.m_tsNetworkAnalysis.Visible = False
+        Me.m_tsNetworkAnalysis.Dock = DockStyle.Top
+
+        Me.m_tlpInfo.Visible = True
+        Me.m_tlpInfo.Dock = DockStyle.Fill
+
     End Sub
 
-    Private Function FindNode(ByVal root As Windows.Forms.TreeNodeCollection, ByVal strText As String) As Windows.Forms.TreeNode
-        Dim ret As Windows.Forms.TreeNode = Nothing
-
-        For Each nd As Windows.Forms.TreeNode In root
-            If nd.Text.Equals(strText) Then
-                ret = nd
-                Exit For
-            Else
-                If nd.GetNodeCount(False) <> 0 Then
-                    ret = FindNode(nd.Nodes, strText)
-                    If Not ret Is Nothing Then Exit For
-                End If
-            End If
-        Next
-
-        Return ret
-    End Function
-
-    'Private Function FindNode(ByVal root As Windows.Forms.TreeNodeCollection, ByVal intIndex As Integer) As Windows.Forms.TreeNode
-    '    Dim ret As Windows.Forms.TreeNode = Nothing
-
-    '    For Each nd As Windows.Forms.TreeNode In root
-    '        If nd.Index.Equals(intIndex) Then
-    '            ret = nd
-    '            Exit For
-    '        Else
-    '            If nd.GetNodeCount(False) <> 0 Then
-    '                ret = FindNode(nd.Nodes, intIndex)
-    '                If Not ret Is Nothing Then Exit For
-    '            End If
-    '        End If
-    '    Next
-
-    '    Return ret
-    'End Function
-
-
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvNetworkAnalysis.AfterSelect
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+
+        If (Me.m_contentmanager IsNot Nothing) Then
+            Me.m_contentmanager.Detach()
+            Me.m_contentmanager = Nothing
+            Me.m_tsNetworkAnalysis.Visible = False ' Hide toolstrip
+        End If
+
+        If Not Me.m_NetworkManager.IsMainNetworkRun Then
+            Me.m_NetworkManager.RunMainNetwork()
+        End If
 
         Select Case e.Node.Name
-            Case "ndRelativeFlows" ' My.Resources.TREE_NODE_REL_FLOWS
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_RelativeFlows = cRelativeFlows.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_RelativeFlows.DisplayData()
-            Case "ndAbsoluteFlows" ' My.Resources.TREE_NODE_ABS_FLOWS
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_AbsoluteFlows = cAbsoluteFlows.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_AbsoluteFlows.DisplayData()
-            Case "ndTransferEfficiency" ' My.Resources.TREE_NODE_TRANSFER_EFF
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_TransferEfficiency = cTransferEfficiency.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_TransferEfficiency.DisplayData()
-            Case "ndFlowPyramid" ' My.Resources.TREE_NODE_FLOW_PYR
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_FlowPyramid = cFlowPyramid.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FlowPyramid.SetUpPanel()
-                m_FlowPyramid.CreatePlot()
-            Case "ndBiomassByTrophicLevel" ' My.Resources.TREE_NODE_BIOMASS_TRP_LVL
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_BiomassByTrophicLevel = cBiomassByTrophicLevel.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_BiomassByTrophicLevel.DisplayData()
-            Case "ndBiomassPyramid" ' My.Resources.TREE_NODE_BIOMASS_PYR
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_BiomassPyramid = cBiomassPyramid.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_BiomassPyramid.SetUpPanel()
-                m_BiomassPyramid.CreatePlot()
-            Case "ndCatchByTrophicLevel" ' My.Resources.TREE_NODE_CATCH_TRP_LVL
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_CatchByTrophicLevel = cCatchByTrophicLevel.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CatchByTrophicLevel.DisplayData()
-            Case "ndCatchPyramid" ' My.Resources.TREE_NODE_CATCH_PYR
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_CatchPyramid = cCatchPyramid.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CatchPyramid.SetUpPanel()
-                m_CatchPyramid.CreatePlot()
-            Case "ndFromPrimaryProducers" ' My.Resources.TREE_NODE_FROM_PRIM_PRODUCER
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_FromPrimaryProd = cFromPrimaryProd.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FromPrimaryProd.DisplayData()
-            Case "ndFromDetritus" ' My.Resources.TREE_NODE_FROM_DET
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_FromDetritus = cFromDetritus.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FromDetritus.DisplayData()
-            Case "ndFromAllCombined" ' My.Resources.TREE_NODE_FROM_ALL_COMB
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_FromAllCombined = cFromAllCombined.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FromAllCombined.DisplayData()
-            Case "ndForHarvestOfAllGroups" ' My.Resources.TREE_NODE_FOR_HARV_ALL_GRP
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If Not m_NetworkManager.IsRequiredPrimaryProdRun Then
-                    m_RequiredPrimaryProduction = cRequiredPrimaryProduction.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_RequiredPrimaryProduction.RunRequiredPrimaryProd()
-                End If
-                m_ForHarvestOfAllGp = cForHarvestOfAllGp.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_ForHarvestOfAllGp.DisplayData()
-            Case "ndForConsumptionOfAllGroups" ' My.Resources.TREE_NODE_FOR_CONSUM_ALL_GRP
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If Not m_NetworkManager.IsRequiredPrimaryProdRun Then
-                    m_RequiredPrimaryProduction = cRequiredPrimaryProduction.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_RequiredPrimaryProduction.RunRequiredPrimaryProd()
-                End If
-                m_ForConsumpOfAllGp = cForConsumpOfAllGp.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_ForConsumpOfAllGp.DisplayData()
-            Case "ndImpactData" ' My.Resources.TREE_NODE_IMPACT_DATA  'Mixed trophic impact data
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_ImpactData = cImpactData.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_ImpactData.DisplayData()
-            Case "ndGraphOfMixedTrophicImpact" ' My.Resources.TREE_NODE_PLOT_MTI 'MTI graph with circles
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_PlotOfMixedTrophicImpact = cPlotOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_PlotOfMixedTrophicImpact.SetUpPanel()
-                m_PlotOfMixedTrophicImpact.CreatePlot()
-                'Case My.Resources.TREE_NODE_GRAPH_MTI 'MTI graph with bars
-                '    If Not m_NetworkManager.IsMainNetworkRun Then
-                '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                '        m_NetworkAnalysis.RunNetworkAnalysis()
-                '    End If
-                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                '    m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                '    m_GraphOfMixedTrophicImpact.SetUpPanel()
-                '    m_GraphOfMixedTrophicImpact.CreatePlot()
+
+            Case "ndRelativeFlows"
+                Me.m_contentmanager = New cRelativeFlows()
+
+            Case "ndAbsoluteFlows"
+                Me.m_contentmanager = New cAbsoluteFlows()
+
+            Case "ndTransferEfficiency"
+                Me.m_contentmanager = New cTransferEfficiency()
+
+            Case "ndFlowPyramid"
+                Me.m_contentmanager = New cFlowPyramid()
+
+            Case "ndBiomassByTrophicLevel"
+                Me.m_contentmanager = New cBiomassByTrophicLevel()
+
+            Case "ndBiomassPyramid"
+                Me.m_contentmanager = New cBiomassPyramid()
+
+            Case "ndCatchByTrophicLevel"
+                Me.m_contentmanager = New cCatchByTrophicLevel()
+
+            Case "ndCatchPyramid"
+                Me.m_contentmanager = New cCatchPyramid()
+
+            Case "ndFromPrimaryProducers"
+                Me.m_contentmanager = New cFromPrimaryProd()
+
+            Case "ndFromDetritus"
+                Me.m_contentmanager = New cFromDetritus()
+
+            Case "ndFromAllCombined"
+                Me.m_contentmanager = New cFromAllCombined()
+
+            Case "ndForHarvestOfAllGroups"
+                Me.m_NetworkManager.RunRequiredPrimaryProd()
+                Me.m_contentmanager = New cForHarvestOfAllGp()
+
+            Case "ndForConsumptionOfAllGroups"
+                Me.m_NetworkManager.RunRequiredPrimaryProd()
+                Me.m_contentmanager = New cForConsumpOfAllGp()
+
+            Case "ndImpactData"
+                Me.m_contentmanager = New cImpactData()
+
+            Case "ndGraphOfMixedTrophicImpact"
+                Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
+
+            Case "ndGraphOfMixedTrophicImpactEwE5"
+                Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
+
+                ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)
                 'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
                 '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
                 '    m_HideGroupsClass.SetUpPanel()
                 '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
                 '    m_HideGroupsForm.ShowDialog()
-            Case "ndTotal" ' My.Resources.TREE_NODE_TOTAL
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
+
+            Case "ndTotal"
+                Me.m_contentmanager = New cTotal()
+
+            Case "ndByGroup"
+                Me.m_contentmanager = New cByGroup()
+
+            Case "ndFlowFromDetritus"
+                Me.m_contentmanager = New cFlowFromDetritus()
+
+            Case "ndPathway_cons_tl1"
+                Me.m_contentmanager = New TL1ToConsumer.cPathways()
+
+            Case "ndSummaryOfPathways_cons_tl1"
+                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+
+            Case "ndPathway_cons_prey_tl1"
+                Me.m_contentmanager = New TL1ToPreyToConsumer.cPathways()
+
+            Case "ndSummaryOfPathways_cons_prey_tl1"
+                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+
+            Case "ndPathway_pred_prey"
+                Me.m_contentmanager = New PreyToPredator.cPathways()
+
+            Case "ndSummaryOfPathways_pred_prey"
+                Me.m_contentmanager = New PreyToPredator.cSummaryPathways()
+
+            Case "ndPathway_living"
+                Me.m_contentmanager = New CyclesLiving.cPathways()
+
+            Case "ndSummaryOfPathways_living"
+                Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
+
+            Case "ndPathway_all"
+                If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
+                    Me.m_NetworkManager.FindPathwaysCyclesAll()
+                    Me.m_contentmanager = New CyclesAll.cPathways()
                 End If
-                m_AscendencyTotal = cTotal.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_AscendencyTotal.DisplayData()
-            Case "ndByGroup" ' My.Resources.TREE_NODE_BY_GRP
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
+
+            Case "ndSummaryOfPathways_all"
+                If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
+                    Me.m_NetworkManager.FindPathwaysCyclesAll()
+                    Me.m_contentmanager = New CyclesAll.cSummaryPathways()
                 End If
-                m_AscendencyByGroup = cByGroup.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_AscendencyByGroup.DisplayData()
-            Case "ndFlowFromDetritus" ' My.Resources.TREE_NODE_FLOW_DET
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
+
+            Case "ndCyclingAndPathLength"
+                Me.m_contentmanager = New cCyclingAndPathLen()
+
+            Case "ndWithoutPrimaryProductionRequiredEstimate"
+
+                Me.m_NetworkManager.EcosimPPROn = False
+                If Me.m_NetworkManager.RunEcosimNetwork() Then
+                    Me.m_contentmanager = New cIndicesWithoutPPREst()
                 End If
-                m_FlowFromDetritus = cFlowFromDetritus.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_FlowFromDetritus.DisplayData()
-            Case "ndPathway_cons_tl1" ' My.Resources.TREE_NODE_CONSUM_TL1
-                m_strSelectedNodeName = e.Node.Name
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
+
+            Case "ndWithPrimaryProductionRequiredEstimate"
+
+                ' Think positive
+                Dim bRun As Boolean = True
+
+                ' PPR not on yet?
+                If (Me.m_NetworkManager.EcosimPPROn = False) Then
+                    ' #Yes: prompt user if need to run
+                    bRun = (MsgBox(My.Resources.PROMPT_ESTIMATE_PPR, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes)
                 End If
-                m_TL1ToConsumerPathways = TL1ToConsumer.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_TL1ToConsumerPathways.DisplayData()
-            Case "ndPathway_cons_prey_tl1" ' My.Resources.TREE_NODE_CONSUM_PREY_TL1
-                m_strSelectedNodeName = e.Node.Name
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_TL1ToPreyToConsumerPathways = TL1ToPreyToConsumer.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_TL1ToPreyToConsumerPathways.DisplayData()
-            Case "ndPathway_pred_prey" ' My.Resources.TREE_NODE_PRED_PREY
-                m_strSelectedNodeName = e.Node.Name
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_PreyToPredatorPathways = PreyToPredator.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_PreyToPredatorPathways.DisplayData()
-            Case "ndPathway_living" ' My.Resources.TREE_NODE_CYC_LIVING
-                m_strSelectedNodeName = e.Node.Name
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_CyclesLivingPathways = CyclesLiving.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CyclesLivingPathways.DisplayData()
-            Case "ndPathway_all" ' My.Resources.TREE_NODE_CYC_ALL
-                If MsgBox(My.Resources.MSG_BOX_CYC_ALL, MsgBoxStyle.YesNo, My.Resources.MSG_BOX_EWE_NA_PLUGIN) = MsgBoxResult.Yes Then
-                    m_strSelectedNodeName = e.Node.Name
-                    If Not m_NetworkManager.IsMainNetworkRun Then
-                        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_NetworkAnalysis.RunNetworkAnalysis()
-                    End If
-                    m_FindPathwaysCyclesAll = cFindPathwaysCyclesAll.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_FindPathwaysCyclesAll.RunFindPathwaysCyclesAll()
-                    m_CyclesAllPathways = CyclesAll.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_CyclesAllPathways.DisplayData()
-                Else
-                    scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                    MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-                    If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-                    dgvNetworkAnalysis.Visible = False
-                    zgcNetworkAnalysis.Visible = False
-                    tlpNetworkAnalysis.Visible = False
-                End If
-            Case "ndSummaryOfPathways_cons_tl1" ' My.Resources.TREE_NODE_CONSUM_TL1
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If m_strSelectedNodeName <> e.Node.Name Then
-                    m_strSelectedNodeName = e.Node.Name
-                    m_TL1ToConsumerPathways = TL1ToConsumer.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_TL1ToConsumerPathways.DisplayData()
-                End If
-                m_TL1ToConsumerSummaryPathways = TL1ToConsumer.cSummaryPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_TL1ToConsumerSummaryPathways.DisplayData()
-            Case "ndSummaryOfPathways_cons_prey_tl1" ' My.Resources.TREE_NODE_CONSUM_PREY_TL1
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If m_strSelectedNodeName <> e.Node.Name Then
-                    m_strSelectedNodeName = e.Node.Name
-                    m_TL1ToPreyToConsumerPathways = TL1ToPreyToConsumer.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_TL1ToPreyToConsumerPathways.DisplayData()
-                End If
-                m_TL1ToPreyToConsumerSummaryPathways = TL1ToPreyToConsumer.cSummaryPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_TL1ToPreyToConsumerSummaryPathways.DisplayData()
-            Case "ndSummaryOfPathways_pred_prey" ' My.Resources.TREE_NODE_PRED_PREY
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If m_strSelectedNodeName <> e.Node.Name Then
-                    m_strSelectedNodeName = e.Node.Name
-                    m_PreyToPredatorPathways = PreyToPredator.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_PreyToPredatorPathways.DisplayData()
-                End If
-                m_PreyToPredatorSummaryPathways = PreyToPredator.cSummaryPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_PreyToPredatorSummaryPathways.DisplayData()
-            Case "ndSummaryOfPathways_living" ' My.Resources.TREE_NODE_CYC_LIVING
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                If m_strSelectedNodeName <> e.Node.Name Then
-                    m_CyclesLivingPathways = CyclesLiving.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_CyclesLivingPathways.DisplayData()
-                End If
-                m_CyclesLivingSummaryPathways = CyclesLiving.cSummaryPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CyclesLivingSummaryPathways.DisplayData()
-            Case "ndSummaryOfPathways_all" ' My.Resources.TREE_NODE_CYC_ALL
-                If m_strSelectedNodeName <> e.Node.Name Then
-                    If MsgBox(My.Resources.MSG_BOX_CYC_ALL, MsgBoxStyle.YesNo, My.Resources.MSG_BOX_EWE_NA_PLUGIN) = MsgBoxResult.Yes Then
-                        If Not m_NetworkManager.IsMainNetworkRun Then
-                            m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                            m_NetworkAnalysis.RunNetworkAnalysis()
-                        End If
-                        m_FindPathwaysCyclesAll = cFindPathwaysCyclesAll.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_FindPathwaysCyclesAll.RunFindPathwaysCyclesAll()
-                        m_CyclesAllPathways = CyclesAll.cPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_CyclesAllPathways.DisplayData()
-                    Else
-                        scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                        MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-                        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-                        dgvNetworkAnalysis.Visible = False
-                        zgcNetworkAnalysis.Visible = False
-                        tlpNetworkAnalysis.Visible = False
-                        Exit Select
+
+                ' Need to run?
+                If bRun Then
+                    ' #Yes: run std PP
+                    Me.m_NetworkManager.RunRequiredPrimaryProd()
+                    ' Switch on PPR in Ecosim
+                    m_NetworkManager.EcosimPPROn = True
+                    ' Ecosim NA run succesful?
+                    If m_NetworkManager.RunEcosimNetwork() = True Then
+                        ' #Yes: update control
+                        Me.m_contentmanager = New cIndicesWithPPREst()
                     End If
                 End If
-                m_CyclesAllSummaryPathways = CyclesAll.cSummaryPathways.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CyclesAllSummaryPathways.DisplayData()
-            Case "ndCyclingAndPathLength" ' My.Resources.TREE_NODE_CYC_PATH_LEN
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                m_CyclingAndPathLen = cCyclingAndPathLen.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_CyclingAndPathLen.DisplayData()
-            Case "ndWithoutPrimaryProductionRequiredEstimate" ' My.Resources.TREE_NODE_INDC_WO_PPR_EST
-                If Not m_NetworkManager.IsMainNetworkRun Then
-                    m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_NetworkAnalysis.RunNetworkAnalysis()
-                End If
-                'If Not m_NetworkManager.IsEcosimNetworkWithoutPPREstRun And _
-                'Not m_NetworkManager.IsEcosimNetworkWithPPREstRun Then
-                If Not m_NetworkManager.IsEcosimNetworkWithoutPPREstRun Then
-                    m_EcosimNetworkAnalysis = cEcosimNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis(False) 'False->WithoutPPREst
-                End If
-                m_IndicesWithoutPPREstClass = cIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_IndicesWithoutPPREstClass.SetUpPanel(m_NetworkManager.IsEcosimNetworkWithoutPPREstRun)
-                'm_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis() might not be successfully run because Ecosim scenario has not been loaded
-                If m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = True Then
-                    m_IndicesWithoutPPREstClass.CreatePlot(Me) ', zgcNetworkAnalysis)
-                    scNetworkAnalysis.Panel2.Refresh()
-                    'm_IndicesWithoutPPREstForm = frmIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    'm_IndicesWithoutPPREstForm.ShowDialog()
-                End If
-            Case "ndWithPrimaryProductionRequiredEstimate" ' My.Resources.TREE_NODE_INDC_W_PPR_EST
-                Dim Answer As String
-                If Not m_NetworkManager.IsEcosimNetworkWithPPREstRun Then
-                    Answer = CStr(MsgBox(My.Resources.MSG_BOX_EST_PPR, MsgBoxStyle.YesNo, My.Resources.MSG_BOX_EWE_NA_PLUGIN))
-                Else
-                    Answer = CStr(vbYes)
-                End If
-                If Answer = CStr(vbYes) Then
-                    If Not m_NetworkManager.IsMainNetworkRun Then
-                        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_NetworkAnalysis.RunNetworkAnalysis()
-                    End If
-                    If Not m_NetworkManager.IsRequiredPrimaryProdRun Then
-                        m_RequiredPrimaryProduction = cRequiredPrimaryProduction.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_RequiredPrimaryProduction.RunRequiredPrimaryProd()
-                    End If
-                    If Not m_NetworkManager.IsEcosimNetworkWithPPREstRun Then
-                        m_EcosimNetworkAnalysis = cEcosimNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        m_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis(True) 'True->WithPPREst
-                    End If
-                    m_IndicesWithPPREstClass = cIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                    m_IndicesWithPPREstClass.SetUpPanel(m_NetworkManager.IsEcosimNetworkWithPPREstRun)
-                    'm_EcosimNetworkAnalysis.RunEcosimNetworkAnalysis() might not be successfully run because Ecosim scenario has not been loaded
-                    If m_NetworkManager.IsEcosimNetworkWithPPREstRun = True Then
-                        m_IndicesWithPPREstClass.CreatePlot(Me) ', zgcNetworkAnalysis)
-                        scNetworkAnalysis.Panel2.Refresh()
-                        'm_IndicesWithPPREstForm = frmIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                        'm_IndicesWithPPREstForm.ShowDialog()
-                    End If
-                Else
-                    scNetworkAnalysis.Panel2.Controls.RemoveByKey("tsNetworkAnalysis")
-                    MixedTrophicImpactUC = CType(scNetworkAnalysis.Panel2.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-                    If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-                    dgvNetworkAnalysis.Visible = False
-                    zgcNetworkAnalysis.Visible = False
-                    tlpNetworkAnalysis.Visible = False
-                End If
+
                 'Case My.Resources.TREE_NODE_FUNCT_RESP
                 '    If Not m_NetworkManager.IsMainNetworkRun Then
                 '        m_NetworkAnalysis = cNetworkAnalysis.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
@@ -589,182 +270,218 @@ Public Class frmNetworkAnalysis
             Case Else
         End Select
 
+        If Me.m_contentmanager IsNot Nothing Then
+            ' Attach form
+            Me.m_contentmanager.Attach(Me.m_NetworkManager, Me.m_datagrid, Me.m_graph, Me.m_plot)
+            ' Get data
+            Me.m_contentmanager.DisplayData()
+
+            Me.m_contentmanager.SetupToolstrip(m_tsNetworkAnalysis)
+            Me.m_tsNetworkAnalysis.Visible = Me.m_contentmanager.RequiresToolstrip
+
+            ' Hide logo
+            Me.m_tlpInfo.Visible = False
+
+            ' Position content
+            If Me.m_tsNetworkAnalysis.Visible Then
+                Me.m_graph.Top = Me.m_tsNetworkAnalysis.Height
+                Me.m_tlpInfo.Top = Me.m_tsNetworkAnalysis.Height
+                Me.m_datagrid.Top = Me.m_tsNetworkAnalysis.Height
+                Me.m_plot.Top = Me.m_tsNetworkAnalysis.Height
+            Else
+                Me.m_graph.Top = 0
+                Me.m_tlpInfo.Top = 0
+                Me.m_datagrid.Top = 0
+                Me.m_plot.Top = 0
+            End If
+        Else
+            ' Hide toolbar
+            Me.m_tsNetworkAnalysis.Visible = False
+            ' Show logo
+            Me.m_tlpInfo.Visible = True
+        End If
+
+        ' Remember selected node name
+        Me.m_strSelectedNodeName = e.Node.Name
+
     End Sub
 
-    Private Sub tvNetworkAnalysis_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles tvNetworkAnalysis.LostFocus
+    Private Sub tvNetworkAnalysis_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tvNetworkAnalysis.LostFocus
+
         tvNetworkAnalysis.SelectedNode.BackColor = Drawing.Color.LightGray
     End Sub
 
-    Private Sub tvNetworkAnalysis_NodeMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles tvNetworkAnalysis.NodeMouseClick
+    Private Sub tvNetworkAnalysis_NodeMouseClick(ByVal sender As Object, ByVal e As TreeNodeMouseClickEventArgs) _
+        Handles tvNetworkAnalysis.NodeMouseClick
+
         tvNetworkAnalysis.SelectedNode.BackColor = Drawing.Color.MintCream
     End Sub
 
-    Private Sub m_PlotOfMixedTrophicImpact_AddToolStrip() Handles m_PlotOfMixedTrophicImpact.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    ' JS 01may09: disabled 'Cancel' functionality; this only makes sense when running NA calcs in a separate thread from the UI
+    'Private Sub tsbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles tsbtnCancel.Click
 
-    Private Sub m_TL1ToConsumerPathways_AddToolStrip() Handles m_TL1ToConsumerPathways.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    '    Select Case m_AlgorithmRunning
+    '        Case My.Resources.LBL_PPR_CAL_PRGR
+    '            m_NetworkManager.CancelRequiredPrimaryProdRun = True
+    '    End Select
+    'End Sub
 
-    Private Sub m_TL1ToPreyToConsumerPathways_AddToolStrip() Handles m_TL1ToPreyToConsumerPathways.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tsbtnOutputIndicesCSV.Click
 
-    Private Sub m_PreyToPredatorPathways_AddToolStrip() Handles m_PreyToPredatorPathways.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-    Private Sub tsbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbtnCancel.Click
-        Select Case m_AlgorithmRunning
-            Case My.Resources.LBL_PPR_CAL_PRGR
-                m_NetworkManager.CancelRequiredPrimaryProdRun = True
-        End Select
-    End Sub
+        If (Me.m_contentmanager Is Nothing) Then Return
+        If (cmdFS Is Nothing) Then Return
 
-    Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnOutputIndicesCSV.Click
-        Select Case tvNetworkAnalysis.SelectedNode.Name
-            Case "ndWithoutPrimaryProductionRequiredEstimate" ' My.Resources.TREE_NODE_INDC_WO_PPR_EST
-                'm_IndicesWithoutPPREstClass = cIndicesWithoutPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_IndicesWithoutPPREstClass.ExtractToCSV()
-            Case "ndWithPrimaryProductionRequiredEstimate" ' My.Resources.TREE_NODE_INDC_W_PPR_EST
-                'm_IndicesWithPPREstClass = cIndicesWithPPREst.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-                m_IndicesWithPPREstClass.ExtractToCSV()
-        End Select
-    End Sub
+        cmdFS.Invoke("CSV files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
 
-    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnOutputGraphEMF.Click
-        m_PlotOfMixedTrophicImpact.SaveToEMF()
-    End Sub
-
-    Private Sub tsbtnGraphMTI_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tsbtnGraphMTI.Click
-        'MTI graph with bars
-        m_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
-        m_GraphOfMixedTrophicImpact.SetUpPanel()
-        m_GraphOfMixedTrophicImpact.CreatePlot()
-    End Sub
-
-    Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tscmbSelection1.SelectedIndexChanged
-        Dim strSelection1 As String
-        Dim intSelection1 As Integer
-
-        strSelection1 = CStr(tscmbSelection1.SelectedItem)
-        intSelection1 = CInt(strSelection1.Substring(0, InStr(strSelection1, ",") - 1))
-
-        Select Case m_strSelectedNodeName
-            Case "ndPathway_cons_tl1" ' My.Resources.TREE_NODE_CONSUM_TL1
-                m_TL1ToConsumerPathways.SetUpGridRow(intSelection1)
-            Case "ndPathway_cons_prey_tl1" ' My.Resources.TREE_NODE_CONSUM_PREY_TL1
-                If m_SelectionOfComboBox1 = 0 Then
-                    m_SelectionOfComboBox1 = intSelection1
-                Else
-                    m_SelectionOfComboBox1 = intSelection1
-                    m_TL1ToPreyToConsumerPathways.SetUpGridRow(m_SelectionOfComboBox1, m_SelectionOfComboBox2)
-                End If
-            Case "ndPathway_pred_prey" ' My.Resources.TREE_NODE_PRED_PREY
-                m_PreyToPredatorPathways.SetUpGridRow(intSelection1)
-            Case Else
-        End Select
-    End Sub
-
-    Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tscmbSelection2.SelectedIndexChanged
-        Dim strSelection2 As String
-
-        strSelection2 = CStr(tscmbSelection2.SelectedItem)
-        m_SelectionOfComboBox2 = CInt(strSelection2.Substring(0, InStr(strSelection2, ",") - 1))
-
-        m_TL1ToPreyToConsumerPathways.SetUpGridRow(m_SelectionOfComboBox1, m_SelectionOfComboBox2)
-
-    End Sub
-
-    Private Sub m_NetworkManager_FindCyclesProgress(ByVal iCycle As Integer) Handles m_NetworkManager.FindCyclesProgress
-        If tsNetworkAnalysis.Items.Count > 0 Then
-            tspgbProgressBar.Maximum = 50 '500
-            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-                tspgbProgressBar.Value += 1
-            Else
-                tspgbProgressBar.Value = 0
-            End If
+        If (cmdFS.Result = DialogResult.OK) Then
+            Try
+                Me.m_contentmanager.SaveToCSV(cmdFS.FileName)
+            Catch ex As Exception
+                ' Woops
+            End Try
         End If
+
     End Sub
 
-    Private Sub m_NetworkManager_RunMainNetworkProgress(ByVal iProgress As Integer) Handles m_NetworkManager.RunMainNetworkProgress
-        If tsNetworkAnalysis.Items.Count > 0 Then
-            tspgbProgressBar.Maximum = 10 '20000
-            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-                tspgbProgressBar.Value += 1
-            Else
-                tspgbProgressBar.Value = 0
-            End If
+    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tsbtnOutputGraphEMF.Click
+
+        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+
+        If (Me.m_contentmanager Is Nothing) Then Return
+        If (cmdFS Is Nothing) Then Return
+
+        cmdFS.Invoke("Enhanced Metafile image files (*.emf)|*.emf|All files (*.*)|*.*", 1)
+
+        If (cmdFS.Result = DialogResult.OK) Then
+            Try
+                Me.m_contentmanager.SaveToEMF(cmdFS.FileName)
+            Catch ex As Exception
+                ' Woops
+            End Try
         End If
+
     End Sub
 
-    Private Sub m_NetworkManager_CalculateRequiredPPProgress(ByVal nPaths As Integer) Handles m_NetworkManager.CalculateRequiredPPProgress
-        If tsNetworkAnalysis.Items.Count > 0 Then
-            tspgbProgressBar.Maximum = 5000 '50000
-            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-                tspgbProgressBar.Value += 1
-            Else
-                tspgbProgressBar.Value = 0
-            End If
+    Private Sub tsbtnGraphMTI_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tsbtnGraphMTI.Click
 
-            m_AlgorithmRunning = My.Resources.LBL_PPR_CAL_PRGR
+        ' ToDo: revamp this
+
+        ''MTI graph with bars
+        'm_GraphOfMixedTrophicImpact = cGraphOfMixedTrophicImpact.GetInstance(m_NetworkManager, scNetworkAnalysis.Panel2)
+        'm_GraphOfMixedTrophicImpact.SetUpPanel()
+        'm_GraphOfMixedTrophicImpact.CreatePlot()
+    End Sub
+
+    Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tscmbSelection1.SelectedIndexChanged
+
+        Me.m_SelectionOfComboBox1 = tscmbSelection1.SelectedIndex + 1
+
+        'Select Case m_strSelectedNodeName
+        '    Case "ndPathway_cons_tl1" ' My.Resources.TREE_NODE_CONSUM_TL1
+        '        m_TL1ToConsumerPathways.SetUpGridRow(intSelection1)
+        '    Case "ndPathway_cons_prey_tl1" ' My.Resources.TREE_NODE_CONSUM_PREY_TL1
+        '        If m_SelectionOfComboBox1 = 0 Then
+        '            m_SelectionOfComboBox1 = intSelection1
+        '        Else
+        '             = intSelection1
+        '            m_TL1ToPreyToConsumerPathways.SetUpGridRow(m_SelectionOfComboBox1, m_SelectionOfComboBox2)
+        '        End If
+        '    Case "ndPathway_pred_prey" ' My.Resources.TREE_NODE_PRED_PREY
+        '        m_PreyToPredatorPathways.SetUpGridRow(intSelection1)
+        '    Case Else
+        'End Select
+
+        If Me.m_contentmanager IsNot Nothing Then
+            Me.m_contentmanager.UpdateData(Me.m_SelectionOfComboBox1, Me.m_SelectionOfComboBox2)
         End If
-        'tsbtnCancel.PerformClick()
+
     End Sub
 
-    Private Sub m_NetworkManager_EcosimNetworkProgress(ByVal iTime As Integer) Handles m_NetworkManager.EcosimNetworkProgress
-        If tsNetworkAnalysis.Items.Count > 0 Then
-            tspgbProgressBar.Maximum = m_NetworkManager.nEcosimTimesteps  '100
-            If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
-                tspgbProgressBar.Value += 1
-            Else
-                tspgbProgressBar.Value = 0
-            End If
+    Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles tscmbSelection2.SelectedIndexChanged
+
+        Me.m_SelectionOfComboBox2 = tscmbSelection2.SelectedIndex + 1
+
+        If Me.m_contentmanager IsNot Nothing Then
+            Me.m_contentmanager.UpdateData(Me.m_SelectionOfComboBox1, Me.m_SelectionOfComboBox2)
         End If
+
     End Sub
 
-    Private Sub m_EcosimNetworkAnalysis_AddToolStrip() Handles m_EcosimNetworkAnalysis.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    'Private Sub m_NetworkManager_FindCyclesProgress(ByVal iCycle As Integer) Handles m_NetworkManager.FindCyclesProgress
+    '    If Me.m_tsNetworkAnalysis.Items.Count > 0 Then
+    '        tspgbProgressBar.Maximum = 50 '500
+    '        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+    '            tspgbProgressBar.Value += 1
+    '        Else
+    '            tspgbProgressBar.Value = 0
+    '        End If
+    '    End If
+    'End Sub
 
-    Private Sub m_NetworkAnalysis_AddToolStrip() Handles m_NetworkAnalysis.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    'Private Sub m_NetworkManager_RunMainNetworkProgress(ByVal iProgress As Integer) Handles m_NetworkManager.RunMainNetworkProgress
+    '    If Me.m_tsNetworkAnalysis.Items.Count > 0 Then
+    '        tspgbProgressBar.Maximum = 10 '20000
+    '        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+    '            tspgbProgressBar.Value += 1
+    '        Else
+    '            tspgbProgressBar.Value = 0
+    '        End If
+    '    End If
+    'End Sub
 
-    Private Sub m_FindPathwaysCyclesAll_AddToolStrip() Handles m_FindPathwaysCyclesAll.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    'Private Sub m_NetworkManager_CalculateRequiredPPProgress(ByVal nPaths As Integer) Handles m_NetworkManager.CalculateRequiredPPProgress
+    '    If Me.m_tsNetworkAnalysis.Items.Count > 0 Then
+    '        tspgbProgressBar.Maximum = 5000 '50000
+    '        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+    '            tspgbProgressBar.Value += 1
+    '        Else
+    '            tspgbProgressBar.Value = 0
+    '        End If
 
-    Private Sub m_RequiredPrimaryProduction_AddToolStrip() Handles m_RequiredPrimaryProduction.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    '        m_AlgorithmRunning = My.Resources.LBL_PPR_CAL_PRGR
+    '    End If
+    '    'tsbtnCancel.PerformClick()
+    'End Sub
 
-    Private Sub m_IndicesWithoutPPREstClass_AddToolStrip() Handles m_IndicesWithoutPPREstClass.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
+    'Private Sub m_NetworkManager_EcosimNetworkProgress(ByVal iTime As Integer) Handles m_NetworkManager.EcosimNetworkProgress
+    '    If Me.m_tsNetworkAnalysis.Items.Count > 0 Then
+    '        tspgbProgressBar.Maximum = m_NetworkManager.nEcosimTimesteps  '100
+    '        If tspgbProgressBar.Value < tspgbProgressBar.Maximum Then
+    '            tspgbProgressBar.Value += 1
+    '        Else
+    '            tspgbProgressBar.Value = 0
+    '        End If
+    '    End If
+    'End Sub
 
-    Private Sub m_IndicesWithPPREstClass_AddToolStrip() Handles m_IndicesWithPPREstClass.AddToolStrip
-        scNetworkAnalysis.Panel2.Controls.Add(tsNetworkAnalysis)
-    End Sub
-
-    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvNetworkAnalysis.CellClick
+    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
         If e.RowIndex > 0 And e.ColumnIndex > 0 Then
             'highlight the cell
-            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
-            dgvNetworkAnalysis.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+            m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
         ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
             'highlight the row
-            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-            dgvNetworkAnalysis.Rows(e.RowIndex).Selected = True
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            m_datagrid.Rows(e.RowIndex).Selected = True
         ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
             'highlight the column
-            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
-            dgvNetworkAnalysis.Columns(e.ColumnIndex).Selected = True
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
+            m_datagrid.Columns(e.ColumnIndex).Selected = True
         ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
             'highlight the whole grid
-            dgvNetworkAnalysis.SelectionMode = DataGridViewSelectionMode.CellSelect
-            dgvNetworkAnalysis.SelectAll()
+            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+            m_datagrid.SelectAll()
         End If
     End Sub
 
@@ -818,7 +535,4 @@ Public Class frmNetworkAnalysis
 
     'End Sub
 
-    Private Sub frmNetworkAnalysis_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
 End Class
