@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cImpactData.vb,v $
+' Revision 1.7  2009/05/01 17:42:59  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.6  2009/04/17 01:07:05  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -55,44 +58,29 @@ Imports System.Windows.Forms
 Imports ZedGraph
 
 Public Class cImpactData
-    Private Shared m_ImpactDataInstance As cImpactData
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cImpactData
-        m_Panel = Panel
-
-        If m_ImpactDataInstance Is Nothing Then m_ImpactDataInstance = New cImpactData(NetworkManager, Panel)
-        Return m_ImpactDataInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                  ByVal datagrid As DataGridView, _
+                                  ByVal graph As ZedGraphControl, _
+                                  ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData() 
+
         Dim strRowContent() As String
 
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
-
-        SetUpGridColumn(m_NetworkManager.nGroups, m_NetworkManager.nFleets)
+        SetUpGridColumn(NetworkManager.nGroups, NetworkManager.nFleets)
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups + m_NetworkManager.nFleets + 1
+        DataGrid.RowCount = NetworkManager.nGroups + NetworkManager.nFleets + 1
         DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Rows(0).Frozen = True
@@ -101,48 +89,34 @@ Public Class cImpactData
         ReDim strRowContent(DataGrid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_IMPACTING_IMPACTED
-        For intIndex As Integer = 1 To m_NetworkManager.nGroups
-            strRowContent(intIndex + 1) = m_NetworkManager.GroupName(intIndex)
+        For intIndex As Integer = 1 To NetworkManager.nGroups
+            strRowContent(intIndex + 1) = NetworkManager.GroupName(intIndex)
         Next
-        For intIndex As Integer = 1 To m_NetworkManager.nFleets
-            strRowContent(m_NetworkManager.nGroups + intIndex + 1) = m_NetworkManager.FleetName(intIndex)
+        For intIndex As Integer = 1 To NetworkManager.nFleets
+            strRowContent(NetworkManager.nGroups + intIndex + 1) = NetworkManager.FleetName(intIndex)
         Next
         DataGrid.Rows(0).SetValues(strRowContent)
         DataGrid.Rows(0).Visible = True
 
-        For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
+        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
             strRowContent(0) = CStr(i)
-            If i <= m_NetworkManager.nGroups Then
-                strRowContent(1) = m_NetworkManager.GroupName(i)
+            If i <= NetworkManager.nGroups Then
+                strRowContent(1) = NetworkManager.GroupName(i)
             Else
-                strRowContent(1) = m_NetworkManager.FleetName(i - m_NetworkManager.nGroups)
+                strRowContent(1) = NetworkManager.FleetName(i - NetworkManager.nGroups)
             End If
-            For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-                strRowContent(j + 1) = (m_NetworkManager.MixedTrophicImpacts(i, j)).ToString("F4")
+            For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+                strRowContent(j + 1) = (NetworkManager.MixedTrophicImpacts(i, j)).ToString("F4")
             Next
             DataGrid.Rows(i).SetValues(strRowContent)
             DataGrid.Rows(i).Visible = True
         Next
         DataGrid.ClearSelection()
-        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub SetUpGridColumn(ByVal iNumGroups As Integer, ByVal iNumFleets As Integer)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         'DataGrid.RowCount = 1
         DataGrid.ColumnCount = iNumGroups + iNumFleets + 2
 
@@ -156,18 +130,7 @@ Public Class cImpactData
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        'If Not ToolStrip Is Nothing Then
-        m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-        DataGrid.Dock = DockStyle.Fill
-        'End If
     End Sub
 
 End Class

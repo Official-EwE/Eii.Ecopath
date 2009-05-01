@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.11  2009/05/01 17:43:00  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.10  2009/04/28 16:24:25  jeroens
 ' Fixed graph max axis
 ' Graph styling done with ZedGraphHelper
@@ -32,42 +35,6 @@
 ' Revision 1.1  2008/09/26 07:30:51  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.13  2008/09/09 14:44:49  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.12  2008/06/25 02:25:22  joeh
-' Compute and send ecosim NA data to csv file - Take 2
-'
-' Revision 1.11  2008/06/25 01:53:41  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.10  2008/06/24 00:52:27  joeh
-' Ecosim NA indice plots are no longer displayed in a pop up form, rather they are displayed in the same form where  we have the NA tree view
-'
-' Revision 1.9  2008/06/18 20:16:02  joeh
-' Plot Ascendency on flow in a second pane
-'
-' Revision 1.8  2008/06/14 03:47:25  joeh
-' Compute and send Ecosim NA data to csv file
-'
-' Revision 1.7  2007/07/06 00:44:59  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.6  2007/06/28 19:23:28  joeh
-' Switch to wait cursor when displaying data
-'
-' Revision 1.5  2007/06/22 19:12:46  joeh
-' Modify GetInstance()
-'
-' Revision 1.4  2007/06/22 00:35:30  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.3  2007/06/20 23:34:01  joeh
-' Add Panel as a new argument in GetInstance() and New()
-'
-' Revision 1.2  2007/06/20 18:13:58  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
 '==============================================================================
 
 #Region " Imports "
@@ -85,190 +52,95 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 Public Class cIndicesWithPPREst
-    Public Event AddToolStrip()
+    Inherits cContentManager
 
-    Private Shared m_IndicesWithPPREstInstance As cIndicesWithPPREst
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
+    Private m_zgh As ZedGraphHelper = Nothing
 
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cIndicesWithPPREst
-        m_Panel = Panel
-
-        If m_IndicesWithPPREstInstance Is Nothing Then m_IndicesWithPPREstInstance = New cIndicesWithPPREst(NetworkManager, Panel)
-        Return m_IndicesWithPPREstInstance
-    End Function
-
-    Private Sub New()
-        '
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                ByVal datagrid As DataGridView, _
+                                ByVal graph As ZedGraphControl, _
+                                ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Graph.Visible = True
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Detach()
+
+        Me.m_zgh.Detach()
+        Me.m_zgh = Nothing
+
+        MyBase.Detach()
+
     End Sub
 
-    Public Sub SetUpPanel(ByVal IsEcosimNetworkAnalysisSuccess As Boolean)
-        SetUpToolStrip(IsEcosimNetworkAnalysisSuccess)
+    Public Overrides Sub DisplayData()
 
-        SetUpGrid(IsEcosimNetworkAnalysisSuccess)
-    End Sub
-
-    Public Sub CreatePlot(ByVal Frm As Form) ', ByVal Zgc As ZedGraphControl)
-        Dim zgc As ZedGraphControl = DirectCast(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim zgh As New ZedGraphHelper()
+        Dim zgc As ZedGraphControl = Me.Graph
         Dim paneMaster As MasterPane = zgc.MasterPane
         Dim pane As GraphPane = Nothing
         Dim g As Graphics = Nothing
 
-        zgh.Attach(Me.m_NetworkManager.Core, zgc, 2)
+        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh.Attach(Me.NetworkManager.Core, zgc, 2)
+        Me.m_zgh.ShowPointValue = True
 
         'Pane1
-        pane = zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
+        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
         'Add curves
         pane.CurveList.Clear()
         'FIB
-        AddCurve(My.Resources.LBL_FIB_INDX, m_NetworkManager.FIB, pane, Color.Green)
+        AddCurve(My.Resources.LBL_FIB_INDX, Me.NetworkManager.FIB, pane, Color.Green)
         'Relative sum of catch
-        AddCurve(My.Resources.LBL_TOTAL_CATCH, m_NetworkManager.RelativeSumOfCatchPlot, pane, Color.Red)
+        AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatchPlot, pane, Color.Red)
         'Relative Kemptons
-        AddCurve(My.Resources.LBL_KEMPTONS_Q, m_NetworkManager.RelativeKemptonsPlot, pane, Color.Blue)
+        AddCurve(My.Resources.LBL_KEMPTONS_Q, Me.NetworkManager.RelativeKemptonsPlot, pane, Color.Blue)
         'TL catch
-        AddCurve(My.Resources.LBL_TL_CATCH, m_NetworkManager.TLCatchPlot, pane, Color.Black)
+        AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatchPlot, pane, Color.Black)
         'FCI
-        AddCurve(My.Resources.LBL_FCI, m_NetworkManager.FCIEcosim, pane, Color.Brown)
+        AddCurve(My.Resources.LBL_FCI, Me.NetworkManager.FCIEcosim, pane, Color.Brown)
         'Catch PPR
-        AddCurve(My.Resources.LBL_CATCH_PPR, m_NetworkManager.RelativeCatchPPRPlot, pane, Color.Violet)
+        AddCurve(My.Resources.LBL_CATCH_PPR, Me.NetworkManager.RelativeCatchPPRPlot, pane, Color.Violet)
         'Catch detritus required
-        AddCurve(My.Resources.LBL_CATCH_DET_REQ, m_NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
+        AddCurve(My.Resources.LBL_CATCH_DET_REQ, Me.NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
 
         'Pane2
-        pane = zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
+        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)
         'Add curves
         pane.CurveList.Clear()
         'Ascendency on flow
-        AddCurve(My.Resources.LBL_ASCEND_FLOW, m_NetworkManager.AscendFlowEcosim, pane, Color.Gold)
+        AddCurve(My.Resources.LBL_ASCEND_FLOW, Me.NetworkManager.AscendFlowEcosim, pane, Color.Gold)
 
         zgc.AxisChange()
         zgc.Refresh()
 
-        g = Frm.CreateGraphics
+        g = Me.Graph.Parent.CreateGraphics
         paneMaster.AxisChange(g)
         paneMaster.SetLayout(g, PaneLayout.SingleColumn)
 
-        zgh.Detach()
-
-        Cursor.Current = Cursors.Default
     End Sub
 
-    Public Sub ExtractToCSV()
-        Dim myStream As StreamWriter
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+    Public Overrides Sub SaveToCSV(ByVal strFileName As String)
 
-        cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
-
-        If cmdFS.Result = DialogResult.OK Then
-            m_Panel.Refresh()
-            myStream = New StreamWriter(cmdFS.FileName)
-            If (myStream IsNot Nothing) Then
-                myStream.Write(ExtractData)
-                myStream.Close()
-            End If
+        Dim myStream As New StreamWriter(strFileName)
+        If (myStream IsNot Nothing) Then
+            myStream.Write(ExtractData)
+            myStream.Close()
         End If
+
     End Sub
 
-    Private Sub SetUpGrid(ByVal IsEcosimNetworkAnalysisSuccess As Boolean)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+    Public Overrides Function RequiresToolstrip() As Boolean
+        Return True
+    End Function
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        DataGrid.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
+    Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
 
-        If IsEcosimNetworkAnalysisSuccess = True Then
-            GraphPane.Visible = True
-        Else
-            GraphPane.Visible = False
-        End If
-    End Sub
+        MyBase.SetupToolstrip(ts)
 
-    Private Sub SetUpToolStrip(ByVal IsEcosimNetworkAnalysisSuccess As Boolean)
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim ToolStripLabel1 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripLabel2 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripLabel3 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripCombo1 As ToolStripComboBox = New ToolStripComboBox
-        Dim ToolStripCombo2 As ToolStripComboBox = New ToolStripComboBox
-        Dim ToolStripPrgBar As ToolStripProgressBar = New ToolStripProgressBar
-        Dim ToolStripButton1 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton2 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton3 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton4 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton5 As ToolStripButton = New ToolStripButton
-        Dim ToolStripSep1 As ToolStripSeparator = New ToolStripSeparator
+        Dim tsbtnExport As ToolStripButton = DirectCast(ts.Items("tsbtnOutputIndicesCSV"), ToolStripButton)
+        tsbtnExport.Visible = True
+        ts.Refresh()
 
-        RemoveToolStrip()
-
-        If IsEcosimNetworkAnalysisSuccess = True Then
-            RaiseEvent AddToolStrip()
-
-            ToolStrip = CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-            ToolStripLabel1 = CType(ToolStrip.Items("tslblSelection1"), ToolStripLabel)
-            ToolStripLabel2 = CType(ToolStrip.Items("tslblSelection2"), ToolStripLabel)
-            ToolStripLabel3 = CType(ToolStrip.Items("tslblProgressBar"), ToolStripLabel)
-            ToolStripCombo1 = CType(ToolStrip.Items("tscmbSelection1"), ToolStripComboBox)
-            ToolStripCombo2 = CType(ToolStrip.Items("tscmbSelection2"), ToolStripComboBox)
-            ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), ToolStripProgressBar)
-            ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), ToolStripButton)
-            ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), ToolStripButton)
-            ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), ToolStripButton)
-            ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), ToolStripButton)
-            ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), ToolStripButton)
-            ToolStripSep1 = CType(ToolStrip.Items("tssepGraphMTI"), ToolStripSeparator)
-
-            ToolStripLabel1.Visible = False
-            ToolStripCombo1.Visible = False
-
-            ToolStripLabel2.Visible = False
-            ToolStripCombo2.Visible = False
-
-            ToolStripLabel3.Visible = False
-            ToolStripPrgBar.Visible = False
-            ToolStripButton1.Visible = False
-            ToolStripButton2.Visible = True
-            ToolStripButton3.Visible = False
-            ToolStripButton4.Visible = False
-            ToolStripButton5.Visible = False
-
-            ToolStripSep1.Visible = False
-
-            ToolStrip.Refresh()
-        End If
-    End Sub
-
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-                    CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-            GraphPane.Dock = DockStyle.Fill
-        End If
     End Sub
 
     Private Function ExtractData() As String
@@ -301,32 +173,32 @@ Public Class cIndicesWithPPREst
         str = str + My.Resources.COL_HDR_ENTROPY + ", "
         str = str + vbCrLf
 
-        For i As Integer = 1 To m_NetworkManager.nEcosimTimesteps
-            str = str + m_NetworkManager.ThroughputEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.CapacityEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AscendImportEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AscendFlowEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AscendExportEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AscendRespEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.OverheadImportEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.OverheadFlowEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.OverheadExportEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.OverheadRespEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.PCIEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.FCIEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.PathLengthEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.ExportEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.RespEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.PrimaryProdEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.ProdEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.BiomassEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.CatchEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.PropFlowDetEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.RaiseToPPEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.RaiseToDetEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AscendTotalEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.AMIEcosim(i).ToString + ", "
-            str = str + m_NetworkManager.EntropyEcosim(i).ToString + ", "
+        For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
+            str = str + Me.NetworkManager.ThroughputEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.CapacityEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AscendImportEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AscendFlowEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AscendExportEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AscendRespEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.OverheadImportEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.OverheadFlowEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.OverheadExportEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.OverheadRespEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.PCIEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.FCIEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.PathLengthEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.ExportEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.RespEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.PrimaryProdEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.ProdEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.BiomassEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.CatchEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.PropFlowDetEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.RaiseToPPEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.RaiseToDetEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AscendTotalEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.AMIEcosim(i).ToString + ", "
+            str = str + Me.NetworkManager.EntropyEcosim(i).ToString + ", "
             str = str + vbCrLf
         Next
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForConsumpOfAllGp.vb,v $
+' Revision 1.6  2009/05/01 17:42:56  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:03  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -56,48 +59,30 @@ Imports EwECore
 Imports ZedGraph
 
 Public Class cForConsumpOfAllGp
-    Private Shared m_ForConsumpOfAllGpInstance As cForConsumpOfAllGp
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cForConsumpOfAllGp
-        m_Panel = Panel
-
-        If m_ForConsumpOfAllGpInstance Is Nothing Then m_ForConsumpOfAllGpInstance = New cForConsumpOfAllGp(NetworkManager, Panel)
-        Return m_ForConsumpOfAllGpInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
-
-        'm_NetworkManager.RunRequiredPrimaryProd()
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                  ByVal datagrid As DataGridView, _
+                                  ByVal graph As ZedGraphControl, _
+                                  ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        Dim core As cCore = cCore.GetInstance
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData() 
+
         Dim strRowContent() As String
         Dim sngTotalPPRCons As Single
-
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
 
         SetUpGridColumn()
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = core.nLivingGroups + 2
+        DataGrid.RowCount = Me.NetworkManager.Core.nLivingGroups + 2
         DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Rows(0).Frozen = True
@@ -118,24 +103,24 @@ Public Class cForConsumpOfAllGp
         DataGrid.Rows(0).SetValues(strRowContent)
         DataGrid.Rows(0).Visible = True
 
-        For i As Integer = 1 To core.nLivingGroups
+        For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             strRowContent(0) = CStr(i)
-            strRowContent(1) = m_NetworkManager.GroupName(i)
-            strRowContent(2) = CStr(m_NetworkManager.NumerPaths(i))
-            strRowContent(3) = m_NetworkManager.TrophicLevel(i).ToString("F2")
-            strRowContent(4) = m_NetworkManager.PPRRequired(i).ToString("F2")
-            strRowContent(5) = m_NetworkManager.PPRRequiredDet(i).ToString("F2")
-            strRowContent(6) = m_NetworkManager.PPRRequiredSum(i).ToString("F2")
-            strRowContent(7) = m_NetworkManager.PPRCons(i).ToString("F2")
-            sngTotalPPRCons = sngTotalPPRCons + m_NetworkManager.PPRCons(i)
-            If m_NetworkManager.PPRCons(i) > 0.0 Then
-                strRowContent(8) = m_NetworkManager.PPROverCons(i).ToString("F2")
+            strRowContent(1) = NetworkManager.GroupName(i)
+            strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
+            strRowContent(3) = NetworkManager.TrophicLevel(i).ToString("F2")
+            strRowContent(4) = NetworkManager.PPRRequired(i).ToString("F2")
+            strRowContent(5) = NetworkManager.PPRRequiredDet(i).ToString("F2")
+            strRowContent(6) = NetworkManager.PPRRequiredSum(i).ToString("F2")
+            strRowContent(7) = NetworkManager.PPRCons(i).ToString("F2")
+            sngTotalPPRCons = sngTotalPPRCons + NetworkManager.PPRCons(i)
+            If NetworkManager.PPRCons(i) > 0.0 Then
+                strRowContent(8) = NetworkManager.PPROverCons(i).ToString("F2")
             Else
                 strRowContent(8) = ""
             End If
-            strRowContent(9) = m_NetworkManager.PPRTotPP(i).ToString("F2")
-            If m_NetworkManager.TotalPrimaryProduction > 0.0 Then
-                strRowContent(10) = m_NetworkManager.PPRU(i).ToString("F2")
+            strRowContent(9) = NetworkManager.PPRTotPP(i).ToString("F2")
+            If NetworkManager.TotalPrimaryProduction > 0.0 Then
+                strRowContent(10) = NetworkManager.PPRU(i).ToString("F2")
             Else
                 strRowContent(10) = ""
             End If
@@ -151,15 +136,15 @@ Public Class cForConsumpOfAllGp
             strRowContent(i) = ""
         Next
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
-        strRowContent(2) = CStr((m_NetworkManager.NumLivPath + m_NetworkManager.NumDetPath))
+        strRowContent(2) = CStr((NetworkManager.NumLivPath + NetworkManager.NumDetPath))
         strRowContent(7) = sngTotalPPRCons.ToString("F2")
         DataGrid.Rows(DataGrid.Rows.Count - 1).SetValues(strRowContent)
         DataGrid.Rows(DataGrid.Rows.Count - 1).Visible = True
 
         'Hide some rows
-        For i As Integer = 1 To core.nLivingGroups
-            If m_NetworkManager.PPRCons(i) <= 0.0 Or _
-                m_NetworkManager.TotalPrimaryProduction <= 0.0 Then
+        For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
+            If NetworkManager.PPRCons(i) <= 0.0 Or _
+                NetworkManager.TotalPrimaryProduction <= 0.0 Then
                 DataGrid.Rows(i).Visible = False
             End If
         Next
@@ -168,21 +153,8 @@ Public Class cForConsumpOfAllGp
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         'DataGrid.RowCount = 1
         DataGrid.ColumnCount = 11
 
@@ -196,18 +168,7 @@ Public Class cForConsumpOfAllGp
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-        End If
     End Sub
 
 End Class

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cByGroup.vb,v $
+' Revision 1.6  2009/05/01 17:42:54  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:01  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -61,47 +64,24 @@ Imports System.Windows.Forms
 Imports ZedGraph
 
 Public Class cByGroup
-    Private Shared m_ByGroupInstance As cByGroup
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cByGroup
-        m_Panel = Panel
-
-        If m_ByGroupInstance Is Nothing Then m_ByGroupInstance = New cByGroup(NetworkManager, Panel)
-        Return m_ByGroupInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
-    End Sub
-
-    Public Sub DisplayData()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData()
         Dim strRowContent() As String
-
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
 
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups + 4
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.DataGrid.RowHeadersVisible = False
+        Me.DataGrid.RowCount = Me.NetworkManager.nGroups + 4
+        Me.DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.DataGrid.Rows(0).Frozen = True
+        Me.DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(DataGrid.Columns.Count)
         strRowContent(0) = ""
@@ -111,19 +91,19 @@ Public Class cByGroup
         strRowContent(4) = My.Resources.COL_HDR_CAPACITY
         strRowContent(5) = My.Resources.COL_HDR_INFO
         strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT_UNIT
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Me.DataGrid.Rows(0).SetValues(strRowContent)
+        Me.DataGrid.Rows(0).Visible = True
 
-        For i As Integer = 1 To m_NetworkManager.nGroups
+        For i As Integer = 1 To Me.NetworkManager.nGroups
             strRowContent(0) = CStr(i)
-            strRowContent(1) = m_NetworkManager.GroupName(i)
-            strRowContent(2) = m_NetworkManager.AscendancyByGroup(i).ToString("F4")
-            strRowContent(3) = m_NetworkManager.OverheadByGroup(i).ToString("F4")
-            strRowContent(4) = m_NetworkManager.CapacityByGroup(i).ToString("F4")
-            strRowContent(5) = m_NetworkManager.InformationByGroup(i).ToString("F4")
-            strRowContent(6) = m_NetworkManager.ThroughputByGroup(i).ToString("F4")
-            DataGrid.Rows(i).SetValues(strRowContent)
-            DataGrid.Rows(i).Visible = True
+            strRowContent(1) = Me.NetworkManager.GroupName(i)
+            strRowContent(2) = Me.NetworkManager.AscendancyByGroup(i).ToString("F4")
+            strRowContent(3) = Me.NetworkManager.OverheadByGroup(i).ToString("F4")
+            strRowContent(4) = Me.NetworkManager.CapacityByGroup(i).ToString("F4")
+            strRowContent(5) = Me.NetworkManager.InformationByGroup(i).ToString("F4")
+            strRowContent(6) = Me.NetworkManager.ThroughputByGroup(i).ToString("F4")
+            Me.DataGrid.Rows(i).SetValues(strRowContent)
+            Me.DataGrid.Rows(i).Visible = True
         Next
 
         strRowContent(0) = ""
@@ -132,62 +112,50 @@ Public Class cByGroup
         strRowContent(3) = ""
         strRowContent(4) = ""
         strRowContent(5) = ""
-        strRowContent(6) = m_NetworkManager.ThroughputByGroup(m_NetworkManager.nGroups + 1).ToString("F4")
-        DataGrid.Rows(m_NetworkManager.nGroups + 1).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups + 1).Visible = True
+        strRowContent(6) = NetworkManager.ThroughputByGroup(Me.NetworkManager.nGroups + 1).ToString("F4")
+        Me.DataGrid.Rows(NetworkManager.nGroups + 1).SetValues(strRowContent)
+        Me.DataGrid.Rows(NetworkManager.nGroups + 1).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
-        strRowContent(2) = m_NetworkManager.AscendencyTotal.ToString("F4")
-        strRowContent(3) = m_NetworkManager.OverheadTotal.ToString("F4")
-        strRowContent(4) = m_NetworkManager.CapacityTotal.ToString("F4")
-        If m_NetworkManager.ThroughputTotal > 0 Then
-            strRowContent(5) = (m_NetworkManager.AscendencyTotal / m_NetworkManager.ThroughputTotal).ToString("F4")
+        strRowContent(2) = Me.NetworkManager.AscendencyTotal.ToString("F4")
+        strRowContent(3) = Me.NetworkManager.OverheadTotal.ToString("F4")
+        strRowContent(4) = Me.NetworkManager.CapacityTotal.ToString("F4")
+        If Me.NetworkManager.ThroughputTotal > 0 Then
+            strRowContent(5) = (Me.NetworkManager.AscendencyTotal / Me.NetworkManager.ThroughputTotal).ToString("F4")
         Else
             strRowContent(5) = ""
         End If
-        strRowContent(6) = m_NetworkManager.ThroughputTotal.ToString("F4")
-        DataGrid.Rows(m_NetworkManager.nGroups + 2).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups + 2).Visible = True
+        strRowContent(6) = Me.NetworkManager.ThroughputTotal.ToString("F4")
+        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 2).SetValues(strRowContent)
+        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 2).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_PCT
-        strRowContent(2) = (m_NetworkManager.AscendencyTotal / m_NetworkManager.CapacityTotal * 100.0).ToString("F4")
-        strRowContent(3) = (m_NetworkManager.OverheadTotal / m_NetworkManager.CapacityTotal * 100.0).ToString("F4")
-        strRowContent(4) = (m_NetworkManager.CapacityTotal / m_NetworkManager.CapacityTotal * 100.0).ToString("F4")
+        strRowContent(2) = (Me.NetworkManager.AscendencyTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
+        strRowContent(3) = (Me.NetworkManager.OverheadTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
+        strRowContent(4) = (Me.NetworkManager.CapacityTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
         strRowContent(5) = ""
         strRowContent(6) = ""
-        DataGrid.Rows(m_NetworkManager.nGroups + 3).SetValues(strRowContent)
-        DataGrid.Rows(m_NetworkManager.nGroups + 3).Visible = True
+        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 3).SetValues(strRowContent)
+        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 3).Visible = True
 
-        DataGrid.ClearSelection()
-        Cursor.Current = Cursors.default
+        Me.DataGrid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-        DataGrid.ReadOnly = True
-        DataGrid.Visible = True
-        'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = 7
+        Me.Graph.Visible = False
+        Me.DataGrid.ReadOnly = True
+        Me.DataGrid.Visible = True
+        'Me.DataGrid.RowCount = 1
+        Me.DataGrid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Me.DataGrid)
 
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).Width = ID_COL_WIDTH
+        Me.DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.DataGrid.Columns(0).Frozen = True
+        Me.DataGrid.Columns(0).Width = ID_COL_WIDTH
 
         DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
@@ -197,18 +165,6 @@ Public Class cByGroup
         'For intIndex As Integer = 2 To 4
         '    DataGrid.Columns(intIndex).Width = 120
         'Next
-    End Sub
-
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-        End If
     End Sub
 
 End Class

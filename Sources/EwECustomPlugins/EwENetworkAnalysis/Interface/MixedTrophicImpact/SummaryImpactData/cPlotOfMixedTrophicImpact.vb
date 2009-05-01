@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.18  2009/05/01 17:42:59  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.17  2009/04/22 22:27:28  joeh
 ' Move MTI data assignment from New to CreatePlot
 '
@@ -46,6 +49,7 @@
 ' Revision 1.3  2008/12/02 03:05:37  joeh
 ' Initial version
 '
+'==============================================================================
 
 #Region " Imports "
 
@@ -64,235 +68,126 @@ Imports System.Drawing.Imaging
 
 'MTI graph with circles
 Public Class cPlotOfMixedTrophicImpact
-    Public Event AddToolStrip()
+    Inherits cContentManager
 
-    Private Shared m_PlotOfMixedTrophicImpactInstance As cPlotOfMixedTrophicImpact
-
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
     Private m_asData(,) As Single
     Private m_astrLabelsX() As String
     Private m_astrLabelsY() As String
 
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cPlotOfMixedTrophicImpact
-        m_Panel = Panel
-
-        If m_PlotOfMixedTrophicImpactInstance Is Nothing Then m_PlotOfMixedTrophicImpactInstance = New cPlotOfMixedTrophicImpact(NetworkManager, Panel)
-        Return m_PlotOfMixedTrophicImpactInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                 ByVal datagrid As DataGridView, _
+                                 ByVal graph As ZedGraphControl, _
+                                 ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Plot.Visible = True
+        AddHandler Me.Plot.Paint, AddressOf PaintUC
+        AddHandler Me.Plot.Resize, AddressOf ResizeUC
     End Sub
 
-    Public Sub SetUpPanel()
-        SetUpToolStrip()
-
-        SetUpGrid()
+    Public Overrides Sub Detach()
+        RemoveHandler Me.Plot.Paint, AddressOf PaintUC
+        RemoveHandler Me.Plot.Resize, AddressOf ResizeUC
+        MyBase.Detach()
     End Sub
 
-    Public Sub CreatePlot() '(ByVal Frm As Form)
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
+    Public Overrides Function RequiresToolstrip() As Boolean
+        Return True
+    End Function
 
-        If MixedTrophicImpactUC Is Nothing Then
-            MixedTrophicImpactUC = New ucPlotOfMixedTrophicImpact
-            MixedTrophicImpactUC.Name = "ucPlotOfMixedTrophicImpact"
-            MixedTrophicImpactUC.Location = New Point(0, ToolStrip.Height)
-            MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
-            m_Panel.Controls.Add(MixedTrophicImpactUC) 'MixedTrophicImpactVisible is defaulted to True
-            'g = MixedTrophicImpactUC.CreateGraphics 'm_Panel.CreateGraphics
-            'PlotToScreen(MixedTrophicImpactUC, g)
-        Else
-            MixedTrophicImpactUC.Visible = True
-        End If
+    Public Overrides Sub DisplayData()
 
-        ReDim m_asData(m_NetworkManager.nGroups + m_NetworkManager.nFleets, m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        ReDim m_astrLabelsX(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        ReDim m_astrLabelsY(m_NetworkManager.nGroups + m_NetworkManager.nFleets)
-        For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-            For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-                If j <= m_NetworkManager.nGroups Then
-                    m_astrLabelsX(j) = m_NetworkManager.GroupName(j)
+        ReDim m_asData(NetworkManager.nGroups + NetworkManager.nFleets, NetworkManager.nGroups + NetworkManager.nFleets)
+        ReDim m_astrLabelsX(NetworkManager.nGroups + NetworkManager.nFleets)
+        ReDim m_astrLabelsY(NetworkManager.nGroups + NetworkManager.nFleets)
+        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+            For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+                If j <= NetworkManager.nGroups Then
+                    m_astrLabelsX(j) = NetworkManager.GroupName(j)
                 Else
-                    m_astrLabelsX(j) = m_NetworkManager.FleetName(j - m_NetworkManager.nGroups)
+                    m_astrLabelsX(j) = NetworkManager.FleetName(j - NetworkManager.nGroups)
                 End If
                 m_astrLabelsY(j) = m_astrLabelsX(j)
-                m_asData(i, j) = m_NetworkManager.MixedTrophicImpacts(j, i)
+                m_asData(i, j) = NetworkManager.MixedTrophicImpacts(j, i)
             Next j
         Next i
 
-        AddHandler MixedTrophicImpactUC.Paint, AddressOf PaintUC
-        AddHandler m_Panel.Resize, AddressOf ResizeUC
+        Me.Plot.Invalidate()
+
     End Sub
 
-    Public Sub SaveToEMF()
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+    Public Overrides Sub SaveToEMF(ByVal strFileName As String)
+
         Dim fs As FileStream = Nothing
         Dim bmp As Bitmap = Nothing
         Dim hdc As IntPtr = Nothing ' :)
-        Dim mMetafile As Metafile = Nothing
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
+        Dim mf As Metafile = Nothing
 
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        cmdFS.Invoke("emf files (*.emf)|*.emf|All files (*.*)|*.*", 1)
-        If cmdFS.Result = DialogResult.OK Then
-            MixedTrophicImpactUC.Refresh() 'm_Panel.Refresh()
-            fs = New FileStream(cmdFS.FileName, FileMode.Create)
-            'bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
-            bmp = New Bitmap(MixedTrophicImpactUC.Width, MixedTrophicImpactUC.Height, PixelFormat.Format32bppArgb)
-            Using g As Graphics = Graphics.FromImage(bmp)
-                hdc = g.GetHdc()
-                mMetafile = New Metafile(fs, hdc, EmfType.EmfOnly)
-                g.ReleaseHdc(hdc)
-            End Using
+        Me.Plot.Refresh() 'm_Panel.Refresh()
+        fs = New FileStream(strFileName, FileMode.Create)
+        'bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
+        bmp = New Bitmap(Me.Plot.Width, Me.Plot.Height, PixelFormat.Format32bppArgb)
+        Using g As Graphics = Graphics.FromImage(bmp)
+            hdc = g.GetHdc()
+            mf = New Metafile(fs, hdc, EmfType.EmfOnly)
+            g.ReleaseHdc(hdc)
+        End Using
 
-            Using g As Graphics = Graphics.FromImage(mMetafile)
-                PlotToEMF(g)
-            End Using
-            fs.Close()
-            mMetafile.Dispose()
-        End If
+        Using g As Graphics = Graphics.FromImage(mf)
+            PlotToEMF(g)
+        End Using
+        fs.Close()
+        mf.Dispose()
     End Sub
 
-    Private Sub SetUpToolStrip()
-        Dim ToolStrip As ToolStrip = CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim ToolStripLabel1 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripLabel2 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripLabel3 As ToolStripLabel = New ToolStripLabel
-        Dim ToolStripCombo1 As ToolStripComboBox = New ToolStripComboBox
-        Dim ToolStripCombo2 As ToolStripComboBox = New ToolStripComboBox
-        Dim ToolStripPrgBar As ToolStripProgressBar = New ToolStripProgressBar
-        Dim ToolStripButton1 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton2 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton3 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton4 As ToolStripButton = New ToolStripButton
-        Dim ToolStripButton5 As ToolStripButton = New ToolStripButton
-        Dim ToolStripSep1 As ToolStripSeparator = New ToolStripSeparator
+    Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
 
-        RemoveToolStrip()
+        MyBase.SetupToolstrip(ts)
 
-        RaiseEvent AddToolStrip()
+        Dim tsbBntExportEMF As ToolStripButton = DirectCast(ts.Items("tsbtnOutputGraphEMF"), ToolStripButton)
+        tsbBntExportEMF.Visible = True
+        ts.Refresh()
 
-        ToolStrip = CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        ToolStripLabel1 = CType(ToolStrip.Items("tslblSelection1"), ToolStripLabel)
-        ToolStripLabel2 = CType(ToolStrip.Items("tslblSelection2"), ToolStripLabel)
-        ToolStripLabel3 = CType(ToolStrip.Items("tslblProgressBar"), ToolStripLabel)
-        ToolStripCombo1 = CType(ToolStrip.Items("tscmbSelection1"), ToolStripComboBox)
-        ToolStripCombo2 = CType(ToolStrip.Items("tscmbSelection2"), ToolStripComboBox)
-        ToolStripPrgBar = CType(ToolStrip.Items("tspgbProgressBar"), ToolStripProgressBar)
-        ToolStripButton1 = CType(ToolStrip.Items("tsbtnCancel"), ToolStripButton)
-        ToolStripButton2 = CType(ToolStrip.Items("tsbtnOutputIndicesCSV"), ToolStripButton)
-        ToolStripButton3 = CType(ToolStrip.Items("tsbtnOutputGraphEMF"), ToolStripButton)
-        ToolStripButton4 = CType(ToolStrip.Items("tsbtnPrintGraph"), ToolStripButton)
-        ToolStripButton5 = CType(ToolStrip.Items("tsbtnGraphMTI"), ToolStripButton)
-        ToolStripSep1 = CType(ToolStrip.Items("tssepGraphMTI"), ToolStripSeparator)
-
-        ToolStripLabel1.Visible = False
-        ToolStripCombo1.Visible = False
-
-        ToolStripLabel2.Visible = False
-        ToolStripCombo2.Visible = False
-
-        ToolStripLabel3.Visible = False
-        ToolStripPrgBar.Visible = False
-        ToolStripButton1.Visible = False
-        ToolStripButton2.Visible = False
-        ToolStripButton3.Visible = True
-        ToolStripButton4.Visible = False
-        ToolStripButton5.Visible = True
-
-        ToolStripSep1.Visible = True
-
-        ToolStrip.Refresh()
-    End Sub
-
-    Private Sub SetUpGrid()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-
-        m_Panel.AutoScroll = True
-        LogoPanel.Visible = False
-        DataGrid.Visible = False
-        GraphPane.Visible = False
-    End Sub
-
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        'Dim GraphPane As ZedGraphControl = _
-        '    CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-            'GraphPane.Dock = DockStyle.Fill
-        End If
     End Sub
 
     Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
-        Dim g As Drawing.Graphics
-
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        'g = MixedTrophicImpactUC.CreateGraphics
-        g = e.Graphics
-        PlotToScreen(MixedTrophicImpactUC, g)
+        PlotToScreen(e.Graphics)
     End Sub
 
     Private Sub ResizeUC(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
-
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        MixedTrophicImpactUC.Size = New Size(m_Panel.Width, m_Panel.Width)
-        MixedTrophicImpactUC.Invalidate() 'm_Panel.Invalidate()
+        Me.Plot.Invalidate()
     End Sub
 
-    Private Sub PlotToScreen(ByVal uc As ucPlotOfMixedTrophicImpact, ByVal g As Graphics)
+    Private Sub PlotToScreen(ByVal g As Graphics)
+
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        r.X = MixedTrophicImpactUC.ClientRectangle.X
+        r.X = Me.Plot.ClientRectangle.X
         r.Y = 0
-        r.Width = MixedTrophicImpactUC.ClientRectangle.Width
-        r.Height = MixedTrophicImpactUC.ClientRectangle.Height - r.Y
+        r.Width = Me.Plot.ClientRectangle.Width
+        r.Height = Me.Plot.ClientRectangle.Height - r.Y
         ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
                 astrLegends)
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
-        'g.DrawEllipse(Pens.Green, New Rectangle(10, 10, 380, 380))
+
         Dim ag As New ArrayGraph()
         Dim r As Rectangle
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
-        MixedTrophicImpactUC = CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
-        r.X = MixedTrophicImpactUC.ClientRectangle.X
+        r.X = Me.Plot.ClientRectangle.X
         r.Y = 0
-        r.Width = MixedTrophicImpactUC.ClientRectangle.Width ' * 3
-        r.Height = (MixedTrophicImpactUC.ClientRectangle.Height - r.Y) ' * 3
+        r.Width = Me.Plot.ClientRectangle.Width ' * 3
+        r.Height = (Me.Plot.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
                 astrLegends)
     End Sub
+
 End Class

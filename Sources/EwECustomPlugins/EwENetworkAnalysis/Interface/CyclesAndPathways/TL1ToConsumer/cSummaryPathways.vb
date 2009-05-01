@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSummaryPathways.vb,v $
+' Revision 1.6  2009/05/01 17:43:05  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:08  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -54,37 +57,22 @@ Imports ZedGraph
 Namespace TL1ToConsumer
 
     Public Class cSummaryPathways
-        Private Shared m_SummaryPathwaysInstnace As cSummaryPathways
+        Inherits cContentManager
 
-        Private m_NetworkManager As cNetworkManager
-        'Private m_Panel As Windows.Forms.Panel
-        Private Shared m_Panel As Panel
-
-        Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cSummaryPathways
-            m_Panel = Panel
-
-            If m_SummaryPathwaysInstnace Is Nothing Then m_SummaryPathwaysInstnace = New cSummaryPathways(NetworkManager, Panel)
-            Return m_SummaryPathwaysInstnace
-        End Function
-
-        Private Sub New()
+        Public Sub New()
             '
         End Sub
 
-        Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-            Me.New()
-
-            m_NetworkManager = NetworkManager
-            m_Panel = Panel
+        Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                      ByVal datagrid As DataGridView, _
+                                      ByVal graph As ZedGraphControl, _
+                                      ByVal plot As ucPlot)
+            MyBase.Attach(manager, datagrid, graph, plot)
+            Me.DataGrid.Visible = True
         End Sub
 
-        Public Sub DisplayData()
-            Dim DataGrid As DataGridView = _
-                CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+        Public Overrides Sub DisplayData()
             Dim strRowContent() As String
-
-            Cursor.Current = Cursors.WaitCursor
-            'RemoveToolStrip() at the end
 
             SetUpGridColumn()
 
@@ -103,42 +91,25 @@ Namespace TL1ToConsumer
             DataGrid.Rows(0).Visible = True
 
             strRowContent(0) = My.Resources.ROW_HDR_TOTAL_NUM_PATH
-            strRowContent(1) = CStr(m_NetworkManager.PathWays.Count)
+            strRowContent(1) = CStr(NetworkManager.PathWays.Count)
             DataGrid.Rows(1).SetValues(strRowContent)
             DataGrid.Rows(1).Visible = True
 
             strRowContent(0) = My.Resources.ROW_HDR_MEAN_PATH_LEN
-            If m_NetworkManager.PathWays.Count = 0 Then
+            If NetworkManager.PathWays.Count = 0 Then
                 strRowContent(1) = My.Resources.ROW_HDR_NOT_APP
             Else
-                strRowContent(1) = (m_NetworkManager.NumArrows / m_NetworkManager.PathWays.Count).ToString("F2")
+                strRowContent(1) = (NetworkManager.NumArrows / NetworkManager.PathWays.Count).ToString("F2")
             End If
             DataGrid.Rows(2).SetValues(strRowContent)
             DataGrid.Rows(2).Visible = True
 
             DataGrid.ClearSelection()
 
-            RemoveToolStrip()
-            Cursor.Current = Cursors.Default
-
         End Sub
 
         Private Sub SetUpGridColumn()
-            Dim DataGrid As DataGridView = _
-                CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-            Dim GraphPane As ZedGraphControl = _
-                CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-            Dim LogoPanel As TableLayoutPanel = _
-                CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-            Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-                CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-            m_Panel.AutoScroll = False
-            LogoPanel.Visible = False
-            GraphPane.Visible = False
-            If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-            DataGrid.ReadOnly = True
-            DataGrid.Visible = True
             DataGrid.ColumnCount = 2
 
             SetGridColumnPropertyDefault(DataGrid)
@@ -146,18 +117,7 @@ Namespace TL1ToConsumer
             DataGrid.Columns(0).Frozen = True
             DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
             DataGrid.Columns(0).Width = 400
-        End Sub
 
-        Private Sub RemoveToolStrip()
-            Dim ToolStrip As ToolStrip = _
-                CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-            Dim DataGrid As DataGridView = _
-                CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-            If Not ToolStrip Is Nothing Then
-                m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-                DataGrid.Dock = DockStyle.Fill
-            End If
         End Sub
 
     End Class

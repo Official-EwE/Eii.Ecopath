@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCyclingAndPathLen.vb,v $
+' Revision 1.6  2009/05/01 17:42:55  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:01  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -52,37 +55,22 @@ Imports System.Windows.Forms
 Imports ZedGraph
 
 Public Class cCyclingAndPathLen
-    Private Shared m_CyclingAndPathLenInstance As cCyclingAndPathLen
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cCyclingAndPathLen
-        m_Panel = Panel
-
-        If m_CyclingAndPathLenInstance Is Nothing Then m_CyclingAndPathLenInstance = New cCyclingAndPathLen(NetworkManager, Panel)
-        Return m_CyclingAndPathLenInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                 ByVal datagrid As DataGridView, _
+                                 ByVal graph As ZedGraphControl, _
+                                 ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData()
         Dim strRowContent() As String
-
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
 
         SetUpGridColumn()
 
@@ -105,7 +93,7 @@ Public Class cCyclingAndPathLen
         'SetCellValue(Grid, 2, 1, Format(Tc, "0.00"))
         'SetCellText(Grid, 3, 1, GetUnits(2, 2))
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_LIV
-        strRowContent(1) = m_NetworkManager.ThroughputCycledLiving.ToString("F2")
+        strRowContent(1) = NetworkManager.ThroughputCycledLiving.ToString("F2")
         strRowContent(2) = My.Resources.STR_T_KM2_YR
         DataGrid.Rows(1).SetValues(strRowContent)
         DataGrid.Rows(1).Visible = True
@@ -116,9 +104,9 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 2, "% of throughput w/o detritus")
         'g_Recordset.Fields("PredatorCyclingIndex").value = 100 * Tc / TCyc
         strRowContent(0) = My.Resources.ROW_HDR_PRED_CYC_INDX
-        If Math.Abs(m_NetworkManager.ThroughputCycledPredatory) > 0.0 Then
-            strRowContent(1) = (100.0 * m_NetworkManager.ThroughputCycledLiving / _
-                m_NetworkManager.ThroughputCycledPredatory).ToString("F2")
+        If Math.Abs(NetworkManager.ThroughputCycledPredatory) > 0.0 Then
+            strRowContent(1) = (100.0 * NetworkManager.ThroughputCycledLiving / _
+                NetworkManager.ThroughputCycledPredatory).ToString("F2")
         Else
             strRowContent(1) = ""
         End If
@@ -131,8 +119,8 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 3, GetUnits(2, 2))
         'g_Recordset.Fields("TrputCyclInclDet").value = TcD
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_TOTAL
-        If Math.Abs(m_NetworkManager.ThroughputCycledAll) > 0.0 Then
-            strRowContent(1) = m_NetworkManager.ThroughputCycledAll.ToString("F2")
+        If Math.Abs(NetworkManager.ThroughputCycledAll) > 0.0 Then
+            strRowContent(1) = NetworkManager.ThroughputCycledAll.ToString("F2")
         Else
             strRowContent(1) = ""
         End If
@@ -145,8 +133,8 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 4, "% of total throughput")
         'g_Recordset.Fields("FinnCyclingIndex").value = 100 * TcD / TruPut
         strRowContent(0) = My.Resources.ROW_HDR_FINN_CYC_INDX
-        strRowContent(1) = (100.0 * m_NetworkManager.ThroughputCycledAll / _
-            m_NetworkManager.ThroughputTotal).ToString("F2")
+        strRowContent(1) = (100.0 * NetworkManager.ThroughputCycledAll / _
+            NetworkManager.ThroughputTotal).ToString("F2")
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
         DataGrid.Rows(4).SetValues(strRowContent)
         DataGrid.Rows(4).Visible = True
@@ -160,9 +148,9 @@ Public Class cCyclingAndPathLen
         'End If
         'SetCellText(Grid, 3, 5, "-")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_MEAN_PATH_LEN
-        If m_NetworkManager.ThroughputExport + m_NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = (m_NetworkManager.ThroughputTotal / _
-                (m_NetworkManager.ThroughputExport + m_NetworkManager.ThroughputResp)).ToString("F4")
+        If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = (NetworkManager.ThroughputTotal / _
+                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp)).ToString("F4")
         Else
             strRowContent(1) = ""
         End If
@@ -178,11 +166,11 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 6, "without detritus")
         'g_Recordset.Update()
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
-        If m_NetworkManager.ThroughputExport - m_NetworkManager.ThroughputExportByGroup(m_NetworkManager.nGroups) + _
-            m_NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = ((m_NetworkManager.ThroughputCycledPredatory - m_NetworkManager.ThroughputCycledLiving) / _
-                (m_NetworkManager.ThroughputExport - m_NetworkManager.ThroughputExportByGroup(m_NetworkManager.nGroups) + _
-                m_NetworkManager.ThroughputResp)).ToString("F4")
+        If NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
+            NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = ((NetworkManager.ThroughputCycledPredatory - NetworkManager.ThroughputCycledLiving) / _
+                (NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
+                NetworkManager.ThroughputResp)).ToString("F4")
         Else
             strRowContent(1) = ""
         End If
@@ -196,9 +184,9 @@ Public Class cCyclingAndPathLen
         'End If
         'SetCellText(Grid, 3, 7, "with detritus")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
-        If m_NetworkManager.ThroughputExport + m_NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = ((m_NetworkManager.ThroughputTotal - m_NetworkManager.ThroughputCycledAll) / _
-                (m_NetworkManager.ThroughputExport + m_NetworkManager.ThroughputResp)).ToString("F4")
+        If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = ((NetworkManager.ThroughputTotal - NetworkManager.ThroughputCycledAll) / _
+                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp)).ToString("F4")
         Else
             strRowContent(1) = ""
         End If
@@ -207,25 +195,11 @@ Public Class cCyclingAndPathLen
         DataGrid.Rows(7).Visible = True
 
         DataGrid.ClearSelection()
-        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         DataGrid.ColumnCount = 3
 
         SetGridColumnPropertyDefault(DataGrid)
@@ -237,18 +211,7 @@ Public Class cCyclingAndPathLen
 
         DataGrid.Columns(2).Width = 165
         DataGrid.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-        End If
     End Sub
 
 End Class

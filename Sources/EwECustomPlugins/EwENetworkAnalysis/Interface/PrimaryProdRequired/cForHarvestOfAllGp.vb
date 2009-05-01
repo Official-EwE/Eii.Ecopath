@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForHarvestOfAllGp.vb,v $
+' Revision 1.6  2009/05/01 17:42:56  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:03  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -53,48 +56,30 @@ Imports EwECore
 Imports ZedGraph
 
 Public Class cForHarvestOfAllGp
-    Private Shared m_ForHarvestOfAllGpInstance As cForHarvestOfAllGp
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cForHarvestOfAllGp
-        m_Panel = Panel
-
-        If m_ForHarvestOfAllGpInstance Is Nothing Then m_ForHarvestOfAllGpInstance = New cForHarvestOfAllGp(NetworkManager, Panel)
-        Return m_ForHarvestOfAllGpInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
-
-        'm_NetworkManager.RunRequiredPrimaryProd()
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                  ByVal datagrid As DataGridView, _
+                                  ByVal graph As ZedGraphControl, _
+                                  ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        Dim core As cCore = cCore.GetInstance
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData()
+
         Dim strRowContent() As String
         Dim lngSumPath As Long
-
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
 
         SetUpGridColumn()
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = core.nLivingGroups + 2
+        DataGrid.RowCount = Me.NetworkManager.Core.nLivingGroups + 2
         DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Rows(0).Frozen = True
@@ -115,24 +100,24 @@ Public Class cForHarvestOfAllGp
         DataGrid.Rows(0).SetValues(strRowContent)
         DataGrid.Rows(0).Visible = True
 
-        For i As Integer = 1 To core.nLivingGroups
+        For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             strRowContent(0) = CStr(i)
-            strRowContent(1) = m_NetworkManager.GroupName(i)
-            strRowContent(2) = CStr(m_NetworkManager.NumerPaths(i))
-            If m_NetworkManager.PPRCatchHarvest(i) > 0.0 Then lngSumPath = lngSumPath + m_NetworkManager.NumerPaths(i)
-            strRowContent(3) = m_NetworkManager.TrophicLevel(i).ToString("F2")
-            strRowContent(4) = m_NetworkManager.PPRRequiredHarvest(i).ToString("F2")
-            strRowContent(5) = m_NetworkManager.PPRRequiredDetHarvest(i).ToString("F2")
-            strRowContent(6) = m_NetworkManager.PPRRequiredSumHarvest(i).ToString("F2")
-            strRowContent(7) = m_NetworkManager.PPRCatchHarvest(i).ToString("F2")
-            If m_NetworkManager.PPRCatchHarvest(i) > 0.0 Then
-                strRowContent(8) = m_NetworkManager.PPROverCatchHarvest(i).ToString("F2")
+            strRowContent(1) = NetworkManager.GroupName(i)
+            strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
+            If NetworkManager.PPRCatchHarvest(i) > 0.0 Then lngSumPath = lngSumPath + NetworkManager.NumerPaths(i)
+            strRowContent(3) = NetworkManager.TrophicLevel(i).ToString("F2")
+            strRowContent(4) = NetworkManager.PPRRequiredHarvest(i).ToString("F2")
+            strRowContent(5) = NetworkManager.PPRRequiredDetHarvest(i).ToString("F2")
+            strRowContent(6) = NetworkManager.PPRRequiredSumHarvest(i).ToString("F2")
+            strRowContent(7) = NetworkManager.PPRCatchHarvest(i).ToString("F2")
+            If NetworkManager.PPRCatchHarvest(i) > 0.0 Then
+                strRowContent(8) = NetworkManager.PPROverCatchHarvest(i).ToString("F2")
             Else
                 strRowContent(8) = ""
             End If
-            strRowContent(9) = m_NetworkManager.PPRTotPPHarvest(i).ToString("F2")
-            If m_NetworkManager.PPRCatchHarvest(i) > 0.0 And m_NetworkManager.TotalPrimaryProduction > 0.0 Then
-                strRowContent(10) = m_NetworkManager.PPRUHarvest(i).ToString("F2")
+            strRowContent(9) = NetworkManager.PPRTotPPHarvest(i).ToString("F2")
+            If NetworkManager.PPRCatchHarvest(i) > 0.0 And NetworkManager.TotalPrimaryProduction > 0.0 Then
+                strRowContent(10) = NetworkManager.PPRUHarvest(i).ToString("F2")
             Else
                 strRowContent(10) = ""
             End If
@@ -146,23 +131,23 @@ Public Class cForHarvestOfAllGp
         Next
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
         strRowContent(2) = CStr(lngSumPath)
-        strRowContent(3) = m_NetworkManager.TotalTL.ToString("F2")
-        strRowContent(4) = m_NetworkManager.TotalPPRPP.ToString("F2")
-        strRowContent(5) = m_NetworkManager.TotalPPRDet.ToString("F2")
-        strRowContent(6) = (m_NetworkManager.TotalPPRPP + m_NetworkManager.TotalPPRDet).ToString("F2")
-        strRowContent(7) = m_NetworkManager.TotalCatch.ToString("F2")
-        If m_NetworkManager.TotalCatch > 0.0 Then
-            strRowContent(8) = ((m_NetworkManager.TotalPPRPP + m_NetworkManager.TotalPPRDet) / _
-                m_NetworkManager.TotalCatch).ToString("F2")
+        strRowContent(3) = NetworkManager.TotalTL.ToString("F2")
+        strRowContent(4) = NetworkManager.TotalPPRPP.ToString("F2")
+        strRowContent(5) = NetworkManager.TotalPPRDet.ToString("F2")
+        strRowContent(6) = (NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet).ToString("F2")
+        strRowContent(7) = NetworkManager.TotalCatch.ToString("F2")
+        If NetworkManager.TotalCatch > 0.0 Then
+            strRowContent(8) = ((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+                NetworkManager.TotalCatch).ToString("F2")
         Else
             strRowContent(8) = ""
         End If
-        strRowContent(9) = (100 * (m_NetworkManager.TotalPPRPP + m_NetworkManager.TotalPPRDet) / _
-            (m_NetworkManager.TotalPrimaryProduction + m_NetworkManager.DetThroughtput(1))).ToString("F2")
-        If m_NetworkManager.TotalCatch > 0.0 Then
-            strRowContent(10) = ((m_NetworkManager.TotalPPRPP + m_NetworkManager.TotalPPRDet) / _
-                (m_NetworkManager.TotalPrimaryProduction + m_NetworkManager.DetThroughtput(1)) / _
-                m_NetworkManager.TotalCatch).ToString("F2")
+        strRowContent(9) = (100 * (NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+            (NetworkManager.TotalPrimaryProduction + NetworkManager.DetThroughtput(1))).ToString("F2")
+        If NetworkManager.TotalCatch > 0.0 Then
+            strRowContent(10) = ((NetworkManager.TotalPPRPP + NetworkManager.TotalPPRDet) / _
+                (NetworkManager.TotalPrimaryProduction + NetworkManager.DetThroughtput(1)) / _
+                NetworkManager.TotalCatch).ToString("F2")
         Else
             strRowContent(10) = ""
         End If
@@ -170,9 +155,9 @@ Public Class cForHarvestOfAllGp
         DataGrid.Rows(DataGrid.RowCount - 1).Visible = True
 
         'Hide some rows
-        For i As Integer = 1 To core.nLivingGroups
-            If m_NetworkManager.PPRCatchHarvest(i) <= 0.0 Or _
-                m_NetworkManager.PPRCatchHarvest(i) <= 0.0 And m_NetworkManager.TotalPrimaryProduction <= 0.0 Then
+        For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
+            If NetworkManager.PPRCatchHarvest(i) <= 0.0 Or _
+                NetworkManager.PPRCatchHarvest(i) <= 0.0 And NetworkManager.TotalPrimaryProduction <= 0.0 Then
                 DataGrid.Rows(i).Visible = False
             End If
         Next
@@ -181,21 +166,8 @@ Public Class cForHarvestOfAllGp
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         'DataGrid.RowCount = 1
         DataGrid.ColumnCount = 11
 
@@ -209,18 +181,7 @@ Public Class cForHarvestOfAllGp
         DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Columns(1).Frozen = True
         DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-        End If
     End Sub
 
 End Class

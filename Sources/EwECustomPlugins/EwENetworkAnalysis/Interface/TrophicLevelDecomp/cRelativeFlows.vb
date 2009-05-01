@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cRelativeFlows.vb,v $
+' Revision 1.7  2009/05/01 17:42:51  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.6  2009/04/17 01:06:59  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -19,31 +22,6 @@
 ' Revision 1.1  2008/09/26 07:30:56  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.15  2008/06/25 01:53:38  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.14  2008/06/24 18:08:37  joeh
-' Ecosim NA indice plots are displayed in the same form where  we have the NA tree view - Take 2
-'
-' Revision 1.13  2007/07/07 00:11:03  joeh
-' Decrease column width
-'
-' Revision 1.12  2007/06/28 19:24:33  joeh
-' Switch to wait cursor when displaying data
-'
-' Revision 1.11  2007/06/22 00:35:28  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.10  2007/06/21 23:49:37  joeh
-' Move hard coded strings into the resource file
-'
-' Revision 1.9  2007/06/21 00:14:37  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.8  2007/06/20 18:13:55  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
 Option Strict On
 Option Explicit On
@@ -52,43 +30,28 @@ Imports System.Windows.Forms
 Imports ZedGraph
 
 Public Class cRelativeFlows
-    Private Shared m_RelativeFlowsInstnace As cRelativeFlows
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel   
-    Private Shared m_Panel As Panel   '???
+    Inherits cContentManager
 
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cRelativeFlows
-        m_Panel = Panel  '???
-
-        If m_RelativeFlowsInstnace Is Nothing Then m_RelativeFlowsInstnace = New cRelativeFlows(NetworkManager, Panel)
-        Return m_RelativeFlowsInstnace
-    End Function
-
-    Private Sub New()
-        '
+    Public Sub New()
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                  ByVal datagrid As DataGridView, _
+                                  ByVal graph As ZedGraphControl, _
+                                  ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData()
+
         Dim strRowContent() As String
 
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
-
-        SetUpGridColumn(m_NetworkManager.nTrophicLevels)
+        SetUpGridColumn(NetworkManager.nTrophicLevels)
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nGroups + 1
+        DataGrid.RowCount = NetworkManager.nGroups + 1
         DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Rows(0).Frozen = True
@@ -97,17 +60,17 @@ Public Class cRelativeFlows
         ReDim strRowContent(DataGrid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
-        For j As Integer = 1 To m_NetworkManager.nTrophicLevels
+        For j As Integer = 1 To NetworkManager.nTrophicLevels
             strRowContent(j + 1) = CRoman(j)
         Next
         DataGrid.Rows(0).SetValues(strRowContent)
         DataGrid.Rows(0).Visible = True
 
-        For i As Integer = 1 To m_NetworkManager.nGroups
+        For i As Integer = 1 To NetworkManager.nGroups
             strRowContent(0) = CStr(i)
-            strRowContent(1) = m_NetworkManager.GroupName(i)
-            For j As Integer = 1 To m_NetworkManager.nTrophicLevels
-                strRowContent(j + 1) = (m_NetworkManager.RelativeFlow(i, j)).ToString("F4")
+            strRowContent(1) = NetworkManager.GroupName(i)
+            For j As Integer = 1 To NetworkManager.nTrophicLevels
+                strRowContent(j + 1) = (NetworkManager.RelativeFlow(i, j)).ToString("F4")
             Next
             'DataGrid.Rows.Add(strary)
             DataGrid.Rows(i).SetValues(strRowContent)
@@ -117,25 +80,11 @@ Public Class cRelativeFlows
             'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
         Next
         DataGrid.ClearSelection()
-        Cursor.Current = Cursors.Default
+
     End Sub
 
     Private Sub SetUpGridColumn(ByVal iNumTrophicLevels As Integer)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
-        DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         'DataGrid.RowCount = 1
         DataGrid.ColumnCount = iNumTrophicLevels + 2
 
@@ -152,18 +101,7 @@ Public Class cRelativeFlows
 
         'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
         'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        'If Not ToolStrip Is Nothing Then
-        m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-        DataGrid.Dock = DockStyle.Fill
-        'End If
     End Sub
 
 End Class

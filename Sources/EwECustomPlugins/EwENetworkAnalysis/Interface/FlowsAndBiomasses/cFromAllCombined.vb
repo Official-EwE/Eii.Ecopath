@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromAllCombined.vb,v $
+' Revision 1.6  2009/05/01 17:42:57  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.5  2009/04/17 01:07:03  joeh
 ' Make MixedTrophicImpactUC not visible when needed
 '
@@ -49,45 +52,29 @@ Imports System.Windows.Forms
 Imports ZedGraph
 
 Public Class cFromAllCombined
-    Private Shared m_FromAllCombinedInstance As cFromAllCombined
+    Inherits cContentManager
 
-    Private m_NetworkManager As cNetworkManager
-    'Private m_Panel As Windows.Forms.Panel
-    Private Shared m_Panel As Panel
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cFromAllCombined
-        m_Panel = Panel
-
-        If m_FromAllCombinedInstance Is Nothing Then m_FromAllCombinedInstance = New cFromAllCombined(NetworkManager, Panel)
-        Return m_FromAllCombinedInstance
-    End Function
-
-    Private Sub New()
-        '
+    Public Sub New()
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        m_Panel = Panel
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                  ByVal datagrid As DataGridView, _
+                                  ByVal graph As ZedGraphControl, _
+                                  ByVal plot As ucPlot)
+        MyBase.Attach(manager, datagrid, graph, plot)
+        Me.DataGrid.Visible = True
     End Sub
 
-    Public Sub DisplayData()
-        'Dim ToolStrip As ToolStrip = _
-        '    CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
+    Public Overrides Sub DisplayData()
+
         Dim strRowContent() As String
         Dim sngSumVariable() As Single
-
-        Cursor.Current = Cursors.WaitCursor
-        RemoveToolStrip()
 
         SetUpGridColumn()
 
         'Set up grid rows
         DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = m_NetworkManager.nTrophicLevels + 5
+        DataGrid.RowCount = NetworkManager.nTrophicLevels + 5
         DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
         DataGrid.Rows(0).Frozen = True
@@ -105,26 +92,26 @@ Public Class cFromAllCombined
         DataGrid.Rows(0).SetValues(strRowContent)
         DataGrid.Rows(0).Visible = True
 
-        For i As Integer = m_NetworkManager.nTrophicLevels To 1 Step -1
+        For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
             strRowContent(0) = CRoman(i)
             If i = 1 Then
-                strRowContent(1) = (m_NetworkManager.DetImport(i) + m_NetworkManager.PPImport(i)).ToString("F4")
-                sngSumVariable(1) = sngSumVariable(1) + m_NetworkManager.DetImport(i) + m_NetworkManager.PPImport(i)
+                strRowContent(1) = (NetworkManager.DetImport(i) + NetworkManager.PPImport(i)).ToString("F4")
+                sngSumVariable(1) = sngSumVariable(1) + NetworkManager.DetImport(i) + NetworkManager.PPImport(i)
             Else
                 strRowContent(1) = ""
             End If
-            strRowContent(2) = (m_NetworkManager.DetConsByPred(i) + m_NetworkManager.PPConsByPred(i)).ToString("F4")
-            sngSumVariable(2) = sngSumVariable(2) + m_NetworkManager.DetConsByPred(i) + m_NetworkManager.PPConsByPred(i)
-            strRowContent(3) = (m_NetworkManager.DetExport(i) + m_NetworkManager.PPExport(i)).ToString("F4")
-            sngSumVariable(3) = sngSumVariable(3) + m_NetworkManager.DetExport(i) + m_NetworkManager.PPExport(i)
-            strRowContent(4) = (m_NetworkManager.DetToDetritus(i) + m_NetworkManager.PPToDetritus(i)).ToString("F4")
-            sngSumVariable(4) = sngSumVariable(4) + m_NetworkManager.DetToDetritus(i) + m_NetworkManager.PPToDetritus(i)
-            strRowContent(5) = (m_NetworkManager.DetRespiration(i) + m_NetworkManager.PPRespiration(i)).ToString("F4")
-            sngSumVariable(5) = sngSumVariable(5) + m_NetworkManager.DetRespiration(i) + m_NetworkManager.PPRespiration(i)
-            strRowContent(6) = (m_NetworkManager.DetThroughtput(i) + m_NetworkManager.PPThroughtput(i)).ToString("F4")
-            sngSumVariable(6) = sngSumVariable(6) + m_NetworkManager.DetThroughtput(i) + m_NetworkManager.PPThroughtput(i)
-            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
-            DataGrid.Rows(m_NetworkManager.nTrophicLevels - i + 1).Visible = True
+            strRowContent(2) = (NetworkManager.DetConsByPred(i) + NetworkManager.PPConsByPred(i)).ToString("F4")
+            sngSumVariable(2) = sngSumVariable(2) + NetworkManager.DetConsByPred(i) + NetworkManager.PPConsByPred(i)
+            strRowContent(3) = (NetworkManager.DetExport(i) + NetworkManager.PPExport(i)).ToString("F4")
+            sngSumVariable(3) = sngSumVariable(3) + NetworkManager.DetExport(i) + NetworkManager.PPExport(i)
+            strRowContent(4) = (NetworkManager.DetToDetritus(i) + NetworkManager.PPToDetritus(i)).ToString("F4")
+            sngSumVariable(4) = sngSumVariable(4) + NetworkManager.DetToDetritus(i) + NetworkManager.PPToDetritus(i)
+            strRowContent(5) = (NetworkManager.DetRespiration(i) + NetworkManager.PPRespiration(i)).ToString("F4")
+            sngSumVariable(5) = sngSumVariable(5) + NetworkManager.DetRespiration(i) + NetworkManager.PPRespiration(i)
+            strRowContent(6) = (NetworkManager.DetThroughtput(i) + NetworkManager.PPThroughtput(i)).ToString("F4")
+            sngSumVariable(6) = sngSumVariable(6) + NetworkManager.DetThroughtput(i) + NetworkManager.PPThroughtput(i)
+            DataGrid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
+            DataGrid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
         strRowContent(0) = My.Resources.ROW_HDR_SUM
@@ -138,7 +125,7 @@ Public Class cFromAllCombined
         For i As Integer = 1 To DataGrid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = m_NetworkManager.ExtractedToBreakCycles.ToString("F4")
+        strRowContent(DataGrid.Columns.Count - 1) = NetworkManager.ExtractedToBreakCycles.ToString("F4")
         DataGrid.Rows(DataGrid.RowCount - 3).SetValues(strRowContent)
         DataGrid.Rows(DataGrid.RowCount - 3).Visible = True
 
@@ -146,7 +133,7 @@ Public Class cFromAllCombined
         For i As Integer = 1 To DataGrid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = m_NetworkManager.InputTLIIPlus.ToString("F4")
+        strRowContent(DataGrid.Columns.Count - 1) = NetworkManager.InputTLIIPlus.ToString("F4")
         DataGrid.Rows(DataGrid.RowCount - 2).SetValues(strRowContent)
         DataGrid.Rows(DataGrid.RowCount - 2).Visible = True
 
@@ -154,31 +141,18 @@ Public Class cFromAllCombined
         For i As Integer = 1 To DataGrid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = (m_NetworkManager.TotalThroughput + _
-            m_NetworkManager.ExtractedToBreakCycles + m_NetworkManager.InputTLIIPlus).ToString("F4")
+        strRowContent(DataGrid.Columns.Count - 1) = (NetworkManager.TotalThroughput + _
+            NetworkManager.ExtractedToBreakCycles + NetworkManager.InputTLIIPlus).ToString("F4")
         DataGrid.Rows(DataGrid.RowCount - 1).SetValues(strRowContent)
         DataGrid.Rows(DataGrid.RowCount - 1).Visible = True
         DataGrid.ClearSelection()
-        Cursor.Current = Cursors.default
+        Cursor.Current = Cursors.Default
 
     End Sub
 
     Private Sub SetUpGridColumn()
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            CType(m_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            CType(m_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-        Dim MixedTrophicImpactUC As ucPlotOfMixedTrophicImpact = _
-            CType(m_Panel.Controls("ucPlotOfMixedTrophicImpact"), ucPlotOfMixedTrophicImpact)
 
-        m_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        GraphPane.Visible = False
-        If Not MixedTrophicImpactUC Is Nothing Then MixedTrophicImpactUC.Visible = False
         DataGrid.ReadOnly = True
-        DataGrid.Visible = True
         'DataGrid.RowCount = 1
         DataGrid.ColumnCount = 7
 
@@ -187,18 +161,7 @@ Public Class cFromAllCombined
         DataGrid.Columns(0).Width = 160
         DataGrid.Columns(0).Frozen = True
         DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-    End Sub
 
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            CType(m_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            CType(m_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            m_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
-        End If
     End Sub
 
 End Class

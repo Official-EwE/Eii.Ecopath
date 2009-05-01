@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.11  2009/05/01 17:42:58  jeroens
+' Inherited from cContentManager
+'
 ' Revision 1.10  2009/04/28 19:00:31  jeroens
 ' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
 '
@@ -50,34 +53,22 @@ Imports ScientificInterfaceShared.Style
 
 'MTI graph with bars
 Public Class cGraphOfMixedTrophicImpact
+    Inherits cContentManager
 
-    Private Shared g_GraphOfMixedTrophicImpactInstance As cGraphOfMixedTrophicImpact
-    Private Shared g_Panel As Panel
-
-    Private m_NetworkManager As cNetworkManager
-    Private m_core As cCore = Nothing
-
-    Public Shared Function GetInstance(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel) As cGraphOfMixedTrophicImpact
-
-        cGraphOfMixedTrophicImpact.g_Panel = Panel
-        If g_GraphOfMixedTrophicImpactInstance Is Nothing Then
-            g_GraphOfMixedTrophicImpactInstance = New cGraphOfMixedTrophicImpact(NetworkManager, Panel)
-        End If
-        Return g_GraphOfMixedTrophicImpactInstance
-    End Function
-
-    Private Sub New()
+    Public Sub New()
         '
     End Sub
 
-    Private Sub New(ByVal NetworkManager As cNetworkManager, ByVal Panel As Windows.Forms.Panel)
-        Me.New()
-        m_NetworkManager = NetworkManager
-        g_Panel = Panel
-        Me.m_core = cCore.GetInstance()
+    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
+                                ByVal datagrid As DataGridView, _
+                                ByVal graph As ZedGraphControl, _
+                                ByVal plot As ucPlot)
+
+        MyBase.Attach(manager, datagrid, graph, plot)
+
     End Sub
 
-    Public Sub CreatePlot()
+    Public Overrides Sub DisplayData()
 
         Dim strOutputFileDir As String
         Dim strOutputFileName As String
@@ -96,49 +87,49 @@ Public Class cGraphOfMixedTrophicImpact
         FileOpen(FileNumber, strOutputFileDir & "\" & strOutputFileName, OpenMode.Output)
 
         NoDisplay = 0
-        For i As Integer = 1 To m_NetworkManager.nGroups
+        For i As Integer = 1 To Me.NetworkManager.nGroups
             ' JS: group hiding has not yet been enabled
             'bShowItem = sg.GroupVisible(i)
             If bShowItem Then NoDisplay += 1
         Next
-        For i As Integer = 1 To m_NetworkManager.nFleets
+        For i As Integer = 1 To Me.NetworkManager.nFleets
             ' JS: fleet hiding has not yet been enabled
             'bShowItem = sg.FleetVisible(i)
             If bShowItem Then NoDisplay += 1
         Next
         PrintLine(FileNumber, Format(NoDisplay, "00"))
 
-        For i As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-            If i <= m_NetworkManager.nGroups Then
+        For i As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
+            If i <= Me.NetworkManager.nGroups Then
                 ' JS: group hiding has not yet been enabled
                 'bShowItem = sg.GroupVisible(i)
             Else
                 ' JS: group hiding has not yet been enabled
-                'bShowItem = sg.FleetVisible(i - m_NetworkManager.nGroups)
+                'bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
             End If
             If bShowItem Then
                 ZeroString = "                    "
-                If i <= m_NetworkManager.nGroups Then
-                    Mid$(ZeroString, 1) = m_NetworkManager.GroupName(i)
+                If i <= Me.NetworkManager.nGroups Then
+                    Mid$(ZeroString, 1) = Me.NetworkManager.GroupName(i)
                 Else
-                    Mid(ZeroString, 1) = m_NetworkManager.FleetName(i - m_NetworkManager.nGroups)
+                    Mid(ZeroString, 1) = Me.NetworkManager.FleetName(i - Me.NetworkManager.nGroups)
                 End If
                 Print(FileNumber, ZeroString)
 
-                For j As Integer = 1 To m_NetworkManager.nGroups + m_NetworkManager.nFleets
-                    If i <= m_NetworkManager.nGroups Then
+                For j As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
+                    If i <= Me.NetworkManager.nGroups Then
                         ' JS: group hiding has not yet been enabled
                         'bShowItem = sg.GroupVisible(i)
                     Else
                         ' JS: fleet hiding has not yet been enabled
-                        'bShowItem = sg.FleetVisible(i - m_NetworkManager.nGroups)
+                        'bShowItem = sg.FleetVisible(i - Me.NetworkManager.nGroups)
                     End If
                     If bShowItem Then
-                        If m_NetworkManager.MixedTrophicImpacts(i, j) >= 0.0 Then
-                            Print(FileNumber, m_NetworkManager.MixedTrophicImpacts(i, j).ToString("000.00", EnUSLocale))
+                        If Me.NetworkManager.MixedTrophicImpacts(i, j) >= 0.0 Then
+                            Print(FileNumber, Me.NetworkManager.MixedTrophicImpacts(i, j).ToString("000.00", EnUSLocale))
                         Else
                             Dim TmpString As String
-                            TmpString = m_NetworkManager.MixedTrophicImpacts(i, j).ToString("00.00", EnUSLocale)
+                            TmpString = Me.NetworkManager.MixedTrophicImpacts(i, j).ToString("00.00", EnUSLocale)
                             If TmpString = "00.00" Then TmpString = "000.00"
                             Print(FileNumber, TmpString)
                         End If
@@ -150,12 +141,12 @@ Public Class cGraphOfMixedTrophicImpact
         Next i
         FileClose(FileNumber)
 
-        'Call impacts.exe using the file written above
-        If IsPlotActive("ECOPATH 3.0 - Impacts") Then
-            AppActivate("ECOPATH 3.0 - Impacts")
-            System.Windows.Forms.SendKeys.Send("%{F4}")
-            'My.Computer.Keyboard.SendKeys("%{F4}", True)
-        End If
+        ''Call impacts.exe using the file written above
+        'If IsPlotActive("ECOPATH 3.0 - Impacts") Then
+        '    AppActivate("ECOPATH 3.0 - Impacts")
+        '    System.Windows.Forms.SendKeys.Send("%{F4}")
+        '    'My.Computer.Keyboard.SendKeys("%{F4}", True)
+        'End If
 
         'Execute the external application through the general function on EwEUtils
         If Not EwEUtils.SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
@@ -166,40 +157,7 @@ Public Class cGraphOfMixedTrophicImpact
             Next
             Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "impacts.exe", sb.ToString), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-            Me.m_core.Messages.SendMessage(msg)
-        End If
-    End Sub
-
-    Public Sub SetUpPanel()
-        'RemoveToolStrip()
-
-        SetUpGrid()
-    End Sub
-
-    Private Sub SetUpGrid()
-        Dim DataGrid As DataGridView = _
-            DirectCast(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-        Dim GraphPane As ZedGraphControl = _
-            DirectCast(g_Panel.Controls("zgcNetworkAnalysis"), ZedGraphControl)
-        Dim LogoPanel As TableLayoutPanel = _
-            DirectCast(g_Panel.Controls("tlpNetworkAnalysis"), TableLayoutPanel)
-
-        g_Panel.AutoScroll = False
-        LogoPanel.Visible = False
-        DataGrid.Visible = False
-        GraphPane.Visible = False
-        'No need to set MixedTrophicImpactUC.Visible = False
-    End Sub
-
-    Private Sub RemoveToolStrip()
-        Dim ToolStrip As ToolStrip = _
-            DirectCast(g_Panel.Controls("tsNetworkAnalysis"), ToolStrip)
-        Dim DataGrid As DataGridView = _
-            DirectCast(g_Panel.Controls("dgvNetworkAnalysis"), DataGridView)
-
-        If Not ToolStrip Is Nothing Then
-            g_Panel.Controls.RemoveByKey("tsNetworkAnalysis")
-            DataGrid.Dock = DockStyle.Fill
+            Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
     End Sub
 
