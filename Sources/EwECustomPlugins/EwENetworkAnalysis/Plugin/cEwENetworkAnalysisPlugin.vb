@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.6  2009/05/01 17:50:37  jeroens
+' Greatly simplified content management
+'
 ' Revision 1.5  2009/04/16 19:31:32  jeroens
 ' Added IsDataAvailable
 '
@@ -115,8 +118,7 @@ Public Class cEwENetworkAnalysisPlugin
                 'Add
                 m_NetworkManager.IsMainNetworkRun = False
                 m_NetworkManager.IsRequiredPrimaryProdRun = False
-                m_NetworkManager.IsEcosimNetworkWithoutPPREstRun = False
-                m_NetworkManager.IsEcosimNetworkWithPPREstRun = False
+                m_NetworkManager.IsEcosimNetworkRan = False
                 'End Add
                 'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
             Else
@@ -277,7 +279,7 @@ Public Class cEwENetworkAnalysisPlugin
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
 
         'Only initialize the Ecosim Network Analysis if it is turned on
-        If Not m_NetworkManager.bEcosimNetwork Then
+        If Not m_NetworkManager.UseEcosimNetwork Then
             Return
         End If
 
@@ -320,7 +322,7 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
         Try
             'Only run the Ecosim Network Analysis if it is turned on
-            If Not m_NetworkManager.bEcosimNetwork Then
+            If Not m_NetworkManager.UseEcosimNetwork Then
                 Return
             End If
 
