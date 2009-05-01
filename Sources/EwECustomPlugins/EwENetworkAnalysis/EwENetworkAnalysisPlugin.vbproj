@@ -76,10 +76,6 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\Algorithm\cEcosimNetworkAnalysis.vb" />
-    <Compile Include="Interface\Algorithm\cFindPathwaysCyclesAll.vb" />
-    <Compile Include="Interface\Algorithm\cNetworkAnalysis.vb" />
-    <Compile Include="Interface\Algorithm\cRequiredPrimaryProduction.vb" />
     <Compile Include="Interface\Ascendency\cByGroup.vb" />
     <Compile Include="Interface\Ascendency\cTotal.vb" />
     <Compile Include="Interface\cFlowFromDetritus.vb" />
@@ -105,13 +101,14 @@
     <Compile Include="Interface\frmNetworkAnalysis.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Interface\cContentManager.vb" />
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cPlotOfMixedTrophicImpact.vb" />
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMixedTrophicImpact.Designer.vb">
-      <DependentUpon>ucPlotOfMixedTrophicImpact.vb</DependentUpon>
+    <Compile Include="Controls\ucPlot.Designer.vb">
+      <DependentUpon>ucPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMixedTrophicImpact.vb">
+    <Compile Include="Controls\ucPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interface\modUtility.vb" />

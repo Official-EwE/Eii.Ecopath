@@ -168,8 +168,8 @@
   <data name="COL_HDR_SOURCE_TRP_LVL" xml:space="preserve">
     <value>Source / Trophic level</value>
   </data>
-  <data name="MSG_BOX_CYC_ALL" xml:space="preserve">
-    <value>Cycles (all)? (very time consuming for bigger model)</value>
+  <data name="PROMPT_COMPUTE_ALL_CYCLES" xml:space="preserve">
+    <value>Compute all cycles? This may be very time consuming for larger models.</value>
   </data>
   <data name="COL_HDR_TRP_LVL_FLOW" xml:space="preserve">
     <value>Trophic level / Flow</value>
@@ -243,7 +243,7 @@
   <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
     <value>Total (t/km²/year)</value>
   </data>
-  <data name="MSG_BOX_EWE_NA_PLUGIN" xml:space="preserve">
+  <data name="CAPTION" xml:space="preserve">
     <value>EwE Network Analysis Plugin</value>
   </data>
   <data name="LBL_KEMPTONS_Q" xml:space="preserve">
@@ -309,7 +309,7 @@
   <data name="COL_HDR_GRP_NAME_TRP_LVL" xml:space="preserve">
     <value>Group name / Trophic level</value>
   </data>
-  <data name="MSG_BOX_DISPALY_ALL_HIDDEN" xml:space="preserve">
+  <data name="PROMPT_DISPLAY_ALL_HIDDEN_GROUPS" xml:space="preserve">
     <value>Display all groups (yes) or hidden groups only (No)?</value>
   </data>
   <data name="ROW_HDR_INPUT_TRP_LVL_II_PLUS" xml:space="preserve">
@@ -420,8 +420,8 @@
   <data name="COL_HDR_THROUGHPUT_UNIT" xml:space="preserve">
     <value>Throughput (t/km²/year)</value>
   </data>
-  <data name="MSG_BOX_EST_PPR" xml:space="preserve">
-    <value>Estimate primary production required? (very time consuming for bigger model)</value>
+  <data name="PROMPT_ESTIMATE_PPR" xml:space="preserve">
+    <value>Estimate primary production required? This may be very time consuming for larger models.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="N_Asponsors" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -517,5 +517,30 @@
   <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
     <value>Failed to launch application {0}. The file does not seem to exist in any of the expected locations: {1}</value>
     <comment>{0}: application name. {1}: locations</comment>
+  </data>
+  <data name="LABEL_INDEXED" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0}: index, {1}: value</comment>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS" xml:space="preserve">
+    <value>Finding pathways...</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSPREY" xml:space="preserve">
+    <value>Finding for '{0}' via '{1}'...</value>
+    <comment>{0}: consumer name, {1}: prey name</comment>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSUMER" xml:space="preserve">
+    <value>Finding pathways to consumer '{0}'...</value>
+    <comment>{0: consumer name</comment>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_PREY" xml:space="preserve">
+    <value>Finding pathways for prey '{0}'...</value>
+    <comment>{0}: prey name</comment>
+  </data>
+  <data name="STATUS_FINDING_PATHWAY_CYCLES" xml:space="preserve">
+    <value>Finding pathway cycles...</value>
+  </data>
+  <data name="STATUS_RUNNING_NETWORKANALYSIS" xml:space="preserve">
+    <value>Running Network Analysis...</value>
   </data>
 </root>

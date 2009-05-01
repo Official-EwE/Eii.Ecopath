@@ -61,6 +61,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to EwE Network Analysis Plugin.
+        '''</summary>
+        Friend ReadOnly Property CAPTION() As String
+            Get
+                Return ResourceManager.GetString("CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to AMI.
         '''</summary>
         Friend ReadOnly Property COL_HDR_AMI() As String
@@ -689,6 +698,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}: {1}.
+        '''</summary>
+        Friend ReadOnly Property LABEL_INDEXED() As String
+            Get
+                Return ResourceManager.GetString("LABEL_INDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ascendency on flow.
         '''</summary>
         Friend ReadOnly Property LBL_ASCEND_FLOW() As String
@@ -886,42 +904,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to Cycles (all)? (very time consuming for bigger model).
-        '''</summary>
-        Friend ReadOnly Property MSG_BOX_CYC_ALL() As String
-            Get
-                Return ResourceManager.GetString("MSG_BOX_CYC_ALL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Display all groups (yes) or hidden groups only (No)?.
-        '''</summary>
-        Friend ReadOnly Property MSG_BOX_DISPALY_ALL_HIDDEN() As String
-            Get
-                Return ResourceManager.GetString("MSG_BOX_DISPALY_ALL_HIDDEN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Estimate primary production required? (very time consuming for bigger model).
-        '''</summary>
-        Friend ReadOnly Property MSG_BOX_EST_PPR() As String
-            Get
-                Return ResourceManager.GetString("MSG_BOX_EST_PPR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to EwE Network Analysis Plugin.
-        '''</summary>
-        Friend ReadOnly Property MSG_BOX_EWE_NA_PLUGIN() As String
-            Get
-                Return ResourceManager.GetString("MSG_BOX_EWE_NA_PLUGIN", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property N_Asponsors() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("N_Asponsors", resourceCulture)
@@ -935,6 +917,33 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_APPLAUNCH_FAILED() As String
             Get
                 Return ResourceManager.GetString("PROMPT_APPLAUNCH_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Compute all cycles? This may be very time consuming for larger models..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_COMPUTE_ALL_CYCLES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_COMPUTE_ALL_CYCLES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Display all groups (yes) or hidden groups only (No)?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DISPLAY_ALL_HIDDEN_GROUPS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DISPLAY_ALL_HIDDEN_GROUPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Estimate primary production required? This may be very time consuming for larger models..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ESTIMATE_PPR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ESTIMATE_PPR", resourceCulture)
             End Get
         End Property
         
@@ -1151,6 +1160,60 @@ Namespace My.Resources
         Friend ReadOnly Property SAMS_URL() As String
             Get
                 Return ResourceManager.GetString("SAMS_URL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Finding pathway cycles....
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDING_PATHWAY_CYCLES() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDING_PATHWAY_CYCLES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Finding pathways....
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDING_PATHWAYS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDING_PATHWAYS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Finding for &apos;{0}&apos; via &apos;{1}&apos;....
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDING_PATHWAYS_CONSPREY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDING_PATHWAYS_CONSPREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Finding pathways to consumer &apos;{0}&apos;....
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDING_PATHWAYS_CONSUMER() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDING_PATHWAYS_CONSUMER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Finding pathways for prey &apos;{0}&apos;....
+        '''</summary>
+        Friend ReadOnly Property STATUS_FINDING_PATHWAYS_PREY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FINDING_PATHWAYS_PREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Network Analysis....
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUNNING_NETWORKANALYSIS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUNNING_NETWORKANALYSIS", resourceCulture)
             End Get
         End Property
         
