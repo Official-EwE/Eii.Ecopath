@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.12  2009/05/01 17:48:17  jeroens
+' Uses central status feedback
+' Public functions no longer throw exceptions
+'
 ' Revision 1.11  2009/04/28 19:00:27  jeroens
 ' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
 '
@@ -34,30 +38,13 @@
 ' Revision 1.1  2008/09/26 07:30:59  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.29  2008/06/25 02:25:21  joeh
-' Compute and send ecosim NA data to csv file - Take 2
-'
-' Revision 1.28  2008/06/14 00:00:28  joeh
-' Compute and send ecosim NA data to csv file
-'
-' Revision 1.27  2007/09/25 19:02:51  joeb
-' Fixed frmHideGroups bug
-'
-' Revision 1.26  2007/06/28 19:33:30  joeh
-' Add tool strip button Cancel
-'
-' Revision 1.25  2007/06/26 21:15:39  joeh
-' Remove FindCycles() during network analysis
-'
-' Revision 1.24  2007/06/20 18:13:56  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
 '==============================================================================
 
 Option Explicit On
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 
 Public Class cEcoNetwork
 
@@ -421,15 +408,18 @@ Public Class cEcoNetwork
 
         Dim i As Integer ', chk As Integer
         Dim strErr As String = ""
+        Dim bSucces As Boolean = True
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
         'ReadF:
 
         Debug.Assert(m_epdata IsNot Nothing, Me.ToString & ".RunNetworkAnalysis() Ecopath data has not been initialized.")
         Try
 
             If m_epdata Is Nothing Then
-                Throw New ApplicationException("Ecopath data has not been initialized properly.")
                 Return False
             End If
+
+            asn.SetStatusText("Running Network Analysis...", TriState.True, 0.1)
 
             FoundCycles = False
             NetworkDimensioning()
@@ -437,51 +427,56 @@ Public Class cEcoNetwork
             ' EconetMain_g% = 1
             'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman           
             Try
-                Me.m_manager.UpdateNetworkAnalysis(1)
+                asn.SetStatusText("Running Network Analysis Ulanow...", TriState.UseDefault, 0.2)
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
-                Me.m_manager.UpdateNetworkAnalysis(2)
+                asn.SetStatusText("Running Network Analysis Lindeman...", TriState.UseDefault, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
-                Me.m_manager.UpdateNetworkAnalysis(3)
+                asn.SetStatusText("Running Network Analysis...", TriState.UseDefault, 0.4)
             Catch ex As Exception
                 cLog.Write(ex)
-                Throw New ApplicationException(Me.ToString & "." & strErr, ex)
+                bSucces = False
             End Try
 
-            ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
-            CatchSum = 0
+            If (bSucces) Then
+
+                ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
+                CatchSum = 0
 
 
-            For i = 1 To m_epdata.NumLiving
-                CatchSum = CatchSum + m_epdata.Landing(0, i) + m_epdata.Discard(0, i) 'Catch(i%)
-            Next i
-            If CatchSum > 0 Or m_epdata.NumFleet > 0 Then
-                CCD = 1
-                ReDim MTI(m_epdata.NumGroups + m_epdata.NumFleet, m_epdata.NumGroups + m_epdata.NumFleet)
-            Else
-                CCD = 0
-                ReDim MTI(m_epdata.NumGroups, m_epdata.NumGroups)
+                For i = 1 To m_epdata.NumLiving
+                    CatchSum = CatchSum + m_epdata.Landing(0, i) + m_epdata.Discard(0, i) 'Catch(i%)
+                Next i
+                If CatchSum > 0 Or m_epdata.NumFleet > 0 Then
+                    CCD = 1
+                    ReDim MTI(m_epdata.NumGroups + m_epdata.NumFleet, m_epdata.NumGroups + m_epdata.NumFleet)
+                Else
+                    CCD = 0
+                    ReDim MTI(m_epdata.NumGroups, m_epdata.NumGroups)
+                End If
+
+                Impacts()
+
+                asn.SetStatusText("Running Network Analysis eqPP...", TriState.UseDefault, 0.6)
+                InitReqPP()
+                asn.SetStatusText("Finalizing Network Analysis run...", TriState.UseDefault, 0.8)
+
+                'activate the textStream to save the output to file
+                'Dim textStream As New System.IO.StreamWriter(System.AppDomain.CurrentDomain.BaseDirectory() & "NetworkOutput.csv")
+                'DumpResultsToStream(Nothing)
+                'Me.m_manager.UpdateNetworkAnalysis(6)
+
             End If
-
-            Impacts()
-
-            Me.m_manager.UpdateNetworkAnalysis(4)
-            InitReqPP()
-            Me.m_manager.UpdateNetworkAnalysis(5)
-
-            'activate the textStream to save the output to file
-            'Dim textStream As New System.IO.StreamWriter(System.AppDomain.CurrentDomain.BaseDirectory() & "NetworkOutput.csv")
-            'DumpResultsToStream(Nothing)
-            'Me.m_manager.UpdateNetworkAnalysis(6)
 
         Catch ex As Exception
             ' Debug.Assert(False, ex.Message)
             cLog.Write(ex)
-            Throw New ApplicationException("RunNetworkAnalysis()", ex)
+            bSucces = False
         End Try
 
+        asn.SetStatusText("", TriState.False)
 
         'Count = 2
     End Function
@@ -547,7 +542,6 @@ Public Class cEcoNetwork
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException("InitReqPP()" & ex.Message, ex)
-            Return False
         End Try
 
     End Function
@@ -2510,7 +2504,7 @@ EndOfImp:
                             CyclePrint(CycDC, Cons)
                             Cnt = Cnt + 1
 
-                            Me.m_manager.updateFoundCycle(Cnt)
+                            'Me.m_manager.updateFoundCycle(Cnt)
                             'prgmsg.Progress = prgmsg.Progress + 1
                             'm_publisher.SendMessage(prgmsg)
 
@@ -2546,7 +2540,7 @@ NextComp:
                 End If
 
                 iProg += 1
-                Me.m_manager.updateProgressFindCycle(iProg)
+                Me.m_manager.UpdateProgress(My.Resources.STATUS_FINDING_PATHWAY_CYCLES, CSng(iProg / 10000))
 
                 '   frmWait.Label1(0).Caption = "Cycles: " + CStr(Cnt) + ", Pivot: " + CStr(pivot) + ", Level: " + CStr(Level)
             Next Level
@@ -2764,13 +2758,17 @@ NextPivot:
 #End Region
 
 #Region "Required PP"
+
     ''' <summary>
     ''' Calcualte public varaibles need for required primary production
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>Calculates values for "Primary prod. required" tab in EwE5. This was done in DisplayPPReq() in EwE5.</remarks>
     Public Function CalculateRequiredPP() As Boolean
+
         Dim numPaths As Integer, TabNo As Integer
+        Dim bSucces As Boolean = True
+
         'this really has to change 
         Try
             TabNo = 1 'in EwE5 this is called from Tab number one
@@ -2779,15 +2777,16 @@ NextPivot:
 
         Catch ex As Exception
             cLog.Write(ex)
-            Throw New ApplicationException("CalculateRequiredPP()", ex)
+            bSucces = False
         Finally
 
         End Try
 
+        Return bSucces
+
     End Function
 
-    'Private Sub FindPaths(ByRef NumOfPaths As Long, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
-    Public Sub FindPaths(ByRef NumOfPaths As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
+    Private Sub FindPaths(ByRef NumOfPaths As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
 
         'EwE5 definition
         'Private Sub FindPaths(ByRef NumOfPaths As Long, ByRef TabNo As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
@@ -2893,7 +2892,8 @@ NextComp2:
                             If Level = pivot - 2 Then Exit For 'Exit the Level for next and try new pivot
                         End If
 
-                        m_manager.UpdateCalculateRequiredPP(NumDetPath + NumLivPath)
+                        'm_manager.UpdateCalculateRequiredPP(NumDetPath + NumLivPath)
+
                         'If DoWhat <> "Ecosim PPR" And (NumDetPath + NumLivPath) Mod 1000 = 0 Then
                         '    frmWait.Label1(0).Caption = "No of pathways: " + CStr(NumDetPath + NumLivPath)
                         '    UpdateWait()
@@ -2905,7 +2905,7 @@ NextComp2:
                         '    Screen.MousePointer = vbDefault
                         '    Exit Sub
                         'End If
-                        If m_manager.CancelRequiredPrimaryProdRun Then Exit Sub
+                        'If m_manager.CancelRequiredPrimaryProdRun Then Exit Sub
                     Next Level
 
                 End If                     'End If for groups with no catches
@@ -2996,7 +2996,6 @@ NextPivot:
             cLog.Write(ex)
             Throw New ApplicationException("FlowInternal() " & ex.Message, ex)
         End Try
-
 
     End Sub
 
@@ -3443,7 +3442,7 @@ NextPivot:
                 'frmCycles.vaEcocycle.row = NoPath
                 'frmCycles.vaEcocycle.Text = Mess
                 ''Print #fnum, Mess
-                Me.m_manager.UpdatePrintCycle(NoPath)
+                'Me.m_manager.UpdatePrintCycle(NoPath)
                 lstPathways.Add(mess)
             End If
             If arrow = 0 Then NoPath = NoPath + 1
@@ -3505,7 +3504,7 @@ NextPivot:
         '    End If
         '    ' If bStopNetworkAnnalysis Then Exit Sub
         'End If
-        Me.m_manager.UpdatePrintPath(NoPath)
+        'Me.m_manager.UpdatePrintPath(NoPath)
         'jb 
         lstPathways.Add(mess)
         Return
@@ -3548,8 +3547,7 @@ NextPivot:
 
 #Region "Ecosim"
 
-
-    Public Sub InitForEcosim()
+    Public Function InitForEcosim() As Boolean
 
         ' RetVal = MsgBox("Estimate PPR? (very time consuming for bigger model)", vbQuestion + vbYesNo, "PPR?")
         '  PPRon = IIf(RetVal = vbYes, True, False)
@@ -3604,12 +3602,15 @@ NextPivot:
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False)
-            Throw New ApplicationException(Me.ToString & ".InitForEcosim() Error: " & ex.Message)
+            Return False
         End Try
 
-    End Sub
+        Return True
+
+    End Function
 
     Public Function EcosimTimestep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) As Boolean
+
         'TLCatch gets computed for each time step
         'it will need to be stored
         Dim TLCatch As Single
@@ -3645,20 +3646,19 @@ NextPivot:
                 RelativeCatchDetReq(iTime) = RaiseToDet(0) / OrigPPR(1)
             End If
 
-
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
-            Throw New ApplicationException(Me.ToString & ".EcosimTimestep()", ex)
+            Return False
         End Try
 
-
-
+        Return True
 
     End Function
 
     'Called during the intialization of Ecosim NA
-    Public Sub EstimateTLofCatch(ByVal TimeStep As Integer, ByRef TL As Single, ByRef Cat As Single, ByVal DoAll As Boolean)
+    Private Sub EstimateTLofCatch(ByVal TimeStep As Integer, ByRef TL As Single, ByRef Cat As Single, ByVal DoAll As Boolean)
+
         Dim i As Integer
         Dim fCatch As Single
         Dim totalTL As Single
@@ -3730,11 +3730,9 @@ NextPivot:
             Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
         End Try
 
-
     End Sub
 
-
-    Public Sub EstimateTLsInEcosim(ByVal time As Integer, ByVal DoAll As Boolean)
+    Private Sub EstimateTLsInEcosim(ByVal time As Integer, ByVal DoAll As Boolean)
         Dim i As Integer
         Dim j As Integer
         Dim Diet(,) As Single
@@ -3804,8 +3802,7 @@ NextPivot:
 
     End Sub
 
-
-    Public Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+    Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
         Dim i As Integer, j As Integer
         Dim ErrCode As Integer
         Dim TL() As Single
@@ -3872,7 +3869,7 @@ NextPivot:
     End Sub
 
 
-    Public Function FunctionKemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
+    Private Function FunctionKemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
 
         Return Me.m_core.EcoFunction.KemptonsQ(Bio, Quan)
 
@@ -3940,91 +3937,88 @@ NextPivot:
 
     End Function
 
+    'Public Sub EstimateTL_Indices(ByVal Year As Integer)
+    '    Dim i As Integer
+    '    Dim j As Integer
+    '    Dim G As Integer
+    '    ' Dim col As Integer
+    '    '  Dim row As Integer
+    '    Try
 
-    Public Sub EstimateTL_Indices(ByVal Year As Integer)
-        Dim i As Integer
-        Dim j As Integer
-        Dim G As Integer
-        ' Dim col As Integer
-        '  Dim row As Integer
-        Try
+    '        For i = 1 To m_epdata.NumLiving
+    '            ' If GrpsToShow(i) Then
+    '            For j = 2 To 7  'use the first tl for the tl-plus group
+    '                If AM(j, i) > 0.01 Then
+    '                    ByTL(Year, j, 0) = ByTL(Year, j, 0) + AM(j, i) * BB(i)
+    '                    ByTL(Year, j, 1) = ByTL(Year, j, 1) + AM(j, i) * m_esdata.loss(i)
+    '                    ByTL(Year, j, 2) = ByTL(Year, j, 2) + AM(j, i) * m_esdata.Eatenby(i)
+    '                    ByTL(Year, j, 3) = ByTL(Year, j, 3) + AM(j, i) * m_esdata.FishTime(i) * BB(i)
+    '                    For G = 1 To m_epdata.NumFleet
+    '                        If m_epdata.Landing(G, i) + m_epdata.Discard(G, i) > 0 Then
+    '                            ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / (m_epdata.Landing(G, i) + m_epdata.Discard(G, i))
+    '                        End If
+    '                    Next
+    '                    'For row = 1 To Inrow : For col = 1 To Incol
+    '                    '        If Depth(row, col) > 0 Then
+    '                    '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + AM(j, i) * BB(i) * HalfDegreeBcell(row, col, i)
+    '                    '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + AM(j, i) * loss(i) * HalfDegreeBcell(row, col, i)
+    '                    '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + AM(j, i) * Eatenby(i) * HalfDegreeBcell(row, col, i)
+    '                    '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + AM(j, i) * FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
+    '                    '        End If
+    '                    '    Next : Next
+    '                End If
+    '            Next j
+    '            '     If TL_cut_off > 0 Then
+    '            j = 1   'use the spot for the first trophic level for saving
+    '            'If m_epdata.TTLX(i) >= TL_cut_off Then
+    '            ByTL(Year, j, 0) = ByTL(Year, j, 0) + BB(i)
+    '            ByTL(Year, j, 1) = ByTL(Year, j, 1) + m_esdata.loss(i)
+    '            ByTL(Year, j, 2) = ByTL(Year, j, 2) + m_esdata.Eatenby(i)
+    '            ByTL(Year, j, 3) = ByTL(Year, j, 3) + m_esdata.FishTime(i) * BB(i)
+    '            For G = 1 To m_epdata.NumFleet
+    '                'If Landing(G, i) + Discard(G, i) > 0 Then
+    '                '040106 VC fixed below, wrong scaling
+    '                If m_epdata.fCatch(i) > 0 Then
+    '                    ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / m_epdata.fCatch(i) '(Landing(G, i) + Discard(G, i))
+    '                End If
+    '            Next
+    '            'For row = 1 To Inrow
+    '            '    For col = 1 To Incol
+    '            '        'If row = 29 And col = 23 Then Stop
+    '            '        If Depth(row, col) > 0 Then       'Here HalfDegreeBcell is the cell biomass relative to the average biomass, ie a scaling factor
+    '            '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + BB(i) * HalfDegreeBcell(row, col, i)
+    '            '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + loss(i) * HalfDegreeBcell(row, col, i)
+    '            '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + Eatenby(i) * HalfDegreeBcell(row, col, i)
+    '            '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
+    '            '        End If
+    '            '    Next
+    '            'Next
+    '            '  End If
+    '            '  End If
+    '            '  End If
+    '            '    'Sum up all catches by SAUP groupings
+    '            '    If m_epdata.fCatch(i) > 0 Then
+    '            '        For j = 1 To NumCatchCodes
+    '            '            If CatchCode(j, i) > 0 And CatchCode(0, i) > 0 Then 'then CatchCode(0,i) will also be > 0
+    '            '                For row = 1 To Inrow : For col = 1 To Incol
+    '            '                        If Depth(row, col) > 0 Then
+    '            '                            SAUP_C_Space(j, row, col) = SAUP_C_Space(j, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i) * CatchCode(j, i) / CatchCode(0, i)
+    '            '                        End If
+    '            '                    Next : Next
+    '            '            End If
+    '            '        Next
+    '            '    End If
+    '        Next i
 
-            For i = 1 To m_epdata.NumLiving
-                ' If GrpsToShow(i) Then
-                For j = 2 To 7  'use the first tl for the tl-plus group
-                    If AM(j, i) > 0.01 Then
-                        ByTL(Year, j, 0) = ByTL(Year, j, 0) + AM(j, i) * BB(i)
-                        ByTL(Year, j, 1) = ByTL(Year, j, 1) + AM(j, i) * m_esdata.loss(i)
-                        ByTL(Year, j, 2) = ByTL(Year, j, 2) + AM(j, i) * m_esdata.Eatenby(i)
-                        ByTL(Year, j, 3) = ByTL(Year, j, 3) + AM(j, i) * m_esdata.FishTime(i) * BB(i)
-                        For G = 1 To m_epdata.NumFleet
-                            If m_epdata.Landing(G, i) + m_epdata.Discard(G, i) > 0 Then
-                                ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / (m_epdata.Landing(G, i) + m_epdata.Discard(G, i))
-                            End If
-                        Next
-                        'For row = 1 To Inrow : For col = 1 To Incol
-                        '        If Depth(row, col) > 0 Then
-                        '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + AM(j, i) * BB(i) * HalfDegreeBcell(row, col, i)
-                        '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + AM(j, i) * loss(i) * HalfDegreeBcell(row, col, i)
-                        '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + AM(j, i) * Eatenby(i) * HalfDegreeBcell(row, col, i)
-                        '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + AM(j, i) * FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
-                        '        End If
-                        '    Next : Next
-                    End If
-                Next j
-                '     If TL_cut_off > 0 Then
-                j = 1   'use the spot for the first trophic level for saving
-                'If m_epdata.TTLX(i) >= TL_cut_off Then
-                ByTL(Year, j, 0) = ByTL(Year, j, 0) + BB(i)
-                ByTL(Year, j, 1) = ByTL(Year, j, 1) + m_esdata.loss(i)
-                ByTL(Year, j, 2) = ByTL(Year, j, 2) + m_esdata.Eatenby(i)
-                ByTL(Year, j, 3) = ByTL(Year, j, 3) + m_esdata.FishTime(i) * BB(i)
-                For G = 1 To m_epdata.NumFleet
-                    'If Landing(G, i) + Discard(G, i) > 0 Then
-                    '040106 VC fixed below, wrong scaling
-                    If m_epdata.fCatch(i) > 0 Then
-                        ByTL(Year, j, 4) = ByTL(Year, j, 4) + BB(i) * m_esdata.FishTime(i) * m_epdata.Market(G, i) * m_epdata.Landing(G, i) / m_epdata.fCatch(i) '(Landing(G, i) + Discard(G, i))
-                    End If
-                Next
-                'For row = 1 To Inrow
-                '    For col = 1 To Incol
-                '        'If row = 29 And col = 23 Then Stop
-                '        If Depth(row, col) > 0 Then       'Here HalfDegreeBcell is the cell biomass relative to the average biomass, ie a scaling factor
-                '            ByTLspace(Year, j, 0, row, col) = ByTLspace(Year, j, 0, row, col) + BB(i) * HalfDegreeBcell(row, col, i)
-                '            ByTLspace(Year, j, 1, row, col) = ByTLspace(Year, j, 1, row, col) + loss(i) * HalfDegreeBcell(row, col, i)
-                '            ByTLspace(Year, j, 2, row, col) = ByTLspace(Year, j, 2, row, col) + Eatenby(i) * HalfDegreeBcell(row, col, i)
-                '            ByTLspace(Year, j, 3, row, col) = ByTLspace(Year, j, 3, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i)
-                '        End If
-                '    Next
-                'Next
-                '  End If
-                '  End If
-                '  End If
-                '    'Sum up all catches by SAUP groupings
-                '    If m_epdata.fCatch(i) > 0 Then
-                '        For j = 1 To NumCatchCodes
-                '            If CatchCode(j, i) > 0 And CatchCode(0, i) > 0 Then 'then CatchCode(0,i) will also be > 0
-                '                For row = 1 To Inrow : For col = 1 To Incol
-                '                        If Depth(row, col) > 0 Then
-                '                            SAUP_C_Space(j, row, col) = SAUP_C_Space(j, row, col) + FishTime(i) * BB(i) * HalfDegreeBcell(row, col, i) * CatchCode(j, i) / CatchCode(0, i)
-                '                        End If
-                '                    Next : Next
-                '            End If
-                '        Next
-                '    End If
-            Next i
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Debug.Assert(False, Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message)
+    '        Throw New ApplicationException(Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message, ex)
+    '    End Try
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message)
-            Throw New ApplicationException(Me.ToString & ".EstimateTL_Indices() Error: " & ex.Message, ex)
-        End Try
+    'End Sub
 
-
-    End Sub
-
-
-    Public Sub PrepareUlanowForCallFromEcosim(ByVal Round As Integer)
+    Private Sub PrepareUlanowForCallFromEcosim(ByVal Round As Integer)
         '040218VC for Sheila's Network in Ecosim calc's
         '060915VC updated this sub, added more indices, and also added call to Lindeman (plus passing parameters to that sub)
 
@@ -4206,73 +4200,69 @@ NextPivot:
             Throw New ApplicationException(Me.ToString & ".PrepareUlanowForCallFromEcosim() Error: " & ex.Message, ex)
         End Try
 
-
     End Sub
 
+    'Private Sub Estimate_Taxon_indices(ByVal Year As Integer)
+    '    'Dim i As Integer
+    '    'Dim j As Integer
+    '    'Dim L As Integer
+    '    'Dim row As Integer
+    '    'Dim col As Integer
+    '    'Dim Code As Integer
+    '    'Dim Grp As Integer
+    '    ''Villy 14Jan2001
+    '    ''Used to estimate biomass, pb, qb for each Taxon group
+    '    'If TaxonCount > 0 Or NoTL > 0 Then
+    '    '    For i = 1 To TaxonCount
+    '    '        Grp = TaxonGrp(i)
+    '    '        For L = 1 To TaxonCode(0, 1, i) '=TaxLevel
+    '    '            'TaxLevel is 1=ISSCAAP, 2 Cla, 3 Ord, 4 Fam, 5, Gen, 6, spe
+    '    '            'TaxonCode Stores:
+    '    '            '1Dim: 0 is for codes, 1 is a ref to where code occured first time
+    '    '            '2Dim: 0 TaxonKey, 1 TaxLevel, 2 ISSCAAP, 3 ClaCode, 4 OrdCode, 5 FamCode, 6 GenCode, 7 SpeCode
+    '    '            '3Dim: Ref to number of taxo-records in model
+    '    '            Code = TaxonCode(1, L + 1, i)
+    '    '            If Code > 0 Then
+    '    '                '  Code is the first occurence of the Taxoncode, if the code is < than i
+    '    '                '  it has occurred before, and it need not be plotted
+    '    '                'Biomass
+    '    '                TaxonValue(L, Year, Code, 0) = TaxonValue(L, Year, Code, 0) + BB(Grp) * TaxonProp(i)
+    '    '                'Production = P/B * B
+    '    '                TaxonValue(L, Year, Code, 1) = TaxonValue(L, Year, Code, 1) + loss(Grp) * TaxonProp(i)
+    '    '                'Consumption
+    '    '                TaxonValue(L, Year, Code, 2) = TaxonValue(L, Year, Code, 2) + Eatenby(Grp) * TaxonProp(i)
+    '    '                'Catch
+    '    '                TaxonValue(L, Year, Code, 3) = TaxonValue(L, Year, Code, 3) + FishTime(Grp) * BB(Grp) * TaxonProp(i)
+    '    '                'Value
+    '    '                For j = 1 To NumGear        'Discarded fish has no value
+    '    '                    If Landing(j, Grp) + Discard(j, Grp) > 0 Then
+    '    '                        TaxonValue(L, Year, Code, 4) = TaxonValue(L, Year, Code, 4) + BB(Grp) * FishTime(Grp) * Market(j, Grp) * Landing(j, Grp) / (Landing(j, Grp) + Discard(j, Grp))
+    '    '                    End If
+    '    '                Next
+    '    '            End If
+    '    '        Next
+    '    '        'If HalfDegreeRow > 0 Then 'Do a whole lot of calculations:
+    '    '        '    L = TaxonCode(0, 1, i)
+    '    '        '    Code = TaxonCode(1, L + 1, i)
+    '    '        '    For row = 1 To HalfDegreeRow : For col = 1 To HalfDegreeCol
+    '    '        '            If Depth(row, col) > 0 Then
+    '    '        '                TaxonSpace(Year, Code, 0, row, col) = TaxonSpace(Year, Code, 0, row, col) + HalfDegreeBcell(row, col, Grp) * BB(Grp) * TaxonProp(i)
+    '    '        '                TaxonSpace(Year, Code, 1, row, col) = TaxonSpace(Year, Code, 1, row, col) + HalfDegreeBcell(row, col, Grp) * loss(Grp) * TaxonProp(i)
+    '    '        '                TaxonSpace(Year, Code, 2, row, col) = TaxonSpace(Year, Code, 2, row, col) + HalfDegreeBcell(row, col, Grp) * Eatenby(Grp) * TaxonProp(i)
+    '    '        '                TaxonSpace(Year, Code, 3, row, col) = TaxonSpace(Year, Code, 3, row, col) + HalfDegreeBcell(row, col, Grp) * FishTime(Grp) * BB(Grp) * TaxonProp(i)
+    '    '        '                For j = 1 To NumGear        'Discarded fish has no value
+    '    '        '                    'If Landing(j, Grp) + Discard(j, Grp) > 0 Then
+    '    '        '            If Catch(j) > 0 Then
+    '    '        '                TaxonSpace(Year, Code, 4, row, col) = TaxonSpace(Year, Code, 4, row, col) + HalfDegreeBcell(row, col, 0) * BB(Grp) * FishTime(Grp) * Market(j, Grp) * Landing(j, Grp) / Catch(j) '(Landing(j, Grp) + Discard(j, Grp))
+    '    '        '                    End If
+    '    '        '                Next
+    '    '        '            End If
+    '    '        '        Next : Next
+    '    '        'End If
+    '    '    Next
+    '    'End If
 
-    Public Sub Estimate_Taxon_indices(ByVal Year As Integer)
-        'Dim i As Integer
-        'Dim j As Integer
-        'Dim L As Integer
-        'Dim row As Integer
-        'Dim col As Integer
-        'Dim Code As Integer
-        'Dim Grp As Integer
-        ''Villy 14Jan2001
-        ''Used to estimate biomass, pb, qb for each Taxon group
-        'If TaxonCount > 0 Or NoTL > 0 Then
-        '    For i = 1 To TaxonCount
-        '        Grp = TaxonGrp(i)
-        '        For L = 1 To TaxonCode(0, 1, i) '=TaxLevel
-        '            'TaxLevel is 1=ISSCAAP, 2 Cla, 3 Ord, 4 Fam, 5, Gen, 6, spe
-        '            'TaxonCode Stores:
-        '            '1Dim: 0 is for codes, 1 is a ref to where code occured first time
-        '            '2Dim: 0 TaxonKey, 1 TaxLevel, 2 ISSCAAP, 3 ClaCode, 4 OrdCode, 5 FamCode, 6 GenCode, 7 SpeCode
-        '            '3Dim: Ref to number of taxo-records in model
-        '            Code = TaxonCode(1, L + 1, i)
-        '            If Code > 0 Then
-        '                '  Code is the first occurence of the Taxoncode, if the code is < than i
-        '                '  it has occurred before, and it need not be plotted
-        '                'Biomass
-        '                TaxonValue(L, Year, Code, 0) = TaxonValue(L, Year, Code, 0) + BB(Grp) * TaxonProp(i)
-        '                'Production = P/B * B
-        '                TaxonValue(L, Year, Code, 1) = TaxonValue(L, Year, Code, 1) + loss(Grp) * TaxonProp(i)
-        '                'Consumption
-        '                TaxonValue(L, Year, Code, 2) = TaxonValue(L, Year, Code, 2) + Eatenby(Grp) * TaxonProp(i)
-        '                'Catch
-        '                TaxonValue(L, Year, Code, 3) = TaxonValue(L, Year, Code, 3) + FishTime(Grp) * BB(Grp) * TaxonProp(i)
-        '                'Value
-        '                For j = 1 To NumGear        'Discarded fish has no value
-        '                    If Landing(j, Grp) + Discard(j, Grp) > 0 Then
-        '                        TaxonValue(L, Year, Code, 4) = TaxonValue(L, Year, Code, 4) + BB(Grp) * FishTime(Grp) * Market(j, Grp) * Landing(j, Grp) / (Landing(j, Grp) + Discard(j, Grp))
-        '                    End If
-        '                Next
-        '            End If
-        '        Next
-        '        'If HalfDegreeRow > 0 Then 'Do a whole lot of calculations:
-        '        '    L = TaxonCode(0, 1, i)
-        '        '    Code = TaxonCode(1, L + 1, i)
-        '        '    For row = 1 To HalfDegreeRow : For col = 1 To HalfDegreeCol
-        '        '            If Depth(row, col) > 0 Then
-        '        '                TaxonSpace(Year, Code, 0, row, col) = TaxonSpace(Year, Code, 0, row, col) + HalfDegreeBcell(row, col, Grp) * BB(Grp) * TaxonProp(i)
-        '        '                TaxonSpace(Year, Code, 1, row, col) = TaxonSpace(Year, Code, 1, row, col) + HalfDegreeBcell(row, col, Grp) * loss(Grp) * TaxonProp(i)
-        '        '                TaxonSpace(Year, Code, 2, row, col) = TaxonSpace(Year, Code, 2, row, col) + HalfDegreeBcell(row, col, Grp) * Eatenby(Grp) * TaxonProp(i)
-        '        '                TaxonSpace(Year, Code, 3, row, col) = TaxonSpace(Year, Code, 3, row, col) + HalfDegreeBcell(row, col, Grp) * FishTime(Grp) * BB(Grp) * TaxonProp(i)
-        '        '                For j = 1 To NumGear        'Discarded fish has no value
-        '        '                    'If Landing(j, Grp) + Discard(j, Grp) > 0 Then
-        '        '            If Catch(j) > 0 Then
-        '        '                TaxonSpace(Year, Code, 4, row, col) = TaxonSpace(Year, Code, 4, row, col) + HalfDegreeBcell(row, col, 0) * BB(Grp) * FishTime(Grp) * Market(j, Grp) * Landing(j, Grp) / Catch(j) '(Landing(j, Grp) + Discard(j, Grp))
-        '        '                    End If
-        '        '                Next
-        '        '            End If
-        '        '        Next : Next
-        '        'End If
-        '    Next
-        'End If
-
-    End Sub
-
-
+    'End Sub
 
 #End Region
 
