@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FileSaveCommand.vb,v $
+' Revision 1.3  2009/05/02 01:47:32  jeroens
+' Added Invoke alternative
+'
 ' Revision 1.2  2008/11/10 05:33:32  jeroens
 ' Renamed
 '
@@ -82,12 +85,32 @@ Namespace Commands
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strFileName As String, ByVal strDirectory As String, _
+        Public Overloads Sub Invoke(ByVal strFileName As String, _
+                                    ByVal strDirectory As String, _
+                                    ByVal strFileFilter As String, _
+                                    Optional ByVal iFilter As Integer = 0)
+
+            Me.m_strFileName = strFileName
+            Me.m_strDirectory = strDirectory
+            Me.m_strFileFilters = strFileFilter
+            Me.m_iFilter = iFilter
+            Me.Invoke()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <param name="strFileFilter"></param>
+        ''' <param name="iFilter"></param>
+        ''' -----------------------------------------------------------------------
+        Public Overloads Sub Invoke(ByVal strFileName As String, _
                 ByVal strFileFilter As String, _
                 Optional ByVal iFilter As Integer = 0)
 
             Me.m_strFileName = strFileName
-            Me.m_strDirectory = strDirectory
+            Me.m_strDirectory = ""
             Me.m_strFileFilters = strFileFilter
             Me.m_iFilter = iFilter
             Me.Invoke()
