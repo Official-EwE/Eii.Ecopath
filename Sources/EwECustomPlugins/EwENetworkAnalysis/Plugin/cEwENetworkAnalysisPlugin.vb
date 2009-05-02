@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.7  2009/05/02 03:07:49  jeroens
+' Minor housekeeping
+'
 ' Revision 1.6  2009/05/01 17:50:37  jeroens
 ' Greatly simplified content management
 '
@@ -44,8 +47,8 @@ Public Class cEwENetworkAnalysisPlugin
     'Implements EwEPlugin.IEcosimRunCompletedPlugin
     'Implements EwEPlugin.IEcosimBeginTimestepPlugin
 
-    Private m_core As EwECore.cCore
-    Private m_bInitOK As Boolean
+    Private m_core As cCore = Nothing
+    Private m_bInitOK As Boolean = False
 
     ''' <summary>
     ''' Network Analysis manager. Provide access to Network Analysis methods.
@@ -53,13 +56,10 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <remarks>Because the plugin handles interactions with the core it manages the life span of the network manager and the interface. 
     ''' The plugin is responsible for telling the network manager when a plugin point has been invoked by the core. 
     ''' The plugin will pass a network manager reference to the interface when the user has clicked the plugins menu item or tree node in the main interface.</remarks>
-    Private m_NetworkManager As cNetworkManager
+    Private m_NetworkManager As cNetworkManager = Nothing
 
-    ''' <summary>
-    ''' Interface form
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private m_frmNetInterface As frmNetworkAnalysis
+    ''' <summary>Interface form.</summary>
+    Private m_frmNA As frmNetworkAnalysis = Nothing
 
 #Region " Core "
 
@@ -75,8 +75,10 @@ Public Class cEwENetworkAnalysisPlugin
         Try
             If TypeOf core Is EwECore.cCore Then
                 m_core = DirectCast(core, EwECore.cCore)
+
                 m_NetworkManager = New cNetworkManager
                 m_NetworkManager.Init(m_core)
+
                 m_bInitOK = True
                 'System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
             Else
@@ -120,6 +122,7 @@ Public Class cEwENetworkAnalysisPlugin
                 m_NetworkManager.IsRequiredPrimaryProdRun = False
                 m_NetworkManager.IsEcosimNetworkRan = False
                 'End Add
+
                 'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
             Else
 
@@ -207,20 +210,20 @@ Public Class cEwENetworkAnalysisPlugin
         If m_bInitOK Then
 
             ' Test if form still exists
-            If Me.m_frmNetInterface IsNot Nothing Then
+            If Me.m_frmNA IsNot Nothing Then
                 ' Form is ready to be used if it has not been disposed yet
-                bIsFormReady = (Me.m_frmNetInterface.IsDisposed = False)
+                bIsFormReady = (Me.m_frmNA.IsDisposed = False)
             End If
             ' Create form when not ready
             If Not bIsFormReady Then
-                Me.m_frmNetInterface = New frmNetworkAnalysis(m_NetworkManager)
+                Me.m_frmNA = New frmNetworkAnalysis(m_NetworkManager)
             End If
 
             ' Activate the form
-            Me.m_frmNetInterface.Show()
+            Me.m_frmNA.Show()
 
             ' Pass form reference back to calling app
-            f = Me.m_frmNetInterface
+            f = Me.m_frmNA
 
             If TypeOf sender Is System.Windows.Forms.TreeView Then
                 'from the navigation panel
