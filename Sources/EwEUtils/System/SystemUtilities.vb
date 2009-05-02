@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SystemUtilities.vb,v $
+' Revision 1.5  2009/05/02 01:49:04  jeroens
+' Fixed temp file logic
+'
 ' Revision 1.4  2009/04/19 13:52:59  jeroens
 ' Don't throw execptions on errors
 '
@@ -156,10 +159,12 @@ Public Class SystemUtilities
         ' TODO: Concat application file name after the file directory.
         ' TODO: Check if file is writeable!!!
 
-        Dim strOutputDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-        'Dim strOutputDir As String = System.IO.Path.GetTempPath
+        Return Path.Combine(System.IO.Path.GetTempPath(), System.IO.Path.GetTempFileName())
 
-        Return Path.Combine(strOutputDir, strFileName)
+        'Dim strOutputDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+        ''Dim strOutputDir As String = System.IO.Path.GetTempPath
+
+        'Return Path.Combine(strOutputDir, strFileName)
 
     End Function
 
