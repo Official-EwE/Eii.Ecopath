@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForConsumpOfAllGp.vb,v $
+' Revision 1.7  2009/05/02 01:51:28  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:56  jeroens
 ' Inherited from cContentManager
 '
@@ -70,10 +73,10 @@ Public Class cForConsumpOfAllGp
                                   ByVal graph As ZedGraphControl, _
                                   ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
-    Public Overrides Sub DisplayData() 
+    Public Overrides Sub DisplayData()
 
         Dim strRowContent() As String
         Dim sngTotalPPRCons As Single
@@ -81,14 +84,14 @@ Public Class cForConsumpOfAllGp
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = Me.NetworkManager.Core.nLivingGroups + 2
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = Me.NetworkManager.Core.nLivingGroups + 2
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         strRowContent(2) = My.Resources.COL_HDR_NUM_PATH
@@ -100,8 +103,8 @@ Public Class cForConsumpOfAllGp
         strRowContent(8) = My.Resources.COL_HDR_PPR_COMSUM
         strRowContent(9) = My.Resources.COL_HDR_PPR_TOTAL_PP
         strRowContent(10) = My.Resources.COL_HDR_PPR_U_BIOMASS
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             strRowContent(0) = CStr(i)
@@ -124,50 +127,50 @@ Public Class cForConsumpOfAllGp
             Else
                 strRowContent(10) = ""
             End If
-            DataGrid.Rows(i).SetValues(strRowContent)
-            DataGrid.Rows(i).Visible = True
+            Grid.Rows(i).SetValues(strRowContent)
+            Grid.Rows(i).Visible = True
 
             'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
             'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
         Next
 
         'Display total
-        For i As Integer = 0 To DataGrid.Columns.Count - 1
+        For i As Integer = 0 To Grid.Columns.Count - 1
             strRowContent(i) = ""
         Next
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
         strRowContent(2) = CStr((NetworkManager.NumLivPath + NetworkManager.NumDetPath))
         strRowContent(7) = sngTotalPPRCons.ToString("F2")
-        DataGrid.Rows(DataGrid.Rows.Count - 1).SetValues(strRowContent)
-        DataGrid.Rows(DataGrid.Rows.Count - 1).Visible = True
+        Grid.Rows(Grid.Rows.Count - 1).SetValues(strRowContent)
+        Grid.Rows(Grid.Rows.Count - 1).Visible = True
 
         'Hide some rows
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             If NetworkManager.PPRCons(i) <= 0.0 Or _
                 NetworkManager.TotalPrimaryProduction <= 0.0 Then
-                DataGrid.Rows(i).Visible = False
+                Grid.Rows(i).Visible = False
             End If
         Next
-        DataGrid.ClearSelection()
+        Grid.ClearSelection()
         Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        DataGrid.ReadOnly = True
+        Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = 11
+        Grid.ColumnCount = 11
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).Width = ID_COL_WIDTH
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Frozen = True
+        Grid.Columns(0).Width = ID_COL_WIDTH
 
-        DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(1).Frozen = True
-        DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(1).Frozen = True
+        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
     End Sub
 

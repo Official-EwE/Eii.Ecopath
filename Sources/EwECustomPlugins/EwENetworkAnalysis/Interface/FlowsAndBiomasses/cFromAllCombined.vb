@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromAllCombined.vb,v $
+' Revision 1.7  2009/05/02 01:51:27  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:57  jeroens
 ' Inherited from cContentManager
 '
@@ -62,7 +65,7 @@ Public Class cFromAllCombined
                                   ByVal graph As ZedGraphControl, _
                                   ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
     Public Overrides Sub DisplayData()
@@ -73,15 +76,15 @@ Public Class cFromAllCombined
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = NetworkManager.nTrophicLevels + 5
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = NetworkManager.nTrophicLevels + 5
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
-        ReDim sngSumVariable(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
+        ReDim sngSumVariable(Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_TRP_LVL_FLOW
         strRowContent(1) = My.Resources.COL_HDR_IMPORT
         strRowContent(2) = My.Resources.COL_HDR_CONSUM_PREDAT
@@ -89,8 +92,8 @@ Public Class cFromAllCombined
         strRowContent(4) = My.Resources.COL_HDR_FLOW_DET
         strRowContent(5) = My.Resources.COL_HDR_RESP
         strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
             strRowContent(0) = CRoman(i)
@@ -110,57 +113,57 @@ Public Class cFromAllCombined
             sngSumVariable(5) = sngSumVariable(5) + NetworkManager.DetRespiration(i) + NetworkManager.PPRespiration(i)
             strRowContent(6) = (NetworkManager.DetThroughtput(i) + NetworkManager.PPThroughtput(i)).ToString("F4")
             sngSumVariable(6) = sngSumVariable(6) + NetworkManager.DetThroughtput(i) + NetworkManager.PPThroughtput(i)
-            DataGrid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
-            DataGrid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
+            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
+            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
         strRowContent(0) = My.Resources.ROW_HDR_SUM
-        For i As Integer = 1 To DataGrid.Columns.Count - 1
+        For i As Integer = 1 To Grid.Columns.Count - 1
             strRowContent(i) = sngSumVariable(i).ToString("F4")
         Next
-        DataGrid.Rows(DataGrid.RowCount - 4).SetValues(strRowContent)
-        DataGrid.Rows(DataGrid.RowCount - 4).Visible = True
+        Grid.Rows(Grid.RowCount - 4).SetValues(strRowContent)
+        Grid.Rows(Grid.RowCount - 4).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_EXTRACT_BREAK_CYC
-        For i As Integer = 1 To DataGrid.Columns.Count - 2
+        For i As Integer = 1 To Grid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = NetworkManager.ExtractedToBreakCycles.ToString("F4")
-        DataGrid.Rows(DataGrid.RowCount - 3).SetValues(strRowContent)
-        DataGrid.Rows(DataGrid.RowCount - 3).Visible = True
+        strRowContent(Grid.Columns.Count - 1) = NetworkManager.ExtractedToBreakCycles.ToString("F4")
+        Grid.Rows(Grid.RowCount - 3).SetValues(strRowContent)
+        Grid.Rows(Grid.RowCount - 3).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_INPUT_TRP_LVL_II_PLUS
-        For i As Integer = 1 To DataGrid.Columns.Count - 2
+        For i As Integer = 1 To Grid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = NetworkManager.InputTLIIPlus.ToString("F4")
-        DataGrid.Rows(DataGrid.RowCount - 2).SetValues(strRowContent)
-        DataGrid.Rows(DataGrid.RowCount - 2).Visible = True
+        strRowContent(Grid.Columns.Count - 1) = NetworkManager.InputTLIIPlus.ToString("F4")
+        Grid.Rows(Grid.RowCount - 2).SetValues(strRowContent)
+        Grid.Rows(Grid.RowCount - 2).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_TOTAL_THROUGHPUT
-        For i As Integer = 1 To DataGrid.Columns.Count - 2
+        For i As Integer = 1 To Grid.Columns.Count - 2
             strRowContent(i) = ""
         Next
-        strRowContent(DataGrid.Columns.Count - 1) = (NetworkManager.TotalThroughput + _
+        strRowContent(Grid.Columns.Count - 1) = (NetworkManager.TotalThroughput + _
             NetworkManager.ExtractedToBreakCycles + NetworkManager.InputTLIIPlus).ToString("F4")
-        DataGrid.Rows(DataGrid.RowCount - 1).SetValues(strRowContent)
-        DataGrid.Rows(DataGrid.RowCount - 1).Visible = True
-        DataGrid.ClearSelection()
+        Grid.Rows(Grid.RowCount - 1).SetValues(strRowContent)
+        Grid.Rows(Grid.RowCount - 1).Visible = True
+        Grid.ClearSelection()
         Cursor.Current = Cursors.Default
 
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        DataGrid.ReadOnly = True
+        Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = 7
+        Grid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).Width = 160
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Width = 160
+        Grid.Columns(0).Frozen = True
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
 
     End Sub
 

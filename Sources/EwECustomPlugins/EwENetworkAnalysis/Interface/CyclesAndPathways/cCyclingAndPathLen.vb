@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCyclingAndPathLen.vb,v $
+' Revision 1.7  2009/05/02 01:51:21  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:55  jeroens
 ' Inherited from cContentManager
 '
@@ -66,7 +69,7 @@ Public Class cCyclingAndPathLen
                                  ByVal graph As ZedGraphControl, _
                                  ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
     Public Overrides Sub DisplayData()
@@ -75,19 +78,19 @@ Public Class cCyclingAndPathLen
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = 8
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = 8
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_PARAM
         strRowContent(1) = My.Resources.COL_HDR_VALUE
         strRowContent(2) = My.Resources.COL_HDR_UNIT
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         'SetCellText(Grid, 1, 1, "Throughput cycled (excluding detritus)")
         'SetCellValue(Grid, 2, 1, Format(Tc, "0.00"))
@@ -95,8 +98,8 @@ Public Class cCyclingAndPathLen
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_LIV
         strRowContent(1) = NetworkManager.ThroughputCycledLiving.ToString("F2")
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        DataGrid.Rows(1).SetValues(strRowContent)
-        DataGrid.Rows(1).Visible = True
+        Grid.Rows(1).SetValues(strRowContent)
+        Grid.Rows(1).Visible = True
 
         'g_Recordset.Fields("TrputCyclExlDet").value = Tc
         'SetCellText(Grid, 1, 2, "Predatory cycling index")
@@ -111,8 +114,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_PCT_THROUGHPUT_LIV
-        DataGrid.Rows(2).SetValues(strRowContent)
-        DataGrid.Rows(2).Visible = True
+        Grid.Rows(2).SetValues(strRowContent)
+        Grid.Rows(2).Visible = True
 
         'SetCellText(Grid, 1, 3, "Throughput cycled (including detritus)")
         'SetCellValue(Grid, 2, 3, IIf(Abs(TcD) > 0, Format(TcD, "0.00"), ""))  'Format(100 * Tc / TcD, "0.00"), "")
@@ -125,8 +128,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        DataGrid.Rows(3).SetValues(strRowContent)
-        DataGrid.Rows(3).Visible = True
+        Grid.Rows(3).SetValues(strRowContent)
+        Grid.Rows(3).Visible = True
 
         'SetCellText(Grid, 1, 4, "Finn's cycling index")
         'SetCellValue(Grid, 2, 4, Format(100 * TcD / TruPut, "0.00"))
@@ -136,8 +139,8 @@ Public Class cCyclingAndPathLen
         strRowContent(1) = (100.0 * NetworkManager.ThroughputCycledAll / _
             NetworkManager.ThroughputTotal).ToString("F2")
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
-        DataGrid.Rows(4).SetValues(strRowContent)
-        DataGrid.Rows(4).Visible = True
+        Grid.Rows(4).SetValues(strRowContent)
+        Grid.Rows(4).Visible = True
 
         'Mean path length is truput/(export+respiration)
         'SetCellText(Grid, 1, 5, "Finn's mean path length")
@@ -155,8 +158,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_NONE
-        DataGrid.Rows(5).SetValues(strRowContent)
-        DataGrid.Rows(5).Visible = True
+        Grid.Rows(5).SetValues(strRowContent)
+        Grid.Rows(5).Visible = True
 
         'SetCellText(Grid, 1, 6, "Finn's straight-through path length")
         'If (SumEx - Ex(NumGroups) + SumResp) > 0 Then
@@ -175,8 +178,8 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_WO_DET
-        DataGrid.Rows(6).SetValues(strRowContent)
-        DataGrid.Rows(6).Visible = True
+        Grid.Rows(6).SetValues(strRowContent)
+        Grid.Rows(6).Visible = True
 
         'SetCellText(Grid, 1, 7, "Finn's straight-through path length") '7
         'If SumEx + SumResp > 0 Then
@@ -191,26 +194,26 @@ Public Class cCyclingAndPathLen
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_W_DET
-        DataGrid.Rows(7).SetValues(strRowContent)
-        DataGrid.Rows(7).Visible = True
+        Grid.Rows(7).SetValues(strRowContent)
+        Grid.Rows(7).Visible = True
 
-        DataGrid.ClearSelection()
+        Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        DataGrid.ReadOnly = True
-        DataGrid.ColumnCount = 3
+        Grid.ReadOnly = True
+        Grid.ColumnCount = 3
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Width = 220
-        DataGrid.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(0).Frozen = True
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Width = 220
+        Grid.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
-        DataGrid.Columns(2).Width = 165
-        DataGrid.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(2).Width = 165
+        Grid.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
     End Sub
 

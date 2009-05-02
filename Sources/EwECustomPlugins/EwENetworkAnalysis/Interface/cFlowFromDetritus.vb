@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFlowFromDetritus.vb,v $
+' Revision 1.7  2009/05/02 01:51:20  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:55  jeroens
 ' Inherited from cContentManager
 '
@@ -63,7 +66,7 @@ Public Class cFlowFromDetritus
                                   ByVal graph As ZedGraphControl, _
                                   ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
     Public Overrides Sub DisplayData()
@@ -73,46 +76,46 @@ Public Class cFlowFromDetritus
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = NetworkManager.nGroups
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = NetworkManager.nGroups
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         strRowContent(2) = ""
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To NetworkManager.nGroups - 1
             strRowContent(0) = CStr(i)
             strRowContent(1) = NetworkManager.GroupName(i)
             strRowContent(2) = NetworkManager.FlowFromDetritus(i).ToString("F4")
-            DataGrid.Rows(i).SetValues(strRowContent)
-            DataGrid.Rows(i).Visible = True
+            Grid.Rows(i).SetValues(strRowContent)
+            Grid.Rows(i).Visible = True
         Next
-        DataGrid.ClearSelection()
+        Grid.ClearSelection()
 
     End Sub
 
     Private Sub SetUpGridColumn()
 
         'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = 3
+        Grid.ColumnCount = 3
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).Width = ID_COL_WIDTH
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Frozen = True
+        Grid.Columns(0).Width = ID_COL_WIDTH
 
-        DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(1).Frozen = True
-        DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(1).Frozen = True
+        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
     End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTotal.vb,v $
+' Revision 1.7  2009/05/02 01:51:21  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:54  jeroens
 ' Inherited from cContentManager
 '
@@ -63,7 +66,7 @@ Public Class cTotal
                                   ByVal graph As ZedGraphControl, _
                                   ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
     Public Overrides Sub DisplayData()
@@ -72,14 +75,14 @@ Public Class cTotal
         SetUpGridColumn()
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = 6
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = 6
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_SOURCE
         strRowContent(1) = My.Resources.COL_HDR_ASCEND_FLOWBIT
         strRowContent(2) = My.Resources.COL_HDR_ASCEND_PCT
@@ -87,8 +90,8 @@ Public Class cTotal
         strRowContent(4) = My.Resources.COL_HDR_OVERHEAD_PCT
         strRowContent(5) = My.Resources.COL_HDR_CAPACITY_FLOWBIT
         strRowContent(6) = My.Resources.COL_HDR_CAPACITY_PCT
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_IMPORT
         strRowContent(1) = NetworkManager.AscendancyImportTotal.ToString("F1")
@@ -97,8 +100,8 @@ Public Class cTotal
         strRowContent(4) = NetworkManager.OverheadImportPer.ToString("F1")
         strRowContent(5) = NetworkManager.CapacityImportTotal.ToString("F1")
         strRowContent(6) = NetworkManager.CapacityImportPer.ToString("F1")
-        DataGrid.Rows(1).SetValues(strRowContent)
-        DataGrid.Rows(1).Visible = True
+        Grid.Rows(1).SetValues(strRowContent)
+        Grid.Rows(1).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
         strRowContent(1) = NetworkManager.AscendancyInternalFlowTotal.ToString("F1")
@@ -107,8 +110,8 @@ Public Class cTotal
         strRowContent(4) = NetworkManager.OverheadFlowPer.ToString("F1")
         strRowContent(5) = NetworkManager.CapacityFlowTotal.ToString("F1")
         strRowContent(6) = NetworkManager.CapacityFlowPer.ToString("F1")
-        DataGrid.Rows(2).SetValues(strRowContent)
-        DataGrid.Rows(2).Visible = True
+        Grid.Rows(2).SetValues(strRowContent)
+        Grid.Rows(2).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_EXPORT
         strRowContent(1) = NetworkManager.AscendancyExportTotal.ToString("F1")
@@ -117,8 +120,8 @@ Public Class cTotal
         strRowContent(4) = NetworkManager.OverheadExportPer.ToString("F1")
         strRowContent(5) = NetworkManager.CapacityExportTotal.ToString("F1")
         strRowContent(6) = NetworkManager.CapacityExportPer.ToString("F1")
-        DataGrid.Rows(3).SetValues(strRowContent)
-        DataGrid.Rows(3).Visible = True
+        Grid.Rows(3).SetValues(strRowContent)
+        Grid.Rows(3).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_RESP
         strRowContent(1) = NetworkManager.AscendancyRespTotal.ToString("F1")
@@ -127,8 +130,8 @@ Public Class cTotal
         strRowContent(4) = NetworkManager.OverheadRespPer.ToString("F1")
         strRowContent(5) = NetworkManager.CapacityRespTotal.ToString("F1")
         strRowContent(6) = NetworkManager.CapacityRespPer.ToString("F1")
-        DataGrid.Rows(4).SetValues(strRowContent)
-        DataGrid.Rows(4).Visible = True
+        Grid.Rows(4).SetValues(strRowContent)
+        Grid.Rows(4).Visible = True
 
         strRowContent(0) = My.Resources.ROW_HDR_TOTAL
         strRowContent(1) = NetworkManager.AscendancyTotalsTotal.ToString("F1")
@@ -137,23 +140,23 @@ Public Class cTotal
         strRowContent(4) = NetworkManager.OverheadTotalsPer.ToString("F1")
         strRowContent(5) = NetworkManager.CapacityTotalsTotal.ToString("F1")
         strRowContent(6) = NetworkManager.CapacityTotalsPer.ToString("F1")
-        DataGrid.Rows(5).SetValues(strRowContent)
-        DataGrid.Rows(5).Visible = True
+        Grid.Rows(5).SetValues(strRowContent)
+        Grid.Rows(5).Visible = True
 
-        DataGrid.ClearSelection()
+        Grid.ClearSelection()
 
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        DataGrid.ReadOnly = True
+        Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = 7
+        Grid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Frozen = True
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Frozen = True
 
     End Sub
 

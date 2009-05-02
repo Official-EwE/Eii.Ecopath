@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.10  2009/05/02 01:51:25  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.9  2009/05/01 17:43:04  jeroens
 ' Inherited from cContentManager
 '
@@ -49,21 +52,21 @@ Namespace TL1ToConsumer
                                       ByVal graph As ZedGraphControl, _
                                       ByVal plot As ucPlot)
             MyBase.Attach(manager, datagrid, graph, plot)
-            Me.DataGrid.Visible = True
+            Me.Grid.Visible = True
         End Sub
 
         Public Overrides Sub DisplayData()
 
-            DataGrid.ReadOnly = True
-            DataGrid.ColumnCount = 2
+            Grid.ReadOnly = True
+            Grid.ColumnCount = 2
 
-            SetGridColumnPropertyDefault(DataGrid)
+            SetGridColumnPropertyDefault(Grid)
 
-            DataGrid.Columns(0).Frozen = True
-            DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+            Grid.Columns(0).Frozen = True
+            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
 
-            DataGrid.Columns(1).Width = 660
-            DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            Grid.Columns(1).Width = 660
+            Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         End Sub
 
@@ -97,46 +100,46 @@ Namespace TL1ToConsumer
 
             Dim strRowContent() As String
 
-            DataGrid.RowHeadersVisible = False
+            Grid.RowHeadersVisible = False
 
-            ReDim strRowContent(DataGrid.Columns.Count)
+            ReDim strRowContent(Grid.Columns.Count)
             NetworkManager.FindPathwaysToConsumer(iSel1)
             If NetworkManager.PathWays.Count > 0 Then
-                DataGrid.RowCount = NetworkManager.PathWays.Count + 1
-                DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-                DataGrid.Rows(0).Frozen = True
-                DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+                Grid.RowCount = NetworkManager.PathWays.Count + 1
+                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                Grid.Rows(0).Frozen = True
+                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
-                DataGrid.Rows(0).SetValues(strRowContent)
-                DataGrid.Rows(0).Visible = True
+                Grid.Rows(0).SetValues(strRowContent)
+                Grid.Rows(0).Visible = True
 
                 For intPathwayIndex As Integer = 0 To NetworkManager.PathWays.Count - 1
                     strRowContent(0) = CStr(intPathwayIndex + 1)
                     strRowContent(1) = CStr(NetworkManager.PathWays.Item(intPathwayIndex))
-                    DataGrid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
-                    DataGrid.Rows(intPathwayIndex + 1).Visible = True
+                    Grid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
+                    Grid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
-                DataGrid.RowCount = 2
-                DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-                DataGrid.Rows(0).Frozen = True
-                DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+                Grid.RowCount = 2
+                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                Grid.Rows(0).Frozen = True
+                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
-                DataGrid.Rows(0).SetValues(strRowContent)
-                DataGrid.Rows(0).Visible = True
+                Grid.Rows(0).SetValues(strRowContent)
+                Grid.Rows(0).Visible = True
 
                 strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
                 strRowContent(1) = ""
-                DataGrid.Rows(1).SetValues(strRowContent)
-                DataGrid.Rows(1).Visible = True
+                Grid.Rows(1).SetValues(strRowContent)
+                Grid.Rows(1).Visible = True
             End If
-            DataGrid.ClearSelection()
+            Grid.ClearSelection()
         End Sub
 
     End Class

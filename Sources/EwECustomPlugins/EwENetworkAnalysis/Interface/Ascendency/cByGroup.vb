@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cByGroup.vb,v $
+' Revision 1.7  2009/05/02 01:51:20  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.6  2009/05/01 17:42:54  jeroens
 ' Inherited from cContentManager
 '
@@ -76,14 +79,14 @@ Public Class cByGroup
         SetUpGridColumn()
 
         'Set up grid rows
-        Me.DataGrid.RowHeadersVisible = False
-        Me.DataGrid.RowCount = Me.NetworkManager.nGroups + 4
-        Me.DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Me.DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        Me.DataGrid.Rows(0).Frozen = True
-        Me.DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nGroups + 4
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         strRowContent(2) = My.Resources.COL_HDR_ASCEND
@@ -91,8 +94,8 @@ Public Class cByGroup
         strRowContent(4) = My.Resources.COL_HDR_CAPACITY
         strRowContent(5) = My.Resources.COL_HDR_INFO
         strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT_UNIT
-        Me.DataGrid.Rows(0).SetValues(strRowContent)
-        Me.DataGrid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(strRowContent)
+        Me.Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.nGroups
             strRowContent(0) = CStr(i)
@@ -102,8 +105,8 @@ Public Class cByGroup
             strRowContent(4) = Me.NetworkManager.CapacityByGroup(i).ToString("F4")
             strRowContent(5) = Me.NetworkManager.InformationByGroup(i).ToString("F4")
             strRowContent(6) = Me.NetworkManager.ThroughputByGroup(i).ToString("F4")
-            Me.DataGrid.Rows(i).SetValues(strRowContent)
-            Me.DataGrid.Rows(i).Visible = True
+            Me.Grid.Rows(i).SetValues(strRowContent)
+            Me.Grid.Rows(i).Visible = True
         Next
 
         strRowContent(0) = ""
@@ -113,8 +116,8 @@ Public Class cByGroup
         strRowContent(4) = ""
         strRowContent(5) = ""
         strRowContent(6) = NetworkManager.ThroughputByGroup(Me.NetworkManager.nGroups + 1).ToString("F4")
-        Me.DataGrid.Rows(NetworkManager.nGroups + 1).SetValues(strRowContent)
-        Me.DataGrid.Rows(NetworkManager.nGroups + 1).Visible = True
+        Me.Grid.Rows(NetworkManager.nGroups + 1).SetValues(strRowContent)
+        Me.Grid.Rows(NetworkManager.nGroups + 1).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_TOTAL
@@ -127,8 +130,8 @@ Public Class cByGroup
             strRowContent(5) = ""
         End If
         strRowContent(6) = Me.NetworkManager.ThroughputTotal.ToString("F4")
-        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 2).SetValues(strRowContent)
-        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 2).Visible = True
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 2).SetValues(strRowContent)
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 2).Visible = True
 
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.ROW_HDR_PCT
@@ -137,30 +140,30 @@ Public Class cByGroup
         strRowContent(4) = (Me.NetworkManager.CapacityTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
         strRowContent(5) = ""
         strRowContent(6) = ""
-        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 3).SetValues(strRowContent)
-        Me.DataGrid.Rows(Me.NetworkManager.nGroups + 3).Visible = True
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 3).SetValues(strRowContent)
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 3).Visible = True
 
-        Me.DataGrid.ClearSelection()
+        Me.Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
 
         Me.Graph.Visible = False
-        Me.DataGrid.ReadOnly = True
-        Me.DataGrid.Visible = True
+        Me.Grid.ReadOnly = True
+        Me.Grid.Visible = True
         'Me.DataGrid.RowCount = 1
-        Me.DataGrid.ColumnCount = 7
+        Me.Grid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(Me.DataGrid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Me.DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        Me.DataGrid.Columns(0).Frozen = True
-        Me.DataGrid.Columns(0).Width = ID_COL_WIDTH
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).Width = ID_COL_WIDTH
 
-        DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(1).Frozen = True
-        DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(1).Frozen = True
+        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
         'For intIndex As Integer = 2 To 4
         '    DataGrid.Columns(intIndex).Width = 120

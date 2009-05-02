@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cImpactData.vb,v $
+' Revision 1.8  2009/05/02 01:51:28  jeroens
+' Updated to cControlManager FN name change
+'
 ' Revision 1.7  2009/05/01 17:42:59  jeroens
 ' Inherited from cContentManager
 '
@@ -69,24 +72,24 @@ Public Class cImpactData
                                   ByVal graph As ZedGraphControl, _
                                   ByVal plot As ucPlot)
         MyBase.Attach(manager, datagrid, graph, plot)
-        Me.DataGrid.Visible = True
+        Me.Grid.Visible = True
     End Sub
 
-    Public Overrides Sub DisplayData() 
+    Public Overrides Sub DisplayData()
 
         Dim strRowContent() As String
 
         SetUpGridColumn(NetworkManager.nGroups, NetworkManager.nFleets)
 
         'Set up grid rows
-        DataGrid.RowHeadersVisible = False
-        DataGrid.RowCount = NetworkManager.nGroups + NetworkManager.nFleets + 1
-        DataGrid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        DataGrid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Rows(0).Frozen = True
-        DataGrid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Grid.RowHeadersVisible = False
+        Grid.RowCount = NetworkManager.nGroups + NetworkManager.nFleets + 1
+        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).Frozen = True
+        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(DataGrid.Columns.Count)
+        ReDim strRowContent(Grid.Columns.Count)
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_IMPACTING_IMPACTED
         For intIndex As Integer = 1 To NetworkManager.nGroups
@@ -95,8 +98,8 @@ Public Class cImpactData
         For intIndex As Integer = 1 To NetworkManager.nFleets
             strRowContent(NetworkManager.nGroups + intIndex + 1) = NetworkManager.FleetName(intIndex)
         Next
-        DataGrid.Rows(0).SetValues(strRowContent)
-        DataGrid.Rows(0).Visible = True
+        Grid.Rows(0).SetValues(strRowContent)
+        Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
             strRowContent(0) = CStr(i)
@@ -108,28 +111,28 @@ Public Class cImpactData
             For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
                 strRowContent(j + 1) = (NetworkManager.MixedTrophicImpacts(i, j)).ToString("F4")
             Next
-            DataGrid.Rows(i).SetValues(strRowContent)
-            DataGrid.Rows(i).Visible = True
+            Grid.Rows(i).SetValues(strRowContent)
+            Grid.Rows(i).Visible = True
         Next
-        DataGrid.ClearSelection()
+        Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn(ByVal iNumGroups As Integer, ByVal iNumFleets As Integer)
 
-        DataGrid.ReadOnly = True
+        Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        DataGrid.ColumnCount = iNumGroups + iNumFleets + 2
+        Grid.ColumnCount = iNumGroups + iNumFleets + 2
 
-        SetGridColumnPropertyDefault(DataGrid)
+        SetGridColumnPropertyDefault(Grid)
 
-        DataGrid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(0).Frozen = True
-        DataGrid.Columns(0).Width = ID_COL_WIDTH
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).Frozen = True
+        Grid.Columns(0).Width = ID_COL_WIDTH
 
-        DataGrid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGrid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
-        DataGrid.Columns(1).Frozen = True
-        DataGrid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(1).Frozen = True
+        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
     End Sub
 
