@@ -1,6 +1,10 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.2  2009/05/02 01:46:02  jeroens
+' Added HideControls
+' Added Filename
+'
 ' Revision 1.1  2009/05/01 17:41:42  jeroens
 ' Initial version
 '
@@ -10,6 +14,9 @@
 
 Option Strict On
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwECore.DataSources
+Imports EwEUtils
 Imports ZedGraph
 
 #End Region ' Imports
@@ -59,16 +66,8 @@ Public MustInherit Class cContentManager
         Me.m_graph = graph
         Me.m_plot = plot
 
-        ' Hide all controls
-        Me.Graph.Visible = False
-        Me.Plot.Visible = False
-        Me.DataGrid.Visible = False
-        Me.Plot.Visible = False
-
-        ' Reset grid
-        Me.DataGrid.Rows.Clear()
-        Me.DataGrid.Columns.Clear()
-        Me.DataGrid.ReadOnly = True
+        ' Hide all managed controls
+        Me.HideControls()
 
     End Sub
 
@@ -83,10 +82,7 @@ Public MustInherit Class cContentManager
     Public Overridable Sub Detach()
 
         ' Hide all controls
-        Me.Graph.Visible = False
-        Me.Plot.Visible = False
-        Me.DataGrid.Visible = False
-        Me.Plot.Visible = False
+        Me.HideControls()
 
         Me.m_manager = Nothing
         Me.m_datagrid = Nothing
@@ -110,21 +106,26 @@ Public MustInherit Class cContentManager
     ''' <summary>
     ''' Update a 'view' to a selection.
     ''' </summary>
-    ''' <param name="iGroup1">Index of the first selected group, if any. This
-    ''' value is one-based.</param>
-    ''' <param name="iGroup2">Index of the second selected group, if any. This
-    ''' value is one-based.</param>
+    ''' <param name="iGroup1">One-based EwE group index of the first selected 
+    ''' group, if any.</param>
+    ''' <param name="iGroup2">One-based EwE group index of the second selected 
+    ''' group, if any.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub UpdateData(ByVal iGroup1 As Integer, ByVal iGroup2 As Integer)
-
+        ' NOP
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Clear managed data.
     ''' </summary>
+    ''' <remarks>
+    ''' The default implementation hides all controls.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub ClearData()
+        ' Hide all controls
+        Me.HideControls()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -157,6 +158,35 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Return the default file name - without extension - for saving the data 
+    ''' managed here to a file of any type.
+    ''' </summary>
+    ''' <remarks>
+    ''' Default implementation returns the loaded model name, converted to a 
+    ''' valid file name.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function Filename() As String
+        Try
+
+            Dim core As cCore = Me.m_manager.Core
+            Dim model As cEwEModel = core.EwEModel
+            Dim ds As IEwEDataSource = core.DataSource
+            Dim strName As String = ""
+
+            strName = model.Name
+            If String.IsNullOrEmpty(strName) Then
+                strName = ds.ToString()
+            End If
+            Return Utilities.FileUtilities.ToValidFileName(model.Name, False)
+
+        Catch ex As Exception
+            Return ""
+        End Try
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Implement to save the content of a view to a EMF file.
     ''' </summary>
     ''' <param name="strFileName"></param>
@@ -172,7 +202,7 @@ Public MustInherit Class cContentManager
     ''' <param name="strFileName"></param>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub SaveToCSV(ByVal strFileName As String)
-
+        ' NOP
     End Sub
 
 #End Region ' Overrides
@@ -192,10 +222,10 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the one and only data grid.
+    ''' Return the one and only data grid view control.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected ReadOnly Property DataGrid() As DataGridView
+    Protected ReadOnly Property Grid() As DataGridView
         Get
             Return Me.m_datagrid
         End Get
@@ -203,7 +233,7 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the one and only graph.
+    ''' Return the one and only graph control.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected ReadOnly Property Graph() As ZedGraphControl
@@ -214,7 +244,7 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the one and only plot.
+    ''' Return the one and only plot control.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected ReadOnly Property Plot() As ucPlot
@@ -224,5 +254,29 @@ Public MustInherit Class cContentManager
     End Property
 
 #End Region ' Properties
+
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Hide all controls. Override this to do your own magic.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub HideControls()
+
+        ' Hide all controls
+        Me.Graph.Visible = False
+        Me.Plot.Visible = False
+        Me.Grid.Visible = False
+        Me.Plot.Visible = False
+
+        ' Clear grid
+        Me.Grid.Rows.Clear()
+        Me.Grid.Columns.Clear()
+        Me.Grid.ReadOnly = True
+
+    End Sub
+
+#End Region ' Internals
 
 End Class
