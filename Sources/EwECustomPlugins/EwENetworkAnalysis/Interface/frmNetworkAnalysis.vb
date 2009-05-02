@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.19  2009/05/02 18:59:33  jeroens
+' Added UI refresh status feedback
+'
 ' Revision 1.18  2009/05/02 03:06:19  jeroens
 ' Cleaned up
 ' Uses content manager provided file names when handling file-based commands
@@ -103,6 +106,8 @@ Public Class frmNetworkAnalysis
 
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
         Handles tvNetworkAnalysis.AfterSelect
+
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
 
         Me.SuspendLayout()
 
@@ -260,15 +265,20 @@ Public Class frmNetworkAnalysis
             Case Else
         End Select
 
-        ' ToDo: use cApplicationStatusNotifier here
+        asn.SetStatusText("Updating UI...", TriState.True)
 
         ' Put content manager to work
         If Me.m_contentmanager IsNot Nothing Then
 
             ' Attach form
             Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot)
-            ' Get data
-            Me.m_contentmanager.DisplayData()
+            Try
+                ' Get data
+                Me.m_contentmanager.DisplayData()
+            Catch ex As Exception
+
+            End Try
+
             ' Fix toolstrip
             Me.m_contentmanager.SetupToolstrip(m_tsNetworkAnalysis)
             Me.m_tsNetworkAnalysis.Visible = Me.m_contentmanager.RequiresToolstrip
@@ -294,6 +304,7 @@ Public Class frmNetworkAnalysis
             Me.m_plot.Top = 0
         End If
 
+        asn.SetStatusText("", TriState.False)
         Me.ResumeLayout()
 
     End Sub
@@ -359,10 +370,18 @@ Public Class frmNetworkAnalysis
     Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection1.SelectedIndexChanged
 
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
         Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
 
         If Me.m_contentmanager IsNot Nothing Then
-            Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            asn.SetStatusText("Updating UI...", TriState.True)
+            Try
+                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            Catch ex As Exception
+                ' Woops
+            End Try
+            asn.SetStatusText("", TriState.False)
         End If
 
     End Sub
@@ -370,10 +389,18 @@ Public Class frmNetworkAnalysis
     Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection2.SelectedIndexChanged
 
+        Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
         Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
 
         If Me.m_contentmanager IsNot Nothing Then
-            Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            asn.SetStatusText("Updating UI...", TriState.True)
+            Try
+                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            Catch ex As Exception
+                ' Woops
+            End Try
+            asn.SetStatusText("", TriState.False)
         End If
 
     End Sub
