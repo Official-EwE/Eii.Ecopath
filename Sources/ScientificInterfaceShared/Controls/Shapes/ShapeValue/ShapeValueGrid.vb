@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeValueGrid.vb,v $
+' Revision 1.5  2009/05/02 19:01:54  jeroens
+' Fixed index
+'
 ' Revision 1.4  2009/03/23 20:21:31  jeroens
 ' Fixed issue 599
 '
@@ -121,13 +124,13 @@ Public Class ShapeValueGrid
 
         If iStartIndex > 0 Then iStartIndex -= 1
 
-        For iValue As Integer = 0 To Me.m_iNumValues - 1
+        For iValue As Integer = 1 To Me.m_iNumValues
 
             sValue = 0.0!
 
             If Me.m_shape IsNot Nothing Then
                 If iValue <= Me.m_shape.XMax Then
-                    sValue = Me.m_shape.ShapeData(iValue + 1)
+                    sValue = Me.m_shape.ShapeData(iValue)
                 End If
             End If
 
@@ -137,28 +140,28 @@ Public Class ShapeValueGrid
 
                     cell = New EwECell(CStr(iValue + 1), GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
-                    Me(iValue + 1, 0) = cell
+                    Me(iValue, 0) = cell
 
                     cell = New EwECell(sValue, GetType(Single))
                     cell.SuppressZero = Me.m_bSuppressZeroes
-                    Me(iValue + 1, 1) = cell
+                    Me(iValue, 1) = cell
 
                 Case frmShapeValue.eDisplayMode.Yearly
 
                     cell = New EwECell(CStr(iValue + iStartIndex), GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
-                    Me(iValue + 1, 0) = cell
+                    Me(iValue, 0) = cell
 
                     cell = New EwECell(sValue, GetType(Single))
                     cell.SuppressZero = Me.m_bSuppressZeroes
-                    Me(iValue + 1, 1) = cell
+                    Me(iValue, 1) = cell
 
                 Case frmShapeValue.eDisplayMode.Monthly
 
                     Dim strLabel0 As String = ""
                     Dim strLabel1 As String = ""
                     Dim iYear As Integer = iStartIndex + CInt(Math.Floor(iValue / 12))
-                    Dim iMonth As Integer = 1 + (iValue Mod 12)
+                    Dim iMonth As Integer = 1 + ((iValue - 1) Mod 12)
                     Dim d As New Date(1, iMonth, 1)
 
                     If iMonth = 1 Then strLabel0 = CStr(iYear) Else strLabel0 = ""
@@ -166,15 +169,15 @@ Public Class ShapeValueGrid
 
                     cell = New EwECell(strLabel0, GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
-                    Me(iValue + 1, 0) = cell
+                    Me(iValue, 0) = cell
 
                     cell = New EwECell(strLabel1, GetType(String))
                     cell.Style = StyleGuide.eStyleFlags.NotEditable
-                    Me(iValue + 1, 1) = cell
+                    Me(iValue, 1) = cell
 
                     cell = New EwECell(sValue, GetType(Single))
                     cell.SuppressZero = Me.m_bSuppressZeroes
-                    Me(iValue + 1, 2) = cell
+                    Me(iValue, 2) = cell
 
             End Select
 
