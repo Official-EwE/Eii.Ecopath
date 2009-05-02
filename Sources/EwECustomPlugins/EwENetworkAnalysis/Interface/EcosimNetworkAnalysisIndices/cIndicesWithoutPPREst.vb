@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.12  2009/05/02 03:00:11  jeroens
+' Scenario name included in default file name
+' ExtractData uses string builder
+'
 ' Revision 1.11  2009/05/01 17:43:00  jeroens
 ' Inherited from cContentManager
 '
@@ -46,7 +50,9 @@ Imports ZedGraph
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.IO
-Imports EwEUtils.Commands
+Imports System.Text
+Imports EwECore
+Imports EwEUtils
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
@@ -119,21 +125,36 @@ Public Class cIndicesWithoutPPREst
 
     End Sub
 
-    Public Sub ExtractToCSV()
-        Dim myStream As StreamWriter
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Append base class file name with scenario name and NA form-specific tag.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function Filename() As String
 
-        cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", 1)
+        Dim core As cCore = Me.NetworkManager.Core
+        Dim scenario As cEcoSimScenario = Nothing
+        Dim strFileName As String = MyBase.Filename()
 
-        If cmdFS.Result = DialogResult.OK Then
-            Me.Plot.Refresh()
-            myStream = New StreamWriter(cmdFS.FileName)
-            If (myStream IsNot Nothing) Then
-                myStream.Write(ExtractData)
-                myStream.Close()
-            End If
+        Try
+            scenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
+            strFileName &= "-" & EwEUtils.Utilities.FileUtilities.ToValidFileName(scenario.Name, False)
+        Catch ex As Exception
+
+        End Try
+
+        Return strFileName & "-NA-woPPR"
+
+    End Function
+
+    Public Overrides Sub SaveToCSV(ByVal strFileName As String)
+
+        Dim sw As New StreamWriter(strFileName)
+        If (sw IsNot Nothing) Then
+            sw.Write(ExtractData)
+            sw.Close()
         End If
+
     End Sub
 
     Public Overrides Function RequiresToolstrip() As Boolean
@@ -151,61 +172,110 @@ Public Class cIndicesWithoutPPREst
     End Sub
 
     Private Function ExtractData() As String
-        Dim str As String = ""
 
-        str = str + My.Resources.COL_HDR_THROUGHPUT + ", "
-        str = str + My.Resources.COL_HDR_CAPACITY_ECOSIM + ", "
-        str = str + My.Resources.COL_HDR_ASCEND_IMPORT + ", "
-        str = str + My.Resources.COL_HDR_ASCEND_FLOW + ", "
-        str = str + My.Resources.COL_HDR_ASCEND_EXPORT + ", "
-        str = str + My.Resources.COL_HDR_ASCEND_RESP + ", "
-        str = str + My.Resources.COL_HDR_OVERHEAD_IMPORT + ", "
-        str = str + My.Resources.COL_HDR_OVERHEAD_FLOW + ", "
-        str = str + My.Resources.COL_HDR_OVERHEAD_EXPORT + ", "
-        str = str + My.Resources.COL_HDR_OVERHEAD_RESP + ", "
-        str = str + My.Resources.COL_HDR_PCI + ", "
-        str = str + My.Resources.COL_HDR_FCI + ", "
-        str = str + My.Resources.COL_HDR_PATH_LEN + ", "
-        str = str + My.Resources.COL_HDR_EXPORT + ", "
-        str = str + My.Resources.COL_HDR_RESP_ECOSIM + ", "
-        str = str + My.Resources.COL_HDR_PRIM_PROD + ", "
-        str = str + My.Resources.COL_HDR_PROD + ", "
-        str = str + My.Resources.COL_HDR_BIOMASS + ", "
-        str = str + My.Resources.COL_HDR_CATCH + ", "
-        str = str + My.Resources.COL_HDR_PROP_FLOW_DET + ", "
-        str = str + My.Resources.COL_HDR_ASCEND_TOTAL + ", "
-        str = str + My.Resources.COL_HDR_AMI + ", "
-        str = str + My.Resources.COL_HDR_ENTROPY + ", "
-        str = str + vbCrLf
+        Dim sb As New StringBuilder()
+
+        sb.Append(My.Resources.COL_HDR_THROUGHPUT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_PCI)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_FCI)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_PATH_LEN)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_EXPORT)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_PRIM_PROD)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_PROD)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_BIOMASS)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_CATCH)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_AMI)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_ENTROPY)
+        sb.Append(", ")
+        sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
-            str = str + Me.NetworkManager.ThroughputEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.CapacityEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AscendImportEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AscendFlowEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AscendExportEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AscendRespEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.OverheadImportEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.OverheadFlowEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.OverheadExportEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.OverheadRespEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.PCIEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.FCIEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.PathLengthEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.ExportEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.RespEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.PrimaryProdEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.ProdEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.BiomassEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.CatchEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.PropFlowDetEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AscendTotalEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.AMIEcosim(i).ToString + ", "
-            str = str + Me.NetworkManager.EntropyEcosim(i).ToString + ", "
-            str = str + vbCrLf
+            sb.Append(Me.NetworkManager.ThroughputEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.CapacityEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AscendImportEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AscendFlowEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AscendExportEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AscendRespEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.OverheadImportEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.OverheadFlowEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.OverheadExportEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.OverheadRespEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.PCIEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.FCIEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.PathLengthEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.ExportEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.RespEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.PrimaryProdEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.ProdEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.BiomassEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.CatchEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.PropFlowDetEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AscendTotalEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.AMIEcosim(i).ToString)
+            sb.Append(", ")
+            sb.Append(Me.NetworkManager.EntropyEcosim(i).ToString)
+            sb.Append(", ")
+            sb.AppendLine("")
         Next
 
-        Return str
+        Return sb.ToString()
+
     End Function
 
 End Class
