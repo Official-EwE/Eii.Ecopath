@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FileUtilities.vb,v $
+' Revision 1.3  2009/05/02 01:48:07  jeroens
+' Added comments
+'
 ' Revision 1.2  2009/03/26 15:51:01  jeroens
 ' Added FindFile
 '
@@ -23,37 +26,52 @@ Namespace Utilities
 
     Public Class FileUtilities
 
-        Public Shared Function ToValidFileName(ByVal strFileName As String, ByVal bProtectPath As Boolean) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a text into a string that would be accepted by the OS as a
+        ''' valid file name.
+        ''' </summary>
+        ''' <param name="strText">Text to convert into a file name.</param>
+        ''' <param name="bProtectPath">Flag stating whether any path information
+        ''' included in <paramref name="strText">strText</paramref> should be
+        ''' preserved. If False, an path information is stripped off.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToValidFileName(ByVal strText As String, ByVal bProtectPath As Boolean) As String
 
             Dim strPath As String = ""
 
             ' 1. Strip off path part
             If bProtectPath Then
-                strPath = Path.GetDirectoryName(strFileName)
+                Try
+                    strPath = Path.GetDirectoryName(strText)
+                Catch ex As Exception
+                    strPath = ""
+                End Try
                 If String.IsNullOrEmpty(strPath) Then
                     bProtectPath = False
                 Else
-                    strFileName = strFileName.Substring(strPath.Length + 1)
+                    strText = strText.Substring(strPath.Length + 1)
                 End If
             End If
 
             ' Clean up
-            strFileName = strFileName.Replace(" ", "_")
-            strFileName = strFileName.Replace("\", "-")
-            strFileName = strFileName.Replace("/", "-")
+            strText = strText.Replace(" ", "_")
+            strText = strText.Replace("\", "-")
+            strText = strText.Replace("/", "-")
 
             ' Replace invalid file name chars with hyphens
             For Each c As Char In Path.GetInvalidFileNameChars
-                If strFileName.IndexOf(c) > -1 Then
-                    strFileName = strFileName.Replace(c, "-"c)
+                If strText.IndexOf(c) > -1 Then
+                    strText = strText.Replace(c, "-"c)
                 End If
             Next
 
             If (bProtectPath And Not String.IsNullOrEmpty(strPath)) Then
-                strFileName = Path.Combine(strPath, strFileName)
+                strText = Path.Combine(strPath, strText)
             End If
 
-            Return strFileName
+            Return strText
         End Function
 
         Public Shared Function FindFile(ByVal strFile As String, ByVal strStartDir As String, _
