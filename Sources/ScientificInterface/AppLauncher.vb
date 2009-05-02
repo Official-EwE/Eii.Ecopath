@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.41  2009/05/02 19:00:55  jeroens
+' Status waitcursor count replaced by status text stack
+'
 ' Revision 1.40  2009/04/23 17:06:44  jeroens
 ' Fixed issue 615
 '
@@ -175,8 +178,7 @@ Public Class AppLauncher
     Private m_StatusStripHelper As StatusStripHelper = Nothing
 
     Private m_strLastSelectedPath As String = ""
-    ''' <summary>Active wait cursor count.</summary>
-    Private m_iWaitCursorCount As Integer = 0
+    Private m_lstrStatus As New List(Of String)
 
     Private m_DockPanel As DockPanel = Nothing
     Private m_NavPanel As NavigationPanel = Nothing
@@ -554,23 +556,47 @@ Public Class AppLauncher
         ' Give app a chance to rener
         Application.DoEvents()
 
-        ' Update status text
-        Me.m_StatusStripHelper.SetStatusText(strText, sProgress)
         ' Update wait cursor
         Select Case tsUseWaitCursor
-            Case TriState.True
-                Me.m_iWaitCursorCount += 1
+
+            Case TriState.True ' Set wait cursor
+
+                ' Push text to the status text stack
+                Me.m_lstrStatus.Insert(0, strText)
+                ' Set wait cursor
                 Me.Cursor = Cursors.WaitCursor
-            Case TriState.False
-                Me.m_iWaitCursorCount -= 1
-                If Me.m_iWaitCursorCount <= 0 Then Me.Cursor = Cursors.Default
+
+            Case TriState.False ' Clear wait cursor
+
+                ' Has wait cursors pending?
+                If Me.m_lstrStatus.Count > 0 Then
+                    ' #Yes: no text specified?
+                    If String.IsNullOrEmpty(strText) Then
+                        ' #Yes: obtain text from the status text stack
+                        strText = Me.m_lstrStatus(0)
+                    End If
+                    ' Pop text from the status text stack
+                    Me.m_lstrStatus.RemoveAt(0)
+                End If
+
+                ' Status stack empty?
+                If Me.m_lstrStatus.Count = 0 Then
+                    ' #Yes: restore default cursor
+                    Me.Cursor = Cursors.Default
+                    strText = ""
+                End If
+
             Case TriState.UseDefault
-                ' Don't do anything
+                ' Don't do anything. Really.
+
         End Select
 
         ' JS 12oct07: disabled total refresh to minimize screen flickering
         '' Redraw!
         'Me.Refresh()
+
+        ' Update status text
+        Me.m_StatusStripHelper.SetStatusText(strText, sProgress)
 
     End Sub
 
