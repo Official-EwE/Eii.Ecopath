@@ -79,12 +79,9 @@ Partial Class frmNetworkAnalysis
         Me.tslblSelection2 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection2 = New System.Windows.Forms.ToolStripComboBox
         Me.tslblProgressBar = New System.Windows.Forms.ToolStripLabel
-        Me.tsbtnCancel = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
         Me.tsbtnPrintGraph = New System.Windows.Forms.ToolStripButton
-        Me.tssepGraphMTI = New System.Windows.Forms.ToolStripSeparator
-        Me.tsbtnGraphMTI = New System.Windows.Forms.ToolStripButton
         Me.m_datagrid = New System.Windows.Forms.DataGridView
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -118,8 +115,8 @@ Partial Class frmNetworkAnalysis
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tsNetworkAnalysis)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
-        Me.scNetworkAnalysis.Size = New System.Drawing.Size(895, 467)
-        Me.scNetworkAnalysis.SplitterDistance = 226
+        Me.scNetworkAnalysis.Size = New System.Drawing.Size(1320, 467)
+        Me.scNetworkAnalysis.SplitterDistance = 333
         Me.scNetworkAnalysis.TabIndex = 3
         '
         'tvNetworkAnalysis
@@ -314,7 +311,7 @@ Partial Class frmNetworkAnalysis
         TreeNode45.Text = "Ecosim network analysis "
         Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode14, TreeNode17, TreeNode21, TreeNode24, TreeNode25, TreeNode42, TreeNode45})
         Me.tvNetworkAnalysis.SelectedImageIndex = 0
-        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(226, 467)
+        Me.tvNetworkAnalysis.Size = New System.Drawing.Size(333, 467)
         Me.tvNetworkAnalysis.TabIndex = 2
         '
         'imglstNetworkAnalysis
@@ -358,10 +355,10 @@ Partial Class frmNetworkAnalysis
         'm_tsNetworkAnalysis
         '
         Me.m_tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.m_tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tsbtnCancel, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph, Me.tssepGraphMTI, Me.tsbtnGraphMTI})
+        Me.m_tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph})
         Me.m_tsNetworkAnalysis.Location = New System.Drawing.Point(0, 0)
         Me.m_tsNetworkAnalysis.Name = "m_tsNetworkAnalysis"
-        Me.m_tsNetworkAnalysis.Size = New System.Drawing.Size(665, 25)
+        Me.m_tsNetworkAnalysis.Size = New System.Drawing.Size(983, 25)
         Me.m_tsNetworkAnalysis.TabIndex = 4
         '
         'tslblSelection1
@@ -395,16 +392,6 @@ Partial Class frmNetworkAnalysis
         Me.tslblProgressBar.Size = New System.Drawing.Size(80, 22)
         Me.tslblProgressBar.Text = "ToolStripLabel3"
         '
-        'tsbtnCancel
-        '
-        Me.tsbtnCancel.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.tsbtnCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.tsbtnCancel.Image = CType(resources.GetObject("tsbtnCancel.Image"), System.Drawing.Image)
-        Me.tsbtnCancel.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbtnCancel.Name = "tsbtnCancel"
-        Me.tsbtnCancel.Size = New System.Drawing.Size(43, 22)
-        Me.tsbtnCancel.Text = "Cancel"
-        '
         'tsbtnOutputIndicesCSV
         '
         Me.tsbtnOutputIndicesCSV.BackColor = System.Drawing.Color.DarkSeaGreen
@@ -412,7 +399,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputIndicesCSV.Image = CType(resources.GetObject("tsbtnOutputIndicesCSV.Image"), System.Drawing.Image)
         Me.tsbtnOutputIndicesCSV.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnOutputIndicesCSV.Name = "tsbtnOutputIndicesCSV"
-        Me.tsbtnOutputIndicesCSV.Size = New System.Drawing.Size(145, 17)
+        Me.tsbtnOutputIndicesCSV.Size = New System.Drawing.Size(145, 22)
         Me.tsbtnOutputIndicesCSV.Text = "Output all indices to CSV file"
         '
         'tsbtnOutputGraphEMF
@@ -421,7 +408,7 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputGraphEMF.Image = CType(resources.GetObject("tsbtnOutputGraphEMF.Image"), System.Drawing.Image)
         Me.tsbtnOutputGraphEMF.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnOutputGraphEMF.Name = "tsbtnOutputGraphEMF"
-        Me.tsbtnOutputGraphEMF.Size = New System.Drawing.Size(88, 17)
+        Me.tsbtnOutputGraphEMF.Size = New System.Drawing.Size(88, 22)
         Me.tsbtnOutputGraphEMF.Text = "Save to EMF file"
         '
         'tsbtnPrintGraph
@@ -430,22 +417,8 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnPrintGraph.Image = CType(resources.GetObject("tsbtnPrintGraph.Image"), System.Drawing.Image)
         Me.tsbtnPrintGraph.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnPrintGraph.Name = "tsbtnPrintGraph"
-        Me.tsbtnPrintGraph.Size = New System.Drawing.Size(64, 17)
+        Me.tsbtnPrintGraph.Size = New System.Drawing.Size(64, 22)
         Me.tsbtnPrintGraph.Text = "Print graph"
-        '
-        'tssepGraphMTI
-        '
-        Me.tssepGraphMTI.Name = "tssepGraphMTI"
-        Me.tssepGraphMTI.Size = New System.Drawing.Size(6, 25)
-        '
-        'tsbtnGraphMTI
-        '
-        Me.tsbtnGraphMTI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.tsbtnGraphMTI.Image = CType(resources.GetObject("tsbtnGraphMTI.Image"), System.Drawing.Image)
-        Me.tsbtnGraphMTI.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbtnGraphMTI.Name = "tsbtnGraphMTI"
-        Me.tsbtnGraphMTI.Size = New System.Drawing.Size(58, 17)
-        Me.tsbtnGraphMTI.Text = "Bar graph"
         '
         'm_datagrid
         '
@@ -500,7 +473,7 @@ Partial Class frmNetworkAnalysis
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(906, 510)
+        Me.ClientSize = New System.Drawing.Size(1331, 510)
         Me.Controls.Add(Me.lblNetworkAnalysis)
         Me.Controls.Add(Me.scNetworkAnalysis)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -530,13 +503,10 @@ Partial Class frmNetworkAnalysis
     Private WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblProgressBar As System.Windows.Forms.ToolStripLabel
     Private WithEvents tslblSelection1 As System.Windows.Forms.ToolStripLabel
-    Private WithEvents tsbtnCancel As System.Windows.Forms.ToolStripButton
     Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
     Private WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
-    Private WithEvents tsbtnGraphMTI As System.Windows.Forms.ToolStripButton
-    Private WithEvents tssepGraphMTI As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsNetworkAnalysis As System.Windows.Forms.ToolStrip
     Private WithEvents m_datagrid As System.Windows.Forms.DataGridView
     Private WithEvents m_graph As ZedGraph.ZedGraphControl

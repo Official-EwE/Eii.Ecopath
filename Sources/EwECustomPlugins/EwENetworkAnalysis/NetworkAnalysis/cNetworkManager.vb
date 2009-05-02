@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.13  2009/05/02 03:02:17  jeroens
+' Cleaned up
+'
 ' Revision 1.12  2009/05/01 17:46:40  jeroens
 ' Simplified run state management
 ' Uses central status feedback
@@ -55,49 +58,7 @@ Imports EwECore
 ''' <remarks>This object is used to coordinate running of the Network Analysis and population of the ouput. </remarks>
 Public Class cNetworkManager
 
-#Region "Events"
-
-    '''' <summary>
-    '''' Progress of the RunMainNetwork() method. The total number of time this will be fired is not known in advance. 
-    '''' So it simmply indicates progress.
-    '''' </summary>
-    '''' <param name="iProgress"></param>
-    '''' <remarks></remarks>
-    'Public Event RunMainNetworkProgress(ByVal iProgress As Integer)
-
-    '''' <summary>
-    '''' Progress of the RunMainNetwork() method. A cycle has been found.
-    '''' </summary>
-    '''' <param name="iCycle"></param>
-    '''' <remarks>The number of cycles is not known in advance</remarks>
-    'Public Event CycleFound(ByVal iCycle As Integer)
-
-    '''' <summary>
-    '''' Progress from one of the FindPathwaysxxx() methods
-    '''' </summary>
-    '''' <param name="iPath"></param>
-    '''' <remarks>The number of pathways is not known in advance.</remarks>
-    'Public Event FindPathwaysProgress(ByVal iPath As Integer)
-
-    '''' <summary>
-    '''' Progress from one of the FindPathwaysxxx() methods
-    '''' </summary>
-    '''' <param name="iCycle"></param>
-    '''' <remarks>The number of pathways is not known in advance.</remarks>
-    'Public Event FindCyclesProgress(ByVal iCycle As Integer)
-
-    'Public Event CalculateRequiredPPProgress(ByVal nPaths As Integer)
-
-    '''' <summary>
-    '''' Progress of Network Analysis for Ecosim
-    '''' </summary>
-    '''' <param name="iTime">Time step</param>
-    '''' <remarks>The total number of time steps </remarks>
-    'Public Event EcosimNetworkProgress(ByVal iTime As Integer)
-
-#End Region
-
-#Region "Private data"
+#Region " Private data "
 
     Private Enum ePathways
         ''' <summary>TL1->Consumer </summary>
@@ -136,10 +97,10 @@ Public Class cNetworkManager
     Private m_econetwork As cEcoNetwork = Nothing
     Private m_core As cCore = Nothing
     Private m_corestatemonitor As cCoreStateMonitor = Nothing
-    Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
-    Private m_runstate As eRunState
     Private m_epdata As cEcopathDataStructures = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
+    Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
+    Private m_runstate As eRunState = eRunState.CoreNotReady
 
     ''' <summary>Flag stating whether Ecosim NA should run with Ecosim.</summary>
     Private m_bUseEcosimNetwork As Boolean = True
@@ -151,17 +112,22 @@ Public Class cNetworkManager
     ''' <summary>To comment</summary>
     Private m_bIsRequiredPrimaryProdRun As Boolean = False
 
+#If 0 Then ' Unused code
     ''' <summary>List of iGroups that have fish catch </summary>
-    Dim lstCatch As New List(Of Integer)
+    Private lstCatch As New List(Of Integer)
+#End If
 
     ''' <summary><see cref="cMessagePublisher">Core message publisher</see> for
     ''' sending messages through the EwE core system.</summary>
     Private m_publisher As cMessagePublisher = Nothing
 
+#End Region ' Private data
 
-#End Region
+#Region " Construction and initialization "
 
-#Region "Construction and initialization"
+    Public Sub New()
+        m_runstate = eRunState.CoreNotReady
+    End Sub
 
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
@@ -179,39 +145,23 @@ Public Class cNetworkManager
         RemoveHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
 
-    Public Sub New()
-        m_runstate = eRunState.CoreNotReady
-    End Sub
+#End Region ' Construction and initialization
 
-#End Region
+#Region " Public Methods for running models "
 
-#Region "Public Methods for running models"
+#Region " Main Network Analysis "
 
-    '''' <summary>
-    '''' Interface for testing Network Analysis routines from the Plugin
-    '''' </summary>
-    '''' <remarks>Temp just for debugging</remarks>
-    'Public Sub Test()
-
-    '    Try
-
-    '        Me.RunMainNetwork()
-    '        Me.FindPathwaysToConsumer(1)
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Debug.Assert(False, ex.ToString)
-    '    End Try
-
-    'End Sub
-#Region "Main Network Analysis"
-
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Run the Main Network Analysis routines
+    ''' Run the Main Network Analysis routines - if necessary
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks>This populates the data for EwE5 'Trophic level decomposition', 'Flow and biomass', 'Mixed Trophic impact', 'Acendency' and 'Flow form detritus' tabs</remarks>
+    ''' <remarks>
+    ''' This populates the data for EwE5 'Trophic level decomposition', 
+    ''' 'Flow and biomass', 'Mixed Trophic impact', 'Acendency' and 
+    ''' 'Flow form detritus' tabs.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Function RunMainNetwork() As Boolean
 
         Dim bSucces As Boolean = True
@@ -219,6 +169,9 @@ Public Class cNetworkManager
         Dim abGroupsToShow(Me.m_core.nGroups) As Boolean
 
         Debug.Assert(m_econetwork IsNot Nothing)
+
+        ' Optimization
+        If Me.m_bIsMainNetworkRun = True Then Return True
 
         m_runstate = eRunState.NetworkNeedsToRun
 
@@ -281,12 +234,13 @@ Public Class cNetworkManager
         End Set
     End Property
     'End Change
-#End Region
 
-#Region "Required PP"
+#End Region ' Main Network Analysis
+
+#Region " Required PP "
 
     ''' <summary>
-    ''' Run the Require Primary Procuction models
+    ''' Run the Require Primary Procuction models - if not already ran.
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This popluates data for the EwE5 tabs 'Primary prod. required'-'For harvest of all groups' and 'For consumption of all groups'</remarks>
@@ -361,9 +315,9 @@ Public Class cNetworkManager
     End Property
     'End change
 
-#End Region
+#End Region ' Required PP
 
-#Region "Pathways"
+#Region " Pathways "
 
     ''' <summary>
     ''' TL1-->Consumer
@@ -509,12 +463,13 @@ Public Class cNetworkManager
         End Try
 
     End Function
-#End Region
 
-#Region "Network from Ecosim"
+#End Region ' Pathways
+
+#Region " Network from Ecosim "
 
     ''' <summary>
-    ''' Run Ecosim and compute the ecosim network analysis data 
+    ''' Run Ecosim and compute the ecosim network analysis data - if not already ran.
     ''' </summary>
     ''' <remarks></remarks>
     Public Function RunEcosimNetwork() As Boolean
@@ -625,7 +580,6 @@ Public Class cNetworkManager
             'do ecosim network calculation for this time step
             m_econetwork.EcosimTimestep(BiomassAtTimestep, EcosimDatastructures, iTime)
             'tell the world that a time step has been computed
-            'If (iTime Mod 10) = 0 Then RaiseEvent EcosimNetworkProgress(iTime)
             Me.UpdateProgress(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, CSng(iTime / Me.m_esdata.NTimes))
 
         Catch ex As Exception
@@ -638,13 +592,13 @@ Public Class cNetworkManager
 
     End Function
 
-#End Region
+#End Region ' Network from Ecosim
 
-#End Region
+#End Region ' Public Methods for running models
 
-#Region "Public Properties"
+#Region " Public Properties "
 
-#Region "Inputs"
+#Region " Inputs "
 
     ''' <summary>
     ''' Ecopath data to run the analysis on
@@ -722,18 +676,17 @@ Public Class cNetworkManager
         End Set
     End Property
 
-
     Public ReadOnly Property Core() As cCore
         Get
             Return Me.m_core
         End Get
     End Property
 
-#End Region
+#End Region ' Inputs
 
-#Region "Model outputs"
+#Region " Model outputs "
 
-#Region "Counters"
+#Region " Counters "
 
     Public ReadOnly Property nTrophicLevels() As Integer
         Get
@@ -780,9 +733,10 @@ Public Class cNetworkManager
             End Try
         End Get
     End Property
-#End Region
 
-#Region "Pathways"
+#End Region ' Counters
+
+#Region " Pathways "
 
     ''' <summary>
     ''' EwE5 Cycles and Pathways
@@ -804,9 +758,9 @@ Public Class cNetworkManager
         End Get
     End Property
 
-#End Region
+#End Region ' Pathways
 
-#Region "Flows"
+#Region " Flows "
 
     ''' <summary>
     ''' EwE5 Trophic level decomposition Relative Flows
@@ -919,9 +873,10 @@ Public Class cNetworkManager
             Return sumad
         End Get
     End Property
-#End Region
 
-#Region "Ascendancy"
+#End Region ' Flows
+
+#Region " Ascendancy "
 
 #Region "By Group"
 
@@ -1310,9 +1265,10 @@ Public Class cNetworkManager
 
 #End Region
 
-#End Region
+#End Region ' Ascendancy
 
-#Region "Trophic Level"
+#Region " Trophic Level "
+
     ''' <summary>
     ''' Flow and Biomass From primary prod. Import 
     ''' </summary>
@@ -1340,7 +1296,6 @@ Public Class cNetworkManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Flow and Biomass From primary prod. Flow To Detritus
     ''' </summary>
@@ -1358,7 +1313,6 @@ Public Class cNetworkManager
             Return m_econetwork.RSP(iTrophicLevel)
         End Get
     End Property
-
 
     ''' <summary>
     ''' Flow and Biomass From primary prod. Throughtput
@@ -1395,7 +1349,6 @@ Public Class cNetworkManager
             Return m_econetwork.EXAD(iTrophicLevel)
         End Get
     End Property
-
 
     ''' <summary>
     ''' Flow and Biomass From detritus. Flow To Detritus
@@ -1472,7 +1425,8 @@ Public Class cNetworkManager
             Return m_econetwork.TotalTrp
         End Get
     End Property
-#End Region
+
+#End Region ' Trophic Level
 
 #Region " Indicators "
 
@@ -1482,8 +1436,11 @@ Public Class cNetworkManager
         End Get
     End Property
 
-#End Region
-#Region "Primary Production Required"
+#End Region ' Indicators
+
+#Region " Primary Production Required "
+
+#If 0 Then ' Unused code
 
     Public ReadOnly Property nCatch() As Integer
         Get
@@ -1519,6 +1476,8 @@ Public Class cNetworkManager
         End Get
 
     End Property
+
+#End If ' Unused code
 
     ''' <summary>
     ''' EwE5 No.of paths
@@ -1735,9 +1694,9 @@ Public Class cNetworkManager
 
 #End Region
 
-#End Region
+#End Region ' Primary Production Required
 
-#Region "Ecosim Public Properties"
+#Region " Ecosim Public Properties "
 
     Public ReadOnly Property nEcosimTimesteps() As Integer
         Get
@@ -1768,7 +1727,6 @@ Public Class cNetworkManager
             Return Me.m_econetwork.RelativeSumOfCatchPlot
         End Get
     End Property
-
 
     ''' <summary>
     ''' EwE5 Ecosim plot "Kemptons Q"
@@ -1987,13 +1945,13 @@ Public Class cNetworkManager
         End Get
     End Property
 
-#End Region
+#End Region ' Ecosim Public Properties
 
-#End Region
+#End Region ' Model outputs
 
-#End Region
+#End Region ' Public Properties
 
-#Region "Misc private methods"
+#Region " Misc private methods "
 
     ''' <summary>
     ''' Build a string that contains the messages from this exception and all it's InnerException's
@@ -2021,9 +1979,9 @@ Public Class cNetworkManager
 
     End Function
 
-#End Region
+#End Region ' Misc private methods
 
-#Region "Message handlers"
+#Region " Message handlers "
 
 #Region "Methods used by Network Analysis to update the Manager about progress."
 
@@ -2075,6 +2033,6 @@ Public Class cNetworkManager
     End Sub
 
 
-#End Region
+#End Region ' Message handlers
 
 End Class
