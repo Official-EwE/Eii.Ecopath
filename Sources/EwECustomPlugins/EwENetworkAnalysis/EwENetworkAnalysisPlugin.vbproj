@@ -187,9 +187,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EwENetworkAnalysis\FD.EXE" />
-    <Content Include="EwENetworkAnalysis\IMPACTS.EXE" />
+    <Content Include="EwENetworkAnalysis\IMPACTS.EXE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="EwENetworkAnalysis\PYRAMID.EXE">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Other\N_Asponsors.jpg" />
     <Content Include="Resources\EwENetworkAnalysis.ico" />
