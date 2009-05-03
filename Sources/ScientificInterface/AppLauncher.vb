@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.42  2009/05/03 14:02:50  jeroens
+' Slightly reorganized
+' Minimized forms docked correctly
+'
 ' Revision 1.41  2009/05/02 19:00:55  jeroens
 ' Status waitcursor count replaced by status text stack
 '
@@ -389,7 +393,7 @@ Public Class AppLauncher
                         'LoadFromXML method requires unintialized dock panel, but when the LoadFromXML
                         'generates the exception and the exception is being caught, the closed
                         'Dock panel needs to be reinitialized.
-                        ShowDockPanels()
+                        InitDockPanelPositions()
                         ' Operation is not sucessful, delete the file instead
                         If File.Exists(strConfigFilePath) Then
                             File.Delete(strConfigFilePath)
@@ -601,6 +605,92 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Public interfaces
+
+#Region " Form overrides "
+
+    ''' <summary>
+    ''' </summary>
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        ' Add the dock panel 
+        Me.SuspendLayout()
+        m_DockPanel = New DockPanel
+        With m_DockPanel
+            .Parent = Me
+            .Dock = DockStyle.Fill
+            .BringToFront()
+        End With
+
+        Me.Icon = My.Resources.Ecopath
+        Me.ResumeLayout()
+        My.Settings.Reload()
+
+        ' Initialize app components
+        Me.m_applicationComponents = New ApplicationComponents()
+
+        ' Peeks at key but does not consume it
+        Me.KeyPreview = True
+
+        Me.InitCoreParams()
+        Me.InitCommands()
+        Me.InitPanels()
+        Me.InitEventHandlers()
+        Me.InitHelp()
+
+        AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        Me.InitDockPanelPositions()
+        'Show start page
+        Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+
+        ' Set app caption
+        Me.Text = Me.GetApplicationCaption()
+        ' Start controlling the status strip
+        Me.m_StatusStripHelper = New StatusStripHelper(Me.m_core, Me.m_ssMain)
+        ' Start controlling forms
+        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
+
+        ' Load plugins once GUI has been created.
+        Me.LoadPlugins()
+        ' Auto-launch plugins
+        Me.AutolaunchPlugins()
+
+        Me.ProcessCommandLine()
+        Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
+        Me.UpdateModelControls()
+
+    End Sub
+
+    ''' <summary>
+    ''' Event handler, catches the form closing event to make sure the core is finalized.
+    ''' Application shut-down is cancelled if the core does not finalize correctly.
+    ''' </summary>
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+        ' Cancel application shut down if the core does not terminate succesfully.
+        e.Cancel = Not Me.m_core.CloseModel()
+
+        ' The core does not terminate sucessfully
+        If e.Cancel = True Then Return
+
+        ' Save form settings
+        Me.SaveMainFormSettings()
+
+        ' Cleanup: disconnect command handler from idle event
+        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+
+        RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        MyBase.OnFormClosing(e)
+
+    End Sub
+
+    Protected Overrides Sub OnResizeEnd(ByVal e As System.EventArgs)
+        Me.UpdateModelPathText(Me.SelectedFileName)
+    End Sub
+
+#End Region ' Form overrides
 
 #Region " Internal implementation "
 
@@ -858,7 +948,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub ShowDockPanels()
+    Private Sub InitDockPanelPositions()
 
         Me.m_NavPanel.Show(m_DockPanel, DockState.DockLeft)
         Me.m_StatusPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
@@ -890,6 +980,10 @@ Public Class AppLauncher
         ' Initialize style guide updated
         Me.m_styleguideupdater = New StyleGuideUpdater(m_core, StyleGuide.GetInstance())
 
+    End Sub
+
+    Private Sub AutolaunchPlugins()
+        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager)
     End Sub
 
     Private Sub LoadPlugins()
@@ -1033,6 +1127,7 @@ Public Class AppLauncher
                     .IsHidden = False
                     If .DockState = DockState.Unknown Then .DockState = DockState.Document
                     If .VisibleState = DockState.Unknown Then .VisibleState = DockState.Document
+                    If .WindowState = FormWindowState.Minimized Then .WindowState = FormWindowState.Normal
                     .BringToFront()
                 End With
                 Return True
@@ -2027,6 +2122,7 @@ Public Class AppLauncher
                 ' Was a form created?
                 If frm IsNot Nothing Then
                     ' #Yes
+                    If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
                     ' Is this a dockable form? 
                     If (TypeOf frm Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                         ' #Yes
@@ -2079,9 +2175,9 @@ Public Class AppLauncher
                 ' #Yes: form detected
                 ' Able to activate this form from the open tabs?
                 If Not ActivateForm(pgcmd.Form.Text) Then
-                    ' #No: form is not currently open. We'll need to nest it in the GUI.
+                    ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.
 
-                    ' Make sure it is not already shown; an active form cannot be docked.
+                    ' Make sure it is not already shown; a visible form cannot be docked.
                     If pgcmd.Form.Visible Then
                         pgcmd.Form.Hide()
                     End If
@@ -2093,15 +2189,16 @@ Public Class AppLauncher
                         If pgcmd.DockState = 0 Then pgcmd.DockState = DockState.Document
                         ' Show the form in the dock panel
                         DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(pgcmd.DockState, DockState))
+
+                        ' Fix window state
+                        If pgcmd.Form.WindowState = FormWindowState.Minimized Then
+                            pgcmd.Form.WindowState = FormWindowState.Normal
+                            pgcmd.Form.Show()
+                        End If
+
                         ' Switch help
                         ' ToDo_JS: consider allowing plug-in provided help documents
                         Me.m_Help.HelpTopic(pgcmd.Form) = ""
-
-                        '' Is even an EwE Form?
-                        'If (TypeOf pgcmd.Form Is EwEForm) Then
-                        '    ' #Yes: Register the form as well for automated state management
-                        '    Me.m_FormStateHelper.RegisterForm(DirectCast(pgcmd.Form, EwEForm))
-                        'End If
                     Else
                         ' Show form
                         pgcmd.Form.MdiParent = Me
@@ -3151,92 +3248,6 @@ Public Class AppLauncher
 
 #Region " Event Handlers "
 
-    ''' <summary>
-    ''' </summary>
-    Private Sub AppLaucher_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-        ' Add the dock panel 
-        Me.SuspendLayout()
-        m_DockPanel = New DockPanel
-        With m_DockPanel
-            .Parent = Me
-            .Dock = DockStyle.Fill
-            .BringToFront()
-        End With
-
-        Me.Icon = My.Resources.Ecopath
-        Me.ResumeLayout()
-        My.Settings.Reload()
-
-        ' Initialize app components
-        Me.m_applicationComponents = New ApplicationComponents()
-
-        ' Peeks at key but does not consume it
-        Me.KeyPreview = True
-
-        Me.InitCoreParams()
-        Me.InitCommands()
-        Me.InitPanels()
-        Me.InitEventHandlers()
-        Me.InitHelp()
-
-        AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-
-        Me.ShowDockPanels()
-        'Show start page
-        Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
-
-
-        ' Set app caption
-        Me.Text = Me.GetApplicationCaption()
-        ' Start controlling the status strip
-        Me.m_StatusStripHelper = New StatusStripHelper(Me.m_core, Me.m_ssMain)
-        ' Start controlling forms
-        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
-
-        ' Load plugins once GUI has been created.
-        Me.LoadPlugins()
-        ' Auto-launch plugins
-        Me.AutolaunchPlugins()
-
-        Me.ProcessCommandLine()
-        Me.DefaultSettingLoadedEventHandler(Nothing, Nothing) ' Ugh!
-        Me.UpdateModelControls()
-
-    End Sub
-
-    Private Sub AppLaucher_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-
-        RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-    End Sub
-
-    ''' <summary>
-    ''' Event handler, catches the form closing event to make sure the core is finalized.
-    ''' Application shut-down is cancelled if the core does not finalize correctly.
-    ''' </summary>
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-
-        ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.m_core.CloseModel()
-
-        ' The core does not terminate sucessfully
-        If e.Cancel = True Then Return
-
-        ' Save form settings
-        Me.SaveMainFormSettings()
-
-        MyBase.OnFormClosing(e)
-
-    End Sub
-
-    Protected Overrides Sub OnResizeEnd(ByVal e As System.EventArgs)
-        Me.UpdateModelPathText(Me.SelectedFileName)
-    End Sub
-
-
     Private Sub RecentFileClickEventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Dim fn As String = mnuItem.Text.Substring(3) ' Get rid of file index
@@ -3411,9 +3422,5 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Ecosim
-
-    Private Sub AutolaunchPlugins()
-        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager)
-    End Sub
 
 End Class
