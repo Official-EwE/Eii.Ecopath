@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.8  2009/05/04 22:26:29  jeroens
+' Loading framework will show form
+'
 ' Revision 1.7  2009/05/02 03:07:49  jeroens
 ' Minor housekeeping
 '
@@ -219,8 +222,9 @@ Public Class cEwENetworkAnalysisPlugin
                 Me.m_frmNA = New frmNetworkAnalysis(m_NetworkManager)
             End If
 
-            ' Activate the form
-            Me.m_frmNA.Show()
+            ' JS 05may09: do not show form; the loading framework should take care of this
+            '' Activate the form
+            'Me.m_frmNA.Show()
 
             ' Pass form reference back to calling app
             f = Me.m_frmNA
