@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.20  2009/05/04 02:12:49  jeroens
+' NA Sim off unless initiated from NA nav tree
+'
 ' Revision 1.19  2009/05/02 18:59:33  jeroens
 ' Added UI refresh status feedback
 '
@@ -222,10 +225,12 @@ Public Class frmNetworkAnalysis
 
             Case "ndWithoutPrimaryProductionRequiredEstimate"
 
+                Me.m_networkmanager.UseEcosimNetwork = True
                 Me.m_networkmanager.EcosimPPROn = False
                 If Me.m_networkmanager.RunEcosimNetwork() Then
                     Me.m_contentmanager = New cIndicesWithoutPPREst()
                 End If
+                Me.m_networkmanager.UseEcosimNetwork = False
 
             Case "ndWithPrimaryProductionRequiredEstimate"
 
@@ -243,12 +248,14 @@ Public Class frmNetworkAnalysis
                     ' #Yes: run std PP
                     Me.m_networkmanager.RunRequiredPrimaryProd()
                     ' Switch on PPR in Ecosim
+                    Me.m_networkmanager.UseEcosimNetwork = True
                     m_networkmanager.EcosimPPROn = True
                     ' Ecosim NA run succesful?
                     If m_networkmanager.RunEcosimNetwork() = True Then
                         ' #Yes: update control
                         Me.m_contentmanager = New cIndicesWithPPREst()
                     End If
+                    Me.m_networkmanager.UseEcosimNetwork = False
                 End If
 
                 ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.14  2009/05/04 02:12:49  jeroens
+' NA Sim off unless initiated from NA nav tree
+'
 ' Revision 1.13  2009/05/02 03:02:17  jeroens
 ' Cleaned up
 '
@@ -103,7 +106,7 @@ Public Class cNetworkManager
     Private m_runstate As eRunState = eRunState.CoreNotReady
 
     ''' <summary>Flag stating whether Ecosim NA should run with Ecosim.</summary>
-    Private m_bUseEcosimNetwork As Boolean = True
+    Private m_bUseEcosimNetwork As Boolean = False
 
     ''' <summary>Flag stating whether the main N/A network has ran.</summary>
     Private m_bIsMainNetworkRun As Boolean = False
