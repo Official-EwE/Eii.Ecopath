@@ -202,7 +202,6 @@ Partial Class frmNetworkAnalysis
         Me.Name = "frmNetworkAnalysis"
         Me.ShowInTaskbar = False
         Me.TabText = "Network analysis plug-in"
-        Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
         Me.scNetworkAnalysis.Panel1.ResumeLayout(False)
         Me.scNetworkAnalysis.Panel2.ResumeLayout(False)
         Me.scNetworkAnalysis.Panel2.PerformLayout()
