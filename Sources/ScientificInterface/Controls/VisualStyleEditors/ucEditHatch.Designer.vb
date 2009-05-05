@@ -28,10 +28,10 @@ Namespace Controls
             Me.nudBlue = New System.Windows.Forms.NumericUpDown
             Me.nudGreen = New System.Windows.Forms.NumericUpDown
             Me.nudRed = New System.Windows.Forms.NumericUpDown
-            Me.tbAlpha = New ucSlider
-            Me.tbBlue = New ucSlider
-            Me.tbGreen = New ucSlider
-            Me.tbRed = New ucSlider
+            Me.tbAlpha = New ScientificInterfaceShared.Controls.ucSlider
+            Me.tbBlue = New ScientificInterfaceShared.Controls.ucSlider
+            Me.tbGreen = New ScientificInterfaceShared.Controls.ucSlider
+            Me.tbRed = New ScientificInterfaceShared.Controls.ucSlider
             Me.pbBrush = New System.Windows.Forms.Panel
             Me.plForeColor = New System.Windows.Forms.Panel
             Me.lbAlpha = New System.Windows.Forms.Label
@@ -48,7 +48,7 @@ Namespace Controls
             'nudAlpha
             '
             Me.nudAlpha.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nudAlpha.Location = New System.Drawing.Point(286, 70)
+            Me.nudAlpha.Location = New System.Drawing.Point(289, 70)
             Me.nudAlpha.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudAlpha.Name = "nudAlpha"
             Me.nudAlpha.Size = New System.Drawing.Size(54, 20)
@@ -57,7 +57,7 @@ Namespace Controls
             'nudBlue
             '
             Me.nudBlue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nudBlue.Location = New System.Drawing.Point(286, 47)
+            Me.nudBlue.Location = New System.Drawing.Point(289, 47)
             Me.nudBlue.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudBlue.Name = "nudBlue"
             Me.nudBlue.Size = New System.Drawing.Size(54, 20)
@@ -66,7 +66,7 @@ Namespace Controls
             'nudGreen
             '
             Me.nudGreen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nudGreen.Location = New System.Drawing.Point(286, 24)
+            Me.nudGreen.Location = New System.Drawing.Point(289, 24)
             Me.nudGreen.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudGreen.Name = "nudGreen"
             Me.nudGreen.Size = New System.Drawing.Size(54, 20)
@@ -75,7 +75,7 @@ Namespace Controls
             'nudRed
             '
             Me.nudRed.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.nudRed.Location = New System.Drawing.Point(286, 0)
+            Me.nudRed.Location = New System.Drawing.Point(289, 0)
             Me.nudRed.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudRed.Name = "nudRed"
             Me.nudRed.Size = New System.Drawing.Size(54, 20)
@@ -85,11 +85,11 @@ Namespace Controls
             '
             Me.tbAlpha.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.tbAlpha.Location = New System.Drawing.Point(124, 70)
+            Me.tbAlpha.Location = New System.Drawing.Point(120, 70)
             Me.tbAlpha.Maximum = 255
             Me.tbAlpha.Minimum = 0
             Me.tbAlpha.Name = "tbAlpha"
-            Me.tbAlpha.Size = New System.Drawing.Size(156, 20)
+            Me.tbAlpha.Size = New System.Drawing.Size(163, 20)
             Me.tbAlpha.TabIndex = 28
             Me.tbAlpha.Value = 50
             '
@@ -97,11 +97,11 @@ Namespace Controls
             '
             Me.tbBlue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.tbBlue.Location = New System.Drawing.Point(124, 47)
+            Me.tbBlue.Location = New System.Drawing.Point(120, 47)
             Me.tbBlue.Maximum = 255
             Me.tbBlue.Minimum = 0
             Me.tbBlue.Name = "tbBlue"
-            Me.tbBlue.Size = New System.Drawing.Size(156, 20)
+            Me.tbBlue.Size = New System.Drawing.Size(163, 20)
             Me.tbBlue.TabIndex = 25
             Me.tbBlue.Value = 50
             '
@@ -109,11 +109,11 @@ Namespace Controls
             '
             Me.tbGreen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.tbGreen.Location = New System.Drawing.Point(124, 24)
+            Me.tbGreen.Location = New System.Drawing.Point(120, 24)
             Me.tbGreen.Maximum = 255
             Me.tbGreen.Minimum = 0
             Me.tbGreen.Name = "tbGreen"
-            Me.tbGreen.Size = New System.Drawing.Size(156, 20)
+            Me.tbGreen.Size = New System.Drawing.Size(163, 20)
             Me.tbGreen.TabIndex = 22
             Me.tbGreen.Value = 50
             '
@@ -121,11 +121,11 @@ Namespace Controls
             '
             Me.tbRed.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.tbRed.Location = New System.Drawing.Point(124, 0)
+            Me.tbRed.Location = New System.Drawing.Point(120, 0)
             Me.tbRed.Maximum = 255
             Me.tbRed.Minimum = 0
             Me.tbRed.Name = "tbRed"
-            Me.tbRed.Size = New System.Drawing.Size(156, 23)
+            Me.tbRed.Size = New System.Drawing.Size(163, 23)
             Me.tbRed.TabIndex = 19
             Me.tbRed.Value = 50
             '
@@ -134,7 +134,7 @@ Namespace Controls
             Me.pbBrush.BackColor = System.Drawing.SystemColors.Control
             Me.pbBrush.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.pbBrush.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.pbBrush.Location = New System.Drawing.Point(3, 3)
+            Me.pbBrush.Location = New System.Drawing.Point(0, 0)
             Me.pbBrush.Name = "pbBrush"
             Me.pbBrush.Size = New System.Drawing.Size(36, 36)
             Me.pbBrush.TabIndex = 15
@@ -145,7 +145,7 @@ Namespace Controls
             Me.plForeColor.BackColor = System.Drawing.SystemColors.Control
             Me.plForeColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.plForeColor.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.plForeColor.Location = New System.Drawing.Point(45, 3)
+            Me.plForeColor.Location = New System.Drawing.Point(42, 0)
             Me.plForeColor.Name = "plForeColor"
             Me.plForeColor.Size = New System.Drawing.Size(22, 22)
             Me.plForeColor.TabIndex = 16
@@ -154,7 +154,7 @@ Namespace Controls
             'lbAlpha
             '
             Me.lbAlpha.AutoSize = True
-            Me.lbAlpha.Location = New System.Drawing.Point(86, 72)
+            Me.lbAlpha.Location = New System.Drawing.Point(83, 72)
             Me.lbAlpha.Name = "lbAlpha"
             Me.lbAlpha.Size = New System.Drawing.Size(37, 13)
             Me.lbAlpha.TabIndex = 27
@@ -163,7 +163,7 @@ Namespace Controls
             'lbBlue
             '
             Me.lbBlue.AutoSize = True
-            Me.lbBlue.Location = New System.Drawing.Point(87, 49)
+            Me.lbBlue.Location = New System.Drawing.Point(84, 49)
             Me.lbBlue.Name = "lbBlue"
             Me.lbBlue.Size = New System.Drawing.Size(31, 13)
             Me.lbBlue.TabIndex = 24
@@ -172,7 +172,7 @@ Namespace Controls
             'lbGreen
             '
             Me.lbGreen.AutoSize = True
-            Me.lbGreen.Location = New System.Drawing.Point(87, 26)
+            Me.lbGreen.Location = New System.Drawing.Point(84, 26)
             Me.lbGreen.Name = "lbGreen"
             Me.lbGreen.Size = New System.Drawing.Size(39, 13)
             Me.lbGreen.TabIndex = 21
@@ -181,7 +181,7 @@ Namespace Controls
             'lbRed
             '
             Me.lbRed.AutoSize = True
-            Me.lbRed.Location = New System.Drawing.Point(86, 3)
+            Me.lbRed.Location = New System.Drawing.Point(83, 3)
             Me.lbRed.Name = "lbRed"
             Me.lbRed.Size = New System.Drawing.Size(30, 13)
             Me.lbRed.TabIndex = 18
@@ -192,7 +192,7 @@ Namespace Controls
             Me.plBackColor.BackColor = System.Drawing.SystemColors.Control
             Me.plBackColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.plBackColor.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.plBackColor.Location = New System.Drawing.Point(59, 17)
+            Me.plBackColor.Location = New System.Drawing.Point(56, 14)
             Me.plBackColor.Name = "plBackColor"
             Me.plBackColor.Size = New System.Drawing.Size(22, 22)
             Me.plBackColor.TabIndex = 17
@@ -218,7 +218,7 @@ Namespace Controls
             Me.Controls.Add(Me.lbRed)
             Me.Controls.Add(Me.plBackColor)
             Me.Name = "ucEditHatch"
-            Me.Size = New System.Drawing.Size(343, 97)
+            Me.Size = New System.Drawing.Size(343, 92)
             CType(Me.nudAlpha, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.nudBlue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.nudGreen, System.ComponentModel.ISupportInitialize).EndInit()

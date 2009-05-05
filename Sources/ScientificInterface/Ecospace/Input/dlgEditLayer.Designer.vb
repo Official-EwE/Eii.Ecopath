@@ -37,19 +37,23 @@ Partial Class dlgEditLayer
             Me.m_plEditVisualStyle = New System.Windows.Forms.Panel
             Me.m_tcLayerView = New System.Windows.Forms.TabControl
             Me.m_tbAppearance = New System.Windows.Forms.TabPage
+            Me.m_scDetails = New System.Windows.Forms.SplitContainer
+            Me.lblDescription = New System.Windows.Forms.Label
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblWeight = New System.Windows.Forms.Label
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_nudWeight = New System.Windows.Forms.NumericUpDown
             Me.lblAppearance = New System.Windows.Forms.Label
-            Me.lblDescription = New System.Windows.Forms.Label
             Me.m_tpData = New System.Windows.Forms.TabPage
             Me.m_lblStaticData = New System.Windows.Forms.Label
             Me.m_grid = New ScientificInterface.gridLayerData
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tbAppearance.SuspendLayout()
+            Me.m_scDetails.Panel1.SuspendLayout()
+            Me.m_scDetails.Panel2.SuspendLayout()
+            Me.m_scDetails.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpData.SuspendLayout()
@@ -133,14 +137,33 @@ Partial Class dlgEditLayer
             '
             'm_tbAppearance
             '
-            Me.m_tbAppearance.Controls.Add(Me.m_tlpDetails)
-            Me.m_tbAppearance.Controls.Add(Me.m_plEditVisualStyle)
-            Me.m_tbAppearance.Controls.Add(Me.lblAppearance)
-            Me.m_tbAppearance.Controls.Add(Me.lblDescription)
+            Me.m_tbAppearance.Controls.Add(Me.m_scDetails)
             Me.m_tbAppearance.Controls.Add(Me.pnBasemap)
             resources.ApplyResources(Me.m_tbAppearance, "m_tbAppearance")
             Me.m_tbAppearance.Name = "m_tbAppearance"
             Me.m_tbAppearance.UseVisualStyleBackColor = True
+            '
+            'm_scDetails
+            '
+            resources.ApplyResources(Me.m_scDetails, "m_scDetails")
+            Me.m_scDetails.Name = "m_scDetails"
+            '
+            'm_scDetails.Panel1
+            '
+            Me.m_scDetails.Panel1.Controls.Add(Me.lblDescription)
+            Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpDetails)
+            '
+            'm_scDetails.Panel2
+            '
+            Me.m_scDetails.Panel2.Controls.Add(Me.lblAppearance)
+            Me.m_scDetails.Panel2.Controls.Add(Me.m_plEditVisualStyle)
+            '
+            'lblDescription
+            '
+            resources.ApplyResources(Me.lblDescription, "lblDescription")
+            Me.lblDescription.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.lblDescription.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+            Me.lblDescription.Name = "lblDescription"
             '
             'm_tlpDetails
             '
@@ -182,19 +205,12 @@ Partial Class dlgEditLayer
             Me.lblAppearance.ForeColor = System.Drawing.SystemColors.ButtonHighlight
             Me.lblAppearance.Name = "lblAppearance"
             '
-            'lblDescription
-            '
-            resources.ApplyResources(Me.lblDescription, "lblDescription")
-            Me.lblDescription.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblDescription.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-            Me.lblDescription.Name = "lblDescription"
-            '
             'm_tpData
             '
             Me.m_tpData.Controls.Add(Me.m_lblStaticData)
-            Me.m_tpData.Controls.Add(Me.m_grid)
             Me.m_tpData.Controls.Add(Me.m_btnDataExport)
             Me.m_tpData.Controls.Add(Me.m_btnDataImport)
+            Me.m_tpData.Controls.Add(Me.m_grid)
             resources.ApplyResources(Me.m_tpData, "m_tpData")
             Me.m_tpData.Name = "m_tpData"
             Me.m_tpData.UseVisualStyleBackColor = True
@@ -247,6 +263,9 @@ Partial Class dlgEditLayer
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_tcLayerView.ResumeLayout(False)
             Me.m_tbAppearance.ResumeLayout(False)
+            Me.m_scDetails.Panel1.ResumeLayout(False)
+            Me.m_scDetails.Panel2.ResumeLayout(False)
+            Me.m_scDetails.ResumeLayout(False)
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).EndInit()
@@ -278,6 +297,7 @@ Partial Class dlgEditLayer
         Friend WithEvents m_lblDescription As System.Windows.Forms.Label
         Friend WithEvents m_lblWeight As System.Windows.Forms.Label
         Friend WithEvents m_nudWeight As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
 
     End Class
 End Namespace

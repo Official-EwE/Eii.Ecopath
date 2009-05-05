@@ -24,7 +24,7 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_glyphSelect = New ucGlyphSelect
+            Me.m_glyphSelect = New ScientificInterfaceShared.Controls.ucGlyphSelect
             Me.btnImport = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
@@ -35,12 +35,12 @@ Namespace Controls
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_glyphSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_glyphSelect.GlyphSize = New System.Drawing.Size(40, 25)
-            Me.m_glyphSelect.Location = New System.Drawing.Point(3, 3)
+            Me.m_glyphSelect.Location = New System.Drawing.Point(0, 0)
             Me.m_glyphSelect.MaxImageSize = New System.Drawing.Size(100, 100)
             Me.m_glyphSelect.Name = "m_glyphSelect"
             Me.m_glyphSelect.SelectedImage = Nothing
             Me.m_glyphSelect.SelectedIndex = -1
-            Me.m_glyphSelect.Size = New System.Drawing.Size(235, 158)
+            Me.m_glyphSelect.Size = New System.Drawing.Size(307, 135)
             Me.m_glyphSelect.TabIndex = 2
             Me.m_glyphSelect.TabStop = False
             '
@@ -49,7 +49,7 @@ Namespace Controls
             Me.btnImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.btnImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
             Me.btnImport.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.btnImport.Location = New System.Drawing.Point(244, 138)
+            Me.btnImport.Location = New System.Drawing.Point(247, 141)
             Me.btnImport.Name = "btnImport"
             Me.btnImport.Size = New System.Drawing.Size(60, 23)
             Me.btnImport.TabIndex = 1
