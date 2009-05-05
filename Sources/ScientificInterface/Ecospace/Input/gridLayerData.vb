@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridLayerData.vb,v $
+' Revision 1.3  2009/05/05 15:09:30  jeroens
+' Removed cEcospaceBasemapLayer variables
+'
 ' Revision 1.2  2008/11/20 15:18:29  jeroens
 ' Layer ReadOnly state properly handled
 '
@@ -234,11 +237,13 @@ Public Class gridLayerData
     Private m_bm As BehaviorModels.IBehaviorModel = New EndEditHandler(Me)
 
     Private m_core As cCore = Nothing
+    Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cLayer = Nothing
 
     Public Sub New()
         MyBase.New()
         Me.m_core = cCore.GetInstance()
+        Me.m_basemap = Me.m_core.EcospaceBasemap
     End Sub
 
     Protected Overrides Function DefaultDockStyle() As System.Windows.Forms.DockStyle
@@ -247,7 +252,7 @@ Public Class gridLayerData
 
     Protected Overrides Sub InitLayout()
         If Me.m_layer Is Nothing Then Return
-        Me.Redim(Me.m_layer.Data.InRow + 1, Me.m_layer.Data.InCol + 1)
+        Me.Redim(Me.m_basemap.InRow + 1, Me.m_basemap.InCol + 1)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -266,9 +271,9 @@ Public Class gridLayerData
         ' Grab the data
         data = Me.m_layer.Data
 
-        Me.Redim(1, data.InCol + 1)
+        Me.Redim(1, Me.m_basemap.InCol + 1)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        For iCol As Integer = 1 To data.InCol
+        For iCol As Integer = 1 To Me.m_basemap.InCol
             Me(0, iCol) = New EwEColumnHeaderCell(CStr(iCol))
         Next
 
@@ -304,13 +309,13 @@ Public Class gridLayerData
         Me.RowsCount = 1
 
         ' Create cells
-        For iRow As Integer = 1 To data.InRow
+        For iRow As Integer = 1 To Me.m_basemap.InRow
             ' Add row
             Me.AddRow()
             ' Add row header cell
             Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             ' Add row value cells
-            For iCol As Integer = 1 To data.InCol
+            For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Properly prepare cell
                 If tCell Is GetType(Integer) Then
                     cell = New EwECell(CInt(data.Cell(iRow, iCol)), tCell)
@@ -373,8 +378,8 @@ Public Class gridLayerData
 
         data = layTarget.Data
 
-        For iRow As Integer = 1 To m_layer.Data.InRow
-            For iCol As Integer = 1 To layTarget.Data.InCol
+        For iRow As Integer = 1 To Me.m_basemap.InRow
+            For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Get original value
                 sOrg = data.Cell(iRow, iCol)
                 ' Get grid value

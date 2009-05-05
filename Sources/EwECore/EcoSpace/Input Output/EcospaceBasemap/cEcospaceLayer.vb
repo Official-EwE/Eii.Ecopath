@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceLayer.vb,v $
+' Revision 1.3  2009/05/05 15:09:29  jeroens
+' Removed cEcospaceBasemapLayer variables
+'
 ' Revision 1.2  2009/01/16 18:30:23  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -77,9 +80,12 @@ Public MustInherit Class cEcospaceLayer
     ''' from the manager.</param>
     ''' <param name="iIndex">Secundary index for obtaining the data.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByRef theCore As cCore, ByVal iDBID As Integer, ByVal manager As cEcospaceBasemap, _
-            ByVal vnData As eVarNameFlags, ByVal iIndex As Integer, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Protected Sub New(ByRef theCore As cCore, _
+                      ByVal iDBID As Integer, _
+                      ByVal manager As cEcospaceBasemap, _
+                      ByVal vnData As eVarNameFlags, _
+                      ByVal iIndex As Integer, _
+                      Optional ByVal meta As cVariableMetaData = Nothing)
 
         Me.New(theCore, iDBID, meta)
 
@@ -96,25 +102,19 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="theCore">The core to notify of changes.</param>
     ''' <param name="data">The data to link to this layer.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByRef theCore As cCore, ByVal data As Object, _
-            ByVal iInRow As Integer, ByVal iInCol As Integer, _
-            ByVal sCellLength As Single, ByVal sLatitude As Single, ByVal sLongitude As Single, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Protected Sub New(ByRef theCore As cCore, _
+                      ByVal data As Object, _
+                      Optional ByVal meta As cVariableMetaData = Nothing)
 
         Me.New(theCore, cCore.NULL_VALUE, meta)
 
         Me.m_data = data
-        Me.AllowValidation = False
-        Me.InRow = iInRow
-        Me.InCol = iInCol
-        Me.CellLength = sCellLength
-        Me.Latitude = sLatitude
-        Me.Longitude = sLongitude
-        Me.AllowValidation = True
 
     End Sub
 
-    Private Sub New(ByRef theCore As cCore, ByVal iDBID As Integer, ByVal metaCellData As cVariableMetaData)
+    Private Sub New(ByRef theCore As cCore, _
+                    ByVal iDBID As Integer, _
+                    ByVal metaCellData As cVariableMetaData)
 
         MyBase.New(theCore)
 
@@ -127,44 +127,11 @@ Public MustInherit Class cEcospaceLayer
             Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.m_mdData = metaCellData
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
-
-            ' InRow
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' InCol
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' CellLength
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' Latitude (top-left coord of layer)
-            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' Longitude (top-left coord of layer)
-            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            'set status flags to default values
             ResetStatusFlags()
 
         Catch ex As Exception
-            Debug.Assert(False, "Error creating new cEcospaceBasemap.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
+            Debug.Assert(False, "Error creating new cEcospaceLayer.")
+            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayer. Error: " & ex.Message)
         End Try
 
     End Sub
@@ -174,7 +141,8 @@ Public MustInherit Class cEcospaceLayer
 #Region " Cell manipulation "
 
     Protected Function ValidateCellPosition(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
-        Return iRow > 0 And iRow <= Me.InRow And iCol > 0 And iCol <= Me.InCol
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Return iRow > 0 And iRow <= bm.InRow And iCol > 0 And iCol <= bm.InCol
     End Function
 
     Protected Function ValidateCellValue(ByVal sValue As Single) As Boolean
@@ -208,146 +176,6 @@ Public MustInherit Class cEcospaceLayer
     Public MustOverride Sub Invalidate()
 
 #End Region ' Cell manipulation
-
-#Region " Variables by dot (.) operator "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the <see cref="cEcospaceDataStructures.Inrow">InRow</see>
-    ''' value for this scenario
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property InRow() As Integer
-
-        Get
-            Dim iVal As Integer = CInt(GetVariable(eVarNameFlags.InRow))
-            If iVal <= 0 Then
-                If Me.m_manager IsNot Nothing Then
-                    iVal = Me.m_manager.InRow
-                End If
-            End If
-            Return iVal
-        End Get
-
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.InRow, value)
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the <see cref="cEcospaceDataStructures.Incol">InCol</see>
-    ''' value for this scenario
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property InCol() As Integer
-
-        Get
-            Dim iVal As Integer = CInt(GetVariable(eVarNameFlags.InCol))
-            If iVal <= 0 Then
-                If Me.m_manager IsNot Nothing Then
-                    iVal = Me.m_manager.InCol
-                End If
-            End If
-            Return iVal
-        End Get
-
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.InCol, value)
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
-    ''' value for this scenario
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property CellLength() As Single
-
-        Get
-            Dim sVal As Single = CSng(GetVariable(eVarNameFlags.CellLength))
-            If sVal <= 0 Then
-                If Me.m_manager IsNot Nothing Then
-                    sVal = Me.m_manager.CellLength
-                End If
-            End If
-            Return sVal
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CellLength, value)
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the TopLeft latitude value for this layer.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Latitude() As Single
-
-        Get
-            Dim sVal As Single = CSng(GetVariable(eVarNameFlags.Latitude))
-            If sVal <= 0 Then
-                If Me.m_manager IsNot Nothing Then
-                    sVal = Me.m_manager.Latitude
-                End If
-            End If
-            Return sVal
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Latitude, value)
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the TopLeft longitude value for this layer.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Longitude() As Single
-
-        Get
-            Dim sVal As Single = CSng(GetVariable(eVarNameFlags.Longitude))
-            If sVal <= 0 Then
-                If Me.m_manager IsNot Nothing Then
-                    sVal = Me.m_manager.Longitude
-                End If
-            End If
-            Return sVal
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Longitude, value)
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the top left position for this layer, expressed in (lon, lat)
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Position() As Drawing.PointF
-
-        Get
-            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)), CSng(GetVariable(eVarNameFlags.Latitude)))
-        End Get
-
-        Set(ByVal value As Drawing.PointF)
-            SetVariable(eVarNameFlags.Longitude, value.X)
-            SetVariable(eVarNameFlags.Latitude, value.Y)
-        End Set
-
-    End Property
-
-#End Region ' Variables by dot (.) operator
 
 End Class
 

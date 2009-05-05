@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.38  2009/05/05 15:09:30  jeroens
+' Removed cEcospaceBasemapLayer variables
+'
 ' Revision 1.37  2009/04/07 20:02:08  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -541,9 +544,7 @@ Namespace Ecospace
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
                 ldataTmp = New cEcospaceIntegerNxNLayer(Me.m_core, _
-                                    Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
-                                    Me.m_basemap.InRow, Me.m_basemap.InCol, Me.m_basemap.CellLength, _
-                                    Me.m_basemap.Latitude, Me.m_basemap.Longitude)
+                                    Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cLayer(ldataTmp, Nothing, Nothing)
                 ' Give the layer a savvy name
@@ -1110,9 +1111,7 @@ Namespace Ecospace
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
                 ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_aiFeedback, _
-                                        Me.m_basemap.InRow, Me.m_basemap.InCol, Me.m_basemap.CellLength, _
-                                        Me.m_basemap.Latitude, Me.m_basemap.Longitude)
+                datalayerTemp = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_aiFeedback)
 
                 Select Case Me.SearchType
 

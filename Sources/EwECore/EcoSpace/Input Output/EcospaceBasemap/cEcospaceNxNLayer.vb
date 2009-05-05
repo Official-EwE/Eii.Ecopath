@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceNxNLayer.vb,v $
+' Revision 1.4  2009/05/05 15:09:30  jeroens
+' Removed cEcospaceBasemapLayer variables
+'
 ' Revision 1.3  2008/11/04 05:42:31  jeroens
 ' Moved migration layer to separate file
 '
@@ -84,10 +87,15 @@ Public Class cEcospaceIntegerNxNLayer
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal iDBID As Integer, ByVal manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal iDBID As Integer, _
+                   ByVal manager As cEcospaceBasemap, _
+                   ByVal varName As eVarNameFlags, _
+                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
+                   Optional ByVal meta As cVariableMetaData = Nothing)
+
         MyBase.New(theCore, iDBID, manager, varName, iIndex, meta)
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -97,11 +105,12 @@ Public Class cEcospaceIntegerNxNLayer
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByRef data As Integer(,), _
-            ByVal iInRow As Integer, ByVal iInCol As Integer, _
-            ByVal sCellLength As Single, ByVal sLatitude As Single, ByVal sLongitude As Single, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
-        MyBase.New(theCore, CObj(data), iInRow, iInCol, sCellLength, sLatitude, sLongitude, meta)
+    Public Sub New(ByRef theCore As cCore, _
+                   ByRef data As Integer(,), _
+                   Optional ByVal meta As cVariableMetaData = Nothing)
+
+        MyBase.New(theCore, CObj(data), meta)
+
     End Sub
 
 #End Region ' Construction
@@ -150,17 +159,20 @@ Public Class cEcospaceIntegerNxNLayer
 #Region " Internals "
 
     Protected Overridable Sub RecalcMinMax()
+
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))
         Me.m_iMaxValue = Integer.MinValue
         Me.m_iMinValue = Integer.MaxValue
-        For iRow As Integer = 1 To Me.InRow
-            For iCol As Integer = 1 To Me.InCol
+        For iRow As Integer = 1 To bm.InRow
+            For iCol As Integer = 1 To bm.InCol
                 If d(iRow, iCol) <> cCore.NULL_VALUE Then
                     Me.m_iMaxValue = Math.Max(d(iRow, iCol), Me.m_iMaxValue)
                     Me.m_iMinValue = Math.Min(d(iRow, iCol), Me.m_iMinValue)
                 End If
             Next iCol
         Next iRow
+
     End Sub
 
 #End Region ' Internals
@@ -217,10 +229,15 @@ Public Class cEcospaceSingleNxNLayer
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal iDBID As Integer, ByRef manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal iDBID As Integer, _
+                   ByVal manager As cEcospaceBasemap, _
+                   ByVal varName As eVarNameFlags, _
+                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
+                   Optional ByVal meta As cVariableMetaData = Nothing)
+
         MyBase.New(theCore, iDBID, manager, varName, iIndex, meta)
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -231,10 +248,10 @@ Public Class cEcospaceSingleNxNLayer
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByRef theCore As cCore, ByRef data As Single(,), _
-            ByVal iInRow As Integer, ByVal iInCol As Integer, _
-            ByVal sCellLength As Single, ByVal sLatitude As Single, ByVal sLongitude As Single, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
-        MyBase.New(theCore, CObj(data), iInRow, iInCol, sCellLength, sLatitude, sLongitude, meta)
+                   Optional ByVal meta As cVariableMetaData = Nothing)
+
+        MyBase.New(theCore, CObj(data), meta)
+
     End Sub
 
 #End Region ' Construction
@@ -282,17 +299,20 @@ Public Class cEcospaceSingleNxNLayer
 #Region " Internals "
 
     Protected Overridable Sub RecalcMinMax()
+
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim d As Single(,) = DirectCast(Me.Data, Single(,))
         Me.m_sMaxValue = Single.MinValue
         Me.m_sMinValue = Single.MaxValue
-        For iRow As Integer = 1 To Me.InRow
-            For iCol As Integer = 1 To Me.InCol
+        For iRow As Integer = 1 To bm.InRow
+            For iCol As Integer = 1 To bm.InCol
                 If d(iRow, iCol) <> cCore.NULL_VALUE Then
                     Me.m_sMaxValue = Math.Max(d(iRow, iCol), Me.m_sMaxValue)
                     Me.m_sMinValue = Math.Min(d(iRow, iCol), Me.m_sMinValue)
                 End If
             Next iCol
         Next iRow
+
     End Sub
 
 #End Region ' Internals

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcospaceLayerMigration.vb,v $
+' Revision 1.3  2009/05/05 15:09:29  jeroens
+' Removed cEcospaceBasemapLayer variables
+'
 ' Revision 1.2  2008/11/14 21:43:29  jeroens
 ' Fixed  crash on migration data outside range of the basemap
 '
@@ -117,13 +120,15 @@ Public Class cEcospaceLayerMigration
     End Function
 
     Private Sub Refresh()
+
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim aiPrefRow As Integer(,) = Me.PrefRow
         Dim aiPrefCol As Integer(,) = Me.PrefCol
 
-        ReDim m_asData(Me.InRow, Me.InCol)
+        ReDim m_asData(bm.InRow, bm.InCol)
 
-        For iRowTest As Integer = 1 To Me.InRow
-            For iColTest As Integer = 1 To Me.InCol
+        For iRowTest As Integer = 1 To bm.InRow
+            For iColTest As Integer = 1 To bm.InCol
                 Me.m_asData(iRowTest, iColTest) = cCore.NULL_VALUE
             Next
         Next
