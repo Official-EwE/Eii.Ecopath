@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.52  2009/05/06 12:19:57  jeroens
+' Renamed key datatype enum
+'
 ' Revision 1.51  2009/04/27 02:39:57  jeroens
 ' Discard unsaved changes when switching scenarios
 '
@@ -7894,7 +7897,7 @@ Public Class cDBDataSource
                 l = ecospaceDS.ImportanceLayers(iLayer)
 
                 ' Try to find existing row
-                objKeys(1) = idm.GetID(eDataTypes.EcospaceImportanceLayer, l.DBID)
+                objKeys(1) = idm.GetID(eDataTypes.EcospaceLayerImportance, l.DBID)
                 drow = dt.Rows.Find(objKeys)
 
                 bNewRow = (iScenarioIDSrc <> iScenarioIDdest) Or (drow Is Nothing)
@@ -7903,7 +7906,7 @@ Public Class cDBDataSource
                     drow = writer.NewRow()
                     drow("ScenarioID") = iScenarioIDdest
                     drow("LayerID") = lID
-                    idm.Add(eDataTypes.EcospaceImportanceLayer, l.DBID, lID)
+                    idm.Add(eDataTypes.EcospaceLayerImportance, l.DBID, lID)
                     lID += 1
                 Else
                     drow.BeginEdit()
@@ -7957,7 +7960,7 @@ Public Class cDBDataSource
             For iLayer As Integer = 0 To ecospaceDS.nImportanceLayers - 1
 
                 l = ecospaceDS.ImportanceLayers(iLayer)
-                lID = idm.GetID(eDataTypes.EcospaceImportanceLayer, l.DBID)
+                lID = idm.GetID(eDataTypes.EcospaceLayerImportance, l.DBID)
 
                 For iRow = 1 To ecospaceDS.Inrow
                     For iCol = 1 To ecospaceDS.InCol
@@ -7968,7 +7971,7 @@ Public Class cDBDataSource
                             drow = writer.NewRow()
                             ' Store simple values
                             drow("ScenarioID") = iScenarioID
-                            drow("LayerID") = idm.GetID(eDataTypes.EcospaceImportanceLayer, lID)
+                            drow("LayerID") = idm.GetID(eDataTypes.EcospaceLayerImportance, lID)
                             drow("InRow") = iRow
                             drow("InCol") = iCol
                             drow("Weight") = l.Data(iRow, iCol)
