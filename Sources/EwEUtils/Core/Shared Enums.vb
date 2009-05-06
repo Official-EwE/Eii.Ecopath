@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.53  2009/05/06 12:53:36  jeroens
+' Datatypes have fixed values
+' Added Ecospace layer enums
+'
 ' Revision 1.52  2009/04/29 17:43:40  joeb
 ' Added Relative Biomass to cEcosimGroupOutputs
 '
@@ -1228,262 +1232,269 @@ Namespace Core
     ''' <summary>
     ''' Enumerated type that indicates a class of data in the EwE core.
     ''' </summary>
+    ''' <remarks>
+    ''' These enums have fixed values since values may be used to identify 
+    ''' items in the EwE6 database system.
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Enum eDataTypes
 
         ''' <summary>
         ''' Data type is not specified.
         ''' </summary>
-        NotSet
+        NotSet = 0
 
         ''' <summary>
         ''' Data belongs to the EwE model.
         ''' </summary>
-        EwEModel
+        EwEModel = 1
 
         ''' <summary>
         ''' Data belongs to the Ecopath group inputs,
         ''' which are provided to perform a parameter estimation run. 
         ''' </summary>
-        EcoPathGroupInput
+        EcoPathGroupInput = 2
 
         ''' <summary>
         ''' Data belongs to the Ecopath group outputs,
         ''' which are produced by a parameter estimation run.
         ''' </summary>
-        EcoPathGroupOutput
+        EcoPathGroupOutput = 3
 
         ''' <summary>
         ''' Data belongs to the Ecopath fleet inputs,
         ''' which are provided for a parameter estimation run.
         ''' </summary>
-        FleetInput
+        FleetInput = 4
 
         ''' <summary>
         ''' Data belongs to an Ecosim scenario.
         ''' </summary>
-        EcoSimScenario
+        EcoSimScenario = 5
 
         ''' <summary>
         ''' Data belongs to the Ecosim model parameters,
         ''' which instruct how to run an Ecosim scenario.
         ''' </summary>
-        EcoSimModelParameter
+        EcoSimModelParameter = 6
 
         ''' <summary>
         ''' Data belongs to an Ecosim group input.
         ''' </summary>
-        EcoSimGroupInput
+        EcoSimGroupInput = 7
 
         ''' <summary>
         ''' Data belongs to a Time Forcing Function.
         ''' </summary>
-        Forcing
+        Forcing = 8
 
         ''' <summary>
         ''' Data belongs to an Egg Production Forcing Function.
         ''' </summary>
-        EggProd
+        EggProd = 9
 
         ''' <summary>
         ''' Data belongs to an Mediation Function.
         ''' </summary>
-        Mediation
+        Mediation = 10
 
         ''' <summary>
         ''' Data belongs to an Fishing Rate shape.
         ''' </summary>
-        FishingEffort
+        FishingEffort = 11
 
         ''' <summary>
         ''' Data belongs to an Fishing Mortality shape.
         ''' </summary>
-        FishMort
+        FishMort = 12
 
         ''' <summary>
         ''' Data belongs to an EwE multi-stanza configuration.
         ''' </summary>
-        Stanza 'jb June-14-06 added for Stanza data types
+        Stanza = 13 'jb June-14-06 added for Stanza data types
 
         ''' <summary>
         ''' Data belongs to an Ecospace scenario.
         ''' </summary>
-        EcoSpaceScenario
+        EcoSpaceScenario = 14
 
         ''' <summary>
         ''' Data belongs to an Ecospace habitat.
         ''' </summary>
-        EcospaceHabitat
+        EcospaceHabitat = 15
 
         ''' <summary>
         ''' Data belongs to an Ecospace region.
         ''' </summary>
-        EcospaceRegion
+        EcospaceRegion = 16
 
         ''' <summary>
         ''' Data belongs to an Ecospace group.
         ''' </summary>
-        EcospaceGroup
+        EcospaceGroup = 17
 
         ''' <summary>
         ''' Data belongs to an Ecospace fleet.
         ''' </summary>
-        EcospaceFleet
+        EcospaceFleet = 18
 
         ''' <summary>
         ''' Data belongs to an Ecospace MPA.
         ''' </summary>
-        EcospaceMPA
+        EcospaceMPA = 19
 
         ''' <summary>
         ''' Data belongs to the Ecospace model parameters,
         ''' which instruct how to run an Ecopace scenario.
         ''' </summary>
-        EcospaceModelParameter
+        EcospaceModelParameter = 20
 
         ''' <summary>
         ''' Data belongs to a cEcospaceModelBasemaps instance.
         ''' </summary>
-        EcospaceBasemap
-
-        ''' <summary>
-        ''' Data belongs to a cEcospaceModelBasemapLayer instance.
-        ''' </summary>
-        EcospaceBasemapLayer
+        EcospaceBasemap = 21
 
         ''' <summary>
         ''' Data belongs to a ecospace importance layer instance.
         ''' </summary>
-        EcospaceImportanceLayer
+        ''' <remarks>The enum value </remarks>
+        EcospaceLayerImportance = 22
 
         ''' <summary>
         ''' cPredPreyInteraction object
         ''' </summary>
-        PredPreyInteraction
+        PredPreyInteraction = 23
 
         ''' <summary>
-        ''' Time step results the currently running for Ecospace model
+        ''' Time step results of the currently running Ecospace model
         ''' </summary>
-        EcospaceTimestepResults
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        EcospaceGroupOuput
-
-        EcospaceFleetOuput
-
-        EcospaceRegionResults
+        EcospaceTimestepResults = 24
 
         ''' <summary>
         ''' 
         ''' </summary>
-        NetworkFlowOutput
+        EcospaceGroupOuput = 25
+
+        EcospaceFleetOuput = 26
+
+        EcospaceRegionResults = 27
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        NetworkFlowOutput = 28
 
         ''' <summary>
         ''' Data belongs to a cGroupTimeSeries instance.
         ''' </summary>
-        GroupTimeSeries
+        GroupTimeSeries = 29
 
         ''' <summary>
         ''' Data belongs to a cFleetTimeSeries instance.
         ''' </summary>
-        FleetTimeSeries
+        FleetTimeSeries = 30
 
         ''' <summary>
         ''' Data belongs to a Time Series Dataset instance.
         ''' </summary>
-        TimeSeriesDataset
+        TimeSeriesDataset = 31
 
         ''' <summary>
         ''' Ecosim Monte Carlo
         ''' </summary>
         ''' <remarks></remarks>
-        MonteCarlo
+        MonteCarlo = 32
 
         ''' <summary>
         ''' Data belongs to an Ecosim group output.
         ''' </summary>
-        EcoSimGroupOutput
-        EcosimFleetOutput
+        EcoSimGroupOutput = 33
+        EcosimFleetOutput = 34
 
-        FitToTimeSeries
+        FitToTimeSeries = 35
 
         ''' <summary>
         ''' Data belongs to an Ecotracer scenario
         ''' </summary>
-        EcotracerScenario
+        EcotracerScenario = 36
 
         ''' <summary>
         ''' Data belongs to Ecotracer model parameters
         ''' </summary>
-        EcotracerModelParameters
+        EcotracerModelParameters = 37
 
         ''' <summary>
         ''' Data belongs to an Ecotracer input group
         ''' </summary>
-        EcotracerGroupInput
-        EcotracerSimOutput
-        EcotracerSpaceOutput
+        EcotracerGroupInput = 38
+        EcotracerSimOutput = 39
+        EcotracerSpaceOutput = 40
 
         ''' <summary>Search Objectives </summary>
         '''<remarks>Search Objectives form the base for the shared search interface ISearchObjective used by Fishing Policy, Ecoseed and MSE </remarks>
-        SearchObjectiveManager
-        SearchObjectiveParameters
-        SearchObjectiveFleetInput
-        SearchObjectiveWeights
-        SearchObjectiveGroupInput
+        SearchObjectiveManager = 41
+        SearchObjectiveParameters = 42 ' Don't panic
+        SearchObjectiveFleetInput = 43
+        SearchObjectiveWeights = 44
+        SearchObjectiveGroupInput = 45
 
         ''' <summary> Fishing Policy (implements ISearchObjective) </summary>
         ''' <remarks>The Fishing Policy uses SearchObjectivexxxx data types as well </remarks>
-        FishingPolicyManager
-        FishingPolicyParameters
-        FishingPolicySearchBlocks
+        FishingPolicyManager = 46
+        FishingPolicyParameters = 47
+        FishingPolicySearchBlocks = 48
 
         ''' <summary> Ecoseed manager (implements ISearchObjective)  </summary>
-        MPAOptManager
+        MPAOptManager = 49
         'EcoSeedInput
-        MPAOptOuput
-        MPAOptParameters
+        MPAOptOuput = 50
+        MPAOptParameters = 51
 
         ''' <summary> Management Strategy Evaluator (implements ISearchObjective)  </summary>
-        MSEManager
-        MSEFleetInput
-        MSEGroupInput
-        MSEOutput
-        MSEParameters
+        MSEManager = 52
+        MSEFleetInput = 53
+        MSEGroupInput = 54
+        MSEOutput = 55
+        MSEParameters = 56
 
         ''' <summary>Pedigree</summary>
-        PedigreeLevel
+        PedigreeLevel = 57
 
         ''' <summary>Data types for the Game</summary>    
-        GameData
+        GameData = 58
 
         ''' <summary>Data types for Ecosim fisheries regulation</summary>    
-        EcosimFisheriesRegulation
+        EcosimFisheriesRegulation = 59
 
         ''' <summary>
         ''' Data belongs to Ecopath statistics.
         ''' </summary>
-        EcoPathStatistics
+        EcoPathStatistics = 60
 
         ''' <summary>
         ''' Data belongs to Ecosim statistics.
         ''' </summary>
-        EcoSimStatistics
+        EcoSimStatistics = 61
 
         ''' <summary>
         ''' Data belongs to Ecospace statistics.
         ''' </summary>
-        EcospaceStats
+        EcospaceStatistics = 62
+
+        ParticleSizeDistribution = 63
+
+        EcospaceLayerDepth = 64
+        EcospaceLayerMPA = 65
+        EcospaceLayerMPASeed = 66
+        EcospaceLayerHabitat = 67
+        EcospaceLayerRegion = 68
+        EcospaceLayerRelPP = 69
+        EcospaceLayerRelCin = 70
 
         ''' <summary>
         ''' Data belongs to an external source.
         ''' </summary>
-        ''' <remarks></remarks>
-        External
-
-        ParticleSizeDistribution
+        External = 777
 
     End Enum
 
