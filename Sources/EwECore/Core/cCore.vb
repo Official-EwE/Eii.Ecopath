@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.118  2009/05/06 13:46:07  jeroens
+' Ecospace layers have unique datatypes
+'
 ' Revision 1.117  2009/04/29 15:40:45  joeb
 ' Added Relative Biomass
 '
@@ -8359,7 +8362,7 @@ Public Class cCore
     ''' <summary>
     ''' Re-calculate Stanza variables from the new parameters in the cStanzaGroup object
     ''' </summary>
-    ''' <param name="StanzaGrp">cStanzaGroup object that contains the new parameters and will be populated with the new values</param>
+    ''' <param name="stanza">cStanzaGroup object that contains the new parameters and will be populated with the new values</param>
     ''' <returns>True if successfull. False otherwise.</returns>
     ''' <remarks>Calculates Biomass for all non leading stanzas, CB for non leading stanzas, WeightAtAge, NumberAtAge and BiomassAtAge.
     '''  It does not save the values or update the Ecopath variables that were affected. That is done via cStanzaGroup.Apply() </remarks>
@@ -9600,10 +9603,10 @@ Public Class cCore
                 Case eDataTypes.EcosimFisheriesRegulation
                     If bValidatedOk Then Me.UpdateEcosimFisheriesRegulation(idAffected)
 
-                Case eDataTypes.EcospaceBasemapLayer, eDataTypes.EcospaceBasemap
+                Case eDataTypes.EcospaceBasemap
                     If bValidatedOk Then Me.UpdateEcospaceBasemap()
 
-                Case eDataTypes.EcospaceImportanceLayer
+                Case eDataTypes.EcospaceLayerImportance
                     If bValidatedOk Then Me.UpdateEcospaceImportanceLayers()
 
                 Case eDataTypes.EcospaceModelParameter
@@ -10435,11 +10438,11 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
-                Case eDataTypes.EcospaceBasemapLayer
+                Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceBasemapLayer))
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
 
                 Case eDataTypes.EcospaceHabitat
