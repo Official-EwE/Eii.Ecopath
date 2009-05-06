@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.54  2009/05/06 18:38:07  jeroens
+' Added game moderator state
+'
 ' Revision 1.53  2009/05/06 12:53:36  jeroens
 ' Datatypes have fixed values
 ' Added Ecospace layer enums
@@ -1156,6 +1159,8 @@ Namespace Core
         GameModel
         ''' <summary>Game server run state.</summary>
         GameState
+        ''' <summary>Game client moderator state.</summary>
+        GameModeratorState
         ''' <summary>Items the client is allowed to show.</summary>
         GameViewVisibleItems
         ''' <summary>Items the client can request from the server.</summary>
