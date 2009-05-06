@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceLayerImportance.vb,v $
+' Revision 1.3  2009/05/06 12:33:00  jeroens
+' Added meaningful datatypes
+'
 ' Revision 1.2  2009/01/16 18:30:23  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -35,7 +38,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ===========================================================================
 Public Class cEcospaceLayerImportance
-    Inherits cEcospaceSingleNxNLayer
+    Inherits cEcospaceLayerSingleNxM
 
 #Region " Constructor "
 
@@ -50,7 +53,7 @@ Public Class cEcospaceLayerImportance
         Me.AllowValidation = False
 
         Try
-            m_dataType = eDataTypes.EcospaceImportanceLayer
+            m_dataType = eDataTypes.EcospaceLayerImportance
             m_coreComponent = eCoreComponentType.EcoSpace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)

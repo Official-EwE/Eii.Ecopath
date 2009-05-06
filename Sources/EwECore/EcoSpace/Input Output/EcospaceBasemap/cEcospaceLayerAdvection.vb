@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcospaceLayerAdvection.vb,v $
+' Revision 1.3  2009/05/06 12:33:00  jeroens
+' Added meaningful datatypes
+'
 ' Revision 1.2  2008/11/05 16:54:36  jeroens
 ' At least it compiles
 '
@@ -24,7 +27,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ===========================================================================
 Public Class cEcospaceLayerAdvection
-    Inherits cEcospaceSingleNxNLayer
+    Inherits cEcospaceLayerSingleNxM
 
 #Region " Construction "
 

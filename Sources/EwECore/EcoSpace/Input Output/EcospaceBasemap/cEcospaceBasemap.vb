@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.7  2009/05/06 12:32:59  jeroens
+' Added meaningful datatypes
+'
 ' Revision 1.6  2009/01/16 18:30:22  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -128,34 +131,34 @@ Public Class cEcospaceBasemap
 
             ' Depth layer
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerDepth, cCore.NULL_VALUE, meta)
+            layer = New cEcospaceLayerDepth(theCore, Me, meta)
             Me.Layers(eVarNameFlags.LayerDepth) = layer
 
             ' Habitat layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerHabitat, cCore.NULL_VALUE, meta)
+            layer = New cEcospaceLayerHabitat(theCore, Me, meta)
             Me.Layers(eVarNameFlags.LayerHabitat) = layer
 
             ' MPA layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerMPA)
+            layer = New cEcospaceLayerMPA(theCore, Me, meta)
             Me.Layers(eVarNameFlags.LayerMPA) = layer
 
             ' Region layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nRegions), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerRegion)
+            layer = New cEcospaceLayerRegion(theCore, Me)
             Me.Layers(eVarNameFlags.LayerRegion) = layer
 
             ' RelPP layer
-            layer = New cEcospaceSingleNxNLayer(theCore, Me, eVarNameFlags.LayerRelPP)
+            layer = New cEcospaceLayerRelPP(theCore, Me)
             Me.Layers(eVarNameFlags.LayerRelPP) = layer
 
             ' RelCin layer
-            layer = New cEcospaceSingleNxNLayer(theCore, Me, eVarNameFlags.LayerRelCin)
+            layer = New cEcospaceLayerSingleNxM(theCore, Me, eVarNameFlags.LayerRelCin)
             Me.Layers(eVarNameFlags.LayerRelCin) = layer
 
             ' MPA Seed
-            layer = New cEcospaceIntegerNxNLayer(theCore, Me, eVarNameFlags.LayerMPASeed)
+            layer = New cEcospaceLayerMPASeed(theCore, Me)
             Me.Layers(eVarNameFlags.LayerMPASeed) = layer
 
             ' Importance layers
@@ -211,6 +214,7 @@ Public Class cEcospaceBasemap
         Get
             Return CInt(GetVariable(eVarNameFlags.InCol))
         End Get
+
         Friend Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.InCol, value)
         End Set
@@ -304,6 +308,7 @@ Public Class cEcospaceBasemap
             End Try
         End Get
     End Property
+
 #End Region ' Variables by dot (.) operator
 
 #Region " Layer interface "
