@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.39  2009/05/06 13:14:42  jeroens
+' Renamed layer classes for consistency reasons
+'
 ' Revision 1.38  2009/05/05 15:09:30  jeroens
 ' Removed cEcospaceBasemapLayer variables
 '
@@ -531,7 +534,7 @@ Namespace Ecospace
             Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
             Dim lLayers As New List(Of cLayer)
             Dim layerTmp As cLayer = Nothing
-            Dim ldataTmp As cEcospaceIntegerNxNLayer = Nothing
+            Dim ldataTmp As cEcospaceLayerIntegerNxM = Nothing
             Dim iAreaClosed As Integer = 0
             Dim iNumResults As Integer = 0
 
@@ -543,7 +546,7 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceIntegerNxNLayer(Me.m_core, _
+                ldataTmp = New cEcospaceLayerIntegerNxM(Me.m_core, _
                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cLayer(ldataTmp, Nothing, Nothing)
@@ -1099,7 +1102,7 @@ Namespace Ecospace
         Private Sub InitMapFeedback()
 
             Dim strGroup As String = ""
-            Dim datalayerTemp As cEcospaceIntegerNxNLayer = Nothing
+            Dim datalayerTemp As cEcospaceLayerIntegerNxM = Nothing
             Dim l As cLayer = Nothing
             Dim alayers As cLayer() = Nothing
             Dim lRunStateLayers As New List(Of cLayer)
@@ -1111,7 +1114,7 @@ Namespace Ecospace
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
                 ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceIntegerNxNLayer(Me.m_core, Me.m_aiFeedback)
+                datalayerTemp = New cEcospaceLayerIntegerNxM(Me.m_core, Me.m_aiFeedback)
 
                 Select Case Me.SearchType
 
