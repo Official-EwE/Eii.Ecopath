@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceNxNLayer.vb,v $
+' Revision 1.5  2009/05/06 12:38:30  jeroens
+' Renamed classes for consistency reasons
+'
 ' Revision 1.4  2009/05/05 15:09:30  jeroens
 ' Removed cEcospaceBasemapLayer variables
 '
@@ -12,21 +15,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:21  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/08/26 18:51:14  jeroens
-' Added means to invalidate value range
-'
-' Revision 1.3  2008/08/12 22:15:26  jeroens
-' Layers can carry metadata to control what values are accepted into their data
-'
-' Revision 1.2  2008/08/11 18:37:09  jeroens
-' Custom layers now have basic map properties set via constructor
-'
-' Revision 1.1  2008/08/11 02:00:35  jeroens
-' Simplified class names
-'
-' Revision 1.2  2008/08/09 00:04:41  jeroens
-' Added optional indexes to the constructors
 '
 '==============================================================================
 
@@ -44,7 +32,7 @@ Imports EwEUtils.Core
 ''' array of Integer values.
 ''' </summary>
 ''' ===========================================================================
-Public Class cEcospaceIntegerNxNLayer
+Public Class cEcospaceLayerIntegerNxM
     Inherits cEcospaceLayer
 
 #Region " Private variables "
@@ -70,9 +58,11 @@ Public Class cEcospaceIntegerNxNLayer
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
-            Optional ByVal meta As cVariableMetaData = Nothing)
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal manager As cEcospaceBasemap, _
+                   ByVal varName As eVarNameFlags, _
+                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE, _
+                   Optional ByVal meta As cVariableMetaData = Nothing)
         MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, meta)
     End Sub
 
@@ -105,8 +95,8 @@ Public Class cEcospaceIntegerNxNLayer
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, _
-                   ByRef data As Integer(,), _
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal data As Integer(,), _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
         MyBase.New(theCore, CObj(data), meta)
@@ -186,7 +176,7 @@ End Class
 ''' array of Single values.
 ''' </summary>
 ''' ===========================================================================
-Public Class cEcospaceSingleNxNLayer
+Public Class cEcospaceLayerSingleNxM
     Inherits cEcospaceLayer
 
 #Region " Private variables "
