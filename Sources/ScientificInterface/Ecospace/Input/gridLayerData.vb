@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridLayerData.vb,v $
+' Revision 1.4  2009/05/06 13:11:39  jeroens
+' Renamed classes for consistency reasons
+'
 ' Revision 1.3  2009/05/05 15:09:30  jeroens
 ' Removed cEcospaceBasemapLayer variables
 '
@@ -298,7 +301,7 @@ Public Class gridLayerData
         ' Grab the data
         data = Me.m_layer.Data
         ' Grab the type of the data
-        If TypeOf data Is cEcospaceIntegerNxNLayer Then
+        If TypeOf data Is cEcospaceLayerIntegerNxM Then
             tCell = GetType(Integer)
         Else
             ' Assume single
