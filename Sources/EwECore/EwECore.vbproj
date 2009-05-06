@@ -266,7 +266,13 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMigration.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceNxNLayer.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPA.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRegion.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelPP.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDepth.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayeHabitat.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPASeed.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelCin.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />
