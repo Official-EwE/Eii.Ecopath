@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.13  2009/05/11 02:12:39  jeroens
+' Simplified default file name use for CSV files
+' Uses new cDirectoryOpenCommand
+'
 ' Revision 1.12  2009/05/02 03:00:11  jeroens
 ' Scenario name included in default file name
 ' ExtractData uses string builder
@@ -132,18 +136,7 @@ Public Class cIndicesWithPPREst
     ''' -----------------------------------------------------------------------
     Public Overrides Function Filename() As String
 
-        Dim core As cCore = Me.NetworkManager.Core
-        Dim scenario As cEcoSimScenario = Nothing
-        Dim strFileName As String = MyBase.Filename()
-
-        Try
-            scenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
-            strFileName &= "-" & EwEUtils.Utilities.FileUtilities.ToValidFileName(scenario.Name, False)
-        Catch ex As Exception
-
-        End Try
-
-        Return strFileName & "-NA-PPR"
+        Return "EwE6-NA_IndicesPPR"
 
     End Function
 

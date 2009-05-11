@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.22  2009/05/11 02:12:40  jeroens
+' Simplified default file name use for CSV files
+' Uses new cDirectoryOpenCommand
+'
 ' Revision 1.21  2009/05/11 01:50:57  jeroens
 ' Renamed command classes
 '
@@ -71,6 +75,7 @@ Option Strict On
 Option Explicit On
 
 Imports System.Windows.Forms
+Imports System.IO
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands
 
@@ -328,19 +333,21 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
+        ' ToDo: localize this
+
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+        Dim strFileName As String = ""
 
         If (Me.m_contentmanager Is Nothing) Then Return
-        If (cmdFS Is Nothing) Then Return
+        If (cmdDOC Is Nothing) Then Return
 
-        cmdFS.Invoke(Me.m_contentmanager.Filename, _
-                     "CSV files (*.csv)|*.csv|text files (*.txt)|*.txt|All files (*.*)|*.*", _
-                     1)
+        cmdDOC.Invoke("", "Select folder to save Network Analysis CSV results")
 
-        If (cmdFS.Result = DialogResult.OK) Then
+        If (cmdDOC.Result = DialogResult.OK) Then
             Try
-                Me.m_contentmanager.SaveToCSV(cmdFS.FileName)
+                strFileName = Path.GetFileNameWithoutExtension(Me.m_contentmanager.Filename) & ".csv"
+                Me.m_contentmanager.SaveToCSV(Path.Combine(cmdDOC.Directory, strFileName))
             Catch ex As Exception
                 ' Woops
             End Try
@@ -356,6 +363,8 @@ Public Class frmNetworkAnalysis
     ''' -----------------------------------------------------------------------
     Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputGraphEMF.Click
+
+        ' ToDo: localize this
 
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)

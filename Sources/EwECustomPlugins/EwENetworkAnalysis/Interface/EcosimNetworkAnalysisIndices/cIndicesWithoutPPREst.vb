@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.14  2009/05/11 02:12:39  jeroens
+' Simplified default file name use for CSV files
+' Uses new cDirectoryOpenCommand
+'
 ' Revision 1.13  2009/05/11 00:33:55  jeroens
 ' Fixed extra comma in CSV results
 '
@@ -135,18 +139,7 @@ Public Class cIndicesWithoutPPREst
     ''' -----------------------------------------------------------------------
     Public Overrides Function Filename() As String
 
-        Dim core As cCore = Me.NetworkManager.Core
-        Dim scenario As cEcoSimScenario = Nothing
-        Dim strFileName As String = MyBase.Filename()
-
-        Try
-            scenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
-            strFileName &= "-" & EwEUtils.Utilities.FileUtilities.ToValidFileName(scenario.Name, False)
-        Catch ex As Exception
-
-        End Try
-
-        Return strFileName & "-NA-woPPR"
+        Return "EwE6-NA_IndicesWithoutPPR"
 
     End Function
 
