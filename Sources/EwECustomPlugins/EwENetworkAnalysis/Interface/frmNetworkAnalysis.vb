@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.23  2009/05/11 20:34:35  jeroens
+' Added monthly / annual averages CVS export
+'
 ' Revision 1.22  2009/05/11 02:12:40  jeroens
 ' Simplified default file name use for CSV files
 ' Uses new cDirectoryOpenCommand
@@ -119,6 +122,8 @@ Public Class frmNetworkAnalysis
         Handles tvNetworkAnalysis.AfterSelect
 
         Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
+        ' ToDo: localize this method
 
         Me.SuspendLayout()
 
@@ -338,16 +343,27 @@ Public Class frmNetworkAnalysis
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim strFileName As String = ""
+        Dim bAnnual As Boolean = False
 
         If (Me.m_contentmanager Is Nothing) Then Return
         If (cmdDOC Is Nothing) Then Return
 
-        cmdDOC.Invoke("", "Select folder to save Network Analysis CSV results")
+        Select Case MsgBox("Save annual averages?", MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+            Case MsgBoxResult.Yes
+                bAnnual = True
+                cmdDOC.Invoke("", "Select folder to save annual averages of Network Analysis CSV results")
+            Case MsgBoxResult.No
+                bAnnual = False
+                cmdDOC.Invoke("", "Select folder to save monthly Network Analysis CSV results")
+            Case Else
+                Return
+        End Select
+
 
         If (cmdDOC.Result = DialogResult.OK) Then
             Try
-                strFileName = Path.GetFileNameWithoutExtension(Me.m_contentmanager.Filename) & ".csv"
-                Me.m_contentmanager.SaveToCSV(Path.Combine(cmdDOC.Directory, strFileName))
+                strFileName = Path.GetFileNameWithoutExtension(Me.m_contentmanager.Filename(bAnnual)) & ".csv"
+                Me.m_contentmanager.SaveToCSV(Path.Combine(cmdDOC.Directory, strFileName), bAnnual)
             Catch ex As Exception
                 ' Woops
             End Try
@@ -368,11 +384,12 @@ Public Class frmNetworkAnalysis
 
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim bAnnual As Boolean = False
 
         If (Me.m_contentmanager Is Nothing) Then Return
         If (cmdFS Is Nothing) Then Return
 
-        cmdFS.Invoke(Me.m_contentmanager.Filename, _
+        cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
                      "EMF image files (*.emf)|*.emf|All files (*.*)|*.*", _
                      1)
 

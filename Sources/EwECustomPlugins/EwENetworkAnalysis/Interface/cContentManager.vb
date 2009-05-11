@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.3  2009/05/11 20:34:34  jeroens
+' Added monthly / annual averages CVS export
+'
 ' Revision 1.2  2009/05/02 01:46:02  jeroens
 ' Added HideControls
 ' Added Filename
@@ -16,7 +19,6 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEUtils
 Imports ZedGraph
 
 #End Region ' Imports
@@ -162,27 +164,11 @@ Public MustInherit Class cContentManager
     ''' managed here to a file of any type.
     ''' </summary>
     ''' <remarks>
-    ''' Default implementation returns the loaded model name, converted to a 
-    ''' valid file name.
+    ''' Default implementation does not return a file name.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Filename() As String
-        Try
-
-            Dim core As cCore = Me.m_manager.Core
-            Dim model As cEwEModel = core.EwEModel
-            Dim ds As IEwEDataSource = core.DataSource
-            Dim strName As String = ""
-
-            strName = model.Name
-            If String.IsNullOrEmpty(strName) Then
-                strName = ds.ToString()
-            End If
-            Return Utilities.FileUtilities.ToValidFileName(model.Name, False)
-
-        Catch ex As Exception
-            Return ""
-        End Try
+    Public Overridable Function Filename(ByVal bAnnual As Boolean) As String
+        Return ""
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -201,7 +187,7 @@ Public MustInherit Class cContentManager
     ''' </summary>
     ''' <param name="strFileName"></param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub SaveToCSV(ByVal strFileName As String)
+    Public Overridable Sub SaveToCSV(ByVal strFileName As String, ByVal bAnnual As Boolean)
         ' NOP
     End Sub
 
