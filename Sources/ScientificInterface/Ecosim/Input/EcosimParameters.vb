@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimParameters.vb,v $
+' Revision 1.9  2009/05/11 01:50:54  jeroens
+' Renamed command classes
+'
 ' Revision 1.8  2009/04/23 13:46:33  jeroens
 ' Fixed crash on deleting scenarios while params form is open
 '
@@ -144,8 +147,8 @@ Namespace Ecosim
 
             m_bInUpdate = True
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("EnableEcotracer")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
             If (cmd IsNot Nothing) Then
                 If (Me.chkConTracing.Checked) Then
                     cmd.Tag = eTracerRunModeTypes.RunSim

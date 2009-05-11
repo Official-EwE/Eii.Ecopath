@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.21  2009/05/11 01:50:57  jeroens
+' Renamed command classes
+'
 ' Revision 1.20  2009/05/04 02:12:49  jeroens
 ' NA Sim off unless initiated from NA nav tree
 '
@@ -325,7 +328,7 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         If (Me.m_contentmanager Is Nothing) Then Return
@@ -354,7 +357,7 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputGraphEMF.Click
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         If (Me.m_contentmanager Is Nothing) Then Return

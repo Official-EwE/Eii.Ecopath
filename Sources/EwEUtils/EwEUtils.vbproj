@@ -71,12 +71,13 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Predefined commands\FileSaveCommand.vb" />
-    <Compile Include="Commands\Predefined commands\FileOpenCommand.vb" />
-    <Compile Include="Commands\Predefined commands\NavigationCommand.vb" />
-    <Compile Include="Commands\Predefined commands\Command.vb" />
-    <Compile Include="Commands\CommandHandler.vb" />
-    <Compile Include="Commands\ControlHandler.vb" />
+    <Compile Include="Commands\Predefined commands\cFileSaveCommand.vb" />
+    <Compile Include="Commands\Predefined commands\cFileOpenCommand.vb" />
+    <Compile Include="Commands\Predefined commands\cDirectoryOpenCommand.vb" />
+    <Compile Include="Commands\Predefined commands\cNavigationCommand.vb" />
+    <Compile Include="Commands\Predefined commands\cCommand.vb" />
+    <Compile Include="Commands\cCommandHandler.vb" />
+    <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\INetworkAnalysisAscendancyData.vb" />
     <Compile Include="Core\IEconomicData.vb" />
     <Compile Include="Core\IRunType.vb" />

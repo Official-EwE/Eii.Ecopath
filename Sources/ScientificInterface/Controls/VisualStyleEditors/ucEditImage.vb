@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucEditImage.vb,v $
+' Revision 1.4  2009/05/11 01:51:02  jeroens
+' Renamed command classes
+'
 ' Revision 1.3  2009/04/21 19:42:32  jeroens
 ' Localized
 '
@@ -66,7 +69,7 @@ Namespace Controls
         Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
 
             Dim img As Image = Nothing
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_IMAGE)

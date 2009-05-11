@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.11  2009/05/11 01:51:00  jeroens
+' Renamed command classes
+'
 ' Revision 1.10  2009/04/22 00:56:48  jeroens
 ' Getting pretty
 '
@@ -262,8 +265,8 @@ Namespace Ecospace
 
         Protected Overrides Sub OnLoad(ByVal e As EventArgs)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdDisplayGroups As Command = Nothing
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdDisplayGroups As cCommand = Nothing
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
@@ -291,8 +294,8 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmdDisplayGroups As Command = cmdh.GetCommand("DisplayGroups")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdDisplayGroups As cCommand = cmdh.GetCommand("DisplayGroups")
             If (cmdDisplayGroups IsNot Nothing) Then cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
 
             Me.m_core.StopEcospace()
@@ -338,7 +341,7 @@ Namespace Ecospace
 
         Private Sub SaveImage(ByRef img As Image)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)

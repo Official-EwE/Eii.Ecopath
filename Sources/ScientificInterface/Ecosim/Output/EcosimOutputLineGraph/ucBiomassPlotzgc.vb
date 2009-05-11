@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.41  2009/05/11 01:51:02  jeroens
+' Renamed command classes
+'
 ' Revision 1.40  2009/04/08 19:14:03  jeroens
 ' Explore mode now fixed set to RelBiomass, needs to be extended
 '
@@ -156,8 +159,8 @@ Namespace Ecosim
 #Region " Constructor/Destructor "
 
         Public Sub New()
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = Nothing
 
             Me.m_sg = StyleGuide.GetInstance()
 
@@ -196,8 +199,8 @@ Namespace Ecosim
             Me.m_zgh = Nothing
 
             ' Show/Hide Groups
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If

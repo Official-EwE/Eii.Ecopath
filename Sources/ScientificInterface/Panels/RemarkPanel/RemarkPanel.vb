@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RemarkPanel.vb,v $
+' Revision 1.4  2009/05/11 01:51:00  jeroens
+' Renamed command classes
+'
 ' Revision 1.3  2009/04/06 14:47:26  jeroens
 ' Reworked WithEvents to prevent crashes on improper clean-up
 '
@@ -125,7 +128,7 @@ Public Class RemarkPanel
         Me.InitializeComponent()
 
         ' Create property selection command
-        Me.m_cmd = CType(CommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+        Me.m_cmd = CType(cCommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
         AddHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
 
         ' Hook up to core state monitor
@@ -166,7 +169,7 @@ Public Class RemarkPanel
     ''' </summary>
     ''' <param name="cmd">The <see cref="Command">Command</see> that was invoked.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnInvoke(ByVal cmd As Command)
+    Private Sub OnInvoke(ByVal cmd As cCommand)
 
         ' Sanity check
         If Not (cmd Is m_cmd) Then Return

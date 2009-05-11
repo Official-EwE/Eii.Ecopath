@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.11  2009/05/11 01:50:48  jeroens
+' Renamed command classes
+'
 ' Revision 1.10  2009/02/05 17:48:38  jeroens
 ' MessageSources -> CoreComponents
 '
@@ -76,10 +79,10 @@ Namespace Ecospace.Basemap
         Private m_propContaminantTracing As cProperty = Nothing
         Private m_layerRelCin As cLayer = Nothing
 
-        Private m_cmdEditBasemap As Command = Nothing
-        Private m_cmdEditHabitats As Command = Nothing
-        Private m_cmdEditRegions As Command = Nothing
-        Private m_cmdEditMPAs As Command = Nothing
+        Private m_cmdEditBasemap As cCommand = Nothing
+        Private m_cmdEditHabitats As cCommand = Nothing
+        Private m_cmdEditRegions As cCommand = Nothing
+        Private m_cmdEditMPAs As cCommand = Nothing
 
 #End Region ' Private vars
 
@@ -144,7 +147,7 @@ Namespace Ecospace.Basemap
 
         Private Sub Basemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim source As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters()
 
@@ -195,7 +198,7 @@ Namespace Ecospace.Basemap
             ' Clean up
             Me.RemoveAllLayers()
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
                 Me.m_cmdEditBasemap.RemoveControl(Me.tsbEditBasemap)
@@ -229,11 +232,11 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnPreIvokeEditcommand(ByVal cmd As Command)
+        Private Sub OnPreIvokeEditcommand(ByVal cmd As cCommand)
             Me.m_ucLayers.LockUpdates()
         End Sub
 
-        Private Sub OnPostIvokeEditcommand(ByVal cmd As Command)
+        Private Sub OnPostIvokeEditcommand(ByVal cmd As cCommand)
             Me.m_ucLayers.UnlockUpdates()
             ' Update map
             Me.m_ucBasemap.Refresh()

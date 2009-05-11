@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.16  2009/05/11 01:50:47  jeroens
+' Renamed command classes
+'
 ' Revision 1.15  2009/04/27 02:42:49  jeroens
 ' Commented a bit more
 '
@@ -123,7 +126,7 @@ Partial Public Class AppLauncher
             Me.m_tsSelection = ss.Items("m_tsSelection")
 
             ' Get property selection command
-            Me.m_cmd = CType(CommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
+            Me.m_cmd = CType(cCommandHandler.GetInstance().GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
 
             ' Hook up to relevant event sources
             Me.m_csm = core.StateMonitor
@@ -173,7 +176,7 @@ Partial Public Class AppLauncher
         ''' </summary>
         ''' <param name="cmd">The <see cref="Command">Command</see> that was invoked.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnInvoke(ByVal cmd As Command) Handles m_cmd.OnInvoke
+        Private Sub OnInvoke(ByVal cmd As cCommand) Handles m_cmd.OnInvoke
 
             Dim aprops() As cProperty = Nothing
 

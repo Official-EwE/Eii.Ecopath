@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerParameters.vb,v $
+' Revision 1.5  2009/05/11 01:50:56  jeroens
+' Renamed command classes
+'
 ' Revision 1.4  2009/03/19 16:02:27  jeroens
 ' Added FormatProvider.Release
 '
@@ -235,8 +238,8 @@ Namespace Ecotracer
 
         Private Sub SetTracerRunMode(ByVal tracerRunMode As eTracerRunModeTypes)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("EnableEcotracer")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
             cmd.Tag = tracerRunMode
             cmd.Invoke()

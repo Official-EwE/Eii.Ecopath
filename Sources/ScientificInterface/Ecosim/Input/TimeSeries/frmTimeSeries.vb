@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.7  2009/05/11 01:50:53  jeroens
+' Renamed command classes
+'
 ' Revision 1.6  2009/04/16 17:38:00  jeroens
 ' --
 '
@@ -92,8 +95,8 @@ Namespace Ecosim
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.m_core.HasTimeSeries Then
-                Dim cmdh As CommandHandler = CommandHandler.GetInstance
-                Dim cmd As Command = cmdh.GetCommand("LoadTimeSeries")
+                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance
+                Dim cmd As cCommand = cmdh.GetCommand("LoadTimeSeries")
                 If cmd IsNot Nothing Then
                     cmd.Invoke()
                 End If

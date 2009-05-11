@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmShowAllFits.vb,v $
+' Revision 1.4  2009/05/11 01:50:58  jeroens
+' Renamed command classes
+'
 ' Revision 1.3  2009/01/16 18:30:43  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -626,7 +629,7 @@ Namespace Ecosim
 
             Dim img As Image = Nothing
             Dim imgFormat As System.Drawing.Imaging.ImageFormat = System.Drawing.Imaging.ImageFormat.Bmp
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)

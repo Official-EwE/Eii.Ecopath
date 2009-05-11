@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.24  2009/05/11 01:51:01  jeroens
+' Renamed command classes
+'
 ' Revision 1.23  2009/04/30 22:33:52  joeh
 ' V.5 regression analysis is comment in for future comparison
 '
@@ -128,8 +131,8 @@ Namespace Ecopath.Output
             Dim parms As cPSDParameters = Nothing
             Dim str As String = ""
             Dim msg As cMessage = Nothing
-            Dim cmdh As CommandHandler = Nothing
-            Dim cmd As Command = Nothing
+            Dim cmdh As cCommandHandler = Nothing
+            Dim cmd As cCommand = Nothing
             Dim sg As StyleGuide = Nothing
 
             Me.m_core = cCore.GetInstance()
@@ -138,7 +141,7 @@ Namespace Ecopath.Output
             Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
-            cmdh = CommandHandler.GetInstance()
+            cmdh = cCommandHandler.GetInstance()
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbnShowHideGroups)
@@ -184,8 +187,8 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As StyleGuide = StyleGuide.GetInstance()
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = Nothing
 
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()

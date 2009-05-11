@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucLayersControl.vb,v $
+' Revision 1.3  2009/05/11 01:51:03  jeroens
+' Renamed command classes
+'
 ' Revision 1.2  2008/11/05 01:14:22  jeroens
 ' Optionally clear new layer groups
 '
@@ -286,8 +289,8 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Sub FireSelectionCommand(ByVal layer As cLayer)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
             Dim sc As PropertySelectionCommand = Nothing
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
             Dim prop As cProperty = Nothing

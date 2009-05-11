@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.14  2009/05/11 01:51:04  jeroens
+' Renamed command classes
+'
 ' Revision 1.13  2009/04/08 17:40:29  jeroens
 ' Cursor properly set and removed in ShowCursor
 '
@@ -692,7 +695,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Function ExtractDataToCSV() As Boolean
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
 

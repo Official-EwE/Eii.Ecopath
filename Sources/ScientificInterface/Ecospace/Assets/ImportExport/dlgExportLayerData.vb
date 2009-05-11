@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgExportLayerData.vb,v $
+' Revision 1.3  2009/05/11 01:50:52  jeroens
+' Renamed command classes
+'
 ' Revision 1.2  2008/11/12 00:40:21  jeroens
 ' Built initial mappings
 '
@@ -255,7 +258,7 @@ Public Class gridExportMappings
             Handles m_btnBrowseTarget.Click
 
             ' Browse via EwE6 open file dialog 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim fsc As cFileSaveCommand = TryCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim strFileFilter As String = My.Resources.FILEFILTER_CSV
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.15  2009/05/11 01:50:54  jeroens
+' Renamed command classes
+'
 ' Revision 1.14  2009/04/06 15:56:18  jeroens
 ' Fixed possible mem leaks on Selection handling
 '
@@ -781,8 +784,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME)
             Dim sc As PropertySelectionCommand = Nothing
             Dim c As SourceGrid2.Cells.ICell = Nothing
 

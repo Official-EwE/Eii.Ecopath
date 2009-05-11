@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFitToTimeSeries.vb,v $
+' Revision 1.13  2009/05/11 01:50:56  jeroens
+' Renamed command classes
+'
 ' Revision 1.12  2009/04/24 16:04:19  jeroens
 ' Anomaly search added year check
 '
@@ -67,7 +70,7 @@ Namespace Ecosim
         Private m_shapeHandler As AppliedFFGUIHandler = Nothing
         Private m_dlgSensOfSS As dlgSensitivityOfSStoV = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
-        Private m_cmdTSWeights As Command = Nothing
+        Private m_cmdTSWeights As cCommand = Nothing
         Private m_gridGroupMaxFishingMortality As gridFitToTimeSeriesGroup = Nothing
 
 #End Region 'Private variables
@@ -172,7 +175,7 @@ Namespace Ecosim
 
             Me.m_shapeHandler = New AppliedFFGUIHandler(Me.m_core, Me.m_shapeToolBox, Me.m_sketchPad)
 
-            Me.m_cmdTSWeights = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            Me.m_cmdTSWeights = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If (Me.m_cmdTSWeights IsNot Nothing) Then
                 AddHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
             End If
@@ -545,7 +548,7 @@ Namespace Ecosim
         ''' time series configuration.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnUpdateTSCommand(ByVal cmd As Command)
+        Private Sub OnUpdateTSCommand(ByVal cmd As cCommand)
             Me.UpdateControls()
         End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.6  2009/05/11 01:50:59  jeroens
+' Renamed command classes
+'
 ' Revision 1.5  2009/03/19 16:02:26  jeroens
 ' Added FormatProvider.Release
 '
@@ -123,9 +126,9 @@ Namespace Ecosim
         Private m_BestFitRG As New MCRunOutputGrid
         Private m_BiomassResults(,) As Single
 
-        Private WithEvents m_cmdRunMonteCarlo As Command = Nothing
-        Private WithEvents m_cmdStopMonteCarlo As Command = Nothing
-        Private WithEvents m_cmdLoadTS As Command = Nothing
+        Private WithEvents m_cmdRunMonteCarlo As cCommand = Nothing
+        Private WithEvents m_cmdStopMonteCarlo As cCommand = Nothing
+        Private WithEvents m_cmdLoadTS As cCommand = Nothing
 
         ''' <summary>Live monitoring of Ecosim NYears</summary>
         Private WithEvents m_pTS As cSingleProperty = Nothing
@@ -208,16 +211,16 @@ Namespace Ecosim
             ' m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             m_mcManager.bRetainFits = cbRetainEstimates.Checked
 
-            Me.m_cmdRunMonteCarlo = New Command("RunMonteCarlo")
+            Me.m_cmdRunMonteCarlo = New cCommand("RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
-            CommandHandler.GetInstance().Add(Me.m_cmdRunMonteCarlo)
+            cCommandHandler.GetInstance().Add(Me.m_cmdRunMonteCarlo)
 
-            Me.m_cmdStopMonteCarlo = New Command("StopMonteCarlo")
+            Me.m_cmdStopMonteCarlo = New cCommand("StopMonteCarlo")
             Me.m_cmdStopMonteCarlo.AddControl(Me.btnStop)
-            CommandHandler.GetInstance().Add(Me.m_cmdStopMonteCarlo)
+            cCommandHandler.GetInstance().Add(Me.m_cmdStopMonteCarlo)
 
             ' Connect to ApplyTS command
-            m_cmdLoadTS = CommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            m_cmdLoadTS = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
             If m_cmdLoadTS IsNot Nothing Then m_cmdLoadTS.AddControl(Me.btnTS)
 
             Debug.Assert(m_cmdLoadTS IsNot Nothing, "Command failed to load.")
@@ -227,11 +230,11 @@ Namespace Ecosim
         Private Sub MCRun_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
 
-            CommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
-            CommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
+            cCommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
+            cCommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
 
             ' Disconnect from ApplyTS command
-            Dim cmd As Command = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
 
             ' Disconnect from property
@@ -366,7 +369,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdRunMonteCarlo.OnInvoke
+        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdRunMonteCarlo.OnInvoke
             ' m_mcManager.bRetainFits = True
 
             Me.prgMCTrials.Maximum = m_mcManager.nTrials
@@ -394,7 +397,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdRunMonteCarlo.OnUpdate
+        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdRunMonteCarlo.OnUpdate
 
             cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And _
                           Me.m_core.HasAppliedTimeSeries() And _
@@ -413,7 +416,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdStopMonteCarlo.OnInvoke
+        Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnInvoke
             m_mcManager.StopRun()
         End Sub
 
@@ -423,7 +426,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdStopMonteCarlo.OnUpdate
+        Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
             cmd.Enabled = Me.m_mcManager.isRunning
         End Sub
 
@@ -432,7 +435,7 @@ Namespace Ecosim
         ''' The Apply time series Command/button has been invoked
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTS.OnPostInvoke
+        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager
             Me.m_mcManager.Load()

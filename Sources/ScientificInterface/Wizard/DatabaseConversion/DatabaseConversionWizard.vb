@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: DatabaseConversionWizard.vb,v $
+' Revision 1.7  2009/05/11 01:50:51  jeroens
+' Renamed command classes
+'
 ' Revision 1.6  2009/04/21 19:42:29  jeroens
 ' Localized
 '
@@ -311,7 +314,7 @@ Namespace Wizard
 
         Private Sub btnBrowseTargetDirectory_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseTargetDirectory.Click
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(Me.txbSaveModelName.Text, "", My.Resources.FILEFILTER_MODEL_SAVE)

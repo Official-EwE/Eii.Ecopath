@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginGUIHandler.vb,v $
+' Revision 1.3  2009/05/11 01:50:49  jeroens
+' Renamed command classes
+'
 ' Revision 1.2  2009/04/02 19:00:44  jeroens
 ' Minor changes
 '
@@ -183,11 +186,11 @@ Public MustInherit Class cPluginGUIHandler
 
     Protected Sub RunPlugin(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
 
-        Dim cmd As Command = Nothing
+        Dim cmd As cCommand = Nothing
         Dim pcmd As PluginGUICommand = Nothing
 
         ' Try to get the reserved GUI command from the central command handler
-        cmd = CommandHandler.GetInstance().GetCommand(PluginGUICommand.COMMAND_NAME)
+        cmd = cCommandHandler.GetInstance().GetCommand(PluginGUICommand.COMMAND_NAME)
         ' Got a result?
         If cmd IsNot Nothing Then
             ' #Yes: verify if correct class?
@@ -222,7 +225,7 @@ End Class
 #Region " PluginGUICommand class "
 
 Public Class PluginGUICommand
-    Inherits Command
+    Inherits cCommand
 
     Public Shared COMMAND_NAME As String = "~launchguiplugin"
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.40  2009/05/11 01:50:57  jeroens
+' Renamed command classes
+'
 ' Revision 1.39  2009/05/06 13:14:42  jeroens
 ' Renamed layer classes for consistency reasons
 '
@@ -421,8 +424,8 @@ Namespace Ecospace
             ' Note that the command is invoked manually here because in THIS FORM only the command will be enabled when
             ' preparing Ecoseed. Yes, it's a half-ass solution while in fact the entire GUI should become aware the 
             ' running of a model by blocking out any possibility to enter/edit data.
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("EditImportanceLayers")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("EditImportanceLayers")
             If cmd IsNot Nothing Then cmd.Invoke()
 
         End Sub
@@ -530,8 +533,8 @@ Namespace Ecospace
         Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSave.Click
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
             Dim lLayers As New List(Of cLayer)
             Dim layerTmp As cLayer = Nothing
             Dim ldataTmp As cEcospaceLayerIntegerNxM = Nothing

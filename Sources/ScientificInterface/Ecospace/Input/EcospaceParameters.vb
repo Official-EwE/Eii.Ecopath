@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcospaceParameters.vb,v $
+' Revision 1.7  2009/05/11 01:50:48  jeroens
+' Renamed command classes
+'
 ' Revision 1.6  2009/03/19 16:02:26  jeroens
 ' Added FormatProvider.Release
 '
@@ -279,8 +282,8 @@ Namespace Ecospace
         Private Sub cbContaminantTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbContaminantTracing.Click
 
             If cbContaminantTracing.Checked Then
-                Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-                Dim cmd As Command = cmdh.GetCommand("EnableEcotracer")
+                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+                Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
                 If (cmd IsNot Nothing) Then
                     cmd.Tag = eTracerRunModeTypes.RunSpace

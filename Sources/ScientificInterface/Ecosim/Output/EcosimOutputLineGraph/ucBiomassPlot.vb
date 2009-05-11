@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlot.vb,v $
+' Revision 1.7  2009/05/11 01:51:01  jeroens
+' Renamed command classes
+'
 ' Revision 1.6  2009/04/21 19:42:31  jeroens
 ' Localized
 '
@@ -119,8 +122,8 @@ Namespace Ecosim
         Private Sub ucBiomassPlot_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = Nothing
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = Nothing
 
             cmd = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
@@ -147,8 +150,8 @@ Namespace Ecosim
         Private Sub ucBiomassPlot_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Disposed
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("DisplayGroups")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("DisplayGroups")
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.tsbtnShowHideGroups)
             End If

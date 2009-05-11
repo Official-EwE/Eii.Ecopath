@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.8  2009/05/11 01:50:48  jeroens
+' Renamed command classes
+'
 ' Revision 1.7  2009/03/19 16:02:26  jeroens
 ' Added FormatProvider.Release
 '
@@ -173,8 +176,8 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDataImport.Click
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ImportLayerData")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("ImportLayerData")
 
             If cmd IsNot Nothing Then
                 cmd.Tag = New cLayer() {Me.m_layerWork}
@@ -186,8 +189,8 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDataExport.Click
 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ExportLayerData")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
 
             If cmd IsNot Nothing Then
                 cmd.Tag = New cLayer() {Me.m_layerWork}

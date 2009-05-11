@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.7  2009/05/11 01:50:55  jeroens
+' Renamed command classes
+'
 ' Revision 1.6  2009/04/07 20:02:06  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -239,7 +242,7 @@ Public Class frmEcotracerOutput
             'No Ecospace scenario has been load
             If Me.m_core.StateMonitor.HasEcospaceLoaded = False Then
                 'Ask the user for a Ecospace scenario via the command
-                Dim cmd As Command = CommandHandler.GetInstance().GetCommand("LoadEcospaceScenario")
+                Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("LoadEcospaceScenario")
                 Debug.Assert(cmd IsNot Nothing, Me.ToString & ".btRunSpace_Click() LoadEcospaceScenario Command could not be found.")
                 cmd.Invoke()
             End If
@@ -294,7 +297,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnShowHideGroups.Click
-        Dim cmd As Command = CommandHandler.GetInstance().GetCommand("DisplayGroups")
+        Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("DisplayGroups")
         Debug.Assert(cmd IsNot Nothing, Me.ToString & ".OnDisplayGroups() DisplayGroups Command could not be found.")
         cmd.Invoke()
     End Sub

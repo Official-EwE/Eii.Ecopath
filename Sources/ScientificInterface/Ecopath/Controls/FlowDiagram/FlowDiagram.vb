@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.6  2009/05/11 01:50:55  jeroens
+' Renamed command classes
+'
 ' Revision 1.5  2009/02/07 17:48:39  jeroens
 ' cINIFile moved
 '
@@ -168,7 +171,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Handles m_tsiLoadFile.Click
 
             Dim ifData As cINIFile = Nothing
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
@@ -191,7 +194,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Handles m_tsiSaveFile.Click
 
             Dim ifData As cINIFile = Nothing
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
@@ -219,7 +222,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Handles m_tsiSaveImage.Click
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)

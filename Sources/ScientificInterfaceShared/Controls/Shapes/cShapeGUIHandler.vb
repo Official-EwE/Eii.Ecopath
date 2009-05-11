@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.18  2009/05/11 01:50:50  jeroens
+' Renamed command classes
+'
 ' Revision 1.17  2009/04/20 12:39:42  jeroens
 ' All fleets edit will update all shapes
 '
@@ -319,7 +322,7 @@ Namespace Controls
 
             Dim msg As cMessage = Nothing
             Dim strError As String = ""
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             If sp Is Nothing Then Return
@@ -797,7 +800,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub WeightTimeSeries()
-            Dim cmd As Command = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -825,7 +828,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub LoadDatasets()
-            Dim cmd As Command = CommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            Dim cmd As cCommand = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
 
             If cmd IsNot Nothing Then
                 cmd.Invoke()
@@ -887,8 +890,8 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub ImportTimeSeries()
             ' Launch via command!
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("ImportTimeSeries")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("ImportTimeSeries")
             If cmd IsNot Nothing Then cmd.Invoke()
         End Sub
 

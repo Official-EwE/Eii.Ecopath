@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: cPropertyFormatProvider.vb,v $
+' Revision 1.2  2009/05/11 01:50:49  jeroens
+' Renamed command classes
+'
 ' Revision 1.1  2009/03/19 16:00:33  jeroens
 ' Split files
 '
@@ -183,7 +186,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim dsc As PropertySelectionCommand = DirectCast(cmdh.GetCommand(PropertySelectionCommand.COMMAND_NAME), PropertySelectionCommand)
 
             If Object.ReferenceEquals(dsc, Nothing) Then Return

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgManageTimeSeries.vb,v $
+' Revision 1.11  2009/05/11 01:50:53  jeroens
+' Renamed command classes
+'
 ' Revision 1.10  2009/04/16 20:12:09  jeroens
 ' Cannot import TS when there are errors
 '
@@ -220,7 +223,7 @@ Public Class dlgManageTimeSeries
     Private Sub OnImportBrowseSource(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnImportBrowse.Click
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_TEXT)

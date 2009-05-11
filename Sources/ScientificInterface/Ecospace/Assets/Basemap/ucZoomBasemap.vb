@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucZoomBasemap.vb,v $
+' Revision 1.4  2009/05/11 01:51:04  jeroens
+' Renamed command classes
+'
 ' Revision 1.3  2008/11/12 00:44:13  jeroens
 ' Fixed 'save as' file filter
 '
@@ -179,7 +182,7 @@ Namespace Ecospace
             Dim core As cCore = cCore.GetInstance()
             Dim model As cEwEModel = core.EwEModel
             Dim scenario As cEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(FileUtilities.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", My.Resources.FILEFILTER_IMAGE)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.25  2009/05/11 01:50:59  jeroens
+' Renamed command classes
+'
 ' Revision 1.24  2009/04/20 14:10:48  jeroens
 ' Moved F form to Sim outputs
 '
@@ -106,8 +109,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' <remarks>
 ''' <para>The Navigation Panel will not actually create or highlight the GUI items 
 ''' that it provides access to. Instead, the panel will outsource this functionality 
-''' via the central <see cref="CommandHandler">CommandHandler</see> and its
-''' <see cref="NavigationCommand">NavigationCommand</see>.</para>
+''' via the central <see cref="cCommandHandler">CommandHandler</see> and its
+''' <see cref="cNavigationCommand">NavigationCommand</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class NavigationPanel
@@ -277,7 +280,7 @@ Public Class NavigationPanel
     ''' <remarks>
     ''' Firing this command will not result in navigation changes.
     ''' </remarks>
-    Public Function GetTemporaryNavCommand(ByVal ndType As String) As NavigationCommand
+    Public Function GetTemporaryNavCommand(ByVal ndType As String) As cNavigationCommand
 
         Dim ni As cNodeInfo = m_nodeController.SearchNodeByType(ndType)
 
@@ -285,7 +288,7 @@ Public Class NavigationPanel
 
         Dim nodes() As TreeNode = Me.m_tvNavigation.Nodes.Find(ni.NodeName, True)
         Debug.Assert(nodes.Length = 1)
-        Return New NavigationCommand(nodes(0).Text, ni.NodeName, ni.ExecutionState, ni.Type)
+        Return New cNavigationCommand(nodes(0).Text, ni.NodeName, ni.ExecutionState, ni.Type)
 
     End Function
 

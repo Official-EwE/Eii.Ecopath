@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTreeViewNodeController.vb,v $
+' Revision 1.4  2009/05/11 01:50:51  jeroens
+' Renamed command classes
+'
 ' Revision 1.3  2009/04/06 15:31:50  jeroens
 ' Fixed withevents mem leak
 '
@@ -156,7 +159,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler; handles a node selection. Invokes a<see cref="NavigationCommand">Navigation command</see>
+        ''' Event handler; handles a node selection. Invokes a<see cref="cNavigationCommand">Navigation command</see>
         ''' for any tree node bearing <see cref="cNodeInfo">rich node information</see>.
         ''' </summary>
         ''' <param name="sender">The tree</param>
@@ -165,23 +168,23 @@ Namespace Controls
         Private Sub OnAfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
 
             Dim ni As cNodeInfo = Me.SearchNodeByName(e.Node.Name)
-            Dim cmdH As CommandHandler = Nothing
-            Dim cmd As Command = Nothing
-            Dim cmdNav As NavigationCommand = Nothing
+            Dim cmdH As cCommandHandler = Nothing
+            Dim cmd As cCommand = Nothing
+            Dim cmdNav As cNavigationCommand = Nothing
 
             ' Is this a registered node, i.e. does this node have a form attached?
             If (ni IsNot Nothing) Then
                 ' #Yes: launch form via central Navigate command
                 ' Get command handler
-                cmdH = CommandHandler.GetInstance()
+                cmdH = cCommandHandler.GetInstance()
                 ' Get the navigation command
-                cmd = cmdH.GetCommand(NavigationCommand.COMMAND_NAME)
+                cmd = cmdH.GetCommand(cNavigationCommand.COMMAND_NAME)
                 ' Does this command exist?
                 If cmd IsNot Nothing Then
                     ' #Yes: is typeof NavigateCommand?
-                    If (TypeOf cmd Is NavigationCommand) Then
+                    If (TypeOf cmd Is cNavigationCommand) Then
                         ' #Yes: Good, now cast it
-                        cmdNav = DirectCast(cmd, NavigationCommand)
+                        cmdNav = DirectCast(cmd, cNavigationCommand)
                         ' ..and launch
                         cmdNav.Invoke(e.Node.Text, ni.NodeName, ni.ExecutionState, ni.Type, ni.HelpURL)
                     End If

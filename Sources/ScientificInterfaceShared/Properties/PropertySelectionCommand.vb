@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: PropertySelectionCommand.vb,v $
+' Revision 1.2  2009/05/11 01:51:00  jeroens
+' Renamed command classes
+'
 ' Revision 1.1  2008/09/26 07:31:21  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -39,7 +42,7 @@ Namespace Properties
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class PropertySelectionCommand
-        Inherits Command
+        Inherits cCommand
 
         ''' <summary>Public available name for this command</summary>
         Public Shared COMMAND_NAME As String = "~SelectedProperties"
@@ -58,7 +61,7 @@ Namespace Properties
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <see cref="Command.Invoke">Invokes</see> the command, broadcasting a
+        ''' <see cref="cCommand.Invoke">Invokes</see> the command, broadcasting a
         ''' data selection throughout the GUI.
         ''' </summary>
         ''' <param name="source">The <see cref="cCoreInputOutputBase">cCoreInputOutput</see> 
@@ -87,7 +90,7 @@ Namespace Properties
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <see cref="Command.Invoke">Invokes</see> the command, broadcasting a
+        ''' <see cref="cCommand.Invoke">Invokes</see> the command, broadcasting a
         ''' data selection throughout the GUI.
         ''' </summary>
         ''' -----------------------------------------------------------------------
@@ -100,7 +103,7 @@ Namespace Properties
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <see cref="Command.Invoke">Invokes</see> the command, broadcasting a
+        ''' <see cref="cCommand.Invoke">Invokes</see> the command, broadcasting a
         ''' data selection throughout the GUI.
         ''' </summary>
         ''' <param name="prop">The <see cref="cProperty">cProperty</see> that 
@@ -117,7 +120,7 @@ Namespace Properties
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <see cref="Command.Invoke">Invokes</see> the command, broadcasting a
+        ''' <see cref="cCommand.Invoke">Invokes</see> the command, broadcasting a
         ''' data selection throughout the GUI.
         ''' </summary>
         ''' <param name="aprop">Array of <see cref="cProperty">cProperty</see> 
@@ -134,7 +137,7 @@ Namespace Properties
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <see cref="Command.Invoke">Invokes</see> the command, broadcasting a
+        ''' <see cref="cCommand.Invoke">Invokes</see> the command, broadcasting a
         ''' data selection throughout the GUI.
         ''' </summary>
         ''' <param name="lprop">List of <see cref="cProperty">cProperty</see> 

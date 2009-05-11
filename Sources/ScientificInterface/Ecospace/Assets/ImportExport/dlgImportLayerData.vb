@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.6  2009/05/11 01:50:52  jeroens
+' Renamed command classes
+'
 ' Revision 1.5  2009/03/23 02:43:03  jeroens
 ' Renamed resources
 '
@@ -327,7 +330,7 @@ Public Class gridMapLayerToAttribute
             Handles m_btnBrowseInput.Click
 
             ' Browse via EwE6 open file dialog 
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim foc As cFileOpenCommand = TryCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim strFileFilter As String = My.Resources.FILEFILTER_LOAD_RASTER
             Dim sfc As eSpatialFileCompatibility = eSpatialFileCompatibility.Unreadable

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucShapeToolbox.vb,v $
+' Revision 1.8  2009/05/11 01:51:03  jeroens
+' Renamed command classes
+'
 ' Revision 1.7  2009/04/19 13:44:21  jeroens
 ' Stripped selection to match available shapes
 '
@@ -370,13 +373,13 @@ Namespace Controls
 #Region " Event handlers "
 
         Private Sub DoLoad(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Dim cmd As Command = Nothing
+            Dim cmd As cCommand = Nothing
 
-            cmd = CommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
             If cmd IsNot Nothing Then
             End If
 
-            cmd = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            cmd = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If
@@ -386,13 +389,13 @@ Namespace Controls
         End Sub
 
         Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Dim cmd As Command = Nothing
+            Dim cmd As cCommand = Nothing
 
-            cmd = CommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
             If cmd IsNot Nothing Then
             End If
 
-            cmd = CommandHandler.GetInstance().GetCommand("WeightTimeSeries")
+            cmd = cCommandHandler.GetInstance().GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.RemoveControl(Me.ApplyToolStripMenuItem)
             End If
