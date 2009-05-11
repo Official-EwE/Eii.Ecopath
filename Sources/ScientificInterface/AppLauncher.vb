@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.43  2009/05/11 01:52:01  jeroens
+' Added cDirectoryOpen command
+'
 ' Revision 1.42  2009/05/03 14:02:50  jeroens
 ' Slightly reorganized
 ' Minimized forms docked correctly
@@ -196,54 +199,55 @@ Public Class AppLauncher
     ' -- commands --
     Private WithEvents m_cmdFileOpen As cFileOpenCommand = Nothing
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
-    Private WithEvents m_cmdNewModel As Command = Nothing
-    Private WithEvents m_cmdLoadModel As Command = Nothing
-    Private WithEvents m_cmdSave As Command = Nothing
-    Private WithEvents m_cmdSaveModelAs As Command = Nothing
-    Private WithEvents m_cmdCloseModel As Command = Nothing
-    Private WithEvents m_cmdCompactModel As Command = Nothing
-    Private WithEvents m_cmdCloseDocument As Command = Nothing
-    Private WithEvents m_cmdNewEcosimScenario As Command = Nothing
-    Private WithEvents m_cmdLoadEcosimScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcosimScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcosimScenarioAs As Command = Nothing
-    Private WithEvents m_cmdNewEcospaceScenario As Command = Nothing
-    Private WithEvents m_cmdLoadEcospaceScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcospaceScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcospaceScenarioAS As Command = Nothing
-    Private WithEvents m_cmdNewEcotracerScenario As Command = Nothing
-    Private WithEvents m_cmdLoadEcotracerScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcotracerScenario As Command = Nothing
-    Private WithEvents m_cmdSaveEcotracerScenarioAS As Command = Nothing
-    Private WithEvents m_cmdCloseAllForms As Command = Nothing
-    Private WithEvents m_cmdNavigate As NavigationCommand = Nothing
-    Private WithEvents m_cmdViewNavPane As Command = Nothing
-    Private WithEvents m_cmdViewStatusPane As Command = Nothing
-    Private WithEvents m_cmdViewStartPanel As Command = Nothing
-    Private WithEvents m_cmdViewRemarkPane As Command = Nothing
-    Private WithEvents m_cmdViewModelBar As Command = Nothing
-    Private WithEvents m_cmdViewStatusbar As Command = Nothing
-    Private WithEvents m_cmdEditGroups As Command = Nothing
-    Private WithEvents m_cmdEditMultiStanza As Command = Nothing
-    Private WithEvents m_cmdEditFleets As Command = Nothing
-    Private WithEvents m_cmdEditBasemap As Command = Nothing
-    Private WithEvents m_cmdEditHabitats As Command = Nothing
-    Private WithEvents m_cmdEditRegions As Command = Nothing
-    Private WithEvents m_cmdEditMPAs As Command = Nothing
-    Private WithEvents m_cmdEditImportanceLayers As Command = Nothing
-    Private WithEvents m_cmdImportLayerData As Command = Nothing
-    Private WithEvents m_cmdExportLayerData As Command = Nothing
-    Private WithEvents m_cmdImportTimeSeries As Command = Nothing
-    Private WithEvents m_cmdLoadTimeSeries As Command = Nothing
-    Private WithEvents m_cmdWeightTimeSeries As Command = Nothing
-    Private WithEvents m_cmdLoadWeightTimeSeries As Command = Nothing
+    Private WithEvents m_cmdDirectoryOpen As cDirectoryOpenCommand = Nothing
+    Private WithEvents m_cmdNewModel As cCommand = Nothing
+    Private WithEvents m_cmdLoadModel As cCommand = Nothing
+    Private WithEvents m_cmdSave As cCommand = Nothing
+    Private WithEvents m_cmdSaveModelAs As cCommand = Nothing
+    Private WithEvents m_cmdCloseModel As cCommand = Nothing
+    Private WithEvents m_cmdCompactModel As cCommand = Nothing
+    Private WithEvents m_cmdCloseDocument As cCommand = Nothing
+    Private WithEvents m_cmdNewEcosimScenario As cCommand = Nothing
+    Private WithEvents m_cmdLoadEcosimScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcosimScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcosimScenarioAs As cCommand = Nothing
+    Private WithEvents m_cmdNewEcospaceScenario As cCommand = Nothing
+    Private WithEvents m_cmdLoadEcospaceScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcospaceScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcospaceScenarioAS As cCommand = Nothing
+    Private WithEvents m_cmdNewEcotracerScenario As cCommand = Nothing
+    Private WithEvents m_cmdLoadEcotracerScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcotracerScenario As cCommand = Nothing
+    Private WithEvents m_cmdSaveEcotracerScenarioAS As cCommand = Nothing
+    Private WithEvents m_cmdCloseAllForms As cCommand = Nothing
+    Private WithEvents m_cmdNavigate As cNavigationCommand = Nothing
+    Private WithEvents m_cmdViewNavPane As cCommand = Nothing
+    Private WithEvents m_cmdViewStatusPane As cCommand = Nothing
+    Private WithEvents m_cmdViewStartPanel As cCommand = Nothing
+    Private WithEvents m_cmdViewRemarkPane As cCommand = Nothing
+    Private WithEvents m_cmdViewModelBar As cCommand = Nothing
+    Private WithEvents m_cmdViewStatusbar As cCommand = Nothing
+    Private WithEvents m_cmdEditGroups As cCommand = Nothing
+    Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
+    Private WithEvents m_cmdEditFleets As cCommand = Nothing
+    Private WithEvents m_cmdEditBasemap As cCommand = Nothing
+    Private WithEvents m_cmdEditHabitats As cCommand = Nothing
+    Private WithEvents m_cmdEditRegions As cCommand = Nothing
+    Private WithEvents m_cmdEditMPAs As cCommand = Nothing
+    Private WithEvents m_cmdEditImportanceLayers As cCommand = Nothing
+    Private WithEvents m_cmdImportLayerData As cCommand = Nothing
+    Private WithEvents m_cmdExportLayerData As cCommand = Nothing
+    Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdLoadWeightTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
-    Private WithEvents m_cmdHelpAbout As Command = Nothing
+    Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
-    Private WithEvents m_cmdDisplayGroups As Command = Nothing
-    Private WithEvents m_cmdEnableEcotracer As Command = Nothing
+    Private WithEvents m_cmdDisplayGroups As cCommand = Nothing
+    Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
-    Private WithEvents m_cmdExportBiomassToCSV As Command = Nothing
+    Private WithEvents m_cmdExportBiomassToCSV As cCommand = Nothing
 
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
@@ -677,7 +681,7 @@ Public Class AppLauncher
         Me.SaveMainFormSettings()
 
         ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
         RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -696,7 +700,7 @@ Public Class AppLauncher
 
     Private Sub InitCommands()
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
 
         ' Create and configure File Open command
         Me.m_cmdFileOpen = cFileOpenCommand.GetInstance()
@@ -706,206 +710,210 @@ Public Class AppLauncher
         Me.m_cmdFileSave = cFileSaveCommand.GetInstance()
         cmdh.Add(Me.m_cmdFileSave)
 
+        ' Create and configure Directory Open command
+        Me.m_cmdDirectoryOpen = cDirectoryOpenCommand.GetInstance()
+        cmdh.Add(Me.m_cmdDirectoryOpen)
+
         ' Create and configure new command
-        m_cmdNewModel = New Command("NewEcopathModel")
+        m_cmdNewModel = New cCommand("NewEcopathModel")
         m_cmdNewModel.AddControl(Me.m_tsmiFileNew)
         cmdh.Add(Me.m_cmdNewModel)
 
         ' Create and configure open command
-        m_cmdLoadModel = New Command("LoadEcopathModel")
+        m_cmdLoadModel = New cCommand("LoadEcopathModel")
         m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
         m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
         cmdh.Add(Me.m_cmdLoadModel)
 
         ' Create and configure save commands
-        m_cmdSaveModelAs = New Command("SaveModelAs")
+        m_cmdSaveModelAs = New cCommand("SaveModelAs")
         m_cmdSaveModelAs.AddControl(Me.m_tsmiFileSaveAs)
         cmdh.Add(Me.m_cmdSaveModelAs)
 
-        m_cmdSave = New Command("SaveModel")
+        m_cmdSave = New cCommand("SaveModel")
         m_cmdSave.AddControl(Me.m_tsmiFileSave)
         cmdh.Add(Me.m_cmdSave)
 
         ' Create and configure 'close model' command
-        m_cmdCloseModel = New Command("CloseModel")
+        m_cmdCloseModel = New cCommand("CloseModel")
         m_cmdCloseModel.AddControl(Me.m_tsmiFileClose)
         cmdh.Add(Me.m_cmdCloseModel)
 
         ' Create and configure 'compact model' command
-        m_cmdCompactModel = New Command("CompactModel")
+        m_cmdCompactModel = New cCommand("CompactModel")
         m_cmdCompactModel.AddControl(Me.m_tsmiFileCompact)
         cmdh.Add(Me.m_cmdCompactModel)
 
         ' Create and configure 'close document' command
-        m_cmdCloseDocument = New Command("CloseDocument")
+        m_cmdCloseDocument = New cCommand("CloseDocument")
         m_cmdCloseDocument.AddControl(Me.m_tsmiWindowsClose)
         cmdh.Add(Me.m_cmdCloseDocument)
 
         ' Create and configure navigate command
-        m_cmdNavigate = New NavigationCommand()
+        m_cmdNavigate = New cNavigationCommand()
         cmdh.Add(Me.m_cmdNavigate)
 
         ' Create and configure 'close all forms' command
-        m_cmdCloseAllForms = New Command("CloseAllForms")
+        m_cmdCloseAllForms = New cCommand("CloseAllForms")
         m_cmdCloseAllForms.AddControl(Me.m_tsmiWindowsCloseAll)
         cmdh.Add(Me.m_cmdCloseAllForms)
 
         'Create and configure 'new ecosim scenario' command
-        m_cmdNewEcosimScenario = New Command("NewEcosimScenario")
+        m_cmdNewEcosimScenario = New cCommand("NewEcosimScenario")
         m_cmdNewEcosimScenario.AddControl(Me.m_tsmiEcosimNew)
         cmdh.Add(Me.m_cmdNewEcosimScenario)
 
         'Create and configure 'load ecosim scenario' command
-        m_cmdLoadEcosimScenario = New Command("LoadEcosimScenario")
+        m_cmdLoadEcosimScenario = New cCommand("LoadEcosimScenario")
         m_cmdLoadEcosimScenario.AddControl(Me.m_tsmiEcosimLoad)
         m_cmdLoadEcosimScenario.AddControl(Me.m_tsbEcosim)
         cmdh.Add(Me.m_cmdLoadEcosimScenario)
 
         'Create and configure 'save ecosim scenario' command
-        m_cmdSaveEcosimScenario = New Command("SaveEcosimScenario")
+        m_cmdSaveEcosimScenario = New cCommand("SaveEcosimScenario")
         m_cmdSaveEcosimScenario.AddControl(Me.m_tsmiEcosimSave)
         cmdh.Add(Me.m_cmdSaveEcosimScenario)
 
         'Create and configure 'save ecosim scenario as' command
-        m_cmdSaveEcosimScenarioAs = New Command("SaveEcosimScenarioAs")
+        m_cmdSaveEcosimScenarioAs = New cCommand("SaveEcosimScenarioAs")
         m_cmdSaveEcosimScenarioAs.AddControl(Me.m_tsmiEcosimSaveAs)
         cmdh.Add(Me.m_cmdSaveEcosimScenarioAs)
 
         'Create and configure 'new ecospace scenario' command
-        m_cmdNewEcospaceScenario = New Command("NewEcospaceScenario")
+        m_cmdNewEcospaceScenario = New cCommand("NewEcospaceScenario")
         m_cmdNewEcospaceScenario.AddControl(Me.m_tsmiEcospaceNew)
         cmdh.Add(Me.m_cmdNewEcospaceScenario)
 
         'Create and configure 'load ecospace scenario' command
-        m_cmdLoadEcospaceScenario = New Command("LoadEcospaceScenario")
+        m_cmdLoadEcospaceScenario = New cCommand("LoadEcospaceScenario")
         m_cmdLoadEcospaceScenario.AddControl(Me.m_tsmiEcospaceLoad)
         m_cmdLoadEcospaceScenario.AddControl(Me.m_tsbEcospace)
         cmdh.Add(Me.m_cmdLoadEcospaceScenario)
 
         'Create and configure 'save ecospace scenario' command
-        m_cmdSaveEcospaceScenario = New Command("SaveEcospaceScenario")
+        m_cmdSaveEcospaceScenario = New cCommand("SaveEcospaceScenario")
         m_cmdSaveEcospaceScenario.AddControl(Me.m_tsmiEcospaceSave)
         cmdh.Add(Me.m_cmdSaveEcospaceScenario)
 
         'Create and configure 'save ecospace scenario as' command
-        m_cmdSaveEcospaceScenarioAS = New Command("SaveEcospaceScenarioAs")
+        m_cmdSaveEcospaceScenarioAS = New cCommand("SaveEcospaceScenarioAs")
         m_cmdSaveEcospaceScenarioAS.AddControl(Me.m_tsmiEcospaceSaveAs)
         cmdh.Add(Me.m_cmdSaveEcospaceScenarioAS)
 
         'Create and configure 'new ecotracer scenario' command
-        Me.m_cmdNewEcotracerScenario = New Command("NewEcotracerScenario")
+        Me.m_cmdNewEcotracerScenario = New cCommand("NewEcotracerScenario")
         Me.m_cmdNewEcotracerScenario.AddControl(Me.m_tsmiEcotracerNew)
         cmdh.Add(Me.m_cmdNewEcotracerScenario)
 
         'Create and configure 'load ecotracer scenario' command
-        m_cmdLoadEcotracerScenario = New Command("LoadEcotracerScenario")
+        m_cmdLoadEcotracerScenario = New cCommand("LoadEcotracerScenario")
         m_cmdLoadEcotracerScenario.AddControl(Me.m_tsmiEcotracerLoad)
         cmdh.Add(Me.m_cmdLoadEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario' command
-        m_cmdSaveEcotracerScenario = New Command("SaveEcotracerScenario")
+        m_cmdSaveEcotracerScenario = New cCommand("SaveEcotracerScenario")
         m_cmdSaveEcotracerScenario.AddControl(Me.m_tsmiEcotracerSave)
         cmdh.Add(Me.m_cmdSaveEcotracerScenario)
 
         'Create and configure 'save ecotracer scenario as' command
-        m_cmdSaveEcotracerScenarioAS = New Command("SaveEcotracerScenarioAs")
+        m_cmdSaveEcotracerScenarioAS = New cCommand("SaveEcotracerScenarioAs")
         m_cmdSaveEcotracerScenarioAS.AddControl(Me.m_tsmiEcotracerSaveAs)
         cmdh.Add(Me.m_cmdSaveEcotracerScenarioAS)
 
         'Create and configure 'view Navtree' command
-        Me.m_cmdViewNavPane = New Command("ViewNavPane")
+        Me.m_cmdViewNavPane = New cCommand("ViewNavPane")
         Me.m_cmdViewNavPane.AddControl(Me.m_tsmiViewNavigation)
         cmdh.Add(Me.m_cmdViewNavPane)
 
         'Create and configure 'view start page' command
-        Me.m_cmdViewStartPanel = New Command("ViewStartPage")
+        Me.m_cmdViewStartPanel = New cCommand("ViewStartPage")
         Me.m_cmdViewStartPanel.AddControl(Me.m_tsmiViewStartPage)
         cmdh.Add(Me.m_cmdViewStartPanel)
 
         'Create and configure 'view status pane' command
-        Me.m_cmdViewStatusPane = New Command("ViewStatusPane")
+        Me.m_cmdViewStatusPane = New cCommand("ViewStatusPane")
         Me.m_cmdViewStatusPane.AddControl(Me.m_tsmiViewStatus)
         cmdh.Add(Me.m_cmdViewStatusPane)
 
         'Create and configure 'view properties pane' command
-        Me.m_cmdViewRemarkPane = New Command("ViewPropertiesPane")
+        Me.m_cmdViewRemarkPane = New cCommand("ViewPropertiesPane")
         Me.m_cmdViewRemarkPane.AddControl(Me.m_tsmiViewRemarks)
         cmdh.Add(Me.m_cmdViewRemarkPane)
 
         'Create and configure 'view Buttonbar' command
-        Me.m_cmdViewModelBar = New Command("ViewButtonBar")
+        Me.m_cmdViewModelBar = New cCommand("ViewButtonBar")
         Me.m_cmdViewModelBar.AddControl(Me.m_tsmiViewModelBar)
         cmdh.Add(Me.m_cmdViewModelBar)
 
         'Create and configure 'view statusbar' command
-        Me.m_cmdViewStatusbar = New Command("ViewStatusbar")
+        Me.m_cmdViewStatusbar = New cCommand("ViewStatusbar")
         Me.m_cmdViewStatusbar.AddControl(Me.m_tsmiViewStatusBar)
         cmdh.Add(Me.m_cmdViewStatusbar)
 
         'Create and configure EditGroups command
-        Me.m_cmdEditGroups = New Command("EditGroups")
+        Me.m_cmdEditGroups = New cCommand("EditGroups")
         Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathEditGroups)
         cmdh.Add(Me.m_cmdEditGroups)
 
         'Create and configure EditMultiStanza cammand
-        Me.m_cmdEditMultiStanza = New Command("EditMultiStanza")
+        Me.m_cmdEditMultiStanza = New cCommand("EditMultiStanza")
         Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathEditMultiStanza)
         cmdh.Add(Me.m_cmdEditMultiStanza)
 
         'Create and configure EditFleets command
-        Me.m_cmdEditFleets = New Command("EditFleets")
+        Me.m_cmdEditFleets = New cCommand("EditFleets")
         Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
         cmdh.Add(Me.m_cmdEditFleets)
 
-        Me.m_cmdEditBasemap = New Command("EditBasemap")
+        Me.m_cmdEditBasemap = New cCommand("EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
         cmdh.Add(Me.m_cmdEditBasemap)
 
-        Me.m_cmdEditHabitats = New Command("EditHabitats")
+        Me.m_cmdEditHabitats = New cCommand("EditHabitats")
         Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceEditHabitats)
         cmdh.Add(Me.m_cmdEditHabitats)
 
-        Me.m_cmdEditRegions = New Command("EditRegions")
+        Me.m_cmdEditRegions = New cCommand("EditRegions")
         Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceEditRegions)
         cmdh.Add(Me.m_cmdEditRegions)
 
-        Me.m_cmdEditMPAs = New Command("EditMPAs")
+        Me.m_cmdEditMPAs = New cCommand("EditMPAs")
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceEditMPAs)
         cmdh.Add(Me.m_cmdEditMPAs)
 
-        Me.m_cmdEditImportanceLayers = New Command("EditImportanceLayers")
+        Me.m_cmdEditImportanceLayers = New cCommand("EditImportanceLayers")
         Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceEditImportanceLayers)
         cmdh.Add(Me.m_cmdEditImportanceLayers)
 
-        Me.m_cmdImportLayerData = New Command("ImportLayerData")
+        Me.m_cmdImportLayerData = New cCommand("ImportLayerData")
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
         cmdh.Add(Me.m_cmdImportLayerData)
 
-        Me.m_cmdExportLayerData = New Command("ExportLayerData")
+        Me.m_cmdExportLayerData = New cCommand("ExportLayerData")
         cmdh.Add(Me.m_cmdExportLayerData)
 
         'Create and configure ImportTimeSeries command
-        Me.m_cmdImportTimeSeries = New Command("ImportTimeSeries")
+        Me.m_cmdImportTimeSeries = New cCommand("ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
         cmdh.Add(Me.m_cmdImportTimeSeries)
 
         'Create and configure LoadTimeSeries command
-        Me.m_cmdLoadTimeSeries = New Command("LoadTimeSeries")
+        Me.m_cmdLoadTimeSeries = New cCommand("LoadTimeSeries")
         Me.m_cmdLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
         cmdh.Add(Me.m_cmdLoadTimeSeries)
 
         'Create and configure WeightTimeSeries command
-        Me.m_cmdWeightTimeSeries = New Command("WeightTimeSeries")
+        Me.m_cmdWeightTimeSeries = New cCommand("WeightTimeSeries")
         Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
         cmdh.Add(Me.m_cmdWeightTimeSeries)
 
         'Create and configure LoadApplyTimeSeries command
-        Me.m_cmdLoadWeightTimeSeries = New Command("LoadWeightTimeSeries")
+        Me.m_cmdLoadWeightTimeSeries = New cCommand("LoadWeightTimeSeries")
         Me.m_cmdLoadWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesReloadLast)
         cmdh.Add(Me.m_cmdLoadWeightTimeSeries)
 
         'Create and configure Help>About command
-        Me.m_cmdHelpAbout = New Command("HelpAbout")
+        Me.m_cmdHelpAbout = New cCommand("HelpAbout")
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
         cmdh.Add(Me.m_cmdHelpAbout)
 
@@ -917,13 +925,13 @@ Public Class AppLauncher
         Me.m_cmdPropertySelection = New PropertySelectionCommand()
         cmdh.Add(Me.m_cmdPropertySelection)
 
-        Me.m_cmdDisplayGroups = New Command("DisplayGroups")
+        Me.m_cmdDisplayGroups = New cCommand("DisplayGroups")
         cmdh.Add(Me.m_cmdDisplayGroups)
 
-        Me.m_cmdEnableEcotracer = New Command("EnableEcotracer")
+        Me.m_cmdEnableEcotracer = New cCommand("EnableEcotracer")
         cmdh.Add(Me.m_cmdEnableEcotracer)
 
-        Me.m_cmdExportBiomassToCSV = New Command("ExportEcosimBiomassToCSV")
+        Me.m_cmdExportBiomassToCSV = New cCommand("ExportEcosimBiomassToCSV")
         cmdh.Add(Me.m_cmdExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
@@ -1614,7 +1622,7 @@ Public Class AppLauncher
                 Return m_StartPage
 
             Case Else
-                Dim nd As NavigationCommand = m_NavPanel.GetTemporaryNavCommand(persistString)
+                Dim nd As cNavigationCommand = m_NavPanel.GetTemporaryNavCommand(persistString)
                 Return CreateDocument(nd)
         End Select
 
@@ -1622,7 +1630,7 @@ Public Class AppLauncher
 
     End Function
 
-    Private Function CreateDocument(ByVal nc As NavigationCommand) As IDockContent
+    Private Function CreateDocument(ByVal nc As cNavigationCommand) As IDockContent
 
         If nc Is Nothing Then Return Nothing
 
@@ -1996,7 +2004,7 @@ Public Class AppLauncher
 
 #Region " Generic commands "
 
-    Private Sub OnFileOpen(ByVal cmd As Command) Handles m_cmdFileOpen.OnInvoke
+    Private Sub OnFileOpen(ByVal cmd As cCommand) Handles m_cmdFileOpen.OnInvoke
 
         Dim dlgLoad As New OpenFileDialog()
         Dim foc As cFileOpenCommand = DirectCast(cmd, cFileOpenCommand)
@@ -2004,7 +2012,7 @@ Public Class AppLauncher
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgLoad, foc.FileName, foc.Filters, foc.FilterIndex, strPath)
+        cEwEFileDialogHelper.Configure(dlgLoad, foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath)
 
         foc.Result = dlgLoad.ShowDialog()
         foc.FilterIndex = dlgLoad.FilterIndex
@@ -2016,7 +2024,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnFileSave(ByVal cmd As Command) Handles m_cmdFileSave.OnInvoke
+    Private Sub OnFileSave(ByVal cmd As cCommand) Handles m_cmdFileSave.OnInvoke
 
         Dim dlgSave As New SaveFileDialog()
         Dim fsc As cFileSaveCommand = DirectCast(cmd, cFileSaveCommand)
@@ -2024,7 +2032,7 @@ Public Class AppLauncher
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgSave, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
+        cEwEFileDialogHelper.Configure(dlgSave, fsc.Title, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
 
         fsc.Result = dlgSave.ShowDialog()
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
@@ -2035,13 +2043,32 @@ Public Class AppLauncher
 
     End Sub
 
+    Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
+
+        Dim dlgLoad As New FolderBrowserDialog()
+        Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
+        Dim strPath As String = doc.Directory
+
+        If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
+
+        cEwEFileDialogHelper.Configure(dlgLoad, doc.Description, strPath)
+
+        doc.Result = dlgLoad.ShowDialog()
+
+        If (doc.Result = Windows.Forms.DialogResult.OK) Then
+            doc.Directory = doc.Directory
+            Me.m_strLastSelectedPath = Path.GetDirectoryName(doc.Directory)
+        End If
+
+    End Sub
+
     ''' <summary>
     ''' Create new Ecopath model
     ''' </summary>
-    Private Sub OnNewFile(ByVal cmd As Command) Handles m_cmdNewModel.OnInvoke
+    Private Sub OnNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
         Dim db As cEwEDatabase = Nothing
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
@@ -2060,16 +2087,16 @@ Public Class AppLauncher
     ''' <summary>
     ''' Update new model command state
     ''' </summary>
-    Private Sub OnUpdateNewFile(ByVal cmd As Command) Handles m_cmdNewModel.OnUpdate
+    Private Sub OnUpdateNewFile(ByVal cmd As cCommand) Handles m_cmdNewModel.OnUpdate
         cmd.Enabled = True
     End Sub
 
     ''' <summary>
     ''' Open Ecopath model from file
     ''' </summary>
-    Private Sub OnLoadModel(ByVal cmd As Command) Handles m_cmdLoadModel.OnInvoke
+    Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         If cmd.Tag IsNot Nothing Then
@@ -2089,16 +2116,16 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnOpenDocument(ByVal cmd As Command) Handles m_cmdNavigate.OnInvoke
+    Private Sub OnOpenDocument(ByVal cmd As cCommand) Handles m_cmdNavigate.OnInvoke
 
-        Dim nc As NavigationCommand = Nothing
+        Dim nc As cNavigationCommand = Nothing
         Dim frm As Form = Nothing
 
         ' Sanity checks
         If cmd Is Nothing Then Return
-        If Not (TypeOf cmd Is NavigationCommand) Then Return
+        If Not (TypeOf cmd Is cNavigationCommand) Then Return
 
-        nc = DirectCast(cmd, NavigationCommand)
+        nc = DirectCast(cmd, cNavigationCommand)
 
         If nc.PageID = "ndScenario" Then
             m_coreController.LoadEcosimScenario()
@@ -2148,7 +2175,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnRunGUIPlugin(ByVal cmd As Command) Handles m_cmdPluginGUICommand.OnInvoke
+    Private Sub OnRunGUIPlugin(ByVal cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
 
         ' Sanity checks
         If Not (TypeOf cmd Is PluginGUICommand) Then Return
@@ -2215,9 +2242,9 @@ Public Class AppLauncher
     ''' <summary>
     ''' Save model under a different name
     ''' </summary>
-    Private Sub OnSaveModelAs(ByVal cmd As Command) Handles m_cmdSaveModelAs.OnInvoke
+    Private Sub OnSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         Dim strFileFilter As String = ""
@@ -2256,7 +2283,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Update save model command state
     ''' </summary>
-    Private Sub OnUpdateSaveModelAs(ByVal cmd As Command) Handles m_cmdSaveModelAs.OnUpdate
+    Private Sub OnUpdateSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnUpdate
 
         Dim bEnable As Boolean = Me.m_core.StateMonitor.HasEcopathLoaded
 
@@ -2276,7 +2303,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Save the model
     ''' </summary>
-    Private Sub OnSave(ByVal cmd As Command) Handles m_cmdSave.OnInvoke
+    Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
         Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
         Me.m_core.Save()
         Me.SetStatusText("", TriState.False)
@@ -2285,35 +2312,35 @@ Public Class AppLauncher
     ''' <summary>
     ''' Update save model command state
     ''' </summary>
-    Private Sub OnUpdateSave(ByVal cmd As Command) Handles m_cmdSave.OnUpdate
+    Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.IsModified
     End Sub
 
     ''' <summary>
     ''' Close the current open model
     ''' </summary>
-    Private Sub OnCloseModel(ByVal cmd As Command) Handles m_cmdCloseModel.OnInvoke
+    Private Sub OnCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnInvoke
         Me.CloseEcopathModel()
     End Sub
 
     ''' <summary>
     ''' Update close model command state
     ''' </summary>
-    Private Sub OnUpdateCloseModel(ByVal cmd As Command) Handles m_cmdCloseModel.OnUpdate
+    Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Compact a model
     ''' </summary>
-    Private Sub OnCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnInvoke
+    Private Sub OnCompactModel(ByVal cmd As cCommand) Handles m_cmdCompactModel.OnInvoke
         Me.CompactModel()
     End Sub
 
     ''' <summary>
     ''' Update compact model command state
     ''' </summary>
-    Private Sub OnUpdateCompactModel(ByVal cmd As Command) Handles m_cmdCompactModel.OnUpdate
+    Private Sub OnUpdateCompactModel(ByVal cmd As cCommand) Handles m_cmdCompactModel.OnUpdate
         Dim ds As IEwEDataSource = Me.m_core.DataSource
         If (ds Is Nothing) Then
             cmd.Enabled = False
@@ -2325,7 +2352,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Close the current active document.
     ''' </summary>
-    Private Sub OnCloseDocument(ByVal cmd As Command) Handles m_cmdCloseDocument.OnInvoke
+    Private Sub OnCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
         ' Is the window docked?
         ' Check whether an active document exists; this will occur when all panels are already closed.
         If Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing) Then
@@ -2338,7 +2365,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; update the 'close document' command state
     ''' </summary>
-    Private Sub OnUpdateCloseDocument(ByVal cmd As Command) Handles m_cmdCloseDocument.OnUpdate
+    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate
         cmd.Enabled = False
         ' Is the window docked?
         cmd.Enabled = Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
@@ -2347,7 +2374,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; closes all closable child forms.
     ''' </summary>
-    Private Sub OnCloseAllForms(ByVal cmd As Command) Handles m_cmdCloseAllForms.OnInvoke
+    Private Sub OnCloseAllForms(ByVal cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
         ' Close all child forms of the parent.
         CloseAllDocuments()
     End Sub
@@ -2355,21 +2382,21 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; toggles main statusbar visibility
     ''' </summary>
-    Private Sub OnViewMainStatusbar(ByVal cmd As Command) Handles m_cmdViewStatusbar.OnInvoke
+    Private Sub OnViewMainStatusbar(ByVal cmd As cCommand) Handles m_cmdViewStatusbar.OnInvoke
         Me.m_ssMain.Visible = Not cmd.Checked
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdViewStatusbar">View Statusbar command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewMainStatusbar(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdViewStatusbar.OnUpdate
+    Private Sub OnUpdateViewMainStatusbar(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewStatusbar.OnUpdate
         cmd.Checked = Me.m_ssMain.Visible
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the edit groups interface
     ''' </summary>
-    Private Sub OnEditGroups(ByVal cmd As Command) Handles m_cmdEditGroups.OnInvoke
+    Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
         Dim dlg As New EditGroups
 
         Me.m_Help.HelpTopic(dlg) = "Edit groups.htm"
@@ -2379,14 +2406,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdEditGroups.OnUpdate
+    Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the edit multi stanza interface
     ''' </summary>
-    Private Sub OnEditMultiStanza(ByVal cmd As Command) Handles m_cmdEditMultiStanza.OnInvoke
+    Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
         Dim dlg As New EditMultiStanza()
         Me.m_Help.HelpTopic(dlg) = "Edit multi stanza.htm"
         dlg.ShowDialog(Me)
@@ -2395,7 +2422,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditMultiStanza">Edit Multi-stanza command</see>.
     ''' </summary>
-    Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdEditMultiStanza.OnUpdate
+    Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded() And (Me.m_core.nStanzas > 0)
     End Sub
@@ -2403,7 +2430,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the edit fleets interface
     ''' </summary>
-    Private Sub OnEditFleets(ByVal cmd As Command) Handles m_cmdEditFleets.OnInvoke
+    Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
         Dim dlg As New EditFleets
         Me.m_Help.HelpTopic(dlg) = "Edit fleets.htm"
         dlg.ShowDialog(Me)
@@ -2412,23 +2439,23 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdEditFleets.OnUpdate
+    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditFleets.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
     End Sub
 
-    Private Sub OnDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnInvoke
+    Private Sub OnDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnInvoke
         Dim dlg As New dlgDisplayGroups()
         dlg.ShowDialog()
     End Sub
 
-    Private Sub OnUpdateDisplayGroups(ByVal cmd As Command) Handles m_cmdDisplayGroups.OnUpdate
+    Private Sub OnUpdateDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded()
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the import layers dialog.
     ''' </summary>
-    Private Sub m_cmdImportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) _
+    Private Sub m_cmdImportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
         Dim dlg As New dlgImportLayerData()
 
@@ -2446,7 +2473,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">import layer data command</see>.
     ''' </summary>
-    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) _
+    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
     End Sub
@@ -2454,7 +2481,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the export layers dialog.
     ''' </summary>
-    Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) _
+    Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
         Dim dlg As New dlgExportLayerData()
         If cmd.Tag IsNot Nothing Then
@@ -2471,7 +2498,7 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) _
+    Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded()
     End Sub
@@ -2491,7 +2518,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; shows the start page.
     ''' </summary>
-    Private Sub OnViewStartPage(ByVal cmd As Command) Handles m_cmdViewStartPanel.OnInvoke
+    Private Sub OnViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnInvoke
         ' If m_startPage has been closed, create a new reference. 
         If m_StartPage.IsDisposed() Then
             m_StartPage = New WebBrowserDC()
@@ -2517,14 +2544,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Start Page command</see> state.
     ''' </summary>
-    Private Sub OnUpdateViewStartPage(ByVal cmd As Command) Handles m_cmdViewStartPanel.OnUpdate
+    Private Sub OnUpdateViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnUpdate
         cmd.Checked = Not m_StartPage.IsDisposed()
     End Sub
 
     ''' <summary>
     ''' Command handler; shows the navigation panel.
     ''' </summary>
-    Private Sub OnViewNavPane(ByVal cmd As Command) Handles m_cmdViewNavPane.OnInvoke
+    Private Sub OnViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnInvoke
         If cmd.Checked Then
             m_NavPanel.DockState = DockState.Hidden
         Else
@@ -2535,14 +2562,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Navigation Panel command</see> state.
     ''' </summary>
-    Private Sub OnUpdateViewNavPane(ByVal cmd As Command) Handles m_cmdViewNavPane.OnUpdate
+    Private Sub OnUpdateViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnUpdate
         cmd.Checked = (m_NavPanel.DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the remark pane
     ''' </summary>
-    Private Sub OnViewRemarkPane(ByVal cmd As Command) Handles m_cmdViewRemarkPane.OnInvoke
+    Private Sub OnViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnInvoke
         If cmd.Checked Then
             m_RemarkPanel.DockState = DockState.Hidden
         Else
@@ -2551,14 +2578,14 @@ Public Class AppLauncher
         End If
     End Sub
 
-    Private Sub OnUpdateViewRemarkPane(ByVal cmd As Command) Handles m_cmdViewRemarkPane.OnUpdate
+    Private Sub OnUpdateViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnUpdate
         cmd.Checked = (m_RemarkPanel.DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the status panel
     ''' </summary>
-    Private Sub OnViewStatusPane(ByVal cmd As Command) Handles m_cmdViewStatusPane.OnInvoke
+    Private Sub OnViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnInvoke
         If cmd.Checked Then
             m_StatusPanel.DockState = DockState.Hidden
         Else
@@ -2567,18 +2594,18 @@ Public Class AppLauncher
         End If
     End Sub
 
-    Private Sub OnUpdateViewStatusPane(ByVal cmd As Command) Handles m_cmdViewStatusPane.OnUpdate
+    Private Sub OnUpdateViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnUpdate
         cmd.Checked = (m_StatusPanel.DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the button bar
     ''' </summary>
-    Private Sub OnViewModelBar(ByVal cmd As Command) Handles m_cmdViewModelBar.OnInvoke
+    Private Sub OnViewModelBar(ByVal cmd As cCommand) Handles m_cmdViewModelBar.OnInvoke
         Me.m_tsModel.Visible = Not cmd.Checked
     End Sub
 
-    Private Sub OnUpdateViewModelBar(ByVal cmd As Command) Handles m_cmdViewModelBar.OnUpdate
+    Private Sub OnUpdateViewModelBar(ByVal cmd As cCommand) Handles m_cmdViewModelBar.OnUpdate
         cmd.Checked = Me.m_tsModel.Visible
     End Sub
 
@@ -2608,7 +2635,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the About... dialog.
     ''' </summary>
-    Private Sub m_cmdHelpAbout_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdHelpAbout.OnInvoke
+    Private Sub m_cmdHelpAbout_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
         Dim dlgAbout As New frmAboutEwE
 
         Me.m_Help.HelpTopic(dlgAbout) = ""
@@ -2618,7 +2645,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables the About.. command.
     ''' </summary>
-    Private Sub m_cmdHelpAbout_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdHelpAbout.OnUpdate
+    Private Sub m_cmdHelpAbout_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnUpdate
         cmd.Enabled = True
     End Sub
 
@@ -2645,7 +2672,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; creates a new Ecosim scenario
     ''' </summary>
-    Private Sub OnNewEcosimScenario(ByVal cmd As Command) Handles m_cmdNewEcosimScenario.OnInvoke
+    Private Sub OnNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.CreateScenario)
 
@@ -2668,14 +2695,14 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdNewEcosimScenario">New Ecosim Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateNewEcosimScenario(ByVal cmd As Command) Handles m_cmdNewEcosimScenario.OnUpdate
+    Private Sub OnUpdateNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; loads a new Ecosim scenario
     ''' </summary>
-    Private Sub OnLoadEcosimScenario(ByVal cmd As Command) Handles m_cmdLoadEcosimScenario.OnInvoke
+    Private Sub OnLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnInvoke
         Me.m_coreController.LoadEcosimScenario()
     End Sub
 
@@ -2683,11 +2710,11 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateLoadEcosimScenario(ByVal cmd As Command) Handles m_cmdLoadEcosimScenario.OnUpdate
+    Private Sub OnUpdateLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnSaveEcosimScenario(ByVal cmd As Command) Handles m_cmdSaveEcosimScenario.OnInvoke
+    Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
         Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Try
@@ -2701,11 +2728,11 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecosim scenario' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As Command) Handles m_cmdSaveEcosimScenario.OnUpdate
+    Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.IsEcosimModified
     End Sub
 
-    Private Sub OnSaveEcosimScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
+    Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(EcosimScenarioDlg.eDialogModeType.SaveScenario, _
                 Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex))
@@ -2747,35 +2774,35 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecosim scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcosimScenarioAs.OnUpdate
+    Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the import time series dialog.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnInvoke
+    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdImportTimeSeries.OnUpdate
+    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the apply time series dialog.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnInvoke
+    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdWeightTimeSeries">Apply TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdWeightTimeSeries.OnUpdate
+    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() ' And Me.m_core.HasTimeSeries()
     End Sub
@@ -2783,21 +2810,21 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the load time series dialog.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnInvoke
+    Private Sub m_cmdLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadTimeSeries.OnUpdate
+    Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTimeSeries.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded()
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the reload time series dialog.
     ''' </summary>
-    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnInvoke
+    Private Sub m_cmdReloadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnInvoke
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         For iDS As Integer = 1 To Me.m_core.nTimeSeriesDatasets
             If (String.Compare(Me.m_core.TimeSeriesDataset(iDS).Name, strDataset, False) = 0) Then
@@ -2811,13 +2838,13 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdLoadWeightTimeSeries">Load and weight TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.Command) Handles m_cmdLoadWeightTimeSeries.OnUpdate
+    Private Sub m_cmdLoadWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadWeightTimeSeries.OnUpdate
         Dim strDataset As String = MRUHelper.GetMRUString(My.Settings.MdbRecentlyUsedList, Me.SelectedFileName, MRUHelper.eModuleType.Dataset)
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And (Not String.IsNullOrEmpty(strDataset))
     End Sub
 
-    Private Sub OnExportBiomassToCSV(ByVal cmd As Command) Handles m_cmdExportBiomassToCSV.OnInvoke
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+    Private Sub OnExportBiomassToCSV(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnInvoke
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(String.Format("EwE6_{0}_Biomass.csv", m_core.EwEModel.Name), "", My.Resources.FILEFILTER_CSV, 1)
@@ -2828,7 +2855,7 @@ Public Class AppLauncher
         End If
     End Sub
 
-    Private Sub OnExportBiomassToCSVs(ByVal cmd As Command) Handles m_cmdExportBiomassToCSV.OnUpdate
+    Private Sub OnExportBiomassToCSVs(ByVal cmd As cCommand) Handles m_cmdExportBiomassToCSV.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimRan
     End Sub
 
@@ -2836,7 +2863,7 @@ Public Class AppLauncher
 
 #Region " Ecospace scenario commands "
 
-    Private Sub OnNewEcospaceScenario(ByVal cmd As Command) Handles m_cmdNewEcospaceScenario.OnInvoke
+    Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdNewEcospaceScenario.OnInvoke
         Dim dlg As New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -2858,22 +2885,22 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As Command) Handles m_cmdNewEcospaceScenario.OnUpdate
+    Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdNewEcospaceScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded
     End Sub
 
-    Private Sub OnLoadEcospaceScenario(ByVal cmd As Command) Handles m_cmdLoadEcospaceScenario.OnInvoke
+    Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnInvoke
         Me.m_coreController.LoadEcospaceScenario()
     End Sub
 
-    Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As Command) Handles m_cmdLoadEcospaceScenario.OnUpdate
+    Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcospaceScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; saves the current active Ecospace scenario under a new name.
     ''' </summary>
-    Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
+    Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
         Dim dlg As New EcospaceScenarioDlg(EcospaceScenarioDlg.eDialogModeType.SaveScenario, _
                 Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex))
@@ -2928,14 +2955,14 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdSaveEcospaceScenarioAs">Save Ecospace Scenario As</see> command.
     ''' </summary>
-    Private Sub OnUpdateSaveEcospaceScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
+    Private Sub OnUpdateSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; saves the current active Ecospace scenario.
     ''' </summary>
-    Private Sub OnSaveEcospaceScenario(ByVal cmd As Command) Handles m_cmdSaveEcospaceScenario.OnInvoke
+    Private Sub OnSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnInvoke
         Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Try
@@ -2950,14 +2977,14 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdSaveEcospaceScenario">Save Ecospace Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As Command) Handles m_cmdSaveEcospaceScenario.OnUpdate
+    Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.IsEcospaceModified
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit basemap dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceBasemap(ByVal cmd As Command) Handles m_cmdEditBasemap.OnInvoke
+    Private Sub OnEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
         Dim dlg As New dlgEditBasemap(Me.m_core.EcospaceBasemap)
         Me.m_Help.HelpTopic(dlg) = "Edit basemap.htm"
         dlg.ShowDialog(Me)
@@ -2966,14 +2993,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit basemap dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceBasemap(ByVal cmd As Command) Handles m_cmdEditBasemap.OnUpdate
+    Private Sub OnUpdateEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit habitats dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceHabitats(ByVal cmd As Command) Handles m_cmdEditHabitats.OnInvoke
+    Private Sub OnEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnInvoke
         Dim dlg As New dlgEditHabitats()
         Me.m_Help.HelpTopic(dlg) = "Edit habitats.htm"
         dlg.ShowDialog(Me)
@@ -2982,14 +3009,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit habitats dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As Command) Handles m_cmdEditHabitats.OnUpdate
+    Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit regions dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceRegions(ByVal cmd As Command) Handles m_cmdEditRegions.OnInvoke
+    Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
         Dim dlg As New dlgEditRegions()
         dlg.ShowDialog(Me)
     End Sub
@@ -2997,14 +3024,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit regions dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As Command) Handles m_cmdEditRegions.OnUpdate
+    Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit MPAs dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceMPAs(ByVal cmd As Command) Handles m_cmdEditMPAs.OnInvoke
+    Private Sub OnEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnInvoke
         Dim dlg As New dlgEditMPAs()
         dlg.ShowDialog(Me)
     End Sub
@@ -3012,14 +3039,14 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit MPAs dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceMPAs(ByVal cmd As Command) Handles m_cmdEditMPAs.OnUpdate
+    Private Sub OnUpdateEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As Command) Handles m_cmdEditImportanceLayers.OnInvoke
+    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnInvoke
         Dim dlg As New dlgEditImportanceLayers()
         dlg.ShowDialog(Me)
     End Sub
@@ -3027,7 +3054,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceImportanceLayers(ByVal cmd As Command) Handles m_cmdEditImportanceLayers.OnUpdate
+    Private Sub OnUpdateEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcospaceLoaded
     End Sub
 
@@ -3087,7 +3114,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; creates a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnNewEcotracerScenario(ByVal cmd As Command) Handles m_cmdNewEcotracerScenario.OnInvoke
+    Private Sub OnNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnInvoke
 
         ' Prerequesite: Ecosim needs to be loaded
         Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded)
@@ -3115,14 +3142,14 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdNewEcotracerScenario">New Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As Command) Handles m_cmdNewEcotracerScenario.OnUpdate
+    Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdNewEcotracerScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; loads a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnLoadEcotracerScenario(ByVal cmd As Command) Handles m_cmdLoadEcotracerScenario.OnInvoke
+    Private Sub OnLoadEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcotracerScenario.OnInvoke
         Me.LoadEcotracerScenario()
     End Sub
 
@@ -3130,11 +3157,11 @@ Public Class AppLauncher
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As Command) Handles m_cmdLoadEcotracerScenario.OnUpdate
+    Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcotracerScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnSaveEcotracerScenario(ByVal cmd As Command) Handles m_cmdSaveEcotracerScenario.OnInvoke
+    Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnInvoke
         Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex).Name)
         Me.SetStatusText(strStatus, TriState.True)
         Me.m_core.SaveEcotracerScenario()
@@ -3144,11 +3171,11 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecotracer scenario' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As Command) Handles m_cmdSaveEcotracerScenario.OnUpdate
+    Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenario.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.IsEcotracerModified
     End Sub
 
-    Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
+    Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
         Dim dlg As New EcotracerScenarioDlg(EcotracerScenarioDlg.eDialogModeType.SaveScenario, _
                 Me.m_core.EcotracerScenarios(Me.m_core.ActiveEcotracerScenarioIndex))
@@ -3182,11 +3209,11 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecotracer scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As Command) Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
+    Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
         cmd.Enabled = Me.m_core.StateMonitor.HasEcotracerLoaded()
     End Sub
 
-    Private Sub OnEnableEcotracer(ByVal cmd As Command) Handles m_cmdEnableEcotracer.OnInvoke
+    Private Sub OnEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnInvoke
 
         Dim pm As cPropertyManager = cPropertyManager.GetInstance()
         Dim ecosimModelParams As cEcoSimModelParameters = Nothing
@@ -3238,7 +3265,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnUpdateEnableEcotracer(ByVal cmd As Command) Handles m_cmdEnableEcotracer.OnUpdate
+    Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) Handles m_cmdEnableEcotracer.OnUpdate
         cmd.Enabled = True
     End Sub
 
