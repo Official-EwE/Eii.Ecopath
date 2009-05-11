@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.44  2009/05/11 02:15:02  jeroens
+' no message
+'
 ' Revision 1.43  2009/05/11 01:52:01  jeroens
 ' Added cDirectoryOpen command
 '
@@ -2056,7 +2059,7 @@ Public Class AppLauncher
         doc.Result = dlgLoad.ShowDialog()
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
-            doc.Directory = doc.Directory
+            doc.Directory = dlgLoad.SelectedPath
             Me.m_strLastSelectedPath = Path.GetDirectoryName(doc.Directory)
         End If
 
