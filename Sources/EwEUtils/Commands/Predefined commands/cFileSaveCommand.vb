@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: FileSaveCommand.vb,v $
+' $Log: cFileSaveCommand.vb,v $
+' Revision 1.1  2009/05/11 01:46:28  jeroens
+' Renamed
+'
 ' Revision 1.3  2009/05/02 01:47:32  jeroens
 ' Added Invoke alternative
 '
@@ -28,10 +31,12 @@ Namespace Commands
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cFileSaveCommand
-        Inherits Command
+        Inherits cCommand
 
 #Region " Privates "
 
+        ''' <summary>Dialog caption.</summary>
+        Private m_strTitle As String = ""
         ''' <summary>Name of the file to save.</summary>
         Private m_strFileName As String = ""
         ''' <summary>Directory to initialize the dialog with.</summary>
@@ -84,12 +89,17 @@ Namespace Commands
         ''' <param name="strDirectory"></param>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileName As String, _
                                     ByVal strDirectory As String, _
                                     ByVal strFileFilter As String, _
-                                    Optional ByVal iFilter As Integer = 0)
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
 
+            Me.m_strTitle = strTitle
             Me.m_strFileName = strFileName
             Me.m_strDirectory = strDirectory
             Me.m_strFileFilters = strFileFilter
@@ -104,16 +114,16 @@ Namespace Commands
         ''' <param name="strFileName"></param>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileName As String, _
-                ByVal strFileFilter As String, _
-                Optional ByVal iFilter As Integer = 0)
+                                    ByVal strFileFilter As String, _
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
 
-            Me.m_strFileName = strFileName
-            Me.m_strDirectory = ""
-            Me.m_strFileFilters = strFileFilter
-            Me.m_iFilter = iFilter
-            Me.Invoke()
+            Me.Invoke(strFileName, "", strFileFilter, iFilter, strTitle)
 
         End Sub
 
@@ -122,17 +132,32 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileFilter As String, _
-                Optional ByVal iFilter As Integer = 0)
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
 
-            Me.m_strFileName = ""
-            Me.m_strDirectory = ""
-            Me.m_strFileFilters = strFileFilter
-            Me.m_iFilter = iFilter
-            Me.Invoke()
+            Me.Invoke("", "", strFileFilter, iFilter, strTitle)
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the title to display in the dialog. If left emtpy, the .NET
+        ''' framework will use the default file open title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Title() As String
+            Get
+                Return Me.m_strTitle
+            End Get
+            Set(ByVal strTitle As String)
+                Me.m_strTitle = strTitle
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

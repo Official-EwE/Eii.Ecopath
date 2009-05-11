@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: ControlHandler.vb,v $
+' $Log: cControlHandler.vb,v $
+' Revision 1.1  2009/05/11 01:43:25  jeroens
+' Renamed
+'
 ' Revision 1.1  2008/09/26 07:31:09  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -31,7 +34,7 @@ Namespace Commands
     Public MustInherit Class ControlHandler
 
         ''' <summary>The associated Command.</summary>
-        Private m_cmd As Command = Nothing
+        Private m_cmd As cCommand = Nothing
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
@@ -42,8 +45,8 @@ Namespace Commands
         ''' <param name="objGUI">The User Interface instance to attach.</param>
         ''' ---------------------------------------------------------------------------
         Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            Debug.Assert(TypeOf objCmd Is Command)
-            m_cmd = DirectCast(objCmd, Command)
+            Debug.Assert(TypeOf objCmd Is cCommand)
+            m_cmd = DirectCast(objCmd, cCommand)
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -51,7 +54,7 @@ Namespace Commands
         ''' Helper method; exposes the attached Command to derived classes.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Protected ReadOnly Property Command() As Command
+        Protected ReadOnly Property Command() As cCommand
             Get
                 Return Me.m_cmd
             End Get

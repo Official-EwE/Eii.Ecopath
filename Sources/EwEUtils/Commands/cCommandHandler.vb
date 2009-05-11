@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: CommandHandler.vb,v $
+' $Log: cCommandHandler.vb,v $
+' Revision 1.1  2009/05/11 01:43:25  jeroens
+' Renamed
+'
 ' Revision 1.1  2008/09/26 07:31:09  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -29,23 +32,23 @@ Namespace Commands
     ''' class serves as a central registry point for <see cref="ControlHandler">ControlHandlers</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class CommandHandler
+    Public Class cCommandHandler
 
 #Region " Singleton "
 
         ''' <summary>Singleton instance.</summary>
-        Private Shared s_inst As CommandHandler
+        Private Shared s_inst As cCommandHandler
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Singleton instance access.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As CommandHandler
-            If CommandHandler.s_inst Is Nothing Then
-                CommandHandler.s_inst = New CommandHandler
+        Public Shared Function GetInstance() As cCommandHandler
+            If cCommandHandler.s_inst Is Nothing Then
+                cCommandHandler.s_inst = New cCommandHandler
             End If
-            Return CommandHandler.s_inst
+            Return cCommandHandler.s_inst
         End Function
 
 #End Region ' Singleton
@@ -59,7 +62,7 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Private Sub New()
             ' Create storages
-            Me.m_dictCommands = New Dictionary(Of String, Command)
+            Me.m_dictCommands = New Dictionary(Of String, cCommand)
             Me.m_dictHandlerTypes = New Dictionary(Of String, Type)
 
             ' Register predefined command handler types
@@ -75,7 +78,7 @@ Namespace Commands
 #Region " Command administration "
 
         ''' <summary>Dictionary of <see cref="Command">Commands</see>.</summary>
-        Private m_dictCommands As Dictionary(Of String, Command) = Nothing
+        Private m_dictCommands As Dictionary(Of String, cCommand) = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -83,7 +86,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="c">The command to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Add(ByVal c As Command)
+        Public Sub Add(ByVal c As cCommand)
             Try
                 Me.m_dictCommands.Add(c.Name.ToLower(), c)
             Catch ex As Exception
@@ -97,7 +100,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="c">The command to remove.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Remove(ByVal c As Command)
+        Public Sub Remove(ByVal c As cCommand)
             Try
                 Me.m_dictCommands.Remove(c.Name.ToLower())
             Catch ex As Exception
@@ -115,7 +118,7 @@ Namespace Commands
         ''' be found.
         ''' </returns>
         ''' -----------------------------------------------------------------------
-        Public Function GetCommand(ByVal strName As String) As Command
+        Public Function GetCommand(ByVal strName As String) As cCommand
             Try
                 Return Me.m_dictCommands(strName.ToLower())
             Catch ex As Exception
@@ -138,7 +141,7 @@ Namespace Commands
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub OnIdle(ByVal sender As Object, ByVal e As EventArgs)
-            For Each cmd As Command In Me.m_dictCommands.Values
+            For Each cmd As cCommand In Me.m_dictCommands.Values
                 cmd.Update()
             Next
         End Sub

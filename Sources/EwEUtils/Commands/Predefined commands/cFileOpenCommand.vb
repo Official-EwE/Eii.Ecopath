@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: FileOpenCommand.vb,v $
+' $Log: cFileOpenCommand.vb,v $
+' Revision 1.1  2009/05/11 01:46:28  jeroens
+' Renamed
+'
 ' Revision 1.2  2008/11/10 05:33:32  jeroens
 ' Renamed
 '
@@ -25,10 +28,12 @@ Namespace Commands
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cFileOpenCommand
-        Inherits Command
+        Inherits cCommand
 
 #Region " Privates "
 
+        ''' <summary>Dialog caption.</summary>
+        Private m_strTitle As String = ""
         ''' <summary>Name of the file to open.</summary>
         Private m_strFileName As String = ""
         ''' <summary>Directory to initialize the dialog with.</summary>
@@ -81,11 +86,17 @@ Namespace Commands
         ''' <param name="strDirectory"></param>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' </param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strFileName As String, ByVal strDirectory As String, _
-                ByVal strFileFilter As String, _
-                Optional ByVal iFilter As Integer = 0)
+        Public Overloads Sub Invoke(ByVal strFileName As String, _
+                                    ByVal strDirectory As String, _
+                                    ByVal strFileFilter As String, _
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
 
+            Me.m_strTitle = strTitle
             Me.m_strFileName = strFileName
             Me.m_strDirectory = strDirectory
             Me.m_strFileFilters = strFileFilter
@@ -99,21 +110,36 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileFilter As String, _
-                Optional ByVal iFilter As Integer = 0)
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
 
-            Me.m_strFileName = ""
-            Me.m_strDirectory = ""
-            Me.m_strFileFilters = strFileFilter
-            Me.m_iFilter = iFilter
-            Me.Invoke()
+            Me.Invoke("", "", strFileFilter, iFilter, strTitle)
 
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Set the file name to show in the dialog. Once invoked and closed
+        ''' Get/set the title to display in the dialog. If left emtpy, the .NET
+        ''' framework will use the default file open title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Title() As String
+            Get
+                Return Me.m_strTitle
+            End Get
+            Set(ByVal strTitle As String)
+                Me.m_strTitle = strTitle
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the file name to show in the dialog. Once invoked and closed
         ''' with the result <see cref="DialogResult.OK">OK</see>, this
         ''' property will contain the full path to the file selected in the 
         ''' dialog.

@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: Command.vb,v $
+' $Log: cCommand.vb,v $
+' Revision 1.1  2009/05/11 01:46:27  jeroens
+' Renamed
+'
 ' Revision 1.1  2008/09/26 07:31:09  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -28,7 +31,7 @@ Namespace Commands
     ''' be updated whenever the Command state changes.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class Command
+    Public Class cCommand
 
 #Region " Construction "
 
@@ -60,7 +63,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="objGUI">The control to add.</param>
         ''' <remarks>
-        ''' The <see cref="CommandHandler">CommandHandler</see> predefines a few
+        ''' The <see cref="cCommandHandler">cCommandHandler</see> predefines a few
         ''' <see cref="ControlHandler">ControlHandler</see> Types that implement
         ''' GUI behaviour for specific User Interface Control classes. Ensure
         ''' that the objGUI object has an associated ControlHandler available
@@ -70,7 +73,7 @@ Namespace Commands
         ''' ----------------------------------------------------------------------
         Public Sub AddControl(ByVal objGUI As Object)
             Try
-                Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+                Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
                 Dim t As Type = cmdh.GetControlHandlerType(objGUI)
                 Dim objControlHandler As Object = Nothing
                 Dim objParms() As Object = {Me, objGUI}
@@ -108,7 +111,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnPreInvoke(ByVal cmd As Command)
+        Public Event OnPreInvoke(ByVal cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -116,7 +119,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnInvoke(ByVal cmd As Command)
+        Public Event OnInvoke(ByVal cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -124,7 +127,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnPostInvoke(ByVal cmd As Command)
+        Public Event OnPostInvoke(ByVal cmd As cCommand)
 
         Private m_bInvoking As Boolean = False
 
@@ -161,7 +164,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is updated.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnUpdate(ByVal cmd As Command)
+        Public Event OnUpdate(ByVal cmd As cCommand)
 
         ''' <summary>Update lock flag to prevent involuntary loops.</summary>
         Private m_bLockUpdates As Boolean = False

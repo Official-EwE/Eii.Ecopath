@@ -1,6 +1,9 @@
 '==============================================================================
 '
-' $Log: NavigationCommand.vb,v $
+' $Log: cNavigationCommand.vb,v $
+' Revision 1.1  2009/05/11 01:46:28  jeroens
+' Renamed
+'
 ' Revision 1.1  2008/09/26 07:31:10  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -25,8 +28,8 @@ Namespace Commands
     ''' <see cref="System.Windows.Forms.Form">Forms</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class NavigationCommand
-        Inherits Command
+    Public Class cNavigationCommand
+        Inherits cCommand
 
         ''' <summary>A human readable name for the page to open. This text may be
         ''' used in tabs, in tooltips and other user interface elements.</summary>
@@ -49,7 +52,7 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' <example>
-        ''' The folowing shows how to retrieve the one instance of the NavigationCommand
+        ''' The folowing shows how to retrieve the one instance of the cNavigationCommand
         ''' from anywhere in the EwE6 user interface:
         ''' <code>
         ''' ' Get the one and only command 
