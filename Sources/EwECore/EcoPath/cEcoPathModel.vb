@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcoPathModel.vb,v $
+' Revision 1.32  2009/05/11 00:02:53  jeroens
+' Commented-out cannibalism fix
+'
 ' Revision 1.31  2009/04/03 20:27:44  jeroens
 ' checkDietsSumToOne uses only one message
 '
@@ -1711,11 +1714,17 @@ LoopCalc:
                                         Exit For
                                     End If
                                 Next K
-                                If pred <> prey Then    'no need to break cannibalism cycles
-                                    'Debug.Print pred, prey, DC(pred, prey)
-                                    m_Data.DC(pred, prey) = 0
-                                    bDietsModified = True
-                                End If
+
+                                ' JS 09may09: disabled diet=0 fix per VC email:
+                                '      "The diets should not be set to 0 automatically. This was a fix for 
+                                '       how to handle some specific problems (don’t remember the details). 
+                                '       Probably best to remark out this cannibalism fix for now"
+
+                                'If pred <> prey Then    'no need to break cannibalism cycles
+                                '    'Debug.Print pred, prey, DC(pred, prey)
+                                '    m_Data.DC(pred, prey) = 0
+                                '    bDietsModified = True
+                                'End If
                                 path(Level) = 0
                             Else
                                 path(Level) = Comp                      'Include group in Path
