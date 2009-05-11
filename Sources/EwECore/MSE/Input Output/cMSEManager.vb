@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.5  2009/05/11 21:28:07  joeb
+' Adding MSE data to Decision Support Tool (Multi Player Game)
+'
 ' Revision 1.4  2009/01/16 18:30:32  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -40,6 +43,7 @@
 ' Revision 1.6  2008/04/24 14:53:41  joeb
 ' Added CVS Log header
 '
+Option Strict On
 
 Imports EwECore
 Imports EwECore.Ecosim
@@ -67,12 +71,12 @@ Namespace MSE
         Private m_searchObjective As cSearchObjective
 
         Private m_InterfaceCallback As MSECallBackDelegate
-        Private m_SyncOb As System.ComponentModel.ISynchronizeInvoke
+        Private m_SyncOb As System.Threading.SynchronizationContext
         Private m_bConnected As Boolean
 
         Private m_parameters As cMSEParameters
-        Private m_lstGroups As New cCoreInputOutputList(Of cMSEGroupInput)(eDataTypes.MSEGroupInput, 1)
-        Private m_lstFleets As New cCoreInputOutputList(Of cMSEFleetInput)(eDataTypes.MSEFleetInput, 1)
+        Private m_lstGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupInput, 1)
+        Private m_lstFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFleetInput, 1)
         Private m_output As cMSEOutput
         Private m_thrdRun As Thread
 
@@ -80,9 +84,8 @@ Namespace MSE
 
 #Region "Connection and Disconnection"
 
-        Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, ByRef InterfaceCallBack As MSECallBackDelegate)
+        Public Sub Connect(ByRef InterfaceCallBack As MSECallBackDelegate)
 
-            m_SyncOb = syncObject
             m_InterfaceCallback = InterfaceCallBack
             m_bConnected = True
 
@@ -91,7 +94,6 @@ Namespace MSE
 
         Public Sub Disconnect()
 
-            m_SyncOb = Nothing
             m_InterfaceCallback = Nothing
             m_bConnected = False
 
@@ -103,13 +105,25 @@ Namespace MSE
 
         Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cMSEFleetInput
             Get
-                Return Me.m_lstFleets(iFleet)
+                Return DirectCast(Me.m_lstFleets(iFleet), cMSEFleetInput)
             End Get
         End Property
 
         Public ReadOnly Property GroupInputs(ByVal iGroup As Integer) As cMSEGroupInput
             Get
-                Return Me.m_lstGroups(iGroup)
+                Return DirectCast(Me.m_lstGroups(iGroup), cMSEGroupInput)
+            End Get
+        End Property
+
+        Public ReadOnly Property FleetInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstFleets
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstGroups
             End Get
         End Property
 
@@ -119,15 +133,11 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
                 Return Me.m_parameters
             End Get
         End Property
-
-
-
 
 #End Region
 
@@ -164,6 +174,11 @@ Namespace MSE
 
             m_core = theCore
             m_searchObjective = m_core.SearchObjective
+
+            Me.m_SyncOb = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread. I'm not sure why this can happen but it was in all the samples...
+            If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
+
 
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
@@ -336,14 +351,7 @@ Namespace MSE
                     Debug.Assert(m_SyncOb IsNot Nothing And m_InterfaceCallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
 
                     'Connected so call the interface
-                    Dim arg(0) As Object
-                    arg(0) = CallBackType
-                    m_SyncOb.BeginInvoke(m_InterfaceCallback, arg)
-
-                Else
-
-                    'no connected interface
-                    System.Console.WriteLine(Me.ToString & ".OnMSECallBack() " & CallBackType.ToString)
+                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf fireCallBack), CallBackType)
 
                 End If
 
@@ -351,6 +359,17 @@ Namespace MSE
                 cLog.Write(ex)
             End Try
 
+        End Sub
+
+
+        Private Sub fireCallBack(ByVal obj As Object)
+            Try
+                Debug.Assert(m_SyncOb IsNot Nothing And m_InterfaceCallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                Dim cbType As eCallBackTypes = DirectCast(obj, eCallBackTypes)
+                m_InterfaceCallback.Invoke(cbType)
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & " Error sending message to interface.")
+            End Try
         End Sub
 
 
@@ -403,7 +422,7 @@ Namespace MSE
             Me.m_output.EmployValue = Me.m_MSEdata.BaseEmployVal
             Me.m_output.MandatedValue = Me.m_MSEdata.BaseManValue
 
-            For iGrp As Integer = 1 To m_core.nGroups
+            For iGrp As Integer = 1 To m_core.nLivingGroups
                 Me.m_output.LowerRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 0)
                 Me.m_output.UpperRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 1)
 
@@ -442,7 +461,7 @@ Namespace MSE
         End Property
 
         Public Function GetID() As String Implements ICoreInterface.GetID
-            Return cCore.NULL_VALUE
+            Return cCore.NULL_VALUE.ToString
         End Function
 
         Public Property Index() As Integer Implements ICoreInterface.Index

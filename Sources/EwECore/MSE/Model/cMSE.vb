@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.6  2009/05/11 21:28:08  joeb
+' Adding MSE data to Decision Support Tool (Multi Player Game)
+'
 ' Revision 1.5  2009/04/02 20:54:38  jeroens
 ' Uses eSearchResultCriteriaTypes
 '
@@ -192,10 +195,9 @@ Namespace MSE
 
                 m_Ecosim.RunModelValue(m_esData.NumYears, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseEcoVal, Nothing, 0)
 
-                ' JS 02apr09: 3 x m_data.BaseTotalVal correct here?
                 Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_data.BaseTotalVal / TotValBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_data.BaseTotalVal / EmployBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_data.BaseTotalVal / ManValueBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_data.BaseEmployVal / EmployBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_data.BaseManValue / ManValueBase + _
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_data.BaseEcoVal / EcoValueBase
 
             Catch ex As Exception

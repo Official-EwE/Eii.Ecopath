@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEDataStructures.vb,v $
+' Revision 1.2  2009/05/11 21:28:09  joeb
+' Adding MSE data to Decision Support Tool (Multi Player Game)
+'
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -88,7 +91,7 @@ Public Class cMSEDataStructures
     ''' Use for Closed Loop Fishing Rate Assesment method
     ''' </summary>
     ''' <remarks></remarks>
-    Public AssessMethod As Integer
+    Public AssessMethod As eAssessmentMethods
 
     Private m_curIter As Integer
 

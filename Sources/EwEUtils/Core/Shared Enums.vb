@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.55  2009/05/11 21:28:10  joeb
+' Adding MSE data to Decision Support Tool (Multi Player Game)
+'
 ' Revision 1.54  2009/05/06 18:38:07  jeroens
 ' Added game moderator state
 '
@@ -1584,6 +1587,10 @@ Namespace Core
         ''' <summary>Number of weight classes in the particle size distribution</summary>
         nWeightClasses
         'End Joeh
+
+        ''' <summary> Number of steps to complete a process </summary>
+        ''' <remarks>At this time this is only used by the Decision Support Tool(game) and is dynamic depending on the current process!!!</remarks>
+        nProgressSteps
     End Enum
 
 #End Region ' Core counters
