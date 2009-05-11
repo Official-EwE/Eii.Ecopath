@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.16  2009/05/11 01:52:59  jeroens
+' Uses cDirectoryOpen command
+'
 ' Revision 1.15  2009/04/28 13:07:27  jeroens
 ' Commented
 '
@@ -198,17 +201,14 @@ Namespace Ecosim
         ''' </summary>
         Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
 
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
             Dim bSaveAnnual As Boolean = False 'Save each time steps
-            Dim fbDlg As New FolderBrowserDialog
 
-            With fbDlg
-                .SelectedPath = My.Settings.LastSelectedDirectory
-                .ShowNewFolderButton = True
-                .Description = My.Resources.ECOSIM_PROMPT_SAVEDESTINATION
-            End With
+            cmd.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
 
-            If (fbDlg.ShowDialog() <> Windows.Forms.DialogResult.OK) Then Return
-            If (String.IsNullOrEmpty(fbDlg.SelectedPath)) Then Return
+            If (cmd.Result <> Windows.Forms.DialogResult.OK) Then Return
+            If (String.IsNullOrEmpty(cmd.Directory)) Then Return
 
             Select Case MsgBox(My.Resources.ECOSIM_PROMPT_SAVEANNUAL, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
                 Case MsgBoxResult.Yes
@@ -224,14 +224,14 @@ Namespace Ecosim
             'Plot 6 - Predation
             'Plot 7 - Prey
             For i As Integer = 0 To 7
-                Me.SaveOutputToFile(fbDlg.SelectedPath, bSaveAnnual, i)
+                Me.SaveOutputToFile(cmd.Directory, bSaveAnnual, i)
             Next
 
         End Sub
 
         Private Sub btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            Dim cmdh As CommandHandler = CommandHandler.GetInstance()
-            Dim cmd As Command = cmdh.GetCommand("LoadTimeSeries")
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmd As cCommand = cmdh.GetCommand("LoadTimeSeries")
             If (cmd IsNot Nothing) Then cmd.Invoke()
         End Sub
 
@@ -634,7 +634,7 @@ Namespace Ecosim
                 If bValid = Windows.Forms.DialogResult.Cancel Then
                     Return
                 ElseIf bValid = Windows.Forms.DialogResult.No Then
-                    Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+                    Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
                     Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
                     cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
