@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.13  2009/05/11 00:33:55  jeroens
+' Fixed extra comma in CSV results
+'
 ' Revision 1.12  2009/05/02 03:00:11  jeroens
 ' Scenario name included in default file name
 ' ExtractData uses string builder
@@ -263,7 +266,6 @@ Public Class cIndicesWithoutPPREst
             sb.Append(Me.NetworkManager.CatchEcosim(i).ToString)
             sb.Append(", ")
             sb.Append(Me.NetworkManager.PropFlowDetEcosim(i).ToString)
-            sb.Append(", ")
             sb.Append(", ")
             sb.Append(Me.NetworkManager.AscendTotalEcosim(i).ToString)
             sb.Append(", ")
