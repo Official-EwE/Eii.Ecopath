@@ -2214,10 +2214,10 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: ??? unit</comment>
   </data>
   <data name="PSD_YAXISLABEL_BIOMASS" xml:space="preserve">
-    <value>Biomass (log interval)</value>
+    <value>Biomass (log g)</value>
   </data>
-  <data name="PSD_XAXISLABEL_WEIGHTCLASS" xml:space="preserve">
-    <value>Weight class (log interval)</value>
+  <data name="PSD_XAXISLABEL_BODYWEIGHT" xml:space="preserve">
+    <value>Body weight (log g)</value>
   </data>
   <data name="PSD_PLOTCAPTION_PSD" xml:space="preserve">
     <value>Particle size distribution</value>
@@ -2348,5 +2348,14 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="PSD_MSG_PSDDISABLED" xml:space="preserve">
     <value>PSD is disabled. Please, enable in model description</value>
+  </data>
+  <data name="PSD_XAXISLABEL_AGE" xml:space="preserve">
+    <value>Age (year)</value>
+  </data>
+  <data name="PSD_YAXISLABEL_G" xml:space="preserve">
+    <value>g</value>
+  </data>
+  <data name="PSD_YAXISLABEL_PERYEAR" xml:space="preserve">
+    <value>/year</value>
   </data>
 </root>
