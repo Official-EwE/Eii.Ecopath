@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.12  2009/05/12 21:31:12  joeh
+' Divide Age1 by 12
+'
 ' Revision 1.11  2009/04/06 22:17:27  joeh
 ' Change Me.m_psd.t0(i) < 0 to Me.m_psd.t0(i) < -9998
 '
@@ -463,7 +466,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CSng(m_stanza.Age1(isp, ist)) ' / 12)
+                            Return CSng(m_stanza.Age1(isp, ist) / 12) '/ 12)
                         Else
                             Return 0
                         End If
@@ -484,7 +487,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist))) '/ 12))
+                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / 12)) '/ 12))
                         Else
                             Return 0
                         End If
