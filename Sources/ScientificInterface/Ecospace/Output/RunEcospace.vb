@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.12  2009/05/12 16:12:00  jeroens
+' Fixed issue 587
+'
 ' Revision 1.11  2009/05/11 01:51:00  jeroens
 ' Renamed command classes
 '
@@ -326,6 +329,24 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
+        Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_pbMap.DoubleClick
+            Me.SaveMapImage()
+        End Sub
+
+        Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
+            Handles m_pbMap.MouseClick
+
+            If e.Button = Windows.Forms.MouseButtons.Right Then
+                Me.SaveMapImage()
+            End If
+        End Sub
+
+        Private Sub pbMapPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
+            Handles m_pbMap.Paint
+            Me.PlotMap(e.Graphics)
+        End Sub
+
 #End Region ' Events 
 
 #Region " Biomass graph "
@@ -339,10 +360,13 @@ Namespace Ecospace
             Me.m_zgh.RescaleAndRedraw()
         End Sub
 
-        Private Sub SaveImage(ByRef img As Image)
+        Private Sub SaveMapImage()
 
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim bmp As Bitmap = Nothing
+            Dim g As Graphics = Nothing
+            Dim br As SolidBrush = Nothing
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
 
@@ -366,7 +390,23 @@ Namespace Ecospace
                         Debug.Assert(False)
                 End Select
 
-                img.Save(cmdFS.FileName, imgFormat)
+                bmp = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
+                g = Graphics.FromImage(bmp)
+                br = New SolidBrush(Color.White)
+                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+
+                Try
+                    Me.PlotMap(g)
+                    bmp.Save(cmdFS.FileName, imgFormat)
+                    ' ToDo: throw succes
+                Catch ex As Exception
+                    ' ToDo: throw error
+                Finally
+                    g.Dispose()
+                    g = Nothing
+                    br.Dispose()
+                    br = Nothing
+                End Try
             End If
 
         End Sub
@@ -490,32 +530,13 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_pbMap.DoubleClick
-            Me.SaveImage(Me.m_pbMap.Image)
-        End Sub
-
-        Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
-            Handles m_pbMap.MouseClick
-
-            If e.Button = Windows.Forms.MouseButtons.Right Then
-                Me.SaveImage(Me.m_pbMap.Image)
-            End If
-        End Sub
-
-        Private Sub pbMapPlot_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) _
-            Handles m_pbMap.Paint
-
-            Dim g As Graphics = e.Graphics
-
+        Private Sub PlotMap(ByVal g As Graphics)
             If m_rbDisplayFishingEffort.Checked Then
                 PlotFishingEffortMap(g)
             Else
                 PlotBiomassMapThreaded(g)
             End If
-
         End Sub
-
 
         Private Sub PlotFishingEffortMap(ByRef g As Graphics)
 
