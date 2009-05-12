@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.42  2009/05/12 14:21:51  jeroens
+' Renamed OnCoreExecutionStateChanged to PrepareNewRun
+'
 ' Revision 1.41  2009/05/11 01:51:02  jeroens
 ' Renamed command classes
 '
@@ -466,7 +469,7 @@ Namespace Ecosim
             Next
         End Sub
 
-        Public Sub OnCoreExecutionStateChanged()
+        Public Sub PrepareNewRun()
             Me.m_zgp.PrepareNewRun()
             Me.PopulateRunsBox()
             Me.PopulateGroupBox()
