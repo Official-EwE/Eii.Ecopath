@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.19  2009/05/12 14:23:16  jeroens
+' Graph populated with data on startup - if data is available
+'
 ' Revision 1.18  2009/04/21 19:42:31  jeroens
 ' Localized
 '
@@ -141,11 +144,9 @@ Namespace Ecosim
 
 #End Region ' Constructors
 
-#Region " Events "
+#Region " Framework overrides "
 
-#Region " Generic "
-
-        Private Sub RunEcosim_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
@@ -155,14 +156,26 @@ Namespace Ecosim
 
             Me.UpdateControls()
 
+            ' Plot Ecosim data, if there is any
+            Me.m_graph.PrepareNewRun()
+            Me.m_graph.PopulateGraph()
+
         End Sub
 
-        Private Sub RunEcosim_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.m_coreStateMonitor = Nothing
             Me.CoreComponents = Nothing
+
+            MyBase.OnFormClosing(e)
         End Sub
+
+#End Region ' Framework overrides
+
+#Region " Events "
+
+#Region " Generic "
 
         Private Sub btnRunOrStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunOrStop.Click
 
@@ -283,7 +296,7 @@ Namespace Ecosim
             ' Does not have ecosim results?
             If (Not bHasEcosimResults) Then
                 ' #Yes: clear run results
-                Me.m_graph.OnCoreExecutionStateChanged()
+                Me.m_graph.PrepareNewRun()
             End If
 
             ' Check whether ecosim is running
