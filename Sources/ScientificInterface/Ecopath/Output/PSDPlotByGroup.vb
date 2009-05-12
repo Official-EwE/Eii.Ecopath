@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.24  2009/05/12 21:34:32  joeh
+' Add titles to graph axis
+'
 ' Revision 1.23  2009/04/28 00:25:27  joeh
 ' Add handling if PSDEnabled is false
 '
@@ -131,12 +134,12 @@ Namespace Ecopath.Output
             InitMasterPane()
 
             parms = Me.m_core.ParticleSizeDistributionParameters
-            CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT)
-            CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL)
-            CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
-            CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD)
+            CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
+            CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, My.Resources.PSD_XAXISLABEL_AGE, "")
+            CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_G)
+            CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBPSD, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, My.Resources.PSD_YAXISLABEL_BIOMASS)
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY)
+                CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY, My.Resources.PSD_XAXISLABEL_AGE, My.Resources.PSD_YAXISLABEL_PERYEAR)
             End If
             llbGroups.SelectedIndex = 0
 
@@ -200,36 +203,40 @@ Namespace Ecopath.Output
             m_MasterPane.IsFontsScaled = False
         End Sub
 
-        Private Sub CreatePane(ByVal PaneNo As ePaneTypes, ByVal strTitle As String)
+        Private Sub CreatePane(ByVal PaneNo As ePaneTypes, ByVal strPaneTitle As String, _
+                               ByVal strXaxisTitle As String, ByVal stryaxistitle As String)
             'Define a new graph pane
             Dim pane As New GraphPane
 
             Debug.Assert(m_MasterPane.PaneList.Count = PaneNo)
 
-            InitGraphPane(strTitle, PaneNo, pane)
+            InitGraphPane(strPaneTitle, strXaxisTitle, strYAxisTitle, PaneNo, pane)
 
             'Add the graphPane to the masterPane
             m_MasterPane.Add(pane)
         End Sub
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByVal paneType As ePaneTypes, ByRef pane As GraphPane)
+        Private Sub InitGraphPane(ByVal strPaneTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String, _
+                                  ByVal paneType As ePaneTypes, ByRef pane As GraphPane)
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
-            pane.Title.Text = strTitle
+            pane.Title.Text = strPaneTitle
             pane.Title.FontSpec.IsBold = True
             pane.Title.FontSpec.Size = 12
 
             pane.XAxis.Scale.FontSpec.Size = 12
-            pane.XAxis.Title.FontSpec.Size = 12
+            pane.XAxis.Title.FontSpec.Size = 10
+            pane.XAxis.Title.Text = strXAxisTitle
 
             pane.YAxis.Scale.FontSpec.Size = 12
-            pane.YAxis.Title.FontSpec.Size = 12
+            pane.YAxis.Title.FontSpec.Size = 10
+            pane.YAxis.Title.Text = strYAxisTitle
 
             Select Case paneType
                 Case ePaneTypes.PSD
-                    pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
-                    pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+                    pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
+                    pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
                     pane.YAxis.Scale.Min = 0
                     'pane.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot
                 Case Else

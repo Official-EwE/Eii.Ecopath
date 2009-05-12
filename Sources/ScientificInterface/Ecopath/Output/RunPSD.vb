@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.25  2009/05/12 21:35:11  joeh
+' Add titles to graph axis
+'
 ' Revision 1.24  2009/05/11 01:51:01  jeroens
 ' Renamed command classes
 '
@@ -300,14 +303,18 @@ Namespace Ecopath.Output
 
             ' JS 23Mar09: Zedgraph helper performs standardized label, axis styling
             Me.m_zgh.ConfigurePane(My.Resources.PSD_PLOTCAPTION_PSD, _
-                                   My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+                                   My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
                                    My.Resources.PSD_YAXISLABEL_BIOMASS, _
                                    True)
 
-            pane.XAxis.Scale.Min = Math.Log10(parms.FirstWeightClass)
-            pane.XAxis.Scale.Max = Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1))
-            pane.YAxis.Scale.Min = 0
+            pane.Title.FontSpec.Size = 16
+            pane.Legend.FontSpec.Size = 14
+            pane.XAxis.Title.FontSpec.Size = 14
+            pane.YAxis.Title.FontSpec.Size = 14
 
+            pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
+            pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            pane.YAxis.Scale.Min = 0
             Return pane
 
         End Function

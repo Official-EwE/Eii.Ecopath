@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.19  2009/05/12 21:34:32  joeh
+' Add titles to graph axis
+'
 ' Revision 1.18  2009/04/28 00:22:07  joeh
 ' Add handling if PSDEnabled is false
 '
@@ -114,7 +117,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles llbGroups.SelectedIndexChanged
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_WEIGHTCLASS, _
+            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
                      My.Resources.PSD_YAXISLABEL_BIOMASS))
 
             'highlight group contribution in the histogram
@@ -172,8 +175,8 @@ Namespace Ecopath.Output
             pane.YAxis.Title.Text = strYAxisTitle
             pane.YAxis.Title.FontSpec.Size = 14
 
-            pane.XAxis.Scale.Min = Math.Log10(psd.FirstWeightClass)
-            pane.XAxis.Scale.Max = Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1))
+            pane.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
+            pane.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.MinorTic.IsAllTics = False
