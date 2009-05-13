@@ -2358,4 +2358,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PSD_YAXISLABEL_PERYEAR" xml:space="preserve">
     <value>/year</value>
   </data>
+  <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative value</value>
+  </data>
 </root>
