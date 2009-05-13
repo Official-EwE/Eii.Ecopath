@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.7  2009/05/13 13:59:53  jeroens
+' Renamed ecosim plot classes
+'
 ' Revision 1.6  2009/05/11 01:50:59  jeroens
 ' Renamed command classes
 '
@@ -133,7 +136,7 @@ Namespace Ecosim
         ''' <summary>Live monitoring of Ecosim NYears</summary>
         Private WithEvents m_pTS As cSingleProperty = Nothing
 
-        Private m_ucBPlots As New ucBiomassPlot
+        Private m_ucBPlots As New ucEcosimOutputPlotOLD
         Private m_fpNumTrials As cEwEFormatProvider = Nothing
         Private m_fpTrial As cEwEFormatProvider = Nothing
         Private m_fpERun As cEwEFormatProvider = Nothing

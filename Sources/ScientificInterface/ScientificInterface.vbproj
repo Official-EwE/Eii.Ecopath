@@ -263,10 +263,10 @@
     <Compile Include="Ecosim\Output\CustomComboBoxFleetGroupTree.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.Designer.vb">
-      <DependentUpon>EcosimOutputLineGraph.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.Designer.vb">
+      <DependentUpon>cEcosimOutputLineGraphOLD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.vb">
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\MCRun.Designer.vb">
@@ -1134,19 +1134,19 @@
     <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.Designer.vb">
-      <DependentUpon>ucBiomassPlot.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.Designer.vb">
+      <DependentUpon>ucEcosimOutputPlotOLD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.vb">
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.Designer.vb">
-      <DependentUpon>ucBiomassPlotzgc.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.Designer.vb">
+      <DependentUpon>ucEcosimOutputPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.vb">
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ZedGraphBiomassPlotter.vb" />
+    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\cEcosimOutputPlotHelper.vb" />
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
     <Compile Include="Ecosim\Output\SuitabilityPlot.Designer.vb">
       <DependentUpon>SuitabilityPlot.vb</DependentUpon>
@@ -1387,16 +1387,16 @@
       <DependentUpon>Vulnerabilities.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\EcosimOutputLineGraph.resx">
-      <DependentUpon>EcosimOutputLineGraph.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.resx">
+      <DependentUpon>cEcosimOutputLineGraphOLD.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlot.resx">
-      <DependentUpon>ucBiomassPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.resx">
+      <DependentUpon>ucEcosimOutputPlotOLD.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucBiomassPlotzgc.resx">
-      <DependentUpon>ucBiomassPlotzgc.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.resx">
+      <DependentUpon>ucEcosimOutputPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.resx">
