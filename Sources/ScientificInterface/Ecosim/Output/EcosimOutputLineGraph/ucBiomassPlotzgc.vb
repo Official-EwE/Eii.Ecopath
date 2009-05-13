@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBiomassPlotzgc.vb,v $
+' Revision 1.43  2009/05/13 12:54:02  jeroens
+' BiomassPlotter inherits from ZedGraphHelper
+'
 ' Revision 1.42  2009/05/12 14:21:51  jeroens
 ' Renamed OnCoreExecutionStateChanged to PrepareNewRun
 '
@@ -154,10 +157,13 @@ Namespace Ecosim
     ''' -------------------------------------------------------------------
     Public Class ucBiomassPlotzgc
 
+#Region " Private vars "
+
         Private m_core As cCore = cCore.GetInstance()
-        Private m_zgh As ZedGraphHelper = Nothing
         Private m_zgp As ZedGraphBiomassPlotter = Nothing
         Private m_sg As StyleGuide = Nothing
+
+#End Region ' Private vars
 
 #Region " Constructor/Destructor "
 
@@ -179,9 +185,6 @@ Namespace Ecosim
             ' Style guide
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            Me.m_zgh = New ZedGraphHelper()
-            Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
-
         End Sub
 
         ''' <summary>
@@ -194,12 +197,9 @@ Namespace Ecosim
             RemoveHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.m_sg = Nothing
 
-            Me.m_zgp.Clear()
+            RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
+            Me.m_zgp.Detach()
             Me.m_zgp = Nothing
-
-            RemoveHandler Me.m_zgh.OnCursorPos, AddressOf OnSyncCursor
-            Me.m_zgh.Detach()
-            Me.m_zgh = Nothing
 
             ' Show/Hide Groups
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
@@ -224,7 +224,7 @@ Namespace Ecosim
             Dim listSum As New PointPairList
 
             ' Double check
-            If Me.m_zgh Is Nothing Or Me.m_zgp Is Nothing Then Return
+            If Me.m_zgp Is Nothing Or Me.m_zgp Is Nothing Then Return
 
             'jb added if ecosim has not run then the Ecosim EcoSimGroupOutputs will not be populated and can not be plotted
             If Not Me.m_core.StateMonitor.HasEcosimRan Then
@@ -418,7 +418,7 @@ Namespace Ecosim
             If m_tsmiBiomass.Checked And m_tsmiRelative.Checked Then DrawTimeSeries()
 
             ' Calculate the Axis Scale Ranges
-            Me.m_zgh.RescaleAndRedraw()
+            Me.m_zgp.RescaleAndRedraw()
             Me.UpdateControls()
             Me.InvalidateGraph()
 
@@ -493,7 +493,7 @@ Namespace Ecosim
             Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Checked
 
             Me.PopulateRunsBox()
-            Me.m_zgh.RescaleAndRedraw()
+            Me.m_zgp.RescaleAndRedraw()
             Me.SplitContainer1.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked
 
         End Sub
@@ -504,7 +504,7 @@ Namespace Ecosim
             Me.m_tsmiShowAnnualOutput.Checked = Not Me.m_tsmiShowAnnualOutput.Checked
             Me.m_zgp.PrepareNewRun(True)
             Me.PopulateGroupBox()
-            Me.m_zgh.RescaleAndRedraw()
+            Me.m_zgp.RescaleAndRedraw()
 
         End Sub
 
@@ -513,7 +513,7 @@ Namespace Ecosim
 
             Me.m_tsmiShowLegend.Checked = Not Me.m_tsmiShowLegend.Checked
             Me.m_zgp.ShowLegend = Me.m_tsmiShowLegend.Checked
-            Me.m_zgh.RescaleAndRedraw()
+            Me.m_zgp.RescaleAndRedraw()
 
         End Sub
 
@@ -556,7 +556,7 @@ Namespace Ecosim
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiAutoscale.Click
 
-            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.UpdateControls()
 
         End Sub
@@ -571,9 +571,9 @@ Namespace Ecosim
         Private Sub OnCustomScale(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiCustomScaleLabel.Click
 
-            Double.TryParse(Me.m_tstbMax.Text, Me.m_zgh.YScaleMax)
-            Double.TryParse(Me.m_tstbMin.Text, Me.m_zgh.YScaleMin)
-            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(Me.m_tstbMax.Text, Me.m_zgp.YScaleMax)
+            Double.TryParse(Me.m_tstbMin.Text, Me.m_zgp.YScaleMin)
+            Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
 
         End Sub
@@ -581,8 +581,8 @@ Namespace Ecosim
         Private Sub m_tstbxSetMax_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tstbMax.LostFocus
 
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMax)
-            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMax)
+            Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
 
         End Sub
@@ -590,8 +590,8 @@ Namespace Ecosim
         Private Sub m_tstbxSetMin_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tstbMin.LostFocus
 
-            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgh.YScaleMin)
-            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
+            Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMin)
+            Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.None
             Me.UpdateControls()
 
         End Sub
@@ -606,20 +606,23 @@ Namespace Ecosim
             If (Me.m_core Is Nothing) Then Return
             If (Me.m_core.EcoSimModelParameters Is Nothing) Then Return
 
-            Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
-            Me.m_zgh.YScaleMin = 0.0!
-            Me.m_zgh.ShowPointValue = True
+            Me.m_zgp = New ZedGraphBiomassPlotter()
+            Me.m_zgp.Attach(Me.m_core, Me.m_zgc)
 
-            AddHandler Me.m_zgh.OnCursorPos, AddressOf OnSyncCursor
+            Me.m_zgp.ConfigurePane(My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS, False)
+            Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected
 
-            Me.m_zgp = New ZedGraphBiomassPlotter(Me.m_zgc.GraphPane, Me.m_core, _
-                    My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS)
-            Me.m_zgp.ShowMultipleRuns = m_tsmShowMultipleRuns.Selected
+            Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_zgp.YScaleMin = 0.0!
+            Me.m_zgp.ShowPointValue = True
+
+            AddHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
 
             ' Set the axis
             Me.m_zgc.GraphPane.XAxis.Scale.Min = m_core.EcosimFirstYear
             Me.m_zgc.GraphPane.XAxis.Scale.Max = m_core.EcoSimModelParameters.NumberYears + m_core.EcosimFirstYear
             Me.m_zgc.AxisChange()
+
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
@@ -644,7 +647,7 @@ Namespace Ecosim
             Handles m_tsbExplore.Click
 
             ' Show or hide cursor
-            Me.m_zgh.ShowCursor = Me.m_tsbExplore.Checked
+            Me.m_zgp.ShowCursor = Me.m_tsbExplore.Checked
 
             Me.UpdateControls()
 
@@ -774,10 +777,10 @@ Namespace Ecosim
 
         Private Sub UpdateControls()
 
-            Me.m_tsmiAutoscale.Checked = Me.m_zgh.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
+            Me.m_tsmiAutoscale.Checked = Me.m_zgp.AutoScaleOption = ZedGraphHelper.ScaleOptions.MaxOnly
             Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked
-            Me.m_tstbMax.Text = CStr(Me.m_zgh.YScaleMax)
-            Me.m_tstbMin.Text = CStr(Me.m_zgh.YScaleMin)
+            Me.m_tstbMax.Text = CStr(Me.m_zgp.YScaleMax)
+            Me.m_tstbMin.Text = CStr(Me.m_zgp.YScaleMin)
 
             If Me.m_tsbExplore.Checked Then
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
