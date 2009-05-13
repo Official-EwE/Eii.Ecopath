@@ -32,6 +32,8 @@ Public Class cGameServerInterface
         m_dctCoreData.Add(eDataTypes.EcospaceGroupOuput, m_core.m_EcospaceGroupOuputs)
         m_dctCoreData.Add(eDataTypes.EcospaceFleetOuput, m_core.m_EcospaceFleetOutputs)
 
+        'MSE 
+        m_dctCoreData.Add(eDataTypes.MSEGroupOutputs, Me.m_core.MSEManager.GroupOutputs)
 
     End Sub
 
