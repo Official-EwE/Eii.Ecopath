@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.119  2009/05/13 17:19:55  joeb
+' Added MSE data to the GameManager
+'
 ' Revision 1.118  2009/05/06 13:46:07  jeroens
 ' Ecospace layers have unique datatypes
 '
@@ -294,7 +297,7 @@ Public Class cCore
     Private m_ConTracer As cContaminantTracer
 
     ''' <summary>Manager to access interface specific to the "Game" interface </summary>
-    Private m_gameManger As cGameServerInterface
+    Private m_gameManager As cGameServerInterface
 
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions
@@ -1181,7 +1184,7 @@ Public Class cCore
 
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
-        m_gameManger = New cGameServerInterface(Me)
+        m_gameManager = New cGameServerInterface(Me)
 
         If bsuccess Then
             m_bCoreIsInit = True
@@ -2351,7 +2354,7 @@ Public Class cCore
                 Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
                 Me.InitSearchManagers()
 
-                Me.m_gameManger.Init()
+                Me.m_gameManager.Init()
 
                 Me.initEcoFunctions()
 
@@ -10663,7 +10666,7 @@ Public Class cCore
 
         'MSE
         If Not Me.m_SearchManagers.ContainsKey(eDataTypes.MSEManager) Then
-            SearchManager = New cMSEManager
+            SearchManager = New cMSEManager()
             Me.m_SearchManagers.Add(eDataTypes.MSEManager, SearchManager)
         End If
 
@@ -10776,7 +10779,7 @@ Public Class cCore
 
     Public ReadOnly Property GameManager() As cGameServerInterface
         Get
-            Return m_gameManger
+            Return m_gameManager
         End Get
     End Property
 #End Region
