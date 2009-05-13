@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.6  2009/05/13 17:21:14  joeb
+' Split outputs objects into groups and not groups
+'
 ' Revision 1.5  2009/05/11 21:28:07  joeb
 ' Adding MSE data to Decision Support Tool (Multi Player Game)
 '
@@ -66,7 +69,7 @@ Namespace MSE
 
         Private m_core As cCore
         Private m_MSE As cMSE
-        Private m_MSEdata As cMSEDataStructures
+        Private m_MSEdata As New cMSEDataStructures
         Private m_search As cSearchDatastructures
         Private m_searchObjective As cSearchObjective
 
@@ -74,10 +77,12 @@ Namespace MSE
         Private m_SyncOb As System.Threading.SynchronizationContext
         Private m_bConnected As Boolean
 
-        Private m_parameters As cMSEParameters
         Private m_lstGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupInput, 1)
         Private m_lstFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFleetInput, 1)
+        Private m_lstGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupOutputs, 1)
         Private m_output As cMSEOutput
+        Private m_parameters As cMSEParameters
+
         Private m_thrdRun As Thread
 
 #End Region
@@ -127,11 +132,18 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property Outputs() As cMSEOutput
+        Public ReadOnly Property Output() As cMSEOutput
             Get
                 Return Me.m_output
             End Get
         End Property
+
+        Public ReadOnly Property GroupOutputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstGroupOutputs
+            End Get
+        End Property
+
 
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
@@ -141,7 +153,13 @@ Namespace MSE
 
 #End Region
 
-#Region "Initialization and Running of the model"
+#Region "Construction Initialization and Running of the model"
+
+        'Public Sub New(ByVal theCore As cCore)
+        '    Me.m_output = New cMSEGroupOutput(theCore)
+        '    Me.m_parameters = New cMSEParameters(theCore)
+        'End Sub
+
 
         Public Function Run() As Boolean
 
@@ -179,11 +197,12 @@ Namespace MSE
             'if there is no current context then create a new one on this thread. I'm not sure why this can happen but it was in all the samples...
             If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
 
+            Me.m_parameters = New cMSEParameters(Me.m_core)
+            Me.m_output = New cMSEOutput(Me.m_core)
 
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
-            'this will have to change when the input/output object are created
-            m_MSEdata = New cMSEDataStructures
+            'this may have to change when the input/output object are created
             m_MSEdata.Init(theCore)
 
             m_MSE = New cMSE
@@ -207,10 +226,10 @@ Namespace MSE
                 Me.m_lstFleets.Add(New cMSEFleetInput(m_core, m_core.m_EcoPathData.FleetDBID(iflt)))
             Next
 
-            m_output = New cMSEOutput(m_core)
-            m_output.Resize()
-
-            m_parameters = New cMSEParameters(m_core)
+            Me.m_lstGroupOutputs.Clear()
+            For igrp As Integer = 1 To m_core.nLivingGroups
+                Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(m_core, m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+            Next
 
         End Function
 
@@ -220,7 +239,7 @@ Namespace MSE
             Dim iGroup As Integer, iFleet As Integer
 
             Try
-
+                'Group inputs
                 For Each mseGrp As cMSEGroupInput In Me.m_lstGroups
                     mseGrp.AllowValidation = False
                     'convert the Database ID into a group index
@@ -235,6 +254,13 @@ Namespace MSE
                     mseGrp.AllowValidation = True
                 Next
 
+                'Group outputs just the index outputs will be populated in LoadOutputs() at each iteration
+                For Each mseOutput As cMSEGroupOutput In Me.m_lstGroupOutputs
+                    mseOutput.AllowValidation = False 'no validation of outputs
+                    mseOutput.Index = Array.IndexOf(coreData.GroupDBID, mseOutput.DBID)
+                Next
+
+                'fleets
                 For Each mseFlt As cMSEFleetInput In Me.m_lstFleets
                     mseFlt.AllowValidation = False
                     'convert the Database ID into a fleet index
@@ -381,7 +407,7 @@ Namespace MSE
 
                 Case eCallBackTypes.IterationCompleted
 
-                    'populate output objects
+                    'populate output objects for this iteration
                     Me.LoadOutputs()
 
                 Case eCallBackTypes.IterationStarted
@@ -422,15 +448,17 @@ Namespace MSE
             Me.m_output.EmployValue = Me.m_MSEdata.BaseEmployVal
             Me.m_output.MandatedValue = Me.m_MSEdata.BaseManValue
 
-            For iGrp As Integer = 1 To m_core.nLivingGroups
-                Me.m_output.LowerRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 0)
-                Me.m_output.UpperRiskCount(iGrp) = Me.m_MSEdata.BioRiskCount(iGrp, 1)
+            Dim nt As Integer = m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            For Each grp As cMSEGroupOutput In Me.m_lstGroupOutputs
+                Dim igrp As Integer = grp.Index
+                grp.LowerRiskCount = Me.m_MSEdata.BioRiskCount(igrp, 0)
+                grp.UpperRiskCount = Me.m_MSEdata.BioRiskCount(igrp, 1)
 
-                For t As Integer = 1 To m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                    Me.m_output.Biomass(iGrp, t) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, t)
+                For t As Integer = 1 To nt
+                    grp.Biomass(t) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, t)
                 Next
 
-            Next iGrp
+            Next grp
 
 
         End Sub
@@ -512,6 +540,8 @@ Namespace MSE
 
 #End Region
 
+
+    
     End Class
 
 End Namespace
