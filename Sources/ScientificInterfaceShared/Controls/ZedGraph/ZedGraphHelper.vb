@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.15  2009/05/13 12:51:45  jeroens
+' Made inheritable
+'
 ' Revision 1.14  2009/05/11 01:51:04  jeroens
 ' Renamed command classes
 '
@@ -133,7 +136,7 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Sub Attach(ByVal core As cCore, ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+        Public Overridable Sub Attach(ByVal core As cCore, ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
 
             If Me.m_zgc IsNot Nothing Then Me.Detach()
 
@@ -167,7 +170,7 @@ Namespace Controls
 
         End Sub
 
-        Public Sub Detach()
+        Public Overridable Sub Detach()
 
             If Me.m_zgc Is Nothing Then Return
 
@@ -203,7 +206,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strTitle">The title to set to the master pane.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Configure(ByVal strTitle As String)
+        Public Overridable Sub Configure(ByVal strTitle As String)
 
             With Me.m_zgc.MasterPane
                 .Title.Text = strTitle
@@ -229,7 +232,7 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ConfigurePane(ByVal strTitle As String, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
             ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
             ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
@@ -267,7 +270,7 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ConfigurePane(ByVal strTitle As String, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
              ByVal strXAxisLabel As String, ByVal strYAxisLabel As String, _
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
              Optional ByVal iPane As Integer = 1) As GraphPane
@@ -316,7 +319,7 @@ Namespace Controls
         ''' <remarks>Note that this method clears out all lines existing in the
         ''' indicated panel.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub PlotLines(ByVal lines As List(Of LineItem), _
+        Public Overridable Sub PlotLines(ByVal lines As List(Of LineItem), _
                              Optional ByVal iPane As Integer = 1, _
                              Optional ByVal bRescale As Boolean = True, _
                              Optional ByVal bClear As Boolean = True)
@@ -353,7 +356,7 @@ Namespace Controls
         ''' <param name="iPane">The pane to redraw, or -1 to redraw all panes 
         ''' in the graph.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Redraw(Optional ByVal iPane As Integer = -1)
+        Public Overridable Sub Redraw(Optional ByVal iPane As Integer = -1)
             Me.m_zgc.Invalidate()
         End Sub
 
@@ -367,7 +370,7 @@ Namespace Controls
         ''' <remarks>When using cursors please use this method to rescale the
         ''' graph axis.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub RescaleAndRedraw(Optional ByVal iPane As Integer = -1)
+        Public Overridable Sub RescaleAndRedraw(Optional ByVal iPane As Integer = -1)
 
             Dim iMin As Integer = 1
             Dim iMax As Integer = Me.m_nPanels
@@ -502,7 +505,7 @@ Namespace Controls
         ''' <param name="ppl"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function CreateLineItem(ByVal curveType As eCurveTypes, _
+        Public Overridable Function CreateLineItem(ByVal curveType As eCurveTypes, _
                                         ByVal iGroup As Integer, _
                                         ByVal ppl As PointPairList) As LineItem
 
@@ -521,7 +524,7 @@ Namespace Controls
         ''' <param name="ppl"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function CreateLineItem(ByVal strName As String, _
+        Public Overridable Function CreateLineItem(ByVal strName As String, _
                                         ByVal curveType As eCurveTypes, _
                                         ByVal clr As Color, _
                                         ByVal ppl As PointPairList) As LineItem
@@ -860,7 +863,7 @@ Namespace Controls
             Next iPane
         End Sub
 
-        Private Sub InitStyle()
+        Protected Overridable Sub InitStyle()
 
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
@@ -931,11 +934,11 @@ Namespace Controls
         ''' <summary>
         ''' Returns a graph pane.
         ''' </summary>
-        ''' <param name="iPane">The index of the pane to return. This index
-        ''' should be between 1 and <see cref="NumPanes">NumPanes</see>.</param>
+        ''' <param name="iPane">The one-based index of the pane to return. This 
+        ''' index should be between 1 and <see cref="NumPanes">NumPanes</see>.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
+        Protected Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
 
             Dim pane As GraphPane = Nothing
 
@@ -956,7 +959,7 @@ Namespace Controls
         ''' <returns>Index of a pane, or -1 if no pane was found at the given
         ''' location.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetPaneAtPoint(ByVal pt As Point) As Integer
+        Protected Function GetPaneAtPoint(ByVal pt As Point) As Integer
             For i As Integer = 1 To Me.m_nPanels
                 Dim gp As GraphPane = Me.GetPane(i)
                 If gp.Rect.Contains(pt) Then Return i
@@ -966,7 +969,7 @@ Namespace Controls
 
 #Region " Cursor "
 
-        Private Function GraphToScale(ByVal ptf As PointF) As PointF
+        Protected Function GraphToScale(ByVal ptf As PointF) As PointF
             Dim myPane As GraphPane = Me.m_zgc.GraphPane
             Dim dX As Double = 0.0
             Dim dY As Double = 0.0
@@ -974,7 +977,7 @@ Namespace Controls
             Return New PointF(CSng(dX), CSng(dY))
         End Function
 
-        Private Sub RemoveCursor(ByVal iPane As Integer)
+        Protected Sub RemoveCursor(ByVal iPane As Integer)
             If Me.m_bShowCursor(iPane) Then
                 Me.GetPane(iPane).CurveList.Remove(Me.m_liCursor(iPane))
                 Me.m_liCursor(iPane) = Nothing
@@ -982,7 +985,7 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub SetCursor(ByVal iPane As Integer)
+        Protected Sub SetCursor(ByVal iPane As Integer)
             If Me.m_bShowCursor(iPane) Then
 
                 Dim gp As GraphPane = Me.GetPane(iPane)
@@ -1017,7 +1020,7 @@ Namespace Controls
         ''' <param name="mousePt"></param>
         ''' <param name="objState"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnBuildContextMenu(ByVal control As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState)
+        Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
             'ToDo_JS: globalize this
 
@@ -1039,7 +1042,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub ExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Sub ExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ExtractDataToCSV()
         End Sub
 
