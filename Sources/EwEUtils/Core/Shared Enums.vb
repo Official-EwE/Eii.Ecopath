@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.56  2009/05/13 17:22:15  joeb
+' Added MSEGroupOutput as datatype
+'
 ' Revision 1.55  2009/05/11 21:28:10  joeb
 ' Adding MSE data to Decision Support Tool (Multi Player Game)
 '
@@ -1498,6 +1501,9 @@ Namespace Core
         EcospaceLayerRegion = 68
         EcospaceLayerRelPP = 69
         EcospaceLayerRelCin = 70
+
+
+        MSEGroupOutputs = 71
 
         ''' <summary>
         ''' Data belongs to an external source.
