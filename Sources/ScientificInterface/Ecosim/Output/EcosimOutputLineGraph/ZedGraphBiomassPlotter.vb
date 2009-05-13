@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphBiomassPlotter.vb,v $
+' Revision 1.5  2009/05/13 12:53:02  jeroens
+' Inherits from ZedGraphHelper
+'
 ' Revision 1.4  2009/04/08 17:41:21  jeroens
 ' iOver -> iRunTest
 '
@@ -79,6 +82,7 @@ Namespace Controls
 
     <CLSCompliant(False)> _
     Public Class ZedGraphBiomassPlotter
+        Inherits ZedGraphHelper
 
         Private m_graphPane As GraphPane = Nothing
         Private m_core As cCore = Nothing
@@ -125,29 +129,36 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor to store all the required variables.
+        ''' Constructor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pane As GraphPane, ByVal core As cCore, _
-                       Optional ByVal strTitle As String = "", Optional ByVal strXaxisTitle As String = "", Optional ByVal strYaxisTitle As String = "")
-
-            Me.m_graphPane = pane
-            Me.m_core = core
-
-            ' Designer-time bailout
-            If (core Is Nothing) Then Return
-
-            Me.m_graphPane.Title.Text = strTitle
-            Me.m_graphPane.XAxis.Title.Text = strXaxisTitle
-            Me.m_graphPane.YAxis.Title.Text = strYaxisTitle
-
-            Me.m_graphPane.Legend.IsVisible = False
-            Me.m_graphPane.AxisChange()
-
+        Public Sub New()
         End Sub
 
 #End Region
 
+#Region " Public interfaces "
+
+        Public Overrides Sub Attach(ByVal core As EwECore.cCore, _
+                                    ByVal zgc As ZedGraph.ZedGraphControl, _
+                                    Optional ByVal iNumPanes As Integer = 1)
+
+            Debug.Assert(iNumPanes = 1)
+            Debug.Assert(core IsNot Nothing)
+
+            MyBase.Attach(core, zgc, 1)
+
+            Me.m_graphPane = Me.GetPane(1)
+            Me.m_core = core
+
+        End Sub
+
+        Public Overrides Sub Detach()
+            Me.Clear()
+            MyBase.Detach()
+        End Sub
+
+#End Region
 #Region " Public Properties "
 
         Public Sub Clear()
