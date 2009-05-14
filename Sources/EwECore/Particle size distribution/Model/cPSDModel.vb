@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.13  2009/05/14 18:11:40  joeh
+' Use cCore.N_MONTHS instead of 12 to convert month to year
+'
 ' Revision 1.12  2009/05/12 21:31:12  joeh
 ' Divide Age1 by 12
 '
@@ -197,7 +200,7 @@ Public Class cPSDModel
                 For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
                     For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                         If m_stanza.EcopathCode(isp, ist) = i Then
-                            Me.m_psd.Tmax(i) = CSng(m_stanza.Age2(isp, ist) / 12)
+                            Me.m_psd.Tmax(i) = CSng(m_stanza.Age2(isp, ist) / cCore.N_MONTHS)
                         End If
                     Next
                 Next
@@ -466,7 +469,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CSng(m_stanza.Age1(isp, ist) / 12) '/ 12)
+                            Return CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
                         Else
                             Return 0
                         End If
@@ -487,7 +490,7 @@ Public Class cPSDModel
                 For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                     If m_stanza.EcopathCode(isp, ist) = iGroup Then
                         If m_stanza.Age1(isp, ist) > 0 Then
-                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / 12)) '/ 12))
+                            Return CalcWeight(iGroup, CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS))
                         Else
                             Return 0
                         End If
