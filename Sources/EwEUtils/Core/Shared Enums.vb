@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.57  2009/05/14 15:32:31  jeroens
+' Added game varnames for generic 'Names'
+'
 ' Revision 1.56  2009/05/13 17:22:15  joeb
 ' Added MSEGroupOutput as datatype
 '
@@ -1204,8 +1207,10 @@ Namespace Core
         GameEconomicJobsTotal
         GameEconomicProduction
 
-        ''' <summary>Fleet name added for the Game data because EwE6 uses Name for all names</summary>
-        FleetName
+        ''' <summary>Game names added for the Game data because EwE6 uses Name for all names</summary>
+        GameFleetName
+        GameMPAName
+        GameHabitatName
 
         'Joeh: PSD
         PSDEnabled
