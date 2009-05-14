@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.121  2009/05/14 18:10:02  joeh
+' In Set_Tcatch_Flags( ) use fCatch instead of Landing to determine if the group is with catches
+'
 ' Revision 1.120  2009/05/14 15:26:53  jeroens
 ' Game exposes MPAs, habitats
 '
@@ -4184,9 +4187,10 @@ Public Class cCore
 
         'convert the Database ID into an iGroup
         iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, group.DBID)
-        For iFleet As Integer = 1 To m_EcoPathData.NumFleet
-            If (m_EcoPathData.Landing(iFleet, iGroup) > 0) Then bIsFished = True
-        Next
+        If m_EcoPathData.fCatch(iGroup) > 0 Then bIsFished = True
+        'For iFleet As Integer = 1 To m_EcoPathData.NumFleet
+        '    If (m_EcoPathData.Landing(iFleet, iGroup) > 0) Then bIsFished = True
+        'Next
 
         ' Is fished?
         If bIsFished Then
