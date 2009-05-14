@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.120  2009/05/14 15:26:53  jeroens
+' Game exposes MPAs, habitats
+'
 ' Revision 1.119  2009/05/13 17:19:55  joeb
 ' Added MSE data to the GameManager
 '
@@ -6183,9 +6186,9 @@ Public Class cCore
     Private m_EcoSpaceGroups As New cCoreInputOutputList(Of cEcospaceGroup)(eDataTypes.EcospaceGroup, 1)
     Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cEcospaceFleet)(eDataTypes.EcospaceFleet, 1)
     Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cEcospaceScenario)(eDataTypes.EcoSpaceScenario, 1)
-    Private m_EcospaceHabitats As New cCoreInputOutputList(Of cEcospaceHabitat)(eDataTypes.EcospaceHabitat, 0)
+    Friend m_EcospaceHabitats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceHabitat, 0)
     Private m_EcospaceRegions As New cCoreInputOutputList(Of cEcospaceRegion)(eDataTypes.EcospaceRegion, 1)
-    Private m_EcospaceMPAs As New cCoreInputOutputList(Of cEcospaceMPA)(eDataTypes.EcospaceMPA, 1)
+    Friend m_EcospaceMPAs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceMPA, 1)
     Private m_EcospaceModelParams As cEcospaceModelParameters
     Private m_EcospaceBasemap As cEcospaceBasemap
 
@@ -6506,7 +6509,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceHabitats(ByVal iHabitat As Integer) As cEcospaceHabitat
         Get
             ' JS 06Jul07: list will handle habitat index / item index offsets
-            Return Me.m_EcospaceHabitats(iHabitat)
+            Return DirectCast(Me.m_EcospaceHabitats(iHabitat), cEcospaceHabitat)
         End Get
     End Property
 
@@ -6520,7 +6523,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceMPAs(ByVal iMPA As Integer) As cEcospaceMPA
         Get
             ' JS 06Jul07: list will handle MPA index / item index offsets
-            Return Me.m_EcospaceMPAs(iMPA)
+            Return DirectCast(Me.m_EcospaceMPAs(iMPA), cEcospaceMPA)
         End Get
     End Property
 
@@ -7647,7 +7650,7 @@ Public Class cCore
 
         Try
             ' Get the object
-            objHab = Me.m_EcospaceHabitats(iHabitat)
+            objHab = DirectCast(Me.m_EcospaceHabitats(iHabitat), cEcospaceHabitat)
 
             m_EcoSpaceData.HabitatText(iHabitat) = objHab.Name
             m_EcoSpaceData.HabAreaProportion(iHabitat) = objHab.HabAreaProportion
