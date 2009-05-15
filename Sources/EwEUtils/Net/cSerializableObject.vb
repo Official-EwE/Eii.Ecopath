@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSerializableObject.vb,v $
+' Revision 1.2  2009/05/15 01:23:16  jeroens
+' Added Invalidate, IsValid
+'
 ' Revision 1.1  2008/09/26 07:31:12  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -44,13 +47,22 @@ Namespace NetUtilities
     Public MustInherit Class cSerializableObject
         Implements ISerializable
 
+#Region " Private vars "
+
+        ''' <summary>Flag stating that the contents of this object is valid.</summary>
+        Private m_bValid As Boolean = True
+
+#End Region ' Private vars
+
 #Region " Constructors "
 
         Public Sub New()
             MyBase.New()
+            Me.m_bValid = True
         End Sub
 
         Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+            Me.m_bValid = True
         End Sub
 
 #End Region ' Constructors
@@ -80,6 +92,14 @@ Namespace NetUtilities
 
         Public Overrides Function ToString() As String
             Return Me.ID()
+        End Function
+
+        Public Sub Invalidate()
+            Me.m_bValid = False
+        End Sub
+
+        Public Function IsValid() As Boolean
+            Return Me.m_bValid
         End Function
 
 #End Region ' Public interfaces
