@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.122  2009/05/15 13:40:09  jeroens
+' OnChanged: DataModified messages sent out for all Core-built Ecospace layers
+'
 ' Revision 1.121  2009/05/14 18:10:02  joeh
 ' In Set_Tcatch_Flags( ) use fCatch instead of Landing to determine if the group is with catches
 '
@@ -10454,6 +10457,13 @@ Public Class cCore
                     Me.LoadEcospaceHabitats()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
+
+                Case eDataTypes.EcospaceLayerMPA, _
+                     eDataTypes.EcospaceLayerImportance, _
+                     eDataTypes.EcospaceLayerRegion, _
+                     eDataTypes.EcospaceLayerRelCin, _
+                     eDataTypes.EcospaceLayerRelPP
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.EcospaceHabitat
 
