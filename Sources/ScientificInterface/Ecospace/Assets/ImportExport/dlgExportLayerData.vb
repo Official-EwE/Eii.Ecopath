@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgExportLayerData.vb,v $
+' Revision 1.4  2009/05/15 14:12:12  jeroens
+' Obtained layers properly disposed
+'
 ' Revision 1.3  2009/05/11 01:50:52  jeroens
 ' Renamed command classes
 '
@@ -231,8 +234,9 @@ Public Class gridExportMappings
 
 #Region " Events "
 
-        Private Sub DoLoad(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             Me.m_core = cCore.GetInstance()
 
@@ -252,6 +256,18 @@ Public Class gridExportMappings
 
             Me.UpdateControls()
 
+        End Sub
+
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+            For Each layer As cLayer In Me.m_lLayers
+                If layer IsNot Nothing Then
+                    layer.Dispose()
+                End If
+            Next
+            Me.m_lLayers = Nothing
+
+            MyBase.OnFormClosing(e)
         End Sub
 
         Private Sub OnBrowseTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
