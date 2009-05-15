@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.9  2009/05/15 14:19:08  jeroens
+' Work layer disposed
+'
 ' Revision 1.8  2009/05/11 01:50:48  jeroens
 ' Renamed command classes
 '
@@ -63,6 +66,9 @@ Namespace Ecospace.Basemap.Layers
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
         Private m_layerOriginal As cLayer = Nothing
+        Private m_layerDepth As cLayer = Nothing
+        Private m_openType As eOpenDialogTypes
+
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
         Private m_layerWork As cLayer = Nothing
         '''' <summary>Basemap zoom wrapper</summary>
@@ -90,7 +96,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer"></param>
         ''' <param name="layerDepth"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByRef layer As cLayer, ByVal layerDepth As cLayer, ByVal openType As eOpenDialogTypes)
+        Public Sub New(ByRef layer As cLayer, ByVal layerDepth As cLayer, ByVal opentype As eOpenDialogTypes)
             InitializeComponent()
 
             ' Who needs sanity?
@@ -100,7 +106,19 @@ Namespace Ecospace.Basemap.Layers
             Me.m_core = cCore.GetInstance()
 
             Me.m_layerOriginal = layer
+            Me.m_layerDepth = layerDepth
+            Me.m_openType = opentype
+
             Me.m_layerWork = New cLayer(layer) ' Work on a clone
+
+        End Sub
+
+#End Region ' Constructors
+
+#Region " Overrides "
+
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             ' Hook up preview Layer to user control
             Me.m_ucZoomControl = New ucZoomBaseMap()
@@ -109,9 +127,9 @@ Namespace Ecospace.Basemap.Layers
             Me.m_ucPreview = Me.m_ucZoomControl.Map()
             Me.m_ucPreview.Basemap = Me.m_core.EcospaceBasemap
             Me.m_ucPreview.AddLayer(Me.m_layerWork)
-            If ((Not Object.ReferenceEquals(layer, layerDepth)) And _
-                (Not Object.ReferenceEquals(layerDepth, Nothing))) Then
-                Me.m_ucPreview.AddLayer(layerDepth)
+            If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
+                (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
+                Me.m_ucPreview.AddLayer(Me.m_layerDepth)
             End If
 
             ' Add basemap to Panel
@@ -124,22 +142,36 @@ Namespace Ecospace.Basemap.Layers
             Me.UpdateControls()
             Me.DrawPreview()
 
-            Me.m_tcLayerView.SelectedIndex = CInt(openType)
+            Me.m_tcLayerView.SelectedIndex = CInt(Me.m_openType)
+
+            If Me.m_ucEditVisualStyle IsNot Nothing Then
+                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
+            End If
+
         End Sub
 
-#End Region ' Constructors
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-#Region " Local events "
+            If Me.m_ucEditVisualStyle IsNot Nothing Then
+                RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
+            End If
 
-        Private Sub DataLayerDialog_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.FormClosing
-
-            RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()
             Me.m_fpDescription.Release()
 
+            Me.m_layerDepth = Nothing
+            Me.m_layerOriginal = Nothing
+            Me.m_layerWork.Dispose()
+            Me.m_layerWork = Nothing
+
+            MyBase.OnFormClosing(e)
+
         End Sub
+
+#End Region ' Overrides
+
+#Region " Local events "
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
@@ -203,6 +235,14 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Internal implementation "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Diagnostic method, states if a layer has a unique core variable 
+        ''' link. Layers with unique sources support extra's that can be stored
+        ''' in the database such as remarks and visual styles.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Private Function HasUniqueSource() As Boolean
             If (Me.m_layerOriginal.Source Is Nothing) Then Return False
             If (TypeOf Me.m_layerOriginal.Source Is cEcospaceBasemap) Then Return False
@@ -225,7 +265,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_fpWeight = New cEwEFormatProvider(Me.m_nudWeight, GetType(Single))
             Me.m_fpDescription = New cEwEFormatProvider(Me.m_tbNameValue, GetType(String))
 
-            If (HasUniqueSource()) Then
+            If (Me.HasUniqueSource()) Then
                 Me.m_fpName.Enabled = True
                 Me.m_tbRemarks.Text = src.Remark
                 Me.m_tbRemarks.Enabled = True
@@ -250,11 +290,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(vs, Me.m_layerWork.Renderer.VisualStyleFlags)
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
-
                 Me.m_ucEditVisualStyle.Dock = DockStyle.Fill
                 Me.m_plEditVisualStyle.Controls.Add(Me.m_ucEditVisualStyle)
-                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
-
             End If
 
             Me.m_grid.Layer = Me.m_layerWork
