@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.7  2009/05/15 15:02:33  joeb
+' Outputs constructed when the Manager is contructed
+'
 ' Revision 1.6  2009/05/13 17:21:14  joeb
 ' Split outputs objects into groups and not groups
 '
@@ -92,7 +95,10 @@ Namespace MSE
         Public Sub Connect(ByRef InterfaceCallBack As MSECallBackDelegate)
 
             m_InterfaceCallback = InterfaceCallBack
+            'MSE does not listen to the Ecosim timesteps
+            Me.m_core.m_EcoSim.TimeStepDelegate = Nothing
             m_bConnected = True
+
 
         End Sub
 
@@ -155,10 +161,10 @@ Namespace MSE
 
 #Region "Construction Initialization and Running of the model"
 
-        'Public Sub New(ByVal theCore As cCore)
-        '    Me.m_output = New cMSEGroupOutput(theCore)
-        '    Me.m_parameters = New cMSEParameters(theCore)
-        'End Sub
+        Public Sub New(ByVal theCore As cCore)
+            Me.m_output = New cMSEOutput(theCore)
+            Me.m_parameters = New cMSEParameters(theCore)
+        End Sub
 
 
         Public Function Run() As Boolean
@@ -197,8 +203,8 @@ Namespace MSE
             'if there is no current context then create a new one on this thread. I'm not sure why this can happen but it was in all the samples...
             If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
 
-            Me.m_parameters = New cMSEParameters(Me.m_core)
-            Me.m_output = New cMSEOutput(Me.m_core)
+            'Me.m_parameters = New cMSEParameters(Me.m_core)
+            'Me.m_output = New cMSEOutput(Me.m_core)
 
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 

@@ -26,7 +26,6 @@ Public Class cMSEGroupOutput
         'If a validator is used then it must be made thread safe as outputs for the MSE are set on a different thread then the core/interface thread
         'the default validator will throw a threading error
         Me.AllowValidation = False
-        Me.DBID = cCore.NULL_VALUE
 
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
 
