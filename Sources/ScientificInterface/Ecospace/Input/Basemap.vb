@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Basemap.vb,v $
+' Revision 1.12  2009/05/15 14:13:11  jeroens
+' Layers disposed
+'
 ' Revision 1.11  2009/05/11 01:50:48  jeroens
 ' Renamed command classes
 '
@@ -269,7 +272,7 @@ Namespace Ecospace.Basemap
                     End If
                 Else
                     If (Me.m_layerRelCin IsNot Nothing) Then
-                        Me.RemoveLayer(m_layerRelCin)
+                        Me.RemoveLayer(Me.m_layerRelCin)
                         Me.m_layerRelCin = Nothing
                     End If
                 End If
@@ -363,6 +366,7 @@ Namespace Ecospace.Basemap
             Me.m_ucLayers.RemoveLayer(l)
 
             RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
+            l.Dispose()
         End Sub
 
 #End Region ' Load core helpers
