@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBaseMap.vb,v $
+' Revision 1.5  2009/05/15 14:08:41  jeroens
+' Safety first
+'
 ' Revision 1.4  2009/01/08 16:19:01  jeroens
 ' Fixed issue 582
 '
@@ -99,7 +102,15 @@ Namespace Ecospace
                 Return Me.m_basemap
             End Get
             Set(ByVal value As cEcospaceBasemap)
+
+                If (Me.m_basemap IsNot Nothing) Then
+                End If
+
                 Me.m_basemap = value
+
+                If (Me.m_basemap IsNot Nothing) Then
+                End If
+
                 Me.Refresh()
             End Set
         End Property
@@ -549,6 +560,7 @@ Namespace Ecospace
 
             RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
             Me.m_layers.Remove(layer)
+
         End Sub
 
 #End Region ' Layers
