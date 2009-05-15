@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceBasemap.vb,v $
+' Revision 1.8  2009/05/15 14:17:42  jeroens
+' Removed obsolete method
+'
 ' Revision 1.7  2009/05/06 12:32:59  jeroens
 ' Added meaningful datatypes
 '
@@ -492,17 +495,5 @@ Public Class cEcospaceBasemap
     End Function
 
 #End Region ' Layer interface
-
-#Region " Layer change management "
-
-    ''' <summary>
-    ''' Called by a layer to tell the manager that it has changed data. 
-    ''' </summary>
-    ''' <remarks>Tell the core that a layer has changed.</remarks>
-    Friend Sub LayerChanged(ByRef layer As cEcospaceLayer)
-        m_core.onChanged(layer)
-    End Sub
-
-#End Region ' Layer change management
 
 End Class
