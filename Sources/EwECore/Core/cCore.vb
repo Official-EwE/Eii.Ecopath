@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.123  2009/05/15 15:01:43  joeb
+' MSE Manager takes the core in its constructor
+'
 ' Revision 1.122  2009/05/15 13:40:09  jeroens
 ' OnChanged: DataModified messages sent out for all Core-built Ecospace layers
 '
@@ -10683,7 +10686,7 @@ Public Class cCore
 
         'MSE
         If Not Me.m_SearchManagers.ContainsKey(eDataTypes.MSEManager) Then
-            SearchManager = New cMSEManager()
+            SearchManager = New cMSEManager(Me)
             Me.m_SearchManagers.Add(eDataTypes.MSEManager, SearchManager)
         End If
 
