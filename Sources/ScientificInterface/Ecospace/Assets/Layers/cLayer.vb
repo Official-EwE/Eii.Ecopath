@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayer.vb,v $
+' Revision 1.4  2009/05/15 14:04:36  jeroens
+' Uses core layer message to trigger map refreshes
+'
 ' Revision 1.3  2008/11/14 01:19:12  jeroens
 ' Editor and renderer can be NULL
 '
@@ -84,6 +87,7 @@ Namespace Ecospace.Basemap.Layers
     ''' </para>
     ''' </remarks>
     Public Class cLayer
+        Implements IDisposable
 
         ''' <summary>
         ''' Enumerated type to indicate layer changes.
@@ -107,7 +111,18 @@ Namespace Ecospace.Basemap.Layers
 
         End Enum
 
+        ''' <summary>
+        ''' Layer change event
+        ''' </summary>
+        ''' <param name="layer"></param>
+        ''' <param name="updateType"></param>
+        Public Event LayerChanged(ByVal layer As cLayer, ByVal updateType As eChangeFlags)
+
+#Region " Private vars "
+
         Private m_core As cCore = Nothing
+        Private m_mh As cMessageHandler = Nothing
+        Private m_bDisposed As Boolean = False
 
         Private m_strName As String = ""
         Private m_source As cCoreInputOutputBase = Nothing
@@ -121,6 +136,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private m_bSelected As Boolean = False
         Private m_bModified As Boolean = False
+        Private m_bInUpdate As Boolean = False
 
         ''' <summary>
         ''' The <see cref="cProperty">property</see> that provides the name of this layer.
@@ -135,7 +151,9 @@ Namespace Ecospace.Basemap.Layers
         ''' </remarks>
         Private m_propName As cProperty = Nothing
 
-        Public Event LayerChanged(ByVal layer As cLayer, ByVal updateType As eChangeFlags)
+#End Region ' Private vars
+
+#Region " Construction / destruction "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -220,6 +238,8 @@ Namespace Ecospace.Basemap.Layers
                 Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
 
             Me.m_core = cCore.GetInstance()
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Nothing)
+            Me.m_core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Sanity checks
             Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
@@ -263,7 +283,39 @@ Namespace Ecospace.Basemap.Layers
             Me.IsSelected = layer.IsSelected
         End Sub
 
-        Private m_bInUpdate As Boolean = False
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="bDisposing"></param>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub Dispose(ByVal bDisposing As Boolean)
+            If Not Me.m_bDisposed Then
+                If bDisposing Then
+                    If Me.m_core IsNot Nothing Then
+                        Me.m_core.Messages.RemoveMessageHandler(Me.m_mh)
+                        Me.m_core = Nothing
+                    End If
+
+                    If Me.m_propName IsNot Nothing Then
+                        RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
+                        Me.m_propName = Nothing
+                    End If
+                End If
+            End If
+            Me.m_bDisposed = True
+        End Sub
+
+        ' This code added by Visual Basic to correctly implement the disposable pattern.
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            Dispose(True)
+            GC.SuppressFinalize(Me)
+        End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Public access "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -272,6 +324,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -----------------------------------------------------------------------
         Public Sub Update(ByVal updateType As eChangeFlags)
 
+            ' Prevent looped updates
             If Me.m_bInUpdate = True Then Return
 
             Me.m_bInUpdate = True
@@ -282,12 +335,16 @@ Namespace Ecospace.Basemap.Layers
             If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
                 ' Update visuals
                 Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
-                ' Inform the core
-                Me.m_core.onChanged(Me.m_data)
 
-                ' Fire off property change to make other copies of this layer respond. This is a hack.
-                If Me.m_propName IsNot Nothing Then
-                    Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                ' Is a core layer?
+                If Me.m_data.DataType <> eDataTypes.NotSet Then
+                    ' #Yes: inform the core
+                    Me.m_core.onChanged(Me.m_data)
+                Else
+                    ' #No: Fire off property change to make other copies of non-core layers respond
+                    If (Me.m_propName IsNot Nothing) Then
+                        Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                    End If
                 End If
 
             End If
@@ -304,7 +361,9 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-#Region " Properties "
+#End Region ' Public access
+
+#Region " Public properties "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -489,12 +548,40 @@ Namespace Ecospace.Basemap.Layers
             End Set
         End Property
 
-#End Region ' Properties
+#End Region ' Public properties
 
 #Region " Events "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' For core layers, the regular core DataModified messages relay layer 
+        ''' updates.
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub EcospaceMessageHandler(ByRef msg As cMessage)
+
+            If msg.DataType = Me.m_data.DataType Then
+
+                ' Prevent looped updates
+                If Me.m_bInUpdate Then Return
+                ' Trigger update
+                Me.Update(eChangeFlags.Map)
+            End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' For non-core layers, a property change is used to trigger layer 
+        ''' updates among independent copies of layers.
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="changeFlags"></param>
+        ''' -------------------------------------------------------------------
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
+            ' Prevent looped updates
             If Me.m_bInUpdate Then Return
 
             ' Translate property change flags into layer change flags
@@ -512,24 +599,14 @@ Namespace Ecospace.Basemap.Layers
                 flag = flag Or (eChangeFlags.All And (Not eChangeFlags.Map))
             End If
 
-            If (flag <> 0) Then Me.Update(flag)
+            If (flag <> 0) Then
+                ' Trigger update
+                Me.Update(flag)
+            End If
+
         End Sub
 
 #End Region ' Events
-
-#Region " Overrides "
-
-        Protected Overrides Sub Finalize()
-
-            If Me.m_propName IsNot Nothing Then
-                RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
-                Me.m_propName = Nothing
-            End If
-
-            MyBase.Finalize()
-        End Sub
-
-#End Region ' Overrides
 
     End Class ' Layer
 
