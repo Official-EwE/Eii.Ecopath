@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.19  2009/05/18 00:38:43  jeroens
+' Reset all generalized for fishing shapes
+'
 ' Revision 1.18  2009/05/11 01:50:50  jeroens
 ' Renamed command classes
 '
@@ -1926,28 +1929,6 @@ Namespace Controls
             Return cCore.NULL_VALUE
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Public interface to execute a given command by this handler. 
-        ''' Overridden to implement fishing forcing function commands.
-        ''' </summary>
-        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
-        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
-        ''' <param name="data">Optional data to accompany the command.</param>
-        ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
-                                                Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
-                                                Optional ByVal data As Object = Nothing)
-
-            Select Case cmd
-                Case eShapeCommandTypes.ResetAll
-                    Me.m_core.FishingEffortShapeManager.ResetToDefaults()
-                Case Else
-                    MyBase.ExecuteCommand(cmd, ashapes, data)
-            End Select
-
-        End Sub
-
     End Class
 
 #End Region ' Fishing effort
@@ -2004,28 +1985,6 @@ Namespace Controls
         Protected Overrides Function MinYScale() As Single
             Return 0
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Public interface to execute a given command by this handler. 
-        ''' Overridden to implement fishing forcing function commands.
-        ''' </summary>
-        ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
-        ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
-        ''' <param name="data">Optional data to accompany the command.</param>
-        ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
-                                                Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
-                                                Optional ByVal data As Object = Nothing)
-
-            Select Case cmd
-                Case eShapeCommandTypes.ResetAll
-                    Me.m_core.FishMortShapeManager.ResetToDefaults()
-                Case Else
-                    MyBase.ExecuteCommand(cmd, ashapes, data)
-            End Select
-
-        End Sub
 
     End Class
 
