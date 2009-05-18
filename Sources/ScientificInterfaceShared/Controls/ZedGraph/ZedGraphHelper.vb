@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.16  2009/05/18 02:11:28  jeroens
+' Left ToDo
+'
 ' Revision 1.15  2009/05/13 12:51:45  jeroens
 ' Made inheritable
 '
@@ -702,6 +705,7 @@ Namespace Controls
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
 
+            'ToDo_JS: globalize this
             cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt", 0)
 
             If cmdFS.Result = DialogResult.OK Then
@@ -1020,7 +1024,10 @@ Namespace Controls
         ''' <param name="mousePt"></param>
         ''' <param name="objState"></param>
         ''' -----------------------------------------------------------------------
-        Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, ByVal menuStrip As ContextMenuStrip, ByVal mousePt As Point, ByVal objState As ZedGraphControl.ContextMenuObjectState)
+        Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, _
+                                         ByVal menuStrip As ContextMenuStrip, _
+                                         ByVal mousePt As Point, _
+                                         ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
             'ToDo_JS: globalize this
 
@@ -1028,11 +1035,10 @@ Namespace Controls
             Dim item As ToolStripMenuItem = New ToolStripMenuItem()
             ' This is the user-defined Tag so you can find this menu item later if necessary
             item.Name = "Extract_CSV_Data"
-            item.Tag = "Extract_CSV_Data_tag"
             ' This is the text that will show up in the menu
-            item.Text = "Extract to CSV..."
+            item.Text = "E&xtract to CSV..."
             ' Add a handler that will respond when that menu item is selected
-            AddHandler item.Click, AddressOf ExtractToCSV
+            AddHandler item.Click, AddressOf OnExtractToCSV
             ' Add the menu item to the menu
             menuStrip.Items.Add(item)
         End Sub
@@ -1042,7 +1048,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Sub ExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ExtractDataToCSV()
         End Sub
 
