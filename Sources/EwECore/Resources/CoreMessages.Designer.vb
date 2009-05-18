@@ -654,6 +654,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecosim annual average results failed to saved to &apos;{0}.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_RESULTSANNUAL_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESULTSANNUAL_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim annual average results have been saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_RESULTSANNUAL_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESULTSANNUAL_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim monthly results failed to save to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_RESULTSMONTHLY_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESULTSMONTHLY_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim monthly results have been saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSIM_RESULTSMONTHLY_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESULTSMONTHLY_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; failed to save. {1}.
         '''</summary>
         Friend Shared ReadOnly Property ECOSIM_SAVE_FAILED() As String
