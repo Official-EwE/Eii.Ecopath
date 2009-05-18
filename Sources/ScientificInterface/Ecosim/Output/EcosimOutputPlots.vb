@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.17  2009/05/18 20:29:38  jeroens
+' Uses cEcosimResultWriter to separate result export logic from the GUI
+'
 ' Revision 1.16  2009/05/11 01:52:59  jeroens
 ' Uses cDirectoryOpen command
 '
@@ -204,6 +207,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
             Dim bSaveAnnual As Boolean = False 'Save each time steps
+            Dim writer As New cEcosimResultWriter(Me.m_core)
 
             cmd.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
 
@@ -219,13 +223,7 @@ Namespace Ecosim
                     Return
             End Select
 
-            'Plot 0 - 5 
-            '"Biomass, Mortality, Yield, Cons/biom, Feeding time, Weight, ";
-            'Plot 6 - Predation
-            'Plot 7 - Prey
-            For i As Integer = 0 To 7
-                Me.SaveOutputToFile(cmd.Directory, bSaveAnnual, i)
-            Next
+            writer.SaveOutputs(cmd.Directory, bSaveAnnual, Me.lbGroups.SelectedIndex + 1)
 
         End Sub
 
@@ -579,250 +577,250 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub SaveOutputToFile(ByVal strPath As String, ByVal bSaveAnnual As Boolean, ByVal iPlot As Integer)
+        'Private Sub SaveOutputToFile(ByVal strPath As String, ByVal bSaveAnnual As Boolean, ByVal iPlot As Integer)
 
-            Dim strFile As String = String.Empty
-            If bSaveAnnual Then
-                Select Case iPlot
-                    Case 0
-                        strFile = "EwE6-Simplot_annual_biomass.csv"
-                    Case 1
-                        strFile = "EwE6-Simplot_annual_mortality.csv"
-                    Case 2
-                        strFile = "EwE6-Simplot_annual_yield.csv"
-                    Case 3
-                        strFile = "EwE6-Simplot_annual_cons_biom.csv"
-                    Case 4
-                        strFile = "EwE6-Simplot_annual_feedingtime.csv"
-                    Case 5
-                        strFile = "EwE6-Simplot_annual_weight.csv"
-                    Case 6
-                        strFile = "EwE6-Simplot_annual_predation.csv"
-                    Case 7
-                        strFile = "EwE6-Simplot_annual_prey.csv"
-                End Select
-            Else
-                Select Case iPlot
-                    Case 0
-                        strFile = "EwE6-Simplot_biomass.csv"
-                    Case 1
-                        strFile = "EwE6-Simplot_mortality.csv"
-                    Case 2
-                        strFile = "EwE6-Simplot_yield.csv"
-                    Case 3
-                        strFile = "EwE6-Simplot_cons_biom.csv"
-                    Case 4
-                        strFile = "EwE6-Simplot_feedingtime.csv"
-                    Case 5
-                        strFile = "EwE6-Simplot_weight.csv"
-                    Case 6
-                        strFile = "EwE6-Simplot_predation.csv"
-                    Case 7
-                        strFile = "EwE6-Simplot_prey.csv"
-                End Select
-            End If
+        '    Dim strFile As String = String.Empty
+        '    If bSaveAnnual Then
+        '        Select Case iPlot
+        '            Case 0
+        '                strFile = "EwE6-Simplot_annual_biomass.csv"
+        '            Case 1
+        '                strFile = "EwE6-Simplot_annual_mortality.csv"
+        '            Case 2
+        '                strFile = "EwE6-Simplot_annual_yield.csv"
+        '            Case 3
+        '                strFile = "EwE6-Simplot_annual_cons_biom.csv"
+        '            Case 4
+        '                strFile = "EwE6-Simplot_annual_feedingtime.csv"
+        '            Case 5
+        '                strFile = "EwE6-Simplot_annual_weight.csv"
+        '            Case 6
+        '                strFile = "EwE6-Simplot_annual_predation.csv"
+        '            Case 7
+        '                strFile = "EwE6-Simplot_annual_prey.csv"
+        '        End Select
+        '    Else
+        '        Select Case iPlot
+        '            Case 0
+        '                strFile = "EwE6-Simplot_biomass.csv"
+        '            Case 1
+        '                strFile = "EwE6-Simplot_mortality.csv"
+        '            Case 2
+        '                strFile = "EwE6-Simplot_yield.csv"
+        '            Case 3
+        '                strFile = "EwE6-Simplot_cons_biom.csv"
+        '            Case 4
+        '                strFile = "EwE6-Simplot_feedingtime.csv"
+        '            Case 5
+        '                strFile = "EwE6-Simplot_weight.csv"
+        '            Case 6
+        '                strFile = "EwE6-Simplot_predation.csv"
+        '            Case 7
+        '                strFile = "EwE6-Simplot_prey.csv"
+        '        End Select
+        '    End If
 
 
-            Dim strFileName As String = Path.Combine(strPath, strFile)
-            Dim strPrompt As String = String.Empty
-            Dim strCaption As String = My.Resources.GENERIC_PROMPT_SAVEDATATOCSV_CAPTION
+        '    Dim strFileName As String = Path.Combine(strPath, strFile)
+        '    Dim strPrompt As String = String.Empty
+        '    Dim strCaption As String = My.Resources.GENERIC_PROMPT_SAVEDATATOCSV_CAPTION
 
-            If File.Exists(strFileName) Then
+        '    If File.Exists(strFileName) Then
 
-                strPrompt = String.Format(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName)
-                Dim bValid As DialogResult = MessageBox.Show(strPrompt, strCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
-                If bValid = Windows.Forms.DialogResult.Cancel Then
-                    Return
-                ElseIf bValid = Windows.Forms.DialogResult.No Then
-                    Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-                    Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        '        strPrompt = String.Format(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName)
+        '        Dim bValid As DialogResult = MessageBox.Show(strPrompt, strCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+        '        If bValid = Windows.Forms.DialogResult.Cancel Then
+        '            Return
+        '        ElseIf bValid = Windows.Forms.DialogResult.No Then
+        '            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        '            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-                    cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
-                    If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-                        strFileName = cmdFS.FileName
-                    Else
-                        Return
-                    End If
-                End If
-            End If
+        '            cmdFS.Invoke(My.Resources.FILEFILTER_CSV)
+        '            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+        '                strFileName = cmdFS.FileName
+        '            Else
+        '                Return
+        '            End If
+        '        End If
+        '    End If
 
-            Dim strModelDetails As String = GetModelDetails()
+        '    Dim strModelDetails As String = GetModelDetails()
 
-            If iPlot <= 5 Then
+        '    If iPlot <= 5 Then
 
-                Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
-                For i As Integer = 1 To m_core.nGroups
-                    Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(i)
-                    For j As Integer = 1 To m_core.nEcosimTimeSteps
-                        Select Case iPlot
-                            Case 0
-                                data(i, j) = grpOutput.Biomass(j)
-                            Case 1
-                                data(i, j) = grpOutput.TotalMort(j)
-                            Case 2
-                                data(i, j) = grpOutput.Yield(j)
-                            Case 3
-                                data(i, j) = grpOutput.ConsumpBiomass(j)
-                            Case 4
-                                data(i, j) = grpOutput.FeedingTime(j)
-                            Case 5
-                                If grpOutput.isMultiStanza Then
-                                    data(i, j) = grpOutput.AvgWeight(j)
-                                Else
-                                    data(i, j) = grpOutput.ProdConsump(j)
-                                End If
+        '        Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
+        '        For i As Integer = 1 To m_core.nGroups
+        '            Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(i)
+        '            For j As Integer = 1 To m_core.nEcosimTimeSteps
+        '                Select Case iPlot
+        '                    Case 0
+        '                        data(i, j) = grpOutput.Biomass(j)
+        '                    Case 1
+        '                        data(i, j) = grpOutput.TotalMort(j)
+        '                    Case 2
+        '                        data(i, j) = grpOutput.Yield(j)
+        '                    Case 3
+        '                        data(i, j) = grpOutput.ConsumpBiomass(j)
+        '                    Case 4
+        '                        data(i, j) = grpOutput.FeedingTime(j)
+        '                    Case 5
+        '                        If grpOutput.isMultiStanza Then
+        '                            data(i, j) = grpOutput.AvgWeight(j)
+        '                        Else
+        '                            data(i, j) = grpOutput.ProdConsump(j)
+        '                        End If
 
-                        End Select
-                    Next
+        '                End Select
+        '            Next
 
-                Next
+        '        Next
 
-                Dim astrGroupNames As String = GetAllGroupNames()
-                Me.SaveDataToFile(strFileName, bSaveAnnual, data, strModelDetails, astrGroupNames)
+        '        Dim astrGroupNames As String = GetAllGroupNames()
+        '        Me.SaveDataToFile(strFileName, bSaveAnnual, data, strModelDetails, astrGroupNames)
 
-            ElseIf iPlot = 6 Then
-                'For predation and prey, the saving scheme is different
-                Dim iGroup As Integer = lbGroups.SelectedIndex + 1
-                Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
+        '    ElseIf iPlot = 6 Then
+        '        'For predation and prey, the saving scheme is different
+        '        Dim iGroup As Integer = lbGroups.SelectedIndex + 1
+        '        Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
 
-                Dim cntPred As Integer = 0
-                Dim predNames As New StringBuilder
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPred(i) Then
-                        cntPred += 1
-                        predNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
-                        predNames.Append(",")
-                    End If
-                Next
+        '        Dim cntPred As Integer = 0
+        '        Dim predNames As New StringBuilder
+        '        For i As Integer = 1 To m_core.nLivingGroups
+        '            If grpOutput.isPred(i) Then
+        '                cntPred += 1
+        '                predNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+        '                predNames.Append(",")
+        '            End If
+        '        Next
 
-                Dim predData(cntPred, m_core.nEcosimTimeSteps) As Single
-                cntPred = 1
+        '        Dim predData(cntPred, m_core.nEcosimTimeSteps) As Single
+        '        cntPred = 1
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPred(i) Then
-                        For j As Integer = 1 To m_core.nEcosimTimeSteps
-                            predData(cntPred, j) = grpOutput.Predation(i, j)
-                        Next
-                        cntPred += 1
-                    End If
-                Next
+        '        For i As Integer = 1 To m_core.nLivingGroups
+        '            If grpOutput.isPred(i) Then
+        '                For j As Integer = 1 To m_core.nEcosimTimeSteps
+        '                    predData(cntPred, j) = grpOutput.Predation(i, j)
+        '                Next
+        '                cntPred += 1
+        '            End If
+        '        Next
 
-                Dim predMdlDetails As String = String.Format("{0},Prey:,{1}, Gives predation mortality rates for this group", strModelDetails, grpOutput.Name)
-                SaveDataToFile(strFileName, bSaveAnnual, predData, predMdlDetails, predNames.ToString)
+        '        Dim predMdlDetails As String = String.Format("{0},Prey:,{1}, Gives predation mortality rates for this group", strModelDetails, grpOutput.Name)
+        '        SaveDataToFile(strFileName, bSaveAnnual, predData, predMdlDetails, predNames.ToString)
 
-            ElseIf iPlot = 7 Then 'Plot 7 - Prey (For the selected group)
+        '    ElseIf iPlot = 7 Then 'Plot 7 - Prey (For the selected group)
 
-                Dim iGroup As Integer = lbGroups.SelectedIndex + 1
-                Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
+        '        Dim iGroup As Integer = lbGroups.SelectedIndex + 1
+        '        Dim grpOutput As cEcosimGroupOutput = m_core.EcoSimGroupOutputs(iGroup)
 
-                Dim cntPrey As Integer = 0
-                Dim preyNames As New StringBuilder
+        '        Dim cntPrey As Integer = 0
+        '        Dim preyNames As New StringBuilder
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPrey(i) Then
-                        cntPrey += 1
-                        preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
-                        preyNames.Append(",")
-                    End If
-                Next
+        '        For i As Integer = 1 To m_core.nLivingGroups
+        '            If grpOutput.isPrey(i) Then
+        '                cntPrey += 1
+        '                preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+        '                preyNames.Append(",")
+        '            End If
+        '        Next
 
-                Dim preyData(cntPrey, m_core.nEcosimTimeSteps) As Single
-                cntPrey = 1
+        '        Dim preyData(cntPrey, m_core.nEcosimTimeSteps) As Single
+        '        cntPrey = 1
 
-                For i As Integer = 1 To m_core.nLivingGroups
+        '        For i As Integer = 1 To m_core.nLivingGroups
 
-                    If grpOutput.isPrey(i) Then
-                        For j As Integer = 1 To m_core.nEcosimTimeSteps
-                            preyData(cntPrey, j) = grpOutput.PreyPercentage(i, j)
-                        Next
-                        cntPrey += 1
-                    End If
-                Next
-                Dim preyMdlDetails As String = String.Format("{0},Predator:,{1}, Shows diets as proportions", strModelDetails, grpOutput.Name)
-                SaveDataToFile(strFileName, bSaveAnnual, preyData, preyMdlDetails, preyNames.ToString)
+        '            If grpOutput.isPrey(i) Then
+        '                For j As Integer = 1 To m_core.nEcosimTimeSteps
+        '                    preyData(cntPrey, j) = grpOutput.PreyPercentage(i, j)
+        '                Next
+        '                cntPrey += 1
+        '            End If
+        '        Next
+        '        Dim preyMdlDetails As String = String.Format("{0},Predator:,{1}, Shows diets as proportions", strModelDetails, grpOutput.Name)
+        '        SaveDataToFile(strFileName, bSaveAnnual, preyData, preyMdlDetails, preyNames.ToString)
 
-            End If
+        '    End If
 
-        End Sub
+        'End Sub
 
-        Private Function SaveDataToFile(ByVal strFileName As String, ByVal bSaveYearly As Boolean, ByVal data As Single(,), ByVal strModelDetails As String, ByVal strGroupNames As String) As Boolean
+        'Private Function SaveDataToFile(ByVal strFileName As String, ByVal bSaveYearly As Boolean, ByVal data As Single(,), ByVal strModelDetails As String, ByVal strGroupNames As String) As Boolean
 
-            Try
-                'Overwritten the file
-                Using sw As StreamWriter = New StreamWriter(strFileName, False)
-                    sw.WriteLine(strModelDetails)
-                    sw.WriteLine(strGroupNames)
+        '    Try
+        '        'Overwritten the file
+        '        Using sw As StreamWriter = New StreamWriter(strFileName, False)
+        '            sw.WriteLine(strModelDetails)
+        '            sw.WriteLine(strGroupNames)
 
-                    If bSaveYearly Then
-                        Dim simYears As Integer = CInt((data.GetLength(1) - 1) / cCore.N_MONTHS)
-                        Dim nGroups As Integer = data.GetLength(0) - 1
-                        Dim sum(nGroups) As Single
-                        For j As Integer = 1 To simYears
-                            ReDim sum(nGroups)
-                            For i As Integer = 1 To nGroups
-                                For k As Integer = 1 To cCore.N_MONTHS
-                                    sum(i) = sum(i) + data(i, (j - 1) * cCore.N_MONTHS + k)
-                                Next
-                                sw.Write(sum(i) / cCore.N_MONTHS)
-                                sw.Write(",")
-                            Next
-                            sw.WriteLine()
-                        Next
-                    Else
-                        'Each time steps
-                        For j As Integer = 1 To data.GetLength(1) - 1
-                            'For every group
-                            For i As Integer = 1 To data.GetLength(0) - 1
-                                sw.Write(data(i, j))
-                                sw.Write(",")
-                            Next
-                            sw.WriteLine()
-                        Next
-                    End If
-                    sw.Close()
+        '            If bSaveYearly Then
+        '                Dim simYears As Integer = CInt((data.GetLength(1) - 1) / cCore.N_MONTHS)
+        '                Dim nGroups As Integer = data.GetLength(0) - 1
+        '                Dim sum(nGroups) As Single
+        '                For j As Integer = 1 To simYears
+        '                    ReDim sum(nGroups)
+        '                    For i As Integer = 1 To nGroups
+        '                        For k As Integer = 1 To cCore.N_MONTHS
+        '                            sum(i) = sum(i) + data(i, (j - 1) * cCore.N_MONTHS + k)
+        '                        Next
+        '                        sw.Write(sum(i) / cCore.N_MONTHS)
+        '                        sw.Write(",")
+        '                    Next
+        '                    sw.WriteLine()
+        '                Next
+        '            Else
+        '                'Each time steps
+        '                For j As Integer = 1 To data.GetLength(1) - 1
+        '                    'For every group
+        '                    For i As Integer = 1 To data.GetLength(0) - 1
+        '                        sw.Write(data(i, j))
+        '                        sw.Write(",")
+        '                    Next
+        '                    sw.WriteLine()
+        '                Next
+        '            End If
+        '            sw.Close()
 
-                End Using
+        '        End Using
 
-            Catch ex As Exception
-                Return False
-            End Try
-            Return True
+        '    Catch ex As Exception
+        '        Return False
+        '    End Try
+        '    Return True
 
-        End Function
+        'End Function
 
-        Private Function GetAllGroupNames() As String
+        'Private Function GetAllGroupNames() As String
 
-            Dim str As New StringBuilder
-            For i As Integer = 1 To m_core.nGroups
-                str.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
-                If i <> m_core.nGroups Then str.Append(",")
-            Next
+        '    Dim str As New StringBuilder
+        '    For i As Integer = 1 To m_core.nGroups
+        '        str.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+        '        If i <> m_core.nGroups Then str.Append(",")
+        '    Next
 
-            Return str.ToString()
+        '    Return str.ToString()
 
-        End Function
+        'End Function
 
-        ''' <summary>
-        ''' This saving format is based on EwE5 code
-        ''' </summary>
-        Private Function GetModelDetails() As String
+        '''' <summary>
+        '''' This saving format is based on EwE5 code
+        '''' </summary>
+        'Private Function GetModelDetails() As String
 
-            Dim str As New StringBuilder
-            'Add the database name
+        '    Dim str As New StringBuilder
+        '    'Add the database name
 
-            Dim dbName As String = My.Settings.MdbRecentlyUsedList(0).ToString
-            Dim iIndex As Integer = dbName.IndexOf(",")
-            str.Append(dbName.Substring(0, iIndex))
-            str.Append(",")
-            'Add the model name
-            str.Append(m_core.EwEModel.Name)
-            str.Append(",")
-            'Add the active scenario name
-            str.Append(m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
+        '    Dim dbName As String = My.Settings.MdbRecentlyUsedList(0).ToString
+        '    Dim iIndex As Integer = dbName.IndexOf(",")
+        '    str.Append(dbName.Substring(0, iIndex))
+        '    str.Append(",")
+        '    'Add the model name
+        '    str.Append(m_core.EwEModel.Name)
+        '    str.Append(",")
+        '    'Add the active scenario name
+        '    str.Append(m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
 
-            Return str.ToString()
+        '    Return str.ToString()
 
-        End Function
+        'End Function
 
         Private Sub UpdateColors()
             m_paneMaster.Fill = New Fill(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND))
