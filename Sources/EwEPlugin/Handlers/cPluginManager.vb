@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.28  2009/05/18 00:14:58  jeroens
+' Fixed plugin name issue in exceptions
+'
 ' Revision 1.27  2009/04/16 19:30:05  jeroens
 ' Added IsDataAvailable
 '
@@ -1779,7 +1782,7 @@ Public Class cPluginManager
     Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
 
         Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_GENERIC, _
-                                                 Path.GetFileNameWithoutExtension(assembly.Filename), _
+                                                 assembly.AssemblyName.Name, _
                                                  ex.Message)
 
         Me.RaisePluginException(New cPluginException(assembly, strMessage, ex))
@@ -1790,7 +1793,7 @@ Public Class cPluginManager
                                     ByVal strMethodName As String, ByVal ex As Exception)
 
         Dim strMessage As String = String.Format(My.Resources.PLUGIN_ERROR_POINT, _
-                                                 Path.GetFileNameWithoutExtension(assembly.Filename), _
+                                                 assembly.AssemblyName.Name, _
                                                  plugin.Name, _
                                                  strMethodName, _
                                                  ex.Message)
