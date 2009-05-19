@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cRelativeFlows.vb,v $
+' Revision 1.9  2009/05/19 13:41:10  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.8  2009/05/02 01:51:30  jeroens
 ' Updated to cControlManager FN name change
 '
@@ -38,13 +41,14 @@ Public Class cRelativeFlows
     Public Sub New()
     End Sub
 
-    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                  ByVal datagrid As DataGridView, _
-                                  ByVal graph As ZedGraphControl, _
-                                  ByVal plot As ucPlot)
-        MyBase.Attach(manager, datagrid, graph, plot)
-        Me.Grid.Visible = True
-    End Sub
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Grid.Visible = bSucces
+        Return bSucces
+    End Function
 
     Public Overrides Sub DisplayData()
 

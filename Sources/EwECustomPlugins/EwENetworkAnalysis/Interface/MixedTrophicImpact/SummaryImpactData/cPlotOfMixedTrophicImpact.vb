@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.19  2009/05/19 13:41:11  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.18  2009/05/01 17:42:59  jeroens
 ' Inherited from cContentManager
 '
@@ -78,15 +81,16 @@ Public Class cPlotOfMixedTrophicImpact
         '
     End Sub
 
-    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                 ByVal datagrid As DataGridView, _
-                                 ByVal graph As ZedGraphControl, _
-                                 ByVal plot As ucPlot)
-        MyBase.Attach(manager, datagrid, graph, plot)
-        Me.Plot.Visible = True
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Plot.Visible = bSucces
         AddHandler Me.Plot.Paint, AddressOf PaintUC
         AddHandler Me.Plot.Resize, AddressOf ResizeUC
-    End Sub
+        Return bSucces
+    End Function
 
     Public Overrides Sub Detach()
         RemoveHandler Me.Plot.Paint, AddressOf PaintUC
@@ -119,6 +123,10 @@ Public Class cPlotOfMixedTrophicImpact
 
     End Sub
 
+    Public Overrides Function Filename(ByVal bAnnual As Boolean) As String
+        Return "EwE6-NA_mixed-trophic-impact"
+    End Function
+
     Public Overrides Sub SaveToEMF(ByVal strFileName As String)
 
         Dim fs As FileStream = Nothing
@@ -128,7 +136,6 @@ Public Class cPlotOfMixedTrophicImpact
 
         Me.Plot.Refresh() 'm_Panel.Refresh()
         fs = New FileStream(strFileName, FileMode.Create)
-        'bmp = New Bitmap(200, 200, PixelFormat.Format32bppArgb)
         bmp = New Bitmap(Me.Plot.Width, Me.Plot.Height, PixelFormat.Format32bppArgb)
         Using g As Graphics = Graphics.FromImage(bmp)
             hdc = g.GetHdc()

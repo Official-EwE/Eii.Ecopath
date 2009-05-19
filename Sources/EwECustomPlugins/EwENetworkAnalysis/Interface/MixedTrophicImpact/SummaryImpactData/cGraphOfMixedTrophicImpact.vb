@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.12  2009/05/19 13:41:11  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.11  2009/05/01 17:42:58  jeroens
 ' Inherited from cContentManager
 '
@@ -59,14 +62,12 @@ Public Class cGraphOfMixedTrophicImpact
         '
     End Sub
 
-    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                ByVal datagrid As DataGridView, _
-                                ByVal graph As ZedGraphControl, _
-                                ByVal plot As ucPlot)
-
-        MyBase.Attach(manager, datagrid, graph, plot)
-
-    End Sub
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot) As Boolean
+        Return MyBase.Attach(manager, datagrid, graph, plot)
+    End Function
 
     Public Overrides Sub DisplayData()
 

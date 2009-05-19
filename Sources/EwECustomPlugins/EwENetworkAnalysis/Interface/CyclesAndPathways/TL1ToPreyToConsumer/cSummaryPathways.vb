@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSummaryPathways.vb,v $
+' Revision 1.8  2009/05/19 13:41:10  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.7  2009/05/02 01:51:26  jeroens
 ' Updated to cControlManager FN name change
 '
@@ -22,34 +25,6 @@
 ' Revision 1.1  2008/09/26 07:30:50  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.17  2008/06/25 01:53:43  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.16  2008/06/24 18:08:40  joeh
-' Ecosim NA indice plots are displayed in the same form where  we have the NA tree view - Take 2
-'
-' Revision 1.15  2007/06/28 19:20:18  joeh
-' Switch to wait cursor when displaying data
-'
-' Revision 1.14  2007/06/26 21:16:58  joeh
-' Add wait cursor when set up grid
-'
-' Revision 1.13  2007/06/22 19:12:48  joeh
-' Modify GetInstance()
-'
-' Revision 1.12  2007/06/22 00:35:32  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.11  2007/06/21 23:49:37  joeh
-' Move hard coded strings into the resource file
-'
-' Revision 1.10  2007/06/21 00:14:40  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.9  2007/06/20 18:14:00  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
 Option Strict On
 Option Explicit On
@@ -66,13 +41,14 @@ Namespace TL1ToPreyToConsumer
             '
         End Sub
 
-        Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                     ByVal datagrid As DataGridView, _
-                                     ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot)
-            MyBase.Attach(manager, datagrid, graph, plot)
-            Me.Grid.Visible = True
-        End Sub
+        Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                        ByVal datagrid As DataGridView, _
+                                        ByVal graph As ZedGraphControl, _
+                                        ByVal plot As ucPlot) As Boolean
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+            Me.Grid.Visible = bSucces
+            Return bSucces
+        End Function
 
         Public Overrides Sub DisplayData()
 

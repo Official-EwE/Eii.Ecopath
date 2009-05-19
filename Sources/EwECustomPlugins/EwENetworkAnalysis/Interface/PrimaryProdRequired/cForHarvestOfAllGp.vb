@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cForHarvestOfAllGp.vb,v $
+' Revision 1.8  2009/05/19 13:41:13  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.7  2009/05/02 01:51:29  jeroens
 ' Updated to cControlManager FN name change
 '
@@ -22,34 +25,6 @@
 ' Revision 1.1  2008/09/26 07:30:54  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.16  2008/06/25 01:53:40  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.15  2008/06/24 18:08:38  joeh
-' Ecosim NA indice plots are displayed in the same form where  we have the NA tree view - Take 2
-'
-' Revision 1.14  2007/07/09 19:44:45  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.13  2007/07/07 00:11:04  joeh
-' Decrease column width
-'
-' Revision 1.12  2007/06/28 19:22:09  joeh
-' Switch to wait cursor when displaying data
-'
-' Revision 1.11  2007/06/22 19:12:46  joeh
-' Modify GetInstance()
-'
-' Revision 1.10  2007/06/22 00:35:29  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.9  2007/06/21 00:14:38  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.8  2007/06/20 18:13:57  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
 Option Strict On
 Option Explicit On
@@ -62,22 +37,26 @@ Public Class cForHarvestOfAllGp
     Inherits cContentManager
 
     Public Sub New()
-        '
     End Sub
 
-    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                  ByVal datagrid As DataGridView, _
-                                  ByVal graph As ZedGraphControl, _
-                                  ByVal plot As ucPlot)
-        MyBase.Attach(manager, datagrid, graph, plot)
-        Me.Grid.Visible = True
-    End Sub
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                    ByVal datagrid As DataGridView, _
+                                    ByVal graph As ZedGraphControl, _
+                                    ByVal plot As ucPlot) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Grid.Visible = bSucces
+        Return bSucces
+    End Function
 
     Public Overrides Sub DisplayData()
 
         Dim strRowContent() As String
         Dim lngSumPath As Long
 
+        ' Load pre-requesites
+        Me.NetworkManager.RunRequiredPrimaryProd()
+
+        ' Init
         SetUpGridColumn()
 
         'Set up grid rows

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.4  2009/05/19 13:41:05  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.3  2009/05/11 20:34:34  jeroens
 ' Added monthly / annual averages CVS export
 '
@@ -57,10 +60,10 @@ Public MustInherit Class cContentManager
     ''' The default implementation stores all controls and hides them.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Attach(ByVal manager As cNetworkManager, _
-                                  ByVal datagrid As DataGridView, _
-                                  ByVal graph As ZedGraphControl, _
-                                  ByVal plot As ucPlot)
+    Public Overridable Function Attach(ByVal manager As cNetworkManager, _
+                                       ByVal datagrid As DataGridView, _
+                                       ByVal graph As ZedGraphControl, _
+                                       ByVal plot As ucPlot) As Boolean
 
         ' Store all references
         Me.m_manager = manager
@@ -71,7 +74,9 @@ Public MustInherit Class cContentManager
         ' Hide all managed controls
         Me.HideControls()
 
-    End Sub
+        Return True
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -178,16 +183,6 @@ Public MustInherit Class cContentManager
     ''' <param name="strFileName"></param>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub SaveToEMF(ByVal strFileName As String)
-        ' NOP
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Implement to save the content of a view to a CSV file.
-    ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' -----------------------------------------------------------------------
-    Public Overridable Sub SaveToCSV(ByVal strFileName As String, ByVal bAnnual As Boolean)
         ' NOP
     End Sub
 

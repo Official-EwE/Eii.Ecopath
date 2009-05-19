@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.24  2009/05/19 13:41:04  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.23  2009/05/11 20:34:35  jeroens
 ' Added monthly / annual averages CVS export
 '
@@ -123,8 +126,6 @@ Public Class frmNetworkAnalysis
 
         Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
 
-        ' ToDo: localize this method
-
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
@@ -172,11 +173,9 @@ Public Class frmNetworkAnalysis
                 Me.m_contentmanager = New cFromAllCombined()
 
             Case "ndForHarvestOfAllGroups"
-                Me.m_networkmanager.RunRequiredPrimaryProd()
                 Me.m_contentmanager = New cForHarvestOfAllGp()
 
             Case "ndForConsumptionOfAllGroups"
-                Me.m_networkmanager.RunRequiredPrimaryProd()
                 Me.m_contentmanager = New cForConsumpOfAllGp()
 
             Case "ndImpactData"
@@ -222,54 +221,19 @@ Public Class frmNetworkAnalysis
                 Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
 
             Case "ndPathway_all"
-                If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
-                    Me.m_networkmanager.FindPathwaysCyclesAll()
-                    Me.m_contentmanager = New CyclesAll.cPathways()
-                End If
+                Me.m_contentmanager = New CyclesAll.cPathways()
 
             Case "ndSummaryOfPathways_all"
-                If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
-                    Me.m_networkmanager.FindPathwaysCyclesAll()
-                    Me.m_contentmanager = New CyclesAll.cSummaryPathways()
-                End If
+                Me.m_contentmanager = New CyclesAll.cSummaryPathways()
 
             Case "ndCyclingAndPathLength"
                 Me.m_contentmanager = New cCyclingAndPathLen()
 
             Case "ndWithoutPrimaryProductionRequiredEstimate"
-
-                Me.m_networkmanager.UseEcosimNetwork = True
-                Me.m_networkmanager.EcosimPPROn = False
-                If Me.m_networkmanager.RunEcosimNetwork() Then
-                    Me.m_contentmanager = New cIndicesWithoutPPREst()
-                End If
-                Me.m_networkmanager.UseEcosimNetwork = False
+                Me.m_contentmanager = New cIndicesWithoutPPREst()
 
             Case "ndWithPrimaryProductionRequiredEstimate"
-
-                ' Think positive
-                Dim bRun As Boolean = True
-
-                ' PPR not on yet?
-                If (Me.m_networkmanager.EcosimPPROn = False) Then
-                    ' #Yes: prompt user if need to run
-                    bRun = (MsgBox(My.Resources.PROMPT_ESTIMATE_PPR, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes)
-                End If
-
-                ' Need to run?
-                If bRun Then
-                    ' #Yes: run std PP
-                    Me.m_networkmanager.RunRequiredPrimaryProd()
-                    ' Switch on PPR in Ecosim
-                    Me.m_networkmanager.UseEcosimNetwork = True
-                    m_networkmanager.EcosimPPROn = True
-                    ' Ecosim NA run succesful?
-                    If m_networkmanager.RunEcosimNetwork() = True Then
-                        ' #Yes: update control
-                        Me.m_contentmanager = New cIndicesWithPPREst()
-                    End If
-                    Me.m_networkmanager.UseEcosimNetwork = False
-                End If
+                Me.m_contentmanager = New cIndicesWithPPREst()
 
                 ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)
                 ' JS 01may09: besides, the interface will be triggered from a toolbar btn instead of a tree node.
@@ -285,19 +249,21 @@ Public Class frmNetworkAnalysis
             Case Else
         End Select
 
+        ' ToDo: localize this
         asn.SetStatusText("Updating UI...", TriState.True)
 
         ' Put content manager to work
-        If Me.m_contentmanager IsNot Nothing Then
+        If (Me.m_contentmanager IsNot Nothing) Then
 
-            ' Attach form
-            Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot)
-            Try
-                ' Get data
-                Me.m_contentmanager.DisplayData()
-            Catch ex As Exception
+            ' Try to attach content manager
+            If Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot) Then
+                Try
+                    ' Display data if succesful
+                    Me.m_contentmanager.DisplayData()
+                Catch ex As Exception
 
-            End Try
+                End Try
+            End If
 
             ' Fix toolstrip
             Me.m_contentmanager.SetupToolstrip(m_tsNetworkAnalysis)
@@ -359,11 +325,10 @@ Public Class frmNetworkAnalysis
                 Return
         End Select
 
-
         If (cmdDOC.Result = DialogResult.OK) Then
             Try
-                strFileName = Path.GetFileNameWithoutExtension(Me.m_contentmanager.Filename(bAnnual)) & ".csv"
-                Me.m_contentmanager.SaveToCSV(Path.Combine(cmdDOC.Directory, strFileName), bAnnual)
+                Dim writer As New cResultWriter(Me.m_networkmanager)
+                writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
             Catch ex As Exception
                 ' Woops
             End Try

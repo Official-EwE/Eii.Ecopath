@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cByGroup.vb,v $
+' Revision 1.8  2009/05/19 13:41:07  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.7  2009/05/02 01:51:20  jeroens
 ' Updated to cControlManager FN name change
 '
@@ -22,43 +25,6 @@
 ' Revision 1.1  2008/09/26 07:30:48  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.19  2008/06/25 01:53:39  joeh
-' Ecosim NA indice plots are displayed in the same form where we have the NA tree view - Take 2
-'
-' Revision 1.18  2008/06/24 18:08:37  joeh
-' Ecosim NA indice plots are displayed in the same form where  we have the NA tree view - Take 2
-'
-' Revision 1.17  2007/07/09 23:05:48  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.16  2007/07/07 00:11:03  joeh
-' Decrease column width
-'
-' Revision 1.15  2007/07/06 00:44:59  joeh
-' Move hard coded strings to resource file
-'
-' Revision 1.14  2007/06/28 19:22:51  joeh
-' Switch to wait cursor when displaying data
-'
-' Revision 1.13  2007/06/22 19:12:45  joeh
-' Modify GetInstance()
-'
-' Revision 1.12  2007/06/22 00:35:28  joeh
-' Add Option Strict On and Option Explicit On
-'
-' Revision 1.11  2007/06/21 23:49:35  joeh
-' Move hard coded strings into the resource file
-'
-' Revision 1.10  2007/06/21 18:08:45  joeh
-' Make the 2 in km2 to superscript
-'
-' Revision 1.9  2007/06/21 00:14:38  joeh
-' Rename SetUpPanel() to DisplayData()
-'
-' Revision 1.8  2007/06/20 18:13:55  joeh
-' add header to the top of the file so that CVS will log the file with every update
-'
-'
 '==============================================================================
 Option Strict On
 Option Explicit On
@@ -72,6 +38,15 @@ Public Class cByGroup
     Public Sub New()
         '
     End Sub
+
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                    ByVal datagrid As DataGridView, _
+                                    ByVal graph As ZedGraphControl, _
+                                    ByVal plot As ucPlot) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+        Me.Grid.Visible = bSucces
+        Return bSucces
+    End Function
 
     Public Overrides Sub DisplayData()
         Dim strRowContent() As String

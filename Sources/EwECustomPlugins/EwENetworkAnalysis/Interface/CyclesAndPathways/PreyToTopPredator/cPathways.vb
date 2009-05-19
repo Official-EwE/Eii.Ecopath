@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.11  2009/05/19 13:41:09  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.10  2009/05/02 01:51:24  jeroens
 ' Updated to cControlManager FN name change
 '
@@ -47,13 +50,14 @@ Namespace PreyToPredator
         Public Sub New()
         End Sub
 
-        Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                    ByVal datagrid As DataGridView, _
-                                    ByVal graph As ZedGraphControl, _
-                                    ByVal plot As ucPlot)
-            MyBase.Attach(manager, datagrid, graph, plot)
-            Me.Grid.Visible = True
-        End Sub
+        Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                        ByVal datagrid As DataGridView, _
+                                        ByVal graph As ZedGraphControl, _
+                                        ByVal plot As ucPlot) As Boolean
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+            Me.Grid.Visible = bSucces
+            Return bSucces
+        End Function
 
         Public Overrides Sub DisplayData()
 

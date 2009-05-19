@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.16  2009/05/19 13:41:11  jeroens
+' Content manager derived pages will take care of updating NA run state
+'
 ' Revision 1.15  2009/05/11 20:34:35  jeroens
 ' Added monthly / annual averages CVS export
 '
@@ -76,13 +79,22 @@ Public Class cIndicesWithoutPPREst
         '
     End Sub
 
-    Public Overrides Sub Attach(ByVal manager As cNetworkManager, _
-                                ByVal datagrid As DataGridView, _
-                                ByVal graph As ZedGraphControl, _
-                                ByVal plot As ucPlot)
-        MyBase.Attach(manager, datagrid, graph, plot)
-        Me.Graph.Visible = True
-    End Sub
+    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot) As Boolean
+
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+
+        Me.NetworkManager.UseEcosimNetwork = True
+        Me.NetworkManager.EcosimPPROn = False
+        bSucces = bSucces and Me.NetworkManager.RunEcosimNetwork() 
+        Me.NetworkManager.UseEcosimNetwork = False
+
+        Me.Graph.Visible = bSucces
+        Return bSucces
+
+    End Function
 
     Public Overrides Sub Detach()
 
@@ -135,31 +147,6 @@ Public Class cIndicesWithoutPPREst
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Append base class file name with scenario name and NA form-specific tag.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function Filename(ByVal bAnnual As Boolean) As String
-
-        If bAnnual Then
-            Return "EwE6-NA_annual_IndicesWithoutPPR"
-        Else
-            Return "EwE6-NA_monthly_IndicesWithoutPPR"
-        End If
-
-    End Function
-
-    Public Overrides Sub SaveToCSV(ByVal strFileName As String, ByVal bAnnual As Boolean)
-
-        Dim sw As New StreamWriter(strFileName)
-        If (sw IsNot Nothing) Then
-            sw.Write(Me.ExtractData(bAnnual))
-            sw.Close()
-        End If
-
-    End Sub
-
     Public Overrides Function RequiresToolstrip() As Boolean
         Return True
     End Function
@@ -173,131 +160,6 @@ Public Class cIndicesWithoutPPREst
         ts.Refresh()
 
     End Sub
-
-    Private Function ExtractData(ByVal bAnnualAverage As Boolean) As String
-
-        Dim sb As New StringBuilder()
-        Dim asValues(23) As Single
-        Dim iMonth As Integer = 0
-        Dim bLineAdded As Boolean = False
-
-        sb.Append(My.Resources.COL_HDR_THROUGHPUT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PCI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FCI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PATH_LEN)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PRIM_PROD)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROD)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_BIOMASS)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_AMI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ENTROPY)
-        sb.Append(", ")
-        sb.AppendLine("")
-
-        For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
-
-            ' Calc month
-            iMonth = (i - 1) Mod cCore.N_MONTHS
-            bLineAdded = False
-
-            ' For every var to output
-            For j As Integer = 1 To 23
-
-                ' Reset total when either processing monthly values OR processing January
-                If (bAnnualAverage = False) Or (iMonth = 0) Then
-                    asValues(j) = 0
-                End If
-
-                ' Add indicator to total
-                Select Case j
-                    Case 1 : asValues(j) += Me.NetworkManager.ThroughputEcosim(i)
-                    Case 2 : asValues(j) += Me.NetworkManager.CapacityEcosim(i)
-                    Case 3 : asValues(j) += Me.NetworkManager.AscendImportEcosim(i)
-                    Case 4 : asValues(j) += Me.NetworkManager.AscendFlowEcosim(i)
-                    Case 5 : asValues(j) += Me.NetworkManager.AscendExportEcosim(i)
-                    Case 6 : asValues(j) += Me.NetworkManager.AscendRespEcosim(i)
-                    Case 7 : asValues(j) += Me.NetworkManager.OverheadImportEcosim(i)
-                    Case 8 : asValues(j) += Me.NetworkManager.OverheadFlowEcosim(i)
-                    Case 9 : asValues(j) += Me.NetworkManager.OverheadExportEcosim(i)
-                    Case 10 : asValues(j) += Me.NetworkManager.OverheadRespEcosim(i)
-                    Case 11 : asValues(j) += Me.NetworkManager.PCIEcosim(i)
-                    Case 12 : asValues(j) += Me.NetworkManager.FCIEcosim(i)
-                    Case 13 : asValues(j) += Me.NetworkManager.PathLengthEcosim(i)
-                    Case 14 : asValues(j) += Me.NetworkManager.ExportEcosim(i)
-                    Case 15 : asValues(j) += Me.NetworkManager.RespEcosim(i)
-                    Case 16 : asValues(j) += Me.NetworkManager.PrimaryProdEcosim(i)
-                    Case 17 : asValues(j) += Me.NetworkManager.ProdEcosim(i)
-                    Case 18 : asValues(j) += Me.NetworkManager.BiomassEcosim(i)
-                    Case 19 : asValues(j) += Me.NetworkManager.CatchEcosim(i)
-                    Case 20 : asValues(j) += Me.NetworkManager.PropFlowDetEcosim(i)
-                    Case 21 : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
-                    Case 22 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
-                    Case 23 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
-                End Select
-
-                ' Processing annual averages?
-                If (bAnnualAverage) Then
-                    ' #Yes: processing december?
-                    If (iMonth = (cCore.N_MONTHS - 1)) Then
-                        ' #Yes: average value and add it
-                        asValues(j) /= cCore.N_MONTHS
-                        sb.Append(asValues(j))
-                        sb.Append(", ")
-                        bLineAdded = True
-                    End If
-                Else
-                    ' #No: add value
-                    sb.Append(asValues(j))
-                    sb.Append(", ")
-                    bLineAdded = True
-                End If
-            Next j
-
-            ' Add newline when a line was added
-            If (bLineAdded) Then
-                sb.AppendLine()
-            End If
-
-        Next i
-
-        Return sb.ToString()
-
-    End Function
 
 End Class
 
