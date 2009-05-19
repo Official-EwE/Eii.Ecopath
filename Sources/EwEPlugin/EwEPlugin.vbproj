@@ -120,6 +120,7 @@
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPlugin.vb" />
     <Compile Include="Handlers\cPluginMenuHandler.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemPlugin.vb" />
+    <Compile Include="Plugin templates\IDisposedPlugin.vb" />
     <Compile Include="Plugin templates\IPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
