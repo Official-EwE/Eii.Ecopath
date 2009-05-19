@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwENetworkAnalysisPlugin.vb,v $
+' Revision 1.9  2009/05/19 13:42:21  jeroens
+' Uses IDisposePlugin, remote controller
+'
 ' Revision 1.8  2009/05/04 22:26:29  jeroens
 ' Loading framework will show form
 '
@@ -36,6 +39,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -46,9 +50,12 @@ Public Class cEwENetworkAnalysisPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements IDataProducerPlugin
+    Implements IDisposedPlugin
     'at this time we do not need these plugin points
     'Implements EwEPlugin.IEcosimRunCompletedPlugin
     'Implements EwEPlugin.IEcosimBeginTimestepPlugin
+
+#Region " Private vars "
 
     Private m_core As cCore = Nothing
     Private m_bInitOK As Boolean = False
@@ -59,10 +66,14 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <remarks>Because the plugin handles interactions with the core it manages the life span of the network manager and the interface. 
     ''' The plugin is responsible for telling the network manager when a plugin point has been invoked by the core. 
     ''' The plugin will pass a network manager reference to the interface when the user has clicked the plugins menu item or tree node in the main interface.</remarks>
-    Private m_NetworkManager As cNetworkManager = Nothing
+    Private m_manager As cNetworkManager = Nothing
 
     ''' <summary>Interface form.</summary>
     Private m_frmNA As frmNetworkAnalysis = Nothing
+    ''' <summary>NA remote control.</summary>
+    Private m_remote As cNetworkAnalysisRemote = Nothing
+
+#End Region ' Private vars
 
 #Region " Core "
 
@@ -77,12 +88,15 @@ Public Class cEwENetworkAnalysisPlugin
         m_bInitOK = False
         Try
             If TypeOf core Is EwECore.cCore Then
-                m_core = DirectCast(core, EwECore.cCore)
+                Me.m_core = DirectCast(core, EwECore.cCore)
 
-                m_NetworkManager = New cNetworkManager
-                m_NetworkManager.Init(m_core)
+                Me.m_manager = New cNetworkManager
+                Me.m_manager.Init(m_core)
 
-                m_bInitOK = True
+                Me.m_remote = New cNetworkAnalysisRemote()
+                Me.m_remote.Attach(Me.m_manager)
+
+                Me.m_bInitOK = True
                 'System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
             Else
                 'some kind of a message
@@ -95,6 +109,23 @@ Public Class cEwENetworkAnalysisPlugin
             Debug.Assert(False, ex.Message)
             Return
         End Try
+
+    End Sub
+
+    Public Sub Dispose() _
+        Implements EwEPlugin.IDisposedPlugin.Dispose
+
+        If Me.HasUI() Then
+            Me.m_frmNA.Close()
+            Me.m_frmNA = Nothing
+        End If
+
+        If (Me.m_remote IsNot Nothing) Then
+            Me.m_remote.Detach()
+        End If
+
+        Me.m_manager = Nothing
+        Me.m_bInitOK = False
 
     End Sub
 
@@ -118,12 +149,12 @@ Public Class cEwENetworkAnalysisPlugin
             If TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures Then
                 'set the Ecopath data in the network manager object
                 'this is the data the Network analysis will be run on
-                m_NetworkManager.EcopathData = DirectCast(EcopathDataStructures, EwECore.cEcopathDataStructures)
+                m_manager.EcopathData = DirectCast(EcopathDataStructures, EwECore.cEcopathDataStructures)
                 'Bug 252 fix by joeh
                 'Add
-                m_NetworkManager.IsMainNetworkRun = False
-                m_NetworkManager.IsRequiredPrimaryProdRun = False
-                m_NetworkManager.IsEcosimNetworkRan = False
+                m_manager.IsMainNetworkRun = False
+                m_manager.IsRequiredPrimaryProdRun = False
+                m_manager.IsEcosimNetworkRan = False
                 'End Add
 
                 'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
@@ -205,21 +236,13 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <remarks>This will handle click events from all interface controls</remarks>
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
-        Dim bIsFormReady As Boolean = False
-
         'Interface item has been clicked
         'Show the Main Network interface
         If m_bInitOK Then
 
-            ' Test if form still exists
-            If Me.m_frmNA IsNot Nothing Then
-                ' Form is ready to be used if it has not been disposed yet
-                bIsFormReady = (Me.m_frmNA.IsDisposed = False)
-            End If
             ' Create form when not ready
-            If Not bIsFormReady Then
-                Me.m_frmNA = New frmNetworkAnalysis(m_NetworkManager)
+            If Not Me.HasUI() Then
+                Me.m_frmNA = New frmNetworkAnalysis(m_manager)
             End If
 
             ' JS 05may09: do not show form; the loading framework should take care of this
@@ -231,10 +254,10 @@ Public Class cEwENetworkAnalysisPlugin
 
             If TypeOf sender Is System.Windows.Forms.TreeView Then
                 'from the navigation panel
-
+                'NOP
             ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
                 'from the menu
-
+                'NOP
             End If
 
         Else
@@ -286,7 +309,7 @@ Public Class cEwENetworkAnalysisPlugin
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
 
         'Only initialize the Ecosim Network Analysis if it is turned on
-        If Not m_NetworkManager.UseEcosimNetwork Then
+        If Not m_manager.UseEcosimNetwork Then
             Return
         End If
 
@@ -294,12 +317,12 @@ Public Class cEwENetworkAnalysisPlugin
             If TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures Then
                 'set the EcosimData data in the network manager object
                 'this is the data the Network analysis will be run on
-                m_NetworkManager.EcosimData = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
+                m_manager.EcosimData = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
 
                 'm_NetworkManager.bEcoismNetwork = True
 
                 'Initialize the Network Analysis for Ecosim
-                m_NetworkManager.InitNetworkForEcosim()
+                m_manager.InitNetworkForEcosim()
 
                 'System.Console.WriteLine(Me.ToString & ".EcosimRunInitialized() called.")
             Else
@@ -329,7 +352,7 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
         Try
             'Only run the Ecosim Network Analysis if it is turned on
-            If Not m_NetworkManager.UseEcosimNetwork Then
+            If Not m_manager.UseEcosimNetwork Then
                 Return
             End If
 
@@ -337,7 +360,7 @@ Public Class cEwENetworkAnalysisPlugin
                 'set the EcosimData data in the network manager object
                 'this is the data the Network analysis will be run on
                 Dim esData As cEcosimDatastructures = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
-                m_NetworkManager.EcosimTimeStep(BiomassAtTimestep, esData, iTime)
+                m_manager.EcosimTimeStep(BiomassAtTimestep, esData, iTime)
             Else
                 Debug.Assert(False, Me.ToString & ".EcosimEndTimeStep() ")
             End If
@@ -452,44 +475,44 @@ Public Class cEwENetworkAnalysisPlugin
         Dim asData(6, 5) As Single
 
         ' Run network if needed
-        If Not Me.m_NetworkManager.IsMainNetworkRun Then
-            Me.m_NetworkManager.RunMainNetwork()
+        If Not Me.m_manager.IsMainNetworkRun Then
+            Me.m_manager.RunMainNetwork()
         End If
 
-        asData(1, 1) = m_NetworkManager.AscendancyImportTotal
-        asData(2, 1) = m_NetworkManager.AscendancyImportPer
-        asData(3, 1) = m_NetworkManager.OverheadImportTotal
-        asData(4, 1) = m_NetworkManager.OverheadImportPer
-        asData(5, 1) = m_NetworkManager.CapacityImportTotal
-        asData(6, 1) = m_NetworkManager.CapacityImportPer
+        asData(1, 1) = m_manager.AscendancyImportTotal
+        asData(2, 1) = m_manager.AscendancyImportPer
+        asData(3, 1) = m_manager.OverheadImportTotal
+        asData(4, 1) = m_manager.OverheadImportPer
+        asData(5, 1) = m_manager.CapacityImportTotal
+        asData(6, 1) = m_manager.CapacityImportPer
 
-        asData(1, 2) = m_NetworkManager.AscendancyInternalFlowTotal
-        asData(2, 2) = m_NetworkManager.AscendancyInternalFlowPer
-        asData(3, 2) = m_NetworkManager.OverheadFlowTotal
-        asData(4, 2) = m_NetworkManager.OverheadFlowPer
-        asData(5, 2) = m_NetworkManager.CapacityFlowTotal
-        asData(6, 2) = m_NetworkManager.CapacityFlowPer
+        asData(1, 2) = m_manager.AscendancyInternalFlowTotal
+        asData(2, 2) = m_manager.AscendancyInternalFlowPer
+        asData(3, 2) = m_manager.OverheadFlowTotal
+        asData(4, 2) = m_manager.OverheadFlowPer
+        asData(5, 2) = m_manager.CapacityFlowTotal
+        asData(6, 2) = m_manager.CapacityFlowPer
 
-        asData(1, 3) = m_NetworkManager.AscendancyExportTotal
-        asData(2, 3) = m_NetworkManager.AscendancyExportPer
-        asData(3, 3) = m_NetworkManager.OverheadExportTotal
-        asData(4, 3) = m_NetworkManager.OverheadExportPer
-        asData(5, 3) = m_NetworkManager.CapacityExportTotal
-        asData(6, 3) = m_NetworkManager.CapacityExportPer
+        asData(1, 3) = m_manager.AscendancyExportTotal
+        asData(2, 3) = m_manager.AscendancyExportPer
+        asData(3, 3) = m_manager.OverheadExportTotal
+        asData(4, 3) = m_manager.OverheadExportPer
+        asData(5, 3) = m_manager.CapacityExportTotal
+        asData(6, 3) = m_manager.CapacityExportPer
 
-        asData(1, 4) = m_NetworkManager.AscendancyRespTotal
-        asData(2, 4) = m_NetworkManager.AscendancyRespPer
-        asData(3, 4) = m_NetworkManager.OverheadRespTotal
-        asData(4, 4) = m_NetworkManager.OverheadRespPer
-        asData(5, 4) = m_NetworkManager.CapacityRespTotal
-        asData(6, 4) = m_NetworkManager.CapacityRespPer
+        asData(1, 4) = m_manager.AscendancyRespTotal
+        asData(2, 4) = m_manager.AscendancyRespPer
+        asData(3, 4) = m_manager.OverheadRespTotal
+        asData(4, 4) = m_manager.OverheadRespPer
+        asData(5, 4) = m_manager.CapacityRespTotal
+        asData(6, 4) = m_manager.CapacityRespPer
 
-        asData(1, 5) = m_NetworkManager.AscendancyTotalsTotal
-        asData(2, 5) = m_NetworkManager.AscendancyTotalsPer
-        asData(3, 5) = m_NetworkManager.OverheadTotalsTotal
-        asData(4, 5) = m_NetworkManager.OverheadTotalsPer
-        asData(5, 5) = m_NetworkManager.CapacityTotalsTotal
-        asData(6, 5) = m_NetworkManager.CapacityTotalsPer
+        asData(1, 5) = m_manager.AscendancyTotalsTotal
+        asData(2, 5) = m_manager.AscendancyTotalsPer
+        asData(3, 5) = m_manager.OverheadTotalsTotal
+        asData(4, 5) = m_manager.OverheadTotalsPer
+        asData(5, 5) = m_manager.CapacityTotalsTotal
+        asData(6, 5) = m_manager.CapacityTotalsPer
 
         ' ToDo: look up plugin assembly name dynamically
         ' Dim s As String = System.Reflection.Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)).FullName)
@@ -498,5 +521,25 @@ Public Class cEwENetworkAnalysisPlugin
     End Function
 
 #End Region ' Data exchange
+
+#Region " Internal helpers "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method; states if the plug-in Form has been initialized as is
+    ''' ready to be used.
+    ''' </summary>
+    ''' <returns>True if form is initialized and is ready to be used.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function HasUI() As Boolean
+
+        ' No form? Whoah!
+        If (Me.m_frmNA Is Nothing) Then Return False
+        ' Form is ready to be used if it has not been disposed yet
+        Return (Me.m_frmNA.IsDisposed = False)
+
+    End Function
+
+#End Region ' Internal helpers
 
 End Class
