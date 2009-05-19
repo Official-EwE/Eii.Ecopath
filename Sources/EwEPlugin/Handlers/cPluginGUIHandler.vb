@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginGUIHandler.vb,v $
+' Revision 1.4  2009/05/19 13:38:54  jeroens
+' No longer listens to 'live' plugin assembly state changes; this will require a restart
+'
 ' Revision 1.3  2009/05/11 01:50:49  jeroens
 ' Renamed command classes
 '
@@ -115,11 +118,13 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The added plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
-        ' Start listening to events originating from this assembly
-        ' - Assembly enabled state changed event
-        AddHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
-        ' Manually fire event to place plug-ins
-        Me.OnAssemblyEnabled(pa, pa.Enabled)
+        ' JS 18may09: no need for 'live' enabled state changes
+        '' Start listening to events originating from this assembly
+        '' - Assembly enabled state changed event
+        'AddHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
+
+        ' Place plug-ins based on enabled state
+        Me.ActivateAssembly(pa, pa.Enabled)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -130,11 +135,12 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The removed plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyRemoved(ByVal pa As cPluginAssembly)
-        ' Simulate disabling of the assembly. This will cause all GUI items from this assembly to be removed.
-        Me.OnAssemblyEnabled(pa, False)
-        ' Stop listening to assemble enabled events
-        ' - Assembly enabled state changed event
-        RemoveHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
+        ' Remove the assembly
+        Me.ActivateAssembly(pa, False)
+        ' JS 18may09: no need for 'live' enabled state changes
+        '' Stop listening to assemble enabled events
+        '' - Assembly enabled state changed event
+        'RemoveHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -146,7 +152,7 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="bEnabled">The new <see cref="cPluginAssembly.Enabled">Enabled</see>
     ''' state.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnAssemblyEnabled(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+    Private Sub ActivateAssembly(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
         Dim ctrl As Control = Nothing
         For Each ip As IPlugin In pa.Plugins(GetType(IGUIPlugin), True)
             ' Position the plugin
