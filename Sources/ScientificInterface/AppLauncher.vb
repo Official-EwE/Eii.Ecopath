@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.45  2009/05/19 13:44:32  jeroens
+' Instantiates cExecuteCommand
+'
 ' Revision 1.44  2009/05/11 02:15:02  jeroens
 ' no message
 '
@@ -203,6 +206,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdFileOpen As cFileOpenCommand = Nothing
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdDirectoryOpen As cDirectoryOpenCommand = Nothing
+    Private WithEvents m_cmdExecute As cExecuteCommand = Nothing
     Private WithEvents m_cmdNewModel As cCommand = Nothing
     Private WithEvents m_cmdLoadModel As cCommand = Nothing
     Private WithEvents m_cmdSave As cCommand = Nothing
@@ -716,6 +720,10 @@ Public Class AppLauncher
         ' Create and configure Directory Open command
         Me.m_cmdDirectoryOpen = cDirectoryOpenCommand.GetInstance()
         cmdh.Add(Me.m_cmdDirectoryOpen)
+
+        ' Create and configure Execute command
+        Me.m_cmdExecute = cExecuteCommand.GetInstance()
+        cmdh.Add(Me.m_cmdExecute)
 
         ' Create and configure new command
         m_cmdNewModel = New cCommand("NewEcopathModel")
