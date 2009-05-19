@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginAssembly.vb,v $
+' Revision 1.10  2009/05/19 13:39:49  jeroens
+' :p
+'
 ' Revision 1.9  2009/04/02 19:01:13  jeroens
 ' Assemblies optionally return disalbed plug-ins
 '
@@ -147,7 +150,7 @@ Public Class cPluginAssembly
     ''' <summary>
     ''' Assembly enabled state changed delegate.
     ''' </summary>
-    ''' <param name="pa">The Plugin assemble that changed enabled state.</param>
+    ''' <param name="pa">The Plugin assembly that changed enabled state.</param>
     ''' <param name="bEnabled">The new enabled state.</param>
     ''' -----------------------------------------------------------------------
     Public Delegate Sub AssemblyEnabledHandler(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
