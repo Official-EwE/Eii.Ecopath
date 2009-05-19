@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.29  2009/05/19 13:37:24  jeroens
+' Uses IDisposedPlugin
+' Removed warnings for non-accessible plugin DLLs
+'
 ' Revision 1.28  2009/05/18 00:14:58  jeroens
 ' Fixed plugin name issue in exceptions
 '
@@ -272,6 +276,7 @@ Public Class cPluginManager
 
                             ' Is assembly compatible to run?
                             If (plugAssem.Enabled) Then
+
                                 ' Is core assigned?
                                 If (Me.m_core IsNot Nothing) Then
                                     Try
@@ -282,6 +287,7 @@ Public Class cPluginManager
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
                                     End Try
                                 End If
+
                             End If
 
                             ' Yeah, got info allright
@@ -324,18 +330,18 @@ Public Class cPluginManager
             ' current assembly file set. Since type detection has failed it cannot be determined
             ' whether the assembly is actually a plug-in or any other file.
 
-            ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
-            System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
-            ' what the hell happend
-            For Each ex As Exception In loaderEX.LoaderExceptions
-                System.Console.WriteLine(ex.Message)
-            Next
-            Me.RaisePluginException(plugAssem, loaderEX)
-
-            ' JS 29nov08: only assert when this is a confirmed plug-in.
-            '             (which will not be the case since the manager could not access 
+            ' JS 29nov08: only assert when this is a confirmed plug-in assembly.
+            '             (which will very likely not be the case since the manager could not access 
             '             the Types contained within the assembly)
             If bHasPlugins Then
+                ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
+                System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
+                ' what the hell happend
+                For Each ex As Exception In loaderEX.LoaderExceptions
+                    System.Console.WriteLine(ex.Message)
+                Next
+                Me.RaisePluginException(plugAssem, loaderEX)
+
                 Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & vbNewLine & strFileName & vbNewLine & loaderEX.Message)
             End If
 
@@ -359,6 +365,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function UnloadPluginAssembly(ByVal strFileName As String) As Boolean
 
+        Dim collPlugins As ICollection(Of cPluginContext) = Nothing
         Dim pa As cPluginAssembly = Nothing
 
         ' Sanity check
@@ -370,6 +377,22 @@ Public Class cPluginManager
         pa = Me.m_dictAssemblies(strFileName)
         ' Inform the world
         RaiseEvent AssemblyRemoved(pa)
+
+        ' Invoke all IDisposedPlugin plug-ins
+        Try
+            collPlugins = Me.GetPlugins(GetType(IDisposedPlugin), pa)
+            For Each ipc As cPluginContext In collPlugins
+                Try
+                    DirectCast(ipc.Plugin, IDisposedPlugin).Dispose()
+                Catch ex As Exception
+                    Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "Dispose", ex)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Return False
+        End Try
+
         ' Remove from internal admin
         Me.m_dictAssemblies.Remove(strFileName)
 
