@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.18  2009/05/19 13:44:56  jeroens
+' Renamed result writer methods
+'
 ' Revision 1.17  2009/05/18 20:29:38  jeroens
 ' Uses cEcosimResultWriter to separate result export logic from the GUI
 '
@@ -223,7 +226,7 @@ Namespace Ecosim
                     Return
             End Select
 
-            writer.SaveOutputs(cmd.Directory, bSaveAnnual, Me.lbGroups.SelectedIndex + 1)
+            writer.WriteResults(cmd.Directory, bSaveAnnual, Me.lbGroups.SelectedIndex + 1)
 
         End Sub
 
