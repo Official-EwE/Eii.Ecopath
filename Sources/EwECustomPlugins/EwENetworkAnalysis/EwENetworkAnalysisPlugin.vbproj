@@ -124,6 +124,7 @@
     <Compile Include="Interface\TrophicLevelDecomp\cRelativeFlows.vb" />
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
+    <Compile Include="NetworkAnalysis\cResultWriter.vb" />
     <Compile Include="Plugin\cEwENetworkAnalysisPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -140,6 +141,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Remote control\cNetworkAnalysisRemote.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
