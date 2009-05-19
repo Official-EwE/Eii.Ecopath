@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.9  2009/05/19 13:43:56  jeroens
+' Pruned history
+'
 ' Revision 1.8  2009/02/02 22:28:57  joeb
 ' Added more output vars to EcoSpace fleets
 '
@@ -24,92 +27,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:11  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.173  2008/07/23 21:12:45  jeroens
-' Converting more messages
-'
-' Revision 1.172  2008/07/22 20:46:01  jeroens
-' Added more suppressable messages
-'
-' Revision 1.171  2008/07/22 20:32:59  jeroens
-' Preparing for suppressable messages
-'
-' Revision 1.170  2008/07/21 14:05:36  jeroens
-' Expanded enum indexer to index two-way
-'
-' Revision 1.169  2008/06/11 17:22:15  joeb
-' Change Ecoseed to MPAOptimization
-'
-' Revision 1.168  2008/06/09 21:57:35  jeroens
-' Moved core counters to EwEUtils
-'
-' Revision 1.167  2008/06/06 15:55:55  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.166  2008/05/29 22:22:47  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.165  2008/05/26 18:06:53  jeroens
-' Added TimeUnit, CurrencyUnit
-'
-' Revision 1.164  2008/05/20 15:40:01  joeb
-' Added Variables for MSE parameters
-'
-' Revision 1.163  2008/05/16 17:03:05  joeb
-' Added Datatypes for SearchObjectives
-' Split file into regions
-'
-' Revision 1.162  2008/05/12 18:54:16  joeb
-' Added varnames for new search varaibles
-'
-' Revision 1.161  2008/05/05 16:15:57  joeb
-' Added MSE output flags
-'
-' Revision 1.160  2008/05/01 20:39:06  joeb
-' Added MSE variables
-'
-' Revision 1.159  2008/04/15 21:22:23  joeb
-' Added enumerators for MSE
-'
-' Revision 1.158  2008/04/04 16:05:02  joeb
-' Added MSEManager datatype
-'
-' Revision 1.157  2008/03/26 21:01:38  joeb
-' Added CBEnvironment
-'
-' Revision 1.156  2008/03/25 14:39:50  jeroens
-' Basemap cell vars exposed as Layer*
-'
-' Revision 1.155  2008/03/23 17:44:48  jeroens
-' Added MPASeed variable
-'
-' Revision 1.154  2008/03/03 16:09:19  joeb
-' Started implemetation of Ecospace output in EcoTracer
-'
-' Revision 1.153  2008/02/28 20:31:56  joeb
-' Added Left and Right Salinity
-'
-' Revision 1.152  2008/02/27 19:28:38  joeb
-' Added FishPolicySearch message source
-'
-' Revision 1.151  2008/02/17 16:08:20  joeb
-' Added EcosimResultsEffort
-'
-' Revision 1.150  2008/02/12 16:22:49  jeroens
-' Added sim output datatypes
-'
-' Revision 1.149  2008/02/10 02:43:06  jeroens
-' Added msg source External
-' Added data type TimeSeriesDataset
-'
-' Revision 1.148  2008/01/24 16:39:48  joeb
-' Added enumerators for EcoSeed
-'
-' Revision 1.147  2008/01/23 15:56:17  joeb
-' Added DataTypes for EcoSeed
-'
-' Revision 1.146  2008/01/08 23:14:05  jeroens
-' Added LastSaved variable
 '
 '==============================================================================
 
