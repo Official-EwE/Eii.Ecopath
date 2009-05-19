@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.58  2009/05/19 13:17:16  jeroens
+' Pruned history
+'
 ' Revision 1.57  2009/05/14 15:32:31  jeroens
 ' Added game varnames for generic 'Names'
 '
@@ -22,157 +25,6 @@
 '
 ' Revision 1.51  2009/04/29 16:19:56  joeb
 ' Renamed GameGroupFishingRates to GameGroupFishingMortRates
-'
-' Revision 1.50  2009/04/29 15:40:49  joeb
-' Added Relative Biomass
-'
-' Revision 1.49  2009/04/06 15:51:00  jeroens
-' eClimateType defined as Short
-'
-' Revision 1.48  2009/04/02 20:51:10  jeroens
-' Added eSearchResultCriteriaTypes
-'
-' Revision 1.47  2009/04/02 15:52:17  jeroens
-' Added PSD enabled flag
-'
-' Revision 1.46  2009/03/31 21:18:09  joeh
-' Add Enum eClimateTypes
-'
-' Revision 1.45  2009/03/26 17:49:33  jeroens
-' Fixed confusion between rate and effort shape names - part II
-'
-' Revision 1.44  2009/03/25 21:08:18  joeb
-' Added XBase to Mediation shapes
-'
-' Revision 1.43  2009/03/21 00:31:42  jeroens
-' More PSD
-'
-' Revision 1.42  2009/03/19 22:22:59  jeroens
-' Added PSD Lohrenzen vars
-'
-' Revision 1.41  2009/03/19 21:45:11  joeh
-' Add two biomass variables for the Size/Weight plot
-'
-' Revision 1.40  2009/03/18 15:35:20  joeb
-' Added GameEconomic enums
-'
-' Revision 1.39  2009/03/18 15:08:16  jeroens
-' PSD mort enum values all have hard-coded integer values
-'
-' Revision 1.38  2009/03/18 13:27:24  jeroens
-' Added more PSD vars
-'
-' Revision 1.37  2009/03/17 02:25:49  joeh
-' Add Lorenzen mortality type
-'
-' Revision 1.36  2009/03/16 16:58:46  jeroens
-' Added PSD core objects
-'
-' Revision 1.35  2009/03/11 00:14:29  joeh
-' Add PSD calculation
-'
-' Revision 1.34  2009/03/06 00:47:57  joeh
-' Add Ecopath output data (Weight, Number, Biomass) over time
-'
-' Revision 1.33  2009/03/03 01:42:56  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.32  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.31  2009/03/01 19:36:35  jeroens
-' -- region
-'
-' Revision 1.30  2009/02/28 00:10:20  joeh
-' Added PSD variables
-'
-' Revision 1.29  2009/02/27 07:56:51  jeroens
-' Changed vbK placement
-'
-' Revision 1.28  2009/02/02 22:29:09  joeb
-' Added more output vars to EcoSpace fleets
-'
-' Revision 1.27  2009/01/30 18:33:36  jeroens
-' Moved stats datatypes to the end of the list
-'
-' Revision 1.26  2009/01/29 17:39:04  jeroens
-' Added datatype cEcospaceStats
-'
-' Revision 1.25  2009/01/29 17:14:29  jeroens
-' Added Ecopath stats vars
-'
-' Revision 1.24  2009/01/29 16:09:50  jeroens
-' Added Ecosim, Ecopath statistics data type
-' Moved cEwEDatabase accesstypes to here
-'
-' Revision 1.23  2009/01/27 17:41:30  joeb
-' Changed ViewSettings varnames
-'
-' Revision 1.22  2009/01/20 23:44:18  joeb
-' Renamed GameYield to GameGroupCatch
-'
-' Revision 1.21  2009/01/20 22:32:56  joeb
-' Added GameCatchRegionFleetGroup
-'
-' Revision 1.20  2009/01/14 18:48:10  joeb
-' Added varnames for Ecospace results
-'
-' Revision 1.19  2009/01/13 21:32:46  joeb
-' Still making changes from merge of Summary into Output objects
-'
-' Revision 1.18  2009/01/13 18:15:40  joeb
-' Added Ecospace output varnames
-'
-' Revision 1.17  2008/12/18 21:56:05  joeb
-' Added FleetSummary Profit and Jobs
-'
-' Revision 1.16  2008/12/10 02:00:02  jeroens
-' Moved datasource types here
-'
-' Revision 1.15  2008/12/09 19:51:17  joeb
-' Added MSE and Electivity varnames
-'
-' Revision 1.14  2008/11/28 16:56:15  joeb
-' Removed a ToDo
-'
-' Revision 1.13  2008/11/20 17:17:18  jeroens
-' Added Initialized core exec states
-'
-' Revision 1.12  2008/11/13 19:01:17  joeb
-' Addeed MPAOptAreaBoundary
-'
-' Revision 1.11  2008/11/12 18:02:35  jeroens
-' Added Biomass Diversity search weight input + output
-'
-' Revision 1.10  2008/11/11 17:08:25  joeb
-' Added GameViewSetting
-'
-' Revision 1.9  2008/10/29 15:49:46  jeroens
-' Pruned history
-'
-' Revision 1.8  2008/10/22 17:00:11  joeb
-' Added NRow and NCols
-'
-' Revision 1.7  2008/10/20 20:22:06  joeb
-' Moved eQuotaTypes here
-'
-' Revision 1.6  2008/10/15 23:53:28  jeroens
-' more basemap definitions
-'
-' Revision 1.5  2008/10/08 20:32:11  joeb
-' Added CVBest and KalWt
-'
-' Revision 1.4  2008/10/08 17:41:07  jeroens
-' Added target fishing mortality policy vars
-'
-' Revision 1.3  2008/10/03 21:52:44  jeroens
-' Added Fisheries regulations varnames
-'
-' Revision 1.2  2008/09/26 21:21:35  joeb
-' Added GameFleetFishingRates and GameGroupFishingRates
-'
-' Revision 1.1  2008/09/26 07:31:10  sherman
-' --== DELETED HISTORY ==--
 '
 '==============================================================================
 
