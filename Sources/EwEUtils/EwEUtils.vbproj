@@ -71,6 +71,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Predefined commands\cExecuteCommand.vb" />
     <Compile Include="Commands\Predefined commands\cFileSaveCommand.vb" />
     <Compile Include="Commands\Predefined commands\cFileOpenCommand.vb" />
     <Compile Include="Commands\Predefined commands\cDirectoryOpenCommand.vb" />
