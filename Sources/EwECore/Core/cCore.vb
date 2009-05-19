@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.124  2009/05/19 16:25:30  jeroens
+' Updating time series will invalidate Ecosim results
+'
 ' Revision 1.123  2009/05/15 15:01:43  joeb
 ' MSE Manager takes the core in its constructor
 '
@@ -1395,7 +1398,7 @@ Public Class cCore
             ' Set number of groups
             Me.m_TSData.nGroups = Me.nGroups
 
-            ' Clear applied
+            ' Update enabled TS
             Me.m_TSData.loadEnabled()
 
         Catch ex As Exception
@@ -1528,7 +1531,8 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function UpdateEcosimTimeSeries() As Boolean
-        Return Me.UpdateEcosimGroupTimeSeries() And Me.UpdateEcosimFleetTimeSeries()
+        Dim bSucces As Boolean = (Me.UpdateEcosimGroupTimeSeries() And Me.UpdateEcosimFleetTimeSeries())
+        Return bSucces
     End Function
 
     Private Function UpdateEcosimGroupTimeSeries() As Boolean
@@ -1791,6 +1795,8 @@ Public Class cCore
         Next
         ' Load enabled TS
         Me.m_TSData.loadEnabled()
+        ' Ecosim needs to run again
+        Me.StateMonitor.SetEcoSimLoaded(True)
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
         Me.setEcosimRunLength(Me.m_TSData.NdatYear, False)
@@ -10495,9 +10501,6 @@ Public Class cCore
                 Case eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries
                     ' Reload
                     If Me.UpdateEcosimTimeSeries() Then Me.m_TSData.loadEnabled(obj.Index)
-                    ' Ecopath needs to run again
-                    'Me.StateMonitor.SetEcoSimLoaded(True)
-                    ' Me.m_FitToTimeSeries.Load()
                     Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
 
                     Me.m_publisher.AddMessage(New cMessage("Time series have changed.", eMessageType.DataModified, _
