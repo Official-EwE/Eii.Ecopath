@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.7  2009/05/20 16:29:37  joeb
+' Renamed eCallBackTypes.Stopped to RunCompleted
+'
 ' Revision 1.6  2009/05/11 21:28:08  joeb
 ' Adding MSE data to Decision Support Tool (Multi Player Game)
 '
@@ -29,7 +32,7 @@ Namespace MSE
 
     Public Enum eCallBackTypes
         Started
-        Stopped
+        RunCompleted
         IterationCompleted
         IterationStarted
     End Enum
@@ -151,7 +154,7 @@ Namespace MSE
 
                 Me.getMeanValues(itr)
 
-                CallBack(eCallBackTypes.Stopped)
+                CallBack(eCallBackTypes.RunCompleted)
 
             Catch ex As Exception
                 cLog.Write(ex)

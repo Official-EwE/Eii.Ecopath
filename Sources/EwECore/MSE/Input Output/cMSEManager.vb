@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.8  2009/05/20 16:28:47  joeb
+' Renamed eCallBackTypes.Stopped to RunCompleted
+'
 ' Revision 1.7  2009/05/15 15:02:33  joeb
 ' Outputs constructed when the Manager is contructed
 '
@@ -420,7 +423,7 @@ Namespace MSE
 
                 Case eCallBackTypes.Started
 
-                Case eCallBackTypes.Stopped
+                Case eCallBackTypes.RunCompleted
 
                     Me.LoadOutputs()
                     'the thread has completed its task
