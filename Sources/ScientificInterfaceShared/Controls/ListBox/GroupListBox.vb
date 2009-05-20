@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupListBox.vb,v $
+' Revision 1.7  2009/05/20 16:39:52  jeroens
+' Added smart group selection interfaces
+'
 ' Revision 1.6  2009/04/09 01:34:22  jeroens
 ' Not sorted by default
 '
@@ -220,6 +223,51 @@ Namespace Controls
             If Me.Sorted Then Me.Sort()
             MyBase.Refresh()
         End Sub
+
+        Public Function GetGroupSelected(ByVal iGroup As Integer) As Boolean
+            Dim iItem As Integer = Me.GroupIndex(iGroup)
+            Return Me.GetSelected(iItem)
+        End Function
+
+        Public Sub SetGroupSelected(ByVal iGroup As Integer, ByVal bSelected As Boolean)
+            Dim iItem As Integer = Me.GroupIndex(iGroup)
+            Me.SetSelected(iItem, bSelected)
+        End Sub
+
+        Public Function GetGroupSelected(ByVal group As cCoreGroupBase) As Boolean
+            Return Me.GetGroupSelected(group.Index)
+        End Function
+
+        Public Sub SetGroupSelected(ByVal group As cCoreGroupBase, ByVal bSelected As Boolean)
+            Me.SetGroupSelected(group.Index, bSelected)
+        End Sub
+
+        Public ReadOnly Property GroupIndex(ByVal iGroup As Integer) As Integer
+            Get
+                Dim gi As cGroupItem = Nothing
+                Dim item As Object = Nothing
+                Dim group As cCoreGroupBase = Nothing
+
+                For i As Integer = 0 To Me.Items.Count - 1
+                    item = Me.Items(i)
+                    If (TypeOf (item) Is cGroupItem) Then
+                        group = DirectCast(item, cGroupItem).Group
+                        If (group IsNot Nothing) Then
+                            If (group.Index = iGroup) Then
+                                Return i
+                            End If
+                        End If
+                    End If
+                Next
+                Return -1
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupIndex(ByVal group As cCoreGroupBase) As Integer
+            Get
+                Return Me.GroupIndex(group.Index)
+            End Get
+        End Property
 
 #Region " Internals "
 
