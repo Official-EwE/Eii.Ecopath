@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.19  2009/05/20 16:31:23  joeb
+' Fixed bug in CheckWhoIsCrashed() that caused an exception if Ecosim was not run first
+'
 ' Revision 1.18  2009/01/16 18:30:19  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -283,6 +286,10 @@ Public Class cEcosimMonteCarlo
         Try
 
             StopTrial = False
+
+            ReDim isCrashed(m_core.nGroups)
+            ReDim isExploded(m_core.nGroups)
+
             m_ecosim.Init(True)
 
             m_core.m_EcoSimData.bTimestepOutput = True
@@ -318,7 +325,7 @@ Public Class cEcosimMonteCarlo
             'make a copy of the original values so the user can restore the values
             Array.Copy(Pmean, startValues, Pmean.Length)
 
-            CheckWhoIsCrashed()
+            ' CheckWhoIsCrashed()
             CalculateUpperLowerLimits(True)
 
 #If 0 Then
@@ -569,7 +576,7 @@ Public Class cEcosimMonteCarlo
             End If
         Catch ex As Exception
             'Bogus Dude.....the interface through an error 
-            'just keep plowing on
+            'just keep ploughing on
             cLog.Write(ex)
         End Try
 
@@ -914,11 +921,12 @@ Public Class cEcosimMonteCarlo
 
     Private Sub CheckWhoIsCrashed()
         Dim EndTime As Integer = (m_core.EcoSimModelParameters.NumberYears - 1) * 12
-        ReDim isCrashed(m_core.nGroups)
-        ReDim isExploded(m_core.nGroups)
         'Dim sStr As String = "Crashed: "
         For iGrp As Integer = 1 To m_core.nLivingGroups
-            If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
+
+            If Me.m_esdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
+                'jb use the core arrays instead of the Ecosim Output objects because the output objects have not been initialized
+                'If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
                 isCrashed(iGrp) = True
                 'sStr += iGrp.ToString & ", "
             Else
