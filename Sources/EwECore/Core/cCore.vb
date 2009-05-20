@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.125  2009/05/20 20:59:19  jeroens
+' CloseModel has option to discard changes
+'
 ' Revision 1.124  2009/05/19 16:25:30  jeroens
 ' Updating time series will invalidate Ecosim results
 '
@@ -2475,8 +2478,12 @@ Public Class cCore
     ''' Try to terminate the core
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function CloseModel() As Boolean
-        If Not Me.SaveChanges() Then Return False
+    Public Function CloseModel(Optional ByVal bSaveChanges As Boolean = True) As Boolean
+
+        If bSaveChanges Then
+            If Not Me.SaveChanges() Then Return False
+        End If
+
         ' Has datasource?
         If (DataSource IsNot Nothing) Then
             ' #Yes: has open connection?
