@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.59  2009/05/20 16:32:18  joeb
+' Added enums for MSE
+'
 ' Revision 1.58  2009/05/19 13:17:16  jeroens
 ' Pruned history
 '
@@ -1030,6 +1033,9 @@ Namespace Core
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
         GameGroupFishingMortRates
+
+        ''' <summary>Type of data available during a simulation (TimeStep or Progress)</summary>
+        GameAvailableRunData
 
         ' EcosimResults
         GameSimulationTimeStep
