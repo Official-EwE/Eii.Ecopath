@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginGUIHandler.vb,v $
+' Revision 1.5  2009/05/21 20:07:30  jeroens
+' Reverted
+'
 ' Revision 1.4  2009/05/19 13:38:54  jeroens
 ' No longer listens to 'live' plugin assembly state changes; this will require a restart
 '
@@ -12,38 +15,6 @@
 '
 ' Revision 1.1  2008/09/26 07:31:04  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.8  2008/09/06 16:17:47  jeroens
-' Uses IDockStatePlugin
-'
-' Revision 1.7  2008/09/05 16:13:40  jeroens
-' PluginManager set/get via Property
-'
-' Revision 1.6  2007/04/26 00:41:56  jeroens
-' + Extended OnControlClick with parameter that can return a reference to the form created for this plugin. This form can then be blended into the application invoking the command
-'
-' Revision 1.5  2007/04/25 22:43:19  jeroens
-' + Extended OnControlClick with parameter that can return a reference to the form created for this plugin. This form can then be blended into the application invoking the command
-'
-' Revision 1.4  2007/03/19 14:23:22  jeroens
-' + Newly placed plug-ins are properly initialized
-'
-' Revision 1.3  2007/03/19 02:26:37  jeroens
-' + Added comments
-' + Added RunPlugin
-' + Added PluginGUICommand
-'
-' Revision 1.2  2007/03/17 02:52:35  jeroens
-' * Uses Plugins(t) capability of cPluginAssembly
-'
-' Revision 1.1  2006/08/31 15:20:33  jeroens
-' * Moved
-'
-' Revision 1.2  2006/08/23 02:28:31  jeroens
-' + Empty string will append menu item to the main menu, rather than fail
-'
-' Revision 1.1  2006/08/08 14:11:50  jeroens
-' + Initial version
 '
 '==============================================================================
 
@@ -118,12 +89,9 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The added plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
-        ' JS 18may09: no need for 'live' enabled state changes
-        '' Start listening to events originating from this assembly
-        '' - Assembly enabled state changed event
-        'AddHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
-
-        ' Place plug-ins based on enabled state
+        ' Start listening to events originating from this assembly
+        ' - Assembly enabled state changed event
+        AddHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
         Me.ActivateAssembly(pa, pa.Enabled)
     End Sub
 
@@ -137,10 +105,9 @@ Public MustInherit Class cPluginGUIHandler
     Private Sub OnAssemblyRemoved(ByVal pa As cPluginAssembly)
         ' Remove the assembly
         Me.ActivateAssembly(pa, False)
-        ' JS 18may09: no need for 'live' enabled state changes
-        '' Stop listening to assemble enabled events
-        '' - Assembly enabled state changed event
-        'RemoveHandler pa.AssemblyEnabled, AddressOf OnAssemblyEnabled
+        ' Stop listening to assemble enabled events
+        ' - Assembly enabled state changed event
+        RemoveHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
     End Sub
 
     ''' -----------------------------------------------------------------------
