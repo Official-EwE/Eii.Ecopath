@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.20  2009/05/21 18:53:46  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.19  2009/05/12 21:34:32  joeh
 ' Add titles to graph axis
 '
@@ -57,13 +60,15 @@
 '
 ' =============================================================================
 
-#Region "Imports"
+#Region " Imports "
 Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports ZedGraph
-#End Region 'Imports
+
+#End Region ' Imports
 
 Namespace Ecopath.Output
 

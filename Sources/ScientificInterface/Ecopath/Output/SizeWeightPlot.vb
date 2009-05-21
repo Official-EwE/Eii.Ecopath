@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.10  2009/05/21 18:53:47  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.9  2009/04/28 00:29:58  joeh
 ' Add handling if PSDEnabled is false
 '
@@ -34,6 +37,7 @@ Option Strict On
 
 Imports EwECore
 Imports ZedGraph
+Imports EwEUtils.Core
 
 #End Region 'Imports
 

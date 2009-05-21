@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessageHandler.vb,v $
+' Revision 1.4  2009/05/21 18:53:37  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.3  2009/01/19 18:07:24  jeroens
 ' MessageHandlers, CoreStateMonitor have sync objects
 '
@@ -10,35 +13,11 @@
 ' Revision 1.1  2008/09/26 07:30:29  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.8  2007/06/14 18:09:34  joeb
-' Changed the logging of errors in SendMessage()
-'
-' Revision 1.7  2007/03/08 16:29:33  jeroens
-' * HAHAHAHA
-'
-' Revision 1.6  2007/03/06 16:00:55  jeroens
-' + Core messages distributed to all listeners
-'
-' Revision 1.5  2006/05/15 18:10:01  cvsuser
-' jb: Removed Assert from SendMessage() so that it will stop bugging you if you have not defined a handler for a message.
-' jb:Made SendMessage a Friend so that a messages could be sent directly without empting the que.
-' jb: Added RemoveMessageHandler to the MessagePublisher() to remove all reference to a message handlers delegate from the publisher.
-'
-' Revision 1.4  2006/03/16 19:30:47  cvsuser
-' Changed Any message handling
-'
-' Revision 1.3  2006/03/15 18:59:28  cvsuser
-' + Dispatch messages of any type when created for MessageType.Any
-'
-' Revision 1.2  2006/03/06 02:21:35  cvsuser
-' + Added header
-' + Prepared comments for doc generation
-'
-'
 '==============================================================================
 
 Option Strict Off
 Imports System.ComponentModel
+Imports EwEUtils.Core
 
 ''' <summary>
 ''' <para>This class is the message handler portion of the Message-Publisher/Message-Handler pattern use to pass messages from the core(publisher) to an interface(handler).</para>

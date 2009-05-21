@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.19  2009/05/21 18:53:41  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.18  2009/05/19 13:44:56  jeroens
 ' Renamed result writer methods
 '
@@ -65,6 +68,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Controls
 Imports ScientificInterface.Other
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ZedGraph
 Imports System.IO

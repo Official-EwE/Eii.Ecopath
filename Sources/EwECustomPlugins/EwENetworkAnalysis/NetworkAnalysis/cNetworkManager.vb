@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.15  2009/05/21 18:53:38  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.14  2009/05/04 02:12:49  jeroens
 ' NA Sim off unless initiated from NA nav tree
 '
@@ -50,8 +53,8 @@ Option Strict On
 Option Explicit On
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
-
 Imports EwECore
+Imports EwEUtils.Core
 
 ' ToDo_JS: localize this class
 

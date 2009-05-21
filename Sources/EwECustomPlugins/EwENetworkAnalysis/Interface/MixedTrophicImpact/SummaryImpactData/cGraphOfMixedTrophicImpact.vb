@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.13  2009/05/21 18:53:36  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.12  2009/05/19 13:41:11  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -51,6 +54,7 @@ Imports System.Windows.Forms
 Imports System.Text
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 
 #End Region ' Imports
 

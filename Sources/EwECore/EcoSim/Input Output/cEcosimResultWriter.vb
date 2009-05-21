@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcosimResultWriter.vb,v $
+' Revision 1.3  2009/05/21 18:53:35  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.2  2009/05/19 13:44:56  jeroens
 ' Renamed result writer methods
 '
@@ -16,6 +19,7 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 
 #End Region ' Imports
 

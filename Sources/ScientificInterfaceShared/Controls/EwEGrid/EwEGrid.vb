@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGrid.vb,v $
+' Revision 1.16  2009/05/21 18:53:41  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.15  2009/05/11 01:50:54  jeroens
 ' Renamed command classes
 '
@@ -58,10 +61,11 @@ Imports System.ComponentModel
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 Imports SourceLibrary
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Properties
 Imports System.Text
 Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Commands
 
 #End Region
 

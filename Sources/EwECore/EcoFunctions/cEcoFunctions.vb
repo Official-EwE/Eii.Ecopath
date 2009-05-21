@@ -1,4 +1,4 @@
-﻿
+﻿Imports EwEUtils.Core
 
 ''' <summary>
 ''' Class to provide access to functions needed both internally to the core and externally by plugins or other things...(what that would be I don't know)

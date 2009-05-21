@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityCoefficientsEwEGrid.vb,v $
+' Revision 1.5  2009/05/21 18:53:45  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.4  2009/03/11 19:31:51  jeroens
 ' Minimal housekeeping
 '
@@ -137,7 +140,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimMonteCarlo.vb,v $
+' Revision 1.20  2009/05/21 18:53:34  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.19  2009/05/20 16:31:23  joeb
 ' Fixed bug in CheckWhoIsCrashed() that caused an exception if Ecosim was not run first
 '
@@ -58,73 +61,6 @@
 ' Revision 1.1  2008/09/26 07:30:27  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.22  2008/09/26 02:39:25  villyc
-' ecosim monte carlo -- vulnerabilties
-'
-' Revision 1.21  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.20  2008/06/25 17:38:27  joeb
-' Fix bug 491 Initialization of Ecosim overwriting fishing mort with default
-'
-' Revision 1.19  2008/04/02 21:26:41  joeb
-' Added Wait to the Monte Carlo manager
-'
-' Revision 1.18  2007/11/14 17:24:12  joeb
-' Code formatting
-'
-' Revision 1.17  2007/09/29 01:15:48  joeb
-' Bug fixes
-'
-' Revision 1.16  2007/08/29 14:48:40  joeb
-' The manager now longer stores references to core data objects. When core data is needed it get it from the core.
-'
-' Revision 1.15  2007/08/24 19:53:02  joeb
-' Changed communication between Model-Manager and Interface all interaction is now handled by the Manager
-'
-' Revision 1.14  2007/08/08 23:02:10  willw
-' added multithreading stuff (commented out)
-'
-' Revision 1.13  2007/08/08 19:01:33  joeb
-' Added messages to manager
-'
-' Revision 1.12  2007/08/06 19:29:24  joeb
-' Messages when a run fails
-'
-' Revision 1.11  2007/07/24 18:31:34  joeb
-' Added Comments
-'
-' Revision 1.10  2007/07/24 16:55:42  joeb
-' Fixed Ecosim initialization bug
-'
-' Revision 1.9  2007/07/19 19:54:27  joeb
-' Updating of data on edit
-'
-' Revision 1.8  2007/07/18 17:26:27  joeb
-' Added Comments
-'
-' Revision 1.7  2007/07/13 23:09:03  joeb
-' Bunch of crap
-'
-' Revision 1.6  2007/07/13 16:17:20  joeb
-' Build Fix
-'
-' Revision 1.5  2007/07/13 00:07:45  joeb
-' Bug fixes
-'
-' Revision 1.4  2007/06/28 16:56:49  joeb
-' Big changes!!!!!!!!!!!!!!
-'
-' Revision 1.3  2007/06/26 22:25:58  joeb
-' more more more cooooode
-'
-' Revision 1.2  2007/06/25 21:30:35  joeb
-' A bunch of stuff
-'
-' Revision 1.1  2007/06/25 16:07:56  joeb
-' Added Monte Carlo
-'
-'
 '=====================================
 
 'Option Strict On
@@ -132,6 +68,7 @@
 Imports EwECore.Ecopath
 Imports EwECore.EcoSim
 Imports System.Threading
+Imports EwEUtils.Core
 
 'vc sep 2008, using streamwriter from system.io:
 Imports System.IO

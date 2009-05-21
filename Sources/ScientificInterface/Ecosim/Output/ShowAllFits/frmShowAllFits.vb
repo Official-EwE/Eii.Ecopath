@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmShowAllFits.vb,v $
+' Revision 1.5  2009/05/21 18:53:43  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.4  2009/05/11 01:50:58  jeroens
 ' Renamed command classes
 '
@@ -59,10 +62,11 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Commands
 Imports System.Windows.Forms
 Imports System.IO
 Imports ScientificInterface.Other
-Imports EwEUtils.Commands
 
 #End Region ' Imports
 

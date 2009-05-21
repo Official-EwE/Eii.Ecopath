@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMessagePublisher.vb,v $
+' Revision 1.4  2009/05/21 18:53:37  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.3  2009/01/16 18:30:29  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -10,46 +13,10 @@
 ' Revision 1.1  2008/09/26 07:30:30  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.19  2008/07/02 01:55:25  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.18  2007/09/27 16:14:09  jeroens
-' * Information messages are now logged too
-'
-' Revision 1.17  2007/09/27 14:01:25  jeroens
-' * Logged only Critical and Warning messages
-'
-' Revision 1.16  2007/04/11 00:11:49  jeroens
-' Fixed major bug in sendAllMessages; SendMessage may re-cache a message if a mesage lock is active. Re-cached messages were subsequently deleted without being sent!
-'
-' Revision 1.15  2007/04/04 14:45:08  joeb
-' All messages written to the cLog. This could be temp for debugging
-'
-' Revision 1.14  2007/03/30 19:58:50  joeb
-' Added Maintenance message logging
-'
-' Revision 1.13  2006/11/19 04:01:24  jeroens
-' + When locked, SendMessage will queue messages to make sure they will be sent at a later stage
-'
-' Revision 1.12  2006/10/18 03:10:58  jeroens
-' + Added message lock
-'
-' Revision 1.11  2006/10/15 03:07:18  jeroens
-' * AddMessage will not add duplicate messages to its queue
-' * SendAllMessages uses temporary array to send to prevent enumerator screw-ups
-'
-' Revision 1.10  2006/10/13 16:26:27  jeroens
-' * Fixed potential crash in SendAlllMessages
-'
-' Revision 1.9  2006/10/08 03:16:36  jeroens
-' * ByRef -> ByVal
-'
-' Revision 1.8  2006/08/17 02:32:19  jeroens
-' + Added header
-'
 '==============================================================================
 
 Option Strict On
+Imports EwEUtils.Core
 
 ''' <summary>
 ''' This class provides a single interface for dealing with different types of messages.

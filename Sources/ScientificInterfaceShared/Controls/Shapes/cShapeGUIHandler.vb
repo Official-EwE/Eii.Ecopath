@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.20  2009/05/21 18:53:39  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.19  2009/05/18 00:38:43  jeroens
 ' Reset all generalized for fishing shapes
 '
@@ -64,6 +67,7 @@
 #Region " Imports "
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities

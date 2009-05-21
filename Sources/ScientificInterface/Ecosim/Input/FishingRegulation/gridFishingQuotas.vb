@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridFishingQuotas.vb,v $
+' Revision 1.6  2009/05/21 18:53:45  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.5  2009/01/16 18:30:43  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -92,7 +95,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoSim
             End Get

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmTimeSeries.vb,v $
+' Revision 1.8  2009/05/21 18:53:44  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.7  2009/05/11 01:50:53  jeroens
 ' Renamed command classes
 '
@@ -34,6 +37,7 @@ Imports System.Drawing
 Imports System.Text.RegularExpressions
 Imports ScientificInterface.Other
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared
 

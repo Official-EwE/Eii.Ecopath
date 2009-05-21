@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSModel.vb,v $
+' Revision 1.8  2009/05/21 18:53:35  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.7  2009/04/24 16:06:20  joeb
 ' Added text for proper initialization
 '
@@ -22,135 +25,6 @@
 ' Revision 1.1  2008/09/26 07:30:25  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.42  2008/09/24 00:11:04  villyc
-' f limits and others
-'
-' Revision 1.41  2008/08/11 21:09:23  joeb
-' Changes for Bug Fix 459 Added Search Modes
-'
-' Revision 1.40  2008/04/17 20:22:03  joeb
-' Changed cCore.m_EcosimSearch to cCore.m_SearchData
-'
-' Revision 1.39  2008/04/17 20:17:28  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.38  2008/03/20 18:34:14  joeb
-' Comments
-'
-' Revision 1.37  2008/02/01 16:52:44  joeb
-' Finishing Sensitivity Search
-'
-' Revision 1.36  2008/01/26 00:16:12  joeb
-' Added setNBlocksFromSensitivity this only works for Predator search right now
-'
-' Revision 1.35  2007/11/30 20:48:42  joeb
-' Changed initialization of sensitivity search
-'
-' Revision 1.34  2007/11/30 16:45:23  joeb
-' Fix cast bug in runModel callback
-'
-' Revision 1.33  2007/11/29 18:40:55  joeb
-' More init changes
-'
-' Revision 1.32  2007/11/23 19:09:43  joeb
-' Initialization changes
-'
-' Revision 1.31  2007/11/22 19:24:25  joeb
-' Changed initialization to call interface after the model has been initialized
-'
-' Revision 1.30  2007/11/21 19:20:25  joeb
-' Fixed Ecosim initialization bug
-'
-' Revision 1.29  2007/11/21 16:11:11  joeb
-' Fixed bug  in DoEstimation that stop the code from converging
-'
-' Revision 1.28  2007/11/20 19:15:05  joeb
-' Code formatting
-'
-' Revision 1.27  2007/11/15 16:00:14  joeb
-' Fixed bug in SPLINT() YVal passed byval not byref
-'
-' Revision 1.26  2007/11/14 17:23:06  joeb
-' Fixed rounding bug in Anomaly search
-'
-' Revision 1.25  2007/11/04 14:46:34  jeroens
-' * ForceNo correctly passed between model and manager
-'
-' Revision 1.24  2007/11/02 21:19:35  joeb
-' Added SendMessage interface
-'
-' Revision 1.23  2007/11/01 18:41:12  joeb
-' Re-oganized some code
-'
-' Revision 1.22  2007/11/01 18:08:18  joeb
-' Added bAnomalySearch
-'
-' Revision 1.21  2007/11/01 15:55:55  joeb
-' Added RunModelDelegate(0
-' Cleaned up dead code
-'
-' Revision 1.20  2007/10/31 21:03:50  joeb
-' Added missing variables from interface
-'
-' Revision 1.19  2007/10/30 22:48:14  joeb
-' Fixed wt bug
-'
-' Revision 1.18  2007/10/26 19:22:00  joeb
-' changed some error handling
-'
-' Revision 1.17  2007/10/25 01:56:10  joeb
-' More code
-'
-' Revision 1.16  2007/10/23 19:24:48  joeb
-' Added SensitivitySS2VByPredator()
-'
-' Revision 1.15  2007/10/22 23:02:26  joeb
-' RunSensitivitySS2VByPredPrey()
-'
-' Revision 1.14  2007/10/14 17:21:37  jeroens
-' * Solved compiler warnings
-'
-' Revision 1.13  2007/09/26 18:28:51  joeb
-' Added Namespace
-'
-' Revision 1.12  2007/09/25 23:24:25  joeb
-' Still getting it running
-'
-' Revision 1.11  2007/09/24 14:20:01  joeb
-' Implementation of fitting
-'
-' Revision 1.10  2007/09/20 19:37:09  joeb
-' Started porting code from EwE5
-'
-' Revision 1.9  2007/09/08 01:21:28  joeh
-' Change data for testing Search analysis
-'
-' Revision 1.8  2007/09/07 21:41:55  joeh
-' Change the values  of nSteps for testing purpose
-'
-' Revision 1.7  2007/09/05 18:05:53  joeh
-' Change nSteps from 169 to 24 for testing the sensitivity by pred column analysis
-'
-' Revision 1.6  2007/09/01 01:20:15  jeroens
-' + Added framework for second sens analysis, search
-'
-' Revision 1.5  2007/08/29 22:28:38  joeh
-' Change the number of loop from 10 to 169 for testing
-'
-' Revision 1.4  2007/08/28 12:38:09  jeroens
-' * Fixed threaded callback parameter issue
-'
-' Revision 1.3  2007/08/25 15:01:53  jeroens
-' * Morphing, morphing
-'
-' Revision 1.2  2007/08/24 19:18:31  jeroens
-' + Added variables
-' + Connected to datastructures
-' + Designed for dual threading
-'
-' Revision 1.1  2007/08/23 14:52:14  jeroens
-' Initial version
-'
 '==============================================================================
 
 Option Strict On
@@ -158,6 +32,7 @@ Option Strict On
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports System.ComponentModel
+Imports EwEUtils.Core
 
 Namespace FitToTimeSeries
 

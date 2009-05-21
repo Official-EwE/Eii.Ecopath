@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FlowDiagram.vb,v $
+' Revision 1.7  2009/05/21 18:53:42  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.6  2009/05/11 01:50:55  jeroens
 ' Renamed command classes
 '
@@ -27,6 +30,7 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEUtils.Win32Api
 Imports ScientificInterfaceShared.Controls

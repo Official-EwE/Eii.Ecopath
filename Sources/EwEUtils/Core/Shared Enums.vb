@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.61  2009/05/21 18:53:47  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.60  2009/05/21 17:55:58  jeroens
 ' PSD enums do not need to be exposed in EwEUtils
 '
@@ -1733,5 +1736,54 @@ Namespace Core
     End Enum
 
 #End Region ' Search criteria results
+
+#Region "CoreComponentType"
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, identifying sources of messages being broadcasted by the Core.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eCoreComponentType
+        ''' <summary>The message source is not specified.</summary>
+        NotSet
+        ''' <summary>The message originated from the Ecopath module of EwE.</summary>
+        EcoPath
+        ''' <summary>The message originated from the Ecosim module of EwE.</summary>
+        EcoSim
+        ''' <summary>The message originated from the Ecospace module of EwE.</summary>
+        EcoSpace
+        ''' <summary>The message originated from the Forcing shapes manager(s) in EwE.</summary>
+        ShapesManager
+        ''' <summary>The message originated from a datasource.</summary>
+        DataSource
+        ''' <summary>The message originated from the core itself.</summary>
+        Core
+        ''' <summary>The message originated from a Plugin </summary>
+        Plugin
+        ''' <summary>The message originated from the Monte Carlo routines in Ecosim.</summary>
+        EcoSimMonteCarlo
+        ''' <summary>The message originated from the Fit to Time Series routines in Ecosim.</summary>
+        EcoSimFitToTimeSeries
+        ''' <summary>The message originated from a change in loaded Time Series.</summary>
+        TimeSeries
+        ''' <summary>The message originated from the pred/prey interaction.</summary>
+        PPIManager
+        ''' <summary>The message originated from Ecotracer.</summary>
+        Ecotracer
+        ''' <summary>The message originated from an external source (such as the user interface)</summary>
+        External
+        ''' <summary>The message source is one of the Search Objective classes</summary>
+        SearchObjective
+        ''' <summary>The message originated from Fishing Policy Search.</summary>
+        FishingPolicySearch
+        ''' <summary>Management Strategy Evaluation  </summary>
+        MSE
+        ''' <summary> EcoSeed </summary>
+        MPAOptimization
+
+    End Enum
+
+#End Region
 
 End Namespace ' Core

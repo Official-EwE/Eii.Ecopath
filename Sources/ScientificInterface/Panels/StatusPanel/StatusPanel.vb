@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.10  2009/05/21 18:53:38  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.9  2009/04/24 14:00:18  jeroens
 ' Fixed potential crash on auto-animation
 '
@@ -39,6 +42,7 @@ Option Explicit On
 
 Imports System.Text
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports WeifenLuo.WinFormsUI.Docking
 
