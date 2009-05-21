@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.10  2009/05/21 17:55:57  jeroens
+' PSD enums do not need to be exposed in EwEUtils
+'
 ' Revision 1.9  2009/05/19 13:43:56  jeroens
 ' Pruned history
 '
@@ -554,4 +557,37 @@ End Enum
 
 #End Region
 
+#Region " PSD mortality types "
+
+''' -----------------------------------------------------------------------
+''' <summary>
+''' Mortality types for PSD analysis
+''' </summary>
+''' -----------------------------------------------------------------------
+Public Enum ePSDMortalityTypes As Integer
+    ''' <summary>Group P/B</summary>
+    GroupZ = 0
+    ''' <summary>Lorenzen-variable</summary>
+    Lorenzen = 1
+End Enum
+
+#End Region ' PSD mortality types
+
+#Region " PSD climate types "
+
+''' -----------------------------------------------------------------------
+''' <summary>
+''' The three climate zones for PSD analysis.
+''' </summary>
+''' -----------------------------------------------------------------------
+Public Enum eClimateTypes As Short
+    ''' <summary>Tropical climate</summary>
+    Tropical = 0
+    ''' <summary>Temperate climate</summary>
+    Temperate = 1
+    ''' <summary>Polar climate</summary>
+    Polar = 2
+End Enum
+
+#End Region ' PSD climate types
 
