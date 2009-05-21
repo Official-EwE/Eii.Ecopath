@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityPredationEwEGrid.vb,v $
+' Revision 1.6  2009/05/21 19:27:13  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.5  2009/04/23 13:08:55  jeroens
 ' Cell: fixed instability in UpdateStyle
 ' Cell: style updated when either source proerpty changes
@@ -199,7 +202,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get

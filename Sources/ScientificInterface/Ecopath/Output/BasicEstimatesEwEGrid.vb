@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicEstimatesEwEGrid.vb,v $
+' Revision 1.6  2009/05/21 19:27:10  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.5  2009/03/30 19:01:56  jeroens
 ' Z-column now properly hidden
 '
@@ -190,7 +193,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get

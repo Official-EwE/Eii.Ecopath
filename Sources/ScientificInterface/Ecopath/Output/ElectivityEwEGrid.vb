@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ElectivityEwEGrid.vb,v $
+' Revision 1.4  2009/05/21 19:27:10  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.3  2009/01/16 18:30:08  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -231,7 +234,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get

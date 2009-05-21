@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryInputFleetDefinitionEwEGrid.vb,v $
+' Revision 1.4  2009/05/21 19:27:16  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.3  2009/01/16 18:30:10  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -167,7 +170,7 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get

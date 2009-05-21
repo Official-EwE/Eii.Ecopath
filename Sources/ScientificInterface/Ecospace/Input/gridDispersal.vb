@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridDispersal.vb,v $
+' Revision 1.4  2009/05/21 19:27:18  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.3  2009/01/16 18:30:07  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -132,7 +135,7 @@ Namespace Ecospace
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSources() As EwECore.eCoreComponentType()
+        Public Overrides ReadOnly Property MessageSources() As eCoreComponentType()
             Get
                 ' Refresh on Ecopath notifications
                 Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSpace}

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.9  2009/05/21 19:27:12  jeroens
+' eCoreComponentTypes moved to EwEUtils
+'
 ' Revision 1.8  2009/04/28 00:19:25  joeh
 ' Add handling if PSDEnabled is false
 '
@@ -192,7 +195,7 @@ Namespace Ecopath.Output
             Return bGroupSelected
         End Function
 
-        Public Overrides ReadOnly Property MessageSource() As EwECore.eCoreComponentType
+        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get
