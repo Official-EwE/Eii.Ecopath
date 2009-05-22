@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTimeSeriesDataStructures.vb,v $
+' Revision 1.8  2009/05/22 16:56:54  jeroens
+' Active DS is cleared on ClearTimeSeriesDatasets
+'
 ' Revision 1.7  2009/03/17 18:30:08  joeb
 ' LoadForcingData() only loads the forcing data it does not load the enable time series... this fixes a bug that stopped to fish mortality shapes from working
 '
@@ -217,6 +220,7 @@ Public Class cTimeSeriesDataStructures
 
     Friend Sub ClearTimeSeriesDatasets()
         Me.nDatasets = 0
+        Me.ActiveDatasetIndex = cCore.NULL_VALUE
         Me.RedimTimeSeriesDatasets()
         Me.ClearTimeSeries()
     End Sub
