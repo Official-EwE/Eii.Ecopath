@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.126  2009/05/22 16:46:06  jeroens
+' cStanzaGroup will never allow validation
+'
 ' Revision 1.125  2009/05/20 20:59:19  jeroens
 ' CloseModel has option to discard changes
 '
@@ -8279,12 +8282,9 @@ Public Class cCore
             For i As Integer = 1 To m_Stanza.Nsplit
 
                 tmpstanzaGrp = New cStanzaGroup(Me, Me.m_Stanza.StanzaDBID(i), m_Stanza.Nstanza(i), i)
-
                 tmpstanzaGrp.AllowValidation = False
                 tmpstanzaGrp.Index = i
                 m_stanzaGroups.Add(tmpstanzaGrp)
-
-                tmpstanzaGrp.AllowValidation = True
 
             Next i
 
@@ -8335,8 +8335,6 @@ Public Class cCore
             'as well and its MaxAge property
             stanza.Index = iStanza
             stanza.Resize()
-
-            stanza.AllowValidation = False
 
             stanza.Name = m_Stanza.StanzaName(iStanza)
             stanza.LeadingB = m_Stanza.BaseStanza(iStanza)
@@ -8484,7 +8482,7 @@ Public Class cCore
             stanza.HatchCode = iHatchCode
             stanza.FixedFecundity = bFixedFecundity
 
-            stanza.AllowValidation = True
+            'stanza.AllowValidation = True
 
             'this does not update the Ecopath variables that were also changed 
             'this is handled by OnChanged()
