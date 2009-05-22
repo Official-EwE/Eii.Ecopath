@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStanzaGroup.vb,v $
+' Revision 1.5  2009/05/22 16:20:20  jeroens
+' cStanzaGroup will never allow validation
+'
 ' Revision 1.4  2009/04/16 01:45:12  jeroens
 ' Added missing VariableStatus
 '
@@ -153,9 +156,20 @@ Public Class cStanzaGroup
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
+        Me.AllowValidation = False
+
     End Sub
 
 #End Region
+
+    Friend Overrides Property AllowValidation() As Boolean
+        Get
+            Return MyBase.AllowValidation
+        End Get
+        Set(ByVal value As Boolean)
+            MyBase.AllowValidation = False
+        End Set
+    End Property
 
 #Region "Public methods unique to this class for calculation of stanza parameters"
 
