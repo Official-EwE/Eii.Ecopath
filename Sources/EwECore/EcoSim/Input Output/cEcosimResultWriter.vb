@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcosimResultWriter.vb,v $
+' Revision 1.4  2009/05/22 16:22:22  jeroens
+' Made robust on invalid group integers
+'
 ' Revision 1.3  2009/05/21 18:53:35  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -156,6 +159,9 @@ Public Class cEcosimResultWriter
                 Return Me.SaveDataToFile(strFileName, bSaveAnnual, data, strModelDetails, astrGroupNames)
 
             Case eResultTypes.PredationMortality
+
+                If iGroup < 0 Then Return True
+
                 grpOutput = m_core.EcoSimGroupOutputs(iGroup)
 
                 Dim iNumPred As Integer = 0
@@ -185,6 +191,8 @@ Public Class cEcosimResultWriter
                 Return Me.SaveDataToFile(strFileName, bSaveAnnual, predData, strModelDetails, predNames.ToString)
 
             Case eResultTypes.Prey
+
+                If iGroup < 0 Then Return True
 
                 grpOutput = m_core.EcoSimGroupOutputs(iGroup)
 
