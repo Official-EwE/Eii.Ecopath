@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.11  2009/05/22 22:31:07  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.10  2009/03/19 21:45:10  joeh
 ' Add two biomass variables for the Size/Weight plot
 '
@@ -278,6 +281,14 @@ Public Class cEcoPathGroupOutput
             End If
             SetNullFlag(eVarNameFlags.t0Output, m_core.m_PSDData.t0(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
+            'Tcatch
+            If m_core.m_PSDData.Tcatch(Me.Index) <> m_core.m_PSDData.TcatchInput(Me.Index) Then
+                Me.SetStatusFlags(eVarNameFlags.TCatchOutput, eStatusFlags.ValueComputed)
+            Else
+                Me.ClearStatusFlags(eVarNameFlags.TCatchOutput, eStatusFlags.ValueComputed)
+            End If
+            SetNullFlag(eVarNameFlags.TCatchOutput, m_core.m_PSDData.Tcatch(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+
             'Tmax
             If m_core.m_PSDData.Tmax(Me.Index) <> m_core.m_PSDData.TmaxInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.TmaxOutput, eStatusFlags.ValueComputed)
@@ -442,7 +453,7 @@ Public Class cEcoPathGroupOutput
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.BiomassSzWt, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.TCatchOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -633,14 +644,14 @@ Public Class cEcoPathGroupOutput
 
     End Property
 
-    Public Property Tcatch() As Single
+    Public Property TcatchOutput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Tcatch))
+            Return CSng(GetVariable(eVarNameFlags.TCatchOutput))
         End Get
 
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.Tcatch, newValue)
+                SetVariable(eVarNameFlags.TCatchOutput, newValue)
             End If
         End Set
 

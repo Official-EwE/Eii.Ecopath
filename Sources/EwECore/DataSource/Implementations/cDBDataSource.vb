@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.53  2009/05/22 22:31:06  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.52  2009/05/06 12:19:57  jeroens
 ' Renamed key datatype enum
 '
@@ -1858,12 +1861,12 @@ Public Class cDBDataSource
 
                 ' PSD
                 ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
-                psdDS.Tcatch(iGroup) = CSng(reader("Tcatch"))
                 psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
                 psdDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
                 psdDS.LooInput(iGroup) = CSng(reader("Loo"))
                 psdDS.WinfInput(iGroup) = CSng(reader("Winf"))
                 psdDS.t0Input(iGroup) = CSng(reader("t0"))
+                psdDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
                 psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
 
 

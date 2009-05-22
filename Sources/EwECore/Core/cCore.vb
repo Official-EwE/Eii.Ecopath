@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.127  2009/05/22 22:31:05  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.126  2009/05/22 16:46:06  jeroens
 ' cStanzaGroup will never allow validation
 '
@@ -2663,12 +2666,12 @@ Public Class cCore
                 Input.iStanza = getStanzaIDForGroup(iGroup)
 
                 ' === PSD ===
-                Input.Tcatch = m_PSDData.Tcatch(iGroup)
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
                 Input.LooInput = m_PSDData.LooInput(iGroup)
                 Input.WinfInput = m_PSDData.WinfInput(iGroup)
                 Input.t0Input = m_PSDData.t0Input(iGroup)
+                Input.TcatchInput = m_PSDData.TcatchInput(iGroup)
                 Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
                 ' === END PSD ===
 
@@ -2720,12 +2723,12 @@ Public Class cCore
 
                 'Joeh
                 m_EcoPathData.vbK(iGroup) = Input.VBK
-                m_PSDData.Tcatch(iGroup) = Input.Tcatch
                 m_PSDData.AinLWInput(iGroup) = Input.AinLWInput
                 m_PSDData.BinLWInput(iGroup) = Input.BinLWInput
                 m_PSDData.LooInput(iGroup) = Input.LooInput
                 m_PSDData.WinfInput(iGroup) = Input.WinfInput
                 m_PSDData.t0Input(iGroup) = Input.t0Input
+                m_PSDData.TcatchInput(iGroup) = Input.TcatchInput
                 m_PSDData.TmaxInput(iGroup) = Input.TmaxInput
                 'End Joeh
 
@@ -2985,12 +2988,12 @@ Public Class cCore
                 output.VBK = CSng(m_EcoPathData.vbK(iGroup))
                 output.BiomassAvgSzWt = CSng(m_PSDData.BiomassAvgSzWt(iGroup))
                 output.BiomassSzWt = CSng(m_PSDData.BiomassSzWt(iGroup))
-                output.Tcatch = CSng(m_PSDData.Tcatch(iGroup))
                 output.AinLWOutput = CSng(m_PSDData.AinLW(iGroup))
                 output.BinLWOutput = CSng(m_PSDData.BinLW(iGroup))
                 output.LooOutput = CSng(m_PSDData.Loo(iGroup))
                 output.WinfOutput = CSng(m_PSDData.Winf(iGroup))
                 output.t0Output = CSng(m_PSDData.t0(iGroup))
+                output.TcatchOutput = CSng(m_PSDData.Tcatch(iGroup))
                 output.TmaxOutput = CSng(m_PSDData.Tmax(iGroup))
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -4177,6 +4180,7 @@ Public Class cCore
             sg = Me.StanzaGroups(group.iStanza)
 
             ' Get the leading group for this stanza config
+
             groupLeading = Me.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
             bIsLeadingGroup = Object.ReferenceEquals(groupLeading, group)
 
@@ -4217,10 +4221,10 @@ Public Class cCore
         ' Is fished?
         If bIsFished Then
             ' #Yes: make Tcatch editable to the user
-            group.ClearStatusFlags(eVarNameFlags.Tcatch, eStatusFlags.NotEditable)
+            group.ClearStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
         Else
             ' #No: make Tcatch read-only to the user
-            group.SetStatusFlags(eVarNameFlags.Tcatch, eStatusFlags.NotEditable)
+            group.SetStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then

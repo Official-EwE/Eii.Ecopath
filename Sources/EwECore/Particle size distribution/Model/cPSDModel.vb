@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.14  2009/05/22 22:31:08  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.13  2009/05/14 18:11:40  joeh
 ' Use cCore.N_MONTHS instead of 12 to convert month to year
 '
@@ -159,6 +162,9 @@ Public Class cPSDModel
     End Sub
 
     Private Sub EstimateGrowthParameters()
+        Dim bIsFished As Boolean
+        Dim bIsStanzaGroup As Boolean
+        Dim bIsUserInput As Boolean
         Dim sTemp As Single
 
         'A in LW
@@ -190,6 +196,88 @@ Public Class cPSDModel
             If Me.m_psd.t0(i) < -9998 And Me.m_psd.Loo(i) > 0 And m_Data.vbK(i) > 0 Then
                 Me.m_psd.t0(i) = CSng(-Math.Exp(-0.3922 - 0.2752 * Math.Log10(Me.m_psd.Loo(i)) - 1.038 * Math.Log10(m_Data.vbK(i))))
             End If
+        Next
+
+        'Tcatch
+        For i As Integer = 1 To m_Data.NumLiving
+            'Is group with catches?
+            If m_Data.fCatch(i) > 0 Then
+                'Yes
+                bIsFished = True
+            Else
+                'No
+                bIsFished = False
+            End If
+
+            'Is stanza group
+            If m_Data.StanzaGroup(i) Then
+                'Yes
+                bIsStanzaGroup = True
+            Else
+                'No
+                bIsStanzaGroup = False
+            End If
+
+            'Is user input
+            If Me.m_psd.Tcatch(i) >= 0 Then
+                'Yes
+                bIsUserInput = True
+            Else
+                'No
+                bIsUserInput = False
+            End If
+
+            If bIsUserInput Then
+                'Yes
+                'Use user input as it is
+            Else
+                'No
+                If bIsFished Then
+                    'Yes
+                    If bIsStanzaGroup Then
+                        'Yes
+                        If Me.m_psd.Tcatch(i) < 0 Then
+                            For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                                For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                                    If m_stanza.EcopathCode(isp, ist) = i Then
+                                        Me.m_psd.Tcatch(i) = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
+                                    End If
+                                Next
+                            Next
+                        End If
+                    Else
+                        'No
+                        Me.m_psd.Tcatch(i) = 0
+                    End If
+                Else
+                    'No
+                    Me.m_psd.Tcatch(i) = 0
+                End If
+            End If
+
+            ''Is stanza group?
+            'If m_Data.StanzaGroup(i) Then
+            '    'Yes
+            '    If Me.m_psd.Tcatch(i) < 0 Then
+            '        For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+            '            For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+            '                If m_stanza.EcopathCode(isp, ist) = i Then
+            '                    Me.m_psd.Tcatch(i) = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
+            '                End If
+            '            Next
+            '        Next
+            '    End If
+            'Else
+            '    'No
+            '    'Is group with no catch or no user input 
+            '    If Me.m_psd.Tcatch(i) < 0 Then
+            '        'Yes
+            '        Me.m_psd.Tcatch(i) = 0
+            '    Else
+            '        'No (i.e. group with catch and user input)
+            '        'Use user input as it is
+            '    End If
+            'End If
         Next
 
         'Tmax

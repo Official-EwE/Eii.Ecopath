@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.10  2009/05/22 22:31:08  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.9  2009/05/21 19:27:12  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -157,7 +160,7 @@ Namespace Ecopath.Output
             Me(iRow, 5) = New PropertyCell(source, eVarNameFlags.WinfOutput)
             Me(iRow, 6) = New PropertyCell(source, eVarNameFlags.VBK)
             Me(iRow, 7) = New PropertyCell(source, eVarNameFlags.t0Output)
-            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.Tcatch)
+            Me(iRow, 8) = New PropertyCell(source, eVarNameFlags.TCatchOutput)
             Me(iRow, 9) = New PropertyCell(source, eVarNameFlags.TmaxOutput)
 
         End Sub

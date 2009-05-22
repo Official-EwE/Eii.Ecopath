@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupInput.vb,v $
+' Revision 1.10  2009/05/22 22:31:07  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.9  2009/04/02 16:20:40  jeroens
 ' PSDIncluded moved to PSD model
 '
@@ -219,7 +222,7 @@ Public Class cEcoPathGroupInput
         'Joeh: PSD
         'Tcatch
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.Tcatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Tcatch))
+        val = New cValue(New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TCatchInput))
         m_values.Add(val.varName, val)
 
         'A in LW
@@ -649,13 +652,13 @@ Public Class cEcoPathGroupInput
     End Property
 
     'Joeh
-    Public Property Tcatch() As Single
+    Public Property TcatchInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Tcatch))
+            Return CSng(GetVariable(eVarNameFlags.TCatchInput))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Tcatch, value)
+            SetVariable(eVarNameFlags.TCatchInput, value)
         End Set
     End Property
 
@@ -1057,13 +1060,13 @@ Public Class cEcoPathGroupInput
         End Set
     End Property
 
-    Public Property TcatchStatus() As eStatusFlags
+    Public Property TcatchInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Tcatch)
+            Return GetStatus(eVarNameFlags.TCatchInput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Tcatch, value)
+            SetStatus(eVarNameFlags.TCatchInput, value)
         End Set
     End Property
 

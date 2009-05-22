@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.10  2009/05/22 22:31:07  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.9  2009/04/02 21:50:35  sherman
 ' Changed PSD back to False
 '
@@ -58,12 +61,12 @@ Public Class cPSDDatastructures
 
     Public BiomassAvgSzWt() As Single
     Public BiomassSzWt() As Single
-    Public Tcatch() As Single
     Public AinLW() As Single
     Public BinLW() As Single
     Public Loo() As Single
     Public Winf() As Single
     Public t0() As Single
+    Public Tcatch() As Single
     Public Tmax() As Single
 
     Public AinLWInput() As Single
@@ -71,6 +74,7 @@ Public Class cPSDDatastructures
     Public LooInput() As Single
     Public WinfInput() As Single
     Public t0Input() As Single
+    Public TcatchInput() As Single
     Public TmaxInput() As Single
 
     Public EcopathWeight(,) As Single
@@ -88,12 +92,12 @@ Public Class cPSDDatastructures
 
         ReDim BiomassAvgSzWt(NumGroups)
         ReDim BiomassSzWt(NumGroups)
-        ReDim Tcatch(NumGroups)
         ReDim AinLW(NumGroups)
         ReDim BinLW(NumGroups)
         ReDim Loo(NumGroups)
         ReDim Winf(NumGroups)
         ReDim t0(NumGroups)
+        ReDim Tcatch(NumGroups)
         ReDim Tmax(NumGroups)
 
         ReDim AinLWInput(NumGroups)
@@ -101,6 +105,7 @@ Public Class cPSDDatastructures
         ReDim LooInput(NumGroups)
         ReDim WinfInput(NumGroups)
         ReDim t0Input(NumGroups)
+        ReDim TcatchInput(NumGroups)
         ReDim TmaxInput(NumGroups)
 
         ReDim EcopathWeight(NumGroups, NAgeSteps)
@@ -134,6 +139,7 @@ Public Class cPSDDatastructures
             LooInput.CopyTo(Loo, 0)
             WinfInput.CopyTo(Winf, 0)
             t0Input.CopyTo(t0, 0)
+            TcatchInput.CopyTo(Tcatch, 0)
             TmaxInput.CopyTo(Tmax, 0)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -148,13 +154,13 @@ Public Class cPSDDatastructures
             'Joeh
             BiomassAvgSzWt.CopyTo(dest.BiomassAvgSzWt, 0)
             BiomassSzWt.CopyTo(dest.BiomassSzWt, 0)
-            Tcatch.CopyTo(dest.Tcatch, 0)
 
             AinLW.CopyTo(dest.AinLW, 0)
             BinLW.CopyTo(dest.BinLW, 0)
             Loo.CopyTo(dest.Loo, 0)
             Winf.CopyTo(dest.Winf, 0)
             t0.CopyTo(dest.t0, 0)
+            Tcatch.CopyTo(dest.Tcatch, 0)
             Tmax.CopyTo(dest.Tmax, 0)
 
             AinLWInput.CopyTo(dest.AinLWInput, 0)
@@ -162,6 +168,7 @@ Public Class cPSDDatastructures
             LooInput.CopyTo(dest.LooInput, 0)
             WinfInput.CopyTo(dest.WinfInput, 0)
             t0Input.CopyTo(dest.t0Input, 0)
+            TcatchInput.CopyTo(dest.TcatchInput, 0)
             TmaxInput.CopyTo(dest.TmaxInput, 0)
 
             dest.EcopathWeight = DirectCast(EcopathWeight.Clone, Single(,))

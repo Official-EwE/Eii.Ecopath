@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.62  2009/05/22 22:31:08  joeh
+' Tcatch reverted to have input and output pair because of new user requirement
+'
 ' Revision 1.61  2009/05/21 18:53:47  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -1081,7 +1084,6 @@ Namespace Core
         VBK
         BiomassAvgSzWt
         BiomassSzWt
-        Tcatch
         AinLWInput
         AinLWOutput
         BinLWInput
@@ -1092,6 +1094,8 @@ Namespace Core
         WinfOutput
         t0Input
         t0Output
+        TCatchInput
+        TCatchOutput
         TmaxInput
         TmaxOutput
         PSDIncluded
