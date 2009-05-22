@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.11  2009/05/22 16:07:56  jeroens
+' AllowValidation made overridable
+'
 ' Revision 1.10  2009/04/04 14:05:54  jeroens
 ' Fixed documentation
 '
@@ -638,7 +641,7 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Properties by dot(.) operator "
 
-    Friend Property AllowValidation() As Boolean
+    Friend Overridable Property AllowValidation() As Boolean
         Get
             Return m_bValidate
         End Get
