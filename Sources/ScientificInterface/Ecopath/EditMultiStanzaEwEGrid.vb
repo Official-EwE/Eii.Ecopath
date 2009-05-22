@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanzaEwEGrid.vb,v $
+' Revision 1.7  2009/05/22 15:49:46  jeroens
+' Cleaned-up
+'
 ' Revision 1.6  2009/04/16 01:49:41  jeroens
 ' Removed all locally cached stanza variables
 ' Stanza group and hatchery FF kept as original objects
@@ -116,10 +119,6 @@ Public Class EditMultiStanzaEwEGrid
         Me.RowsCount = 1
 
         If (Me.m_stanzagroup Is Nothing) Then Return
-
-        source = core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(1))
-
-        'm_sCurvParam = source.VBK
 
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 
