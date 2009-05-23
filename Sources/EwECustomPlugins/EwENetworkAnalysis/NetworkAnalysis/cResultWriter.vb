@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cResultWriter.vb,v $
+' Revision 1.2  2009/05/23 11:49:33  jeroens
+' Don't for get to run main network first!
+'
 ' Revision 1.1  2009/05/19 13:22:48  jeroens
 ' Initial version
 '
@@ -73,7 +76,9 @@ Public Class cResultWriter
         Dim strData As String = ""
         Dim bSucces As Boolean = False
 
-        bSucces = Me.NetworkManager.RunRequiredPrimaryProd()
+        bSucces = Me.NetworkManager.RunMainNetwork()
+        bSucces = bSucces And Me.NetworkManager.RunRequiredPrimaryProd()
+
         ' Switch on PPR in Ecosim
         Me.NetworkManager.UseEcosimNetwork = True
         Me.NetworkManager.EcosimPPROn = False
