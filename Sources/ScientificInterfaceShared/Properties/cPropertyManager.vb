@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.5  2009/05/23 11:50:23  jeroens
+' Fixed assertion on nStanzasForStanzaGroup datatype
+'
 ' Revision 1.4  2009/02/26 00:55:40  jeroens
 ' Pruned history
 '
@@ -266,6 +269,8 @@ Namespace Properties
                              eCoreCounterTypes.nEcosimYears, eCoreCounterTypes.nEcosimTimeSteps, _
                              eCoreCounterTypes.nEcospaceYears, eCoreCounterTypes.nEcospaceTimeSteps
                             sourceSec = Nothing
+                        Case eCoreCounterTypes.nStanzasForStanzaGroup
+                            sourceSec = core.StanzaGroups(vs.iArrayIndex)
                         Case Else
                             Debug.Assert(False, String.Format("Core counter type {0} not supported in property manager", va.CoreCounterType))
                     End Select
