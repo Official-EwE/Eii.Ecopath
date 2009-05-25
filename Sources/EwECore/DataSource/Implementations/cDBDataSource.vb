@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.54  2009/05/25 13:22:50  jeroens
+' Added DiscardChanges
+'
 ' Revision 1.53  2009/05/22 22:31:06  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -466,6 +469,29 @@ Public Class cDBDataSource
 
 #Region " Change management "
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether the datasource has unsaved changes that do not relate
+    ''' to any of the supported sub-models.
+    ''' </summary>
+    ''' <returns>True if the datasource has pending changes.</returns>
+    ''' -------------------------------------------------------------------
+    Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
+        If Not Me.IsConnected() Then Return False
+        Return Me.IsChanged(eCoreComponentType.DataSource) Or _
+               Me.IsChanged(eCoreComponentType.Core)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Clears all changed information for either a given data type or for 
+    ''' the entire datasource.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
+        Me.ClearChanged(eCoreComponentType.NotSet)
+    End Sub
+
     ''' <summary>Dictionary of changed core components.</summary>
     Private m_dictChangedComponents As New Dictionary(Of eCoreComponentType, Boolean)
 
@@ -478,16 +504,6 @@ Public Class cDBDataSource
     Public Sub SetChanged(ByVal cc As eCoreComponentType) _
             Implements IEwEDataSource.SetChanged
         Me.m_dictChangedComponents.Item(cc) = True
-    End Sub
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper method, clears all changed information for either a given
-    ''' data type or for the entire datasource.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub ClearChanged()
-        Me.m_dictChangedComponents.Clear()
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -513,7 +529,9 @@ Public Class cDBDataSource
     ''' -------------------------------------------------------------------
     Private Sub ClearChanged(ByVal component As eCoreComponentType)
 
-        If Me.m_dictChangedComponents.ContainsKey(component) Then
+        If (component = eCoreComponentType.NotSet) Then
+            Me.m_dictChangedComponents.Clear()
+        ElseIf Me.m_dictChangedComponents.ContainsKey(component) Then
             Me.m_dictChangedComponents.Remove(component)
         End If
 
@@ -649,23 +667,6 @@ Public Class cDBDataSource
 #End Region ' Messages
 
 #Region " Generic datasource "
-
-#Region " Diagnostics "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' States whether the datasource has unsaved changes that do not relate
-    ''' to any of the supported sub-models.
-    ''' </summary>
-    ''' <returns>True if the datasource has pending changes.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function IsModified() As Boolean Implements DataSources.IEwEDataSource.IsModified
-        If Not Me.IsConnected() Then Return False
-        Return Me.IsChanged(eCoreComponentType.DataSource) Or _
-               Me.IsChanged(eCoreComponentType.Core)
-    End Function
-
-#End Region ' Diagnostics
 
 #Region " Cleanup "
 

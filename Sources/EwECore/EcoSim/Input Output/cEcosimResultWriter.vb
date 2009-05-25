@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEcosimResultWriter.vb,v $
+' Revision 1.5  2009/05/25 13:22:58  jeroens
+' Added DiscardChanges
+'
 ' Revision 1.4  2009/05/22 16:22:22  jeroens
 ' Made robust on invalid group integers
 '
@@ -60,13 +63,19 @@ Public Class cEcosimResultWriter
     ''' <summary>
     ''' Save all available Ecosim results to a CSV file.
     ''' </summary>
-    ''' <param name="strPath"></param>
-    ''' <param name="bSaveAnnual"></param>
-    ''' <param name="iGroup"></param>
+    ''' <param name="strPath">The path to write to. If not specified, output is
+    ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
+    ''' <param name="bSaveAnnual">States whether to save annual averages (true)
+    ''' or monthly values (false). True by default.</param>
+    ''' <param name="iGroup">The group to save results for. This parameter only
+    ''' applies to <see cref="eResultTypes.PredationMortality">prediation mortality</see>
+    ''' and <see cref="eResultTypes.PredationMortality">prey</see> outputs. If
+    ''' no group value is specified (i.e. iGroup equals <see cref="cCore.NULL_VALUE">core NULL</see>),
+    ''' these two Ecosim outputs will not be saved.</param>
     ''' <returns>True if saved successfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(ByVal strPath As String, _
-                                 ByVal bSaveAnnual As Boolean, _
+    Public Function WriteResults(Optional ByVal strPath As String = "", _
+                                 Optional ByVal bSaveAnnual As Boolean = True, _
                                  Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim strMessageText As String = ""
@@ -74,6 +83,10 @@ Public Class cEcosimResultWriter
         Dim bSucces As Boolean = True
 
         If Not Me.m_core.StateMonitor.HasEcosimRan Then Return False
+
+        If String.IsNullOrEmpty(strPath) Then
+            strPath = Me.m_core.OutputPath
+        End If
 
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
             Try

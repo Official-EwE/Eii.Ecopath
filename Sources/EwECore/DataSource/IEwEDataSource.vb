@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: IEwEDataSource.vb,v $
+' Revision 1.8  2009/05/25 13:22:47  jeroens
+' Added DiscardChanges
+'
 ' Revision 1.7  2009/03/26 15:49:47  jeroens
 ' Added CanCompact
 '
@@ -167,6 +170,13 @@ Namespace DataSources
         ''' <returns>True if the datasource has pending changes.</returns>
         ''' -------------------------------------------------------------------
         Function IsModified() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clears any modified flags (use with care!)
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Sub ClearChanged()
 
         ''' -------------------------------------------------------------------
         ''' <summary>

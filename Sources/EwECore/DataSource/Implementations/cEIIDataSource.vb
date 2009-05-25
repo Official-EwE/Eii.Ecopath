@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cEIIDataSource.vb,v $
+' Revision 1.11  2009/05/25 13:22:49  jeroens
+' Added DiscardChanges
+'
 ' Revision 1.10  2009/03/26 15:49:48  jeroens
 ' Added CanCompact
 '
@@ -137,13 +140,24 @@ Public Class cEIIDataSource
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Flag a core object as changed in the datasource. Since the EIIDataSource
-    ''' does not support incremental saving, this method will contain no implementation
+    ''' does not support saving of data, this method contains no implementation
     ''' </summary>
     ''' <param name="cc">The <see cref="eCoreComponentType">core component</see> that changed.</param>
     ''' -------------------------------------------------------------------
-    Public Sub SetChanged(ByVal cc As eCoreComponentType) _
+    Friend Sub SetChanged(ByVal cc As eCoreComponentType) _
             Implements IEwEDataSource.SetChanged
         ' Take no action
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear change flags in the datasource. Since the EIIDataSource does 
+    ''' not support saving of data, this method contains no implementation
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Friend Sub ClearChanged() _
+        Implements IEwEDataSource.ClearChanged
+        ' Take no actions
     End Sub
 
     ''' -------------------------------------------------------------------

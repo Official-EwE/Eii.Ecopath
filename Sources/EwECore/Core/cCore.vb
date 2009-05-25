@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.128  2009/05/25 13:22:58  jeroens
+' Added DiscardChanges
+'
 ' Revision 1.127  2009/05/22 22:31:05  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -2011,8 +2014,11 @@ Public Class cCore
         Dim strPrompt As String = ""
         Dim bIsModelChanged As Boolean = False
 
+        ' Hang on, can we do this at all?
+        If (Me.m_DataSource Is Nothing) Then Return True
+
         ' In a batch?
-        If (m_iBatchLock > 0) Then Return True
+        If (Me.m_iBatchLock > 0) Then Return True
 
         ' Check if core data is dirty
         bIsModelChanged = Me.m_StateMonitor.IsModified
@@ -2137,6 +2143,18 @@ Public Class cCore
 
         ' All well, proceed.
         Return True
+
+    End Function
+
+    Public Function DiscardChanges() As Boolean
+
+        ' Hang on, can we do this at all?
+        If (Me.m_DataSource Is Nothing) Then Return False
+
+        ' In a batch?
+        If (Me.m_iBatchLock > 0) Then Return False
+
+        Me.m_DataSource.IsModified()
 
     End Function
 
