@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.129  2009/05/25 14:51:30  jeroens
+' Fixed DiscardChanges
+'
 ' Revision 1.128  2009/05/25 13:22:58  jeroens
 ' Added DiscardChanges
 '
@@ -2150,11 +2153,8 @@ Public Class cCore
 
         ' Hang on, can we do this at all?
         If (Me.m_DataSource Is Nothing) Then Return False
-
-        ' In a batch?
-        If (Me.m_iBatchLock > 0) Then Return False
-
-        Me.m_DataSource.IsModified()
+        Me.m_DataSource.ClearChanged()
+        Me.m_StateMonitor.UpdateDataState(Me.m_DataSource)
 
     End Function
 
