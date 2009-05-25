@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.130  2009/05/25 19:32:38  jeroens
+' Bug fix: ScenarioCount methods return figure from Ecopath data, not length of lists of core IO objects
+' CloseModel no longer has suppress save flag; DiscardChanges can be invoked for this purpose
+'
 ' Revision 1.129  2009/05/25 14:51:30  jeroens
 ' Fixed DiscardChanges
 '
@@ -2502,11 +2506,9 @@ Public Class cCore
     ''' Try to terminate the core
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function CloseModel(Optional ByVal bSaveChanges As Boolean = True) As Boolean
+    Public Function CloseModel() As Boolean
 
-        If bSaveChanges Then
-            If Not Me.SaveChanges() Then Return False
-        End If
+        If Not Me.SaveChanges() Then Return False
 
         ' Has datasource?
         If (DataSource IsNot Nothing) Then
@@ -4512,7 +4514,7 @@ Public Class cCore
     Public ReadOnly Property EcosimScenarioCount() As Integer
         Get
             Try
-                Return m_EcoSimScenarios.Count
+                Return Me.m_EcoPathData.NumEcosimScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -6497,7 +6499,8 @@ Public Class cCore
     Public ReadOnly Property EcospaceScenarioCount() As Integer
         Get
             Try
-                Return m_EcoSpaceScenarios.Count
+                ' Return the official ecopath administration figure
+                Return Me.m_EcoPathData.NumEcospaceScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -8733,7 +8736,8 @@ Public Class cCore
     Public ReadOnly Property EcotracerScenarioCount() As Integer
         Get
             Try
-                Return Me.m_EcotracerScenarios.Count
+                ' Return Ecopath administration number here instead of counting UI items
+                Return Me.m_EcoPathData.NumEcotracerScenarios
             Catch ex As Exception
                 Return 0
             End Try
