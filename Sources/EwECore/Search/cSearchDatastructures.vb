@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSearchDatastructures.vb,v $
+' Revision 1.21  2009/05/26 16:45:25  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.20  2009/04/02 20:54:39  jeroens
 ' Uses eSearchResultCriteriaTypes
 '
@@ -193,6 +196,9 @@ Public Class cSearchDatastructures
     Private m_SearchCatchSemaphor As System.Threading.Semaphore = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
 
     Public KemptonQ As Single
+
+    Public FPSUseEconomicPlugin As Boolean
+    Public MSEUseEconomicPlugin As Boolean
 
     'needed for KemptonsQ
     Private m_EcoFunctions As cEcoFunctions

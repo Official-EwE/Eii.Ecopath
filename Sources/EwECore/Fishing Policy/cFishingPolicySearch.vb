@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicySearch.vb,v $
+' Revision 1.14  2009/05/26 16:45:22  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.13  2009/04/02 20:54:37  jeroens
 ' Uses eSearchResultCriteriaTypes
 '
@@ -1119,7 +1122,7 @@ endline:    ' '
 
                 m_ecosim.RunModelValue(TotalTime, X, n)
 
-                If Me.m_pluginManager IsNot Nothing Then
+                If Me.m_searchData.FPSUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
                     Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
                 End If
 

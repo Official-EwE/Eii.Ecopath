@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.63  2009/05/26 16:45:25  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.62  2009/05/22 22:31:08  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -883,6 +886,8 @@ Namespace Core
         SearchBaseYear
         SearchFishingMortalityPenalty
 
+        isEconomicAvailable
+
         FPSValueComponentType
 
         FPSGroupStrucRelWeight
@@ -915,6 +920,7 @@ Namespace Core
         FPSFishingLimit
         FPSPredictionVariance
         FPSExistenceValue
+        FPSUseEconomicPlugin
 
         ' Fit to time series
         F2TSVulnerabilitySearch
@@ -1020,6 +1026,7 @@ Namespace Core
         MSEAssessPower
         MSENTrials
         MSEBiomass
+        MSEUseEconomicPlugin
 
         ' Pedigree
         VariableName

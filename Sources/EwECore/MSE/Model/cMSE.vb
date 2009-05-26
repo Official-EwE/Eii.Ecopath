@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.8  2009/05/26 16:45:24  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.7  2009/05/20 16:29:37  joeb
 ' Renamed eCallBackTypes.Stopped to RunCompleted
 '
@@ -27,6 +30,7 @@
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
+Imports EwEPlugin
 
 Namespace MSE
 
@@ -64,7 +68,9 @@ Namespace MSE
         Private EcoValueBase As Single, ManValueBase As Single
         Private TotValBase As Single, EmployBase As Single
 
-        Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures)
+        Private m_pluginManager As cPluginManager
+
+        Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
 
             Me.m_data = MSEData
             Me.m_Ecosim = Ecosim
@@ -72,6 +78,10 @@ Namespace MSE
 
             Me.m_esData = m_Ecosim.m_Data
             Me.m_epdata = EcopathData
+            Me.m_pluginManager = PluginManager
+
+            'turn the Economic data plugin on by default
+            Me.m_Search.MSEUseEconomicPlugin = True
 
         End Sub
 
@@ -108,8 +118,6 @@ Namespace MSE
         End Sub
 
         Public Sub Run()
-
-            Dim tmpTotval, tmpEmpval, tmpManval, tmpEcoval As Single
             Dim itr As Integer
 
             Try
@@ -144,9 +152,12 @@ Namespace MSE
                     'Set MSE data back to initial values for a new run
                     m_data.InitForTrial()
 
-                    m_Ecosim.RunModelValue(m_esData.NumYears, tmpTotval, tmpEmpval, tmpManval, tmpEcoval, Nothing, 0)
+                    Me.m_Ecosim.Run()
 
-                    Me.SumValues(tmpTotval, tmpEmpval, tmpManval, tmpEcoval)
+                    'use Economic data from the ValueChain or any other plugin
+                    Me.getEconomicPluginData()
+
+                    Me.SumValues(Me.m_Search.totval, Me.m_Search.Employ, Me.m_Search.manvalue, Me.m_Search.ecovalue)
 
                     Me.CallBack(eCallBackTypes.IterationCompleted)
 
@@ -161,6 +172,12 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".Run() Error: " & ex.Message)
             End Try
 
+        End Sub
+
+        Private Sub getEconomicPluginData()
+            If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                Me.m_pluginManager.PostRunSearchResults(Me.m_Search)
+            End If
         End Sub
 
         Private Sub getMeanValues(ByVal NTrials As Integer)
@@ -195,9 +212,16 @@ Namespace MSE
         Private Sub setBestTotalValue()
 
             Try
+                'Run Ecosim
+                Me.m_Ecosim.Run()
 
-                m_Ecosim.RunModelValue(m_esData.NumYears, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseTotalVal, m_data.BaseEcoVal, Nothing, 0)
+                'get the base values from the search data
+                Me.m_data.BaseTotalVal = Me.m_Search.totval
+                Me.m_data.BaseEmployVal = Me.m_Search.Employ
+                Me.m_data.BaseManValue = Me.m_Search.manvalue
+                Me.m_data.BaseEcoVal = Me.m_Search.ecovalue
 
+                'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
                 Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_data.BaseTotalVal / TotValBase + _
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_data.BaseEmployVal / EmployBase + _
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_data.BaseManValue / ManValueBase + _

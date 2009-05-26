@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.9  2009/05/26 16:45:26  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.8  2009/04/07 20:02:07  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -67,10 +70,11 @@ Namespace Ecosim
 
         Private m_fpDiscRate As cPropertyFormatProvider = Nothing
         Private m_fpGenDiscRate As cPropertyFormatProvider = Nothing
+        Private m_fpUsePlugin As cPropertyFormatProvider = Nothing
 
         Private m_propBaseYear As cProperty = Nothing
 
-        Private m_lstOptVisControls As New List(Of cControlVisContainer)
+        Private m_lstOptEnabled As New List(Of cControlEnabler)
 
         ''' <summary>Results to be plotted</summary>
         ''' <remarks></remarks>
@@ -104,19 +108,23 @@ Namespace Ecosim
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.txDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.txGenDiscRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
+            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.cbUsePlugin, m_core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
+
             Me.m_propBaseYear = cPropertyManager.GetInstance().GetProperty(m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             AddHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
 
-            Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cbMaxPortUl, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cbPrevCE, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cmbSearchUsing, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbMaxPortUl, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbPrevCE, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cmbSearchUsing, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbUsePlugin, eOptimizeApproachTypes.SystemObjective))
 
-            Me.m_lstOptVisControls.Add(New cControlVisContainer(Me.cbIncludeCCosts, eOptimizeApproachTypes.FleetValues))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.Plugin}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
+            Me.updateOptControls()
 
         End Sub
 
@@ -132,11 +140,11 @@ Namespace Ecosim
             Me.CoreComponents = Nothing
         End Sub
 
-        Private Sub setVisibleControls()
+        Private Sub updateOptControls()
 
             Dim optAproach As eOptimizeApproachTypes = m_params.OptimizeApproach
-            For Each ct As cControlVisContainer In m_lstOptVisControls
-                ct.Visible(optAproach)
+            For Each ct As cControlEnabler In m_lstOptEnabled
+                ct.Enabled(optAproach)
             Next
 
         End Sub
@@ -196,10 +204,13 @@ Namespace Ecosim
             End Select
 
             ' Plot graph
-            InitResultsPlot()
+            Me.InitResultsPlot()
 
             ' Controls
-            setVisibleControls()
+            Me.updateOptControls()
+
+            'set the enabled state of the Use Economic data checkbox
+            Me.updateEconomicDataAvailable()
 
             Me.btnSearch.Enabled = True
             Me.btnStop.Enabled = False
@@ -209,6 +220,7 @@ Namespace Ecosim
         Private Sub InitMaxSOParams()
             cbMaxPortUl.Checked = m_params.MaxPortUtil
             cbPrevCE.Checked = Me.m_manager.ObjectiveParameters.PrevCostEarning
+            Me.cbUsePlugin.Checked = Me.m_manager.ModelParameters.UseEconomicPlugin
         End Sub
 
         Private Sub InitMaxFVParams()
@@ -285,7 +297,7 @@ Namespace Ecosim
 
             End If
 
-            setVisibleControls()
+            updateOptControls()
 
         End Sub
 
@@ -398,7 +410,7 @@ Namespace Ecosim
         End Sub
 
         ''' <summary>
-        ''' Delegate for cFishingPolicyManager.ProgressHandler(). This sub will be called the the FishingPolicyManager to update the search progress.
+        ''' Delegate for cFishingPolicyManager.ProgressHandler(). This will be called by the FishingPolicyManager to update the search progress.
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SearchProgressHandler()
@@ -456,6 +468,11 @@ Namespace Ecosim
             If msg.Source = eCoreComponentType.TimeSeries Then
                 Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
             End If
+
+            If msg.Source = eCoreComponentType.Plugin Then
+                'if there is a plugin message then update the the enabled state of the Use plugin economic data
+                Me.updateEconomicDataAvailable()
+            End If
         End Sub
 
         Private m_bInUpdate As Boolean = False
@@ -494,6 +511,14 @@ Namespace Ecosim
 
         Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+        End Sub
+
+        ''' <summary>
+        ''' Update the enabled state of the Use Economic Plugin checkbox
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub updateEconomicDataAvailable()
+            Me.cbUsePlugin.Enabled = Me.m_manager.ModelParameters.isEconomicAvailable
         End Sub
 
 #Region " Graphing Region "
@@ -636,31 +661,33 @@ Namespace Ecosim
 
         End Class
 
+        ''' <summary>
+        ''' Wrapper for a control that sets the enabled state of the control based on a eOptimizeApproachTypes 
+        ''' </summary>
+        Private Class cControlEnabler
+
+            Private m_ct As Windows.Forms.Control
+            Private m_EnabledState As eOptimizeApproachTypes
+
+            Public Sub New(ByVal Control As Windows.Forms.Control, ByVal EnabledState As eOptimizeApproachTypes)
+                m_ct = Control
+                m_EnabledState = EnabledState
+            End Sub
+
+            Public Sub Enabled(ByVal OptAproach As eOptimizeApproachTypes)
+                If OptAproach = m_EnabledState Then
+                    m_ct.Enabled = True
+                Else
+                    m_ct.Enabled = False
+                End If
+            End Sub
+
+        End Class
+
 #End Region ' Helper classes
 
     End Class ' frmFishingPolicySearch
 
-    ''' <summary>
-    ''' Set the visibility of a control based on an optimize approach value
-    ''' </summary>
-    Friend Class cControlVisContainer
-
-        Private m_ct As Windows.Forms.Control
-        Private m_visState As eOptimizeApproachTypes
-
-        Public Sub New(ByVal Control As Windows.Forms.Control, ByVal VisibleState As eOptimizeApproachTypes)
-            m_ct = Control
-            m_visState = VisibleState
-        End Sub
-
-        Public Sub Visible(ByVal OptAproach As eOptimizeApproachTypes)
-            If OptAproach = m_visState Then
-                m_ct.Visible = True
-            Else
-                m_ct.Visible = False
-            End If
-        End Sub
-
-    End Class
+ 
 
 End Namespace

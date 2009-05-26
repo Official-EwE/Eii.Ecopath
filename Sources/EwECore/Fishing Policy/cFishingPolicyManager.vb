@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.8  2009/05/26 16:45:20  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.7  2009/04/03 19:54:56  jeroens
 ' Requires Ecosim to produce time step results
 '
@@ -284,6 +287,8 @@ Namespace FishingPolicy
                 m_parameters.nRuns = coreData.nRuns
                 m_parameters.IncludeComp = coreData.IncludeCompetitiveImpact
                 m_parameters.MaxEffChange = coreData.MaxEffortChange
+                m_parameters.UseEconomicPlugin = coreData.FPSUseEconomicPlugin
+                m_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
 
                 m_parameters.ResetStatusFlags()
 
@@ -341,12 +346,12 @@ Namespace FishingPolicy
             coreData.InitOption = Me.m_parameters.InitOption
             coreData.SearchMethod = Me.m_parameters.SearchOption
             coreData.IncludeCompetitiveImpact = Me.m_parameters.IncludeComp
+            coreData.FPSUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
 
             coreData.PortFolio = Me.m_parameters.MaxPortUtil
 
             coreData.nInterations = CInt(m_parameters.MaxNumEval)
             coreData.nRuns = m_parameters.nRuns
-
 
             coreData.MaxEffortChange = m_parameters.MaxEffChange
             If m_parameters.MaxEffChange > 0 Then
@@ -362,7 +367,6 @@ Namespace FishingPolicy
             If m_parameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues Then
                 coreData.SearchMethod = eSearchOptionTypes.BaseProfitability
             End If
-
 
         End Function
 

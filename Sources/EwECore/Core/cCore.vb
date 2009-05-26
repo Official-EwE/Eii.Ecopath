@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.131  2009/05/26 16:45:18  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.130  2009/05/25 19:32:38  jeroens
 ' Bug fix: ScenarioCount methods return figure from Ecopath data, not length of lists of core IO objects
 ' CloseModel no longer has suppress save flag; DiscardChanges can be invoked for this purpose
@@ -10558,7 +10561,7 @@ Public Class cCore
             Try
                 Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
             Catch ex As Exception
-
+                System.Console.WriteLine("PluginManager.DataValidated() Error: " & ex.Message)
             End Try
 
             Me.m_publisher.sendAllMessages()
@@ -10675,6 +10678,30 @@ Public Class cCore
             ' Inform the plugin manager of the new core state.
             Me.m_pluginManager.UpdatePluginEnabledStates()
         End If
+
+    End Sub
+
+    ''' <summary>
+    ''' The enabled state of an Economic plugin has changed (e.g. ValueChain)
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub onEconomicPluginEnabled()
+        'ToDo_jb cCore.onEconomicPluginEnabled() we still need to find a way for the core to know when Plugin Enabled states have changed
+
+        'This should only be called when a plugin that supports Economic data has changed
+        'that decision will need to be made elsewhere
+
+        'update all components that could be using the Economic data from a plugin
+        Try
+            'this will reset the isEconomicAvailable flag in the Parameters objects to the values 
+            Me.MSEManager.Load()
+            Me.FishingPolicyManager.Load()
+
+            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Plugin, eMessageImportance.Maintenance))
+
+        Catch ex As Exception
+            Debug.Assert(False, "Core.onEconomicPluginEnabled() Error: " & ex.Message)
+        End Try
 
     End Sub
 

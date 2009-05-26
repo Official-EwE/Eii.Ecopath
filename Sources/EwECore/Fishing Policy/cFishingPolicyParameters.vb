@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyParameters.vb,v $
+' Revision 1.3  2009/05/26 16:45:22  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.2  2009/01/16 18:30:30  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -169,17 +172,24 @@ Public Class cFishingPolicyParameters
         val = New cValue(New Boolean, eVarNameFlags.FPSIncludeComp, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSIncludeComp))
         m_values.Add(val.varName, val)
 
-
         'FPSBatchRun
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.FPSBatchRun, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSBatchRun))
         m_values.Add(val.varName, val)
 
-
         'FPSUseEcospace
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.FPSUseEcospace, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSUseEcospace))
         m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.FPSUseEconomicPlugin, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSUseEconomicPlugin))
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEconomicAvailable))
+        m_values.Add(val.varName, val)
+
 
         ResetStatusFlags()
         AllowValidation = True
@@ -292,6 +302,28 @@ Public Class cFishingPolicyParameters
             Debug.Assert(False, Me.ToString & ".UseEcospace() has not been implemented yet!")
         End Set
     End Property
+
+    Public Property UseEconomicPlugin() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.FPSUseEconomicPlugin))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.FPSUseEconomicPlugin, value)
+        End Set
+    End Property
+
+
+    Public Property isEconomicAvailable() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.isEconomicAvailable))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.isEconomicAvailable, value)
+        End Set
+    End Property
+
 
 End Class
 

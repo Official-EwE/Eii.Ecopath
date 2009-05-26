@@ -64,6 +64,14 @@ Public Class cMSEParameters
         val = New cValue(New Integer, eVarNameFlags.MSENTrials, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSENTrials))
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.MSEUseEconomicPlugin, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEUseEconomicPlugin))
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEconomicAvailable))
+        m_values.Add(val.varName, val)
+
         ResetStatusFlags()
         AllowValidation = True
 
@@ -111,7 +119,6 @@ Public Class cMSEParameters
         End Set
     End Property
 
-
     Public Property NTrials() As Integer
         Get
             Return CType(GetVariable(eVarNameFlags.MSENTrials), Integer)
@@ -121,8 +128,6 @@ Public Class cMSEParameters
             SetVariable(eVarNameFlags.MSENTrials, value)
         End Set
     End Property
-
-
 
     Public Property AssessmentMethodStatus() As eStatusFlags
         Get
@@ -155,7 +160,6 @@ Public Class cMSEParameters
         End Set
     End Property
 
-
     Public Property AssessPowerStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.MSEAssessPower)
@@ -166,7 +170,6 @@ Public Class cMSEParameters
         End Set
     End Property
 
-
     Public Property NTrialsStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.MSENTrials)
@@ -176,4 +179,25 @@ Public Class cMSEParameters
             SetStatus(eVarNameFlags.MSENTrials, value)
         End Set
     End Property
+
+    Public Property UseEconomicPlugin() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.MSEUseEconomicPlugin))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.MSEUseEconomicPlugin, value)
+        End Set
+    End Property
+
+    Public Property isEconomicAvailable() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.isEconomicAvailable))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.isEconomicAvailable, value)
+        End Set
+    End Property
+
 End Class

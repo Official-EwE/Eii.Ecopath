@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.9  2009/05/26 16:45:23  joeb
+' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
+'
 ' Revision 1.8  2009/05/20 16:28:47  joeb
 ' Renamed eCallBackTypes.Stopped to RunCompleted
 '
@@ -167,6 +170,7 @@ Namespace MSE
         Public Sub New(ByVal theCore As cCore)
             Me.m_output = New cMSEOutput(theCore)
             Me.m_parameters = New cMSEParameters(theCore)
+
         End Sub
 
 
@@ -201,13 +205,11 @@ Namespace MSE
 
             m_core = theCore
             m_searchObjective = m_core.SearchObjective
+            m_search = theCore.m_SearchData
 
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
             'if there is no current context then create a new one on this thread. I'm not sure why this can happen but it was in all the samples...
             If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
-
-            'Me.m_parameters = New cMSEParameters(Me.m_core)
-            'Me.m_output = New cMSEOutput(Me.m_core)
 
             'cMSEDataStructures are not part of the core!!!!!
             'Only the MSEManager and model know about them 
@@ -215,7 +217,7 @@ Namespace MSE
             m_MSEdata.Init(theCore)
 
             m_MSE = New cMSE
-            m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData)
+            m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
 
             'connect the MSE model to the manager
             m_MSE.Connect(AddressOf Me.OnMSECallBack)
@@ -298,6 +300,9 @@ Namespace MSE
                 Catch ex As Exception
 
                 End Try
+
+                m_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
+                m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
 
                 m_parameters.AllowValidation = True
@@ -348,6 +353,7 @@ Namespace MSE
                         Me.m_MSEdata.AssessMethod = Me.m_parameters.AssessmentMethod()
                         Me.m_MSEdata.AssessPower = Me.m_parameters.AssessPower()
                         Me.m_MSEdata.NTrials = Me.m_parameters.NTrials()
+                        Me.m_search.MSEUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
 
                 End Select
 

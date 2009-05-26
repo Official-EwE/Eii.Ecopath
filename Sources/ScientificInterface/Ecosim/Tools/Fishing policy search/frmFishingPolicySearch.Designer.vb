@@ -27,12 +27,12 @@ Namespace Ecosim
             Me.btnSearch = New System.Windows.Forms.Button
             Me.btnStop = New System.Windows.Forms.Button
             Me.plRunParams = New System.Windows.Forms.Panel
+            Me.cbPrevCE = New System.Windows.Forms.CheckBox
             Me.Label2 = New System.Windows.Forms.Label
             Me.txGenDiscRate = New System.Windows.Forms.TextBox
             Me.Label1 = New System.Windows.Forms.Label
             Me.txDiscountRate = New System.Windows.Forms.TextBox
             Me.plMaxSO = New System.Windows.Forms.Panel
-            Me.cbPrevCE = New System.Windows.Forms.CheckBox
             Me.cbMaxPortUl = New System.Windows.Forms.CheckBox
             Me.cbIncludeCCosts = New System.Windows.Forms.CheckBox
             Me.nupMaxEffChg = New System.Windows.Forms.NumericUpDown
@@ -62,6 +62,7 @@ Namespace Ecosim
             Me.m_splcPlotResults = New System.Windows.Forms.SplitContainer
             Me.m_graphResults = New ZedGraph.ZedGraphControl
             Me.m_zgcKiteDiag = New ZedGraph.ZedGraphControl
+            Me.cbUsePlugin = New System.Windows.Forms.CheckBox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -108,12 +109,12 @@ Namespace Ecosim
             '
             Me.SplitContainer1.Panel2.Controls.Add(Me.tcMain)
             Me.SplitContainer1.Size = New System.Drawing.Size(993, 687)
-            Me.SplitContainer1.SplitterDistance = 338
+            Me.SplitContainer1.SplitterDistance = 381
             Me.SplitContainer1.TabIndex = 0
             '
             'btnSearch
             '
-            Me.btnSearch.Location = New System.Drawing.Point(48, 307)
+            Me.btnSearch.Location = New System.Drawing.Point(34, 340)
             Me.btnSearch.Name = "btnSearch"
             Me.btnSearch.Size = New System.Drawing.Size(75, 23)
             Me.btnSearch.TabIndex = 22
@@ -122,7 +123,7 @@ Namespace Ecosim
             '
             'btnStop
             '
-            Me.btnStop.Location = New System.Drawing.Point(129, 307)
+            Me.btnStop.Location = New System.Drawing.Point(115, 340)
             Me.btnStop.Name = "btnStop"
             Me.btnStop.Size = New System.Drawing.Size(75, 23)
             Me.btnStop.TabIndex = 23
@@ -131,6 +132,8 @@ Namespace Ecosim
             '
             'plRunParams
             '
+            Me.plRunParams.Controls.Add(Me.cbUsePlugin)
+            Me.plRunParams.Controls.Add(Me.cbPrevCE)
             Me.plRunParams.Controls.Add(Me.Label2)
             Me.plRunParams.Controls.Add(Me.txGenDiscRate)
             Me.plRunParams.Controls.Add(Me.Label1)
@@ -154,8 +157,18 @@ Namespace Ecosim
             Me.plRunParams.Location = New System.Drawing.Point(-1, -1)
             Me.plRunParams.Margin = New System.Windows.Forms.Padding(0)
             Me.plRunParams.Name = "plRunParams"
-            Me.plRunParams.Size = New System.Drawing.Size(262, 305)
+            Me.plRunParams.Size = New System.Drawing.Size(262, 338)
             Me.plRunParams.TabIndex = 0
+            '
+            'cbPrevCE
+            '
+            Me.cbPrevCE.AutoSize = True
+            Me.cbPrevCE.Location = New System.Drawing.Point(11, 276)
+            Me.cbPrevCE.Name = "cbPrevCE"
+            Me.cbPrevCE.Size = New System.Drawing.Size(138, 17)
+            Me.cbPrevCE.TabIndex = 0
+            Me.cbPrevCE.Text = "Prevent cost > earnings"
+            Me.cbPrevCE.UseVisualStyleBackColor = True
             '
             'Label2
             '
@@ -193,29 +206,18 @@ Namespace Ecosim
             '
             Me.plMaxSO.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.plMaxSO.Controls.Add(Me.cbPrevCE)
             Me.plMaxSO.Controls.Add(Me.cbMaxPortUl)
             Me.plMaxSO.Controls.Add(Me.cbIncludeCCosts)
-            Me.plMaxSO.Location = New System.Drawing.Point(7, 252)
+            Me.plMaxSO.Location = New System.Drawing.Point(11, 296)
             Me.plMaxSO.Margin = New System.Windows.Forms.Padding(0)
             Me.plMaxSO.Name = "plMaxSO"
             Me.plMaxSO.Size = New System.Drawing.Size(255, 42)
             Me.plMaxSO.TabIndex = 19
             '
-            'cbPrevCE
-            '
-            Me.cbPrevCE.AutoSize = True
-            Me.cbPrevCE.Location = New System.Drawing.Point(0, 1)
-            Me.cbPrevCE.Name = "cbPrevCE"
-            Me.cbPrevCE.Size = New System.Drawing.Size(138, 17)
-            Me.cbPrevCE.TabIndex = 0
-            Me.cbPrevCE.Text = "Prevent cost > earnings"
-            Me.cbPrevCE.UseVisualStyleBackColor = True
-            '
             'cbMaxPortUl
             '
             Me.cbMaxPortUl.AutoSize = True
-            Me.cbMaxPortUl.Location = New System.Drawing.Point(0, 24)
+            Me.cbMaxPortUl.Location = New System.Drawing.Point(0, 3)
             Me.cbMaxPortUl.Name = "cbMaxPortUl"
             Me.cbMaxPortUl.Size = New System.Drawing.Size(135, 17)
             Me.cbMaxPortUl.TabIndex = 1
@@ -225,7 +227,7 @@ Namespace Ecosim
             'cbIncludeCCosts
             '
             Me.cbIncludeCCosts.AutoSize = True
-            Me.cbIncludeCCosts.Location = New System.Drawing.Point(6, 3)
+            Me.cbIncludeCCosts.Location = New System.Drawing.Point(0, 22)
             Me.cbIncludeCCosts.Name = "cbIncludeCCosts"
             Me.cbIncludeCCosts.Size = New System.Drawing.Size(133, 17)
             Me.cbIncludeCCosts.TabIndex = 0
@@ -387,7 +389,7 @@ Namespace Ecosim
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.plBlocks.Location = New System.Drawing.Point(267, -2)
             Me.plBlocks.Name = "plBlocks"
-            Me.plBlocks.Size = New System.Drawing.Size(718, 332)
+            Me.plBlocks.Size = New System.Drawing.Size(718, 375)
             Me.plBlocks.TabIndex = 0
             '
             'tcMain
@@ -399,7 +401,7 @@ Namespace Ecosim
             Me.tcMain.Location = New System.Drawing.Point(0, 0)
             Me.tcMain.Name = "tcMain"
             Me.tcMain.SelectedIndex = 0
-            Me.tcMain.Size = New System.Drawing.Size(989, 341)
+            Me.tcMain.Size = New System.Drawing.Size(989, 298)
             Me.tcMain.TabIndex = 0
             '
             'tbpObjv
@@ -408,7 +410,7 @@ Namespace Ecosim
             Me.tbpObjv.Location = New System.Drawing.Point(4, 22)
             Me.tbpObjv.Name = "tbpObjv"
             Me.tbpObjv.Padding = New System.Windows.Forms.Padding(3)
-            Me.tbpObjv.Size = New System.Drawing.Size(981, 315)
+            Me.tbpObjv.Size = New System.Drawing.Size(981, 272)
             Me.tbpObjv.TabIndex = 0
             Me.tbpObjv.Text = "Objectives"
             Me.tbpObjv.UseVisualStyleBackColor = True
@@ -422,7 +424,7 @@ Namespace Ecosim
             'SplitContainer2.Panel2
             '
             Me.SplitContainer2.Panel2.Controls.Add(Me.SplitContainer3)
-            Me.SplitContainer2.Size = New System.Drawing.Size(975, 309)
+            Me.SplitContainer2.Size = New System.Drawing.Size(975, 266)
             Me.SplitContainer2.SplitterDistance = 319
             Me.SplitContainer2.TabIndex = 0
             '
@@ -431,7 +433,7 @@ Namespace Ecosim
             Me.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SplitContainer3.Location = New System.Drawing.Point(0, 0)
             Me.SplitContainer3.Name = "SplitContainer3"
-            Me.SplitContainer3.Size = New System.Drawing.Size(652, 309)
+            Me.SplitContainer3.Size = New System.Drawing.Size(652, 266)
             Me.SplitContainer3.SplitterDistance = 212
             Me.SplitContainer3.TabIndex = 0
             '
@@ -441,7 +443,7 @@ Namespace Ecosim
             Me.tbpResultTable.Location = New System.Drawing.Point(4, 22)
             Me.tbpResultTable.Name = "tbpResultTable"
             Me.tbpResultTable.Padding = New System.Windows.Forms.Padding(3)
-            Me.tbpResultTable.Size = New System.Drawing.Size(981, 315)
+            Me.tbpResultTable.Size = New System.Drawing.Size(981, 272)
             Me.tbpResultTable.TabIndex = 1
             Me.tbpResultTable.Text = "Iteration results"
             Me.tbpResultTable.UseVisualStyleBackColor = True
@@ -455,7 +457,7 @@ Namespace Ecosim
             'scIterResult.Panel1
             '
             Me.scIterResult.Panel1.Controls.Add(Me.scIterResultMultiRun)
-            Me.scIterResult.Size = New System.Drawing.Size(975, 309)
+            Me.scIterResult.Size = New System.Drawing.Size(975, 266)
             Me.scIterResult.SplitterDistance = 541
             Me.scIterResult.TabIndex = 0
             '
@@ -465,8 +467,8 @@ Namespace Ecosim
             Me.scIterResultMultiRun.Location = New System.Drawing.Point(0, 0)
             Me.scIterResultMultiRun.Name = "scIterResultMultiRun"
             Me.scIterResultMultiRun.Orientation = System.Windows.Forms.Orientation.Horizontal
-            Me.scIterResultMultiRun.Size = New System.Drawing.Size(541, 309)
-            Me.scIterResultMultiRun.SplitterDistance = 157
+            Me.scIterResultMultiRun.Size = New System.Drawing.Size(541, 266)
+            Me.scIterResultMultiRun.SplitterDistance = 135
             Me.scIterResultMultiRun.TabIndex = 0
             '
             'm_tpPlots
@@ -475,7 +477,7 @@ Namespace Ecosim
             Me.m_tpPlots.Location = New System.Drawing.Point(4, 22)
             Me.m_tpPlots.Name = "m_tpPlots"
             Me.m_tpPlots.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpPlots.Size = New System.Drawing.Size(981, 315)
+            Me.m_tpPlots.Size = New System.Drawing.Size(981, 272)
             Me.m_tpPlots.TabIndex = 2
             Me.m_tpPlots.Text = "Plot results"
             Me.m_tpPlots.UseVisualStyleBackColor = True
@@ -494,7 +496,7 @@ Namespace Ecosim
             '
             Me.m_splcPlotResults.Panel2.Controls.Add(Me.m_zgcKiteDiag)
             Me.m_splcPlotResults.Panel2Collapsed = True
-            Me.m_splcPlotResults.Size = New System.Drawing.Size(975, 309)
+            Me.m_splcPlotResults.Size = New System.Drawing.Size(975, 266)
             Me.m_splcPlotResults.SplitterDistance = 626
             Me.m_splcPlotResults.TabIndex = 10
             '
@@ -511,7 +513,7 @@ Namespace Ecosim
             Me.m_graphResults.ScrollMinX = 0
             Me.m_graphResults.ScrollMinY = 0
             Me.m_graphResults.ScrollMinY2 = 0
-            Me.m_graphResults.Size = New System.Drawing.Size(975, 309)
+            Me.m_graphResults.Size = New System.Drawing.Size(975, 266)
             Me.m_graphResults.TabIndex = 8
             '
             'm_zgcKiteDiag
@@ -530,12 +532,24 @@ Namespace Ecosim
             Me.m_zgcKiteDiag.Size = New System.Drawing.Size(96, 100)
             Me.m_zgcKiteDiag.TabIndex = 9
             '
+            'cbUsePlugin
+            '
+            Me.cbUsePlugin.AutoSize = True
+            Me.cbUsePlugin.Enabled = False
+            Me.cbUsePlugin.Location = New System.Drawing.Point(11, 253)
+            Me.cbUsePlugin.Name = "cbUsePlugin"
+            Me.cbUsePlugin.Size = New System.Drawing.Size(149, 17)
+            Me.cbUsePlugin.TabIndex = 21
+            Me.cbUsePlugin.Text = "Use plugin economic data"
+            Me.cbUsePlugin.UseVisualStyleBackColor = True
+            '
             'frmFishingPolicySearch
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(993, 687)
             Me.Controls.Add(Me.SplitContainer1)
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFishingPolicySearch"
             Me.TabText = "Fishing policy search"
             Me.Text = "Fishing policy search"
@@ -605,6 +619,7 @@ Namespace Ecosim
         Private WithEvents m_zgcKiteDiag As ZedGraph.ZedGraphControl
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Friend WithEvents m_splcPlotResults As System.Windows.Forms.SplitContainer
+        Friend WithEvents cbUsePlugin As System.Windows.Forms.CheckBox
 
     End Class
 End Namespace
