@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.6  2009/05/26 21:55:15  jeroens
+' Responds to messages from more core components
+'
 ' Revision 1.5  2009/05/23 11:50:23  jeroens
 ' Fixed assertion on nStanzasForStanzaGroup datatype
 '
@@ -326,12 +329,13 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Sub Refresh(ByVal msgSource As eCoreComponentType)
 
+            For Each prop As cProperty In Me.m_htGeneric.Values
+                ' Refresh yourself
+                prop.Refresh()
+            Next
+
             Select Case msgSource
                 Case eCoreComponentType.EcoPath
-                    For Each prop As cProperty In Me.m_htGeneric.Values
-                        ' Refresh yourself
-                        prop.Refresh()
-                    Next
                     For Each prop As cProperty In Me.m_htEcopath.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -350,10 +354,6 @@ Namespace Properties
                     Next
 
                 Case eCoreComponentType.EcoSim
-                    For Each prop As cProperty In Me.m_htGeneric.Values
-                        ' Refresh yourself
-                        prop.Refresh()
-                    Next
                     For Each prop As cProperty In Me.m_htEcosim.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -368,10 +368,6 @@ Namespace Properties
                     Next
 
                 Case eCoreComponentType.EcoSpace
-                    For Each prop As cProperty In Me.m_htGeneric.Values
-                        ' Refresh yourself
-                        prop.Refresh()
-                    Next
                     For Each prop As cProperty In Me.m_htEcospace.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -382,10 +378,6 @@ Namespace Properties
                     Next
 
                 Case eCoreComponentType.Ecotracer
-                    For Each prop As cProperty In Me.m_htGeneric.Values
-                        ' Refresh yourself
-                        prop.Refresh()
-                    Next
                     For Each prop As cProperty In Me.m_htEcotracer.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -403,11 +395,13 @@ Namespace Properties
 
             Dim core As cCore = cCore.GetInstance()
 
-            'core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.ShapesManager, eMessageType.Any))
             core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_sync))
             core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_sync))
             core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_sync))
             core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_sync))
+            core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_sync))
 
         End Sub
 
