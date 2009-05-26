@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFishingPolicyManager.vb,v $
+' Revision 1.9  2009/05/26 22:02:33  jeroens
+' EconData availability variable value and status obtained from plug-in
+'
 ' Revision 1.8  2009/05/26 16:45:20  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -288,7 +291,7 @@ Namespace FishingPolicy
                 m_parameters.IncludeComp = coreData.IncludeCompetitiveImpact
                 m_parameters.MaxEffChange = coreData.MaxEffortChange
                 m_parameters.UseEconomicPlugin = coreData.FPSUseEconomicPlugin
-                m_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
+                'm_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
 
                 m_parameters.ResetStatusFlags()
 

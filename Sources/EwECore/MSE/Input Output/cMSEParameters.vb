@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEParameters.vb,v $
+' Revision 1.5  2009/05/26 22:02:34  jeroens
+' EconData availability variable value and status obtained from plug-in
+'
 ' Revision 1.4  2009/05/26 20:19:41  jeroens
 ' Variables no longer Stored
 '
@@ -81,15 +84,16 @@ Public Class cMSEParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEconomicAvailable))
-        val.Stored = False
-        m_values.Add(val.varName, val)
-
         ResetStatusFlags()
         AllowValidation = True
 
     End Sub
+
+    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
+        Me.m_core.Set_EconomicAvailable_Flags(Me, eVarNameFlags.MSEUseEconomicPlugin)
+        Return True
+    End Function
 
     Public Property AssessmentMethod() As eAssessmentMethods
         Get
@@ -204,14 +208,14 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    Public Property isEconomicAvailable() As Boolean
-        Get
-            Return CBool(GetVariable(eVarNameFlags.isEconomicAvailable))
-        End Get
+    'Public Property isEconomicAvailable() As Boolean
+    '    Get
+    '        Return CBool(GetVariable(eVarNameFlags.isEconomicAvailable))
+    '    End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.isEconomicAvailable, value)
-        End Set
-    End Property
+    '    Set(ByVal value As Boolean)
+    '        SetVariable(eVarNameFlags.isEconomicAvailable, value)
+    '    End Set
+    'End Property
 
 End Class

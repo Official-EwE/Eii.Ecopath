@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.10  2009/05/26 22:02:34  jeroens
+' EconData availability variable value and status obtained from plug-in
+'
 ' Revision 1.9  2009/05/26 16:45:23  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -301,9 +304,10 @@ Namespace MSE
 
                 End Try
 
-                m_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
+                'm_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
                 m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
+                m_parameters.ResetStatusFlags()
 
                 m_parameters.AllowValidation = True
 

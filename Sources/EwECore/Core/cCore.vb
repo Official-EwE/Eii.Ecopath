@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.133  2009/05/26 22:02:21  jeroens
+' EconData availability variable value and status obtained from plug-in
+'
 ' Revision 1.132  2009/05/26 18:20:44  joeb
 ' onEconomicPluginEnabled() sends a message for both FPS and MSE
 '
@@ -2494,7 +2497,7 @@ Public Class cCore
 
         If (DirectCast(Me.DataSource, IEcopathDataSource).SaveModel()) Then
             ' #Yes: invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveModel(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveModel(Me)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             ' Oh we're happy now!
@@ -3534,8 +3537,8 @@ Public Class cCore
                 're-populate the Ecopath statistics
                 LoadEcopathStats()
 
-                If Me.m_pluginManager IsNot Nothing Then
-                    m_pluginManager.EcopathRunCompleted(m_EcoPathData)
+                If Me.PluginManager IsNot Nothing Then
+                    Me.PluginManager.EcopathRunCompleted(m_EcoPathData)
                 End If
                 bsuccess = True
 
@@ -4191,7 +4194,6 @@ Public Class cCore
         Return True
     End Function
 
-    'Joeh
     Friend Function Set_VBK_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         Dim sg As cStanzaGroup = Nothing
@@ -4280,7 +4282,26 @@ Public Class cCore
 
         group.AllowValidation = True
     End Function
-    'End Joeh
+
+    Friend Function Set_EconomicAvailable_Flags(ByVal parms As cCoreInputOutputBase, ByVal varname As eVarNameFlags) As Boolean
+
+        Dim bAllowValidationOrg As Boolean = parms.AllowValidation
+        Dim bAvailable As Boolean = False
+
+        If Me.PluginManager IsNot Nothing Then
+            bAvailable = Me.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
+        End If
+
+        parms.AllowValidation = False
+        If bAvailable Then
+            parms.ClearStatusFlags(varname, eStatusFlags.NotEditable)
+        Else
+            parms.SetStatusFlags(varname, eStatusFlags.NotEditable)
+            parms.SetVariable(varname, False)
+        End If
+        parms.AllowValidation = bAllowValidationOrg
+
+    End Function
 
     Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
 
@@ -4843,6 +4864,9 @@ Public Class cCore
                 search.Load() 'populate the interface objects
             Next
 
+            ' Update economic data state for Ecosim objects
+            Me.OnEconomicDataPluginEnabled()
+
             ' Let's send out at least one message
             Me.SendEcosimLoadStateMessage(strScenarioName)
 
@@ -4894,7 +4918,7 @@ Public Class cCore
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
             ' #Yes: invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
             ' Force update
             Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             ' Update data state
@@ -4944,7 +4968,7 @@ Public Class cCore
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
             ' #Yes: invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcosimScenario(Me)
             ' Inform the world
             Me.SendEcosimSaveStateMessage(strName)
             ' Force update
@@ -6931,7 +6955,7 @@ Public Class cCore
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
 
             ' Invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
             ' Force update
             Me.m_StateMonitor.SetEcospaceLoaded(True, TriState.True)
             ' Update data state
@@ -6983,7 +7007,7 @@ Public Class cCore
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
             ' #Yes: invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
             ' Reload scenarios
             Me.InitEcospaceScenarios()
             ' Inform the world
@@ -8902,7 +8926,7 @@ Public Class cCore
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
             ' Invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
             ' Force update
             Me.m_StateMonitor.SetEcotracerLoaded(True, TriState.True)
             ' Update data state
@@ -8953,7 +8977,7 @@ Public Class cCore
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
             ' Invoke plugin point
-            If (Me.m_pluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcotracerScenario(Me)
             ' Inform the world
             Me.SendEcotracerSaveStateMessage(strName)
             ' Force update
@@ -10601,9 +10625,11 @@ Public Class cCore
             Me.m_EcoPath.PluginManager = pm
             Me.m_EcoSim.PluginManager = pm
             Me.m_Ecospace.PluginManager = pm
-            ' Hand plugin manager a delegate to check core enabled state
-            Me.m_pluginManager.CoreExecutionStateDelegate = New cPluginManager.CanExecutePlugin(AddressOf Me.CanExecutePlugin)
 
+            If (Me.m_pluginManager IsNot Nothing) Then
+                ' Hand plugin manager a delegate to check core enabled state
+                Me.m_pluginManager.CoreExecutionStateDelegate = New cPluginManager.CanExecutePlugin(AddressOf Me.CanExecutePlugin)
+            End If
         End Set
 
     End Property
@@ -10616,7 +10642,9 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
-        m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
+
+        Me.m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
+        AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10627,7 +10655,18 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
+
         m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
+        RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
+    End Sub
+
+    Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+
+        If (pa Is Nothing) Then Return
+        If pa.Plugins(GetType(IEconomicData)) IsNot Nothing Then
+            Me.OnEconomicDataPluginEnabled()
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10688,20 +10727,24 @@ Public Class cCore
     ''' The enabled state of an Economic plugin has changed (e.g. ValueChain)
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub onEconomicPluginEnabled()
+    Private Sub OnEconomicDataPluginEnabled()
         'ToDo_jb cCore.onEconomicPluginEnabled() we still need to find a way for the core to know when Plugin Enabled states have changed
 
         'This should only be called when a plugin that supports Economic data has changed
         'that decision will need to be made elsewhere
 
         'update all components that could be using the Economic data from a plugin
+
         Try
             'this will reset the isEconomicAvailable flag in the Parameters objects to the values 
-            Me.MSEManager.Load()
-            Me.FishingPolicyManager.Load()
+            If Me.m_StateMonitor.HasEcosimLoaded Then
+                'implementation limitation: managers are only initialized when Ecosim is initialized
+                Me.MSEManager.Load()
+                Me.FishingPolicyManager.Load()
 
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.FishingPolicySearch, eMessageImportance.Maintenance))
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance))
+                Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.FishingPolicySearch, eMessageImportance.Maintenance))
+                Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance))
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, "Core.onEconomicPluginEnabled() Error: " & ex.Message)
