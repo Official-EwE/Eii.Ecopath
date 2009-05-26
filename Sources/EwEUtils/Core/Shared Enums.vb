@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.64  2009/05/26 22:10:24  jeroens
+' Removed isEconomicDataAvailable
+'
 ' Revision 1.63  2009/05/26 16:45:25  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -886,7 +889,7 @@ Namespace Core
         SearchBaseYear
         SearchFishingMortalityPenalty
 
-        isEconomicAvailable
+        'isEconomicAvailable
 
         FPSValueComponentType
 
