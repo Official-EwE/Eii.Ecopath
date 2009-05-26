@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.134  2009/05/26 22:33:58  joeh
+' Add Cascade_TCatchInput( )
+'
 ' Revision 1.133  2009/05/26 22:02:21  jeroens
 ' EconData availability variable value and status obtained from plug-in
 '
@@ -4460,6 +4463,39 @@ Public Class cCore
         Next
 
     End Sub
+
+    'Joeh
+    Private Sub Cascade_TCatchInput(ByVal sTCatchInput As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
+
+        Dim groupCascade As cEcoPathGroupInput = Nothing
+        Dim bAllowValidationOrg As Boolean = False
+        Dim iStanza As Integer = Me.getStanzaIDForGroup(group.Index)
+
+        Debug.Assert(iStanza = group.iStanza)
+
+        ' Is not a stanza life stage?
+        If (iStanza < 0) Then Return
+
+        For iGroup As Integer = 1 To Me.nGroups
+            groupCascade = Me.EcoPathGroupInputs(iGroup)
+
+            Debug.Assert(Me.getStanzaIDForGroup(iGroup) = groupCascade.iStanza)
+
+            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) And _
+            (m_EcoPathData.fCatch(iGroup) > 0) Then
+
+                bAllowValidationOrg = groupCascade.AllowValidation
+                groupCascade.AllowValidation = False
+                groupCascade.TcatchInput = sTCatchInput
+                groupCascade.ResetStatusFlags()
+                groupCascade.AllowValidation = bAllowValidationOrg
+
+                msg.AddVariable(GetAffectedVariableStatus(groupCascade, eVarNameFlags.TCatchInput))
+            End If
+        Next
+
+    End Sub
+    'End Joeh
 
 #End Region ' Status flags updating
 
@@ -10012,6 +10048,11 @@ Public Class cCore
                     Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableUpdated?
                         Me.Cascade_VBK(group.VBK, group, msg)
+
+                        'Joeh
+                    Case eVarNameFlags.TCatchInput
+                        Me.Cascade_TCatchInput(group.TcatchInput, group, msg)
+                        'End Joeh
 
                     Case eVarNameFlags.PP
                         ' Cascade PP change to other Groups
