@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFormatProvider.vb,v $
+' Revision 1.4  2009/05/26 19:37:50  jeroens
+' Fixed combo box background style
+'
 ' Revision 1.3  2009/04/27 03:53:02  jeroens
 ' Fixed issue 616
 '
@@ -816,7 +819,7 @@ Namespace Controls
                 ' - Set colours
                 ' *** Checkbox special: do not colour background on "OK" or "NotEditable" style
                 style = style And Not (StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable)
-                Me.m_cb.BackColor = Color.FromArgb(0, 0, 0, 0)
+                Me.m_cb.BackColor = SystemColors.Control
                 ' Fetch, boy
                 sg.GetStyleColors(style, Me.m_cb.ForeColor, Me.m_cb.BackColor)
                 ' - Set enabled state
