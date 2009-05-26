@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.11  2009/05/26 22:31:59  joeb
+' Removed updateEconomicDataAvailable()
+'
 ' Revision 1.10  2009/05/26 21:59:14  jeroens
 ' Cleaned-up gui
 ' EconData availability check performed via a variable and its status
@@ -123,7 +126,7 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.Plugin}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
             Me.UpdateControls()
@@ -488,14 +491,11 @@ Namespace Ecosim
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+
             If msg.Source = eCoreComponentType.TimeSeries Then
                 Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
             End If
 
-            'If msg.Source = eCoreComponentType.Plugin Then
-            '    'if there is a plugin message then update the the enabled state of the Use plugin economic data
-            '    Me.updateEconomicDataAvailable()
-            'End If
         End Sub
 
         Private m_bInUpdate As Boolean = False
@@ -538,18 +538,6 @@ Namespace Ecosim
         Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
         End Sub
-
-        '''' <summary>
-        '''' Update the enabled state of the Use Economic Plugin checkbox
-        '''' </summary>
-        '''' <remarks></remarks>
-        'Private Sub updateEconomicDataAvailable()
-        '    If Me.m_manager.ModelParameters.isEconomicAvailable Then
-        '        Me.m_fpUsePlugin.Style = StyleGuide.eStyleFlags.OK
-        '    Else
-        '        Me.m_fpUsePlugin.Style = StyleGuide.eStyleFlags.NotEditable
-        '    End If
-        'End Sub
 
 #Region " Graphing Region "
 
