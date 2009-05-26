@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.10  2009/05/26 21:59:14  jeroens
+' Cleaned-up gui
+' EconData availability check performed via a variable and its status
+'
 ' Revision 1.9  2009/05/26 16:45:26  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -59,7 +63,6 @@ Namespace Ecosim
         Private m_blocks As ucPolicyColorBlocks = Nothing
         Private m_core As cCore = Nothing
         Private m_manager As cFishingPolicyManager = Nothing
-        Private m_params As cFishingPolicyParameters = Nothing
 
         Private m_gridObjectiveWeights As gridSearchObjectivesWeight = Nothing
         Private m_gridFleetObjectives As gridSearchObjectivesFleet = Nothing
@@ -91,7 +94,6 @@ Namespace Ecosim
 
             'Initialize Fishing Policy Manager
             Me.m_manager = Me.m_core.FishingPolicyManager
-            Me.m_params = Me.m_manager.ModelParameters
 
             Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
@@ -105,26 +107,26 @@ Namespace Ecosim
             Me.m_gridSystemObjectivesMulti = New gridFPSResultSystemObjectives()
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
 
-            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.txDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.txGenDiscRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.m_txtDiscountRate, m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.cbUsePlugin, m_core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
+            Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.m_chkUsePlugin, m_core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
             Me.m_propBaseYear = cPropertyManager.GetInstance().GetProperty(m_core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             AddHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
 
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbMaxPortUl, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbPrevCE, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cmbSearchUsing, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbUsePlugin, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkMaxPortUl, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkPrevCE, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_cmbSearchUsing, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
+            'Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkUsePlugin, eOptimizeApproachTypes.SystemObjective))
 
-            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.cbIncludeCCosts, eOptimizeApproachTypes.FleetValues))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.Plugin}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
-            Me.updateOptControls()
+            Me.UpdateControls()
 
         End Sub
 
@@ -140,9 +142,9 @@ Namespace Ecosim
             Me.CoreComponents = Nothing
         End Sub
 
-        Private Sub updateOptControls()
+        Private Sub UpdateControls()
 
-            Dim optAproach As eOptimizeApproachTypes = m_params.OptimizeApproach
+            Dim optAproach As eOptimizeApproachTypes = Me.m_manager.ModelParameters.OptimizeApproach
             For Each ct As cControlEnabler In m_lstOptEnabled
                 ct.Enabled(optAproach)
             Next
@@ -151,20 +153,20 @@ Namespace Ecosim
 
         Private Sub FishingPolicySearch_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-            plBlocks.Controls.Clear()
-            plBlocks.Controls.Add(m_blocks)
+            m_plBlocks.Controls.Clear()
+            m_plBlocks.Controls.Add(m_blocks)
             m_blocks.Dock = DockStyle.Fill
 
-            SplitContainer2.Panel1.Controls.Clear()
-            SplitContainer2.Panel1.Controls.Add(m_gridObjectiveWeights)
+            m_scObjectives.Panel1.Controls.Clear()
+            m_scObjectives.Panel1.Controls.Add(m_gridObjectiveWeights)
             m_gridObjectiveWeights.Dock = DockStyle.Fill
 
-            SplitContainer3.Panel1.Controls.Clear()
-            SplitContainer3.Panel1.Controls.Add(m_gridFleetObjectives)
+            m_scAarghArghAaargh.Panel1.Controls.Clear()
+            m_scAarghArghAaargh.Panel1.Controls.Add(m_gridFleetObjectives)
             m_gridFleetObjectives.Dock = DockStyle.Fill
 
-            SplitContainer3.Panel2.Controls.Clear()
-            SplitContainer3.Panel2.Controls.Add(m_gridGroupObjectives)
+            m_scAarghArghAaargh.Panel2.Controls.Clear()
+            m_scAarghArghAaargh.Panel2.Controls.Add(m_gridGroupObjectives)
             m_gridGroupObjectives.Dock = DockStyle.Fill
 
             m_blocks.ParmBlockCodes.nBlockCodes = m_core.nFleets
@@ -176,30 +178,30 @@ Namespace Ecosim
 
         Private Sub InitRunParams()
 
-            nupNumOfRuns.Value = CDec(m_params.nRuns)
-            nupMaxNumEval.Value = CDec(m_params.MaxNumEval)
-            Select Case m_params.InitOption
+            m_nudNumberOfRuns.Value = CDec(Me.m_manager.ModelParameters.nRuns)
+            m_nudMaxNumEval.Value = CDec(Me.m_manager.ModelParameters.MaxNumEval)
+            Select Case Me.m_manager.ModelParameters.InitOption
                 Case eInitOption.EcopathBaseF
-                    cmbInitUsing.SelectedIndex = 0
+                    m_cmbInitUsing.SelectedIndex = 0
                 Case eInitOption.CurrentF
-                    cmbInitUsing.SelectedIndex = 1
+                    m_cmbInitUsing.SelectedIndex = 1
                 Case eInitOption.RandomF
-                    cmbInitUsing.SelectedIndex = 2
+                    m_cmbInitUsing.SelectedIndex = 2
             End Select
 
-            Select Case m_params.SearchOption
+            Select Case Me.m_manager.ModelParameters.SearchOption
                 Case eSearchOptionTypes.Fletch
-                    cmbSearchUsing.SelectedIndex = 0
+                    m_cmbSearchUsing.SelectedIndex = 0
                 Case eSearchOptionTypes.DFPmin
-                    cmbSearchUsing.SelectedIndex = 1
+                    m_cmbSearchUsing.SelectedIndex = 1
             End Select
 
-            Select Case m_params.OptimizeApproach
+            Select Case Me.m_manager.ModelParameters.OptimizeApproach
                 Case eOptimizeApproachTypes.SystemObjective
-                    cmbOptmApproach.SelectedIndex = 0
+                    m_cmbOptmApproach.SelectedIndex = 0
                     InitMaxSOParams()
                 Case eOptimizeApproachTypes.FleetValues
-                    cmbOptmApproach.SelectedIndex = 1
+                    m_cmbOptmApproach.SelectedIndex = 1
                     InitMaxFVParams()
             End Select
 
@@ -207,10 +209,10 @@ Namespace Ecosim
             Me.InitResultsPlot()
 
             ' Controls
-            Me.updateOptControls()
+            Me.UpdateControls()
 
-            'set the enabled state of the Use Economic data checkbox
-            Me.updateEconomicDataAvailable()
+            ''set the enabled state of the Use Economic data checkbox
+            'Me.updateEconomicDataAvailable()
 
             Me.btnSearch.Enabled = True
             Me.btnStop.Enabled = False
@@ -218,122 +220,134 @@ Namespace Ecosim
         End Sub
 
         Private Sub InitMaxSOParams()
-            cbMaxPortUl.Checked = m_params.MaxPortUtil
-            cbPrevCE.Checked = Me.m_manager.ObjectiveParameters.PrevCostEarning
-            Me.cbUsePlugin.Checked = Me.m_manager.ModelParameters.UseEconomicPlugin
+            m_chkMaxPortUl.Checked = Me.m_manager.ModelParameters.MaxPortUtil
+            m_chkPrevCE.Checked = Me.m_manager.ObjectiveParameters.PrevCostEarning
+            Me.m_chkUsePlugin.Checked = Me.m_manager.ModelParameters.UseEconomicPlugin
         End Sub
 
         Private Sub InitMaxFVParams()
-            cbIncludeCCosts.Checked = m_params.IncludeComp
-            nupMaxEffChg.Value = CDec(m_params.MaxEffChange)
-            nudBaseYear.Value = CDec(Me.m_manager.ObjectiveParameters.BaseYear)
+            m_chkIncludeCCosts.Checked = Me.m_manager.ModelParameters.IncludeComp
+            m_nudMaxEffChg.Value = CDec(Me.m_manager.ModelParameters.MaxEffChange)
+            m_nudBaseYear.Value = CDec(Me.m_manager.ObjectiveParameters.BaseYear)
         End Sub
 
-        Private Sub nupNumOfRuns_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles nupNumOfRuns.ValueChanged
+        Private Sub m_nudNumberOfRuns_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudNumberOfRuns.ValueChanged
 
-            If Not m_params Is Nothing Then
-                m_params.nRuns = CInt(nupNumOfRuns.Value)
-                If m_params.nRuns > 1 And m_params.InitOption <> eInitOption.RandomF Then
-                    m_params.InitOption = eInitOption.RandomF
-                    InitRunParams()
-                End If
+            ' Check to discard premature NumericUpDown events
+            If Me.m_manager Is Nothing Then Return
+
+            Me.m_manager.ModelParameters.nRuns = CInt(m_nudNumberOfRuns.Value)
+            If Me.m_manager.ModelParameters.nRuns > 1 And Me.m_manager.ModelParameters.InitOption <> eInitOption.RandomF Then
+                Me.m_manager.ModelParameters.InitOption = eInitOption.RandomF
+                InitRunParams()
             End If
 
         End Sub
 
-        Private Sub nupMaxNumEval_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles nupMaxNumEval.ValueChanged
+        Private Sub m_nudMaxNumEval_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudMaxNumEval.ValueChanged
 
-            If Not m_params Is Nothing Then
-                m_params.MaxNumEval = CSng(nupMaxNumEval.Value)
-            End If
+            ' Check to discard premature NumericUpDown events
+            If Me.m_manager Is Nothing Then Return
 
-        End Sub
-
-        Private Sub cbInitUsing_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbInitUsing.SelectedIndexChanged
-
-            If Not m_params Is Nothing Then
-
-                Select Case cmbInitUsing.SelectedIndex
-                    Case 0
-                        m_params.InitOption = eInitOption.EcopathBaseF
-                    Case 1
-                        m_params.InitOption = eInitOption.CurrentF
-                    Case 2
-                        m_params.InitOption = eInitOption.RandomF
-                End Select
-
-            End If
+            Me.m_manager.ModelParameters.MaxNumEval = CSng(m_nudMaxNumEval.Value)
 
         End Sub
 
-        Private Sub cbSearchUsing_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbSearchUsing.SelectedIndexChanged
+        Private Sub m_cmbInitUsing_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbInitUsing.SelectedIndexChanged
 
-            If Not m_params Is Nothing Then
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
 
-                Select Case cmbSearchUsing.SelectedIndex
-                    Case 0
-                        m_params.SearchOption = eSearchOptionTypes.Fletch
-                    Case 1
-                        m_params.SearchOption = eSearchOptionTypes.DFPmin
-                End Select
-
-            End If
-
-        End Sub
-
-        Private Sub cbOptmApproach_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOptmApproach.SelectedIndexChanged
-            If Not m_params Is Nothing Then
-
-                Select Case cmbOptmApproach.SelectedIndex
-                    Case 0
-                        m_params.OptimizeApproach = eOptimizeApproachTypes.SystemObjective
-                        InitMaxSOParams()
-                        m_gridFleetObjectives.IsMaximizeByFleetValue = False
-                    Case 1
-                        m_params.OptimizeApproach = eOptimizeApproachTypes.FleetValues
-                        InitMaxFVParams()
-                        m_gridFleetObjectives.IsMaximizeByFleetValue = True
-                End Select
-
-            End If
-
-            updateOptControls()
-
-        End Sub
-
-        Private Sub nupMaxEffChg_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles nupMaxEffChg.ValueChanged
-
-            If Not m_params Is Nothing Then
-                m_params.MaxEffChange = CSng(nupMaxEffChg.Value)
-            End If
-
-        End Sub
-
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-
-            tcMain.SelectedIndex = 1
-
-            scIterResultMultiRun.Panel1.Controls.Clear()
-
-            scIterResultMultiRun.Panel1.Controls.Add(m_gridSystemObjectives)
-            m_gridSystemObjectives.InsertColumns(m_manager.nSearchBlocks)
-
-            Select Case m_params.OptimizeApproach
-                Case eOptimizeApproachTypes.SystemObjective
-                    scIterResult.Panel2Collapsed = True
-                Case eOptimizeApproachTypes.FleetValues
-                    scIterResult.Panel2Collapsed = False
-                    scIterResult.Panel2.Controls.Clear()
-                    scIterResult.Panel2.Controls.Add(m_gridFleetValue)
+            Select Case m_cmbInitUsing.SelectedIndex
+                Case 0
+                    Me.m_manager.ModelParameters.InitOption = eInitOption.EcopathBaseF
+                Case 1
+                    Me.m_manager.ModelParameters.InitOption = eInitOption.CurrentF
+                Case 2
+                    Me.m_manager.ModelParameters.InitOption = eInitOption.RandomF
             End Select
 
-            If CInt(nupNumOfRuns.Value) > 1 Then
-                scIterResultMultiRun.Panel2Collapsed = False
-                scIterResultMultiRun.Panel2.Controls.Clear()
-                scIterResultMultiRun.Panel2.Controls.Add(m_gridSystemObjectivesMulti)
+        End Sub
+
+        Private Sub m_cmbSearchUsing_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbSearchUsing.SelectedIndexChanged
+
+            If Not Me.m_manager.ModelParameters Is Nothing Then
+
+                Select Case m_cmbSearchUsing.SelectedIndex
+                    Case 0
+                        Me.m_manager.ModelParameters.SearchOption = eSearchOptionTypes.Fletch
+                    Case 1
+                        Me.m_manager.ModelParameters.SearchOption = eSearchOptionTypes.DFPmin
+                End Select
+
+            End If
+
+        End Sub
+
+        Private Sub OnOptmApproach_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbOptmApproach.SelectedIndexChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+
+            Select Case m_cmbOptmApproach.SelectedIndex
+                Case 0
+                    Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.SystemObjective
+                    InitMaxSOParams()
+                    m_gridFleetObjectives.IsMaximizeByFleetValue = False
+                Case 1
+                    Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues
+                    InitMaxFVParams()
+                    m_gridFleetObjectives.IsMaximizeByFleetValue = True
+            End Select
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnMaxEffValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudMaxEffChg.ValueChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+
+            Me.m_manager.ModelParameters.MaxEffChange = CSng(m_nudMaxEffChg.Value)
+
+        End Sub
+
+        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles btnSearch.Click
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+
+            m_tcMain.SelectedIndex = 1
+
+            m_scIterResultMultiRun.Panel1.Controls.Clear()
+
+            m_scIterResultMultiRun.Panel1.Controls.Add(m_gridSystemObjectives)
+            m_gridSystemObjectives.InsertColumns(m_manager.nSearchBlocks)
+
+            Select Case Me.m_manager.ModelParameters.OptimizeApproach
+                Case eOptimizeApproachTypes.SystemObjective
+                    m_scIterResult.Panel2Collapsed = True
+                Case eOptimizeApproachTypes.FleetValues
+                    m_scIterResult.Panel2Collapsed = False
+                    m_scIterResult.Panel2.Controls.Clear()
+                    m_scIterResult.Panel2.Controls.Add(m_gridFleetValue)
+            End Select
+
+            If CInt(m_nudNumberOfRuns.Value) > 1 Then
+                m_scIterResultMultiRun.Panel2Collapsed = False
+                m_scIterResultMultiRun.Panel2.Controls.Clear()
+                m_scIterResultMultiRun.Panel2.Controls.Add(m_gridSystemObjectivesMulti)
                 m_gridSystemObjectivesMulti.InsertColumns(m_manager.nSearchBlocks)
             Else
-                scIterResultMultiRun.Panel2Collapsed = True
+                m_scIterResultMultiRun.Panel2Collapsed = True
             End If
 
             ' Init the Results plot
@@ -343,8 +357,8 @@ Namespace Ecosim
             Me.btnSearch.Enabled = False
             Me.btnStop.Enabled = True
 
-            Me.plRunParams.Enabled = False
-            Me.plBlocks.Enabled = False
+            Me.m_plRunParams.Enabled = False
+            Me.m_plBlocks.Enabled = False
 
             AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
 
@@ -361,8 +375,8 @@ Namespace Ecosim
                 Me.btnSearch.Enabled = True
                 Me.btnStop.Enabled = False
 
-                Me.plRunParams.Enabled = True
-                Me.plBlocks.Enabled = True
+                Me.m_plRunParams.Enabled = True
+                Me.m_plBlocks.Enabled = True
 
                 AppLauncher.GetInstance().SetStatusText("", TriState.UseDefault)
 
@@ -398,7 +412,7 @@ Namespace Ecosim
         Private Sub RunCompletedHandler()
 
             Try
-                If CInt(nupNumOfRuns.Value) > 1 Then
+                If CInt(m_nudNumberOfRuns.Value) > 1 Then
                     Dim results As cFPSSearchResults = m_manager.SearchResults
                     m_gridSystemObjectivesMulti.InsertOneIterResult(results, m_manager.nSearchBlocks, m_blocks.ParmBlockCodes)
                 End If
@@ -420,7 +434,7 @@ Namespace Ecosim
                 'cFishingPolicyManager.SearchResults will be populate with the results of the Search at the current interation
                 Dim results As cFPSSearchResults = m_manager.SearchResults
 
-                If cmbOptmApproach.SelectedIndex = 1 Then
+                If m_cmbOptmApproach.SelectedIndex = 1 Then
                     m_gridFleetValue.InsertOneIterResult(results)
                 End If
 
@@ -436,23 +450,32 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub cbIncludeCCosts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIncludeCCosts.CheckedChanged
-            If Not m_params Is Nothing Then
-                m_params.IncludeComp = cbIncludeCCosts.Checked
-            End If
+        Private Sub cbIncludeCCosts_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkIncludeCCosts.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ModelParameters.IncludeComp = m_chkIncludeCCosts.Checked
+
         End Sub
 
-        Private Sub cbMaxPortUl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMaxPortUl.CheckedChanged
-            If Not m_params Is Nothing Then
-                m_params.MaxPortUtil = cbMaxPortUl.Checked
-                m_gridObjectiveWeights.ShowMaxPortUtil = cbMaxPortUl.Checked
-            End If
+        Private Sub cbMaxPortUl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkMaxPortUl.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ModelParameters.MaxPortUtil = m_chkMaxPortUl.Checked
+            Me.m_gridObjectiveWeights.ShowMaxPortUtil = m_chkMaxPortUl.Checked
+
         End Sub
 
-        Private Sub cbPrevCE_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbPrevCE.CheckedChanged
-            ' If Not m_FPParams Is Nothing Then
-            Me.m_manager.ObjectiveParameters.PrevCostEarning = cbPrevCE.Checked
-            '  End If
+        Private Sub cbPrevCE_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_chkPrevCE.CheckedChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
+            Me.m_manager.ObjectiveParameters.PrevCostEarning = m_chkPrevCE.Checked
+
         End Sub
 
         Private Sub btnStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStop.Click
@@ -469,10 +492,10 @@ Namespace Ecosim
                 Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
             End If
 
-            If msg.Source = eCoreComponentType.Plugin Then
-                'if there is a plugin message then update the the enabled state of the Use plugin economic data
-                Me.updateEconomicDataAvailable()
-            End If
+            'If msg.Source = eCoreComponentType.Plugin Then
+            '    'if there is a plugin message then update the the enabled state of the Use plugin economic data
+            '    Me.updateEconomicDataAvailable()
+            'End If
         End Sub
 
         Private m_bInUpdate As Boolean = False
@@ -484,21 +507,24 @@ Namespace Ecosim
 
             'If (cf And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value Then
             Me.m_bInUpdate = True
-            Me.nudBaseYear.Value = CInt(prop.GetValue()) + Me.m_core.EcosimFirstYear
+            Me.m_nudBaseYear.Value = CInt(prop.GetValue()) + Me.m_core.EcosimFirstYear
             Me.m_bInUpdate = False
             'End If
 
         End Sub
 
         Private Sub OnBaseYearChanged(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles nudBaseYear.ValueChanged
+            Handles m_nudBaseYear.ValueChanged
+
+            ' Check to discard premature events
+            If Me.m_manager Is Nothing Then Return
 
             Dim iStart As Integer = Me.m_core.EcosimFirstYear
             Dim iEnd As Integer = iStart + Me.m_core.nEcosimYears
             Dim iValue As Integer = iStart
 
             Try
-                iValue = CInt(Val(Me.nudBaseYear.Value))
+                iValue = CInt(Val(Me.m_nudBaseYear.Value))
             Catch ex As Exception
                 ' Whoops
             End Try
@@ -513,13 +539,17 @@ Namespace Ecosim
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
         End Sub
 
-        ''' <summary>
-        ''' Update the enabled state of the Use Economic Plugin checkbox
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub updateEconomicDataAvailable()
-            Me.cbUsePlugin.Enabled = Me.m_manager.ModelParameters.isEconomicAvailable
-        End Sub
+        '''' <summary>
+        '''' Update the enabled state of the Use Economic Plugin checkbox
+        '''' </summary>
+        '''' <remarks></remarks>
+        'Private Sub updateEconomicDataAvailable()
+        '    If Me.m_manager.ModelParameters.isEconomicAvailable Then
+        '        Me.m_fpUsePlugin.Style = StyleGuide.eStyleFlags.OK
+        '    Else
+        '        Me.m_fpUsePlugin.Style = StyleGuide.eStyleFlags.NotEditable
+        '    End If
+        'End Sub
 
 #Region " Graphing Region "
 

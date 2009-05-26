@@ -23,349 +23,367 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.btnSearch = New System.Windows.Forms.Button
+            Me.m_scTopBits = New System.Windows.Forms.SplitContainer
+            Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel
             Me.btnStop = New System.Windows.Forms.Button
-            Me.plRunParams = New System.Windows.Forms.Panel
-            Me.cbPrevCE = New System.Windows.Forms.CheckBox
-            Me.Label2 = New System.Windows.Forms.Label
-            Me.txGenDiscRate = New System.Windows.Forms.TextBox
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.txDiscountRate = New System.Windows.Forms.TextBox
-            Me.plMaxSO = New System.Windows.Forms.Panel
-            Me.cbMaxPortUl = New System.Windows.Forms.CheckBox
-            Me.cbIncludeCCosts = New System.Windows.Forms.CheckBox
-            Me.nupMaxEffChg = New System.Windows.Forms.NumericUpDown
-            Me.nudBaseYear = New System.Windows.Forms.NumericUpDown
-            Me.lblBaseYear = New System.Windows.Forms.Label
-            Me.cmbOptmApproach = New System.Windows.Forms.ComboBox
-            Me.lblMaxEffChg = New System.Windows.Forms.Label
-            Me.lblOptmApproach = New System.Windows.Forms.Label
-            Me.cmbSearchUsing = New System.Windows.Forms.ComboBox
-            Me.lblSearchUsing = New System.Windows.Forms.Label
-            Me.cmbInitUsing = New System.Windows.Forms.ComboBox
-            Me.lblInitUsing = New System.Windows.Forms.Label
-            Me.nupMaxNumEval = New System.Windows.Forms.NumericUpDown
-            Me.nupNumOfRuns = New System.Windows.Forms.NumericUpDown
-            Me.lblMaxNumEval = New System.Windows.Forms.Label
-            Me.lblNumOfRuns = New System.Windows.Forms.Label
+            Me.btnSearch = New System.Windows.Forms.Button
+            Me.m_plRunParams = New System.Windows.Forms.Panel
+            Me.m_chkIncludeCCosts = New System.Windows.Forms.CheckBox
+            Me.m_chkMaxPortUl = New System.Windows.Forms.CheckBox
+            Me.m_chkUsePlugin = New System.Windows.Forms.CheckBox
+            Me.m_chkPrevCE = New System.Windows.Forms.CheckBox
+            Me.m_lblGenDiscRate = New System.Windows.Forms.Label
+            Me.m_txtGenDiscRate = New System.Windows.Forms.TextBox
+            Me.m_lblDiscRate = New System.Windows.Forms.Label
+            Me.m_txtDiscountRate = New System.Windows.Forms.TextBox
+            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown
+            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
+            Me.m_lblBaseYear = New System.Windows.Forms.Label
+            Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox
+            Me.m_lblMaxEffChg = New System.Windows.Forms.Label
+            Me.m_lblOptmApproach = New System.Windows.Forms.Label
+            Me.m_cmbSearchUsing = New System.Windows.Forms.ComboBox
+            Me.m_lblSearchUsing = New System.Windows.Forms.Label
+            Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox
+            Me.m_lblInitUsing = New System.Windows.Forms.Label
+            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown
+            Me.m_lblMaxNumEval = New System.Windows.Forms.Label
+            Me.m_lblNumOfRuns = New System.Windows.Forms.Label
             Me.lblInitializationHeader = New System.Windows.Forms.Label
-            Me.plBlocks = New System.Windows.Forms.Panel
-            Me.tcMain = New System.Windows.Forms.TabControl
-            Me.tbpObjv = New System.Windows.Forms.TabPage
-            Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
-            Me.SplitContainer3 = New System.Windows.Forms.SplitContainer
-            Me.tbpResultTable = New System.Windows.Forms.TabPage
-            Me.scIterResult = New System.Windows.Forms.SplitContainer
-            Me.scIterResultMultiRun = New System.Windows.Forms.SplitContainer
+            Me.m_plBlocks = New System.Windows.Forms.Panel
+            Me.m_tcMain = New System.Windows.Forms.TabControl
+            Me.m_tabObjectives = New System.Windows.Forms.TabPage
+            Me.m_scObjectives = New System.Windows.Forms.SplitContainer
+            Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer
+            Me.m_tabResultTable = New System.Windows.Forms.TabPage
+            Me.m_scIterResult = New System.Windows.Forms.SplitContainer
+            Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer
             Me.m_tpPlots = New System.Windows.Forms.TabPage
             Me.m_splcPlotResults = New System.Windows.Forms.SplitContainer
             Me.m_graphResults = New ZedGraph.ZedGraphControl
             Me.m_zgcKiteDiag = New ZedGraph.ZedGraphControl
-            Me.cbUsePlugin = New System.Windows.Forms.CheckBox
-            Me.SplitContainer1.Panel1.SuspendLayout()
-            Me.SplitContainer1.Panel2.SuspendLayout()
-            Me.SplitContainer1.SuspendLayout()
-            Me.plRunParams.SuspendLayout()
-            Me.plMaxSO.SuspendLayout()
-            CType(Me.nupMaxEffChg, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nupMaxNumEval, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.nupNumOfRuns, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.tcMain.SuspendLayout()
-            Me.tbpObjv.SuspendLayout()
-            Me.SplitContainer2.Panel2.SuspendLayout()
-            Me.SplitContainer2.SuspendLayout()
-            Me.SplitContainer3.SuspendLayout()
-            Me.tbpResultTable.SuspendLayout()
-            Me.scIterResult.Panel1.SuspendLayout()
-            Me.scIterResult.SuspendLayout()
-            Me.scIterResultMultiRun.SuspendLayout()
+            Me.m_scTopBits.Panel1.SuspendLayout()
+            Me.m_scTopBits.Panel2.SuspendLayout()
+            Me.m_scTopBits.SuspendLayout()
+            Me.m_tlpRunStop.SuspendLayout()
+            Me.m_plRunParams.SuspendLayout()
+            CType(Me.m_nudMaxEffChg, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudMaxNumEval, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNumberOfRuns, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tcMain.SuspendLayout()
+            Me.m_tabObjectives.SuspendLayout()
+            Me.m_scObjectives.Panel2.SuspendLayout()
+            Me.m_scObjectives.SuspendLayout()
+            Me.m_scAarghArghAaargh.SuspendLayout()
+            Me.m_tabResultTable.SuspendLayout()
+            Me.m_scIterResult.Panel1.SuspendLayout()
+            Me.m_scIterResult.SuspendLayout()
+            Me.m_scIterResultMultiRun.SuspendLayout()
             Me.m_tpPlots.SuspendLayout()
             Me.m_splcPlotResults.Panel1.SuspendLayout()
             Me.m_splcPlotResults.Panel2.SuspendLayout()
             Me.m_splcPlotResults.SuspendLayout()
             Me.SuspendLayout()
             '
-            'SplitContainer1
+            'm_scTopBits
             '
-            Me.SplitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
-            Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
-            Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(0)
-            Me.SplitContainer1.Name = "SplitContainer1"
-            Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
+            Me.m_scTopBits.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_scTopBits.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scTopBits.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
+            Me.m_scTopBits.Location = New System.Drawing.Point(0, 0)
+            Me.m_scTopBits.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_scTopBits.Name = "m_scTopBits"
+            Me.m_scTopBits.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
-            'SplitContainer1.Panel1
+            'm_scTopBits.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.btnSearch)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.btnStop)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.plRunParams)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.plBlocks)
-            Me.SplitContainer1.Panel1MinSize = 338
+            Me.m_scTopBits.Panel1.Controls.Add(Me.m_tlpRunStop)
+            Me.m_scTopBits.Panel1.Controls.Add(Me.m_plRunParams)
+            Me.m_scTopBits.Panel1.Controls.Add(Me.m_plBlocks)
+            Me.m_scTopBits.Panel1MinSize = 338
             '
-            'SplitContainer1.Panel2
+            'm_scTopBits.Panel2
             '
-            Me.SplitContainer1.Panel2.Controls.Add(Me.tcMain)
-            Me.SplitContainer1.Size = New System.Drawing.Size(993, 687)
-            Me.SplitContainer1.SplitterDistance = 381
-            Me.SplitContainer1.TabIndex = 0
+            Me.m_scTopBits.Panel2.Controls.Add(Me.m_tcMain)
+            Me.m_scTopBits.Size = New System.Drawing.Size(993, 687)
+            Me.m_scTopBits.SplitterDistance = 381
+            Me.m_scTopBits.TabIndex = 0
             '
-            'btnSearch
+            'm_tlpRunStop
             '
-            Me.btnSearch.Location = New System.Drawing.Point(34, 340)
-            Me.btnSearch.Name = "btnSearch"
-            Me.btnSearch.Size = New System.Drawing.Size(75, 23)
-            Me.btnSearch.TabIndex = 22
-            Me.btnSearch.Text = "&Search"
-            Me.btnSearch.UseVisualStyleBackColor = True
+            Me.m_tlpRunStop.ColumnCount = 5
+            Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
+            Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 3.0!))
+            Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
+            Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpRunStop.Controls.Add(Me.btnStop, 3, 0)
+            Me.m_tlpRunStop.Controls.Add(Me.btnSearch, 1, 0)
+            Me.m_tlpRunStop.Location = New System.Drawing.Point(0, 350)
+            Me.m_tlpRunStop.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_tlpRunStop.Name = "m_tlpRunStop"
+            Me.m_tlpRunStop.RowCount = 1
+            Me.m_tlpRunStop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpRunStop.Size = New System.Drawing.Size(265, 23)
+            Me.m_tlpRunStop.TabIndex = 0
             '
             'btnStop
             '
-            Me.btnStop.Location = New System.Drawing.Point(115, 340)
+            Me.btnStop.Location = New System.Drawing.Point(134, 0)
+            Me.btnStop.Margin = New System.Windows.Forms.Padding(0)
             Me.btnStop.Name = "btnStop"
             Me.btnStop.Size = New System.Drawing.Size(75, 23)
-            Me.btnStop.TabIndex = 23
+            Me.btnStop.TabIndex = 1
             Me.btnStop.Text = "Sto&p"
             Me.btnStop.UseVisualStyleBackColor = True
             '
-            'plRunParams
+            'btnSearch
             '
-            Me.plRunParams.Controls.Add(Me.cbUsePlugin)
-            Me.plRunParams.Controls.Add(Me.cbPrevCE)
-            Me.plRunParams.Controls.Add(Me.Label2)
-            Me.plRunParams.Controls.Add(Me.txGenDiscRate)
-            Me.plRunParams.Controls.Add(Me.Label1)
-            Me.plRunParams.Controls.Add(Me.txDiscountRate)
-            Me.plRunParams.Controls.Add(Me.plMaxSO)
-            Me.plRunParams.Controls.Add(Me.nupMaxEffChg)
-            Me.plRunParams.Controls.Add(Me.nudBaseYear)
-            Me.plRunParams.Controls.Add(Me.lblBaseYear)
-            Me.plRunParams.Controls.Add(Me.cmbOptmApproach)
-            Me.plRunParams.Controls.Add(Me.lblMaxEffChg)
-            Me.plRunParams.Controls.Add(Me.lblOptmApproach)
-            Me.plRunParams.Controls.Add(Me.cmbSearchUsing)
-            Me.plRunParams.Controls.Add(Me.lblSearchUsing)
-            Me.plRunParams.Controls.Add(Me.cmbInitUsing)
-            Me.plRunParams.Controls.Add(Me.lblInitUsing)
-            Me.plRunParams.Controls.Add(Me.nupMaxNumEval)
-            Me.plRunParams.Controls.Add(Me.nupNumOfRuns)
-            Me.plRunParams.Controls.Add(Me.lblMaxNumEval)
-            Me.plRunParams.Controls.Add(Me.lblNumOfRuns)
-            Me.plRunParams.Controls.Add(Me.lblInitializationHeader)
-            Me.plRunParams.Location = New System.Drawing.Point(-1, -1)
-            Me.plRunParams.Margin = New System.Windows.Forms.Padding(0)
-            Me.plRunParams.Name = "plRunParams"
-            Me.plRunParams.Size = New System.Drawing.Size(262, 338)
-            Me.plRunParams.TabIndex = 0
+            Me.btnSearch.Location = New System.Drawing.Point(56, 0)
+            Me.btnSearch.Margin = New System.Windows.Forms.Padding(0)
+            Me.btnSearch.Name = "btnSearch"
+            Me.btnSearch.Size = New System.Drawing.Size(75, 23)
+            Me.btnSearch.TabIndex = 0
+            Me.btnSearch.Text = "&Search"
+            Me.btnSearch.UseVisualStyleBackColor = True
             '
-            'cbPrevCE
+            'm_plRunParams
             '
-            Me.cbPrevCE.AutoSize = True
-            Me.cbPrevCE.Location = New System.Drawing.Point(11, 276)
-            Me.cbPrevCE.Name = "cbPrevCE"
-            Me.cbPrevCE.Size = New System.Drawing.Size(138, 17)
-            Me.cbPrevCE.TabIndex = 0
-            Me.cbPrevCE.Text = "Prevent cost > earnings"
-            Me.cbPrevCE.UseVisualStyleBackColor = True
+            Me.m_plRunParams.Controls.Add(Me.m_chkIncludeCCosts)
+            Me.m_plRunParams.Controls.Add(Me.m_chkMaxPortUl)
+            Me.m_plRunParams.Controls.Add(Me.m_chkUsePlugin)
+            Me.m_plRunParams.Controls.Add(Me.m_chkPrevCE)
+            Me.m_plRunParams.Controls.Add(Me.m_lblGenDiscRate)
+            Me.m_plRunParams.Controls.Add(Me.m_txtGenDiscRate)
+            Me.m_plRunParams.Controls.Add(Me.m_lblDiscRate)
+            Me.m_plRunParams.Controls.Add(Me.m_txtDiscountRate)
+            Me.m_plRunParams.Controls.Add(Me.m_nudMaxEffChg)
+            Me.m_plRunParams.Controls.Add(Me.m_nudBaseYear)
+            Me.m_plRunParams.Controls.Add(Me.m_lblBaseYear)
+            Me.m_plRunParams.Controls.Add(Me.m_cmbOptmApproach)
+            Me.m_plRunParams.Controls.Add(Me.m_lblMaxEffChg)
+            Me.m_plRunParams.Controls.Add(Me.m_lblOptmApproach)
+            Me.m_plRunParams.Controls.Add(Me.m_cmbSearchUsing)
+            Me.m_plRunParams.Controls.Add(Me.m_lblSearchUsing)
+            Me.m_plRunParams.Controls.Add(Me.m_cmbInitUsing)
+            Me.m_plRunParams.Controls.Add(Me.m_lblInitUsing)
+            Me.m_plRunParams.Controls.Add(Me.m_nudMaxNumEval)
+            Me.m_plRunParams.Controls.Add(Me.m_nudNumberOfRuns)
+            Me.m_plRunParams.Controls.Add(Me.m_lblMaxNumEval)
+            Me.m_plRunParams.Controls.Add(Me.m_lblNumOfRuns)
+            Me.m_plRunParams.Controls.Add(Me.lblInitializationHeader)
+            Me.m_plRunParams.Location = New System.Drawing.Point(0, 0)
+            Me.m_plRunParams.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plRunParams.Name = "m_plRunParams"
+            Me.m_plRunParams.Size = New System.Drawing.Size(265, 344)
+            Me.m_plRunParams.TabIndex = 0
             '
-            'Label2
+            'm_chkIncludeCCosts
             '
-            Me.Label2.AutoSize = True
-            Me.Label2.Location = New System.Drawing.Point(5, 48)
-            Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(79, 13)
-            Me.Label2.TabIndex = 3
-            Me.Label2.Text = "Gen. disc. rate:"
+            Me.m_chkIncludeCCosts.AutoSize = True
+            Me.m_chkIncludeCCosts.Location = New System.Drawing.Point(8, 325)
+            Me.m_chkIncludeCCosts.Name = "m_chkIncludeCCosts"
+            Me.m_chkIncludeCCosts.Size = New System.Drawing.Size(133, 17)
+            Me.m_chkIncludeCCosts.TabIndex = 21
+            Me.m_chkIncludeCCosts.Text = "Include &compete costs"
+            Me.m_chkIncludeCCosts.UseVisualStyleBackColor = True
             '
-            'txGenDiscRate
+            'm_chkMaxPortUl
             '
-            Me.txGenDiscRate.Location = New System.Drawing.Point(116, 45)
-            Me.txGenDiscRate.Name = "txGenDiscRate"
-            Me.txGenDiscRate.Size = New System.Drawing.Size(60, 20)
-            Me.txGenDiscRate.TabIndex = 4
+            Me.m_chkMaxPortUl.AutoSize = True
+            Me.m_chkMaxPortUl.Location = New System.Drawing.Point(8, 302)
+            Me.m_chkMaxPortUl.Name = "m_chkMaxPortUl"
+            Me.m_chkMaxPortUl.Size = New System.Drawing.Size(135, 17)
+            Me.m_chkMaxPortUl.TabIndex = 20
+            Me.m_chkMaxPortUl.Text = "Maximize portfolio &utility"
+            Me.m_chkMaxPortUl.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_chkUsePlugin
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(5, 22)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(73, 13)
-            Me.Label1.TabIndex = 1
-            Me.Label1.Text = "Discount rate:"
+            Me.m_chkUsePlugin.AutoSize = True
+            Me.m_chkUsePlugin.Location = New System.Drawing.Point(8, 256)
+            Me.m_chkUsePlugin.Name = "m_chkUsePlugin"
+            Me.m_chkUsePlugin.Size = New System.Drawing.Size(152, 17)
+            Me.m_chkUsePlugin.TabIndex = 18
+            Me.m_chkUsePlugin.Text = "Use p&lug-in economic data"
+            Me.m_chkUsePlugin.UseVisualStyleBackColor = True
             '
-            'txDiscountRate
+            'm_chkPrevCE
             '
-            Me.txDiscountRate.Location = New System.Drawing.Point(116, 19)
-            Me.txDiscountRate.Name = "txDiscountRate"
-            Me.txDiscountRate.Size = New System.Drawing.Size(60, 20)
-            Me.txDiscountRate.TabIndex = 2
+            Me.m_chkPrevCE.AutoSize = True
+            Me.m_chkPrevCE.Location = New System.Drawing.Point(8, 279)
+            Me.m_chkPrevCE.Name = "m_chkPrevCE"
+            Me.m_chkPrevCE.Size = New System.Drawing.Size(138, 17)
+            Me.m_chkPrevCE.TabIndex = 19
+            Me.m_chkPrevCE.Text = "&Prevent cost > earnings"
+            Me.m_chkPrevCE.UseVisualStyleBackColor = True
             '
-            'plMaxSO
+            'm_lblGenDiscRate
             '
-            Me.plMaxSO.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_lblGenDiscRate.AutoSize = True
+            Me.m_lblGenDiscRate.Location = New System.Drawing.Point(5, 51)
+            Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
+            Me.m_lblGenDiscRate.Size = New System.Drawing.Size(111, 13)
+            Me.m_lblGenDiscRate.TabIndex = 2
+            Me.m_lblGenDiscRate.Text = "&Generic discount rate:"
+            '
+            'm_txtGenDiscRate
+            '
+            Me.m_txtGenDiscRate.Location = New System.Drawing.Point(122, 48)
+            Me.m_txtGenDiscRate.Name = "m_txtGenDiscRate"
+            Me.m_txtGenDiscRate.Size = New System.Drawing.Size(60, 20)
+            Me.m_txtGenDiscRate.TabIndex = 3
+            '
+            'm_lblDiscRate
+            '
+            Me.m_lblDiscRate.AutoSize = True
+            Me.m_lblDiscRate.Location = New System.Drawing.Point(5, 25)
+            Me.m_lblDiscRate.Name = "m_lblDiscRate"
+            Me.m_lblDiscRate.Size = New System.Drawing.Size(73, 13)
+            Me.m_lblDiscRate.TabIndex = 0
+            Me.m_lblDiscRate.Text = "&Discount rate:"
+            '
+            'm_txtDiscountRate
+            '
+            Me.m_txtDiscountRate.Location = New System.Drawing.Point(122, 22)
+            Me.m_txtDiscountRate.Name = "m_txtDiscountRate"
+            Me.m_txtDiscountRate.Size = New System.Drawing.Size(60, 20)
+            Me.m_txtDiscountRate.TabIndex = 1
+            '
+            'm_nudMaxEffChg
+            '
+            Me.m_nudMaxEffChg.Location = New System.Drawing.Point(122, 153)
+            Me.m_nudMaxEffChg.Name = "m_nudMaxEffChg"
+            Me.m_nudMaxEffChg.Size = New System.Drawing.Size(60, 20)
+            Me.m_nudMaxEffChg.TabIndex = 11
+            '
+            'm_nudBaseYear
+            '
+            Me.m_nudBaseYear.Location = New System.Drawing.Point(122, 126)
+            Me.m_nudBaseYear.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
+            Me.m_nudBaseYear.Name = "m_nudBaseYear"
+            Me.m_nudBaseYear.Size = New System.Drawing.Size(60, 20)
+            Me.m_nudBaseYear.TabIndex = 9
+            '
+            'm_lblBaseYear
+            '
+            Me.m_lblBaseYear.AutoSize = True
+            Me.m_lblBaseYear.Location = New System.Drawing.Point(5, 128)
+            Me.m_lblBaseYear.Name = "m_lblBaseYear"
+            Me.m_lblBaseYear.Size = New System.Drawing.Size(57, 13)
+            Me.m_lblBaseYear.TabIndex = 8
+            Me.m_lblBaseYear.Text = "&Base year:"
+            '
+            'm_cmbOptmApproach
+            '
+            Me.m_cmbOptmApproach.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.plMaxSO.Controls.Add(Me.cbMaxPortUl)
-            Me.plMaxSO.Controls.Add(Me.cbIncludeCCosts)
-            Me.plMaxSO.Location = New System.Drawing.Point(11, 296)
-            Me.plMaxSO.Margin = New System.Windows.Forms.Padding(0)
-            Me.plMaxSO.Name = "plMaxSO"
-            Me.plMaxSO.Size = New System.Drawing.Size(255, 42)
-            Me.plMaxSO.TabIndex = 19
+            Me.m_cmbOptmApproach.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbOptmApproach.FormattingEnabled = True
+            Me.m_cmbOptmApproach.Items.AddRange(New Object() {"Maximize system objective", "Maximize by fleet values"})
+            Me.m_cmbOptmApproach.Location = New System.Drawing.Point(122, 229)
+            Me.m_cmbOptmApproach.Name = "m_cmbOptmApproach"
+            Me.m_cmbOptmApproach.Size = New System.Drawing.Size(140, 21)
+            Me.m_cmbOptmApproach.TabIndex = 17
             '
-            'cbMaxPortUl
+            'm_lblMaxEffChg
             '
-            Me.cbMaxPortUl.AutoSize = True
-            Me.cbMaxPortUl.Location = New System.Drawing.Point(0, 3)
-            Me.cbMaxPortUl.Name = "cbMaxPortUl"
-            Me.cbMaxPortUl.Size = New System.Drawing.Size(135, 17)
-            Me.cbMaxPortUl.TabIndex = 1
-            Me.cbMaxPortUl.Text = "Maximize portfolio utility"
-            Me.cbMaxPortUl.UseVisualStyleBackColor = True
+            Me.m_lblMaxEffChg.AutoSize = True
+            Me.m_lblMaxEffChg.Location = New System.Drawing.Point(5, 155)
+            Me.m_lblMaxEffChg.Name = "m_lblMaxEffChg"
+            Me.m_lblMaxEffChg.Size = New System.Drawing.Size(96, 13)
+            Me.m_lblMaxEffChg.TabIndex = 10
+            Me.m_lblMaxEffChg.Text = "Max e&ffort change:"
             '
-            'cbIncludeCCosts
+            'm_lblOptmApproach
             '
-            Me.cbIncludeCCosts.AutoSize = True
-            Me.cbIncludeCCosts.Location = New System.Drawing.Point(0, 22)
-            Me.cbIncludeCCosts.Name = "cbIncludeCCosts"
-            Me.cbIncludeCCosts.Size = New System.Drawing.Size(133, 17)
-            Me.cbIncludeCCosts.TabIndex = 0
-            Me.cbIncludeCCosts.Text = "Include compete costs"
-            Me.cbIncludeCCosts.UseVisualStyleBackColor = True
+            Me.m_lblOptmApproach.Location = New System.Drawing.Point(5, 224)
+            Me.m_lblOptmApproach.Name = "m_lblOptmApproach"
+            Me.m_lblOptmApproach.Size = New System.Drawing.Size(105, 32)
+            Me.m_lblOptmApproach.TabIndex = 16
+            Me.m_lblOptmApproach.Text = "&Optimization approach:"
             '
-            'nupMaxEffChg
+            'm_cmbSearchUsing
             '
-            Me.nupMaxEffChg.Location = New System.Drawing.Point(116, 150)
-            Me.nupMaxEffChg.Name = "nupMaxEffChg"
-            Me.nupMaxEffChg.Size = New System.Drawing.Size(60, 20)
-            Me.nupMaxEffChg.TabIndex = 12
-            '
-            'nudBaseYear
-            '
-            Me.nudBaseYear.Location = New System.Drawing.Point(116, 123)
-            Me.nudBaseYear.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
-            Me.nudBaseYear.Name = "nudBaseYear"
-            Me.nudBaseYear.Size = New System.Drawing.Size(60, 20)
-            Me.nudBaseYear.TabIndex = 10
-            '
-            'lblBaseYear
-            '
-            Me.lblBaseYear.AutoSize = True
-            Me.lblBaseYear.Location = New System.Drawing.Point(5, 125)
-            Me.lblBaseYear.Name = "lblBaseYear"
-            Me.lblBaseYear.Size = New System.Drawing.Size(57, 13)
-            Me.lblBaseYear.TabIndex = 9
-            Me.lblBaseYear.Text = "Base year:"
-            '
-            'cmbOptmApproach
-            '
-            Me.cmbOptmApproach.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_cmbSearchUsing.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.cmbOptmApproach.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbOptmApproach.FormattingEnabled = True
-            Me.cmbOptmApproach.Items.AddRange(New Object() {"Maximize system objective", "Maximize by fleet values"})
-            Me.cmbOptmApproach.Location = New System.Drawing.Point(116, 226)
-            Me.cmbOptmApproach.Name = "cmbOptmApproach"
-            Me.cmbOptmApproach.Size = New System.Drawing.Size(143, 21)
-            Me.cmbOptmApproach.TabIndex = 18
+            Me.m_cmbSearchUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbSearchUsing.FormattingEnabled = True
+            Me.m_cmbSearchUsing.Items.AddRange(New Object() {"Fletch", "DFPmin"})
+            Me.m_cmbSearchUsing.Location = New System.Drawing.Point(122, 202)
+            Me.m_cmbSearchUsing.Name = "m_cmbSearchUsing"
+            Me.m_cmbSearchUsing.Size = New System.Drawing.Size(140, 21)
+            Me.m_cmbSearchUsing.TabIndex = 15
             '
-            'lblMaxEffChg
+            'm_lblSearchUsing
             '
-            Me.lblMaxEffChg.AutoSize = True
-            Me.lblMaxEffChg.Location = New System.Drawing.Point(5, 152)
-            Me.lblMaxEffChg.Name = "lblMaxEffChg"
-            Me.lblMaxEffChg.Size = New System.Drawing.Size(96, 13)
-            Me.lblMaxEffChg.TabIndex = 11
-            Me.lblMaxEffChg.Text = "Max effort change:"
+            Me.m_lblSearchUsing.AutoSize = True
+            Me.m_lblSearchUsing.Location = New System.Drawing.Point(5, 205)
+            Me.m_lblSearchUsing.Name = "m_lblSearchUsing"
+            Me.m_lblSearchUsing.Size = New System.Drawing.Size(72, 13)
+            Me.m_lblSearchUsing.TabIndex = 14
+            Me.m_lblSearchUsing.Text = "&Search using:"
             '
-            'lblOptmApproach
+            'm_cmbInitUsing
             '
-            Me.lblOptmApproach.Location = New System.Drawing.Point(5, 221)
-            Me.lblOptmApproach.Name = "lblOptmApproach"
-            Me.lblOptmApproach.Size = New System.Drawing.Size(72, 32)
-            Me.lblOptmApproach.TabIndex = 17
-            Me.lblOptmApproach.Text = "Optimization approach:"
-            '
-            'cmbSearchUsing
-            '
-            Me.cmbSearchUsing.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_cmbInitUsing.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.cmbSearchUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbSearchUsing.FormattingEnabled = True
-            Me.cmbSearchUsing.Items.AddRange(New Object() {"Fletch", "DFPmin"})
-            Me.cmbSearchUsing.Location = New System.Drawing.Point(116, 199)
-            Me.cmbSearchUsing.Name = "cmbSearchUsing"
-            Me.cmbSearchUsing.Size = New System.Drawing.Size(143, 21)
-            Me.cmbSearchUsing.TabIndex = 16
+            Me.m_cmbInitUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbInitUsing.FormattingEnabled = True
+            Me.m_cmbInitUsing.Items.AddRange(New Object() {"Ecopath base F's", "Current F's", "Random F's"})
+            Me.m_cmbInitUsing.Location = New System.Drawing.Point(122, 179)
+            Me.m_cmbInitUsing.Name = "m_cmbInitUsing"
+            Me.m_cmbInitUsing.Size = New System.Drawing.Size(140, 21)
+            Me.m_cmbInitUsing.TabIndex = 13
             '
-            'lblSearchUsing
+            'm_lblInitUsing
             '
-            Me.lblSearchUsing.AutoSize = True
-            Me.lblSearchUsing.Location = New System.Drawing.Point(5, 202)
-            Me.lblSearchUsing.Name = "lblSearchUsing"
-            Me.lblSearchUsing.Size = New System.Drawing.Size(72, 13)
-            Me.lblSearchUsing.TabIndex = 15
-            Me.lblSearchUsing.Text = "Search using:"
+            Me.m_lblInitUsing.AutoSize = True
+            Me.m_lblInitUsing.Location = New System.Drawing.Point(5, 182)
+            Me.m_lblInitUsing.Name = "m_lblInitUsing"
+            Me.m_lblInitUsing.Size = New System.Drawing.Size(75, 13)
+            Me.m_lblInitUsing.TabIndex = 12
+            Me.m_lblInitUsing.Text = "&Initialize using:"
             '
-            'cmbInitUsing
+            'm_nudMaxNumEval
             '
-            Me.cmbInitUsing.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.cmbInitUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbInitUsing.FormattingEnabled = True
-            Me.cmbInitUsing.Items.AddRange(New Object() {"Ecopath base F's", "Current F's", "Random F's"})
-            Me.cmbInitUsing.Location = New System.Drawing.Point(116, 176)
-            Me.cmbInitUsing.Name = "cmbInitUsing"
-            Me.cmbInitUsing.Size = New System.Drawing.Size(143, 21)
-            Me.cmbInitUsing.TabIndex = 14
+            Me.m_nudMaxNumEval.Location = New System.Drawing.Point(122, 100)
+            Me.m_nudMaxNumEval.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
+            Me.m_nudMaxNumEval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudMaxNumEval.Name = "m_nudMaxNumEval"
+            Me.m_nudMaxNumEval.Size = New System.Drawing.Size(60, 20)
+            Me.m_nudMaxNumEval.TabIndex = 7
+            Me.m_nudMaxNumEval.Value = New Decimal(New Integer() {2000, 0, 0, 0})
             '
-            'lblInitUsing
+            'm_nudNumberOfRuns
             '
-            Me.lblInitUsing.AutoSize = True
-            Me.lblInitUsing.Location = New System.Drawing.Point(5, 179)
-            Me.lblInitUsing.Name = "lblInitUsing"
-            Me.lblInitUsing.Size = New System.Drawing.Size(75, 13)
-            Me.lblInitUsing.TabIndex = 13
-            Me.lblInitUsing.Text = "Initialize using:"
+            Me.m_nudNumberOfRuns.Location = New System.Drawing.Point(122, 74)
+            Me.m_nudNumberOfRuns.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudNumberOfRuns.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumberOfRuns.Name = "m_nudNumberOfRuns"
+            Me.m_nudNumberOfRuns.Size = New System.Drawing.Size(60, 20)
+            Me.m_nudNumberOfRuns.TabIndex = 5
+            Me.m_nudNumberOfRuns.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'nupMaxNumEval
+            'm_lblMaxNumEval
             '
-            Me.nupMaxNumEval.Location = New System.Drawing.Point(116, 97)
-            Me.nupMaxNumEval.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
-            Me.nupMaxNumEval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nupMaxNumEval.Name = "nupMaxNumEval"
-            Me.nupMaxNumEval.Size = New System.Drawing.Size(60, 20)
-            Me.nupMaxNumEval.TabIndex = 8
-            Me.nupMaxNumEval.Value = New Decimal(New Integer() {2000, 0, 0, 0})
+            Me.m_lblMaxNumEval.AutoSize = True
+            Me.m_lblMaxNumEval.Location = New System.Drawing.Point(5, 102)
+            Me.m_lblMaxNumEval.Name = "m_lblMaxNumEval"
+            Me.m_lblMaxNumEval.Size = New System.Drawing.Size(85, 13)
+            Me.m_lblMaxNumEval.TabIndex = 6
+            Me.m_lblMaxNumEval.Text = "Max no of &evals:"
             '
-            'nupNumOfRuns
+            'm_lblNumOfRuns
             '
-            Me.nupNumOfRuns.Location = New System.Drawing.Point(116, 71)
-            Me.nupNumOfRuns.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.nupNumOfRuns.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.nupNumOfRuns.Name = "nupNumOfRuns"
-            Me.nupNumOfRuns.Size = New System.Drawing.Size(60, 20)
-            Me.nupNumOfRuns.TabIndex = 6
-            Me.nupNumOfRuns.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'lblMaxNumEval
-            '
-            Me.lblMaxNumEval.AutoSize = True
-            Me.lblMaxNumEval.Location = New System.Drawing.Point(5, 99)
-            Me.lblMaxNumEval.Name = "lblMaxNumEval"
-            Me.lblMaxNumEval.Size = New System.Drawing.Size(63, 13)
-            Me.lblMaxNumEval.TabIndex = 7
-            Me.lblMaxNumEval.Text = "Max # eval:"
-            '
-            'lblNumOfRuns
-            '
-            Me.lblNumOfRuns.AutoSize = True
-            Me.lblNumOfRuns.Location = New System.Drawing.Point(5, 73)
-            Me.lblNumOfRuns.Name = "lblNumOfRuns"
-            Me.lblNumOfRuns.Size = New System.Drawing.Size(64, 13)
-            Me.lblNumOfRuns.TabIndex = 5
-            Me.lblNumOfRuns.Text = "No of Runs:"
+            Me.m_lblNumOfRuns.AutoSize = True
+            Me.m_lblNumOfRuns.Location = New System.Drawing.Point(5, 76)
+            Me.m_lblNumOfRuns.Name = "m_lblNumOfRuns"
+            Me.m_lblNumOfRuns.Size = New System.Drawing.Size(82, 13)
+            Me.m_lblNumOfRuns.TabIndex = 4
+            Me.m_lblNumOfRuns.Text = "&Number of runs:"
             '
             'lblInitializationHeader
             '
@@ -377,99 +395,100 @@ Namespace Ecosim
             Me.lblInitializationHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.lblInitializationHeader.Location = New System.Drawing.Point(0, 0)
             Me.lblInitializationHeader.Name = "lblInitializationHeader"
-            Me.lblInitializationHeader.Size = New System.Drawing.Size(262, 18)
+            Me.lblInitializationHeader.Size = New System.Drawing.Size(265, 18)
             Me.lblInitializationHeader.TabIndex = 0
             Me.lblInitializationHeader.Text = "Parameters"
             Me.lblInitializationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'plBlocks
+            'm_plBlocks
             '
-            Me.plBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Me.m_plBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.plBlocks.Location = New System.Drawing.Point(267, -2)
-            Me.plBlocks.Name = "plBlocks"
-            Me.plBlocks.Size = New System.Drawing.Size(718, 375)
-            Me.plBlocks.TabIndex = 0
+            Me.m_plBlocks.Location = New System.Drawing.Point(271, 0)
+            Me.m_plBlocks.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plBlocks.Name = "m_plBlocks"
+            Me.m_plBlocks.Size = New System.Drawing.Size(718, 377)
+            Me.m_plBlocks.TabIndex = 2
             '
-            'tcMain
+            'm_tcMain
             '
-            Me.tcMain.Controls.Add(Me.tbpObjv)
-            Me.tcMain.Controls.Add(Me.tbpResultTable)
-            Me.tcMain.Controls.Add(Me.m_tpPlots)
-            Me.tcMain.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.tcMain.Location = New System.Drawing.Point(0, 0)
-            Me.tcMain.Name = "tcMain"
-            Me.tcMain.SelectedIndex = 0
-            Me.tcMain.Size = New System.Drawing.Size(989, 298)
-            Me.tcMain.TabIndex = 0
+            Me.m_tcMain.Controls.Add(Me.m_tabObjectives)
+            Me.m_tcMain.Controls.Add(Me.m_tabResultTable)
+            Me.m_tcMain.Controls.Add(Me.m_tpPlots)
+            Me.m_tcMain.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tcMain.Location = New System.Drawing.Point(0, 0)
+            Me.m_tcMain.Name = "m_tcMain"
+            Me.m_tcMain.SelectedIndex = 0
+            Me.m_tcMain.Size = New System.Drawing.Size(989, 298)
+            Me.m_tcMain.TabIndex = 0
             '
-            'tbpObjv
+            'm_tabObjectives
             '
-            Me.tbpObjv.Controls.Add(Me.SplitContainer2)
-            Me.tbpObjv.Location = New System.Drawing.Point(4, 22)
-            Me.tbpObjv.Name = "tbpObjv"
-            Me.tbpObjv.Padding = New System.Windows.Forms.Padding(3)
-            Me.tbpObjv.Size = New System.Drawing.Size(981, 272)
-            Me.tbpObjv.TabIndex = 0
-            Me.tbpObjv.Text = "Objectives"
-            Me.tbpObjv.UseVisualStyleBackColor = True
+            Me.m_tabObjectives.Controls.Add(Me.m_scObjectives)
+            Me.m_tabObjectives.Location = New System.Drawing.Point(4, 22)
+            Me.m_tabObjectives.Name = "m_tabObjectives"
+            Me.m_tabObjectives.Padding = New System.Windows.Forms.Padding(3)
+            Me.m_tabObjectives.Size = New System.Drawing.Size(981, 272)
+            Me.m_tabObjectives.TabIndex = 0
+            Me.m_tabObjectives.Text = "Objectives"
+            Me.m_tabObjectives.UseVisualStyleBackColor = True
             '
-            'SplitContainer2
+            'm_scObjectives
             '
-            Me.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer2.Location = New System.Drawing.Point(3, 3)
-            Me.SplitContainer2.Name = "SplitContainer2"
+            Me.m_scObjectives.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scObjectives.Location = New System.Drawing.Point(3, 3)
+            Me.m_scObjectives.Name = "m_scObjectives"
             '
-            'SplitContainer2.Panel2
+            'm_scObjectives.Panel2
             '
-            Me.SplitContainer2.Panel2.Controls.Add(Me.SplitContainer3)
-            Me.SplitContainer2.Size = New System.Drawing.Size(975, 266)
-            Me.SplitContainer2.SplitterDistance = 319
-            Me.SplitContainer2.TabIndex = 0
+            Me.m_scObjectives.Panel2.Controls.Add(Me.m_scAarghArghAaargh)
+            Me.m_scObjectives.Size = New System.Drawing.Size(975, 266)
+            Me.m_scObjectives.SplitterDistance = 319
+            Me.m_scObjectives.TabIndex = 0
             '
-            'SplitContainer3
+            'm_scAarghArghAaargh
             '
-            Me.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer3.Location = New System.Drawing.Point(0, 0)
-            Me.SplitContainer3.Name = "SplitContainer3"
-            Me.SplitContainer3.Size = New System.Drawing.Size(652, 266)
-            Me.SplitContainer3.SplitterDistance = 212
-            Me.SplitContainer3.TabIndex = 0
+            Me.m_scAarghArghAaargh.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scAarghArghAaargh.Location = New System.Drawing.Point(0, 0)
+            Me.m_scAarghArghAaargh.Name = "m_scAarghArghAaargh"
+            Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(652, 266)
+            Me.m_scAarghArghAaargh.SplitterDistance = 212
+            Me.m_scAarghArghAaargh.TabIndex = 0
             '
-            'tbpResultTable
+            'm_tabResultTable
             '
-            Me.tbpResultTable.Controls.Add(Me.scIterResult)
-            Me.tbpResultTable.Location = New System.Drawing.Point(4, 22)
-            Me.tbpResultTable.Name = "tbpResultTable"
-            Me.tbpResultTable.Padding = New System.Windows.Forms.Padding(3)
-            Me.tbpResultTable.Size = New System.Drawing.Size(981, 272)
-            Me.tbpResultTable.TabIndex = 1
-            Me.tbpResultTable.Text = "Iteration results"
-            Me.tbpResultTable.UseVisualStyleBackColor = True
+            Me.m_tabResultTable.Controls.Add(Me.m_scIterResult)
+            Me.m_tabResultTable.Location = New System.Drawing.Point(4, 22)
+            Me.m_tabResultTable.Name = "m_tabResultTable"
+            Me.m_tabResultTable.Padding = New System.Windows.Forms.Padding(3)
+            Me.m_tabResultTable.Size = New System.Drawing.Size(981, 272)
+            Me.m_tabResultTable.TabIndex = 1
+            Me.m_tabResultTable.Text = "Iteration results"
+            Me.m_tabResultTable.UseVisualStyleBackColor = True
             '
-            'scIterResult
+            'm_scIterResult
             '
-            Me.scIterResult.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.scIterResult.Location = New System.Drawing.Point(3, 3)
-            Me.scIterResult.Name = "scIterResult"
+            Me.m_scIterResult.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scIterResult.Location = New System.Drawing.Point(3, 3)
+            Me.m_scIterResult.Name = "m_scIterResult"
             '
-            'scIterResult.Panel1
+            'm_scIterResult.Panel1
             '
-            Me.scIterResult.Panel1.Controls.Add(Me.scIterResultMultiRun)
-            Me.scIterResult.Size = New System.Drawing.Size(975, 266)
-            Me.scIterResult.SplitterDistance = 541
-            Me.scIterResult.TabIndex = 0
+            Me.m_scIterResult.Panel1.Controls.Add(Me.m_scIterResultMultiRun)
+            Me.m_scIterResult.Size = New System.Drawing.Size(975, 266)
+            Me.m_scIterResult.SplitterDistance = 541
+            Me.m_scIterResult.TabIndex = 0
             '
-            'scIterResultMultiRun
+            'm_scIterResultMultiRun
             '
-            Me.scIterResultMultiRun.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.scIterResultMultiRun.Location = New System.Drawing.Point(0, 0)
-            Me.scIterResultMultiRun.Name = "scIterResultMultiRun"
-            Me.scIterResultMultiRun.Orientation = System.Windows.Forms.Orientation.Horizontal
-            Me.scIterResultMultiRun.Size = New System.Drawing.Size(541, 266)
-            Me.scIterResultMultiRun.SplitterDistance = 135
-            Me.scIterResultMultiRun.TabIndex = 0
+            Me.m_scIterResultMultiRun.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scIterResultMultiRun.Location = New System.Drawing.Point(0, 0)
+            Me.m_scIterResultMultiRun.Name = "m_scIterResultMultiRun"
+            Me.m_scIterResultMultiRun.Orientation = System.Windows.Forms.Orientation.Horizontal
+            Me.m_scIterResultMultiRun.Size = New System.Drawing.Size(541, 266)
+            Me.m_scIterResultMultiRun.SplitterDistance = 135
+            Me.m_scIterResultMultiRun.TabIndex = 0
             '
             'm_tpPlots
             '
@@ -532,47 +551,35 @@ Namespace Ecosim
             Me.m_zgcKiteDiag.Size = New System.Drawing.Size(96, 100)
             Me.m_zgcKiteDiag.TabIndex = 9
             '
-            'cbUsePlugin
-            '
-            Me.cbUsePlugin.AutoSize = True
-            Me.cbUsePlugin.Enabled = False
-            Me.cbUsePlugin.Location = New System.Drawing.Point(11, 253)
-            Me.cbUsePlugin.Name = "cbUsePlugin"
-            Me.cbUsePlugin.Size = New System.Drawing.Size(149, 17)
-            Me.cbUsePlugin.TabIndex = 21
-            Me.cbUsePlugin.Text = "Use plugin economic data"
-            Me.cbUsePlugin.UseVisualStyleBackColor = True
-            '
             'frmFishingPolicySearch
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(993, 687)
-            Me.Controls.Add(Me.SplitContainer1)
+            Me.Controls.Add(Me.m_scTopBits)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFishingPolicySearch"
             Me.TabText = "Fishing policy search"
             Me.Text = "Fishing policy search"
-            Me.SplitContainer1.Panel1.ResumeLayout(False)
-            Me.SplitContainer1.Panel2.ResumeLayout(False)
-            Me.SplitContainer1.ResumeLayout(False)
-            Me.plRunParams.ResumeLayout(False)
-            Me.plRunParams.PerformLayout()
-            Me.plMaxSO.ResumeLayout(False)
-            Me.plMaxSO.PerformLayout()
-            CType(Me.nupMaxEffChg, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nudBaseYear, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nupMaxNumEval, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.nupNumOfRuns, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.tcMain.ResumeLayout(False)
-            Me.tbpObjv.ResumeLayout(False)
-            Me.SplitContainer2.Panel2.ResumeLayout(False)
-            Me.SplitContainer2.ResumeLayout(False)
-            Me.SplitContainer3.ResumeLayout(False)
-            Me.tbpResultTable.ResumeLayout(False)
-            Me.scIterResult.Panel1.ResumeLayout(False)
-            Me.scIterResult.ResumeLayout(False)
-            Me.scIterResultMultiRun.ResumeLayout(False)
+            Me.m_scTopBits.Panel1.ResumeLayout(False)
+            Me.m_scTopBits.Panel2.ResumeLayout(False)
+            Me.m_scTopBits.ResumeLayout(False)
+            Me.m_tlpRunStop.ResumeLayout(False)
+            Me.m_plRunParams.ResumeLayout(False)
+            Me.m_plRunParams.PerformLayout()
+            CType(Me.m_nudMaxEffChg, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudMaxNumEval, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNumberOfRuns, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tcMain.ResumeLayout(False)
+            Me.m_tabObjectives.ResumeLayout(False)
+            Me.m_scObjectives.Panel2.ResumeLayout(False)
+            Me.m_scObjectives.ResumeLayout(False)
+            Me.m_scAarghArghAaargh.ResumeLayout(False)
+            Me.m_tabResultTable.ResumeLayout(False)
+            Me.m_scIterResult.Panel1.ResumeLayout(False)
+            Me.m_scIterResult.ResumeLayout(False)
+            Me.m_scIterResultMultiRun.ResumeLayout(False)
             Me.m_tpPlots.ResumeLayout(False)
             Me.m_splcPlotResults.Panel1.ResumeLayout(False)
             Me.m_splcPlotResults.Panel2.ResumeLayout(False)
@@ -580,46 +587,46 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Friend WithEvents plBlocks As System.Windows.Forms.Panel
-        Friend WithEvents plRunParams As System.Windows.Forms.Panel
+        Friend WithEvents m_scTopBits As System.Windows.Forms.SplitContainer
         Friend WithEvents lblInitializationHeader As System.Windows.Forms.Label
-        Friend WithEvents lblInitUsing As System.Windows.Forms.Label
-        Friend WithEvents nupMaxNumEval As System.Windows.Forms.NumericUpDown
-        Friend WithEvents nupNumOfRuns As System.Windows.Forms.NumericUpDown
-        Friend WithEvents lblMaxNumEval As System.Windows.Forms.Label
-        Friend WithEvents lblNumOfRuns As System.Windows.Forms.Label
-        Friend WithEvents cmbSearchUsing As System.Windows.Forms.ComboBox
-        Friend WithEvents cmbInitUsing As System.Windows.Forms.ComboBox
-        Friend WithEvents cmbOptmApproach As System.Windows.Forms.ComboBox
-        Friend WithEvents lblOptmApproach As System.Windows.Forms.Label
-        Friend WithEvents tcMain As System.Windows.Forms.TabControl
-        Friend WithEvents tbpObjv As System.Windows.Forms.TabPage
-        Friend WithEvents tbpResultTable As System.Windows.Forms.TabPage
-        Friend WithEvents nupMaxEffChg As System.Windows.Forms.NumericUpDown
-        Friend WithEvents lblBaseYear As System.Windows.Forms.Label
-        Friend WithEvents lblMaxEffChg As System.Windows.Forms.Label
-        Friend WithEvents nudBaseYear As System.Windows.Forms.NumericUpDown
-        Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
-        Friend WithEvents SplitContainer3 As System.Windows.Forms.SplitContainer
-        Friend WithEvents scIterResult As System.Windows.Forms.SplitContainer
-        Friend WithEvents scIterResultMultiRun As System.Windows.Forms.SplitContainer
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents txDiscountRate As System.Windows.Forms.TextBox
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents txGenDiscRate As System.Windows.Forms.TextBox
-        Friend WithEvents lblSearchUsing As System.Windows.Forms.Label
-        Friend WithEvents plMaxSO As System.Windows.Forms.Panel
-        Friend WithEvents cbPrevCE As System.Windows.Forms.CheckBox
-        Friend WithEvents cbMaxPortUl As System.Windows.Forms.CheckBox
-        Friend WithEvents cbIncludeCCosts As System.Windows.Forms.CheckBox
+        Friend WithEvents m_lblSearchUsing As System.Windows.Forms.Label
         Friend WithEvents btnStop As System.Windows.Forms.Button
         Friend WithEvents btnSearch As System.Windows.Forms.Button
-        Friend WithEvents m_tpPlots As System.Windows.Forms.TabPage
         Private WithEvents m_zgcKiteDiag As ZedGraph.ZedGraphControl
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Friend WithEvents m_splcPlotResults As System.Windows.Forms.SplitContainer
-        Friend WithEvents cbUsePlugin As System.Windows.Forms.CheckBox
+        Private WithEvents m_tlpRunStop As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblOptmApproach As System.Windows.Forms.Label
+        Private WithEvents m_lblInitUsing As System.Windows.Forms.Label
+        Private WithEvents m_lblMaxEffChg As System.Windows.Forms.Label
+        Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
+        Private WithEvents m_lblMaxNumEval As System.Windows.Forms.Label
+        Private WithEvents m_lblNumOfRuns As System.Windows.Forms.Label
+        Private WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
+        Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
+        Private WithEvents m_txtDiscountRate As System.Windows.Forms.TextBox
+        Private WithEvents m_txtGenDiscRate As System.Windows.Forms.TextBox
+        Private WithEvents m_nudNumberOfRuns As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudMaxNumEval As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudMaxEffChg As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_cmbInitUsing As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbSearchUsing As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbOptmApproach As System.Windows.Forms.ComboBox
+        Private WithEvents m_chkUsePlugin As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkPrevCE As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkMaxPortUl As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkIncludeCCosts As System.Windows.Forms.CheckBox
+        Private WithEvents m_plRunParams As System.Windows.Forms.Panel
+        Private WithEvents m_plBlocks As System.Windows.Forms.Panel
+        Private WithEvents m_tcMain As System.Windows.Forms.TabControl
+        Private WithEvents m_tabObjectives As System.Windows.Forms.TabPage
+        Private WithEvents m_scObjectives As System.Windows.Forms.SplitContainer
+        Private WithEvents m_scAarghArghAaargh As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tabResultTable As System.Windows.Forms.TabPage
+        Private WithEvents m_scIterResult As System.Windows.Forms.SplitContainer
+        Private WithEvents m_scIterResultMultiRun As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tpPlots As System.Windows.Forms.TabPage
 
     End Class
 End Namespace
