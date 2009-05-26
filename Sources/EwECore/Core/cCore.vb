@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.132  2009/05/26 18:20:44  joeb
+' onEconomicPluginEnabled() sends a message for both FPS and MSE
+'
 ' Revision 1.131  2009/05/26 16:45:18  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -10697,7 +10700,8 @@ Public Class cCore
             Me.MSEManager.Load()
             Me.FishingPolicyManager.Load()
 
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Plugin, eMessageImportance.Maintenance))
+            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.FishingPolicySearch, eMessageImportance.Maintenance))
+            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance))
 
         Catch ex As Exception
             Debug.Assert(False, "Core.onEconomicPluginEnabled() Error: " & ex.Message)
