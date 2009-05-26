@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.15  2009/05/26 22:38:24  joeh
+' Modify the routine to set default value of Tcatch
+'
 ' Revision 1.14  2009/05/22 22:31:08  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -162,10 +165,8 @@ Public Class cPSDModel
     End Sub
 
     Private Sub EstimateGrowthParameters()
-        Dim bIsFished As Boolean
-        Dim bIsStanzaGroup As Boolean
-        Dim bIsUserInput As Boolean
-        Dim sTemp As Single
+        Dim sngTemp As Single
+        Dim strTemp As String = Nothing
 
         'A in LW
         For i As Integer = 1 To m_Data.NumLiving
@@ -200,84 +201,42 @@ Public Class cPSDModel
 
         'Tcatch
         For i As Integer = 1 To m_Data.NumLiving
-            'Is group with catches?
-            If m_Data.fCatch(i) > 0 Then
-                'Yes
-                bIsFished = True
-            Else
-                'No
-                bIsFished = False
-            End If
-
-            'Is stanza group
-            If m_Data.StanzaGroup(i) Then
-                'Yes
-                bIsStanzaGroup = True
-            Else
-                'No
-                bIsStanzaGroup = False
-            End If
-
-            'Is user input
-            If Me.m_psd.Tcatch(i) >= 0 Then
-                'Yes
-                bIsUserInput = True
-            Else
-                'No
-                bIsUserInput = False
-            End If
-
-            If bIsUserInput Then
-                'Yes
+            'Is user input?
+            If Me.m_psd.TcatchInput(i) >= 0 Then
+                'Yes user input
                 'Use user input as it is
             Else
-                'No
-                If bIsFished Then
-                    'Yes
-                    If bIsStanzaGroup Then
-                        'Yes
-                        If Me.m_psd.Tcatch(i) < 0 Then
-                            For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
-                                For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
-                                    If m_stanza.EcopathCode(isp, ist) = i Then
-                                        Me.m_psd.Tcatch(i) = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
+                'Not user input
+                'Is group with catches?
+                If m_Data.fCatch(i) > 0 Then
+                    'Yes group with catches
+                    'Is stanza group?
+                    If m_Data.StanzaGroup(i) Then
+                        'Yes stanza group
+                        For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
+                            For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
+                                If m_stanza.EcopathCode(isp, ist) = i Then
+                                    'Is first stanza with catches?
+                                    If m_stanza.StanzaName(isp) <> strTemp Then
+                                        'Yes first stanza with catches
+                                        sngTemp = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
+                                        strTemp = m_stanza.StanzaName(isp)
+                                    Else
+                                        'Not first stanza with catches
                                     End If
-                                Next
+                                End If
                             Next
-                        End If
+                        Next
+                        Me.m_psd.Tcatch(i) = sngTemp
                     Else
-                        'No
+                        'Not stanza group
                         Me.m_psd.Tcatch(i) = 0
                     End If
                 Else
-                    'No
+                    'Not group with catches
                     Me.m_psd.Tcatch(i) = 0
                 End If
             End If
-
-            ''Is stanza group?
-            'If m_Data.StanzaGroup(i) Then
-            '    'Yes
-            '    If Me.m_psd.Tcatch(i) < 0 Then
-            '        For isp As Integer = 1 To m_stanza.Nsplit 'No. of split group
-            '            For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
-            '                If m_stanza.EcopathCode(isp, ist) = i Then
-            '                    Me.m_psd.Tcatch(i) = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)
-            '                End If
-            '            Next
-            '        Next
-            '    End If
-            'Else
-            '    'No
-            '    'Is group with no catch or no user input 
-            '    If Me.m_psd.Tcatch(i) < 0 Then
-            '        'Yes
-            '        Me.m_psd.Tcatch(i) = 0
-            '    Else
-            '        'No (i.e. group with catch and user input)
-            '        'Use user input as it is
-            '    End If
-            'End If
         Next
 
         'Tmax
@@ -295,14 +254,14 @@ Public Class cPSDModel
             Else
                 'No
                 If m_Data.PBinput(i) > 0 Then
-                    sTemp = m_Data.PBinput(i)
+                    sngTemp = m_Data.PBinput(i)
                 Else
-                    sTemp = m_Data.PB(i)
+                    sngTemp = m_Data.PB(i)
                 End If
-                If sTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
-                    sTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
+                If sngTemp = 0 And m_Data.QBinput(i) > 0 And m_Data.GEinput(i) > 0 Then
+                    sngTemp = m_Data.QBinput(i) * m_Data.GEinput(i)
                 End If
-                If Me.m_psd.Tmax(i) < 0 And sTemp > 0 Then Me.m_psd.Tmax(i) = CSng(Math.Exp((Math.Log(sTemp) - 1.44) / -0.984))
+                If Me.m_psd.Tmax(i) < 0 And sngTemp > 0 Then Me.m_psd.Tmax(i) = CSng(Math.Exp((Math.Log(sngTemp) - 1.44) / -0.984))
             End If
         Next
     End Sub
