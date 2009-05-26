@@ -1,3 +1,11 @@
+'==============================================================================
+'
+' $Log: cMSEParameters.vb,v $
+' Revision 1.4  2009/05/26 20:19:41  jeroens
+' Variables no longer Stored
+'
+'==============================================================================
+
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -41,35 +49,41 @@ Public Class cMSEParameters
         'Assessment method
         meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eAssessmentMethods)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Integer, eVarNameFlags.MSEAssessMethod, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEAssessMethod))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         'Kalman gain
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEKalmanGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEKalmanGain))
+        val.Stored = False
         m_values.Add(val.varName, val)
-
 
         'Forcast Gain
         meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Single, eVarNameFlags.MSEForcastGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEForcastGain))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         'Assess Power
         meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Single, eVarNameFlags.MSEAssessPower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEAssessPower))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         'nTrials
         meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.MSENTrials, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSENTrials))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.MSEUseEconomicPlugin, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEUseEconomicPlugin))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEconomicAvailable))
+        val.Stored = False
         m_values.Add(val.varName, val)
 
         ResetStatusFlags()
