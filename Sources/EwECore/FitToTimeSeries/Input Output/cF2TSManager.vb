@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cF2TSManager.vb,v $
+' Revision 1.5  2009/05/26 04:30:31  jeroens
+' Fixed bug in CanRun that allowd FitToTS only to run with Anomaly Search enabled
+'
 ' Revision 1.4  2009/04/24 16:06:18  joeb
 ' Added text for proper initialization
 '
@@ -452,10 +455,12 @@ Public Class cF2TSManager
         Try
 
             bCanRun = Me.m_core.StateMonitor.HasEcosimLoaded
-            bCanRun = bCanRun And (Me.AnomalySearch And (Me.AnomalySearchShapeNumber > 0))
+
+            If (Me.AnomalySearch) Then bCanRun = bCanRun And (Me.AnomalySearchShapeNumber > 0)
             'isRefDataLoaded() will send a message if there is not data loaded
             bCanRun = bCanRun And isRefDataLoaded()
             bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
+
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " Error not properly initialized.")
             bCanRun = False
