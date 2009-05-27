@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.13  2009/05/27 22:34:23  villyc
+' adding keystoneness sub to network
+'
 ' Revision 1.12  2009/05/01 17:48:17  jeroens
 ' Uses central status feedback
 ' Public functions no longer throw exceptions
@@ -458,6 +461,9 @@ Public Class cEcoNetwork
                 End If
 
                 Impacts()
+
+                'VC090527 Adding calculation of keystoneness based on Libralato et al 2006:
+                Keystoneness()
 
                 asn.SetStatusText("Running Network Analysis eqPP...", TriState.UseDefault, 0.6)
                 InitReqPP()
@@ -2755,6 +2761,61 @@ NextPivot:
 
 
     End Sub
+
+    ''' <summary>
+    ''' Calculation of keystoneness following Libralato et al 2006. Implemented by VC in May 2009, leaving the interface to JS.
+    ''' Doesn't require any saving, but the index needs to be exposed so that we can pick it up for meta analysis.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub Keystoneness()
+        'First calculate the relative biomass sum for each LIVING group
+        'The keystoneindex is always calculated, just after the MTI has been done
+        'it requires no input, we have all
+
+        Dim RelBi(m_epdata.NumLiving) As Double
+        Dim TotalImpact(m_epdata.NumLiving) As Double
+        Dim sumB As Single = 0
+        For i As Integer = 1 To m_epdata.NumLiving
+            sumB += m_epdata.B(i)
+        Next
+        Try
+            'try is just because biomass could be 0 if model is really stupid
+            For i As Integer = 1 To m_epdata.NumLiving
+                RelBi(i) = m_epdata.B(i) / sumB
+            Next
+            'next we need the total impact for each LIVING group,
+            Dim maxImpact As Double = -9
+            For i As Integer = 1 To m_epdata.NumLiving
+                For j As Integer = 1 To m_epdata.NumGroups
+                    If i <> j Then
+                        TotalImpact(i) += MTI(i, j) ^ 2
+                    End If
+                Next
+                TotalImpact(i) = Math.Sqrt(TotalImpact(i))
+                If maxImpact < TotalImpact(i) Then maxImpact = TotalImpact(i)
+            Next
+
+
+
+            Dim KeystoneIndex(m_epdata.NumLiving) As Double
+            Dim ScaledImpact(m_epdata.NumLiving) As Double
+            For i As Integer = 1 To m_epdata.NumLiving
+                KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
+                ScaledImpact(i) = TotalImpact(i) / maxImpact
+            Next
+            'VC: Jeroen if you would (1), in the network analysis, just after the mixed trophic impact on the menu, 
+            'add 'Keystoneness', and then place a table with the group number, group name, keystoneIndex
+            '(2) not rush: we should add a scatter plot which has ScaledImpact(i) on the X-axis, 
+            'and Keystoneindex(i) on the Y-axis, and where each X-Y point (one for each living group) 
+            'is plotted with the number of the functional group on the plot (OK to have some on top of each other)
+
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
 #End Region
 
 #Region "Required PP"
