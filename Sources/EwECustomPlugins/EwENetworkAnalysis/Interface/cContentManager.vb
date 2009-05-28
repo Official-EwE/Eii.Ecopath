@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.6  2009/05/28 13:59:57  jeroens
+' Fixed annual averages option in CSV export
+'
 ' Revision 1.5  2009/05/28 12:37:06  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -195,6 +198,18 @@ Public MustInherit Class cContentManager
     Public Overridable Sub SaveToEMF(ByVal strFileName As String)
         ' NOP
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Flag stating whether the data being displayed has a time component.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property IsDataOverTime() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 
 #End Region ' Overrides
 

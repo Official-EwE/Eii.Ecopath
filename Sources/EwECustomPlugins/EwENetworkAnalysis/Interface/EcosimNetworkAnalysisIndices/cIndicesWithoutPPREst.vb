@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.18  2009/05/28 13:59:57  jeroens
+' Fixed annual averages option in CSV export
+'
 ' Revision 1.17  2009/05/28 12:37:14  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -107,6 +110,12 @@ Public Class cIndicesWithoutPPREst
         MyBase.Detach()
 
     End Sub
+
+    Public Overrides ReadOnly Property IsDataOverTime() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
     Public Overrides Sub DisplayData()
 
