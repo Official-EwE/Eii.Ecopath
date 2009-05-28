@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.16  2009/05/28 02:14:33  jeroens
+' Keystoneness vars exposed
+'
 ' Revision 1.15  2009/05/21 18:53:38  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -706,7 +709,13 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property nDetrituesGroups() As Integer
+    Public ReadOnly Property nLivingGroups() As Integer
+        Get
+            Return Me.m_core.nLivingGroups
+        End Get
+    End Property
+
+    Public ReadOnly Property nDetritusGroups() As Integer
         Get
             Return Me.m_core.nDetritusGroups
         End Get
@@ -1952,6 +1961,22 @@ Public Class cNetworkManager
     End Property
 
 #End Region ' Ecosim Public Properties
+
+#Region " Keystoneness "
+
+    Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
+        Get
+            Return Me.m_econetwork.KeystoneIndex(iGroup)
+        End Get
+    End Property
+
+    Public ReadOnly Property ScaledImpact(ByVal iGroup As Integer) As Double
+        Get
+            Return Me.m_econetwork.ScaledImpact(iGroup)
+        End Get
+    End Property
+
+#End Region ' Keystoneness
 
 #End Region ' Model outputs
 

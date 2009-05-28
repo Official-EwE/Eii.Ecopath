@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.14  2009/05/28 02:13:24  jeroens
+' Keystoneness vars exposed
+'
 ' Revision 1.13  2009/05/27 22:34:23  villyc
 ' adding keystoneness sub to network
 '
@@ -234,6 +237,13 @@ Public Class cEcoNetwork
     'see EwE5 DisplayFlowIndices
     Public TruPut As Single, SumAc As Single, SumEc As Single, SumCc As Single
     Public SumEx As Single, SumResp As Single, Tc As Single, TCyc As Single, TcD As Single
+
+#End Region
+
+#Region " Keystoneness "
+
+    Public KeystoneIndex() As Double
+    Public ScaledImpact() As Double
 
 #End Region
 
@@ -2795,10 +2805,9 @@ NextPivot:
                 If maxImpact < TotalImpact(i) Then maxImpact = TotalImpact(i)
             Next
 
+            ReDim KeystoneIndex(m_epdata.NumLiving)
+            ReDim ScaledImpact(m_epdata.NumLiving)
 
-
-            Dim KeystoneIndex(m_epdata.NumLiving) As Double
-            Dim ScaledImpact(m_epdata.NumLiving) As Double
             For i As Integer = 1 To m_epdata.NumLiving
                 KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
                 ScaledImpact(i) = TotalImpact(i) / maxImpact
