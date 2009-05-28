@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: PropertyRowHeaderCell.vb,v $
+' Revision 1.2  2009/05/28 12:37:32  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/03/30 16:59:26  jeroens
 ' Split
 '
@@ -50,12 +53,12 @@ Namespace Controls.EwEGrid
             Me.VisualModel = New cVisualizerEwERowHeader
         End Sub
 
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As StyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New StyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -81,15 +84,15 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="StyleGuide.eUnitType">unit of measurement</see> into
+        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
         ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="StyleGuide.eUnitType">unit of measurement</see>
+        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
                 ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal unitType As StyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New StyleGuide.eUnitType() {unitType})
+                ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -100,14 +103,14 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="StyleGuide.eUnitType">unit of measurements</see> into
+        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
         ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="StyleGuide.eUnitType">unit of measurements</see>
+        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
                 ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+                ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 

@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridRegulatoryOptions.vb,v $
+' Revision 1.5  2009/05/28 12:37:39  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:19  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -91,7 +94,7 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXEFFORT, StyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXEFFORT, cStyleGuide.eUnitType.Currency)
             Me(0, eColumnTypes.OptionNotSet) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_EFFORT)
             Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_WEAKESTSTOCK)
             Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_STRONGESTSTOCK)

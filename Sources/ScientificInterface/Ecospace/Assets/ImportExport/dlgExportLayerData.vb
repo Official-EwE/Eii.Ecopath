@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgExportLayerData.vb,v $
+' Revision 1.5  2009/05/28 12:37:18  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/15 14:12:12  jeroens
 ' Obtained layers properly disposed
 '
@@ -136,7 +139,7 @@ Public Class gridExportMappings
                     layer = Me.m_aLayers(iLayer)
 
                     ewec = New EwECell(layer.Name, GetType(String))
-                    ewec.Style = (StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable)
+                    ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
 
                     ewec = New EwECell(layer.Name, GetType(String))

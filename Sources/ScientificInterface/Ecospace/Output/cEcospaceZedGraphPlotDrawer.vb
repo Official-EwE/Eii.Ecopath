@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceZedGraphPlotDrawer.vb,v $
+' Revision 1.3  2009/05/28 12:37:10  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/04/22 00:56:48  jeroens
 ' Getting pretty
 '
@@ -30,17 +33,17 @@ Namespace Ecospace
         Private m_core As cCore = Nothing
         Private m_nTotalSteps As Integer
         Private m_nGroups As Integer
-        Private m_zgh As ZedGraphHelper = Nothing
-        Private m_sg As StyleGuide = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
+        Private m_sg As cStyleGuide = Nothing
         Private m_pane As GraphPane = Nothing
 
         Private m_showGroupMode As RunEcospace.eShowGroupType = RunEcospace.eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = cCore.NULL_VALUE
 
-        Public Sub New(ByVal core As cCore, ByVal zgh As ZedGraphHelper)
+        Public Sub New(ByVal core As cCore, ByVal zgh As cZedGraphHelper)
             Me.m_core = core
             Me.m_zgh = zgh
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
         End Sub
 
         Public Sub Reset(ByVal nGroups As Integer, ByVal nTotalSteps As Integer)
@@ -53,7 +56,7 @@ Namespace Ecospace
 
             Me.m_pane.CurveList.Clear()
             For iGroup As Integer = 1 To nGroups
-                li = Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.EcosimOutput, iGroup, New PointPairList())
+                li = Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, iGroup, New PointPairList())
                 li.Tag = iGroup
                 Me.m_pane.CurveList.Add(li)
             Next

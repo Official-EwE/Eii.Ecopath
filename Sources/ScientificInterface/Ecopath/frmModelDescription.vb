@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmModelDescription.vb,v $
+' Revision 1.6  2009/05/28 12:37:28  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/04/23 20:11:07  jeroens
 ' Added PSD enable check box
 '
@@ -162,7 +165,7 @@ Public Class frmModelDescription
 #Region " Currency "
 
     Private Sub PatchCurrencyUnitRadioButtonText(ByVal rb As RadioButton, ByVal uct As eUnitCurrencyType)
-        rb.Text = String.Format(rb.Text, StyleGuide.GetInstance().CurrencyUnitText(uct))
+        rb.Text = String.Format(rb.Text, cStyleGuide.GetInstance().CurrencyUnitText(uct))
     End Sub
 
     Private Sub OnUnitCurrencyRadioChanged(ByVal sender As Object, ByVal eventargs As EventArgs) _

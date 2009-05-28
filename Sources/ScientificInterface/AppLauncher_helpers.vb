@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher_helpers.vb,v $
+' Revision 1.17  2009/05/28 12:36:53  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.16  2009/05/11 01:50:47  jeroens
 ' Renamed command classes
 '
@@ -534,7 +537,7 @@ Partial Public Class AppLauncher
     Private Class StyleGuideUpdater
 
         Private m_core As cCore = Nothing
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         Private m_bIsEcopathLoaded As Boolean = False
 
         Private m_sm As cCoreStateMonitor = Nothing
@@ -546,7 +549,7 @@ Partial Public Class AppLauncher
         Private m_propUnitMonetary As cIntegerProperty = Nothing
         Private m_propUnitMonetaryText As cStringProperty = Nothing
 
-        Public Sub New(ByVal core As cCore, ByVal sg As StyleGuide)
+        Public Sub New(ByVal core As cCore, ByVal sg As cStyleGuide)
 
             Me.m_core = core
             Me.m_sm = core.StateMonitor
@@ -651,26 +654,26 @@ Partial Public Class AppLauncher
 
             Me.m_sg.LoadDefaultApplicationColors()
 
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_TEXT) = My.Settings.ColorDefaultText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_BACKGROUND) = My.Settings.ColorDefaultBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.NAMES_TEXT) = My.Settings.ColorNameText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.NAMES_BACKGROUND) = My.Settings.ColorNameBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT) = My.Settings.ColorFailedResultText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT) = My.Settings.ColorESPressureText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PROFIT_TEXT) = My.Settings.ColorESProfitsText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.TOTALCATCH_TEXT) = My.Settings.ColorESTotalCatchText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.TROPHICLINK_TEXT) = My.Settings.ColorTrophicLinkText
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.READONLY_BACKGROUND) = My.Settings.ColorReadOnlyBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.CHECKED_BACKGROUND) = My.Settings.ColorCheckedBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND) = My.Settings.ColorMissingParamBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND) = My.Settings.ColorImageBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
-            Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT) = My.Settings.ColorDefaultText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND) = My.Settings.ColorDefaultBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT) = My.Settings.ColorNameText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND) = My.Settings.ColorNameBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT) = My.Settings.ColorFailedResultText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT) = My.Settings.ColorESPressureText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT) = My.Settings.ColorESProfitsText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT) = My.Settings.ColorESTotalCatchText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT) = My.Settings.ColorTrophicLinkText
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND) = My.Settings.ColorReadOnlyBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND) = My.Settings.ColorCheckedBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND) = My.Settings.ColorMissingParamBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND) = My.Settings.ColorImageBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
+            Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
 
             Me.m_sg.ResumeEvents()
 
@@ -678,26 +681,26 @@ Partial Public Class AppLauncher
 
         Public Sub Save()
 
-            My.Settings.ColorDefaultText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_TEXT)
-            My.Settings.ColorDefaultBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
-            My.Settings.ColorNameText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.NAMES_TEXT)
-            My.Settings.ColorNameBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.NAMES_BACKGROUND)
-            My.Settings.ColorFailedResultText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
-            My.Settings.ColorFailedValidationText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
-            My.Settings.ColorErrorText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.GENERICERROR_TEXT)
-            My.Settings.ColorComputedValuesText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.COMPUTED_TEXT)
-            My.Settings.ColorESPressureText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
-            My.Settings.ColorESProfitsText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PROFIT_TEXT)
-            My.Settings.ColorESTotalCatchText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
-            My.Settings.ColorTrophicLinkText = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
-            My.Settings.ColorRemarksBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
-            My.Settings.ColorSumBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.SUM_BACKGROUND)
-            My.Settings.ColorReadOnlyBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.READONLY_BACKGROUND)
-            My.Settings.ColorCheckedBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
-            My.Settings.ColorMissingParamBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
-            My.Settings.ColorImageBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
-            My.Settings.ColorPlotsBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            My.Settings.ColorMapBackground = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.MAP_BACKGROUND)
+            My.Settings.ColorDefaultText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            My.Settings.ColorDefaultBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
+            My.Settings.ColorNameText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_TEXT)
+            My.Settings.ColorNameBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
+            My.Settings.ColorFailedResultText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
+            My.Settings.ColorFailedValidationText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
+            My.Settings.ColorErrorText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+            My.Settings.ColorComputedValuesText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
+            My.Settings.ColorESPressureText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
+            My.Settings.ColorESProfitsText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT)
+            My.Settings.ColorESTotalCatchText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
+            My.Settings.ColorTrophicLinkText = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
+            My.Settings.ColorRemarksBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+            My.Settings.ColorSumBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
+            My.Settings.ColorReadOnlyBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+            My.Settings.ColorCheckedBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
+            My.Settings.ColorMissingParamBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+            My.Settings.ColorImageBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+            My.Settings.ColorPlotsBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            My.Settings.ColorMapBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
 
             My.Settings.Save()
         End Sub

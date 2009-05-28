@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditRegions.vb,v $
+' Revision 1.3  2009/05/28 12:37:44  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/12/15 15:55:34  jeroens
 ' no message
 '
@@ -382,7 +385,7 @@ Namespace Ecospace
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
-                ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+                ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.RegionIndex) = ewec
 
                 Me(iRow, eColumnTypes.RegionName) = New Cells.Real.Cell("", GetType(String))

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StatusPanel.vb,v $
+' Revision 1.11  2009/05/28 12:37:48  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.10  2009/05/21 18:53:38  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -620,7 +623,7 @@ Public Class StatusPanel
 
         ' Toggle highlight bit for each property
         For Each p As cProperty In Me.m_lpHighlighted
-            p.SetStyle(StyleGuide.eStyleFlags.Highlight, TriState.UseDefault, bsm)
+            p.SetStyle(cStyleGuide.eStyleFlags.Highlight, TriState.UseDefault, bsm)
         Next
     End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: DetritusFateEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:36:59  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:15  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -181,7 +184,7 @@ Namespace Ecopath.Input
             ' Configure static SUM prop
             propSum = New cSingleProperty("")
             propSum.SetValue(1.0)
-            propSum.SetStyle(StyleGuide.eStyleFlags.Sum Or StyleGuide.eStyleFlags.NotEditable)
+            propSum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
             'Create rows for all groups
             For rowIndex As Integer = 1 To core.nGroups

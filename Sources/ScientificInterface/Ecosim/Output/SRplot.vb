@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SRplot.vb,v $
+' Revision 1.8  2009/05/28 12:37:23  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/04/16 04:16:09  jeroens
 ' Fixed crash, cleaned up
 '
@@ -44,6 +47,8 @@ Namespace Ecosim
     ''' =======================================================================
     Public Class SRplot
 
+#Region " Helper classes "
+
         ''' <summary>
         ''' 
         ''' </summary>
@@ -73,6 +78,8 @@ Namespace Ecosim
             'Public NumLifeStages As Integer
         End Class
 
+#End Region ' Helper classes
+
 #Region " Private vars "
 
         Private m_core As cCore = Nothing
@@ -82,7 +89,8 @@ Namespace Ecosim
         Private m_curveSlope As CurveItem = Nothing
         Private m_mhEcosim As cMessageHandler = Nothing
         Private m_SRResults As List(Of SRLine)
-        Private m_sg As StyleGuide = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
+        Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private vars
 
@@ -93,7 +101,7 @@ Namespace Ecosim
             Me.InitializeComponent()
 
             Me.m_core = cCore.GetInstance()
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
             Me.m_graphpane = Me.m_plot.GraphPane
             Me.m_SRResults = New List(Of SRLine)
@@ -213,8 +221,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal change As StyleGuide.eChangeType)
-            If (change And StyleGuide.eChangeType.Colours) > 0 Then
+        Private Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
+            If (change And cStyleGuide.eChangeType.Colours) > 0 Then
                 ' Add the curves again
                 Me.AddCurves(Me.m_graphpane, False)
             End If
@@ -268,7 +276,7 @@ Namespace Ecosim
             Dim pane As GraphPane = sender.MasterPane.FindChartRect(ptMouse)
             Dim x, y As Double
             Dim item As CurveItem = Nothing
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             If Not pane Is Nothing Then
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmShowAllFits.vb,v $
+' Revision 1.6  2009/05/28 12:37:38  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/05/21 18:53:43  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -102,7 +105,7 @@ Namespace Ecosim
 
         Private m_lShownPlotsType As New List(Of eTimeSeriesType)
 
-        Private m_sg As StyleGuide = StyleGuide.GetInstance()
+        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
 
 #End Region ' Private vars
 
@@ -220,7 +223,7 @@ Namespace Ecosim
                         g.Clip = New Region(New Rectangle(0, 0, iWidth, iHeight))
 
                     Else
-                        Using p As New Pen(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT))
+                        Using p As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT))
                             g.DrawLine(p, sPosX, sPosY, sPosX + pzPosGraph.Width, sPosY + pzPosGraph.Height)
                             g.DrawLine(p, sPosX, sPosY + pzPosGraph.Height, sPosX + pzPosGraph.Width, sPosY)
                         End Using
@@ -721,7 +724,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleguideChanged(ByVal changeType As StyleGuide.eChangeType)
+        Private Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
             ' Redraw
             Me.Invalidate()
         End Sub

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.11  2009/05/28 12:37:48  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.10  2009/04/28 14:21:59  jeroens
 ' Added Fleet visibility
 '
@@ -51,12 +54,12 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(True)> _
-    Public Class StyleGuide
+    Public Class cStyleGuide
 
 #Region " Private bits "
 
         ''' <summary>Singleton instance</summary>
-        Private Shared _inst_ As StyleGuide = New StyleGuide()
+        Private Shared _inst_ As cStyleGuide = New cStyleGuide()
         ''' <summary>Admin: Monetary unit name lookup table.</summary>
         Private m_dtMonetaryUnitNames As New Dictionary(Of eUnitMonetaryType, String)
 
@@ -81,7 +84,7 @@ Namespace Style
         ''' <summary>States whether the StyleGuide contains unsaved changes</summary>
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
-        Private m_dtApplicationColors As New Dictionary(Of StyleGuide.eApplicationColorType, Color)
+        Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
         ''' <summary>Color ramp for obtaining the standard EwE5 colors</summary>
         Private m_clrrmpEwE5 As New SAUPColorRamp()
         ''' <summary>Start offset for colour ramp.</summary>
@@ -132,7 +135,7 @@ Namespace Style
         Private Sub New()
 
             ' Register one and only instance
-            StyleGuide._inst_ = Me
+            cStyleGuide._inst_ = Me
 
             ' Control how colour ramp delivers its colours
             Me.m_clrrmpEwE5.ColorOffsetStart = c_sRampOffsetStart
@@ -313,8 +316,8 @@ Namespace Style
         ''' </summary>
         ''' <remarks>Use this method to obtain a reference to the StyleGuide</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As StyleGuide
-            Return StyleGuide._inst_
+        Public Shared Function GetInstance() As cStyleGuide
+            Return cStyleGuide._inst_
         End Function
 
 #End Region ' Styles
@@ -754,23 +757,23 @@ Namespace Style
         ''' text color and a background color.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub GetStyleColors(ByVal eStatus As StyleGuide.eStyleFlags, _
+        Public Sub GetStyleColors(ByVal eStatus As cStyleGuide.eStyleFlags, _
             ByRef colorText As Color, ByRef colorBackground As Color)
 
             ' Default priorities, used when the provided priorities did not yield
             ' a status to display, or when no priority sequence has been provided.
-            Dim ePriorities() As StyleGuide.eStyleFlags = { _
-                    StyleGuide.eStyleFlags.Null, _
-                    StyleGuide.eStyleFlags.InvalidModelResult, _
-                    StyleGuide.eStyleFlags.FailedValidation, _
-                    StyleGuide.eStyleFlags.ErrorEncountered, _
-                    StyleGuide.eStyleFlags.ValueComputed, _
-                    StyleGuide.eStyleFlags.Remarks, _
-                    StyleGuide.eStyleFlags.Sum, _
-                    StyleGuide.eStyleFlags.Names, _
-                    StyleGuide.eStyleFlags.Checked, _
-                    StyleGuide.eStyleFlags.NotEditable, _
-                    StyleGuide.eStyleFlags.OK}
+            Dim ePriorities() As cStyleGuide.eStyleFlags = { _
+                    cStyleGuide.eStyleFlags.Null, _
+                    cStyleGuide.eStyleFlags.InvalidModelResult, _
+                    cStyleGuide.eStyleFlags.FailedValidation, _
+                    cStyleGuide.eStyleFlags.ErrorEncountered, _
+                    cStyleGuide.eStyleFlags.ValueComputed, _
+                    cStyleGuide.eStyleFlags.Remarks, _
+                    cStyleGuide.eStyleFlags.Sum, _
+                    cStyleGuide.eStyleFlags.Names, _
+                    cStyleGuide.eStyleFlags.Checked, _
+                    cStyleGuide.eStyleFlags.NotEditable, _
+                    cStyleGuide.eStyleFlags.OK}
 
             ' JS 02Aug08: disabled, not used at all
             'StyleGuide.eStyleFlags.FishingPressure, _
@@ -779,8 +782,8 @@ Namespace Style
             'StyleGuide.eStyleFlags.TrophicLink, _
 
             ' Set defaults
-            Dim eColorText As StyleGuide.eApplicationColorType = 0
-            Dim eColorBack As StyleGuide.eApplicationColorType = 0
+            Dim eColorText As cStyleGuide.eApplicationColorType = 0
+            Dim eColorBack As cStyleGuide.eApplicationColorType = 0
 
             ' Variable statuses may have a text style, a background style or both.
             ' 
@@ -794,25 +797,25 @@ Namespace Style
 
                 Select Case (eStatus And ePriorities(i))
 
-                    Case StyleGuide.eStyleFlags.Null
+                    Case cStyleGuide.eStyleFlags.Null
                         ' No specific colour feedback
 
-                    Case StyleGuide.eStyleFlags.InvalidModelResult
+                    Case cStyleGuide.eStyleFlags.InvalidModelResult
                         eColorText = eApplicationColorType.INVALIDMODELRESULT_TEXT
 
-                    Case StyleGuide.eStyleFlags.FailedValidation
+                    Case cStyleGuide.eStyleFlags.FailedValidation
                         eColorText = eApplicationColorType.FAILEDVALIDATION_TEXT
 
-                    Case StyleGuide.eStyleFlags.ErrorEncountered
+                    Case cStyleGuide.eStyleFlags.ErrorEncountered
                         eColorText = eApplicationColorType.GENERICERROR_TEXT
 
-                    Case StyleGuide.eStyleFlags.ValueComputed
+                    Case cStyleGuide.eStyleFlags.ValueComputed
                         eColorText = eApplicationColorType.COMPUTED_TEXT
 
-                    Case StyleGuide.eStyleFlags.Remarks
+                    Case cStyleGuide.eStyleFlags.Remarks
                         eColorBack = eApplicationColorType.REMARKS_BACKGROUND
 
-                    Case StyleGuide.eStyleFlags.Sum
+                    Case cStyleGuide.eStyleFlags.Sum
                         eColorBack = eApplicationColorType.SUM_BACKGROUND
 
                         'Case StyleGuide.eStyleFlags.FishingPressure
@@ -830,14 +833,14 @@ Namespace Style
                     Case eStyleFlags.Checked
                         eColorBack = eApplicationColorType.CHECKED_BACKGROUND
 
-                    Case StyleGuide.eStyleFlags.Names
+                    Case cStyleGuide.eStyleFlags.Names
                         eColorText = eApplicationColorType.NAMES_TEXT
                         eColorBack = eApplicationColorType.NAMES_BACKGROUND
 
-                    Case StyleGuide.eStyleFlags.NotEditable
+                    Case cStyleGuide.eStyleFlags.NotEditable
                         eColorBack = eApplicationColorType.READONLY_BACKGROUND
 
-                    Case StyleGuide.eStyleFlags.OK
+                    Case cStyleGuide.eStyleFlags.OK
                         eColorText = eApplicationColorType.DEFAULT_TEXT
                         eColorBack = eApplicationColorType.DEFAULT_BACKGROUND
 
@@ -858,7 +861,7 @@ Namespace Style
                 Dim clr As Color = Color.Transparent
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
                     Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
-                    clr = StyleGuide.IntToColor(grp.PoolColor)
+                    clr = cStyleGuide.IntToColor(grp.PoolColor)
                 End If
                 If clr.A = 0 Then
                     clr = Me.GroupColorDefault(core, iGroup)
@@ -869,16 +872,16 @@ Namespace Style
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
                     Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
                     ' Optimization
-                    If grp.PoolColor = StyleGuide.ColorToInt(value) Then Return
+                    If grp.PoolColor = cStyleGuide.ColorToInt(value) Then Return
                     ' Apply
-                    grp.PoolColor = StyleGuide.ColorToInt(value)
+                    grp.PoolColor = cStyleGuide.ColorToInt(value)
                     ' Notify the world
                     Me.ColorsChanged()
                 End If
             End Set
         End Property
 
-        Public Property ApplicationColor(ByVal colorType As StyleGuide.eApplicationColorType) As Color
+        Public Property ApplicationColor(ByVal colorType As cStyleGuide.eApplicationColorType) As Color
             Get
                 ' Sanity check
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.20  2009/05/28 12:37:22  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.19  2009/05/12 14:23:16  jeroens
 ' Graph populated with data on startup - if data is available
 '
@@ -438,7 +441,7 @@ Namespace Ecosim
 
             Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
-            Me.m_sketchPad.Style = StyleGuide.eStyleFlags.OK
+            Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.OK
             Me.UpdateControls()
         End Sub
 
@@ -453,7 +456,7 @@ Namespace Ecosim
             Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.m_core, Nothing, Me.m_sketchPad)
             Me.m_shapeGUIHandler.SelectedShape = shape
             ' Cannot edit Fs anymore
-            Me.m_sketchPad.Style = StyleGuide.eStyleFlags.NotEditable
+            Me.m_sketchPad.Style = cStyleGuide.eStyleFlags.NotEditable
             Me.UpdateControls()
         End Sub
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditFleetsEwEGrid.vb,v $
+' Revision 1.3  2009/05/28 12:37:24  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/10/29 15:45:50  jeroens
 ' Fixed issue 562
 '
@@ -379,7 +382,7 @@ Imports EwEUtils.Utilities
             Me.AddRow()
 
             ewec = New EwECell(0, GetType(Integer))
-            ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+            ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.FleetIndex) = ewec
 
             Me(iRow, eColumnTypes.FleetName) = New Cells.Real.Cell("", GetType(String))

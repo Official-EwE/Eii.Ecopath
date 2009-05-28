@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cExpression.vb,v $
+' Revision 1.2  2009/05/28 12:37:01  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/04/02 13:19:40  jeroens
 ' Separated out of cFormulaExpression.vb
 '
@@ -24,7 +27,7 @@ Namespace Properties
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public MustOverride Function GetValue() As Single
-        Public MustOverride Function GetStyle() As StyleGuide.eStyleFlags
+        Public MustOverride Function GetStyle() As cStyleGuide.eStyleFlags
 
         ''' ---------------------------------------------------------------
         ''' <summary>

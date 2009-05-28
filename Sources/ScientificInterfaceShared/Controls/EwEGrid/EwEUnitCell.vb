@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEUnitCell.vb,v $
+' Revision 1.2  2009/05/28 12:37:31  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/03/30 16:59:25  jeroens
 ' Split
 '
@@ -32,7 +35,7 @@ Namespace Controls.EwEGrid
 
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As EwECellVisualizerBase
-        Protected m_aUnitTypes() As StyleGuide.eUnitType
+        Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 
 #Region " Construction "
@@ -42,8 +45,8 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal unitType As StyleGuide.eUnitType)
-            Me.New("{0}", New StyleGuide.eUnitType() {unitType})
+        Public Sub New(ByVal unitType As cStyleGuide.eUnitType)
+            Me.New("{0}", New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -51,7 +54,7 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             MyBase.New(Nothing, GetType(String))
 
             Me.m_strUnitMask = strUnitMask
@@ -85,17 +88,17 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Private Function GetUnitString(ByVal unitType As StyleGuide.eUnitType) As String
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim strUnitString As String = ""
             Select Case unitType
-                Case StyleGuide.eUnitType.Currency
+                Case cStyleGuide.eUnitType.Currency
                     strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
-                Case StyleGuide.eUnitType.Time
+                Case cStyleGuide.eUnitType.Time
                     strUnitString = sg.TimeUnitText(sg.TimeUnit)
-                Case StyleGuide.eUnitType.Monetary
+                Case cStyleGuide.eUnitType.Monetary
                     strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
-                Case StyleGuide.eUnitType.Nominal
+                Case cStyleGuide.eUnitType.Nominal
                     strUnitString = sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)
@@ -108,12 +111,12 @@ Namespace Controls.EwEGrid
         ''' Overridden to enusre that this cell cannot be edited.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Style() As StyleGuide.eStyleFlags
+        Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return (MyBase.Style Or StyleGuide.eStyleFlags.NotEditable)
+                Return (MyBase.Style Or cStyleGuide.eStyleFlags.NotEditable)
             End Get
-            Set(ByVal styleNew As StyleGuide.eStyleFlags)
-                MyBase.Style = (styleNew Or StyleGuide.eStyleFlags.NotEditable)
+            Set(ByVal styleNew As cStyleGuide.eStyleFlags)
+                MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property
 

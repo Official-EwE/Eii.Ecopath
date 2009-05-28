@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.5  2009/05/28 12:37:06  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/19 13:41:05  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -22,6 +25,7 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
+Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 
 #End Region ' Imports
@@ -43,6 +47,8 @@ Public MustInherit Class cContentManager
     Private m_plot As ucPlot = Nothing
     ''' <summary></summary>
     Private m_datagrid As DataGridView = Nothing
+    ''' <summary></summary>
+    Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private variables
 
@@ -71,6 +77,8 @@ Public MustInherit Class cContentManager
         Me.m_graph = graph
         Me.m_plot = plot
 
+        Me.m_sg = cStyleGuide.GetInstance()
+
         ' Hide all managed controls
         Me.HideControls()
 
@@ -95,6 +103,8 @@ Public MustInherit Class cContentManager
         Me.m_datagrid = Nothing
         Me.m_graph = Nothing
         Me.m_plot = Plot
+
+        Me.m_sg = Nothing
 
     End Sub
 
@@ -231,6 +241,17 @@ Public MustInherit Class cContentManager
     Protected ReadOnly Property Plot() As ucPlot
         Get
             Return Me.m_plot
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return the one and only style guide.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property StyleGuide() As cStyleGuide
+        Get
+            Return Me.m_sg
         End Get
     End Property
 

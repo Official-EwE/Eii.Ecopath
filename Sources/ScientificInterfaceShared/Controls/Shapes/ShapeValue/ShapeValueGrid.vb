@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeValueGrid.vb,v $
+' Revision 1.6  2009/05/28 12:37:47  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/05/02 19:01:54  jeroens
 ' Fixed index
 '
@@ -139,7 +142,7 @@ Public Class ShapeValueGrid
                 Case frmShapeValue.eDisplayMode.Index
 
                     cell = New EwECell(CStr(iValue + 1), GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
                     cell = New EwECell(sValue, GetType(Single))
@@ -149,7 +152,7 @@ Public Class ShapeValueGrid
                 Case frmShapeValue.eDisplayMode.Yearly
 
                     cell = New EwECell(CStr(iValue + iStartIndex), GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
                     cell = New EwECell(sValue, GetType(Single))
@@ -168,11 +171,11 @@ Public Class ShapeValueGrid
                     strLabel1 = d.ToString("MMM")
 
                     cell = New EwECell(strLabel0, GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
                     cell = New EwECell(strLabel1, GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 1) = cell
 
                     cell = New EwECell(sValue, GetType(Single))

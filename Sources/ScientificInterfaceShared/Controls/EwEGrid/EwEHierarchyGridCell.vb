@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEHierarchyGridCell.vb,v $
+' Revision 1.3  2009/05/28 12:37:30  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/03/30 17:09:33  jeroens
 ' Split cells
 '
@@ -73,11 +76,11 @@ Namespace Controls.EwEGrid
             Me.Expanded = Not Me.Expanded
         End Sub
 
-        Public Overrides Property Style() As StyleGuide.eStyleFlags
+        Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return StyleGuide.eStyleFlags.NotEditable Or StyleGuide.eStyleFlags.Names
+                Return cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             End Get
-            Set(ByVal value As StyleGuide.eStyleFlags)
+            Set(ByVal value As cStyleGuide.eStyleFlags)
                 ' No style
             End Set
         End Property

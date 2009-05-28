@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: SizeWeightPlot.vb,v $
+' Revision 1.11  2009/05/28 12:36:58  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.10  2009/05/21 18:53:47  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -47,7 +50,7 @@ Namespace Ecopath.Output
 
 #Region "Variables"
         Private m_core As cCore = Nothing
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
 #End Region 'Variables
 
 #Region "Constructor"
@@ -58,7 +61,7 @@ Namespace Ecopath.Output
 
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance()
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
 
             Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
 
@@ -171,7 +174,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim bGroupSelected(m_core.nLivingGroups) As Boolean
 
             For i As Integer = 1 To m_core.nLivingGroups

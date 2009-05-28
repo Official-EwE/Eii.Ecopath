@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyManager.vb,v $
+' Revision 1.7  2009/05/28 12:37:05  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/05/26 21:55:15  jeroens
 ' Responds to messages from more core components
 '
@@ -61,7 +64,7 @@ Namespace Properties
         Private Sub New()
             ' Create No Data property
             Me.m_propNoData = New cStringProperty("")
-            Me.m_propNoData.SetStyle(StyleGuide.eStyleFlags.ErrorEncountered Or StyleGuide.eStyleFlags.NotEditable)
+            Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
             Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
             ' Start listening to core messages
             Me.InitializeMessageHandlers()

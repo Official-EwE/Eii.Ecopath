@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridLayerData.vb,v $
+' Revision 1.5  2009/05/28 12:37:45  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/06 13:11:39  jeroens
 ' Renamed classes for consistency reasons
 '
@@ -331,7 +334,7 @@ Public Class gridLayerData
                 'If dataDepth.Cell(iRow, iCol) = 0 Then
                 '    cell.Style = StyleGuide.eStyleFlags.Checked
                 'Else
-                cell.Style = StyleGuide.eStyleFlags.OK
+                cell.Style = cStyleGuide.eStyleFlags.OK
                 'End If
                 Me(iRow, iCol) = cell
             Next iCol

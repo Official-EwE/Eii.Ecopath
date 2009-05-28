@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: cPropertyFormatProvider.vb,v $
+' Revision 1.3  2009/05/28 12:37:13  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/05/11 01:50:49  jeroens
 ' Renamed command classes
 '
@@ -111,14 +114,14 @@ Namespace Controls
         ''' dictated by the underlying cProperty.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Style() As StyleGuide.eStyleFlags
+        Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Dim eStyle As StyleGuide.eStyleFlags = MyBase.Style()
-                If (eStyle <> StyleGuide.eStyleFlags.OK) Then Return eStyle
+                Dim eStyle As cStyleGuide.eStyleFlags = MyBase.Style()
+                If (eStyle <> cStyleGuide.eStyleFlags.OK) Then Return eStyle
                 If Me.m_prop Is Nothing Then Return Nothing
                 Return Me.m_prop.GetStyle()
             End Get
-            Set(ByVal eStyle As StyleGuide.eStyleFlags)
+            Set(ByVal eStyle As cStyleGuide.eStyleFlags)
                 MyBase.Style = eStyle
             End Set
         End Property

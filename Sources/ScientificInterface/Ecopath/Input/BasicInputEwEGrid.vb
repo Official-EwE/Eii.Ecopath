@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicInputEwEGrid.vb,v $
+' Revision 1.9  2009/05/28 12:36:59  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.8  2009/05/21 19:27:14  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -73,14 +76,14 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
             Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(My.Resources.HEADER_UNASSIMILCONSUMPTION)
-            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(My.Resources.HEADER_DETIMP_UNIT, New StyleGuide.eUnitType() {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time})
+            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(My.Resources.HEADER_DETIMP_UNIT, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time})
 
             Me.FixedColumns = 2
 
@@ -133,7 +136,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.BA) = cell
 
                     cell = New EwECell("", GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iRow, eColumnTypes.Z) = cell
 
                     cell = New PropertyCell(source, eVarNameFlags.PBInput)
@@ -185,7 +188,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.Z) = cell
 
                     cell = New EwECell("", GetType(String))
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     cell.Behaviors.Add(m_bm)
                     Me(iRow, eColumnTypes.PB) = cell
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMonetaryUnitComboBox.vb,v $
+' Revision 1.2  2009/05/28 12:37:17  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/02/24 03:47:36  jeroens
 ' Renamed
 '
@@ -63,7 +66,7 @@ Namespace Controls
 
         Private Sub Populate()
 
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim strLabel As String = ""
 
             Me.SuspendLayout()

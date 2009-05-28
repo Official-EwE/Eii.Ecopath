@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPropertyOperand.vb,v $
+' Revision 1.2  2009/05/28 12:37:02  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/04/02 13:19:40  jeroens
 ' Separated out of cFormulaExpression.vb
 '
@@ -75,11 +78,11 @@ Namespace Properties
 
         ''' ---------------------------------------------------------------
         ''' <summary>
-        ''' Returns the <see cref="StyleGuide.eStyleFlags">style</see>
+        ''' Returns the <see cref="cStyleGuide.eStyleFlags">style</see>
         ''' of the <see cref="cSingleProperty">cSingleProperty</see>.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Public Overrides Function GetStyle() As StyleGuide.eStyleFlags
+        Public Overrides Function GetStyle() As cStyleGuide.eStyleFlags
             Return Me.m_prop.GetStyle()
         End Function
 

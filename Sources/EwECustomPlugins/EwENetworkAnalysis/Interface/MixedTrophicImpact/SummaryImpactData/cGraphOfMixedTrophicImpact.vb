@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.14  2009/05/28 12:37:14  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.13  2009/05/21 18:53:36  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -81,7 +84,7 @@ Public Class cGraphOfMixedTrophicImpact
         Dim ZeroString As String
         Dim NoDisplay As Integer
         Dim EnUSLocale As New CultureInfo("en-US")
-        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
         Dim bShowItem As Boolean = True
 
         'Write data to file

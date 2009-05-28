@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.25  2009/05/28 12:36:57  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.24  2009/05/12 21:34:32  joeh
 ' Add titles to graph axis
 '
@@ -90,7 +93,7 @@ Namespace Ecopath.Output
 #Region "Variables"
         Private m_core As cCore = Nothing
         Private m_MasterPane As MasterPane
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
         Private m_Time() As Single
         Private m_Weight() As Single
         Private m_Number() As Single
@@ -115,7 +118,7 @@ Namespace Ecopath.Output
             Me.m_core = cCore.GetInstance()
             Me.m_MasterPane = New MasterPane
 
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.zgcZedGraphCntl)
 
             'Don't manually run! The core execution states take care of this!
@@ -270,7 +273,7 @@ Namespace Ecopath.Output
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
             Dim grpOutput As cEcoPathGroupOutput = Nothing
-            Dim sgStyleGuide As StyleGuide = StyleGuide.GetInstance
+            Dim sgStyleGuide As cStyleGuide = cStyleGuide.GetInstance
             Dim sSystemPSD(m_core.nWeightClasses) As Single
 
             grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
@@ -384,7 +387,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim bGroupSelected(m_core.nLivingGroups) As Boolean
 
             For i As Integer = 1 To m_core.nLivingGroups

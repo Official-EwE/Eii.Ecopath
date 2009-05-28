@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryInputOffVesselPriceEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:37:00  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:17  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -95,7 +98,7 @@ Namespace Ecopath.Input
             For fleetIndex As Integer = 1 To core.nFleets
                 source = core.FleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(source, eVarNameFlags.Name, Nothing, _
-                        My.Resources.GENERIC_HEADER_PROP_A_PER_B, New StyleGuide.eUnitType() {StyleGuide.eUnitType.Monetary, StyleGuide.eUnitType.Currency})
+                        My.Resources.GENERIC_HEADER_PROP_A_PER_B, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Currency})
             Next
 
             Me.FixedColumns = 2

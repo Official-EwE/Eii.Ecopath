@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryInputFleetDefinitionEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:37:00  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:16  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -127,7 +130,7 @@ Namespace Ecopath.Input
 
             Dim propTotal As New cSingleProperty("")
             propTotal.SetValue(100.0)
-            propTotal.SetStyle(StyleGuide.eStyleFlags.NotEditable Or StyleGuide.eStyleFlags.Sum)
+            propTotal.SetStyle(cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
             For rowIndex As Integer = 1 To core.nFleets
 

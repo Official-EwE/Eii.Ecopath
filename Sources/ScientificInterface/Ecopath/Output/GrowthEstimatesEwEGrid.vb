@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GrowthEstimatesEwEGrid.vb,v $
+' Revision 1.11  2009/05/28 12:36:55  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.10  2009/05/22 22:31:08  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -189,7 +192,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim bGroupSelected(m_core.nLivingGroups) As Boolean
 
             For i As Integer = 1 To m_core.nLivingGroups

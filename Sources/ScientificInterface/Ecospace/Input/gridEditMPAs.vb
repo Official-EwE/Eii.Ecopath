@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditMPAs.vb,v $
+' Revision 1.4  2009/05/28 12:37:42  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.3  2009/03/23 02:25:04  jeroens
 ' No longer uses month resource strings; uses OS date formatting options instead
 '
@@ -395,7 +398,7 @@ Namespace Ecospace
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
-                ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+                ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.MPAIndex) = ewec
 
                 Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))

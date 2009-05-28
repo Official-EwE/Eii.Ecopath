@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.7  2009/05/28 12:37:25  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/02/27 07:55:14  jeroens
 ' Changed vbK placement
 '
@@ -904,7 +907,7 @@ Imports EwEUtils.Drawing
             Me.AddRow()
 
             ewec = New EwECell(0, GetType(Integer))
-            ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+            ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.GroupIndex) = ewec
 
             Me(iRow, eColumnTypes.GroupName) = New Cells.Real.Cell("", GetType(String))
@@ -996,8 +999,8 @@ Imports EwEUtils.Drawing
         aCells(eColumnTypes.GroupPP).SetValue(pos, gi.PP)
 
         pos = New Position(iRow, eColumnTypes.GroupColor)
-        Dim clr As Color = StyleGuide.IntToColor(gi.PoolColor)
-        If clr.A = 0 Then clr = StyleGuide.GetInstance().GroupColorDefault(Me.m_core, iRow, Me.m_lgiGroups.Count)
+        Dim clr As Color = cStyleGuide.IntToColor(gi.PoolColor)
+        If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.m_core, iRow, Me.m_lgiGroups.Count)
         aCells(eColumnTypes.GroupColor).SetValue(pos, clr)
 
         Select Case gi.Status
@@ -1028,8 +1031,8 @@ Imports EwEUtils.Drawing
 
         Me.AllowUpdates = False
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            clr = StyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
-            If clr.A = 0 Then clr = StyleGuide.GetInstance().GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count)
+            clr = cStyleGuide.IntToColor(Me.m_lgiGroups(iGroup).PoolColor)
+            If clr.A = 0 Then clr = cStyleGuide.GetInstance().GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count)
             Me(iGroup + iFIRSTGROUPROW, eColumnTypes.GroupColor).Value = clr
         Next iGroup
         Me.AllowUpdates = True
@@ -1494,17 +1497,17 @@ Imports EwEUtils.Drawing
         Next
 
         For i As Integer = 0 To lGroupLists.Count - 1
-            hsvGroup = StyleGuide.CalculateAlternatingGroupColor(i + 1, lGroupLists.Count)
+            hsvGroup = cStyleGuide.CalculateAlternatingGroupColor(i + 1, lGroupLists.Count)
             lGroups = lGroupLists(i)
             If lGroups.Count > 1 Then
                 For iLifeStage As Integer = 0 To lGroups.Count - 1
                     gi = lGroups(iLifeStage)
-                    hsvLifeStage = StyleGuide.CalculateAlternatingStanzaGroupColor(hsvGroup, iLifeStage, lGroups.Count)
-                    gi.PoolColor = StyleGuide.ColorToInt(HSV.ToColor(hsvLifeStage))
+                    hsvLifeStage = cStyleGuide.CalculateAlternatingStanzaGroupColor(hsvGroup, iLifeStage, lGroups.Count)
+                    gi.PoolColor = cStyleGuide.ColorToInt(HSV.ToColor(hsvLifeStage))
                 Next
             Else 'Non stanza group
                 gi = lGroups(0)
-                gi.PoolColor = StyleGuide.ColorToInt(HSV.ToColor(hsvGroup))
+                gi.PoolColor = cStyleGuide.ColorToInt(HSV.ToColor(hsvGroup))
             End If
         Next
 
@@ -1512,10 +1515,10 @@ Imports EwEUtils.Drawing
     End Sub
 
     Public Sub SetScaleGroupColors()
-        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-            Me.m_lgiGroups(iGroup).PoolColor = StyleGuide.ColorToInt(sg.GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count))
+            Me.m_lgiGroups(iGroup).PoolColor = cStyleGuide.ColorToInt(sg.GroupColorDefault(Me.m_core, iGroup + 1, Me.m_lgiGroups.Count))
             Me.UpdateRow(iGroup + iFIRSTGROUPROW)
         Next
 
@@ -1534,9 +1537,9 @@ Imports EwEUtils.Drawing
         gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
 
         dlgColor = New ColorDialog()
-        dlgColor.Color = StyleGuide.IntToColor(gi.PoolColor)
+        dlgColor.Color = cStyleGuide.IntToColor(gi.PoolColor)
         If dlgColor.ShowDialog() = DialogResult.OK Then
-            gi.PoolColor = StyleGuide.ColorToInt(dlgColor.Color)
+            gi.PoolColor = cStyleGuide.ColorToInt(dlgColor.Color)
             Me.UpdateRow(iRow)
         End If
 
@@ -1848,7 +1851,7 @@ Imports EwEUtils.Drawing
         Dim stanza As cStanzaGroup = Nothing
         Dim iStanza As Integer = 0
         Dim bSuccess As Boolean = True
-        Dim stgd As StyleGuide = StyleGuide.GetInstance()
+        Dim stgd As cStyleGuide = cStyleGuide.GetInstance()
         Dim sb As New System.Text.StringBuilder
 
         ' =================
@@ -2082,7 +2085,7 @@ Imports EwEUtils.Drawing
                             If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
                             If (group.PoolColor <> gi.PoolColor) Then
                                 ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = StyleGuide.ColorToInt(stgd.GroupColorDefault(Me.m_core, iGrpTmp, Me.m_core.nGroups)) Then
+                                If gi.PoolColor = cStyleGuide.ColorToInt(stgd.GroupColorDefault(Me.m_core, iGrpTmp, Me.m_core.nGroups)) Then
                                     ' #Yes: Set color to transparent to allow group to show up as true default colour
                                     group.PoolColor = 0
                                 Else
@@ -2096,7 +2099,7 @@ Imports EwEUtils.Drawing
                     Next
                 End If
             Next
-            If bColorsChanged Then StyleGuide.GetInstance().ColorsChanged()
+            If bColorsChanged Then cStyleGuide.GetInstance().ColorsChanged()
         End If
 
         appl.SetStatusText("", TriState.False)

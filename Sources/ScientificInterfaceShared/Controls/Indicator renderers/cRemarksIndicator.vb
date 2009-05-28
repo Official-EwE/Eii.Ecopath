@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cRemarksIndicator.vb,v $
+' Revision 1.2  2009/05/28 12:37:18  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/09/26 07:31:17  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -74,12 +77,12 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Shared Sub Paint(ByVal rcClip As Rectangle, ByVal g As Graphics, ByVal bHasRemarks As Boolean)
 
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim pt() As Point = GetPoints(rcClip)
             Dim clrFill As Color = Nothing
 
             If (bHasRemarks) Then
-                clrFill = sg.ApplicationColor(StyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+                clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
                 Using br As New SolidBrush(clrFill)
                     g.FillPolygon(br, pt)
                 End Using

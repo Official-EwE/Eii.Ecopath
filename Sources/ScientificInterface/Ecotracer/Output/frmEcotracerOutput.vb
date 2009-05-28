@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotracerOutput.vb,v $
+' Revision 1.8  2009/05/28 12:37:32  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/05/11 01:50:55  jeroens
 ' Renamed command classes
 '
@@ -134,11 +137,11 @@ Public Class frmEcotracerOutput
     ''' <summary></summary>
     Private m_core As cCore = Nothing
     ''' <summary></summary>
-    Private m_zgh As ZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper = Nothing
     ''' <summary></summary>
     Private m_curDisplayMode As eDisplayModeTypes = eDisplayModeTypes.NotInitialized
     ''' <summary></summary>
-    Private m_sg As StyleGuide = Nothing
+    Private m_sg As cStyleGuide = Nothing
 
     ''' <summary></summary>
     Private m_asScaling() As Single
@@ -163,8 +166,8 @@ Public Class frmEcotracerOutput
     Private Sub frmEcotracerOutput_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.m_core = cCore.GetInstance()
-        Me.m_sg = StyleGuide.GetInstance()
-        Me.m_zgh = New ZedGraphHelper()
+        Me.m_sg = cStyleGuide.GetInstance()
+        Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
@@ -209,8 +212,8 @@ Public Class frmEcotracerOutput
         PlotGroup()
     End Sub
 
-    Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
-        If ((changeType And StyleGuide.eChangeType.Colours) > 0) Then
+    Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
             ' Respond to group colour changes
             Me.PlotGroup()
             ' Invalidate group list box
@@ -576,7 +579,7 @@ Public Class frmEcotracerOutput
                 Else
                     Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
                     strItemText = group.Name
-                    clr = StyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                    clr = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
                 End If
             Else
                 strItemText = "" ' Deleted
@@ -894,7 +897,7 @@ Public Class frmEcotracerOutput
             If iGroup > 0 Then
                 Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
                 strLabel = group.Name
-                clrLine = StyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                clrLine = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
             End If
 
             'decide the plot type outside the loop 
@@ -1168,7 +1171,7 @@ Public Class frmEcotracerOutput
             'build the label group and region name
             If iGroup > 0 Then
                 name = Me.m_core.EcoPathGroupInputs(iGroup).Name
-                clrLine = StyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
+                clrLine = cStyleGuide.GetInstance().GroupColor(Me.m_core, iGroup)
             End If
 
             If iregion > 0 Then

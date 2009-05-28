@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: gridFishingQuotas.vb,v $
+' Revision 1.7  2009/05/28 12:37:39  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/05/21 18:53:45  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -60,7 +63,7 @@ Namespace Ecosim
                 src = core.FleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, _
                     eVarNameFlags.Name, Nothing, _
-                    "{0} ({1})", StyleGuide.eUnitType.Currency)
+                    "{0} ({1})", cStyleGuide.eUnitType.Currency)
             Next
 
             Me.FixedColumns = 2

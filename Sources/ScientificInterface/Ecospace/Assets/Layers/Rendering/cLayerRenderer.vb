@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cLayerRenderer.vb,v $
+' Revision 1.2  2009/05/28 12:37:15  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/11/04 04:41:34  jeroens
 ' Split into separate files, moved
 '
@@ -147,7 +150,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="rc">Device area to render cell onto.</param>
         ''' <param name="value">The value to render.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderCell(ByVal g As Graphics, ByVal rc As Rectangle, ByVal value As Object, ByVal style As StyleGuide.eStyleFlags)
+        Public MustOverride Sub RenderCell(ByVal g As Graphics, ByVal rc As Rectangle, ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

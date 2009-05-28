@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBioPercent.vb,v $
+' Revision 1.7  2009/05/28 12:37:52  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/04/07 20:02:11  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -60,7 +63,7 @@ Namespace Ecosim
         Private m_core As cCore = Nothing
         Private m_medfn As cMediationFunction = Nothing
         Private m_RdmColor As ColorSymbolRotator = Nothing
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
 
         Public Sub New()
 
@@ -101,7 +104,7 @@ Namespace Ecosim
 
         Private Sub InitGraphPane()
 
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
             Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
 
@@ -123,7 +126,7 @@ Namespace Ecosim
             Dim medFlt As cMediatingFleet = Nothing
             Dim list As PointPairList = Nothing
             Dim pane As GraphPane = m_zedgraph.GraphPane
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
@@ -177,7 +180,7 @@ Namespace Ecosim
         Public Sub LoadGraphData(ByVal data As Dictionary(Of cCoreInputOutputBase, Single))
 
             Dim myPane As GraphPane = m_zedgraph.GraphPane
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cCoreInputOutputBase = Nothing
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
@@ -200,7 +203,7 @@ Namespace Ecosim
                         myCurve.Bar.Fill = New Fill(clr)
                     Else
                         ' #No: get the group
-                        clr = StyleGuide.GetInstance().GroupColor(Me.m_core, source.Index)
+                        clr = cStyleGuide.GetInstance().GroupColor(Me.m_core, source.Index)
                         myCurve = myPane.AddBar(source.Name, list, clr)
                         myCurve.Bar.Fill = New Fill(clr)
                     End If

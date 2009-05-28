@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLayerRendererDepth.vb,v $
+' Revision 1.2  2009/05/28 12:37:16  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/01/17 03:23:51  jeroens
 ' Initial version
 '
@@ -52,7 +55,7 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, ByVal value As Object, _
-                ByVal style As StyleGuide.eStyleFlags)
+                ByVal style As cStyleGuide.eStyleFlags)
 
             Try
                 Dim sValue As Single = CSng(value)
@@ -65,7 +68,7 @@ Namespace Ecospace.Basemap.Layers
                     ' #No: only draw colours when highlighted
 
                     ' Highlighted? draw values in colour + value on top
-                    If ((style And StyleGuide.eStyleFlags.Highlight) = StyleGuide.eStyleFlags.Highlight) Then
+                    If ((style And cStyleGuide.eStyleFlags.Highlight) = cStyleGuide.eStyleFlags.Highlight) Then
 
                         If (Me.m_brFore Is Nothing) Then Me.Update()
 

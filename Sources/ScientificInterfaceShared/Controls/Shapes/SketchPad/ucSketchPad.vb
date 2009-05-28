@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.12  2009/05/28 12:37:54  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.11  2009/04/20 13:56:11  jeroens
 ' Fixed cursor feedback
 '
@@ -101,7 +104,7 @@ Namespace Controls
         ''' <summary>The one core</summary>
         Private m_core As cCore = Nothing
         ''' <summary>Styleguide to listen to.</summary>
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         ''' <summary>The manager of this control.</summary>
         Private m_handler As cShapeGUIHandler = Nothing
         ''' <summary>The shape shown in this control.</summary>
@@ -138,7 +141,7 @@ Namespace Controls
         ''' <summary></summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
         ''' <summary>Style of the control.</summary>
-        Private m_style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+        Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         ''' <summary></summary>
         Public Delegate Sub ShapeChangedDelegate(ByVal shape As cShapeData)
@@ -170,7 +173,7 @@ Namespace Controls
             Me.Dock = DockStyle.Fill
 
             Me.m_core = cCore.GetInstance()
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
 
             ' Default rendering mode
             Me.m_sketchDrawMode = eSketchDrawModeTypes.Fill
@@ -202,11 +205,11 @@ Namespace Controls
         ''' Get/set the style of the control to override data styles.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Style() As StyleGuide.eStyleFlags
+        Public Property Style() As cStyleGuide.eStyleFlags
             Get
                 Return Me.m_style
             End Get
-            Set(ByVal value As StyleGuide.eStyleFlags)
+            Set(ByVal value As cStyleGuide.eStyleFlags)
                 Me.m_style = value
                 Me.UpdateControl()
             End Set
@@ -556,12 +559,12 @@ Namespace Controls
 
         Private Sub UpdateControl()
 
-            If ((Me.Style And StyleGuide.eStyleFlags.NotEditable) = 0) And (Me.m_shape IsNot Nothing) Then
+            If ((Me.Style And cStyleGuide.eStyleFlags.NotEditable) = 0) And (Me.m_shape IsNot Nothing) Then
                 Me.Enabled = True
-                Me.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+                Me.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Else
                 Me.Enabled = False
-                Me.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+                Me.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
             End If
 
             Me.UpdateCursor()

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwECellBase.vb,v $
+' Revision 1.2  2009/05/28 12:37:29  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/03/30 16:59:24  jeroens
 ' Split
 '
@@ -51,7 +54,7 @@ Namespace Controls.EwEGrid
         Private Shared g_visualizer As New EwECellVisualizer()
 
         ''' <summary>StyleGuide instance for subscribing to events</summary>
-        Protected m_sg As StyleGuide = StyleGuide.GetInstance()
+        Protected m_sg As cStyleGuide = cStyleGuide.GetInstance()
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         ''' <summary>Behaviour model to catch cell resize events.</summary>
@@ -112,23 +115,23 @@ Namespace Controls.EwEGrid
         ''' Custom cell style
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private m_style As StyleGuide.eStyleFlags = 0
+        Private m_style As cStyleGuide.eStyleFlags = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Allows to set a custom <see cref="StyleGuide.eStyleFlags">style</see>,
+        ''' Allows to set a custom <see cref="cStyleGuide.eStyleFlags">style</see>,
         ''' triggering EwE colour feedback and EwE cell edit behaviour.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Style() As StyleGuide.eStyleFlags
+        Public Overridable Property Style() As cStyleGuide.eStyleFlags
 
             Get
                 Return Me.m_style
             End Get
 
-            Set(ByVal s As StyleGuide.eStyleFlags)
+            Set(ByVal s As cStyleGuide.eStyleFlags)
                 Me.m_style = s
-                If ((s And StyleGuide.eStyleFlags.NotEditable) = 0) Then
+                If ((s And cStyleGuide.eStyleFlags.NotEditable) = 0) Then
                     Me.DataModel.EnableEdit = True
                     Me.DataModel.EditableMode = SourceGrid2.EditableMode.Default
                 Else
@@ -144,7 +147,7 @@ Namespace Controls.EwEGrid
             ' Safety catch, this method should be obsolete but *apparently* a double-click on
             ' disabled cells (EndableEdit and EditableMode locked down) still
             ' results into EditStarting!
-            If ((Me.Style And StyleGuide.eStyleFlags.NotEditable) = StyleGuide.eStyleFlags.NotEditable) Then
+            If ((Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then
                 e.Cancel = True
             End If
             MyBase.OnEditStarting(e)
@@ -192,7 +195,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Get/set the number of decimal digits to display when formatting
         ''' numeric values. Set this value to a negative number to use the 
-        ''' system-wide <see cref="StyleGuide.NumDigits">NumDigits</see> setting.
+        ''' system-wide <see cref="cStyleGuide.NumDigits">NumDigits</see> setting.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property NumDigits() As Integer
@@ -214,8 +217,8 @@ Namespace Controls.EwEGrid
         ''' <returns>The formatted value of the cell.</returns>
         ''' <remarks>
         ''' Real values will be formatted according
-        ''' to the <see cref="StyleGuide.NumDigits">number of digits</see>
-        ''' setting specified in the EwE <see cref="StyleGuide">StyleGuide</see>,
+        ''' to the <see cref="cStyleGuide.NumDigits">number of digits</see>
+        ''' setting specified in the EwE <see cref="cStyleGuide">StyleGuide</see>,
         ''' or via the local <see cref="NumDigits">NumDigits</see> override
         ''' if provided.
         ''' </remarks>
@@ -226,7 +229,7 @@ Namespace Controls.EwEGrid
                 Dim objValue As Object = Me.Value
                 Dim tValue As Type = Me.DataModel.ValueType
 
-                If ((Me.Style And StyleGuide.eStyleFlags.Null) > 0) Then
+                If ((Me.Style And cStyleGuide.eStyleFlags.Null) > 0) Then
                     Return ""
                 End If
 
@@ -315,7 +318,7 @@ Namespace Controls.EwEGrid
         ''' StyleGuide change event handler; makes sure cells are redrawn
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             Me.Invalidate()
         End Sub
 

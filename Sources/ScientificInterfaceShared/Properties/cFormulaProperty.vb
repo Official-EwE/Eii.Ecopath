@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFormulaProperty.vb,v $
+' Revision 1.3  2009/05/28 12:37:03  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/04/02 13:22:26  jeroens
 ' Separated expressions out of cFormulaProperty.vb
 '
@@ -148,10 +151,10 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Private Sub Calculate()
 
-            Dim styleSum As StyleGuide.eStyleFlags = (StyleGuide.eStyleFlags.Sum Or StyleGuide.eStyleFlags.NotEditable)
+            Dim styleSum As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
             Dim cf As cProperty.eChangeFlags = 0
             Dim sValue As Single = 0.0
-            Dim style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
             Try
                 ' Try to calculate formula outcome
@@ -162,14 +165,14 @@ Namespace Properties
             Catch ex As Exception
                 ' Woops, something went wrong. For now, do not try to discover the error, just flag
                 ' the Property value as erroneous
-                styleSum = styleSum Or StyleGuide.eStyleFlags.ErrorEncountered
+                styleSum = styleSum Or cStyleGuide.eStyleFlags.ErrorEncountered
                 ' Reset the value
                 sValue = 0.0
             End Try
 
             ' Update style without notifying anyone
             ' - Some core states are suppressed, such as NULL, Remarks, and ValueComputed
-            If (Me.SetStyle(styleSum And Not (StyleGuide.eStyleFlags.Remarks Or StyleGuide.eStyleFlags.Null Or StyleGuide.eStyleFlags.ValueComputed), TriState.False)) Then
+            If (Me.SetStyle(styleSum And Not (cStyleGuide.eStyleFlags.Remarks Or cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.ValueComputed), TriState.False)) Then
                 cf = cf Or eChangeFlags.CoreStatus
             End If
 

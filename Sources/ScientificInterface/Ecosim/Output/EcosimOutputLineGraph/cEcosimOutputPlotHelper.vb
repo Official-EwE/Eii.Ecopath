@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimOutputPlotHelper.vb,v $
+' Revision 1.2  2009/05/28 12:37:08  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/05/13 13:35:17  jeroens
 ' Renamed
 '
@@ -85,11 +88,11 @@ Namespace Controls
 
     <CLSCompliant(False)> _
     Public Class cEcosimOutputPlotHelper
-        Inherits ZedGraphHelper
+        Inherits cZedGraphHelper
 
         Private m_graphPane As GraphPane = Nothing
         Private m_core As cCore = Nothing
-        Private m_sg As StyleGuide = StyleGuide.GetInstance()
+        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
 
         Private m_bShowMultipleRuns As Boolean = False
         Private m_bCumulative As Boolean = False

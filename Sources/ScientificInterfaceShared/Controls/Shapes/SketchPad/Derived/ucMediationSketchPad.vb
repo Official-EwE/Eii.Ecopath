@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.8  2009/05/28 12:37:53  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/04/20 13:57:13  jeroens
 ' no message
 '
@@ -67,7 +70,7 @@ Namespace Controls
             Dim iXMax As Integer = 0
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 

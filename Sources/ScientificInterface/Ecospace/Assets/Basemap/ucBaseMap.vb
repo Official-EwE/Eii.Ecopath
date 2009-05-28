@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucBaseMap.vb,v $
+' Revision 1.6  2009/05/28 12:37:51  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/05/15 14:08:41  jeroens
 ' Safety first
 '
@@ -368,7 +371,7 @@ Namespace Ecospace
 
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim l As cLayer = Nothing
-            Dim style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
             Dim ldDepth As cEcospaceLayer = Me.m_basemap.LayerDepth()
             Dim szCell As SizeF = Me.GetCellSize()
             Dim ptCell As Point = Nothing
@@ -412,7 +415,7 @@ Namespace Ecospace
                         ' Get layer
                         l = Me.m_layers(iLayer)
                         ' Reset style flag
-                        style = StyleGuide.eStyleFlags.OK
+                        style = cStyleGuide.eStyleFlags.OK
 
                         ' Test if layer is the depth layer
                         bIsDepthLayer = Object.ReferenceEquals(l.Data, ldDepth)
@@ -421,7 +424,7 @@ Namespace Ecospace
                             If l.HasValue(ptCell.Y, ptCell.X) Then
                                 ' Build style flags
                                 If l.IsSelected Then
-                                    style = (style Or StyleGuide.eStyleFlags.Highlight)
+                                    style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                 End If
                                 ' Render cell
                                 l.Renderer.RenderCell(g, rcScreen, l.Value(ptCell.Y, ptCell.X), style)

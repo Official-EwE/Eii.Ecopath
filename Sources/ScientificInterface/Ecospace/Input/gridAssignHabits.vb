@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridAssignHabits.vb,v $
+' Revision 1.5  2009/05/28 12:37:40  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 18:53:44  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -141,7 +144,7 @@ Namespace Ecospace
 
                 ' Ecopath area
                 cell = New PropertyCell(groupEcopath, eVarNameFlags.Area)
-                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iGroup, m_Core.nHabitats + 3) = cell
 
             Next

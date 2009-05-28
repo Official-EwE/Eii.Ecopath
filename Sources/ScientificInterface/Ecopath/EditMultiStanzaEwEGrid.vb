@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanzaEwEGrid.vb,v $
+' Revision 1.8  2009/05/28 12:37:28  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/05/22 15:49:46  jeroens
 ' Cleaned-up
 '
@@ -98,9 +101,9 @@ Public Class EditMultiStanzaEwEGrid
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(My.Resources.HEADER_STARTAGE)
-        Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, StyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
-        Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
         Me.FixedColumnWidths = False
         Me.AutoStretchColumnsToFitWidth = True
@@ -136,7 +139,7 @@ Public Class EditMultiStanzaEwEGrid
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.GetVariable(eVarNameFlags.StartAge, iStanza)
             ' JS 27jun07: start ages only editable from EditGroups interface
-            ewec.Style = StyleGuide.eStyleFlags.NotEditable
+            ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.StartAge) = ewec
 
             'Biomass
@@ -146,9 +149,9 @@ Public Class EditMultiStanzaEwEGrid
             'Ignore core read-only status; only leading group can edit
             bReadOnly = (Me.m_stanzagroup.LeadingB <> iStanza)
             If bReadOnly Then
-                ewec.Style = StyleGuide.eStyleFlags.NotEditable
+                ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Else
-                ewec.Style = StyleGuide.eStyleFlags.OK
+                ewec.Style = cStyleGuide.eStyleFlags.OK
             End If
             Me(iRow, eColumnTypes.BiomassAreaInput) = ewec
             Me(iRow, eColumnTypes.BiomassAreaInput).Behaviors.Add(m_bm)
@@ -166,9 +169,9 @@ Public Class EditMultiStanzaEwEGrid
             ewec.Value = Me.m_stanzagroup.CB(iStanza)
             bReadOnly = (Me.m_stanzagroup.LeadingCB <> iStanza)
             If bReadOnly Then
-                ewec.Style = StyleGuide.eStyleFlags.NotEditable
+                ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Else
-                ewec.Style = StyleGuide.eStyleFlags.OK
+                ewec.Style = cStyleGuide.eStyleFlags.OK
             End If
             Me(iRow, eColumnTypes.QBInput) = ewec
             Me(iRow, eColumnTypes.QBInput).Behaviors.Add(m_bm)

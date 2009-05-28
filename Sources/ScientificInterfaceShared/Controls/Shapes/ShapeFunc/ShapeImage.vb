@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeImage.vb,v $
+' Revision 1.5  2009/05/28 12:37:47  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/04/27 20:31:12  joeb
 ' Changed shape drawing to draw data as a discreet chunck instead of a sloping line
 '
@@ -156,7 +159,7 @@ Namespace Controls
 
             Dim brShape As New SolidBrush(clr)
             Dim pnShape As New Pen(clr, 1)
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             ' No max specified? Calc it.
             If (sYMax <> sYMax) Then Return
@@ -323,7 +326,7 @@ Namespace Controls
                     ' Draw Ymark label, if any
                     If Not String.IsNullOrEmpty(strYMarkLabel) Then
                         Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
-                            Using br As New SolidBrush(sg.ApplicationColor(StyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                            Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                                 ' Position label on the right end of the graph
                                 ptfTo.X -= g.MeasureString(strYMarkLabel, ft).Width
                                 g.DrawString(strYMarkLabel, ft, br, ptfTo)

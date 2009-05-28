@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLayerRendererGradient.vb,v $
+' Revision 1.2  2009/05/28 12:37:16  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/11/04 04:41:35  jeroens
 ' Split into separate files, moved
 '
@@ -43,7 +46,7 @@ Namespace Ecospace.Basemap.Layers
             End If
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, ByVal value As Object, ByVal style As StyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
             Me.RenderPreview(g, rc)
         End Sub
 

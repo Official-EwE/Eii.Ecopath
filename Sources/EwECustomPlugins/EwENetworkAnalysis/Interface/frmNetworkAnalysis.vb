@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.26  2009/05/28 12:37:06  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.25  2009/05/28 02:17:19  jeroens
 ' Added keystoneness table
 '
@@ -190,8 +193,11 @@ Public Class frmNetworkAnalysis
             Case "ndGraphOfMixedTrophicImpactEwE5"
                 Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
 
-            Case "ndKeystoneness"
-                Me.m_contentmanager = New cKeystoneness()
+            Case "ndKeystonenessTable"
+                Me.m_contentmanager = New cKeystonenessTable()
+
+            Case "ndKeystonenessGraph"
+                Me.m_contentmanager = New cKeystonenessGraph()
 
             Case "ndTotal"
                 Me.m_contentmanager = New cTotal()

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmMPAOptimizations.vb,v $
+' Revision 1.41  2009/05/28 12:37:35  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.40  2009/05/11 01:50:57  jeroens
 ' Renamed command classes
 '
@@ -247,12 +250,12 @@ Namespace Ecospace
         Private m_gridSOGroup As gridSearchObjectivesGroup = Nothing
 
         ''' <summary>Progress graph helper.</summary>
-        Private m_zghProgress As ZedGraphHelper = Nothing
+        Private m_zghProgress As cZedGraphHelper = Nothing
         ''' <summary>Progress graph data.</summary>
         Private m_lptsProgress(5) As ResultPoints
 
         ''' <summary>Results graph helper.</summary>
-        Private m_zghResults As ZedGraphHelper = Nothing
+        Private m_zghResults As cZedGraphHelper = Nothing
         ''' <summary>Results graph data.</summary>
         Private m_lptsResults(6) As ResultPoints
 
@@ -497,7 +500,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
         End Sub
 
@@ -657,7 +660,7 @@ Namespace Ecospace
             ' Flush first color to make sure that the two graps (progress and output) use the same colour scheme
             Dim clrFlush As Color = zgcr.NextColor
 
-            Me.m_zghProgress = New ZedGraphHelper()
+            Me.m_zghProgress = New cZedGraphHelper()
             Me.m_zghProgress.Attach(Me.m_core, Me.m_graphProgress)
 
             Me.m_graphProgress.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
@@ -691,7 +694,7 @@ Namespace Ecospace
 
             Dim zgcr As New ZedGraph.ColorSymbolRotator
 
-            Me.m_zghResults = New ZedGraphHelper()
+            Me.m_zghResults = New cZedGraphHelper()
             Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = True
 

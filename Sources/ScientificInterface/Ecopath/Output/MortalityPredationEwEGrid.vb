@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityPredationEwEGrid.vb,v $
+' Revision 1.7  2009/05/28 12:36:56  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/05/21 19:27:13  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -106,7 +109,7 @@ Namespace Ecopath.Output
             Private Sub UpdateStyle()
 
                 Dim prop As cProperty = Me.GetProperty()
-                Dim style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.Null
+                Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Null
                 Dim sPB As Single = 0
                 Dim sPmort As Single = 0
 
@@ -117,7 +120,7 @@ Namespace Ecopath.Output
                 End If
 
                 If (sPmort > sPB) Then
-                    style = style Or StyleGuide.eStyleFlags.Checked
+                    style = style Or cStyleGuide.eStyleFlags.Checked
                 End If
                 Me.Style = style
 

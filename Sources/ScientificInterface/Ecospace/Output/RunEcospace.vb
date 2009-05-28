@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.13  2009/05/28 12:37:11  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.12  2009/05/12 16:12:00  jeroens
 ' Fixed issue 587
 '
@@ -113,10 +116,10 @@ Namespace Ecospace
         Private m_bpConTracing As cBooleanProperty = Nothing
 
         ''' <summary>Styleguide to listen to.</summary>
-        Private m_sg As StyleGuide = StyleGuide.GetInstance()
+        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = 0
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
 
         'Legend colors for the Effort map
         Private m_nEffortBins As Single = 100 'number of legend bins is arbitrary
@@ -221,7 +224,7 @@ Namespace Ecospace
         Private Sub InitDrawingThreads()
             Dim drawer As cMapDrawer
             Dim nThreads As Integer = Environment.ProcessorCount
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
 
             Me.m_nMapsPerThread = (Me.m_core.nGroups + nThreads - 1) \ nThreads
@@ -249,17 +252,17 @@ Namespace Ecospace
             Next
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
-            If ((changeType And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
+        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateStyleColors()
             End If
-            If ((changeType And StyleGuide.eChangeType.GroupVisibility) = StyleGuide.eChangeType.GroupVisibility) Then
+            If ((changeType And cStyleGuide.eChangeType.GroupVisibility) = cStyleGuide.eChangeType.GroupVisibility) Then
                 Me.RefreshPlot()
             End If
         End Sub
 
         Private Sub UpdateStyleColors()
-            Me.m_pbMap.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.m_pbMap.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
         End Sub
 
 #End Region ' Initialization and Updating
@@ -282,7 +285,7 @@ Namespace Ecospace
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
             Me.m_pdBiomass = New cEcospaceZedGraphPlotDrawer(Me.m_core, Me.m_zgh)
@@ -499,7 +502,7 @@ Namespace Ecospace
 
             ElseIf (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
 
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
                 Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
 
                 'Show one group at a time
@@ -567,7 +570,7 @@ Namespace Ecospace
 
         Private Sub DrawFishingBaseMap(ByRef baseMap(,,) As Single, ByVal iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
 
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim lColors As List(Of Color) = sg.GetColorRamp(CInt(Me.m_nEffortBins))
             Dim cScaler As Single = Me.m_nEffortBins / Me.m_sMaxEffort
 
@@ -615,7 +618,7 @@ Namespace Ecospace
         Private Sub pbColors_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles m_pbColors.Paint
 
             Dim g As Graphics = e.Graphics
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim lColors As List(Of Color) = sg.GetColorRamp(Me.m_core.nGroups)
             Dim sHeight As Single = CSng(Me.m_pbColors.Height / Me.m_core.nGroups)
             Dim brTmp As SolidBrush = Nothing

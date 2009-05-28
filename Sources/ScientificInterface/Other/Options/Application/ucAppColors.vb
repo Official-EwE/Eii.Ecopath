@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucAppColors.vb,v $
+' Revision 1.4  2009/05/28 12:37:50  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.3  2009/03/23 02:34:58  jeroens
 ' Renamed resources
 '
@@ -57,12 +60,12 @@ Namespace Other
         Private Class TypeColorListBoxItem
             Private m_strName As String = ""
             Private m_strDescription As String = ""
-            Private m_ctFore As StyleGuide.eApplicationColorType
+            Private m_ctFore As cStyleGuide.eApplicationColorType
             Private m_clrFore As Color = Nothing
-            Private m_ctBack As StyleGuide.eApplicationColorType
+            Private m_ctBack As cStyleGuide.eApplicationColorType
             Private m_clrBack As Color = Nothing
 
-            Public Sub New(ByVal strText As String, ByVal ctFore As StyleGuide.eApplicationColorType, ByVal ctBack As StyleGuide.eApplicationColorType, ByVal sg As StyleGuide)
+            Public Sub New(ByVal strText As String, ByVal ctFore As cStyleGuide.eApplicationColorType, ByVal ctBack As cStyleGuide.eApplicationColorType, ByVal sg As cStyleGuide)
 
                 Dim astrBits As String() = strText.Split("|"c)
                 Me.m_strName = astrBits(0)
@@ -90,13 +93,13 @@ Namespace Other
                 End Get
             End Property
 
-            Public ReadOnly Property ForeColorType() As StyleGuide.eApplicationColorType
+            Public ReadOnly Property ForeColorType() As cStyleGuide.eApplicationColorType
                 Get
                     Return Me.m_ctFore
                 End Get
             End Property
 
-            Public ReadOnly Property BackColorType() As StyleGuide.eApplicationColorType
+            Public ReadOnly Property BackColorType() As cStyleGuide.eApplicationColorType
                 Get
                     Return Me.m_ctBack
                 End Get
@@ -107,7 +110,7 @@ Namespace Other
                     Return Me.m_clrFore
                 End Get
                 Set(ByVal value As Color)
-                    If Me.m_ctFore <> StyleGuide.eApplicationColorType.NotSet Then Me.m_clrFore = value
+                    If Me.m_ctFore <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_clrFore = value
                 End Set
             End Property
 
@@ -116,7 +119,7 @@ Namespace Other
                     Return Me.m_clrBack
                 End Get
                 Set(ByVal value As Color)
-                    If Me.m_ctBack <> StyleGuide.eApplicationColorType.NotSet Then Me.m_clrBack = value
+                    If Me.m_ctBack <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_clrBack = value
                 End Set
             End Property
 
@@ -164,7 +167,7 @@ Namespace Other
         ''' <summary>Only ref to core</summary>
         Private m_Core As cCore = Nothing
         ''' <summary>Only ref to styleguide</summary>
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         'List of known colours
         Private m_lciKnownColors As New List(Of KnownColorItem)
 
@@ -179,7 +182,7 @@ Namespace Other
 
             ' Add any initialization after the InitializeComponent() call.
             m_Core = cCore.GetInstance()
-            m_sg = StyleGuide.GetInstance()
+            m_sg = cStyleGuide.GetInstance()
 
             InitKnownColors()
 
@@ -246,34 +249,34 @@ Namespace Other
         Private Sub SetTypeColor()
 
             Me.lbItems.Items.Clear()
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_DEFAULT, StyleGuide.eApplicationColorType.DEFAULT_TEXT, StyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_NAMES, StyleGuide.eApplicationColorType.NAMES_TEXT, StyleGuide.eApplicationColorType.NAMES_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT, StyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION, StyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ERROR, StyleGuide.eApplicationColorType.GENERICERROR_TEXT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_COMPUTED, StyleGuide.eApplicationColorType.COMPUTED_TEXT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_DEFAULT, cStyleGuide.eApplicationColorType.DEFAULT_TEXT, cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_NAMES, cStyleGuide.eApplicationColorType.NAMES_TEXT, cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT, cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION, cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ERROR, cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_COMPUTED, cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
             ' JS 02Aug08: disabled, not used
             'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_PRESSURE, StyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
             'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_PROFITS, StyleGuide.eApplicationColorType.PROFIT_TEXT)
             'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_TOTALCATCH, StyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
             'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_TROPHIC_LINK, StyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_REMARKS, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_SUM, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.SUM_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_READONLY, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.READONLY_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_CHECKED, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_HIGHLIGHT, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.HIGHLIGHT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR, StyleGuide.eApplicationColorType.NotSet, StyleGuide.eApplicationColorType.MAP_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_REMARKS, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_SUM, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_READONLY, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_CHECKED, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_HIGHLIGHT, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
 
             ' Kick off
             Me.lbItems.SelectedIndex = 0
 
         End Sub
 
-        Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As StyleGuide.eApplicationColorType, _
-                Optional ByVal ctBack As StyleGuide.eApplicationColorType = StyleGuide.eApplicationColorType.NotSet)
+        Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As cStyleGuide.eApplicationColorType, _
+                Optional ByVal ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
             Me.lbItems.Items.Add(New TypeColorListBoxItem(strName, ctFore, ctBack, Me.m_sg))
         End Sub
 
@@ -540,10 +543,10 @@ Namespace Other
             Dim item As TypeColorListBoxItem = DirectCast(lbItems.SelectedItem, TypeColorListBoxItem)
 
             ' Update controls state
-            SetUIControlsStatus(item.ForeColorType <> StyleGuide.eApplicationColorType.NotSet, item.BackColorType <> StyleGuide.eApplicationColorType.NotSet)
+            SetUIControlsStatus(item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet, item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet)
 
             'Update the selection in combobox
-            If (item.ForeColorType <> StyleGuide.eApplicationColorType.NotSet) Then
+            If (item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet) Then
                 UpdateColorComboboxItem(Me.cbItemForeground, Me.m_sg.ApplicationColor(item.ForeColorType))
                 Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(item.ForeColorType)
             Else
@@ -551,7 +554,7 @@ Namespace Other
                 Me.m_lblExample.ForeColor = Me.m_sg.ApplicationColor(item.BackColorType)
             End If
 
-            If (item.BackColorType <> StyleGuide.eApplicationColorType.NotSet) Then
+            If (item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet) Then
                 UpdateColorComboboxItem(Me.cbItemBackground, Me.m_sg.ApplicationColor(item.BackColorType))
                 Me.m_lblExample.BackColor = Me.m_sg.ApplicationColor(item.BackColorType)
             Else
@@ -651,7 +654,7 @@ Namespace Other
             Dim tcli As TypeColorListBoxItem = CType(lbItems.SelectedItem, TypeColorListBoxItem)
             Dim selClr As KnownColorItem = CType(Me.cbItemForeground.SelectedItem, KnownColorItem)
 
-            If tcli.ForeColorType <> StyleGuide.eApplicationColorType.NotSet Then
+            If tcli.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 UpdateForeColor(tcli, selClr.Color)
             End If
         End Sub
@@ -666,7 +669,7 @@ Namespace Other
             Dim tcli As TypeColorListBoxItem = DirectCast(lbItems.SelectedItem, TypeColorListBoxItem)
             Dim selClr As KnownColorItem = DirectCast(Me.cbItemBackground.SelectedItem, KnownColorItem)
 
-            If tcli.BackColorType <> StyleGuide.eApplicationColorType.NotSet Then
+            If tcli.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 UpdateBackColor(tcli, selClr.Color)
             End If
         End Sub
@@ -689,8 +692,8 @@ Namespace Other
 
             For i As Integer = 0 To Me.lbItems.Items.Count - 1
                 item = DirectCast(Me.lbItems.Items(i), TypeColorListBoxItem)
-                If item.ForeColorType <> StyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.ForeColorType) = item.ForeColor
-                If item.BackColorType <> StyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.BackColorType) = item.BackColor
+                If item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.ForeColorType) = item.ForeColor
+                If item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.BackColorType) = item.BackColor
             Next
 
             Me.m_sg.ResumeEvents()

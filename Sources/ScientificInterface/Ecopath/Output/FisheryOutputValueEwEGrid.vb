@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryOutputValueEwEGrid.vb,v $
+' Revision 1.6  2009/05/28 12:36:54  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/05/21 19:27:12  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -61,8 +64,8 @@ Namespace Ecopath.Output
 
             ' Catch value column
             Me(0, core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHVALUE)
-            Me(0, core.nFleets + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_NONMARKET_VALUE, StyleGuide.eUnitType.Monetary)
-            Me(0, core.nFleets + 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE, StyleGuide.eUnitType.Monetary)
+            Me(0, core.nFleets + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_NONMARKET_VALUE, cStyleGuide.eUnitType.Monetary)
+            Me(0, core.nFleets + 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
 
             Me.FixedColumns = 2
         End Sub
@@ -198,7 +201,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALVALUE, StyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
@@ -262,7 +265,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALCOST, StyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALCOST, cStyleGuide.eUnitType.Monetary)
 
             alSumCost.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
@@ -316,7 +319,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALPROFIT, StyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALPROFIT, cStyleGuide.eUnitType.Monetary)
 
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To core.nFleets

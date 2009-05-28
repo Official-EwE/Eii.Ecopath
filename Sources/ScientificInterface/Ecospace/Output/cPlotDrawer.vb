@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPlotDrawer.vb,v $
+' Revision 1.3  2009/05/28 12:37:10  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/11/27 03:10:42  jeroens
 ' Group visible flags maintained by style guide, no longer by AppLauncher
 '
@@ -87,7 +90,7 @@ Namespace Ecospace
         Public Sub Draw(ByVal g As Graphics, ByVal rc As Rectangle)
             Dim mx As New Matrix()
             Dim mxTmp As Matrix = g.Transform
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim bShowGroup As Boolean = True
 
             mx.Translate(0, CSng(rc.Height / 2))

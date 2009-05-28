@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFormatProvider.vb,v $
+' Revision 1.5  2009/05/28 12:37:12  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/26 19:37:50  jeroens
 ' Fixed combo box background style
 '
@@ -268,11 +271,11 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
-                Dim style As StyleGuide.eStyleFlags = Me.m_provider.Style
-                Dim bEditable As Boolean = ((style And StyleGuide.eStyleFlags.NotEditable) = 0)
+                Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
                 Dim strText As String = ""
 
                 ' Sanity checks
@@ -303,8 +306,8 @@ Namespace Controls
                 Me.m_tb.TabStop = (bEditable = True)
 
                 ' Highlight border
-                If (style And StyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_tb.BackColor = sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT)
+                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                    Me.m_tb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 End If
 
             End Sub
@@ -361,7 +364,7 @@ Namespace Controls
             ''' <summary></summary>
             Private m_provider As cEwEFormatProvider = Nothing
             ''' <summary>For trapping number of decimal digits display.</summary>
-            Private m_sg As StyleGuide = Nothing
+            Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private variables 
 
@@ -402,7 +405,7 @@ Namespace Controls
                     AddHandler Me.m_ud.Validated, AddressOf OnSaveValue
                     AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
 
-                    Me.m_sg = StyleGuide.GetInstance()
+                    Me.m_sg = cStyleGuide.GetInstance()
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
                     ' Store ref to provider
@@ -413,7 +416,7 @@ Namespace Controls
                         Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(metadata.Max)))
                     End If
                     ' Config control
-                    Me.OnStyleGuideChanged(StyleGuide.eChangeType.All)
+                    Me.OnStyleGuideChanged(cStyleGuide.eChangeType.All)
                 Catch e As Exception
                     ' Throw dev. time error
                     Debug.Assert(False, "Failed to wrap numeric up down control")
@@ -454,8 +457,8 @@ Namespace Controls
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
-                Dim style As StyleGuide.eStyleFlags = Me.m_provider.Style
-                Dim bEditable As Boolean = ((style And StyleGuide.eStyleFlags.NotEditable) = 0)
+                Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' Sanity checks
                 If objValue Is Nothing Then Return
@@ -470,8 +473,8 @@ Namespace Controls
                 Me.m_ud.TabStop = (bEditable = True)
 
                 ' Highlight border
-                If (style And StyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_ud.BackColor = Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT)
+                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                    Me.m_ud.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 End If
 
             End Sub
@@ -513,9 +516,9 @@ Namespace Controls
             ''' Event handler, invoked when the Style Guide has been modified.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
+            Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
 
-                If (changeType And StyleGuide.eChangeType.NumDigits) = 0 Then Return
+                If (changeType And cStyleGuide.eChangeType.NumDigits) = 0 Then Return
 
                 Dim objValueType As Type = Me.m_provider.ValueType
 
@@ -623,9 +626,9 @@ Namespace Controls
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
-                Dim style As StyleGuide.eStyleFlags = Me.m_provider.Style
-                Dim bEditable As Boolean = ((style And StyleGuide.eStyleFlags.NotEditable) = 0)
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' Sanity checks
                 If objValue Is Nothing Then Return
@@ -804,11 +807,11 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
-                Dim style As StyleGuide.eStyleFlags = Me.m_provider.Style
-                Dim bEditable As Boolean = ((style And StyleGuide.eStyleFlags.NotEditable) = 0)
+                Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' Sanity checks
                 If objValue Is Nothing Then Return
@@ -818,7 +821,7 @@ Namespace Controls
                 Me.m_cb.Checked = CBool(objValue)
                 ' - Set colours
                 ' *** Checkbox special: do not colour background on "OK" or "NotEditable" style
-                style = style And Not (StyleGuide.eStyleFlags.OK Or StyleGuide.eStyleFlags.NotEditable)
+                style = style And Not (cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable)
                 Me.m_cb.BackColor = SystemColors.Control
                 ' Fetch, boy
                 sg.GetStyleColors(style, Me.m_cb.ForeColor, Me.m_cb.BackColor)
@@ -826,8 +829,8 @@ Namespace Controls
                 Me.m_cb.Enabled = bEditable
 
                 ' Highlight border
-                If (style And StyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_cb.BackColor = sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT)
+                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                    Me.m_cb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 End If
 
             End Sub
@@ -927,10 +930,10 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
 
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
                 Dim objValue As Object = Me.m_provider.Value
                 Dim objValueType As Object = Me.m_provider.ValueType
-                Dim style As StyleGuide.eStyleFlags = Me.m_provider.Style
+                Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim strText As String = ""
 
                 ' Sanity checks
@@ -955,11 +958,11 @@ Namespace Controls
                 ' - Set text
                 Me.m_lb.Text = strText
                 ' - Set colours
-                sg.GetStyleColors(style And Not StyleGuide.eStyleFlags.OK, Me.m_lb.ForeColor, Me.m_lb.BackColor)
+                sg.GetStyleColors(style And Not cStyleGuide.eStyleFlags.OK, Me.m_lb.ForeColor, Me.m_lb.BackColor)
 
                 ' Highlight border
-                If (style And StyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_lb.BackColor = sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT)
+                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                    Me.m_lb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 End If
 
             End Sub
@@ -988,10 +991,10 @@ Namespace Controls
         Private m_objValue As Object = Nothing
         ''' <summary><see cref="Type">Type</see> of the Value.</summary>
         Private m_tValue As Type = Nothing
-        ''' <summary>EwE <see cref="StyleGuide.eStyleFlags">Style</see> of the control.</summary>
-        Private m_style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
-        ''' <summary>Reference to the global <see cref="StyleGuide">StyleGuide</see>.</summary>
-        Private m_sg As StyleGuide = Nothing
+        ''' <summary>EwE <see cref="cStyleGuide.eStyleFlags">Style</see> of the control.</summary>
+        Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+        ''' <summary>Reference to the global <see cref="cStyleGuide">cStyleGuide</see>.</summary>
+        Private m_sg As cStyleGuide = Nothing
         ''' <summary>The wrapper that interacts with the control</summary>
         Private m_ctrlWrapper As IControlWrapper = Nothing
 
@@ -1013,7 +1016,7 @@ Namespace Controls
             ' Get wrapper
             Me.m_ctrlWrapper = ControlWrapperFactory.GetControlWrapper(ctrl, Me, aItems, metadata)
             ' Connect to style guide
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
@@ -1099,15 +1102,15 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get or set the <see cref="StyleGuide.eStyleFlags">Style</see> to reflect 
+        ''' Get or set the <see cref="cStyleGuide.eStyleFlags">Style</see> to reflect 
         ''' in the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Style() As StyleGuide.eStyleFlags
+        Public Overridable Property Style() As cStyleGuide.eStyleFlags
             Get
                 Return Me.m_style
             End Get
-            Set(ByVal s As StyleGuide.eStyleFlags)
+            Set(ByVal s As cStyleGuide.eStyleFlags)
                 ' Store style
                 Me.m_style = s
                 ' Update
@@ -1142,13 +1145,13 @@ Namespace Controls
 
         Public Property Enabled() As Boolean
             Get
-                Return ((Me.m_style And StyleGuide.eStyleFlags.NotEditable) <> StyleGuide.eStyleFlags.NotEditable)
+                Return ((Me.m_style And cStyleGuide.eStyleFlags.NotEditable) <> cStyleGuide.eStyleFlags.NotEditable)
             End Get
             Set(ByVal value As Boolean)
                 If value = True Then
-                    Me.Style = Me.Style And (Not StyleGuide.eStyleFlags.NotEditable)
+                    Me.Style = Me.Style And (Not cStyleGuide.eStyleFlags.NotEditable)
                 Else
-                    Me.Style = Me.Style Or StyleGuide.eStyleFlags.NotEditable
+                    Me.Style = Me.Style Or cStyleGuide.eStyleFlags.NotEditable
                 End If
             End Set
         End Property
@@ -1158,10 +1161,10 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' StyleGuide change event handler; makes sure cells are redrawn
+        ''' cStyleGuide change event handler; makes sure cells are redrawn
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             Me.UpdateContent()
         End Sub
 

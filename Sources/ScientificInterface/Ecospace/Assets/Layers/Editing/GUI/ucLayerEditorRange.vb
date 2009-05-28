@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucLayerEditorRange.vb,v $
+' Revision 1.2  2009/05/28 12:37:53  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/11/04 04:40:34  jeroens
 ' Split into separate files, moved
 '
@@ -30,7 +33,7 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Private vars "
 
-        Private m_sg As StyleGuide = StyleGuide.GetInstance()
+        Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
 
 #End Region ' Private vars
 
@@ -82,8 +85,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_sg = Nothing
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal cf As StyleGuide.eChangeType)
-            If ((cf And StyleGuide.eChangeType.NumDigits) > 0) Then
+        Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+            If ((cf And cStyleGuide.eChangeType.NumDigits) > 0) Then
                 Me.UpdateControls()
             End If
         End Sub

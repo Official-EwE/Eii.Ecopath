@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: dlgImportLayerData.vb,v $
+' Revision 1.7  2009/05/28 12:37:19  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/05/11 01:50:52  jeroens
 ' Renamed command classes
 '
@@ -160,7 +163,7 @@ Public Class gridMapLayerToAttribute
                     layer = Me.m_aLayers(iLayer)
 
                     ewec = New EwECell(layer.Name, GetType(String))
-                    ewec.Style = (StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable)
+                    ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
 
                     cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrAttributes, True)

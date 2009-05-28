@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: PropertyCell.vb,v $
+' Revision 1.3  2009/05/28 12:37:31  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/04/23 13:11:17  jeroens
 ' OnPropertyChanged overridable
 '
@@ -106,7 +109,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
             ' Sanity check
-            If (Me.Style And StyleGuide.eStyleFlags.NotEditable) = StyleGuide.eStyleFlags.NotEditable Then Return
+            If (Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable Then Return
             ' Apply edited value
             Me.Value = p_Value
         End Sub
@@ -149,7 +152,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Allows to set a custom cell <see cref="StyleGuide.eStyleFlags">style</see>,
+        ''' Allows to set a custom cell <see cref="cStyleGuide.eStyleFlags">style</see>,
         ''' overriding any style in the attached property.
         ''' </summary>
         ''' <remarks>
@@ -161,13 +164,13 @@ Namespace Controls.EwEGrid
         ''' modify the <see cref="cProperty.SetStyle">Style</see> in the instance of the cProperty.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Style() As StyleGuide.eStyleFlags
+        Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Dim s As StyleGuide.eStyleFlags = MyBase.Style
+                Dim s As cStyleGuide.eStyleFlags = MyBase.Style
                 If s = 0 Then Return Me.m_property.GetStyle()
                 Return s
             End Get
-            Set(ByVal s As StyleGuide.eStyleFlags)
+            Set(ByVal s As cStyleGuide.eStyleFlags)
                 MyBase.Style = s
             End Set
         End Property
@@ -194,7 +197,7 @@ Namespace Controls.EwEGrid
             ' Check style flag changes
             If (changeFlags And cProperty.eChangeFlags.CoreStatus) = cProperty.eChangeFlags.CoreStatus Then
                 ' Update read-only state
-                Me.DataModel.EnableEdit = ((prop.GetStyle() And StyleGuide.eStyleFlags.NotEditable) = 0)
+                Me.DataModel.EnableEdit = ((prop.GetStyle() And cStyleGuide.eStyleFlags.NotEditable) = 0)
             End If
 
             ' Check for remark changes

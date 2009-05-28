@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.12  2009/05/28 12:37:35  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.11  2009/05/26 22:31:59  joeb
 ' Removed updateEconomicDataAvailable()
 '
@@ -85,7 +88,7 @@ Namespace Ecosim
         ''' <summary>Results to be plotted</summary>
         ''' <remarks></remarks>
         Private m_lptsResults() As ResultPoints
-        Private m_zghResults As ZedGraphHelper
+        Private m_zghResults As cZedGraphHelper
 
         Public Sub New()
 
@@ -535,7 +538,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnResultCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
         End Sub
 
@@ -543,7 +546,7 @@ Namespace Ecosim
 
         Private Sub InitResultsPlot()
 
-            Me.m_zghResults = New ZedGraphHelper()
+            Me.m_zghResults = New cZedGraphHelper()
             Me.m_zghResults.Attach(Me.m_core, Me.m_graphResults)
             Me.m_zghResults.ShowCursor = False
 

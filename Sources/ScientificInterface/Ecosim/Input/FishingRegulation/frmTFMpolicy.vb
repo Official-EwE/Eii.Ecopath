@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: frmTFMpolicy.vb,v $
+' Revision 1.6  2009/05/28 12:37:39  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/04/07 20:02:09  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -46,8 +49,8 @@ Namespace Ecosim
             Fopt
         End Enum
 
-        ''' <summary><see cref="ZedGraphHelper">Helper</see> to manipulate the graph.</summary>
-        Private m_zgh As ZedGraphHelper = Nothing
+        ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
+        Private m_zgh As cZedGraphHelper = Nothing
         ''' <summary>Group selected in the form.</summary>
         Private m_group As cEcoSimGroupInput = Nothing
         ''' <summary>Graph drag mode.</summary>
@@ -61,7 +64,7 @@ Namespace Ecosim
 
             Dim core As cCore = cCore.GetInstance()
 
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(core, Me.m_graph)
             Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_TFM, True)
 

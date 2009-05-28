@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ApplyShapeEwEGrid.vb,v $
+' Revision 1.2  2009/05/28 12:36:53  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/12/15 19:54:04  jeroens
 ' *** empty log message ***
 '
@@ -243,7 +246,7 @@ Namespace Ecosim
                         ' #No: cannot assign FF to this pred/prey combo
                         cellDefault = New EwECell(Nothing, GetType(Single))
                         '  Setup default cell
-                        cellDefault.Style = (StyleGuide.eStyleFlags.NotEditable Or StyleGuide.eStyleFlags.Null)
+                        cellDefault.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                         ' Apply cell to the grid
                         Me(rowIndex, iCol) = cellDefault
                     End If

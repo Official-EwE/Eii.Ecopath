@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: BasicEstimatesEwEGrid.vb,v $
+' Revision 1.7  2009/05/28 12:36:54  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/05/21 19:27:10  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -64,11 +67,11 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(My.Resources.HEADER_TROPHICLEVEL)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, StyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, StyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
 
@@ -156,7 +159,7 @@ Namespace Ecopath.Output
                 Me(iRow, eColumnTypes.Z) = New PropertyCell(source, eVarNameFlags.PBOutput)
             Else
                 cell = New EwECell("", GetType(String))
-                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.Z) = cell
             End If
 
@@ -164,7 +167,7 @@ Namespace Ecopath.Output
                 Me(iRow, eColumnTypes.PB) = New PropertyCell(source, eVarNameFlags.PBOutput)
             Else
                 cell = New EwECell("", GetType(String))
-                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.PB) = cell
             End If
 

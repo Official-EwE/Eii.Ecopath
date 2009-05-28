@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MortalityCoefficientsEwEGrid.vb,v $
+' Revision 1.6  2009/05/28 12:36:55  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2009/05/21 18:53:45  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -148,9 +151,9 @@ Namespace Ecopath.Output
 
         Private Sub SetCellAlert(ByVal cell As EwECellBase, ByVal bSetAlert As Boolean)
             If bSetAlert Then
-                cell.Style = cell.Style Or StyleGuide.eStyleFlags.Checked
+                cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Checked
             Else
-                cell.Style = cell.Style And (Not StyleGuide.eStyleFlags.Checked)
+                cell.Style = cell.Style And (Not cStyleGuide.eStyleFlags.Checked)
             End If
         End Sub
 

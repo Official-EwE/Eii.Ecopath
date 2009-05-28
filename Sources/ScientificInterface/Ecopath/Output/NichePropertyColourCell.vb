@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NichePropertyColourCell.vb,v $
+' Revision 1.2  2009/05/28 12:36:56  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/09/26 07:31:33  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -125,7 +128,7 @@ Public Class NichePropertyColourCell
     Public Overrides ReadOnly Property DisplayText() As String
         Get
             ' Is a read-only cell?
-            If (Me.Style And StyleGuide.eStyleFlags.NotEditable) = StyleGuide.eStyleFlags.NotEditable Then
+            If (Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable Then
                 ' #Yes: suppress any value output
                 Return ""
             End If

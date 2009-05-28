@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucDefBioPercentGrid.vb,v $
+' Revision 1.2  2009/05/28 12:37:52  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/09/26 07:31:38  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -96,7 +99,7 @@ Namespace Ecosim
             Dim ewec As EwECell = Nothing
 
             ewec = New EwECell(obj.Name, GetType(String))
-            ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+            ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.Name) = ewec
 
             Me(iRow, eColumnTypes.Weight) = New Cells.Real.Cell(sWeight, GetType(Single))

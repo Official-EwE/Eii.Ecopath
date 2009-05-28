@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucParmBlockCodes.vb,v $
+' Revision 1.3  2009/05/28 12:37:54  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/12/15 15:56:02  jeroens
 ' no message
 '
@@ -55,7 +58,7 @@ Namespace Ecosim
 
                 If value = Me.m_nBlockCodes Then Return
 
-                Dim sg As StyleGuide = StyleGuide.GetInstance()
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
                 Me.m_nBlockCodes = value
 

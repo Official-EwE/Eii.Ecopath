@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: OtherProductionEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:37:00  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:17  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -72,16 +75,16 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim aUnitType As StyleGuide.eUnitType() = {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time}
+            Dim aUnitType As cStyleGuide.eUnitType() = {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
 
             Me.Redim(1, 7)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_IMMIGRATION_UNIT, aUnitType)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_EMIGRATION_UNIT, aUnitType)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_EMIGRATIONRATE_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_EMIGRATIONRATE_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCU_UNIT, aUnitType)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE_UNIT, cStyleGuide.eUnitType.Time)
 
             Me.FixedColumns = 2
 

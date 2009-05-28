@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithoutPPREst.vb,v $
+' Revision 1.17  2009/05/28 12:37:14  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.16  2009/05/19 13:41:11  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -73,7 +76,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class cIndicesWithoutPPREst
     Inherits cContentManager
 
-    Private m_zgh As ZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper = Nothing
 
     Public Sub New()
         '
@@ -88,7 +91,7 @@ Public Class cIndicesWithoutPPREst
 
         Me.NetworkManager.UseEcosimNetwork = True
         Me.NetworkManager.EcosimPPROn = False
-        bSucces = bSucces and Me.NetworkManager.RunEcosimNetwork() 
+        bSucces = bSucces And Me.NetworkManager.RunEcosimNetwork()
         Me.NetworkManager.UseEcosimNetwork = False
 
         Me.Graph.Visible = bSucces
@@ -112,7 +115,7 @@ Public Class cIndicesWithoutPPREst
         Dim pane As GraphPane = Nothing
         Dim g As Graphics = Nothing
 
-        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.NetworkManager.Core, zgc, 2)
         Me.m_zgh.ShowPointValue = True
 

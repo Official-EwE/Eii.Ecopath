@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cProperty.vb,v $
+' Revision 1.4  2009/05/28 12:37:04  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.3  2009/04/04 22:48:20  jeroens
 ' Hm
 '
@@ -115,7 +118,7 @@ Namespace Properties
             Dim newValue As Object = Nothing
             Dim strNewRemark As String = ""
             Dim coreStatus As eStatusFlags = 0
-            Dim guiStyle As StyleGuide.eStyleFlags = 0
+            Dim guiStyle As cStyleGuide.eStyleFlags = 0
             Dim changeFlags As eChangeFlags = 0
             Dim iIndex As Integer = cCore.NULL_VALUE
 
@@ -142,8 +145,8 @@ Namespace Properties
                 ' Get the core status
                 coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
-                guiStyle = DirectCast(CInt(coreStatus And StyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
-                                  CInt(Me.Style And (Not StyleGuide.eStyleFlags.CoreStatusFlagsMask)), StyleGuide.eStyleFlags)
+                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
+                                  CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
                 ' Did Style change?
                 If Not Me.IsStyle(guiStyle) Then
                     ' # Yes: flag as changed
@@ -330,13 +333,13 @@ Namespace Properties
                 If ((vs.Status And eStatusFlags.FailedValidation) = 0) Then
                     ' #Yes
                     ' Turn f.v. Style flag off. Do not notify, but check if a change occurred
-                    If (Me.SetStyle(StyleGuide.eStyleFlags.FailedValidation, TriState.False, eBitSetMode.BitwiseOff)) Then
+                    If (Me.SetStyle(cStyleGuide.eStyleFlags.FailedValidation, TriState.False, eBitSetMode.BitwiseOff)) Then
                         changeFlags = eChangeFlags.CoreStatus
                     End If
                 Else
                     ' #No
                     ' Turn f.v. Style flag on. Do not notify, but check if a change occurred
-                    If (Me.SetStyle(StyleGuide.eStyleFlags.FailedValidation, TriState.False, eBitSetMode.BitwiseOn)) Then
+                    If (Me.SetStyle(cStyleGuide.eStyleFlags.FailedValidation, TriState.False, eBitSetMode.BitwiseOn)) Then
                         changeFlags = eChangeFlags.CoreStatus
                     End If
                     ' Fetch value corrected by the Core
@@ -406,14 +409,14 @@ Namespace Properties
         ''' inheriting classes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Property Style() As StyleGuide.eStyleFlags
+        Protected MustOverride Property Style() As cStyleGuide.eStyleFlags
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the <see cref="StyleGuide.eStyleFlags">Style</see> of the property
+        ''' Returns the <see cref="cStyleGuide.eStyleFlags">Style</see> of the property
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GetStyle() As StyleGuide.eStyleFlags
+        Public Function GetStyle() As cStyleGuide.eStyleFlags
             Return Me.Style
         End Function
 
@@ -435,12 +438,12 @@ Namespace Properties
         ''' <remarks>Be aware that Style flags set here are not passed down to the Core. Core status bits are exclusively
         ''' managed by the core itself. Rather, this method allows </remarks>
         ''' -------------------------------------------------------------------
-        Public Function SetStyle(ByVal newStyle As StyleGuide.eStyleFlags, _
+        Public Function SetStyle(ByVal newStyle As cStyleGuide.eStyleFlags, _
                     Optional ByVal notify As TriState = TriState.False, _
                     Optional ByVal BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
 
             ' Get the current style
-            Dim style As StyleGuide.eStyleFlags = Me.Style
+            Dim style As cStyleGuide.eStyleFlags = Me.Style
             ' Change flag
             Dim bChanged As Boolean = False
 
@@ -478,7 +481,7 @@ Namespace Properties
         ''' <param name="Style">Style to compare</param>
         ''' <returns>True if the Stylees are considered equal</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function IsStyle(ByVal Style As StyleGuide.eStyleFlags) As Boolean
+        Protected MustOverride Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -501,7 +504,7 @@ Namespace Properties
                 nRemarksStyle = eBitSetMode.BitwiseOn
             End If
 
-            Me.SetStyle(StyleGuide.eStyleFlags.Remarks, notify, nRemarksStyle)
+            Me.SetStyle(cStyleGuide.eStyleFlags.Remarks, notify, nRemarksStyle)
         End Sub
 
 #End Region ' Style

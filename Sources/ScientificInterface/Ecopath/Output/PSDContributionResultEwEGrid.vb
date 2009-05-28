@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.13  2009/05/28 12:36:57  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.12  2009/05/21 18:53:46  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -227,7 +230,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim bGroupSelected(m_core.nLivingGroups) As Boolean
 
             For i As Integer = 1 To m_core.nLivingGroups

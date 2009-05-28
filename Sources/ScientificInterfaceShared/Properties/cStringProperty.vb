@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cStringProperty.vb,v $
+' Revision 1.3  2009/05/28 12:37:06  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/04/02 15:50:38  jeroens
 ' Removed assert on set_Value
 '
@@ -27,7 +30,7 @@ Namespace Properties
         : Inherits cProperty
 
         Private m_strValue As String = ""
-        Private m_Style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+        Private m_Style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -84,7 +87,7 @@ Namespace Properties
         Protected Overrides Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
             Get
                 ' Is this a NULL value?
-                If bHonourNull And ((Me.m_Style And StyleGuide.eStyleFlags.Null) = StyleGuide.eStyleFlags.Null) Then
+                If bHonourNull And ((Me.m_Style And cStyleGuide.eStyleFlags.Null) = cStyleGuide.eStyleFlags.Null) Then
                     ' #Yes: return empty string
                     Return ""
                 End If
@@ -123,11 +126,11 @@ Namespace Properties
         ''' </summary>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Property Style() As StyleGuide.eStyleFlags
+        Protected Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Return m_Style
             End Get
-            Set(ByVal Style As StyleGuide.eStyleFlags)
+            Set(ByVal Style As cStyleGuide.eStyleFlags)
                 Me.m_Style = Style
             End Set
         End Property
@@ -140,7 +143,7 @@ Namespace Properties
         ''' <returns>True if the Style equal</returns>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function IsStyle(ByVal Style As StyleGuide.eStyleFlags) As Boolean
+        Protected Overrides Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
             Return Me.m_Style = Style
         End Function
 

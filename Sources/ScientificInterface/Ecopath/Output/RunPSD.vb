@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.26  2009/05/28 12:36:58  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.25  2009/05/12 21:35:11  joeh
 ' Add titles to graph axis
 '
@@ -104,7 +107,7 @@ Namespace Ecopath.Output
         Private m_core As cCore = Nothing
 
         ' -- To make life easier and a more fun place to be
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
 
         ' -- Format providers --
         Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
@@ -120,7 +123,7 @@ Namespace Ecopath.Output
 #Region " Constructor/Destructor "
 
         Public Sub New()
-            
+
             Me.InitializeComponent()
 
         End Sub
@@ -136,11 +139,11 @@ Namespace Ecopath.Output
             Dim msg As cMessage = Nothing
             Dim cmdh As cCommandHandler = Nothing
             Dim cmd As cCommand = Nothing
-            Dim sg As StyleGuide = Nothing
+            Dim sg As cStyleGuide = Nothing
 
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
@@ -151,7 +154,7 @@ Namespace Ecopath.Output
             End If
 
             ' Style guide
-            sg = StyleGuide.GetInstance()
+            sg = cStyleGuide.GetInstance()
             AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Connect format providers
@@ -189,7 +192,7 @@ Namespace Ecopath.Output
             Handles Me.FormClosing
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmd As cCommand = Nothing
 
@@ -247,7 +250,7 @@ Namespace Ecopath.Output
             Me.SynchronizePlot()
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             Me.UpdateVariables()
             Me.m_core.RunEcoPath()
         End Sub
@@ -327,7 +330,7 @@ Namespace Ecopath.Output
             Dim sSlope As Single
             Dim sIntercept As Single
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             Me.InitLists(resultLists, 2)
 
@@ -391,7 +394,7 @@ Namespace Ecopath.Output
 
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             'Mortality type
             If m_tsmiGroupPB.Checked Then
@@ -430,7 +433,7 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim grpInput As cEcoPathGroupInput = Nothing
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             'Mortality type
             Select Case parms.MortalityType

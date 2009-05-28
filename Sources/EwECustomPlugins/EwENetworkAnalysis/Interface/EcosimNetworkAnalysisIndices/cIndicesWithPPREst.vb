@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.16  2009/05/28 12:37:14  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.15  2009/05/19 13:41:11  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -70,7 +73,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class cIndicesWithPPREst
     Inherits cContentManager
 
-    Private m_zgh As ZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper = Nothing
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
@@ -120,7 +123,7 @@ Public Class cIndicesWithPPREst
         Dim pane As GraphPane = Nothing
         Dim g As Graphics = Nothing
 
-        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.NetworkManager.Core, zgc, 2)
         Me.m_zgh.ShowPointValue = True
 

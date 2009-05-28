@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEwEGrid.vb,v $
+' Revision 1.7  2009/05/28 12:37:33  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.6  2009/03/27 20:49:31  jeroens
 ' Safety check on Dispose
 '
@@ -304,7 +307,7 @@ Public Class frmEwEGrid
                         Me.m_ttbValue.Text = CStr(objValue)
                     ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Or (TypeOf objValue Is Integer) Then
                         Try
-                            Me.m_ttbValue.Text = StyleGuide.GetInstance().FormatNumber(CSng(objValue))
+                            Me.m_ttbValue.Text = cStyleGuide.GetInstance().FormatNumber(CSng(objValue))
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
@@ -340,7 +343,7 @@ Public Class frmEwEGrid
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
                 If TypeOf cell Is PropertyCell Then
                     Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                    If (pcell.Style And StyleGuide.eStyleFlags.NotEditable) = 0 Then
+                    If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
                         pcell.GetProperty().SetValue(strValue)
                     End If
                 Else

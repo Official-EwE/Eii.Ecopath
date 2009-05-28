@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.46  2009/05/28 12:36:51  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.45  2009/05/19 13:44:32  jeroens
 ' Instantiates cExecuteCommand
 '
@@ -997,7 +1000,7 @@ Public Class AppLauncher
         ' Initialize core controller
         Me.m_coreController = New EwECoreController(Me.m_core.StateMonitor, Me.m_core.StateManager)
         ' Initialize style guide updated
-        Me.m_styleguideupdater = New StyleGuideUpdater(m_core, StyleGuide.GetInstance())
+        Me.m_styleguideupdater = New StyleGuideUpdater(m_core, cStyleGuide.GetInstance())
 
     End Sub
 

@@ -1,6 +1,9 @@
 '=============================================================================
 '
 ' $Log: EditMultiStanza.vb,v $
+' Revision 1.8  2009/05/28 12:37:28  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/04/27 01:32:30  jeroens
 ' Fixed potential exception in UpdateGraph
 '
@@ -51,7 +54,7 @@ Namespace Ecopath
         Private m_fpWmatWinf As cEwEFormatProvider = Nothing
         Private m_fpFF As cEwEFormatProvider = Nothing
         Private m_fpStanza As cEwEFormatProvider = Nothing
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
         Private m_groupInitial As cEcoPathGroupInput = Nothing
 
 #End Region ' Private variables
@@ -64,7 +67,7 @@ Namespace Ecopath
 
             Me.m_core = cCore.GetInstance()
 
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.m_zgc)
             Me.m_groupInitial = group
 
@@ -110,9 +113,9 @@ Namespace Ecopath
             End If
             Me.m_fpFF = New cEwEFormatProvider(Me.m_cmbFF, GetType(Integer), lItems.ToArray)
             If bEcosimLoaded Then
-                Me.m_fpFF.Style = StyleGuide.eStyleFlags.OK
+                Me.m_fpFF.Style = cStyleGuide.eStyleFlags.OK
             Else
-                Me.m_fpFF.Style = StyleGuide.eStyleFlags.NotEditable
+                Me.m_fpFF.Style = cStyleGuide.eStyleFlags.NotEditable
             End If
 
             ' Init FF drop down, even when no sim scenario is loaded

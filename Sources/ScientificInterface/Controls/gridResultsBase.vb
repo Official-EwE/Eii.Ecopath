@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridResultsBase.vb,v $
+' Revision 1.4  2009/05/28 12:37:46  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.3  2009/01/12 23:01:45  joeb
 ' Added SetCellValue(Integer, Integer,  Single)
 '
@@ -60,11 +63,11 @@ Namespace Controls
 
                     cell = New EwECell(0.0!, GetType(Single))
                     cell.SuppressZero = True
-                    cell.Style = StyleGuide.eStyleFlags.NotEditable
+                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
                     For i As Integer = 0 To asCalc.Length - 1
                         If columnIndex = asCalc(i) Then
-                            cell.Style = StyleGuide.eStyleFlags.NotEditable Or StyleGuide.eStyleFlags.ValueComputed
+                            cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed
                             Exit For
                         End If
                     Next
@@ -83,11 +86,11 @@ Namespace Controls
 
                 cell = New EwECell(0.0!, GetType(Single))
                 cell.SuppressZero = True
-                cell.Style = StyleGuide.eStyleFlags.NotEditable
+                cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
                 For i As Integer = 0 To asCalc.Length - 1
                     If columnIndex = asCalc(i) Then
-                        cell.Style = StyleGuide.eStyleFlags.NotEditable Or StyleGuide.eStyleFlags.ValueComputed
+                        cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed
                         Exit For
                     End If
                 Next

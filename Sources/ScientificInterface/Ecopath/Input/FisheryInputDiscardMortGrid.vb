@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: FisheryInputDiscardMortGrid.vb,v $
+' Revision 1.5  2009/05/28 12:37:00  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:16  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -52,7 +55,7 @@ Public Class FisheryInputDiscardMortGrid
             src = core.FleetInputs(iFleet)
             Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(src, _
                 eVarNameFlags.Name, Nothing, _
-                "{0} ({1})", StyleGuide.eUnitType.Currency)
+                "{0} ({1})", cStyleGuide.eUnitType.Currency)
         Next
 
         Me.FixedColumns = 2

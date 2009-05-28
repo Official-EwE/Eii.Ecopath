@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimOutputPlots.vb,v $
+' Revision 1.20  2009/05/28 12:37:21  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.19  2009/05/21 18:53:41  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -88,8 +91,8 @@ Namespace Ecosim
         Private m_core As cCore
         Private m_parms As cEcoSimModelParameters
         Private m_paneMaster As MasterPane = Nothing
-        Private m_sg As StyleGuide = Nothing
-        Private m_zgh As ZedGraphHelper = Nothing
+        Private m_sg As cStyleGuide = Nothing
+        Private m_zgh As cZedGraphHelper = Nothing
 
         Private Enum ePaneTypes As Integer
             Biomass = 1
@@ -112,7 +115,7 @@ Namespace Ecosim
 
             Me.m_core = cCore.GetInstance()
             Me.m_parms = m_core.EcoSimModelParameters()
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
 
         End Sub
 
@@ -134,7 +137,7 @@ Namespace Ecosim
             Me.lbGroups.Refresh()
 
             Me.m_paneMaster = Me.zgcPlots.MasterPane
-            Me.m_zgh = New ZedGraphHelper()
+            Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.m_core, Me.zgcPlots, [Enum].GetValues(GetType(ePaneTypes)).Length)
             Me.m_zgh.ShowPointValue = True
 
@@ -178,8 +181,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
-            If ((changeType And StyleGuide.eChangeType.Colours) = StyleGuide.eChangeType.Colours) Then
+        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateColors()
             End If
         End Sub
@@ -336,7 +339,7 @@ Namespace Ecosim
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
             Next
 
-            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
+            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplB))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroup, Color.Blue)
                 Me.AddCurveToGraphPane(ePaneTypes.Biomass, li, False)
             Next li
@@ -345,10 +348,10 @@ Namespace Ecosim
                 Me.AddCurveToGraphPane(ePaneTypes.Biomass, li, False)
             Next li
 
-            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
-            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
+            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplConsB))
+            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplFeedTime))
 
-            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
+            Me.AddCurveToGraphPane(ePaneTypes.Yield, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplYield))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
                 Me.AddCurveToGraphPane(ePaneTypes.Yield, li, False)
             Next li
@@ -360,7 +363,7 @@ Namespace Ecosim
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
 
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
                     Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, li, False)
                 Next li
@@ -368,13 +371,13 @@ Namespace Ecosim
             Else
 
                 Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.ECOSIM_PLOT_CAPTION_PRODCONS)
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem("", cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplAvgWorProdCons))
 
             End If
 
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal), True)
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation), False)
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, ZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing), False)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Black, pplMortTotal), True)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Red, pplMortPredation), False)
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, cZedGraphHelper.eCurveTypes.EcosimOutput, Color.Blue, pplMortFishing), False)
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
                 Me.AddCurveToGraphPane(ePaneTypes.Mortality, li, False)
             Next li
@@ -393,7 +396,7 @@ Namespace Ecosim
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
                     iCount += 1
                 End If
             Next
@@ -407,7 +410,7 @@ Namespace Ecosim
                         dXValue = Me.m_core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(ZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
+                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(cZedGraphHelper.eCurveTypes.EcosimOutput, i, ppl), (iCount = 0))
                     iCount += 1
                 End If
             Next
@@ -458,7 +461,7 @@ Namespace Ecosim
                     ppt.Add(Me.m_core.EcosimFirstYear + j - 1, da(j) * dScale)
                 End If
             Next
-            Return Me.m_zgh.CreateLineItem(gts.Name, ZedGraphHelper.eCurveTypes.TimeSeries, clr, ppt)
+            Return Me.m_zgh.CreateLineItem(gts.Name, cZedGraphHelper.eCurveTypes.TimeSeries, clr, ppt)
 
         End Function
 
@@ -830,9 +833,9 @@ Namespace Ecosim
         'End Function
 
         Private Sub UpdateColors()
-            m_paneMaster.Fill = New Fill(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+            m_paneMaster.Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             For Each p As GraphPane In Me.m_paneMaster.PaneList
-                p.Chart.Fill = New Fill(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                p.Chart.Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             Next
         End Sub
 

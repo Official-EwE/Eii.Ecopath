@@ -14,7 +14,7 @@ Namespace Ecospace
     Public Class cGridEcospaceResultsGroup
         : Inherits gridResultsBase
 
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer
 
@@ -23,7 +23,7 @@ Namespace Ecospace
 
             Me.m_iNumVisibleGroups = 0
 
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
@@ -155,8 +155,8 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
-            If (ct And StyleGuide.eChangeType.GroupVisibility) > 0 Then
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
                 Me.RefreshContent()
             End If
         End Sub

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: PropertyHeaderCell.vb,v $
+' Revision 1.2  2009/05/28 12:37:31  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/03/30 16:59:25  jeroens
 ' Split
 '
@@ -52,14 +55,14 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="StyleGuide.eUnitType">unit of measurement</see> into
+        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
         ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="StyleGuide.eUnitType">unit of measurement</see>
+        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As StyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New StyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -68,12 +71,12 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="StyleGuide.eUnitType">unit of measurements</see> into
+        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
         ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="StyleGuide.eUnitType">unit of measurements</see>
+        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -99,15 +102,15 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="StyleGuide.eUnitType">unit of measurement</see> into
+        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
         ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="StyleGuide.eUnitType">unit of measurement</see>
+        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
                 ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal unitType As StyleGuide.eUnitType)
-            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New StyleGuide.eUnitType() {unitType})
+                ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+            Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -118,14 +121,14 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="StyleGuide.eUnitType">unit of measurements</see> into
+        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
         ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="StyleGuide.eUnitType">unit of measurements</see>
+        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal Source As cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
                 ByVal SourceSec As cCoreInputOutputBase, _
-                ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+                ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New(cPropertyManager.GetInstance().GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
@@ -138,12 +141,12 @@ Namespace Controls.EwEGrid
         ''' Overridden to enusre that header cells use names colour feedback
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Style() As StyleGuide.eStyleFlags
+        Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return (MyBase.Style Or StyleGuide.eStyleFlags.NotEditable)
+                Return (MyBase.Style Or cStyleGuide.eStyleFlags.NotEditable)
             End Get
-            Set(ByVal styleNew As StyleGuide.eStyleFlags)
-                MyBase.Style = (styleNew Or StyleGuide.eStyleFlags.NotEditable)
+            Set(ByVal styleNew As cStyleGuide.eStyleFlags)
+                MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property
 
@@ -151,10 +154,10 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_aUnitTypes() As StyleGuide.eUnitType
+        Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 
-        Public Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+        Public Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             ' Sanity checks
             Debug.Assert(aUnitTypes.Length = 1 Or aUnitTypes.Length = 2)
 
@@ -184,17 +187,17 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Private Function GetUnitString(ByVal unitType As StyleGuide.eUnitType) As String
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim strUnitString As String = ""
             Select Case unitType
-                Case StyleGuide.eUnitType.Currency
+                Case cStyleGuide.eUnitType.Currency
                     strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
-                Case StyleGuide.eUnitType.Time
+                Case cStyleGuide.eUnitType.Time
                     strUnitString = sg.TimeUnitText(sg.TimeUnit)
-                Case StyleGuide.eUnitType.Monetary
+                Case cStyleGuide.eUnitType.Monetary
                     strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
-                Case StyleGuide.eUnitType.Nominal
+                Case cStyleGuide.eUnitType.Nominal
                     strUnitString = sg.NominalUnitText()
                 Case Else
                     Debug.Assert(False)

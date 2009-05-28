@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.17  2009/05/28 12:37:17  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.16  2009/05/28 02:14:33  jeroens
 ' Keystoneness vars exposed
 '
@@ -174,7 +177,7 @@ Public Class cNetworkManager
     Public Function RunMainNetwork() As Boolean
 
         Dim bSucces As Boolean = True
-        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
         Dim abGroupsToShow(Me.m_core.nGroups) As Boolean
 
         Debug.Assert(m_econetwork IsNot Nothing)

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSingleProperty.vb,v $
+' Revision 1.5  2009/05/28 12:37:05  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/04/04 14:07:25  jeroens
 ' Value type conversion performed on SetValue to prevent type differences from resulting in premature core data changes
 '
@@ -39,7 +42,7 @@ Namespace Properties
 
         ''' <summary></summary>
         Private m_sValue As Single = 0.0
-        Private m_Style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+        Private m_Style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -98,7 +101,7 @@ Namespace Properties
         Protected Overrides Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
             Get
                 ' Is this a NULL value?
-                If bHonourNull And ((Me.m_Style And StyleGuide.eStyleFlags.Null) = StyleGuide.eStyleFlags.Null) Then
+                If bHonourNull And ((Me.m_Style And cStyleGuide.eStyleFlags.Null) = cStyleGuide.eStyleFlags.Null) Then
                     ' #Yes: return nothing (NOT 0.0)
                     Return Nothing
                 End If
@@ -174,25 +177,25 @@ Namespace Properties
         ''' </summary>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Property Style() As StyleGuide.eStyleFlags
+        Protected Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Return m_Style
             End Get
-            Set(ByVal val As StyleGuide.eStyleFlags)
+            Set(ByVal val As cStyleGuide.eStyleFlags)
                 Me.m_Style = val
             End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Compares the <see cref="StyleGuide.eStyleFlags">Style</see> maintained
+        ''' Compares the <see cref="cStyleGuide.eStyleFlags">Style</see> maintained
         ''' in the prothe Style mainta the property Style.
         ''' </summary>
         ''' <param name="Style">The Style to compare.</param>
         ''' <returns>True if the Style equal</returns>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function IsStyle(ByVal Style As StyleGuide.eStyleFlags) As Boolean
+        Protected Overrides Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
             Return Me.m_Style = Style
         End Function
 

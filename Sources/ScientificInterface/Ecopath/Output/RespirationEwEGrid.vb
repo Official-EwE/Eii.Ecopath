@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RespirationEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:36:57  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:13  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -84,7 +87,7 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Dim aUnitType As StyleGuide.eUnitType() = {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time}
+            Dim aUnitType As cStyleGuide.eUnitType() = {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
 
             Me.Redim(1, 7)
 
@@ -95,7 +98,7 @@ Namespace Ecopath.Output
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_ASSIMILATION_UNIT, aUnitType)
             Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPIRATIONASSIMILATION)
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_PRODRESP)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPBIOM_UNIT, StyleGuide.eUnitType.Time)
+            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPBIOM_UNIT, cStyleGuide.eUnitType.Time)
 
             Me.FixedColumns = 2
 

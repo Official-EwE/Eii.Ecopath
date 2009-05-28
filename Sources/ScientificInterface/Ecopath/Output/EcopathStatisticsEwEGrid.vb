@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: EcopathStatisticsEwEGrid.vb,v $
+' Revision 1.3  2009/05/28 12:36:54  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2009/02/20 17:58:31  jeroens
 ' Renamed UnitCell to EwEUnitCell
 '
@@ -54,10 +57,10 @@ Namespace Ecopath.Output
         Protected Overrides Sub FillData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cEcoPathStats = core.EcopathStats
 
-            Dim aunitCurrOverTime As StyleGuide.eUnitType() = New StyleGuide.eUnitType() {StyleGuide.eUnitType.Currency, StyleGuide.eUnitType.Time}
+            Dim aunitCurrOverTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
             Dim strMask2 As String = "{0}/{1}"
 
             ' ToDo_JS: globalize this
@@ -74,17 +77,17 @@ Namespace Ecopath.Output
             Me.AddRow("Net system production", source, eVarNameFlags.EcopathStatsNetSystemProduction, aunitCurrOverTime, strMask2)
             Me.AddRow("Total primary production/total biomass", source, eVarNameFlags.EcopathStatsTotalPB)
             Me.AddRow("Total biomass/total throughput", source, eVarNameFlags.EcopathStatsTotalBT)
-            Me.AddRow("Total biomass (excluding detritus)", source, eVarNameFlags.EcopathStatsTotalBNonDet, StyleGuide.eUnitType.Currency)
+            Me.AddRow("Total biomass (excluding detritus)", source, eVarNameFlags.EcopathStatsTotalBNonDet, cStyleGuide.eUnitType.Currency)
             Me.AddRow("Total catches", source, eVarNameFlags.EcopathStatsTotalCatch, aunitCurrOverTime, strMask2)
             Me.AddRow("Connectance Index", source, eVarNameFlags.EcopathStatsConnectanceIndex)
             Me.AddRow("System Omnivory Index", source, eVarNameFlags.EcopathStatsOmnivIndex)
-            Me.AddRow("Total market value", source, eVarNameFlags.EcopathStatsTotalMarketValue, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Total shadow value", source, eVarNameFlags.EcopathStatsTotalShadowValue, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Total value", source, eVarNameFlags.EcopathStatsTotalValue, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Total fixed cost", source, eVarNameFlags.EcopathStatsTotalFixedCost, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Total variable cost", source, eVarNameFlags.EcopathStatsTotalVarCost, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Total cost", source, eVarNameFlags.EcopathStatsTotalCost, StyleGuide.eUnitType.Monetary)
-            Me.AddRow("Profit", source, eVarNameFlags.EcopathStatsProfit, StyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total market value", source, eVarNameFlags.EcopathStatsTotalMarketValue, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total shadow value", source, eVarNameFlags.EcopathStatsTotalShadowValue, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total value", source, eVarNameFlags.EcopathStatsTotalValue, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total fixed cost", source, eVarNameFlags.EcopathStatsTotalFixedCost, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total variable cost", source, eVarNameFlags.EcopathStatsTotalVarCost, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Total cost", source, eVarNameFlags.EcopathStatsTotalCost, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow("Profit", source, eVarNameFlags.EcopathStatsProfit, cStyleGuide.eUnitType.Monetary)
 
         End Sub
 
@@ -94,13 +97,13 @@ Namespace Ecopath.Output
 
         Private Overloads Sub AddRow(ByVal strHeader As String, _
                         ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal unitType As StyleGuide.eUnitType)
-            Me.AddRow(strHeader, source, vnf, New StyleGuide.eUnitType() {unitType}, "{0}")
+                        ByVal unitType As cStyleGuide.eUnitType)
+            Me.AddRow(strHeader, source, vnf, New cStyleGuide.eUnitType() {unitType}, "{0}")
         End Sub
 
         Private Overloads Sub AddRow(ByVal strHeader As String, _
                         ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal aUnitTypes() As StyleGuide.eUnitType, ByVal strUnitMask As String)
+                        ByVal aUnitTypes() As cStyleGuide.eUnitType, ByVal strUnitMask As String)
 
             Dim iRow As Integer = Me.AddRow()
             Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)

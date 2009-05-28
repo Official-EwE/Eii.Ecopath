@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEColumnHeaderCell.vb,v $
+' Revision 1.2  2009/05/28 12:37:30  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/03/30 16:59:25  jeroens
 ' Split
 '
@@ -40,12 +43,12 @@ Namespace Controls.EwEGrid
             Me.VisualModel = g_visualizer
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As StyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
             Me.New("")
-            Me.SetUnitHeader(strUnitMask, New StyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As StyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New("")
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub

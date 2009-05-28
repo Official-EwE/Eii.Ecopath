@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgSensitivityOfSStoV.vb,v $
+' Revision 1.3  2009/05/28 12:37:20  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/12/15 15:54:30  jeroens
 ' no message
 '
@@ -256,7 +259,7 @@ Public Class dlgSensitivityOfSStoV
             Me.m_iNumBlocks = value
 
             ' Create some purdy working colours
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Me.m_ucVulBlocks.RefreshContent()
             Me.m_ucVulBlocks.BlockColors = sg.GetColorRamp(Me.m_iNumBlocks)
             Me.m_ucVulBlocks.BlockColors(0) = Color.Black

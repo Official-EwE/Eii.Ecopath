@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EcosimResultsGridGroup.vb,v $
+' Revision 1.5  2009/05/28 12:37:22  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/01/13 18:00:47  joeb
 ' Replace Ecosim summary objects with Ecosim Ouput objects all output data now in Fleet or Group objects
 '
@@ -59,14 +62,14 @@ Namespace Ecosim
 
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
 
         Public Sub New()
             MyBase.New()
 
             Me.m_iNumVisibleGroups = 0
 
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
@@ -114,7 +117,7 @@ Namespace Ecosim
 
             'This method init the cells, its visual and data models. 
             Dim core As cCore = cCore.GetInstance()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             Dim lName As New List(Of String)
             lName.Add(String.Empty)
@@ -140,7 +143,7 @@ Namespace Ecosim
         Friend Sub UpdateData()
 
             Dim core As cCore = cCore.GetInstance()
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim source As cEcosimGroupOutput = Nothing
 
             Dim asTotal(0 To 10) As Single
@@ -208,8 +211,8 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
-            If (ct And StyleGuide.eChangeType.GroupVisibility) > 0 Then
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
                 Me.RefreshContent()
             End If
         End Sub

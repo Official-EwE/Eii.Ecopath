@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.17  2009/05/28 12:37:55  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.16  2009/05/18 02:11:28  jeroens
 ' Left ToDo
 '
@@ -81,7 +84,7 @@ Namespace Controls
     ''' export.
     ''' </summary>
     ''' =======================================================================
-    Public Class ZedGraphHelper
+    Public Class cZedGraphHelper
 
 #Region " Private vars "
 
@@ -92,7 +95,7 @@ Namespace Controls
         ''' <summary>Number of panels wanted in the zed graph</summary>
         Private m_nPanels As Integer = 1
         ''' <summary>Style! Styyyyyle, baby!</summary>
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         ''' <summary>Registered lines representing EwE groups.</summary>
         Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
 
@@ -121,7 +124,7 @@ Namespace Controls
 
 #Region " Construction / destruction "
 
-         Public Sub New()
+        Public Sub New()
         End Sub
 
         Protected Overrides Sub Finalize()
@@ -145,7 +148,7 @@ Namespace Controls
 
             Me.m_core = core
             Me.m_zgc = zgc
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             Me.m_nPanels = iNumPanels
 
             While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
@@ -585,7 +588,7 @@ Namespace Controls
         ''' <summary>
         ''' Register a <see cref="LineItem">line</see> currently existing in the 
         ''' wrapped graph, and connect it to an <see cref="cEcoPathGroupInput">Ecopath group</see>. 
-        ''' The line colour will be coloured according to the <see cref="StyleGuide.GroupColor">colour</see> 
+        ''' The line colour will be coloured according to the <see cref="cStyleGuide.GroupColor">colour</see> 
         ''' of the group, and colour changes will be automagically applied.
         ''' </summary>
         ''' <param name="line">The <see cref="LineItem">line</see> to register.</param>
@@ -631,7 +634,7 @@ Namespace Controls
         ''' pertains to.</param>
         ''' <param name="sPos">The new cursor position.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnCursorPos(ByVal zgh As ZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Public Event OnCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -779,10 +782,10 @@ Namespace Controls
         ''' </summary>
         ''' <param name="changeType"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
-            If ((changeType And StyleGuide.eChangeType.Fonts) = StyleGuide.eChangeType.Fonts) Then
+        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            If ((changeType And cStyleGuide.eChangeType.Fonts) = cStyleGuide.eChangeType.Fonts) Then
                 Me.InitStyle()
-            ElseIf changeType = StyleGuide.eChangeType.Colours Then
+            ElseIf changeType = cStyleGuide.eChangeType.Colours Then
                 Me.InitColors()
             End If
 
@@ -857,8 +860,8 @@ Namespace Controls
         Private Sub InitColors()
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
-                    .Chart.Fill = New Fill(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND))
-                    .Fill = New Fill(Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                    .Chart.Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                    .Fill = New Fill(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
 
                     Me.RemoveCursor(iPane)
                     Me.SetCursor(iPane)
@@ -1002,7 +1005,7 @@ Namespace Controls
                 Me.m_liCursor(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR, _
                         New Double() {Me.m_sCursorPos(iPane), Me.m_sCursorPos(iPane)}, _
                         New Double() {dYMin, dYMax}, _
-                        Me.m_sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT), _
+                        Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
                         SymbolType.None, _
                         3)
 

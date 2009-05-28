@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EwEGridVisualizers.vb,v $
+' Revision 1.3  2009/05/28 12:37:30  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.2  2008/10/08 23:57:25  jeroens
 ' Fixed borderstyle on column header cells
 '
@@ -73,7 +76,7 @@ Namespace Controls.EwEGrid
                 ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                 ByVal p_Status As SourceGrid2.DrawCellStatus)
 
-            Dim eStyle As StyleGuide.eStyleFlags = 0
+            Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
 
@@ -88,7 +91,7 @@ Namespace Controls.EwEGrid
                 ' ! Note that when obtaining the background color the remarks style is excluded. This
                 ' ! style will not be not reflected via the background colour but instead via a 
                 ' ! dedicated indicator (see below)
-                StyleGuide.GetInstance().GetStyleColors(eStyle And (Not StyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
+                cStyleGuide.GetInstance().GetStyleColors(eStyle And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
             End If
 
             ' Does cell have focus?
@@ -113,7 +116,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Need to draw remarks indicator?
-            If ((eStyle And StyleGuide.eStyleFlags.Remarks) > 0) Then
+            If ((eStyle And cStyleGuide.eStyleFlags.Remarks) > 0) Then
                 ' #Yes: draw remarks indicator
                 cRemarksIndicator.Paint(p_ClientRectangle, e.Graphics, True)
             End If
@@ -132,7 +135,7 @@ Namespace Controls.EwEGrid
                 ByVal p_ClientRectangle As System.Drawing.Rectangle, _
                 ByVal p_Status As SourceGrid2.DrawCellStatus)
 
-            Dim eStyle As StyleGuide.eStyleFlags = 0
+            Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim clrBack As Color = Nothing ' Not used here
             Dim rcBorder As RectangleBorder = Me.Border
@@ -147,7 +150,7 @@ Namespace Controls.EwEGrid
                 ' Get its style
                 eStyle = cell.Style()
                 ' Get SG colours for this style
-                StyleGuide.GetInstance().GetStyleColors(eStyle, clrFore, clrBack)
+                cStyleGuide.GetInstance().GetStyleColors(eStyle, clrFore, clrBack)
             End If
 
             ' Does cell have focus?
@@ -182,8 +185,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
 
-            Dim sg As StyleGuide = StyleGuide.GetInstance()
-            Dim eStyle As StyleGuide.eStyleFlags = 0
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim eStyle As cStyleGuide.eStyleFlags = 0
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
 
@@ -207,10 +210,10 @@ Namespace Controls.EwEGrid
             End If
 
             ' Need to render highlightboder?
-            If ((eStyle And StyleGuide.eStyleFlags.Highlight) > 0) Then
+            If ((eStyle And cStyleGuide.eStyleFlags.Highlight) > 0) Then
                 ' #Yes: render highlight border
                 rcBorder = New RectangleBorder( _
-                    New Border(sg.ApplicationColor(StyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
+                    New Border(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
             End If
 
             ' Draw the border

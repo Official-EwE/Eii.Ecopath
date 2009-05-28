@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cUnaryOperation.vb,v $
+' Revision 1.2  2009/05/28 12:37:02  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2009/04/02 13:19:40  jeroens
 ' Separated out of cFormulaExpression.vb
 '
@@ -68,7 +71,7 @@ Namespace Properties
         ''' <summary>Cached calcuated value</summary>
         Private m_sValue As Single = 0.0
         ''' <summary>Cached style</summary>
-        Private m_style As StyleGuide.eStyleFlags = StyleGuide.eStyleFlags.OK
+        Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         ''' ---------------------------------------------------------------
         ''' <summary>
@@ -98,11 +101,11 @@ Namespace Properties
 
         ''' ---------------------------------------------------------------
         ''' <summary>
-        ''' Returns the <see cref="StyleGuide.eStyleFlags">style</see>
+        ''' Returns the <see cref="cStyleGuide.eStyleFlags">style</see>
         ''' of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Public Overrides Function GetStyle() As StyleGuide.eStyleFlags
+        Public Overrides Function GetStyle() As cStyleGuide.eStyleFlags
             Return Me.m_style
         End Function
 
@@ -116,7 +119,7 @@ Namespace Properties
 
             ' Calc new value and style
             Dim sVal As Single = Me.CalcValue()
-            Dim style As StyleGuide.eStyleFlags = Me.CalcStyle()
+            Dim style As cStyleGuide.eStyleFlags = Me.CalcStyle()
             ' Changes?
             If ((sVal <> Me.m_sValue) Or (Me.m_style <> style)) Then
                 ' #Yes: set new value and style
@@ -180,7 +183,7 @@ Namespace Properties
         ''' Recalculate the style of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Private Function CalcStyle() As StyleGuide.eStyleFlags
+        Private Function CalcStyle() As cStyleGuide.eStyleFlags
             Return Me.m_operand.GetStyle()
         End Function
 

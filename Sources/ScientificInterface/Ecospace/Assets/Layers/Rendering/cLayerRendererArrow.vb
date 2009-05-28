@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cLayerRendererArrow.vb,v $
+' Revision 1.2  2009/05/28 12:37:15  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.1  2008/11/04 04:41:34  jeroens
 ' Split into separate files, moved
 '
@@ -37,7 +40,7 @@ Namespace Ecospace.Basemap.Layers
         Public Overrides Sub RenderPreview(ByVal g As Graphics, ByVal rc As Rectangle)
             If Me.IsStyleValid Then
                 'g.FillRectangle(Brushes.White, rc)
-                Me.RenderCell(g, rc, 45, StyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, 45, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -55,7 +58,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal value As Object, ByVal style As StyleGuide.eStyleFlags)
+                                        ByVal value As Object, ByVal style As cStyleGuide.eStyleFlags)
             Dim asValues As Single() = Nothing
             Dim sAngle As Single = 0
             Dim sScale As Single = 1.0

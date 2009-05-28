@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: gridEditImportanceLayers.vb,v $
+' Revision 1.6  2009/05/28 12:37:41  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.5  2008/12/15 15:55:33  jeroens
 ' no message
 '
@@ -394,7 +397,7 @@ Namespace Ecospace
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
-                ewec.Style = StyleGuide.eStyleFlags.Names Or StyleGuide.eStyleFlags.NotEditable
+                ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
                 Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: FisheryInputDiscardFateEwEGrid.vb,v $
+' Revision 1.5  2009/05/28 12:36:59  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.4  2009/05/21 19:27:15  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -110,7 +113,7 @@ Namespace Ecopath.Input
 
             Dim sum As New cSingleProperty("")
             sum.SetValue(1.0)
-            sum.SetStyle(StyleGuide.eStyleFlags.Sum Or StyleGuide.eStyleFlags.NotEditable)
+            sum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
             Dim prop As cProperty = Nothing
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()

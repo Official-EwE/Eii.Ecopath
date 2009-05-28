@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgDisplayGroups.vb,v $
+' Revision 1.4  2009/05/28 12:37:18  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.3  2008/12/15 15:54:30  jeroens
 ' no message
 '
@@ -35,14 +38,14 @@ Namespace Ecosim
     Public Class dlgDisplayGroups
 
         Private m_core As cCore = Nothing
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
 
         Public Sub New()
 
             InitializeComponent()
 
             Me.m_core = cCore.GetInstance()
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
 
         End Sub
 

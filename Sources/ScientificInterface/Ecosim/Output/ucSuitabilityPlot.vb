@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: ucSuitabilityPlot.vb,v $
+' Revision 1.8  2009/05/28 12:37:23  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/04/07 20:02:11  jeroens
 ' Updated to use ZedGraphHelper Attach
 '
@@ -59,9 +62,9 @@ Public Class ucSuitabilityPlot
 
 #Region " Private variables "
 
-    Private m_zgh As ZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper = Nothing
     Private m_core As cCore = cCore.GetInstance()
-    Private m_sg As StyleGuide = StyleGuide.GetInstance()
+    Private m_sg As cStyleGuide = cStyleGuide.GetInstance()
 
 #End Region ' Private variables
 
@@ -78,7 +81,7 @@ Public Class ucSuitabilityPlot
     Private Sub ucSuitabilityPlot_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Load
 
-        Me.m_zgh = New ZedGraphHelper()
+        Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.m_core, Me.m_graph)
 
         Me.UpdatePlotTypeDropdown()
@@ -109,7 +112,7 @@ Public Class ucSuitabilityPlot
         Me.UpdateGraph()
     End Sub
 
-    Private Sub OnStyleGuideChanged(ByVal changeType As StyleGuide.eChangeType)
+    Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
         ' Blunt!
         Me.UpdateGraph()
     End Sub

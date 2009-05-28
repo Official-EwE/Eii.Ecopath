@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: GroupListBox.vb,v $
+' Revision 1.8  2009/05/28 12:37:46  jeroens
+' Properly named utility classes StyleGuide and ZedGraphHelper
+'
 ' Revision 1.7  2009/05/20 16:39:52  jeroens
 ' Added smart group selection interfaces
 '
@@ -145,7 +148,7 @@ Namespace Controls
 #Region " Privates "
 
         Private m_core As cCore = Nothing
-        Private m_sg As StyleGuide = Nothing
+        Private m_sg As cStyleGuide = Nothing
         Private m_sortType As eSortType = eSortType.Default
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
 
@@ -161,7 +164,7 @@ Namespace Controls
 
             ' Connect
             Me.m_core = cCore.GetInstance()
-            Me.m_sg = StyleGuide.GetInstance()
+            Me.m_sg = cStyleGuide.GetInstance()
             AddHandler m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' This box draws its own items
@@ -337,7 +340,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As StyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             Me.Invalidate()
         End Sub
 
