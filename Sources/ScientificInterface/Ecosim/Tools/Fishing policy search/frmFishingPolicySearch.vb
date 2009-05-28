@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFishingPolicySearch.vb,v $
+' Revision 1.13  2009/05/28 18:27:21  jeroens
+' Use value chain option only enabled for specific optimization approaches
+'
 ' Revision 1.12  2009/05/28 12:37:35  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -154,6 +157,8 @@ Namespace Ecosim
             For Each ct As cControlEnabler In m_lstOptEnabled
                 ct.Enabled(optAproach)
             Next
+
+            Me.m_fpUsePlugin.Enabled = (optAproach = eOptimizeApproachTypes.SystemObjective)
 
         End Sub
 
