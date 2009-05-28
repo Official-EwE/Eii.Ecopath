@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmFlowDiagramPlugin.vb,v $
+' Revision 1.3  2009/05/28 14:44:33  jeroens
+' Updated to build
+'
 ' Revision 1.2  2009/04/21 20:41:49  jeroens
 ' Thou shalst compile!
 '
@@ -18,6 +21,7 @@ Imports EwECore
 Imports System
 Imports System.IO
 Imports System.Text
+Imports EwEUtils.Core
 
 #End Region ' Imports
 

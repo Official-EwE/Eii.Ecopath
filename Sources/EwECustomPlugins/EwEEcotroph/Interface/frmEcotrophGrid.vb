@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmEcotrophGrid.vb,v $
+' Revision 1.3  2009/05/28 14:43:44  jeroens
+' Updated to build
+'
 ' Revision 1.2  2009/01/16 18:30:40  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -134,7 +137,7 @@ Public Class frmEcotrophGrid
 
     Private Sub tvEcotroph_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvEcotroph.AfterSelect
 
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         Select Case e.Node.Text
@@ -514,7 +517,7 @@ Public Class frmEcotrophGrid
         Dim SelTabPg As TabPage
         Dim SelTabPgIdx As Integer
         Dim DataGrid As DataGridView
-        Dim cmdh As CommandHandler = CommandHandler.GetInstance()
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         ConnectToComputation.cTranspose.Transpose.m_EcotrophManager = m_EcotrophManager
