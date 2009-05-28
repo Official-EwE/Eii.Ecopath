@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.27  2009/05/28 14:03:13  jeroens
+' Fixed annual averages option in CSV export
+' Shows keystoneness chart and graph
+'
 ' Revision 1.26  2009/05/28 12:37:06  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -326,16 +330,22 @@ Public Class frmNetworkAnalysis
         If (Me.m_contentmanager Is Nothing) Then Return
         If (cmdDOC Is Nothing) Then Return
 
-        Select Case MsgBox("Save annual averages?", MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-            Case MsgBoxResult.Yes
-                bAnnual = True
-                cmdDOC.Invoke("", "Select folder to save annual averages of Network Analysis CSV results")
-            Case MsgBoxResult.No
-                bAnnual = False
-                cmdDOC.Invoke("", "Select folder to save monthly Network Analysis CSV results")
-            Case Else
-                Return
-        End Select
+        If (Me.m_contentmanager.IsDataOverTime) Then
+            Select Case MsgBox("Save Network Analysis results as annual averages?", MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+
+                Case MsgBoxResult.Yes
+                    bAnnual = True
+
+                Case MsgBoxResult.No
+                    bAnnual = False
+
+                Case Else
+                    Return
+
+            End Select
+        End If
+
+        cmdDOC.Invoke("", "Select destination to save Network Analysis results CSV file")
 
         If (cmdDOC.Result = DialogResult.OK) Then
             Try

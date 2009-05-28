@@ -361,10 +361,18 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
-        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
-        AQABAAEICAgCAAAABgMAAAAMS2V5c3RvbmVuZXNzBgQAAAAObmRLZXlzdG9uZW5lc3MAAQAAAAYFAAAA
-        AAEAAAAJBQAAAAAAAAAL
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQoAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
+        bGRyZW4wCWNoaWxkcmVuMQEBAAABAAEABAQBCAgIHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2Rl
+        AgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAAMS2V5c3RvbmVuZXNz
+        BgQAAAAObmRLZXlzdG9uZW5lc3MA/////wYFAAAAAP////8JBQAAAAIAAAAJBgAAAAkHAAAABQYAAAAd
+        U3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJ
+        bmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50
+        AQEAAAEAAQABCAgIAgAAAAYIAAAABVRhYmxlBgkAAAATbmRLZXlzdG9uZW5lc3NUYWJsZQD/////CQUA
+        AAD/////CQUAAAAAAAAABQcAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQE
+        TmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0
+        ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQABCAgIAgAAAAYLAAAABUdyYXBoBgwAAAATbmRLZXlz
+        dG9uZW5lc3NHcmFwaAD/////CQUAAAD/////CQUAAAAAAAAACw==
 </value>
   </data>
   <data name="tvNetworkAnalysis.Nodes5" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -617,10 +625,10 @@
     <value>Magenta</value>
   </data>
   <data name="tsbtnOutputIndicesCSV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 22</value>
+    <value>87, 22</value>
   </data>
   <data name="tsbtnOutputIndicesCSV.Text" xml:space="preserve">
-    <value>Output all indices to CSV file</value>
+    <value>Save to CSV file</value>
   </data>
   <data name="tsbtnOutputGraphEMF.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
