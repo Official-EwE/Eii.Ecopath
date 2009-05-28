@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
-' $Log: cKeystoneness.vb,v $
+' $Log: cKeystonenessTable.vb,v $
+' Revision 1.1  2009/05/28 13:40:11  jeroens
+' Added keystoneness graph, renamed table content manager to prevent confusion
+'
 ' Revision 1.2  2009/05/28 02:28:32  jeroens
 ' Added scaled impact column
 '
@@ -15,7 +18,7 @@ Option Explicit On
 Imports System.Windows.Forms
 Imports ZedGraph
 
-Public Class cKeystoneness
+Public Class cKeystonenessTable
     Inherits cContentManager
 
     Public Sub New()
