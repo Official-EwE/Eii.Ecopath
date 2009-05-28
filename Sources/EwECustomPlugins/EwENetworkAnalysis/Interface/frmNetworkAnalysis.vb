@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.25  2009/05/28 02:17:19  jeroens
+' Added keystoneness table
+'
 ' Revision 1.24  2009/05/19 13:41:04  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -186,6 +189,9 @@ Public Class frmNetworkAnalysis
 
             Case "ndGraphOfMixedTrophicImpactEwE5"
                 Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
+
+            Case "ndKeystoneness"
+                Me.m_contentmanager = New cKeystoneness()
 
             Case "ndTotal"
                 Me.m_contentmanager = New cTotal()

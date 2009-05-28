@@ -27,6 +27,7 @@ Partial Class frmNetworkAnalysis
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
         Me.imglstNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
         Me.m_graph = New ZedGraph.ZedGraphControl
+        Me.m_plot = New EwENetworkAnalysis.ucPlot
         Me.m_tsNetworkAnalysis = New System.Windows.Forms.ToolStrip
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection1 = New System.Windows.Forms.ToolStripComboBox
@@ -40,7 +41,6 @@ Partial Class frmNetworkAnalysis
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblNetworkAnalysis = New System.Windows.Forms.Label
-        Me.m_plot = New EwENetworkAnalysis.ucPlot
         Me.scNetworkAnalysis.Panel1.SuspendLayout()
         Me.scNetworkAnalysis.Panel2.SuspendLayout()
         Me.scNetworkAnalysis.SuspendLayout()
@@ -74,7 +74,7 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.tvNetworkAnalysis, "tvNetworkAnalysis")
         Me.tvNetworkAnalysis.ImageList = Me.imglstNetworkAnalysis
         Me.tvNetworkAnalysis.Name = "tvNetworkAnalysis"
-        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode)})
+        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes8"), System.Windows.Forms.TreeNode)})
         '
         'imglstNetworkAnalysis
         '
@@ -103,6 +103,12 @@ Partial Class frmNetworkAnalysis
         Me.m_graph.ScrollMinX = 0
         Me.m_graph.ScrollMinY = 0
         Me.m_graph.ScrollMinY2 = 0
+        '
+        'm_plot
+        '
+        Me.m_plot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        resources.ApplyResources(Me.m_plot, "m_plot")
+        Me.m_plot.Name = "m_plot"
         '
         'm_tsNetworkAnalysis
         '
@@ -185,12 +191,6 @@ Partial Class frmNetworkAnalysis
         '
         resources.ApplyResources(Me.lblNetworkAnalysis, "lblNetworkAnalysis")
         Me.lblNetworkAnalysis.Name = "lblNetworkAnalysis"
-        '
-        'm_plot
-        '
-        Me.m_plot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        resources.ApplyResources(Me.m_plot, "m_plot")
-        Me.m_plot.Name = "m_plot"
         '
         'frmNetworkAnalysis
         '
