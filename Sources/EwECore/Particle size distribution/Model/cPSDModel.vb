@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.16  2009/05/28 23:10:25  joeh
+' Use Landing+Discard rather than fCatch to determine a group is fished
+'
 ' Revision 1.15  2009/05/26 22:38:24  joeh
 ' Modify the routine to set default value of Tcatch
 '
@@ -167,6 +170,7 @@ Public Class cPSDModel
     Private Sub EstimateGrowthParameters()
         Dim sngTemp As Single
         Dim strTemp As String = Nothing
+        Dim bIsFished As Boolean = False
 
         'A in LW
         For i As Integer = 1 To m_Data.NumLiving
@@ -201,6 +205,16 @@ Public Class cPSDModel
 
         'Tcatch
         For i As Integer = 1 To m_Data.NumLiving
+            'Determine if group is fished
+            bIsFished = False
+            For iFleet As Integer = 1 To m_Data.NumFleet
+                If (m_Data.Landing(iFleet, i) + _
+                    m_Data.Discard(iFleet, i)) > 0 Then
+                    bIsFished = True
+                    Exit For
+                End If
+            Next
+
             'Is user input?
             If Me.m_psd.TcatchInput(i) >= 0 Then
                 'Yes user input
@@ -208,7 +222,7 @@ Public Class cPSDModel
             Else
                 'Not user input
                 'Is group with catches?
-                If m_Data.fCatch(i) > 0 Then
+                If bIsFished Then ' m_Data.fCatch(i) > 0 Then
                     'Yes group with catches
                     'Is stanza group?
                     If m_Data.StanzaGroup(i) Then
