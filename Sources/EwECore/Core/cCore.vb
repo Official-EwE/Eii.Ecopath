@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.136  2009/05/28 23:09:29  joeh
+' In Cascade_TcatchInput( ) use Landing+Discard rather than fCatch to determine a group is fished
+'
 ' Revision 1.135  2009/05/28 20:50:59  jeroens
 ' Fixed multi-stanza TCatch status flag logic
 '
@@ -4522,6 +4525,7 @@ Public Class cCore
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
         Dim iStanza As Integer = Me.getStanzaIDForGroup(group.Index)
+        Dim bIsFished As Boolean
 
         Debug.Assert(iStanza = group.iStanza)
 
@@ -4529,12 +4533,21 @@ Public Class cCore
         If (iStanza < 0) Then Return
 
         For iGroup As Integer = 1 To Me.nGroups
+            bIsFished = False
+
             groupCascade = Me.EcoPathGroupInputs(iGroup)
 
             Debug.Assert(Me.getStanzaIDForGroup(iGroup) = groupCascade.iStanza)
 
-            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) And _
-            (m_EcoPathData.fCatch(iGroup) > 0) Then
+            For iFleet As Integer = 1 To Me.nFleets
+                If (Me.m_EcoPathData.Landing(iFleet, iGroup) + _
+                    Me.m_EcoPathData.Discard(iFleet, iGroup)) > 0 Then
+                    bIsFished = True
+                    Exit For
+                End If
+            Next
+
+            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) And bIsFished Then
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
