@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystoneness.vb,v $
+' Revision 1.2  2009/05/28 02:28:32  jeroens
+' Added scaled impact column
+'
 ' Revision 1.1  2009/05/28 02:12:02  jeroens
 ' Initial version
 '
@@ -45,6 +48,7 @@ Public Class cKeystoneness
         strRowContent(0) = ""
         strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         strRowContent(2) = "Keystone index"
+        strRowContent(3) = "Scaled impact"
         Me.Grid.Rows(0).SetValues(strRowContent)
         Me.Grid.Rows(0).Visible = True
 
@@ -52,6 +56,7 @@ Public Class cKeystoneness
             strRowContent(0) = CStr(i)
             strRowContent(1) = Me.NetworkManager.GroupName(i)
             strRowContent(2) = Me.NetworkManager.KeystoneIndex(i).ToString("F4")
+            strRowContent(3) = Me.NetworkManager.ScaledImpact(i).ToString("F4")
             Me.Grid.Rows(i).SetValues(strRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
@@ -64,7 +69,7 @@ Public Class cKeystoneness
         Me.Graph.Visible = False
         Me.Grid.ReadOnly = True
         Me.Grid.Visible = True
-        Me.Grid.ColumnCount = 3
+        Me.Grid.ColumnCount = 4
 
         SetGridColumnPropertyDefault(Me.Grid)
 
