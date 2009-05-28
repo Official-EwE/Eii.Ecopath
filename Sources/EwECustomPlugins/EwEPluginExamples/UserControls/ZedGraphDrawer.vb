@@ -24,7 +24,7 @@ Public Class ZedGraphDrawer
     ''' Function to plot biomass
     ''' </summary>
     Private Sub plotBiomass()
-        Dim sg As StyleGuide = StyleGuide.GetInstance()
+        Dim sg As cStyleGuide = cStyleGuide.GetInstance()
         Dim graphArea As GraphPane = m_zgc.GraphPane
         Dim x, y As Double()
 

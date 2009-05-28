@@ -49,6 +49,7 @@ Public Class frmEwEPlugin
     ''' Runs ecosim upon button click
     ''' </summary>
     Private Sub btnRunEcosim_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunEcosim.Click
+        If m_core.ActiveEcosimScenarioIndex = -1 Then Return
         m_core.RunEcoSim()
     End Sub
 
@@ -59,8 +60,7 @@ Public Class frmEwEPlugin
     ''' </summary>
     Private Sub btnMakeDataGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMakeDataGrid.Click
         ' Clear up old controls
-        For i As Integer = 0 To Panel1.Controls.Count - 1 : Panel1.Controls.RemoveAt(i) : Next
-
+        Panel1.Controls.Clear()
         ' Load a new User Control... see EcopathDataGrid defintion control
         Panel1.Controls.Add(New EcopathDataGrid(m_core))
     End Sub
@@ -71,9 +71,9 @@ Public Class frmEwEPlugin
     ''' Makes a new biomass graph and plots it on the right
     ''' </summary>
     Private Sub btnPlotEcosim_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlotEcosim.Click
+        If m_core.ActiveEcosimScenarioIndex = -1 Then Return
         ' Clear up old controls
-        For i As Integer = 0 To Panel1.Controls.Count - 1 : Panel1.Controls.RemoveAt(i) : Next
-
+        Panel1.Controls.Clear()
         ' Load a new User Control... see Zedgraph control
         Panel1.Controls.Add(New ZedGraphDrawer(m_core))
     End Sub
