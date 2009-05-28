@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.135  2009/05/28 20:50:59  jeroens
+' Fixed multi-stanza TCatch status flag logic
+'
 ' Revision 1.134  2009/05/26 22:33:58  joeh
 ' Add Cascade_TCatchInput( )
 '
@@ -4237,6 +4240,7 @@ Public Class cCore
     End Function
 
     Friend Function Set_Tcatch_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
         Dim iGroup As Integer
         Dim bIsFished As Boolean = False
 
@@ -4244,12 +4248,48 @@ Public Class cCore
 
         'convert the Database ID into an iGroup
         iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, group.DBID)
-        If m_EcoPathData.fCatch(iGroup) > 0 Then bIsFished = True
-        'For iFleet As Integer = 1 To m_EcoPathData.NumFleet
-        '    If (m_EcoPathData.Landing(iFleet, iGroup) > 0) Then bIsFished = True
-        'Next
+        ' haha
+        Debug.Assert(group.Index = iGroup)
 
-        ' Is fished?
+        ' Is multi-stanza?
+        If group.isMultiStanza Then
+            ' #Yes: determine if this is the first stanza group that is being fished (ouch)
+            Dim sg As cStanzaGroup = Me.StanzaGroups(group.iStanza)
+            Dim iAgeYoungest As Integer = 0
+            Dim iYoungest As Integer = 0
+
+            ' Determine lifestage index of youngest life stage that is being fished
+            ' ..For all life stages
+            For iLifestage As Integer = 1 To sg.NStanzas
+                ' ..For all fleets
+                For iFleet As Integer = 1 To Me.nFleets
+                    ' Is this life stage being caught?
+                    If (Me.m_EcoPathData.Landing(iFleet, sg.iGroups(iLifestage)) + _
+                        Me.m_EcoPathData.Discard(iFleet, sg.iGroups(iLifestage))) > 0 Then
+
+                        ' #Yes: remember youngest life stage index 
+                        If (bIsFished = False) Or (sg.StartAge(iLifestage) < iAgeYoungest) Then
+                            iAgeYoungest = sg.StartAge(iLifestage)
+                            iYoungest = sg.iGroups(iLifestage)
+                            bIsFished = True
+                        End If
+                    End If
+                Next
+            Next
+
+            bIsFished = bIsFished And (iYoungest = iGroup)
+
+        Else
+            ' #No: is being fished?
+            For iFleet As Integer = 1 To Me.nFleets
+                If (Me.m_EcoPathData.Landing(iFleet, iGroup) + Me.m_EcoPathData.Discard(iFleet, iGroup)) > 0 Then
+                    bIsFished = True
+                    Exit For
+                End If
+            Next
+        End If
+
+        ' Is being fished?
         If bIsFished Then
             ' #Yes: make Tcatch editable to the user
             group.ClearStatusFlags(eVarNameFlags.TCatchInput, eStatusFlags.NotEditable)
@@ -4464,7 +4504,19 @@ Public Class cCore
 
     End Sub
 
-    'Joeh
+    Private Sub Update_Stanza_Catches()
+
+        Dim group As cEcoPathGroupInput = Nothing
+
+        For iGroup As Integer = 1 To Me.nGroups
+            group = Me.EcoPathGroupInputs(iGroup)
+            If (group.isMultiStanza) Then
+                Me.Set_Tcatch_Flags(group, True)
+            End If
+        Next
+
+    End Sub
+
     Private Sub Cascade_TCatchInput(ByVal sTCatchInput As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
@@ -4495,7 +4547,6 @@ Public Class cCore
         Next
 
     End Sub
-    'End Joeh
 
 #End Region ' Status flags updating
 
@@ -10067,8 +10118,10 @@ Public Class cCore
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
                         Set_Quota_Flags(Me.EcosimFisheriesRegulations(flt.Index), True)
+
                     Case eVarNameFlags.Discards
                         Set_DiscardMort_Flags(flt, True)
+
                 End Select
 
             Case eDataTypes.EcoSimModelParameter
@@ -10389,6 +10442,17 @@ Public Class cCore
             Case eDataTypes.Stanza
                 ' Need to recalc multi-stanza configuration
                 bRecalcStanza = True
+
+            Case eDataTypes.FleetInput
+
+                Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
+
+                Select Case value.varName
+                    ' For landings and discards, check the effect on stanza configurations
+                    Case eVarNameFlags.Landings, eVarNameFlags.Discards
+                        Update_Stanza_Catches()
+
+                End Select
 
             Case eDataTypes.EcoSimModelParameter
                 Select Case value.varName
