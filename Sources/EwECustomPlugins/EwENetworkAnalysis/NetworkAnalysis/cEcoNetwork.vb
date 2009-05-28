@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.15  2009/05/28 15:04:25  jeroens
+' Added Assert  in case of keystoneness failure
+'
 ' Revision 1.14  2009/05/28 02:13:24  jeroens
 ' Keystoneness vars exposed
 '
@@ -2772,12 +2775,18 @@ NextPivot:
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Calculation of keystoneness following Libralato et al 2006. Implemented by VC in May 2009, leaving the interface to JS.
-    ''' Doesn't require any saving, but the index needs to be exposed so that we can pick it up for meta analysis.
+    ''' Calculation of keystoneness following Libralato et al 2006.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>
+    ''' <para>Implemented by VC in May 2009, leaving the interface to JS.</para>
+    ''' <para>Doesn't require any saving, but the index needs to be exposed so 
+    ''' that we can pick it up for meta analysis.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Private Sub Keystoneness()
+
         'First calculate the relative biomass sum for each LIVING group
         'The keystoneindex is always calculated, just after the MTI has been done
         'it requires no input, we have all
@@ -2788,6 +2797,7 @@ NextPivot:
         For i As Integer = 1 To m_epdata.NumLiving
             sumB += m_epdata.B(i)
         Next
+
         Try
             'try is just because biomass could be 0 if model is really stupid
             For i As Integer = 1 To m_epdata.NumLiving
@@ -2812,15 +2822,9 @@ NextPivot:
                 KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
                 ScaledImpact(i) = TotalImpact(i) / maxImpact
             Next
-            'VC: Jeroen if you would (1), in the network analysis, just after the mixed trophic impact on the menu, 
-            'add 'Keystoneness', and then place a table with the group number, group name, keystoneIndex
-            '(2) not rush: we should add a scatter plot which has ScaledImpact(i) on the X-axis, 
-            'and Keystoneindex(i) on the Y-axis, and where each X-Y point (one for each living group) 
-            'is plotted with the number of the functional group on the plot (OK to have some on top of each other)
-
 
         Catch ex As Exception
-
+            Debug.Assert(False, "Exception in Keystoneness: " & ex.Message)
         End Try
     End Sub
 
