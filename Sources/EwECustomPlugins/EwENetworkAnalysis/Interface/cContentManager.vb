@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.7  2009/05/28 14:56:15  jeroens
+' Responds to styleguide changes by updating content of content managers that display the graph or the grid
+'
 ' Revision 1.6  2009/05/28 13:59:57  jeroens
 ' Fixed annual averages option in CSV export
 '
@@ -81,6 +84,7 @@ Public MustInherit Class cContentManager
         Me.m_plot = plot
 
         Me.m_sg = cStyleGuide.GetInstance()
+        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         ' Hide all managed controls
         Me.HideControls()
@@ -102,12 +106,13 @@ Public MustInherit Class cContentManager
         ' Hide all controls
         Me.HideControls()
 
+        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        Me.m_sg = Nothing
+
         Me.m_manager = Nothing
         Me.m_datagrid = Nothing
         Me.m_graph = Nothing
         Me.m_plot = Plot
-
-        Me.m_sg = Nothing
 
     End Sub
 
@@ -292,6 +297,18 @@ Public MustInherit Class cContentManager
         Me.Grid.Columns.Clear()
         Me.Grid.ReadOnly = True
 
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, responding to styleguide changes.
+    ''' </summary>
+    ''' <param name="cf"></param>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+        If Me.Graph.Visible Or Me.Grid.Visible Then
+            Me.DisplayData()
+        End If
     End Sub
 
 #End Region ' Internals
