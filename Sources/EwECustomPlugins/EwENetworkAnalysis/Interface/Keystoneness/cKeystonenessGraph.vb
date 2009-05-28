@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessGraph.vb,v $
+' Revision 1.2  2009/05/28 14:58:45  jeroens
+' Styled graph
+'
 ' Revision 1.1  2009/05/28 13:40:11  jeroens
 ' Added keystoneness graph, renamed table content manager to prevent confusion
 '
@@ -58,27 +61,41 @@ Public Class cKeystonenessGraph
 
     Public Overrides Sub DisplayData()
 
-        Dim zgc As ZedGraphControl = Me.Graph
-        Dim paneMaster As MasterPane = zgc.MasterPane
         Dim pane As GraphPane = Nothing
         Dim curve As CurveItem = Nothing
         Dim ppl As PointPairList = Nothing
+        Dim txt As ZedGraph.TextObj = Nothing
         Dim source As cCoreInputOutputBase = Nothing
 
         ' ToDo: localize this
         pane = Me.m_zgh.ConfigurePane("", "Keystoneness", "Scaled impact", False)
 
         pane.CurveList.Clear()
+        pane.GraphObjList.Clear()
+
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
 
             ppl = New PointPairList()
             ppl.Add(Me.NetworkManager.ScaledImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
 
             source = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
-
             curve = pane.AddCurve(source.Name, ppl, _
                       Me.StyleGuide.GroupColor(Me.NetworkManager.Core, source.Index), _
                       SymbolType.Circle)
+
+            ' Add text label
+            txt = New ZedGraph.TextObj(CStr(source.Index), _
+                                       Me.NetworkManager.ScaledImpact(iGroup) + 0.025, _
+                                       Me.NetworkManager.KeystoneIndex(iGroup))
+
+            txt.ZOrder = ZOrder.E_BehindCurves
+            With txt.FontSpec
+                .Fill.IsVisible = False
+                .Border.IsVisible = False
+                .FontColor = Me.StyleGuide.GroupColor(Me.NetworkManager.Core, source.Index)
+            End With
+
+            pane.GraphObjList.Add(txt)
 
         Next
 
