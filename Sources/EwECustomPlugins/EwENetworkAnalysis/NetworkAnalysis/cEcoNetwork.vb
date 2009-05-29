@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.17  2009/05/29 23:56:47  jeroens
+' Localized
+'
 ' Revision 1.16  2009/05/29 19:31:57  villyc
 ' Added another keystoneness index relative to biomass
 '
@@ -439,7 +442,7 @@ Public Class cEcoNetwork
                 Return False
             End If
 
-            asn.SetStatusText("Running Network Analysis...", TriState.True, 0.1)
+            asn.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.True, 0.1)
 
             FoundCycles = False
             NetworkDimensioning()
@@ -447,14 +450,14 @@ Public Class cEcoNetwork
             ' EconetMain_g% = 1
             'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman           
             Try
-                asn.SetStatusText("Running Network Analysis Ulanow...", TriState.UseDefault, 0.2)
+                asn.SetStatusText(My.Resources.STATUS_RUNNING_ULANOW, TriState.UseDefault, 0.2)
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
-                asn.SetStatusText("Running Network Analysis Lindeman...", TriState.UseDefault, 0.3)
+                asn.SetStatusText(My.Resources.STATUS_RUNNING_LINDEMAN, TriState.UseDefault, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
-                asn.SetStatusText("Running Network Analysis...", TriState.UseDefault, 0.4)
+                asn.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.UseDefault, 0.4)
             Catch ex As Exception
                 cLog.Write(ex)
                 bSucces = False
@@ -482,10 +485,10 @@ Public Class cEcoNetwork
                 'VC090527 Adding calculation of keystoneness based on Libralato et al 2006:
                 Keystoneness()
 
-                asn.SetStatusText("Running Network Analysis eqPP...", TriState.UseDefault, 0.6)
+                asn.SetStatusText(My.Resources.STATUS_RUNNING_EQPP, TriState.UseDefault, 0.6)
                 InitReqPP()
-                asn.SetStatusText("Finalizing Network Analysis run...", TriState.UseDefault, 0.8)
 
+                'asn.SetStatusText("Finalizing Network Analysis run...", TriState.UseDefault, 0.8)
                 'activate the textStream to save the output to file
                 'Dim textStream As New System.IO.StreamWriter(System.AppDomain.CurrentDomain.BaseDirectory() & "NetworkOutput.csv")
                 'DumpResultsToStream(Nothing)
