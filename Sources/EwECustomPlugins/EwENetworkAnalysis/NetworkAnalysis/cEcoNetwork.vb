@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.16  2009/05/29 19:31:57  villyc
+' Added another keystoneness index relative to biomass
+'
 ' Revision 1.15  2009/05/28 15:04:25  jeroens
 ' Added Assert  in case of keystoneness failure
 '
@@ -246,6 +249,7 @@ Public Class cEcoNetwork
 #Region " Keystoneness "
 
     Public KeystoneIndex() As Double
+    Public KeystoneOverBiomass() As Double
     Public ScaledImpact() As Double
 
 #End Region
@@ -2816,10 +2820,12 @@ NextPivot:
             Next
 
             ReDim KeystoneIndex(m_epdata.NumLiving)
+            ReDim KeystoneOverBiomass(m_epdata.NumLiving)
             ReDim ScaledImpact(m_epdata.NumLiving)
 
             For i As Integer = 1 To m_epdata.NumLiving
                 KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
+                KeystoneOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
                 ScaledImpact(i) = TotalImpact(i) / maxImpact
             Next
 
