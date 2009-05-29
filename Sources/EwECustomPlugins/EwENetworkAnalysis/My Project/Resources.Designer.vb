@@ -331,6 +331,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Keystone index.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_KEYSTONEINDEX() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Non-hidden.
         '''</summary>
         Friend ReadOnly Property COL_HDR_NONHIDDEN() As String
@@ -592,6 +601,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Scaled impact.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_SCALEDIMPACT() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_SCALEDIMPACT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Source.
         '''</summary>
         Friend ReadOnly Property COL_HDR_SOURCE() As String
@@ -698,11 +716,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
+        '''  Looks up a localized string similar to EMF image files (*.emf)|*.emf|All files (*.*)|*.*.
         '''</summary>
-        Friend ReadOnly Property LABEL_INDEXED() As String
+        Friend ReadOnly Property FILEFILTER_EMF() As String
             Get
-                Return ResourceManager.GetString("LABEL_INDEXED", resourceCulture)
+                Return ResourceManager.GetString("FILEFILTER_EMF", resourceCulture)
             End Get
         End Property
         
@@ -797,11 +815,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}: {1}.
+        '''</summary>
+        Friend ReadOnly Property LBL_INDEXED() As String
+            Get
+                Return ResourceManager.GetString("LBL_INDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Kemptons Q.
         '''</summary>
         Friend ReadOnly Property LBL_KEMPTONS_Q() As String
             Get
                 Return ResourceManager.GetString("LBL_KEMPTONS_Q", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Keystoneness.
+        '''</summary>
+        Friend ReadOnly Property LBL_KEYSTONENESS() As String
+            Get
+                Return ResourceManager.GetString("LBL_KEYSTONENESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Keystoneness over biomass.
+        '''</summary>
+        Friend ReadOnly Property LBL_KEYSTONENESS_OVER_B() As String
+            Get
+                Return ResourceManager.GetString("LBL_KEYSTONENESS_OVER_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Months.
+        '''</summary>
+        Friend ReadOnly Property LBL_MONTHS() As String
+            Get
+                Return ResourceManager.GetString("LBL_MONTHS", resourceCulture)
             End Get
         End Property
         
@@ -878,11 +932,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Time steps.
+        '''  Looks up a localized string similar to Scaled impact.
         '''</summary>
-        Friend ReadOnly Property LBL_TIME_STEP() As String
+        Friend ReadOnly Property LBL_SCALEDIMPACT() As String
             Get
-                Return ResourceManager.GetString("LBL_TIME_STEP", resourceCulture)
+                Return ResourceManager.GetString("LBL_SCALEDIMPACT", resourceCulture)
             End Get
         End Property
         
@@ -901,6 +955,69 @@ Namespace My.Resources
         Friend ReadOnly Property LBL_TOTAL_CATCH() As String
             Get
                 Return ResourceManager.GetString("LBL_TOTAL_CATCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Graph content.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Keystoneness.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_KEYSTONE() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Keystoneness over &amp;Biomass.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_KEYSTONE_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Graph style.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Circles.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE_CIRCLES() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE_CIRCLES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Circles, scaled to &amp;Biomass.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE_CIRCLES_SCALED() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE_CIRCLES_SCALED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Numbers.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE_NUMBERS() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE_NUMBERS", resourceCulture)
             End Get
         End Property
         
@@ -944,6 +1061,24 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_ESTIMATE_PPR() As String
             Get
                 Return ResourceManager.GetString("PROMPT_ESTIMATE_PPR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save Network Analysis results as annual averages?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SAVE_ANNUAL_AVERAGES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVE_ANNUAL_AVERAGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select destination to save Network Analysis results CSV file.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SAVE_DESTINATION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVE_DESTINATION", resourceCulture)
             End Get
         End Property
         
@@ -1182,7 +1317,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Finding for &apos;{0}&apos; via &apos;{1}&apos;....
+        '''  Looks up a localized string similar to Finding pathways for &apos;{0}&apos; via &apos;{1}&apos;....
         '''</summary>
         Friend ReadOnly Property STATUS_FINDING_PATHWAYS_CONSPREY() As String
             Get
@@ -1209,11 +1344,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Running Network Analysis eqPP....
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUNNING_EQPP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUNNING_EQPP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Network Analysis Lindeman....
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUNNING_LINDEMAN() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUNNING_LINDEMAN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Network Analysis....
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUNNING_NA() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUNNING_NA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Running Network Analysis....
         '''</summary>
         Friend ReadOnly Property STATUS_RUNNING_NETWORKANALYSIS() As String
             Get
                 Return ResourceManager.GetString("STATUS_RUNNING_NETWORKANALYSIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running Network Analysis Ulanow....
+        '''</summary>
+        Friend ReadOnly Property STATUS_RUNNING_ULANOW() As String
+            Get
+                Return ResourceManager.GetString("STATUS_RUNNING_ULANOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Updating UI....
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATING_UI() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATING_UI", resourceCulture)
             End Get
         End Property
         

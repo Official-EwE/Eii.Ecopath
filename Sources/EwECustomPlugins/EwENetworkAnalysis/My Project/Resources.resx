@@ -264,8 +264,8 @@
   <data name="LBL_TOTAL_CATCH" xml:space="preserve">
     <value>Total catch</value>
   </data>
-  <data name="LBL_TIME_STEP" xml:space="preserve">
-    <value>Time steps</value>
+  <data name="LBL_MONTHS" xml:space="preserve">
+    <value>Months</value>
   </data>
   <data name="COL_HDR_INFO" xml:space="preserve">
     <value>Information (bits)</value>
@@ -518,7 +518,7 @@
     <value>Failed to launch application {0}. The file does not seem to exist in any of the expected locations: {1}</value>
     <comment>{0}: application name. {1}: locations</comment>
   </data>
-  <data name="LABEL_INDEXED" xml:space="preserve">
+  <data name="LBL_INDEXED" xml:space="preserve">
     <value>{0}: {1}</value>
     <comment>{0}: index, {1}: value</comment>
   </data>
@@ -526,7 +526,7 @@
     <value>Finding pathways...</value>
   </data>
   <data name="STATUS_FINDING_PATHWAYS_CONSPREY" xml:space="preserve">
-    <value>Finding for '{0}' via '{1}'...</value>
+    <value>Finding pathways for '{0}' via '{1}'...</value>
     <comment>{0}: consumer name, {1}: prey name</comment>
   </data>
   <data name="STATUS_FINDING_PATHWAYS_CONSUMER" xml:space="preserve">
@@ -542,5 +542,65 @@
   </data>
   <data name="STATUS_RUNNING_NETWORKANALYSIS" xml:space="preserve">
     <value>Running Network Analysis...</value>
+  </data>
+  <data name="FILEFILTER_EMF" xml:space="preserve">
+    <value>EMF image files (*.emf)|*.emf|All files (*.*)|*.*</value>
+  </data>
+  <data name="PROMPT_SAVE_ANNUAL_AVERAGES" xml:space="preserve">
+    <value>Save Network Analysis results as annual averages?</value>
+  </data>
+  <data name="PROMPT_SAVE_DESTINATION" xml:space="preserve">
+    <value>Select destination to save Network Analysis results CSV file</value>
+  </data>
+  <data name="STATUS_UPDATING_UI" xml:space="preserve">
+    <value>Updating UI...</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX" xml:space="preserve">
+    <value>Keystone index</value>
+  </data>
+  <data name="COL_HDR_SCALEDIMPACT" xml:space="preserve">
+    <value>Scaled impact</value>
+  </data>
+  <data name="LBL_KEYSTONENESS" xml:space="preserve">
+    <value>Keystoneness</value>
+  </data>
+  <data name="LBL_KEYSTONENESS_OVER_B" xml:space="preserve">
+    <value>Keystoneness over biomass</value>
+  </data>
+  <data name="LBL_SCALEDIMPACT" xml:space="preserve">
+    <value>Scaled impact</value>
+  </data>
+  <data name="MNU_CONTENT" xml:space="preserve">
+    <value>&amp;Graph content</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE" xml:space="preserve">
+    <value>&amp;Keystoneness</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE_BIOMASS" xml:space="preserve">
+    <value>Keystoneness over &amp;Biomass</value>
+  </data>
+  <data name="MNU_STYLE" xml:space="preserve">
+    <value>&amp;Graph style</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES" xml:space="preserve">
+    <value>&amp;Circles</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES_SCALED" xml:space="preserve">
+    <value>Circles, scaled to &amp;Biomass</value>
+  </data>
+  <data name="MNU_STYLE_NUMBERS" xml:space="preserve">
+    <value>&amp;Numbers</value>
+  </data>
+  <data name="STATUS_RUNNING_EQPP" xml:space="preserve">
+    <value>Running Network Analysis eqPP...</value>
+  </data>
+  <data name="STATUS_RUNNING_LINDEMAN" xml:space="preserve">
+    <value>Running Network Analysis Lindeman...</value>
+  </data>
+  <data name="STATUS_RUNNING_NA" xml:space="preserve">
+    <value>Running Network Analysis...</value>
+  </data>
+  <data name="STATUS_RUNNING_ULANOW" xml:space="preserve">
+    <value>Running Network Analysis Ulanow...</value>
   </data>
 </root>
