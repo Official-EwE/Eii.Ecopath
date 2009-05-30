@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromPrimaryProd.vb,v $
+' Revision 1.9  2009/05/30 00:00:52  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.8  2009/05/19 13:41:12  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -40,10 +43,11 @@ Public Class cFromPrimaryProd
     End Sub
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                ByVal datagrid As DataGridView, _
-                                ByVal graph As ZedGraphControl, _
-                                ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function
@@ -51,7 +55,7 @@ Public Class cFromPrimaryProd
     Public Overrides Sub DisplayData()
 
         Dim strRowContent() As String
-        Dim sngSumVariable() As Single
+        Dim sSum() As Single
 
         SetUpGridColumn()
 
@@ -64,7 +68,7 @@ Public Class cFromPrimaryProd
         Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim strRowContent(Grid.Columns.Count)
-        ReDim sngSumVariable(Grid.Columns.Count)
+        ReDim sSum(Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_TRP_LVL_FLOW
         strRowContent(1) = My.Resources.COL_HDR_IMPORT
         strRowContent(2) = My.Resources.COL_HDR_CONSUM_PREDAT
@@ -79,28 +83,28 @@ Public Class cFromPrimaryProd
             'strRowContent(0) = CStr(i)
             strRowContent(0) = CRoman(i)
             If i = 1 Then
-                strRowContent(1) = NetworkManager.PPImport(i).ToString("F4")
-                sngSumVariable(1) = sngSumVariable(1) + NetworkManager.PPImport(i)
+                strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.PPImport(i))
+                sSum(1) = sSum(1) + NetworkManager.PPImport(i)
             Else
                 strRowContent(1) = ""
             End If
-            strRowContent(2) = NetworkManager.PPConsByPred(i).ToString("F4")
-            sngSumVariable(2) = sngSumVariable(2) + NetworkManager.PPConsByPred(i)
-            strRowContent(3) = NetworkManager.PPExport(i).ToString("F4")
-            sngSumVariable(3) = sngSumVariable(3) + NetworkManager.PPExport(i)
-            strRowContent(4) = NetworkManager.PPToDetritus(i).ToString("F4")
-            sngSumVariable(4) = sngSumVariable(4) + NetworkManager.PPToDetritus(i)
-            strRowContent(5) = NetworkManager.PPRespiration(i).ToString("F4")
-            sngSumVariable(5) = sngSumVariable(5) + NetworkManager.PPRespiration(i)
-            strRowContent(6) = NetworkManager.PPThroughtput(i).ToString("F4")
-            sngSumVariable(6) = sngSumVariable(6) + NetworkManager.PPThroughtput(i)
+            strRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.PPConsByPred(i))
+            sSum(2) = sSum(2) + NetworkManager.PPConsByPred(i)
+            strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.PPExport(i))
+            sSum(3) = sSum(3) + NetworkManager.PPExport(i)
+            strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPToDetritus(i))
+            sSum(4) = sSum(4) + NetworkManager.PPToDetritus(i)
+            strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRespiration(i))
+            sSum(5) = sSum(5) + NetworkManager.PPRespiration(i)
+            strRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.PPThroughtput(i))
+            sSum(6) = sSum(6) + NetworkManager.PPThroughtput(i)
             Grid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
             Grid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
         strRowContent(0) = My.Resources.ROW_HDR_SUM
         For i As Integer = 1 To Grid.Columns.Count - 1
-            strRowContent(i) = sngSumVariable(i).ToString("F4")
+            strRowContent(i) = Me.StyleGuide.FormatNumber(sSum(i))
         Next
         Grid.Rows(Grid.RowCount - 1).SetValues(strRowContent)
         Grid.Rows(Grid.RowCount - 1).Visible = True

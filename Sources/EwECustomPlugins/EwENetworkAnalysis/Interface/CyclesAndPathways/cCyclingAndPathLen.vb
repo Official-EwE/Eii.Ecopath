@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCyclingAndPathLen.vb,v $
+' Revision 1.9  2009/05/30 00:00:51  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.8  2009/05/19 13:41:13  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -40,10 +43,11 @@ Public Class cCyclingAndPathLen
     End Sub
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                    ByVal datagrid As DataGridView, _
-                                    ByVal graph As ZedGraphControl, _
-                                    ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function
@@ -128,8 +132,8 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 5, "-")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_MEAN_PATH_LEN
         If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = (NetworkManager.ThroughputTotal / _
-                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp)).ToString("F4")
+            strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputTotal / _
+                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If
@@ -147,9 +151,9 @@ Public Class cCyclingAndPathLen
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
         If NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
             NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = ((NetworkManager.ThroughputCycledPredatory - NetworkManager.ThroughputCycledLiving) / _
+            strRowContent(1) = Me.StyleGuide.FormatNumber((NetworkManager.ThroughputCycledPredatory - NetworkManager.ThroughputCycledLiving) / _
                 (NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
-                NetworkManager.ThroughputResp)).ToString("F4")
+                NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If
@@ -164,8 +168,8 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 7, "with detritus")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
         If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = ((NetworkManager.ThroughputTotal - NetworkManager.ThroughputCycledAll) / _
-                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp)).ToString("F4")
+            strRowContent(1) = Me.StyleGuide.FormatNumber((NetworkManager.ThroughputTotal - NetworkManager.ThroughputCycledAll) / _
+                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If

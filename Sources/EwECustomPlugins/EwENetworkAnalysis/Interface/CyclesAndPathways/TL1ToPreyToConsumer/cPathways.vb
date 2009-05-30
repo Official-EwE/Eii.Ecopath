@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.12  2009/05/30 00:00:57  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.11  2009/05/19 13:41:10  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -54,12 +57,17 @@ Namespace TL1ToPreyToConsumer
         End Sub
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                      ByVal datagrid As DataGridView, _
-                                      ByVal graph As ZedGraphControl, _
-                                      ByVal plot As ucPlot) As Boolean
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                         ByVal datagrid As DataGridView, _
+                                         ByVal graph As ZedGraphControl, _
+                                         ByVal plot As ucPlot, _
+                                         ByVal toolstrip As ToolStrip) As Boolean
+
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
             Me.Grid.Visible = bSucces
+            Me.Toolstrip.Visible = bSucces
+            Me.ToolstripShowGroups(My.Resources.LBL_PATH_TO, My.Resources.LBL_PATH_VIA)
             Return bSucces
+
         End Function
 
         Public Overrides Sub DisplayData()
@@ -73,46 +81,6 @@ Namespace TL1ToPreyToConsumer
 
             Grid.Columns(1).Width = 660
             Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-
-        End Sub
-
-        Public Overrides Function RequiresToolstrip() As Boolean
-            Return True
-        End Function
-
-        Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
-
-            MyBase.SetupToolstrip(ts)
-
-            Dim tslbl1 As ToolStripLabel = DirectCast(ts.Items("tslblSelection1"), ToolStripLabel)
-            Dim tslbl2 As ToolStripLabel = DirectCast(ts.Items("tslblSelection2"), ToolStripLabel)
-            Dim tscmb1 As ToolStripComboBox = DirectCast(ts.Items("tscmbSelection1"), ToolStripComboBox)
-            Dim tscmb2 As ToolStripComboBox = DirectCast(ts.Items("tscmbSelection2"), ToolStripComboBox)
-
-            tslbl1.Visible = True
-            tslbl1.Text = My.Resources.LBL_PATH_TO
-            tscmb1.Visible = True
-            tscmb1.Items.Clear()
-
-            tslbl2.Visible = True
-            tslbl2.Text = My.Resources.LBL_PATH_VIA
-            tscmb2.Visible = True
-            tscmb2.Items.Clear()
-
-            ' JS 01May09: Should '4' not be 'Me.NetworkManager.nDetritusGroups'?
-            For iGroup As Integer = 1 To Me.NetworkManager.nGroups - 4
-                tscmb1.Items.Add(String.Format(My.Resources.LABEL_INDEXED, iGroup, Me.NetworkManager.GroupName(iGroup)))
-                tscmb2.Items.Add(String.Format(My.Resources.LABEL_INDEXED, iGroup, Me.NetworkManager.GroupName(iGroup)))
-            Next
-
-            ts.Refresh()
-
-            ' Suppress the first SelectedIndex-caused update
-            Me.m_bInUpdate = True
-            tscmb1.SelectedIndex = 0
-            Me.m_bInUpdate = False
-            ' Yo!
-            tscmb2.SelectedIndex = 0
 
         End Sub
 

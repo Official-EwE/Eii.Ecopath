@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.12  2009/05/30 00:00:56  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.11  2009/05/19 13:41:09  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -53,9 +56,15 @@ Namespace PreyToPredator
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                         ByVal datagrid As DataGridView, _
                                         ByVal graph As ZedGraphControl, _
-                                        ByVal plot As ucPlot) As Boolean
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                        ByVal plot As ucPlot, _
+                                        ByVal toolstrip As ToolStrip) As Boolean
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, ToolStrip)
+
             Me.Grid.Visible = bSucces
+
+            Me.Toolstrip.Visible = bSucces
+            Me.ToolstripShowGroups(My.Resources.LBL_PATH_FROM)
+
             Return bSucces
         End Function
 
@@ -73,38 +82,13 @@ Namespace PreyToPredator
 
         End Sub
 
-        Public Overrides Function RequiresToolstrip() As Boolean
-            Return True
-        End Function
-
-        Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
-
-            MyBase.SetupToolstrip(ts)
-
-            Dim tslbl As ToolStripLabel = DirectCast(ts.Items("tslblSelection1"), ToolStripLabel)
-            Dim tscmb As ToolStripComboBox = DirectCast(ts.Items("tscmbSelection1"), ToolStripComboBox)
-
-            tslbl.Visible = True
-            tslbl.Text = My.Resources.LBL_PATH_FROM
-            tscmb.Visible = True
-            tscmb.Items.Clear()
-
-            For iGroup As Integer = 1 To Me.NetworkManager.nGroups
-                tscmb.Items.Add(String.Format(My.Resources.LABEL_INDEXED, iGroup, Me.NetworkManager.GroupName(iGroup)))
-            Next
-
-            ts.Refresh()
-
-            tscmb.SelectedIndex = 0
-        End Sub
-
         Public Overrides Sub UpdateData(ByVal iSel1 As Integer, ByVal iSel2 As Integer)
 
-            Dim strRowContent() As String
+            Dim astrRowContent() As String
 
             Grid.RowHeadersVisible = False
 
-            ReDim strRowContent(Grid.Columns.Count)
+            ReDim astrRowContent(Grid.Columns.Count)
             Me.NetworkManager.FindPathwaysFromPrey(iSel1)
             If Me.NetworkManager.PathWays.Count > 0 Then
                 Grid.RowCount = Me.NetworkManager.PathWays.Count + 1
@@ -113,15 +97,15 @@ Namespace PreyToPredator
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
-                strRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(strRowContent)
+                astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                astrRowContent(1) = My.Resources.COL_HDR_PATH
+                Grid.Rows(0).SetValues(astrRowContent)
                 Grid.Rows(0).Visible = True
 
                 For intPathwayIndex As Integer = 0 To Me.NetworkManager.PathWays.Count - 1
-                    strRowContent(0) = CStr(intPathwayIndex + 1)
-                    strRowContent(1) = CStr(Me.NetworkManager.PathWays.Item(intPathwayIndex))
-                    Grid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
+                    astrRowContent(0) = CStr(intPathwayIndex + 1)
+                    astrRowContent(1) = CStr(Me.NetworkManager.PathWays.Item(intPathwayIndex))
+                    Grid.Rows(intPathwayIndex + 1).SetValues(astrRowContent)
                     Grid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
@@ -131,14 +115,14 @@ Namespace PreyToPredator
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
-                strRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(strRowContent)
+                astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                astrRowContent(1) = My.Resources.COL_HDR_PATH
+                Grid.Rows(0).SetValues(astrRowContent)
                 Grid.Rows(0).Visible = True
 
-                strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
-                strRowContent(1) = ""
-                Grid.Rows(1).SetValues(strRowContent)
+                astrRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
+                astrRowContent(1) = ""
+                Grid.Rows(1).SetValues(astrRowContent)
                 Grid.Rows(1).Visible = True
             End If
             Grid.ClearSelection()

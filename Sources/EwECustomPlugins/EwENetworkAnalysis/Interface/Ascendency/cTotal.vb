@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cTotal.vb,v $
+' Revision 1.9  2009/05/30 00:00:49  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.8  2009/05/19 13:41:07  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -41,14 +44,15 @@ Public Class cTotal
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                     ByVal datagrid As DataGridView, _
                                     ByVal graph As ZedGraphControl, _
-                                    ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                    ByVal plot As ucPlot, _
+                                    ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, ToolStrip)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function
 
     Public Overrides Sub DisplayData()
-        Dim strRowContent() As String
+        Dim astrRowContent() As String
 
         SetUpGridColumn()
 
@@ -60,65 +64,65 @@ Public Class cTotal
         Grid.Rows(0).Frozen = True
         Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(Grid.Columns.Count)
-        strRowContent(0) = My.Resources.COL_HDR_SOURCE
-        strRowContent(1) = My.Resources.COL_HDR_ASCEND_FLOWBIT
-        strRowContent(2) = My.Resources.COL_HDR_ASCEND_PCT
-        strRowContent(3) = My.Resources.COL_HDR_OVERHEAD_FLOWBIT
-        strRowContent(4) = My.Resources.COL_HDR_OVERHEAD_PCT
-        strRowContent(5) = My.Resources.COL_HDR_CAPACITY_FLOWBIT
-        strRowContent(6) = My.Resources.COL_HDR_CAPACITY_PCT
-        Grid.Rows(0).SetValues(strRowContent)
+        ReDim astrRowContent(Grid.Columns.Count)
+        astrRowContent(0) = My.Resources.COL_HDR_SOURCE
+        astrRowContent(1) = My.Resources.COL_HDR_ASCEND_FLOWBIT
+        astrRowContent(2) = My.Resources.COL_HDR_ASCEND_PCT
+        astrRowContent(3) = My.Resources.COL_HDR_OVERHEAD_FLOWBIT
+        astrRowContent(4) = My.Resources.COL_HDR_OVERHEAD_PCT
+        astrRowContent(5) = My.Resources.COL_HDR_CAPACITY_FLOWBIT
+        astrRowContent(6) = My.Resources.COL_HDR_CAPACITY_PCT
+        Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True
 
-        strRowContent(0) = My.Resources.ROW_HDR_IMPORT
-        strRowContent(1) = NetworkManager.AscendancyImportTotal.ToString("F1")
-        strRowContent(2) = NetworkManager.AscendancyImportPer.ToString("F1")
-        strRowContent(3) = NetworkManager.OverheadImportTotal.ToString("F1")
-        strRowContent(4) = NetworkManager.OverheadImportPer.ToString("F1")
-        strRowContent(5) = NetworkManager.CapacityImportTotal.ToString("F1")
-        strRowContent(6) = NetworkManager.CapacityImportPer.ToString("F1")
-        Grid.Rows(1).SetValues(strRowContent)
+        astrRowContent(0) = My.Resources.ROW_HDR_IMPORT
+        astrRowContent(1) = NetworkManager.AscendancyImportTotal.ToString("F1")
+        astrRowContent(2) = NetworkManager.AscendancyImportPer.ToString("F1")
+        astrRowContent(3) = NetworkManager.OverheadImportTotal.ToString("F1")
+        astrRowContent(4) = NetworkManager.OverheadImportPer.ToString("F1")
+        astrRowContent(5) = NetworkManager.CapacityImportTotal.ToString("F1")
+        astrRowContent(6) = NetworkManager.CapacityImportPer.ToString("F1")
+        Grid.Rows(1).SetValues(astrRowContent)
         Grid.Rows(1).Visible = True
 
-        strRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
-        strRowContent(1) = NetworkManager.AscendancyInternalFlowTotal.ToString("F1")
-        strRowContent(2) = NetworkManager.AscendancyInternalFlowPer.ToString("F1")
-        strRowContent(3) = NetworkManager.OverheadFlowTotal.ToString("F1")
-        strRowContent(4) = NetworkManager.OverheadFlowPer.ToString("F1")
-        strRowContent(5) = NetworkManager.CapacityFlowTotal.ToString("F1")
-        strRowContent(6) = NetworkManager.CapacityFlowPer.ToString("F1")
-        Grid.Rows(2).SetValues(strRowContent)
+        astrRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
+        astrRowContent(1) = NetworkManager.AscendancyInternalFlowTotal.ToString("F1")
+        astrRowContent(2) = NetworkManager.AscendancyInternalFlowPer.ToString("F1")
+        astrRowContent(3) = NetworkManager.OverheadFlowTotal.ToString("F1")
+        astrRowContent(4) = NetworkManager.OverheadFlowPer.ToString("F1")
+        astrRowContent(5) = NetworkManager.CapacityFlowTotal.ToString("F1")
+        astrRowContent(6) = NetworkManager.CapacityFlowPer.ToString("F1")
+        Grid.Rows(2).SetValues(astrRowContent)
         Grid.Rows(2).Visible = True
 
-        strRowContent(0) = My.Resources.ROW_HDR_EXPORT
-        strRowContent(1) = NetworkManager.AscendancyExportTotal.ToString("F1")
-        strRowContent(2) = NetworkManager.AscendancyExportPer.ToString("F1")
-        strRowContent(3) = NetworkManager.OverheadExportTotal.ToString("F1")
-        strRowContent(4) = NetworkManager.OverheadExportPer.ToString("F1")
-        strRowContent(5) = NetworkManager.CapacityExportTotal.ToString("F1")
-        strRowContent(6) = NetworkManager.CapacityExportPer.ToString("F1")
-        Grid.Rows(3).SetValues(strRowContent)
+        astrRowContent(0) = My.Resources.ROW_HDR_EXPORT
+        astrRowContent(1) = NetworkManager.AscendancyExportTotal.ToString("F1")
+        astrRowContent(2) = NetworkManager.AscendancyExportPer.ToString("F1")
+        astrRowContent(3) = NetworkManager.OverheadExportTotal.ToString("F1")
+        astrRowContent(4) = NetworkManager.OverheadExportPer.ToString("F1")
+        astrRowContent(5) = NetworkManager.CapacityExportTotal.ToString("F1")
+        astrRowContent(6) = NetworkManager.CapacityExportPer.ToString("F1")
+        Grid.Rows(3).SetValues(astrRowContent)
         Grid.Rows(3).Visible = True
 
-        strRowContent(0) = My.Resources.ROW_HDR_RESP
-        strRowContent(1) = NetworkManager.AscendancyRespTotal.ToString("F1")
-        strRowContent(2) = NetworkManager.AscendancyRespPer.ToString("F1")
-        strRowContent(3) = NetworkManager.OverheadRespTotal.ToString("F1")
-        strRowContent(4) = NetworkManager.OverheadRespPer.ToString("F1")
-        strRowContent(5) = NetworkManager.CapacityRespTotal.ToString("F1")
-        strRowContent(6) = NetworkManager.CapacityRespPer.ToString("F1")
-        Grid.Rows(4).SetValues(strRowContent)
+        astrRowContent(0) = My.Resources.ROW_HDR_RESP
+        astrRowContent(1) = NetworkManager.AscendancyRespTotal.ToString("F1")
+        astrRowContent(2) = NetworkManager.AscendancyRespPer.ToString("F1")
+        astrRowContent(3) = NetworkManager.OverheadRespTotal.ToString("F1")
+        astrRowContent(4) = NetworkManager.OverheadRespPer.ToString("F1")
+        astrRowContent(5) = NetworkManager.CapacityRespTotal.ToString("F1")
+        astrRowContent(6) = NetworkManager.CapacityRespPer.ToString("F1")
+        Grid.Rows(4).SetValues(astrRowContent)
         Grid.Rows(4).Visible = True
 
-        strRowContent(0) = My.Resources.ROW_HDR_TOTAL
-        strRowContent(1) = NetworkManager.AscendancyTotalsTotal.ToString("F1")
-        strRowContent(2) = NetworkManager.AscendancyTotalsPer.ToString("F1")
-        strRowContent(3) = NetworkManager.OverheadTotalsTotal.ToString("F1")
-        strRowContent(4) = NetworkManager.OverheadTotalsPer.ToString("F1")
-        strRowContent(5) = NetworkManager.CapacityTotalsTotal.ToString("F1")
-        strRowContent(6) = NetworkManager.CapacityTotalsPer.ToString("F1")
-        Grid.Rows(5).SetValues(strRowContent)
+        astrRowContent(0) = My.Resources.ROW_HDR_TOTAL
+        astrRowContent(1) = NetworkManager.AscendancyTotalsTotal.ToString("F1")
+        astrRowContent(2) = NetworkManager.AscendancyTotalsPer.ToString("F1")
+        astrRowContent(3) = NetworkManager.OverheadTotalsTotal.ToString("F1")
+        astrRowContent(4) = NetworkManager.OverheadTotalsPer.ToString("F1")
+        astrRowContent(5) = NetworkManager.CapacityTotalsTotal.ToString("F1")
+        astrRowContent(6) = NetworkManager.CapacityTotalsPer.ToString("F1")
+        Grid.Rows(5).SetValues(astrRowContent)
         Grid.Rows(5).Visible = True
 
         Grid.ClearSelection()

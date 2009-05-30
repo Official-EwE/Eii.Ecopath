@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cIndicesWithPPREst.vb,v $
+' Revision 1.18  2009/05/30 00:00:54  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.17  2009/05/28 13:59:57  jeroens
 ' Fixed annual averages option in CSV export
 '
@@ -81,9 +84,10 @@ Public Class cIndicesWithPPREst
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot) As Boolean
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
 
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
 
         ' PPR not on yet?
         If (Me.NetworkManager.EcosimPPROn = False) Then
@@ -105,7 +109,14 @@ Public Class cIndicesWithPPREst
             bSucces = False
         End If
 
+        Me.m_zgh = New cZedGraphHelper()
+        Me.m_zgh.Attach(Me.NetworkManager.Core, Me.Graph, 2)
+        Me.m_zgh.ShowPointValue = True
+
         Me.Graph.Visible = bSucces
+        Me.Toolstrip.Visible = bSucces
+        Me.ToolstripShowOptionCSV()
+
         Return bSucces
 
     End Function
@@ -127,17 +138,12 @@ Public Class cIndicesWithPPREst
 
     Public Overrides Sub DisplayData()
 
-        Dim zgc As ZedGraphControl = Me.Graph
-        Dim paneMaster As MasterPane = zgc.MasterPane
+        Dim paneMaster As MasterPane = Me.Graph.MasterPane
         Dim pane As GraphPane = Nothing
         Dim g As Graphics = Nothing
 
-        Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.NetworkManager.Core, zgc, 2)
-        Me.m_zgh.ShowPointValue = True
-
         'Pane1
-        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
+        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
         'Add curves
         pane.CurveList.Clear()
         'FIB
@@ -156,32 +162,17 @@ Public Class cIndicesWithPPREst
         AddCurve(My.Resources.LBL_CATCH_DET_REQ, Me.NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
 
         'Pane2
-        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_TIME_STEP, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)
+        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)
         'Add curves
         pane.CurveList.Clear()
         'Ascendency on flow
         AddCurve(My.Resources.LBL_ASCEND_FLOW, Me.NetworkManager.AscendFlowEcosim, pane, Color.Gold)
 
-        zgc.AxisChange()
-        zgc.Refresh()
+        Me.m_zgh.RescaleAndRedraw()
 
         g = Me.Graph.Parent.CreateGraphics
         paneMaster.AxisChange(g)
         paneMaster.SetLayout(g, PaneLayout.SingleColumn)
-
-    End Sub
-
-    Public Overrides Function RequiresToolstrip() As Boolean
-        Return True
-    End Function
-
-    Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
-
-        MyBase.SetupToolstrip(ts)
-
-        Dim tsbtnExport As ToolStripButton = DirectCast(ts.Items("tsbtnOutputIndicesCSV"), ToolStripButton)
-        tsbtnExport.Visible = True
-        ts.Refresh()
 
     End Sub
 

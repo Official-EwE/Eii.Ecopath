@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cByGroup.vb,v $
+' Revision 1.9  2009/05/30 00:00:49  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.8  2009/05/19 13:41:07  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -42,14 +45,15 @@ Public Class cByGroup
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                     ByVal datagrid As DataGridView, _
                                     ByVal graph As ZedGraphControl, _
-                                    ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                    ByVal plot As ucPlot, _
+                                    ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function
 
     Public Overrides Sub DisplayData()
-        Dim strRowContent() As String
+        Dim astrRowContent() As String
 
         SetUpGridColumn()
 
@@ -61,61 +65,61 @@ Public Class cByGroup
         Me.Grid.Rows(0).Frozen = True
         Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(Grid.Columns.Count)
-        strRowContent(0) = ""
-        strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
-        strRowContent(2) = My.Resources.COL_HDR_ASCEND
-        strRowContent(3) = My.Resources.COL_HDR_OVERHEAD
-        strRowContent(4) = My.Resources.COL_HDR_CAPACITY
-        strRowContent(5) = My.Resources.COL_HDR_INFO
-        strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT_UNIT
-        Me.Grid.Rows(0).SetValues(strRowContent)
+        ReDim astrRowContent(Grid.Columns.Count)
+        astrRowContent(0) = ""
+        astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
+        astrRowContent(2) = My.Resources.COL_HDR_ASCEND
+        astrRowContent(3) = My.Resources.COL_HDR_OVERHEAD
+        astrRowContent(4) = My.Resources.COL_HDR_CAPACITY
+        astrRowContent(5) = My.Resources.COL_HDR_INFO
+        astrRowContent(6) = My.Resources.COL_HDR_THROUGHPUT_UNIT
+        Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.nGroups
-            strRowContent(0) = CStr(i)
-            strRowContent(1) = Me.NetworkManager.GroupName(i)
-            strRowContent(2) = Me.NetworkManager.AscendancyByGroup(i).ToString("F4")
-            strRowContent(3) = Me.NetworkManager.OverheadByGroup(i).ToString("F4")
-            strRowContent(4) = Me.NetworkManager.CapacityByGroup(i).ToString("F4")
-            strRowContent(5) = Me.NetworkManager.InformationByGroup(i).ToString("F4")
-            strRowContent(6) = Me.NetworkManager.ThroughputByGroup(i).ToString("F4")
-            Me.Grid.Rows(i).SetValues(strRowContent)
+            astrRowContent(0) = CStr(i)
+            astrRowContent(1) = Me.NetworkManager.GroupName(i)
+            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyByGroup(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadByGroup(i))
+            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityByGroup(i))
+            astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.InformationByGroup(i))
+            astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputByGroup(i))
+            Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
 
-        strRowContent(0) = ""
-        strRowContent(1) = My.Resources.ROW_HDR_IMPORT
-        strRowContent(2) = ""
-        strRowContent(3) = ""
-        strRowContent(4) = ""
-        strRowContent(5) = ""
-        strRowContent(6) = NetworkManager.ThroughputByGroup(Me.NetworkManager.nGroups + 1).ToString("F4")
-        Me.Grid.Rows(NetworkManager.nGroups + 1).SetValues(strRowContent)
+        astrRowContent(0) = ""
+        astrRowContent(1) = My.Resources.ROW_HDR_IMPORT
+        astrRowContent(2) = ""
+        astrRowContent(3) = ""
+        astrRowContent(4) = ""
+        astrRowContent(5) = ""
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputByGroup(Me.NetworkManager.nGroups + 1))
+        Me.Grid.Rows(NetworkManager.nGroups + 1).SetValues(astrRowContent)
         Me.Grid.Rows(NetworkManager.nGroups + 1).Visible = True
 
-        strRowContent(0) = ""
-        strRowContent(1) = My.Resources.ROW_HDR_TOTAL
-        strRowContent(2) = Me.NetworkManager.AscendencyTotal.ToString("F4")
-        strRowContent(3) = Me.NetworkManager.OverheadTotal.ToString("F4")
-        strRowContent(4) = Me.NetworkManager.CapacityTotal.ToString("F4")
+        astrRowContent(0) = ""
+        astrRowContent(1) = My.Resources.ROW_HDR_TOTAL
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendencyTotal)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityTotal)
         If Me.NetworkManager.ThroughputTotal > 0 Then
-            strRowContent(5) = (Me.NetworkManager.AscendencyTotal / Me.NetworkManager.ThroughputTotal).ToString("F4")
+            astrRowContent(5) = Me.StyleGuide.FormatNumber((Me.NetworkManager.AscendencyTotal / Me.NetworkManager.ThroughputTotal))
         Else
-            strRowContent(5) = ""
+            astrRowContent(5) = ""
         End If
-        strRowContent(6) = Me.NetworkManager.ThroughputTotal.ToString("F4")
-        Me.Grid.Rows(Me.NetworkManager.nGroups + 2).SetValues(strRowContent)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputTotal)
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 2).SetValues(astrRowContent)
         Me.Grid.Rows(Me.NetworkManager.nGroups + 2).Visible = True
 
-        strRowContent(0) = ""
-        strRowContent(1) = My.Resources.ROW_HDR_PCT
-        strRowContent(2) = (Me.NetworkManager.AscendencyTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
-        strRowContent(3) = (Me.NetworkManager.OverheadTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
-        strRowContent(4) = (Me.NetworkManager.CapacityTotal / Me.NetworkManager.CapacityTotal * 100.0).ToString("F4")
-        strRowContent(5) = ""
-        strRowContent(6) = ""
-        Me.Grid.Rows(Me.NetworkManager.nGroups + 3).SetValues(strRowContent)
+        astrRowContent(0) = ""
+        astrRowContent(1) = My.Resources.ROW_HDR_PCT
+        astrRowContent(2) = Me.StyleGuide.FormatNumber((Me.NetworkManager.AscendencyTotal / Me.NetworkManager.CapacityTotal * 100.0))
+        astrRowContent(3) = Me.StyleGuide.FormatNumber((Me.NetworkManager.OverheadTotal / Me.NetworkManager.CapacityTotal * 100.0))
+        astrRowContent(4) = Me.StyleGuide.FormatNumber((Me.NetworkManager.CapacityTotal / Me.NetworkManager.CapacityTotal * 100.0))
+        astrRowContent(5) = ""
+        astrRowContent(6) = ""
+        Me.Grid.Rows(Me.NetworkManager.nGroups + 3).SetValues(astrRowContent)
         Me.Grid.Rows(Me.NetworkManager.nGroups + 3).Visible = True
 
         Me.Grid.ClearSelection()
@@ -126,7 +130,6 @@ Public Class cByGroup
         Me.Graph.Visible = False
         Me.Grid.ReadOnly = True
         Me.Grid.Visible = True
-        'Me.DataGrid.RowCount = 1
         Me.Grid.ColumnCount = 7
 
         SetGridColumnPropertyDefault(Me.Grid)
@@ -140,9 +143,6 @@ Public Class cByGroup
         Grid.Columns(1).Frozen = True
         Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
-        'For intIndex As Integer = 2 To 4
-        '    DataGrid.Columns(intIndex).Width = 120
-        'Next
     End Sub
 
 End Class

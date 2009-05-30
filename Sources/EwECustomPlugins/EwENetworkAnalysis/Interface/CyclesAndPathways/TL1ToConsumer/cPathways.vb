@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.12  2009/05/30 00:00:56  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.11  2009/05/19 13:41:09  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -53,9 +56,12 @@ Namespace TL1ToConsumer
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                         ByVal datagrid As DataGridView, _
                                         ByVal graph As ZedGraphControl, _
-                                        ByVal plot As ucPlot) As Boolean
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                        ByVal plot As ucPlot, _
+                                        ByVal toolstrip As ToolStrip) As Boolean
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, ToolStrip)
             Me.Grid.Visible = bSucces
+            Me.Toolstrip.Visible = bSucces
+            Me.ToolstripShowGroups(My.Resources.LBL_PATH_TO)
             Return bSucces
         End Function
 
@@ -71,32 +77,6 @@ Namespace TL1ToConsumer
 
             Grid.Columns(1).Width = 660
             Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-
-        End Sub
-
-        Public Overrides Function RequiresToolstrip() As Boolean
-            Return True
-        End Function
-
-        Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
-
-            MyBase.SetupToolstrip(ts)
-
-            Dim lslbl As ToolStripLabel = DirectCast(ts.Items("tslblSelection1"), ToolStripLabel)
-            Dim tscmb As ToolStripComboBox = DirectCast(ts.Items("tscmbSelection1"), ToolStripComboBox)
-
-            lslbl.Visible = True
-            lslbl.Text = My.Resources.LBL_PATH_TO
-            tscmb.Visible = True
-            tscmb.Items.Clear()
-            ts.Refresh()
-
-            ' JS 01may09: Should '4' not be 'Me.NetworkManager.nDetritusGroups'?
-            For iGroup As Integer = 1 To Me.NetworkManager.nGroups - 4
-                tscmb.Items.Add(String.Format(My.Resources.LABEL_INDEXED, iGroup, Me.NetworkManager.GroupName(iGroup)))
-            Next
-
-            tscmb.SelectedIndex = 0
 
         End Sub
 

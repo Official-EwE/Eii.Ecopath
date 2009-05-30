@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.28  2009/05/30 00:00:50  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.27  2009/05/28 14:03:13  jeroens
 ' Fixed annual averages option in CSV export
 ' Shows keystoneness chart and graph
@@ -105,6 +108,8 @@ Public Class frmNetworkAnalysis
     Private m_iSelectedGroup1 As Integer = 0
     ''' <summary>Current selected group in toolbar combo 2.</summary>
     Private m_iSelectedGroup2 As Integer = 0
+    ''' <summary>Update feedback loop prevention.</summary>
+    Private m_bInUpdate As Boolean = False
 
     Public Sub New(ByRef networkmanager As cNetworkManager)
         Me.InitializeComponent()
@@ -123,8 +128,8 @@ Public Class frmNetworkAnalysis
         Me.m_datagrid.Visible = False
         Me.m_datagrid.Dock = DockStyle.Fill
 
-        Me.m_tsNetworkAnalysis.Visible = False
-        Me.m_tsNetworkAnalysis.Dock = DockStyle.Top
+        Me.m_toolstrip.Visible = False
+        Me.m_toolstrip.Dock = DockStyle.Top
 
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
@@ -141,7 +146,6 @@ Public Class frmNetworkAnalysis
         If (Me.m_contentmanager IsNot Nothing) Then
             Me.m_contentmanager.Detach()
             Me.m_contentmanager = Nothing
-            Me.m_tsNetworkAnalysis.Visible = False ' Hide toolstrip
         End If
 
         ' Make sure main network has ran
@@ -265,40 +269,60 @@ Public Class frmNetworkAnalysis
             Case Else
         End Select
 
-        ' ToDo: localize this
-        asn.SetStatusText("Updating UI...", TriState.True)
+        asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
 
         ' Put content manager to work
         If (Me.m_contentmanager IsNot Nothing) Then
 
             ' Try to attach content manager
-            If Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot) Then
+            If Me.m_contentmanager.Attach(Me.m_networkmanager, Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip) Then
+
                 Try
                     ' Display data if succesful
                     Me.m_contentmanager.DisplayData()
                 Catch ex As Exception
 
                 End Try
+
+                ' Need to populate group combos?
+                If Me.m_toolstrip.Visible Then
+
+                    Me.m_bInUpdate = True
+
+                    Me.tscmbSelection1.Items.Clear()
+                    Me.tscmbSelection2.Items.Clear()
+                    For iGroup As Integer = 1 To Me.m_networkmanager.nLivingGroups
+                        Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                        Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                    Next
+                    Me.m_toolstrip.Refresh()
+
+                    Me.tscmbSelection1.SelectedIndex = 0
+                    Me.tscmbSelection2.SelectedIndex = 0
+
+                    Me.m_bInUpdate = False
+
+                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+
+                End If
+
             End If
 
-            ' Fix toolstrip
-            Me.m_contentmanager.SetupToolstrip(m_tsNetworkAnalysis)
-            Me.m_tsNetworkAnalysis.Visible = Me.m_contentmanager.RequiresToolstrip
             ' Hide info panel
             Me.m_tlpInfo.Visible = False
         Else
             ' Hide toolbar
-            Me.m_tsNetworkAnalysis.Visible = False
+            Me.m_toolstrip.Visible = False
             ' Show logo
             Me.m_tlpInfo.Visible = True
         End If
 
         ' Position content
-        If Me.m_tsNetworkAnalysis.Visible Then
-            Me.m_graph.Top = Me.m_tsNetworkAnalysis.Height
-            Me.m_tlpInfo.Top = Me.m_tsNetworkAnalysis.Height
-            Me.m_datagrid.Top = Me.m_tsNetworkAnalysis.Height
-            Me.m_plot.Top = Me.m_tsNetworkAnalysis.Height
+        If Me.m_toolstrip.Visible Then
+            Me.m_graph.Top = Me.m_toolstrip.Height
+            Me.m_tlpInfo.Top = Me.m_toolstrip.Height
+            Me.m_datagrid.Top = Me.m_toolstrip.Height
+            Me.m_plot.Top = Me.m_toolstrip.Height
         Else
             Me.m_graph.Top = 0
             Me.m_tlpInfo.Top = 0
@@ -320,8 +344,6 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
-        ' ToDo: localize this
-
         Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
         Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim strFileName As String = ""
@@ -331,7 +353,7 @@ Public Class frmNetworkAnalysis
         If (cmdDOC Is Nothing) Then Return
 
         If (Me.m_contentmanager.IsDataOverTime) Then
-            Select Case MsgBox("Save Network Analysis results as annual averages?", MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+            Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
 
                 Case MsgBoxResult.Yes
                     bAnnual = True
@@ -345,7 +367,7 @@ Public Class frmNetworkAnalysis
             End Select
         End If
 
-        cmdDOC.Invoke("", "Select destination to save Network Analysis results CSV file")
+        cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
 
         If (cmdDOC.Result = DialogResult.OK) Then
             Try
@@ -377,7 +399,7 @@ Public Class frmNetworkAnalysis
         If (cmdFS Is Nothing) Then Return
 
         cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
-                     "EMF image files (*.emf)|*.emf|All files (*.*)|*.*", _
+                     My.Resources.FILEFILTER_EMF, _
                      1)
 
         If (cmdFS.Result = DialogResult.OK) Then
@@ -397,8 +419,10 @@ Public Class frmNetworkAnalysis
 
         Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
 
+        If Me.m_bInUpdate Then Return
+
         If Me.m_contentmanager IsNot Nothing Then
-            asn.SetStatusText("Updating UI...", TriState.True)
+            asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
             Try
                 Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
             Catch ex As Exception
@@ -416,8 +440,10 @@ Public Class frmNetworkAnalysis
 
         Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
 
+        If Me.m_bInUpdate Then Return
+
         If Me.m_contentmanager IsNot Nothing Then
-            asn.SetStatusText("Updating UI...", TriState.True)
+            asn.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
             Try
                 Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
             Catch ex As Exception

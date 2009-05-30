@@ -28,26 +28,24 @@ Partial Class frmNetworkAnalysis
         Me.imglstNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
         Me.m_graph = New ZedGraph.ZedGraphControl
         Me.m_plot = New EwENetworkAnalysis.ucPlot
-        Me.m_tsNetworkAnalysis = New System.Windows.Forms.ToolStrip
+        Me.m_datagrid = New System.Windows.Forms.DataGridView
+        Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.m_toolstrip = New System.Windows.Forms.ToolStrip
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection1 = New System.Windows.Forms.ToolStripComboBox
         Me.tslblSelection2 = New System.Windows.Forms.ToolStripLabel
         Me.tscmbSelection2 = New System.Windows.Forms.ToolStripComboBox
-        Me.tslblProgressBar = New System.Windows.Forms.ToolStripLabel
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
-        Me.tsbtnPrintGraph = New System.Windows.Forms.ToolStripButton
-        Me.m_datagrid = New System.Windows.Forms.DataGridView
-        Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.lblNetworkAnalysis = New System.Windows.Forms.Label
         Me.scNetworkAnalysis.Panel1.SuspendLayout()
         Me.scNetworkAnalysis.Panel2.SuspendLayout()
         Me.scNetworkAnalysis.SuspendLayout()
-        Me.m_tsNetworkAnalysis.SuspendLayout()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpInfo.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_toolstrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'scNetworkAnalysis
@@ -64,9 +62,9 @@ Partial Class frmNetworkAnalysis
         Me.scNetworkAnalysis.Panel2.BackColor = System.Drawing.Color.White
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_graph)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_plot)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tsNetworkAnalysis)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
         Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
+        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_toolstrip)
         '
         'tvNetworkAnalysis
         '
@@ -110,12 +108,35 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.m_plot, "m_plot")
         Me.m_plot.Name = "m_plot"
         '
-        'm_tsNetworkAnalysis
+        'm_datagrid
         '
-        Me.m_tsNetworkAnalysis.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.m_tsNetworkAnalysis.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tslblProgressBar, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbtnPrintGraph})
-        resources.ApplyResources(Me.m_tsNetworkAnalysis, "m_tsNetworkAnalysis")
-        Me.m_tsNetworkAnalysis.Name = "m_tsNetworkAnalysis"
+        Me.m_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
+        Me.m_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_datagrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.m_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        resources.ApplyResources(Me.m_datagrid, "m_datagrid")
+        Me.m_datagrid.Name = "m_datagrid"
+        Me.m_datagrid.ReadOnly = True
+        '
+        'm_tlpInfo
+        '
+        resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
+        Me.m_tlpInfo.Controls.Add(Me.PictureBox1, 1, 1)
+        Me.m_tlpInfo.Name = "m_tlpInfo"
+        '
+        'PictureBox1
+        '
+        resources.ApplyResources(Me.PictureBox1, "PictureBox1")
+        Me.PictureBox1.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.TabStop = False
+        '
+        'm_toolstrip
+        '
+        Me.m_toolstrip.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF})
+        resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
+        Me.m_toolstrip.Name = "m_toolstrip"
         '
         'tslblSelection1
         '
@@ -140,11 +161,6 @@ Partial Class frmNetworkAnalysis
         Me.tscmbSelection2.Name = "tscmbSelection2"
         resources.ApplyResources(Me.tscmbSelection2, "tscmbSelection2")
         '
-        'tslblProgressBar
-        '
-        Me.tslblProgressBar.Name = "tslblProgressBar"
-        resources.ApplyResources(Me.tslblProgressBar, "tslblProgressBar")
-        '
         'tsbtnOutputIndicesCSV
         '
         Me.tsbtnOutputIndicesCSV.BackColor = System.Drawing.Color.DarkSeaGreen
@@ -157,35 +173,6 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputGraphEMF.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbtnOutputGraphEMF, "tsbtnOutputGraphEMF")
         Me.tsbtnOutputGraphEMF.Name = "tsbtnOutputGraphEMF"
-        '
-        'tsbtnPrintGraph
-        '
-        Me.tsbtnPrintGraph.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.tsbtnPrintGraph, "tsbtnPrintGraph")
-        Me.tsbtnPrintGraph.Name = "tsbtnPrintGraph"
-        '
-        'm_datagrid
-        '
-        Me.m_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_datagrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
-        Me.m_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        resources.ApplyResources(Me.m_datagrid, "m_datagrid")
-        Me.m_datagrid.Name = "m_datagrid"
-        Me.m_datagrid.ReadOnly = True
-        '
-        'm_tlpInfo
-        '
-        resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
-        Me.m_tlpInfo.Controls.Add(Me.PictureBox1, 1, 1)
-        Me.m_tlpInfo.Name = "m_tlpInfo"
-        '
-        'PictureBox1
-        '
-        resources.ApplyResources(Me.PictureBox1, "PictureBox1")
-        Me.PictureBox1.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.TabStop = False
         '
         'lblNetworkAnalysis
         '
@@ -206,11 +193,11 @@ Partial Class frmNetworkAnalysis
         Me.scNetworkAnalysis.Panel2.ResumeLayout(False)
         Me.scNetworkAnalysis.Panel2.PerformLayout()
         Me.scNetworkAnalysis.ResumeLayout(False)
-        Me.m_tsNetworkAnalysis.ResumeLayout(False)
-        Me.m_tsNetworkAnalysis.PerformLayout()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpInfo.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_toolstrip.ResumeLayout(False)
+        Me.m_toolstrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -222,13 +209,11 @@ Partial Class frmNetworkAnalysis
     Private WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
     Private WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
-    Private WithEvents tslblProgressBar As System.Windows.Forms.ToolStripLabel
     Private WithEvents tslblSelection1 As System.Windows.Forms.ToolStripLabel
     Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents tsbtnOutputIndicesCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents tsbtnOutputGraphEMF As System.Windows.Forms.ToolStripButton
-    Private WithEvents tsbtnPrintGraph As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsNetworkAnalysis As System.Windows.Forms.ToolStrip
+    Private WithEvents m_toolstrip As System.Windows.Forms.ToolStrip
     Private WithEvents m_datagrid As System.Windows.Forms.DataGridView
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel

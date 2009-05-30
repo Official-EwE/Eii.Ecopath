@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.8  2009/05/30 00:00:49  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.7  2009/05/28 14:56:15  jeroens
 ' Responds to styleguide changes by updating content of content managers that display the graph or the grid
 '
@@ -54,6 +57,8 @@ Public MustInherit Class cContentManager
     ''' <summary></summary>
     Private m_datagrid As DataGridView = Nothing
     ''' <summary></summary>
+    Private m_toolstrip As ToolStrip = Nothing
+    ''' <summary></summary>
     Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Private variables
@@ -75,13 +80,15 @@ Public MustInherit Class cContentManager
     Public Overridable Function Attach(ByVal manager As cNetworkManager, _
                                        ByVal datagrid As DataGridView, _
                                        ByVal graph As ZedGraphControl, _
-                                       ByVal plot As ucPlot) As Boolean
+                                       ByVal plot As ucPlot, _
+                                       ByVal toolstrip As ToolStrip) As Boolean
 
         ' Store all references
         Me.m_manager = manager
         Me.m_datagrid = datagrid
         Me.m_graph = graph
         Me.m_plot = plot
+        Me.m_toolstrip = toolstrip
 
         Me.m_sg = cStyleGuide.GetInstance()
         AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -112,7 +119,8 @@ Public MustInherit Class cContentManager
         Me.m_manager = Nothing
         Me.m_datagrid = Nothing
         Me.m_graph = Nothing
-        Me.m_plot = Plot
+        Me.m_plot = Nothing
+        Me.m_toolstrip = Nothing
 
     End Sub
 
@@ -151,34 +159,6 @@ Public MustInherit Class cContentManager
     Public Overridable Sub ClearData()
         ' Hide all controls
         Me.HideControls()
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' States whether a view requires a toolstrip.
-    ''' </summary>
-    ''' <returns>True if a toolstrip is required.</returns>
-    ''' <remarks>
-    ''' The default implementation will not require a toolstrip.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Overridable Function RequiresToolstrip() As Boolean
-        Return False
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Update toolstrip controls
-    ''' </summary>
-    ''' <param name="ts"></param>
-    ''' <remarks>
-    ''' The default implementation will hide all toolstrip controls.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Overridable Sub SetupToolstrip(ByVal ts As ToolStrip)
-        For Each tsi As ToolStripItem In ts.Items
-            tsi.Visible = False
-        Next
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -266,6 +246,17 @@ Public MustInherit Class cContentManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Return the one and only tool strip.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property Toolstrip() As ToolStrip
+        Get
+            Return Me.m_toolstrip
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Return the one and only style guide.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -291,11 +282,17 @@ Public MustInherit Class cContentManager
         Me.Plot.Visible = False
         Me.Grid.Visible = False
         Me.Plot.Visible = False
+        Me.Toolstrip.Visible = False
 
         ' Clear grid
         Me.Grid.Rows.Clear()
         Me.Grid.Columns.Clear()
         Me.Grid.ReadOnly = True
+
+        ' Hide toolstrip items
+        For Each tsi As ToolStripItem In Me.Toolstrip.Items
+            tsi.Visible = False
+        Next
 
     End Sub
 
@@ -309,6 +306,34 @@ Public MustInherit Class cContentManager
         If Me.Graph.Visible Or Me.Grid.Visible Then
             Me.DisplayData()
         End If
+    End Sub
+
+    Protected Sub ToolstripShowGroups(Optional ByVal strLabel1 As String = "", _
+                                      Optional ByVal strLabel2 As String = "")
+
+        Dim tslbl1 As ToolStripItem = Me.Toolstrip.Items("tslblSelection1")
+        Dim tslbl2 As ToolStripItem = Me.Toolstrip.Items("tslblSelection2")
+        Dim tscmb1 As ToolStripItem = Me.Toolstrip.Items("tscmbSelection1")
+        Dim tscmb2 As ToolStripItem = Me.Toolstrip.Items("tscmbSelection2")
+
+        tslbl1.Text = strLabel1
+        tslbl1.Visible = Not String.IsNullOrEmpty(strLabel1)
+        tscmb1.Visible = Not String.IsNullOrEmpty(strLabel1)
+
+        tslbl2.Text = strLabel2
+        tslbl2.Visible = Not String.IsNullOrEmpty(strLabel2)
+        tscmb2.Visible = Not String.IsNullOrEmpty(strLabel2)
+
+    End Sub
+
+    Protected Sub ToolstripShowOptionCSV(Optional ByVal bShow As Boolean = True)
+        Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputIndicesCSV")
+        tsi.Visible = bShow
+    End Sub
+
+    Protected Sub ToolstripShowOptionEMF(Optional ByVal bShow As Boolean = True)
+        Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputGraphEMF")
+        tsi.Visible = bShow
     End Sub
 
 #End Region ' Internals

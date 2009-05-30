@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.18  2009/05/30 00:00:54  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.17  2009/05/28 12:37:17  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -1970,6 +1973,12 @@ Public Class cNetworkManager
     Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
         Get
             Return Me.m_econetwork.KeystoneIndex(iGroup)
+        End Get
+    End Property
+
+    Public ReadOnly Property KeystoneOverBiomass(ByVal iGroup As Integer) As Double
+        Get
+            Return Me.m_econetwork.KeystoneOverBiomass(iGroup)
         End Get
     End Property
 

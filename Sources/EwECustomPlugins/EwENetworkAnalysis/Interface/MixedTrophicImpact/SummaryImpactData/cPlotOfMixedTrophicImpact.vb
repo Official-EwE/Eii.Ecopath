@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPlotOfMixedTrophicImpact.vb,v $
+' Revision 1.20  2009/05/30 00:00:53  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.19  2009/05/19 13:41:11  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -84,9 +87,13 @@ Public Class cPlotOfMixedTrophicImpact
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
         Me.Plot.Visible = bSucces
+        Me.Toolstrip.Visible = bSucces
+        Me.ToolstripShowOptionEMF()
+
         AddHandler Me.Plot.Paint, AddressOf PaintUC
         AddHandler Me.Plot.Resize, AddressOf ResizeUC
         Return bSucces
@@ -97,10 +104,6 @@ Public Class cPlotOfMixedTrophicImpact
         RemoveHandler Me.Plot.Resize, AddressOf ResizeUC
         MyBase.Detach()
     End Sub
-
-    Public Overrides Function RequiresToolstrip() As Boolean
-        Return True
-    End Function
 
     Public Overrides Sub DisplayData()
 
@@ -148,16 +151,6 @@ Public Class cPlotOfMixedTrophicImpact
         End Using
         fs.Close()
         mf.Dispose()
-    End Sub
-
-    Public Overrides Sub SetUpToolStrip(ByVal ts As ToolStrip)
-
-        MyBase.SetupToolstrip(ts)
-
-        Dim tsbBntExportEMF As ToolStripButton = DirectCast(ts.Items("tsbtnOutputGraphEMF"), ToolStripButton)
-        tsbBntExportEMF.Visible = True
-        ts.Refresh()
-
     End Sub
 
     Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)

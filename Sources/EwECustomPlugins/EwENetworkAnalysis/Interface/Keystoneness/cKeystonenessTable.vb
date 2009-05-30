@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessTable.vb,v $
+' Revision 1.2  2009/05/30 00:00:54  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.1  2009/05/28 13:40:11  jeroens
 ' Added keystoneness graph, renamed table content manager to prevent confusion
 '
@@ -26,16 +29,17 @@ Public Class cKeystonenessTable
     End Sub
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                    ByVal datagrid As DataGridView, _
-                                    ByVal graph As ZedGraphControl, _
-                                    ByVal plot As ucPlot) As Boolean
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+                                     ByVal datagrid As DataGridView, _
+                                     ByVal graph As ZedGraphControl, _
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
         Me.Grid.Visible = bSucces
         Return bSucces
     End Function
 
     Public Overrides Sub DisplayData()
-        Dim strRowContent() As String
+        Dim astrRowContent() As String
 
         SetUpGridColumn()
 
@@ -47,20 +51,20 @@ Public Class cKeystonenessTable
         Me.Grid.Rows(0).Frozen = True
         Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(Grid.Columns.Count)
-        strRowContent(0) = ""
-        strRowContent(1) = My.Resources.COL_HDR_GRP_NAME
-        strRowContent(2) = "Keystone index"
-        strRowContent(3) = "Scaled impact"
-        Me.Grid.Rows(0).SetValues(strRowContent)
+        ReDim astrRowContent(Grid.Columns.Count)
+        astrRowContent(0) = ""
+        astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
+        astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX
+        astrRowContent(3) = My.Resources.COL_HDR_SCALEDIMPACT
+        Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.nLivingGroups
-            strRowContent(0) = CStr(i)
-            strRowContent(1) = Me.NetworkManager.GroupName(i)
-            strRowContent(2) = Me.NetworkManager.KeystoneIndex(i).ToString("F4")
-            strRowContent(3) = Me.NetworkManager.ScaledImpact(i).ToString("F4")
-            Me.Grid.Rows(i).SetValues(strRowContent)
+            astrRowContent(0) = CStr(i)
+            astrRowContent(1) = Me.NetworkManager.GroupName(i)
+            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ScaledImpact(i))
+            Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
 

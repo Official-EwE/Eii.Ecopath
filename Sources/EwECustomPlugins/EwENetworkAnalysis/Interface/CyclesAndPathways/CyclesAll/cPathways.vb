@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.9  2009/05/30 00:00:55  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.8  2009/05/19 13:41:08  jeroens
 ' Content manager derived pages will take care of updating NA run state
 '
@@ -43,9 +46,10 @@ Namespace CyclesAll
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                          ByVal datagrid As DataGridView, _
                                          ByVal graph As ZedGraphControl, _
-                                         ByVal plot As ucPlot) As Boolean
+                                         ByVal plot As ucPlot, _
+                                         ByVal toolstrip As ToolStrip) As Boolean
 
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot)
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
 
             If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
                 Me.Grid.Visible = bSucces And Me.NetworkManager.FindPathwaysCyclesAll()

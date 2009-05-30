@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cGraphOfMixedTrophicImpact.vb,v $
+' Revision 1.15  2009/05/30 00:00:52  jeroens
+' Toolstrip usage centralized
+'
 ' Revision 1.14  2009/05/28 12:37:14  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -72,8 +75,9 @@ Public Class cGraphOfMixedTrophicImpact
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot) As Boolean
-        Return MyBase.Attach(manager, datagrid, graph, plot)
+                                     ByVal plot As ucPlot, _
+                                     ByVal toolstrip As ToolStrip) As Boolean
+        Return MyBase.Attach(manager, datagrid, graph, plot, toolstrip)
     End Function
 
     Public Overrides Sub DisplayData()
