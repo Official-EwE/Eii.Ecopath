@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessTable.vb,v $
+' Revision 1.3  2009/06/01 01:00:26  jeroens
+' Added Keyst over B column
+'
 ' Revision 1.2  2009/05/30 00:00:54  jeroens
 ' Toolstrip usage centralized
 '
@@ -55,7 +58,8 @@ Public Class cKeystonenessTable
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX
-        astrRowContent(3) = My.Resources.COL_HDR_SCALEDIMPACT
+        astrRowContent(3) = My.Resources.COL_HDR_KEYSTONEOVERB
+        astrRowContent(4) = My.Resources.COL_HDR_SCALEDIMPACT
         Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
@@ -63,7 +67,8 @@ Public Class cKeystonenessTable
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = Me.NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex(i))
-            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ScaledImpact(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneOverBiomass(i))
+            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ScaledImpact(i))
             Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
@@ -76,7 +81,7 @@ Public Class cKeystonenessTable
         Me.Graph.Visible = False
         Me.Grid.ReadOnly = True
         Me.Grid.Visible = True
-        Me.Grid.ColumnCount = 4
+        Me.Grid.ColumnCount = 5
 
         SetGridColumnPropertyDefault(Me.Grid)
 
