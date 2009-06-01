@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEDataStructures.vb,v $
+' Revision 1.3  2009/06/01 17:07:38  joeb
+' MSE debugging
+'
 ' Revision 1.2  2009/05/11 21:28:09  joeb
 ' Adding MSE data to Decision Support Tool (Multi Player Game)
 '
@@ -22,7 +25,7 @@
 ' Revision 1.5  2008/04/24 14:51:18  joeb
 ' Added mean results varaibles
 '
-
+Option Strict On
 
 Public Class cMSEDataStructures
 
@@ -75,11 +78,17 @@ Public Class cMSEDataStructures
     Public KalmanGain() As Single
     Public QGrowUsed() As Single
 
-    Public MeanEmploy As Single
-    Public MeanVal As Single
-    Public MeanManVal As Single
-    Public MeanEcoVal As Single
-    Public MeanTotalValue As Single
+    ''' <summary>sum of employment value over all the completed trials</summary>
+    Public sumEmployVal As Single
+    ''' <summary>sum of economic over all the completed trials</summary>
+    Public SumTotVal As Single
+    ''' <summary>sum of mandated value over all the completed trials</summary>
+    Public sumManVal As Single
+    ''' <summary>sum of ecological value (biomass) over all the completed trials</summary>
+    Public sumEcoVal As Single
+    ''' <summary>weighted sum of all values over all the completed trials</summary>
+    Public sumWeightedValues As Single
+
     Public BestTotalValue As Single
 
     Public BaseEmployVal As Single
@@ -106,6 +115,11 @@ Public Class cMSEDataStructures
         End Set
     End Property
 
+    Public Sub clearBioRisk()
+        '   ReDim BioRiskValue(m_core.nLivingGroups, 1)
+        ReDim BioRiskCount(m_core.nLivingGroups, 1)
+    End Sub
+
     ''' <summary>
     ''' Set default values for the Management Strategy Evaluation model cMSE
     ''' </summary>
@@ -120,7 +134,7 @@ Public Class cMSEDataStructures
 
             'default assessment method
             ' Fs from biomass estimates by pool
-            AssessMethod = 1
+            AssessMethod = eAssessmentMethods.CatchEstmBio
 
             AssessPower = 1
 
@@ -179,7 +193,7 @@ Public Class cMSEDataStructures
     End Sub
 
     Public Sub New()
-        NTrials = 20 'default number of trials
+        NTrials = 10 'default number of trials
     End Sub
 
     ''' <summary>

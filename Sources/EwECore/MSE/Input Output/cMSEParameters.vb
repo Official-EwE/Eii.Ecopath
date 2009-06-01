@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEParameters.vb,v $
+' Revision 1.6  2009/06/01 17:07:38  joeb
+' MSE debugging
+'
 ' Revision 1.5  2009/05/26 22:02:34  jeroens
 ' EconData availability variable value and status obtained from plug-in
 '
@@ -14,6 +17,7 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 Public Enum eAssessmentMethods
+    Exact = 0
     CatchEstmBio = 1
     DirectExploitation = 2
 End Enum

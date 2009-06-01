@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.65  2009/06/01 17:07:39  joeb
+' MSE debugging
+'
 ' Revision 1.64  2009/05/26 22:10:24  jeroens
 ' Removed isEconomicDataAvailable
 '
@@ -1001,19 +1004,21 @@ Namespace Core
         ''' <summary>Upper biomass bounds for risk analysis</summary>
         MSEUpperRisk
         ''' <summary>Number of trial that exceeded the lower biomass bounds for risk analysis</summary>
-        MSELowerRiskCount
+        MSELowerRiskPercent
         ''' <summary>Number of trial that exceeded the upper biomass bounds for risk analysis</summary>
-        MSEUpperRiskCount
+        MSEUpperRiskPercent
 
         ''' <summary> Sum of all economic values for the current MSE output object (results)</summary>
-        MSETotalValue
+        MSEEconomicValue
         ''' <summary> Sum of employment values for the current MSE output object (results)</summary>
         MSEEmployValue
         MSEMandatedValue
         ''' <summary> Sum of biomass for the current MSE output object (results)</summary>
         MSEEcologicalValue
 
-        MSEMeanTotalValue
+        ''' <summary> Weighted sum of all mean values</summary>
+        MSEWeightedTotalValue
+        MSEMeanEconomicValue
         MSEMeanEmployValue
         MSEMeanMandatedValue
         MSEMeanEcologicalValue

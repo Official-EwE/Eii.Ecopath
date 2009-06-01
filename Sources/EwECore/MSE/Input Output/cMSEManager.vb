@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.11  2009/06/01 17:07:36  joeb
+' MSE debugging
+'
 ' Revision 1.10  2009/05/26 22:02:34  jeroens
 ' EconData availability variable value and status obtained from plug-in
 '
@@ -108,7 +111,6 @@ Namespace MSE
             Me.m_core.m_EcoSim.TimeStepDelegate = Nothing
             m_bConnected = True
 
-
         End Sub
 
 
@@ -173,7 +175,6 @@ Namespace MSE
         Public Sub New(ByVal theCore As cCore)
             Me.m_output = New cMSEOutput(theCore)
             Me.m_parameters = New cMSEParameters(theCore)
-
         End Sub
 
 
@@ -290,7 +291,6 @@ Namespace MSE
                     mseFlt.AllowValidation = True
                 Next
 
-
                 m_parameters.AllowValidation = False
                 m_parameters.AssessmentMethod = Me.m_MSEdata.AssessMethod
                 m_parameters.AssessPower = Me.m_MSEdata.AssessPower
@@ -341,7 +341,6 @@ Namespace MSE
                                 Me.m_MSEdata.Fweight(mseFlt.Index, igrp) = mseFlt.FleetWeight(igrp)
                             Next igrp
                         Next mseFlt
-
 
                     Case eDataTypes.MSEParameters
 
@@ -440,7 +439,25 @@ Namespace MSE
                     'clear the signal state of the thread this will release any threads that called Wait()
                     Me.ReleaseWait()
 
+                    Me.dumpOutput()
+
             End Select
+
+        End Sub
+
+        Private Sub dumpOutput()
+            Console.WriteLine("----------MSE output-------------")
+
+            Console.WriteLine("Mean Economic = " & Me.m_output.MeanEconomicValue.ToString)
+            Console.WriteLine("Mean Ecologial = " & Me.m_output.MeanEcologicalValue.ToString)
+            Console.WriteLine("Mean Employ = " & Me.m_output.MeanEmployValue.ToString)
+            Console.WriteLine("Biomass risk")
+
+            For Each grp As cMSEGroupOutput In Me.GroupOutputs
+                Dim igrp As Integer = grp.Index
+                Console.WriteLine("grp = " & igrp.ToString & ", lower = " & grp.LowerRiskPercent.ToString & ", upper = " & grp.UpperRiskPercent.ToString & ", ")
+            Next
+            Console.WriteLine("---------Done-------------")
 
         End Sub
 
@@ -456,13 +473,15 @@ Namespace MSE
 
             Me.m_output.TrialNumber = Me.m_MSEdata.CurrentIteration
 
+            Me.m_output.WeightedMeanTotalValue = Me.m_MSEdata.sumWeightedValues / Me.m_MSEdata.CurrentIteration
             Me.m_output.BestTotalValue = Me.m_MSEdata.BestTotalValue
-            Me.m_output.MeanTotalValue = Me.m_MSEdata.MeanTotalValue / Me.m_MSEdata.CurrentIteration
-            Me.m_output.MeanEcologicalValue = Me.m_MSEdata.MeanEcoVal / Me.m_MSEdata.CurrentIteration
-            Me.m_output.MeanEmployValue = Me.m_MSEdata.MeanEmploy / Me.m_MSEdata.CurrentIteration
-            Me.m_output.MeanMandatedValue = Me.m_MSEdata.MeanManVal / Me.m_MSEdata.CurrentIteration
 
-            Me.m_output.TotalValue = Me.m_MSEdata.BestTotalValue
+            Me.m_output.MeanEconomicValue = Me.m_MSEdata.SumTotVal / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanEcologicalValue = Me.m_MSEdata.sumEcoVal / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanEmployValue = Me.m_MSEdata.sumEmployVal / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanMandatedValue = Me.m_MSEdata.sumManVal / Me.m_MSEdata.CurrentIteration
+
+            Me.m_output.EconomicValue = Me.m_MSEdata.BaseTotalVal
             Me.m_output.EcologicalValue = Me.m_MSEdata.BaseEcoVal
             Me.m_output.EmployValue = Me.m_MSEdata.BaseEmployVal
             Me.m_output.MandatedValue = Me.m_MSEdata.BaseManValue
@@ -470,15 +489,12 @@ Namespace MSE
             Dim nt As Integer = m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
             For Each grp As cMSEGroupOutput In Me.m_lstGroupOutputs
                 Dim igrp As Integer = grp.Index
-                grp.LowerRiskCount = Me.m_MSEdata.BioRiskCount(igrp, 0)
-                grp.UpperRiskCount = Me.m_MSEdata.BioRiskCount(igrp, 1)
-
+                grp.LowerRiskPercent = CInt(Me.m_MSEdata.BioRiskCount(igrp, 0) / Me.m_MSEdata.CurrentIteration * 100)
+                grp.UpperRiskPercent = CInt(Me.m_MSEdata.BioRiskCount(igrp, 1) / Me.m_MSEdata.CurrentIteration * 100)
                 For t As Integer = 1 To nt
                     grp.Biomass(t) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, t)
                 Next
-
             Next grp
-
 
         End Sub
 
@@ -559,8 +575,6 @@ Namespace MSE
 
 #End Region
 
-
-    
     End Class
 
 End Namespace

@@ -32,11 +32,11 @@ Public Class cMSEGroupOutput
         'Risk
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSELowerRiskCount, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Integer, eVarNameFlags.MSELowerRiskPercent, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSEUpperRiskCount, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Integer, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
 
@@ -50,46 +50,46 @@ Public Class cMSEGroupOutput
 
 #Region "Variable access via dot operators"
 
-    Public Property LowerRiskCount() As Integer
+    Public Property LowerRiskPercent() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MSELowerRiskCount))
+            Return CInt(GetVariable(eVarNameFlags.MSELowerRiskPercent))
         End Get
 
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.MSELowerRiskCount, value)
+            SetVariable(eVarNameFlags.MSELowerRiskPercent, value)
         End Set
     End Property
 
 
-    Public Property UpperRiskCount() As Integer
+    Public Property UpperRiskPercent() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MSEUpperRiskCount))
+            Return CInt(GetVariable(eVarNameFlags.MSEUpperRiskPercent))
         End Get
 
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.MSEUpperRiskCount, value)
+            SetVariable(eVarNameFlags.MSEUpperRiskPercent, value)
         End Set
     End Property
 
 
     Public Property LowerRiskCountStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.MSELowerRiskCount)
+            Return GetStatus(eVarNameFlags.MSELowerRiskPercent)
         End Get
 
         Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSELowerRiskCount, value)
+            SetStatus(eVarNameFlags.MSELowerRiskPercent, value)
         End Set
     End Property
 
 
     Public Property UpperRiskCountStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.MSEUpperRiskCount)
+            Return GetStatus(eVarNameFlags.MSEUpperRiskPercent)
         End Get
 
         Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MSEUpperRiskCount, value)
+            SetStatus(eVarNameFlags.MSEUpperRiskPercent, value)
         End Set
     End Property
 
@@ -181,18 +181,16 @@ Public Class cMSEOutput
 
         'Total values
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSETotalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEEconomicValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEEcologicalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
-
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEEmployValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
-
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEMandatedValue, eStatusFlags.Null, eValueTypes.Sng, meta)
@@ -200,18 +198,20 @@ Public Class cMSEOutput
 
         'Mean values
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMeanTotalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEWeightedTotalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.MSEMeanEconomicValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEMeanEcologicalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
-
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEMeanEmployValue, eStatusFlags.Null, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
-
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.MSEMeanMandatedValue, eStatusFlags.Null, eValueTypes.Sng, meta)
@@ -257,17 +257,28 @@ Public Class cMSEOutput
         End Set
     End Property
 
-    Public Property TotalValue() As Single
+    Public Property EconomicValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MSETotalValue))
+            Return CSng(GetVariable(eVarNameFlags.MSEEconomicValue))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MSETotalValue, value)
+            SetVariable(eVarNameFlags.MSEEconomicValue, value)
         End Set
     End Property
 
+
     'mean
+    Public Property MeanEconomicValue() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.MSEMeanEconomicValue))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.MSEMeanEconomicValue, value)
+        End Set
+    End Property
+
     Public Property MeanEmployValue() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.MSEMeanEmployValue))
@@ -298,13 +309,13 @@ Public Class cMSEOutput
         End Set
     End Property
 
-    Public Property MeanTotalValue() As Single
+    Public Property WeightedMeanTotalValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MSEMeanTotalValue))
+            Return CSng(GetVariable(eVarNameFlags.MSEWeightedTotalValue))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MSEMeanTotalValue, value)
+            SetVariable(eVarNameFlags.MSEWeightedTotalValue, value)
         End Set
     End Property
 

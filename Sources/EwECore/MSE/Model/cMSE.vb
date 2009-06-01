@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.9  2009/06/01 17:07:38  joeb
+' MSE debugging
+'
 ' Revision 1.8  2009/05/26 16:45:24  joeb
 ' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
 '
@@ -26,6 +29,8 @@
 ' --== DELETED HISTORY ==--
 '
 '==============================================================================
+
+Option Strict On
 
 Imports EwECore
 Imports EwECore.Ecosim
@@ -80,9 +85,6 @@ Namespace MSE
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
 
-            'turn the Economic data plugin on by default
-            Me.m_Search.MSEUseEconomicPlugin = True
-
         End Sub
 
         Public Sub Connect(ByRef CallbackDelegate As MSECallBackDelegate)
@@ -95,6 +97,8 @@ Namespace MSE
             Try
                 Dim iflt As Integer
                 ReDim BestTime(m_epdata.NumGroups)
+
+                Me.m_data.clearBioRisk()
 
                 For iflt = 1 To m_epdata.NumFleet
                     'save qgrowth parameter so as not to interfere with value fitting simulations
@@ -127,11 +131,8 @@ Namespace MSE
                 'init the MSE data
                 Me.InitForRun()
 
-                'set up the search data
-
-                'turn the evaluator on for the trials
-                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
-                Me.m_Search.SearchMode = eSearchModes.MSE
+                'turn off the searches for initialization and setting of base values
+                Me.m_Search.SearchMode = eSearchModes.FishingPolicy
                 Me.m_esData.bTimestepOutput = True
                 Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
                 Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
@@ -143,6 +144,10 @@ Namespace MSE
 
                 'runs Ecosim and gets the base values
                 Me.setBestTotalValue()
+
+                'turn the evaluator on for the trials
+                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
+                Me.m_Search.SearchMode = eSearchModes.MSE
 
                 For itr = 1 To m_data.NTrials
 
@@ -158,12 +163,12 @@ Namespace MSE
                     Me.getEconomicPluginData()
 
                     Me.SumValues(Me.m_Search.totval, Me.m_Search.Employ, Me.m_Search.manvalue, Me.m_Search.ecovalue)
-
                     Me.CallBack(eCallBackTypes.IterationCompleted)
 
                 Next
 
-                Me.getMeanValues(itr)
+                'mean values are computed by the manager from the sums
+                '      Me.getMeanValues(m_data.CurrentIteration)
 
                 CallBack(eCallBackTypes.RunCompleted)
 
@@ -182,11 +187,11 @@ Namespace MSE
 
         Private Sub getMeanValues(ByVal NTrials As Integer)
 
-            Me.m_data.MeanEmploy = Me.m_data.MeanEmploy / NTrials
-            Me.m_data.MeanVal = Me.m_data.MeanVal / NTrials
-            Me.m_data.MeanManVal = Me.m_data.MeanManVal / NTrials
-            Me.m_data.MeanEcoVal = Me.m_data.MeanEcoVal / NTrials
-            Me.m_data.MeanTotalValue = Me.m_data.MeanTotalValue / NTrials
+            Me.m_data.sumEmployVal = Me.m_data.sumEmployVal / NTrials
+            Me.m_data.SumTotVal = Me.m_data.SumTotVal / NTrials
+            Me.m_data.sumManVal = Me.m_data.sumManVal / NTrials
+            Me.m_data.sumEcoVal = Me.m_data.sumEcoVal / NTrials
+            Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
 
         End Sub
 
@@ -195,13 +200,13 @@ Namespace MSE
         ''' Sum results of Model run into Mean values
         ''' </summary>
         ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
-        Private Sub SumValues(ByVal TotalValue As Double, ByVal EmployValue As Double, ByVal ManValue As Double, ByVal EcoValue As Double)
+        Private Sub SumValues(ByVal TotalValue As Single, ByVal EmployValue As Single, ByVal ManValue As Single, ByVal EcoValue As Single)
 
-            m_data.MeanEmploy += EmployValue
-            m_data.MeanVal += TotalValue
-            m_data.MeanManVal += ManValue
-            m_data.MeanEcoVal += EcoValue
-            m_data.MeanTotalValue = m_data.MeanTotalValue + _
+            m_data.sumEmployVal += EmployValue
+            m_data.SumTotVal += TotalValue
+            m_data.sumManVal += ManValue
+            m_data.sumEcoVal += EcoValue
+            m_data.sumWeightedValues = m_data.sumWeightedValues + _
                     m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotalValue / TotValBase + _
                     m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployValue / EmployBase + _
                     m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValue / ManValueBase + _
@@ -222,10 +227,10 @@ Namespace MSE
                 Me.m_data.BaseEcoVal = Me.m_Search.ecovalue
 
                 'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
-                Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_data.BaseTotalVal / TotValBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_data.BaseEmployVal / EmployBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_data.BaseManValue / ManValueBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_data.BaseEcoVal / EcoValueBase
+                Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / TotValBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / EmployBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / ManValueBase + _
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / EcoValueBase
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -367,7 +372,7 @@ Namespace MSE
                 'first estimate fishing rates actually achieved by gear and species, Fest(i,j)
                 Select Case m_data.AssessMethod
 
-                    Case 0 'biomasses and catch known exactly
+                    Case eAssessmentMethods.Exact 'biomasses and catch known exactly
 
                         For i = 1 To m_epdata.NumFleet
                             For j = 1 To m_epdata.NumLiving
@@ -375,10 +380,10 @@ Namespace MSE
                             Next
                         Next
 
-                    Case 1 ' Fs from biomass estimates by pool
-
+                    Case eAssessmentMethods.CatchEstmBio ' Fs from biomass estimates by pool
                         For j = 1 To m_epdata.NumLiving
-                            Best(j) = Math.Exp(Normal2() * m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ m_data.AssessPower
+                            Best(j) = CSng(Math.Exp(Normal2() * m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ m_data.AssessPower)
+
                             If BestTime(j) > 0 Then  'have previous biomass estimate for this run
                                 Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RstockPred(j)
                                 BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
@@ -394,11 +399,11 @@ Namespace MSE
 
                         Next j
 
-                    Case 2 ' Fs from direct exploitation method (eg tagging)
+                    Case eAssessmentMethods.DirectExploitation ' Fs from direct exploitation method (eg tagging)
 
                         For i = 1 To m_epdata.NumFleet
                             For j = 1 To m_epdata.NumLiving
-                                Fest(i, j) = (m_Search.CatchYear(i, j) / Bbar(j)) * Math.Exp(Normal2() * m_data.CVFest(j))
+                                Fest(i, j) = (m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Normal2() * m_data.CVFest(j)))
                             Next
                         Next
 

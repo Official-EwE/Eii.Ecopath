@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cValidatorBase.vb,v $
+' Revision 1.2  2009/06/01 17:07:38  joeb
+' MSE debugging
+'
 ' Revision 1.1  2008/09/26 07:30:35  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -426,8 +429,8 @@ Public Class cValidatorManager
         'Output validator
         validator = New cValidatorOutput(eStatusFlags.NotEditable Or eStatusFlags.OK)
         m_validators.Add(eVarNameFlags.EcospaceBiomassOverTime, validator)
-        m_validators.Add(eVarNameFlags.MSELowerRiskCount, validator)
-        m_validators.Add(eVarNameFlags.MSEUpperRiskCount, validator)
+        m_validators.Add(eVarNameFlags.MSELowerRiskPercent, validator)
+        m_validators.Add(eVarNameFlags.MSEUpperRiskPercent, validator)
 
         'Fishing Policy search base year validated via a core counter
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcosimYears)
