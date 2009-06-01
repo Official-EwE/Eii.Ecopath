@@ -112,7 +112,6 @@ Partial Class frmNetworkAnalysis
         '
         Me.m_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
         Me.m_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_datagrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.m_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         resources.ApplyResources(Me.m_datagrid, "m_datagrid")
         Me.m_datagrid.Name = "m_datagrid"
