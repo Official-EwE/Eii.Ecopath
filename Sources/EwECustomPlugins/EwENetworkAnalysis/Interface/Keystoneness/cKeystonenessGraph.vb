@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessGraph.vb,v $
+' Revision 1.4  2009/06/01 00:58:16  jeroens
+' Hmm
+'
 ' Revision 1.3  2009/05/30 00:08:44  jeroens
 ' Toolstrip usage centralized
 ' Added custom menu commands to style the graph
@@ -117,7 +120,6 @@ Public Class cKeystonenessGraph
         Dim txt As ZedGraph.TextObj = Nothing
         Dim source As cCoreInputOutputBase = Nothing
 
-        ' ToDo: localize this
         pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_SCALEDIMPACT, My.Resources.LBL_KEYSTONENESS, False)
 
         pane.CurveList.Clear()
