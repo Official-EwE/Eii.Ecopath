@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: EditGroupsStanzaEwEGrid.vb,v $
+' Revision 1.8  2009/06/02 14:50:43  jeroens
+' Can paste group names (fixes issue 627)
+'
 ' Revision 1.7  2009/05/28 12:37:25  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -750,7 +753,7 @@ Imports EwEUtils.Drawing
 
         MyBase.InitStyle()
 
-        Me.Selection.SelectionMode = GridSelectionMode.Row
+        'Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
         ' JS 15Apr07: there will be no context menu item until we have a better idea
@@ -1142,8 +1145,13 @@ Imports EwEUtils.Drawing
         Select Case DirectCast(p.Column, eColumnTypes)
 
             Case eColumnTypes.GroupName
-                ' JS: Handled in OnCellEdited()
-                ' gi.Name = CStr(cell.GetValue(p))
+                Dim strName As String = CStr(cell.GetValue(p))
+                ' Check if name is unique
+                If Me.IsNameUnique(strName, gi) Then
+                    ' Allow name change
+                    gi.Name = strName
+                End If
+                Me.UpdateRow(p.Row)
 
             Case eColumnTypes.GroupPPConsumer
                 gi.PP = ePrimaryProductionTypes.Consumer
@@ -1214,16 +1222,12 @@ Imports EwEUtils.Drawing
             Case eColumnTypes.GroupName
                 Dim strName As String = CStr(cell.GetValue(p))
                 ' Check if name is unique
-                For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
-                    Dim giTemp As GroupInfo = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
-                    ' Does name already exist?
-                    If (Not Object.ReferenceEquals(giTemp, gi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
-                        ' Change is not allowed
-                        Me.UpdateRow(p.Row)
-                        ' Report failure
-                        Return False
-                    End If
-                Next
+                If Not Me.IsNameUnique(strName, gi) Then
+                    ' Change is not allowed
+                    Me.UpdateRow(p.Row)
+                    ' Report failure
+                    Return False
+                End If
                 ' Allow name change
                 gi.Name = strName
 
@@ -1830,6 +1834,21 @@ Imports EwEUtils.Drawing
 
         ' Detritus configuration is valid
         Return True
+    End Function
+
+    Private Function IsNameUnique(ByVal strName As String, ByVal gi As GroupInfo) As Boolean
+
+        ' Check if name is unique
+        For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
+            Dim giTemp As GroupInfo = DirectCast(Me.m_lgiGroups(iGroup), GroupInfo)
+            ' Does name already exist?
+            If (Not Object.ReferenceEquals(giTemp, gi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                ' Report failure
+                Return False
+            End If
+        Next
+        Return True
+
     End Function
 
 #End Region ' Validation
