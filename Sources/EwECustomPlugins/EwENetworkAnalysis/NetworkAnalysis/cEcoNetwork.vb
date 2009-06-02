@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.18  2009/06/02 02:36:52  jeroens
+' Identified 2 issues in Keystoneness calculations, VC please check
+'
 ' Revision 1.17  2009/05/29 23:56:47  jeroens
 ' Localized
 '
@@ -252,8 +255,8 @@ Public Class cEcoNetwork
 #Region " Keystoneness "
 
     Public KeystoneIndex() As Double
-    Public KeystoneOverBiomass() As Double
-    Public ScaledImpact() As Double
+    Public TotalImpactOverBiomass() As Double
+    Public RelTotalImpact() As Double
 
 #End Region
 
@@ -2800,36 +2803,47 @@ NextPivot:
 
         Dim RelBi(m_epdata.NumLiving) As Double
         Dim TotalImpact(m_epdata.NumLiving) As Double
-        Dim sumB As Single = 0
+        Dim sSumB As Single = 0
+        Dim dMaxImpact As Double = cCore.NULL_VALUE
+
+        ReDim KeystoneIndex(m_epdata.NumLiving)
+        ReDim TotalImpactOverBiomass(m_epdata.NumLiving)
+        ReDim RelTotalImpact(m_epdata.NumLiving)
+
+        ' Calc max sSumB
         For i As Integer = 1 To m_epdata.NumLiving
-            sumB += m_epdata.B(i)
+            sSumB += m_epdata.B(i)
         Next
 
         Try
-            'try is just because biomass could be 0 if model is really stupid
-            For i As Integer = 1 To m_epdata.NumLiving
-                RelBi(i) = m_epdata.B(i) / sumB
-            Next
+
             'next we need the total impact for each LIVING group,
-            Dim maxImpact As Double = -9
             For i As Integer = 1 To m_epdata.NumLiving
-                For j As Integer = 1 To m_epdata.NumGroups
+                ' JS note to VC: iterate predators to NumLiving, NOT to NumGroups? Detritus does not predate well ;)
+                'For j As Integer = 1 To m_epdata.NumGroups
+                For j As Integer = 1 To m_epdata.NumLiving
                     If i <> j Then
-                        TotalImpact(i) += MTI(i, j) ^ 2
+                        TotalImpact(i) += (MTI(i, j) ^ 2)
                     End If
                 Next
                 TotalImpact(i) = Math.Sqrt(TotalImpact(i))
-                If maxImpact < TotalImpact(i) Then maxImpact = TotalImpact(i)
+                dMaxImpact = Math.Max(dMaxImpact, TotalImpact(i))
             Next
 
-            ReDim KeystoneIndex(m_epdata.NumLiving)
-            ReDim KeystoneOverBiomass(m_epdata.NumLiving)
-            ReDim ScaledImpact(m_epdata.NumLiving)
+            'try is just because biomass could be 0 if model is really stupid
+            For i As Integer = 1 To m_epdata.NumLiving
+                RelBi(i) = m_epdata.B(i) / sSumB
+            Next
 
             For i As Integer = 1 To m_epdata.NumLiving
-                KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
-                KeystoneOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
-                ScaledImpact(i) = TotalImpact(i) / maxImpact
+                ' JS note to VC: The publication states Log, not LN, for the calculations below. 
+                '                Since Math.Log implements LN, the calculations below should 
+                '                probably use the Math.Log10 operator
+                'Me.KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
+                'Me.TotalImpactOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
+                Me.KeystoneIndex(i) = Math.Log10(TotalImpact(i) * (1 - RelBi(i)))
+                Me.TotalImpactOverBiomass(i) = Math.Log10(TotalImpact(i) / RelBi(i))
+                Me.RelTotalImpact(i) = TotalImpact(i) / dMaxImpact
             Next
 
         Catch ex As Exception
