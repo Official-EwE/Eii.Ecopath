@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.19  2009/06/02 02:38:51  jeroens
+' Renamed exposed keystoneness indicators
+'
 ' Revision 1.18  2009/05/30 00:00:54  jeroens
 ' Toolstrip usage centralized
 '
@@ -1976,15 +1979,15 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property KeystoneOverBiomass(ByVal iGroup As Integer) As Double
+    Public ReadOnly Property TotalImpactOverBiomass(ByVal iGroup As Integer) As Double
         Get
-            Return Me.m_econetwork.KeystoneOverBiomass(iGroup)
+            Return Me.m_econetwork.TotalImpactOverBiomass(iGroup)
         End Get
     End Property
 
-    Public ReadOnly Property ScaledImpact(ByVal iGroup As Integer) As Double
+    Public ReadOnly Property RelativeTotalImpact(ByVal iGroup As Integer) As Double
         Get
-            Return Me.m_econetwork.ScaledImpact(iGroup)
+            Return Me.m_econetwork.RelTotalImpact(iGroup)
         End Get
     End Property
 
