@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.20  2009/06/02 15:37:33  jeroens
+' Added TotalImpact (needs validation)
+'
 ' Revision 1.19  2009/06/02 02:37:52  jeroens
 ' Hmm
 '
@@ -258,6 +261,7 @@ Public Class cEcoNetwork
 #Region " Keystoneness "
 
     Public KeystoneIndex() As Double
+    Public TotalImpact() As Double
     Public TotalImpactOverBiomass() As Double
     Public RelTotalImpact() As Double
 
@@ -2763,8 +2767,6 @@ NextPivot:
 
     End Sub
 
-
-
     Private Sub CalcSumCycDC(ByRef CycDC(,) As Single)
 
         ' SumCycDC(i) is the proportion of group i's diet
@@ -2804,14 +2806,15 @@ NextPivot:
         'The keystoneindex is always calculated, just after the MTI has been done
         'it requires no input, we have all
 
-        Dim RelBi(m_epdata.NumLiving) As Double
-        Dim TotalImpact(m_epdata.NumLiving) As Double
+        Dim adRelBi(m_epdata.NumLiving) As Double
+        Dim adTotalImpact(m_epdata.NumLiving) As Double
         Dim sSumB As Single = 0
         Dim dMaxImpact As Double = cCore.NULL_VALUE
 
-        ReDim KeystoneIndex(m_epdata.NumLiving)
-        ReDim TotalImpactOverBiomass(m_epdata.NumLiving)
-        ReDim RelTotalImpact(m_epdata.NumLiving)
+        ReDim Me.KeystoneIndex(m_epdata.NumLiving)
+        ReDim Me.TotalImpact(m_epdata.NumLiving)
+        ReDim Me.TotalImpactOverBiomass(m_epdata.NumLiving)
+        ReDim Me.RelTotalImpact(m_epdata.NumLiving)
 
         ' Calc max sSumB
         For i As Integer = 1 To m_epdata.NumLiving
@@ -2826,15 +2829,15 @@ NextPivot:
                 'For j As Integer = 1 To m_epdata.NumGroups
                 For j As Integer = 1 To m_epdata.NumLiving
                     If i <> j Then
-                        TotalImpact(i) += (MTI(i, j) ^ 2)
+                        adTotalImpact(i) += (MTI(i, j) ^ 2)
                     End If
                 Next
-                TotalImpact(i) = Math.Sqrt(TotalImpact(i))
-                dMaxImpact = Math.Max(dMaxImpact, TotalImpact(i))
+                adTotalImpact(i) = Math.Sqrt(adTotalImpact(i))
+                dMaxImpact = Math.Max(dMaxImpact, adTotalImpact(i))
             Next
 
             For i As Integer = 1 To m_epdata.NumLiving
-                RelBi(i) = m_epdata.B(i) / sSumB
+                adRelBi(i) = m_epdata.B(i) / sSumB
             Next
 
             For i As Integer = 1 To m_epdata.NumLiving
@@ -2843,9 +2846,10 @@ NextPivot:
                 '                probably use the Math.Log10 operator
                 'Me.KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
                 'Me.TotalImpactOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
-                Me.KeystoneIndex(i) = Math.Log10(TotalImpact(i) * (1 - RelBi(i)))
-                Me.TotalImpactOverBiomass(i) = Math.Log10(TotalImpact(i) / RelBi(i))
-                Me.RelTotalImpact(i) = TotalImpact(i) / dMaxImpact
+                Me.KeystoneIndex(i) = Math.Log10(adTotalImpact(i) * (1 - adRelBi(i)))
+                Me.TotalImpact(i) = Math.Log10(adTotalImpact(i))
+                Me.TotalImpactOverBiomass(i) = Math.Log10(adTotalImpact(i) / adRelBi(i))
+                Me.RelTotalImpact(i) = adTotalImpact(i) / dMaxImpact
             Next
 
         Catch ex As Exception
