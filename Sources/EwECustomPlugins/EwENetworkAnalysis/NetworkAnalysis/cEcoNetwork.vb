@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.21  2009/06/02 20:39:01  villyc
+' added some remarks (as response to Jeroen's questions).
+'
 ' Revision 1.20  2009/06/02 15:37:33  jeroens
 ' Added TotalImpact (needs validation)
 '
@@ -2826,6 +2829,7 @@ NextPivot:
             'next we need the total impact for each LIVING group,
             For i As Integer = 1 To m_epdata.NumLiving
                 ' JS note to VC: iterate predators to NumLiving, NOT to NumGroups? Detritus does not predate well ;)
+                ' VC response: only include living groups in the calculations (as consumers and as prey)
                 'For j As Integer = 1 To m_epdata.NumGroups
                 For j As Integer = 1 To m_epdata.NumLiving
                     If i <> j Then
@@ -2844,6 +2848,7 @@ NextPivot:
                 ' JS note to VC: The publication states Log, not LN, for the calculations below. 
                 '                Since Math.Log implements LN, the calculations below should 
                 '                probably use the Math.Log10 operator
+                ' VC response: log10 OK
                 'Me.KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
                 'Me.TotalImpactOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
                 Me.KeystoneIndex(i) = Math.Log10(adTotalImpact(i) * (1 - adRelBi(i)))
