@@ -1,6 +1,11 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessGraph.vb,v $
+' Revision 1.5  2009/06/02 02:44:52  jeroens
+' Fixed label placement bug when displaying numbers
+' Renamed keystoneness indicators
+' Scaled circles to relative biomass to control max circle size
+'
 ' Revision 1.4  2009/06/01 00:58:16  jeroens
 ' Hmm
 '
@@ -34,6 +39,8 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class cKeystonenessGraph
     Inherits cContentManager
+
+    Private Const iMAX_SYMBOL_SIZE As Integer = 100
 
     Private m_zgh As cZedGraphHelper = Nothing
 
@@ -94,7 +101,7 @@ Public Class cKeystonenessGraph
 
     Private Enum eContentStyleType As Byte
         Keystoneness
-        KeystonenessOverB
+        TotalImpactOverB
     End Enum
 
     Private m_contentstyle As eContentStyleType = eContentStyleType.Keystoneness
@@ -119,11 +126,20 @@ Public Class cKeystonenessGraph
         Dim ppl As PointPairList = Nothing
         Dim txt As ZedGraph.TextObj = Nothing
         Dim source As cCoreInputOutputBase = Nothing
+        Dim sMaxB As Single = 0.0
 
-        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_SCALEDIMPACT, My.Resources.LBL_KEYSTONENESS, False)
+        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
+        pane.XAxis.Scale.Max = 1.0
 
         pane.CurveList.Clear()
         pane.GraphObjList.Clear()
+
+        'Precalc max B (for CircleScaled style)
+        For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
+            sMaxB = Math.Max(sMaxB, Me.NetworkManager.BiomassByGroup(iGroup))
+        Next
+        ' Avoid division by zero
+        If sMaxB = 0 Then sMaxB = 1.0
 
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
 
@@ -131,9 +147,9 @@ Public Class cKeystonenessGraph
 
             Select Case Me.ContentStyle
                 Case eContentStyleType.Keystoneness
-                    ppl.Add(Me.NetworkManager.ScaledImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
-                Case eContentStyleType.KeystonenessOverB
-                    ppl.Add(Me.NetworkManager.ScaledImpact(iGroup), Me.NetworkManager.KeystoneOverBiomass(iGroup))
+                    ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
+                Case eContentStyleType.TotalImpactOverB
+                    ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
             End Select
 
             source = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
@@ -151,7 +167,7 @@ Public Class cKeystonenessGraph
                     li = New LineItem(source.Name, ppl, Color.Black, SymbolType.Circle)
                     li.Line.Color = Color.Transparent
                     If (Me.NetworkManager.BiomassByGroup(iGroup) > 0) Then
-                        li.Symbol.Size = CSng(Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup)))
+                        li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
                         li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, source.Index))
                         pane.CurveList.Add(li)
                     End If
@@ -163,9 +179,7 @@ Public Class cKeystonenessGraph
                     pane.CurveList.Add(li)
 
                     ' Add text label
-                    txt = New ZedGraph.TextObj(CStr(source.Index), _
-                                               Me.NetworkManager.ScaledImpact(iGroup), _
-                                               Me.NetworkManager.KeystoneIndex(iGroup))
+                    txt = New ZedGraph.TextObj(CStr(source.Index), ppl(0).X, ppl(0).Y)
 
                     txt.ZOrder = ZOrder.E_BehindCurves
                     With txt.FontSpec
@@ -215,7 +229,7 @@ Public Class cKeystonenessGraph
         Me.m_tsmiKeyst = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE)
         AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
 
-        Me.m_tsmiKeystOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE_BIOMASS)
+        Me.m_tsmiKeystOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS)
         AddHandler Me.m_tsmiKeystOverB.Click, AddressOf OnContentKoverB
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
@@ -266,7 +280,7 @@ Public Class cKeystonenessGraph
     End Sub
 
     Private Sub OnContentKoverB(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.ContentStyle = eContentStyleType.KeystonenessOverB
+        Me.ContentStyle = eContentStyleType.TotalImpactOverB
     End Sub
 
     Private Sub UpdateControls()
@@ -276,15 +290,15 @@ Public Class cKeystonenessGraph
         Me.m_tsmiNumbers.Checked = (Me.GraphStyle = eGraphStyleType.Number)
 
         Me.m_tsmiKeyst.Checked = (Me.ContentStyle = eContentStyleType.Keystoneness)
-        Me.m_tsmiKeystOverB.Checked = (Me.ContentStyle = eContentStyleType.KeystonenessOverB)
+        Me.m_tsmiKeystOverB.Checked = (Me.ContentStyle = eContentStyleType.TotalImpactOverB)
 
         Select Case Me.ContentStyle
 
             Case eContentStyleType.Keystoneness
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_SCALEDIMPACT, My.Resources.LBL_KEYSTONENESS, False)
+                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
 
-            Case eContentStyleType.KeystonenessOverB
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_SCALEDIMPACT, My.Resources.LBL_KEYSTONENESS_OVER_B, False)
+            Case eContentStyleType.TotalImpactOverB
+                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_TOTALIMPACT_OVER_B, False)
 
         End Select
 
