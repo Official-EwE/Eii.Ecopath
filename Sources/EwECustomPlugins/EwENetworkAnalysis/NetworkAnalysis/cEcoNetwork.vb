@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.19  2009/06/02 02:37:52  jeroens
+' Hmm
+'
 ' Revision 1.18  2009/06/02 02:36:52  jeroens
 ' Identified 2 issues in Keystoneness calculations, VC please check
 '
@@ -2815,7 +2818,7 @@ NextPivot:
             sSumB += m_epdata.B(i)
         Next
 
-        Try
+        Try 'try is just because biomass could be 0 if model is really stupid
 
             'next we need the total impact for each LIVING group,
             For i As Integer = 1 To m_epdata.NumLiving
@@ -2830,7 +2833,6 @@ NextPivot:
                 dMaxImpact = Math.Max(dMaxImpact, TotalImpact(i))
             Next
 
-            'try is just because biomass could be 0 if model is really stupid
             For i As Integer = 1 To m_epdata.NumLiving
                 RelBi(i) = m_epdata.B(i) / sSumB
             Next
@@ -2850,7 +2852,6 @@ NextPivot:
             Debug.Assert(False, "Exception in Keystoneness: " & ex.Message)
         End Try
     End Sub
-
 
 #End Region
 
