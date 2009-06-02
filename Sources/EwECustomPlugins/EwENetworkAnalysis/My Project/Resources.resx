@@ -558,17 +558,17 @@
   <data name="COL_HDR_KEYSTONEINDEX" xml:space="preserve">
     <value>Keystone index</value>
   </data>
-  <data name="COL_HDR_SCALEDIMPACT" xml:space="preserve">
-    <value>Scaled impact</value>
+  <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relative total impact</value>
   </data>
   <data name="LBL_KEYSTONENESS" xml:space="preserve">
     <value>Keystoneness</value>
   </data>
-  <data name="LBL_KEYSTONENESS_OVER_B" xml:space="preserve">
-    <value>Keystoneness over biomass</value>
+  <data name="LBL_TOTALIMPACT_OVER_B" xml:space="preserve">
+    <value>Total impact over Biomass</value>
   </data>
-  <data name="LBL_SCALEDIMPACT" xml:space="preserve">
-    <value>Scaled impact</value>
+  <data name="LBL_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relative total impact</value>
   </data>
   <data name="MNU_CONTENT" xml:space="preserve">
     <value>&amp;Graph content</value>
@@ -576,8 +576,8 @@
   <data name="MNU_CONTENT_KEYSTONE" xml:space="preserve">
     <value>&amp;Keystoneness</value>
   </data>
-  <data name="MNU_CONTENT_KEYSTONE_BIOMASS" xml:space="preserve">
-    <value>Keystoneness over &amp;Biomass</value>
+  <data name="MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS" xml:space="preserve">
+    <value>Total impact over &amp;Biomass</value>
   </data>
   <data name="MNU_STYLE" xml:space="preserve">
     <value>&amp;Graph style</value>
@@ -603,7 +603,7 @@
   <data name="STATUS_RUNNING_ULANOW" xml:space="preserve">
     <value>Running Network Analysis Ulanow...</value>
   </data>
-  <data name="COL_HDR_KEYSTONEOVERB" xml:space="preserve">
-    <value>Keystone over Biomass</value>
+  <data name="COL_HDR_TOTALIMPACTOVERB" xml:space="preserve">
+    <value>Total impact over Biomass</value>
   </data>
 </root>

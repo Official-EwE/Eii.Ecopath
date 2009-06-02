@@ -340,15 +340,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone over Biomass.
-        '''</summary>
-        Friend ReadOnly Property COL_HDR_KEYSTONEOVERB() As String
-            Get
-                Return ResourceManager.GetString("COL_HDR_KEYSTONEOVERB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Non-hidden.
         '''</summary>
         Friend ReadOnly Property COL_HDR_NONHIDDEN() As String
@@ -592,6 +583,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Relative total impact.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_RELTOTALIMPACT() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_RELTOTALIMPACT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Respiration.
         '''</summary>
         Friend ReadOnly Property COL_HDR_RESP() As String
@@ -606,15 +606,6 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_RESP_ECOSIM() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_RESP_ECOSIM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Scaled impact.
-        '''</summary>
-        Friend ReadOnly Property COL_HDR_SCALEDIMPACT() As String
-            Get
-                Return ResourceManager.GetString("COL_HDR_SCALEDIMPACT", resourceCulture)
             End Get
         End Property
         
@@ -678,6 +669,15 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_TOTAL_TKM2YR() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_TOTAL_TKM2YR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total impact over Biomass.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_TOTALIMPACTOVERB() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_TOTALIMPACTOVERB", resourceCulture)
             End Get
         End Property
         
@@ -851,15 +851,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystoneness over biomass.
-        '''</summary>
-        Friend ReadOnly Property LBL_KEYSTONENESS_OVER_B() As String
-            Get
-                Return ResourceManager.GetString("LBL_KEYSTONENESS_OVER_B", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Months.
         '''</summary>
         Friend ReadOnly Property LBL_MONTHS() As String
@@ -941,11 +932,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Scaled impact.
+        '''  Looks up a localized string similar to Relative total impact.
         '''</summary>
-        Friend ReadOnly Property LBL_SCALEDIMPACT() As String
+        Friend ReadOnly Property LBL_RELTOTALIMPACT() As String
             Get
-                Return ResourceManager.GetString("LBL_SCALEDIMPACT", resourceCulture)
+                Return ResourceManager.GetString("LBL_RELTOTALIMPACT", resourceCulture)
             End Get
         End Property
         
@@ -968,6 +959,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Total impact over Biomass.
+        '''</summary>
+        Friend ReadOnly Property LBL_TOTALIMPACT_OVER_B() As String
+            Get
+                Return ResourceManager.GetString("LBL_TOTALIMPACT_OVER_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Graph content.
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT() As String
@@ -986,11 +986,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystoneness over &amp;Biomass.
+        '''  Looks up a localized string similar to Total impact over &amp;Biomass.
         '''</summary>
-        Friend ReadOnly Property MNU_CONTENT_KEYSTONE_BIOMASS() As String
+        Friend ReadOnly Property MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS() As String
             Get
-                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE_BIOMASS", resourceCulture)
+                Return ResourceManager.GetString("MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS", resourceCulture)
             End Get
         End Property
         
