@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessTable.vb,v $
+' Revision 1.4  2009/06/02 02:46:58  jeroens
+' Renamed exposed keystoneness indicators
+'
 ' Revision 1.3  2009/06/01 01:00:26  jeroens
 ' Added Keyst over B column
 '
@@ -58,8 +61,8 @@ Public Class cKeystonenessTable
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX
-        astrRowContent(3) = My.Resources.COL_HDR_KEYSTONEOVERB
-        astrRowContent(4) = My.Resources.COL_HDR_SCALEDIMPACT
+        astrRowContent(3) = My.Resources.COL_HDR_TOTALIMPACTOVERB
+        astrRowContent(4) = My.Resources.COL_HDR_RELTOTALIMPACT
         Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
@@ -67,8 +70,8 @@ Public Class cKeystonenessTable
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = Me.NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex(i))
-            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneOverBiomass(i))
-            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ScaledImpact(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.TotalImpactOverBiomass(i))
+            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeTotalImpact(i))
             Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
