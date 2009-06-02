@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.20  2009/06/02 15:56:20  jeroens
+' Added TotalImpact (needs validation)
+'
 ' Revision 1.19  2009/06/02 02:38:51  jeroens
 ' Renamed exposed keystoneness indicators
 '
@@ -1976,6 +1979,12 @@ Public Class cNetworkManager
     Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
         Get
             Return Me.m_econetwork.KeystoneIndex(iGroup)
+        End Get
+    End Property
+
+    Public ReadOnly Property TotalImpact(ByVal iGroup As Integer) As Double
+        Get
+            Return Me.m_econetwork.TotalImpact(iGroup)
         End Get
     End Property
 

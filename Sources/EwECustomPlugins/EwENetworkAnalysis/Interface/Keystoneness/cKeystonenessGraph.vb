@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessGraph.vb,v $
+' Revision 1.6  2009/06/02 15:58:53  jeroens
+' Added TotalImpact (needs validation)
+'
 ' Revision 1.5  2009/06/02 02:44:52  jeroens
 ' Fixed label placement bug when displaying numbers
 ' Renamed keystoneness indicators
@@ -37,12 +40,86 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Content manager-derived class, able to plot keystoneness-related values.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cKeystonenessGraph
     Inherits cContentManager
 
+#Region " Private defs "
+
+    ''' <summary>Max size for scaled symbols</summary>
     Private Const iMAX_SYMBOL_SIZE As Integer = 100
 
+    ''' <summary>Graph representation styles.</summary>
+    Private Enum eRepresentationType As Byte
+        ''' <summary>Items reflected by black uni-sized circles.</summary>
+        Circle
+        ''' <summary>Items reflected by coloured circles scaled by biomass.</summary>
+        CircleScaled
+        ''' <summary>Items reflected by group index.</summary>
+        Number
+    End Enum
+
+    ''' <summary>Graph content styles.</summary>
+    Private Enum eContentType As Byte
+        Keystoneness
+        TotalImpact
+        TotalImpactOverB
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class; sorts line items by symbol sizes, smallest symbols on top
+    ''' to make sure that large symbols do not obscure smaller symbols.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cSymbolSizeSorter
+        Implements IComparer(Of ZedGraph.CurveItem)
+
+        Public Function Compare(ByVal x As ZedGraph.CurveItem, ByVal y As ZedGraph.CurveItem) As Integer _
+            Implements System.Collections.Generic.IComparer(Of ZedGraph.CurveItem).Compare
+            If TypeOf (x) Is LineItem And TypeOf (y) Is LineItem Then
+                Dim liX As LineItem = DirectCast(x, LineItem)
+                Dim liY As LineItem = DirectCast(y, LineItem)
+                If liX.Symbol.Size < liY.Symbol.Size Then Return -1
+                If liX.Symbol.Size > liY.Symbol.Size Then Return 1
+            End If
+            Return 0
+        End Function
+    End Class
+
+#End Region ' Private defs
+
+#Region " Private vars "
+
+    ''' <summary>Helper class molesting the graph.</summary>
     Private m_zgh As cZedGraphHelper = Nothing
+    ''' <summary>Flag stating what data to plot.</summary>
+    Private m_content As eContentType = eContentType.Keystoneness
+    ''' <summary>Flag stating how data should be plot.</summary>
+    Private m_representation As eRepresentationType = eRepresentationType.Circle
+
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsStyle As ToolStripDropDownButton = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiCircles As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiCirclesScaled As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiNumbers As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsContent As ToolStripDropDownButton = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiKeyst As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiTotImpact As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiTotImpactOverB As ToolStripMenuItem = Nothing
+
+#End Region ' Private vars
 
     Public Sub New()
         '
@@ -58,7 +135,7 @@ Public Class cKeystonenessGraph
         Me.Graph.Visible = bSucces
         Me.Toolstrip.Visible = bSucces
         Me.ToolstripShowOptionCSV()
-        Me.AddToolstrippybits()
+        Me.AddToolstripItems()
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.NetworkManager.Core, Me.Graph, 1)
@@ -70,7 +147,7 @@ Public Class cKeystonenessGraph
 
     Public Overrides Sub Detach()
 
-        Me.RemoveToolstrippybits()
+        Me.RemoveToolstripItems()
 
         Me.m_zgh.Detach()
         Me.m_zgh = Nothing
@@ -79,45 +156,6 @@ Public Class cKeystonenessGraph
 
     End Sub
 
-    Private Enum eGraphStyleType As Byte
-        Circle
-        CircleScaled
-        Number
-    End Enum
-
-    Private m_graphstyle As eGraphStyleType = eGraphStyleType.Circle
-
-    Private Property GraphStyle() As eGraphStyleType
-        Get
-            Return Me.m_graphstyle
-        End Get
-        Set(ByVal graphstyle As eGraphStyleType)
-            If (Me.m_graphstyle <> graphstyle) Then
-                Me.m_graphstyle = graphstyle
-                Me.DisplayData()
-            End If
-        End Set
-    End Property
-
-    Private Enum eContentStyleType As Byte
-        Keystoneness
-        TotalImpactOverB
-    End Enum
-
-    Private m_contentstyle As eContentStyleType = eContentStyleType.Keystoneness
-
-    Private Property ContentStyle() As eContentStyleType
-        Get
-            Return Me.m_contentstyle
-        End Get
-        Set(ByVal contentstyle As eContentStyleType)
-            If (Me.m_contentstyle <> contentstyle) Then
-                Me.m_contentstyle = contentstyle
-                Me.DisplayData()
-            End If
-        End Set
-    End Property
-
     Public Overrides Sub DisplayData()
 
         Dim pane As GraphPane = Nothing
@@ -125,91 +163,124 @@ Public Class cKeystonenessGraph
         Dim curve As CurveItem = Nothing
         Dim ppl As PointPairList = Nothing
         Dim txt As ZedGraph.TextObj = Nothing
-        Dim source As cCoreInputOutputBase = Nothing
+        Dim group As cCoreInputOutputBase = Nothing
         Dim sMaxB As Single = 0.0
 
-        pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
+        ' UpdateControls will take care of axis labels
+        pane = Me.m_zgh.ConfigurePane("", "", "", False)
+        ' All X-axis values are relative to 1
         pane.XAxis.Scale.Max = 1.0
 
+        ' Clear curves
         pane.CurveList.Clear()
+        ' Clear text objects and other misc objects that may have been added
         pane.GraphObjList.Clear()
 
-        'Precalc max B (for CircleScaled style)
+        ' Precalc max Biomass (for CircleScaled style)
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
             sMaxB = Math.Max(sMaxB, Me.NetworkManager.BiomassByGroup(iGroup))
         Next
         ' Avoid division by zero
         If sMaxB = 0 Then sMaxB = 1.0
 
+        ' Create a unique line item for each group
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
 
+            ' Build line item
             ppl = New PointPairList()
+            Select Case Me.Content
 
-            Select Case Me.ContentStyle
-                Case eContentStyleType.Keystoneness
+                Case eContentType.Keystoneness
                     ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
-                Case eContentStyleType.TotalImpactOverB
+
+                Case eContentType.TotalImpact
+                    ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.TotalImpact(iGroup))
+
+                Case eContentType.TotalImpactOverB
                     ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
+
             End Select
 
-            source = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
+            ' Get actual group
+            group = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
 
-            Select Case Me.m_graphstyle
+            ' Make things look purdy
+            Select Case Me.m_representation
 
-                Case eGraphStyleType.Circle
+                Case eRepresentationType.Circle
 
-                    li = New LineItem(source.Name, ppl, Color.Black, SymbolType.Circle)
+                    ' Render values as uni-sized black circles
+                    li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
                     li.Line.Color = Color.Transparent
                     pane.CurveList.Add(li)
 
-                Case eGraphStyleType.CircleScaled
+                Case eRepresentationType.CircleScaled
 
-                    li = New LineItem(source.Name, ppl, Color.Black, SymbolType.Circle)
+                    ' Render values as group-coloured circles, scaled to biomass
+                    li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
                     li.Line.Color = Color.Transparent
-                    If (Me.NetworkManager.BiomassByGroup(iGroup) > 0) Then
-                        li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
-                        li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, source.Index))
-                        pane.CurveList.Add(li)
-                    End If
+                    li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
+                    li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, group.Index))
+                    pane.CurveList.Add(li)
 
-                Case eGraphStyleType.Number
+                Case eRepresentationType.Number
+
+                    ' Render values as black texts reflecting numeric group indices
 
                     ' Add hidden line for mouse value tracking
-                    li = New LineItem(source.Name, ppl, Color.Transparent, SymbolType.None)
+                    li = New LineItem(group.Name, ppl, Color.Transparent, SymbolType.None)
                     pane.CurveList.Add(li)
 
                     ' Add text label
-                    txt = New ZedGraph.TextObj(CStr(source.Index), ppl(0).X, ppl(0).Y)
-
-                    txt.ZOrder = ZOrder.E_BehindCurves
+                    txt = New ZedGraph.TextObj(CStr(group.Index), ppl(0).X, ppl(0).Y)
+                    txt.ZOrder = ZOrder.A_InFront
                     With txt.FontSpec
                         .Fill.IsVisible = False
                         .Border.IsVisible = False
-                        '.FontColor = Me.StyleGuide.GroupColor(Me.NetworkManager.Core, source.Index)
                         .FontColor = Color.Black
                     End With
-
                     pane.GraphObjList.Add(txt)
 
             End Select
 
-        Next
+        Next iGroup
 
+        ' Sort curve list by symbol size, if applicable
+        pane.CurveList.Sort(New cSymbolSizeSorter())
+
+        ' Yo!
         Me.m_zgh.RescaleAndRedraw()
         Me.UpdateControls()
 
     End Sub
 
-    Private m_tsStyle As ToolStripDropDownButton = Nothing
-    Private m_tsmiCircles As ToolStripMenuItem = Nothing
-    Private m_tsmiCirclesScaled As ToolStripMenuItem = Nothing
-    Private m_tsmiNumbers As ToolStripMenuItem = Nothing
+#Region " Internals "
 
-    Private m_tsContent As ToolStripDropDownButton = Nothing
-    Private m_tsmiKeyst As ToolStripMenuItem = Nothing
-    Private m_tsmiKeystOverB As ToolStripMenuItem = Nothing
+    Private Property Representation() As eRepresentationType
+        Get
+            Return Me.m_representation
+        End Get
+        Set(ByVal representation As eRepresentationType)
+            If (Me.m_representation <> representation) Then
+                Me.m_representation = representation
+                Me.DisplayData()
+            End If
+        End Set
+    End Property
 
-    Private Sub AddToolstrippybits()
+    Private Property Content() As eContentType
+        Get
+            Return Me.m_content
+        End Get
+        Set(ByVal content As eContentType)
+            If (Me.m_content <> content) Then
+                Me.m_content = content
+                Me.DisplayData()
+            End If
+        End Set
+    End Property
+
+    Private Sub AddToolstripItems()
 
         Me.m_tsmiCircles = New ToolStripMenuItem(My.Resources.MNU_STYLE_CIRCLES)
         AddHandler Me.m_tsmiCircles.Click, AddressOf OnStyleCircles
@@ -229,17 +300,21 @@ Public Class cKeystonenessGraph
         Me.m_tsmiKeyst = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE)
         AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
 
-        Me.m_tsmiKeystOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS)
-        AddHandler Me.m_tsmiKeystOverB.Click, AddressOf OnContentKoverB
+        Me.m_tsmiTotImpact = New ToolStripMenuItem("Total &impact")
+        AddHandler Me.m_tsmiTotImpact.Click, AddressOf OnContentTI
+
+        Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS)
+        AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTIoverB
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst)
-        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeystOverB)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpact)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpactOverB)
         Me.Toolstrip.Items.Add(Me.m_tsContent)
 
     End Sub
 
-    Private Sub RemoveToolstrippybits()
+    Private Sub RemoveToolstripItems()
 
         Me.Toolstrip.Items.Remove(Me.m_tsStyle)
 
@@ -257,51 +332,63 @@ Public Class cKeystonenessGraph
         Me.m_tsContent.DropDownItems.Clear()
         RemoveHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
         Me.m_tsmiKeyst = Nothing
-        RemoveHandler Me.m_tsmiKeystOverB.Click, AddressOf OnContentKoverB
-        Me.m_tsmiKeystOverB = Nothing
+        RemoveHandler Me.m_tsmiTotImpact.Click, AddressOf OnContentTI
+        Me.m_tsmiTotImpact = Nothing
+        RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTIoverB
+        Me.m_tsmiTotImpactOverB = Nothing
         Me.m_tsContent = Nothing
 
     End Sub
 
     Private Sub OnStyleCircles(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.GraphStyle = eGraphStyleType.Circle
+        Me.Representation = eRepresentationType.Circle
     End Sub
 
     Private Sub OnStyleCirclesScaled(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.GraphStyle = eGraphStyleType.CircleScaled
+        Me.Representation = eRepresentationType.CircleScaled
     End Sub
 
     Private Sub OnStyleNumbers(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.GraphStyle = eGraphStyleType.Number
+        Me.Representation = eRepresentationType.Number
     End Sub
 
     Private Sub OnContentK(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.ContentStyle = eContentStyleType.Keystoneness
+        Me.Content = eContentType.Keystoneness
     End Sub
 
-    Private Sub OnContentKoverB(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.ContentStyle = eContentStyleType.TotalImpactOverB
+    Private Sub OnContentTI(ByVal sender As Object, ByVal arg As EventArgs)
+        Me.Content = eContentType.TotalImpact
+    End Sub
+
+    Private Sub OnContentTIoverB(ByVal sender As Object, ByVal arg As EventArgs)
+        Me.Content = eContentType.TotalImpactOverB
     End Sub
 
     Private Sub UpdateControls()
 
-        Me.m_tsmiCircles.Checked = (Me.GraphStyle = eGraphStyleType.Circle)
-        Me.m_tsmiCirclesScaled.Checked = (Me.GraphStyle = eGraphStyleType.CircleScaled)
-        Me.m_tsmiNumbers.Checked = (Me.GraphStyle = eGraphStyleType.Number)
+        Me.m_tsmiCircles.Checked = (Me.Representation = eRepresentationType.Circle)
+        Me.m_tsmiCirclesScaled.Checked = (Me.Representation = eRepresentationType.CircleScaled)
+        Me.m_tsmiNumbers.Checked = (Me.Representation = eRepresentationType.Number)
 
-        Me.m_tsmiKeyst.Checked = (Me.ContentStyle = eContentStyleType.Keystoneness)
-        Me.m_tsmiKeystOverB.Checked = (Me.ContentStyle = eContentStyleType.TotalImpactOverB)
+        Me.m_tsmiKeyst.Checked = (Me.Content = eContentType.Keystoneness)
+        Me.m_tsmiTotImpact.Checked = (Me.Content = eContentType.TotalImpact)
+        Me.m_tsmiTotImpactOverB.Checked = (Me.Content = eContentType.TotalImpactOverB)
 
-        Select Case Me.ContentStyle
+        Select Case Me.Content
 
-            Case eContentStyleType.Keystoneness
+            Case eContentType.Keystoneness
                 Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
 
-            Case eContentStyleType.TotalImpactOverB
+            Case eContentType.TotalImpact
+                Me.m_zgh.ConfigurePane("", "Relative biomass", "Total impact", False)
+
+            Case eContentType.TotalImpactOverB
                 Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_TOTALIMPACT_OVER_B, False)
 
         End Select
 
     End Sub
+
+#End Region ' Internals
 
 End Class
