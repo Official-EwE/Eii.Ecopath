@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StringUtils.vb,v $
+' Revision 1.4  2009/06/03 19:25:34  jeroens
+' Added ToRoman
+'
 ' Revision 1.3  2009/04/13 14:14:02  jeroens
 ' Added path trim option
 '
@@ -14,6 +17,7 @@
 
 Option Strict On
 
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -222,7 +226,78 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function ToRoman(ByVal nArabicValue As Integer) As String
 
+            Dim nThousands As Integer
+            Dim nFiveHundreds As Integer
+            Dim nHundreds As Integer
+            Dim nFifties As Integer
+            Dim nTens As Integer
+            Dim nFives As Integer
+            Dim nOnes As Integer
+            Dim sbNumber As New StringBuilder()
+
+            'take the value passed and split it out
+            'to values representing the number of
+            'ones, tens, hundreds, etc
+            nOnes = nArabicValue
+            nThousands = nOnes \ 1000
+            nOnes = nOnes - nThousands * 1000
+            nFiveHundreds = nOnes \ 500
+            nOnes = nOnes - nFiveHundreds * 500
+            nHundreds = nOnes \ 100
+            nOnes = nOnes - nHundreds * 100
+            nFifties = nOnes \ 50
+            nOnes = nOnes - nFifties * 50
+            nTens = nOnes \ 10
+            nOnes = nOnes - nTens * 10
+            nFives = nOnes \ 5
+            nOnes = nOnes - nFives * 5
+
+            'using VB's String function, create
+            'a series of strings representing
+            'the number of each respective denomination
+            sbNumber.Append(New String("M"c, nThousands))
+
+            'handle those cases where the denominator
+            'value is on either side of a roman numeral
+            If nHundreds = 4 Then
+                If nFiveHundreds = 1 Then
+                    sbNumber.Append("CM")
+                Else
+                    sbNumber.Append("CD")
+                End If
+            Else
+                'not a 4, so create the string
+                sbNumber.Append(New String("D"c, nFiveHundreds))
+                sbNumber.Append(New String("C"c, nHundreds))
+            End If
+
+            If nTens = 4 Then
+                If nFifties = 1 Then
+                    sbNumber.Append("XC")
+                Else
+                    sbNumber.Append("XL")
+                End If
+            Else
+                sbNumber.Append(New String("L"c, nFifties))
+                sbNumber.Append(New String("X"c, nTens))
+            End If
+
+            If nOnes = 4 Then
+                If nFives = 1 Then
+                    sbNumber.Append("IX")
+                Else
+                    sbNumber.Append("IV")
+                End If
+            Else
+                sbNumber.Append(New String("V"c, nFives))
+                sbNumber.Append(New String("I"c, nOnes))
+            End If
+
+            Return sbNumber.ToString()
+
+        End Function
 
 
     End Class
