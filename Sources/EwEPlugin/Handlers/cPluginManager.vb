@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPluginManager.vb,v $
+' Revision 1.30  2009/06/03 19:00:23  jeroens
+' Implemented suggestion by Sharon Tickell (CMAR)
+'
 ' Revision 1.29  2009/05/19 13:37:24  jeroens
 ' Uses IDisposedPlugin
 ' Removed warnings for non-accessible plugin DLLs
@@ -263,7 +266,7 @@ Public Class cPluginManager
                     If Not ((clsType.Attributes And System.Reflection.TypeAttributes.Abstract) = _
                         System.Reflection.TypeAttributes.Abstract) Then
                         ' Check for the implementation of the specified interface
-                        clsInterface = clsType.GetInterface("IPlugin", True)
+                        clsInterface = clsType.GetInterface("EwEPlugin.IPlugin", True)
                         If Not (clsInterface Is Nothing) Then
                             ' Get the plugin
                             ip = LoadPlugin(strFileName, clsType.FullName)
