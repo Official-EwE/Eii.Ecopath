@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessTable.vb,v $
+' Revision 1.5  2009/06/03 02:22:42  jeroens
+' Implemented VC changes 2jun09
+'
 ' Revision 1.4  2009/06/02 02:46:58  jeroens
 ' Renamed exposed keystoneness indicators
 '
@@ -61,7 +64,7 @@ Public Class cKeystonenessTable
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX
-        astrRowContent(3) = My.Resources.COL_HDR_TOTALIMPACTOVERB
+        astrRowContent(3) = My.Resources.COL_HDR_KEYSTONEINDEX2
         astrRowContent(4) = My.Resources.COL_HDR_RELTOTALIMPACT
         Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True

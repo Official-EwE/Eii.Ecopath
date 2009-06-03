@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cKeystonenessGraph.vb,v $
+' Revision 1.7  2009/06/03 02:22:42  jeroens
+' Implemented VC changes 2jun09
+'
 ' Revision 1.6  2009/06/02 15:58:53  jeroens
 ' Added TotalImpact (needs validation)
 '
@@ -66,8 +69,8 @@ Public Class cKeystonenessGraph
     ''' <summary>Graph content styles.</summary>
     Private Enum eContentType As Byte
         Keystoneness
-        TotalImpact
-        TotalImpactOverB
+        TotalEffectOverB
+        KeystoneIndex2
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -115,9 +118,9 @@ Public Class cKeystonenessGraph
     ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiKeyst As ToolStripMenuItem = Nothing
     ''' <summary>Custom toolstrip item</summary>
-    Private m_tsmiTotImpact As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiTotImpactOverB As ToolStripMenuItem = Nothing
+    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiKeyst2 As ToolStripMenuItem = Nothing
 
 #End Region ' Private vars
 
@@ -193,10 +196,10 @@ Public Class cKeystonenessGraph
                 Case eContentType.Keystoneness
                     ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
 
-                Case eContentType.TotalImpact
-                    ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.TotalImpact(iGroup))
+                Case eContentType.TotalEffectOverB
+                    ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.RelativeTotalImpact(iGroup))
 
-                Case eContentType.TotalImpactOverB
+                Case eContentType.KeystoneIndex2
                     ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
 
             End Select
@@ -300,16 +303,16 @@ Public Class cKeystonenessGraph
         Me.m_tsmiKeyst = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE)
         AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
 
-        Me.m_tsmiTotImpact = New ToolStripMenuItem("Total &impact")
-        AddHandler Me.m_tsmiTotImpact.Click, AddressOf OnContentTI
+        Me.m_tsmiKeyst2 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE2)
+        AddHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentTIoverB
 
-        Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTALIMPACT_OVER_BIOMASS)
-        AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTIoverB
+        Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTIMPACT_OVER_B)
+        AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst)
-        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpact)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpactOverB)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst2)
         Me.Toolstrip.Items.Add(Me.m_tsContent)
 
     End Sub
@@ -332,10 +335,10 @@ Public Class cKeystonenessGraph
         Me.m_tsContent.DropDownItems.Clear()
         RemoveHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
         Me.m_tsmiKeyst = Nothing
-        RemoveHandler Me.m_tsmiTotImpact.Click, AddressOf OnContentTI
-        Me.m_tsmiTotImpact = Nothing
-        RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTIoverB
+        RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
         Me.m_tsmiTotImpactOverB = Nothing
+        RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentTIoverB
+        Me.m_tsmiKeyst2 = Nothing
         Me.m_tsContent = Nothing
 
     End Sub
@@ -357,11 +360,11 @@ Public Class cKeystonenessGraph
     End Sub
 
     Private Sub OnContentTI(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.Content = eContentType.TotalImpact
+        Me.Content = eContentType.TotalEffectOverB
     End Sub
 
     Private Sub OnContentTIoverB(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.Content = eContentType.TotalImpactOverB
+        Me.Content = eContentType.KeystoneIndex2
     End Sub
 
     Private Sub UpdateControls()
@@ -371,19 +374,19 @@ Public Class cKeystonenessGraph
         Me.m_tsmiNumbers.Checked = (Me.Representation = eRepresentationType.Number)
 
         Me.m_tsmiKeyst.Checked = (Me.Content = eContentType.Keystoneness)
-        Me.m_tsmiTotImpact.Checked = (Me.Content = eContentType.TotalImpact)
-        Me.m_tsmiTotImpactOverB.Checked = (Me.Content = eContentType.TotalImpactOverB)
+        Me.m_tsmiTotImpactOverB.Checked = (Me.Content = eContentType.TotalEffectOverB)
+        Me.m_tsmiKeyst2.Checked = (Me.Content = eContentType.KeystoneIndex2)
 
         Select Case Me.Content
 
             Case eContentType.Keystoneness
                 Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
 
-            Case eContentType.TotalImpact
-                Me.m_zgh.ConfigurePane("", "Relative biomass", "Total impact", False)
+            Case eContentType.TotalEffectOverB
+                Me.m_zgh.ConfigurePane("", "Relative biomass", My.Resources.LBL_RELTOTALIMPACT, False)
 
-            Case eContentType.TotalImpactOverB
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_TOTALIMPACT_OVER_B, False)
+            Case eContentType.KeystoneIndex2
+                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE2, False)
 
         End Select
 

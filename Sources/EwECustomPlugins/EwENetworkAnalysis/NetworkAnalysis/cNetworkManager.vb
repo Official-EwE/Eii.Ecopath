@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.21  2009/06/03 02:22:40  jeroens
+' Implemented VC changes 2jun09
+'
 ' Revision 1.20  2009/06/02 15:56:20  jeroens
 ' Added TotalImpact (needs validation)
 '
@@ -1979,12 +1982,6 @@ Public Class cNetworkManager
     Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
         Get
             Return Me.m_econetwork.KeystoneIndex(iGroup)
-        End Get
-    End Property
-
-    Public ReadOnly Property TotalImpact(ByVal iGroup As Integer) As Double
-        Get
-            Return Me.m_econetwork.TotalImpact(iGroup)
         End Get
     End Property
 
