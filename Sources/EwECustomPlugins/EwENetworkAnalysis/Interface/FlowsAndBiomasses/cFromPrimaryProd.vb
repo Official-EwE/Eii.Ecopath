@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromPrimaryProd.vb,v $
+' Revision 1.10  2009/06/03 19:26:28  jeroens
+' Uses EwEUtils ToRoman
+'
 ' Revision 1.9  2009/05/30 00:00:52  jeroens
 ' Toolstrip usage centralized
 '
@@ -33,6 +36,7 @@
 Option Strict On
 Option Explicit On
 
+Imports EwEUtils.Utilities
 Imports System.Windows.Forms
 Imports ZedGraph
 
@@ -81,7 +85,7 @@ Public Class cFromPrimaryProd
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
             'strRowContent(0) = CStr(i)
-            strRowContent(0) = CRoman(i)
+            strRowContent(0) = StringUtils.ToRoman(i)
             If i = 1 Then
                 strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.PPImport(i))
                 sSum(1) = sSum(1) + NetworkManager.PPImport(i)

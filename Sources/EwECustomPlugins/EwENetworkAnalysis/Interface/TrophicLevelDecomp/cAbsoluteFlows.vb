@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cAbsoluteFlows.vb,v $
+' Revision 1.11  2009/06/03 19:26:26  jeroens
+' Uses EwEUtils ToRoman
+'
 ' Revision 1.10  2009/05/30 00:00:47  jeroens
 ' Toolstrip usage centralized
 '
@@ -36,6 +39,7 @@
 Option Strict On
 Option Explicit On
 
+Imports EwEUtils.Utilities
 Imports System.Windows.Forms
 Imports ZedGraph
 
@@ -74,7 +78,7 @@ Public Class cAbsoluteFlows
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
         For j As Integer = 1 To NetworkManager.nTrophicLevels
-            astrRowContent(j + 1) = CRoman(j)
+            astrRowContent(j + 1) = StringUtils.ToRoman(j)
         Next
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True

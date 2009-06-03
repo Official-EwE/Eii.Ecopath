@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFromAllCombined.vb,v $
+' Revision 1.10  2009/06/03 19:26:27  jeroens
+' Uses EwEUtils ToRoman
+'
 ' Revision 1.9  2009/05/30 00:00:52  jeroens
 ' Toolstrip usage centralized
 '
@@ -29,11 +32,13 @@
 ' --== DELETED HISTORY ==--
 '
 '==============================================================================
+
 Option Strict On
 Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
+Imports EwEUtils.Utilities
 
 Public Class cFromAllCombined
     Inherits cContentManager
@@ -79,7 +84,7 @@ Public Class cFromAllCombined
         Grid.Rows(0).Visible = True
 
         For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
-            astrRowContent(0) = CRoman(i)
+            astrRowContent(0) = StringUtils.ToRoman(i)
             If i = 1 Then
                 astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.DetImport(i) + NetworkManager.PPImport(i))
                 asSum(1) = asSum(1) + NetworkManager.DetImport(i) + NetworkManager.PPImport(i)
