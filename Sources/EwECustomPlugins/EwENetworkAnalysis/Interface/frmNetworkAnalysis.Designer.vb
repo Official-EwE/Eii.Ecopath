@@ -70,6 +70,8 @@ Partial Class frmNetworkAnalysis
         '
         Me.tvNetworkAnalysis.BackColor = System.Drawing.Color.MintCream
         resources.ApplyResources(Me.tvNetworkAnalysis, "tvNetworkAnalysis")
+        Me.tvNetworkAnalysis.FullRowSelect = True
+        Me.tvNetworkAnalysis.HideSelection = False
         Me.tvNetworkAnalysis.ImageList = Me.imglstNetworkAnalysis
         Me.tvNetworkAnalysis.Name = "tvNetworkAnalysis"
         Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes8"), System.Windows.Forms.TreeNode)})
