@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.12  2009/06/04 23:52:58  jeroens
+' Added null style support for formatting numbers
+'
 ' Revision 1.11  2009/05/28 12:37:48  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -397,6 +400,10 @@ Namespace Style
 
             ' Use styleguide numdigits setting if value not provided
             If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
+
+            If (style And eStyleFlags.Null) > 0 Then
+                Return ""
+            End If
 
             ' Calculated values must be formatted with a hard number of digits
             If (style And (eStyleFlags.ValueComputed Or eStyleFlags.Sum)) > 0 Then
