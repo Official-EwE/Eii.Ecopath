@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.22  2009/06/04 18:04:07  jeroens
+' Moved transfer efficiency computations to manager
+'
 ' Revision 1.21  2009/06/03 02:22:40  jeroens
 ' Implemented VC changes 2jun09
 '
@@ -901,6 +904,37 @@ Public Class cNetworkManager
                 sumad += m_econetwork.Ad(itl, iGroup)
             Next
             Return sumad
+        End Get
+    End Property
+
+    Public ReadOnly Property DetTransferEfficiency(ByVal iTrophicLevel As Integer) As Single
+        Get
+            If Me.DetThroughtput(iTrophicLevel) > 0.001 Then
+                Return (Me.CatchDetritus(iTrophicLevel) + Me.DetConsByPred(iTrophicLevel)) / Me.DetThroughtput(iTrophicLevel)
+            End If
+            Return 0
+        End Get
+    End Property
+
+    Public ReadOnly Property PPTransferEfficiency(ByVal iTrophicLevel As Integer) As Single
+        Get
+            If Me.PPThroughtput(iTrophicLevel) > 0.001 Then
+                Return (Me.CA(iTrophicLevel) + Me.PPConsByPred(iTrophicLevel)) / Me.PPThroughtput(iTrophicLevel)
+            End If
+            Return 0
+        End Get
+    End Property
+
+    Public ReadOnly Property TotTransferEfficiency(ByVal iTrophicLevel As Integer) As Single
+        Get
+            Dim sTotThroughput As Single = (Me.DetThroughtput(iTrophicLevel) + Me.PPThroughtput(iTrophicLevel))
+            If sTotThroughput > 0 Then
+                Return (Me.CatchDetritus(iTrophicLevel) + _
+                        Me.CA(iTrophicLevel) + _
+                        Me.DetConsByPred(iTrophicLevel) + _
+                        Me.PPConsByPred(iTrophicLevel)) / sTotThroughput
+            End If
+            Return 0
         End Get
     End Property
 
