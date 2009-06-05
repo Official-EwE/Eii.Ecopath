@@ -743,6 +743,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to accum.
+        '''</summary>
+        Friend ReadOnly Property LBL_BACCUM() As String
+            Get
+                Return ResourceManager.GetString("LBL_BACCUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to biomass.
+        '''</summary>
+        Friend ReadOnly Property LBL_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("LBL_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Catch detritus required.
         '''</summary>
         Friend ReadOnly Property LBL_CATCH_DET_REQ() As String
@@ -757,6 +775,15 @@ Namespace My.Resources
         Friend ReadOnly Property LBL_CATCH_PPR() As String
             Get
                 Return ResourceManager.GetString("LBL_CATCH_PPR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to consumption.
+        '''</summary>
+        Friend ReadOnly Property LBL_CONS() As String
+            Get
+                Return ResourceManager.GetString("LBL_CONS", resourceCulture)
             End Get
         End Property
         
@@ -788,6 +815,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to exports and catches.
+        '''</summary>
+        Friend ReadOnly Property LBL_EXPORT() As String
+            Get
+                Return ResourceManager.GetString("LBL_EXPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to FCI.
         '''</summary>
         Friend ReadOnly Property LBL_FCI() As String
@@ -806,6 +842,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to flow to detritus.
+        '''</summary>
+        Friend ReadOnly Property LBL_FLOWDET() As String
+            Get
+                Return ResourceManager.GetString("LBL_FLOWDET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Impacted group.
         '''</summary>
         Friend ReadOnly Property LBL_IMPACTED_GP() As String
@@ -820,6 +865,15 @@ Namespace My.Resources
         Friend ReadOnly Property LBL_IMPACTING_GP() As String
             Get
                 Return ResourceManager.GetString("LBL_IMPACTING_GP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to import.
+        '''</summary>
+        Friend ReadOnly Property LBL_IMPORT() As String
+            Get
+                Return ResourceManager.GetString("LBL_IMPORT", resourceCulture)
             End Get
         End Property
         
@@ -941,11 +995,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to predation.
+        '''</summary>
+        Friend ReadOnly Property LBL_PREDATION() As String
+            Get
+                Return ResourceManager.GetString("LBL_PREDATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Relative total impact.
         '''</summary>
         Friend ReadOnly Property LBL_RELTOTALIMPACT() As String
             Get
                 Return ResourceManager.GetString("LBL_RELTOTALIMPACT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to respiration.
+        '''</summary>
+        Friend ReadOnly Property LBL_RESP() As String
+            Get
+                Return ResourceManager.GetString("LBL_RESP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TE.
+        '''</summary>
+        Friend ReadOnly Property LBL_TE() As String
+            Get
+                Return ResourceManager.GetString("LBL_TE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TL.
+        '''</summary>
+        Friend ReadOnly Property LBL_TL() As String
+            Get
+                Return ResourceManager.GetString("LBL_TL", resourceCulture)
             End Get
         End Property
         
@@ -968,7 +1058,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Graph content.
+        '''  Looks up a localized string similar to TST(%).
+        '''</summary>
+        Friend ReadOnly Property LBL_TST() As String
+            Get
+                Return ResourceManager.GetString("LBL_TST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Graph c&amp;ontent.
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT() As String
             Get
@@ -995,6 +1094,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Show &amp;biomass.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_SHOW_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_SHOW_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show biomass &amp;accumulation.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_SHOW_BIOMASSACCUM() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_SHOW_BIOMASSACCUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show &amp;import.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_SHOW_IMPORT() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_SHOW_IMPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show &amp;TST(%).
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_SHOW_TST() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_SHOW_TST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Total &amp;impact over Biomass.
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_TOTIMPACT_OVER_B() As String
@@ -1004,7 +1139,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Graph style.
+        '''  Looks up a localized string similar to Graph &amp;style.
         '''</summary>
         Friend ReadOnly Property MNU_STYLE() As String
             Get
@@ -1027,6 +1162,24 @@ Namespace My.Resources
         Friend ReadOnly Property MNU_STYLE_CIRCLES_SCALED() As String
             Get
                 Return ResourceManager.GetString("MNU_STYLE_CIRCLES_SCALED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Collapse detritus.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE_DETRITUS_COLLAPSE() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE_DETRITUS_COLLAPSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Expand detritus.
+        '''</summary>
+        Friend ReadOnly Property MNU_STYLE_DETRITUS_EXPAND() As String
+            Get
+                Return ResourceManager.GetString("MNU_STYLE_DETRITUS_EXPAND", resourceCulture)
             End Get
         End Property
         

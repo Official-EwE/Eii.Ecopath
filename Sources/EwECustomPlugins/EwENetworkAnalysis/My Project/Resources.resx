@@ -571,7 +571,8 @@
     <value>Relative total impact</value>
   </data>
   <data name="MNU_CONTENT" xml:space="preserve">
-    <value>&amp;Graph content</value>
+    <value>Graph c&amp;ontent</value>
+    <comment>Beware of shortcut conflict with pre-defined toolstip accelerators in dialog template</comment>
   </data>
   <data name="MNU_CONTENT_KEYSTONE" xml:space="preserve">
     <value>&amp;Keystoneness</value>
@@ -580,7 +581,8 @@
     <value>Keystone index #&amp;2</value>
   </data>
   <data name="MNU_STYLE" xml:space="preserve">
-    <value>&amp;Graph style</value>
+    <value>Graph &amp;style</value>
+    <comment>Beware of shortcut conflict with pre-defined toolstip accelerators in dialog template</comment>
   </data>
   <data name="MNU_STYLE_CIRCLES" xml:space="preserve">
     <value>&amp;Circles</value>
@@ -608,5 +610,67 @@
   </data>
   <data name="MNU_CONTENT_TOTIMPACT_OVER_B" xml:space="preserve">
     <value>Total &amp;impact over Biomass</value>
+  </data>
+  <data name="LBL_BACCUM" xml:space="preserve">
+    <value>accum</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_BIOMASS" xml:space="preserve">
+    <value>biomass</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_CONS" xml:space="preserve">
+    <value>consumption</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_EXPORT" xml:space="preserve">
+    <value>exports and catches</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_FLOWDET" xml:space="preserve">
+    <value>flow to detritus</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_IMPORT" xml:space="preserve">
+    <value>import</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_PREDATION" xml:space="preserve">
+    <value>predation</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_RESP" xml:space="preserve">
+    <value>respiration</value>
+    <comment>lower-case lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_TE" xml:space="preserve">
+    <value>TE</value>
+    <comment>lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_TL" xml:space="preserve">
+    <value>TL</value>
+    <comment>lindeman graph legend label</comment>
+  </data>
+  <data name="LBL_TST" xml:space="preserve">
+    <value>TST(%)</value>
+    <comment>lindeman graph legend label</comment>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASS" xml:space="preserve">
+    <value>Show &amp;biomass</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASSACCUM" xml:space="preserve">
+    <value>Show biomass &amp;accumulation</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_IMPORT" xml:space="preserve">
+    <value>Show &amp;import</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_TST" xml:space="preserve">
+    <value>Show &amp;TST(%)</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_COLLAPSE" xml:space="preserve">
+    <value>&amp;Collapse detritus</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_EXPAND" xml:space="preserve">
+    <value>&amp;Expand detritus</value>
   </data>
 </root>
