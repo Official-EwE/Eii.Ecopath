@@ -1533,6 +1533,10 @@
     <EmbeddedResource Include="Resources\SaveAllHS.png" />
     <EmbeddedResource Include="Resources\openHS.png" />
     <EmbeddedResource Include="Resources\NewDocumentHS.png" />
+    <EmbeddedResource Include="Tools\MSE\frmMSE.resx">
+      <DependentUpon>frmMSE.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Wizard\EwEScenarioDlg.resx">
       <DependentUpon>EwEScenarioDlg.vb</DependentUpon>
       <SubType>Designer</SubType>
