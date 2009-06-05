@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.23  2009/06/05 02:50:25  jeroens
+' Moving calcs from UI to manager for reuse
+'
 ' Revision 1.22  2009/06/04 18:04:07  jeroens
 ' Moved transfer efficiency computations to manager
 '
@@ -1387,6 +1390,16 @@ Public Class cNetworkManager
         End Get
     End Property
 
+    Public ReadOnly Property PPThroughtputSum() As Single
+        Get
+            Dim sSum As Single = 0
+            For i As Integer = 1 To Me.nTrophicLevels
+                sSum += Me.PPThroughtput(i)
+            Next
+            Return sSum
+        End Get
+    End Property
+
     ''' <summary>
     ''' Flow and Biomass From detritus. Import 
     ''' </summary>
@@ -1432,13 +1445,25 @@ Public Class cNetworkManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Flow and Biomass From detritus. Throughtput
     ''' </summary>
     Public ReadOnly Property DetThroughtput(ByVal iTrophicLevel As Integer) As Single
         Get
             Return m_econetwork.TRPD(iTrophicLevel)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Flow and Biomass From detritus. Throughtput sum
+    ''' </summary>
+    Public ReadOnly Property DetThroughtputSum() As Single
+        Get
+            Dim sSum As Single = 0
+            For iTrophicLevel As Integer = 1 To Me.nTrophicLevels
+                sSum += Me.DetThroughtput(iTrophicLevel)
+            Next
+            Return sSum
         End Get
     End Property
 
