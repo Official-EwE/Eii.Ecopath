@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: NavigationPanel.vb,v $
+' Revision 1.26  2009/06/05 19:01:49  joeb
+' Added MSE node to navigation tree
+'
 ' Revision 1.25  2009/05/11 01:50:59  jeroens
 ' Renamed command classes
 '
@@ -225,6 +228,9 @@ Public Class NavigationPanel
         m_nodeController.Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help
         m_nodeController.Add("ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), "") ' ToDo: connect to help
         m_nodeController.Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
+
+        'MSE
+        m_nodeController.Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
 
     End Sub
 
