@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.48  2009/06/05 20:26:01  joeb
+' Change setFishTime() to handle both Search and Non Search calls
+'
 ' Revision 1.47  2009/04/29 17:43:37  joeb
 ' Added Relative Biomass to cEcosimGroupOutputs
 '
@@ -716,6 +719,7 @@ Public Property PluginManager() As cPluginManager
             Dim told As Single
             Dim RelFopt() As Single, QGrowUsed() As Single
             Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
+            Dim sumBio As Single
 
             Dim Fgear() As Single
 
@@ -858,16 +862,9 @@ Public Property PluginManager() As cPluginManager
 
                     If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)
 
-                    'set FishTime() 
-                    If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
-                        'in Fishing Polcy or MSE search
-                        'sets FishRateNo to FishYear() computed above then computes FishTime() with FishRateNo
-                        Me.setFishTimeForFPSMSE(itime)
-                    Else
-                        'Sets FishTime() to forcing data if loaded otherwise computes it
-                        Me.setFishTime(itime, iyr)
-                    End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
-
+                    'Sets FishTime() density dependant catchability  
+                    'search routines vary FishYear() which is then used to set FishTime()
+                    Me.setFishTime(itime, iyr)
 
                     If m_Data.PredictSimEffort Then
 
@@ -932,6 +929,10 @@ Public Property PluginManager() As cPluginManager
 
                     CheckIfSmall(1, nvar, BB)
 
+                    For igrp As Integer = 1 To Me.nGroups
+                        sumBio += BB(igrp)
+                    Next
+
                     'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                     '*
                     If m_search.bInSearch And iyr >= m_search.BaseYear Then
@@ -952,7 +953,7 @@ Public Property PluginManager() As cPluginManager
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
                     If Me.bStopRunning Then Exit For
- 
+
                 Next ipct 'Month
                 'xxxxxxxxxxxxxxxxxxxxxxxxx
                 'END OF MONTHLY TIME LOOP
@@ -999,6 +1000,8 @@ Public Property PluginManager() As cPluginManager
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
+            System.Console.WriteLine("Sum Bio = " & sumBio.ToString)
+
         End Sub
 
         ''' <summary>
@@ -1042,45 +1045,65 @@ Public Property PluginManager() As cPluginManager
 
 
         ''' <summary>
-        ''' Set FishTime() Computed or Forced 
+        ''' Set FishTime(Group)density dependant catchability
         ''' </summary>
         ''' <param name="iTime"></param>
-        ''' <remarks></remarks>
+        ''' <remarks>If runnning in a regular mode (no search) then use fishing mortality rates set by the user to compute density dependant catchability. 
+        '''  Otherwise (in a search) use FishYear() to set the user inputed fishing mortality then use this to computed catchability. </remarks>
         Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
 
-            Debug.Assert(Me.m_search.SearchMode <> eSearchModes.FishingPolicy Or Me.m_search.SearchMode <> eSearchModes.MSE, Me.ToString & ".setFishTime() incorrect search mode.")
+            If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
+                'in Fishing Polcy or MSE search
+                'sets FishRateNo to FishYear() computed before this is called then computes FishTime() with FishRateNo
 
-            For iGrp As Integer = 1 To nvar
+                Debug.Assert(Me.m_search.SearchMode = eSearchModes.FishingPolicy Or Me.m_search.SearchMode = eSearchModes.MSE, Me.ToString & ".setFishTimeForFPSMSE incorrect search mode.")
 
-                'Catches forced or computed
-                If iYear <= Me.m_RefData.NdatYear And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
-                    'Forced catch rates
-                    'Was up to Sep 2008:
-                    m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
-                    'Dim CBratio As Double = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
-                    'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
-                    'Carl suggests the following:
-                    'predict F from
-                    'F=w*Fmax+(1-w)C/B
-                    'Where the “weight” w is given by the logistic function, and K = 5
-                    'w = 1 / (1 + exp(-K * (C / B - Fmax)))
-                    'Fmax is the Flimit from the search
-                    'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - m_search.FLimit(iGrp))))
-                    'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
+                'in Fishing Policy or MSE search
+                For igrp As Integer = 1 To nvar
+                    'overwrite FishRateNo() with computed catch rates (FishYear(group)) if in Fishing Policy or MSE 
+                    'see EwE5 RunModelValue()
+                    m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
+                    m_Data.FishTime(igrp) = m_Data.QmQo(igrp) * m_Data.FishRateNo(igrp, iTime) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
 
-                    'The next is easier, and gives almost the same answer:
-                    If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_search.FLimit(iGrp) ' : Stop
-                Else
-                    'Computed fishing mortality
-                    m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
-                End If
+                Next igrp
 
-                'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
-                If iYear <= Me.m_RefData.NdatYear Then
-                    Me.m_RefData.PoolForceZ(iGrp, 0) = IIf(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
-                End If
+            Else
 
-            Next iGrp
+                Debug.Assert(Me.m_search.SearchMode <> eSearchModes.FishingPolicy Or Me.m_search.SearchMode <> eSearchModes.MSE, Me.ToString & ".setFishTime() incorrect search mode.")
+
+                For iGrp As Integer = 1 To nvar
+
+                    'Catches forced or computed
+                    If iYear <= Me.m_RefData.NdatYear And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
+                        'Forced catch rates
+                        'Was up to Sep 2008:
+                        m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
+                        'Dim CBratio As Double = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
+                        'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
+                        'Carl suggests the following:
+                        'predict F from
+                        'F=w*Fmax+(1-w)C/B
+                        'Where the “weight” w is given by the logistic function, and K = 5
+                        'w = 1 / (1 + exp(-K * (C / B - Fmax)))
+                        'Fmax is the Flimit from the search
+                        'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - m_search.FLimit(iGrp))))
+                        'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
+
+                        'The next is easier, and gives almost the same answer:
+                        If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_search.FLimit(iGrp) ' : Stop
+                    Else
+                        'Computed fishing mortality
+                        m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
+                    End If
+
+                    'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
+                    If iYear <= Me.m_RefData.NdatYear Then
+                        Me.m_RefData.PoolForceZ(iGrp, 0) = IIf(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
+                    End If
+
+                Next iGrp
+
+            End If
 
         End Sub
 
