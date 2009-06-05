@@ -407,6 +407,27 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAHUHJvcEJhZwRUZXh0BE5hbWUJSXNDaGVja2VkCklt
+        YWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRD
+        b3VudAQBAQAAAQABAClTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Pd25lckRyYXdQcm9wZXJ0eUJhZwIAAAAB
+        CAgIAgAAAAkDAAAABgQAAAAUTGluZGVtYW4gc3BpbmUgZ3JhcGgGBQAAAA9uZExpbmRlbWFuU3BpbmUA
+        /////wYGAAAAAP////8JBgAAAAAAAAAMBwAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAwAAAClTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5Pd25lckRyYXdQcm9wZXJ0eUJhZwMAAAAJQmFja0NvbG9yCUZvcmVDb2xv
+        cgRGb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yBwAAABRTeXN0ZW0uRHJhd2luZy5Db2xvcgcAAAAT
+        U3lzdGVtLkRyYXdpbmcuRm9udAcAAAACAAAABfj///8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5h
+        bWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJBwcHAAAACgAAAAAAAAAAAAAAAAH3////+P///woA
+        AAAAAAAAAAAAAAAJCgAAAAUKAAAAE1N5c3RlbS5EcmF3aW5nLkZvbnQEAAAABE5hbWUEU2l6ZQVTdHls
+        ZQRVbml0AQAEBAsYU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlBwAAABtTeXN0ZW0uRHJhd2luZy5HcmFw
+        aGljc1VuaXQHAAAABwAAAAYLAAAAFE1pY3Jvc29mdCBTYW5zIFNlcmlmAAAEQQX0////GFN5c3RlbS5E
+        cmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIBwAAAAAAAAAF8////xtTeXN0ZW0uRHJhd2luZy5H
+        cmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAcAAAADAAAACw==
+</value>
+  </data>
+  <data name="tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQ4AAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
         CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
         bGRyZW4wCWNoaWxkcmVuMQljaGlsZHJlbjIJY2hpbGRyZW4zCWNoaWxkcmVuNAljaGlsZHJlbjUBAQAA
@@ -483,7 +504,7 @@
         YXlzX2FsbAD/////CQUAAAD/////CQUAAAAAAAAACw==
 </value>
   </data>
-  <data name="tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="tvNetworkAnalysis.Nodes9" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -700,7 +721,7 @@
     <value>87, 22</value>
   </data>
   <data name="tsbtnOutputIndicesCSV.Text" xml:space="preserve">
-    <value>Save to CSV file</value>
+    <value>Save to &amp;CSV file</value>
   </data>
   <data name="tsbtnOutputGraphEMF.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -724,7 +745,7 @@
     <value>88, 22</value>
   </data>
   <data name="tsbtnOutputGraphEMF.Text" xml:space="preserve">
-    <value>Save to EMF file</value>
+    <value>Save to &amp;EMF file</value>
   </data>
   <data name="m_toolstrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>

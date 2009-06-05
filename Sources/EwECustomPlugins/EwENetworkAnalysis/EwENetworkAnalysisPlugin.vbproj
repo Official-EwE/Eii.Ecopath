@@ -116,6 +116,8 @@
     <Compile Include="Interface\modUtility.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForConsumpOfAllGp.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForHarvestOfAllGp.vb" />
+    <Compile Include="Interface\LindemanSpine\cLindemanSpine.vb" />
+    <Compile Include="Interface\LindemanSpine\cLindemanSpineDiagram.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cBiomassByTrophicLevel.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cBiomassPyramid.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\SummaryFlowData\cCatchByTrophicLevel.vb" />

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.29  2009/06/05 02:48:06  jeroens
+' Added Lindeman spine
+'
 ' Revision 1.28  2009/05/30 00:00:50  jeroens
 ' Toolstrip usage centralized
 '
@@ -248,6 +251,9 @@ Public Class frmNetworkAnalysis
 
             Case "ndCyclingAndPathLength"
                 Me.m_contentmanager = New cCyclingAndPathLen()
+
+            Case "ndLindemanSpine"
+                Me.m_contentmanager = New cLindemanSpine()
 
             Case "ndWithoutPrimaryProductionRequiredEstimate"
                 Me.m_contentmanager = New cIndicesWithoutPPREst()
