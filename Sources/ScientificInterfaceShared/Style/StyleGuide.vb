@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: StyleGuide.vb,v $
+' Revision 1.13  2009/06/05 16:01:34  jeroens
+' Limited max precision
+'
 ' Revision 1.12  2009/06/04 23:52:58  jeroens
 ' Added null style support for formatting numbers
 '
@@ -394,12 +397,12 @@ Namespace Style
         Public Function FormatNumber(ByVal dValue As Double, Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
                 Optional ByVal iNumDigits As Integer = -1) As String
 
-            Dim dTest As Double = CDbl(Math.Abs(dValue))
-            Dim iMinPrecision As Integer = 0
-            Dim iMaxPrecision As Integer = 10
-
             ' Use styleguide numdigits setting if value not provided
             If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
+
+            Dim dTest As Double = CDbl(Math.Abs(dValue))
+            Dim iMinPrecision As Integer = 0
+            Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
 
             If (style And eStyleFlags.Null) > 0 Then
                 Return ""
