@@ -140,6 +140,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}: ({1}, {2}).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_GRAPHVALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}: {1}.
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String

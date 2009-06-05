@@ -284,4 +284,8 @@
   <data name="GENERIC_VALUE_ALL" xml:space="preserve">
     <value>(All)</value>
   </data>
+  <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
+    <value>{0}: ({1}, {2})</value>
+    <comment>{0}: graph curve name, {1}: X point value, {2}: Y point value</comment>
+  </data>
 </root>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ZedGraphHelper.vb,v $
+' Revision 1.18  2009/06/05 00:58:18  jeroens
+' Localized ZGhelper
+'
 ' Revision 1.17  2009/05/28 12:37:55  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -577,7 +580,10 @@ Namespace Controls
 
         Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
             Dim pp As PointPair = curve(iPoint)
-            Return String.Format("{0}: ({1}, {2})", curve.Label.Text, Me.m_sg.FormatNumber(pp.X), Me.m_sg.FormatNumber(pp.Y))
+            Return String.Format(My.Resources.GENERIC_LABEL_GRAPHVALUE, _
+                                 curve.Label.Text, _
+                                 Me.m_sg.FormatNumber(pp.X), _
+                                 Me.m_sg.FormatNumber(pp.Y))
         End Function
 
 #End Region ' Tooltip
