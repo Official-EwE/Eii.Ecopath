@@ -679,4 +679,7 @@
   <data name="COL_HDR_LIVING_TKM2" xml:space="preserve">
     <value>Living (t/km²)</value>
   </data>
+  <data name="MNU_CONTENT_MAXTL" xml:space="preserve">
+    <value>&amp;Max. trophic level</value>
+  </data>
 </root>

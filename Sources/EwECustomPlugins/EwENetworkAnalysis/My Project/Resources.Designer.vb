@@ -1112,6 +1112,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to &amp;Max. trophic level.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_MAXTL() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_MAXTL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Show &amp;biomass.
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_SHOW_BIOMASS() As String
