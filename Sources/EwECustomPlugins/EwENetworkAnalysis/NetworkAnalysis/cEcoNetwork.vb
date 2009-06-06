@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoNetwork.vb,v $
+' Revision 1.23  2009/06/06 21:54:39  jeroens
+' Cleaning up
+'
 ' Revision 1.22  2009/06/03 02:22:40  jeroens
 ' Implemented VC changes 2jun09
 '
@@ -1008,16 +1011,16 @@ Public Class cEcoNetwork
         For i = 2 To NoTL
             For j = 1 To m_epdata.NumLiving
                 If ADj(j) > 0 Then
-                    PredatD(i) = PredatD(i) + PredNoC(j) * Ad(i, j)
-                    TRPD(i) = TRPD(i) + HNoC(j) * Ad(i, j)
+                    PredatD(i) += PredNoC(j) * Ad(i, j)
+                    TRPD(i) += HNoC(j) * Ad(i, j)
 
-                    If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j)
+                    If GrpsToShow(j) Then TrpShow(i) += HNoC(j) * Ad(i, j)
                     'TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j) 'joeh
-                    ImpD(i) = ImpD(i) + im(j) * Ad(i, j)
-                    CAD(i) = CAD(i) + m_epdata.fCatch(j) * Ad(i, j)
-                    EXAD(i) = EXAD(i) + Ex(j) * Ad(i, j)
-                    DTAD(i) = DTAD(i) + m_epdata.FlowToDet(j) * Ad(i, j)
-                    RSPD(i) = RSPD(i) + Resp(j) * Ad(i, j)
+                    ImpD(i) += im(j) * Ad(i, j)
+                    CAD(i) += m_epdata.fCatch(j) * Ad(i, j)
+                    EXAD(i) += Ex(j) * Ad(i, j)
+                    DTAD(i) += m_epdata.FlowToDet(j) * Ad(i, j)
+                    RSPD(i) += Resp(j) * Ad(i, j)
                 End If
             Next j
             SumTrpD = SumTrpD + TRPD(i)
@@ -1042,7 +1045,7 @@ Public Class cEcoNetwork
                 i = NoTL + 1
             End If
         Next i
-        'MsgBox "FLOWS ORIGINATING FROM THE DETRITUS"
+
         For i = 1 To NoTL + 1
             If i <= m_epdata.NumGroups Then
                 lines = lines + 1
@@ -1051,7 +1054,7 @@ Public Class cEcoNetwork
                 End If
             End If
         Next i
-        'MsgBox "FLOWS ALL COMBINED"
+
         TotalTrp = 0
         SumIm = 0
         For i = 1 To NoTL + 1
@@ -1059,11 +1062,11 @@ Public Class cEcoNetwork
                 If i = 1 Then
                     'MsgBox Cstr$(Impo(i) + ImpD(i))
                 Else
-                    SumIm = SumIm + Impo(i) + ImpD(i)
+                    SumIm += (Impo(i) + ImpD(i))
                 End If
                 TotalTrp = TotalTrp + TRP(i) + TRPD(i)
                 If i <= m_epdata.NumLiving Then
-                    If TRP(i) + TRPD(i) < 0.0001 And TRP(i + 1) + TRPD(i + 1) < 0.0001 Then i = NoTL + 1
+                    If (TRP(i) + TRPD(i)) < 0.0001 And (TRP(i + 1) + TRPD(i + 1)) < 0.0001 Then i = NoTL + 1
                 Else
                     i = NoTL + 1
                 End If
@@ -1113,46 +1116,15 @@ Public Class cEcoNetwork
 
         For i = 1 To NoTL + 1
             If i <= m_epdata.NumLiving Then
-                TotalB = TotalB + BbyTL(i)
+                TotalB += BbyTL(i)
                 If BbyTL(i) < 0.0001 Then i = NoTL + 1
             End If
         Next i
 
-
-        '      GoTo EndOfLinde
-
-        '===========
-        'Subroutines
-        '===========
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'jb This has been moved to   Private Sub SortTL()
-        'SortTL:  'This routine sorts group after
-        '        'trophic level
-        '        For K = 1 To m_epdata.NumGroups
-        '            TropLvl(K) = m_epdata.TTLX(K)
-        '        Next K
-
-        '        For kk = 1 To m_epdata.NumGroups
-        '            MinTL = 100
-        '            Grp = -2
-        '            For K = 1 To m_epdata.NumGroups
-        '                If TropLvl(K) <= MinTL And TropLvl(K) > 0 Then
-        '                    MinTL = TropLvl(K)
-        '                    Grp = K
-        '                End If
-        '            Next K
-        '            TLsort(kk) = Grp             'Contains list with sorted grpnumbers
-        '            TropLvl(Grp) = -1
-        '        Next kk
-        '        Return
-        'xxxxxxxxxxxxxxxxxxxxxxxxx
-
-        'EndOfLinde:
     End Sub
 
-
     Private Sub SortTL()
-        'ToDo_jb cNetWork.SortTL this was a gosub in the EwE5 code make sure this does the same thing
+
         Dim K As Integer
         Dim Grp As Integer
         Dim MinTL As Integer
