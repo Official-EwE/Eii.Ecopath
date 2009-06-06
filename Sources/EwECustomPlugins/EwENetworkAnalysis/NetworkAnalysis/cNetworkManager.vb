@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cNetworkManager.vb,v $
+' Revision 1.24  2009/06/06 21:55:39  jeroens
+' Added DetritusByTrophicLevel
+'
 ' Revision 1.23  2009/06/05 02:50:25  jeroens
 ' Moving calcs from UI to manager for reuse
 '
@@ -867,6 +870,26 @@ Public Class cNetworkManager
     Public ReadOnly Property BiomassByGroup(ByVal iGroupNum As Integer) As Single
         Get
             Return m_epdata.B(iGroupNum)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' EwE5 Trophic level decomposition detritus by Trophic Level
+    ''' </summary>
+    Public ReadOnly Property DetritusByTrophicLevel(ByVal iTrophicLevel As Integer) As Single
+        Get
+            Dim sMass As Single = 0
+            If iTrophicLevel = 1 Then
+                For i As Integer = Me.nLivingGroups + 1 To Me.nGroups
+                    sMass += Me.BiomassByGroup(i)
+                Next
+            Else
+                If Me.PPToDetritus(iTrophicLevel) > 0 Then
+                    sMass = (Me.BiomassByTrophicLevel(iTrophicLevel) * Me.DetToDetritus(iTrophicLevel)) / _
+                            (Me.PPToDetritus(iTrophicLevel) + Me.DetToDetritus(iTrophicLevel))
+                End If
+            End If
+            Return sMass
         End Get
     End Property
 
