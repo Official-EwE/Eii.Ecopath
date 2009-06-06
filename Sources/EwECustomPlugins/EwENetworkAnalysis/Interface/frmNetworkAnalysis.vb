@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: frmNetworkAnalysis.vb,v $
+' Revision 1.30  2009/06/06 02:01:22  jeroens
+' Centralized DisplayGroups behaviour
+'
 ' Revision 1.29  2009/06/05 02:48:06  jeroens
 ' Added Lindeman spine
 '
@@ -100,6 +103,7 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared
 
 Public Class frmNetworkAnalysis
 
@@ -113,6 +117,8 @@ Public Class frmNetworkAnalysis
     Private m_iSelectedGroup2 As Integer = 0
     ''' <summary>Update feedback loop prevention.</summary>
     Private m_bInUpdate As Boolean = False
+    ''' <summary></summary>
+    Private m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
 
     Public Sub New(ByRef networkmanager As cNetworkManager)
         Me.InitializeComponent()
@@ -137,6 +143,26 @@ Public Class frmNetworkAnalysis
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
 
+        Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+        Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
+        If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+            Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
+            AddHandler Me.m_cmdDisplayGroups.OnPreInvoke, AddressOf OnPreInvokeDisplayGroups
+            AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
+        End If
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+        If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+            Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
+            RemoveHandler Me.m_cmdDisplayGroups.OnPreInvoke, AddressOf OnPreInvokeDisplayGroups
+            RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
+            Me.m_cmdDisplayGroups = Nothing
+        End If
+
+        MyBase.OnFormClosing(e)
     End Sub
 
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
@@ -477,6 +503,27 @@ Public Class frmNetworkAnalysis
             'highlight the whole grid
             m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
             m_datagrid.SelectAll()
+        End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, triggered before 'DisplayGroups' command has been invoked.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub OnPreInvokeDisplayGroups(ByVal cmd As cCommand)
+        Me.m_cmdDisplayGroups.ShowGroups = True
+        Me.m_cmdDisplayGroups.ShowTotals = False
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, triggered after 'DisplayGroups' command has been invoked.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Sub OnPostInvokeDisplayGroups(ByVal cmd As cCommand)
+        If Me.m_contentmanager IsNot Nothing Then
+            Me.m_contentmanager.DisplayData()
         End If
     End Sub
 

@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="ts1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ts1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <metadata name="ts2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="ts2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <metadata name="ts3.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="ts3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="scNetworkAnalysis.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="scNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 37</value>
   </data>
@@ -248,54 +266,65 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQwAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZRIAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
         CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
-        bGRyZW4wCWNoaWxkcmVuMQljaGlsZHJlbjIJY2hpbGRyZW4zAQEAAAEAAQAEBAQEAQgICB1TeXN0ZW0u
-        V2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUCAAAA
-        HVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlAgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVl
-        Tm9kZQIAAAACAAAABgMAAAATRmxvd3MgYW5kIGJpb21hc3NlcwYEAAAAE25kRmxvd3NBbmRCaW9tYXNz
-        ZXMA/////wYFAAAAAP////8JBQAAAAQAAAAJBgAAAAkHAAAACQgAAAAJCQAAAAUGAAAAHVN5c3RlbS5X
+        bGRyZW4wCWNoaWxkcmVuMQljaGlsZHJlbjIJY2hpbGRyZW4zCWNoaWxkcmVuNAljaGlsZHJlbjUJY2hp
+        bGRyZW42CWNoaWxkcmVuNwljaGlsZHJlbjgJY2hpbGRyZW45AQEAAAEAAQAEBAQEBAQEBAQEAQgICB1T
+        eXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5v
+        ZGUCAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlAgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jt
+        cy5UcmVlTm9kZQIAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUCAAAAHVN5c3RlbS5XaW5k
+        b3dzLkZvcm1zLlRyZWVOb2RlAgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAAdU3lz
+        dGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUCAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2Rl
+        AgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAATRmxvd3MgYW5kIGJp
+        b21hc3NlcwYEAAAAE25kRmxvd3NBbmRCaW9tYXNzZXMA/////wYFAAAAAP////8JBQAAAAoAAAAJBgAA
+        AAkHAAAACQgAAAAJCQAAAAkKAAAACQsAAAAJDAAAAAkNAAAACQ4AAAAJDwAAAAUGAAAAHVN5c3RlbS5X
         aW5kb3dzLkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1h
         Z2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEA
-        AQgICAIAAAAGCgAAABZGcm9tIHByaW1hcnkgcHJvZHVjZXJzBgsAAAAWbmRGcm9tUHJpbWFyeVByb2R1
+        AQgICAIAAAAGEAAAABZGcm9tIHByaW1hcnkgcHJvZHVjZXJzBhEAAAAWbmRGcm9tUHJpbWFyeVByb2R1
         Y2VycwD/////CQUAAAD/////CQUAAAAAAAAABQcAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5v
         ZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdl
-        SW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQABCAgIAgAAAAYNAAAADUZyb20g
-        ZGV0cml0dXMGDgAAAA5uZEZyb21EZXRyaXR1cwD/////CQUAAAD/////CQUAAAAAAAAABQgAAAAdU3lz
+        SW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQABCAgIAgAAAAYTAAAADUZyb20g
+        ZGV0cml0dXMGFAAAAA5uZEZyb21EZXRyaXR1cwD/////CQUAAAD/////CQUAAAAAAAAABQgAAAAdU3lz
         dGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRl
         eAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEA
-        AAEAAQABCAgIAgAAAAYQAAAAEUZyb20gYWxsIGNvbWJpbmVkBhEAAAARbmRGcm9tQWxsQ29tYmluZWQA
-        /////wkFAAAA/////wkFAAAAAAAAAAUJAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlDgAA
-        AARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4
-        EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAljaGlsZHJlbjAJY2hpbGRyZW4xCWNoaWxkcmVuMglj
-        aGlsZHJlbjMJY2hpbGRyZW40CWNoaWxkcmVuNQEBAAABAAEABAQEBAQEAQgICB1TeXN0ZW0uV2luZG93
-        cy5Gb3Jtcy5UcmVlTm9kZQIAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUCAAAAHVN5c3Rl
-        bS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlAgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIA
-        AAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUCAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRy
-        ZWVOb2RlAgAAAAIAAAAGEwAAABRTdW1tYXJ5IG9mIGZsb3cgZGF0YQYUAAAAE25kU3VtbWFyeU9mRmxv
-        d0RhdGEA/////wkFAAAA/////wkFAAAABgAAAAkWAAAACRcAAAAJGAAAAAkZAAAACRoAAAAJGwAAAAUW
-        AAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCklt
-        YWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRD
-        b3VudAEBAAABAAEAAQgICAIAAAAGHAAAABNUcmFuc2ZlciBlZmZpY2llbmN5Bh0AAAAUbmRUcmFuc2Zl
-        ckVmZmljaWVuY3kA/////wkFAAAA/////wkFAAAAAAAAAAUXAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1z
-        LlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0
-        ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEAAQgICAIAAAAGHwAA
-        AAxGbG93IHB5cmFtaWQGIAAAAA1uZEZsb3dQeXJhbWlkAP////8JBQAAAP////8JBQAAAAAAAAAFGAAA
-        AB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFn
-        ZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291
-        bnQBAQAAAQABAAEICAgCAAAABiIAAAAYQmlvbWFzcyBieSB0cm9waGljIGxldmVsBiMAAAAXbmRCaW9t
-        YXNzQnlUcm9waGljTGV2ZWwA/////wkFAAAA/////wkFAAAAAAAAAAUZAAAAHVN5c3RlbS5XaW5kb3dz
-        LkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkS
-        U2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEAAQgICAIA
-        AAAGJQAAAA9CaW9tYXNzIHB5cmFtaWQGJgAAABBuZEJpb21hc3NQeXJhbWlkAP////8JBQAAAP////8J
-        BQAAAAAAAAAFGgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlz
-        Q2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdl
-        S2V5CkNoaWxkQ291bnQBAQAAAQABAAEICAgCAAAABigAAAAWQ2F0Y2ggYnkgdHJvcGhpYyBsZXZlbAYp
-        AAAAFW5kQ2F0Y2hCeVRyb3BoaWNMZXZlbAD/////CQUAAAD/////CQUAAAAAAAAABRsAAAAdU3lzdGVt
+        AAEAAQABCAgIAgAAAAYWAAAAEUZyb20gYWxsIGNvbWJpbmVkBhcAAAARbmRGcm9tQWxsQ29tYmluZWQA
+        /////wkFAAAA/////wkFAAAAAAAAAAUJAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCQAA
+        AAdQcm9wQmFnBFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZElt
+        YWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50BAEBAAABAAEAKVN5c3RlbS5XaW5kb3dz
+        LkZvcm1zLk93bmVyRHJhd1Byb3BlcnR5QmFnAgAAAAEICAgCAAAACRkAAAAGGgAAAA5MaW5kZW1hbiBz
+        cGluZQYbAAAAD25kTGluZGVtYW5TcGluZQD/////CQUAAAD/////CQUAAAAAAAAABQoAAAAdU3lzdGVt
         LldpbmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJ
         bWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEA
-        AQABCAgIAgAAAAYrAAAADUNhdGNoIHB5cmFtaWQGLAAAAA5uZENhdGNoUHlyYW1pZAD/////CQUAAAD/
-        ////CQUAAAAAAAAACw==
+        AQABCAgIAgAAAAYdAAAAE1RyYW5zZmVyIGVmZmljaWVuY3kGHgAAABRuZFRyYW5zZmVyRWZmaWNpZW5j
+        eQD/////CQUAAAD/////CQUAAAAAAAAABQsAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUI
+        AAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5k
+        ZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQABCAgIAgAAAAYgAAAADEZsb3cgcHly
+        YW1pZAYhAAAADW5kRmxvd1B5cmFtaWQA/////wkFAAAA/////wkFAAAAAAAAAAUMAAAAHVN5c3RlbS5X
+        aW5kb3dzLkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1h
+        Z2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEA
+        AQgICAIAAAAGIwAAABhCaW9tYXNzIGJ5IHRyb3BoaWMgbGV2ZWwGJAAAABduZEJpb21hc3NCeVRyb3Bo
+        aWNMZXZlbAD/////CQUAAAD/////CQUAAAAAAAAABQ0AAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJl
+        ZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZElt
+        YWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQABCAgIAgAAAAYmAAAAD0Jp
+        b21hc3MgcHlyYW1pZAYnAAAAEG5kQmlvbWFzc1B5cmFtaWQA/////wkFAAAA/////wkFAAAAAAAAAAUO
+        AAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCklt
+        YWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRD
+        b3VudAEBAAABAAEAAQgICAIAAAAGKQAAABZDYXRjaCBieSB0cm9waGljIGxldmVsBioAAAAVbmRDYXRj
+        aEJ5VHJvcGhpY0xldmVsAP////8JBQAAAP////8JBQAAAAAAAAAFDwAAAB1TeXN0ZW0uV2luZG93cy5G
+        b3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNl
+        bGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAAAQABAAEICAgCAAAA
+        BiwAAAANQ2F0Y2ggcHlyYW1pZAYtAAAADm5kQ2F0Y2hQeXJhbWlkAP////8JBQAAAP////8JBQAAAAAA
+        AAAMLwAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1
+        YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFGQAAAClTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Pd25l
+        ckRyYXdQcm9wZXJ0eUJhZwMAAAAJQmFja0NvbG9yCUZvcmVDb2xvcgRGb250BAQEFFN5c3RlbS5EcmF3
+        aW5nLkNvbG9yLwAAABRTeXN0ZW0uRHJhd2luZy5Db2xvci8AAAATU3lzdGVtLkRyYXdpbmcuRm9udC8A
+        AAACAAAABdD///8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVz
+        dGF0ZQEAAAAJBwcvAAAACgAAAAAAAAAAAAAAAAHP////0P///woAAAAAAAAAAAAAAAAJMgAAAAUyAAAA
+        E1N5c3RlbS5EcmF3aW5nLkZvbnQEAAAABE5hbWUEU2l6ZQVTdHlsZQRVbml0AQAEBAsYU3lzdGVtLkRy
+        YXdpbmcuRm9udFN0eWxlLwAAABtTeXN0ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQvAAAALwAAAAYzAAAA
+        FE1pY3Jvc29mdCBTYW5zIFNlcmlmAAAEQQXM////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAH
+        dmFsdWVfXwAILwAAAAAAAAAFy////xtTeXN0ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVl
+        X18ACC8AAAADAAAACw==
 </value>
   </data>
   <data name="tvNetworkAnalysis.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -407,27 +436,6 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAHUHJvcEJhZwRUZXh0BE5hbWUJSXNDaGVja2VkCklt
-        YWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRD
-        b3VudAQBAQAAAQABAClTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Pd25lckRyYXdQcm9wZXJ0eUJhZwIAAAAB
-        CAgIAgAAAAkDAAAABgQAAAAUTGluZGVtYW4gc3BpbmUgZ3JhcGgGBQAAAA9uZExpbmRlbWFuU3BpbmUA
-        /////wYGAAAAAP////8JBgAAAAAAAAAMBwAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAwAAAClTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5Pd25lckRyYXdQcm9wZXJ0eUJhZwMAAAAJQmFja0NvbG9yCUZvcmVDb2xv
-        cgRGb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yBwAAABRTeXN0ZW0uRHJhd2luZy5Db2xvcgcAAAAT
-        U3lzdGVtLkRyYXdpbmcuRm9udAcAAAACAAAABfj///8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5h
-        bWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJBwcHAAAACgAAAAAAAAAAAAAAAAH3////+P///woA
-        AAAAAAAAAAAAAAAJCgAAAAUKAAAAE1N5c3RlbS5EcmF3aW5nLkZvbnQEAAAABE5hbWUEU2l6ZQVTdHls
-        ZQRVbml0AQAEBAsYU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlBwAAABtTeXN0ZW0uRHJhd2luZy5HcmFw
-        aGljc1VuaXQHAAAABwAAAAYLAAAAFE1pY3Jvc29mdCBTYW5zIFNlcmlmAAAEQQX0////GFN5c3RlbS5E
-        cmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIBwAAAAAAAAAF8////xtTeXN0ZW0uRHJhd2luZy5H
-        cmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAcAAAADAAAACw==
-</value>
-  </data>
-  <data name="tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQ4AAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
         CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
         bGRyZW4wCWNoaWxkcmVuMQljaGlsZHJlbjIJY2hpbGRyZW4zCWNoaWxkcmVuNAljaGlsZHJlbjUBAQAA
@@ -504,7 +512,7 @@
         YXlzX2FsbAD/////CQUAAAD/////CQUAAAAAAAAACw==
 </value>
   </data>
-  <data name="tvNetworkAnalysis.Nodes9" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -681,6 +689,30 @@
   <metadata name="m_toolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <data name="tsmiDisplayGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgxJREFUOE+lkvtL
+        U2EYx+0PEbtpFwnBKPGKiJImGP0gYhIYs1E5GF5gIxkpA00JRSmMEF0ohMh+GaRWYlqabMVcNdS2QpaI
+        VqiDIYhk397vA6fXhCjyhYdzeM/5fp7vczkAdeL2cwho7v/wWzT1zcN+Pwhr51uY2/y41PQaF+wzKKiZ
+        QvaN58g0jyLd5KEUcQbg+84P/Cm2tncQjW3j68YWIqubCC3FcOJc478BAuGoZM6zvoRnakXEruEIjhc4
+        /g5gZop9c+voGAyLbQIfeBZxLL9BA1jzXvuGbWamuKh+GmmVbswE19A59FEBbmoAG7YbsLtm2mZmiml9
+        cvabNDwpz6YB7LYBoMXCumkJr7LOmnnHzBQ/9X2Bo2cOibm1GsBREbAQiYmw/8lnuCeWkVzcgnZlnw1j
+        3HV/wuNXK6i/9x5Hc6wawDlTXHbLJ+LZUBQPRyKwdQdxutwl1h+NLXHh5Ht1ewBHsiwawCW57HyDAfWR
+        dvl0uhZQ1eqX8aVc7EKLqrum651ATLf9OJx5XQM4KmY0xPzZ0hFAiQJnXB0WwME0E3IsL5B17ZlADqWb
+        NYDrOepdlcysmTWWOrxqbceRWtaLk0VO1XW72D5Vckd2gMBfq8zdpmUG62NJvKM4+XyziDk24xmfWoGE
+        s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="tsmiDisplayGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsmiDisplayGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 22</value>
+  </data>
+  <data name="tsmiDisplayGroups.Text" xml:space="preserve">
+    <value>&amp;Display groups...</value>
+  </data>
   <data name="tslblSelection1.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 22</value>
   </data>
@@ -3213,11 +3245,35 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Networkanalysis plug-in</value>
   </data>
+  <data name="&gt;&gt;ts1.Name" xml:space="preserve">
+    <value>ts1</value>
+  </data>
+  <data name="&gt;&gt;ts1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ts2.Name" xml:space="preserve">
+    <value>ts2</value>
+  </data>
+  <data name="&gt;&gt;ts2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ts3.Name" xml:space="preserve">
+    <value>ts3</value>
+  </data>
+  <data name="&gt;&gt;ts3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;imglstNetworkAnalysis.Name" xml:space="preserve">
     <value>imglstNetworkAnalysis</value>
   </data>
   <data name="&gt;&gt;imglstNetworkAnalysis.Type" xml:space="preserve">
     <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmiDisplayGroups.Name" xml:space="preserve">
+    <value>tsmiDisplayGroups</value>
+  </data>
+  <data name="&gt;&gt;tsmiDisplayGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tslblSelection1.Name" xml:space="preserve">
     <value>tslblSelection1</value>
