@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgDisplayGroups.vb,v $
+' Revision 1.5  2009/06/06 01:45:18  jeroens
+' Added option to suppress groups, total options
+'
 ' Revision 1.4  2009/05/28 12:37:18  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -39,13 +42,16 @@ Namespace Ecosim
 
         Private m_core As cCore = Nothing
         Private m_sg As cStyleGuide = Nothing
+        Private m_bShowGroups As Boolean = True
+        Private m_bShowTotals As Boolean = False
 
-        Public Sub New()
+        Public Sub New(ByVal bShowGroups As Boolean, ByVal bShowTotals As Boolean)
 
-            InitializeComponent()
-
+            Me.InitializeComponent()
             Me.m_core = cCore.GetInstance()
             Me.m_sg = cStyleGuide.GetInstance()
+            Me.m_bShowGroups = bShowGroups
+            Me.m_bShowTotals = bShowTotals
 
         End Sub
 
@@ -56,27 +62,38 @@ Namespace Ecosim
 
             Me.m_clbGroups.Items.Clear()
 
-            For iGroup As Integer = 1 To Me.m_core.nGroups
-                group = m_core.EcoPathGroupInputs(iGroup)
-                Me.m_clbGroups.Items.Add(group.Name, Me.m_sg.GroupVisible(iGroup))
-            Next
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_core.nGroups
+                    group = m_core.EcoPathGroupInputs(iGroup)
+                    Me.m_clbGroups.Items.Add(group.Name, Me.m_sg.GroupVisible(iGroup))
+                Next
+            End If
 
-            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, Me.m_sg.TotalCatchVisible)
-            Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, Me.m_sg.TotalValueVisible)
+            If Me.m_bShowTotals Then
+                Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, Me.m_sg.TotalCatchVisible)
+                Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, Me.m_sg.TotalValueVisible)
+            End If
 
         End Sub
 
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
+            Dim iIndex As Integer = 0
+
             Me.m_sg.SuspendEvents()
 
-            For iGroup As Integer = 1 To Me.m_core.nGroups
-                Me.m_sg.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
-            Next
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_core.nGroups
+                    Me.m_sg.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
+                Next
+                iIndex += Me.m_core.nGroups
+            End If
 
-            Me.m_sg.TotalCatchVisible = Me.m_clbGroups.GetItemChecked(Me.m_core.nGroups)
-            Me.m_sg.TotalValueVisible = Me.m_clbGroups.GetItemChecked(Me.m_core.nGroups + 1)
+            If Me.m_bShowTotals Then
+                Me.m_sg.TotalCatchVisible = Me.m_clbGroups.GetItemChecked(iIndex)
+                Me.m_sg.TotalValueVisible = Me.m_clbGroups.GetItemChecked(iIndex + 1)
+            End If
 
             Me.m_sg.ResumeEvents()
 
@@ -112,12 +129,22 @@ Namespace Ecosim
         Private Sub m_btnDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDefault.Click
             ' Check all groups, uncheck summary items
             Me.m_clbGroups.SuspendLayout()
-            For iItem As Integer = 0 To Me.m_clbGroups.Items.Count - 3
-                Me.m_clbGroups.SetItemChecked(iItem, True)
-            Next
-            For iItem As Integer = Me.m_clbGroups.Items.Count - 2 To Me.m_clbGroups.Items.Count - 1
-                Me.m_clbGroups.SetItemChecked(iItem, False)
-            Next
+
+            Dim iIndex As Integer = 0
+
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, True)
+                Next
+                iIndex = Me.m_core.nGroups
+            End If
+
+            If Me.m_bShowTotals Then
+                For iItem As Integer = iIndex To Me.m_clbGroups.Items.Count - 1
+                    Me.m_clbGroups.SetItemChecked(iItem, False)
+                Next
+            End If
+
             Me.m_clbGroups.ResumeLayout()
         End Sub
     End Class
