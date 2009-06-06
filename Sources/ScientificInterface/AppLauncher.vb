@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.47  2009/06/06 01:43:59  jeroens
+' Updated to new cDisplayGroupsCommand
+'
 ' Revision 1.46  2009/05/28 12:36:51  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -254,7 +257,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdPluginGUICommand As PluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As PropertySelectionCommand = Nothing
-    Private WithEvents m_cmdDisplayGroups As cCommand = Nothing
+    Private WithEvents m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
     Private WithEvents m_cmdExportBiomassToCSV As cCommand = Nothing
@@ -939,7 +942,7 @@ Public Class AppLauncher
         Me.m_cmdPropertySelection = New PropertySelectionCommand()
         cmdh.Add(Me.m_cmdPropertySelection)
 
-        Me.m_cmdDisplayGroups = New cCommand("DisplayGroups")
+        Me.m_cmdDisplayGroups = New cDisplayGroupsCommand()
         cmdh.Add(Me.m_cmdDisplayGroups)
 
         Me.m_cmdEnableEcotracer = New cCommand("EnableEcotracer")
@@ -2458,7 +2461,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnDisplayGroups(ByVal cmd As cCommand) Handles m_cmdDisplayGroups.OnInvoke
-        Dim dlg As New dlgDisplayGroups()
+        Dim dlg As New dlgDisplayGroups(m_cmdDisplayGroups.ShowGroups, m_cmdDisplayGroups.ShowTotals)
         dlg.ShowDialog()
     End Sub
 
