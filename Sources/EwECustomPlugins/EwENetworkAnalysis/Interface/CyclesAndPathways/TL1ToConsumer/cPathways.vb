@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.13  2009/06/06 01:59:14  jeroens
+' Renamed toolstrip access methods
+'
 ' Revision 1.12  2009/05/30 00:00:56  jeroens
 ' Toolstrip usage centralized
 '
@@ -61,7 +64,7 @@ Namespace TL1ToConsumer
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, ToolStrip)
             Me.Grid.Visible = bSucces
             Me.Toolstrip.Visible = bSucces
-            Me.ToolstripShowGroups(My.Resources.LBL_PATH_TO)
+            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_TO)
             Return bSucces
         End Function
 

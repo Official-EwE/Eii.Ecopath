@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPathways.vb,v $
+' Revision 1.13  2009/06/06 01:59:13  jeroens
+' Renamed toolstrip access methods
+'
 ' Revision 1.12  2009/05/30 00:00:56  jeroens
 ' Toolstrip usage centralized
 '
@@ -63,7 +66,7 @@ Namespace PreyToPredator
             Me.Grid.Visible = bSucces
 
             Me.Toolstrip.Visible = bSucces
-            Me.ToolstripShowGroups(My.Resources.LBL_PATH_FROM)
+            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_FROM)
 
             Return bSucces
         End Function

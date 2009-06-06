@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cContentManager.vb,v $
+' Revision 1.9  2009/06/06 02:02:54  jeroens
+' Renamed toolstrip access methods
+'
 ' Revision 1.8  2009/05/30 00:00:49  jeroens
 ' Toolstrip usage centralized
 '
@@ -35,6 +38,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 
 #End Region ' Imports
@@ -90,11 +94,13 @@ Public MustInherit Class cContentManager
         Me.m_plot = plot
         Me.m_toolstrip = toolstrip
 
+        ' Hide all managed controls
+        Me.HideControls()
+
         Me.m_sg = cStyleGuide.GetInstance()
         AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-        ' Hide all managed controls
-        Me.HideControls()
+        cToolstripUtils.HideRepeatingSeparators(Me.m_toolstrip)
 
         Return True
 
@@ -308,8 +314,8 @@ Public MustInherit Class cContentManager
         End If
     End Sub
 
-    Protected Sub ToolstripShowGroups(Optional ByVal strLabel1 As String = "", _
-                                      Optional ByVal strLabel2 As String = "")
+    Protected Sub ToolstripShowGroupSelections(Optional ByVal strLabel1 As String = "", _
+                                               Optional ByVal strLabel2 As String = "")
 
         Dim tslbl1 As ToolStripItem = Me.Toolstrip.Items("tslblSelection1")
         Dim tslbl2 As ToolStripItem = Me.Toolstrip.Items("tslblSelection2")
@@ -326,14 +332,25 @@ Public MustInherit Class cContentManager
 
     End Sub
 
+    Protected Sub ToolstripShowDisplayGroups(Optional ByVal bShow As Boolean = True)
+        Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsmiDisplayGroups")
+        If (tsi IsNot Nothing) Then
+            tsi.Visible = bShow
+        End If
+    End Sub
+
     Protected Sub ToolstripShowOptionCSV(Optional ByVal bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputIndicesCSV")
-        tsi.Visible = bShow
+        If (tsi IsNot Nothing) Then
+            tsi.Visible = bShow
+        End If
     End Sub
 
     Protected Sub ToolstripShowOptionEMF(Optional ByVal bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputGraphEMF")
-        tsi.Visible = bShow
+        If (tsi IsNot Nothing) Then
+            tsi.Visible = bShow
+        End If
     End Sub
 
 #End Region ' Internals
