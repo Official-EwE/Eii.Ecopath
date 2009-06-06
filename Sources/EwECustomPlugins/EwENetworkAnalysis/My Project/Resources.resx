@@ -673,4 +673,10 @@
   <data name="MNU_STYLE_DETRITUS_EXPAND" xml:space="preserve">
     <value>&amp;Expand detritus</value>
   </data>
+  <data name="COL_HDR_DETRITUS_TKM2" xml:space="preserve">
+    <value>Detritus (t/km²)</value>
+  </data>
+  <data name="COL_HDR_LIVING_TKM2" xml:space="preserve">
+    <value>Living (t/km²)</value>
+  </data>
 </root>

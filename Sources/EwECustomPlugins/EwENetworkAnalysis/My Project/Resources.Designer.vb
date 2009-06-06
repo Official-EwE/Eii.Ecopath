@@ -250,6 +250,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Detritus (t/km²).
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_DETRITUS_TKM2() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_DETRITUS_TKM2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Entropy.
         '''</summary>
         Friend ReadOnly Property COL_HDR_ENTROPY() As String
@@ -345,6 +354,15 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_KEYSTONEINDEX2() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Living (t/km²).
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_LIVING_TKM2() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_LIVING_TKM2", resourceCulture)
             End Get
         End Property
         
