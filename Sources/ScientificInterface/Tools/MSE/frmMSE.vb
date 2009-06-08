@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: frmMSE.vb,v $
+' Revision 1.4  2009/06/08 16:49:08  joeb
+' More MSE interface
+'
 ' Revision 1.3  2009/06/05 20:20:31  joeb
 ' MSE
 '
@@ -20,6 +23,7 @@ Imports EwECore.MSE
 Imports EwECore.SearchObjectives
 Imports ScientificInterface.Controls
 Imports EwEUtils.Core
+Imports ScientificInterface.Ecosim
 
 Imports ZedGraph
 
@@ -44,6 +48,10 @@ Public Class frmMSE
     Private m_sg As cStyleGuide = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
 
+    Private m_gridObjectiveWeights As gridSearchObjectivesWeight
+    Private m_gridGroupObjectives As gridSearchObjectivesGroup
+
+
 
 #End Region
 
@@ -59,6 +67,9 @@ Public Class frmMSE
         Me.m_MSE = Me.m_core.MSEManager
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
+
+        Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.m_core.FishingPolicyManager)
+        Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.m_core.FishingPolicyManager)
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
@@ -77,6 +88,15 @@ Public Class frmMSE
         Me.m_paneMaster = Me.zdGraph.MasterPane
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.m_core, Me.zdGraph, Me.m_core.nGroups)
+
+        Me.tbObjectives.TabPages("pgObjective").Controls.Add(Me.m_gridObjectiveWeights)
+        Me.m_gridObjectiveWeights.Dock = DockStyle.Fill
+
+        Me.tbObjectives.TabPages("pgEcoObjectives").Controls.Add(Me.m_gridGroupObjectives)
+        Me.m_gridGroupObjectives.Dock = DockStyle.Fill
+
+
+
 
         Me.LoadGraphPanes()
 
@@ -124,8 +144,13 @@ Public Class frmMSE
             Case eCallBackTypes.Started
                 state = eMSEStates.Running
 
+            Case eCallBackTypes.IterationStarted
+                state = eMSEStates.Running
+
+
             Case eCallBackTypes.IterationCompleted
                 Me.onMSEProgress()
+                state = eMSEStates.Running
 
             Case eCallBackTypes.RunCompleted
                 Me.onMSECompleted()
@@ -202,9 +227,11 @@ Public Class frmMSE
 
             Case eMSEStates.InActive
                 Me.btRun.Enabled = True
+                Me.spInputOutput.Panel2Collapsed = True
 
             Case eMSEStates.Running
                 Me.btRun.Enabled = False
+                Me.spInputOutput.Panel1Collapsed = True
 
             Case eMSEStates.Completed
                 Me.btRun.Enabled = True
