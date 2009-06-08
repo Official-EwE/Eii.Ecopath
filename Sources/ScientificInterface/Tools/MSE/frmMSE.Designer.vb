@@ -64,6 +64,8 @@ Partial Class frmMSE
         '
         'prgProgress
         '
+        Me.prgProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.prgProgress.Location = New System.Drawing.Point(4, 68)
         Me.prgProgress.Name = "prgProgress"
         Me.prgProgress.Size = New System.Drawing.Size(1012, 19)
@@ -87,6 +89,8 @@ Partial Class frmMSE
         '
         'lbRun
         '
+        Me.lbRun.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbRun.BackColor = System.Drawing.SystemColors.ButtonShadow
         Me.lbRun.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbRun.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -100,7 +104,8 @@ Partial Class frmMSE
         '
         'spInputOutput
         '
-        Me.spInputOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.spInputOutput.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.spInputOutput.Location = New System.Drawing.Point(4, 121)
         Me.spInputOutput.Name = "spInputOutput"
@@ -248,6 +253,8 @@ Partial Class frmMSE
         '
         'Label2
         '
+        Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.BackColor = System.Drawing.SystemColors.ButtonShadow
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText

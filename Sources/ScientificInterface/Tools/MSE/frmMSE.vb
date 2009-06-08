@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: frmMSE.vb,v $
+' Revision 1.5  2009/06/08 17:17:11  joeb
+' More MSE layout
+'
 ' Revision 1.4  2009/06/08 16:49:08  joeb
 ' More MSE interface
 '
@@ -158,7 +161,7 @@ Public Class frmMSE
 
         End Select
 
-        UpdateControls(state)
+        Me.UpdateControls(state)
 
     End Sub
 
@@ -203,9 +206,6 @@ Public Class frmMSE
 
     End Sub
 
-#End Region
-
-
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Configure a plot on the main graph
@@ -221,17 +221,21 @@ Public Class frmMSE
     End Sub
 
 
+#End Region
+
+
+  
+
+
     Private Sub UpdateControls(ByVal State As eMSEStates)
 
         Select Case State
 
             Case eMSEStates.InActive
                 Me.btRun.Enabled = True
-                Me.spInputOutput.Panel2Collapsed = True
 
             Case eMSEStates.Running
                 Me.btRun.Enabled = False
-                Me.spInputOutput.Panel1Collapsed = True
 
             Case eMSEStates.Completed
                 Me.btRun.Enabled = True
