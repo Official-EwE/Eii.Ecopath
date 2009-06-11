@@ -1,6 +1,10 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionPlot.vb,v $
+' Revision 1.22  2009/06/11 22:48:20  joeh
+' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
+' Selected group number instead of selected index of group box is used to identify the selected group
+'
 ' Revision 1.21  2009/05/28 12:36:56  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -202,6 +206,7 @@ Namespace Ecopath.Output
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sgStyleGuide As cStyleGuide = cStyleGuide.GetInstance
             Dim curveSelected As BarItem = Nothing
+            Dim iSelectedGrpNum As Integer = 1
 
             InitLists(resultLists, m_core.nLivingGroups) '3)
 
@@ -209,26 +214,35 @@ Namespace Ecopath.Output
             FindSystemPSD(sSystemPSD)
 
             For igroup As Integer = 1 To m_core.nLivingGroups
-                If IsGroupSelected(igroup) Then
-                    grpOutput = m_core.EcoPathGroupOutputs(igroup)
-                    For iWtClass As Integer = 1 To m_core.nWeightClasses
-                        sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
-                        If sSystemPSD(iWtClass) * 100000 > 0 Then
-                            'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
-                            '* 100000 for plotting purpose
-                            resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
-                        Else
-                            resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
-                        End If
-                    Next
-                End If
+                'No need to check if group is selected. Generate the result list even for the not selected group. It will have zero Y values
+                'If IsGroupSelected(igroup) Then
+                grpOutput = m_core.EcoPathGroupOutputs(igroup)
+                For iWtClass As Integer = 1 To m_core.nWeightClasses
+                    sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    If sSystemPSD(iWtClass) * 1000000000 > 0 Then
+                        'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
+                        '* 1000000000 for plotting purpose
+                        resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
+                    Else
+                        resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
+                    End If
+                Next
+                'End If
             Next
 
             ' Clear pane
             pane.CurveList.Clear()
 
+            'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To m_core.nLivingGroups
-                If iGroup = llbGroups.SelectedIndex + 1 Then
+                If m_core.EcoPathGroupOutputs(iGroup).Name = llbGroups.Items(llbGroups.SelectedIndex).ToString() Then
+                    iSelectedGrpNum = iGroup
+                    Exit For
+                End If
+            Next
+
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                If iGroup = iSelectedGrpNum Then
                     curveSelected = AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)
                 Else
                     AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), sgStyleGuide.GroupColor(Me.m_core, iGroup - 1), Color.Gray)

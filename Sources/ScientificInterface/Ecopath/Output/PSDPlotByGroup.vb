@@ -1,6 +1,10 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDPlotByGroup.vb,v $
+' Revision 1.26  2009/06/11 22:48:20  joeh
+' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
+' Selected group number instead of selected index of group box is used to identify the selected group
+'
 ' Revision 1.25  2009/05/28 12:36:57  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -275,8 +279,17 @@ Namespace Ecopath.Output
             Dim grpOutput As cEcoPathGroupOutput = Nothing
             Dim sgStyleGuide As cStyleGuide = cStyleGuide.GetInstance
             Dim sSystemPSD(m_core.nWeightClasses) As Single
+            Dim iSelectedGrpNum As Integer
 
-            grpOutput = m_core.EcoPathGroupOutputs(llbGroups.SelectedIndex + 1)
+            'Find the selected group number based on the selected index
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                If m_core.EcoPathGroupOutputs(iGroup).Name = llbGroups.Items(llbGroups.SelectedIndex).ToString() Then
+                    iSelectedGrpNum = iGroup
+                    Exit For
+                End If
+            Next
+
+            grpOutput = m_core.EcoPathGroupOutputs(iSelectedGrpNum)
             Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
                     InitLists(resultLists, 4)
@@ -313,10 +326,10 @@ Namespace Ecopath.Output
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
-                If sSystemPSD(iWtClass) * 100000 > 0 Then
-                    'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
-                    '* 100000 for plotting purpose
-                    resultLists(3).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
+                If sSystemPSD(iWtClass) * 1000000000 > 0 Then
+                    'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
+                    '* 1000000000 for plotting purpose
+                    resultLists(3).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
                 Else
                     resultLists(3).Add(Math.Log10(sXValue), 0)
                 End If
@@ -330,14 +343,14 @@ Namespace Ecopath.Output
                 gp.CurveList.Clear()
             Next
 
-            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
-            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
-            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
-            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
+            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
 
             'Lorenzen mortality plot if mortality type is Lorenzen
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), sgStyleGuide.GroupColor(m_core, llbGroups.SelectedIndex))
+                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), sgStyleGuide.GroupColor(m_core, iSelectedGrpNum - 1))
             End If
         End Sub
 
