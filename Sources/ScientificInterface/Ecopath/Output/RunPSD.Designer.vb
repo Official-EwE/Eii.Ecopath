@@ -148,8 +148,8 @@ Namespace Ecopath.Output
             'm_tslblNoOfPointsPSD
             '
             Me.m_tslblNoOfPointsPSD.Name = "m_tslblNoOfPointsPSD"
-            Me.m_tslblNoOfPointsPSD.Size = New System.Drawing.Size(112, 22)
-            Me.m_tslblNoOfPointsPSD.Text = "No. of points for PSD:"
+            Me.m_tslblNoOfPointsPSD.Size = New System.Drawing.Size(113, 22)
+            Me.m_tslblNoOfPointsPSD.Text = "No. of weight classes:"
             '
             'm_tstbxNoOfPointsPSD
             '
@@ -159,8 +159,8 @@ Namespace Ecopath.Output
             'm_tslblMinWeight
             '
             Me.m_tslblMinWeight.Name = "m_tslblMinWeight"
-            Me.m_tslblMinWeight.Size = New System.Drawing.Size(63, 22)
-            Me.m_tslblMinWeight.Text = "Min. wt (g):"
+            Me.m_tslblMinWeight.Size = New System.Drawing.Size(123, 22)
+            Me.m_tslblMinWeight.Text = "Lowest weight class (g):"
             '
             'm_tstbxMinWeight
             '
@@ -170,8 +170,8 @@ Namespace Ecopath.Output
             'm_tslblNoOfPointsMovAvg
             '
             Me.m_tslblNoOfPointsMovAvg.Name = "m_tslblNoOfPointsMovAvg"
-            Me.m_tslblNoOfPointsMovAvg.Size = New System.Drawing.Size(134, 22)
-            Me.m_tslblNoOfPointsMovAvg.Text = "No. of points for mov avg:"
+            Me.m_tslblNoOfPointsMovAvg.Size = New System.Drawing.Size(148, 22)
+            Me.m_tslblNoOfPointsMovAvg.Text = "No. of points for moving avg:"
             '
             'm_tstbxNoOfPointsMovAvg
             '
@@ -210,6 +210,7 @@ Namespace Ecopath.Output
             Me.ClientSize = New System.Drawing.Size(869, 266)
             Me.Controls.Add(Me.m_zedgraph)
             Me.Controls.Add(Me.m_tsRunPSD)
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "RunPSD"
             Me.ShowInTaskbar = False
             Me.Text = "RunParticleSizeDistribution"

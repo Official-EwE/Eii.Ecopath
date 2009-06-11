@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.27  2009/06/11 22:45:55  joeh
+' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
+'
 ' Revision 1.26  2009/05/28 12:36:58  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -341,11 +344,11 @@ Namespace Ecopath.Output
             Me.FindRegression(sSlope, sIntercept, sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
-                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     'PSD plot
-                    resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 100000)) '* 100000 for plotting purpose
+                    resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 1000000000)) '* 1000000000 for plotting purpose
                     'PSD regression plot
                     resultLists(1).Add(Math.Log10(sXValue), sSlope * Math.Log10(sXValue) + sIntercept)
 
@@ -507,11 +510,11 @@ Namespace Ecopath.Output
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
-                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
                     dSumX = dSumX + Math.Log10(sXValue)
-                    dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 100000.0!)
+                    dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 1000000000.0)
 
                     'v.5
                     'sXValue = iWtClass
@@ -526,10 +529,10 @@ Namespace Ecopath.Output
             dYMean = dSumY / iNum
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
-                If sSystemPSD(iWtClass) * 100000 > 0 Then
+                If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
-                    dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 100000) - dYMean)
+                    dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 1000000000) - dYMean)
                     dSumXdevSq = dSumXdevSq + (Math.Log10(sXValue) - dXMean) ^ 2
 
                     'v.5
