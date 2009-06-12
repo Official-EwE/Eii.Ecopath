@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.17  2009/06/12 18:16:52  joeh
+' After moving averaging, the system PSD is assigned to the first selected group
+'
 ' Revision 1.16  2009/05/28 23:10:25  joeh
 ' Use Landing+Discard rather than fCatch to determine a group is fished
 '
@@ -417,6 +420,7 @@ Public Class cPSDModel
         Dim sTempPSD(m_psd.NWeightClasses) As Single
         Dim iUpperLimit As Integer
         Dim iPoints As Integer
+        Dim iFirstSelectedGrpNum As Integer
 
         CalcSystemPSD(sSystemPSD)
 
@@ -438,11 +442,22 @@ Public Class cPSDModel
             sSystemPSD(i) = sSystemPSD(i) / m_psd.NPtsMovAvg
         Next
 
+        'Determine the first selected group
+        For iGroup As Integer = 1 To m_psd.NumLiving
+            If m_psd.Include(iGroup) Then
+                iFirstSelectedGrpNum = iGroup
+                Exit For
+            End If
+        Next
+
+        'Assign the system PSD to the first selected group
         For i As Integer = 1 To m_psd.NWeightClasses
-            m_psd.PSD(1, i) = sSystemPSD(i)
-            For j As Integer = 2 To m_Data.NumLiving
+            For j As Integer = 1 To m_Data.NumLiving
                 m_psd.PSD(j, i) = 0
             Next
+        Next
+        For i As Integer = 1 To m_psd.NWeightClasses
+            m_psd.PSD(iFirstSelectedGrpNum, i) = sSystemPSD(i)
         Next
     End Sub
 
