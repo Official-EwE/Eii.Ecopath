@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: modUtility.vb,v $
+' Revision 1.5  2009/06/15 14:21:53  jeroens
+' Added WritePyramidFile
+'
 ' Revision 1.4  2009/06/03 19:26:47  jeroens
 ' Moved ToRoman to EwEUtils
 '
@@ -53,6 +56,8 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
 Imports System.Text
+Imports System.Xml
+Imports System.Globalization
 
 Module modUtility
     Public Const DEFAULT_COL_WIDTH As Integer = 70
@@ -85,5 +90,69 @@ Module modUtility
 
         Pane.XAxis.Scale.Max = iNumPoints
     End Sub
+
+    Public Enum ePyramidTypes As Byte
+        [Catch] = 0
+        Flow = 1
+        Biomass = 2
+    End Enum
+
+    Public Function WritePyramidFile(ByVal strModel As String, ByVal pyramidtype As ePyramidTypes, _
+                                     ByVal strUnits As String, ByVal iNumTL As Integer, _
+                                     ByVal sTotalB As Single, ByVal asBiomass() As Single, ByVal asValue() As Single) As String
+
+        Dim doc As XmlDocument = New XmlDocument()
+        Dim nodePyramid As XmlNode = Nothing
+        Dim attrib As XmlAttribute = Nothing
+        Dim nodeTL As XmlNode = Nothing
+        Dim ciEnUSLocale As New CultureInfo("en-US")
+        Dim strOutputFile As String = EwEUtils.SystemUtilities.MakeTempFile("NA-pyramid-biomass.xml")
+
+        doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", ""))
+        nodePyramid = doc.CreateElement("pyramid")
+        doc.AppendChild(nodePyramid)
+
+        attrib = doc.CreateAttribute("model")
+        attrib.Value = strModel
+        nodePyramid.Attributes.Append(attrib)
+
+        attrib = doc.CreateAttribute("type")
+        attrib.Value = pyramidtype.ToString()
+        nodePyramid.Attributes.Append(attrib)
+
+        attrib = doc.CreateAttribute("unit")
+        attrib.Value = strUnits
+        nodePyramid.Attributes.Append(attrib)
+
+        attrib = doc.CreateAttribute("total-biomass")
+        attrib.Value = sTotalB.ToString(ciEnUSLocale)
+        nodePyramid.Attributes.Append(attrib)
+
+        attrib = doc.CreateAttribute("num-tl")
+        attrib.Value = iNumTL.ToString(ciEnUSLocale)
+        nodePyramid.Attributes.Append(attrib)
+
+        For iTL As Integer = 1 To iNumTL
+            nodeTL = doc.CreateElement("trophic-level")
+
+            attrib = doc.CreateAttribute("level")
+            attrib.Value = iTL.ToString(ciEnUSLocale)
+            nodeTL.Attributes.Append(attrib)
+
+            attrib = doc.CreateAttribute("biomass")
+            attrib.Value = asBiomass(iTL).ToString(ciEnUSLocale)
+            nodeTL.Attributes.Append(attrib)
+
+            attrib = doc.CreateAttribute("value")
+            attrib.Value = asValue(iTL).ToString(ciEnUSLocale)
+            nodeTL.Attributes.Append(attrib)
+
+            nodePyramid.AppendChild(nodeTL)
+        Next iTL
+
+        doc.Save(strOutputFile)
+
+        Return strOutputFile
+    End Function
 
 End Module
