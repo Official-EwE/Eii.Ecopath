@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.28  2009/06/16 19:30:24  joeh
+' Add Correlation to PSD regression calculation
+'
 ' Revision 1.27  2009/06/11 22:45:55  joeh
 ' SystemPSD values are now multiplied by a billion instead of 100 thousands to shift the Log(PSD Values) to the positive region
 '
@@ -332,6 +335,7 @@ Namespace Ecopath.Output
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sSlope As Single
             Dim sIntercept As Single
+            Dim sCorrelation As Single
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
@@ -341,7 +345,7 @@ Namespace Ecopath.Output
             Me.FindSystemPSD(sSystemPSD)
 
             'Find regression of the system PSD
-            Me.FindRegression(sSlope, sIntercept, sSystemPSD)
+            Me.FindRegression(sSlope, sIntercept, sCorrelation, sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
@@ -357,8 +361,8 @@ Namespace Ecopath.Output
 
             Me.AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
             Me.AddCurveToGraphPane(pane, resultLists(1), _
-                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sIntercept)), _
-                    Color.Black)
+                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sIntercept), _
+                                  sg.FormatNumber(sCorrelation)), Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -497,11 +501,14 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
-                                   ByVal sSystemPSD() As Single)
+                                   ByRef sCorrelation As Single, ByVal sSystemPSD() As Single)
 
             Dim sXValue As Single = 0
             Dim dSumX As Double = 0
             Dim dSumY As Double = 0
+            Dim dSumXSq As Double = 0
+            Dim dSumYSq As Double = 0
+            Dim dSumXY As Double = 0
             Dim iNum As Integer = 0
             Dim dXMean As Double
             Dim dYMean As Double
@@ -515,6 +522,9 @@ Namespace Ecopath.Output
 
                     dSumX = dSumX + Math.Log10(sXValue)
                     dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass) * 1000000000.0)
+                    dSumXSq = dSumXSq + Math.Log10(sXValue) ^ 2
+                    dSumYSq = dSumYSq + Math.Log10(sSystemPSD(iWtClass) * 1000000000.0) ^ 2
+                    dSumXY = dSumXY + Math.Log10(sXValue) * Math.Log10(sSystemPSD(iWtClass) * 1000000000.0)
 
                     'v.5
                     'sXValue = iWtClass
@@ -546,6 +556,8 @@ Namespace Ecopath.Output
 
             sSlope = CSng(dSumXdevYdev / dSumXdevSq)
             sIntercept = CSng(dYMean - sSlope * dXMean)
+            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) / _
+                           (Math.Sqrt(iNum * dSumXSq - dSumX ^ 2) * Math.Sqrt(iNum * dSumYSq - dSumY ^ 2)))
 
         End Sub
 
