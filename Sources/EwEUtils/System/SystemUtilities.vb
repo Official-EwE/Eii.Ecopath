@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: SystemUtilities.vb,v $
+' Revision 1.6  2009/06/16 20:12:56  jeroens
+' MakeTempPath includes user-provided name, if any
+'
 ' Revision 1.5  2009/05/02 01:49:04  jeroens
 ' Fixed temp file logic
 '
@@ -156,10 +159,13 @@ Public Class SystemUtilities
 
     Public Shared Function MakeTempFile(ByVal strFileName As String) As String
 
-        ' TODO: Concat application file name after the file directory.
+        If String.IsNullOrEmpty(strFileName) Then
+            strFileName = System.IO.Path.GetTempFileName()
+        End If
+
         ' TODO: Check if file is writeable!!!
 
-        Return Path.Combine(System.IO.Path.GetTempPath(), System.IO.Path.GetTempFileName())
+        Return Path.Combine(System.IO.Path.GetTempPath(), strFileName)
 
         'Dim strOutputDir As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
         ''Dim strOutputDir As String = System.IO.Path.GetTempPath
