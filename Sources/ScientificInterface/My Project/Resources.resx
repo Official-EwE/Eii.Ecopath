@@ -2263,8 +2263,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Year</value>
   </data>
   <data name="PSD_GRAPH_REGRESSION_LABEL" xml:space="preserve">
-    <value>Slope = {0}, Y-intercept = {1}</value>
-    <comment>{0}: slope value, {1}: intercept value</comment>
+    <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}</value>
+    <comment>{0}: slope value, {1}: intercept value, {2}: correlation coefficient</comment>
   </data>
   <data name="ECOSIM_VALUE_ALL_RUNS" xml:space="preserve">
     <value>(All runs)</value>
