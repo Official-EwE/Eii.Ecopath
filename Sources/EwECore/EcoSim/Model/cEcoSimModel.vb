@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSimModel.vb,v $
+' Revision 1.49  2009/06/16 20:15:22  jeroens
+' Fixed comments
+'
 ' Revision 1.48  2009/06/05 20:26:01  joeb
 ' Change setFishTime() to handle both Search and Non Search calls
 '
@@ -1133,12 +1136,12 @@ Public Property PluginManager() As cPluginManager
             'FishRateGear() user entered fishing effort multilpier or Time Series Forcing data loaded via the applied time series data
             If Me.m_search.bInSearch Then
 
-                'if in a fishing policy search then get the Fgear values set by the optimization routine
+                'if in a (fishing policy) search then get the Fgear values set by the optimization routine
                 Me.m_search.SetFGear(Fgear, RelFopt, iYear, NumberOfYears)
 
             Else
 
-                'not in the search so get Fgear() from user inputted fishing rate shape
+                'not in the search so get Fgear() from user-entered fishing rate shape
                 Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
                 For iFlt As Integer = 1 To Me.m_EPData.NumFleet
                     Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
@@ -1146,8 +1149,7 @@ Public Property PluginManager() As cPluginManager
 
             End If
 
-            ' PluginManger used to set Fleet
-            ' IMPORTANT (SL Apr09): Fgear will not be used if Me.m_search.bInSearch is not true. 
+            ' Invoke FGear override plug-in point
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyFGear(Fgear, BB, Me.m_Data, TimeNow)
 
         End Sub
