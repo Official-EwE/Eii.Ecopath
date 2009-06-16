@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFileOpenCommand.vb,v $
+' Revision 1.2  2009/06/16 20:12:01  jeroens
+' Added multiple selection support
+'
 ' Revision 1.1  2009/05/11 01:46:28  jeroens
 ' Renamed
 '
@@ -36,12 +39,16 @@ Namespace Commands
         Private m_strTitle As String = ""
         ''' <summary>Name of the file to open.</summary>
         Private m_strFileName As String = ""
+        ''' <summary>Names of the files to open.</summary>
+        Private m_astrFileNames As String()
         ''' <summary>Directory to initialize the dialog with.</summary>
         Private m_strDirectory As String = ""
         ''' <summary>File filter to use.</summary>
         Private m_strFileFilters As String = ""
         ''' <summary>Default file filter.</summary>
         Private m_iFilter As Integer = 0
+        ''' <summary>Allow mutliple files to be selected.</summary>
+        Private m_bAllowMultiple As Boolean = False
         ''' <summary>The dialog result.</summary>
         Private m_iResult As DialogResult = DialogResult.OK
 
@@ -156,6 +163,23 @@ Namespace Commands
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the file name to show in the dialog. Once invoked and closed
+        ''' with the result <see cref="DialogResult.OK">OK</see>, this
+        ''' property will contain the full path to the file selected in the 
+        ''' dialog.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property FileNames() As String()
+            Get
+                Return Me.m_astrFileNames
+            End Get
+            Set(ByVal astrFileNames As String())
+                Me.m_astrFileNames = astrFileNames
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get the directory that the command was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -201,6 +225,15 @@ Namespace Commands
             End Get
             Set(ByVal value As Integer)
                 Me.m_iFilter = value
+            End Set
+        End Property
+
+        Public Property AllowMultiple() As Boolean
+            Get
+                Return Me.m_bAllowMultiple
+            End Get
+            Set(ByVal bAllowMultiple As Boolean)
+                Me.m_bAllowMultiple = bAllowMultiple
             End Set
         End Property
 
