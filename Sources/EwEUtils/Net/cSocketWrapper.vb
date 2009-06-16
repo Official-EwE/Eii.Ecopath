@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.9  2009/06/16 20:14:51  jeroens
+' Fixed reconnect functionality
+'
 ' Revision 1.8  2009/04/28 13:15:34  jeroens
 ' Events marshalled
 '
@@ -388,9 +391,16 @@ Namespace NetUtilities
         ''' <returns>True if disconnected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public Function Disconnect() As Boolean
-            If Me.m_socket.Connected() Then
-                Me.m_socket.Disconnect(True)
-            End If
+            Try
+                If Me.m_socket.Connected() Then
+                    Me.m_socket.Disconnect(True)
+                End If
+            Catch ex As Exception
+                ' Whoopy
+            End Try
+            ' Create new socket
+            Me.m_socket = Nothing
+            Me.m_socket = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             Return Not Me.m_socket.Connected()
         End Function
 
@@ -735,10 +745,11 @@ Namespace NetUtilities
 #End If
             End Try
 
-            ' Disconnected?
+            ' Disconnected message?
             If iNumBytes = 0 Then
-                ' #Yes: pull the plug
-                sw.m_socket.Disconnect(False)
+                ' #Yes: disconnect the socket
+                sw.Disconnect()
+
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("sw {0} disconnected", Me.ToString())
 #End If
