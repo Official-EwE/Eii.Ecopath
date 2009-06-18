@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: AppLauncher.vb,v $
+' Revision 1.48  2009/06/18 04:56:16  jeroens
+' File open dialog supports multiple files
+'
 ' Revision 1.47  2009/06/06 01:43:59  jeroens
 ' Updated to new cDisplayGroupsCommand
 '
@@ -2029,13 +2032,14 @@ Public Class AppLauncher
 
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
 
-        cEwEFileDialogHelper.Configure(dlgLoad, foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath)
+        cEwEFileDialogHelper.Configure(dlgLoad, foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath, foc.AllowMultiple)
 
         foc.Result = dlgLoad.ShowDialog()
         foc.FilterIndex = dlgLoad.FilterIndex
 
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
+            foc.FileNames = dlgLoad.FileNames
             Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgLoad.FileName)
         End If
 
