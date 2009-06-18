@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoPathGroupOutput.vb,v $
+' Revision 1.12  2009/06/18 20:39:22  jeroens
+' Solved issue 559
+'
 ' Revision 1.11  2009/05/22 22:31:07  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -304,7 +307,7 @@ Public Class cEcoPathGroupOutput
 
             SetNullFlag(eVarNameFlags.MortCoBioAcumRate, Me.MortCoBioAcumRate, cCore.NULL_VALUE, eNullTestTypes.NonZero)
             SetNullFlag(eVarNameFlags.MortCoFishRate, Me.MortCoFishRate, cCore.NULL_VALUE, eNullTestTypes.NonZero)
-            SetNullFlag(eVarNameFlags.MortCoNetMig, Me.MortCoNetMig)
+            SetNullFlag(eVarNameFlags.MortCoNetMig, Me.MortCoNetMig, cCore.NULL_VALUE, eNullTestTypes.NonZero)
             ' This value can be negative
             SetNullFlag(eVarNameFlags.MortCoOtherMort, Me.MortCoOtherMort, cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
             SetNullFlag(eVarNameFlags.MortCoPB, Me.MortCoPB)
