@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.29  2009/06/18 23:04:02  joeh
+' Comment out OnStyleGuideChanged so that a change in Select Groups won't trigger the core to run EcoPath again
+'
 ' Revision 1.28  2009/06/16 19:30:24  joeh
 ' Add Correlation to PSD regression calculation
 '
@@ -145,7 +148,7 @@ Namespace Ecopath.Output
             Dim msg As cMessage = Nothing
             Dim cmdh As cCommandHandler = Nothing
             Dim cmd As cCommand = Nothing
-            Dim sg As cStyleGuide = Nothing
+            'Dim sg As cStyleGuide = Nothing
 
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
@@ -160,8 +163,8 @@ Namespace Ecopath.Output
             End If
 
             ' Style guide
-            sg = cStyleGuide.GetInstance()
-            AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            'sg = cStyleGuide.GetInstance()
+            'AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Connect format providers
             parms = Me.m_core.ParticleSizeDistributionParameters
@@ -220,7 +223,7 @@ Namespace Ecopath.Output
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             'Style guide
-            RemoveHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            'RemoveHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
@@ -256,10 +259,10 @@ Namespace Ecopath.Output
             Me.SynchronizePlot()
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
-            Me.UpdateVariables()
-            Me.m_core.RunEcoPath()
-        End Sub
+        'Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        '    Me.UpdateVariables()
+        '    Me.m_core.RunEcoPath()
+        'End Sub
 
 #End Region ' Event handlers
 
