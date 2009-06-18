@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwEFileDialogHelper.vb,v $
+' Revision 1.4  2009/06/18 15:56:43  jeroens
+' File open dialog supports multiple files
+'
 ' Revision 1.3  2009/05/11 01:50:49  jeroens
 ' Renamed command classes
 '
@@ -29,7 +32,8 @@ Namespace Controls
                                     ByVal strFileName As String, _
                                     ByVal strFilters As String, _
                                     Optional ByVal iDefaultFilter As Integer = 0, _
-                                    Optional ByVal strInitialDirectory As String = "")
+                                    Optional ByVal strInitialDirectory As String = "", _
+                                    Optional ByVal bMultiSelect As Boolean = False)
 
             With dlg
                 .FileName = strFileName
@@ -41,6 +45,7 @@ Namespace Controls
                 .RestoreDirectory = True
                 .SupportMultiDottedExtensions = True
                 .AddExtension = True
+                .Multiselect = bMultiSelect
             End With
 
             ' Hack when SP1 installation is not detected
