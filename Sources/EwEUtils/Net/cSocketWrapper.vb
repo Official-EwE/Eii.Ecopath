@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.10  2009/06/18 15:55:48  jeroens
+' Added IPv6 support
+'
 ' Revision 1.9  2009/06/16 20:14:51  jeroens
 ' Fixed reconnect functionality
 '
@@ -202,6 +205,14 @@ Namespace NetUtilities
             Me.m_iID = iID
             Me.m_socket = s
 
+            ' Configure socket for use with IPv6
+            If Socket.OSSupportsIPv6 Then
+                ' After http://forum.soft32.com/windows/Socket-problem-migrating-Vista-ftopict363802.html
+                Me.m_socket.SetSocketOption(SocketOptionLevel.IPv6, _
+                                            DirectCast(27, SocketOptionName), _
+                                            0)
+            End If
+
             ' Get sync object
             Me.m_syncObject = SynchronizationContext.Current
             If (Me.m_syncObject Is Nothing) Then
@@ -318,7 +329,6 @@ Namespace NetUtilities
             If (aIP Is Nothing) Then Return False
             If (aIP.Length = 0) Then Return False
 
-            ' Use IP4, not IP6
             For Each ip As IPAddress In aIP
                 If ip.AddressFamily = AddressFamily.InterNetwork Then
                     Return Me.Connect(ip, iPort)
