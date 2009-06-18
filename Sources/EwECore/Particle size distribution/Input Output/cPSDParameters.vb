@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.10  2009/06/18 23:06:27  joeh
+' Change the minimum value of No. of Weight Class from 1 to 2
+'
 ' Revision 1.9  2009/04/28 19:15:01  joeh
 ' Remove val.Stored = False for PSDEnable
 '
@@ -65,7 +68,7 @@ Public Class cPSDParameters
             m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses
-            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 1)
+            meta = New cVariableMetaData(2, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 2)
             val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDNumWeightClasses))
             m_values.Add(val.varName, val)
 
