@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: dlgEditLayer.vb,v $
+' Revision 1.10  2009/06/18 04:57:16  jeroens
+' Fixed update bug after layer import
+'
 ' Revision 1.9  2009/05/15 14:19:08  jeroens
 ' Work layer disposed
 '
@@ -215,6 +218,7 @@ Namespace Ecospace.Basemap.Layers
                 cmd.Tag = New cLayer() {Me.m_layerWork}
                 cmd.Invoke()
             End If
+            Me.m_grid.RefreshContent()
 
         End Sub
 
