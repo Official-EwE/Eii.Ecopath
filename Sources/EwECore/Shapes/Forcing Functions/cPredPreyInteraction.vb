@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cPredPreyInteraction.vb,v $
+' Revision 1.3  2009/06/19 22:09:13  jeroens
+' Removed assert - reload works for removed shapes as long as Ecosim is totally reloaded
+'
 ' Revision 1.2  2009/01/16 18:30:33  jeroens
 ' eMessageSource renamed to eCoreComponentTypes
 '
@@ -345,7 +348,7 @@ Public Class cPredPreyInteraction
                 Return shape
             End If
         Next
-        Debug.Assert(False, Me.ToString & ".Failed to find shape.")
+        'Debug.Assert(False, Me.ToString & ".Failed to find shape.")
         Return Nothing
     End Function
 
