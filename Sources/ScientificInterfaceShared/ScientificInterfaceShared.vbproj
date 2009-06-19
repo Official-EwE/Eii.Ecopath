@@ -236,6 +236,7 @@
       <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.Designer.vb">
       <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
