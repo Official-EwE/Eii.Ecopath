@@ -157,6 +157,7 @@
     </Compile>
     <Compile Include="Controls\MessageBox\CheckedMessageBox.vb" />
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
+    <Compile Include="Controls\Pyramid\cPyramid.vb" />
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeFunc\ShapeImage.vb" />
     <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.Designer.vb">
@@ -235,7 +236,6 @@
       <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.vb">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.Designer.vb">
       <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
