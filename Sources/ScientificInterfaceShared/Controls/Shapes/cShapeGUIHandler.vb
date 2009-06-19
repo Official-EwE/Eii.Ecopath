@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cShapeGUIHandler.vb,v $
+' Revision 1.21  2009/06/19 21:51:06  jeroens
+' MsgBox -> cFeedbackMessage
+'
 ' Revision 1.20  2009/05/21 18:53:39  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -382,15 +385,21 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overridable Sub SetSeasonal(ByVal shape As cShapeData, ByVal bSeasonal As Boolean)
 
+            Dim fms As cFeedbackMessage = Nothing
+
             Debug.Assert(shape IsNot Nothing)
 
             If (bSeasonal = False) Then
                 Me.SelectedShape.IsSeasonal = False
             Else
                 If Not Me.SelectedShape.IsSeasonal Then
-                    If (MsgBox(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG, _
-                             MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, _
-                             My.Resources.SHAPE_TYPE_TO_SEASONAL_CAPTION) = MsgBoxResult.Yes) Then
+                    fms = New cFeedbackMessage(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG, _
+                                               eCoreComponentType.ShapesManager, _
+                                               eMessageImportance.Information, _
+                                               cFeedbackMessage.eReplyStyle.YES_NO, _
+                                               eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
+                    Me.m_core.Messages.SendMessage(fms, True)
+                    If fms.Reply = cFeedbackMessage.eReply.YES Then
                         Me.SelectedShape.IsSeasonal = True
                     End If
                 End If
@@ -909,19 +918,30 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub RemoveTimeSeries(ByVal ashapes As cShapeData())
 
+            Dim fms As cFeedbackMessage = Nothing
+            Dim strMessage As String = ""
             Dim bSucces As Boolean = True
 
             ' Sanity check
             Debug.Assert(ashapes IsNot Nothing, "Need valid TS")
 
+            ' Prompt for confirmation
             If ashapes.Length = 1 Then
-                If MsgBox(String.Format(My.Resources.PROMPT_TIMESERIES_DELETE, ashapes(0).Name), _
-                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+                strMessage = String.Format(My.Resources.PROMPT_TIMESERIES_DELETE, ashapes(0).Name)
             Else
-                If MsgBox(String.Format(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length), _
-                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+                strMessage = String.Format(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length)
             End If
 
+            fms = New cFeedbackMessage(strMessage, _
+                                       eCoreComponentType.ShapesManager, _
+                                       eMessageImportance.Warning, _
+                                       cFeedbackMessage.eReplyStyle.YES_NO, _
+                                       eDataTypes.TimeSeriesDataset, _
+                                       cFeedbackMessage.eReply.OK)
+            Me.m_core.Messages.SendMessage(fms, True)
+            If (fms.Reply = cFeedbackMessage.eReply.NO) Then Return
+
+            ' Delete
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
             For Each shape As cShapeData In ashapes
                 Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
@@ -1424,18 +1444,26 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub RemoveFF(ByVal ashapes As cShapeData())
 
+            Dim fms As cFeedbackMessage = Nothing
+            Dim strMessage As String = ""
             Dim bSucces As Boolean = True
 
             ' Sanity check
             Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
 
+            ' Ask for permission to perform irreversible action
             If ashapes.Length = 1 Then
-                If MsgBox(String.Format(My.Resources.PROMPT_FORCING_DELETE, ashapes(0).Name), _
-                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE, ashapes(0).Name)
             Else
-                If MsgBox(String.Format(My.Resources.PROMPT_FORCING_DELETE_MULTIPLE, ashapes.Length), _
-                        MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Return
+                strMessage = String.Format(My.Resources.PROMPT_SHAPE_DELETE_MULTIPLE, ashapes.Length)
             End If
+            fms = New cFeedbackMessage(strMessage, _
+                                       eCoreComponentType.ShapesManager, _
+                                       eMessageImportance.Warning, _
+                                       cFeedbackMessage.eReplyStyle.YES_NO, _
+                                       eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
+            Me.m_core.Messages.SendMessage(fms, True)
+            If fms.Reply = cFeedbackMessage.eReply.NO Then Return
 
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
             For Each shape As cShapeData In ashapes
