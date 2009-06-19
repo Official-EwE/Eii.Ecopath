@@ -296,20 +296,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''  Looks up a localized string similar to You are about to delete forcing or mediation function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_FORCING_DELETE() As String
+        Friend ReadOnly Property PROMPT_SHAPE_DELETE() As String
             Get
-                Return ResourceManager.GetString("PROMPT_FORCING_DELETE", resourceCulture)
+                Return ResourceManager.GetString("PROMPT_SHAPE_DELETE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to You are about to delete {0} forcing functions&apos;. This action cannot be undone. Are you sure you want to do this?.
+        '''  Looks up a localized string similar to You are about to delete {0} forcing or mediation functions&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_FORCING_DELETE_MULTIPLE() As String
+        Friend ReadOnly Property PROMPT_SHAPE_DELETE_MULTIPLE() As String
             Get
-                Return ResourceManager.GetString("PROMPT_FORCING_DELETE_MULTIPLE", resourceCulture)
+                Return ResourceManager.GetString("PROMPT_SHAPE_DELETE_MULTIPLE", resourceCulture)
             End Get
         End Property
         

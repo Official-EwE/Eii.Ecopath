@@ -245,10 +245,6 @@
   <data name="LABEL_GROUP" xml:space="preserve">
     <value>&amp;Group:</value>
   </data>
-  <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
-    <value>You are about to delete forcing function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0} = forcing function name</comment>
-  </data>
   <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
     <value>You are about to delete time series '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: time series name</comment>
@@ -273,10 +269,6 @@
   <data name="HEADER_YEAR" xml:space="preserve">
     <value>Year</value>
   </data>
-  <data name="PROMPT_FORCING_DELETE_MULTIPLE" xml:space="preserve">
-    <value>You are about to delete {0} forcing functions'. This action cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0}: delete count</comment>
-  </data>
   <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
     <value>You are about to delete {0} time series'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0}: delete count</comment>
@@ -287,5 +279,11 @@
   <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
     <value>{0}: ({1}, {2})</value>
     <comment>{0}: graph curve name, {1}: X point value, {2}: Y point value</comment>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
+    <value>You are about to delete forcing or mediation function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
+    <value>You are about to delete {0} forcing or mediation functions'. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
 </root>
