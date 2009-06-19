@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.8  2009/06/19 04:10:29  jeroens
+' YMarkValue aligned to shape / XBase intersection, no longer to YBase
+'
 ' Revision 1.7  2009/04/12 21:20:52  jeroens
 ' Custom -> DefineXAxis (issue 611)
 '
@@ -203,8 +206,9 @@ Namespace Ecosim
                         Me.SketchPad.XMarkValue = cCore.NULL_VALUE
                         Me.SketchPad.YMarkValue = cCore.NULL_VALUE
                     Else
-                        Me.SketchPad.XMarkValue = CSng(DirectCast(shapeSelected, cMediationFunction).XBaseIndex)
-                        Me.SketchPad.YMarkValue = DirectCast(shapeSelected, cMediationFunction).YBase
+                        Dim mf As cMediationFunction = DirectCast(shapeSelected, cMediationFunction)
+                        Me.SketchPad.XMarkValue = CSng(mf.XBaseIndex)
+                        Me.SketchPad.YMarkValue = mf.ShapeData(Math.Max(0, Math.Min(mf.XBaseIndex, mf.ShapeData.Length - 1)))
                     End If
                 End If
 
