@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.13  2009/06/19 03:46:49  jeroens
+' YMark positioned at XMark / Shape intersection
+'
 ' Revision 1.12  2009/05/28 12:37:54  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -615,6 +618,7 @@ Namespace Controls
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
             Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
+            Me.YMarkValue = Me.Shape.ShapeData(CInt(Me.XMarkValue))
             Me.Refresh()
         End Sub
 
