@@ -23,10 +23,10 @@ Namespace Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucForcingSketchPad))
             Me.SuspendLayout()
             '
-            'ForcingSketchPad
+            'ucForcingSketchPad
             '
             resources.ApplyResources(Me, "$this")
-            Me.Name = "ForcingSketchPad"
+            Me.Name = "ucForcingSketchPad"
             Me.ResumeLayout(False)
 
         End Sub
