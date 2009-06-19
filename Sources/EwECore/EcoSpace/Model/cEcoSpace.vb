@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcoSpace.vb,v $
+' Revision 1.22  2009/06/19 21:49:35  joeb
+' SpaceSplitUpdate sets WageS(age one) = 0
+'
 ' Revision 1.21  2009/04/20 19:41:45  joeb
 ' Bug Fix Ecospace slowed down after running have a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
 '
@@ -4314,7 +4317,7 @@ exitline:
                     m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
                 End If
                 If m_Stanza.HatchCode(isp) = 0 Then m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) * (m_Stanza.EggsStanza(isp) / m_Stanza.BaseEggsStanza(isp)) ^ m_Stanza.RecPowerSplit(isp)
-                m_Stanza.WageS(isp, m_Stanza.Age1(isp, 1)) = 0.000001
+                m_Stanza.WageS(isp, m_Stanza.Age1(isp, 1)) = 0
             End If
         Next
         ' finally update bioamss and pred index information for all species
