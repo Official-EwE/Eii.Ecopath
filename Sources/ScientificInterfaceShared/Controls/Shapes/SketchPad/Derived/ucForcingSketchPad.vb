@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucForcingSketchPad.vb,v $
+' Revision 1.6  2009/06/19 03:48:39  jeroens
+' Removed dead code
+'
 ' Revision 1.5  2009/05/28 12:37:52  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -162,8 +165,6 @@ Namespace Controls
                 If yStep = 0 Then yStep = 1
 
                 For j As Double = 0 To sYMax Step yStep * 0.5
-                    ' JS 21nov07: calc proper label Y position
-                    'Dim yPos As Integer = CInt(rcImage.Bottom - rcImage.Height * j / sYMax)
                     Dim yPos As Integer = CInt(ShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
                     strLabel = j.ToString
