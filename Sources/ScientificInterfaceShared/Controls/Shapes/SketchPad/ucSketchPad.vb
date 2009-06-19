@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucSketchPad.vb,v $
+' Revision 1.14  2009/06/19 06:29:08  jeroens
+' YMark repositioned when shape changes
+'
 ' Revision 1.13  2009/06/19 03:46:49  jeroens
 ' YMark positioned at XMark / Shape intersection
 '
@@ -618,7 +621,7 @@ Namespace Controls
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
             Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
-            Me.YMarkValue = Me.Shape.ShapeData(CInt(Me.XMarkValue))
+            Me.PositionYMark()
             Me.Refresh()
         End Sub
 
@@ -693,6 +696,11 @@ Namespace Controls
         Private Function IsNearYMark(ByVal ptMouse As PointF) As Boolean
             Return False
         End Function
+
+        Private Sub PositionYMark()
+            If Me.Shape Is Nothing Then Return
+            Me.YMarkValue = Me.Shape.ShapeData(CInt(Math.Max(0, Math.Min(Me.Shape.ShapeData.Length - 1, Me.XMarkValue))))
+        End Sub
 
 #End Region ' Private Methods
 
@@ -869,6 +877,7 @@ Namespace Controls
         ''' </summary>
         Protected Overridable Sub OnShapeChanged()
             RaiseEvent ShapeChanged(Me.Shape)
+            Me.PositionYMark()
             Me.Invalidate()
         End Sub
 
