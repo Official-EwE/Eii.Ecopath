@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.10  2009/06/19 16:45:42  jeroens
+' Y-axis labels scaled to XMark value
+'
 ' Revision 1.9  2009/06/19 06:31:12  jeroens
 ' Added Y-axis labels to Med shapes
 '
@@ -76,6 +79,7 @@ Namespace Controls
             Dim strLabel As String = ""
             Dim iYStep As Integer = 0
             Dim iYPos As Integer = 0
+            Dim sYScale As Single = 1
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
@@ -86,12 +90,17 @@ Namespace Controls
 
             'sYMax = Me.YAxisMaxValue
             iXMax = Me.Shape.XMax
+            sYScale = Me.YMarkValue
+
+            If (sYScale = 0) Then sYScale = 1
 
             sfmt = New StringFormat()
             sfmt.Alignment = StringAlignment.Center
             sfmt.LineAlignment = StringAlignment.Center
 
-            strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (DirectCast(Me.Shape, cMediationFunction).ID + 1), Me.Shape.Name)
+            strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                                       (DirectCast(Me.Shape, cMediationFunction).ID + 1), _
+                                       Me.Shape.Name)
 
             Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
@@ -99,6 +108,9 @@ Namespace Controls
 
                         g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
                         g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
+
+                        ' Scale sYMax to the value at XMark
+                        sYMax /= sYScale
 
                         'Draw Axis Y marks
                         iYStep = CInt(sYMax / 3)
