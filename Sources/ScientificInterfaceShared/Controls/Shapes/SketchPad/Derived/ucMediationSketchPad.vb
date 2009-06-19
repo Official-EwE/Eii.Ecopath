@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ucMediationSketchPad.vb,v $
+' Revision 1.9  2009/06/19 06:31:12  jeroens
+' Added Y-axis labels to Med shapes
+'
 ' Revision 1.8  2009/05/28 12:37:53  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -70,6 +73,9 @@ Namespace Controls
             Dim iXMax As Integer = 0
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
+            Dim strLabel As String = ""
+            Dim iYStep As Integer = 0
+            Dim iYPos As Integer = 0
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
@@ -89,11 +95,34 @@ Namespace Controls
 
             Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
-                    g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
-                    g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
+                    Using pn As New Pen(Color.FromArgb(128, 0, 0, 0))
+
+                        g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
+                        g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
+
+                        'Draw Axis Y marks
+                        iYStep = CInt(sYMax / 3)
+                        If iYStep = 0 Then iYStep = 1
+
+                        For j As Double = 0 To sYMax Step iYStep * 0.5
+                            iYPos = CInt(ShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
+
+                            strLabel = j.ToString
+                            g.DrawString(strLabel, Me.Font, br, rcImage.Left + 5, iYPos)
+                            g.DrawLine(pn, rcImage.Left, iYPos, rcImage.Left + 3, iYPos)
+                        Next
+
+                        If sYMax < 0.5 And sYMax >= 0.01 Then
+                            For j As Integer = 0 To 2
+                                iYPos = CInt(rcImage.Bottom - rcImage.Height * (3 - j) / 3)
+                                strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
+                                g.DrawString(strLabel, Me.Font, br, rcImage.Left + 5, iYPos)
+                                g.DrawLine(pn, rcImage.Left, iYPos, rcImage.Left + 3, iYPos)
+                            Next
+                        End If
+                    End Using
                 End Using
             End Using
-
         End Sub
 
     End Class
