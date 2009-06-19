@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcospaceZedGraphPlotDrawer.vb,v $
+' Revision 1.4  2009/06/19 22:04:11  jeroens
+' Fixed typo
+'
 ' Revision 1.3  2009/05/28 12:37:10  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -83,7 +86,7 @@ Namespace Ecospace
 
         End Sub
 
-        Public Sub UpodateCurveVisibility()
+        Public Sub UpdateCurveVisibility()
 
             Dim li As CurveItem = Nothing
             Dim bShowGroup As Boolean = True

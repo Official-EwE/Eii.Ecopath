@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcospace.vb,v $
+' Revision 1.14  2009/06/19 22:06:37  jeroens
+' Fixed typo
+'
 ' Revision 1.13  2009/05/28 12:37:11  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -718,7 +721,7 @@ Namespace Ecospace
 
                 Me.m_pdBiomass.GroupShowMode = Me.m_showGroupMode
                 Me.m_pdBiomass.GroupToShow = Me.m_iGroupToShow
-                Me.m_pdBiomass.UpodateCurveVisibility()
+                Me.m_pdBiomass.UpdateCurveVisibility()
                 Me.m_zgh.Redraw()
 
             End If

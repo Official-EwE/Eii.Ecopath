@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MediationGUIHandler.vb,v $
+' Revision 1.9  2009/06/19 22:04:11  jeroens
+' Fixed typo
+'
 ' Revision 1.8  2009/06/19 04:10:29  jeroens
 ' YMarkValue aligned to shape / XBase intersection, no longer to YBase
 '
@@ -43,8 +46,6 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
-
-#Region " Mediation "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -264,7 +265,5 @@ Namespace Ecosim
         End Sub
 
     End Class
-
-#End Region ' Mediation
 
 End Namespace ' Ecosim
