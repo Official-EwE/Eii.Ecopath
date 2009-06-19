@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeImage.vb,v $
+' Revision 1.6  2009/06/19 03:41:17  jeroens
+' Removed dead code
+'
 ' Revision 1.5  2009/05/28 12:37:47  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -77,21 +80,6 @@ Namespace Controls
 
         End Function
 
-        '''' -------------------------------------------------------------------
-        '''' <summary>
-        '''' This helper method transforms the underlying point value to the screen point value
-        '''' </summary>
-        '''' -------------------------------------------------------------------
-        'Public Shared Function ToScreenPoint(ByVal ptModel As PointF, _
-        '                            ByVal rcClip As Rectangle, _
-        '                            ByVal sXMax As Single, ByVal sYMax As Single) As PointF
-
-        '    Dim ptScreen As New PointF(ptModel.X * rcClip.Width / sXMax + rcClip.Left, _
-        '                    rcClip.Height + rcClip.Top - ptModel.Y * rcClip.Height / sYMax)
-        '    Return ptScreen
-
-        'End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' This method transforms the screen point to the underlying model point
@@ -156,10 +144,12 @@ Namespace Controls
                                 Optional ByVal strYMarkLabel As String = "", _
                                 Optional ByVal strXMarkLabel As String = "")
 
-
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim brShape As New SolidBrush(clr)
             Dim pnShape As New Pen(clr, 1)
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim pnMark As New Pen(Color.Blue, 1)
+
+            pnMark.DashStyle = DashStyle.Dash
 
             ' No max specified? Calc it.
             If (sYMax <> sYMax) Then Return
@@ -195,46 +185,6 @@ Namespace Controls
                     pt2 = ShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
                     gp.AddLine(pt1, pt2)
 
-
-#If 0 Then
-                    'jb 27-04-09 old drawing routine uses different logic to draw seasonal and complete time series data 
-                    'new method above uses the same logic drawing each data point as a discreet line from x-1 to x
-                    'once we are satisfied with the new logic we can remove this code
-                    If bIsSeasonal Then
-
-                        nPoints = cCore.N_MONTHS
-
-                        pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
-                        For i As Integer = 1 To nPoints
-                            pt1 = pt2
-                            'x-1 point
-                            pt2 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
-                            gp.AddLine(pt1, pt2)
-                            'x point
-                            pt1 = pt2
-                            pt2 = ShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
-                            gp.AddLine(pt1, pt2)
-                        Next
-
-                        pt1 = pt2
-                        pt2 = ShapeImage.ToImagePoint(New PointF(13.0!, 0), rcImage, nPoints, sYMax)
-                        gp.AddLine(pt1, pt2)
-
-                    Else
-
-                        pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
-
-                        For i As Integer = 1 To nPoints
-                            pt1 = pt2
-                            pt2 = ShapeImage.ToImagePoint(New PointF(i - 1, asData(i)), rcImage, nPoints, sYMax)
-                            gp.AddLine(pt1, pt2)
-                        Next
-                        pt1 = pt2
-                        pt2 = ShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
-                        gp.AddLine(pt1, pt2)
-
-                    End If
-#End If
                     Try
                         Select Case drawMode
                             Case eSketchDrawModeTypes.Line
@@ -345,32 +295,30 @@ Namespace Controls
 
             ' Draw XMark
             If (sXMark > 0) Then
-                Using p As New Pen(Color.Blue, 1)
 
-                    Dim ptfTmp As PointF = ShapeImage.ToImagePoint(New PointF(sXMark, 0), rcImage, nPoints, sYMax)
-                    Dim ptfFrom As New PointF(ptfTmp.X, 0)
-                    Dim ptfTo As New PointF(ptfTmp.X, rcImage.Height)
+                Dim ptfTmp As PointF = ShapeImage.ToImagePoint(New PointF(sXMark, 0), rcImage, nPoints, sYMax)
+                Dim ptfFrom As New PointF(ptfTmp.X, 0)
+                Dim ptfTo As New PointF(ptfTmp.X, rcImage.Height)
 
-                    p.DashStyle = DashStyle.Dash
-                    g.DrawLine(p, ptfFrom, ptfTo)
+                g.DrawLine(pnMark, ptfFrom, ptfTo)
 
-                    ' Draw Xmark label, if any
-                    If Not String.IsNullOrEmpty(strXMarkLabel) Then
-                        Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
-                            Using br As New SolidBrush(Color.Blue)
-                                Dim szfText As SizeF = g.MeasureString(strXMarkLabel, ft)
-                                ' Position label on the top of the graph, left of the line
-                                ptfFrom.X -= szfText.Width
-                                g.DrawString(strXMarkLabel, ft, br, ptfFrom)
-                            End Using
+                ' Draw Xmark label, if any
+                If Not String.IsNullOrEmpty(strXMarkLabel) Then
+                    Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
+                        Using br As New SolidBrush(Color.Blue)
+                            Dim szfText As SizeF = g.MeasureString(strXMarkLabel, ft)
+                            ' Position label on the top of the graph, left of the line
+                            ptfFrom.X -= szfText.Width
+                            g.DrawString(strXMarkLabel, ft, br, ptfFrom)
                         End Using
-                    End If
+                    End Using
+                End If
 
-                End Using
             End If
 
             pnShape.Dispose()
             brShape.Dispose()
+            pnMark.Dispose()
 
         End Sub
 
