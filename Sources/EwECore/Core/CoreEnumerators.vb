@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: CoreEnumerators.vb,v $
+' Revision 1.12  2009/06/20 21:12:39  jeroens
+' Fixed enum type incompatibility
+'
 ' Revision 1.11  2009/05/21 18:53:39  jeroens
 ' eCoreComponentTypes moved to EwEUtils
 '
@@ -530,7 +533,7 @@ End Enum
 ''' The three climate zones for PSD analysis.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-Public Enum eClimateTypes As Short
+Public Enum eClimateTypes As Integer
     ''' <summary>Tropical climate</summary>
     Tropical = 0
     ''' <summary>Temperate climate</summary>
