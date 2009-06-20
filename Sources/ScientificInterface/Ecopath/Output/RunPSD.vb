@@ -1,6 +1,10 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.30  2009/06/20 21:08:50  jeroens
+' Updated to modified DisplayGroups command
+' Graph invalidated when values change
+'
 ' Revision 1.29  2009/06/18 23:04:02  joeh
 ' Comment out OnStyleGuideChanged so that a change in Select Groups won't trigger the core to run EcoPath again
 '
@@ -127,6 +131,8 @@ Namespace Ecopath.Output
         ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
         Private m_bEcopathResultsPlotted As Boolean = False
 
+        Private m_cmdShowGroups As cDisplayGroupsCommand = Nothing
+
 #End Region 'Variables
 
 #Region " Constructor/Destructor "
@@ -147,8 +153,6 @@ Namespace Ecopath.Output
             Dim str As String = ""
             Dim msg As cMessage = Nothing
             Dim cmdh As cCommandHandler = Nothing
-            Dim cmd As cCommand = Nothing
-            'Dim sg As cStyleGuide = Nothing
 
             Me.m_core = cCore.GetInstance()
             Me.m_coreStateMonitor = Me.m_core.StateMonitor
@@ -157,14 +161,11 @@ Namespace Ecopath.Output
 
             ' Connect to show/hide groups command
             cmdh = cCommandHandler.GetInstance()
-            cmd = cmdh.GetCommand("DisplayGroups")
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.AddControl(Me.m_tsbnShowHideGroups)
+            Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
+            If Not Object.ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
+                Me.m_cmdShowGroups.AddControl(Me.m_tsbnShowHideGroups)
+                AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
             End If
-
-            ' Style guide
-            'sg = cStyleGuide.GetInstance()
-            'AddHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             ' Connect format providers
             parms = Me.m_core.ParticleSizeDistributionParameters
@@ -190,20 +191,11 @@ Namespace Ecopath.Output
             End If
         End Sub
 
-        Private Sub RunPSD_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-            Dim parms As cPSDParameters = Nothing
-
-            parms = Me.m_core.ParticleSizeDistributionParameters
-            If parms.PSDEnabled = False Then Me.Close()
-        End Sub
-
         Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
-            Dim cmd As cCommand = Nothing
 
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()
@@ -214,35 +206,45 @@ Namespace Ecopath.Output
             Me.m_zgh = Nothing
 
             ' Detach from show/hide groups command
-            cmd = cmdh.GetCommand("DisplayGroups")
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
-                cmd.RemoveControl(Me.m_tsbnShowHideGroups)
+            If Not Object.ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
+                RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
+                Me.m_cmdShowGroups.RemoveControl(Me.m_tsbnShowHideGroups)
             End If
 
             ' Detach from core state monitor events
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            'Style guide
-            'RemoveHandler sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
         End Sub
 
-        Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsmiGroupPB.Click
+        Private Sub RunPSD_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+            Dim parms As cPSDParameters = Nothing
+
+            parms = Me.m_core.ParticleSizeDistributionParameters
+            If parms.PSDEnabled = False Then Me.Close()
+        End Sub
+
+        Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiGroupPB.Click
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiGroupPB.Checked = True
             Me.m_tsmiLorenzen.Checked = Not Me.m_tsmiGroupPB.Checked
             'Disable MeanLat label and combo box
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
+
+            Me.SynchronizePlot()
         End Sub
 
-        Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tsmiLorenzen.Click
+        Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiLorenzen.Click
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiLorenzen.Checked = True
             Me.m_tsmiGroupPB.Checked = Not Me.m_tsmiLorenzen.Checked
             'Enable MeanLat label and combo box
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
+
+            Me.SynchronizePlot()
         End Sub
 
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -259,10 +261,15 @@ Namespace Ecopath.Output
             Me.SynchronizePlot()
         End Sub
 
-        'Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
-        '    Me.UpdateVariables()
-        '    Me.m_core.RunEcoPath()
-        'End Sub
+        Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
+            Me.SynchronizePlot()
+        End Sub
+
+        Private Sub m_tscbxMeanLat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tscbxMeanLat.SelectedIndexChanged
+            ' To Joe: this may not be sufficient, but I cannot test PSD w/o proper data
+            Me.SynchronizePlot()
+        End Sub
 
 #End Region ' Event handlers
 
@@ -415,7 +422,7 @@ Namespace Ecopath.Output
 
             'Climate type
             If m_tsmiLorenzen.Checked Then
-                parms.ClimateType = CType(m_tscbxMeanLat.SelectedIndex, eClimateTypes)
+                parms.ClimateType = DirectCast(m_tscbxMeanLat.SelectedIndex, eClimateTypes)
             End If
 
             'Group included in PSD 
