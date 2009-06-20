@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ICoreInputOutput.vb,v $
+' Revision 1.12  2009/06/20 20:56:43  jeroens
+' Relaxed optimization: values will be validated when actual value does not change, but validation status may be out of date
+'
 ' Revision 1.11  2009/05/22 16:07:56  jeroens
 ' AllowValidation made overridable
 '
@@ -564,10 +567,13 @@ Public MustInherit Class cCoreInputOutputBase
         Try
             valueobject = m_values.Item(VarName)
 
-            ' Optimization: abort when the set operation will not change the variable value.
+            ' Optimization: abort when the set operation will not change the variable value, and when
+            '               a value does not need re-validating.
             If Object.Equals(newValue, valueobject.Value(iSecondaryIndex)) Then
-                ' Report that variable has NOT been set.
-                Return False
+                If (valueobject.Status(iSecondaryIndex) = eStatusFlags.OK) Then
+                    ' Report that variable has NOT been set.
+                    Return False
+                End If
             End If
 
             'validate the variable by setting its value
