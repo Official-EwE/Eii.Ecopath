@@ -1,73 +1,15 @@
 '==============================================================================
 '
 ' $Log: cValidatorBase.vb,v $
+' Revision 1.3  2009/06/20 20:52:32  jeroens
+' Pruned log
+' Added odd/even validator
+'
 ' Revision 1.2  2009/06/01 17:07:38  joeb
 ' MSE debugging
 '
 ' Revision 1.1  2008/09/26 07:30:35  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.32  2008/08/14 18:07:05  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.31  2008/05/29 22:22:52  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.30  2008/05/12 19:01:10  joeb
-' Added validator for SearchBaseYear
-'
-' Revision 1.29  2008/05/05 16:23:58  joeb
-' Added Validators for some MSE outputs
-'
-' Revision 1.28  2008/04/23 17:40:57  joeb
-' Added core validation for MSEFleetWeight
-'
-' Revision 1.27  2008/04/15 15:22:20  joeb
-' Added Validator for FPS SearchBlocks
-'
-' Revision 1.26  2008/02/27 19:29:59  joeb
-' Added Core counter validator
-'
-' Revision 1.25  2008/01/10 11:07:18  jeroens
-' Simplified Validate
-'
-' Revision 1.24  2007/09/20 16:04:58  joeb
-' Added core validation for Ecosim summary time period data
-'
-' Revision 1.23  2007/06/25 15:08:40  joeb
-' Changed MetaData DefaultValue() to NullValue()
-'
-' Revision 1.22  2007/06/20 18:10:54  joeb
-' Added Validator for BiomassAreaInput
-'
-' Revision 1.21  2007/06/20 01:25:18  jeroens
-' + Validation out of metadata range may still succeed if the new value
-'   happens to be the default value. If that is the case, the variable status will
-'   be set to core_null. An appropriate message is sent out.
-'
-' Revision 1.20  2007/05/07 12:43:19  jeroens
-' * Fixed minor bug: validation messages corrected for array variables
-'
-' Revision 1.19  2007/04/11 23:03:52  jeroens
-' + Improved information contained in validation messages
-'
-' Revision 1.18  2007/03/27 16:20:14  jeroens
-' + Included IntArray in basic validation
-'
-' Revision 1.17  2007/03/02 23:49:13  joeb
-' Added Validator for Output objects
-'
-' Revision 1.16  2007/02/20 21:30:26  joeb
-' Added Core Validator class cValidatorCore
-'
-' Revision 1.15  2007/01/19 18:32:22  joeb
-' Changes to handle different array types
-'
-' Revision 1.14  2006/10/16 02:02:22  jeroens
-' + Localized messages
-'
-' Revision 1.13  2006/09/30 13:26:56  jeroens
-' Added header
 '
 '==============================================================================
 
@@ -108,7 +50,7 @@ Public Class cValidatorDefault
         End Get
     End Property
 
-    Public Overridable Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overridable Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim bCleared As Boolean = False
@@ -183,7 +125,7 @@ Public Class cValidatorDefault
             End If
         End If
 
-            Return True
+        Return True
 
     End Function
 
@@ -199,7 +141,7 @@ End Class
 Public Class cValidatorNumericSetToNull
     Inherits cValidatorDefault
 
-    Public Overrides Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
@@ -231,7 +173,7 @@ Public Class cValidatorNumericSetToNull
         ' JS 09Jan08: If validation failed set status to Failed Validation at any time.
         ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
-        Return true
+        Return True
 
         ''failed the validation 
         'If Not MetaData.MinOperator.Compare(CType(ValueObject.Value(iSecondaryIndex), Single), MetaData.Min) Then
@@ -271,7 +213,7 @@ Public Class cValidatorCore
         m_core = theCore
     End Sub
 
-    Public Overrides Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
         'Call Validate in the core to do the validation
         Return m_core.Validate(ValueObject, MetaData, iSecondaryIndex)
 
@@ -280,7 +222,6 @@ Public Class cValidatorCore
 End Class
 
 #End Region
-
 
 #Region "Core counter validator"
 
@@ -300,7 +241,7 @@ Public Class cValidatorCounter
     End Sub
 
 
-    Public Overrides Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Try
             Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -333,6 +274,67 @@ End Class
 
 #End Region
 
+#Region " Odd values validator "
+
+Public Class cValidatorOddEven
+    Inherits cValidatorDefault
+
+    Private m_bOdd As Boolean = True
+
+    Public Sub New(ByVal bOdd As Boolean)
+        Me.m_bOdd = bOdd
+    End Sub
+
+    Public Overrides Function Validate(ByVal ValueObject As ValueWrapper.cValue, _
+                                       ByVal MetaData As cVariableMetaData, _
+                                       Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
+
+        If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False
+
+
+        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim iValue As Integer = 0
+        Dim dTest As Double = 0
+        Dim bOdd As Boolean = True
+
+        Try
+            If Not (TypeOf (ValueObject.Value(iSecondaryIndex)) Is Integer) Then
+                cLog.Write("Validator cannot be used for this type of value")
+                Return False ' Unable to validate, report error
+            End If
+        Catch ex As Exception
+            cLog.Write(ex)
+            Return False
+        End Try
+
+        iValue = CInt(ValueObject.Value(iSecondaryIndex))
+        dTest = 2.0 * Math.Floor(iValue / 2.0)
+        bOdd = (dTest <> iValue)
+
+        If (bOdd <> Me.m_bOdd) Then
+
+            If Me.m_bOdd Then
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_ODD, _
+                                                              cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            Else
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_EVEN, _
+                                                              cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            End If
+            ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+            ValueObject.Status(iSecondaryIndex) = eStatusFlags.FailedValidation
+        Else
+            ValueObject.ValidationStatus = eStatusFlags.OK
+            ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+        End If
+
+        Return True
+
+    End Function
+
+End Class
+
+#End Region ' Odd/even values validator
+
 ''' <summary>
 ''' Validate output objects. This will set the status flag to a value appropriate to the output
 ''' </summary>
@@ -348,7 +350,7 @@ Public Class cValidatorOutput
 
     End Sub
 
-    Public Overrides Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
         'Ok for now there is no validation of output values!!! this just sets the status flag
         'if the model set the value it is assumed to be OK
         'if there is a problem then the core will need to set the status flag some other way
@@ -436,6 +438,9 @@ Public Class cValidatorManager
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcosimYears)
         m_validators.Add(eVarNameFlags.SearchBaseYear, validator)
 
+        'PSD validator(s)
+        validator = New cValidatorOddEven(True)
+        m_validators.Add(eVarNameFlags.NumPtsMovAvg, validator)
 
     End Sub
 
