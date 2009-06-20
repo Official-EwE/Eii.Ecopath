@@ -1,146 +1,187 @@
 '==============================================================================
 '
 ' $Log: cVariableMetaData.vb,v $
+' Revision 1.2  2009/06/20 20:57:33  jeroens
+' Fixed comments
+'
 ' Revision 1.1  2008/09/26 07:30:13  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2007/06/25 15:03:44  joeb
-' Changed DefaultValue() to NullValue()
-'
-' Revision 1.3  2007/06/15 14:59:53  jeroens
-' - Handled pending VERIFY
-'
-' Revision 1.2  2006/12/14 23:28:47  jeroens
-' + Added DefaultValue
 '
 '==============================================================================
 
 Option Strict On
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Meta Data for a varaible.
+''' Meta data for a variable, describing its value range and default value.
 ''' </summary>
-''' <remarks>At this time this is only used by a cValue object during variable validation. It is not exposed to an interface.</remarks>
+''' ---------------------------------------------------------------------------
 Public Class cVariableMetaData
 
-    'variables use for numeric values
+    ' -- Variables for numeric values --
+
+    ''' <summary>Minimum value for a variable.</summary>
     Private m_min As Single = 0
+    ''' <summary>Minimum value operator.</summary>
+    Private m_operatorMin As cOperatorBase = Nothing
+    ''' <summary>Maximum value for a variable.</summary>
     Private m_max As Single = 0
-    Private m_MinOperator As cOperatorBase = Nothing
-    Private m_MaxOperator As cOperatorBase = Nothing
+    ''' <summary>Maximum value operator.</summary>
+    Private m_operatorMax As cOperatorBase = Nothing
     ''' <summary>Default value for variable when a value is missing or in error.</summary>
     Private m_nullvalue As Object = Nothing
 
-    'variables for strings
-    Private m_length As Integer
+    ' -- Variables for string values --
+    ''' <summary>Allowed length of string values.</summary>
+    Private m_iLength As Integer = 0
 
 #Region "Constructors"
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Default constructor use for boolean values.
+    ''' Constructor use boolean values.
     ''' </summary>
-    ''' <param name="ValueDefault">Default value to assign to variable when in error.</param>
-    ''' <remarks></remarks>
-    Sub New(Optional ByVal ValueDefault As Boolean = False)
-        m_length = 0
-        m_nullvalue = ValueDefault
+    ''' <param name="bValueDefault">Default value to assign to variable when in error.</param>
+    ''' <remarks>Booleans do not have min or max values.</remarks>
+    ''' -----------------------------------------------------------------------
+    Sub New(Optional ByVal bValueDefault As Boolean = False)
+        Me.m_nullvalue = bValueDefault
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constuctor for a String MetaData object.
+    ''' Constuctor for string values.
     ''' </summary>
-    ''' <param name="Length"></param>
-    ''' <param name="ValueDefault">Default value to assign to variable when in error.</param>
-    ''' <remarks>Strings do not have Min Max or Null values</remarks>
-    Sub New(ByVal Length As Integer, Optional ByVal ValueDefault As String = "")
-        m_length = Length
-        m_nullvalue = ValueDefault
+    ''' <param name="iLength">The max allowed string length.</param>
+    ''' <param name="strValueDefault">
+    ''' Default value to assign to variable when in error.</param>
+    ''' <remarks>Strings do not have min or max values.</remarks>
+    ''' -----------------------------------------------------------------------
+    Sub New(ByVal iLength As Integer, Optional ByVal strValueDefault As String = "")
+        Me.m_iLength = iLength
+        Me.m_nullvalue = strValueDefault
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for a numeric value that uses the default for NullValue.
+    ''' Constructor for numeric values.
     ''' </summary>
-    ''' <param name="Min"></param>
-    ''' <param name="Max"></param>
-    ''' <param name="MinOperator"></param>
-    ''' <param name="MaxOperator"></param>
-    ''' <param name="ValueDefault">Default value to assign to variable when in error.</param>
-    ''' <remarks></remarks>
-    Sub New(ByVal Min As Single, ByVal Max As Single, ByRef MinOperator As cOperatorBase, ByRef MaxOperator As cOperatorBase, _
-            Optional ByVal ValueDefault As Single = 0)
-        m_min = Min
-        m_max = Max
-        m_MinOperator = MinOperator
-        m_MaxOperator = MaxOperator
-        m_nullvalue = ValueDefault
+    ''' <param name="sMin">Lowest value a variable can contain.</param>
+    ''' <param name="sMax">Highest value a variable can contain.</param>
+    ''' <param name="operatorMin"><see cref="cOperatorBase">Operator</see>
+    ''' stating how the <paramref name="sMin">minimum value</paramref> is included
+    ''' in the variable value range.</param>
+    ''' <param name="operatorMax"><see cref="cOperatorBase">Operator</see>
+    ''' stating how the <paramref name="sMax">maximum value</paramref> is included
+    ''' in the variable value range.</param>
+    ''' <param name="sValueDefault">Default value to assign to variable when in error.</param>
+    ''' -----------------------------------------------------------------------
+    Sub New(ByVal sMin As Single, ByVal sMax As Single, _
+            ByVal operatorMin As cOperatorBase, ByVal operatorMax As cOperatorBase, _
+            Optional ByVal sValueDefault As Single = 0)
+        Me.m_min = sMin
+        Me.m_max = sMax
+        Me.m_operatorMin = operatorMin
+        Me.m_operatorMax = operatorMax
+        Me.m_nullvalue = sValueDefault
     End Sub
 
 #End Region
 
-#Region "Operators"
+#Region " Operators "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the minimum value operator.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Property MinOperator() As cOperatorBase
         Get
-            Return m_MinOperator
+            Return Me.m_operatorMin
         End Get
         Set(ByVal value As cOperatorBase)
-            m_MinOperator = value
+            Me.m_operatorMin = value
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the maximum value operator.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Property MaxOperator() As cOperatorBase
         Get
-            Return m_MaxOperator
+            Return Me.m_operatorMax
         End Get
         Set(ByVal value As cOperatorBase)
-            m_MaxOperator = value
+            Me.m_operatorMax = value
         End Set
     End Property
 
-#End Region
+#End Region ' Operators
 
-#Region "Properties"
-    'Properties are Public read and Friend write at this time this is by design.
-    'If the are exposed by the core they should not be editable. However it may be desirable for a datasource to set the value. 
-    'Although this may not be practical.
+#Region " Properties "
 
+    ' Properties are Public read and Friend write at this time this is by design.
+    ' If the are exposed by the core they should not be editable.
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the minimum value for a variable.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Min() As Single
         Get
-            Return m_min
+            Return Me.m_min
         End Get
         Friend Set(ByVal value As Single)
-            m_min = value
+            Me.m_min = value
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the maximum value for a variable.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Max() As Single
         Get
-            Return m_max
+            Return Me.m_max
         End Get
         Friend Set(ByVal value As Single)
-            m_max = value
+            Me.m_max = value
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the default value for a variable.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property NullValue() As Object
         Get
-            Return m_nullvalue
+            Return Me.m_nullvalue
         End Get
         Friend Set(ByVal value As Object)
-            m_nullvalue = value
+            Me.m_nullvalue = value
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the maximum allowed string length for variables.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Length() As Integer
         Get
-            Return m_length
+            Return Me.m_iLength
         End Get
         Friend Set(ByVal value As Integer)
-            m_length = value
+            Me.m_iLength = value
         End Set
     End Property
 
-#End Region
+#End Region ' Properties
 
 End Class
 
