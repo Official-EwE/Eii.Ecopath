@@ -220,7 +220,7 @@ Namespace Ecopath.Output
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_tsRunPSD As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsRunPSD As System.Windows.Forms.ToolStrip
         Private WithEvents m_tstbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsbtnRun As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
@@ -233,8 +233,8 @@ Namespace Ecopath.Output
         Private WithEvents m_tstbxMinWeight As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tslblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
-        Friend WithEvents m_tsmiMeanLat As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tscbxMeanLat As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tsmiMeanLat As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tscbxMeanLat As System.Windows.Forms.ToolStripComboBox
     End Class
 
 End Namespace
