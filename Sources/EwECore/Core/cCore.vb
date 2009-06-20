@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.137  2009/06/20 00:55:31  sherman
+' Change InitCore to public for access from the webservice.
+'
 ' Revision 1.136  2009/05/28 23:09:29  joeh
 ' In Cascade_TcatchInput( ) use Landing+Discard rather than fCatch to determine a group is fished
 '
@@ -1216,7 +1219,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This initializes all the object that the core need to run a basic model (EcoPath). This does not load the model that happens in LoadModel(DataSource)</remarks>
-    Private Function InitCore() As Boolean
+    Public Function InitCore() As Boolean
 
         m_bCoreIsInit = False
         m_bEcoSimIsInit = False
