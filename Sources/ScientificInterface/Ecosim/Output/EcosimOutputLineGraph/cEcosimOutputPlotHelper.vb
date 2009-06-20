@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimOutputPlotHelper.vb,v $
+' Revision 1.3  2009/06/20 01:10:36  jeroens
+' Fixed multiple run init strangeness
+'
 ' Revision 1.2  2009/05/28 12:37:08  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -97,7 +100,7 @@ Namespace Controls
         Private m_bShowMultipleRuns As Boolean = False
         Private m_bCumulative As Boolean = False
         Private m_lclRuns As New List(Of CurveList)
-        Private m_clRunCurrent As New CurveList
+        Private m_clRunCurrent As CurveList = Nothing
         Private m_dicTimeSeriesGroup As New Dictionary(Of Integer, CurveItem)
         Private m_pplSum As New PointPairList
 
@@ -140,6 +143,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
+            Me.m_clRunCurrent = New CurveList()
         End Sub
 
 #End Region
@@ -181,11 +185,12 @@ Namespace Controls
         ''' Makes sure all the object is set. Cleans up all list if required.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub PrepareNewRun(Optional ByVal bForceClear As Boolean = False)
-            If (Me.m_bShowMultipleRuns = False) Or (bForceClear = True) Then
+        Public Sub CreateRun()
+            If (Me.m_bShowMultipleRuns = False) Then
                 Me.Clear()
             End If
             Me.m_clRunCurrent = New CurveList()
+            Me.m_lclRuns.Add(Me.m_clRunCurrent)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -241,20 +246,11 @@ Namespace Controls
         Public Function GetValueAt(ByVal iGroup As Integer, ByVal iRun As Integer, ByVal iTimeStep As Integer) As Double
             ' Wow, speaking about running into a brick wall at full tilt...
             Try
-                Return m_lclRuns.Item(iRun).Item(iGroup - 1).Item(iTimeStep).Y
+                Return Me.m_lclRuns.Item(iRun).Item(iGroup - 1).Item(iTimeStep).Y
             Catch ex As Exception
                 Return 0.0
             End Try
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Store the run in the archive.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub StoreRun()
-            m_lclRuns.Add(m_clRunCurrent)
-        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -269,10 +265,12 @@ Namespace Controls
         Public Sub Highlight(ByVal i As Integer, ByVal iCount As Integer, ByVal iGroup As Integer, ByVal iRun As Integer)
 
             ' This is a tricky situation
+            Dim crv As CurveItem = Nothing
+            Dim crvType As cCurveType = Nothing
 
             If iGroup <= 0 And iRun < 0 Then
                 ' Set set all to normal color
-                SetAllToColors(True)
+                Me.SetAllToColors(True)
 
             ElseIf iGroup > 0 And iRun < 0 Then
                 ' Set only group for all runs
@@ -281,13 +279,13 @@ Namespace Controls
                 If i = iCount - 1 Then SetAllToColors(False)
 
                 For iRunTest As Integer = 0 To m_lclRuns.Count - 1
-                    Dim crv As CurveItem = m_lclRuns.Item(iRunTest).Item(iGroup - 1)
-                    Dim crvType As cCurveType = DirectCast(crv.Tag, cCurveType)
+                    crv = Me.m_lclRuns.Item(iRunTest).Item(iGroup - 1)
+                    crvType = DirectCast(crv.Tag, cCurveType)
 
                     'If relative plot then plot line of selected group with highlight
                     If crvType.m_lineType = eLineType.RelativeBiomass Or _
                        crvType.m_lineType = eLineType.RelativeCatch Then
-                        SetLine(crv, True, True)
+                        Me.SetLine(crv, True, True)
                     End If
 
                     'If cumulative plot then plot line of selected group without highlight but with color fill
@@ -295,15 +293,15 @@ Namespace Controls
                        crvType.m_lineType = eLineType.CumulativeSelectedBiomass Or _
                        crvType.m_lineType = eLineType.CumulativeCatch Then
 
-                        SetLine(crv, True, False)
+                        Me.SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
                         If iGroup >= 2 Then
-                            crv = m_lclRuns.Item(iRunTest).Item(iGroup - 2)
-                            SetLine(crv, True, False, True)
+                            crv = Me.m_lclRuns.Item(iRunTest).Item(iGroup - 2)
+                            Me.SetLine(crv, True, False, True)
                         End If
                         'If needed, plot lines of the remaining groups
                         If iGroup >= 3 Then
-                            SetSomeToColors(iGroup - 3)
+                            Me.SetSomeToColors(iGroup - 3)
                         End If
                     End If
                     'SetSomeToColors(index - 3, False)
@@ -314,10 +312,10 @@ Namespace Controls
             ElseIf iGroup <= 0 And iRun >= 0 Then
                 ' Only single run to highlight
 
-                SetAllToColors(False)
+                Me.SetAllToColors(False)
                 For j As Integer = 1 To m_lclRuns.Item(iRun).Count
-                    Dim crv As CurveItem = m_lclRuns.Item(iRun).Item(j - 1)
-                    SetLine(crv, True, True)
+                    crv = Me.m_lclRuns.Item(iRun).Item(j - 1)
+                    Me.SetLine(crv, True, True)
                 Next
 
 
@@ -325,13 +323,15 @@ Namespace Controls
                 ' Set only one line
 
                 SetAllToColors(False)
-                Dim crv As CurveItem = m_lclRuns.Item(iRun).Item(iGroup - 1)
-                SetLine(crv, True, True)
+                crv = m_lclRuns.Item(iRun).Item(iGroup - 1)
+                Me.SetLine(crv, True, True)
 
             End If
 
             ' Draw the time series for the group
-            If m_dicTimeSeriesGroup.ContainsKey(iGroup) Then SetLine(m_dicTimeSeriesGroup(iGroup), True, True)
+            If m_dicTimeSeriesGroup.ContainsKey(iGroup) Then
+                Me.SetLine(Me.m_dicTimeSeriesGroup(iGroup), True, True)
+            End If
 
         End Sub
 
@@ -342,13 +342,16 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property ShowMultipleRuns() As Boolean
             Get
-                Return m_bShowMultipleRuns
+                Return Me.m_bShowMultipleRuns
             End Get
-            Set(ByVal value As Boolean)
-                If value Then
-                    PrepareNewRun()
+            Set(ByVal bShowMultipleRuns As Boolean)
+                ' Update flag
+                Me.m_bShowMultipleRuns = bShowMultipleRuns
+                ' Switched to single view?
+                If (bShowMultipleRuns = False) Then
+                    ' #Yes: clear 
+                    Me.Clear()
                 End If
-                m_bShowMultipleRuns = value
             End Set
         End Property
 
@@ -359,7 +362,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumRuns() As Integer
             Get
-                Return m_lclRuns.Count
+                Return Me.m_lclRuns.Count
             End Get
         End Property
 
@@ -370,10 +373,10 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property ShowLegend() As Boolean
             Get
-                Return m_graphPane.Legend.IsVisible
+                Return Me.m_graphPane.Legend.IsVisible
             End Get
             Set(ByVal value As Boolean)
-                m_graphPane.Legend.IsVisible = value
+                Me.m_graphPane.Legend.IsVisible = value
             End Set
         End Property
 
@@ -384,8 +387,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public WriteOnly Property DataName() As String
             Set(ByVal value As String)
-                m_graphPane.Title.Text = value
-                m_graphPane.YAxis.Title.Text = value
+                Me.m_graphPane.Title.Text = value
+                Me.m_graphPane.YAxis.Title.Text = value
             End Set
         End Property
 
@@ -399,38 +402,45 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
+
+            Dim crv As CurveItem = Nothing
+
             ' Set the lines
-            For iOver As Integer = 0 To m_lclRuns.Count - 1
-                For iIndex As Integer = m_lclRuns.Item(iOver).Count - 1 To 0 Step -1
-                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iIndex)
+            For iOver As Integer = 0 To Me.m_lclRuns.Count - 1
+                For iIndex As Integer = Me.m_lclRuns.Item(iOver).Count - 1 To 0 Step -1
+                    crv = Me.m_lclRuns.Item(iOver).Item(iIndex)
                     If bUseOriginalColor Then
-                        SetLine(crv, True, False)
+                        Me.SetLine(crv, True, False)
                     Else
-                        SetLine(crv, False, False)
+                        Me.SetLine(crv, False, False)
                     End If
                 Next iIndex
             Next iOver
 
             ' Set the TS plots
             For iIndex As Integer = 1 To m_core.nGroups
-                If m_dicTimeSeriesGroup.ContainsKey(iIndex) Then
+                If Me.m_dicTimeSeriesGroup.ContainsKey(iIndex) Then
                     If bUseOriginalColor Then
-                        SetLine(m_dicTimeSeriesGroup(iIndex), True, False)
+                        Me.SetLine(Me.m_dicTimeSeriesGroup(iIndex), True, False)
                     Else
-                        SetLine(m_dicTimeSeriesGroup(iIndex), False, False)
+                        Me.SetLine(Me.m_dicTimeSeriesGroup(iIndex), False, False)
                     End If
                 End If
             Next
         End Sub
 
         Private Sub SetSomeToColors(ByVal startIndex As Integer)
+
+            Dim crv As CurveItem = Nothing
+
             ' Set the lines
-            For iOver As Integer = 0 To m_lclRuns.Count - 1
+            For iOver As Integer = 0 To Me.m_lclRuns.Count - 1
                 For iIndex As Integer = startIndex To 0 Step -1
-                    Dim crv As CurveItem = m_lclRuns.Item(iOver).Item(iIndex)
-                    SetLine(crv, True, False, True)
+                    crv = Me.m_lclRuns.Item(iOver).Item(iIndex)
+                    Me.SetLine(crv, True, False, True)
                 Next iIndex
             Next iOver
+
         End Sub
 
         ''' -------------------------------------------------------------------

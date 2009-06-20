@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.21  2009/06/20 01:10:36  jeroens
+' Fixed multiple run init strangeness
+'
 ' Revision 1.20  2009/05/28 12:37:22  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -159,8 +162,6 @@ Namespace Ecosim
 
             Me.UpdateControls()
 
-            ' Plot Ecosim data, if there is any
-            Me.m_graph.PrepareNewRun()
             Me.m_graph.PopulateGraph()
 
         End Sub
@@ -297,9 +298,9 @@ Namespace Ecosim
             Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
 
             ' Does not have ecosim results?
-            If (Not bHasEcosimResults) Then
+            If (Not m_coreStateMonitor.HasEcopathRan) Then
                 ' #Yes: clear run results
-                Me.m_graph.PrepareNewRun()
+                Me.m_graph.Clear()
             End If
 
             ' Check whether ecosim is running
@@ -311,6 +312,7 @@ Namespace Ecosim
                     AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
                     AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
+                    Me.m_graph.CreateRun()
                 End If
                 Me.UpdateControls()
 
