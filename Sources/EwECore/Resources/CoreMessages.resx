@@ -761,4 +761,12 @@ System Error: {0}</value>
     <value>Ecosim monthly results have been saved to '{0}'</value>
     <comment>{0}=path</comment>
   </data>
+  <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
+    <value>Value '{1}' for variable '{0}' must be even.</value>
+    <comment>{0}=variable name, {1}=value</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
+    <value>Value '{1}' for variable '{0}' must be odd.</value>
+    <comment>{0}=variable name, {1}=value</comment>
+  </data>
 </root>

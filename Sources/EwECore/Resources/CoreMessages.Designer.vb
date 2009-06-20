@@ -1680,6 +1680,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be even..
+        '''</summary>
+        Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_EVEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be odd..
+        '''</summary>
+        Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_ODD() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_ODD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Value &apos;{1}&apos; accepted for variable &apos;{0}&apos;..
         '''</summary>
         Friend Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
