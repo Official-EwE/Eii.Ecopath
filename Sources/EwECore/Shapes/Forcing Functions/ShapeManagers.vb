@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: ShapeManagers.vb,v $
+' Revision 1.6  2009/06/20 20:58:44  jeroens
+' Pruned log
+'
 ' Revision 1.5  2009/04/20 12:35:48  jeroens
 ' Localized
 '
@@ -15,63 +18,6 @@
 '
 ' Revision 1.1  2008/09/26 07:30:33  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.19  2008/07/04 15:33:43  jeroens
-' Fixed enum
-'
-' Revision 1.18  2008/06/06 15:56:06  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.17  2008/05/18 01:35:59  jeroens
-' Got rid of sime CreateShape method for ease of generic use
-'
-' Revision 1.16  2008/04/05 03:03:30  jeroens
-' Shape duplication / addition simplified
-'
-' Revision 1.15  2008/02/28 16:55:49  jeroens
-' Fixed bug 382
-'
-' Revision 1.14  2008/02/06 21:05:54  jeroens
-' Fixed effort shapes ResetToDefaults
-'
-' Revision 1.13  2008/01/26 00:20:14  joeb
-' ResetToDefaults and LockUpdates (ResetToDefaults() still not working right)
-'
-' Revision 1.12  2007/11/26 14:49:14  jeroens
-' * Fixed bug 351
-'
-' Revision 1.11  2007/11/21 22:28:02  jeroens
-' * Set first eShapeFunctionType value explicitly to 0
-'
-' Revision 1.10  2007/11/21 18:03:42  jeroens
-' * Fixed bug 353
-'
-' Revision 1.9  2007/11/20 16:39:55  jeroens
-' * Shape ID values realigned when shapes are added or removed
-'
-' Revision 1.8  2007/11/20 00:54:39  jeroens
-' * Shapedata to copy can now be passed to AppendShape logic
-'
-' Revision 1.7  2007/10/31 16:00:53  jeroens
-' + FishRate shapes no longer try to determine ecosim index; this must be provided by manager
-' + ShapeChanged now accepts shape parameter
-'
-' Revision 1.6  2007/10/30 02:40:03  jeroens
-' * FishingRate, Mortality shapes now have correct Index, DBID values
-'
-' Revision 1.5  2007/10/15 01:32:29  jeroens
-' * Fixed validation bug in EggShapeManager
-'
-' Revision 1.4  2007/10/15 00:47:38  jeroens
-' cMediationManager now properly sets ID
-'
-' Revision 1.3  2007/08/31 15:59:23  jeroens
-' * Fixed 2 bugs on Med.CreateNewShape:
-'   1. Type of shape caused wrong load to be called
-'   2. Index was passed to new MedFN constructor instead of DBID (thans Joe)
-'
-' Revision 1.2  2007/08/21 15:01:49  jeroens
-' * Fish rate and fish mort shapes can now be reset
 '
 '==============================================================================
 
