@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.11  2009/06/22 20:32:01  jeroens
+' Handshake transfers machine name from connecting client
+'
 ' Revision 1.10  2009/06/18 15:55:48  jeroens
 ' Added IPv6 support
 '
@@ -86,6 +89,7 @@ Namespace NetUtilities
 
             Private m_iHandshake As Int32 = 0
             Private m_bRelayed As Boolean = False
+            Private m_strClientMachineName As String = ""
 
             Public Sub New(ByVal iHandshake As Int32)
                 MyBase.New()
@@ -97,6 +101,7 @@ Namespace NetUtilities
                 Try
                     Me.m_iHandshake = info.GetInt32("m_iHandshake")
                     Me.m_bRelayed = info.GetBoolean("m_bRelayed")
+                    Me.m_strClientMachineName = info.GetString("m_strClientMachineName")
                 Catch ex As Exception
                     Debug.Assert(False, String.Format("Exception '{0}' while deserializing cHandShake", ex.Message))
                 End Try
@@ -106,16 +111,21 @@ Namespace NetUtilities
                 MyBase.GetObjectData(info, context)
                 info.AddValue("m_iHandshake", Me.m_iHandshake, GetType(Int32))
                 info.AddValue("m_bRelayed", Me.m_bRelayed, GetType(Boolean))
+                info.AddValue("m_strClientMachineName", Me.m_strClientMachineName, GetType(String))
             End Sub
 
-            Public Property Relayed() As Boolean
+            Public ReadOnly Property Relayed() As Boolean
                 Get
                     Return Me.m_bRelayed
                 End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bRelayed = value
-                End Set
             End Property
+
+            Public Function Relay(ByVal strClientMachineName As String) As Boolean
+                If Me.m_bRelayed Then Return False
+                Me.m_strClientMachineName = strClientMachineName
+                Me.m_bRelayed = True
+                Return True
+            End Function
 
             Public Function HandshakeID() As Int32
                 Return Me.m_iHandshake
@@ -127,6 +137,11 @@ Namespace NetUtilities
                 End Get
             End Property
 
+            Public ReadOnly Property ClientMachineName() As String
+                Get
+                    Return Me.m_strClientMachineName
+                End Get
+            End Property
         End Class
 
 #End Region ' Private helper classes
@@ -159,8 +174,9 @@ Namespace NetUtilities
         Private m_iDataRead As Integer = 0
         ''' <summary>States whether or not the socket connection is authorized for communication.</summary>
         Private m_bAuthorized As Boolean = False
-        Private m_abReceived() As Byte
 
+        ''' <summary>Received bytes buffer.</summary>
+        Private m_abReceived() As Byte
         ''' <summary>Buffer for object size </summary>
         Private m_abSizeBuff(4) As Byte
 
@@ -168,7 +184,10 @@ Namespace NetUtilities
         Private m_iSizeRead As Integer
         Private m_iQueue As Integer = 0
 
+        ''' <summary>Client ID.</summary>
         Private m_iID As Int32 = 0
+        ''' <summary>Name of the remote machine.</summary>
+        Private m_strRemoteMachineName As String = ""
 
         '''' <summary>Semaphore to lock sending of data </summary>
         '   Private m_SendLock As New System.Threading.Semaphore(1, 1)
@@ -424,6 +443,20 @@ Namespace NetUtilities
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the machine name of a connected, authorized client.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property RemoteMachineName() As String
+            Get
+                Return Me.m_strRemoteMachineName
+            End Get
+            Protected Set(ByVal strRemoteMachineName As String)
+                Me.m_strRemoteMachineName = strRemoteMachineName
+            End Set
+        End Property
+
         Public Sub Authorize()
 
             Me.m_iHandshake = Me.m_iID
@@ -555,16 +588,19 @@ Namespace NetUtilities
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Send handshake message back to the sender
         ''' </summary>
         ''' <param name="hs"></param>
         ''' <remarks>Messages can be relayed only once.</remarks>
+        ''' -------------------------------------------------------------------
         Private Sub RelayHandshake(ByVal hs As cHandShake)
 
             Try
                 If hs.Relayed = False Then
-                    hs.Relayed = True
+                    hs.Relay(Environment.MachineName)
+
                     If Me.Send(hs, False, True) Then
 #If VERBOSE_LEVEL >= 3 Then
                         Console.WriteLine("sw {0} handshake {1} relayed", Me.ToString(), hs.HandshakeID)
@@ -611,8 +647,7 @@ Namespace NetUtilities
             Dim iOffset As Integer = 0
             Dim iChunkSize As Integer = 0
             Dim nSizeCopy As Integer
-            Dim lstObs As List(Of cSerializableObject)
-            lstObs = New List(Of cSerializableObject)
+            Dim lstObs As New List(Of cSerializableObject)
 
             Try
 
@@ -643,8 +678,10 @@ Namespace NetUtilities
                             'yes we have all the bytes for the size buffer
 
                             'how big is this object
-                            Me.m_iDataSize = CInt(Me.m_abSizeBuff(0)) + CInt(Me.m_abSizeBuff(1) * 2 ^ 8) _
-                                + CInt(Me.m_abSizeBuff(2) * 2 ^ 16) + CInt(Me.m_abSizeBuff(3) * 2 ^ 24)
+                            Me.m_iDataSize = CInt(Me.m_abSizeBuff(0)) + _
+                                             CInt(Me.m_abSizeBuff(1) * 2 ^ 8) + _
+                                             CInt(Me.m_abSizeBuff(2) * 2 ^ 16) + _
+                                             CInt(Me.m_abSizeBuff(3) * 2 ^ 24)
 
                             ' Allocate size
                             ReDim Me.m_abReceived(Me.m_iDataSize)
@@ -833,7 +870,7 @@ Namespace NetUtilities
         ''' <param name="handshake">cHandshake to process</param>
         ''' <remarks></remarks>
         Private Sub ReceiveHandShake(ByVal sw As cSocketWrapper, ByVal handshake As cHandShake)
-            Dim bSendAuthorization As Boolean
+            Dim bSendAuthorization As Boolean = False
 
 #If VERBOSE_LEVEL >= 2 Then
             Console.WriteLine("sw {0} handling handshake {1}", Me.ToString(), handshake.ToString())
@@ -841,12 +878,13 @@ Namespace NetUtilities
             ' Is the socket wrapper not authorized?
             If (sw.Authorized = False) Then
                 ' #Yes: is the incoming handshake designated for the socket wrapper?
-                If sw.IsHandshake(handshake.HandshakeID) Then
+                If sw.IsHandshake(handshake.HandshakeID) And (handshake.Relayed = True) Then
                     ' #Yes: Authorized
                     sw.Authorized = True
+                    sw.RemoteMachineName = handshake.ClientMachineName
                     bSendAuthorization = True
 #If VERBOSE_LEVEL >= 1 Then
-                    Console.WriteLine("sw {0} authorized", Me.ToString())
+                    Console.WriteLine("sw {0} authorized for client machine {1}", Me.ToString(), handshake.ClientMachineName)
 #End If
                 Else
 #If VERBOSE_LEVEL >= 1 Then
