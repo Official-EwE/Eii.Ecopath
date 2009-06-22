@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -146,18 +146,10 @@
     <Compile Include="Ecopath\EditFleetsEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Controls\FlowDiagram\Data\FlowDiagramData.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\Draw.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\Tree.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Connector.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\Draw\GraphObjects\Node.vb" />
-    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagram.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.Designer.vb">
-      <DependentUpon>FlowDiagramSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.vb">
+    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramData.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramRenderer.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\cFlowDiagramTree.vb" />
+    <Compile Include="Ecopath\Controls\FlowDiagram\frmFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\EditGroups.Designer.vb">
@@ -757,12 +749,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\FlowDiagram.resx">
-      <DependentUpon>FlowDiagram.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\FlowDiagramSettings.resx">
-      <DependentUpon>FlowDiagramSettings.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Controls\FlowDiagram\frmFlowDiagram.resx">
+      <DependentUpon>frmFlowDiagram.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\EditGroups.resx">
