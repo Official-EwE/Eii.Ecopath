@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.31  2009/06/22 22:15:59  joeh
+' Add more statistics parameters for the PSD regression
+'
 ' Revision 1.30  2009/06/20 21:08:50  jeroens
 ' Updated to modified DisplayGroups command
 ' Graph invalidated when values change
@@ -344,8 +347,13 @@ Namespace Ecopath.Output
             Dim sXValue As Single = 0
             Dim sSystemPSD(m_core.nWeightClasses) As Single
             Dim sSlope As Single
+            Dim sSlopeStdErr As Single
             Dim sIntercept As Single
+            Dim sInterceptStdErr As Single
             Dim sCorrelation As Single
+            Dim sLowWtClass As Single
+            Dim sHighWtClass As Single
+            Dim iSampleSize As Integer
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
@@ -355,7 +363,8 @@ Namespace Ecopath.Output
             Me.FindSystemPSD(sSystemPSD)
 
             'Find regression of the system PSD
-            Me.FindRegression(sSlope, sIntercept, sCorrelation, sSystemPSD)
+            Me.FindRegression(sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, _
+                              sLowWtClass, sHighWtClass, iSampleSize, sSystemPSD)
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
@@ -371,8 +380,9 @@ Namespace Ecopath.Output
 
             Me.AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
             Me.AddCurveToGraphPane(pane, resultLists(1), _
-                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sIntercept), _
-                                  sg.FormatNumber(sCorrelation)), Color.Black)
+                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
+                                  sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & vbCrLf, _
+                                  sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize)), Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -510,8 +520,10 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub FindRegression(ByRef sSlope As Single, ByRef sIntercept As Single, _
-                                   ByRef sCorrelation As Single, ByVal sSystemPSD() As Single)
+        Private Sub FindRegression(ByRef sSlope As Single, ByRef sSlopeStdErr As Single, _
+                                   ByRef sIntercept As Single, ByRef sInterceptStdErr As Single, _
+                                   ByRef sCorrelation As Single, ByRef sLowWtClass As Single, ByRef sHighWtClass As Single, _
+                                   ByRef iSampleSize As Integer, ByVal sSystemPSD() As Single)
 
             Dim sXValue As Single = 0
             Dim dSumX As Double = 0
@@ -520,10 +532,16 @@ Namespace Ecopath.Output
             Dim dSumYSq As Double = 0
             Dim dSumXY As Double = 0
             Dim iNum As Integer = 0
+            Dim sXMin As Single = -1
+            Dim sXMax As Single
             Dim dXMean As Double
             Dim dYMean As Double
             Dim dSumXdevYdev As Double = 0
             Dim dSumXdevSq As Double = 0
+            Dim dSumYdevSq As Double = 0
+            Dim dXStdDev As Double
+            Dim dYStdDev As Double
+            Dim dEstStdErr As Double
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
 
             For iWtClass As Integer = 1 To m_core.nWeightClasses
@@ -542,6 +560,8 @@ Namespace Ecopath.Output
                     'dSumX = dSumX + sXValue
                     'dSumY = dSumY + Math.Log10(sSystemPSD(iWtClass))
                     'End v.5
+                    If sXMin < 0 Then sXMin = sXValue
+                    sXMax = sXValue
                     iNum = iNum + 1
                 End If
             Next
@@ -554,6 +574,7 @@ Namespace Ecopath.Output
 
                     dSumXdevYdev = dSumXdevYdev + (Math.Log10(sXValue) - dXMean) * (Math.Log10(sSystemPSD(iWtClass) * 1000000000) - dYMean)
                     dSumXdevSq = dSumXdevSq + (Math.Log10(sXValue) - dXMean) ^ 2
+                    dSumYdevSq = dSumYdevSq + (Math.Log10(sSystemPSD(iWtClass) * 1000000000) - dYMean) ^ 2
 
                     'v.5
                     'sXValue = iWtClass
@@ -566,8 +587,18 @@ Namespace Ecopath.Output
 
             sSlope = CSng(dSumXdevYdev / dSumXdevSq)
             sIntercept = CSng(dYMean - sSlope * dXMean)
+
+            dXStdDev = Math.Sqrt(dSumXdevSq / (iNum - 1))
+            dYStdDev = Math.Sqrt(dSumYdevSq / (iNum - 1))
+            dEstStdErr = Math.Sqrt((iNum - 1) * (dYStdDev ^ 2 - sSlope ^ 2 * dXStdDev ^ 2) / (iNum - 2))
+            sSlopeStdErr = CSng(dEstStdErr / (Math.Sqrt(iNum - 1) * dXStdDev))
+            sInterceptStdErr = CSng(dEstStdErr * Math.Sqrt((1 / iNum) + (dXMean ^ 2 / ((iNum - 1) * dXStdDev ^ 2))))
+
             sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) / _
                            (Math.Sqrt(iNum * dSumXSq - dSumX ^ 2) * Math.Sqrt(iNum * dSumYSq - dSumY ^ 2)))
+            sLowWtClass = sXMin
+            sHighWtClass = sXMax
+            iSampleSize = iNum
 
         End Sub
 
