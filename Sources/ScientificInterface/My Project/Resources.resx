@@ -2361,4 +2361,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
     <value>Cumulative value</value>
   </data>
+  <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
+    <value>b: {0}</value>
+    <comment>{0}: biomass value</comment>
+  </data>
+  <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
+    <value>Enhanced meta files (*.emf)|*.wmf</value>
+  </data>
 </root>
