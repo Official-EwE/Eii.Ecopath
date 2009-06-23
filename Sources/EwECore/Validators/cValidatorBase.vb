@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cValidatorBase.vb,v $
+' Revision 1.4  2009/06/23 00:37:48  joeh
+' Change cValidatorOddEven.Validate so that it does not test if null value is odd or even
+'
 ' Revision 1.3  2009/06/20 20:52:32  jeroens
 ' Pruned log
 ' Added odd/even validator
@@ -289,8 +292,8 @@ Public Class cValidatorOddEven
                                        ByVal MetaData As cVariableMetaData, _
                                        Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
 
+        ' Perform 'normal' validation
         If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False
-
 
         Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim iValue As Integer = 0
@@ -311,8 +314,10 @@ Public Class cValidatorOddEven
         dTest = 2.0 * Math.Floor(iValue / 2.0)
         bOdd = (dTest <> iValue)
 
-        If (bOdd <> Me.m_bOdd) Then
+        ' Do not test if null value is 'odd' or 'even'
+        If (iValue = CInt(MetaData.NullValue)) Then Return True
 
+        If (bOdd <> Me.m_bOdd) Then
             If Me.m_bOdd Then
                 ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_ODD, _
                                                               cni.GetVarName(ValueObject.varName), ValueObject.Value)
