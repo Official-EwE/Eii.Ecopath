@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.67  2009/06/23 05:05:44  jeroens
+' Added varname GameIssueList
+'
 ' Revision 1.66  2009/06/22 22:37:08  jeroens
 ' Added varname GameIssue
 '
@@ -1058,6 +1061,7 @@ Namespace Core
         GameViewAvailableItems
         ''' <summary>Issues that define a summit.</summary>
         GameIssue
+        GameIssueList
         ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
