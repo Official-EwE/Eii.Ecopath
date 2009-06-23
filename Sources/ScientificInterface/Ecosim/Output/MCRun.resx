@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblNumTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 31</value>
+    <value>4, 31</value>
   </data>
   <data name="lblNumTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 13</value>
@@ -144,14 +144,14 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblNumTrials.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>5</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRunTrials.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="btnRunTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 508</value>
+    <value>466, 508</value>
   </data>
   <data name="btnRunTrials.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -172,13 +172,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnRunTrials.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>13</value>
   </data>
   <data name="btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>648, 508</value>
+    <value>553, 508</value>
   </data>
   <data name="btnStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnStop.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>12</value>
   </data>
   <data name="tcMCOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -207,11 +207,8 @@
   <data name="tbpB.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tbpB.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
   <data name="tbpB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpB.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -234,11 +231,8 @@
   <data name="tbpBP.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tbpBP.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
   <data name="tbpBP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpBP.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -262,7 +256,7 @@
     <value>4, 22</value>
   </data>
   <data name="tbpEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpEE.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -286,7 +280,7 @@
     <value>4, 22</value>
   </data>
   <data name="tbpBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpBA.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -310,7 +304,7 @@
     <value>4, 22</value>
   </data>
   <data name="tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -334,7 +328,7 @@
     <value>4, 22</value>
   </data>
   <data name="tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>809, 369</value>
+    <value>714, 369</value>
   </data>
   <data name="tbpBPlot.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -358,7 +352,7 @@
     <value>4, 107</value>
   </data>
   <data name="tcMCOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>817, 395</value>
+    <value>722, 395</value>
   </data>
   <data name="tcMCOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -373,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tcMCOutput.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>7</value>
   </data>
   <data name="cbPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -385,7 +379,7 @@
     <value>False</value>
   </data>
   <data name="cbPedigree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>460, 76</value>
+    <value>371, 76</value>
   </data>
   <data name="cbPedigree.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 17</value>
@@ -409,13 +403,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbPedigree.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>6</value>
   </data>
   <data name="cbRetainEstimates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbRetainEstimates.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 76</value>
+    <value>7, 76</value>
   </data>
   <data name="cbRetainEstimates.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 17</value>
@@ -436,7 +430,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRetainEstimates.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>8</value>
   </data>
   <data name="cbRetainCurPattern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -448,7 +442,7 @@
     <value>False</value>
   </data>
   <data name="cbRetainCurPattern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 53</value>
+    <value>276, 53</value>
   </data>
   <data name="cbRetainCurPattern.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 17</value>
@@ -472,28 +466,31 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRetainCurPattern.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="lblTrial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>10</value>
   </data>
   <data name="lblTrial.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblTrial.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblTrial.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 31</value>
+    <value>3, 0</value>
   </data>
   <data name="lblTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 13</value>
+    <value>73, 22</value>
   </data>
   <data name="lblTrial.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="lblTrial.Text" xml:space="preserve">
     <value>Trial:</value>
+  </data>
+  <data name="lblTrial.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lblTrial.Name" xml:space="preserve">
     <value>lblTrial</value>
@@ -502,31 +499,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblTrial.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblTrial.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="lblERun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>0</value>
   </data>
   <data name="lblERun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblERun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblERun.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblERun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 54</value>
+    <value>3, 22</value>
   </data>
   <data name="lblERun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
+    <value>73, 22</value>
   </data>
   <data name="lblERun.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="lblERun.Text" xml:space="preserve">
     <value>Ecopath runs:</value>
+  </data>
+  <data name="lblERun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lblERun.Name" xml:space="preserve">
     <value>lblERun</value>
@@ -535,31 +535,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblERun.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblERun.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="lblSS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>1</value>
   </data>
   <data name="lblSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblSS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblSS.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>719, 54</value>
+    <value>122, 22</value>
   </data>
   <data name="lblSS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
+    <value>64, 22</value>
   </data>
   <data name="lblSS.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="lblSS.Text" xml:space="preserve">
     <value>Current SS: </value>
+  </data>
+  <data name="lblSS.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lblSS.Name" xml:space="preserve">
     <value>lblSS</value>
@@ -568,31 +571,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblSS.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblSS.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="lblBestSS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>7</value>
   </data>
   <data name="lblBestSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblBestSS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblBestSS.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lblBestSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>719, 77</value>
+    <value>122, 44</value>
   </data>
   <data name="lblBestSS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
+    <value>64, 23</value>
   </data>
   <data name="lblBestSS.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="lblBestSS.Text" xml:space="preserve">
     <value>Best SS:</value>
+  </data>
+  <data name="lblBestSS.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lblBestSS.Name" xml:space="preserve">
     <value>lblBestSS</value>
@@ -601,16 +607,16 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblBestSS.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblBestSS.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>8</value>
   </data>
   <data name="cbShowBioTraj.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbShowBioTraj.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 53</value>
+    <value>7, 53</value>
   </data>
   <data name="cbShowBioTraj.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 17</value>
@@ -631,31 +637,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbShowBioTraj.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="prgMCTrials.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="prgMCTrials.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 509</value>
-  </data>
-  <data name="prgMCTrials.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 23</value>
-  </data>
-  <data name="prgMCTrials.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;prgMCTrials.Name" xml:space="preserve">
-    <value>prgMCTrials</value>
-  </data>
-  <data name="&gt;&gt;prgMCTrials.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;prgMCTrials.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;prgMCTrials.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>11</value>
   </data>
   <data name="btApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -664,7 +646,7 @@
     <value>False</value>
   </data>
   <data name="btApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>735, 508</value>
+    <value>640, 508</value>
   </data>
   <data name="btApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 25</value>
@@ -685,7 +667,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btApply.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>9</value>
   </data>
   <data name="nudNumTrials.Location" type="System.Drawing.Point, System.Drawing">
     <value>160, 29</value>
@@ -711,8 +693,11 @@
   <data name="btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="btnTS.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
   <data name="btnTS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>460, 26</value>
+    <value>371, 26</value>
   </data>
   <data name="btnTS.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 23</value>
@@ -733,28 +718,31 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnTS.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblValueERun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>4</value>
   </data>
   <data name="lblValueERun.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblValueERun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblValueERun.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblValueERun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>651, 54</value>
+    <value>82, 22</value>
   </data>
   <data name="lblValueERun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
+    <value>28, 22</value>
   </data>
   <data name="lblValueERun.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lblValueERun.Text" xml:space="preserve">
     <value>###</value>
+  </data>
+  <data name="lblValueERun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;lblValueERun.Name" xml:space="preserve">
     <value>lblValueERun</value>
@@ -763,31 +751,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueERun.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblValueERun.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lblValueSSBest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>3</value>
   </data>
   <data name="lblValueSSBest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblValueSSBest.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblValueSSBest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblValueSSBest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>789, 77</value>
+    <value>192, 44</value>
   </data>
   <data name="lblValueSSBest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
+    <value>58, 23</value>
   </data>
   <data name="lblValueSSBest.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lblValueSSBest.Text" xml:space="preserve">
     <value>###</value>
+  </data>
+  <data name="lblValueSSBest.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;lblValueSSBest.Name" xml:space="preserve">
     <value>lblValueSSBest</value>
@@ -796,31 +787,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSSBest.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblValueSSBest.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="lblValueSS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="lblValueSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblValueSS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblValueSS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblValueSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>789, 54</value>
+    <value>192, 22</value>
   </data>
   <data name="lblValueSS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
+    <value>58, 22</value>
   </data>
   <data name="lblValueSS.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lblValueSS.Text" xml:space="preserve">
     <value>###</value>
+  </data>
+  <data name="lblValueSS.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;lblValueSS.Name" xml:space="preserve">
     <value>lblValueSS</value>
@@ -829,31 +823,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSS.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblValueSS.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="lblValueSSOrg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="lblValueSSOrg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblValueSSOrg.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lblValueSSOrg.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblValueSSOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>789, 31</value>
+    <value>192, 0</value>
   </data>
   <data name="lblValueSSOrg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
+    <value>58, 22</value>
   </data>
   <data name="lblValueSSOrg.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lblValueSSOrg.Text" xml:space="preserve">
     <value>###</value>
+  </data>
+  <data name="lblValueSSOrg.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;lblValueSSOrg.Name" xml:space="preserve">
     <value>lblValueSSOrg</value>
@@ -862,28 +859,31 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueSSOrg.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblValueSSOrg.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="lblValueTrial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>9</value>
   </data>
   <data name="lblValueTrial.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="lblValueTrial.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="lblValueTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>651, 31</value>
+    <value>82, 0</value>
   </data>
   <data name="lblValueTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 13</value>
+    <value>28, 22</value>
   </data>
   <data name="lblValueTrial.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lblValueTrial.Text" xml:space="preserve">
     <value>###</value>
+  </data>
+  <data name="lblValueTrial.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="&gt;&gt;lblValueTrial.Name" xml:space="preserve">
     <value>lblValueTrial</value>
@@ -892,31 +892,34 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblValueTrial.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lblValueTrial.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="lbSSOrg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>2</value>
   </data>
   <data name="lbSSOrg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lbSSOrg.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="lbSSOrg.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="lbSSOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>719, 31</value>
+    <value>122, 0</value>
   </data>
   <data name="lbSSOrg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 13</value>
+    <value>64, 22</value>
   </data>
   <data name="lbSSOrg.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="lbSSOrg.Text" xml:space="preserve">
     <value>Original SS:</value>
+  </data>
+  <data name="lbSSOrg.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lbSSOrg.Name" xml:space="preserve">
     <value>lbSSOrg</value>
@@ -925,42 +928,9 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbSSOrg.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpOutputs</value>
   </data>
   <data name="&gt;&gt;lbSSOrg.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="lblTrialsComplete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="lblTrialsComplete.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTrialsComplete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 514</value>
-  </data>
-  <data name="lblTrialsComplete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
-  </data>
-  <data name="lblTrialsComplete.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="lblTrialsComplete.Text" xml:space="preserve">
-    <value>Trials complete</value>
-  </data>
-  <data name="lblTrialsComplete.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;lblTrialsComplete.Name" xml:space="preserve">
-    <value>lblTrialsComplete</value>
-  </data>
-  <data name="&gt;&gt;lblTrialsComplete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTrialsComplete.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblTrialsComplete.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_lblInputOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -976,13 +946,13 @@
     <value>4, 5</value>
   </data>
   <data name="m_lblInputOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>551, 18</value>
+    <value>456, 18</value>
   </data>
   <data name="m_lblInputOpt.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblInputOpt.Text" xml:space="preserve">
-    <value>&amp;Input options</value>
+    <value>Input</value>
   </data>
   <data name="m_lblInputOpt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -997,7 +967,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblInputOpt.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblOutputParam.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1009,16 +979,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblOutputParam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 5</value>
+    <value>470, 5</value>
   </data>
   <data name="m_lblOutputParam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>260, 18</value>
+    <value>256, 18</value>
   </data>
   <data name="m_lblOutputParam.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
   <data name="m_lblOutputParam.Text" xml:space="preserve">
-    <value>&amp;Output parameters</value>
+    <value>Output</value>
   </data>
   <data name="m_lblOutputParam.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1033,7 +1003,43 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblOutputParam.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpOutputs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_tlpOutputs.ColumnCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_tlpOutputs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>473, 26</value>
+  </data>
+  <data name="m_tlpOutputs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpOutputs.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpOutputs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>253, 67</value>
+  </data>
+  <data name="m_tlpOutputs.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;m_tlpOutputs.Name" xml:space="preserve">
+    <value>m_tlpOutputs</value>
+  </data>
+  <data name="&gt;&gt;m_tlpOutputs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpOutputs.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tlpOutputs.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_tlpOutputs.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblTrial" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblERun" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblValueTrial" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblValueERun" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblValueSSBest" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="lbSSOrg" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="lblValueSS" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="lblSS" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="lblBestSS" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="lblValueSSOrg" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Absolute,6,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Absolute,22,Absolute,22,Absolute,22" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1042,16 +1048,13 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>827, 542</value>
+    <value>732, 542</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
-  </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>Monte Carlo simulation of varying Ecopath basic parameters</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Monte Carlo simulation of varying Ecopath basic parameters</value>
@@ -1060,6 +1063,6 @@
     <value>MCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.622, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

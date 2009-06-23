@@ -1,6 +1,11 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.8  2009/06/23 18:17:30  jeroens
+' Fixed layout: SS no longer drops off of screen
+' Fixed panel padding
+' Uses central progress feedback structure
+'
 ' Revision 1.7  2009/05/13 13:59:53  jeroens
 ' Renamed ecosim plot classes
 '
@@ -173,8 +178,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub MCRun_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs) 
 
             m_BRG.DisplayInputValue = MCRunDisplayInputValue.B
             m_PBRG.DisplayInputValue = MCRunDisplayInputValue.PB
@@ -228,10 +232,10 @@ Namespace Ecosim
 
             Debug.Assert(m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
-        Private Sub MCRun_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs) 
 
             cCommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
             cCommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
@@ -250,6 +254,7 @@ Namespace Ecosim
             Me.m_fpSSorg.Release()
             Me.m_fpTrial.Release()
 
+            Me.CoreComponents = Nothing
         End Sub
 
         Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
@@ -296,9 +301,12 @@ Namespace Ecosim
 
         Private Sub MonteCarloStepHandler()
 
+            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
             Try
-                prgMCTrials.PerformStep()
-                If Me.prgMCTrials.Value = Me.prgMCTrials.Maximum Then Me.lblTrialsComplete.Visible = True
+                ' ToDo: localize this
+                asn.SetStatusText("Running monte carlo...", TriState.UseDefault, _
+                                  Me.m_mcManager.nTrialIterations / Me.m_mcManager.nTrials)
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -332,6 +340,8 @@ Namespace Ecosim
 
         Private Sub MonteCarloCompletedHandler()
 
+            Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+
             Try
                 Me.btApply.Enabled = True
                 Me.tcMCOutput.SelectedIndex = 4 ' For best fit page
@@ -339,6 +349,7 @@ Namespace Ecosim
                 m_BestFitRG.RefreshData()
                 ' m_ucBPlots.tcOutput.Enabled = True
                 Me.m_ucBPlots.EnableControls(True)
+                asn.SetStatusText("", TriState.False)
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -372,12 +383,8 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdRunMonteCarlo.OnInvoke
-            ' m_mcManager.bRetainFits = True
-
-            Me.prgMCTrials.Maximum = m_mcManager.nTrials
-            Me.prgMCTrials.Value = 0
-            Me.lblTrialsComplete.Visible = False
+        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+            Handles m_cmdRunMonteCarlo.OnInvoke
 
             Me.btApply.Enabled = False
             Me.tcMCOutput.SelectedIndex = 5 ' For biomass plot page.
@@ -389,6 +396,10 @@ Namespace Ecosim
             Me.m_fpSSBest.Value = 0.0!
 
             Me.m_ucBPlots.EnableControls(False)
+
+            ' ToDo: localize this
+            cApplicationStatusNotifier.GetInstance().SetStatusText("Running monte carlo...", TriState.True)
+
             m_ucBPlots.Plot.Reset()
             m_mcManager.Run()
 

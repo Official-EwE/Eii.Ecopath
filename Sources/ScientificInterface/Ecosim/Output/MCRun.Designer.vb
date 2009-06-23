@@ -4,7 +4,7 @@ Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class MCRun
-        Inherits DockContent
+        Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -42,7 +42,6 @@ Namespace Ecosim
             Me.lblSS = New System.Windows.Forms.Label
             Me.lblBestSS = New System.Windows.Forms.Label
             Me.cbShowBioTraj = New System.Windows.Forms.CheckBox
-            Me.prgMCTrials = New System.Windows.Forms.ProgressBar
             Me.btApply = New System.Windows.Forms.Button
             Me.nudNumTrials = New System.Windows.Forms.NumericUpDown
             Me.btnTS = New System.Windows.Forms.Button
@@ -52,11 +51,12 @@ Namespace Ecosim
             Me.lblValueSSOrg = New System.Windows.Forms.Label
             Me.lblValueTrial = New System.Windows.Forms.Label
             Me.lbSSOrg = New System.Windows.Forms.Label
-            Me.lblTrialsComplete = New System.Windows.Forms.Label
             Me.m_lblInputOpt = New System.Windows.Forms.Label
             Me.m_lblOutputParam = New System.Windows.Forms.Label
+            Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel
             Me.tcMCOutput.SuspendLayout()
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpOutputs.SuspendLayout()
             Me.SuspendLayout()
             '
             'lblNumTrials
@@ -170,13 +170,6 @@ Namespace Ecosim
             Me.cbShowBioTraj.Name = "cbShowBioTraj"
             Me.cbShowBioTraj.UseVisualStyleBackColor = True
             '
-            'prgMCTrials
-            '
-            resources.ApplyResources(Me.prgMCTrials, "prgMCTrials")
-            Me.prgMCTrials.Name = "prgMCTrials"
-            Me.prgMCTrials.Step = 1
-            Me.prgMCTrials.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-            '
             'btApply
             '
             resources.ApplyResources(Me.btApply, "btApply")
@@ -225,12 +218,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.lbSSOrg, "lbSSOrg")
             Me.lbSSOrg.Name = "lbSSOrg"
             '
-            'lblTrialsComplete
-            '
-            resources.ApplyResources(Me.lblTrialsComplete, "lblTrialsComplete")
-            Me.lblTrialsComplete.BackColor = System.Drawing.Color.Transparent
-            Me.lblTrialsComplete.Name = "lblTrialsComplete"
-            '
             'm_lblInputOpt
             '
             resources.ApplyResources(Me.m_lblInputOpt, "m_lblInputOpt")
@@ -245,38 +232,45 @@ Namespace Ecosim
             Me.m_lblOutputParam.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblOutputParam.Name = "m_lblOutputParam"
             '
+            'm_tlpOutputs
+            '
+            resources.ApplyResources(Me.m_tlpOutputs, "m_tlpOutputs")
+            Me.m_tlpOutputs.Controls.Add(Me.lblTrial, 0, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.lblERun, 0, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.lblValueTrial, 1, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.lblValueERun, 1, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.lblValueSSBest, 4, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.lbSSOrg, 3, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.lblValueSS, 4, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.lblSS, 3, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.lblBestSS, 3, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
+            Me.m_tlpOutputs.Name = "m_tlpOutputs"
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_tlpOutputs)
             Me.Controls.Add(Me.m_lblOutputParam)
             Me.Controls.Add(Me.m_lblInputOpt)
-            Me.Controls.Add(Me.lblValueERun)
             Me.Controls.Add(Me.nudNumTrials)
-            Me.Controls.Add(Me.lblValueSSBest)
-            Me.Controls.Add(Me.lblTrialsComplete)
-            Me.Controls.Add(Me.lblValueSS)
             Me.Controls.Add(Me.btnTS)
-            Me.Controls.Add(Me.lblValueSSOrg)
             Me.Controls.Add(Me.lblNumTrials)
-            Me.Controls.Add(Me.lblValueTrial)
             Me.Controls.Add(Me.cbPedigree)
-            Me.Controls.Add(Me.lblBestSS)
             Me.Controls.Add(Me.tcMCOutput)
-            Me.Controls.Add(Me.lblSS)
             Me.Controls.Add(Me.cbRetainEstimates)
-            Me.Controls.Add(Me.lbSSOrg)
-            Me.Controls.Add(Me.lblTrial)
             Me.Controls.Add(Me.btApply)
-            Me.Controls.Add(Me.lblERun)
             Me.Controls.Add(Me.cbRetainCurPattern)
-            Me.Controls.Add(Me.prgMCTrials)
             Me.Controls.Add(Me.cbShowBioTraj)
             Me.Controls.Add(Me.btnStop)
             Me.Controls.Add(Me.btnRunTrials)
             Me.Name = "MCRun"
+            Me.TabText = "Monte Carlo simulation of varying Ecopath basic parameters"
             Me.tcMCOutput.ResumeLayout(False)
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpOutputs.ResumeLayout(False)
+            Me.m_tlpOutputs.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -287,31 +281,30 @@ Namespace Ecosim
         Friend WithEvents cbPedigree As System.Windows.Forms.CheckBox
         Friend WithEvents cbRetainEstimates As System.Windows.Forms.CheckBox
         Friend WithEvents cbRetainCurPattern As System.Windows.Forms.CheckBox
-        Friend WithEvents lblTrial As System.Windows.Forms.Label
-        Friend WithEvents lblERun As System.Windows.Forms.Label
-        Friend WithEvents lblSS As System.Windows.Forms.Label
-        Friend WithEvents lblBestSS As System.Windows.Forms.Label
         Friend WithEvents cbShowBioTraj As System.Windows.Forms.CheckBox
-        Friend WithEvents tcMCOutput As System.Windows.Forms.TabControl
         Friend WithEvents tbpB As System.Windows.Forms.TabPage
         Friend WithEvents tbpBP As System.Windows.Forms.TabPage
         Friend WithEvents tbpEE As System.Windows.Forms.TabPage
         Friend WithEvents tbpBA As System.Windows.Forms.TabPage
         Friend WithEvents tbpBestTrial As System.Windows.Forms.TabPage
-        Friend WithEvents prgMCTrials As System.Windows.Forms.ProgressBar
         Friend WithEvents btApply As System.Windows.Forms.Button
         Friend WithEvents tbpBPlot As System.Windows.Forms.TabPage
         Friend WithEvents btnTS As System.Windows.Forms.Button
-        Friend WithEvents lbSSOrg As System.Windows.Forms.Label
         Friend WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
-        Friend WithEvents lblValueERun As System.Windows.Forms.Label
-        Friend WithEvents lblValueSSBest As System.Windows.Forms.Label
-        Friend WithEvents lblValueSS As System.Windows.Forms.Label
-        Friend WithEvents lblValueSSOrg As System.Windows.Forms.Label
-        Friend WithEvents lblValueTrial As System.Windows.Forms.Label
-        Friend WithEvents lblTrialsComplete As System.Windows.Forms.Label
         Friend WithEvents m_lblInputOpt As System.Windows.Forms.Label
         Friend WithEvents m_lblOutputParam As System.Windows.Forms.Label
+        Private WithEvents tcMCOutput As System.Windows.Forms.TabControl
+        Private WithEvents lblValueERun As System.Windows.Forms.Label
+        Private WithEvents lblValueSSBest As System.Windows.Forms.Label
+        Private WithEvents lblValueSS As System.Windows.Forms.Label
+        Private WithEvents lblValueSSOrg As System.Windows.Forms.Label
+        Private WithEvents lblValueTrial As System.Windows.Forms.Label
+        Private WithEvents lblTrial As System.Windows.Forms.Label
+        Private WithEvents lblERun As System.Windows.Forms.Label
+        Private WithEvents lblSS As System.Windows.Forms.Label
+        Private WithEvents lblBestSS As System.Windows.Forms.Label
+        Private WithEvents lbSSOrg As System.Windows.Forms.Label
+        Private WithEvents m_tlpOutputs As System.Windows.Forms.TableLayoutPanel
     End Class
 
 End Namespace
