@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.18  2009/06/23 17:37:14  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.17  2009/06/12 18:16:52  joeh
 ' After moving averaging, the system PSD is assigned to the first selected group
 '
@@ -73,6 +76,8 @@ Public Class cPSDModel
         ' Sanity check
         If Not Me.m_psd.Enabled Then Return False
 
+        Me.m_psd.Computed = False
+
         'Is there any missing input
         If CheckMissingInputParameters() Then
             'Yes: return failure
@@ -83,6 +88,7 @@ Public Class cPSDModel
             EstimatePSD()
             EstimateSizeWeight()
             If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
+            Me.m_psd.Computed = True
             Return True
         End If
     End Function

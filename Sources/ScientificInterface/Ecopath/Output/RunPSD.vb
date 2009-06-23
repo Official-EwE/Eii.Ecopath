@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.33  2009/06/23 17:37:15  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.32  2009/06/23 00:50:13  joeh
 ' Just add a comment
 '
@@ -124,6 +127,7 @@ Namespace Ecopath.Output
         ' -- Core connection
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_core As cCore = Nothing
+        Private m_propComputed As cBooleanProperty = Nothing
 
         ' -- To make life easier and a more fun place to be
         Private m_zgh As cZedGraphHelper = Nothing
@@ -153,8 +157,8 @@ Namespace Ecopath.Output
 
 #Region " Event handlers "
 
-        Private Sub RunPSD_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
             Dim parms As cPSDParameters = Nothing
             Dim str As String = ""
             Dim msg As cMessage = Nothing
@@ -182,6 +186,10 @@ Namespace Ecopath.Output
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
+            Me.m_propComputed = DirectCast(cPropertyManager.GetInstance().GetProperty(parms, eVarNameFlags.PSDComputed),  _
+                                           cBooleanProperty)
+            AddHandler Me.m_propComputed.PropertyChanged, AddressOf OnPSDComputedChanged
+
             ' Sync controls
             Me.UpdateToolstrip()
             ' Neatify
@@ -197,8 +205,7 @@ Namespace Ecopath.Output
             End If
         End Sub
 
-        Private Sub RunPSD_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs) 
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
@@ -219,6 +226,8 @@ Namespace Ecopath.Output
 
             ' Detach from core state monitor events
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_propComputed.PropertyChanged, AddressOf OnPSDComputedChanged
+            Me.m_propComputed = Nothing
 
         End Sub
 
@@ -231,6 +240,9 @@ Namespace Ecopath.Output
 
         Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tsmiGroupPB.Click
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiGroupPB.Checked = True
             Me.m_tsmiLorenzen.Checked = Not Me.m_tsmiGroupPB.Checked
@@ -238,11 +250,14 @@ Namespace Ecopath.Output
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
 
-            Me.SynchronizePlot()
+            Me.m_propComputed.SetValue(False)
         End Sub
 
         Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tsmiLorenzen.Click
+
+            Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
+
             ' Make sure one checkbox is checked exclusively
             Me.m_tsmiLorenzen.Checked = True
             Me.m_tsmiGroupPB.Checked = Not Me.m_tsmiLorenzen.Checked
@@ -250,7 +265,7 @@ Namespace Ecopath.Output
             m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
             m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
 
-            Me.SynchronizePlot()
+            Me.m_propComputed.SetValue(False)
         End Sub
 
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -258,23 +273,24 @@ Namespace Ecopath.Output
 
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
-
+            ' Run Ecopath
             Me.m_core.RunEcoPath()
-            Me.PlotCurves()
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-            Me.SynchronizePlot()
+            Me.m_propComputed.Refresh()
         End Sub
 
         Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
-            ' To Joe: this may not be sufficient, but I cannot test PSD w/o proper data
-            Me.SynchronizePlot()
+            Me.m_propComputed.SetValue(False)
         End Sub
 
         Private Sub m_tscbxMeanLat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tscbxMeanLat.SelectedIndexChanged
-            ' To Joe: this may not be sufficient, but I cannot test PSD w/o proper data
+            Me.m_propComputed.SetValue(False)
+        End Sub
+
+        Private Sub OnPSDComputedChanged(ByVal prop As cProperty, ByVal changeflags As cProperty.eChangeFlags)
             Me.SynchronizePlot()
         End Sub
 
@@ -289,9 +305,11 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub SynchronizePlot()
 
+            'Me.m_propComputed.Refresh()
+
             ' This code is optimized to only plot when new results are available
             ' Are Ecopath results available?
-            If Me.m_coreStateMonitor.HasEcopathRan Then
+            If Me.m_coreStateMonitor.HasEcopathRan And (CBool(Me.m_propComputed.GetValue()) = True) Then
                 ' #Yes: are these results not plotted yet?
                 If Me.m_bEcopathResultsPlotted = False Then
                     ' #Yes: Plot the curves

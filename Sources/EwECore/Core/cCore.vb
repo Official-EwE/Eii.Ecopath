@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cCore.vb,v $
+' Revision 1.138  2009/06/23 17:37:13  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.137  2009/06/20 00:55:31  sherman
 ' Change InitCore to public for access from the webservice.
 '
@@ -3357,6 +3360,7 @@ Public Class cCore
         Me.m_PSDParameters.FirstWeightClass = Me.m_PSDData.FirstWeightClass
         Me.m_PSDParameters.ClimateType = Me.m_PSDData.ClimateType
         Me.m_PSDParameters.NumPtsMovAvg = Me.m_PSDData.NPtsMovAvg
+        Me.m_PSDParameters.PSDComputed = Me.m_PSDData.Computed
 
         For iGroup As Integer = 1 To m_EcoPathData.NumGroups
             Me.m_PSDParameters.GroupIncluded(iGroup) = Me.m_PSDData.Include(iGroup)
@@ -3377,6 +3381,7 @@ Public Class cCore
         Me.m_PSDData.FirstWeightClass = Me.m_PSDParameters.FirstWeightClass
         Me.m_PSDData.ClimateType = Me.m_PSDParameters.ClimateType
         Me.m_PSDData.NPtsMovAvg = Me.m_PSDParameters.NumPtsMovAvg
+        Me.m_PSDData.Computed = Me.m_PSDParameters.PSDComputed
 
         For iGroup As Integer = 1 To m_EcoPathData.NumGroups
             Me.m_PSDData.Include(iGroup) = Me.m_PSDParameters.GroupIncluded(iGroup)
@@ -3548,6 +3553,8 @@ Public Class cCore
                 LoadEcopathOutputs()
                 're-populate the Ecopath statistics
                 LoadEcopathStats()
+                're-populate PSD parameters
+                LoadPSDParameters()
 
                 If Me.PluginManager IsNot Nothing Then
                     Me.PluginManager.EcopathRunCompleted(m_EcoPathData)
@@ -10351,12 +10358,10 @@ Public Class cCore
 
             Case eDataTypes.ParticleSizeDistribution
 
-                Select Case value.varName
+                Me.m_PSDParameters.AllowValidation = False
+                Me.m_PSDParameters.PSDComputed = False
+                Me.m_PSDParameters.AllowValidation = True
 
-                    Case eVarNameFlags.PSDNumWeightClasses
-                        ' ToDo: redim?
-
-                End Select
         End Select
 
         ' Cascade name changes across models

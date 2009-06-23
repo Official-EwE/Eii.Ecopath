@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.13  2009/06/23 17:37:15  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.12  2009/06/23 00:49:06  joeh
 ' Set min value for NumPtsMovAvg back from 1 to 0
 '
@@ -71,6 +74,13 @@ Public Class cPSDParameters
             'PSDEnabled
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            'PSDComputed
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses
@@ -132,6 +142,23 @@ Public Class cPSDParameters
 
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.PSDEnabled, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the PSD results have been computed.
+    ''' </summary>
+    ''' <remarks>
+    ''' This *should* have been reported by the core state monitor.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Property PSDComputed() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.PSDComputed))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.PSDComputed, value)
         End Set
     End Property
 

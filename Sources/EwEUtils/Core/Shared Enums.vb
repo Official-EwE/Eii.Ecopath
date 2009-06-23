@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.68  2009/06/23 17:37:15  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.67  2009/06/23 05:05:44  jeroens
 ' Added varname GameIssueList
 '
@@ -1105,6 +1108,7 @@ Namespace Core
 
         'Joeh: PSD
         PSDEnabled
+        PSDComputed
         VBK
         BiomassAvgSzWt
         BiomassSzWt

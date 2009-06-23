@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDDatastructures.vb,v $
+' Revision 1.11  2009/06/23 17:37:14  jeroens
+' Fixed PSD parameter change behaviour
+'
 ' Revision 1.10  2009/05/22 22:31:07  joeh
 ' Tcatch reverted to have input and output pair because of new user requirement
 '
@@ -44,6 +47,8 @@ Public Class cPSDDatastructures
 
     ''' <summary>States whether PSD model is enabled.</summary>
     Public Enabled As Boolean = False
+    ''' <summary>States whether PSD model has run.</summary>
+    Public Computed As Boolean = False
 
     ''' <summary>Total number of groups (living and detritus)</summary>
     Public NumGroups As Integer
