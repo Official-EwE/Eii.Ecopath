@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDParameters.vb,v $
+' Revision 1.12  2009/06/23 00:49:06  joeh
+' Set min value for NumPtsMovAvg back from 1 to 0
+'
 ' Revision 1.11  2009/06/20 21:00:13  jeroens
 ' Set min + default values for NumPtsMovAvg
 '
@@ -91,7 +94,7 @@ Public Class cPSDParameters
             m_values.Add(val.varName, val)
 
             'Number of points used in moving average
-            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 1)
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
             val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumPtsMovAvg))
             m_values.Add(val.varName, val)
 
