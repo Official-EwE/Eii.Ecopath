@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.32  2009/06/23 00:50:13  joeh
+' Just add a comment
+'
 ' Revision 1.31  2009/06/22 22:15:59  joeh
 ' Add more statistics parameters for the PSD regression
 '
@@ -265,6 +268,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
+            ' To Joe: this may not be sufficient, but I cannot test PSD w/o proper data
             Me.SynchronizePlot()
         End Sub
 
