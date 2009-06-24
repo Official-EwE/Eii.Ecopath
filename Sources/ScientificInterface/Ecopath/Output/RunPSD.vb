@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.34  2009/06/24 23:17:05  joeh
+' Do not display regression std err when sample size is 2
+'
 ' Revision 1.33  2009/06/23 17:37:15  jeroens
 ' Fixed PSD parameter change behaviour
 '
@@ -378,6 +381,7 @@ Namespace Ecopath.Output
             Dim iSampleSize As Integer
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim str As String = ""
 
             Me.InitLists(resultLists, 2)
 
@@ -392,19 +396,29 @@ Namespace Ecopath.Output
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
-                    'PSD plot
+                    'PSD data
                     resultLists(0).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 1000000000)) '* 1000000000 for plotting purpose
-                    'PSD regression plot
+                    'PSD regression data
                     resultLists(1).Add(Math.Log10(sXValue), sSlope * Math.Log10(sXValue) + sIntercept)
 
                 End If
             Next
 
+            'PSD plot
             Me.AddCurveToGraphPane(pane, resultLists(0), "", Color.Transparent)
-            Me.AddCurveToGraphPane(pane, resultLists(1), _
-                    String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
-                                  sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & vbCrLf, _
-                                  sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize)), Color.Black)
+            'PSD regression plot
+            If iSampleSize = 2 Then
+                'Without std err
+                str = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope), _
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & vbCrLf, _
+                                    sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
+            Else
+                'With std err
+                str = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & vbCrLf, _
+                                    sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
+            End If
+            Me.AddCurveToGraphPane(pane, resultLists(1), str, Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
