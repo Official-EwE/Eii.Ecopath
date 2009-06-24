@@ -1,6 +1,9 @@
 ﻿'==============================================================================
 '
 ' $Log: cPSDModel.vb,v $
+' Revision 1.19  2009/06/24 22:50:45  joeh
+' Add checking mechanism for successful PSD estimation
+'
 ' Revision 1.18  2009/06/23 17:37:14  jeroens
 ' Fixed PSD parameter change behaviour
 '
@@ -83,13 +86,19 @@ Public Class cPSDModel
             'Yes: return failure
             Return False
         Else
-            'No: do estimattion and return success
+            'No: estimate growth parameters 
             EstimateGrowthParameters()
-            EstimatePSD()
-            EstimateSizeWeight()
-            If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
-            Me.m_psd.Computed = True
-            Return True
+            'Is PSD estimation successful?
+            If EstimatePSD() Then
+                'Yes: more estimation and return success
+                EstimateSizeWeight()
+                If m_psd.NPtsMovAvg > 0 Then EstimatePSDMovAvg()
+                Me.m_psd.Computed = True
+                Return True
+            Else
+                'No: return failure
+                Return False
+            End If
         End If
     End Function
 
@@ -122,28 +131,21 @@ Public Class cPSDModel
 
                 ' #Yes: generate - or append to - message
                 If (msg Is Nothing) Then
-                    ' ToDo_JH: localize this
-                    str = "The PSD estimation routine can work only with either 'L at infinity' or 'W at infinity' as unknown per group. 'K in VBGF' must be known for each group."
-                    str = str & "Here, one or more of these are unknown:"
-                    'str = str & vbCrLf & vbCrLf
-                    'str = str & "Please re-edit the growth input parameters."
-                    msg = New cMessage(str, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                    msg = New cMessage(My.Resources.CoreMessages.PSD_MISSING_INPUT, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                     msg.Suppressable = False
                 End If
                 bMissing = True
 
                 ' JS: add variable status to report missing L or W 
                 If (m_psd.WinfInput(i) < 0 And m_psd.LooInput(i) < 0) Then
-                    ' ToDo_JH: localize this
-                    str = String.Format("Required 'L at infinity' or 'W at infinity' missing for group {0}", Me.m_Data.GroupName(i))
+                    str = String.Format(My.Resources.CoreMessages.PSD_REQ_LW, Me.m_Data.GroupName(i))
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                     msg.AddVariable(vs)
                 End If
 
                 ' JS: add variable status to report missing K in VGBF
                 If (m_Data.vbK(i) <= 0) Then
-                    ' ToDo_JH: localize this
-                    str = String.Format("Required 'K in VBGF' missing for group {0}", Me.m_Data.GroupName(i))
+                    str = String.Format(My.Resources.CoreMessages.PSD_REQ_K_VBGF, Me.m_Data.GroupName(i))
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                     msg.AddVariable(vs)
                 End If
@@ -289,7 +291,7 @@ Public Class cPSDModel
         Next
     End Sub
 
-    Private Sub EstimatePSD()
+    Private Function EstimatePSD() As Boolean
         Dim sTime As Single
 
         Dim WeightClass() As Single
@@ -299,6 +301,11 @@ Public Class cPSDModel
         Dim Biomass() As Single
         Dim StartWeightClassNum As Integer
         Dim ScaleFactor As Single
+
+        Dim sSystemPSD(m_psd.NWeightClasses) As Single
+        Dim iNWtClsSysPSDGTZero As Integer = 0
+        Dim bSuccess As Boolean = False
+        Dim msg As cMessage = Nothing
 
         ReDim Me.m_psd.PSD(m_Data.NumGroups, Me.m_psd.NWeightClasses)
 
@@ -419,7 +426,25 @@ Public Class cPSDModel
                 Next
             End If
         Next
-    End Sub
+
+        'Check if groups fall into at least two weight classes
+        CalcSystemPSD(sSystemPSD)
+        For i As Integer = 1 To m_psd.NWeightClasses
+            If sSystemPSD(i) > 0.0 Then iNWtClsSysPSDGTZero = iNWtClsSysPSDGTZero + 1
+        Next
+        If iNWtClsSysPSDGTZero >= 2 Then
+            bSuccess = True
+        Else
+            If (msg Is Nothing) Then
+                msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                msg.Suppressable = False
+            End If
+        End If
+
+        Me.NotifyCore(msg)
+
+        Return bSuccess
+    End Function
 
     Private Sub EstimatePSDMovAvg()
         Dim sSystemPSD(m_psd.NWeightClasses) As Single
