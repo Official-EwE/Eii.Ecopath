@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: RunEcosim.vb,v $
+' Revision 1.22  2009/06/24 17:54:32  jeroens
+' Added option to name runs
+'
 ' Revision 1.21  2009/06/20 01:10:36  jeroens
 ' Fixed multiple run init strangeness
 '
@@ -296,6 +299,7 @@ Namespace Ecosim
 
             Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
             Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
+            Dim strRunLabel As String = String.Format(My.Resources.ECOSIM_LABEL_RUN, (Me.m_graph.NumRuns + 1))
 
             ' Does not have ecosim results?
             If (Not m_coreStateMonitor.HasEcopathRan) Then
@@ -312,7 +316,7 @@ Namespace Ecosim
                     AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
                     AppLauncher.GetInstance().SetStatusText("", TriState.False, 0)
-                    Me.m_graph.CreateRun()
+                    Me.m_graph.CreateRun(strRunLabel)
                 End If
                 Me.UpdateControls()
 
