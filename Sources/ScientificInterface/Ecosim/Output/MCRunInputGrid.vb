@@ -1,26 +1,14 @@
 '==============================================================================
 '
 ' $Log: MCRunInputGrid.vb,v $
+' Revision 1.3  2009/06/24 18:22:47  jeroens
+' Enabled for use in the .NET designer
+'
 ' Revision 1.2  2008/12/15 15:55:37  jeroens
 ' no message
 '
 ' Revision 1.1  2008/09/26 07:31:47  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.10  2008/09/26 00:22:50  villyc
-' updating ecosimMonteCarlo to pick vulnerabilities
-'
-' Revision 1.9  2008/08/12 16:09:11  jeroens
-' Fixed header style
-'
-' Revision 1.8  2008/08/02 03:04:15  jeroens
-' Renamed resources
-'
-' Revision 1.7  2008/07/31 21:29:11  sherman
-' Removed dead groups bug
-'
-' Revision 1.6  2008/06/02 00:01:33  jeroens
-' Added ScientificInterfaceShared
 '
 '==============================================================================
 
@@ -42,29 +30,32 @@ Namespace Ecosim
     Public Class MCRunInputGrid
         : Inherits EwEGrid
 
-        Private m_DisplayInputValue As MCRunDisplayInputValue
-        Private m_Core As cCore
-        Private m_McManager As cMonteCarloManager = Nothing
+        Private m_value As eMCRunDisplayInputValueTypes = 0
+        Private m_core As cCore = Nothing
+        Private m_mcmanager As cMonteCarloManager = Nothing
 
         Public Sub New()
             MyBase.New()
-            m_Core = cCore.GetInstance()
-            m_McManager = m_Core.EcosimMonteCarlo
         End Sub
 
-        Public Property DisplayInputValue() As MCRunDisplayInputValue
+        Public Property DisplayInputValue() As eMCRunDisplayInputValueTypes
             Get
-                Return m_DisplayInputValue
+                Return m_value
             End Get
-            Set(ByVal value As MCRunDisplayInputValue)
-                m_DisplayInputValue = value
+            Set(ByVal value As eMCRunDisplayInputValueTypes)
+                Me.m_core = cCore.GetInstance()
+                Me.m_mcmanager = m_core.EcosimMonteCarlo
+                Me.m_value = value
+                Me.RefreshContent()
             End Set
         End Property
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            Me.Redim(m_Core.nLivingGroups + 1, 6)
+            If Me.m_core Is Nothing Then Return
+
+            Me.Redim(m_core.nLivingGroups + 1, 6)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.MCRUN_HEADER_CV)
@@ -77,17 +68,19 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Select Case m_DisplayInputValue
-                Case MCRunDisplayInputValue.B
-                    FillValue(New eVarNameFlags() {eVarNameFlags.mcBcv, eVarNameFlags.mcBLower, eVarNameFlags.mcB, eVarNameFlags.mcBUpper})
-                Case MCRunDisplayInputValue.PB
-                    FillValue(New eVarNameFlags() {eVarNameFlags.mcPBcv, eVarNameFlags.mcPBLower, eVarNameFlags.mcPB, eVarNameFlags.mcPBUpper})
-                Case MCRunDisplayInputValue.EE
-                    FillValue(New eVarNameFlags() {eVarNameFlags.mcEEcv, eVarNameFlags.mcEELower, eVarNameFlags.mcEE, eVarNameFlags.mcEEUpper})
-                Case MCRunDisplayInputValue.BA
-                    FillValue(New eVarNameFlags() {eVarNameFlags.mcBAcv, eVarNameFlags.mcBALower, eVarNameFlags.mcBA, eVarNameFlags.mcBAUpper})
-                Case MCRunDisplayInputValue.VU
-                    FillValue(New eVarNameFlags() {eVarNameFlags.mcVUcv, eVarNameFlags.mcVULower, eVarNameFlags.mcVU, eVarNameFlags.mcVUUpper})
+            If Me.m_core Is Nothing Then Return
+
+            Select Case m_value
+                Case eMCRunDisplayInputValueTypes.B
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcBcv, eVarNameFlags.mcBLower, eVarNameFlags.mcB, eVarNameFlags.mcBUpper})
+                Case eMCRunDisplayInputValueTypes.PB
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcPBcv, eVarNameFlags.mcPBLower, eVarNameFlags.mcPB, eVarNameFlags.mcPBUpper})
+                Case eMCRunDisplayInputValueTypes.EE
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcEEcv, eVarNameFlags.mcEELower, eVarNameFlags.mcEE, eVarNameFlags.mcEEUpper})
+                Case eMCRunDisplayInputValueTypes.BA
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcBAcv, eVarNameFlags.mcBALower, eVarNameFlags.mcBA, eVarNameFlags.mcBAUpper})
+                Case eMCRunDisplayInputValueTypes.VU
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcVUcv, eVarNameFlags.mcVULower, eVarNameFlags.mcVU, eVarNameFlags.mcVUUpper})
             End Select
 
         End Sub
@@ -97,8 +90,8 @@ Namespace Ecosim
             Dim mcGrp As cCoreGroupBase = Nothing
             'Dim mcGroup As cMonteCarloGroup = Nothing
 
-            For i As Integer = 1 To m_Core.nLivingGroups
-                mcGrp = m_McManager.Groups(i)
+            For i As Integer = 1 To m_core.nLivingGroups
+                mcGrp = m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(mcGrp.Index)
                 Me(i, 1) = New EwERowHeaderCell(mcGrp.Name)
                 Me(i, 2) = New PropertyCell(mcGrp, flags(0))
