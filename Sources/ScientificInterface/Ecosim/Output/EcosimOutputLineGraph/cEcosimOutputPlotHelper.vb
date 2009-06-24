@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimOutputPlotHelper.vb,v $
+' Revision 1.4  2009/06/24 18:30:47  jeroens
+' Added option to name runs
+'
 ' Revision 1.3  2009/06/20 01:10:36  jeroens
 ' Fixed multiple run init strangeness
 '
@@ -99,8 +102,8 @@ Namespace Controls
 
         Private m_bShowMultipleRuns As Boolean = False
         Private m_bCumulative As Boolean = False
-        Private m_lclRuns As New List(Of CurveList)
-        Private m_clRunCurrent As CurveList = Nothing
+        Private m_lRuns As New List(Of cRun)
+        Private m_runCurrent As cRun = Nothing
         Private m_dicTimeSeriesGroup As New Dictionary(Of Integer, CurveItem)
         Private m_pplSum As New PointPairList
 
@@ -114,10 +117,21 @@ Namespace Controls
             Public m_lineType As eLineType = eLineType.CumulativeBiomass
 
             Public Sub New(ByVal strName As String, ByVal iIndex As Integer, ByVal iRun As Integer, ByVal lineType As eLineType)
-                m_strName = strName
-                m_iIndex = iIndex
-                m_iRun = iRun
-                m_lineType = lineType
+                Me.m_strName = strName
+                Me.m_iIndex = iIndex
+                Me.m_iRun = iRun
+                Me.m_lineType = lineType
+            End Sub
+        End Class
+
+        Private Class cRun
+
+            Public m_strName As String
+            Public m_curvelist As CurveList = Nothing
+
+            Public Sub New(ByVal strName As String)
+                Me.m_strName = strName
+                Me.m_curvelist = New CurveList()
             End Sub
         End Class
 
@@ -143,7 +157,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
-            Me.m_clRunCurrent = New CurveList()
+            'Me.m_clRunCurrent = New CurveList()
         End Sub
 
 #End Region
@@ -174,10 +188,10 @@ Namespace Controls
 #Region " Public Properties "
 
         Public Sub Clear()
-            Me.m_lclRuns.Clear()
+            Me.m_lRuns.Clear()
+            Me.m_runCurrent = Nothing
             Me.m_graphPane.CurveList.Clear()
             Me.m_dicTimeSeriesGroup.Clear()
-            Me.m_clRunCurrent = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -185,12 +199,12 @@ Namespace Controls
         ''' Makes sure all the object is set. Cleans up all list if required.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub CreateRun()
+        Public Sub CreateRun(ByVal strLabel As String)
             If (Me.m_bShowMultipleRuns = False) Then
                 Me.Clear()
             End If
-            Me.m_clRunCurrent = New CurveList()
-            Me.m_lclRuns.Add(Me.m_clRunCurrent)
+            Me.m_runCurrent = New cRun(strLabel)
+            Me.m_lRuns.Add(Me.m_runCurrent)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -200,9 +214,13 @@ Namespace Controls
         ''' <param name="strLabel">Label of the line to add.</param>
         ''' <param name="iGroup">Index of the underlying group.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLine(ByVal strLabel As String, ByVal iGroup As Integer, ByVal lineType As eLineType, ByVal list As PointPairList)
+        Public Sub AddLine(ByVal strLabel As String, _
+                           ByVal iGroup As Integer, _
+                           ByVal lineType As eLineType, _
+                           ByVal list As PointPairList)
+
             Dim crv As LineItem = Nothing
-            Dim crvType As cCurveType = New cCurveType(strLabel, iGroup, m_lclRuns.Count - 1, lineType)
+            Dim crvType As cCurveType = New cCurveType(strLabel, iGroup, Me.m_lRuns.Count - 1, lineType)
 
             Select Case crvType.m_lineType
 
@@ -212,13 +230,13 @@ Namespace Controls
                     crv = m_graphPane.AddCurve(strLabel, list, Drawing.Color.LightSlateGray, SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
                     crv.Line.Fill = New Fill(Me.m_sg.GroupColor(m_core, iGroup))
-                    Me.m_clRunCurrent.Add(crv)
+                    Me.m_runCurrent.m_curvelist.Add(crv)
                     crv.Tag = crvType
 
                 Case eLineType.RelativeBiomass, eLineType.RelativeCatch
                     crv = m_graphPane.AddCurve(strLabel, list, Me.m_sg.GroupColor(m_core, iGroup), SymbolType.None)
                     crv.Symbol.Type = SymbolType.None
-                    Me.m_clRunCurrent.Add(crv)
+                    Me.m_runCurrent.m_curvelist.Add(crv)
                     crv.Tag = crvType
 
                 Case eLineType.TimeSeries
@@ -243,13 +261,17 @@ Namespace Controls
 
         End Sub
 
-        Public Function GetValueAt(ByVal iGroup As Integer, ByVal iRun As Integer, ByVal iTimeStep As Integer) As Double
-            ' Wow, speaking about running into a brick wall at full tilt...
+        Public Function GetValueAt(ByVal iGroup As Integer, _
+                                   ByVal iRun As Integer, _
+                                   ByVal iTimeStep As Integer) As Double
+
             Try
-                Return Me.m_lclRuns.Item(iRun).Item(iGroup - 1).Item(iTimeStep).Y
+                ' Wow, speaking about running into a brick wall at full tilt...
+                Return Me.m_lRuns(iRun).m_curvelist.Item(iGroup - 1).Item(iTimeStep).Y
             Catch ex As Exception
                 Return 0.0
             End Try
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -262,9 +284,14 @@ Namespace Controls
         ''' <param name="iGroup">Group index to select</param>
         ''' <param name="iRun">The run to highlight.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Highlight(ByVal i As Integer, ByVal iCount As Integer, ByVal iGroup As Integer, ByVal iRun As Integer)
+        Public Sub Highlight(ByVal i As Integer, _
+                             ByVal iCount As Integer, _
+                             ByVal iGroup As Integer, _
+                             ByVal iRun As Integer)
 
             ' This is a tricky situation
+            Dim run As cRun = Nothing
+            Dim cl As CurveList = Nothing
             Dim crv As CurveItem = Nothing
             Dim crvType As cCurveType = Nothing
 
@@ -278,8 +305,11 @@ Namespace Controls
                 'If highlighting the last curve (curve with the highest index in the collection)
                 If i = iCount - 1 Then SetAllToColors(False)
 
-                For iRunTest As Integer = 0 To m_lclRuns.Count - 1
-                    crv = Me.m_lclRuns.Item(iRunTest).Item(iGroup - 1)
+                For iRunTest As Integer = 0 To m_lRuns.Count - 1
+
+                    run = Me.m_lRuns.Item(iRunTest)
+                    cl = run.m_curvelist
+                    crv = cl.Item(iGroup - 1)
                     crvType = DirectCast(crv.Tag, cCurveType)
 
                     'If relative plot then plot line of selected group with highlight
@@ -296,7 +326,9 @@ Namespace Controls
                         Me.SetLine(crv, True, False)
                         'If needed, plot line of the group of next lower index without highlight but with white fill
                         If iGroup >= 2 Then
-                            crv = Me.m_lclRuns.Item(iRunTest).Item(iGroup - 2)
+                            run = Me.m_lRuns(iRunTest)
+                            cl = run.m_curvelist
+                            crv = cl.Item(iGroup - 2)
                             Me.SetLine(crv, True, False, True)
                         End If
                         'If needed, plot lines of the remaining groups
@@ -313,17 +345,20 @@ Namespace Controls
                 ' Only single run to highlight
 
                 Me.SetAllToColors(False)
-                For j As Integer = 1 To m_lclRuns.Item(iRun).Count
-                    crv = Me.m_lclRuns.Item(iRun).Item(j - 1)
+                run = Me.m_lRuns(iRun)
+                cl = run.m_curvelist
+                For j As Integer = 1 To cl.Count
+                    crv = cl.Item(j - 1)
                     Me.SetLine(crv, True, True)
                 Next
-
 
             ElseIf iGroup > 0 And iRun >= 0 Then
                 ' Set only one line
 
                 SetAllToColors(False)
-                crv = m_lclRuns.Item(iRun).Item(iGroup - 1)
+                run = Me.m_lRuns(iRun)
+                cl = run.m_curvelist
+                crv = cl.Item(iGroup - 1)
                 Me.SetLine(crv, True, True)
 
             End If
@@ -362,7 +397,18 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumRuns() As Integer
             Get
-                Return Me.m_lclRuns.Count
+                Return Me.m_lRuns.Count
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets the label of run.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property RunLabel(ByVal iRun As Integer) As String
+            Get
+                Return Me.m_lRuns(iRun).m_strName
             End Get
         End Property
 
@@ -403,19 +449,21 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
 
+            Dim cl As CurveList = Nothing
             Dim crv As CurveItem = Nothing
 
             ' Set the lines
-            For iOver As Integer = 0 To Me.m_lclRuns.Count - 1
-                For iIndex As Integer = Me.m_lclRuns.Item(iOver).Count - 1 To 0 Step -1
-                    crv = Me.m_lclRuns.Item(iOver).Item(iIndex)
+            For Each run As cRun In Me.m_lRuns
+                cl = run.m_curvelist
+                For iCurve As Integer = cl.Count - 1 To 0 Step -1
+                    crv = cl.Item(iCurve)
                     If bUseOriginalColor Then
                         Me.SetLine(crv, True, False)
                     Else
                         Me.SetLine(crv, False, False)
                     End If
-                Next iIndex
-            Next iOver
+                Next iCurve
+            Next run
 
             ' Set the TS plots
             For iIndex As Integer = 1 To m_core.nGroups
@@ -429,17 +477,21 @@ Namespace Controls
             Next
         End Sub
 
-        Private Sub SetSomeToColors(ByVal startIndex As Integer)
+        Private Sub SetSomeToColors(ByVal iStartCurve As Integer)
 
+            Dim run As cRun = Nothing
+            Dim cl As CurveList = Nothing
             Dim crv As CurveItem = Nothing
 
             ' Set the lines
-            For iOver As Integer = 0 To Me.m_lclRuns.Count - 1
-                For iIndex As Integer = startIndex To 0 Step -1
-                    crv = Me.m_lclRuns.Item(iOver).Item(iIndex)
+            For iRun As Integer = 0 To Me.NumRuns - 1
+                run = Me.m_lRuns(iRun)
+                cl = run.m_curvelist
+                For iCurve As Integer = iStartCurve To 0 Step -1
+                    crv = cl.Item(iCurve)
                     Me.SetLine(crv, True, False, True)
-                Next iIndex
-            Next iOver
+                Next iCurve
+            Next iRun
 
         End Sub
 
