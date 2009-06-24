@@ -204,148 +204,271 @@
   <data name="tcMCOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="tbpB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="tcMCOutput.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
+    <value>FlatButtons</value>
   </data>
-  <data name="tbpB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
+  <data name="m_gridB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tbpB.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gridB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_gridB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_gridB.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="tbpB.Text" xml:space="preserve">
+  <data name="&gt;&gt;m_gridB.Name" xml:space="preserve">
+    <value>m_gridB</value>
+  </data>
+  <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
+    <value>m_tbpB</value>
+  </data>
+  <data name="&gt;&gt;m_gridB.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tbpB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_tbpB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tbpB.Text" xml:space="preserve">
     <value>B</value>
   </data>
-  <data name="&gt;&gt;tbpB.Name" xml:space="preserve">
-    <value>tbpB</value>
+  <data name="&gt;&gt;m_tbpB.Name" xml:space="preserve">
+    <value>m_tbpB</value>
   </data>
-  <data name="&gt;&gt;tbpB.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpB.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbpB.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpB.Parent" xml:space="preserve">
     <value>tcMCOutput</value>
   </data>
-  <data name="&gt;&gt;tbpB.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpB.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tbpBP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="m_gridPB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tbpBP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
+  <data name="m_gridPB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="tbpBP.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gridPB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_gridPB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_gridPB.Name" xml:space="preserve">
+    <value>m_gridPB</value>
+  </data>
+  <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
+    <value>m_tbpBP</value>
+  </data>
+  <data name="&gt;&gt;m_gridPB.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpBP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tbpBP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_tbpBP.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tbpBP.Text" xml:space="preserve">
+  <data name="m_tbpBP.Text" xml:space="preserve">
     <value>P/B</value>
   </data>
-  <data name="&gt;&gt;tbpBP.Name" xml:space="preserve">
-    <value>tbpBP</value>
+  <data name="&gt;&gt;m_tbpBP.Name" xml:space="preserve">
+    <value>m_tbpBP</value>
   </data>
-  <data name="&gt;&gt;tbpBP.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBP.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbpBP.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBP.Parent" xml:space="preserve">
     <value>tcMCOutput</value>
   </data>
-  <data name="&gt;&gt;tbpBP.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBP.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tbpEE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="m_gridEE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tbpEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
+  <data name="m_gridEE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="tbpEE.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gridEE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_gridEE.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_gridEE.Name" xml:space="preserve">
+    <value>m_gridEE</value>
+  </data>
+  <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
+    <value>m_tbpEE</value>
+  </data>
+  <data name="&gt;&gt;m_gridEE.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpEE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tbpEE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_tbpEE.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="tbpEE.Text" xml:space="preserve">
+  <data name="m_tbpEE.Text" xml:space="preserve">
     <value>EE</value>
   </data>
-  <data name="&gt;&gt;tbpEE.Name" xml:space="preserve">
-    <value>tbpEE</value>
+  <data name="&gt;&gt;m_tbpEE.Name" xml:space="preserve">
+    <value>m_tbpEE</value>
   </data>
-  <data name="&gt;&gt;tbpEE.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpEE.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbpEE.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpEE.Parent" xml:space="preserve">
     <value>tcMCOutput</value>
   </data>
-  <data name="&gt;&gt;tbpEE.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpEE.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tbpBA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="m_gridBA.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tbpBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
+  <data name="m_gridBA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="tbpBA.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gridBA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_gridBA.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_gridBA.Name" xml:space="preserve">
+    <value>m_gridBA</value>
+  </data>
+  <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
+    <value>m_tbpBA</value>
+  </data>
+  <data name="&gt;&gt;m_gridBA.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpBA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tbpBA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_tbpBA.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="tbpBA.Text" xml:space="preserve">
+  <data name="m_tbpBA.Text" xml:space="preserve">
     <value>BA</value>
   </data>
-  <data name="&gt;&gt;tbpBA.Name" xml:space="preserve">
-    <value>tbpBA</value>
+  <data name="&gt;&gt;m_tbpBA.Name" xml:space="preserve">
+    <value>m_tbpBA</value>
   </data>
-  <data name="&gt;&gt;tbpBA.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBA.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbpBA.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBA.Parent" xml:space="preserve">
     <value>tcMCOutput</value>
   </data>
-  <data name="&gt;&gt;tbpBA.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBA.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="tbpBestTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="m_tbpBPlot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
   </data>
-  <data name="tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
+  <data name="m_tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
   </data>
-  <data name="tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="tbpBestTrial.Text" xml:space="preserve">
-    <value>Data from best fitting trial</value>
-  </data>
-  <data name="&gt;&gt;tbpBestTrial.Name" xml:space="preserve">
-    <value>tbpBestTrial</value>
-  </data>
-  <data name="&gt;&gt;tbpBestTrial.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbpBestTrial.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
-  </data>
-  <data name="&gt;&gt;tbpBestTrial.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tbpBPlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>714, 369</value>
-  </data>
-  <data name="tbpBPlot.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbpBPlot.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="tbpBPlot.Text" xml:space="preserve">
+  <data name="m_tbpBPlot.Text" xml:space="preserve">
     <value>Biomass plot</value>
   </data>
-  <data name="&gt;&gt;tbpBPlot.Name" xml:space="preserve">
-    <value>tbpBPlot</value>
+  <data name="&gt;&gt;m_tbpBPlot.Name" xml:space="preserve">
+    <value>m_tbpBPlot</value>
   </data>
-  <data name="&gt;&gt;tbpBPlot.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBPlot.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbpBPlot.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBPlot.Parent" xml:space="preserve">
     <value>tcMCOutput</value>
   </data>
-  <data name="&gt;&gt;tbpBPlot.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbpBPlot.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_gridBestFit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_gridBestFit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_gridBestFit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_gridBestFit.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_gridBestFit.Name" xml:space="preserve">
+    <value>m_gridBestFit</value>
+  </data>
+  <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.MCRunOutputGrid, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
+    <value>m_tbpBestTrial</value>
+  </data>
+  <data name="&gt;&gt;m_gridBestFit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpBestTrial.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_tbpBestTrial.Text" xml:space="preserve">
+    <value>Best fitting trial</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Name" xml:space="preserve">
+    <value>m_tbpBestTrial</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Parent" xml:space="preserve">
+    <value>tcMCOutput</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="tcMCOutput.Location" type="System.Drawing.Point, System.Drawing">
@@ -1063,6 +1186,6 @@
     <value>MCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.622, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.9  2009/06/24 18:31:16  jeroens
+' Enabled to be maintained in the designer
+'
 ' Revision 1.8  2009/06/23 18:17:30  jeroens
 ' Fixed layout: SS no longer drops off of screen
 ' Fixed panel padding
@@ -126,20 +129,15 @@ Namespace Ecosim
 #Region " Private vars "
 
         Private m_core As EwECore.cCore
-        Private m_mcManager As cMonteCarloManager
-        Private m_BRG As New MCRunInputGrid
-        Private m_BARG As New MCRunInputGrid
-        Private m_EERG As New MCRunInputGrid
-        Private m_PBRG As New MCRunInputGrid
-        Private m_BestFitRG As New MCRunOutputGrid
-        Private m_BiomassResults(,) As Single
+        Private m_mcmanager As cMonteCarloManager
+        Private m_as2BiomassResults(,) As Single
 
         Private WithEvents m_cmdRunMonteCarlo As cCommand = Nothing
         Private WithEvents m_cmdStopMonteCarlo As cCommand = Nothing
         Private WithEvents m_cmdLoadTS As cCommand = Nothing
 
         ''' <summary>Live monitoring of Ecosim NYears</summary>
-        Private WithEvents m_pTS As cSingleProperty = Nothing
+        Private m_pTS As cSingleProperty = Nothing
 
         Private m_ucBPlots As New ucEcosimOutputPlotOLD
         Private m_fpNumTrials As cEwEFormatProvider = Nothing
@@ -159,18 +157,21 @@ Namespace Ecosim
             InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
-            m_core = cCore.GetInstance
-            m_mcManager = m_core.EcosimMonteCarlo
-            m_mcManager.Load()
+            Me.m_core = cCore.GetInstance
+            Me.m_mcmanager = Me.m_core.EcosimMonteCarlo
+            Me.m_mcmanager.Load()
+
+            Me.m_ucBPlots = New ucEcosimOutputPlotOLD()
+            Me.m_ucBPlots.Dock = DockStyle.Fill
+            Me.m_ucBPlots.Plot.IsSummaryLinesShown = False
+            Me.m_ucBPlots.BatchMode = True
 
             'set the call back delegates for the monte carlo trials and ecopath iteration
-            m_mcManager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
-            m_mcManager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
-            m_mcManager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
-            m_mcManager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
-            m_mcManager.SyncObject = Me
-
-            m_pTS = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
+            Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
+            Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
+            Me.m_mcmanager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
+            Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
+            Me.m_mcmanager.SyncObject = Me
 
         End Sub
 
@@ -178,26 +179,17 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs) 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            m_BRG.DisplayInputValue = MCRunDisplayInputValue.B
-            m_PBRG.DisplayInputValue = MCRunDisplayInputValue.PB
-            m_EERG.DisplayInputValue = MCRunDisplayInputValue.EE
-            m_BARG.DisplayInputValue = MCRunDisplayInputValue.BA
-
-            tbpB.Controls.Add(m_BRG)
-            tbpBA.Controls.Add(m_BARG)
-            tbpEE.Controls.Add(m_EERG)
-            tbpBP.Controls.Add(m_PBRG)
-            tbpBestTrial.Controls.Add(m_BestFitRG)
-
-            m_ucBPlots.Plot.IsSummaryLinesShown = False
-            m_ucBPlots.BatchMode = True
-
-            tbpBPlot.Controls.Add(m_ucBPlots)
+            ' Set via designer
+            'm_gridB.DisplayInputValue = eMCRunDisplayInputValueTypes.B
+            'm_gridPB.DisplayInputValue = eMCRunDisplayInputValueTypes.PB
+            'm_gridEE.DisplayInputValue = eMCRunDisplayInputValueTypes.EE
+            'm_gridBA.DisplayInputValue = eMCRunDisplayInputValueTypes.BA
+            Me.m_tbpBPlot.Controls.Add(Me.m_ucBPlots)
 
             Me.m_fpNumTrials = New cEwEFormatProvider(Me.nudNumTrials, GetType(Integer))
-            Me.m_fpNumTrials.Value = m_mcManager.nTrials
+            Me.m_fpNumTrials.Value = m_mcmanager.nTrials
 
             Me.m_fpTrial = New cEwEFormatProvider(Me.lblValueTrial, GetType(Integer))
             Me.m_fpTrial.Value = 0
@@ -206,7 +198,7 @@ Namespace Ecosim
             Me.m_fpERun.Value = 0
 
             Me.m_fpSSorg = New cEwEFormatProvider(Me.lblValueSSOrg, GetType(Single))
-            Me.m_fpSSorg.Value = Me.m_mcManager.SSorg
+            Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
 
             Me.m_fpSS = New cEwEFormatProvider(Me.lblValueSS, GetType(Single))
             Me.m_fpSS.Value = 0.0!
@@ -214,9 +206,9 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
-            m_mcManager.bShowPlot = cbShowBioTraj.Checked
+            m_mcmanager.bShowPlot = cbShowBioTraj.Checked
             ' m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            m_mcManager.bRetainFits = cbRetainEstimates.Checked
+            m_mcmanager.bRetainFits = cbRetainEstimates.Checked
 
             Me.m_cmdRunMonteCarlo = New cCommand("RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
@@ -230,12 +222,15 @@ Namespace Ecosim
             m_cmdLoadTS = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
             If m_cmdLoadTS IsNot Nothing Then m_cmdLoadTS.AddControl(Me.btnTS)
 
+            Me.m_pTS = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
+            AddHandler Me.m_pTS.PropertyChanged, AddressOf m_pTS_PropertyChanged
+
             Debug.Assert(m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs) 
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
             cCommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
             cCommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
@@ -245,6 +240,7 @@ Namespace Ecosim
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
 
             ' Disconnect from property
+            RemoveHandler Me.m_pTS.PropertyChanged, AddressOf m_pTS_PropertyChanged
             Me.m_pTS = Nothing
 
             Me.m_fpERun.Release()
@@ -258,41 +254,41 @@ Namespace Ecosim
         End Sub
 
         Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-            Me.m_mcManager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
+            Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
         End Sub
 
         Private Sub MCRun_Deactivate(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Deactivate
-            Me.m_mcManager.EcosimTimeStepHandler = Nothing
+            Me.m_mcmanager.EcosimTimeStepHandler = Nothing
         End Sub
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnStop.Click
-            m_mcManager.StopRun()
+            m_mcmanager.StopRun()
         End Sub
 
         Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btApply.Click
-            m_mcManager.ApplyBestFits()
+            m_mcmanager.ApplyBestFits()
         End Sub
 
         Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbShowBioTraj.CheckedChanged
-            If Not m_mcManager Is Nothing Then
-                m_mcManager.bShowPlot = cbShowBioTraj.Checked
+            If Not m_mcmanager Is Nothing Then
+                m_mcmanager.bShowPlot = cbShowBioTraj.Checked
             End If
         End Sub
 
         Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRetainCurPattern.CheckedChanged
-            If Not m_mcManager Is Nothing Then
+            If Not m_mcmanager Is Nothing Then
                 ' m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             End If
         End Sub
 
         Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRetainEstimates.CheckedChanged
-            If Not m_mcManager Is Nothing Then
-                m_mcManager.bRetainFits = cbRetainEstimates.Checked
+            If Not m_mcmanager Is Nothing Then
+                m_mcmanager.bRetainFits = cbRetainEstimates.Checked
             End If
         End Sub
 
         Private Sub txbNumTrials_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            m_mcManager.nTrials = CInt(Me.m_fpNumTrials.Value)
+            m_mcmanager.nTrials = CInt(Me.m_fpNumTrials.Value)
         End Sub
 
 #End Region ' Events
@@ -305,25 +301,24 @@ Namespace Ecosim
 
             Try
                 ' ToDo: localize this
-                asn.SetStatusText("Running monte carlo...", TriState.UseDefault, _
-                                  Me.m_mcManager.nTrialIterations / Me.m_mcManager.nTrials)
+                asn.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, _
+                                  Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
 
-            Me.m_fpTrial.Value = Me.m_mcManager.nTrialIterations
-            Me.m_fpSS.Value = Me.m_mcManager.SS
-            Me.m_fpSSBest.Value = Me.m_mcManager.SSBestFit
+            Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
+            Me.m_fpSS.Value = Me.m_mcmanager.SS
+            Me.m_fpSSBest.Value = Me.m_mcmanager.SSBestFit
 
             'Plot the graph 
-            If ((m_mcManager.bShowPlot = True) And (m_BiomassResults IsNot Nothing)) Then
-                If (m_mcManager.nTrialIterations = m_mcManager.nTrials) Then
-                    m_ucBPlots.Plot.IsTSDataShown = True
+            If ((Me.m_mcmanager.bShowPlot = True) And (Me.m_as2BiomassResults IsNot Nothing)) Then
+                If (Me.m_mcmanager.nTrialIterations = Me.m_mcmanager.nTrials) Then
+                    Me.m_ucBPlots.Plot.IsTSDataShown = True
                 Else
-                    m_ucBPlots.Plot.IsTSDataShown = False
+                    Me.m_ucBPlots.Plot.IsTSDataShown = False
                 End If
-                m_ucBPlots.AddValues(m_BiomassResults)
-
+                Me.m_ucBPlots.AddValues(Me.m_as2BiomassResults)
             End If
 
         End Sub
@@ -331,7 +326,7 @@ Namespace Ecosim
         Private Sub MonteCarloEcopathStepHandler()
 
             Try
-                Me.m_fpERun.Value = Me.m_mcManager.nEcopathIterations
+                Me.m_fpERun.Value = Me.m_mcmanager.nEcopathIterations
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -344,10 +339,10 @@ Namespace Ecosim
 
             Try
                 Me.btApply.Enabled = True
-                Me.tcMCOutput.SelectedIndex = 4 ' For best fit page
+                ' Select outputs
+                Me.tcMCOutput.SelectedTab = m_tbpBestTrial
                 'populate the grid with new values (biomass....)
-                m_BestFitRG.RefreshData()
-                ' m_ucBPlots.tcOutput.Enabled = True
+                Me.m_gridBestFit.RefreshData()
                 Me.m_ucBPlots.EnableControls(True)
                 asn.SetStatusText("", TriState.False)
             Catch ex As Exception
@@ -362,12 +357,12 @@ Namespace Ecosim
         ''' <remarks>This will be called at each ecosim timestep for plotting the data</remarks>
         Private Sub EcoSimTimeStepHandler(ByVal iTime As Long, ByVal results As cEcoSimResults)
 
-            If m_mcManager.bShowPlot Then
+            If m_mcmanager.bShowPlot Then
                 If iTime = 1 Then
-                    ReDim m_BiomassResults(m_core.nGroups, m_core.nEcosimTimeSteps)
+                    ReDim m_as2BiomassResults(m_core.nGroups, m_core.nEcosimTimeSteps)
                 End If
                 For groupIndex As Integer = 1 To results.nGroups
-                    m_BiomassResults(groupIndex, CInt(iTime)) = results.Biomass(groupIndex)
+                    m_as2BiomassResults(groupIndex, CInt(iTime)) = results.Biomass(groupIndex)
                 Next
             End If
 
@@ -387,21 +382,22 @@ Namespace Ecosim
             Handles m_cmdRunMonteCarlo.OnInvoke
 
             Me.btApply.Enabled = False
-            Me.tcMCOutput.SelectedIndex = 5 ' For biomass plot page.
+            ' Select biomass plot page.
+            Me.tcMCOutput.SelectedTab = Me.m_tbpBPlot
 
-            Me.m_fpSSorg.Value = Me.m_mcManager.SSorg
+            Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
             Me.m_fpERun.Value = 0
             Me.m_fpSS.Value = 0.0!
             Me.m_fpSSBest.Value = 0.0!
 
+            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, _
+                                                                   TriState.True)
+
+            Me.m_ucBPlots.Plot.Reset()
             Me.m_ucBPlots.EnableControls(False)
 
-            ' ToDo: localize this
-            cApplicationStatusNotifier.GetInstance().SetStatusText("Running monte carlo...", TriState.True)
-
-            m_ucBPlots.Plot.Reset()
-            m_mcManager.Run()
+            Me.m_mcmanager.Run()
 
         End Sub
 
@@ -415,11 +411,11 @@ Namespace Ecosim
 
             cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And _
                           Me.m_core.HasAppliedTimeSeries() And _
-                          Not Me.m_mcManager.isRunning
+                          Not Me.m_mcmanager.isRunning
 
             If m_core.HasAppliedTimeSeries() Then
                 ' JS 11dec07: is this necessary?
-                Me.m_fpSSorg.Value = Me.m_mcManager.SSorg
+                Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             End If
 
         End Sub
@@ -431,7 +427,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnInvoke
-            m_mcManager.StopRun()
+            m_mcmanager.StopRun()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -441,7 +437,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
-            cmd.Enabled = Me.m_mcManager.isRunning
+            cmd.Enabled = Me.m_mcmanager.isRunning
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -452,20 +448,20 @@ Namespace Ecosim
         Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager
-            Me.m_mcManager.Load()
-            Me.changeGraphXAxis()
+            Me.m_mcmanager.Load()
+            Me.UpdateGraphXAxis()
         End Sub
 
-        Private Sub m_pTS_PropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) Handles m_pTS.PropertyChanged
-            Me.changeGraphXAxis()
+        Private Sub m_pTS_PropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+            Me.UpdateGraphXAxis()
         End Sub
 
-        Private Sub changeGraphXAxis()
+        Private Sub UpdateGraphXAxis()
             Try
                 'set the xaxis this is the number of years the model ran for
-                m_ucBPlots.Plot.XAxis = m_core.nEcosimTimeSteps
+                Me.m_ucBPlots.Plot.XAxis = m_core.nEcosimTimeSteps
                 'now what..... hope it draws right next time!
-                m_ucBPlots.Plot.GenerateOutputImage()
+                Me.m_ucBPlots.Plot.GenerateOutputImage()
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
