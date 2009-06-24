@@ -731,7 +731,7 @@ System Error: {0}</value>
     <comment>{0}=plug-in error, {1}=newline</comment>
   </data>
   <data name="PSD_RUN_ERROR" xml:space="preserve">
-    <value>PSD failed to run.</value>
+    <value>The PSD estimation routine can work only when groups fall into at least two weight classes. Please, redefine the weight range by adjusting No. of wt. classes and/or Lowest wt. class</value>
   </data>
   <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
     <value>Trophic mediation function '{0}' has zero value at Ecopath base and cannot be used. Please edit your data</value>
@@ -768,5 +768,16 @@ System Error: {0}</value>
   <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
     <value>Value '{1}' for variable '{0}' must be odd.</value>
     <comment>{0}=variable name, {1}=value</comment>
+  </data>
+  <data name="PSD_MISSING_INPUT" xml:space="preserve">
+    <value>The PSD estimation routine can work only with either 'L at infinity' or 'W at infinity' as unknown per group. 'K in VBGF' must be known for each group.  Here, one or more of these are unknown:</value>
+  </data>
+  <data name="PSD_REQ_K_VBGF" xml:space="preserve">
+    <value>Required 'K in VBGF' missing for group {0}</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="PSD_REQ_LW" xml:space="preserve">
+    <value>Required 'L at infinity' or 'W at infinity' missing for group {0}</value>
+    <comment>{0}=group name</comment>
   </data>
 </root>
