@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared UIEnums.vb,v $
+' Revision 1.5  2009/06/24 17:46:53  jeroens
+' Renamed MC enum
+'
 ' Revision 1.4  2009/03/02 17:36:16  jeroens
 ' Removed ridiculous enum
 '
@@ -83,7 +86,7 @@ Namespace Definitions
     End Enum
 
     <CLSCompliant(True)> _
-    Public Enum MCRunDisplayInputValue As Integer
+    Public Enum eMCRunDisplayInputValueTypes As Integer
         B = 0
         PB
         EE
