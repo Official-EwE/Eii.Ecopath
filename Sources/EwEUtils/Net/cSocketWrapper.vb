@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.13  2009/06/25 07:36:45  sherman
+' Moved IPv6 toggle on create socket constructor.
+'
 ' Revision 1.12  2009/06/25 07:02:20  jeroens
 ' Fixed client authorization bug while reporting machine name
 '
@@ -59,7 +62,7 @@ Imports System.Reflection
 '   1: Main info, main failures
 '   2: Status updates
 '   3: Data details (for the hardcore debuggers)
-#Const VERBOSE_LEVEL = 0
+#Const VERBOSE_LEVEL = 1
 
 Namespace NetUtilities
 
@@ -204,13 +207,36 @@ Namespace NetUtilities
 
 #Region " Constructor "
 
+        Private Shared Function CreateSocket() As Socket
+
+            Dim s As Socket = Nothing
+
+            ' Configure socket for use with IPv6
+            If Socket.OSSupportsIPv6 Then
+                s = New Socket(AddressFamily.InterNetworkV6, _
+                               SocketType.Stream, _
+                               ProtocolType.Tcp)
+
+                ' After http://forum.soft32.com/windows/Socket-problem-migrating-Vista-ftopict363802.html
+                s.SetSocketOption(SocketOptionLevel.IPv6, _
+                                  DirectCast(27, SocketOptionName), _
+                                  0)
+            Else
+                s = New Socket(AddressFamily.InterNetwork, _
+                               SocketType.Stream, _
+                               ProtocolType.Tcp)
+            End If
+            Return s
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create a new socket wrapper.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
-            Me.New(0, New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            Me.New(0, cSocketWrapper.CreateSocket())
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -226,14 +252,6 @@ Namespace NetUtilities
 
             Me.m_iID = iID
             Me.m_socket = s
-
-            ' Configure socket for use with IPv6
-            If Socket.OSSupportsIPv6 Then
-                ' After http://forum.soft32.com/windows/Socket-problem-migrating-Vista-ftopict363802.html
-                Me.m_socket.SetSocketOption(SocketOptionLevel.IPv6, _
-                                            DirectCast(27, SocketOptionName), _
-                                            0)
-            End If
 
             ' Get sync object
             Me.m_syncObject = SynchronizationContext.Current
