@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.14  2009/06/25 15:09:59  sherman
+' Fixed IPv6 initialization parameter
+'
 ' Revision 1.13  2009/06/25 07:36:45  sherman
 ' Moved IPv6 toggle on create socket constructor.
 '
@@ -213,7 +216,7 @@ Namespace NetUtilities
 
             ' Configure socket for use with IPv6
             If Socket.OSSupportsIPv6 Then
-                s = New Socket(AddressFamily.InterNetworkV6, _
+                s = New Socket(AddressFamily.InterNetwork, _
                                SocketType.Stream, _
                                ProtocolType.Tcp)
 
