@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: RunPSD.vb,v $
+' Revision 1.35  2009/06/25 19:50:24  joeh
+' Move the Y axis to pass thru the origin
+'
 ' Revision 1.34  2009/06/24 23:17:05  joeh
 ' Do not display regression std err when sample size is 2
 '
@@ -348,7 +351,7 @@ Namespace Ecopath.Output
 
             pane.CurveList.Clear()
 
-            ' JS 23Mar09: Zedgraph helper performs standardized label, axis styling
+            'JS 23Mar09: Zedgraph helper performs standardized label, axis styling
             Me.m_zgh.ConfigurePane(My.Resources.PSD_PLOTCAPTION_PSD, _
                                    My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
                                    My.Resources.PSD_YAXISLABEL_BIOMASS, _
@@ -362,6 +365,10 @@ Namespace Ecopath.Output
             pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
             pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.m_core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             pane.YAxis.Scale.Min = 0
+
+            pane.YAxis.Cross = 0
+            pane.YAxis.CrossAuto = False
+
             Return pane
 
         End Function
@@ -381,7 +388,7 @@ Namespace Ecopath.Output
             Dim iSampleSize As Integer
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-            Dim str As String = ""
+            Dim strLabel As String = ""
 
             Me.InitLists(resultLists, 2)
 
@@ -409,16 +416,16 @@ Namespace Ecopath.Output
             'PSD regression plot
             If iSampleSize = 2 Then
                 'Without std err
-                str = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope), _
+                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope), _
                                     sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & vbCrLf, _
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             Else
                 'With std err
-                str = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
+                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
                                     sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & vbCrLf, _
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             End If
-            Me.AddCurveToGraphPane(pane, resultLists(1), str, Color.Black)
+            Me.AddCurveToGraphPane(pane, resultLists(1), strLabel, Color.Black)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
