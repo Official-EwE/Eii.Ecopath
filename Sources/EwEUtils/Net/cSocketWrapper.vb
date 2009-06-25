@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.12  2009/06/25 07:02:20  jeroens
+' Fixed client authorization bug while reporting machine name
+'
 ' Revision 1.11  2009/06/22 20:32:01  jeroens
 ' Handshake transfers machine name from connecting client
 '
@@ -878,10 +881,12 @@ Namespace NetUtilities
             ' Is the socket wrapper not authorized?
             If (sw.Authorized = False) Then
                 ' #Yes: is the incoming handshake designated for the socket wrapper?
-                If sw.IsHandshake(handshake.HandshakeID) And (handshake.Relayed = True) Then
+                If sw.IsHandshake(handshake.HandshakeID) Then
                     ' #Yes: Authorized
                     sw.Authorized = True
-                    sw.RemoteMachineName = handshake.ClientMachineName
+                    If (handshake.Relayed = True) Then
+                        sw.RemoteMachineName = handshake.ClientMachineName
+                    End If
                     bSendAuthorization = True
 #If VERBOSE_LEVEL >= 1 Then
                     Console.WriteLine("sw {0} authorized for client machine {1}", Me.ToString(), handshake.ClientMachineName)
