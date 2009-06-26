@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.69  2009/06/26 19:50:11  sherman
+' Added Performance Measure Enums 'PM'
+'
 ' Revision 1.68  2009/06/23 17:37:15  jeroens
 ' Fixed PSD parameter change behaviour
 '
@@ -528,6 +531,7 @@ Namespace Core
         LayerHabitat
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
+        LayerMPAPM
         ''' <summary>Ecospace cell RelPP assignments</summary>
         LayerRelPP
         ''' <summary>Ecospace cell RelCin assignments</summary>
@@ -1075,7 +1079,9 @@ Namespace Core
 
         ' EcosimResults
         GameSimulationTimeStep
+        ''' <summary>Game absolute biomass.</summary>
         GameBiomass
+        GameBiomassPM
         ''' <summary>Game generic relative biomass over time (no specific source)</summary>
         GameBiomassRel
 
@@ -1086,20 +1092,26 @@ Namespace Core
 
         ''' <summary>Profit by Fleet.</summary>      
         GameFleetProfitSummary
+        GameFleetProfitSummaryPM
         ''' <summary>Jobs(?) by Fleet.</summary>    
         GameFleetJobsSummary
+        GameFleetJobsSummaryPM
 
         GameFleetValue
         GameFleetCatch
 
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
         GameGroupCatch
+        GameGroupCatchPM
 
         'Economic data for the game
         GameEconomicCost
         GameEconomicProfit
+        GameEconomicProfitPM
         GameEconomicJobsTotal
+        GameEconomicJobsTotalPM
         GameEconomicProduction
+        GameEconomicProductionPM
 
         ''' <summary>Game names added for the Game data because EwE6 uses Name for all names</summary>
         GameFleetName
