@@ -1,6 +1,9 @@
 ﻿' =============================================================================
 '
 ' $Log: PSDContributionResultEwEGrid.vb,v $
+' Revision 1.14  2009/06/26 18:06:02  joeh
+' Re-program FillData( ) without using PropertyCell
+'
 ' Revision 1.13  2009/05/28 12:36:57  jeroens
 ' Properly named utility classes StyleGuide and ZedGraphHelper
 '
@@ -131,101 +134,74 @@ Namespace Ecopath.Output
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
 
-            Dim sourceSec As cCoreGroupBase = Nothing
-            Dim propManager As cPropertyManager = cPropertyManager.GetInstance()
-            Dim propPSD As cProperty = Nothing
-            Dim propCell As PropertyCell = Nothing
-
-            Dim alSumRow As ArrayList = New ArrayList
-            Dim opSumRow As cMultiOperation = Nothing
-            Dim propSumRow As cFormulaProperty = Nothing
+            Dim sValue As Single = 0.0!
+            Dim sTotal As Single = 0.0!
+            Dim cell As EwECell = Nothing
 
             Me(iRow, 0) = New PropertyRowHeaderCell(source, eVarNameFlags.Index)
             Me(iRow, 1) = New PropertyRowHeaderCell(source, eVarNameFlags.Name)
 
-            alSumRow.Clear()
             ' For each weight class (each column) 
             For wtClassIndex As Integer = 1 To m_core.nWeightClasses
-                sourceSec = m_core.EcoPathGroupOutputs(wtClassIndex)
-                propPSD = propManager.GetProperty(source, eVarNameFlags.PSD, sourceSec)
-                propCell = New PropertyCell(CType(propPSD, cProperty))
-                ' Configure the cell
-                propCell.SuppressZero = True
-                ' Set the cell
-                Me(iRow, wtClassIndex + 1) = propCell
+                sValue = CSng(source.GetVariable(eVarNameFlags.PSD, wtClassIndex))
+                cell = New EwECell(sValue, GetType(Single))
+                cell.SuppressZero = True
+                cell.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me(iRow, wtClassIndex + 1) = cell
 
                 'Sum values in a row
-                alSumRow.Add(propPSD)
+                sTotal = sTotal + sValue 'sTotal += sValue
             Next
 
             'Display the sum of quantities in a row
-            opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-            propSumRow = New cFormulaProperty(CType(opSumRow, cExpression))
-            propCell = New PropertyCell(CType(propSumRow, cProperty))
-            propCell.SuppressZero = True
-            Me(iRow, Me.ColumnsCount - 1) = propCell
+            cell = New EwECell(sTotal, GetType(Single))
+            cell.SuppressZero = True
+            cell.Style = cStyleGuide.eStyleFlags.Sum
+            Me(iRow, Me.ColumnsCount - 1) = cell
         End Sub
 
         Private Sub FillTotalValueRow()
 
-            Dim groupInput As cEcoPathGroupInput = Nothing
-            Dim source As cCoreGroupBase = Nothing
-            Dim sourceSec As cCoreGroupBase = Nothing
-            Dim pmPropertyManager As cPropertyManager = cPropertyManager.GetInstance()
-            Dim propPSD As cProperty = Nothing
             Dim iRow As Integer
-            '    Dim propMarketPrice As cProperty = Nothing
-            '    Dim alProdLandingsMarketPrice As ArrayList = New ArrayList()
-            '    Dim opProdLandingsMarketPrice As cMultiOperation = Nothing
-            '    Dim propProdLandingsMarketPrice As cFormulaProperty = Nothing
+            Dim source As cCoreGroupBase = Nothing
+            Dim sValue As Single = 0.0!
+            Dim sTotal(m_core.nWeightClasses) As Single
+            Dim sSumTotal As Single = 0.0!
+            Dim cell As EwECell = Nothing
 
-            Dim alSumCol As New ArrayList()
-            Dim opSumCol As cMultiOperation = Nothing
-            Dim propSumCol As cFormulaProperty = Nothing
-
-            Dim alSumAll As New ArrayList()
-            Dim opSumAll As cMultiOperation = Nothing
-            Dim propSumAll As cFormulaProperty = Nothing
-
-            Dim propCell As PropertyCell = Nothing
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                sTotal(iWtClass) = 0.0!
+            Next
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell("Sum") 'My.Resources.HEADER_TOTALVALUE, StyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_SUM)
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+                If IsGroupSelected(iGroup) Then
+                    source = m_core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To m_core.nWeightClasses
+                        sValue = CSng(source.GetVariable(eVarNameFlags.PSD, iWtClass))
+                        sTotal(iWtClass) = STotal(iWtClass) + sValue
+                    Next
+                End If
+            Next
 
-            alSumAll.Clear()
-            For wtClassIndex As Integer = 1 To m_core.nWeightClasses
-                source = m_core.EcoPathGroupOutputs(wtClassIndex)
-                alSumCol.Clear()
-
-                For rowIndex As Integer = 1 To m_core.nLivingGroups
-                    If IsGroupSelected(rowIndex) Then
-                        sourceSec = m_core.EcoPathGroupOutputs(rowIndex)
-                        ' Get the index PSD property
-                        propPSD = pmPropertyManager.GetProperty(sourceSec, eVarNameFlags.PSD, source)
-
-                        'Sum values in a column
-                        alSumCol.Add(propPSD)
-
-                        'Sum all values
-                        alSumAll.Add(propPSD)
-                    End If
-                Next
-
-                'Display the sum of values in a column
-                opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
-                propSumCol = New cFormulaProperty(CType(opSumCol, cExpression))
-                propCell = New PropertyCell(CType(propSumCol, cProperty))
-                propCell.SuppressZero = True
-                Me(Me.RowsCount - 1, wtClassIndex + 1) = propCell
+            'Display the sum of values in a column
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                cell = New EwECell(sTotal(iWtClass), GetType(Single))
+                cell.SuppressZero = True
+                cell.Style = cStyleGuide.eStyleFlags.Sum
+                Me(Me.RowsCount - 1, iWtClass + 1) = cell
             Next
 
             'Display the sum of all values
-            opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
-            propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-            propCell = New PropertyCell(CType(propSumAll, cProperty))
-            propCell.SuppressZero = True
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = propCell
+            For iWtClass As Integer = 1 To m_core.nWeightClasses
+                sSumTotal = sSumTotal + sTotal(iWtClass)
+            Next
+            cell = New EwECell(sSumTotal, GetType(Single))
+            cell.SuppressZero = True
+            cell.Style = cStyleGuide.eStyleFlags.Sum
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = cell
 
         End Sub
 
