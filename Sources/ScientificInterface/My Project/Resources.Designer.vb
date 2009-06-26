@@ -4857,7 +4857,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Slope = {0} ({1} SE), Y-intercept = {2} ({3} SE), Correlation = {4}Lowest wt class (g) = {5}, Highest wt class (g) = {6}, N = {7}.
+        '''  Looks up a localized string similar to Slope = {0} ({1} SE), Y-intercept = {2} ({3} SE), Correlation = {4}Wt. class range (g) = {5} to {6}, N = {7}.
         '''</summary>
         Friend ReadOnly Property PSD_GRAPH_REGRESSION_LABEL_W_STDERR() As String
             Get
@@ -4866,7 +4866,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Slope = {0}, Y-intercept = {1}, Correlation = {2}Lowest wt class (g) = {3}, Highest wt class (g) = {4}, N = {5}.
+        '''  Looks up a localized string similar to Slope = {0}, Y-intercept = {1}, Correlation = {2}Wt. class range (g) = {3} to {4}, N = {5}.
         '''</summary>
         Friend ReadOnly Property PSD_GRAPH_REGRESSION_LABEL_WO_STDERR() As String
             Get
