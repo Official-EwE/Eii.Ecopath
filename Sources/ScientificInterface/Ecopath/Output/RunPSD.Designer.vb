@@ -170,8 +170,8 @@ Namespace Ecopath.Output
             'm_tslblNoOfPointsMovAvg
             '
             Me.m_tslblNoOfPointsMovAvg.Name = "m_tslblNoOfPointsMovAvg"
-            Me.m_tslblNoOfPointsMovAvg.Size = New System.Drawing.Size(132, 22)
-            Me.m_tslblNoOfPointsMovAvg.Text = "No. of pts. for mov. avg.:"
+            Me.m_tslblNoOfPointsMovAvg.Size = New System.Drawing.Size(142, 22)
+            Me.m_tslblNoOfPointsMovAvg.Text = "No. of pts. for moving avg.:"
             '
             'm_tstbxNoOfPointsMovAvg
             '
