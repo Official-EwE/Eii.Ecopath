@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: cSocketWrapper.vb,v $
+' Revision 1.15  2009/06/27 16:05:28  sherman
+' Caught exception when client disconnected.
+' TODO: Throw event when client disconnects
+'
 ' Revision 1.14  2009/06/25 15:09:59  sherman
 ' Fixed IPv6 initialization parameter
 '
@@ -882,7 +886,12 @@ Namespace NetUtilities
 
             ' After all data is handled prepare for receiving next chunk
             If iNumBytes > 1 Then
-                sw.m_socket.BeginReceive(sw.m_abBuffer, 0, cSocketWrapper.cBUFFER_SIZE, SocketFlags.None, AddressOf ReceiveCallBack, sw)
+                Try
+                    sw.m_socket.BeginReceive(sw.m_abBuffer, 0, cSocketWrapper.cBUFFER_SIZE, SocketFlags.None, AddressOf ReceiveCallBack, sw)
+                Catch ex As Exception
+                    ' TODO: Likely need better feedback, maybe send an event.
+                    Debug.Assert(False, String.Format("Failed to recieve object.  May be attributed to client or server disconnecting during transfer. {0}", ex.ToString()))
+                End Try
             End If
 
         End Sub
@@ -990,7 +999,8 @@ Namespace NetUtilities
                 'End If
 
             Catch ex As Exception
-                Debug.Assert(False)
+                ' TODO: Likely need better feedback, maybe send an event.
+                Debug.Assert(False, "Cannot send message.  Failed at sending Binary" + ex.ToString())
                 Return False
             End Try
             Return True
