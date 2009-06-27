@@ -201,10 +201,10 @@
   <data name="&gt;&gt;btnStop.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="tcMCOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tcOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="tcMCOutput.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
+  <data name="m_tcOutput.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
     <value>FlatButtons</value>
   </data>
   <data name="m_gridB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -250,7 +250,7 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpB.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpB.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -298,7 +298,7 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpBP.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpBP.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -346,7 +346,7 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpEE.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpEE.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -394,10 +394,151 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpBA.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpBA.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_spPlot.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_spPlot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
+    <value>565, 366</value>
+  </data>
+  <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
+    <value>m_graph</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.39486, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Name" xml:space="preserve">
+    <value>m_spPlot.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Parent" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lbGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_lbGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_lbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 348</value>
+  </data>
+  <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Name" xml:space="preserve">
+    <value>m_lbGroups</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.0.6.623, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblGroups.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 18</value>
+  </data>
+  <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblGroups.Text" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="m_lblGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Name" xml:space="preserve">
+    <value>m_lblGroups</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Name" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Parent" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_spPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>714, 366</value>
+  </data>
+  <data name="m_spPlot.SplitterDistance" type="System.Int32, mscorlib">
+    <value>565</value>
+  </data>
+  <data name="m_spPlot.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Name" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Parent" xml:space="preserve">
+    <value>m_tbpBPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_tbpBPlot.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -418,7 +559,7 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpBPlot.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpBPlot.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -466,30 +607,30 @@
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbpBestTrial.Parent" xml:space="preserve">
-    <value>tcMCOutput</value>
+    <value>m_tcOutput</value>
   </data>
   <data name="&gt;&gt;m_tbpBestTrial.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tcMCOutput.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tcOutput.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 107</value>
   </data>
-  <data name="tcMCOutput.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tcOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>722, 395</value>
   </data>
-  <data name="tcMCOutput.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tcOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tcMCOutput.Name" xml:space="preserve">
-    <value>tcMCOutput</value>
+  <data name="&gt;&gt;m_tcOutput.Name" xml:space="preserve">
+    <value>m_tcOutput</value>
   </data>
-  <data name="&gt;&gt;tcMCOutput.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tcOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tcMCOutput.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tcOutput.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tcMCOutput.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tcOutput.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="cbPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

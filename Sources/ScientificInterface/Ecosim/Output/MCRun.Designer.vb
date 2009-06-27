@@ -1,4 +1,5 @@
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ZedGraph
 
 Namespace Ecosim
 
@@ -23,11 +24,12 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MCRun))
             Me.lblNumTrials = New System.Windows.Forms.Label
             Me.btnRunTrials = New System.Windows.Forms.Button
             Me.btnStop = New System.Windows.Forms.Button
-            Me.tcMCOutput = New System.Windows.Forms.TabControl
+            Me.m_tcOutput = New System.Windows.Forms.TabControl
             Me.m_tbpB = New System.Windows.Forms.TabPage
             Me.m_gridB = New ScientificInterface.Ecosim.MCRunInputGrid
             Me.m_tbpBP = New System.Windows.Forms.TabPage
@@ -36,9 +38,13 @@ Namespace Ecosim
             Me.m_gridEE = New ScientificInterface.Ecosim.MCRunInputGrid
             Me.m_tbpBA = New System.Windows.Forms.TabPage
             Me.m_gridBA = New ScientificInterface.Ecosim.MCRunInputGrid
+            Me.m_tbpBPlot = New System.Windows.Forms.TabPage
+            Me.m_spPlot = New System.Windows.Forms.SplitContainer
+            Me.m_graph = New ZedGraph.ZedGraphControl
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_lblGroups = New System.Windows.Forms.Label
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage
             Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid
-            Me.m_tbpBPlot = New System.Windows.Forms.TabPage
             Me.cbPedigree = New System.Windows.Forms.CheckBox
             Me.cbRetainEstimates = New System.Windows.Forms.CheckBox
             Me.cbRetainCurPattern = New System.Windows.Forms.CheckBox
@@ -59,11 +65,15 @@ Namespace Ecosim
             Me.m_lblInputOpt = New System.Windows.Forms.Label
             Me.m_lblOutputParam = New System.Windows.Forms.Label
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel
-            Me.tcMCOutput.SuspendLayout()
+            Me.m_tcOutput.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
             Me.m_tbpBP.SuspendLayout()
             Me.m_tbpEE.SuspendLayout()
             Me.m_tbpBA.SuspendLayout()
+            Me.m_tbpBPlot.SuspendLayout()
+            Me.m_spPlot.Panel1.SuspendLayout()
+            Me.m_spPlot.Panel2.SuspendLayout()
+            Me.m_spPlot.SuspendLayout()
             Me.m_tbpBestTrial.SuspendLayout()
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpOutputs.SuspendLayout()
@@ -86,17 +96,17 @@ Namespace Ecosim
             Me.btnStop.Name = "btnStop"
             Me.btnStop.UseVisualStyleBackColor = True
             '
-            'tcMCOutput
+            'm_tcOutput
             '
-            resources.ApplyResources(Me.tcMCOutput, "tcMCOutput")
-            Me.tcMCOutput.Controls.Add(Me.m_tbpB)
-            Me.tcMCOutput.Controls.Add(Me.m_tbpBP)
-            Me.tcMCOutput.Controls.Add(Me.m_tbpEE)
-            Me.tcMCOutput.Controls.Add(Me.m_tbpBA)
-            Me.tcMCOutput.Controls.Add(Me.m_tbpBPlot)
-            Me.tcMCOutput.Controls.Add(Me.m_tbpBestTrial)
-            Me.tcMCOutput.Name = "tcMCOutput"
-            Me.tcMCOutput.SelectedIndex = 0
+            resources.ApplyResources(Me.m_tcOutput, "m_tcOutput")
+            Me.m_tcOutput.Controls.Add(Me.m_tbpB)
+            Me.m_tcOutput.Controls.Add(Me.m_tbpBP)
+            Me.m_tcOutput.Controls.Add(Me.m_tbpEE)
+            Me.m_tcOutput.Controls.Add(Me.m_tbpBA)
+            Me.m_tcOutput.Controls.Add(Me.m_tbpBPlot)
+            Me.m_tcOutput.Controls.Add(Me.m_tbpBestTrial)
+            Me.m_tcOutput.Name = "m_tcOutput"
+            Me.m_tcOutput.SelectedIndex = 0
             '
             'm_tbpB
             '
@@ -238,6 +248,56 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             '
+            'm_tbpBPlot
+            '
+            Me.m_tbpBPlot.BackColor = System.Drawing.SystemColors.Control
+            Me.m_tbpBPlot.Controls.Add(Me.m_spPlot)
+            resources.ApplyResources(Me.m_tbpBPlot, "m_tbpBPlot")
+            Me.m_tbpBPlot.Name = "m_tbpBPlot"
+            Me.m_tbpBPlot.UseVisualStyleBackColor = True
+            '
+            'm_spPlot
+            '
+            resources.ApplyResources(Me.m_spPlot, "m_spPlot")
+            Me.m_spPlot.Name = "m_spPlot"
+            '
+            'm_spPlot.Panel1
+            '
+            Me.m_spPlot.Panel1.Controls.Add(Me.m_graph)
+            '
+            'm_spPlot.Panel2
+            '
+            Me.m_spPlot.Panel2.Controls.Add(Me.m_lbGroups)
+            Me.m_spPlot.Panel2.Controls.Add(Me.m_lblGroups)
+            '
+            'm_graph
+            '
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0
+            Me.m_graph.ScrollMaxX = 0
+            Me.m_graph.ScrollMaxY = 0
+            Me.m_graph.ScrollMaxY2 = 0
+            Me.m_graph.ScrollMinX = 0
+            Me.m_graph.ScrollMinY = 0
+            Me.m_graph.ScrollMinY2 = 0
+            '
+            'm_lbGroups
+            '
+            resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
+            Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbGroups.FormattingEnabled = True
+            Me.m_lbGroups.Name = "m_lbGroups"
+            Me.m_lbGroups.SortThreshold = -9999.0!
+            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.[Default]
+            '
+            'm_lblGroups
+            '
+            resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
+            Me.m_lblGroups.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_lblGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblGroups.Name = "m_lblGroups"
+            '
             'm_tbpBestTrial
             '
             Me.m_tbpBestTrial.Controls.Add(Me.m_gridBestFit)
@@ -271,13 +331,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            '
-            'm_tbpBPlot
-            '
-            Me.m_tbpBPlot.BackColor = System.Drawing.SystemColors.Control
-            resources.ApplyResources(Me.m_tbpBPlot, "m_tbpBPlot")
-            Me.m_tbpBPlot.Name = "m_tbpBPlot"
-            Me.m_tbpBPlot.UseVisualStyleBackColor = True
             '
             'cbPedigree
             '
@@ -413,7 +466,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.btnTS)
             Me.Controls.Add(Me.lblNumTrials)
             Me.Controls.Add(Me.cbPedigree)
-            Me.Controls.Add(Me.tcMCOutput)
+            Me.Controls.Add(Me.m_tcOutput)
             Me.Controls.Add(Me.cbRetainEstimates)
             Me.Controls.Add(Me.btApply)
             Me.Controls.Add(Me.cbRetainCurPattern)
@@ -422,11 +475,15 @@ Namespace Ecosim
             Me.Controls.Add(Me.btnRunTrials)
             Me.Name = "MCRun"
             Me.TabText = "Monte Carlo simulation of varying Ecopath basic parameters"
-            Me.tcMCOutput.ResumeLayout(False)
+            Me.m_tcOutput.ResumeLayout(False)
             Me.m_tbpB.ResumeLayout(False)
             Me.m_tbpBP.ResumeLayout(False)
             Me.m_tbpEE.ResumeLayout(False)
             Me.m_tbpBA.ResumeLayout(False)
+            Me.m_tbpBPlot.ResumeLayout(False)
+            Me.m_spPlot.Panel1.ResumeLayout(False)
+            Me.m_spPlot.Panel2.ResumeLayout(False)
+            Me.m_spPlot.ResumeLayout(False)
             Me.m_tbpBestTrial.ResumeLayout(False)
             CType(Me.nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpOutputs.ResumeLayout(False)
@@ -435,19 +492,19 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents lblNumTrials As System.Windows.Forms.Label
-        Friend WithEvents btnRunTrials As System.Windows.Forms.Button
-        Friend WithEvents btnStop As System.Windows.Forms.Button
-        Friend WithEvents cbPedigree As System.Windows.Forms.CheckBox
-        Friend WithEvents cbRetainEstimates As System.Windows.Forms.CheckBox
-        Friend WithEvents cbRetainCurPattern As System.Windows.Forms.CheckBox
-        Friend WithEvents cbShowBioTraj As System.Windows.Forms.CheckBox
-        Friend WithEvents btApply As System.Windows.Forms.Button
-        Friend WithEvents btnTS As System.Windows.Forms.Button
-        Friend WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
-        Friend WithEvents m_lblInputOpt As System.Windows.Forms.Label
-        Friend WithEvents m_lblOutputParam As System.Windows.Forms.Label
-        Private WithEvents tcMCOutput As System.Windows.Forms.TabControl
+        Private WithEvents lblNumTrials As System.Windows.Forms.Label
+        Private WithEvents btnRunTrials As System.Windows.Forms.Button
+        Private WithEvents btnStop As System.Windows.Forms.Button
+        Private WithEvents cbPedigree As System.Windows.Forms.CheckBox
+        Private WithEvents cbRetainEstimates As System.Windows.Forms.CheckBox
+        Private WithEvents cbRetainCurPattern As System.Windows.Forms.CheckBox
+        Private WithEvents cbShowBioTraj As System.Windows.Forms.CheckBox
+        Private WithEvents btApply As System.Windows.Forms.Button
+        Private WithEvents btnTS As System.Windows.Forms.Button
+        Private WithEvents nudNumTrials As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblInputOpt As System.Windows.Forms.Label
+        Private WithEvents m_lblOutputParam As System.Windows.Forms.Label
+        Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
         Private WithEvents lblValueERun As System.Windows.Forms.Label
         Private WithEvents lblValueSSBest As System.Windows.Forms.Label
         Private WithEvents lblValueSS As System.Windows.Forms.Label
@@ -470,6 +527,10 @@ Namespace Ecosim
         Private WithEvents m_tbpEE As System.Windows.Forms.TabPage
         Private WithEvents m_tbpBP As System.Windows.Forms.TabPage
         Private WithEvents m_tbpB As System.Windows.Forms.TabPage
+        Private WithEvents m_spPlot As System.Windows.Forms.SplitContainer
+        Private WithEvents m_graph As ZedGraphControl
+        Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
+        Private WithEvents m_lblGroups As System.Windows.Forms.Label
     End Class
 
 End Namespace

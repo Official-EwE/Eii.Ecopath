@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: MCRun.vb,v $
+' Revision 1.10  2009/06/27 18:18:44  jeroens
+' Uses Zedgraph for plotting
+'
 ' Revision 1.9  2009/06/24 18:31:16  jeroens
 ' Enabled to be maintained in the designer
 '
@@ -30,81 +33,6 @@
 ' Revision 1.1  2008/09/26 07:31:47  sherman
 ' --== DELETED HISTORY ==--
 '
-' Revision 1.32  2008/07/18 17:51:19  jeroens
-' Updated to new ZedGraphHelper interface
-'
-' Revision 1.31  2008/06/02 00:01:33  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.30  2008/05/29 22:22:54  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.29  2008/05/05 22:21:26  jeroens
-' Shared progress bar
-'
-' Revision 1.28  2007/12/14 15:48:39  jeroens
-' * Updated to new way of controlling output graph
-'
-' Revision 1.27  2007/12/11 17:04:49  jeroens
-' * Uses format providers to present output, resolves pending globalization issues
-' * Time series btn links to load, not just apply
-'
-' Revision 1.26  2007/12/10 04:09:17  jeroens
-' * Cleaned-up GUI
-' * Uses EwEformatprovider
-' * Numbers formatted via StyleGuide
-' * Balanced dynamically assigned handlers
-' + Identified pending globalization issues
-'
-' Revision 1.25  2007/10/09 18:58:56  joeb
-' Progress bar
-'
-' Revision 1.24  2007/10/05 19:09:55  joeb
-' Graph resizes in response to number of years changing
-'
-' Revision 1.23  2007/10/05 18:15:14  joeb
-' Added BatchMode to biomass graph
-'
-' Revision 1.22  2007/09/29 01:17:00  joeb
-' Bug Fixes
-'
-' Revision 1.21  2007/09/28 18:55:17  joeb
-' changed number of years
-'
-' Revision 1.20  2007/08/24 22:54:43  fgao
-' Add a progress bar ... Temporary test for incremental drawing..
-'
-' Revision 1.19  2007/08/10 23:23:41  fgao
-' Finish ucBiomassPlot, make them work for both MCRun and RunEcosim UI,
-' Add annual plot options etc.
-'
-' Revision 1.18  2007/08/10 00:38:48  fgao
-' Keep on adding and debugging more function
-' s
-'
-' Revision 1.17  2007/08/09 21:22:01  fgao
-' Add More MCRun functions..
-'
-' Revision 1.16  2007/08/08 23:22:44  fgao
-' Add refresh data public interface. We need to populate data again after
-' MCRun ends..
-'
-' Revision 1.15  2007/08/07 17:52:19  jeroens
-' * Fully connected Run, Stop button
-' + Connected ApplyTS button to global command
-'
-' Revision 1.14  2007/08/03 23:46:49  fgao
-' Improved a lot in biomass rendering speed.
-'
-' Revision 1.13  2007/08/01 23:42:44  fgao
-' Add MC Run plot now....
-'
-' Revision 1.12  2007/08/01 23:14:44  fgao
-' Removed conflicting code
-'
-' Revision 1.11  2007/07/31 16:03:42  jeroens
-' * Run and Stop handled via central commands
-'
 '==============================================================================
 
 #Region " Imports "
@@ -116,6 +44,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports ZedGraph
 
 #End Region
 
@@ -128,24 +57,25 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_core As EwECore.cCore
-        Private m_mcmanager As cMonteCarloManager
-        Private m_as2BiomassResults(,) As Single
+        Private m_core As EwECore.cCore = Nothing
+        Private m_mcmanager As cMonteCarloManager = Nothing
+        Private m_plothelper As cEcosimOutputPlotHelper = Nothing
 
         Private WithEvents m_cmdRunMonteCarlo As cCommand = Nothing
         Private WithEvents m_cmdStopMonteCarlo As cCommand = Nothing
         Private WithEvents m_cmdLoadTS As cCommand = Nothing
 
         ''' <summary>Live monitoring of Ecosim NYears</summary>
-        Private m_pTS As cSingleProperty = Nothing
+        Private m_propNYears As cSingleProperty = Nothing
 
-        Private m_ucBPlots As New ucEcosimOutputPlotOLD
         Private m_fpNumTrials As cEwEFormatProvider = Nothing
         Private m_fpTrial As cEwEFormatProvider = Nothing
         Private m_fpERun As cEwEFormatProvider = Nothing
         Private m_fpSSorg As cEwEFormatProvider = Nothing
         Private m_fpSS As cEwEFormatProvider = Nothing
         Private m_fpSSBest As cEwEFormatProvider = Nothing
+
+        Private m_lpplIteration As New List(Of PointPairList)
 
 #End Region ' Private vars
 
@@ -154,17 +84,12 @@ Namespace Ecosim
         Public Sub New()
 
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
             Me.m_core = cCore.GetInstance
             Me.m_mcmanager = Me.m_core.EcosimMonteCarlo
             Me.m_mcmanager.Load()
-
-            Me.m_ucBPlots = New ucEcosimOutputPlotOLD()
-            Me.m_ucBPlots.Dock = DockStyle.Fill
-            Me.m_ucBPlots.Plot.IsSummaryLinesShown = False
-            Me.m_ucBPlots.BatchMode = True
 
             'set the call back delegates for the monte carlo trials and ecopath iteration
             Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
@@ -186,7 +111,6 @@ Namespace Ecosim
             'm_gridPB.DisplayInputValue = eMCRunDisplayInputValueTypes.PB
             'm_gridEE.DisplayInputValue = eMCRunDisplayInputValueTypes.EE
             'm_gridBA.DisplayInputValue = eMCRunDisplayInputValueTypes.BA
-            Me.m_tbpBPlot.Controls.Add(Me.m_ucBPlots)
 
             Me.m_fpNumTrials = New cEwEFormatProvider(Me.nudNumTrials, GetType(Integer))
             Me.m_fpNumTrials.Value = m_mcmanager.nTrials
@@ -206,9 +130,16 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
-            m_mcmanager.bShowPlot = cbShowBioTraj.Checked
-            ' m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            m_mcmanager.bRetainFits = cbRetainEstimates.Checked
+            Me.m_mcmanager.bShowPlot = cbShowBioTraj.Checked
+            ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
+            Me.m_mcmanager.bRetainFits = cbRetainEstimates.Checked
+
+            Me.m_plothelper = New cEcosimOutputPlotHelper()
+            Me.m_plothelper.Attach(Me.m_core, Me.m_graph)
+            Me.m_plothelper.ShowMultipleRuns = True
+            ' ToDo_JS: localize this
+            Me.m_plothelper.ConfigurePane("Monte carlo trials", "Time", "Biomass", False)
+            Me.m_plothelper.AutoScaleOption() = cZedGraphHelper.ScaleOptions.Both
 
             Me.m_cmdRunMonteCarlo = New cCommand("RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.btnRunTrials)
@@ -219,15 +150,17 @@ Namespace Ecosim
             cCommandHandler.GetInstance().Add(Me.m_cmdStopMonteCarlo)
 
             ' Connect to ApplyTS command
-            m_cmdLoadTS = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
-            If m_cmdLoadTS IsNot Nothing Then m_cmdLoadTS.AddControl(Me.btnTS)
+            Me.m_cmdLoadTS = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
+            If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.btnTS)
 
-            Me.m_pTS = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
-            AddHandler Me.m_pTS.PropertyChanged, AddressOf m_pTS_PropertyChanged
+            Me.m_propNYears = New cSingleProperty(m_core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
+            AddHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
 
-            Debug.Assert(m_cmdLoadTS IsNot Nothing, "Command failed to load.")
+            Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Me.PopulateGroupBox()
+
         End Sub
 
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
@@ -240,8 +173,10 @@ Namespace Ecosim
             If cmd IsNot Nothing Then cmd.RemoveControl(Me.btnTS)
 
             ' Disconnect from property
-            RemoveHandler Me.m_pTS.PropertyChanged, AddressOf m_pTS_PropertyChanged
-            Me.m_pTS = Nothing
+            RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
+            Me.m_propNYears = Nothing
+
+            Me.m_plothelper.Detach()
 
             Me.m_fpERun.Release()
             Me.m_fpNumTrials.Release()
@@ -251,6 +186,7 @@ Namespace Ecosim
             Me.m_fpTrial.Release()
 
             Me.CoreComponents = Nothing
+
         End Sub
 
         Private Sub MCRun_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
@@ -262,33 +198,32 @@ Namespace Ecosim
         End Sub
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnStop.Click
-            m_mcmanager.StopRun()
+            Me.m_mcmanager.StopRun()
         End Sub
 
         Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btApply.Click
-            m_mcmanager.ApplyBestFits()
+            Me.m_mcmanager.ApplyBestFits()
         End Sub
 
-        Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbShowBioTraj.CheckedChanged
-            If Not m_mcmanager Is Nothing Then
-                m_mcmanager.bShowPlot = cbShowBioTraj.Checked
+        Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles cbShowBioTraj.CheckedChanged
+            If Not Me.m_mcmanager Is Nothing Then
+                Me.m_mcmanager.bShowPlot = cbShowBioTraj.Checked
             End If
         End Sub
 
-        Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRetainCurPattern.CheckedChanged
-            If Not m_mcmanager Is Nothing Then
-                ' m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
+        Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles cbRetainCurPattern.CheckedChanged
+            If Not Me.m_mcmanager Is Nothing Then
+                ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             End If
         End Sub
 
-        Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRetainEstimates.CheckedChanged
-            If Not m_mcmanager Is Nothing Then
-                m_mcmanager.bRetainFits = cbRetainEstimates.Checked
+        Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles cbRetainEstimates.CheckedChanged
+            If Not Me.m_mcmanager Is Nothing Then
+                Me.m_mcmanager.bRetainFits = cbRetainEstimates.Checked
             End If
-        End Sub
-
-        Private Sub txbNumTrials_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            m_mcmanager.nTrials = CInt(Me.m_fpNumTrials.Value)
         End Sub
 
 #End Region ' Events
@@ -298,28 +233,38 @@ Namespace Ecosim
         Private Sub MonteCarloStepHandler()
 
             Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+            Dim group As cEcoPathGroupInput = Nothing
 
             Try
-                ' ToDo: localize this
                 asn.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, _
                                   Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
+
+                Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
+                Me.m_fpSS.Value = Me.m_mcmanager.SS
+                Me.m_fpSSBest.Value = Me.m_mcmanager.SSBestFit
+
+                Me.m_plothelper.CreateRun(String.Format("Iteration {0}", CInt(Me.m_mcmanager.nTrialIterations)))
+                Me.m_lpplIteration.Clear()
+
+                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                    Me.m_lpplIteration.Add(New PointPairList())
+                Next
+
+                If (Me.m_mcmanager.bShowPlot = True) Then
+                    For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                        ' Get the ecopath group
+                        group = Me.m_core.EcoPathGroupInputs(iGroup)
+
+                        Me.m_plothelper.AddLine(group.Name, iGroup, _
+                                                cEcosimOutputPlotHelper.eLineType.RelativeBiomass, _
+                                                Me.m_lpplIteration(iGroup - 1))
+
+                    Next iGroup
+                End If
+
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
-
-            Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
-            Me.m_fpSS.Value = Me.m_mcmanager.SS
-            Me.m_fpSSBest.Value = Me.m_mcmanager.SSBestFit
-
-            'Plot the graph 
-            If ((Me.m_mcmanager.bShowPlot = True) And (Me.m_as2BiomassResults IsNot Nothing)) Then
-                If (Me.m_mcmanager.nTrialIterations = Me.m_mcmanager.nTrials) Then
-                    Me.m_ucBPlots.Plot.IsTSDataShown = True
-                Else
-                    Me.m_ucBPlots.Plot.IsTSDataShown = False
-                End If
-                Me.m_ucBPlots.AddValues(Me.m_as2BiomassResults)
-            End If
 
         End Sub
 
@@ -327,6 +272,8 @@ Namespace Ecosim
 
             Try
                 Me.m_fpERun.Value = Me.m_mcmanager.nEcopathIterations
+                Me.UpdateGraphHighlights()
+
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -336,15 +283,15 @@ Namespace Ecosim
         Private Sub MonteCarloCompletedHandler()
 
             Dim asn As cApplicationStatusNotifier = cApplicationStatusNotifier.GetInstance()
+            asn.SetStatusText("", TriState.False)
 
             Try
                 Me.btApply.Enabled = True
                 ' Select outputs
-                Me.tcMCOutput.SelectedTab = m_tbpBestTrial
+                Me.m_tcOutput.SelectedTab = m_tbpBestTrial
                 'populate the grid with new values (biomass....)
                 Me.m_gridBestFit.RefreshData()
-                Me.m_ucBPlots.EnableControls(True)
-                asn.SetStatusText("", TriState.False)
+
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -355,17 +302,23 @@ Namespace Ecosim
         ''' Time Step handler for Ecosim results
         ''' </summary>
         ''' <remarks>This will be called at each ecosim timestep for plotting the data</remarks>
-        Private Sub EcoSimTimeStepHandler(ByVal iTime As Long, ByVal results As cEcoSimResults)
+        Private Sub EcoSimTimeStepHandler(ByVal lTime As Long, ByVal results As cEcoSimResults)
 
-            If m_mcmanager.bShowPlot Then
-                If iTime = 1 Then
-                    ReDim m_as2BiomassResults(m_core.nGroups, m_core.nEcosimTimeSteps)
-                End If
-                For groupIndex As Integer = 1 To results.nGroups
-                    m_as2BiomassResults(groupIndex, CInt(iTime)) = results.Biomass(groupIndex)
+            Dim ppl As PointPairList = Nothing
+
+            If (Me.m_lpplIteration.Count = 0) Then Return
+
+            Try
+
+                ' Store results
+                For iGroup As Integer = 1 To Me.m_core.nLivingGroups
+                    ppl = Me.m_lpplIteration(iGroup - 1)
+                    ppl.Add(New PointPair(Me.m_core.EcosimFirstYear + CInt(lTime), results.Biomass(iGroup)))
                 Next
-            End If
 
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' MC Run callbacks
@@ -383,7 +336,7 @@ Namespace Ecosim
 
             Me.btApply.Enabled = False
             ' Select biomass plot page.
-            Me.tcMCOutput.SelectedTab = Me.m_tbpBPlot
+            Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
 
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
@@ -393,10 +346,7 @@ Namespace Ecosim
 
             cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, _
                                                                    TriState.True)
-
-            Me.m_ucBPlots.Plot.Reset()
-            Me.m_ucBPlots.EnableControls(False)
-
+            Me.m_plothelper.Clear()
             Me.m_mcmanager.Run()
 
         End Sub
@@ -445,26 +395,64 @@ Namespace Ecosim
         ''' The Apply time series Command/button has been invoked
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdLoadTS.OnPostInvoke
+        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+            Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager
             Me.m_mcmanager.Load()
             Me.UpdateGraphXAxis()
         End Sub
 
-        Private Sub m_pTS_PropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Private Sub OnPropNumYearsChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
             Me.UpdateGraphXAxis()
         End Sub
 
+        Private Sub m_lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_lbGroups.SelectedIndexChanged
+            Me.UpdateGraphHighlights()
+        End Sub
+
         Private Sub UpdateGraphXAxis()
-            Try
-                'set the xaxis this is the number of years the model ran for
-                Me.m_ucBPlots.Plot.XAxis = m_core.nEcosimTimeSteps
-                'now what..... hope it draws right next time!
-                Me.m_ucBPlots.Plot.GenerateOutputImage()
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Me.m_core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.m_core.EcoSimModelParameters.NumberYears + Me.m_core.EcosimFirstYear
+            Me.m_graph.AxisChange()
+        End Sub
+
+        Private Sub UpdateGraphHighlights()
+
+            Dim gi As cGroupListBox.cGroupItem = Nothing
+
+            ' Start setting highlights
+            Me.m_plothelper.ClearHighlights()
+            For Each item As Object In Me.m_lbGroups.SelectedItems
+                If TypeOf (item) Is cGroupListBox.cGroupItem Then
+                    gi = DirectCast(item, cGroupListBox.cGroupItem)
+                    Me.m_plothelper.Highlight(gi.Group.Index, -1)
+                End If
+            Next item
+            Me.m_graph.Invalidate()
+
+        End Sub
+
+        Private Sub PopulateGroupBox()
+
+            Dim group As cCoreGroupBase = Nothing
+            Dim gi As cGroupListBox.cGroupItem = Nothing
+
+            Me.m_lbGroups.SuspendLayout()
+            Me.m_lbGroups.Items.Clear()
+
+            For iGroup As Integer = 1 To m_core.nLivingGroups
+
+                ' #Yes: add group to the list of options
+                group = Me.m_core.EcoPathGroupInputs(iGroup)
+                gi = New cGroupListBox.cGroupItem(group)
+                Me.m_lbGroups.Items.Add(gi)
+
+            Next
+
+            Me.m_lbGroups.SelectedIndex = 0
+            Me.m_lbGroups.ResumeLayout()
 
         End Sub
 
