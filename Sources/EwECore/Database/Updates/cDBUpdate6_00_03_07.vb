@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_03_07.vb,v $
+' Revision 1.2  2009/06/28 01:33:27  jeroens
+' Inherited from cDBUpdate
+'
 ' Revision 1.1  2008/09/26 07:30:15  sherman
 ' --== DELETED HISTORY ==--
 '
@@ -37,7 +40,7 @@ Imports System.Data
 ''' </summary>
 ''' --------------------------------------------------------------------------
 Public Class cDBUpdate6_00_03_07
-    Implements IDatabaseUpdatePlugin
+    Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -46,8 +49,7 @@ Public Class cDBUpdate6_00_03_07
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
-            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean 
 
         Dim bSucces As Boolean = True
 
@@ -82,7 +84,7 @@ Public Class cDBUpdate6_00_03_07
     ''' the database.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
+    Public Overrides ReadOnly Property UpdateDescription() As String
         Get
             Return "Added salinity to Ecosim" + vbNewLine + "Added concentration FF to Ecotracer" + vbNewLine + "Fixed missing Ecospace group defaults"
         End Get
@@ -99,62 +101,9 @@ Public Class cDBUpdate6_00_03_07
     ''' update is ran regardless of version number.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateVersion() As Single Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateVersion
+    Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
             Return 6.037!
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
-        Get
-            Return Me.UpdateDescription
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        ' Void
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "Database update " & Me.UpdateVersion
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:support@ecopath.org"
         End Get
     End Property
 

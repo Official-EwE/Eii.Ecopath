@@ -1,23 +1,11 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_005.vb,v $
+' Revision 1.2  2009/06/28 01:33:28  jeroens
+' Inherited from cDBUpdate
+'
 ' Revision 1.1  2008/09/26 07:30:16  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/08/16 18:09:26  jeroens
-' Aargh!
-'
-' Revision 1.4  2008/08/15 03:44:19  jeroens
-' MPAaaaaargh
-'
-' Revision 1.3  2008/08/14 01:36:18  jeroens
-' Fixed dataset import crash
-'
-' Revision 1.2  2008/08/08 15:39:44  jeroens
-' Added Sequence field to preserve layer order
-'
-' Revision 1.1  2008/08/07 18:36:43  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -40,33 +28,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' --------------------------------------------------------------------------
 Public Class cDBUpdate6_00_04_0005
-    Implements IDatabaseUpdatePlugin
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' The actual update logic.
-    ''' </summary>
-    ''' <param name="db">Database to modify.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
-            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
-
-        Return Me.AddEcospaceWeightTables(db) And Me.FixFieldLengths(db)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' This method provides the text that will be entered in the update log in
-    ''' the database.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
-        Get
-            Return "Adds Ecospace weight layer tables" & vbNewLine & "Fixed field lengths"
-        End Get
-    End Property
+    Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -79,66 +41,36 @@ Public Class cDBUpdate6_00_04_0005
     ''' update is ran regardless of version number.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateVersion() As Single Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateVersion
+    Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
             Return 6.04005!
         End Get
     End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
+    ''' This method provides the text that will be entered in the update log in
+    ''' the database.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return Me.UpdateDescription
+            Return "Adds Ecospace weight layer tables" & vbNewLine & "Fixed field lengths"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
+    ''' The actual update logic.
     ''' </summary>
+    ''' <param name="db">Database to modify.</param>
+    ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        ' Void
-    End Sub
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "Database update " & Me.UpdateVersion
-        End Get
-    End Property
+        Return Me.AddEcospaceWeightTables(db) And Me.FixFieldLengths(db)
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
+    End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:support@ecopath.org"
-        End Get
-    End Property
-
-#Region " Internals "
 
     Private Function AddEcospaceWeightTables(ByVal db As cEwEDatabase) As Boolean
 
@@ -169,7 +101,5 @@ Public Class cDBUpdate6_00_04_0005
     Private Function FixFieldLengths(ByVal db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcosimTimeSeriesDataset ALTER COLUMN DatasetName TEXT(255)")
     End Function
-
-#End Region ' Internals
 
 End Class

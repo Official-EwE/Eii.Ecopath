@@ -1,26 +1,11 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_004.vb,v $
+' Revision 1.2  2009/06/28 01:33:28  jeroens
+' Inherited from cDBUpdate
+'
 ' Revision 1.1  2008/09/26 07:30:16  sherman
 ' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/07/30 12:54:09  jeroens
-' Fixed update statement
-'
-' Revision 1.5  2008/07/18 20:30:47  jeroens
-' Fixed error in applying units
-'
-' Revision 1.4  2008/07/17 17:15:11  jeroens
-' Reverted last change
-'
-' Revision 1.3  2008/07/17 17:02:44  jeroens
-' Fixes insufficiently updated tracer databases
-'
-' Revision 1.2  2008/07/10 19:12:30  jeroens
-' Updated to unit fixes
-'
-' Revision 1.1  2008/07/03 20:13:24  jeroens
-' Initial version
 '
 '==============================================================================
 
@@ -43,7 +28,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' --------------------------------------------------------------------------
 Public Class cDBUpdate6_00_04_0004
-    Implements IDatabaseUpdatePlugin
+    Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -52,8 +37,8 @@ Public Class cDBUpdate6_00_04_0004
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean _
-            Implements EwEPlugin.IDatabaseUpdatePlugin.ApplyUpdate
+    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
+
 
         Return Me.FixRelPP(db) And Me.FixUnits(db)
 
@@ -65,10 +50,10 @@ Public Class cDBUpdate6_00_04_0004
     ''' the database.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateDescription() As String Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateDescription
+    Public Overrides ReadOnly Property UpdateDescription() As String
         Get
             Return "Fixes relative primary production issue in existing Ecospace scenarios." & vbNewLine _
-                & "Fixes system units." 
+                & "Fixes system units."
         End Get
     End Property
 
@@ -83,66 +68,11 @@ Public Class cDBUpdate6_00_04_0004
     ''' update is ran regardless of version number.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property UpdateVersion() As Single Implements EwEPlugin.IDatabaseUpdatePlugin.UpdateVersion
+    Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
             Return 6.04004!
         End Get
     End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
-        Get
-            Return Me.UpdateDescription
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Initialize">IPlugin.Initialize</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        ' Void
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Name">IPlugin.Name</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "Database update " & Me.UpdateVersion
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:support@ecopath.org"
-        End Get
-    End Property
-
-#Region " Internals "
 
     Private Function FixRelPP(ByVal db As EwEUtils.Database.cEwEDatabase) As Boolean
 
@@ -271,7 +201,5 @@ Public Class cDBUpdate6_00_04_0004
         Return bSucces
 
     End Function
-
-#End Region ' Internals
 
 End Class
