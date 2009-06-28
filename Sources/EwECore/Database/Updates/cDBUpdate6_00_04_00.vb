@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBUpdate6_00_04_00.vb,v $
+' Revision 1.3  2009/06/28 01:54:38  jeroens
+' Woops
+'
 ' Revision 1.2  2009/06/28 01:33:27  jeroens
 ' Inherited from cDBUpdate
 '
@@ -138,17 +141,6 @@ Public Class cDBUpdate6_00_04_00
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
             Return 6.04!
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="IPlugin.Description">IPlugin.Description</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property Description() As String
-        Get
-            Return Me.UpdateDescription
         End Get
     End Property
 
