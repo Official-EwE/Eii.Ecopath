@@ -98,7 +98,6 @@
     <Compile Include="Database\cDatabaseUpdater.vb" />
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="Database\Import\cEwE6DatabaseImporter.vb" />
-    <Compile Include="Database\Updates\~sample~DB~Update~.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
     <Compile Include="Search\cSearchDatastructures.vb" />
@@ -233,6 +232,7 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerRegionGroupOutput.vb" />
     <Compile Include="Core\cCoreStateManager.vb" />
     <Compile Include="Core\cEwEScenario.vb" />
+    <Compile Include="Database\Updates\cDBUpdate.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_03_02.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_03_04.vb" />
@@ -257,6 +257,7 @@
     </Compile>
     <Compile Include="Database\Updates\cDBUpdate6_00_05_005.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_00_06_001.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_00_06_002.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\cEcoPathStats.vb" />
