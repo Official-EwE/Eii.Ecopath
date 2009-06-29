@@ -2366,7 +2366,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: biomass value</comment>
   </data>
   <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
-    <value>Enhanced meta files (*.emf)|*.wmf</value>
+    <value>Enhanced meta files (*.emf)|*.emf</value>
   </data>
   <data name="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR" xml:space="preserve">
     <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}Wt. class range (g) = {3} to {4}, N = {5}</value>
