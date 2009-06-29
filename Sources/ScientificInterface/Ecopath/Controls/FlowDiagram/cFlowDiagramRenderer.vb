@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cFlowDiagramRenderer.vb,v $
+' Revision 1.2  2009/06/29 16:06:00  jeroens
+' Fixed layout save/load index bug
+'
 ' Revision 1.1  2009/06/22 02:25:37  jeroens
 ' Revamped, rewarped and lobotomized
 '
@@ -167,7 +170,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Public Sub SaveToFile(ByVal inifile As cINIFile, ByVal rc As Rectangle)
             inifile.WriteInteger("Global", "NumGroups", Me.m_data.NumGroups)
-            For i As Integer = 0 To Me.m_data.NumGroups
+            For i As Integer = 1 To Me.m_data.NumGroups
                 inifile.WriteInteger("Locations", i.ToString + "x", CInt(Me.m_tree.NodeLocation(i, rc).X))
                 inifile.WriteInteger("Locations", i.ToString + "y", CInt(Me.m_tree.NodeLocation(i, rc).Y))
                 inifile.WriteInteger("Locations", i.ToString + "xlabel", CInt(Me.m_tree.LabelLocation(i, rc).X))
@@ -178,7 +181,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public Function LoadFromFile(ByVal inifile As cINIFile, ByVal rc As Rectangle) As Boolean
             Dim ptf As PointF
             If Me.m_data.NumGroups = inifile.GetInteger("Global", "NumGroups", 0) Then
-                For i As Integer = 0 To Me.m_data.NumGroups
+                For i As Integer = 1 To Me.m_data.NumGroups
                     ptf.X = inifile.GetInteger("Locations", i.ToString + "x", 0)
                     ptf.Y = inifile.GetInteger("Locations", i.ToString + "y", 0)
                     Me.m_tree.NodeLocation(i, rc) = ptf
