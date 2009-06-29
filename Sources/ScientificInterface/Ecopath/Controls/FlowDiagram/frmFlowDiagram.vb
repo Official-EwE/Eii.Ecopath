@@ -1,6 +1,10 @@
 '==============================================================================
 '
 ' $Log: frmFlowDiagram.vb,v $
+' Revision 1.2  2009/06/29 16:07:40  jeroens
+' Added default file name
+' Fixed file filter index bug
+'
 ' Revision 1.1  2009/06/22 02:25:37  jeroens
 ' Revamped, rewarped and lobotomized
 '
@@ -240,21 +244,18 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE & "|" & My.Resources.FILEFILTER_IMAGE_EMF)
+            cmdFS.Invoke("EwE6-flow_diagram", My.Resources.FILEFILTER_IMAGE & "|" & My.Resources.FILEFILTER_IMAGE_EMF, 6)
             If cmdFS.Result = DialogResult.OK Then
-
                 Select Case cmdFS.FilterIndex
-                    Case 0
-                        fmt = Imaging.ImageFormat.Bmp
-                    Case 1
-                        fmt = Imaging.ImageFormat.Jpeg
                     Case 2
-                        fmt = Imaging.ImageFormat.Gif
+                        fmt = Imaging.ImageFormat.Jpeg
                     Case 3
-                        fmt = Imaging.ImageFormat.Png
+                        fmt = Imaging.ImageFormat.Gif
                     Case 4
-                        fmt = Imaging.ImageFormat.Tiff
+                        fmt = Imaging.ImageFormat.Png
                     Case 5
+                        fmt = Imaging.ImageFormat.Tiff
+                    Case 6
                         fs = New FileStream(cmdFS.FileName, FileMode.Create)
                         Using g As Graphics = Graphics.FromImage(bmp)
                             hdc = g.GetHdc()
@@ -268,6 +269,8 @@ Namespace Ecopath.Controls.FlowDiagram
                         mf.Dispose()
                         bmp.Dispose()
                         Return
+                    Case Else
+                        fmt = Imaging.ImageFormat.Bmp
                 End Select
 
                 Using g As Graphics = Graphics.FromImage(bmp)
