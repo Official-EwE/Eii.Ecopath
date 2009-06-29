@@ -255,12 +255,6 @@
     <Compile Include="Ecosim\Output\CustomComboBoxFleetGroupTree.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.Designer.vb">
-      <DependentUpon>cEcosimOutputLineGraphOLD.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Ecosim\Output\MCRun.Designer.vb">
       <DependentUpon>MCRun.vb</DependentUpon>
     </Compile>
@@ -1122,18 +1116,6 @@
     <Compile Include="Ecosim\Input\TimeSeries\gridWeightTS.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.Designer.vb">
-      <DependentUpon>ucEcosimOutputPlotOLD.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.Designer.vb">
-      <DependentUpon>ucEcosimOutputPlot.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\cEcosimOutputPlotHelper.vb" />
     <Compile Include="Ecosim\Output\ShowAllFits\ShowAllFitsPlotData.vb" />
     <Compile Include="Ecosim\Output\SuitabilityPlot.Designer.vb">
@@ -1381,18 +1363,6 @@
       <DependentUpon>Vulnerabilities.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\cEcosimOutputLineGraphOLD.resx">
-      <DependentUpon>cEcosimOutputLineGraphOLD.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\ucEcosimOutputPlotOLD.resx">
-      <DependentUpon>ucEcosimOutputPlotOLD.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputLineGraph\ucEcosimOutputPlot.resx">
-      <DependentUpon>ucEcosimOutputPlot.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.resx">
       <SubType>Designer</SubType>
       <DependentUpon>dlgSensitivityOfSStoV.vb</DependentUpon>
@@ -1551,6 +1521,9 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ecosim\Output\EcosimOutputLineGraph\To be removed\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
