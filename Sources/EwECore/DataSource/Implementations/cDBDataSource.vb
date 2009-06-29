@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cDBDataSource.vb,v $
+' Revision 1.55  2009/06/29 01:39:40  jeroens
+' Added cDBUpdate, update 6.0.06002
+'
 ' Revision 1.54  2009/05/25 13:22:50  jeroens
 ' Added DiscardChanges
 '
@@ -3904,7 +3907,7 @@ Public Class cDBDataSource
             ecosimDS.MediationShapeParams(iMediationShape) = shapeParms
             ecosimDS.MediationDBIDs(iMediationShape) = iShapeID
             ecosimDS.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
-            ecosimDS.MedXbase(iMediationShape) = CSng(readerShape("XBaseLine"))
+            ecosimDS.IMedBase(iMediationShape) = CInt(Me.ReadSafe(readerShape, "IMedBase", 1200 / 3))
 
             Me.m_db.ReleaseReader(readerShape)
             readerShape = Nothing
@@ -4483,7 +4486,7 @@ Public Class cDBDataSource
             drow("YBase") = shapeParms.YBase
             drow("YEnd") = shapeParms.YEnd
             drow("Steep") = shapeParms.Steep
-            drow("XBaseLine") = ecosimDS.MedXbase(iShape)
+            drow("IMedBase") = ecosimDS.IMedBase(iShape)
             drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.NMedPoints
