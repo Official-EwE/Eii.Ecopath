@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEcosimOutputPlotHelper.vb,v $
+' Revision 1.6  2009/06/29 15:54:46  jeroens
+' Fixed potential init crash
+'
 ' Revision 1.5  2009/06/27 18:17:48  jeroens
 ' Ecosim plot helper sharable
 '
@@ -246,6 +249,7 @@ Namespace Controls
         End Sub
 
         Public Sub ResetRun()
+            If (Me.m_runCurrent Is Nothing) Then Return
             Me.m_runCurrent.m_curvelist.Clear()
             Me.m_graphPane.CurveList.Clear()
         End Sub
