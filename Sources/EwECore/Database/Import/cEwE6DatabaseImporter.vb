@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cEwE6DatabaseImporter.vb,v $
+' Revision 1.14  2009/06/29 15:04:52  jeroens
+' Fixed mediation
+'
 ' Revision 1.13  2009/04/07 17:27:41  jeroens
 ' Fixed exsiting t0 defaults
 '
@@ -2293,7 +2296,7 @@ Namespace Database
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeMediation")
                     drow = writer.NewRow()
-                    drow("XBaseLine") = Me.FixValue(reader, "XBaseLine")
+                    drow("IMedBase") = Me.FixValue(reader, "XBaseLine")
                     drow("zScale") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
                     ' New in EwE6
                     drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
