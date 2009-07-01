@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: Shared Enums.vb,v $
+' Revision 1.70  2009/07/01 17:55:52  joeb
+' Added varnames for PM's
+'
 ' Revision 1.69  2009/06/26 19:50:11  sherman
 ' Added Performance Measure Enums 'PM'
 '
@@ -1092,13 +1095,14 @@ Namespace Core
 
         ''' <summary>Profit by Fleet.</summary>      
         GameFleetProfitSummary
-        GameFleetProfitSummaryPM
+        'GameFleetProfitSummaryPM
         ''' <summary>Jobs(?) by Fleet.</summary>    
         GameFleetJobsSummary
-        GameFleetJobsSummaryPM
+        ' GameFleetJobsSummaryPM
 
         GameFleetValue
         GameFleetCatch
+        GameFleetCatchPM
 
         ''' <summary>For Ecosim Yield from Ecosim Plots Biomass * FishTime </summary>
         GameGroupCatch
