@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEDataStructures.vb,v $
+' Revision 1.4  2009/07/03 23:41:36  joeb
+' MSE interface changes
+'
 ' Revision 1.3  2009/06/01 17:07:38  joeb
 ' MSE debugging
 '
@@ -106,6 +109,7 @@ Public Class cMSEDataStructures
 
     Private m_core As cCore
 
+
     Public Property CurrentIteration() As Integer
         Get
             Return m_curIter
@@ -159,6 +163,7 @@ Public Class cMSEDataStructures
             For iFlt As Integer = 1 To m_core.nFleets
                 Qgrow(iFlt) = 0.1
             Next iFlt
+
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -232,5 +237,75 @@ Public Class cMSEDataStructures
 
     End Sub
 
+    Public ReadOnly Property NGroups() As Integer
+        Get
+            Return Me.m_core.nGroups
+        End Get
+    End Property
+
+    Public ReadOnly Property nTimeSteps() As Integer
+        Get
+            Return Me.m_core.nEcosimTimeSteps
+        End Get
+    End Property
 
 End Class
+
+#Region "Confidence interval helper class(s)"
+
+Public Class cMSESummaryStats
+
+    Private Enum eSumIndexes
+        Mean
+        Min
+        Max
+    End Enum
+    Private m_mseData As cMSEDataStructures
+    Private m_data(,) As Single
+    Private m_count() As Integer
+
+    Public Sub New(ByVal MSEData As cMSEDataStructures)
+
+        m_mseData = MSEData
+
+    End Sub
+
+    Public Sub Init()
+        ReDim Me.m_data(2, Me.m_mseData.NGroups)
+        ReDim Me.m_count(Me.m_mseData.NGroups)
+        For igrp As Integer = 0 To Me.m_mseData.NGroups
+            Me.m_data(eSumIndexes.Min, igrp) = Single.MaxValue
+        Next
+    End Sub
+
+    Public WriteOnly Property AddValue(ByVal Group As Integer) As Single
+        Set(ByVal value As Single)
+            Me.m_data(eSumIndexes.Mean, Group) += value
+            Me.m_data(eSumIndexes.Min, Group) = Math.Min(Me.m_data(eSumIndexes.Min, Group), value)
+            Me.m_data(eSumIndexes.Max, Group) = Math.Max(Me.m_data(eSumIndexes.Max, Group), value)
+            Me.m_count(Group) += 1
+        End Set
+    End Property
+
+
+    Public ReadOnly Property Mean(ByVal Group As Integer) As Single
+        Get
+            Return Me.m_data(eSumIndexes.Mean, Group) / Me.m_count(Group)
+        End Get
+    End Property
+
+    Public ReadOnly Property Min(ByVal Group As Integer) As Single
+        Get
+            Return Me.m_data(eSumIndexes.Min, Group)
+        End Get
+    End Property
+
+    Public ReadOnly Property Max(ByVal Group As Integer) As Single
+        Get
+            Return Me.m_data(eSumIndexes.Max, Group)
+        End Get
+    End Property
+
+End Class
+
+#End Region

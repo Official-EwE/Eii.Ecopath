@@ -2,6 +2,9 @@
 '==============================================================================
 '
 ' $Log: frmMSE.vb,v $
+' Revision 1.6  2009/07/03 23:41:36  joeb
+' MSE interface changes
+'
 ' Revision 1.5  2009/06/08 17:17:11  joeb
 ' More MSE layout
 '
@@ -58,7 +61,7 @@ Public Class frmMSE
 
 #End Region
 
-#Region "Construction Initialization and Distruction"
+#Region "Construction Initialization and Destruction"
 
     Public Sub New()
 
@@ -222,10 +225,6 @@ Public Class frmMSE
 
 
 #End Region
-
-
-  
-
 
     Private Sub UpdateControls(ByVal State As eMSEStates)
 

@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSEManager.vb,v $
+' Revision 1.12  2009/07/03 23:41:34  joeb
+' MSE interface changes
+'
 ' Revision 1.11  2009/06/01 17:07:36  joeb
 ' MSE debugging
 '
@@ -261,6 +264,7 @@ Namespace MSE
                     iGroup = Array.IndexOf(coreData.GroupDBID, mseGrp.DBID)
 
                     mseGrp.Index = iGroup
+                    mseGrp.Name = Me.m_core.m_EcoPathData.GroupName(iGroup)
                     mseGrp.BiomassCV = Me.m_MSEdata.CVbiomEst(mseGrp.Index)
                     mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 1)
                     mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(mseGrp.Index, 0)
@@ -273,6 +277,7 @@ Namespace MSE
                 For Each mseOutput As cMSEGroupOutput In Me.m_lstGroupOutputs
                     mseOutput.AllowValidation = False 'no validation of outputs
                     mseOutput.Index = Array.IndexOf(coreData.GroupDBID, mseOutput.DBID)
+                    mseOutput.Name = Me.m_core.m_EcoPathData.GroupName(mseOutput.Index)
                 Next
 
                 'fleets
@@ -282,6 +287,7 @@ Namespace MSE
                     iFleet = Array.IndexOf(coreData.FleetDBID, mseFlt.DBID)
 
                     mseFlt.Index = iFleet
+                    mseFlt.Name = Me.m_core.m_EcoPathData.FleetName(iFleet)
                     mseFlt.QIncrease = Me.m_MSEdata.Qgrow(mseFlt.Index)
 
                     For igrp As Integer = 1 To m_core.nLivingGroups

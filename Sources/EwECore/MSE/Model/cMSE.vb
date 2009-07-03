@@ -1,6 +1,9 @@
 '==============================================================================
 '
 ' $Log: cMSE.vb,v $
+' Revision 1.10  2009/07/03 23:41:36  joeb
+' MSE interface changes
+'
 ' Revision 1.9  2009/06/01 17:07:38  joeb
 ' MSE debugging
 '
@@ -73,6 +76,8 @@ Namespace MSE
         Private EcoValueBase As Single, ManValueBase As Single
         Private TotValBase As Single, EmployBase As Single
 
+        Private m_bioSum As cMSESummaryStats
+
         Private m_pluginManager As cPluginManager
 
         Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
@@ -111,8 +116,13 @@ Namespace MSE
                     Me.m_data.RstockPred(iflt) = (1 - Me.m_data.GstockPred(iflt)) * Me.m_esData.StartBiomass(iflt)
                 Next
 
+                Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
+
                 'initialize Ecosim
                 m_Ecosim.Init(False)
+
+                Me.m_bioSum = New cMSESummaryStats(Me.m_data)
+                Me.m_bioSum.Init()
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -170,6 +180,8 @@ Namespace MSE
                 'mean values are computed by the manager from the sums
                 '      Me.getMeanValues(m_data.CurrentIteration)
 
+                Me.dumpStats()
+
                 CallBack(eCallBackTypes.RunCompleted)
 
             Catch ex As Exception
@@ -179,6 +191,24 @@ Namespace MSE
 
         End Sub
 
+
+        Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
+            'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
+
+            For igrp As Integer = 1 To Me.m_esData.nGroups
+                Me.m_bioSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime))
+            Next igrp
+
+        End Sub
+
+
+        Private Sub dumpStats()
+
+            For igrp As Integer = 1 To Me.m_data.NGroups
+                System.Console.Write("Mean=" & Me.m_bioSum.Mean(igrp).ToString & ", Min=" & Me.m_bioSum.Min(igrp).ToString & ", " & "Max=" & Me.m_bioSum.Max(igrp).ToString & ", ")
+            Next
+
+        End Sub
         Private Sub getEconomicPluginData()
             If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
                 Me.m_pluginManager.PostRunSearchResults(Me.m_Search)
