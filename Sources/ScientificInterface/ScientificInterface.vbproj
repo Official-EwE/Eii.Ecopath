@@ -1229,6 +1229,12 @@
     <Compile Include="Tools\MSE\frmMSE.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Tools\MSE\gridBioCV.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSE\gridFishingWeights.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Content Include="Includes\SAUPUtil.dll" />
     <Content Include="Includes\shapelib.dll" />
     <Content Include="Includes\SourceGrid2.dll" />
@@ -1501,6 +1507,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
+      <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
+      <Name>EwEValueChain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwEMultiPlayerGame\EwEGameServer\EwEGameServer.vbproj">
+      <Project>{BD4B53EB-8A73-4262-8F73-F1E602F873A7}</Project>
+      <Name>EwEGameServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
