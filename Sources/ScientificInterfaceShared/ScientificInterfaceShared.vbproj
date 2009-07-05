@@ -55,24 +55,25 @@
   <ItemGroup>
     <Reference Include="SAUPUtil, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ScientificInterface\Includes\SAUPUtil.dll</HintPath>
+      <HintPath>Includes\SAUPUtil.dll</HintPath>
     </Reference>
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ScientificInterface\Includes\SourceGrid2.dll</HintPath>
+      <HintPath>Includes\SourceGrid2.dll</HintPath>
     </Reference>
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ScientificInterface\Includes\SourceLibrary.dll</HintPath>
+      <HintPath>Includes\SourceLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ScientificInterface\Includes\ZedGraph.dll</HintPath>
+      <HintPath>Includes\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +381,14 @@
     <None Include="Properties\Formula expressions\_expressions overview_.cd" />
     <None Include="Properties\_properties overview_.cd" />
     <None Include="Resources\OptionsHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Includes\SAUPUtil.dll" />
+    <Content Include="Includes\shapelib.dll" />
+    <Content Include="Includes\SourceGrid2.dll" />
+    <Content Include="Includes\SourceLibrary.dll" />
+    <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="Includes\ZedGraph.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
