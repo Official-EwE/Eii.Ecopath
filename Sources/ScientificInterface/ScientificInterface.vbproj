@@ -95,9 +95,15 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
-    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
+    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <HintPath>..\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -105,10 +111,12 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
     <Reference Include="ZedGraph, Version=5.0.8.21916, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\ZedGraph.dll</HintPath>
+      <HintPath>..\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1235,12 +1243,6 @@
     <Compile Include="Tools\MSE\gridFishingWeights.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Content Include="Includes\SAUPUtil.dll" />
-    <Content Include="Includes\shapelib.dll" />
-    <Content Include="Includes\SourceGrid2.dll" />
-    <Content Include="Includes\SourceLibrary.dll" />
-    <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
-    <Content Include="Includes\ZedGraph.dll" />
     <None Include="Resources\BreakpointHS.png" />
     <None Include="Resources\compareversionsHS.png" />
     <None Include="Resources\credits.rtf" />
@@ -1507,14 +1509,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
-      <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
-      <Name>EwEValueChain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwEMultiPlayerGame\EwEGameServer\EwEGameServer.vbproj">
-      <Project>{BD4B53EB-8A73-4262-8F73-F1E602F873A7}</Project>
-      <Name>EwEGameServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
