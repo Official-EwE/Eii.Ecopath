@@ -11003,7 +11003,6 @@ Public Class cCore
             Try
                 Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSEManager), cMSEManager)
             Catch ex As Exception
-                Debug.Assert(False, "Error getting MSEManager(): " & ex.Message)
                 cLog.Write(ex)
                 Return Nothing
             End Try
