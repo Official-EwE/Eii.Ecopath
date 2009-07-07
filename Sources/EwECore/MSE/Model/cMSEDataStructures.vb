@@ -105,6 +105,11 @@ Public Class cMSEDataStructures
     ''' <remarks></remarks>
     Public AssessMethod As eAssessmentMethods
 
+
+    Public BioSum As cMSESummaryStats
+    Public CatchGroupSum As cMSESummaryStats
+    Public CatchFleetSum As cMSESummaryStats
+
     Private m_curIter As Integer
 
     Private m_core As cCore
@@ -164,6 +169,9 @@ Public Class cMSEDataStructures
                 Qgrow(iFlt) = 0.1
             Next iFlt
 
+            Me.BioSum = New cMSESummaryStats(Me, Me.m_core.nGroups)
+            Me.CatchGroupSum = New cMSESummaryStats(Me, Me.m_core.nGroups)
+            Me.CatchFleetSum = New cMSESummaryStats(Me, Me.m_core.nFleets)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -237,6 +245,14 @@ Public Class cMSEDataStructures
 
     End Sub
 
+    Public Sub InitForRun()
+
+        Me.BioSum.Init()
+        Me.CatchGroupSum.Init()
+        Me.CatchFleetSum.Init()
+
+    End Sub
+
     Public ReadOnly Property NGroups() As Integer
         Get
             Return Me.m_core.nGroups
@@ -262,49 +278,59 @@ Public Class cMSESummaryStats
     End Enum
     Private m_mseData As cMSEDataStructures
     Private m_data(,) As Single
-    Private m_count() As Integer
+    Private m_n() As Integer
+    Private m_count As Integer
 
-    Public Sub New(ByVal MSEData As cMSEDataStructures)
+    Public Sub New(ByVal MSEData As cMSEDataStructures, ByVal Count As Integer)
 
         m_mseData = MSEData
+        m_count = Count
 
     End Sub
 
     Public Sub Init()
-        ReDim Me.m_data(2, Me.m_mseData.NGroups)
-        ReDim Me.m_count(Me.m_mseData.NGroups)
-        For igrp As Integer = 0 To Me.m_mseData.NGroups
+        ReDim Me.m_data(2, Me.m_count)
+        ReDim Me.m_n(Me.m_count)
+        For igrp As Integer = 0 To Me.m_count
             Me.m_data(eSumIndexes.Min, igrp) = Single.MaxValue
         Next
     End Sub
 
-    Public WriteOnly Property AddValue(ByVal Group As Integer) As Single
+    Public WriteOnly Property AddValue(ByVal Index As Integer) As Single
         Set(ByVal value As Single)
-            Me.m_data(eSumIndexes.Mean, Group) += value
-            Me.m_data(eSumIndexes.Min, Group) = Math.Min(Me.m_data(eSumIndexes.Min, Group), value)
-            Me.m_data(eSumIndexes.Max, Group) = Math.Max(Me.m_data(eSumIndexes.Max, Group), value)
-            Me.m_count(Group) += 1
+            Me.m_data(eSumIndexes.Mean, Index) += value
+            Me.m_data(eSumIndexes.Min, Index) = Math.Min(Me.m_data(eSumIndexes.Min, Index), value)
+            Me.m_data(eSumIndexes.Max, Index) = Math.Max(Me.m_data(eSumIndexes.Max, Index), value)
+            Me.m_n(Index) += 1
         End Set
     End Property
 
 
-    Public ReadOnly Property Mean(ByVal Group As Integer) As Single
+    Public ReadOnly Property Mean(ByVal Index As Integer) As Single
         Get
-            Return Me.m_data(eSumIndexes.Mean, Group) / Me.m_count(Group)
+            Return Me.m_data(eSumIndexes.Mean, Index) / Me.m_n(Index)
         End Get
     End Property
 
-    Public ReadOnly Property Min(ByVal Group As Integer) As Single
+    Public ReadOnly Property Min(ByVal Index As Integer) As Single
         Get
-            Return Me.m_data(eSumIndexes.Min, Group)
+            Return Me.m_data(eSumIndexes.Min, Index)
         End Get
     End Property
 
-    Public ReadOnly Property Max(ByVal Group As Integer) As Single
+    Public ReadOnly Property Max(ByVal Index As Integer) As Single
         Get
-            Return Me.m_data(eSumIndexes.Max, Group)
+            Return Me.m_data(eSumIndexes.Max, Index)
         End Get
     End Property
+
+
+    Public ReadOnly Property Count() As Integer
+        Get
+            Return Me.m_count
+        End Get
+    End Property
+
 
 End Class
 
