@@ -14,7 +14,13 @@ Imports EwEUtils.Core
 Imports EwECore.Ecosim
 
 Public Enum eSearchModes
+    ''' <summary>Not in any kind of a search mode</summary>
     NotInSearch
+    ''' <summary>A search of some type is initializing the data. 
+    ''' All data will be initialized but the code will not go into specific search routines.
+    ''' </summary>
+    InitializingSearch
+
     FitToTimeSeries
     FishingPolicy
     MonteCarlo
@@ -804,33 +810,35 @@ Public Class cSearchDatastructures
 
         Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
 
-        If Me.SearchMode = eSearchModes.FishingPolicy Then
+        Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 
-            'in the Fishing policy search
-            'If the search has set an effort then use that value to populate Fgear()
-            For iFlt As Integer = 1 To m_ecopathData.NumFleet
+        ' If Me.SearchMode = eSearchModes.FishingPolicy Then
 
-                If FblockCode(iFlt, iyf) > 0 Then  'And bBaseYearSet?
-                    'Fishing policy search has set an effort 
-                    'copy that value into Fgear(nfleets)
-                    Fgear(iFlt) = RelFopt(ParNumber(FblockCode(iFlt, iyf)))
-                Else
-                    'No effort has been set by the Fishing policy search
-                    'use the effort in FishRateGear()
-                    Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
-                End If
+        'in the Fishing policy search
+        'If the search has set an effort then use that value to populate Fgear()
+        For iFlt As Integer = 1 To m_ecopathData.NumFleet
 
-            Next iFlt
-
-        Else
-
-            'not in a search
-            'use fishing effort in FishRateGear()
-            For iFlt As Integer = 1 To m_ecopathData.NumFleet
+            If FblockCode(iFlt, iyf) > 0 Then  'And bBaseYearSet?
+                'Fishing policy search has set an effort 
+                'copy that value into Fgear(nfleets)
+                Fgear(iFlt) = RelFopt(ParNumber(FblockCode(iFlt, iyf)))
+            Else
+                'No effort has been set by the Fishing policy search
+                'use the effort in FishRateGear()
                 Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
-            Next iFlt
+            End If
 
-        End If
+        Next iFlt
+
+        'Else
+
+        'not in a search
+        'use fishing effort in FishRateGear()
+        'For iFlt As Integer = 1 To m_ecopathData.NumFleet
+        '    Fgear(iFlt) = m_ecosimData.FishRateGear(iFlt, 12 * iyf - 11)
+        'Next iFlt
+
+        'End If
 
     End Sub
 
