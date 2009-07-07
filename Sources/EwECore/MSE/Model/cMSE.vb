@@ -76,8 +76,6 @@ Namespace MSE
         Private EcoValueBase As Single, ManValueBase As Single
         Private TotValBase As Single, EmployBase As Single
 
-        Private m_bioSum As cMSESummaryStats
-
         Private m_pluginManager As cPluginManager
 
         Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
@@ -121,9 +119,6 @@ Namespace MSE
                 'initialize Ecosim
                 m_Ecosim.Init(False)
 
-                Me.m_bioSum = New cMSESummaryStats(Me.m_data)
-                Me.m_bioSum.Init()
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -133,16 +128,26 @@ Namespace MSE
 
         Public Sub Run()
             Dim itr As Integer
+            Dim PredEffortorg As Boolean
+            Dim ClosedLooporg As Boolean
 
             Try
 
                 CallBack(eCallBackTypes.Started)
+                'save the regulatory flags
+                PredEffortorg = Me.m_esData.PredictSimEffort
+                ClosedLooporg = Me.m_esData.DoClosedLoop
+
+                'turn off regulatory models for initialization
+                Me.m_esData.PredictSimEffort = False
+                Me.m_esData.DoClosedLoop = False
 
                 'init the MSE data
                 Me.InitForRun()
+                Me.m_data.InitForRun()
 
-                'turn off the searches for initialization and setting of base values
-                Me.m_Search.SearchMode = eSearchModes.FishingPolicy
+                'put the search mode to initialization for setting of base values
+                Me.m_Search.SearchMode = eSearchModes.InitializingSearch
                 Me.m_esData.bTimestepOutput = True
                 Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
                 Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
@@ -154,6 +159,10 @@ Namespace MSE
 
                 'runs Ecosim and gets the base values
                 Me.setBestTotalValue()
+
+                'set the regulatory models back to there original state once initialization has completed
+                Me.m_esData.PredictSimEffort = PredEffortorg
+                Me.m_esData.DoClosedLoop = ClosedLooporg
 
                 'turn the evaluator on for the trials
                 'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
@@ -172,7 +181,7 @@ Namespace MSE
                     'use Economic data from the ValueChain or any other plugin
                     Me.getEconomicPluginData()
 
-                    Me.SumValues(Me.m_Search.totval, Me.m_Search.Employ, Me.m_Search.manvalue, Me.m_Search.ecovalue)
+                    Me.SumValues()
                     Me.CallBack(eCallBackTypes.IterationCompleted)
 
                 Next
@@ -195,18 +204,44 @@ Namespace MSE
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
             'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
 
-            For igrp As Integer = 1 To Me.m_esData.nGroups
-                Me.m_bioSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime))
-            Next igrp
+            Try
+
+                For igrp As Integer = 1 To Me.m_esData.nGroups
+                    Me.m_data.BioSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime))
+                    Me.m_data.CatchGroupSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime))
+                Next igrp
+
+                For iflt As Integer = 1 To Me.m_esData.nGear
+                    Me.m_data.CatchFleetSum.AddValue(iflt) = Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime))
+                Next iflt
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
+            End Try
 
         End Sub
 
 
         Private Sub dumpStats()
 
+            System.Console.WriteLine("Biomass ranges")
             For igrp As Integer = 1 To Me.m_data.NGroups
-                System.Console.Write("Mean=" & Me.m_bioSum.Mean(igrp).ToString & ", Min=" & Me.m_bioSum.Min(igrp).ToString & ", " & "Max=" & Me.m_bioSum.Max(igrp).ToString & ", ")
+                System.Console.Write("Mean=" & Me.m_data.BioSum.Mean(igrp).ToString & ", Min=" & Me.m_data.BioSum.Min(igrp).ToString & ", " & "Max=" & Me.m_data.BioSum.Max(igrp).ToString & ", ")
             Next
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Catch by group ranges")
+            For igrp As Integer = 1 To Me.m_data.NGroups
+                System.Console.Write("Mean=" & Me.m_data.CatchGroupSum.Mean(igrp).ToString & ", Min=" & Me.m_data.CatchGroupSum.Min(igrp).ToString & ", " & "Max=" & Me.m_data.CatchGroupSum.Max(igrp).ToString & ", ")
+            Next
+            System.Console.WriteLine()
+
+
+            System.Console.WriteLine("Catch by fleet ranges")
+            For iflt As Integer = 1 To Me.m_epdata.NumFleet
+                System.Console.Write("Mean=" & Me.m_data.CatchFleetSum.Mean(iflt).ToString & ", Min=" & Me.m_data.CatchFleetSum.Min(iflt).ToString & ", " & "Max=" & Me.m_data.CatchFleetSum.Max(iflt).ToString & ", ")
+            Next
+            System.Console.WriteLine()
 
         End Sub
         Private Sub getEconomicPluginData()
@@ -230,17 +265,18 @@ Namespace MSE
         ''' Sum results of Model run into Mean values
         ''' </summary>
         ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
-        Private Sub SumValues(ByVal TotalValue As Single, ByVal EmployValue As Single, ByVal ManValue As Single, ByVal EcoValue As Single)
+        Private Sub SumValues()
 
-            m_data.sumEmployVal += EmployValue
-            m_data.SumTotVal += TotalValue
-            m_data.sumManVal += ManValue
-            m_data.sumEcoVal += EcoValue
+            m_data.sumEmployVal += Me.m_Search.Employ
+            m_data.SumTotVal += Me.m_Search.totval
+            m_data.sumManVal += Me.m_Search.manvalue
+            m_data.sumEcoVal += Me.m_Search.ecovalue
+
             m_data.sumWeightedValues = m_data.sumWeightedValues + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotalValue / TotValBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployValue / EmployBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValue / ManValueBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValue / EcoValueBase
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / TotValBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / EmployBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / ManValueBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / EcoValueBase
 
         End Sub
 
