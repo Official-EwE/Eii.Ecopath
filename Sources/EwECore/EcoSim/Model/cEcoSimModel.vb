@@ -878,7 +878,7 @@ Public Property PluginManager() As cPluginManager
                         End If
 
                         'Can only predict effort if Not in search mode
-                        Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
+                        '  Debug.Assert(Me.m_search.bInSearch = False, Me.ToString & ".RunModelValue() Can not Predict Sim Effort while in Search!")
 
                         PredictCurrentEffort(itime)
                         SetFtimeFromGear(BB, itime, m_Data.FishTime, True)
@@ -1134,7 +1134,8 @@ Public Property PluginManager() As cPluginManager
             'RelFopt() Effort set by the Fishing Policy search
             'or
             'FishRateGear() user entered fishing effort multilpier or Time Series Forcing data loaded via the applied time series data
-            If Me.m_search.bInSearch Then
+            ' If Me.m_search.bInSearch Then
+            If Me.m_search.SearchMode = eSearchModes.FishingPolicy Then
 
                 'if in a (fishing policy) search then get the Fgear values set by the optimization routine
                 Me.m_search.SetFGear(Fgear, RelFopt, iYear, NumberOfYears)
@@ -4160,9 +4161,8 @@ Public Property PluginManager() As cPluginManager
             'initialize fishing capacities by fleet for dynamic effort model, and
             'set effort dynamic response parameters for simulation
 
-            If m_search.bInSearch Then
-                'If in search mode then do not do this
-                'or any prediction of Effort
+            If m_search.bInSearch And Me.m_search.SearchMode <> eSearchModes.MSE Then
+                'If in search mode then only MSE
                 Exit Sub
             End If
 
