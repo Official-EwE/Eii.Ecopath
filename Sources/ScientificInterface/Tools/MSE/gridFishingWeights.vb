@@ -50,32 +50,39 @@ Public Class gridFishingWeights
 
     Protected Overrides Sub FillData()
 
-        Dim core As cCore = cCore.GetInstance()
-        Dim mse As cMSEManager = Me.m_core.MSEManager
-        If mse Is Nothing Then Exit Sub
+        Try
 
-        Dim group As cCoreInputOutputBase = Nothing
-        Dim fleet As cMSEFleetInput = Nothing
-        ' Dim cell As ICell = Nothing
+            Dim core As cCore = cCore.GetInstance()
+            Dim mse As cMSEManager = Me.m_core.MSEManager
+            If mse Is Nothing Then Exit Sub
 
-        ' For each group
-        For iGroup As Integer = 1 To core.nGroups
+            Dim group As cCoreInputOutputBase = Nothing
+            Dim fleet As cMSEFleetInput = Nothing
+            ' Dim cell As ICell = Nothing
 
-            Me.AddRow()
+            ' For each group
+            For iGroup As Integer = 1 To core.nGroups
 
-            'Get the group info
-            group = core.EcoPathGroupInputs(iGroup)
+                Me.AddRow()
 
-            ' Fleet name As row header
-            Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
-            Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+                'Get the group info
+                group = core.EcoPathGroupInputs(iGroup)
 
-            ' Fleet cells
-            For iFleet As Integer = 1 To core.nFleets
-                fleet = MSE.FleetInputs(iFleet)
-                Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.MSEFleetWeight, group)
+                ' Fleet name As row header
+                Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, 1) = New PropertyRowHeaderCell(group, eVarNameFlags.Name)
+
+                ' Fleet cells
+                For iFleet As Integer = 1 To core.nFleets
+                    fleet = mse.FleetInputs(iFleet)
+                    Me(iGroup, 1 + iFleet) = New PropertyCell(fleet, eVarNameFlags.MSEFleetWeight, group)
+                Next
             Next
-        Next
+
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+
 
     End Sub
 

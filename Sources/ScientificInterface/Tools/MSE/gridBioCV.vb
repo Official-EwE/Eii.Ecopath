@@ -34,17 +34,24 @@ Public Class gridBioCV
     End Sub
 
     Protected Overrides Sub FillData()
-        Dim mse As cMSEManager = Me.m_core.MSEManager
-        If mse Is Nothing Then Exit Sub
+        Try
 
-        For igrp As Integer = 1 To m_core.nLivingGroups
+            Dim mse As cMSEManager = Me.m_core.MSEManager
+            If mse Is Nothing Then Exit Sub
 
-            Me.Rows.Insert(igrp)
+            For igrp As Integer = 1 To m_core.nLivingGroups
 
-            Me(igrp, 0) = New PropertyRowHeaderCell(mse.GroupInputs(igrp), eVarNameFlags.Name)
-            Me(igrp, 1) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSEBioCV)
+                Me.Rows.Insert(igrp)
 
-        Next
+                Me(igrp, 0) = New PropertyRowHeaderCell(mse.GroupInputs(igrp), eVarNameFlags.Name)
+                Me(igrp, 1) = New PropertyCell(mse.GroupInputs(igrp), eVarNameFlags.MSEBioCV)
+
+            Next
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+
+
 
     End Sub
 
