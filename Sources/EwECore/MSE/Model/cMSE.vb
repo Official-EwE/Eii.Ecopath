@@ -128,27 +128,24 @@ Namespace MSE
 
         Public Sub Run()
             Dim itr As Integer
-            Dim PredEffortorg As Boolean
-            Dim ClosedLooporg As Boolean
 
             Try
 
                 CallBack(eCallBackTypes.Started)
-                'save the regulatory flags
-                PredEffortorg = Me.m_esData.PredictSimEffort
-                ClosedLooporg = Me.m_esData.DoClosedLoop
 
                 'turn off regulatory models for initialization
                 Me.m_esData.PredictSimEffort = False
                 Me.m_esData.DoClosedLoop = False
 
-                'init the MSE data
-                Me.InitForRun()
-                Me.m_data.InitForRun()
 
                 'put the search mode to initialization for setting of base values
                 Me.m_Search.SearchMode = eSearchModes.InitializingSearch
                 Me.m_esData.bTimestepOutput = True
+
+                'init the MSE data
+                Me.InitForRun()
+                Me.m_data.InitForRun()
+
                 Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
                 Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
                 If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
@@ -159,10 +156,6 @@ Namespace MSE
 
                 'runs Ecosim and gets the base values
                 Me.setBestTotalValue()
-
-                'set the regulatory models back to there original state once initialization has completed
-                Me.m_esData.PredictSimEffort = PredEffortorg
-                Me.m_esData.DoClosedLoop = ClosedLooporg
 
                 'turn the evaluator on for the trials
                 'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
