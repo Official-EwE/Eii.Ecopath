@@ -359,10 +359,10 @@ Public Class cEcosimDatastructures
     ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
     Public RegDiscard(,) As Single ' gear group
 
-    ''' <summary>Proportion of regulated landings (by gear group)</summary>
+    ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
     Public PropLandedTime(,) As Single
 
-    ''' <summary>Proportion of regulated discards (by gear group)</summary>
+    ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
     Public Propdiscardtime(,) As Single
 
     Public Bestimate() As Single
