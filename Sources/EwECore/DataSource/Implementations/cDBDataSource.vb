@@ -3035,9 +3035,8 @@ Public Class cDBDataSource
             Me.m_db.RollbackTransaction()
         End If
 
-        ' Reload ecosim scenario definitions to update lastsaved data
+        ' Reload ecosim scenario definitions 
         Me.LoadEcosimScenarioDefinitions()
-
         Me.ClearChanged(eCoreComponentType.EcoSim)
 
         Return bSucces
@@ -6034,6 +6033,10 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.SaveEcospaceFleets(idm)
         bSucces = bSucces And Me.SaveEcospaceBasemap(idm)
         bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
+
+        ' Reload ecospace scenario definitions 
+        Me.LoadEcospaceScenarioDefinitions()
+        Me.ClearChanged(eCoreComponentType.EcoSpace)
 
         Return bSucces
 
