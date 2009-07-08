@@ -4763,6 +4763,7 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveEcosimScenario() As Boolean
+
         Dim iScenarioID As Integer = 0
         Dim ds As IEcosimDatasource = Nothing
 
@@ -4772,7 +4773,6 @@ Public Class cCore
 
         ' Overwrite scenario?
         iScenarioID = Me.m_EcoPathData.EcosimScenarioDBID(Me.m_EcoPathData.ActiveEcosimScenario)
-
         Debug.Assert(iScenarioID > 0)
 
         ' Save ok?
@@ -6807,7 +6807,6 @@ Public Class cCore
 
         ' Overwrite scenario?
         iScenarioID = m_EcoPathData.EcospaceScenarioDBID(m_EcoPathData.ActiveEcospaceScenario)
-
         Debug.Assert(iScenarioID > 0)
 
         ' Save ok?
@@ -6826,15 +6825,12 @@ Public Class cCore
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
             ' Report succes
-            SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex))
+            Me.SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex))
             Return True
-        Else
-            ' Restore active scenario ID
-            Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
         End If
 
         ' Report failure
-        SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex), False, _
+        Me.SendEcospaceSaveStateMessage(Me.m_EcoPathData.EcospaceScenarioName(Me.ActiveEcospaceScenarioIndex), False, _
                 My.Resources.CoreMessages.GENERIC_SAVE_RESOLUTION)
 
         Return False
@@ -6869,12 +6865,12 @@ Public Class cCore
                 epd.EcospaceScenarioContact(Me.m_EcoPathData.ActiveEcospaceScenario), _
                 iScenarioID)) Then
 
+            ' Reload scenarios
+            Me.InitEcospaceScenarios()
             ' Update active scenario ID
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
             ' #Yes: invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
-            ' Reload scenarios
-            Me.InitEcospaceScenarios()
             ' Inform the world
             Me.SendEcospaceSaveStateMessage(strName)
             ' Force update
@@ -6883,9 +6879,6 @@ Public Class cCore
             Me.m_StateMonitor.UpdateDataState(DataSource)
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
             Return True
-        Else
-            ' Restore active scenario
-            Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
         End If
 
         ' Report failure
