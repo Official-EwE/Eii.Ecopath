@@ -148,7 +148,6 @@
 '==============================================================================
 
 
-' ToDO: turn this ON one day...
 Option Strict Off
 Option Explicit On
 
@@ -4119,9 +4118,10 @@ Public Property PluginManager() As cPluginManager
             For ig = 1 To m_Data.nGear
                 Ipower = CurrentIncome(ig) ^ m_EPData.Epower(ig)
                 m_Data.FishRateGear(ig, t) = CapTime(ig) * Ipower / (EscalePar(ig) + Ipower)
-                If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
-
+                'jb m_Data.FishRateGear(gear,time) is bounded by MaxEffort() in SetFtimeFromGear()
+                'If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
             Next
+
         End Sub
 
         Sub FindCurrentProfit(ByVal BB() As Single, ByVal t As Integer)
