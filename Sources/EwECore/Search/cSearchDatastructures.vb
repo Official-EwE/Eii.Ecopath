@@ -422,7 +422,7 @@ Public Class cSearchDatastructures
             'Extra Years are only for Fishing policy and MSE search
             'See EwE5 RunModelValue()
             m_ExtraYears = 0
-            If Me.SearchMode = eSearchModes.FishingPolicy Or Me.SearchMode = eSearchModes.MSE Then
+            If Me.SearchMode = eSearchModes.FishingPolicy Or Me.SearchMode = eSearchModes.MSE Or Me.SearchMode = eSearchModes.InitializingSearch Then
                 m_ExtraYears = 20
             End If
 
