@@ -105,10 +105,13 @@ Public Class cMSEDataStructures
     ''' <remarks></remarks>
     Public AssessMethod As eAssessmentMethods
 
-
     Public BioSum As cMSESummaryStats
     Public CatchGroupSum As cMSESummaryStats
     Public CatchFleetSum As cMSESummaryStats
+
+    Public ProfitSum As cMSESummaryStats
+    Public CostSum As cMSESummaryStats
+    Public JobsSum As cMSESummaryStats
 
     Private m_curIter As Integer
 
@@ -172,6 +175,10 @@ Public Class cMSEDataStructures
             Me.BioSum = New cMSESummaryStats(Me, Me.m_core.nGroups)
             Me.CatchGroupSum = New cMSESummaryStats(Me, Me.m_core.nGroups)
             Me.CatchFleetSum = New cMSESummaryStats(Me, Me.m_core.nFleets)
+
+            Me.ProfitSum = New cMSESummaryStats(Me, 1)
+            Me.JobsSum = New cMSESummaryStats(Me, 1)
+            Me.CostSum = New cMSESummaryStats(Me, 1)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -251,6 +258,10 @@ Public Class cMSEDataStructures
         Me.CatchGroupSum.Init()
         Me.CatchFleetSum.Init()
 
+        Me.ProfitSum.Init()
+        Me.CostSum.Init()
+        Me.JobsSum.Init()
+
     End Sub
 
     Public ReadOnly Property NGroups() As Integer
@@ -284,7 +295,7 @@ Public Class cMSESummaryStats
     Public Sub New(ByVal MSEData As cMSEDataStructures, ByVal Count As Integer)
 
         m_mseData = MSEData
-        m_count = Count
+        m_count = Count - 1
 
     End Sub
 
@@ -296,30 +307,31 @@ Public Class cMSESummaryStats
         Next
     End Sub
 
-    Public WriteOnly Property AddValue(ByVal Index As Integer) As Single
-        Set(ByVal value As Single)
-            Me.m_data(eSumIndexes.Mean, Index) += value
-            Me.m_data(eSumIndexes.Min, Index) = Math.Min(Me.m_data(eSumIndexes.Min, Index), value)
-            Me.m_data(eSumIndexes.Max, Index) = Math.Max(Me.m_data(eSumIndexes.Max, Index), value)
-            Me.m_n(Index) += 1
-        End Set
-    End Property
-
+    Public Sub AddValue(ByVal index As Integer, ByVal Value As Single)
+        index -= 1
+        Me.m_data(eSumIndexes.Mean, index) += Value
+        Me.m_data(eSumIndexes.Min, index) = Math.Min(Me.m_data(eSumIndexes.Min, index), Value)
+        Me.m_data(eSumIndexes.Max, index) = Math.Max(Me.m_data(eSumIndexes.Max, index), Value)
+        Me.m_n(index) += 1
+    End Sub
 
     Public ReadOnly Property Mean(ByVal Index As Integer) As Single
         Get
+            Index -= 1
             Return Me.m_data(eSumIndexes.Mean, Index) / Me.m_n(Index)
         End Get
     End Property
 
     Public ReadOnly Property Min(ByVal Index As Integer) As Single
         Get
+            Index -= 1
             Return Me.m_data(eSumIndexes.Min, Index)
         End Get
     End Property
 
     Public ReadOnly Property Max(ByVal Index As Integer) As Single
         Get
+            Index -= 1
             Return Me.m_data(eSumIndexes.Max, Index)
         End Get
     End Property
@@ -327,9 +339,18 @@ Public Class cMSESummaryStats
 
     Public ReadOnly Property Count() As Integer
         Get
-            Return Me.m_count
+            Return Me.m_count + 1
         End Get
     End Property
+
+
+    Public Overrides Function ToString() As String
+        Dim buf As New System.Text.StringBuilder
+        For i As Integer = 0 To Me.m_count
+            buf.Append("Mean=" & Me.m_data(eSumIndexes.Mean, i).ToString & ", Min=" & Me.m_data(eSumIndexes.Min, i).ToString & ", " & "Max=" & Me.m_data(eSumIndexes.Max, i).ToString & ", ")
+        Next
+        Return buf.ToString
+    End Function
 
 
 End Class
