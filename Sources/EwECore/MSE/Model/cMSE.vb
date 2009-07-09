@@ -196,17 +196,29 @@ Namespace MSE
 
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
             'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
-
             Try
 
                 For igrp As Integer = 1 To Me.m_esData.nGroups
-                    Me.m_data.BioSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime))
-                    Me.m_data.CatchGroupSum.AddValue(igrp) = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime))
+                    Me.m_data.BioSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
+                    Me.m_data.CatchGroupSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
                 Next igrp
 
                 For iflt As Integer = 1 To Me.m_esData.nGear
-                    Me.m_data.CatchFleetSum.AddValue(iflt) = Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime))
+                    Me.m_data.CatchFleetSum.AddValue(iflt, Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                 Next iflt
+
+                If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                    Dim d() As EwEPlugin.Data.IPluginData
+                    d = Me.m_pluginManager.GetData(GetType(IEconomicData))
+
+                    If TypeOf d Is IEconomicData Then
+                        Dim ecoData As IEconomicData = DirectCast(d(0), IEconomicData)
+                        Me.m_data.ProfitSum.AddValue(1, ecoData.Profit)
+                        Me.m_data.JobsSum.AddValue(1, ecoData.NumberOfJobsTotal)
+                        Me.m_data.CostSum.AddValue(1, ecoData.Cost)
+                    End If
+
+                End If
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
@@ -218,22 +230,27 @@ Namespace MSE
         Private Sub dumpStats()
 
             System.Console.WriteLine("Biomass ranges")
-            For igrp As Integer = 1 To Me.m_data.NGroups
-                System.Console.Write("Mean=" & Me.m_data.BioSum.Mean(igrp).ToString & ", Min=" & Me.m_data.BioSum.Min(igrp).ToString & ", " & "Max=" & Me.m_data.BioSum.Max(igrp).ToString & ", ")
-            Next
+            System.Console.Write(Me.m_data.BioSum.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Catch by group ranges")
-            For igrp As Integer = 1 To Me.m_data.NGroups
-                System.Console.Write("Mean=" & Me.m_data.CatchGroupSum.Mean(igrp).ToString & ", Min=" & Me.m_data.CatchGroupSum.Min(igrp).ToString & ", " & "Max=" & Me.m_data.CatchGroupSum.Max(igrp).ToString & ", ")
-            Next
+            System.Console.Write(Me.m_data.CatchGroupSum.ToString)
             System.Console.WriteLine()
 
-
             System.Console.WriteLine("Catch by fleet ranges")
-            For iflt As Integer = 1 To Me.m_epdata.NumFleet
-                System.Console.Write("Mean=" & Me.m_data.CatchFleetSum.Mean(iflt).ToString & ", Min=" & Me.m_data.CatchFleetSum.Min(iflt).ToString & ", " & "Max=" & Me.m_data.CatchFleetSum.Max(iflt).ToString & ", ")
-            Next
+            System.Console.Write(Me.m_data.CatchFleetSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Profit")
+            System.Console.Write(Me.m_data.ProfitSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Cost")
+            System.Console.Write(Me.m_data.CostSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Jobs")
+            System.Console.Write(Me.m_data.JobsSum.ToString)
             System.Console.WriteLine()
 
         End Sub
