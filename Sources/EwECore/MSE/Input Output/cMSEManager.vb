@@ -310,7 +310,6 @@ Namespace MSE
 
                 End Try
 
-                'm_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
                 m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
                 m_parameters.ResetStatusFlags()
