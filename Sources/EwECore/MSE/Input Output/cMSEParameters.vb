@@ -212,14 +212,18 @@ Public Class cMSEParameters
         End Set
     End Property
 
-    'Public Property isEconomicAvailable() As Boolean
-    '    Get
-    '        Return CBool(GetVariable(eVarNameFlags.isEconomicAvailable))
-    '    End Get
 
-    '    Set(ByVal value As Boolean)
-    '        SetVariable(eVarNameFlags.isEconomicAvailable, value)
-    '    End Set
-    'End Property
+
+    Public Property UseEconomicPluginStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
+        End Get
+
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
+        End Set
+    End Property
+
+
 
 End Class
