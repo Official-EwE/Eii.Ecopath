@@ -49,6 +49,7 @@ Public Class frmMSE
     Dim m_MSE As cMSEManager
 
     Private m_fpNTrials As cPropertyFormatProvider
+    Private m_fpUsePlugin As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
     Private m_sg As cStyleGuide = Nothing
@@ -73,6 +74,8 @@ Public Class frmMSE
         Me.m_MSE = Me.m_core.MSEManager
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.txNTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
+        Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+
 
         Me.m_gridObjectiveWeights = New gridSearchObjectivesWeight(Me.m_core.FishingPolicyManager)
         Me.m_gridGroupObjectives = New gridSearchObjectivesGroup(Me.m_core.FishingPolicyManager)
@@ -100,9 +103,6 @@ Public Class frmMSE
 
         Me.tbObjectives.TabPages("pgEcoObjectives").Controls.Add(Me.m_gridGroupObjectives)
         Me.m_gridGroupObjectives.Dock = DockStyle.Fill
-
-
-
 
         Me.LoadGraphPanes()
 

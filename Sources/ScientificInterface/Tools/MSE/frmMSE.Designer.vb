@@ -47,6 +47,7 @@ Partial Class frmMSE
         Me.pgRisk = New System.Windows.Forms.TabPage
         Me.pgPerformance = New System.Windows.Forms.TabPage
         Me.Label2 = New System.Windows.Forms.Label
+        Me.ckPlugin = New System.Windows.Forms.CheckBox
         Me.spInputOutput.Panel1.SuspendLayout()
         Me.spInputOutput.Panel2.SuspendLayout()
         Me.spInputOutput.SuspendLayout()
@@ -59,7 +60,7 @@ Partial Class frmMSE
         '
         'btRun
         '
-        Me.btRun.Location = New System.Drawing.Point(250, 43)
+        Me.btRun.Location = New System.Drawing.Point(12, 38)
         Me.btRun.Name = "btRun"
         Me.btRun.Size = New System.Drawing.Size(93, 20)
         Me.btRun.TabIndex = 0
@@ -70,14 +71,14 @@ Partial Class frmMSE
         '
         Me.prgProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.prgProgress.Location = New System.Drawing.Point(4, 68)
+        Me.prgProgress.Location = New System.Drawing.Point(4, 73)
         Me.prgProgress.Name = "prgProgress"
-        Me.prgProgress.Size = New System.Drawing.Size(1012, 19)
+        Me.prgProgress.Size = New System.Drawing.Size(1012, 14)
         Me.prgProgress.TabIndex = 1
         '
         'txNTrials
         '
-        Me.txNTrials.Location = New System.Drawing.Point(111, 42)
+        Me.txNTrials.Location = New System.Drawing.Point(265, 47)
         Me.txNTrials.Name = "txNTrials"
         Me.txNTrials.Size = New System.Drawing.Size(63, 20)
         Me.txNTrials.TabIndex = 2
@@ -85,7 +86,7 @@ Partial Class frmMSE
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 45)
+        Me.Label1.Location = New System.Drawing.Point(166, 50)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(80, 13)
         Me.Label1.TabIndex = 3
@@ -241,12 +242,13 @@ Partial Class frmMSE
                     Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.panelCV.CustomSort = False
+        Me.panelCV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.panelCV.FixedColumnWidths = True
         Me.panelCV.FocusStyle = SourceGrid2.FocusStyle.None
         Me.panelCV.GridToolTipActive = True
-        Me.panelCV.Location = New System.Drawing.Point(3, 38)
+        Me.panelCV.Location = New System.Drawing.Point(0, 0)
         Me.panelCV.Name = "panelCV"
-        Me.panelCV.Size = New System.Drawing.Size(515, 402)
+        Me.panelCV.Size = New System.Drawing.Size(521, 452)
         Me.panelCV.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -331,11 +333,22 @@ Partial Class frmMSE
         Me.Label2.Text = "Inputs and Outputs"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'ckPlugin
+        '
+        Me.ckPlugin.AutoSize = True
+        Me.ckPlugin.Location = New System.Drawing.Point(167, 24)
+        Me.ckPlugin.Name = "ckPlugin"
+        Me.ckPlugin.Size = New System.Drawing.Size(149, 17)
+        Me.ckPlugin.TabIndex = 9
+        Me.ckPlugin.Text = "Use plugin economic data"
+        Me.ckPlugin.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1028, 595)
+        Me.Controls.Add(Me.ckPlugin)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.spInputOutput)
         Me.Controls.Add(Me.lbRun)
@@ -379,4 +392,5 @@ Partial Class frmMSE
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents panelCV As gridBioCV
     Friend WithEvents PanelFleetWeight As gridFishingWeights
+    Friend WithEvents ckPlugin As System.Windows.Forms.CheckBox
 End Class
