@@ -77,6 +77,16 @@ Namespace MSE
         Private TotValBase As Single, EmployBase As Single
 
         Private m_pluginManager As cPluginManager
+        Private m_bUsePluginData As Boolean
+
+        Private ReadOnly Property UsePlugin() As Boolean
+            Get
+                If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                    Return True
+                End If
+                Return False
+            End Get
+        End Property
 
         Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
 
@@ -171,6 +181,8 @@ Namespace MSE
 
                     Me.m_Ecosim.Run()
 
+                    Me.summarizeEconomicData()
+
                     'use Economic data from the ValueChain or any other plugin
                     Me.getEconomicPluginData()
 
@@ -193,10 +205,52 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' A single trial has completed
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub summarizeEconomicData()
+
+            If Not Me.UsePlugin Then
+
+                Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
+                For iflt As Integer = 0 To Me.m_esData.nGear
+
+                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
+                        sumValue += Me.m_esData.ResultsSumValueByGear(iflt, it)
+                    Next
+                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
+                        sumEffort += Me.m_esData.ResultsEffort(iflt, it)
+                    Next
+
+                    sumCost += Me.m_Search.NetCost(iflt)
+
+                    ' profit
+                    '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
+                    sumProfit = sumValue * (Me.m_epdata.cost(iflt, eCostIndex.Profit) / 100) * sumEffort
+
+                    'TEMP just for something to work with until we have ECost up and running
+                    '[value of catch] * [Jobs(fleet) from the search forms]
+                    sumJobs = sumValue * Me.m_Search.Jobs(iflt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+
+                Next iflt
+
+                Me.m_data.ProfitSum.AddValue(1, Me.m_Search.totval)
+                Me.m_data.JobsSum.AddValue(1, sumJobs)
+                Me.m_data.CostSum.AddValue(1, sumCost)
+
+
+            End If
+        End Sub
+
 
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
             'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
             Try
+
+                If Me.m_Search.SearchMode <> eSearchModes.MSE Then
+                    Exit Sub
+                End If
 
                 For igrp As Integer = 1 To Me.m_esData.nGroups
                     Me.m_data.BioSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
@@ -207,11 +261,11 @@ Namespace MSE
                     Me.m_data.CatchFleetSum.AddValue(iflt, Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                 Next iflt
 
-                If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                If Me.UsePlugin Then
                     Dim d() As EwEPlugin.Data.IPluginData
                     d = Me.m_pluginManager.GetData(GetType(IEconomicData))
 
-                    If TypeOf d Is IEconomicData Then
+                    If TypeOf d(0) Is IEconomicData Then
                         Dim ecoData As IEconomicData = DirectCast(d(0), IEconomicData)
                         Me.m_data.ProfitSum.AddValue(1, ecoData.Profit)
                         Me.m_data.JobsSum.AddValue(1, ecoData.NumberOfJobsTotal)
@@ -269,6 +323,8 @@ Namespace MSE
             Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
 
         End Sub
+
+
 
 
         ''' <summary>
