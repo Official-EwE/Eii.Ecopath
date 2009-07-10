@@ -159,7 +159,7 @@ Public Class cSearchDatastructures
     Public ValCatch(,) As Single
 
     ''' <summary>Net cost</summary>
-    ''' <remarks></remarks>
+    ''' <remarks>NetCost(nfleets)</remarks>
     Public NetCost() As Single
 
     ''' <summary>Value of catch gear</summary>
