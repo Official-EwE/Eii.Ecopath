@@ -1,174 +1,4 @@
-'==============================================================================
-'
-' $Log: cDBDataSource.vb,v $
-' Revision 1.55  2009/06/29 01:39:40  jeroens
-' Added cDBUpdate, update 6.0.06002
-'
-' Revision 1.54  2009/05/25 13:22:50  jeroens
-' Added DiscardChanges
-'
-' Revision 1.53  2009/05/22 22:31:06  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.52  2009/05/06 12:19:57  jeroens
-' Renamed key datatype enum
-'
-' Revision 1.51  2009/04/27 02:39:57  jeroens
-' Discard unsaved changes when switching scenarios
-'
-' Revision 1.50  2009/04/16 01:47:49  jeroens
-' Stanza brute delete eradicated Stanza hatchery forcing assignments
-'
-' Revision 1.49  2009/04/07 17:27:38  jeroens
-' Fixed exsiting t0 defaults
-'
-' Revision 1.48  2009/04/07 13:58:56  jeroens
-' Fixed issue 608
-'
-' Revision 1.47  2009/04/07 13:15:34  jeroens
-' Fixed bug in storing applied med fn / forcing fn
-'
-' Revision 1.46  2009/04/06 15:53:39  jeroens
-' PSD data types safe casted
-'
-' Revision 1.45  2009/04/05 17:58:37  jeroens
-' useVarPQ no longer stored
-'
-' Revision 1.44  2009/04/04 01:40:08  villyc
-' varPQ was being set to true when loading Ecosim scenario, should be false.
-'
-' Revision 1.43  2009/04/03 14:32:04  jeroens
-' Forcing TS added per month
-'
-' Revision 1.42  2009/04/02 21:03:27  jeroens
-' Reworked PSD
-'
-' Revision 1.41  2009/04/02 18:53:14  jeroens
-' Ok, just disabled climate type saving until a DB update is available
-'
-' Revision 1.40  2009/04/02 18:50:26  jeroens
-' PSD not saved for now
-'
-' Revision 1.39  2009/03/31 21:34:23  joeh
-' Remove LatNWCorner and LatSECorner. Add ClimateType
-'
-' Revision 1.38  2009/03/27 20:48:13  jeroens
-' IncludePSD no longer stored in DB
-'
-' Revision 1.37  2009/03/26 17:49:55  jeroens
-' Fixed confusion between rate and effort shape names - part II
-'
-' Revision 1.36  2009/03/26 15:49:48  jeroens
-' Added CanCompact
-'
-' Revision 1.35  2009/03/24 03:12:48  jeroens
-' Fixed model save issues on PSD FK
-'
-' Revision 1.34  2009/03/18 15:29:11  jeroens
-' Read/write PSD data
-' Cleaned up invalid code
-'
-' Revision 1.33  2009/03/18 13:27:07  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.32  2009/03/17 18:19:03  jeroens
-' Time series cleared when ecosim scenario is loaded
-'
-' Revision 1.31  2009/03/04 03:58:29  jeroens
-' Fixed major bug: RemoveStanza was reloading group info - bypassing a database lock
-'
-' Revision 1.30  2009/03/03 01:42:55  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.29  2009/03/02 20:09:35  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.28  2009/03/01 19:38:49  jeroens
-' 'External' data no longer tracked by datasource; it really has no business here
-'
-' Revision 1.27  2009/02/28 00:16:09  joeh
-' Added PSD foundation
-'
-' Revision 1.26  2009/02/27 07:57:09  jeroens
-' Changed vbK placement
-'
-' Revision 1.25  2009/02/26 21:51:32  jeroens
-' vbK read from EcopathGroup once again for PSD logic
-'
-' Revision 1.24  2009/02/26 00:56:48  jeroens
-' Added DB compact
-' Model dirty flag logic expanded to encompass all relevant core component types
-'
-' Revision 1.23  2009/02/25 08:29:29  jeroens
-' Fixed bug 589
-'
-' Revision 1.22  2009/02/25 07:18:41  jeroens
-' Fixed crash on reading forcepoints
-'
-' Revision 1.21  2009/02/23 03:21:06  jeroens
-' Database changed for core and db message types
-'
-' Revision 1.20  2009/02/08 17:35:01  jeroens
-' Can now force datasource type when opening a new source
-'
-' Revision 1.19  2009/01/29 16:10:46  jeroens
-' Moved cEwEDatabase.eAccessTypes to shared enums
-'
-' Revision 1.18  2009/01/16 23:51:17  jeroens
-' Datasource no longer maitains data state by datatype, but by eCoreComponentType
-'
-' Revision 1.17  2009/01/16 18:30:12  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.16  2009/01/14 20:18:25  jeroens
-' Fixed groups cascading delete block on EcosimScenarioQuota
-'
-' Revision 1.15  2008/11/27 18:17:18  joeb
-' Moved Flimit() back to Search data
-'
-' Revision 1.14  2008/11/26 12:21:30  jeroens
-' Explicity handled exception when handling new Ecosim groups
-'
-' Revision 1.13  2008/11/21 16:21:59  jeroens
-' Fixed bug 544
-'
-' Revision 1.12  2008/11/10 19:28:54  jeroens
-' Fixed MAJOR bug on identifying Ecospace scenario IDs
-'
-' Revision 1.11  2008/11/06 01:07:05  jeroens
-' Fixed bug on deleting Ecosim fleets
-'
-' Revision 1.10  2008/11/02 02:10:00  jeroens
-' Pruned history
-'
-' Revision 1.9  2008/10/29 17:14:31  jeroens
-' Fixed bug 564
-'
-' Revision 1.8  2008/10/10 23:22:20  villyc
-' *** empty log message ***
-'
-' Revision 1.7  2008/10/09 17:21:03  jeroens
-' Moved discard mort data from Ecosim to Ecopath
-'
-' Revision 1.6  2008/10/07 19:19:14  jeroens
-' Proportion of discards mortality is moved to Ecopath in preparation for pending change
-'
-' Revision 1.5  2008/10/07 00:38:45  jeroens
-' Ecosim prey/pred ff table flipped
-'
-' Revision 1.4  2008/10/06 16:33:12  jeroens
-' Flipped Vulnerabilities matrix in database
-'
-' Revision 1.3  2008/10/03 23:08:22  jeroens
-' Added cEcosimFisheriesRegulations
-'
-' Revision 1.2  2008/10/03 19:40:32  jeroens
-' Sim quota data loaded and saved
-'
-' Revision 1.1  2008/09/26 07:30:14  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
@@ -180,6 +10,8 @@ Imports System.Text
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -3120,7 +2952,11 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
-            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
+            ' Delete 'soft links': database links forged by database updates
+            '    DB update 6.04022
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iDBID))
+            ' Delete actual scenario
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iDBID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iDBID))
             bSucces = False
@@ -3531,7 +3367,14 @@ Public Class cDBDataSource
                 Debug.Assert(drow IsNot Nothing, String.Format("Cannot find ecosim group {0} (path group {1}) for scenario {2}", ecosimDS.GroupDBID(i), ecopathDS.GroupDBID(i), iScenarioID))
 
                 ' Store ecosim group ID mapping now we know it
-                idm.Add(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(i), CInt(drow("GroupID")))
+                ' JS 12Jul09: group mapping is stored by ECOPATH group ID since this is the only constant
+                '             factor while appending Ecosim scenarios. Above, CreateRepairEcosimGroup is
+                '             called to complement missing Ecosim groups, which will create the groups
+                '             in the database for a given Ecosim scenario but this will not update the
+                '             ecosim datastructures. This caused the ID mapping context to be populated
+                '             with Ecosim IDs for groups from the previous scenario, NOT the new scenario,
+                '             thus creating Ecosim scenarios what were bugged right from the start.
+                idm.Add(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(i), CInt(drow("GroupID")))
 
                 drow.BeginEdit()
                 drow("pbmaxs") = ecosimDS.PBmaxs(i)
@@ -3570,10 +3413,14 @@ Public Class cDBDataSource
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim bNewRow As Boolean = False
+        Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = True
         Dim objKeys() As Object = {Nothing, Nothing}
 
-        objKeys(0) = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        ' Obtain mapped scenario ID
+        iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+        objKeys(0) = iScenarioID
 
         Try
             writer = Me.m_db.GetWriter("EcosimScenarioFleet")
@@ -3628,8 +3475,11 @@ Public Class cDBDataSource
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim strSQL As String = ""
-        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = True
+
+        ' Obtain mapped scenario ID
+        iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
         strSQL = String.Format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
         bSucces = Me.m_db.Execute(strSQL)
@@ -3643,7 +3493,7 @@ Public Class cDBDataSource
                     ' Populate key
                     drow("ScenarioID") = iScenarioID
                     drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
-                    drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                    drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                     ' Write dynamic bit
                     drow("Quota") = ecosimDS.Quota(iFleet, iGroup)
                     ' Add new row to the writer
@@ -4528,8 +4378,8 @@ Public Class cDBDataSource
                 For iPrey = 1 To ecosimDS.nGroups
 
                     drow = writer.NewRow()
-                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
-                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
+                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
+                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
                     drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
                     drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
                     writer.AddRow(drow)
@@ -4573,8 +4423,8 @@ Public Class cDBDataSource
                             If (iShape > 0) Then
                                 ' Save assignment
                                 drow = writer.NewRow()
-                                drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredator))
-                                drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
+                                drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
+                                drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
                                 drow("ScenarioID") = idm.GetID(eDataTypes.EcoSimScenario, iScenarioID)
                                 If (ecosimDS.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
                                     drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
@@ -4607,13 +4457,15 @@ Public Class cDBDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+        Dim iScenarioID As Integer = 0
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 
-        Try
+        ' Obtain mapped scenario ID
+        iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
+        Try
             Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcosimScenarioshapeMedWeightsGroup")
             For iGroup As Integer = 1 To ecosimDS.nGroups
@@ -4622,7 +4474,7 @@ Public Class cDBDataSource
                         drow = writer.NewRow()
                         drow("ScenarioID") = iScenarioID
                         ' Ecosim groups unique per scenario: map this
-                        drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                        drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                         drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
                         drow("MedWeights") = ecosimDS.MedWeights(iGroup, iShape)
                         writer.AddRow(drow)
@@ -6149,6 +6001,11 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
+            ' Delete 'soft links'
+            '    Update 6.04005
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
+            ' Delete scenario
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
@@ -8467,6 +8324,10 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         Try
+            ' Delete 'soft links'
+            '    DB update 6.036!
+            Me.m_db.Execute(String.Format("DELETE FROM EcotracerScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+            ' Delete scenario
             Me.m_db.Execute(String.Format("DELETE FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
         Catch ex As Exception
             Me.LogMessage(String.Format("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
