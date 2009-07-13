@@ -949,7 +949,8 @@ Public Property PluginManager() As cPluginManager
 
                     'Compute time step results if the calling routine set bTimestepOutput to True
                     If m_Data.bTimestepOutput Then
-                        ProcessTimeStep(itime, ipct)
+                        Me.PopulateResults(itime, ipct)
+                        Me.FireOnTimeStep(itime)
                     End If
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
@@ -1642,6 +1643,20 @@ Public Property PluginManager() As cPluginManager
             '  m_search.clearBaseYear() 'sets baseyear to zero
         End Sub
 
+
+        Private Sub FireOnTimeStep(ByVal iTime As Integer)
+
+            If m_ProgressDelegate IsNot Nothing Then
+                Try
+                    m_ProgressDelegate(iTime, Me.m_Results)
+                Catch ex As Exception
+                    'swallow any errors so ecosim can keep running
+                    cLog.Write(ex)
+                    Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
+                End Try
+            End If
+        End Sub
+
         ''' <summary>
         ''' Processes the current EcoSim Time step
         ''' </summary>
@@ -1651,7 +1666,7 @@ Public Property PluginManager() As cPluginManager
         ''' To package/summarize data from the model into an cEcoSimResults object which 
         ''' then gets passed to the Delegate function (mProgressDelegate) that was initialized in InitMultiThreading(...)
         ''' </remarks>
-        Private Sub ProcessTimeStep(ByVal iTime As Integer, ByVal imonth As Integer)
+        Private Sub PopulateResults(ByVal iTime As Integer, ByVal imonth As Integer)
             Try
                 Dim ist As Integer
                 Dim ia As Integer
@@ -1813,15 +1828,17 @@ Public Property PluginManager() As cPluginManager
                     Array.Clear(BrecYear, 0, m_Data.nGroups)
                 End If
 
-                If m_ProgressDelegate IsNot Nothing Then
-                    Try
-                        m_ProgressDelegate(iTime, m_Results)
-                    Catch ex As Exception
-                        'swallow the error so ecosim can keep running
-                        cLog.Write(ex)
-                        Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
-                    End Try
-                End If
+                'Moved to FireOnTimeStep
+                'this was done so that the last time the happens during a timestep is calling the timestep delegate
+                'If m_ProgressDelegate IsNot Nothing Then
+                '    Try
+                '        m_ProgressDelegate(iTime, m_Results)
+                '    Catch ex As Exception
+                '        'swallow the error so ecosim can keep running
+                '        cLog.Write(ex)
+                '        Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
+                '    End Try
+                'End If
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -1848,8 +1865,8 @@ Public Property PluginManager() As cPluginManager
 
             If m_EPData Is Nothing Then
                 nMissing += 1
-                msg = msg + vbNewLine + "Model not initialized properly: The property EcopathParameters() must be set before  is called."
-                cLog.Write(Me.ToString & "Model not initialized properly: The property EcopathParameters() must be set before  is called.")
+                msg = msg + vbNewLine + "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called."
+                cLog.Write(Me.ToString & "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called.")
             End If
 
             If m_Data Is Nothing Then
