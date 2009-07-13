@@ -79,6 +79,8 @@ Namespace MSE
         Private m_pluginManager As cPluginManager
         Private m_bUsePluginData As Boolean
 
+        Private WithEvents EconomicData As cEconomicDataSource
+
         Private ReadOnly Property UsePlugin() As Boolean
             Get
                 If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
@@ -97,6 +99,8 @@ Namespace MSE
             Me.m_esData = m_Ecosim.m_Data
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
+
+            Me.EconomicData = cEconomicDataSource.getInstance()
 
         End Sub
 
@@ -211,6 +215,7 @@ Namespace MSE
         ''' <remarks></remarks>
         Private Sub summarizeEconomicData()
 
+            'ToDo_jb cMSE.summarizeEconomicData() figure out how to compute Economic data from the Ecosim data
             If Not Me.UsePlugin Then
 
                 Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
@@ -261,18 +266,6 @@ Namespace MSE
                     Me.m_data.CatchFleetSum.AddValue(iflt, Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                 Next iflt
 
-                If Me.UsePlugin Then
-                    Dim d() As EwEPlugin.Data.IPluginData
-                    d = Me.m_pluginManager.GetData(GetType(IEconomicData))
-
-                    If TypeOf d(0) Is IEconomicData Then
-                        Dim ecoData As IEconomicData = DirectCast(d(0), IEconomicData)
-                        Me.m_data.ProfitSum.AddValue(1, ecoData.Profit)
-                        Me.m_data.JobsSum.AddValue(1, ecoData.NumberOfJobsTotal)
-                        Me.m_data.CostSum.AddValue(1, ecoData.Cost)
-                    End If
-
-                End If
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
@@ -586,7 +579,29 @@ Namespace MSE
             Normal = CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
         End Function
 
-    End Class
+        Private Sub onEconomicData(ByVal EconomicData As EwEUtils.Core.IEconomicData) Handles EconomicData.onEconomicData
 
+            Try
+
+                'Is there plugin economic data
+                If Me.UsePlugin Then
+                    'Plugin economic data from the ValueChain pluging is sent out every timestep
+                    'Store the data in cMSESUmmaryStats objects
+
+                    Me.m_data.ProfitSum.AddValue(1, EconomicData.Profit)
+                    Me.m_data.JobsSum.AddValue(1, EconomicData.NumberOfJobsTotal)
+                    Me.m_data.CostSum.AddValue(1, EconomicData.Cost)
+
+                End If
+
+            Catch ex As Exception
+                'make sure all exceptions are handled here and not back in the cEconomicDataSource object
+                System.Console.WriteLine(Me.ToString & ".onEconomicData() Error: " & ex.Message)
+                cLog.Write(ex)
+            End Try
+
+        End Sub
+
+    End Class
 
 End Namespace
