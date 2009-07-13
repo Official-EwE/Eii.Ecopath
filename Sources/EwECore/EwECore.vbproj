@@ -288,6 +288,7 @@
     <Compile Include="MSE\Input Output\cMSEManager.vb" />
     <Compile Include="MSE\Input Output\cMSEOutput.vb" />
     <Compile Include="MSE\Input Output\cMSEParameters.vb" />
+    <Compile Include="Core\cEconomicDataSource.vb" />
     <Compile Include="MSE\Model\cMSE.vb" />
     <Compile Include="MSE\Model\cMSEDataStructures.vb" />
     <Compile Include="Particle size distribution\Input Output\cPSDParameters.vb" />
