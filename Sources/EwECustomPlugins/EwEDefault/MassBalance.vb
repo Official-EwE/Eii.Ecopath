@@ -18,6 +18,7 @@ Public Class MassBalance
     Private NoBQB() As Integer
     Private AUL(,) As Single
 
+
     'private copy of public Properties
     Private m_in_estimation_loop As Integer 'currently in the parameter estimation loop 0 = false 1 = true
     Private m_missing_param As Integer 'exit parameter estimation sub (ParamEstimate(...)) because number of missing parameter > 2 
