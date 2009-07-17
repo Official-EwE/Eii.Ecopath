@@ -3,7 +3,6 @@ Option Strict Off
 Imports EwECore
 
 
-
 Public Class MassBalance
 
     Private m_core As cCore = Nothing
