@@ -27,6 +27,7 @@ Public Class MassBalance
         Me.m_core = core
     End Sub
 
+
     Public Function Calculate(ByVal p_EcoPathDataStructures As Object, ByVal p_EstimateFor As Integer) As eStatusFlags
 
         ' Sanity checks
@@ -132,6 +133,7 @@ LoopCalc:
                 End If
 
             Next
+
 
             If noMissing > 0 Then              ' else No GIM
 
