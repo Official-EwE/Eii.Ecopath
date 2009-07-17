@@ -1,18 +1,3 @@
-'==============================================================================
-'
-' $Log: MassBalance.vb,v $
-' Revision 1.1  2008/09/26 07:30:36  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2007/03/10 15:26:23  joeb
-' Move EwECustomPlugins to EwEDefault
-' Added EwENetworkAnalysis
-'
-' Revision 1.1  2006/08/09 19:33:39  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict Off
 
 Imports EwECore
