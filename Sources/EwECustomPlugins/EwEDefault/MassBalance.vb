@@ -1,3 +1,4 @@
+
 Option Strict Off
 
 Imports EwECore
