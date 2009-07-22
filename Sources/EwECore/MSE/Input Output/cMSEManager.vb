@@ -411,6 +411,16 @@ Namespace MSE
         End Sub
 
 
+
+        Private Sub fireSendMessages(ByVal obj As Object)
+            Try
+                Me.m_core.Messages.sendAllMessages()
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & " Error sending message to interface.")
+            End Try
+        End Sub
+
+
         Private Sub fireCallBack(ByVal obj As Object)
             Try
                 Debug.Assert(m_SyncOb IsNot Nothing And m_InterfaceCallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
@@ -444,9 +454,25 @@ Namespace MSE
                     'clear the signal state of the thread this will release any threads that called Wait()
                     Me.ReleaseWait()
 
+                    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEOutput))
+                    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupOutputs))
+
+
                     Me.dumpOutput()
 
             End Select
+
+            Try
+                'make sure something didn't screwup
+                Debug.Assert(m_SyncOb IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                'Marshall the call the cCore.Messages.sendAllMessages() onto the cores thread
+                m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireSendMessages), Nothing)
+            Catch ex As Exception
+
+            End Try
+
+
+
 
         End Sub
 
