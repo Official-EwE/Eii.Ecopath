@@ -16,7 +16,7 @@ Public Class cMSEGroupOutput
         Dim val As cValue
         Dim meta As cVariableMetaData
 
-        m_dataType = eDataTypes.MSEOutput
+        m_dataType = eDataTypes.MSEGroupOutputs
         m_coreComponent = eCoreComponentType.MSE
         Me.DBID = GroupDBID
         Me.Index = groupIndex
@@ -32,16 +32,16 @@ Public Class cMSEGroupOutput
         'Risk
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSELowerRiskPercent, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Integer, eVarNameFlags.MSELowerRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Integer, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
 
         meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBiomass, eStatusFlags.Null, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBiomass))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBiomass, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBiomass))
         m_values.Add(val.varName, val)
 
     End Sub
@@ -181,44 +181,44 @@ Public Class cMSEOutput
 
         'Total values
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEEconomicValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEEconomicValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEEcologicalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEEcologicalValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEEmployValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEEmployValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMandatedValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEMandatedValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         'Mean values
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEWeightedTotalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEWeightedTotalValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMeanEconomicValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEMeanEconomicValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMeanEcologicalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEMeanEcologicalValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMeanEmployValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEMeanEmployValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEMeanMandatedValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEMeanMandatedValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.MSEBestTotalValue, eStatusFlags.Null, eValueTypes.Sng, meta)
+        val = New cValue(New Single, eVarNameFlags.MSEBestTotalValue, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
         m_values.Add(val.varName, val)
 
     End Sub
