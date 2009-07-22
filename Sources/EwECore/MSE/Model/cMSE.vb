@@ -42,6 +42,8 @@ Imports EwEPlugin
 
 Namespace MSE
 
+#Region "Public definitions"
+
     Public Enum eCallBackTypes
         Started
         RunCompleted
@@ -51,15 +53,18 @@ Namespace MSE
 
     Public Delegate Sub MSECallBackDelegate(ByVal CallBackType As eCallBackTypes)
 
-    'ToDo_jb MSE How does the Fishing Policy Search integrate with the MSE
-    'ToDo_jb MSE Make sure all public vars need to be public
-    'ToDo_jb MSE sort out the initialization
+#End Region
+
+#Region "MSE Class"
 
     ''' <summary>
     ''' Management Strategy Evaluation
     ''' </summary>
     ''' <remarks>This was the Closed Loop Simulation in EwE5</remarks>
     Public Class cMSE
+
+#Region "Private data"
+
 
         Private m_data As cMSEDataStructures
         Private m_Ecosim As Ecosim.cEcoSimModel
@@ -81,6 +86,12 @@ Namespace MSE
 
         Private WithEvents EconomicData As cEconomicDataSource
 
+#End Region
+
+#Region "Modeling code"
+
+#Region "Private Properties"
+
         Private ReadOnly Property UsePlugin() As Boolean
             Get
                 If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
@@ -89,6 +100,10 @@ Namespace MSE
                 Return False
             End Get
         End Property
+
+#End Region
+
+#Region "Initialization and Connection"
 
         Public Sub Init(ByRef MSEData As cMSEDataStructures, ByRef Ecosim As Ecosim.cEcoSimModel, ByRef SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
 
@@ -140,204 +155,6 @@ Namespace MSE
 
         End Sub
 
-        Public Sub Run()
-            Dim itr As Integer
-
-            Try
-
-                CallBack(eCallBackTypes.Started)
-
-                'turn off regulatory models for initialization
-                Me.m_esData.PredictSimEffort = False
-                Me.m_esData.DoClosedLoop = False
-
-
-                'put the search mode to initialization for setting of base values
-                Me.m_Search.SearchMode = eSearchModes.InitializingSearch
-                Me.m_esData.bTimestepOutput = True
-
-                'init the MSE data
-                Me.InitForRun()
-                Me.m_data.InitForRun()
-
-                Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
-                Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
-                If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
-                Me.m_Search.setBaseYearEffort(Me.m_esData)
-
-                'sets MeanEmploy, MeanVal, MeanManVal, MeanEcoVal, MeanTotalValue
-                Me.SetBaseValues()
-
-                'runs Ecosim and gets the base values
-                Me.setBestTotalValue()
-
-                'turn the evaluator on for the trials
-                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
-                Me.m_Search.SearchMode = eSearchModes.MSE
-
-                For itr = 1 To m_data.NTrials
-
-                    m_data.CurrentIteration = itr
-                    Me.CallBack(eCallBackTypes.IterationStarted)
-
-                    'Set MSE data back to initial values for a new run
-                    m_data.InitForTrial()
-
-                    Me.m_Ecosim.Run()
-
-                    Me.summarizeEconomicData()
-
-                    'use Economic data from the ValueChain or any other plugin
-                    Me.getEconomicPluginData()
-
-                    Me.SumValues()
-                    Me.CallBack(eCallBackTypes.IterationCompleted)
-
-                Next
-
-                'mean values are computed by the manager from the sums
-                '      Me.getMeanValues(m_data.CurrentIteration)
-
-                Me.dumpStats()
-
-                CallBack(eCallBackTypes.RunCompleted)
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Throw New ApplicationException(Me.ToString & ".Run() Error: " & ex.Message)
-            End Try
-
-        End Sub
-
-        ''' <summary>
-        ''' A single trial has completed
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub summarizeEconomicData()
-
-            'ToDo_jb cMSE.summarizeEconomicData() figure out how to compute Economic data from the Ecosim data
-            If Not Me.UsePlugin Then
-
-                Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
-                For iflt As Integer = 0 To Me.m_esData.nGear
-
-                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
-                        sumValue += Me.m_esData.ResultsSumValueByGear(iflt, it)
-                    Next
-                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
-                        sumEffort += Me.m_esData.ResultsEffort(iflt, it)
-                    Next
-
-                    sumCost += Me.m_Search.NetCost(iflt)
-
-                    ' profit
-                    '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
-                    sumProfit = sumValue * (Me.m_epdata.cost(iflt, eCostIndex.Profit) / 100) * sumEffort
-
-                    'TEMP just for something to work with until we have ECost up and running
-                    '[value of catch] * [Jobs(fleet) from the search forms]
-                    sumJobs = sumValue * Me.m_Search.Jobs(iflt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
-
-                Next iflt
-
-                Me.m_data.ProfitSum.AddValue(1, Me.m_Search.totval)
-                Me.m_data.JobsSum.AddValue(1, sumJobs)
-                Me.m_data.CostSum.AddValue(1, sumCost)
-
-
-            End If
-        End Sub
-
-
-        Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
-            'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
-            Try
-
-                If Me.m_Search.SearchMode <> eSearchModes.MSE Then
-                    Exit Sub
-                End If
-
-                For igrp As Integer = 1 To Me.m_esData.nGroups
-                    Me.m_data.BioSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
-                    Me.m_data.CatchGroupSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
-                Next igrp
-
-                For iflt As Integer = 1 To Me.m_esData.nGear
-                    Me.m_data.CatchFleetSum.AddValue(iflt, Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
-                Next iflt
-
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
-            End Try
-
-        End Sub
-
-
-        Private Sub dumpStats()
-
-            System.Console.WriteLine("Biomass ranges")
-            System.Console.Write(Me.m_data.BioSum.ToString)
-            System.Console.WriteLine()
-
-            System.Console.WriteLine("Catch by group ranges")
-            System.Console.Write(Me.m_data.CatchGroupSum.ToString)
-            System.Console.WriteLine()
-
-            System.Console.WriteLine("Catch by fleet ranges")
-            System.Console.Write(Me.m_data.CatchFleetSum.ToString)
-            System.Console.WriteLine()
-
-            System.Console.WriteLine("Profit")
-            System.Console.Write(Me.m_data.ProfitSum.ToString)
-            System.Console.WriteLine()
-
-            System.Console.WriteLine("Cost")
-            System.Console.Write(Me.m_data.CostSum.ToString)
-            System.Console.WriteLine()
-
-            System.Console.WriteLine("Jobs")
-            System.Console.Write(Me.m_data.JobsSum.ToString)
-            System.Console.WriteLine()
-
-        End Sub
-        Private Sub getEconomicPluginData()
-            If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
-                Me.m_pluginManager.PostRunSearchResults(Me.m_Search)
-            End If
-        End Sub
-
-        Private Sub getMeanValues(ByVal NTrials As Integer)
-
-            Me.m_data.sumEmployVal = Me.m_data.sumEmployVal / NTrials
-            Me.m_data.SumTotVal = Me.m_data.SumTotVal / NTrials
-            Me.m_data.sumManVal = Me.m_data.sumManVal / NTrials
-            Me.m_data.sumEcoVal = Me.m_data.sumEcoVal / NTrials
-            Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
-
-        End Sub
-
-
-
-
-        ''' <summary>
-        ''' Sum results of Model run into Mean values
-        ''' </summary>
-        ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
-        Private Sub SumValues()
-
-            m_data.sumEmployVal += Me.m_Search.Employ
-            m_data.SumTotVal += Me.m_Search.totval
-            m_data.sumManVal += Me.m_Search.manvalue
-            m_data.sumEcoVal += Me.m_Search.ecovalue
-
-            m_data.sumWeightedValues = m_data.sumWeightedValues + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / TotValBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / EmployBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / ManValueBase + _
-                    m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / EcoValueBase
-
-        End Sub
 
         Private Sub setBestTotalValue()
 
@@ -406,6 +223,150 @@ Namespace MSE
             If EcoValueBase < 1.0E-20 Then EcoValueBase = 1.0E-20
 
         End Sub
+
+#End Region
+
+#Region "Running and computational code"
+
+        Public Sub Run()
+            Dim itr As Integer
+
+            Try
+
+                CallBack(eCallBackTypes.Started)
+
+                'turn off regulatory models for initialization
+                Me.m_esData.PredictSimEffort = False
+                Me.m_esData.DoClosedLoop = False
+
+
+                'put the search mode to initialization for setting of base values
+                Me.m_Search.SearchMode = eSearchModes.InitializingSearch
+                Me.m_esData.bTimestepOutput = True
+
+                'init the MSE data
+                Me.InitForRun()
+                Me.m_data.InitForRun()
+
+                Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
+                Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
+                If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
+                Me.m_Search.setBaseYearEffort(Me.m_esData)
+
+                'sets MeanEmploy, MeanVal, MeanManVal, MeanEcoVal, MeanTotalValue
+                Me.SetBaseValues()
+
+                'runs Ecosim and gets the base values
+                Me.setBestTotalValue()
+
+                'turn the evaluator on for the trials
+                'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
+                Me.m_Search.SearchMode = eSearchModes.MSE
+
+                For itr = 1 To m_data.NTrials
+
+                    m_data.CurrentIteration = itr
+                    Me.CallBack(eCallBackTypes.IterationStarted)
+
+                    'Set MSE data back to initial values for a new run
+                    m_data.InitForTrial()
+
+                    'run ecosim
+                    Me.m_Ecosim.Run()
+
+                    Me.summarizeEcosimEconomicData()
+
+                    'post the search data to plugins
+                    Me.PostPluginData()
+
+                    Me.SumValues()
+                    Me.CallBack(eCallBackTypes.IterationCompleted)
+
+                Next
+
+                'mean values are computed by the manager from the sums
+                '      Me.getMeanValues(m_data.CurrentIteration)
+
+                Me.dumpStats()
+
+                CallBack(eCallBackTypes.RunCompleted)
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Throw New ApplicationException(Me.ToString & ".Run() Error: " & ex.Message)
+            End Try
+
+        End Sub
+
+        Private Sub dumpStats()
+
+            System.Console.WriteLine("Biomass ranges")
+            System.Console.Write(Me.m_data.BioSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Catch by group ranges")
+            System.Console.Write(Me.m_data.CatchGroupSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Catch by fleet ranges")
+            System.Console.Write(Me.m_data.CatchFleetSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Profit")
+            System.Console.Write(Me.m_data.ProfitSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Cost")
+            System.Console.Write(Me.m_data.CostSum.ToString)
+            System.Console.WriteLine()
+
+            System.Console.WriteLine("Jobs")
+            System.Console.Write(Me.m_data.JobsSum.ToString)
+            System.Console.WriteLine()
+
+        End Sub
+
+        ''' <summary>
+        ''' Tell any plugin that a search interation has completed
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub PostPluginData()
+            If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                Me.m_pluginManager.PostRunSearchResults(Me.m_Search)
+            End If
+        End Sub
+
+        Private Sub getMeanValues(ByVal NTrials As Integer)
+
+            Me.m_data.sumEmployVal = Me.m_data.sumEmployVal / NTrials
+            Me.m_data.SumTotVal = Me.m_data.SumTotVal / NTrials
+            Me.m_data.sumManVal = Me.m_data.sumManVal / NTrials
+            Me.m_data.sumEcoVal = Me.m_data.sumEcoVal / NTrials
+            Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Sum results of Model run into Mean values
+        ''' </summary>
+        ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
+        Private Sub SumValues()
+
+            m_data.sumEmployVal += Me.m_Search.Employ
+            m_data.SumTotVal += Me.m_Search.totval
+            m_data.sumManVal += Me.m_Search.manvalue
+            m_data.sumEcoVal += Me.m_Search.ecovalue
+
+            m_data.sumWeightedValues = m_data.sumWeightedValues + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / TotValBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / EmployBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / ManValueBase + _
+                    m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / EcoValueBase
+
+        End Sub
+
+  
 
         Private Sub CallBack(ByVal CallBackType As eCallBackTypes)
             Try
@@ -579,6 +540,45 @@ Namespace MSE
             Normal = CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
         End Function
 
+#End Region
+
+#End Region
+
+#Region "Time step data summary"
+        ''' <summary>
+        ''' Ecosim Timestep delegate handler 
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <param name="data"></param>
+        ''' <remarks></remarks>
+        Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
+            'ToDo_jb get the Mean Min and Max values of all variables that will have stats from the MSE
+            Try
+
+                If Me.m_Search.SearchMode <> eSearchModes.MSE Then
+                    Exit Sub
+                End If
+
+                For igrp As Integer = 1 To Me.m_esData.nGroups
+                    Me.m_data.BioSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
+                    Me.m_data.CatchGroupSum.AddValue(igrp, Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
+                Next igrp
+
+                For iflt As Integer = 1 To Me.m_esData.nGear
+                    Me.m_data.CatchFleetSum.AddValue(iflt, Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
+                Next iflt
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
+            End Try
+
+        End Sub
+
+        ''' <summary>
+        ''' Event handler for Plugin Economic data
+        ''' </summary>
+        ''' <param name="EconomicData"></param>
+        ''' <remarks></remarks>
         Private Sub onEconomicData(ByVal EconomicData As EwEUtils.Core.IEconomicData) Handles EconomicData.onEconomicData
 
             Try
@@ -586,7 +586,7 @@ Namespace MSE
                 'Is there plugin economic data
                 If Me.UsePlugin Then
                     'Plugin economic data from the ValueChain pluging is sent out every timestep
-                    'Store the data in cMSESUmmaryStats objects
+                    'Store the data in cMSESummaryStats objects
 
                     Me.m_data.ProfitSum.AddValue(1, EconomicData.Profit)
                     Me.m_data.JobsSum.AddValue(1, EconomicData.NumberOfJobsTotal)
@@ -602,6 +602,51 @@ Namespace MSE
 
         End Sub
 
+
+        ''' <summary>
+        ''' Summarize the economic data gathered by Ecosim at the end of a trial
+        ''' </summary>
+        ''' <remarks>Economic data caculated by ecosim at the end of a run</remarks>
+        Private Sub summarizeEcosimEconomicData()
+
+            'ToDo_jb cMSE.summarizeEconomicData() figure out how to compute Economic data from the Ecosim data
+            If Not Me.UsePlugin Then
+
+                Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
+                For iflt As Integer = 0 To Me.m_esData.nGear
+
+                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
+                        sumValue += Me.m_esData.ResultsSumValueByGear(iflt, it)
+                    Next
+                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
+                        sumEffort += Me.m_esData.ResultsEffort(iflt, it)
+                    Next
+
+                    sumCost += Me.m_Search.NetCost(iflt)
+
+                    ' profit
+                    '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
+                    sumProfit = sumValue * (Me.m_epdata.cost(iflt, eCostIndex.Profit) / 100) * sumEffort
+
+                    'TEMP just for something to work with until we have ECost up and running
+                    '[value of catch] * [Jobs(fleet) from the search forms]
+                    sumJobs = sumValue * Me.m_Search.Jobs(iflt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+
+                Next iflt
+
+                Me.m_data.ProfitSum.AddValue(1, Me.m_Search.totval)
+                Me.m_data.JobsSum.AddValue(1, sumJobs)
+                Me.m_data.CostSum.AddValue(1, sumCost)
+
+            End If
+
+        End Sub
+
+
+#End Region
+
     End Class
+
+#End Region
 
 End Namespace
