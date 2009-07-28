@@ -534,7 +534,7 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         bSucces = Me.LoadModelInfo()
-        bSucces = bSucces And Me.LoadGroupInfo()
+        bSucces = bSucces And Me.LoadEcopathGroups()
         bSucces = bSucces And Me.LoadFleetInfo()
         bSucces = bSucces And Me.LoadParticleSizeDistribution()
         bSucces = bSucces And Me.LoadAuxillaryData()
@@ -567,7 +567,7 @@ Public Class cDBDataSource
 
         ' Start saving
         bSucces = Me.SaveModelInfo()
-        bSucces = bSucces And Me.SaveGroupInfo()
+        bSucces = bSucces And Me.SaveEcopathGroups()
         bSucces = bSucces And Me.SaveFleetInfo()
         bSucces = bSucces And Me.SaveParticleSizeDistribution()
         bSucces = bSucces And Me.SaveAuxillaryData()
@@ -1640,7 +1640,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function LoadGroupInfo() As Boolean
+    Private Function LoadEcopathGroups() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
@@ -1661,12 +1661,7 @@ Public Class cDBDataSource
 
 
         ' Allocate space
-        If (Not ecopathDS.redimGroupVariables()) Then
-            ' It would be quite remarkable to fail here... log message?
-            Return False
-        End If
-        ' Allocate space
-        If (Not psdDS.redimGroupVariables()) Then
+        If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then
             ' It would be quite remarkable to fail here... log message?
             Return False
         End If
@@ -1747,7 +1742,7 @@ Public Class cDBDataSource
     ''' </summary>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Private Function SaveGroupInfo() As Boolean
+    Private Function SaveEcopathGroups() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
