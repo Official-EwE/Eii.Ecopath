@@ -1398,21 +1398,21 @@ Namespace Database
 
             Dim strGroupName As String = ""
             Dim reader As IDataReader = Nothing
-            Dim readerStanza As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim nGroupID As Integer = 0
             Dim drow As DataRow = Nothing
             Dim drowFK As DataRow = Nothing
             Dim drowSelect() As DataRow = Nothing
             Dim dt As DataTable = Nothing
+            Dim sValue As Single = 0.0!
 
-            ' Merge EwE5 Group Size data with EwE6 GroupInfo
+            ' Get writer
+            writer = m_dbEwE6.GetWriter("EcopathGroup")
+            dt = writer.GetDataTable()
+
+            ' Merge EwE5 Group Size data with EwE6 GroupInfo for non-stanza groups
             reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Group size] where modelName='{0}'", strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
-
-            writer = m_dbEwE6.GetWriter("EcopathGroup")
-
-            dt = writer.GetDataTable()
 
             While reader.Read()
 
@@ -1427,34 +1427,49 @@ Namespace Database
                     drow = drowSelect(0)
                     drow.BeginEdit()
 
-                    ' Import overriding values
+                    ' Import values
                     drow("AinLW") = Me.FixValue(reader, "AinLW")
                     drow("BinLW") = Me.FixValue(reader, "BinLW")
                     drow("Loo") = Me.FixValue(reader, "Loo")
                     drow("winf") = Me.FixValue(reader, "winf")
-                    'drow("vbK") = Me.FixValue(reader, "vbK", 0.3)
                     drow("t0") = Me.FixValue(reader, "t0", -9999)
                     drow("Tcatch") = Me.FixValue(reader, "Tcatch")
                     drow("Tmax") = Me.FixValue(reader, "Tmax")
 
-                    Try
-                        readerStanza = Me.m_dbEwE5.GetReader(String.Format("SELECT vbK from [Group Stanza] where modelName='{0}' AND groupName='{1}'", strModelName, strGroupName))
-                        readerStanza.Read()
-                        ' If not a valid stanza group, import vbK as 0
-                        drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.0)
-                        Me.m_dbEwE5.ReleaseReader(readerStanza)
-                    Catch ex As Exception
-                        drow("vbK") = 0.0!
-                    End Try
+                    ' Special case vbK merge
+                    sValue = CSng(Me.FixValue(reader, "vbK", 0.0))
+                    If sValue < 0 Then sValue = 0.0!
+                    drow("vbK") = sValue
 
                     drow.EndEdit()
 
                 End If
             End While
+            Me.m_dbEwE5.ReleaseReader(reader)
+
+            ' Read stanza vbK values
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT groupName, vbK from [Group Stanza] where modelName='{0}'", strModelName))
+            If reader IsNot Nothing Then
+
+                While reader.Read()
+                    strGroupName = CStr(reader("groupName"))
+                    ' Get EwE6 GroupID for this record
+                    nGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strGroupName)
+                    drowSelect = dt.Select(String.Format("GroupID={0}", nGroupID))
+
+                    If (drowSelect.Length = 1) Then
+                        drow = drowSelect(0)
+                        drow.BeginEdit()
+                        drow("vbK") = Me.FixValue(reader, "vbK", 0.3!)
+                        drow.EndEdit()
+                    End If
+                End While
+
+                Me.m_dbEwE5.ReleaseReader(reader)
+            End If
 
             ' Clean up, store changes
             Me.m_dbEwE6.ReleaseWriter(writer)
-            Me.m_dbEwE5.ReleaseReader(reader)
 
         End Sub
 
