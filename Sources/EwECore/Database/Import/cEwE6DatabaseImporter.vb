@@ -1,51 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwE6DatabaseImporter.vb,v $
-' Revision 1.14  2009/06/29 15:04:52  jeroens
-' Fixed mediation
-'
-' Revision 1.13  2009/04/07 17:27:41  jeroens
-' Fixed exsiting t0 defaults
-'
-' Revision 1.12  2009/04/03 14:31:07  jeroens
-' Forcing TS imported per month
-'
-' Revision 1.11  2009/03/26 17:49:42  jeroens
-' Fixed confusion between rate and effort shape names - part II
-'
-' Revision 1.10  2009/03/12 01:24:38  jeroens
-' Fixed vbK import
-'
-' Revision 1.9  2009/02/27 07:56:12  jeroens
-' Changed vbK placement
-'
-' Revision 1.8  2009/02/26 21:51:48  jeroens
-' vbK read from EcopathGroup once again for PSD logic
-' Fixed Pedigree import
-'
-' Revision 1.7  2009/02/07 20:23:09  jeroens
-' Removed cCoreResources
-'
-' Revision 1.6  2009/01/29 16:10:48  jeroens
-' Moved cEwEDatabase.eAccessTypes to shared enums
-'
-' Revision 1.5  2009/01/16 18:30:25  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.4  2008/11/04 20:01:50  jeroens
-' Vul < 1.0 set to 2.0
-'
-' Revision 1.3  2008/10/07 00:38:46  jeroens
-' Ecosim prey/pred ff table flipped
-'
-' Revision 1.2  2008/10/06 16:33:13  jeroens
-' Flipped Vulnerabilities matrix in database
-'
-' Revision 1.1  2008/09/26 07:30:14  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports System.Data
 Imports System.IO
@@ -547,7 +499,7 @@ Namespace Database
             Me.ImportModels(strModelName)
 
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
-            Me.ImportGroupInfo(strModelName)
+            Me.ImportEcopathGroups(strModelName)
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
             Me.ImportGroupSize(strModelName)
             Me.ImportBasicRemarks(strModelName)
@@ -1248,7 +1200,7 @@ Namespace Database
 
 #Region " Ecopath "
 
-        Private Sub ImportGroupInfo(ByVal strModelName As String)
+        Private Sub ImportEcopathGroups(ByVal strModelName As String)
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -1488,10 +1440,11 @@ Namespace Database
                     Try
                         readerStanza = Me.m_dbEwE5.GetReader(String.Format("SELECT vbK from [Group Stanza] where modelName='{0}' AND groupName='{1}'", strModelName, strGroupName))
                         readerStanza.Read()
-                        drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.3)
+                        ' If not a valid stanza group read vbK as 0
+                        drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.0)
                         Me.m_dbEwE5.ReleaseReader(readerStanza)
                     Catch ex As Exception
-                        drow("vbK") = 0.3!
+                        drow("vbK") = 0.0!
                     End Try
 
                     drow.EndEdit()
