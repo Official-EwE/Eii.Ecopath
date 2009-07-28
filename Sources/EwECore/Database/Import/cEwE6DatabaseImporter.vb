@@ -1440,7 +1440,7 @@ Namespace Database
                     Try
                         readerStanza = Me.m_dbEwE5.GetReader(String.Format("SELECT vbK from [Group Stanza] where modelName='{0}' AND groupName='{1}'", strModelName, strGroupName))
                         readerStanza.Read()
-                        ' If not a valid stanza group read vbK as 0
+                        ' If not a valid stanza group, import vbK as 0
                         drow("vbK") = Me.FixValue(readerStanza, "vbK", 0.0)
                         Me.m_dbEwE5.ReleaseReader(readerStanza)
                     Catch ex As Exception
