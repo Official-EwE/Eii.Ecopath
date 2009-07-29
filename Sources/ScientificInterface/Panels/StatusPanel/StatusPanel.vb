@@ -1,43 +1,3 @@
-'==============================================================================
-'
-' $Log: StatusPanel.vb,v $
-' Revision 1.11  2009/05/28 12:37:48  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.10  2009/05/21 18:53:38  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.9  2009/04/24 14:00:18  jeroens
-' Fixed potential crash on auto-animation
-'
-' Revision 1.8  2009/04/06 15:14:31  jeroens
-' Added feedback message reply to nodes
-'
-' Revision 1.7  2009/04/03 20:29:09  jeroens
-' FeedbackMessages logged in status panel (to be improved)
-' All pop-ups share same message breakdown logic
-'
-' Revision 1.6  2009/03/27 21:37:12  jeroens
-' Status panel slides open temproarily
-'
-' Revision 1.5  2009/03/27 13:39:26  jeroens
-' Limited number of status messages
-'
-' Revision 1.4  2009/02/26 21:41:00  jeroens
-' Long messages truncated
-' '\n' substituted for vbNewLine in feedback messages
-'
-' Revision 1.3  2009/01/19 18:07:26  jeroens
-' MessageHandlers, CoreStateMonitor have sync objects
-'
-' Revision 1.2  2009/01/16 18:30:31  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:32:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -64,7 +24,7 @@ Public Class StatusPanel
 
     Public Sub New()
 
-        InitializeComponent()
+        Me.InitializeComponent()
         ' Set tab label
         Me.TabText = My.Resources.HEADER_STATUS
 
@@ -94,7 +54,7 @@ Public Class StatusPanel
     ''' list of auto-replies.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Sub Clear()
+    Public Sub Reset()
         Me.SetHighlights(Nothing)
         Me.tvStatus.Nodes.Clear()
         Me.m_msh.Clear(eCoreComponentType.Core)
@@ -524,7 +484,7 @@ Public Class StatusPanel
         If msg IsNot Nothing Then
 
             bError = ToMessageBoxText(msg, strMessage)
- 
+
             ' Resolve what icon to show
             Select Case msg.Importance
                 Case eMessageImportance.Critical
@@ -662,7 +622,7 @@ Public Class StatusPanel
     End Sub
 
     Private Sub Item_RemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Item_RemoveAll.Click
-        Me.Clear()
+        Me.Reset()
     End Sub
 
     Private Sub cmenuListBox_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmenuListBox.Opening
