@@ -204,8 +204,6 @@ Public Class AppLauncher
             Return False
         End If
 
-        Me.m_StatusPanel.Clear()
-
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
             Case eDataSourceTypes.ACCDB, _
                  eDataSourceTypes.MDB
@@ -1096,11 +1094,13 @@ Public Class AppLauncher
 
             My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
             ' Save the current model layout
-            SaveDockPanelLayout()
+            Me.SaveDockPanelLayout()
             'Then close all open documents
-            CloseAllDocuments()
+            Me.CloseAllDocuments()
 
+            ' Reset components
             Me.m_NavPanel.Reset()
+            Me.m_StatusPanel.Reset()
 
             ' Clear the properties cache
             cPropertyManager.GetInstance().Clear(eCoreComponentType.EcoPath)
