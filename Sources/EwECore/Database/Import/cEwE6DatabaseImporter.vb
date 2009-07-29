@@ -144,7 +144,7 @@ Namespace Database
                 Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information, _
                 Optional ByVal bPublishToInterface As Boolean = False)
 
-            Me.LogMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
+            Me.LogMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance), bPublishToInterface)
             ' Log everything
             Me.m_sbLog.AppendLine(strMessage)
 
@@ -153,11 +153,13 @@ Namespace Database
         Private Sub LogMessage(ByVal msg As cMessage, _
                 Optional ByVal bPublishToInterface As Boolean = False)
 
-            ' Send warnings and criticals to the core
-            bPublishToInterface = bPublishToInterface Or ((msg.Importance = eMessageImportance.Warning) Or (msg.Importance = eMessageImportance.Critical))
+            ' Send warnings and criticals to the core messages too
+            bPublishToInterface = bPublishToInterface Or _
+                (msg.Importance = eMessageImportance.Warning) Or _
+                (msg.Importance = eMessageImportance.Critical)
 
             If bPublishToInterface Then
-                Me.m_core.m_publisher.AddMessage(msg)
+                Me.m_core.m_publisher.SendMessage(msg)
             End If
         End Sub
 
@@ -437,7 +439,7 @@ Namespace Database
 
             ' Perform actual import
             bSucces = Me.Import(strModelName, db)
- 
+
             If bSucces Then
                 Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_SUCCES, _
                     strModelName, Date.Now.ToString()), eMessageType.NotSet, eMessageImportance.Information, True)
@@ -1152,7 +1154,7 @@ Namespace Database
                         ' Import error: stanza config missing essential first stage
                         ' ToDo_JS: globalize this
                         Me.LogMessage(String.Format("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName), _
-                                eMessageType.DataImport, eMessageImportance.Warning, True)
+                                eMessageType.DataImport, eMessageImportance.Information, True)
                     End If
                 End If
 
@@ -2143,7 +2145,7 @@ Namespace Database
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS, _
                                     iShapeNumber, _
                                     shapeDataType.ToString()), _
-                                    eMessageType.DataImport, eMessageImportance.Information)
+                                    eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
 
                     Case 100 To Integer.MaxValue
@@ -2168,7 +2170,7 @@ Namespace Database
                         Else
                             ' Failed to import shape
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString), _
-                                    eMessageType.DataImport, eMessageImportance.Information)
+                                    eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
                     Else
                         ' This indicates an internal error
@@ -2176,14 +2178,14 @@ Namespace Database
                         Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE, _
                                 iShapeNumber, _
                                 shapeDataType.ToString()), _
-                                eMessageType.DataImport, eMessageImportance.Information)
+                                eMessageType.DataImport, eMessageImportance.Information, True)
 
                     End If ' Valid ShapeType is set
                 Else
                     ' Invalid shape number
                     Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGTYPEMISSING, _
                             iShapeNumber), _
-                            eMessageType.DataImport, eMessageImportance.Information)
+                            eMessageType.DataImport, eMessageImportance.Information, True)
                 End If ' Not imported yet
             End While
 
@@ -2506,7 +2508,7 @@ Namespace Database
                         Else
                             ' Multiple ecosim scenarios: do not import, throw a warning
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_MULTISTANZASHAPE, CStr(reader("stanzaName"))), _
-                                        eMessageType.DataImport, eMessageImportance.Information)
+                                        eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
                     End If
 
@@ -2924,36 +2926,37 @@ Namespace Database
                         iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
                         iFleetID = Me.PoolCodeID(eDataTypes.FleetInput, CInt(reader("Pool")))
 
-                        iTimeSeriesID += 1
-
-                        drow = writerTimeSeries.NewRow()
-                        drow("TimeSeriesID") = iTimeSeriesID
-                        drow("Sequence") = iTimeSeriesID
-                        drow("DatasetID") = iDatasetID
-                        drow("DatType") = eType
-                        drow("DatName") = Me.FixValue(reader, "DatName", "")
-                        'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
-
-                        strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                        drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
-                        'drow("NumYears") = CInt(strMemo.Length / 10)
-
-                        ' JS 06Nov07: Time series imported with weight of 1 (not 0!)
-                        drow("WtType") = Me.FixValue(reader, "WtType", 1.0!)
-                        writerTimeSeries.AddRow(drow)
-
-                        drow = writerFleet.NewRow()
-                        drow("TimeSeriesID") = iTimeSeriesID
-                        drow("FleetID") = iFleetID
-                        writerFleet.AddRow(drow)
-
-                        ' Is this an existing fleet?
-                        If iFleetID = 0 Then
+                        ' Is this fleet missing?
+                        If (iFleetID = 0) Then
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESFLEET, _
-                                    Me.FixValue(reader, "DatName", ""), _
-                                    Me.FixValue(reader, "Dataset", ""), _
-                                    CInt(reader("Pool"))), _
-                                    eMessageType.DataImport, eMessageImportance.Information)
+                                Me.FixValue(reader, "DatName", ""), _
+                                Me.FixValue(reader, "Dataset", ""), _
+                                CInt(reader("Pool"))), _
+                                eMessageType.DataImport, eMessageImportance.Information, True)
+                        Else
+                            iTimeSeriesID += 1
+
+                            drow = writerTimeSeries.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("Sequence") = iTimeSeriesID
+                            drow("DatasetID") = iDatasetID
+                            drow("DatType") = eType
+                            drow("DatName") = Me.FixValue(reader, "DatName", "")
+                            'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
+
+                            strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
+                            drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
+                            'drow("NumYears") = CInt(strMemo.Length / 10)
+
+                            ' JS 06Nov07: Time series imported with weight of 1 (not 0!)
+                            drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
+                            writerTimeSeries.AddRow(drow)
+
+                            drow = writerFleet.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("FleetID") = iFleetID
+                            writerFleet.AddRow(drow)
+
                         End If
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
@@ -2961,37 +2964,37 @@ Namespace Database
                         iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
                         iGroupID = Me.PoolCodeID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
 
-                        iTimeSeriesID += 1
-
-                        drow = writerTimeSeries.NewRow()
-                        drow("TimeSeriesID") = iTimeSeriesID
-                        drow("Sequence") = iTimeSeriesID
-                        drow("DatasetID") = iDatasetID
-                        drow("DatType") = eType
-                        drow("DatName") = Me.FixValue(reader, "DatName", "")
-                        'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
-
-                        strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                        drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
-                        'drow("NumYears") = CInt(strMemo.Length / 10)
-
-                        ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
-                        drow("WtType") = Me.FixValue(reader, "WtType", 1.0!)
-                        writerTimeSeries.AddRow(drow)
-
-                        drow = writerGroup.NewRow()
-                        drow("TimeSeriesID") = iTimeSeriesID
-                        drow("GroupID") = iGroupID
-                        drow("VariableName") = ""
-                        writerGroup.AddRow(drow)
-
-                        ' Is this an existing group?
+                        ' Is this group missing?
                         If (iGroupID = 0) Then
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
                                     Me.FixValue(reader, "DatName", ""), _
                                     Me.FixValue(reader, "Dataset", ""), _
                                     CInt(reader("Pool"))), _
-                                    eMessageType.DataImport, eMessageImportance.Information)
+                                    eMessageType.DataImport, eMessageImportance.Information, True)
+                        Else
+                            iTimeSeriesID += 1
+
+                            drow = writerTimeSeries.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("Sequence") = iTimeSeriesID
+                            drow("DatasetID") = iDatasetID
+                            drow("DatType") = eType
+                            drow("DatName") = Me.FixValue(reader, "DatName", "")
+                            'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
+
+                            strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
+                            drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
+                            'drow("NumYears") = CInt(strMemo.Length / 10)
+
+                            ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
+                            drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
+                            writerTimeSeries.AddRow(drow)
+
+                            drow = writerGroup.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("GroupID") = iGroupID
+                            drow("VariableName") = ""
+                            writerGroup.AddRow(drow)
                         End If
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.NotSet
@@ -3000,7 +3003,7 @@ Namespace Database
                                 Me.FixValue(reader, "DatName", ""), _
                                 Me.FixValue(reader, "Dataset", ""), _
                                 eType.ToString()), _
-                                eMessageType.DataImport, eMessageImportance.Information)
+                                eMessageType.DataImport, eMessageImportance.Information, True)
 
                 End Select
 
