@@ -1,44 +1,3 @@
-'==============================================================================
-'
-' $Log: CoreEnumerators.vb,v $
-' Revision 1.12  2009/06/20 21:12:39  jeroens
-' Fixed enum type incompatibility
-'
-' Revision 1.11  2009/05/21 18:53:39  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.10  2009/05/21 17:55:57  jeroens
-' PSD enums do not need to be exposed in EwEUtils
-'
-' Revision 1.9  2009/05/19 13:43:56  jeroens
-' Pruned history
-'
-' Revision 1.8  2009/02/02 22:28:57  joeb
-' Added more output vars to EcoSpace fleets
-'
-' Revision 1.7  2009/01/16 18:30:12  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.6  2009/01/12 22:48:42  joeb
-' Added enums for Ecospace results over time
-'
-' Revision 1.5  2008/10/20 20:21:08  joeb
-' Quota editable from Game Client
-'
-' Revision 1.4  2008/10/03 18:45:06  joeb
-' Renamed eQuotaTypes.NotSet to NotUsed
-'
-' Revision 1.3  2008/10/03 18:11:44  joeb
-' Changes fro Regulatory Quotas
-'
-' Revision 1.2  2008/10/02 22:53:53  joeb
-' Added Quota types
-'
-' Revision 1.1  2008/09/26 07:30:11  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Core
 
@@ -483,11 +442,11 @@ End Enum
 
 #End Region
 
-#Region "Time series types"
+#Region " Time series types "
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Types of time series
 ''' </summary>
 ''' <remarks>The enumerated values follow the original EwE5 scheme.</remarks>
 ''' ---------------------------------------------------------------------------
@@ -508,7 +467,7 @@ Public Enum eTimeSeriesType
     NotSet = cCore.NULL_VALUE
 End Enum
 
-#End Region
+#End Region ' Time series types
 
 #Region " PSD mortality types "
 
