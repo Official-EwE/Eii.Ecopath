@@ -519,7 +519,7 @@ System Error: {0}</value>
     <value>Ecosim pairs are no longer supported. You will need to translate one or more EwE5 pairs to an EwE6 multi-stanza configuration.</value>
   </data>
   <data name="IMPORT_WARNING_TIMESERIESFLEET" xml:space="preserve">
-    <value>Time Series {0} ({1}) imported without fleet link, fleet {2} could not be resolved</value>
+    <value>Time Series {0} ({1}) not imported because fleet number {2} could not be resolved</value>
     <comment>{0} = time series name, {1} = dataset name, {2} = EwE5 fleet index</comment>
   </data>
   <data name="IMPORT_WARNING_TIMESERIESTYPE" xml:space="preserve">
@@ -527,7 +527,7 @@ System Error: {0}</value>
     <comment>{0} = time series name, {1} = dataset name, {2} = time series type</comment>
   </data>
   <data name="IMPORT_WARNING_TIMESIERIESGROUP" xml:space="preserve">
-    <value>Time Series {0} ({1}) imported without group link, group {2} could not be resolved</value>
+    <value>Time Series {0} ({1}) not imported because group number {2} could not be resolved</value>
     <comment>(0}: Time Series name, {1}: dataset name, {2}: EwE5 group index</comment>
   </data>
   <data name="LOAD_ERROR_MODEL" xml:space="preserve">
