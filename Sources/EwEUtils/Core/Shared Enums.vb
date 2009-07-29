@@ -1,69 +1,3 @@
-'==============================================================================
-'
-' $Log: Shared Enums.vb,v $
-' Revision 1.70  2009/07/01 17:55:52  joeb
-' Added varnames for PM's
-'
-' Revision 1.69  2009/06/26 19:50:11  sherman
-' Added Performance Measure Enums 'PM'
-'
-' Revision 1.68  2009/06/23 17:37:15  jeroens
-' Fixed PSD parameter change behaviour
-'
-' Revision 1.67  2009/06/23 05:05:44  jeroens
-' Added varname GameIssueList
-'
-' Revision 1.66  2009/06/22 22:37:08  jeroens
-' Added varname GameIssue
-'
-' Revision 1.65  2009/06/01 17:07:39  joeb
-' MSE debugging
-'
-' Revision 1.64  2009/05/26 22:10:24  jeroens
-' Removed isEconomicDataAvailable
-'
-' Revision 1.63  2009/05/26 16:45:25  joeb
-' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
-'
-' Revision 1.62  2009/05/22 22:31:08  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.61  2009/05/21 18:53:47  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.60  2009/05/21 17:55:58  jeroens
-' PSD enums do not need to be exposed in EwEUtils
-'
-' Revision 1.59  2009/05/20 16:32:18  joeb
-' Added enums for MSE
-'
-' Revision 1.58  2009/05/19 13:17:16  jeroens
-' Pruned history
-'
-' Revision 1.57  2009/05/14 15:32:31  jeroens
-' Added game varnames for generic 'Names'
-'
-' Revision 1.56  2009/05/13 17:22:15  joeb
-' Added MSEGroupOutput as datatype
-'
-' Revision 1.55  2009/05/11 21:28:10  joeb
-' Adding MSE data to Decision Support Tool (Multi Player Game)
-'
-' Revision 1.54  2009/05/06 18:38:07  jeroens
-' Added game moderator state
-'
-' Revision 1.53  2009/05/06 12:53:36  jeroens
-' Datatypes have fixed values
-' Added Ecospace layer enums
-'
-' Revision 1.52  2009/04/29 17:43:40  joeb
-' Added Relative Biomass to cEcosimGroupOutputs
-'
-' Revision 1.51  2009/04/29 16:19:56  joeb
-' Renamed GameGroupFishingRates to GameGroupFishingMortRates
-'
-'==============================================================================
-
 Option Strict On
 
 Namespace Core
@@ -1785,7 +1719,7 @@ Namespace Core
 
 #End Region ' Search criteria results
 
-#Region "CoreComponentType"
+#Region " CoreComponentType "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -1832,6 +1766,6 @@ Namespace Core
 
     End Enum
 
-#End Region
+#End Region ' CoreComponentType
 
 End Namespace ' Core
