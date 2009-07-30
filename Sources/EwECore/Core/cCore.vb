@@ -1610,6 +1610,11 @@ Public Class cCore
                 shpmanager.Load()
                 shpmanager = m_ShapeManagers.Item(eDataTypes.FishMort)
                 shpmanager.Load()
+
+                'tell the interface that the shapes have changed
+                Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
+                Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
+
                 Exit For
             End If
         Next

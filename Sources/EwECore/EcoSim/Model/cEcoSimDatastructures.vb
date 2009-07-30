@@ -76,7 +76,7 @@ Public Class cEcosimDatastructures
     ''' Number of Ecosim results variables stored in ResultsOverTime(N_TIME_RESULTS,groups,time)
     ''' </summary>
     ''' <remarks> Used in <see>cEcosimModel.dimResults() </see>to size ResultsOverTime()</remarks>
-    Public Const N_TIME_RESULTS As Integer = 10
+    Public Const N_TIME_RESULTS As Integer = 11
     Public Const DEFAULT_N_FORCINGPOINTS As Integer = 1200 'min number of forcing point 100 years * FORCING_POINTS_PER_YEAR
     Public Const FORCING_POINTS_PER_YEAR As Integer = 12
 
@@ -95,6 +95,7 @@ Public Class cEcosimDatastructures
         FishMort
         ProdConsump
         AvgWeight
+        MortVPred
     End Enum
 
     Public Enum eEcosimPreyPredResults

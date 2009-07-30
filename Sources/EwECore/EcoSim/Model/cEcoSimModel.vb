@@ -1555,6 +1555,8 @@ Public Property PluginManager() As cPluginManager
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) = m_Data.Eatenof(igrp) / BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, igrp, iTime) = m_Data.FishTime(igrp) + m_Data.Eatenof(igrp) / BB(igrp)
 
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVPred, igrp, iTime) = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) / m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, igrp, iTime)
+
                     For ipred As Integer = 1 To m_Results.nGroups
                         'sum of consumption for pred and prey
                         m_Data.ResultsAvgByPreyPred(cEcosimDatastructures.eEcosimPreyPredResults.Pred, igrp, ipred) += m_Data.Consumpt(igrp, ipred) 'm_Data.Eatenby(i) '
@@ -2808,6 +2810,19 @@ Public Property PluginManager() As cPluginManager
                 If m_RefData.DatSS(j) > 0 Then LogL = LogL + m_RefData.WtType(j) * (DatNobs(j) - 1) * Math.Log(m_RefData.DatSS(j))
             Next
             LogL = LogL / 2
+
+            'Dim iy As Integer
+            'System.Console.WriteLine(Me.m_RefData.strName(75) & ", " & Me.m_RefData.DatType(75).ToString & ", " & Me.m_RefData.DatPool(75).ToString)
+            'For iy = 1 To Me.m_RefData.NdatYear
+            '    System.Console.Write(Me.m_RefData.DatVal(iy, 75).ToString & ", ")
+            'Next
+            'System.Console.WriteLine()
+
+            'System.Console.WriteLine(Me.m_RefData.strName(39) & ", " & Me.m_RefData.DatType(39).ToString & ", " & Me.m_RefData.DatPool(39).ToString)
+            'For iy = 1 To Me.m_RefData.NdatYear
+            '    System.Console.Write(Me.m_RefData.DatVal(iy, 39).ToString & ", ")
+            'Next
+            'System.Console.WriteLine()
 
             'vc sep 2008, adding an option for increasing SS with a fishing mortality penalty
             'if doing a fit to time series, and there are any fmax in the fishing policy screen,
