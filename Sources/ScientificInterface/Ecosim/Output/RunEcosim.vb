@@ -695,14 +695,17 @@ Namespace Ecosim
                         'Biomass
                         If m_tsmiCumulative.Checked Then
                             'Cumulative highlight
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, cEcosimOutputPlotHelper.eLineType.CumulativeBiomass, pplData)
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                          i, cEcosimOutputPlotHelper.eLineType.CumulativeBiomass, pplData)
                         Else
                             'Cumulative selected
-                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, cEcosimOutputPlotHelper.eLineType.CumulativeSelectedBiomass, pplData)
+                            m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                          i, cEcosimOutputPlotHelper.eLineType.CumulativeSelectedBiomass, pplData)
                         End If
                     ElseIf m_tsmiCatch.Checked Then
                         'Catch
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, cEcosimOutputPlotHelper.eLineType.CumulativeCatch, pplData)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                      i, cEcosimOutputPlotHelper.eLineType.CumulativeCatch, pplData)
                     Else
                         Debug.Assert(False)
                     End If
@@ -780,10 +783,12 @@ Namespace Ecosim
                     ' 3) Store the line
                     If m_tsmiBiomass.Checked Then
                         'Biomass
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, cEcosimOutputPlotHelper.eLineType.RelativeBiomass, pplData)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                      i, cEcosimOutputPlotHelper.eLineType.RelativeBiomass, pplData)
                     ElseIf m_tsmiCatch.Checked Then
                         'Catch
-                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, i, cEcosimOutputPlotHelper.eLineType.RelativeCatch, pplData)
+                        m_zgp.AddLine(m_core.EcoSimGroupInputs(i).Name, _
+                                      i, cEcosimOutputPlotHelper.eLineType.RelativeCatch, pplData)
                     Else
                         Debug.Assert(False)
                     End If
@@ -821,6 +826,7 @@ Namespace Ecosim
                         If gts.Enabled() Then
                             'm_abHasTSData(gts.GroupIndex) = True
                             Dim da() As Single = gts.ShapeData()
+                            Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(gts.GroupIndex)
                             ppl = New PointPairList
 
                             For j As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
@@ -833,8 +839,8 @@ Namespace Ecosim
                             Next
 
                             ' Add line to graph.
-
-                            m_zgp.AddLine(ts.Name, gts.GroupIndex, cEcosimOutputPlotHelper.eLineType.TimeSeries, ppl)
+                            m_zgp.AddLine(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name), _
+                                          gts.GroupIndex, cEcosimOutputPlotHelper.eLineType.TimeSeries, ppl)
 
                         End If
 
