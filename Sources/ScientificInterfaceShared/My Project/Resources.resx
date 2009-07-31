@@ -286,4 +286,47 @@
   <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
     <value>You are about to delete {0} forcing or mediation functions'. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
+  <data name="GENERIC_LABEL_DETAIL" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0}: main value, {1}: detail for {0}</comment>
+  </data>
+  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Average weight</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
+    <value>Absolute biomass</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
+    <value>Biomass forcing</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
+    <value>Relative biomass</value>
+  </data>
+  <data name="TS_TYPE_CATCHES" xml:space="preserve">
+    <value>Catches</value>
+  </data>
+  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
+    <value>Catches forcing</value>
+  </data>
+  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
+    <value>Constant total mortality</value>
+  </data>
+  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
+  </data>
+  <data name="TS_TYPE_FISHINGMORT" xml:space="preserve">
+    <value>Fishing mortality</value>
+  </data>
+  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
+    <value>Time forcing</value>
+  </data>
+  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
+    <value>Total mortality</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
+    <value>Ecotracer absolute concentration</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
+    <value>Ecotracer relative concentration</value>
+  </data>
 </root>

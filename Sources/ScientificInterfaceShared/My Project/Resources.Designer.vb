@@ -140,6 +140,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_LABEL_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}: ({1}, {2}).
         '''</summary>
         Friend ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
@@ -382,6 +391,123 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average weight.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_AVERAGEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_AVERAGEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Absolute biomass.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_BIOMASSABS() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_BIOMASSABS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass forcing.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_BIOMASSFORCING() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_BIOMASSFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative biomass.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_BIOMASSREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_BIOMASSREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catches.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_CATCHES() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_CATCHES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catches forcing.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_CATCHESFORCING() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_CATCHESFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Constant total mortality.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_CONSTTOTALMORT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_CONSTTOTALMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing effort.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_FISHINGEFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mortality.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_FISHINGMORT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_FISHINGMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time forcing.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_TIMEFORCING() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_TIMEFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total mortality.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_TOTALMORT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_TOTALMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer absolute concentration.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_TRACER_CONCABS() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_TRACER_CONCABS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer relative concentration.
+        '''</summary>
+        Friend ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_TRACER_CONCREL", resourceCulture)
             End Get
         End Property
         

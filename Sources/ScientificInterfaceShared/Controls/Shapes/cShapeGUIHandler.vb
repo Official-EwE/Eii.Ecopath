@@ -1,73 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cShapeGUIHandler.vb,v $
-' Revision 1.21  2009/06/19 21:51:06  jeroens
-' MsgBox -> cFeedbackMessage
-'
-' Revision 1.20  2009/05/21 18:53:39  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.19  2009/05/18 00:38:43  jeroens
-' Reset all generalized for fishing shapes
-'
-' Revision 1.18  2009/05/11 01:50:50  jeroens
-' Renamed command classes
-'
-' Revision 1.17  2009/04/20 12:39:42  jeroens
-' All fleets edit will update all shapes
-'
-' Revision 1.16  2009/04/16 17:45:56  jeroens
-' Added TimeSeries reset all
-' Added Fishing rate, mort reset all
-'
-' Revision 1.15  2009/04/12 21:20:28  jeroens
-' Custom -> DefineXAxis
-'
-' Revision 1.14  2009/03/26 17:41:41  jeroens
-' Fixed confusion between rate and effort shape names
-'
-' Revision 1.13  2009/03/26 01:19:05  jeroens
-' There shall be updates
-'
-' Revision 1.12  2009/03/24 20:29:08  jeroens
-' Added Custom command
-'
-' Revision 1.11  2009/03/23 17:27:42  jeroens
-' Constructors made safe handling missing components
-'
-' Revision 1.10  2009/03/21 00:30:32  jeroens
-' Fixed unclear parameter names
-'
-' Revision 1.9  2009/03/20 17:53:59  jeroens
-' Multiple selection
-'
-' Revision 1.8  2009/03/11 00:31:54  jeroens
-' Shapes update on reset to make sure changes are committed to the core
-'
-' Revision 1.7  2009/03/04 06:31:55  jeroens
-' ResetAll command properly enabled
-'
-' Revision 1.6  2009/03/04 06:29:34  jeroens
-' ResetAll uses generic shape manager
-'
-' Revision 1.5  2009/03/02 20:08:23  jeroens
-' Implemented FF reset all
-'
-' Revision 1.4  2009/03/02 01:45:20  jeroens
-' Removed ecopath mort rate indicator from fishing rate shape manager
-'
-' Revision 1.3  2009/02/12 15:33:25  jeroens
-' Fishing rates showing Y mark label
-'
-' Revision 1.2  2009/01/16 18:30:35  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/12/15 15:37:16  jeroens
-' Moved from ScInt
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Imports EwECore
 Imports EwEUtils.Core
@@ -1039,6 +970,31 @@ Namespace Controls
         End Sub
 
 #End Region ' Helper methods
+
+#Region " Public bits "
+
+        Public Shared Function GetTimeSeriesTypeName(ByVal tst As eTimeSeriesType) As String
+
+            Select Case tst
+                Case eTimeSeriesType.AverageWeight : Return My.Resources.TS_TYPE_AVERAGEWEIGHT
+                Case eTimeSeriesType.BiomassAbs : Return My.Resources.TS_TYPE_BIOMASSABS
+                Case eTimeSeriesType.BiomassForcing : Return My.Resources.TS_TYPE_BIOMASSFORCING
+                Case eTimeSeriesType.BiomassRel : Return My.Resources.TS_TYPE_BIOMASSREL
+                Case eTimeSeriesType.Catches : Return My.Resources.TS_TYPE_CATCHES
+                Case eTimeSeriesType.CatchesForcing : Return My.Resources.TS_TYPE_CATCHESFORCING
+                Case eTimeSeriesType.ConstantTotalMortality : Return My.Resources.TS_TYPE_CONSTTOTALMORT
+                Case eTimeSeriesType.EcotracerConcAbs : Return My.Resources.TS_TYPE_TRACER_CONCABS
+                Case eTimeSeriesType.EcotracerConcRel : Return My.Resources.TS_TYPE_TRACER_CONCREL
+                Case eTimeSeriesType.FishingEffort : Return My.Resources.TS_TYPE_FISHINGEFFORT
+                Case eTimeSeriesType.FishingMortality : Return My.Resources.TS_TYPE_FISHINGMORT
+                Case eTimeSeriesType.TimeForcing : Return My.Resources.TS_TYPE_TIMEFORCING
+                Case eTimeSeriesType.TotalMortality : Return My.Resources.TS_TYPE_TOTALMORT
+            End Select
+            Return ""
+
+        End Function
+
+#End Region ' Public bits
 
     End Class
 

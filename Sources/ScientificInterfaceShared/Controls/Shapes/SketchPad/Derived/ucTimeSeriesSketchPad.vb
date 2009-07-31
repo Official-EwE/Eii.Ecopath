@@ -53,12 +53,12 @@ Namespace Controls
         Public Sub New()
 
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             Me.m_sketchDrawMode = eSketchDrawModeTypes.Dots
 
             'Default display as Absolute value
-            m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
+            Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
 
         End Sub
 
@@ -70,9 +70,12 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
+             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+            Dim core As cCore = cCore.GetInstance
+            Dim strType As String = ""
+            Dim strName As String = ""
             Dim strLabel As String = ""
             Dim fmt As StringFormat = Nothing
-            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
@@ -151,8 +154,31 @@ Namespace Controls
                     Next
                 End If
 
+                ' Draw time series name
                 strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.Shape.Index, Me.Shape.Name)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, fmt)
+
+                ' Draw time series type
+                If TypeOf shape Is cGroupTimeSeries Then
+
+                    Dim gts As cGroupTimeSeries = DirectCast(shape, cGroupTimeSeries)
+                    Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(gts.GroupIndex)
+
+                    strName = group.Name
+                    strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(gts.TimeSeriesType)
+
+                ElseIf TypeOf shape Is cFleetTimeSeries Then
+
+                    Dim fts As cFleetTimeSeries = DirectCast(shape, cFleetTimeSeries)
+                    Dim fleet As cFleetInput = core.FleetInputs(fts.FleetIndex)
+
+                    strName = fleet.Name
+                    strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(fts.TimeSeriesType)
+
+                End If
+
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAIL, strType, strName)
+                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, fmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.
                 brTmp.Dispose()
