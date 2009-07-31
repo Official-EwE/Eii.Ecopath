@@ -634,8 +634,12 @@ Namespace Core
         EcosimAvgWeight
         EcosimAvgPrey
         EcosimAvgPred
-        ''' <summary>[total mortality]/[predation mortality]</summary>
+
+        ''' <summary>[predation mortality]/[total mortality]</summary>
         EcosimMortVPred
+        ''' <summary>[fishing mortality]/[total mortality]</summary>
+        EcosimMortVFishing
+
 
         'Joeh
         ''' <summary>Ecopath ouput data over time</summary>
