@@ -5279,7 +5279,7 @@ Public Class cDBDataSource
 
                 tsDS.iTimeSeriesDBID(iSeries) = CInt(reader("TimeSeriesID"))
                 tsDS.strName(iSeries) = CStr(reader("DatName"))
-                tsDS.TimeSeriesType(iSeries) = DirectCast(reader("DatType"), eTimeSeriesType)
+                tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(reader("DatType")), eTimeSeriesType)
                 tsDS.sWeight(iSeries) = CSng(reader("WtType"))
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
