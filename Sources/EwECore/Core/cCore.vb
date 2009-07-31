@@ -1582,7 +1582,6 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function UpdateTimeSeries() As Boolean
-        Dim shpmanager As cBaseShapeManager
 
         ' Update enable flags
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
@@ -1603,21 +1602,12 @@ Public Class cCore
 
         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
 
-        'If one of these shapes has changed then reload the objects for the interface
-        For i As Integer = 1 To m_TSData.NdatType
-            If m_TSData.DatType(i) = eDataTypes.FishingEffort Or m_TSData.DatType(i) = eDataTypes.FishMort Then
-                shpmanager = m_ShapeManagers.Item(eDataTypes.FishingEffort)
-                shpmanager.Load()
-                shpmanager = m_ShapeManagers.Item(eDataTypes.FishMort)
-                shpmanager.Load()
+        Me.m_ShapeManagers.Item(eDataTypes.FishingEffort).Load()
+        Me.m_ShapeManagers.Item(eDataTypes.FishMort).Load()
 
-                'tell the interface that the shapes have changed
-                Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
-                Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
-
-                Exit For
-            End If
-        Next
+        'tell the interface that the shapes have changed
+        Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
+        Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
         Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
         Me.Messages.sendAllMessages()
