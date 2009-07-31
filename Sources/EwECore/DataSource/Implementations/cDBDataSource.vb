@@ -5279,10 +5279,10 @@ Public Class cDBDataSource
 
                 tsDS.iTimeSeriesDBID(iSeries) = CInt(reader("TimeSeriesID"))
                 tsDS.strName(iSeries) = CStr(reader("DatName"))
-                tsDS.iType(iSeries) = CInt(reader("DatType"))
+                tsDS.TimeSeriesType(iSeries) = DirectCast(reader("DatType"), eTimeSeriesType)
                 tsDS.sWeight(iSeries) = CSng(reader("WtType"))
 
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.iType(iSeries), eTimeSeriesType))
+                Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Group
                         readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
@@ -5383,7 +5383,7 @@ Public Class cDBDataSource
 
                 drow.BeginEdit()
                 drow("DatName") = tsDS.strName(iTS)
-                drow("DatType") = tsDS.iType(iTS)
+                drow("DatType") = tsDS.TimeSeriesType(iTS)
                 drow("WtType") = tsDS.sWeight(iTS)
 
                 ' Concoct time series memo
@@ -5396,7 +5396,7 @@ Public Class cDBDataSource
 
                 drow.EndEdit()
 
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(DirectCast(tsDS.iType(iTS), eTimeSeriesType))
+                Select Case cTimeSeriesFactory.TimeSeriesCategory(DirectCast(tsDS.TimeSeriesType(iTS), eTimeSeriesType))
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
                         drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                         bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)

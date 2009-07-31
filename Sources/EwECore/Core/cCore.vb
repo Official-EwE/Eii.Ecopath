@@ -1219,7 +1219,7 @@ Public Class cCore
 
         ' Create time series
         For iSeries As Integer = 1 To Me.nTimeSeries
-            ts = cTimeSeriesFactory.CreateTimeSeries(DirectCast(Me.m_TSData.iType(iSeries), eTimeSeriesType), Me, Me.m_TSData.iTimeSeriesDBID(iSeries))
+            ts = cTimeSeriesFactory.CreateTimeSeries(DirectCast(Me.m_TSData.TimeSeriesType(iSeries), eTimeSeriesType), Me, Me.m_TSData.iTimeSeriesDBID(iSeries))
             ts.Index = iSeries
             Select Case ts.DataType
                 Case eDataTypes.GroupTimeSeries
@@ -1264,7 +1264,7 @@ Public Class cCore
                 ts.Name = Me.m_TSData.strName(ts.Index)
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
-                ts.TimeSeriesType = DirectCast(Me.m_TSData.iType(ts.Index), eTimeSeriesType)
+                ts.TimeSeriesType = DirectCast(Me.m_TSData.TimeSeriesType(ts.Index), eTimeSeriesType)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
 
@@ -1291,7 +1291,7 @@ Public Class cCore
                 ts.Name = Me.m_TSData.strName(ts.Index)
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
-                ts.TimeSeriesType = DirectCast(Me.m_TSData.iType(ts.Index), eTimeSeriesType)
+                ts.TimeSeriesType = DirectCast(Me.m_TSData.TimeSeriesType(ts.Index), eTimeSeriesType)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
 
@@ -1341,8 +1341,7 @@ Public Class cCore
 
                 ' Validate whether TS will remain in its category (group)
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
-                Me.m_TSData.iType(ts.Index) = CInt(ts.TimeSeriesType)
-
+                Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.strName(ts.Index) = ts.Name
                 Me.m_TSData.iPool(ts.Index) = ts.DatPool
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
@@ -1379,7 +1378,7 @@ Public Class cCore
 
                 ' Validate whether TS will remain in its category (fleet)
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet, "Cannot change TS to a different category")
-                Me.m_TSData.iType(ts.Index) = CInt(ts.TimeSeriesType)
+                Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
 
                 Me.m_TSData.strName(ts.Index) = ts.Name
                 Me.m_TSData.iPool(ts.Index) = ts.DatPool

@@ -1,113 +1,3 @@
-'==============================================================================
-'
-' $Log: cTimeSeriesDataStructures.vb,v $
-' Revision 1.8  2009/05/22 16:56:54  jeroens
-' Active DS is cleared on ClearTimeSeriesDatasets
-'
-' Revision 1.7  2009/03/17 18:30:08  joeb
-' LoadForcingData() only loads the forcing data it does not load the enable time series... this fixes a bug that stopped to fish mortality shapes from working
-'
-' Revision 1.6  2009/03/17 18:19:06  jeroens
-' Time series cleared when ecosim scenario is loaded
-'
-' Revision 1.5  2009/02/26 18:38:01  joeb
-' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
-'
-' Revision 1.4  2008/12/08 16:46:03  jeroens
-' DoDatValCalculations public again
-'
-' Revision 1.3  2008/11/25 18:00:04  joeb
-' Fixed bug 459 made DoDatValCalculation() private
-'
-' Revision 1.2  2008/09/26 20:29:00  villyc
-' ecosimmontecarlo stuff
-'
-' Revision 1.1  2008/09/26 07:30:34  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.15  2008/09/23 16:24:21  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.14  2008/08/11 21:13:29  joeb
-' Changes for Bug Fix 459 Added Search Modes and changed loading of Forcing Data
-'
-' Revision 1.13  2008/02/11 03:30:25  jeroens
-' Datasets are separate entities now, no longer just defined by name in Time Series
-'
-' Revision 1.12  2007/10/30 01:19:43  jeroens
-' * Fixed endless loop in LoadApplied
-'
-' Revision 1.11  2007/10/29 15:59:01  jeroens
-' * TS datastructures allow individual TS to be applied
-'
-' Revision 1.10  2007/10/18 22:10:49  joeb
-' clearFishForced when loading data
-'
-' Revision 1.9  2007/10/12 20:35:15  jeroens
-' + Added strDatasetName, nDatasetNumTimeSeries
-'
-' Revision 1.8  2007/10/12 16:30:40  joeb
-' Added Exception handling to DoDatValCalcultions
-'
-' Revision 1.7  2007/10/04 16:17:41  joeb
-' Changed a comment
-'
-' Revision 1.6  2007/09/28 18:52:42  joeb
-' changed apply
-'
-' Revision 1.5  2007/09/24 14:20:59  joeb
-' Added   EcosimData.redimFishingRatesToForcingData(NdatYear) when reference data is loaded
-'
-' Revision 1.4  2007/09/04 17:01:04  jeroens
-' * Fixed crash on deleting last TS
-'
-' Revision 1.3  2007/07/12 16:29:24  jeroens
-' + Moved
-'
-' Revision 1.1  2007/07/12 15:50:02  jeroens
-' * Moved
-'
-' Revision 1.15  2007/06/13 20:37:54  joeb
-'  Changed RedimAppliedTimeSeries() from Friend to Public for Villy
-'
-' Revision 1.14  2007/06/12 20:45:58  joeb
-' Fixed a mistake in the last commit to cEcospaceDataStructures
-'
-' Revision 1.13  2007/06/12 20:44:42  joeb
-' Added cEcospaceTimeSeriesDataStructures for ecospace time series data
-'
-' Revision 1.12  2007/06/11 17:56:46  joeb
-' Changed indexing when updating applied data
-'
-' Revision 1.11  2007/06/11 16:16:24  jeroens
-' * DatQ and DatSS ready for the lime light
-'
-' Revision 1.10  2007/06/11 04:25:13  jeroens
-' + Tested Apply
-'
-' Revision 1.9  2007/06/11 03:23:50  jeroens
-' * Implemented Apply
-'
-' Revision 1.8  2007/06/08 21:09:49  joeb
-' AccumulateDataInfo and PlotDataInfo bugs
-'
-' Revision 1.7  2007/06/05 21:43:46  joeb
-' Added DoDatValCalculations()
-'
-' Revision 1.6  2007/06/05 17:37:40  jeroens
-' + Added ApplyAll. THIS IS A TEMPORARY HACK!
-'
-' Revision 1.5  2007/05/24 16:43:47  joeb
-' More forcing/timeseries data moved to cTimeSeriesDataStructures
-'
-' Revision 1.4  2007/05/23 16:38:47  jeroens
-' * Split data in input and applied structures
-'
-' Revision 1.3  2007/05/22 13:23:41  jeroens
-' + Commented
-'
-'==============================================================================
-
 Option Strict On
 
 ''' <summary>
@@ -166,9 +56,9 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Array of flags indicating which a time series must be applied.</summary>
     Public bEnable() As Boolean
     ''' <summary>Type of each time series.</summary>
-    Public iType() As Integer
+    Public TimeSeriesType() As eTimeSeriesType
     ''' <summary>Index of the core object that each time series links to. The type
-    ''' of the core object is implied by <see cref="iType">iType</see>.</summary>
+    ''' of the core object is implied by <see cref="TimeSeriesType">TimeSeriesType</see>.</summary>
     Public iPool() As Integer
     ''' <summary>Weight type for each time series.</summary>
     Public sWeight() As Single
@@ -191,7 +81,7 @@ Public Class cTimeSeriesDataStructures
 
     'ToDo_jb change DatType to eTimeSeriesType
     ''' <summary><see cref="eTimeSeriesType">Type</see> of each applied time series.</summary>
-    Public DatType() As Integer
+    Public DatType() As eTimeSeriesType
     ''' <summary>Index of the core object that each applied time series links to. The type
     ''' of the core object is implied by <see cref="DatType">DatType</see>.</summary>
     Public DatPool() As Integer
@@ -262,7 +152,7 @@ Public Class cTimeSeriesDataStructures
         ReDim bEnable(nNumTimeSeries)
         ReDim iPool(nNumTimeSeries)
         ReDim sWeight(nNumTimeSeries)
-        ReDim iType(nNumTimeSeries)
+        ReDim TimeSeriesType(nNumTimeSeries)
         ReDim sValues(nMaxYears + 1, nNumTimeSeries)
         ReDim strCustomVariableName(nNumTimeSeries)
         ReDim sDatSS(nNumTimeSeries)
@@ -381,7 +271,7 @@ Public Class cTimeSeriesDataStructures
         Debug.Assert(Me.bEnable(iTS))
 
         DatPool(iTSEnable) = iPool(iTS)
-        DatType(iTSEnable) = iType(iTS)
+        DatType(iTSEnable) = TimeSeriesType(iTS)
         WtType(iTSEnable) = sWeight(iTS)
         For iYear As Integer = 0 To NdatYear
             DatVal(iYear, iTSEnable) = sValues(iYear, iTS)
@@ -457,16 +347,16 @@ Public Class cTimeSeriesDataStructures
                 For j = 1 To NdatType
                     Select Case DatType(j)
 
-                        Case 0, 1
+                        Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs
 
                             If DatVal(i, j) > 0 Then Iobs = Iobs + 1
                             PoolForceBB(DatPool(j), i) = 0
 
-                        Case -1 'pool biomass forcing
+                        Case eTimeSeriesType.BiomassForcing 'pool biomass forcing
 
                             PoolForceBB(DatPool(j), i) = DatVal(i, j)
 
-                        Case 2 'time forcing data
+                        Case eTimeSeriesType.TimeForcing 'time forcing data
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                             'jb Time forcing data (Shapes) are handled through the Shape manager and not loaded with the Time series in EwE6
                             'this is the code from EwE5
@@ -485,7 +375,7 @@ Public Class cTimeSeriesDataStructures
                             '    Next
                             'End If
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        Case 3  'effort data by gear type
+                        Case eTimeSeriesType.FishingEffort 'effort data by gear type
 
                             If DatPool(j) > 0 And DatPool(j) <= EcosimData.nGear Then
                                 For K = 1 To 12
@@ -495,7 +385,7 @@ Public Class cTimeSeriesDataStructures
                                 Next
                             End If
 
-                        Case 4 'F by pool
+                        Case eTimeSeriesType.FishingMortality 'F by pool
 
                             If DatPool(j) > 0 And DatPool(j) <= nGroups Then
                                 EcosimData.FisForced(DatPool(j)) = True
@@ -509,7 +399,7 @@ Public Class cTimeSeriesDataStructures
                                 'Also check the fishratemax(pool):
                             End If
 
-                        Case 5, -5 'Z by pool
+                        Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
 
                             If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
                             If DatType(j) = -5 Then
@@ -518,7 +408,7 @@ Public Class cTimeSeriesDataStructures
                                 PoolForceZ(DatPool(j), i) = 0
                             End If
 
-                        Case -6, 6 'Catches, -6 is forced
+                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'Catches, -6 is forced
                             If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
                             If DatType(j) = -6 Then
                                 PoolForceCatch(DatPool(j), i) = DatVal(i, j)
@@ -527,7 +417,7 @@ Public Class cTimeSeriesDataStructures
                             End If
 
                             'Martell playing here!
-                        Case 7 'Mean Body Weight data for split pool groups
+                        Case eTimeSeriesType.AverageWeight 'Mean Body Weight data for split pool groups
                             'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
                             If DatVal(i, j) > 0 Then Iobs = Iobs + 1
 
