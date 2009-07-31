@@ -89,6 +89,7 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimProdConsump, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ProdConsump, Me.Index))
 
         m_coreData.Add(eVarNameFlags.EcosimMortVPred, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.MortVPred, Me.Index))
+        m_coreData.Add(eVarNameFlags.EcosimMortVFishing, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.MortVFishing, Me.Index))
 
         'cEcosimDataStrucures.ResultsAvgByPreyPred(var,group,time) Var and Group are fixed
         m_coreData.Add(eVarNameFlags.EcosimAvgPred, New c3DResultsWrapper2Fixed(m_simData.ResultsAvgByPreyPred, cEcosimDatastructures.eEcosimPreyPredResults.Pred, Me.Index))
@@ -295,6 +296,16 @@ Public Class cEcosimGroupOutput
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimMortVPred, iTime))
+        End Get
+
+    End Property
+
+
+
+    Public ReadOnly Property MortVFishing(ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimMortVFishing, iTime))
         End Get
 
     End Property

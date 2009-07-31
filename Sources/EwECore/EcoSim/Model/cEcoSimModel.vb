@@ -943,7 +943,8 @@ Public Property PluginManager() As cPluginManager
                         'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
 
                         'The next is easier, and gives almost the same answer:
-                        If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = m_search.FLimit(iGrp) ' : Stop
+                        ' If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
+                        If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
                     Else
                         'Computed fishing mortality
                         m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
@@ -1524,6 +1525,7 @@ Public Property PluginManager() As cPluginManager
                 Dim SumEf As Single
                 Dim iflt As Integer
                 Dim igrp As Integer
+                Dim totMort As Single
 
                 Me.m_Results.clear()
 
@@ -1547,15 +1549,19 @@ Public Property PluginManager() As cPluginManager
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, igrp, iTime) = m_Data.Ftime(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, igrp, iTime) = m_Data.Eatenby(igrp) / BB(igrp)
+
                     If m_EPData.PP(igrp) < 1 Then
-                        m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, igrp, iTime) = m_Data.loss(igrp) / BB(igrp)
+                        totMort = m_Data.loss(igrp) / BB(igrp)
                     Else
-                        m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, igrp, iTime) = pbb(igrp)
+                        totMort = pbb(igrp)
                     End If
+
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, igrp, iTime) = totMort
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) = m_Data.Eatenof(igrp) / BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, igrp, iTime) = m_Data.FishTime(igrp) + m_Data.Eatenof(igrp) / BB(igrp)
 
-                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVPred, igrp, iTime) = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) / m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, igrp, iTime)
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVPred, igrp, iTime) = m_Data.Eatenof(igrp) / totMort
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVFishing, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp) / totMort
 
                     For ipred As Integer = 1 To m_Results.nGroups
                         'sum of consumption for pred and prey
@@ -2121,7 +2127,7 @@ Public Property PluginManager() As cPluginManager
 
                         'ToDetritus = ToDetritus + m_data.mo(i) * biomass(i)
                         'pbm is 0 for consumers
-                        Pmult = 1.0#
+                        Pmult = 1.0
                         ApplyAVmodifiers(Pmult, Veff(1), i, i, True)
                         pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
