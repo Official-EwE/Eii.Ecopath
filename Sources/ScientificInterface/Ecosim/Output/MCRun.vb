@@ -1,40 +1,3 @@
-'==============================================================================
-'
-' $Log: MCRun.vb,v $
-' Revision 1.10  2009/06/27 18:18:44  jeroens
-' Uses Zedgraph for plotting
-'
-' Revision 1.9  2009/06/24 18:31:16  jeroens
-' Enabled to be maintained in the designer
-'
-' Revision 1.8  2009/06/23 18:17:30  jeroens
-' Fixed layout: SS no longer drops off of screen
-' Fixed panel padding
-' Uses central progress feedback structure
-'
-' Revision 1.7  2009/05/13 13:59:53  jeroens
-' Renamed ecosim plot classes
-'
-' Revision 1.6  2009/05/11 01:50:59  jeroens
-' Renamed command classes
-'
-' Revision 1.5  2009/03/19 16:02:26  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.4  2009/01/16 23:46:21  jeroens
-' Fixed ApplyTimeSeries outdated name bug
-'
-' Revision 1.3  2008/12/15 15:55:37  jeroens
-' no message
-'
-' Revision 1.2  2008/11/25 02:16:26  sherman
-' Added feedback onto monte carlo progress bar.
-'
-' Revision 1.1  2008/09/26 07:31:47  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -226,6 +189,16 @@ Namespace Ecosim
             End If
         End Sub
 
+        Private Sub nudNumTrials_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles nudNumTrials.ValueChanged
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.nTrials = CInt(Me.nudNumTrials.Value)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
 #End Region ' Events
 
 #Region " MC Run callbacks "
@@ -357,7 +330,8 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdRunMonteCarlo.OnUpdate
+        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+            Handles m_cmdRunMonteCarlo.OnUpdate
 
             cmd.Enabled = Me.m_core.StateMonitor.HasEcosimLoaded() And _
                           Me.m_core.HasAppliedTimeSeries() And _
