@@ -639,7 +639,8 @@ Namespace Core
         EcosimMortVPred
         ''' <summary>[fishing mortality]/[total mortality]</summary>
         EcosimMortVFishing
-
+        EcosimMortVPredPM
+        EcosimMortVFishingPM
 
         'Joeh
         ''' <summary>Ecopath ouput data over time</summary>
