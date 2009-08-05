@@ -1,55 +1,3 @@
-'==============================================================================
-'
-' $Log: cSocketWrapper.vb,v $
-' Revision 1.15  2009/06/27 16:05:28  sherman
-' Caught exception when client disconnected.
-' TODO: Throw event when client disconnects
-'
-' Revision 1.14  2009/06/25 15:09:59  sherman
-' Fixed IPv6 initialization parameter
-'
-' Revision 1.13  2009/06/25 07:36:45  sherman
-' Moved IPv6 toggle on create socket constructor.
-'
-' Revision 1.12  2009/06/25 07:02:20  jeroens
-' Fixed client authorization bug while reporting machine name
-'
-' Revision 1.11  2009/06/22 20:32:01  jeroens
-' Handshake transfers machine name from connecting client
-'
-' Revision 1.10  2009/06/18 15:55:48  jeroens
-' Added IPv6 support
-'
-' Revision 1.9  2009/06/16 20:14:51  jeroens
-' Fixed reconnect functionality
-'
-' Revision 1.8  2009/04/28 13:15:34  jeroens
-' Events marshalled
-'
-' Revision 1.7  2009/01/16 18:30:35  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.6  2008/12/18 21:53:25  joeb
-' Changed the size of the buffer from huge to 1024
-'
-' Revision 1.5  2008/12/17 20:53:01  joeb
-' Bug fixes to sending and receiving data
-'
-' Revision 1.4  2008/12/01 11:21:05  jeroens
-' Actively connect to IP4 networks only
-'
-' Revision 1.3  2008/10/02 21:27:25  jeroens
-' Socket able to connect to URI
-'
-' Revision 1.2  2008/10/02 06:24:27  jeroens
-' Added SyncSend capabilties to enforce outgoing data order
-' Fixed potential handshake relay / authorization order mix-up
-'
-' Revision 1.1  2008/09/26 07:31:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -69,7 +17,7 @@ Imports System.Reflection
 '   1: Main info, main failures
 '   2: Status updates
 '   3: Data details (for the hardcore debuggers)
-#Const VERBOSE_LEVEL = 1
+#Const VERBOSE_LEVEL = 0
 
 Namespace NetUtilities
 
