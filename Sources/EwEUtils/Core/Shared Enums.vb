@@ -1051,6 +1051,7 @@ Namespace Core
 
         'Economic data for the game
         GameEconomicCost
+        GameEconomicCostPM
         GameEconomicProfit
         GameEconomicProfitPM
         GameEconomicJobsTotal
