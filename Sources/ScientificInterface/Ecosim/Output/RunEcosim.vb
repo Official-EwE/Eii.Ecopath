@@ -660,8 +660,11 @@ Namespace Ecosim
                                     pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
                                 ElseIf m_tsmiCatch.Checked Then
                                     'Catch
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
+                                    'jb changed to use Yield computed by Ecosim 
+                                    'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                    '  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
+                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Yield(t)))
+
                                 Else
                                     Debug.Assert(False)
                                 End If
@@ -673,8 +676,7 @@ Namespace Ecosim
                                 pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)))
                             ElseIf m_tsmiCatch.Checked Then
                                 'Catch
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t))))
+                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Yield(t)))
                             Else
                                 Debug.Assert(False)
                             End If
@@ -750,13 +752,14 @@ Namespace Ecosim
                         If m_tsmiShowAnnualOutput.Checked Then
                             If t Mod cCore.N_MONTHS = 0 Then
 
+
+
                                 If m_tsmiBiomass.Checked Then
                                     'Biomass
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
                                 ElseIf m_tsmiCatch.Checked Then
                                     'Catch
-                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                      (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
+                                    pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
                                 Else
                                     Debug.Assert(False)
                                 End If
@@ -767,12 +770,13 @@ Namespace Ecosim
                             ' 2) Add a single point to temp list
                             If m_tsmiBiomass.Checked Then
                                 'Biomass
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t)) / m_core.EcoPathGroupOutputs(i).Biomass())
+                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).BiomassRel(t)))
                             ElseIf m_tsmiCatch.Checked Then
                                 'Catch
-                                'Console.WriteLine(m_core.EcoPathGroupInputs(i).Name)
-                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
-                                  (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
+                                'jb changed to use relative values computed by Ecosim original code left for reference until this has been vetted
+                                'pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).Biomass(t) * _
+                                '    (m_core.EcoSimGroupOutputs(i).FishMort(t) - m_core.EcoSimGroupOutputs(i).PredMort(t)) / (m_core.EcoPathGroupOutputs(i).Biomass() * m_core.EcoPathGroupOutputs(i).MortCoFishRate())))
+                                pplData.Add(CDbl(t / cCore.N_MONTHS) + m_core.EcosimFirstYear, CDbl(m_core.EcoSimGroupOutputs(i).YieldRel(t)))
                             Else
                                 Debug.Assert(False)
                             End If
