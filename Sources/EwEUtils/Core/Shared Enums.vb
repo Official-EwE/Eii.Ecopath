@@ -625,6 +625,9 @@ Namespace Core
         ''' <summary>Ecosim relative biomass over time</summary>
         EcosimBiomassRel
         EcosimYield
+        ''' <summary>[catch(t)]/[catch(0)]</summary>
+        EcosimYieldRel
+
         EcosimTotalMort
         EcosimConsumpBiomass
         EcosimFeedingTime
