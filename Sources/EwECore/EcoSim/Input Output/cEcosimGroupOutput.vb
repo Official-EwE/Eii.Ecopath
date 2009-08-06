@@ -80,6 +80,7 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimBiomassRel, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.BiomassRel, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimYield, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
+        m_coreData.Add(eVarNameFlags.EcosimYieldRel, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.YieldRel, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimFeedingTime, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.FeedingTime, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimConsumpBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.ConsumpBiomass, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimPredMort, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.PredMort, Me.Index))
@@ -226,6 +227,15 @@ Public Class cEcosimGroupOutput
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimYield, iTime))
+        End Get
+
+    End Property
+
+
+    Public ReadOnly Property YieldRel(ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimYieldRel, iTime))
         End Get
 
     End Property

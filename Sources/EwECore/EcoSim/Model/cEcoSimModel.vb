@@ -1526,7 +1526,7 @@ Public Property PluginManager() As cPluginManager
                 Dim iflt As Integer
                 Dim igrp As Integer
                 Dim totMort As Single
-
+                Dim startCatch As Single
                 Me.m_Results.clear()
 
                 m_Results.CurrentT = iTime
@@ -1539,7 +1539,13 @@ Public Property PluginManager() As cPluginManager
                     'output biomass is relative to its initial state  
                     'StartBiomass() is the input to EcoSim which is the output from EcoPath
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
-                    m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / (m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp))
+
+                    startCatch = m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp)
+                    If startCatch <> 0 Then
+                        m_Results.Yield(igrp) = BB(igrp) * m_Data.FishTime(igrp) / startCatch
+                        m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.YieldRel, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp) / startCatch
+                    End If
+
                     'ToDo_jb Compute fish count for real not pretend like this
                     m_Results.FishCount(igrp) = BB(igrp) * 100 '
 
@@ -1547,6 +1553,7 @@ Public Property PluginManager() As cPluginManager
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.BiomassRel, igrp, iTime) = BB(igrp) / Me.m_Data.StartBiomass(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp)
+
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, igrp, iTime) = m_Data.Ftime(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, igrp, iTime) = m_Data.Eatenby(igrp) / BB(igrp)
 
