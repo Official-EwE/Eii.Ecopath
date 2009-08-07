@@ -533,6 +533,8 @@ End Class
 Public Class cTimeSeriesImport
     Inherits cGroupTimeSeries
 
+    Private m_bIsMonthly As Boolean = False
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor
@@ -551,6 +553,15 @@ Public Class cTimeSeriesImport
         ' Suppress this
         Return True
     End Function
+
+    Public Property IsMonthly() As Boolean
+        Get
+            Return Me.m_bIsMonthly
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bIsMonthly = value
+        End Set
+    End Property
 
 End Class
 

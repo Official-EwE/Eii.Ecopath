@@ -579,9 +579,14 @@ Public Class dlgManageTimeSeries
 
         If Not core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
-        ' Create new dataset
-        bSucces = core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
-                Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears)
+        ' Create new dataset if it will contain one of more TS
+        For Each ts As cTimeSeriesImport In Me.m_tr
+            If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
+                bSucces = core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
+                        Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears)
+                Exit For
+            End If
+        Next
 
         ' Dataset succesfully removed?
         If (bSucces = True) Then
@@ -589,6 +594,24 @@ Public Class dlgManageTimeSeries
             appl.SetStatusText(String.Format(My.Resources.STATUS_IMPORTINGDATASET, Me.DatasetName), TriState.True)
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
+
+                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing) Then
+                        ' ToDo: use cFeedback message
+                        ' ToDo: localize this
+                        Select Case MsgBox(String.Format("Do you wish to import '{0}' as monthly forcing data?", ts.Name), _
+                                              MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+
+                            Case MsgBoxResult.Yes
+                                ts.IsMonthly = True
+                            Case MsgBoxResult.No
+                                ts.IsMonthly = False
+                            Case MsgBoxResult.Cancel
+                                bSucces = False
+                                Exit For
+
+                        End Select
+                    End If
+
                     If core.ImportEcosimTimeSeries(ts, core.ActiveTimeSeriesDatasetIndex) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
@@ -611,7 +634,7 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Release appropriate level
-        core.ReleaseBatchLock(clf)
+        core.ReleaseBatchLock(clf, bSucces)
 
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then

@@ -4923,6 +4923,7 @@ Public Class cDBDataSource
         Dim iNextShapeID As Integer = 0
         Dim bSucces As Boolean = True
         Dim sbZScale As New Text.StringBuilder()
+        Dim iRepetitions As Integer = 1
 
         Try
             iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
@@ -4957,9 +4958,11 @@ Public Class cDBDataSource
             drow("FunctionType") = eShapeFunctionType.NotSet
 
             ' Assemble Zscale. 
-            ' JS 04april09: Time Series are ANNUAL, FFs are MONTHLY: repeat values 12 times.
+            ' JS 04april09: Time Series are most likely ANNUAL, FFs are MONTHLY
+            If ts.IsMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
+
             For iYear As Integer = 0 To ts.XMax - 1
-                For iMonth As Integer = 1 To cCore.N_MONTHS
+                For iMonth As Integer = 1 To iRepetitions
                     If sbZScale.Length > 0 Then sbZScale.Append(" ")
                     sbZScale.Append(ts.ShapeData(iYear))
                 Next
