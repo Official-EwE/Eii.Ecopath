@@ -1062,6 +1062,13 @@ Namespace Core
         GameEconomicProduction
         GameEconomicProductionPM
 
+        GameEconomicTaxes
+        GameEconomicTaxesPM
+
+        GameEconomicSubsidies
+        GameEconomicSubsidiesPM
+
+
         ''' <summary>Eco system structure 1/pb * b(t)</summary>    
         GameEcoSystemStruct
         GameEcoSystemStructPM
