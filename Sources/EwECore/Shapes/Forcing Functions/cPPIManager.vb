@@ -1,24 +1,3 @@
-'==============================================================================
-'
-' $Log: cPPIManager.vb,v $
-' Revision 1.1  2008/09/26 07:30:33  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/11/02 15:41:08  jeroens
-' + Added IsApplied
-'
-' Revision 1.2  2007/09/06 00:22:40  joeb
-' Added isPredPrey = True for primary producer pairs
-'
-' Revision 1.1  2007/07/12 15:50:23  jeroens
-' * Moved
-'
-' Revision 1.4  2007/06/20 17:44:29  joeb
-' Add Log statment to CVS
-'
-'
-'
-'==============================================================================
 Option Explicit On
 
 ''' <summary>

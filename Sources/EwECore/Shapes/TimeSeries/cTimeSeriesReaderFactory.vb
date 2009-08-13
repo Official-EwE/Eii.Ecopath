@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: cTimeSeriesReaderFactory.vb,v $
-' Revision 1.1  2008/09/26 07:30:34  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/07/12 16:29:25  jeroens
-' + Moved
-'
-' Revision 1.1  2007/07/12 15:50:02  jeroens
-' * Moved
-'
-' Revision 1.3  2007/06/07 11:17:55  jeroens
-' + Commented
-'
-' Revision 1.2  2007/05/16 17:12:38  jeroens
-' + Added core ref to reader constructors
-'
-' Revision 1.1  2007/05/14 15:05:36  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 ''' ---------------------------------------------------------------------------

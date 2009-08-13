@@ -1,30 +1,3 @@
-'==============================================================================
-'
-' $Log: cTimeSeriesTextReader.vb,v $
-' Revision 1.7  2009/04/16 20:07:23  jeroens
-' Added HasErrors
-'
-' Revision 1.6  2009/04/03 14:56:51  jeroens
-' Hm
-'
-' Revision 1.5  2009/01/16 18:30:37  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.4  2008/11/06 05:31:23  jeroens
-' Pool code check mistakenly excluded upper boundary
-'
-' Revision 1.3  2008/11/05 05:07:13  jeroens
-' More leniency
-'
-' Revision 1.2  2008/11/04 18:52:23  jeroens
-' Provided more thorough error feedback on unexpected headers
-' Resolved parsing problems on typical clear values
-'
-' Revision 1.1  2008/09/26 07:30:34  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

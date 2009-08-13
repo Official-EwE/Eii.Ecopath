@@ -1,117 +1,11 @@
-'==============================================================================
-'
-' $Log: cTimeSeries.vb,v $
-' Revision 1.2  2009/01/16 18:30:36  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:34  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.22  2008/09/24 00:53:40  jeroens
-' Fixed XML comment errors
-'
-' Revision 1.21  2008/09/23 16:24:20  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.20  2008/06/06 15:56:08  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.19  2008/02/11 03:28:15  jeroens
-' Removed Dataset name, first year, numyears
-'
-' Revision 1.18  2008/01/21 04:06:38  jeroens
-' Fixed shape max scale issues, once and for all
-'
-' Revision 1.17  2007/11/06 13:22:47  jeroens
-' * Default weight = 1
-'
-' Revision 1.16  2007/10/12 20:35:40  jeroens
-' - Removed physical link to dataset
-'
-' Revision 1.15  2007/10/02 18:20:29  jeroens
-' * Fixed major TS mis-allocation category issue
-'
-' Revision 1.14  2007/09/10 15:30:49  jeroens
-' + Added CanApply
-'
-' Revision 1.13  2007/08/30 02:25:05  jeroens
-' + Added link to TS dataset
-'
-' Revision 1.12  2007/08/28 03:53:47  jeroens
-' * Fixed bug in FleetTimeSeries initialization
-'
-' Revision 1.11  2007/08/08 20:47:48  joeh
-' Change the scope of GroupIndex and FleetIndex from Friend Set to Set
-'
-' Revision 1.10  2007/08/08 00:54:03  jeroens
-' * Factory.CreateTimeSeries made public
-'
-' Revision 1.9  2007/07/30 01:50:18  jeroens
-' * Limited TS type changes
-'
-' Revision 1.8  2007/07/27 19:45:19  joeh
-' Change Time Series Type property to public
-'
-' Revision 1.7  2007/07/20 18:17:25  jeroens
-' - cTimeSeriesImport is not allowed to report back to the core any longer
-'
-' Revision 1.6  2007/07/17 16:21:25  jeroens
-' + Implemented cTimeSeries.Update()
-'
-' Revision 1.5  2007/07/17 02:15:38  jeroens
-' * cTimeSeries now inherited from cShapeData
-'
-' Revision 1.4  2007/07/13 17:24:33  jeroens
-' - Removed Forcing namespace
-'
-' Revision 1.3  2007/07/12 16:29:24  jeroens
-' + Moved
-'
-' Revision 1.1  2007/07/12 15:50:02  jeroens
-' * Moved
-'
-' Revision 1.9  2007/06/11 02:56:06  jeroens
-' * cTimeSeries inherits cCoreInputOutputBase
-' * cTimeSeriesImport serves as import data
-' - Discontinued cForcingTimeSeries
-'
-' Revision 1.8  2007/06/08 21:09:25  joeb
-' Added DataSS and DataQ
-'
-' Revision 1.7  2007/06/07 16:09:42  jeroens
-' * Fixed enum misinterpretation bug
-'
-' Revision 1.6  2007/06/07 12:44:48  jeroens
-' + Added Factory to simplify interpretation of awkward eTimeSeriesType values
-'
-' Revision 1.5  2007/06/07 11:55:55  jeroens
-' * TS type -6 is also Fleet-related
-'
-' Revision 1.4  2007/05/23 16:36:50  jeroens
-' + Added Apply()
-'
-' Revision 1.3  2007/05/18 03:21:44  jeroens
-' * Commented
-'
-' Revision 1.2  2007/05/16 17:11:40  jeroens
-' + Completed base class, added subclasses
-'
-' Revision 1.1  2007/05/14 03:15:03  jeroens
-' Initial version
-'
-' Revision 1.1  2007/05/10 03:18:58  jeroens
-' + Drafting up initial version
-'
-'==============================================================================
-
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

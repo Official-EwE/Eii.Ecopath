@@ -1,20 +1,9 @@
-'==============================================================================
-'
-' $Log: cTimeSeriesCSVReader.vb,v $
-' Revision 1.2  2008/11/04 18:51:17  jeroens
-' Pruned history
-'
-' Revision 1.1  2008/09/26 07:30:33  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
-#Region " Imports directive "
+#Region " Imports "
 
 Option Strict On
 Imports System.IO
 
-#End Region ' Imports directive
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

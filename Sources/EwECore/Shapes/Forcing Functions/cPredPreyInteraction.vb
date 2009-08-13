@@ -1,31 +1,4 @@
-'==============================================================================
-'
-' $Log: cPredPreyInteraction.vb,v $
-' Revision 1.3  2009/06/19 22:09:13  jeroens
-' Removed assert - reload works for removed shapes as long as Ecosim is totally reloaded
-'
-' Revision 1.2  2009/01/16 18:30:33  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:33  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/06/06 15:56:07  joeb
-' Moved eDataTypes to EwEUtils.Core
-'
-' Revision 1.4  2008/01/21 20:27:53  joeb
-' Remove m_bPendingUpdates it was stopping the data from updating even if a lock was not set
-'
-' Revision 1.3  2007/10/04 14:26:28  jeroens
-' * Smoothened pending updates bahaviour
-'
-' Revision 1.2  2007/09/10 17:03:00  jeroens
-' + Added update lock to improve performance
-'
-'==============================================================================
-
 Option Explicit On
-
 Imports EwEUtils.Core
 
 ''' <summary>

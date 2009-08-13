@@ -1,28 +1,4 @@
-'==============================================================================
-'
-' $Log: ShapeManagers.vb,v $
-' Revision 1.6  2009/06/20 20:58:44  jeroens
-' Pruned log
-'
-' Revision 1.5  2009/04/20 12:35:48  jeroens
-' Localized
-'
-' Revision 1.4  2009/03/26 17:41:38  jeroens
-' Fixed confusion between rate and effort shape names
-'
-' Revision 1.3  2009/01/16 18:30:34  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/11/28 16:54:15  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:33  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
-
 Imports EwEUtils.Core
 
 #Region "Public Enumerators"
