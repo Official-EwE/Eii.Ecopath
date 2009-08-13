@@ -645,6 +645,8 @@ Namespace Core
         EcosimMortVPredPM
         EcosimMortVFishingPM
 
+        EcosimEcoSystemStruct
+
         'Joeh
         ''' <summary>Ecopath ouput data over time</summary>
         EcopathWeight
@@ -1039,10 +1041,8 @@ Namespace Core
 
         ''' <summary>Profit by Fleet.</summary>      
         GameFleetProfitSummary
-        'GameFleetProfitSummaryPM
         ''' <summary>Jobs(?) by Fleet.</summary>    
         GameFleetJobsSummary
-        ' GameFleetJobsSummaryPM
 
         GameFleetValue
         GameFleetCatch
@@ -1061,6 +1061,10 @@ Namespace Core
         GameEconomicJobsTotalPM
         GameEconomicProduction
         GameEconomicProductionPM
+
+        ''' <summary>Eco system structure 1/pb * b(t)</summary>    
+        GameEcoSystemStruct
+        GameEcoSystemStructPM
 
         ''' <summary>Game names added for the Game data because EwE6 uses Name for all names</summary>
         GameFleetName
