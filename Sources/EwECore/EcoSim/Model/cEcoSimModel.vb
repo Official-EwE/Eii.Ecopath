@@ -1567,6 +1567,8 @@ Public Property PluginManager() As cPluginManager
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) = m_Data.Eatenof(igrp) / BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, igrp, iTime) = m_Data.FishTime(igrp) + m_Data.Eatenof(igrp) / BB(igrp)
 
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.EcoSysStructure, igrp, iTime) = Me.m_search.BGoalValue(igrp) / BB(igrp)
+
                     If totMort <> 0 Then
                         m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVPred, igrp, iTime) = m_Data.Eatenof(igrp) / totMort
                         m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVFishing, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp) / totMort

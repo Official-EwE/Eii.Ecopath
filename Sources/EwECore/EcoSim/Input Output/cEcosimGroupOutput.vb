@@ -101,6 +101,10 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimPreyPercentageTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPreyPredResults.Prey, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimPredRateTime, New c4DResultsWrapper(m_simData.PredPreyResultsOverTime, cEcosimDatastructures.eEcosimPreyPredResults.Pred, Me.Index))
 
+        m_coreData.Add(eVarNameFlags.EcosimEcoSystemStruct, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.EcoSysStructure, Me.Index))
+
+        ' EcosimEcoSystemStruct()
+
         'cEcosimDataStrucures.Elect(group,group,time) First Group is fixed
         m_coreData.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
@@ -319,6 +323,15 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
+
+    Public ReadOnly Property EcoSystemStruct(ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimEcoSystemStruct, iTime))
+        End Get
+
+    End Property
+
 
 
     Public ReadOnly Property AvgPredConsumption(ByVal iGroup As Integer) As Single
