@@ -1567,7 +1567,7 @@ Public Property PluginManager() As cPluginManager
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime) = m_Data.Eatenof(igrp) / BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, igrp, iTime) = m_Data.FishTime(igrp) + m_Data.Eatenof(igrp) / BB(igrp)
 
-                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.EcoSysStructure, igrp, iTime) = Me.m_search.BGoalValue(igrp) / BB(igrp)
+                    m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.EcoSysStructure, igrp, iTime) = Me.m_search.BGoalValue(igrp) * BB(igrp)
 
                     If totMort <> 0 Then
                         m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.MortVPred, igrp, iTime) = m_Data.Eatenof(igrp) / totMort
@@ -1817,6 +1817,8 @@ Public Property PluginManager() As cPluginManager
 
                         Zstat = 0
                         m_RefData.Iobs += 1
+
+                        'Debug.Assert(m_RefData.Iobs <> 65)
 
                         'data type 0,1,5,6,-6,7
                         Select Case m_RefData.DatType(j)
@@ -2747,7 +2749,7 @@ Public Property PluginManager() As cPluginManager
             ' 
 
             'if SSgrup is called:
-            Dim bSSgrp As Boolean = SSgroup IsNot Nothing
+            Dim bSSgrp As Boolean = (SSgroup IsNot Nothing)
 
             'ToDo_jb PlotDataInfo AverageBodyWeight
             Dim i As Integer, j As Integer, iYear As Integer ', bplot As Single
@@ -2760,7 +2762,7 @@ Public Property PluginManager() As cPluginManager
             For j = 1 To m_RefData.NdatType
                 If DatNobs(j) > 0 Then
 
-                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Then
+                    If m_RefData.DatType(j) = eTimeSeriesType.BiomassAbs Or m_RefData.DatType(j) = eTimeSeriesType.Catches Or m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Then
                         m_RefData.DatSS(j) = DatSumZ2(j)
                         m_RefData.DatQ(j) = 0
                     End If
@@ -2768,8 +2770,7 @@ Public Property PluginManager() As cPluginManager
                     If m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
                        m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                        m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                       m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
+                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
@@ -2827,6 +2828,10 @@ Public Property PluginManager() As cPluginManager
                 If m_RefData.DatSS(j) > 0 Then LogL = LogL + m_RefData.WtType(j) * (DatNobs(j) - 1) * Math.Log(m_RefData.DatSS(j))
             Next
             LogL = LogL / 2
+
+            'For ib As Integer = 1 To m_RefData.Iobs
+            '    System.Console.WriteLine(Me.m_RefData.Erpred(ib).ToString)
+            'Next
 
             'Dim iy As Integer
             'System.Console.WriteLine(Me.m_RefData.strName(75) & ", " & Me.m_RefData.DatType(75).ToString & ", " & Me.m_RefData.DatPool(75).ToString)
