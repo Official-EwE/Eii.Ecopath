@@ -1821,13 +1821,18 @@ Public Class cCore
             Select Case fm.Reply
                 Case cFeedbackMessage.eReply.CANCEL
                     Return False
+
                 Case cFeedbackMessage.eReply.YES
                     If Not Me.PluginManager.SaveModel(Me.m_DataSource) Then
                         Return False
                     End If
+                    ' Update core data state
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
                 Case cFeedbackMessage.eReply.NO
                     ' Do nothing
             End Select
+
         End If
 
         'default reply Yes save the changes!!!!On my that could be dangerous
@@ -1849,6 +1854,9 @@ Public Class cCore
                     If Not Me.SaveEcotracerScenario() Then
                         Return False
                     End If
+                    ' Update core data state
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
                 Case cFeedbackMessage.eReply.NO
                     ' Do nothing
             End Select
@@ -1872,6 +1880,9 @@ Public Class cCore
                     If Not Me.SaveEcospaceScenario() Then
                         Return False
                     End If
+                    ' Update core data state
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
                 Case cFeedbackMessage.eReply.NO
                     ' Do nothing
             End Select
@@ -1895,6 +1906,9 @@ Public Class cCore
                     If Not Me.SaveEcosimScenario() Then
                         Return False
                     End If
+                    ' Update core data state
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
                 Case cFeedbackMessage.eReply.NO
                     ' Do nothing
             End Select
@@ -1916,6 +1930,9 @@ Public Class cCore
                         ' VERIFY_JS: Discuss what to do here. Prompt user how to proceed?
                         Return False
                     End If
+                    ' Update core data state
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
                 Case cFeedbackMessage.eReply.NO
                     ' Do nothing
             End Select
@@ -4769,8 +4786,10 @@ Public Class cCore
         iScenarioID = Me.m_EcoPathData.EcosimScenarioDBID(Me.m_EcoPathData.ActiveEcosimScenario)
         Debug.Assert(iScenarioID > 0)
 
-        ' Save ok?
         ds = DirectCast(DataSource, IEcosimDatasource)
+        ' No need to save? Yippee
+        If Not ds.IsEcosimModified Then Return True
+        ' Save ok?
         If (ds.SaveEcosimScenario(iScenarioID)) Then
             ' Reload ecosim scenarios
             Me.InitEcosimScenarios()
@@ -4792,6 +4811,7 @@ Public Class cCore
                 My.Resources.CoreMessages.GENERIC_SAVE_RESOLUTION)
 
         Return False
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -6803,8 +6823,10 @@ Public Class cCore
         iScenarioID = m_EcoPathData.EcospaceScenarioDBID(m_EcoPathData.ActiveEcospaceScenario)
         Debug.Assert(iScenarioID > 0)
 
-        ' Save ok?
         ds = DirectCast(DataSource, IEcospaceDatasource)
+        ' No need to save? Yippee
+        If Not ds.IsEcospaceModified Then Return True
+        ' Save ok?
         If (ds.SaveEcospaceScenario(iScenarioID)) Then
 
             ' #Yes: reload ecospace scenario defs
