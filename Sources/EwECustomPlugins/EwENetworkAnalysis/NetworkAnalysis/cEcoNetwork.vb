@@ -1,78 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcoNetwork.vb,v $
-' Revision 1.23  2009/06/06 21:54:39  jeroens
-' Cleaning up
-'
-' Revision 1.22  2009/06/03 02:22:40  jeroens
-' Implemented VC changes 2jun09
-'
-' Revision 1.21  2009/06/02 20:39:01  villyc
-' added some remarks (as response to Jeroen's questions).
-'
-' Revision 1.20  2009/06/02 15:37:33  jeroens
-' Added TotalImpact (needs validation)
-'
-' Revision 1.19  2009/06/02 02:37:52  jeroens
-' Hmm
-'
-' Revision 1.18  2009/06/02 02:36:52  jeroens
-' Identified 2 issues in Keystoneness calculations, VC please check
-'
-' Revision 1.17  2009/05/29 23:56:47  jeroens
-' Localized
-'
-' Revision 1.16  2009/05/29 19:31:57  villyc
-' Added another keystoneness index relative to biomass
-'
-' Revision 1.15  2009/05/28 15:04:25  jeroens
-' Added Assert  in case of keystoneness failure
-'
-' Revision 1.14  2009/05/28 02:13:24  jeroens
-' Keystoneness vars exposed
-'
-' Revision 1.13  2009/05/27 22:34:23  villyc
-' adding keystoneness sub to network
-'
-' Revision 1.12  2009/05/01 17:48:17  jeroens
-' Uses central status feedback
-' Public functions no longer throw exceptions
-'
-' Revision 1.11  2009/04/28 19:00:27  jeroens
-' Revamped to be able to use styleguide hide groups, rather than an isolated hidegroups interface
-'
-' Revision 1.10  2009/04/15 17:58:13  joeh
-' Do not call DumResultsToStream to speed up the system
-'
-' Revision 1.9  2009/01/23 03:10:35  jeroens
-' Removed unused references
-'
-' Revision 1.8  2008/11/27 23:45:05  joeb
-' Moved MatrixCalc to EcoFunctions
-'
-' Revision 1.7  2008/11/24 18:11:06  jeroens
-' Electivity exposed
-'
-' Revision 1.6  2008/11/13 23:01:11  joeh
-' Fix integer overflow problem for variable NoArrows
-'
-' Revision 1.5  2008/11/13 19:34:14  joeh
-' Fix the error in the calculation of total ascendency
-'
-' Revision 1.4  2008/11/11 21:35:18  joeb
-' Moved FunctionKemptonsQ to cCore.EcoFunctions.KemptonsQ so it would be accessible for the Seach functions
-'
-' Revision 1.3  2008/10/15 06:06:20  jeroens
-' No longer close Console.Out; rather restore to its original state in DumpResultsToStream
-'
-' Revision 1.2  2008/10/08 19:39:01  villyc
-' mti feature: discards no longer have a positive impact on the fleet that catches them
-'
-' Revision 1.1  2008/09/26 07:30:59  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Explicit On
 Option Strict On
 Imports EwECore
@@ -1763,7 +1688,7 @@ nextroute:
             For col = LBound(Gamma, 2) To UBound(Gamma, 2)
                 Gamma(row, col) = 0.0!
                 For inside = LBound(Alpha, 2) To UBound(Alpha, 2)
-                    Gamma(row, col) = Gamma(row, col) + Alpha(row, inside) * Beta(inside, col)
+                    Gamma(row, col) += Alpha(row, inside) * Beta(inside, col)
                 Next inside
             Next col
         Next row
