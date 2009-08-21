@@ -44,7 +44,6 @@ Public Class AppLauncher
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
     Private m_coreController As EwECoreController = Nothing
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
-    Private m_StatusStripHelper As StatusStripHelper = Nothing
 
     Private m_strLastSelectedPath As String = ""
     Private m_lstrStatus As New List(Of String)
@@ -420,6 +419,7 @@ Public Class AppLauncher
         Optional ByVal sProgress As Single = 0.0) _
         Implements IApplicationStatusDispatcher.SetStatusText
 
+        ' EVEN MORE TODO: PERFORM THIS VIA cStatusNotifier!
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
         ' Give app a chance to rener
@@ -465,7 +465,7 @@ Public Class AppLauncher
         'Me.Refresh()
 
         ' Update status text
-        Me.m_StatusStripHelper.SetStatusText(strText, sProgress)
+        Me.m_ssMain.SetStatusText(strText, sProgress)
 
     End Sub
 
@@ -511,7 +511,7 @@ Public Class AppLauncher
         ' Set app caption
         Me.Text = Me.GetApplicationCaption()
         ' Start controlling the status strip
-        Me.m_StatusStripHelper = New StatusStripHelper(Me.m_core, Me.m_ssMain)
+        Me.m_ssMain.Connect(Me.m_core)
         ' Start controlling forms
         Me.m_FormStateHelper = New cEwEFormStateHelper(Me.m_core.StateMonitor, Me.m_DockPanel)
 

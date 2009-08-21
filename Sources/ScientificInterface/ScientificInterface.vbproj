@@ -872,6 +872,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\cEwEStatusBar.resx">
+      <DependentUpon>cEwEStatusBar.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\VisualStyleEditors\ucEditImage.resx">
       <DependentUpon>ucEditImage.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -981,6 +984,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ecopath_logo.ico" />
+    <Compile Include="Controls\cEwEStatusBar.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\cEwEBrushProvider.vb" />
     <Compile Include="Controls\gridResultsBase.vb">
       <SubType>Component</SubType>

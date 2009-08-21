@@ -230,12 +230,6 @@
   <data name="m_tsmiHelpContents.Text" xml:space="preserve">
     <value>&amp;Contents</value>
   </data>
-  <data name="m_tsmiHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
-  </data>
-  <data name="m_tsmiHelp.Text" xml:space="preserve">
-    <value>&amp;Help</value>
-  </data>
   <data name="m_tsmiHelpIndex.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -303,11 +297,11 @@
   <data name="m_tsmiHelpAbout.Text" xml:space="preserve">
     <value>&amp;About...</value>
   </data>
-  <data name="m_tsmiWindows.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 20</value>
+  <data name="m_tsmiHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 20</value>
   </data>
-  <data name="m_tsmiWindows.Text" xml:space="preserve">
-    <value>&amp;Windows</value>
+  <data name="m_tsmiHelp.Text" xml:space="preserve">
+    <value>&amp;Help</value>
   </data>
   <data name="m_tsmiWindowsClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 22</value>
@@ -321,132 +315,23 @@
   <data name="m_tsmiWindowsCloseAll.Text" xml:space="preserve">
     <value>C&amp;lose All</value>
   </data>
+  <data name="m_tsmiWindows.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 20</value>
+  </data>
+  <data name="m_tsmiWindows.Text" xml:space="preserve">
+    <value>&amp;Windows</value>
+  </data>
   <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 22</value>
   </data>
   <data name="m_tsmiOptions.Text" xml:space="preserve">
     <value>&amp;Options...</value>
   </data>
-  <data name="m_tsStatus.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_tsStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>813, 21</value>
-  </data>
-  <data name="m_tsStatus.Text" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="m_tsStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <metadata name="m_ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 620</value>
-  </metadata>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_ssMain.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_ssMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 620</value>
-  </data>
-  <data name="m_ssMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>832, 26</value>
-  </data>
-  <data name="m_ssMain.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_ssMain.Name" xml:space="preserve">
-    <value>m_ssMain</value>
-  </data>
-  <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ssMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tsbProgress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 20</value>
-  </data>
-  <data name="m_tsbProgress.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_tsSelection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>4, 21</value>
-  </data>
-  <data name="m_tsEcopathModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 21</value>
-  </data>
-  <data name="m_tsEcopathModel.Text" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="m_tsEcopathModel.ToolTipText" xml:space="preserve">
-    <value>No Ecopath model loaded</value>
-  </data>
-  <data name="m_tsEcopathModel.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_tsEcosimScenario.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 21</value>
-  </data>
-  <data name="m_tsEcosimScenario.Text" xml:space="preserve">
-    <value>N/A</value>
-  </data>
-  <data name="m_tsEcosimScenario.ToolTipText" xml:space="preserve">
-    <value>No Ecosim scenario loaded</value>
-  </data>
-  <data name="m_tsEcosimScenario.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_tsEcospaceScenario.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 21</value>
-  </data>
-  <data name="m_tsEcospaceScenario.Text" xml:space="preserve">
-    <value>N/A</value>
-  </data>
-  <data name="m_tsEcospaceScenario.ToolTipText" xml:space="preserve">
-    <value>No Ecospace scenario loaded</value>
-  </data>
-  <data name="m_tsEcospaceScenario.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_tsEcotracerScenario.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 21</value>
-  </data>
-  <data name="m_tsEcotracerScenario.Text" xml:space="preserve">
-    <value>N/A</value>
-  </data>
-  <data name="m_tsEcotracerScenario.ToolTipText" xml:space="preserve">
-    <value>No Ecotracer scenario loaded</value>
-  </data>
-  <data name="m_tsEcotracerScenario.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_tsiModified.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 21</value>
-  </data>
-  <data name="m_tsiModified.Text" xml:space="preserve">
-    <value>Modified</value>
-  </data>
-  <data name="m_tsiModified.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="m_tsmiFileExit.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
   </data>
   <data name="m_tsmiFileExit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
-  </data>
-  <data name="m_tsmiFile.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>ActiveBorder</value>
-  </data>
-  <data name="m_tsmiFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 20</value>
-  </data>
-  <data name="m_tsmiFile.Text" xml:space="preserve">
-    <value>&amp;File</value>
   </data>
   <data name="m_tsmiFileNew.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Ctrl+N</value>
@@ -496,12 +381,7 @@
   <data name="m_tsmiFileCompact.Text" xml:space="preserve">
     <value>&amp;Compact...</value>
   </data>
-  <data name="m_tsmiFileRecent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
-  </data>
-  <data name="m_tsmiFileRecent.Text" xml:space="preserve">
-    <value>&amp;Recent Models</value>
-  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsmiNone.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -511,63 +391,24 @@
   <data name="m_tsmiNone.Text" xml:space="preserve">
     <value>(none)</value>
   </data>
+  <data name="m_tsmiFileRecent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
+  </data>
+  <data name="m_tsmiFileRecent.Text" xml:space="preserve">
+    <value>&amp;Recent Models</value>
+  </data>
+  <data name="m_tsmiFile.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>ActiveBorder</value>
+  </data>
+  <data name="m_tsmiFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 20</value>
+  </data>
+  <data name="m_tsmiFile.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
   <metadata name="m_menuMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="m_tsmiView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
-  </data>
-  <data name="m_tsmiView.Text" xml:space="preserve">
-    <value>&amp;View</value>
-  </data>
-  <data name="m_tsmiEcopath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 20</value>
-  </data>
-  <data name="m_tsmiEcopath.Text" xml:space="preserve">
-    <value>&amp;Ecopath</value>
-  </data>
-  <data name="m_tsmiEcosim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
-  </data>
-  <data name="m_tsmiEcosim.Text" xml:space="preserve">
-    <value>Eco&amp;sim</value>
-  </data>
-  <data name="m_tsmiEcospace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 20</value>
-  </data>
-  <data name="m_tsmiEcospace.Text" xml:space="preserve">
-    <value>Ecos&amp;pace</value>
-  </data>
-  <data name="m_tsmiTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
-  </data>
-  <data name="m_tsmiTools.Text" xml:space="preserve">
-    <value>&amp;Tools</value>
-  </data>
-  <data name="m_menuMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_menuMain.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 2, 0, 2</value>
-  </data>
-  <data name="m_menuMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>832, 24</value>
-  </data>
-  <data name="m_menuMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_menuMain.Name" xml:space="preserve">
-    <value>m_menuMain</value>
-  </data>
-  <data name="&gt;&gt;m_menuMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_menuMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_menuMain.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tsmiViewStartPage.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 22</value>
   </data>
@@ -604,6 +445,12 @@
   <data name="m_tsmiViewStatusBar.Text" xml:space="preserve">
     <value>&amp;Status Bar</value>
   </data>
+  <data name="m_tsmiView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="m_tsmiView.Text" xml:space="preserve">
+    <value>&amp;View</value>
+  </data>
   <data name="m_tsmiEcopathEditGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>214, 22</value>
   </data>
@@ -621,6 +468,12 @@
   </data>
   <data name="m_tsmiEcopathEditFleets.Text" xml:space="preserve">
     <value>Edit &amp;Fleets...</value>
+  </data>
+  <data name="m_tsmiEcopath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 20</value>
+  </data>
+  <data name="m_tsmiEcopath.Text" xml:space="preserve">
+    <value>&amp;Ecopath</value>
   </data>
   <data name="m_tsmiEcosimNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>258, 22</value>
@@ -675,6 +528,12 @@
   </data>
   <data name="m_tsmiExportBiomassToCSV.Text" xml:space="preserve">
     <value>&amp;Export biomass results to .csv file...</value>
+  </data>
+  <data name="m_tsmiEcosim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 20</value>
+  </data>
+  <data name="m_tsmiEcosim.Text" xml:space="preserve">
+    <value>Eco&amp;sim</value>
   </data>
   <data name="m_tsmiEcospaceNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
@@ -736,11 +595,11 @@
   <data name="m_tsmiEcospaceImportLayers.Text" xml:space="preserve">
     <value>&amp;Import layer data...</value>
   </data>
-  <data name="m_tsmiEcotracer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 22</value>
+  <data name="m_tsmiEcospace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 20</value>
   </data>
-  <data name="m_tsmiEcotracer.Text" xml:space="preserve">
-    <value>Eco&amp;tracer</value>
+  <data name="m_tsmiEcospace.Text" xml:space="preserve">
+    <value>Ecos&amp;pace</value>
   </data>
   <data name="m_tsmiEcotracerNew.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -765,6 +624,42 @@
   </data>
   <data name="m_tsmiEcotracerSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
+  </data>
+  <data name="m_tsmiEcotracer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 22</value>
+  </data>
+  <data name="m_tsmiEcotracer.Text" xml:space="preserve">
+    <value>Eco&amp;tracer</value>
+  </data>
+  <data name="m_tsmiTools.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="m_tsmiTools.Text" xml:space="preserve">
+    <value>&amp;Tools</value>
+  </data>
+  <data name="m_menuMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_menuMain.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 2, 0, 2</value>
+  </data>
+  <data name="m_menuMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>832, 24</value>
+  </data>
+  <data name="m_menuMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_menuMain.Name" xml:space="preserve">
+    <value>m_menuMain</value>
+  </data>
+  <data name="&gt;&gt;m_menuMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_menuMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_menuMain.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="m_tsModel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 24</value>
@@ -854,6 +749,30 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tsModel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>105, 13</value>
+  </metadata>
+  <data name="m_ssMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 621</value>
+  </data>
+  <data name="m_ssMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>832, 25</value>
+  </data>
+  <data name="m_ssMain.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_ssMain.Name" xml:space="preserve">
+    <value>m_ssMain</value>
+  </data>
+  <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.0.6.821, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ssMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -5988,54 +5907,6 @@
   </data>
   <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsStatus.Name" xml:space="preserve">
-    <value>m_tsStatus</value>
-  </data>
-  <data name="&gt;&gt;m_tsStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbProgress.Name" xml:space="preserve">
-    <value>m_tsbProgress</value>
-  </data>
-  <data name="&gt;&gt;m_tsbProgress.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsSelection.Name" xml:space="preserve">
-    <value>m_tsSelection</value>
-  </data>
-  <data name="&gt;&gt;m_tsSelection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcopathModel.Name" xml:space="preserve">
-    <value>m_tsEcopathModel</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcopathModel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcosimScenario.Name" xml:space="preserve">
-    <value>m_tsEcosimScenario</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcosimScenario.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcospaceScenario.Name" xml:space="preserve">
-    <value>m_tsEcospaceScenario</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcospaceScenario.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcotracerScenario.Name" xml:space="preserve">
-    <value>m_tsEcotracerScenario</value>
-  </data>
-  <data name="&gt;&gt;m_tsEcotracerScenario.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsiModified.Name" xml:space="preserve">
-    <value>m_tsiModified</value>
-  </data>
-  <data name="&gt;&gt;m_tsiModified.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiFileExit.Name" xml:space="preserve">
     <value>m_tsmiFileExit</value>

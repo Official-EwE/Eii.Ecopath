@@ -443,7 +443,7 @@ Public Class cEwEStatusBar
         '
         Me.m_tslVersion.Name = "m_tslVersion"
         Me.m_tslVersion.Size = New System.Drawing.Size(39, 21)
-        Me.m_tslVersion.Text = "<ver>"
+        Me.m_tslVersion.Text = "<EwE version>"
         Me.m_tslVersion.Visible = False
         Me.ResumeLayout(False)
         '

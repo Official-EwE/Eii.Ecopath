@@ -48,15 +48,6 @@
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiWindowsCloseAll = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiOptions = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsStatus = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_ssMain = New System.Windows.Forms.StatusStrip
-        Me.m_tsbProgress = New System.Windows.Forms.ToolStripProgressBar
-        Me.m_tsSelection = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcopathModel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcosimScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcospaceScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcotracerScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsiModified = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsmiFileExit = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFile = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiFileNew = New System.Windows.Forms.ToolStripMenuItem
@@ -111,6 +102,7 @@
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbModel = New System.Windows.Forms.ToolStripButton
+        Me.m_ssMain = New ScientificInterface.cEwEStatusBar
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -128,7 +120,6 @@
         m_tssTools1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_ssMain.SuspendLayout()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -270,76 +261,6 @@
         Me.m_tsmiOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
         Me.m_tsmiOptions.Name = "m_tsmiOptions"
         resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
-        '
-        'm_tsStatus
-        '
-        resources.ApplyResources(Me.m_tsStatus, "m_tsStatus")
-        Me.m_tsStatus.Name = "m_tsStatus"
-        Me.m_tsStatus.Spring = True
-        '
-        'm_ssMain
-        '
-        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsiModified})
-        Me.m_ssMain.Name = "m_ssMain"
-        Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsbProgress
-        '
-        Me.m_tsbProgress.Name = "m_tsbProgress"
-        resources.ApplyResources(Me.m_tsbProgress, "m_tsbProgress")
-        Me.m_tsbProgress.Step = 1
-        Me.m_tsbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        '
-        'm_tsSelection
-        '
-        Me.m_tsSelection.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsSelection.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsSelection.Name = "m_tsSelection"
-        resources.ApplyResources(Me.m_tsSelection, "m_tsSelection")
-        '
-        'm_tsEcopathModel
-        '
-        Me.m_tsEcopathModel.AutoToolTip = True
-        Me.m_tsEcopathModel.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcopathModel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcopathModel.Image = Global.ScientificInterface.My.Resources.Resources.Ecopath_32x32
-        Me.m_tsEcopathModel.Name = "m_tsEcopathModel"
-        resources.ApplyResources(Me.m_tsEcopathModel, "m_tsEcopathModel")
-        '
-        'm_tsEcosimScenario
-        '
-        Me.m_tsEcosimScenario.AutoToolTip = True
-        Me.m_tsEcosimScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcosimScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcosimScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecosim_32x32
-        Me.m_tsEcosimScenario.Name = "m_tsEcosimScenario"
-        resources.ApplyResources(Me.m_tsEcosimScenario, "m_tsEcosimScenario")
-        '
-        'm_tsEcospaceScenario
-        '
-        Me.m_tsEcospaceScenario.AutoToolTip = True
-        Me.m_tsEcospaceScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcospaceScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcospaceScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecospace_32x32
-        Me.m_tsEcospaceScenario.Name = "m_tsEcospaceScenario"
-        resources.ApplyResources(Me.m_tsEcospaceScenario, "m_tsEcospaceScenario")
-        '
-        'm_tsEcotracerScenario
-        '
-        Me.m_tsEcotracerScenario.AutoToolTip = True
-        Me.m_tsEcotracerScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcotracerScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcotracerScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
-        Me.m_tsEcotracerScenario.Name = "m_tsEcotracerScenario"
-        resources.ApplyResources(Me.m_tsEcotracerScenario, "m_tsEcotracerScenario")
-        '
-        'm_tsiModified
-        '
-        Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsiModified.Image = Global.ScientificInterface.My.Resources.Resources.Modified
-        Me.m_tsiModified.Name = "m_tsiModified"
-        resources.ApplyResources(Me.m_tsiModified, "m_tsiModified")
         '
         'm_tsmiFileExit
         '
@@ -659,18 +580,22 @@
         Me.m_tsbModel.Name = "m_tsbModel"
         Me.m_tsbModel.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
         '
+        'm_ssMain
+        '
+        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
+        Me.m_ssMain.Name = "m_ssMain"
+        Me.m_ssMain.ShowItemToolTips = True
+        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_tsModel)
         Me.Controls.Add(Me.m_ssMain)
+        Me.Controls.Add(Me.m_tsModel)
         Me.Controls.Add(Me.m_menuMain)
         Me.IsMdiContainer = True
         Me.MainMenuStrip = Me.m_menuMain
         Me.Name = "AppLauncher"
-        Me.m_ssMain.ResumeLayout(False)
-        Me.m_ssMain.PerformLayout()
         Me.m_menuMain.ResumeLayout(False)
         Me.m_menuMain.PerformLayout()
         Me.m_tsModel.ResumeLayout(False)
@@ -686,7 +611,6 @@
     Private WithEvents m_tsmiHelpAbout As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiWindows As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_ssMain As System.Windows.Forms.StatusStrip
     Private WithEvents m_menuMain As System.Windows.Forms.MenuStrip
     Private WithEvents ToolBarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTools As System.Windows.Forms.ToolStripMenuItem
@@ -713,7 +637,6 @@
     Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsSelection As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsmiTimeSeriesReloadLast As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbModel As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripButton
@@ -722,12 +645,6 @@
     Private WithEvents m_tsmiTimeSeriesEditWeights As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceImportLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceEditImportanceLayers As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsStatus As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcopathModel As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcosimScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcospaceScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcotracerScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsbProgress As System.Windows.Forms.ToolStripProgressBar
     Private WithEvents m_tsmiHelpBugReport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiExportBiomassToCSV As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopath As System.Windows.Forms.ToolStripMenuItem
@@ -750,9 +667,9 @@
     Private WithEvents m_tsmiFileRecent As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileExit As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsiModified As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsmiEcosim As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospace As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
 
 End Class
 
