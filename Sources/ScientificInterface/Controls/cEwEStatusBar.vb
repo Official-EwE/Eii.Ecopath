@@ -387,6 +387,7 @@ Public Class cEwEStatusBar
         Me.m_tsStatus.Name = "m_tsStatus"
         Me.m_tsStatus.Spring = True
         Me.m_tsStatus.Text = ""
+        Me.m_tsStatus.TextAlign = ContentAlignment.MiddleLeft
         Me.m_tsStatus.Visible = True
         '
         'm_tsSelection
