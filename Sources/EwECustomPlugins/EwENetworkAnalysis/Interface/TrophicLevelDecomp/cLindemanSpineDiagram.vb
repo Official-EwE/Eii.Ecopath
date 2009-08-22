@@ -363,7 +363,7 @@ Public Class cLindemanSpineDiagram
 
         fmt.Alignment = StringAlignment.Center
         fmt.LineAlignment = StringAlignment.Center
-        Using f As New Font(font.Name, CSng(font.Size * 1.5), FontStyle.Bold)
+        Using f As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Title)
             g.DrawString(strTL, f, brFore, rcBox, fmt)
         End Using
 
