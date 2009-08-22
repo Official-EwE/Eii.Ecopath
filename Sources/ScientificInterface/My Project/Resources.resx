@@ -2372,4 +2372,19 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}Wt. class range (g) = {3} to {4}, N = {5}</value>
     <comment>{0}: slope value, {1}: intercept value, {2}: correlation coefficient, {3}: lowest wt class, {4}: highest wt class, {5}: sample size</comment>
   </data>
+  <data name="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES" xml:space="preserve">
+    <value>Scales and values|Font to render scales and values in graphs and figures</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_AXISTITLE" xml:space="preserve">
+    <value>Sub titles|Font to render subtitles in graphs and figures</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
+    <value>Legend|Font to render legends in graphs and figures</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
+    <value>Title|Font for titles of graphs and figures</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
+    <value>Values|Font to render values</value>
+  </data>
 </root>

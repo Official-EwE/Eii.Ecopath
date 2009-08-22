@@ -1,41 +1,3 @@
-'==============================================================================
-'
-' $Log: ucAppColors.vb,v $
-' Revision 1.4  2009/05/28 12:37:50  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.3  2009/03/23 02:34:58  jeroens
-' Renamed resources
-'
-' Revision 1.2  2008/12/15 15:56:02  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:32:09  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.20  2008/08/15 21:31:11  jeroens
-' Localized
-'
-' Revision 1.19  2008/08/03 02:10:29  jeroens
-' Preview no longer picture box, just a simple label field
-' Removed obsolete colour styles
-' Added highlight style to interface
-' Added colour description
-'
-' Revision 1.18  2008/06/02 00:01:46  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.17  2008/05/07 01:39:07  jeroens
-' Fixed bugs 281, 378, 470
-'
-' Revision 1.16  2008/03/02 15:28:28  jeroens
-' Checked values reflected in AppColors GUI as background color, not as text coler
-'
-' Revision 1.15  2007/11/23 19:43:27  jeroens
-' + Added header
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -57,7 +19,8 @@ Namespace Other
 
 #Region " Helper classes "
 
-        Private Class TypeColorListBoxItem
+        Private Class cColorItem
+
             Private m_strName As String = ""
             Private m_strDescription As String = ""
             Private m_ctFore As cStyleGuide.eApplicationColorType
@@ -129,7 +92,7 @@ Namespace Other
 
         End Class
 
-        Private Class KnownColorItem
+        Private Class cKnownColorItem
 
             Private m_strName As String = ""
             Private m_clr As Color
@@ -169,7 +132,7 @@ Namespace Other
         ''' <summary>Only ref to styleguide</summary>
         Private m_sg As cStyleGuide = Nothing
         'List of known colours
-        Private m_lciKnownColors As New List(Of KnownColorItem)
+        Private m_lciKnownColors As New List(Of cKnownColorItem)
 
 #End Region ' Variables
 
@@ -212,7 +175,7 @@ Namespace Other
                 ' Check if this is a System color (system color names have no ARGB values)
                 If (kcColor > KnownColor.Transparent) Then
                     ' Add it to the internal list of colours
-                    m_lciKnownColors.Add(New KnownColorItem(strName, Color.FromName(strName)))
+                    m_lciKnownColors.Add(New cKnownColorItem(strName, Color.FromName(strName)))
                 End If
             Next strName
 
@@ -230,7 +193,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Function GetColorName(ByVal clr As Color) As String
 
-            Dim ciTest As KnownColorItem = Nothing
+            Dim ciTest As cKnownColorItem = Nothing
             For iKnown As Integer = 0 To Me.m_lciKnownColors.Count - 1
                 ciTest = Me.m_lciKnownColors(iKnown)
                 If clr.R = ciTest.Color.R And clr.G = ciTest.Color.G And clr.B = ciTest.Color.B Then
@@ -277,7 +240,7 @@ Namespace Other
 
         Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As cStyleGuide.eApplicationColorType, _
                 Optional ByVal ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
-            Me.lbItems.Items.Add(New TypeColorListBoxItem(strName, ctFore, ctBack, Me.m_sg))
+            Me.lbItems.Items.Add(New cColorItem(strName, ctFore, ctBack, Me.m_sg))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -285,14 +248,15 @@ Namespace Other
         ''' Helper method to add an array of items into combobox control. 
         ''' </summary>
         ''' <param name="cb">The combobox reference</param>
-        ''' <param name="lColors">The list of <see cref="KnownColorItem">color items</see> to be added into the combobox</param>
+        ''' <param name="lColors">The list of <see cref="cKnownColorItem">color items</see> 
+        ''' to be added into the combobox</param>
         ''' -------------------------------------------------------------------
-        Private Sub FillColourComboBox(ByRef cb As ComboBox, ByRef lColors As List(Of KnownColorItem))
+        Private Sub FillColourComboBox(ByRef cb As ComboBox, ByRef lColors As List(Of cKnownColorItem))
 
             cb.Items.Clear()
 
             ' Add intial 'custom' item
-            cb.Items.Add(New KnownColorItem(My.Resources.GENERIC_VALUE_CUSTOM, Color.Black))
+            cb.Items.Add(New cKnownColorItem(My.Resources.GENERIC_VALUE_CUSTOM, Color.Black))
 
             ' Add all known colours
             For i As Integer = 0 To lColors.Count - 1
@@ -311,10 +275,10 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub UpdateColorComboboxItem(ByRef cb As ComboBox, ByRef clr As Color)
 
-            Dim ciTest As KnownColorItem = Nothing
+            Dim ciTest As cKnownColorItem = Nothing
 
             For i As Integer = 1 To cb.Items.Count - 1
-                ciTest = CType(cb.Items(i), KnownColorItem)
+                ciTest = CType(cb.Items(i), cKnownColorItem)
                 If (ciTest.Color = clr) Then
                     cb.SelectedIndex = i
                     Return
@@ -322,7 +286,7 @@ Namespace Other
             Next
 
             ' Update item 0: the Custom item
-            ciTest = CType(cb.Items(0), KnownColorItem)
+            ciTest = CType(cb.Items(0), cKnownColorItem)
             ciTest.Color = clr
             cb.SelectedIndex = 0
 
@@ -360,7 +324,7 @@ Namespace Other
         ''' Helper method to update the color in an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateForeColor(ByRef tcli As TypeColorListBoxItem, ByVal clr As Color)
+        Private Sub UpdateForeColor(ByRef tcli As cColorItem, ByVal clr As Color)
 
             ' Sanity check
             If tcli Is Nothing Then Return
@@ -378,7 +342,7 @@ Namespace Other
         ''' </summary>
         ''' <param name="clr">The item reference whose color gets updated.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateBackColor(ByRef tcli As TypeColorListBoxItem, ByVal clr As Color)
+        Private Sub UpdateBackColor(ByRef tcli As cColorItem, ByVal clr As Color)
 
             ' Sanity check
             If tcli Is Nothing Then Return
@@ -404,7 +368,7 @@ Namespace Other
 
             Try
                 'Get the current drawn item
-                Dim item As KnownColorItem = CType(s.Items(e.Index), KnownColorItem)
+                Dim item As cKnownColorItem = CType(s.Items(e.Index), cKnownColorItem)
                 'The rectangle to draw the color box
                 Dim rect As Rectangle = New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, e.Bounds.Height, e.Bounds.Height - 4)
 
@@ -532,7 +496,7 @@ Namespace Other
             If e.Index = -1 Then Return
 
             'get the current drawn item
-            Dim item As TypeColorListBoxItem = CType(s.Items(e.Index), TypeColorListBoxItem)
+            Dim item As cColorItem = CType(s.Items(e.Index), cColorItem)
             DrawCustomText(e, item.Name, e.Bounds)
 
         End Sub
@@ -540,7 +504,7 @@ Namespace Other
         Private Sub lbItems_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles lbItems.SelectedIndexChanged
 
-            Dim item As TypeColorListBoxItem = DirectCast(lbItems.SelectedItem, TypeColorListBoxItem)
+            Dim item As cColorItem = DirectCast(lbItems.SelectedItem, cColorItem)
 
             ' Update controls state
             SetUIControlsStatus(item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet, item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet)
@@ -601,7 +565,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub btnCustomForeColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCustomForeColor.Click
 
-            Dim tcli As TypeColorListBoxItem = CType(lbItems.SelectedItem, TypeColorListBoxItem)
+            Dim tcli As cColorItem = CType(lbItems.SelectedItem, cColorItem)
             Dim clrSelected As Color = Nothing
 
             If (tcli IsNot Nothing) Then
@@ -621,7 +585,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub btnCustomBackColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCustomBackColor.Click
 
-            Dim tcli As TypeColorListBoxItem = CType(lbItems.SelectedItem, TypeColorListBoxItem)
+            Dim tcli As cColorItem = CType(lbItems.SelectedItem, cColorItem)
             Dim clrSelected As Color = Nothing
 
             If (tcli IsNot Nothing) Then
@@ -651,8 +615,8 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub cbItemForeground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbItemForeground.SelectedIndexChanged
 
-            Dim tcli As TypeColorListBoxItem = CType(lbItems.SelectedItem, TypeColorListBoxItem)
-            Dim selClr As KnownColorItem = CType(Me.cbItemForeground.SelectedItem, KnownColorItem)
+            Dim tcli As cColorItem = CType(lbItems.SelectedItem, cColorItem)
+            Dim selClr As cKnownColorItem = CType(Me.cbItemForeground.SelectedItem, cKnownColorItem)
 
             If tcli.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 UpdateForeColor(tcli, selClr.Color)
@@ -666,8 +630,8 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub cbItemBackground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbItemBackground.SelectedIndexChanged
 
-            Dim tcli As TypeColorListBoxItem = DirectCast(lbItems.SelectedItem, TypeColorListBoxItem)
-            Dim selClr As KnownColorItem = DirectCast(Me.cbItemBackground.SelectedItem, KnownColorItem)
+            Dim tcli As cColorItem = DirectCast(lbItems.SelectedItem, cColorItem)
+            Dim selClr As cKnownColorItem = DirectCast(Me.cbItemBackground.SelectedItem, cKnownColorItem)
 
             If tcli.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 UpdateBackColor(tcli, selClr.Color)
@@ -680,20 +644,24 @@ Namespace Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the newly updated color choice back to the color manager.
+        ''' Save colour selections back to the style guide.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub SaveColorOptions()
+        Public Sub Save()
 
-            Dim item As TypeColorListBoxItem = Nothing
+            Dim ci As cColorItem = Nothing
 
             ' Apply colors to the style guide
             Me.m_sg.SuspendEvents()
 
             For i As Integer = 0 To Me.lbItems.Items.Count - 1
-                item = DirectCast(Me.lbItems.Items(i), TypeColorListBoxItem)
-                If item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.ForeColorType) = item.ForeColor
-                If item.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_sg.ApplicationColor(item.BackColorType) = item.BackColor
+                ci = DirectCast(Me.lbItems.Items(i), cColorItem)
+                If ci.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then
+                    Me.m_sg.ApplicationColor(ci.ForeColorType) = ci.ForeColor
+                End If
+                If ci.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then
+                    Me.m_sg.ApplicationColor(ci.BackColorType) = ci.BackColor
+                End If
             Next
 
             Me.m_sg.ResumeEvents()

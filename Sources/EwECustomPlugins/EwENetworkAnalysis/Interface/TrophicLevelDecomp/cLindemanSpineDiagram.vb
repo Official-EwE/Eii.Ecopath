@@ -1,26 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLindemanSpineDiagram.vb,v $
-' Revision 1.1  2009/06/15 14:15:26  jeroens
-' Flattened directory structure
-'
-' Revision 1.4  2009/06/06 21:57:35  jeroens
-' Added max TL to display
-' Added direction indicators
-'
-' Revision 1.3  2009/06/05 16:03:45  jeroens
-' Added size support
-'
-' Revision 1.2  2009/06/05 02:51:45  jeroens
-' Filling in the blanks
-' Added ToDo's
-'
-' Revision 1.1  2009/06/04 19:14:53  jeroens
-' Initial version, not complete yet
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Utilities
@@ -186,7 +164,7 @@ Public Class cLindemanSpineDiagram
         Dim brBack As Brush = Nothing
         Dim penNormal As Pen = Nothing
         Dim penHighlight As Pen = Nothing
-        Dim font As New Font(Me.m_sg.GraphFontFamilyName, Me.m_sg.GraphAxisScaleFontSize)
+        Dim ft As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
 
         Me.m_sg.GetStyleColors(cStyleGuide.eStyleFlags.OK, clrText, clrBack)
         Me.m_sg.GetStyleColors(cStyleGuide.eStyleFlags.Highlight, clrHighlight, clrDummy)
@@ -229,7 +207,7 @@ Public Class cLindemanSpineDiagram
                 sTE = Me.NetworkManager.PPTransferEfficiency(iTL)
             End If
 
-            Me.RenderBox(g, penNormal, font, _
+            Me.RenderBox(g, penNormal, ft, _
                          brText, brBack, _
                          1, iTL, strTL, _
                          Me.FormatNumber(sImp, Me.m_bShowImport), _
@@ -239,7 +217,7 @@ Public Class cLindemanSpineDiagram
                          Me.FormatNumber(sExp, iTL > 1), _
                          Me.FormatNumber(sResp, iTL > 1))
 
-            Me.DrawPredAndTE(g, penNormal, font, brText, _
+            Me.DrawPredAndTE(g, penNormal, ft, brText, _
                              1, iTL, _
                              Me.FormatNumber(sCons), _
                              Me.FormatNumber(sTE, iTL > 1))
@@ -259,7 +237,7 @@ Public Class cLindemanSpineDiagram
             sCons = Me.NetworkManager.DetConsByPred(iTL)
             sTE = Me.NetworkManager.DetTransferEfficiency(iTL)
 
-            Me.RenderBox(g, penNormal, font, _
+            Me.RenderBox(g, penNormal, ft, _
                          brText, brBack, _
                          2, iTL, strTL, _
                          Me.FormatNumber(sImp, Me.m_bShowImport), _
@@ -269,7 +247,7 @@ Public Class cLindemanSpineDiagram
                          Me.FormatNumber(sExp, iTL > 1), _
                          Me.FormatNumber(sResp, sResp <> 0))
 
-            Me.DrawPredAndTE(g, penNormal, font, brText, _
+            Me.DrawPredAndTE(g, penNormal, ft, brText, _
                              2, iTL, _
                              Me.FormatNumber(sCons), _
                              Me.FormatNumber(sTE, iTL > 1))
@@ -286,20 +264,20 @@ Public Class cLindemanSpineDiagram
             End If
             sSumFlowToDet += (sPPF2D + sDetF2D)
 
-            Me.DrawFlowToDetritus(g, penNormal, font, brText, _
+            Me.DrawFlowToDetritus(g, penNormal, ft, brText, _
                                   iTL, _
                                   Me.FormatNumber(sPPF2D), _
                                   Me.FormatNumber(sDetF2D), _
                                   Me.FormatNumber(sSumFlowToDet, iTL = Me.NumTrophicLevels))
         Next
 
-        Me.DrawConsumptionOfDetritus(g, penNormal, font, brText, _
+        Me.DrawConsumptionOfDetritus(g, penNormal, ft, brText, _
                                      Me.FormatNumber(Me.NetworkManager.DetConsByPred(1)))
 
-        Me.RenderLegend(g, penNormal, font, brText, brBack)
+        Me.RenderLegend(g, penNormal, ft, brText, brBack)
 
         ' Clean up
-        font.Dispose()
+        ft.Dispose()
         penNormal.Dispose()
         penHighlight.Dispose()
         brText.Dispose()

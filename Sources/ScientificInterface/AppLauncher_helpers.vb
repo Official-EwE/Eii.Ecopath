@@ -247,6 +247,12 @@ Partial Public Class AppLauncher
             Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
             Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
 
+            Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
+            Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
+            Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
+            Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
+            Me.StringToFontSetting(My.Settings.FontValue, cStyleGuide.eApplicationFontType.Value)
+
             Me.m_sg.ResumeEvents()
 
         End Sub
@@ -274,8 +280,52 @@ Partial Public Class AppLauncher
             My.Settings.ColorPlotsBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
             My.Settings.ColorMapBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
 
+            My.Settings.FontTitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Title)
+            My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)
+            My.Settings.FontLegend = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Legend)
+            My.Settings.FontScale = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Scale)
+            My.Settings.FontValue = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Value)
+
             My.Settings.Save()
         End Sub
+
+        Private Sub StringToFontSetting(ByVal strSetting As String, ByVal ft As cStyleGuide.eApplicationFontType)
+
+            Dim astrBits As String() = strSetting.Split(","c)
+            If astrBits.Length >= 1 Then
+                Try
+                    Me.m_sg.FontFamilyName(ft) = astrBits(0)
+                Catch ex As Exception
+                    Me.m_sg.FontFamilyName(ft) = ""
+                End Try
+            End If
+            If astrBits.Length >= 2 Then
+                Try
+                    Me.m_sg.FontStyle(ft) = DirectCast(CInt(astrBits(1)), FontStyle)
+                Catch ex As Exception
+                    Me.m_sg.FontStyle(ft) = FontStyle.Regular
+                End Try
+            End If
+            If astrBits.Length >= 3 Then
+                Try
+                    Me.m_sg.FontSize(ft) = Single.Parse(astrBits(2))
+                Catch ex As Exception
+                    Me.m_sg.FontSize(ft) = 0.0!
+                End Try
+            End If
+        End Sub
+
+        Private Function FontSettingToString(ByVal ft As cStyleGuide.eApplicationFontType) As String
+
+            Dim sb As New StringBuilder()
+            sb.Append(Me.m_sg.FontFamilyName(ft))
+            sb.Append(",")
+            sb.Append(CInt(Me.m_sg.FontStyle(ft)))
+            sb.Append(",")
+            sb.Append(Me.m_sg.FontSize(ft))
+            Return sb.ToString()
+
+        End Function
 
     End Class
 

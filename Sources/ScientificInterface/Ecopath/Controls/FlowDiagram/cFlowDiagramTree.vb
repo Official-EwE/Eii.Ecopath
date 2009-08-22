@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cFlowDiagramTree.vb,v $
-' Revision 1.1  2009/06/22 02:25:37  jeroens
-' Revamped, rewarped and lobotomized
-'
-' Revision 1.3  2009/02/10 02:08:43  sherman
-' Changed bug in draw biomass string text
-'
-' Revision 1.2  2009/02/05 21:14:51  jeroens
-' Woops
-'
-' Revision 1.1  2009/02/05 21:06:43  jeroens
-' Merged FlowDiagramType, Tree
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -100,24 +83,22 @@ Namespace Ecopath.Controls.FlowDiagram
                                  Optional ByVal sBiomass As Single = 0.0)
 
                 Dim sg As cStyleGuide = cStyleGuide.GetInstance()
-                Dim font As Font = Nothing
-                Dim br As SolidBrush = Nothing
 
-                font = New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisScaleFontStyle)
-                br = New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
+                    Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
 
-                ' Draw group name
-                g.DrawString(strGroupName, font, br, ptf.X, ptf.Y)
+                        ' Draw group name
+                        g.DrawString(strGroupName, ft, br, ptf.X, ptf.Y)
 
-                ' Draw the biomass string
-                If (sBiomass > 0.0) Then
-                    g.DrawString(String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, sg.FormatNumber(sBiomass)), _
-                                 font, br, _
-                                 ptf.X, ptf.Y + CInt(sg.GraphAxisScaleFontSize * 1.5))
-                End If
+                        ' Draw the biomass string
+                        If (sBiomass > 0.0) Then
+                            g.DrawString(String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, sg.FormatNumber(sBiomass)), _
+                                         ft, br, _
+                                         ptf.X, ptf.Y + CInt(ft.Size * 1.5))
+                        End If
 
-                font.Dispose()
-                br.Dispose()
+                    End Using
+                End Using
 
             End Sub
 
@@ -126,7 +107,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Dim sg As cStyleGuide = cStyleGuide.GetInstance()
                 Dim szLabel As SizeF = Nothing
 
-                Using font As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisScaleFontStyle)
+                Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
                     szLabel = g.MeasureString(strGroupName, font)
                 End Using
                 Return szLabel
@@ -281,7 +262,7 @@ Namespace Ecopath.Controls.FlowDiagram
             End Using
 
             Using brText As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                Using font As Font = New Font(Me.m_sg.GraphFontFamilyName, Me.m_sg.GraphAxisLabelFontSize, Me.m_sg.GraphAxisLabelFontStyle)
+                Using font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
                     For i As Integer = 1 To m_iNumTrophicLevels - 1
                         g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
                         g.DrawLine(Pens.LightGray, 20, i * iUnitHeight, rc.Width - 20, i * iUnitHeight)
@@ -368,6 +349,7 @@ Namespace Ecopath.Controls.FlowDiagram
                                         iLineWidth, _
                                         Me.LineConnectionType)
         End Sub
+
         Public Sub DrawLegend(ByRef g As Graphics, _
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
                               ByVal strTitle As String, _
@@ -378,7 +360,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim sValInc As Single = 0
             Dim iIconHeight As Integer = CInt((iYSize * 0.7) / iNumIntervals)
             Dim ptIconTL As Point = New Point(CInt(iXSize * 0.1 + ptTopLeft.X), CInt(iYSize * 0.3 + ptTopLeft.Y))
-            Dim font As New Font(Me.m_sg.GraphFontFamilyName, Me.m_sg.GraphLegendFontSize, Me.m_sg.GraphLegendFontStyle)
+            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
             Dim pen As New Pen(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
             Dim brush As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
             Dim brLegend As Brush = Nothing

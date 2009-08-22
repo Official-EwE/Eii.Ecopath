@@ -148,7 +148,7 @@ Namespace Controls
                 sBtnSpace = Me.Font.Height
                 brTmp = New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 penTmp = New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-                tmpFont = New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
+                tmpFont = sg.Font(cStyleGuide.eApplicationFontType.Scale)
 
                 For i As Integer = 0 To astrXMarks.Length - 1
                     If Me.Shape.IsSeasonal Then

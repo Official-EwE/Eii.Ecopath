@@ -1,46 +1,4 @@
-'==============================================================================
-'
-' $Log: StyleGuide.vb,v $
-' Revision 1.13  2009/06/05 16:01:34  jeroens
-' Limited max precision
-'
-' Revision 1.12  2009/06/04 23:52:58  jeroens
-' Added null style support for formatting numbers
-'
-' Revision 1.11  2009/05/28 12:37:48  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.10  2009/04/28 14:21:59  jeroens
-' Added Fleet visibility
-'
-' Revision 1.9  2009/04/07 19:58:11  jeroens
-' Changed default fonts
-'
-' Revision 1.8  2009/03/12 01:31:00  jeroens
-' ResetVisibleFlags may not distribute event
-'
-' Revision 1.7  2009/02/24 06:04:09  jeroens
-' Allow 0 decimal digits
-'
-' Revision 1.6  2009/02/20 17:57:30  jeroens
-' Added nominal unit text
-'
-' Revision 1.5  2009/02/12 15:32:41  jeroens
-' Fixed fonts
-'
-' Revision 1.4  2009/01/23 03:08:55  jeroens
-' Removed unused imports
-'
-' Revision 1.3  2008/12/02 18:22:14  jeroens
-' Added standard colour ramp offsets to prevent groups colours getting too light to see
-'
-' Revision 1.2  2008/11/27 03:10:43  jeroens
-' Group visible flags maintained by style guide, no longer by AppLauncher
-'
-' Revision 1.1  2008/09/26 07:31:23  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 
@@ -50,6 +8,8 @@ Imports System.Text
 Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
+
+#End Region ' Imports
 
 Namespace Style
 
@@ -100,23 +60,11 @@ Namespace Style
 
         ' -- graphs --
         ''' <summary></summary>
-        Private m_strGraphFontFamilyName As String = "Microsoft Sans serif"
+        Private m_dtFontFamilyName As New Dictionary(Of eApplicationFontType, String)
         ''' <summary></summary>
-        Private m_sGraphCaptionFontSize As Single = 12
+        Private m_dtFontSize As New Dictionary(Of eApplicationFontType, Single)
         ''' <summary></summary>
-        Private m_fsGraphCaptionFontStye As FontStyle = FontStyle.Regular
-        ''' <summary></summary>
-        Private m_sGraphAxisLabelFontSize As Single = 10
-        ''' <summary></summary>
-        Private m_fsGraphAxisLabelFontStye As FontStyle = FontStyle.Regular
-        ''' <summary></summary>
-        Private m_sGraphAxisScaleFontSize As Single = 8.25
-        ''' <summary></summary>
-        Private m_fsGraphAxisScaleFontStye As FontStyle = FontStyle.Regular
-        ''' <summary></summary>
-        Private m_sGraphLegendFontSize As Single = 8.25
-        ''' <summary></summary>
-        Private m_fsGraphLegendFontStye As FontStyle = FontStyle.Regular
+        Private m_dtFontStye As New Dictionary(Of eApplicationFontType, FontStyle)
 
         ' -- group visibility --
         ''' <summary>List of indexes of groups to hide.</summary>
@@ -157,12 +105,25 @@ Namespace Style
 
 #Region " Public Methods "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This method loads the default application color mainly used in rendering grid color scheme. 
+        ''' Resets application colors to default values.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub LoadDefaultApplicationColors()
             'Default colors
             m_dtApplicationColors.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Resets application fonts to default values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub LoadDefaultApplicationFonts()
+            Me.m_dtFontFamilyName.Clear()
+            Me.m_dtFontSize.Clear()
+            Me.m_dtFontStye.Clear()
         End Sub
 
 #End Region ' Public interfaces
@@ -223,6 +184,29 @@ Namespace Style
             dtNames.Clear()
 
         End Sub
+
+        Private Function DefaultFontFamilyName(ByVal ft As eApplicationFontType) As String
+            Return "Microsoft Sans Serif"
+        End Function
+
+        Private Function DefaultFontStyle(ByVal ft As eApplicationFontType) As FontStyle
+            Return Drawing.FontStyle.Regular
+        End Function
+
+        Private Function DefaultFontSize(ByVal ft As eApplicationFontType) As Single
+            Select Case ft
+                Case eApplicationFontType.Title
+                    Return 12
+                Case eApplicationFontType.Legend, eApplicationFontType.SubTitle
+                    Return 10
+                Case eApplicationFontType.Scale, _
+                     eApplicationFontType.Value
+                    Return 8.25
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            Return -1
+        End Function
 
 #End Region ' Internal implementation
 
@@ -755,6 +739,15 @@ Namespace Style
             MAP_BACKGROUND
         End Enum
 
+        Public Enum eApplicationFontType As Integer
+            NotSet = 0
+            Title
+            Legend
+            SubTitle
+            Scale
+            Value
+        End Enum
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' To be written
@@ -989,112 +982,98 @@ Namespace Style
 
 #End Region ' Color access
 
-#Region " Graphs and figures "
+#Region " Fonts "
 
-        Public Property GraphFontFamilyName() As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the font for a given application type. The font size is specified
+        ''' in <see cref="GraphicsUnit.Point">points</see>.
+        ''' </summary>
+        ''' <param name="ft"></param>
+        ''' <remarks>You must manually dispose the font after usage.</remarks>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Font(ByVal ft As eApplicationFontType) As Font
             Get
-                Return Me.m_strGraphFontFamilyName
+                Return New Font(Me.FontFamilyName(ft), Me.FontSize(ft), Me.FontStyle(ft), GraphicsUnit.Point)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="FontFamily.Name">font family name</see> for 
+        ''' a given application type.
+        ''' </summary>
+        ''' <param name="ft"></param>
+        ''' -------------------------------------------------------------------
+        Public Property FontFamilyName(ByVal ft As eApplicationFontType) As String
+            Get
+                If Me.m_dtFontFamilyName.ContainsKey(ft) Then
+                    Dim strName As String = Me.m_dtFontFamilyName(ft)
+                    If Not String.IsNullOrEmpty(strName) Then
+                        Return strName
+                    End If
+                End If
+                Return Me.DefaultFontFamilyName(ft)
             End Get
             Set(ByVal value As String)
-                If (String.Compare(Me.m_strGraphFontFamilyName, value, True) = 0) Then Return
-                Me.m_strGraphFontFamilyName = value
-                Me.GraphsChanged()
+                Me.m_dtFontFamilyName(ft) = value
+                Me.FontsChanged()
             End Set
         End Property
 
-        Public Property GraphCaptionFontSize() As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="FontStyle">font style</see> for a given 
+        ''' application type.
+        ''' </summary>
+        ''' <param name="ft"></param>
+        ''' -------------------------------------------------------------------
+        Public Property FontStyle(ByVal ft As eApplicationFontType) As FontStyle
             Get
-                Return Me.m_sGraphCaptionFontSize
-            End Get
-            Set(ByVal value As Single)
-                If (value = Me.m_sGraphCaptionFontSize) Then Return
-                Me.m_sGraphCaptionFontSize = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Property GraphCaptionFontStyle() As FontStyle
-            Get
-                Return Me.m_fsGraphCaptionFontStye
+                If Me.m_dtFontStye.ContainsKey(ft) Then
+                    Return Me.m_dtFontStye(ft)
+                End If
+                Return Me.DefaultFontStyle(ft)
             End Get
             Set(ByVal value As FontStyle)
-                If (Me.m_fsGraphCaptionFontStye = value) Then Return
-                Me.m_fsGraphCaptionFontStye = value
-                Me.GraphsChanged()
+                Me.m_dtFontStye(ft) = value
+                Me.FontsChanged()
             End Set
         End Property
 
-        Public Property GraphAxisLabelFontSize() As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the font size for a given application type. The font size 
+        ''' is specified in <see cref="GraphicsUnit.Point">points</see>.
+        ''' </summary>
+        ''' <param name="ft"></param>
+        ''' -------------------------------------------------------------------
+        Public Property FontSize(ByVal ft As eApplicationFontType) As Single
             Get
-                Return Me.m_sGraphAxisLabelFontSize
+                If Me.m_dtFontSize.ContainsKey(ft) Then
+                    Dim sSize As Single = Me.m_dtFontSize(ft)
+                    If sSize >= 6 Then
+                        Return sSize
+                    End If
+                End If
+                Return Me.DefaultFontSize(ft)
             End Get
             Set(ByVal value As Single)
-                If (Me.m_sGraphAxisLabelFontSize = value) Then Return
-                Me.m_sGraphAxisLabelFontSize = value
-                Me.GraphsChanged()
+                Me.m_dtFontSize(ft) = value
+                Me.FontsChanged()
             End Set
         End Property
 
-        Public Property GraphAxisLabelFontStyle() As FontStyle
-            Get
-                Return m_fsGraphAxisLabelFontStye
-            End Get
-            Set(ByVal value As FontStyle)
-                If (Me.m_fsGraphAxisLabelFontStye = value) Then Return
-                Me.m_fsGraphAxisLabelFontStye = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Property GraphAxisScaleFontSize() As Single
-            Get
-                Return Me.m_sGraphAxisScaleFontSize
-            End Get
-            Set(ByVal value As Single)
-                If (Me.m_sGraphAxisScaleFontSize = value) Then Return
-                Me.m_sGraphAxisScaleFontSize = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Property GraphAxisScaleFontStyle() As FontStyle
-            Get
-                Return m_fsGraphAxisScaleFontStye
-            End Get
-            Set(ByVal value As FontStyle)
-                If (Me.m_fsGraphAxisScaleFontStye = value) Then Return
-                Me.m_fsGraphAxisScaleFontStye = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Property GraphLegendFontSize() As Single
-            Get
-                Return Me.m_sGraphLegendFontSize
-            End Get
-            Set(ByVal value As Single)
-                If (Me.m_sGraphLegendFontSize = value) Then Return
-                Me.m_sGraphLegendFontSize = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Property GraphLegendFontStyle() As FontStyle
-            Get
-                Return m_fsGraphLegendFontStye
-            End Get
-            Set(ByVal value As FontStyle)
-                If (Me.m_fsGraphLegendFontStye = value) Then Return
-                Me.m_fsGraphLegendFontStye = value
-                Me.GraphsChanged()
-            End Set
-        End Property
-
-        Public Sub GraphsChanged()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Broadcast a <see cref="eChangeType.Fonts">font changed event</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub FontsChanged()
             Me.FireChangeEvent(eChangeType.Fonts)
         End Sub
 
-#End Region ' Graphs and figures
+#End Region ' Fonts
 
 #Region " Item visibility "
 

@@ -533,6 +533,66 @@ Partial Friend NotInheritable Class Settings
             Me("FeedbackMessageLogSize") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property FontTitle() As String
+        Get
+            Return CType(Me("FontTitle"),String)
+        End Get
+        Set
+            Me("FontTitle") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property FontLegend() As String
+        Get
+            Return CType(Me("FontLegend"),String)
+        End Get
+        Set
+            Me("FontLegend") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property FontSubtitle() As String
+        Get
+            Return CType(Me("FontSubtitle"),String)
+        End Get
+        Set
+            Me("FontSubtitle") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property FontScale() As String
+        Get
+            Return CType(Me("FontScale"),String)
+        End Get
+        Set
+            Me("FontScale") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property FontValue() As String
+        Get
+            Return CType(Me("FontValue"),String)
+        End Get
+        Set
+            Me("FontValue") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

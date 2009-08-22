@@ -275,7 +275,7 @@ Namespace Controls
 
                     ' Draw Ymark label, if any
                     If Not String.IsNullOrEmpty(strYMarkLabel) Then
-                        Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
+                        Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
                             Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                                 ' Position label on the right end of the graph
                                 ptfTo.X -= g.MeasureString(strYMarkLabel, ft).Width
@@ -304,7 +304,7 @@ Namespace Controls
 
                 ' Draw Xmark label, if any
                 If Not String.IsNullOrEmpty(strXMarkLabel) Then
-                    Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize, sg.GraphAxisLabelFontStyle)
+                    Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
                         Using br As New SolidBrush(Color.Blue)
                             Dim szfText As SizeF = g.MeasureString(strXMarkLabel, ft)
                             ' Position label on the top of the graph, left of the line

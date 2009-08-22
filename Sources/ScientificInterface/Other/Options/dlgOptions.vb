@@ -1,48 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgOptions.vb,v $
-' Revision 1.2  2008/12/15 15:54:30  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:32:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.24  2008/08/14 01:52:18  jeroens
-' Not mybase!
-'
-' Revision 1.23  2008/07/29 23:43:48  jeroens
-' Settings saved after all pages have been applied
-'
-' Revision 1.22  2008/07/18 18:00:48  jeroens
-' Plugin changes Applied on [OK]
-'
-' Revision 1.21  2008/07/16 13:54:58  jeroens
-' Ugh, adding pages manually did not cause them to be disposed properly
-'
-' Revision 1.20  2008/07/10 18:19:28  jeroens
-' Removed units references
-'
-' Revision 1.19  2007/11/23 20:05:45  jeroens
-' + Added PlugIns page
-'
-' Revision 1.18  2007/10/30 23:05:04  jeroens
-' * Woops
-'
-' Revision 1.17  2007/10/30 22:51:19  jeroens
-' - Discontinued Model settings
-'
-' Revision 1.16  2007/10/03 02:32:54  jeroens
-' no message
-'
-' Revision 1.15  2007/10/03 01:54:29  jeroens
-' * Reworked styleguide, colormanager
-'
-' Revision 1.14  2007/06/14 14:53:54  jeroens
-' + Added error page when model not loaded
-' + Added General model parameters page
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -68,6 +23,8 @@ Namespace Other
         ''' <summary></summary>
         Private m_ucAppColors As ucAppColors
         ''' <summary></summary>
+        Private m_ucAppFonts As ucAppFonts
+        ''' <summary></summary>
         Private m_ucAppGeneral As ucAppGeneral
         ''' <summary></summary>
         Private m_ucAppPlugins As ucAppPlugins
@@ -87,6 +44,10 @@ Namespace Other
             Me.m_ucAppColors = New ucAppColors
             Me.m_ucAppColors.Dock = DockStyle.Fill
 
+            'Initialize the font option control
+            Me.m_ucAppFonts = New ucAppFonts
+            Me.m_ucAppFonts.Dock = DockStyle.Fill
+
             'Initialize the general option control
             Me.m_ucAppGeneral = New ucAppGeneral
             Me.m_ucAppGeneral.Dock = DockStyle.Fill
@@ -104,8 +65,9 @@ Namespace Other
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.m_ucAppPlugins.Apply()
-            Me.m_ucAppColors.SaveColorOptions()
-            Me.m_ucAppGeneral.SaveGeneralOptions()
+            Me.m_ucAppColors.Save()
+            Me.m_ucAppFonts.Save()
+            Me.m_ucAppGeneral.Save()
 
             ' Save all settings
             My.Settings.Save()
@@ -130,6 +92,8 @@ Namespace Other
                     ucPage = Me.m_ucAppGeneral
                 Case "ndColors"
                     ucPage = Me.m_ucAppColors
+                Case "ndFonts"
+                    ucPage = Me.m_ucAppFonts
                 Case "ndPlugins"
                     ucPage = Me.m_ucAppPlugins
 
@@ -157,6 +121,7 @@ Namespace Other
             ' Manually dispose
             Me.m_ucCurrent.Dispose()
             Me.m_ucAppColors.Dispose()
+            Me.m_ucAppFonts.Dispose()
             Me.m_ucAppGeneral.Dispose()
             Me.m_ucAppPlugins.Dispose()
 

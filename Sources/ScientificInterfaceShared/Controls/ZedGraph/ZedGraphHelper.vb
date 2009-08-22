@@ -1,65 +1,3 @@
-'==============================================================================
-'
-' $Log: ZedGraphHelper.vb,v $
-' Revision 1.18  2009/06/05 00:58:18  jeroens
-' Localized ZGhelper
-'
-' Revision 1.17  2009/05/28 12:37:55  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.16  2009/05/18 02:11:28  jeroens
-' Left ToDo
-'
-' Revision 1.15  2009/05/13 12:51:45  jeroens
-' Made inheritable
-'
-' Revision 1.14  2009/05/11 01:51:04  jeroens
-' Renamed command classes
-'
-' Revision 1.13  2009/04/08 17:40:29  jeroens
-' Cursor properly set and removed in ShowCursor
-'
-' Revision 1.12  2009/04/07 20:55:53  jeroens
-' FIxed time series line style
-' Added line items directly
-'
-' Revision 1.11  2009/04/07 20:01:14  jeroens
-' Added preformatted line support
-' Changed constructor; need to use Attach and Detach explicitly
-'
-' Revision 1.10  2009/04/03 18:21:24  jeroens
-' Added Attach, Detach
-'
-' Revision 1.9  2009/03/24 13:44:30  jeroens
-' Tick tock
-'
-' Revision 1.8  2009/03/23 02:43:43  jeroens
-' Added option to show data under cursor in tooltip
-'
-' Revision 1.7  2009/02/23 03:21:39  jeroens
-' Cleaned
-' Left ToDo
-'
-' Revision 1.6  2008/12/02 20:45:35  sherman
-' Fixed autoscale bugs
-'
-' Revision 1.5  2008/11/29 19:00:11  sherman
-' Updated bugs and rescaling in RunEcosim plot
-'
-' Revision 1.4  2008/11/11 00:52:24  joeh
-' Set plot type default to relative and scale default to auto
-'
-' Revision 1.3  2008/11/10 05:34:37  jeroens
-' Renamed file command
-'
-' Revision 1.2  2008/10/08 17:44:58  jeroens
-' Bells and whistles
-'
-' Revision 1.1  2008/09/26 07:31:20  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -882,39 +820,39 @@ Namespace Controls
                 With Me.GetPane(iPane)
                     .IsFontsScaled = False
 
-                    .Title.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .Title.FontSpec.Size = Me.m_sg.GraphCaptionFontSize
-                    .Title.FontSpec.IsBold = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .Title.FontSpec.IsItalic = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .Title.FontSpec.IsUnderline = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Underline) = FontStyle.Underline)
+                    .Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
+                    .Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Title)
+                    .Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
+                    .Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
+                    .Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
 
-                    .XAxis.Title.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .YAxis.Title.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .XAxis.Title.FontSpec.Size = Me.m_sg.GraphAxisLabelFontSize
-                    .YAxis.Title.FontSpec.Size = Me.m_sg.GraphAxisLabelFontSize
-                    .XAxis.Title.FontSpec.IsBold = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .YAxis.Title.FontSpec.IsBold = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .XAxis.Title.FontSpec.IsItalic = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .YAxis.Title.FontSpec.IsItalic = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .XAxis.Title.FontSpec.IsUnderline = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Underline) = FontStyle.Underline)
-                    .YAxis.Title.FontSpec.IsUnderline = ((Me.m_sg.GraphAxisLabelFontStyle And FontStyle.Underline) = FontStyle.Underline)
+                    .XAxis.Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
+                    .YAxis.Title.FontSpec.Family = .XAxis.Title.FontSpec.Family
+                    .XAxis.Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
+                    .YAxis.Title.FontSpec.Size = .XAxis.Title.FontSpec.Size
+                    .XAxis.Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
+                    .YAxis.Title.FontSpec.IsBold = .XAxis.Title.FontSpec.IsBold
+                    .XAxis.Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
+                    .YAxis.Title.FontSpec.IsItalic = .XAxis.Title.FontSpec.IsItalic
+                    .XAxis.Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
+                    .YAxis.Title.FontSpec.IsUnderline = .XAxis.Title.FontSpec.IsUnderline
 
-                    .XAxis.Scale.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .YAxis.Scale.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .XAxis.Scale.FontSpec.Size = Me.m_sg.GraphAxisScaleFontSize
-                    .YAxis.Scale.FontSpec.Size = Me.m_sg.GraphAxisScaleFontSize
-                    .XAxis.Scale.FontSpec.IsBold = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .YAxis.Scale.FontSpec.IsBold = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .XAxis.Scale.FontSpec.IsItalic = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .YAxis.Scale.FontSpec.IsItalic = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .XAxis.Scale.FontSpec.IsUnderline = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Underline) = FontStyle.Underline)
-                    .YAxis.Scale.FontSpec.IsUnderline = ((Me.m_sg.GraphAxisScaleFontStyle And FontStyle.Underline) = FontStyle.Underline)
+                    .XAxis.Scale.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Scale)
+                    .YAxis.Scale.FontSpec.Family = .XAxis.Scale.FontSpec.Family
+                    .XAxis.Scale.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Scale)
+                    .YAxis.Scale.FontSpec.Size = .XAxis.Scale.FontSpec.Size
+                    .XAxis.Scale.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Bold) = FontStyle.Bold)
+                    .YAxis.Scale.FontSpec.IsBold = .XAxis.Scale.FontSpec.IsBold
+                    .XAxis.Scale.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Italic) = FontStyle.Italic)
+                    .YAxis.Scale.FontSpec.IsItalic = .XAxis.Scale.FontSpec.IsItalic
+                    .XAxis.Scale.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
+                    .YAxis.Scale.FontSpec.IsUnderline = .XAxis.Scale.FontSpec.IsUnderline
 
-                    .Legend.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                    .Legend.FontSpec.Size = Me.m_sg.GraphLegendFontSize
-                    .Legend.FontSpec.IsBold = ((Me.m_sg.GraphLegendFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                    .Legend.FontSpec.IsItalic = ((Me.m_sg.GraphLegendFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                    .Legend.FontSpec.IsUnderline = ((Me.m_sg.GraphLegendFontStyle And FontStyle.Underline) = FontStyle.Underline)
+                    .Legend.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Legend)
+                    .Legend.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Legend)
+                    .Legend.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Bold) = FontStyle.Bold)
+                    .Legend.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Italic) = FontStyle.Italic)
+                    .Legend.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Underline) = FontStyle.Underline)
 
                 End With
             Next
@@ -927,11 +865,11 @@ Namespace Controls
 
             With Me.m_zgc.MasterPane
                 .Border.IsVisible = False
-                .Title.FontSpec.Family = Me.m_sg.GraphFontFamilyName
-                .Title.FontSpec.Size = Me.m_sg.GraphCaptionFontSize
-                .Title.FontSpec.IsBold = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Bold) = FontStyle.Bold)
-                .Title.FontSpec.IsItalic = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Italic) = FontStyle.Italic)
-                .Title.FontSpec.IsUnderline = ((Me.m_sg.GraphCaptionFontStyle And FontStyle.Underline) = FontStyle.Underline)
+                .Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
+                .Title.FontSpec.Size = Me.m_sg.FontSize(cStyleGuide.eApplicationFontType.Title)
+                .Title.FontSpec.IsBold = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Bold) = FontStyle.Bold)
+                .Title.FontSpec.IsItalic = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
+                .Title.FontSpec.IsUnderline = ((Me.m_sg.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
 
                 Using g As Graphics = Me.m_zgc.CreateGraphics()
                     .SetLayout(g, PaneLayout.SquareColPreferred)

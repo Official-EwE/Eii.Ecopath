@@ -119,7 +119,7 @@ Namespace Other
 
         End Sub
 
-        Public Sub SaveGeneralOptions()
+        Public Sub Save()
             My.Settings.SaveContentLayout = cbSaveLayout.Checked
             My.Settings.ContentLayoutSaveDirectory = txbSaveDirectory.Text
             Me.SaveMsgSettings()

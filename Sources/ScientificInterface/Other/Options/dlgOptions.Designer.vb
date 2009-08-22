@@ -54,7 +54,7 @@ Namespace Other
             resources.ApplyResources(Me.tvOptions, "tvOptions")
             Me.tvOptions.HideSelection = False
             Me.tvOptions.Name = "tvOptions"
-            Me.tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes2"), System.Windows.Forms.TreeNode)})
+            Me.tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvOptions.Nodes3"), System.Windows.Forms.TreeNode)})
             '
             'ImageList1
             '

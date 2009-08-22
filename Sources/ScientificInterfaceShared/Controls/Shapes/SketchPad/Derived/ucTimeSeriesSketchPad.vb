@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: ucTimeSeriesSketchPad.vb,v $
-' Revision 1.6  2009/05/28 12:37:53  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/03/23 17:29:53  jeroens
-' Made capable of rendering without a dataset
-'
-' Revision 1.4  2009/03/11 00:30:48  jeroens
-' Removed resources month strings
-'
-' Revision 1.3  2009/03/02 17:43:52  jeroens
-' Cleaned up
-'
-' Revision 1.2  2009/02/12 15:32:21  jeroens
-' Can add labels to XMark, YMark lines
-'
-' Revision 1.1  2008/12/15 15:36:40  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:45  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -105,7 +79,7 @@ Namespace Controls
                 Dim brTmp As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Dim penTmp As New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Dim sLabelXPos As Single = 0.0
-                Dim tmpFont As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
+                Dim tmpFont As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
                 Dim sBtnSpace As Single = tmpFont.Height
 
                 For i As Integer = 0 To astrXMarks.Length - 1

@@ -1,41 +1,3 @@
-'==============================================================================
-'
-' $Log: ucMediationSketchPad.vb,v $
-' Revision 1.10  2009/06/19 16:45:42  jeroens
-' Y-axis labels scaled to XMark value
-'
-' Revision 1.9  2009/06/19 06:31:12  jeroens
-' Added Y-axis labels to Med shapes
-'
-' Revision 1.8  2009/05/28 12:37:53  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.7  2009/04/20 13:57:13  jeroens
-' no message
-'
-' Revision 1.6  2009/03/24 02:00:27  jeroens
-' Fixed crash when no shape selected
-'
-' Revision 1.5  2009/03/21 00:30:34  jeroens
-' Fixed unclear parameter names
-'
-' Revision 1.4  2009/03/02 17:43:52  jeroens
-' Cleaned up
-'
-' Revision 1.3  2009/03/02 02:03:42  jeroens
-' Simplified
-'
-' Revision 1.2  2009/02/12 15:32:21  jeroens
-' Can add labels to XMark, YMark lines
-'
-' Revision 1.1  2008/12/15 15:36:40  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:38  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -103,7 +65,7 @@ Namespace Controls
                                        Me.Shape.Name)
 
             Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-                Using ft As New Font(sg.GraphFontFamilyName, sg.GraphAxisScaleFontSize)
+                Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
                     Using pn As New Pen(Color.FromArgb(128, 0, 0, 0))
 
                         g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
