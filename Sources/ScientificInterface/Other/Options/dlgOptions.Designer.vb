@@ -22,32 +22,24 @@ Namespace Other
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOptions))
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
+            Me.m_btnOk = New System.Windows.Forms.Button
+            Me.m_btnCancel = New System.Windows.Forms.Button
             Me.tvOptions = New System.Windows.Forms.TreeView
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.plOption = New System.Windows.Forms.Panel
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_btnApply = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
-            'TableLayoutPanel1
+            'm_btnOk
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_btnOk, "m_btnOk")
+            Me.m_btnOk.Name = "m_btnOk"
             '
-            'OK_Button
+            'm_btnCancel
             '
-            resources.ApplyResources(Me.OK_Button, "OK_Button")
-            Me.OK_Button.Name = "OK_Button"
-            '
-            'Cancel_Button
-            '
-            resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
-            Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Cancel_Button.Name = "Cancel_Button"
+            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_btnCancel.Name = "m_btnCancel"
             '
             'tvOptions
             '
@@ -68,15 +60,22 @@ Namespace Other
             resources.ApplyResources(Me.plOption, "plOption")
             Me.plOption.Name = "plOption"
             '
+            'm_btnApply
+            '
+            resources.ApplyResources(Me.m_btnApply, "m_btnApply")
+            Me.m_btnApply.Name = "m_btnApply"
+            '
             'dlgOptions
             '
-            Me.AcceptButton = Me.OK_Button
+            Me.AcceptButton = Me.m_btnOk
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.CancelButton = Me.Cancel_Button
+            Me.CancelButton = Me.m_btnCancel
+            Me.Controls.Add(Me.m_btnCancel)
+            Me.Controls.Add(Me.m_btnApply)
+            Me.Controls.Add(Me.m_btnOk)
             Me.Controls.Add(Me.plOption)
             Me.Controls.Add(Me.tvOptions)
-            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.DoubleBuffered = True
             Me.MaximizeBox = False
             Me.MinimizeBox = False
@@ -84,17 +83,16 @@ Namespace Other
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents OK_Button As System.Windows.Forms.Button
-        Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+        Friend WithEvents m_btnCancel As System.Windows.Forms.Button
         Friend WithEvents tvOptions As System.Windows.Forms.TreeView
         Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
         Friend WithEvents plOption As System.Windows.Forms.Panel
         Friend WithEvents tnModel As System.Windows.Forms.TreeNode
+        Private WithEvents m_btnOk As System.Windows.Forms.Button
+        Private WithEvents m_btnApply As System.Windows.Forms.Button
     End Class
 
 End Namespace

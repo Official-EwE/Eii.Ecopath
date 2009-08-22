@@ -55,40 +55,31 @@ Namespace Other
             Me.m_ucAppPlugins = New ucAppPlugins
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
+            Me.SelectPage("")
+
         End Sub
 
 #End Region ' Constructor
 
-#Region " Event handlers "
+#Region " Internals "
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub Apply()
 
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.m_ucAppPlugins.Apply()
+            Me.m_ucAppPlugins.Save()
             Me.m_ucAppColors.Save()
             Me.m_ucAppFonts.Save()
             Me.m_ucAppGeneral.Save()
-
-            ' Save all settings
             My.Settings.Save()
-            Me.Close()
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-            ' Cancel the option setting
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Close()
-        End Sub
-
-        Private Sub tvOptions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvOptions.AfterSelect
-
+        Private Sub SelectPage(ByVal strPage As String)
             Dim ucPage As UserControl = Me.m_ucAppGeneral
 
             Me.SuspendLayout()
 
-            Select Case e.Node.Name
-                Case "ndGeneral"
+            Select Case strPage
+                Case "", "ndGeneral"
                     ucPage = Me.m_ucAppGeneral
                 Case "ndColors"
                     ucPage = Me.m_ucAppColors
@@ -110,6 +101,40 @@ Namespace Other
             Me.plOption.Controls.Add(ucPage)
 
             Me.ResumeLayout()
+        End Sub
+
+#End Region ' Internals
+
+#Region " Event handlers "
+
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnOk.Click
+
+            Me.Apply()
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+
+        End Sub
+
+        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnApply.Click
+
+            Me.Apply()
+
+        End Sub
+
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCancel.Click
+
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+
+        End Sub
+
+        Private Sub tvOptions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+            Handles tvOptions.AfterSelect
+
+            Me.SelectPage(e.Node.Name)
 
         End Sub
 
@@ -119,7 +144,7 @@ Namespace Other
             ' Bye
             Me.plOption.Controls.Clear()
             ' Manually dispose
-            Me.m_ucCurrent.Dispose()
+            Me.m_ucCurrent = Nothing
             Me.m_ucAppColors.Dispose()
             Me.m_ucAppFonts.Dispose()
             Me.m_ucAppGeneral.Dispose()

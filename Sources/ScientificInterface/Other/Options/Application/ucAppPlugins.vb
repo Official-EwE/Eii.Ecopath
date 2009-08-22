@@ -106,7 +106,7 @@ Namespace Other
 
 #Region " Public interfaces "
 
-        Public Sub Apply()
+        Public Sub Save()
 
             Dim alDisabledPlugins As New ArrayList()
             For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
