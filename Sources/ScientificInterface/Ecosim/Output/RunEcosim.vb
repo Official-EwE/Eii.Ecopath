@@ -833,11 +833,23 @@ Namespace Ecosim
                             Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(gts.GroupIndex)
                             ppl = New PointPairList
 
+                            'Scaling values for relative and actual observed biomass values (reference data)
+                            'BiomassRel (relative value)scale values by exp(DataQ) DataQ = mle mean(sumof(log(observed/predicted))
+                            'BiomassAbs (actual value) scale to relative [b(t)]/[b(0)] no statistical scaling
+                            Dim startBio As Single = 1
+                            Dim eDataQ As Single = CSng(Math.Exp(gts.DataQ))
+                            If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
+                                'convert actual biomass into relative
+                                startBio = m_core.StartBiomass(gts.GroupIndex) 'b(0)
+                                'don't use the stat scaler for actual values
+                                eDataQ = 1
+                            End If
+
                             For j As Integer = 1 To m_core.EcoSimModelParameters.NumberYears
                                 If j < da.Length Then
                                     If da(j) > 0 Then
                                         ' Minus 1 because it should start with the first year
-                                        ppl.Add(j + m_core.EcosimFirstYear - 1, (da(j) / CSng(Math.Exp(gts.DataQ))) / m_core.StartBiomass(gts.GroupIndex))
+                                        ppl.Add(j + m_core.EcosimFirstYear - 1, (da(j) / eDataQ) / startBio)
                                     End If
                                 End If
                             Next
