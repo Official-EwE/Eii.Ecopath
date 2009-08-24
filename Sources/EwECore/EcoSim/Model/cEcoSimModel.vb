@@ -141,7 +141,12 @@ Namespace Ecosim
         Private TimeSeriesFile As String
 
         'fitting of model to time series data
-        Private DatSumZ() As Single, DatSumZ2() As Single, DatNobs() As Integer
+        ''' <summary>sumof log(observed/predicted)</summary>
+        Private DatSumZ() As Single
+        ''' <summary>sumof log(observed/predicted)^2</summary>
+        Private DatSumZ2() As Single
+        ''' <summary>number of observation</summary>
+        Private DatNobs() As Integer
         Private eDatq() As Single
         Private NobsTime() As Single
         Private DatDev(,) As Single
@@ -930,6 +935,7 @@ Public Property PluginManager() As cPluginManager
                     If iYear <= Me.m_RefData.NdatYear And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
                         'Forced catch rates
                         'Was up to Sep 2008:
+                        ' Debug.Assert(iYear <> 53)
                         m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
                         'Dim CBratio As Double = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
                         'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
@@ -1818,8 +1824,6 @@ Public Property PluginManager() As cPluginManager
                         Zstat = 0
                         m_RefData.Iobs += 1
 
-                        'Debug.Assert(m_RefData.Iobs <> 65)
-
                         'data type 0,1,5,6,-6,7
                         Select Case m_RefData.DatType(j)
 
@@ -1828,7 +1832,6 @@ Public Property PluginManager() As cPluginManager
                                 If MakeTestData Then m_RefData.DatVal(iDyear, j) = BB(m_RefData.DatPool(j)) * Math.Exp(SDtest * RandomNormal()) ' to test with random error data
                                 Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / BB(m_RefData.DatPool(j)))
                                 m_RefData.Yhat(m_RefData.Iobs) = Math.Log(BB(m_RefData.DatPool(j)))
-
 
                             Case eTimeSeriesType.TotalMortality      '5 Total mortality Data
                                 'Zest = m_data.mo(m_refData.DatPool(j)) + Eatenof(m_refData.DatPool(j)) / bb(m_refData.DatPool(j))
@@ -1867,14 +1870,11 @@ Public Property PluginManager() As cPluginManager
                             Case Else
                         End Select
 
-                        '  sd = sd + m_RefData.DatVal(iDyear, j)
-
                         'count this stat
                         'increment counters
                         NobsTime(iDyear) += 1
                         m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(j)
 
-                        'following line sets data to simulated value for SS testing
                         m_RefData.Erpred(m_RefData.Iobs) = Zstat
                         DatNobs(j) = DatNobs(j) + 1
                         DatSumZ(j) = DatSumZ(j) + Zstat
@@ -1945,7 +1945,7 @@ Public Property PluginManager() As cPluginManager
                 'jb changed the logic
                 'If rrate > 24 And m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) = 0 Then m_Data.NoIntegrate(i) = 0
                 If rrate > 24 And m_Data.NoIntegrate(i) = i Then
-                    'if the rate of ratio of [loss biomass]/[ecopath biomass]is greater then 24(?) then turn of the numeric integration 
+                    'if the rate of loss [loss biomass]/[ecopath biomass]is greater then 24(?) then turn of the numeric integration 
                     m_Data.NoIntegrate(i) = 0
                 End If
             Next
@@ -2753,7 +2753,6 @@ Public Property PluginManager() As cPluginManager
 
             'ToDo_jb PlotDataInfo AverageBodyWeight
             Dim i As Integer, j As Integer, iYear As Integer ', bplot As Single
-            ' Dim Start_Wt As Single
 
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
@@ -2770,6 +2769,7 @@ Public Property PluginManager() As cPluginManager
                     If m_RefData.DatType(j) = eTimeSeriesType.BiomassRel Or _
                        m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                        m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
+                       m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
                         m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
@@ -2828,23 +2828,6 @@ Public Property PluginManager() As cPluginManager
                 If m_RefData.DatSS(j) > 0 Then LogL = LogL + m_RefData.WtType(j) * (DatNobs(j) - 1) * Math.Log(m_RefData.DatSS(j))
             Next
             LogL = LogL / 2
-
-            'For ib As Integer = 1 To m_RefData.Iobs
-            '    System.Console.WriteLine(Me.m_RefData.Erpred(ib).ToString)
-            'Next
-
-            'Dim iy As Integer
-            'System.Console.WriteLine(Me.m_RefData.strName(75) & ", " & Me.m_RefData.DatType(75).ToString & ", " & Me.m_RefData.DatPool(75).ToString)
-            'For iy = 1 To Me.m_RefData.NdatYear
-            '    System.Console.Write(Me.m_RefData.DatVal(iy, 75).ToString & ", ")
-            'Next
-            'System.Console.WriteLine()
-
-            'System.Console.WriteLine(Me.m_RefData.strName(39) & ", " & Me.m_RefData.DatType(39).ToString & ", " & Me.m_RefData.DatPool(39).ToString)
-            'For iy = 1 To Me.m_RefData.NdatYear
-            '    System.Console.Write(Me.m_RefData.DatVal(iy, 39).ToString & ", ")
-            'Next
-            'System.Console.WriteLine()
 
             'vc sep 2008, adding an option for increasing SS with a fishing mortality penalty
             'if doing a fit to time series, and there are any fmax in the fishing policy screen,
