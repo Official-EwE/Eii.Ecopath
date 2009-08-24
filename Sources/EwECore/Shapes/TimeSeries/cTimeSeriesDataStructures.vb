@@ -92,6 +92,8 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Start year for each applied time series.</summary>
     Public DatYear() As Integer
     Public DatSS() As Single
+
+    ''' <summary>mean(sumof(log(observed/predicted))) by data type</summary>
     Public DatQ() As Single
 
     Public PoolForceBB(,) As Single
@@ -106,6 +108,8 @@ Public Class cTimeSeriesDataStructures
     Public Wt() As Single
 
     Public Yhat() As Single
+
+    ''' <summary>log(observed/predicted) by observation</summary>
     Public Erpred() As Single
 
     Friend Sub ClearTimeSeriesDatasets()
