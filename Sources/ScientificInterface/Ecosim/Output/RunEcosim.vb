@@ -836,11 +836,9 @@ Namespace Ecosim
                             'Scaling values for relative and actual observed biomass values (reference data)
                             'BiomassRel (relative value)scale values by exp(DataQ) DataQ = mle mean(sumof(log(observed/predicted))
                             'BiomassAbs (actual value) scale to relative [b(t)]/[b(0)] no statistical scaling
-                            Dim startBio As Single = 1
+                            Dim startBio As Single = m_core.StartBiomass(gts.GroupIndex)
                             Dim eDataQ As Single = CSng(Math.Exp(gts.DataQ))
                             If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                'convert actual biomass into relative
-                                startBio = m_core.StartBiomass(gts.GroupIndex) 'b(0)
                                 'don't use the stat scaler for actual values
                                 eDataQ = 1
                             End If
