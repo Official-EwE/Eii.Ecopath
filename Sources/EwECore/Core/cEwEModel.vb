@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwEModel.vb,v $
-' Revision 1.4  2009/02/02 19:00:16  jeroens
-' Hey, why not 60K?! Whoohoo!
-'
-' Revision 1.3  2009/02/02 18:56:54  jeroens
-' Description max length changed to 4K
-'
-' Revision 1.2  2009/01/16 18:30:11  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
