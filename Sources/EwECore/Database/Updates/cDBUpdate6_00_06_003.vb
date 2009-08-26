@@ -47,7 +47,7 @@ Public Class cDBUpdate6_00_06_003
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
-        Return Me.FixEcosimFleets(db)
+        Return Me.FixEcosimFleets(db) And Me.FixDoubleLinkedEffortShapes(db)
     End Function
 
     Private Function FixEcosimFleets(ByVal db As cEwEDatabase) As Boolean
@@ -90,6 +90,32 @@ Public Class cDBUpdate6_00_06_003
                 End If
             Next iScenarioID
         Next iFleetID
+        Return bSucces
+
+    End Function
+
+    Private Function FixDoubleLinkedEffortShapes(ByVal db As cEwEDatabase) As Boolean
+
+        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenarioFleet")
+        Dim dt As DataTable = writer.GetDataTable()
+        Dim drow As DataRow = Nothing
+        Dim liShapes As New List(Of Integer)
+        Dim iShape As Integer
+        Dim bSucces As Boolean = True
+
+        For Each drow In dt.Rows
+            iShape = CInt(drow("FishRateShapeID"))
+            If liShapes.Contains(iShape) Then
+                drow.BeginEdit()
+                drow("FishRateShapeID") = 0
+                drow.EndEdit()
+            Else
+                liShapes.Add(iShape)
+            End If
+        Next
+
+        writer.Commit()
+        db.ReleaseWriter(writer)
         Return bSucces
 
     End Function
