@@ -1,34 +1,3 @@
-'=============================================================================
-'
-' $Log: EditMultiStanza.vb,v $
-' Revision 1.8  2009/05/28 12:37:28  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.7  2009/04/27 01:32:30  jeroens
-' Fixed potential exception in UpdateGraph
-'
-' Revision 1.6  2009/04/16 02:09:11  jeroens
-' Removed all locally cached stanza variables
-' Stanza group and hatchery FF kept as original objects
-' Uses format providers for all controls (whoohoo)
-'
-' Revision 1.5  2009/04/07 20:02:06  jeroens
-' Updated to use ZedGraphHelper Attach
-'
-' Revision 1.4  2009/04/03 18:00:23  jeroens
-' Deliberately detached zedgraphhelper
-'
-' Revision 1.3  2009/03/19 16:02:27  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.2  2008/12/15 15:52:27  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:30  sherman
-' --== DELETED HISTORY ==--
-'
-'=============================================================================
-
 #Region " Imports "
 Option Explicit On
 Option Strict On
@@ -116,11 +85,6 @@ Namespace Ecopath
                 Me.m_fpFF.Style = cStyleGuide.eStyleFlags.OK
             Else
                 Me.m_fpFF.Style = cStyleGuide.eStyleFlags.NotEditable
-            End If
-
-            ' Init FF drop down, even when no sim scenario is loaded
-            If (Me.m_grid.StanzaGroup IsNot Nothing) Then
-                Me.m_fpFF.Value = Me.m_grid.StanzaGroup.HatchCode
             End If
 
             Me.m_grid.RefreshContent()

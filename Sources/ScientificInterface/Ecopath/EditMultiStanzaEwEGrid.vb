@@ -180,6 +180,8 @@ Public Class EditMultiStanzaEwEGrid
 
     Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
 
+        Dim core As cCore = cCore.GetInstance()
+
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 
             ' JS 27jun07: stanza ages only editable from EditGroups interface
@@ -194,7 +196,12 @@ Public Class EditMultiStanzaEwEGrid
 
         Next
 
-        If bApplyToCore Then Me.m_stanzagroup.Apply()
+        If bApplyToCore Then
+            ' JS 090826: apply changes for all stanza groups, not only the last used stanza group
+            For iIndex As Integer = 0 To core.nStanzas - 1
+                core.StanzaGroups(iIndex).Apply()
+            Next
+        End If
 
     End Sub
 
