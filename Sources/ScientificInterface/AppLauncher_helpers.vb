@@ -86,7 +86,7 @@ Partial Public Class AppLauncher
                 stateForm = f.CoreExecutionState
 
                 ' Check if form should be disabled
-                bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) And frmEwE.IsOutputForm(stateForm))
+                bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) Or frmEwE.IsOutputForm(stateForm))
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form
