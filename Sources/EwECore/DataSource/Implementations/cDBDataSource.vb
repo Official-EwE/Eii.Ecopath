@@ -3244,6 +3244,8 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
         Dim asDummy(ecosimDS.NTimes) As Single
 
+        Dim dtNewFleetShapes As New Dictionary(Of Integer, Integer)
+
         For iPt As Integer = 0 To ecosimDS.NTimes : asDummy(iPt) = 1.0 : Next
 
         ' For each fleet
@@ -3260,7 +3262,9 @@ Public Class cDBDataSource
             End Try
 
             If iShapeID <= 0 Then
+                ' Define a new shape for this fleet
                 Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, 0, 0, 0, 0, eShapeFunctionType.NotSet)
+                dtNewFleetShapes.Add(iFleetID, iShapeID)
             End If
 
             If iShapeID > -1 Then
@@ -3279,8 +3283,31 @@ Public Class cDBDataSource
             End Try
 
             Me.m_db.ReleaseReader(reader)
-
         Next
+
+        ' Store new shape links
+        Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_db.GetWriter("EcosimScenarioFleet")
+        Dim dt As DataTable = writer.GetDataTable()
+        Dim objKeys() As Object = {iScenarioID, Nothing}
+        Dim drow As DataRow = Nothing
+
+        ' Store new IDs
+        For Each iFleetID In dtNewFleetShapes.Keys
+            iShapeID = dtNewFleetShapes(iFleetID)
+            objKeys(1) = iFleetID
+            drow = dt.Rows.Find(objKeys)
+            ' Check wheter a new row or an existing row
+            Debug.Assert(Not Object.ReferenceEquals(drow, Nothing))
+            Try
+                drow.BeginEdit()
+                drow("FishRateShapeID") = iShapeID
+                drow.EndEdit()
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+
+        Me.m_db.ReleaseWriter(writer)
         Return bSucces
 
     End Function

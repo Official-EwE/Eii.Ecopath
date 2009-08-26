@@ -2028,53 +2028,58 @@ Namespace Database
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
-            Dim iFleetID As Integer = 1
             Dim iEcopathFleetID As Integer = 0
             Dim iShapeID As Integer = 0
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim FishGear] where modelName='{0}'", strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            ' JS090826: first day to the EwE25 conference, and time to raise hell. The previous logic failed to import
+            '           fleets for Ecosim when only defined in Ecopath.
+            Dim dtFleets As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.FleetInput))
+            Dim dtScenarios As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.EcoSimScenario))
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioFleet")
 
-            ' In EwE5, FishRateGear shapes are scenario-specific, at least they're embedded in
-            ' table [EcoSim FishGear] but seem identical for every occurence of the ecosim fleet.
+            For Each strFleetName As String In dtFleets.Keys
+                For Each strScenarioName As String In dtScenarios.Keys
 
-            ' Here, the shapes will be stored as one per fleet across scenarios.
+                    ' Grab foreign keys
+                    iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, strScenarioName)
+                    iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleetName)
 
-            While reader.Read()
+                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
+                                                              strModelName, strFleetName, strScenarioName))
+                    ' Assume no shape is read
+                    iShapeID = 0
+                    ' Try to read effort linkage
+                    If reader IsNot Nothing Then
+                        reader.Read()
+                        Try
+                            ' Check if shape already imported
+                            iShapeID = Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID)
+                        Catch ex As Exception
+                        End Try
+                        Me.m_dbEwE5.ReleaseReader(reader)
+                    End If
 
-                drow = writer.NewRow()
+                    ' Not imported yet? Signal that import is needed after the fleet has been defined
+                    If iShapeID = 0 Then iShapeID = Me.m_iNextShapeID
 
-                ' Map foreign keys
-                iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, CStr(reader("Scenario")))
-                iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, CStr(reader("gearName")))
+                    drow = writer.NewRow()
+                    drow("ScenarioID") = iScenarioID
+                    drow("EcopathFleetID") = iEcopathFleetID
+                    drow("FishRateShapeID") = iShapeID
+                    writer.AddRow(drow)
+                    writer.Commit()
 
-                ' Check if shape already imported
-                iShapeID = Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID)
-                ' Not imported yet? Signal that import is needed after the fleet has been defined
-                If iShapeID = 0 Then iShapeID = Me.m_iNextShapeID
+                    If iShapeID = Me.m_iNextShapeID Then
+                        Me.ImportShape(iEcopathFleetID, iShapeID, eDataTypes.FishingEffort, reader)
+                        Me.HashKey(eDataTypes.FishingEffort, strFleetName, eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
+                        Me.m_iNextShapeID += 1
+                    End If
 
-                drow("ScenarioID") = iScenarioID
-                'drow("FleetID") = iFleetID
-                drow("EcopathFleetID") = iEcopathFleetID
-                drow("FishRateShapeID") = iShapeID
-
-                iFleetID += 1
-
-                writer.AddRow(drow)
-                writer.Commit()
-
-                If iShapeID = Me.m_iNextShapeID Then
-                    Me.ImportShape(iEcopathFleetID, iShapeID, eDataTypes.FishingEffort, reader)
-                    Me.HashKey(eDataTypes.FishingEffort, CStr(reader("gearName")), eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
-                    Me.m_iNextShapeID += 1
-                End If
-
-            End While
+                Next strScenarioName
+            Next strFleetName
 
             Me.m_dbEwE6.ReleaseWriter(writer)
-            Me.m_dbEwE5.ReleaseReader(reader)
 
         End Sub
 
@@ -2101,6 +2106,7 @@ Namespace Database
             ' JS061218: A great performance boost can be achieved by opening all shape writers here rather than
             '           once for every shape. These writers can be made global to the class, similar to the 
             '           remarks writer, or can have local scope, to be passed on to the writing methods.
+
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecosim nshapes] WHERE modelName='{0}'", strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
