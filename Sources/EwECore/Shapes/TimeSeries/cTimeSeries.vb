@@ -135,6 +135,10 @@ Public MustInherit Class cTimeSeries
     Protected m_sDatSS As Single = 0.0!
     ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs.</summary>
     Protected m_sDataQ As Single = 0.0!
+
+    ''' <summary>exp(DataQ)</summary>
+    Protected m_eDataQ As Single
+
     ''' <summary>The core this TS belongs to.</summary>
     Protected m_core As cCore = Nothing
 
@@ -281,6 +285,22 @@ Public MustInherit Class cTimeSeries
             Me.m_sDataQ = sDataQ
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' exp(DataQ) average prediction error
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property eDataQ() As Single
+        Get
+            Return Me.m_eDataQ
+        End Get
+
+        Friend Set(ByVal eDataQ As Single)
+            Me.m_eDataQ = eDataQ
+        End Set
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

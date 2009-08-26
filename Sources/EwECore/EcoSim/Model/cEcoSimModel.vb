@@ -147,7 +147,7 @@ Namespace Ecosim
         Private DatSumZ2() As Single
         ''' <summary>number of observation</summary>
         Private DatNobs() As Integer
-        Private eDatq() As Single
+        'Private eDatq() As Single
         Private NobsTime() As Single
         Private DatDev(,) As Single
 
@@ -2756,7 +2756,7 @@ Public Property PluginManager() As cPluginManager
 
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
-            ReDim eDatq(m_RefData.NdatType)
+            ReDim m_RefData.eDatq(m_RefData.NdatType)
 
             For j = 1 To m_RefData.NdatType
                 If DatNobs(j) > 0 Then
@@ -2776,7 +2776,7 @@ Public Property PluginManager() As cPluginManager
 
                         m_RefData.DatSS(j) = DatSumZ2(j) - DatSumZ(j) ^ 2 / DatNobs(j)
                         m_RefData.DatQ(j) = DatSumZ(j) / DatNobs(j)
-                        eDatq(j) = Math.Exp(m_RefData.DatQ(j))
+                        m_RefData.eDatq(j) = Math.Exp(m_RefData.DatQ(j))
 
                         'If m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then
                         '    Start_Wt = mean_BdyWt(m_RefData.DatPool(j), 6)
@@ -4212,7 +4212,6 @@ Public Property PluginManager() As cPluginManager
                 d.DatSumZ = DatSumZ.Clone
                 d.DatSumZ2 = DatSumZ2.Clone
                 d.DatNobs = DatNobs.Clone
-                d.eDatq = eDatq.Clone
 
                 ' Datq.clone , m_refdata.DatSS.clone 
 

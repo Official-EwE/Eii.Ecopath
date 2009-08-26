@@ -1271,6 +1271,7 @@ Public Class cCore
                 'DatSS and DatQ are not part of m_TSData yet
                 ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears
@@ -1298,6 +1299,7 @@ Public Class cCore
                 'DatSS and DatQ are not part of m_TSData yet
                 ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears

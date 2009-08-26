@@ -450,10 +450,9 @@ Namespace Ecosim
             If gts.TimeSeriesType = eTimeSeriesType.BiomassRel Or _
                  gts.TimeSeriesType = eTimeSeriesType.TotalMortality Or _
                     gts.TimeSeriesType = eTimeSeriesType.AverageWeight Then
-                'jb still need to sort this out
-                ' If gts.DataQ > 0 Then
-                dScale = 1.0F / CSng(Math.Exp(gts.DataQ))
-                'End If
+                If gts.eDataQ > 0 Then
+                    dScale = 1.0F / gts.eDataQ
+                End If
             End If
 
             Dim da() As Single = gts.ShapeData()

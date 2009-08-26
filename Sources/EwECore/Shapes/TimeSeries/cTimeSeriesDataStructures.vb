@@ -68,6 +68,7 @@ Public Class cTimeSeriesDataStructures
     Public sValues(,) As Single
     Public sDatSS() As Single
     Public sDatQ() As Single
+    Public sEDatQ() As Single 'exp(sDatQ)
 
 
     ' ------------------------------------------------
@@ -95,6 +96,7 @@ Public Class cTimeSeriesDataStructures
 
     ''' <summary>mean(sumof(log(observed/predicted))) by data type</summary>
     Public DatQ() As Single
+    Public eDatQ() As Single
 
     Public PoolForceBB(,) As Single
     Public PoolForceZ(,) As Single
@@ -161,9 +163,11 @@ Public Class cTimeSeriesDataStructures
         ReDim strCustomVariableName(nNumTimeSeries)
         ReDim sDatSS(nNumTimeSeries)
         ReDim sDatQ(nNumTimeSeries)
+        ReDim sEDatQ(nNumTimeSeries)
 
         ReDim DatSS(nNumTimeSeries)
         ReDim DatQ(nNumTimeSeries)
+        ReDim eDatQ(nNumTimeSeries)
 
     End Sub
 
@@ -180,6 +184,7 @@ Public Class cTimeSeriesDataStructures
         ReDim DatYear(NdatYear)
         ReDim DatSS(NdatType)
         ReDim DatQ(NdatType)
+        ReDim eDatQ(NdatType)
 
     End Sub
 
@@ -292,10 +297,12 @@ Public Class cTimeSeriesDataStructures
                 iTSenabled += 1 'DatSS and DatQ are indexed from one
                 sDatSS(iTS) = DatSS(iTSenabled)
                 sDatQ(iTS) = DatQ(iTSenabled)
+                sEDatQ(iTS) = eDatQ(iTSenabled)
 
             Else
                 sDatSS(iTS) = 0.0!
                 sDatQ(iTS) = 0.0!
+                sEDatQ(iTS) = 0.0!
             End If
         Next iTS
 

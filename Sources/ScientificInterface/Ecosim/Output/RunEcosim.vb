@@ -837,7 +837,7 @@ Namespace Ecosim
                             'BiomassRel (relative value)scale values by exp(DataQ) DataQ = mle mean(sumof(log(observed/predicted))
                             'BiomassAbs (actual value) scale to relative [b(t)]/[b(0)] no statistical scaling
                             Dim startBio As Single = m_core.StartBiomass(gts.GroupIndex)
-                            Dim eDataQ As Single = CSng(Math.Exp(gts.DataQ))
+                            Dim eDataQ As Single = gts.eDataQ
                             If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
                                 'don't use the stat scaler for actual values
                                 eDataQ = 1

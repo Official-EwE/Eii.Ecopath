@@ -114,7 +114,8 @@ Namespace Ecosim
                     (Me.m_ts.TimeSeriesType = eTimeSeriesType.AverageWeight)) Then
 
                     ' JS 12feb08: EwE5 uses eDatQ here, which is e^DataQ!
-                    If (Me.m_ts.DataQ <> 0) Then Me.TSDataScale = CSng(1.0! / Math.Exp(Me.m_ts.DataQ))
+                    'jb 26Aug09 added eDatQ to timeseries data
+                    If (Me.m_ts.DataQ <> 0) Then Me.TSDataScale = CSng(1.0! / Me.m_ts.eDataQ)
                 End If
 
                 asData = Me.m_ts.ShapeData
