@@ -1,28 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLindemanSpine.vb,v $
-' Revision 1.1  2009/06/15 14:15:26  jeroens
-' Flattened directory structure
-'
-' Revision 1.5  2009/06/06 21:57:02  jeroens
-' Added Max TL menu
-'
-' Revision 1.4  2009/06/05 15:56:12  jeroens
-' Added child panel for scrolling
-'
-' Revision 1.3  2009/06/05 02:58:21  jeroens
-' Collapse/expand detritus handled by only one menu item
-'
-' Revision 1.2  2009/06/05 02:52:45  jeroens
-' Added content menu items
-' Localized
-'
-' Revision 1.1  2009/06/04 19:14:54  jeroens
-' Initial version, not complete yet
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwEUtils
@@ -32,6 +8,7 @@ Imports System.IO
 Imports System.Drawing.Imaging
 Imports ZedGraph
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -64,6 +41,9 @@ Public Class cLindemanSpine
     ''' <summary>Custom toolstrip items for selecting Trophic Levels</summary>
     Private m_ltsmiTL As New List(Of ToolStripMenuItem)
 
+    Private m_sg As cStyleGuide = Nothing
+
+
     Public Sub New()
         '
     End Sub
@@ -86,8 +66,11 @@ Public Class cLindemanSpine
         Me.Plot.Controls.Add(Me.m_plGraph)
         Me.Plot.AutoScroll = True
 
+        Me.m_sg = cStyleGuide.GetInstance()
+
         AddHandler Me.m_plGraph.Paint, AddressOf PaintUC
         AddHandler Me.m_plGraph.Resize, AddressOf ResizeUC
+        AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Return bSucces
 
@@ -97,11 +80,13 @@ Public Class cLindemanSpine
 
         RemoveHandler Me.m_plGraph.Paint, AddressOf PaintUC
         RemoveHandler Me.m_plGraph.Resize, AddressOf ResizeUC
+        RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         Me.Plot.Controls.Remove(Me.m_plGraph)
 
         Me.m_plGraph = Nothing
         Me.m_graph = Nothing
+        Me.m_sg = Nothing
 
         Me.RemoveToolstripItems()
 
@@ -111,7 +96,7 @@ Public Class cLindemanSpine
 
     Public Overrides Sub DisplayData()
         Me.m_plGraph.Size = Me.m_graph.Size
-        Me.m_plGraph.Invalidate()
+        Me.m_plGraph.Refresh()
         Me.UpdateControls()
     End Sub
 
@@ -151,30 +136,11 @@ Public Class cLindemanSpine
     End Sub
 
     Private Sub PlotToScreen(ByVal g As Graphics)
-
-        'Dim r As Rectangle
-
-        'r.X = Me.Plot.ClientRectangle.X
-        'r.Y = 0
-        'r.Width = Me.Plot.ClientRectangle.Width
-        'r.Height = Me.Plot.ClientRectangle.Height - r.Y
-
         Me.m_graph.Draw(g)
-
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
-
-        'Dim r As Rectangle
-
-        'r.X = Me.Plot.ClientRectangle.X
-        'r.Y = 0
-        'r.Width = Me.Plot.ClientRectangle.Width
-        'r.Height = (Me.Plot.ClientRectangle.Height - r.Y)
-
-        '' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
         Me.m_graph.Draw(g)
-
     End Sub
 
     Private Sub AddToolstripItems()
