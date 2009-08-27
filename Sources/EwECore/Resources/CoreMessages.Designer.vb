@@ -299,7 +299,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Computed EE invalid for group {0}.
+        '''  Looks up a localized string similar to Computed EE value {1} invalid for group &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_EE() As String
             Get
@@ -345,7 +345,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Gear &apos;{0}&apos; is missing Discard Fate.
+        '''  Looks up a localized string similar to Fleet &apos;{0}&apos; is missing Discard fate.
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET() As String
             Get
@@ -354,7 +354,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Estimated PB = 0 for group {0}..
+        '''  Looks up a localized string similar to Estimated PB = 0 for group &apos;{0}&apos;..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0() As String
             Get
@@ -374,7 +374,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Estimated QB = 0 for group {0}..
+        '''  Looks up a localized string similar to Estimated QB = 0 for group &apos;{0}&apos;..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0() As String
             Get

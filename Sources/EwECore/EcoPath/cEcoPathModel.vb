@@ -1,108 +1,6 @@
-﻿'==============================================================================
-'
-' $Log: cEcoPathModel.vb,v $
-' Revision 1.32  2009/05/11 00:02:53  jeroens
-' Commented-out cannibalism fix
-'
-' Revision 1.31  2009/04/03 20:27:44  jeroens
-' checkDietsSumToOne uses only one message
-'
-' Revision 1.30  2009/04/01 17:27:15  joeh
-' Remove codes related to PSD
-'
-' Revision 1.29  2009/03/31 21:36:13  joeh
-' Move all PSD computation routines to a new class cPSDModel
-'
-' Revision 1.28  2009/03/24 01:07:08  joeh
-' Redim PSD array
-'
-' Revision 1.27  2009/03/20 18:05:44  joeh
-' Add more codes to estimate the two biomass variables for Size/Weight plot
-'
-' Revision 1.26  2009/03/20 00:51:09  joeh
-' Add codes to estimate the two variables for Size/Weight plot
-'
-' Revision 1.25  2009/03/18 15:28:27  jeroens
-' PSD SelectedGroup -> Include
-'
-' Revision 1.24  2009/03/18 13:26:52  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.23  2009/03/17 23:37:34  joeh
-' Add codes for the Selected Group feature
-'
-' Revision 1.22  2009/03/17 19:38:08  joeh
-' Add latitudes of NW and SE corners of model
-'
-' Revision 1.21  2009/03/17 02:25:49  joeh
-' Add Lorenzen mortality type
-'
-' Revision 1.20  2009/03/17 00:01:49  joeh
-' Divide m_stanza.Age1 by 12 to convert from month to year
-'
-' Revision 1.19  2009/03/16 21:37:19  joeh
-' Incorporate StartTime into the computation of EcopathWeight, EcopathNumber and EcopathBiomass
-'
-' Revision 1.18  2009/03/16 16:58:15  jeroens
-' Ecopath model needs PSD data structures too
-'
-' Revision 1.17  2009/03/13 21:35:40  joeh
-' In cCore.InitEcopath( ), cCore sets stanza data to cEcoPathModel
-'
-' Revision 1.16  2009/03/11 00:14:28  joeh
-' Add PSD calculation
-'
-' Revision 1.15  2009/03/06 17:54:01  joeh
-' Minor changes in the computation of Weight, Number and Biomass
-'
-' Revision 1.14  2009/03/06 00:47:56  joeh
-' Add Ecopath output data (Weight, Number, Biomass) over time
-'
-' Revision 1.13  2009/03/03 20:17:17  joeh
-' Minor change in the t0 and Tmax computation
-'
-' Revision 1.12  2009/03/03 01:16:38  joeh
-' Compute Tmax
-'
-' Revision 1.11  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.10  2009/02/28 00:58:08  joeh
-' Add PSD estimation
-'
-' Revision 1.9  2009/02/26 18:38:01  joeb
-' Fix fit to timeseries bug Iobs counter being reset to 0 each timestep
-'
-' Revision 1.8  2009/01/16 18:30:16  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.7  2008/11/28 16:54:05  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.6  2008/11/28 16:03:17  joeb
-' Minor code cleanup after moving all code to cEcopathModel
-'
-' Revision 1.5  2008/11/27 23:33:56  joeb
-' Removed EcopoathMassBalance module all code now in cEcopathModel
-'
-' Revision 1.4  2008/11/27 18:19:38  joeb
-' Added EcoFunctions to Ecopath constructor
-'
-' Revision 1.3  2008/11/05 18:16:08  joeb
-' Fixed Bug that caused discards not to be include in Fishing mortality shapes FishRateNo() by moving caculation of PropDiscards() to Ecopath with calculation of PropLandings()
-'
-' Revision 1.2  2008/10/29 15:56:00  joeb
-' Change catch_calculation() missing catch message from Imformation to Warning
-'
-' Revision 1.1  2008/09/26 07:30:18  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
-Option Strict On
+﻿Option Strict On
 Imports EwEUtils.Core
 Imports EwEPlugin
-
 
 Namespace Ecopath
 
@@ -740,16 +638,14 @@ Namespace Ecopath
                         msg.Suppressable = True
                     End If
                     msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, i), _
+                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(1)), _
                                 eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
-
                 End If
             Next
 
             If Not msg Is Nothing Then
                 NotifyCore(msg)
             End If
-
 
         End Sub
 
@@ -784,7 +680,7 @@ Namespace Ecopath
                         End If
                         ' Create variable information for this messages
                         vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0, i), _
+                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0, Me.m_Data.GroupName(i)), _
                                 eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgPB0.Variables.Add(vs)
@@ -800,7 +696,7 @@ Namespace Ecopath
                         End If
                         ' Create variable information for this messages
                         vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, i), _
+                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, Me.m_Data.GroupName(i)), _
                                 eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgQB0.Variables.Add(vs)

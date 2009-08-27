@@ -180,8 +180,8 @@
     <value>Failed to run EcoPath, a model has not yet been initialized.</value>
   </data>
   <data name="ECOPATH_INVALIDMODEL_EE" xml:space="preserve">
-    <value>Computed EE invalid for group {0}</value>
-    <comment>Ecopath EE value computed incorrectly for group #</comment>
+    <value>Computed EE value {1} invalid for group '{0}'</value>
+    <comment>{0}=group name, {1}=invalid EE value</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
     <value>Your model is NOT mass-balanced!
@@ -189,8 +189,8 @@ Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s).</value>
     <comment>Ecopath EE values computed incorrectly</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
-    <value>Estimated PB = 0 for group {0}.</value>
-    <comment>Ecopath estimated PB = 0 for group #</comment>
+    <value>Estimated PB = 0 for group '{0}'.</value>
+    <comment>{0}= group name; Ecopath estimated PB = 0 for group #</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
     <value>The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please re-edit your data.
@@ -199,7 +199,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>Ecopath estimated PB = 0</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_QB0" xml:space="preserve">
-    <value>Estimated QB = 0 for group {0}.</value>
+    <value>Estimated QB = 0 for group '{0}'.</value>
     <comment>Ecopath estimated QB = 0 for group #</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
@@ -219,7 +219,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
     <value>Discard information is missing for fleet {0}, group {1}.</value>
-    <comment>{0} = fleet name</comment>
+    <comment>{0} = fleet name, {1}=group name</comment>
   </data>
   <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
     <value>Estimated Biomass Accumulation (BA) is negative for group {0}, which may be related to the failure to estimate EE.</value>
@@ -227,7 +227,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="ECOPATH_MISSINGPARAM_LANDING" xml:space="preserve">
     <value>Landing information is missing for fleet {0}, group {1}.</value>
-    <comment>{0} = fleet name</comment>
+    <comment>{0} = fleet name, {1}=group name</comment>
   </data>
   <data name="ECOPATH_PARAMESTIMATION_FAILED_PB" xml:space="preserve">
     <value>Production / biomass ratio (PB) could not be estimated for group {0}.</value>
@@ -713,7 +713,7 @@ System Error: {0}</value>
     <comment>{0}=occurrence count</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET" xml:space="preserve">
-    <value>Gear '{0}' is missing Discard Fate</value>
+    <value>Fleet '{0}' is missing Discard fate</value>
     <comment>{0}=gear/fleet name</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
