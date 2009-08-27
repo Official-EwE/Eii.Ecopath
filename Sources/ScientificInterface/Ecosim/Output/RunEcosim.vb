@@ -83,9 +83,6 @@ Namespace Ecosim
             Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.m_core, Me.tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
-            ' Track core monitor changes
-            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.m_core, Me.m_graph)
 
@@ -110,6 +107,9 @@ Namespace Ecosim
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
+
+            ' Track core monitor changes
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.PopulateGraph()
 
@@ -326,6 +326,9 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+
+            ' Could be that we're closing
+            If (Me.IsDisposed) Then Return
 
             Dim bEcosimRunning As Boolean = m_coreStateMonitor.IsEcosimRunning
             Dim bHasEcosimResults As Boolean = m_coreStateMonitor.HasEcosimRan
