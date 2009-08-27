@@ -144,6 +144,7 @@ Namespace Other
 
             Me.m_core = cCore.GetInstance()
             Me.m_sg = cStyleGuide.GetInstance()
+            Me.FillFontFamiliesComboBox()
 
         End Sub
 
@@ -323,14 +324,8 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
-
-            Me.FillFontFamiliesComboBox()
             Me.FillFontTypesListBox()
-
             Me.m_lbFontTypes.SelectedIndex = 0
-
-            cApplicationStatusNotifier.GetInstance().SetStatusText("", TriState.False)
 
         End Sub
 
@@ -453,7 +448,6 @@ Namespace Other
 #End Region ' Public methods
 
     End Class
-
 
 End Namespace
 

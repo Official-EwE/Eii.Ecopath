@@ -37,7 +37,8 @@ Namespace Other
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
+            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+
             Me.InitializeComponent()
 
             'Initialize the color option control
@@ -56,6 +57,8 @@ Namespace Other
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
 
             Me.SelectPage("")
+
+            cApplicationStatusNotifier.GetInstance().SetStatusText("", TriState.False)
 
         End Sub
 
