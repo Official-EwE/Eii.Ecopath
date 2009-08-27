@@ -139,8 +139,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-            MyBase.OnFormClosing(e)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
@@ -149,6 +148,8 @@ Namespace Ecosim
             Me.m_zghResults = Nothing
 
             Me.CoreComponents = Nothing
+            MyBase.OnFormClosed(e)
+
         End Sub
 
         Private Sub UpdateControls()

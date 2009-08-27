@@ -153,7 +153,7 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             If Me.m_ucEditVisualStyle IsNot Nothing Then
                 RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
@@ -168,7 +168,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_layerWork.Dispose()
             Me.m_layerWork = Nothing
 
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
 
         End Sub
 

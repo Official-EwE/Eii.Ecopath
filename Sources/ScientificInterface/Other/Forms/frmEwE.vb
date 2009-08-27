@@ -281,10 +281,10 @@ Public Class frmEwE
         cFormPositionSettings.GetInstance().Apply(Me)
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         cFormPositionSettings.GetInstance().Store(Me)
         Me.CoreComponents = Nothing
-        MyBase.OnFormClosing(e)
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form overrides

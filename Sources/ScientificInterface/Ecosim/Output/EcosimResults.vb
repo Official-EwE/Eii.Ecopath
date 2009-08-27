@@ -84,8 +84,9 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub EcosimResults_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             rbGear.Checked = True
 
@@ -108,14 +109,14 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
-        Private Sub EcosimResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_fpEndSum.Release()
             Me.m_fpNumSteps.Release()
             Me.m_fpStartSum.Release()
 
             Me.CoreComponents = Nothing
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

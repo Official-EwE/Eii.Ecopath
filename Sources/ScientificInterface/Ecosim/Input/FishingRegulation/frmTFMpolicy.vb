@@ -60,7 +60,9 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub HandleLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             Dim core As cCore = cCore.GetInstance()
 
@@ -79,11 +81,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub HandleFormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             ' Clean up
             Me.Group = Nothing
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _

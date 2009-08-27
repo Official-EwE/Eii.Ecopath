@@ -136,10 +136,10 @@ Namespace Ecopath.Output
             UpdatePlot()
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
         End Sub
 
 #End Region 'Event handlers

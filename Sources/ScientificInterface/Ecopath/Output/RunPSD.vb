@@ -211,7 +211,7 @@ Namespace Ecopath.Output
             End If
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs) 
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim parms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = cStyleGuide.GetInstance()
@@ -235,6 +235,7 @@ Namespace Ecopath.Output
             RemoveHandler Me.m_propComputed.PropertyChanged, AddressOf OnPSDComputedChanged
             Me.m_propComputed = Nothing
 
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub RunPSD_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

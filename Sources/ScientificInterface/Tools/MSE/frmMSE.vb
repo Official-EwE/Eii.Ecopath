@@ -104,11 +104,11 @@ Public Class frmMSE
 
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-        MyBase.OnFormClosing(e)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.CoreComponents = Nothing
         Me.m_MSE.Disconnect()
+        MyBase.OnFormClosed(e)
 
     End Sub
 

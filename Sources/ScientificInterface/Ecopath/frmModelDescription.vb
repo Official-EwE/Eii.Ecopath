@@ -64,8 +64,9 @@ Public Class frmModelDescription
 
     End Sub
 
-    Private Sub frmModelDescription_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles MyBase.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        MyBase.OnLoad(e)
 
         Dim eweModel As cEwEModel = m_core.EwEModel()
         Dim psdParms As cPSDParameters = Me.m_core.ParticleSizeDistributionParameters()
@@ -120,8 +121,7 @@ Public Class frmModelDescription
 
     End Sub
 
-    Private Sub frmModelDescription_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.FormClosing
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpArea.Release()
         Me.m_fpAuthor.Release()
@@ -151,6 +151,8 @@ Public Class frmModelDescription
 
         RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
         Me.m_propUnitMonetary = Nothing
+
+        MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub m_csm_CoreDataStateEvent(ByVal coreStateMonitor As EwECore.cCoreStateMonitor)

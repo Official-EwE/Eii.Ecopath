@@ -81,8 +81,9 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub EcosimParams_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs) 
+
+            MyBase.OnLoad(e)
 
             Dim ecosimModelParams As cEcoSimModelParameters = m_core.EcoSimModelParameters()
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
@@ -112,8 +113,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub EcosimParameters_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -136,6 +136,8 @@ Namespace Ecosim
 
             RemoveHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
             Me.m_propPredictEffort = Nothing
+
+            MyBase.OnFormClosed(e)
 
         End Sub
 

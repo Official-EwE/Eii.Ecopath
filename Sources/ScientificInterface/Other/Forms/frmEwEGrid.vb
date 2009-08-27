@@ -461,7 +461,7 @@ Public Class frmEwEGrid
     ''' Event handler; handles the Disposed event to clear this form after usage.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Release any quick edit handler
         Me.SetQuickEditHandler(False)
@@ -473,7 +473,7 @@ Public Class frmEwEGrid
             Me.m_grid = Nothing
         End If
 
-        MyBase.OnFormClosing(e)
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form overrides

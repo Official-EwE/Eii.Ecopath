@@ -79,14 +79,26 @@ Partial Public Class AppLauncher
             Dim bMustCloseForm As Boolean = False
 
             For Each f As frmEwE In Me.GetEwEForms()
-                ' Think positive
-                bMustCloseForm = False
 
                 ' Get form state
                 stateForm = f.CoreExecutionState
 
-                ' Check if form should be disabled
-                bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) Or frmEwE.IsOutputForm(stateForm))
+                ' Check if form should be closed
+                ' A form should be closed if its outputs are invalidated or then the data 
+                ' used to populate the form are no longer available.
+                If frmEwE.IsOutputForm(stateForm) Then
+                    Select Case stateForm
+                        Case eCoreExecutionState.EcopathCompleted
+                            bMustCloseForm = Not Me.m_csm.HasEcopathRan
+                        Case eCoreExecutionState.EcosimCompleted
+                            bMustCloseForm = Not Me.m_csm.HasEcosimRan
+                        Case eCoreExecutionState.EcospaceCompleted
+                            bMustCloseForm = Not Me.m_csm.HasEcospaceRan
+                    End Select
+                Else
+                    bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
+                End If
+                'bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) And frmEwE.IsOutputForm(stateForm))
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form

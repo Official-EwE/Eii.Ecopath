@@ -874,6 +874,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\cEwEStatusBar.resx">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VisualStyleEditors\ucEditImage.resx">
       <DependentUpon>ucEditImage.vb</DependentUpon>
@@ -1548,6 +1549,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEPluginExamples\EwEPluginExamples.vbproj">
+      <Project>{4B074F06-BF94-438F-8D3C-F2A4D85346BB}</Project>
+      <Name>EwEPluginExamples</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>

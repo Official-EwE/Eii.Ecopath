@@ -53,8 +53,8 @@ Public Class dlgEditBasemap
 
 #Region " Events "
 
-    Private Sub dlgEditBasemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
         Me.m_fpInCol = New cEwEFormatProvider(Me.nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
         Me.m_fpInCol.Value = Me.m_basemap.InCol
@@ -75,14 +75,14 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Private Sub dlgEditBasemap_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-        Handles Me.FormClosing
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpCellLength.Release()
         Me.m_fpInCol.Release()
         Me.m_fpInRow.Release()
         Me.m_fpLat.Release()
         Me.m_fpLon.Release()
+        MyBase.OnFormClosed(e)
 
     End Sub
 

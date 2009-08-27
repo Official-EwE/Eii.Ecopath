@@ -115,7 +115,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             ' Show/Hide Groups
@@ -128,7 +128,7 @@ Namespace Ecosim
             Me.m_coreStateMonitor = Nothing
             Me.CoreComponents = Nothing
 
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)

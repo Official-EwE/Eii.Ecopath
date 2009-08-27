@@ -138,13 +138,15 @@ Namespace Ecosim
         End Sub
 
 
-        Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing
 
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            MyBase.OnFormClosed(e)
 
         End Sub
 

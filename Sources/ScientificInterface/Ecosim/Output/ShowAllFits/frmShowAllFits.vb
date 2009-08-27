@@ -126,10 +126,14 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ShowAllFits_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            Me.SaveFormPos()
+            MyBase.OnFormClosing(e)
+        End Sub
 
-            SaveFormPos()
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
+            MyBase.OnFormClosed(e)
         End Sub
 
 #Region " Rendering "

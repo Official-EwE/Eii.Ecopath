@@ -90,8 +90,7 @@ Namespace Ecospace
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
-        Private Sub EcospaceParameters_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.CoreComponents = Nothing
             Me.m_bpUseIBM = Nothing
@@ -114,6 +113,8 @@ Namespace Ecospace
             Me.m_fpMaxIterations.Release()
             Me.m_fpPredictEffort.Release()
             Me.m_fpUseExact.Release()
+
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub InitContent()

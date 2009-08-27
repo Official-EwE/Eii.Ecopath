@@ -126,7 +126,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             cCommandHandler.GetInstance().Remove(Me.m_cmdRunMonteCarlo)
             cCommandHandler.GetInstance().Remove(Me.m_cmdStopMonteCarlo)
@@ -149,6 +149,8 @@ Namespace Ecosim
             Me.m_fpTrial.Release()
 
             Me.CoreComponents = Nothing
+
+            MyBase.OnFormClosed(e)
 
         End Sub
 

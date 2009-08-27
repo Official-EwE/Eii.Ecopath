@@ -301,7 +301,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdDisplayGroups As cCommand = cmdh.GetCommand("DisplayGroups")
@@ -318,6 +318,7 @@ Namespace Ecospace
             Me.m_bpConTracing = Nothing
 
             Me.CoreComponents = Nothing
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub RunEcospace_ResizeEnd(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ResizeEnd

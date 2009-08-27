@@ -111,10 +111,10 @@ Namespace Ecopath.Controls.FlowDiagram
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
             Me.CoreComponents = Nothing
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
         End Sub
 
 #End Region ' Overrides

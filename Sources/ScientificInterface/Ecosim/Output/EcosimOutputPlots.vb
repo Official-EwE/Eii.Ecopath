@@ -163,12 +163,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-
-            ' To prevent multiple calls. How the hell...?
-            If Me.CoreComponents Is Nothing Then
-                Return
-            End If
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.CoreComponents = Nothing
 
@@ -179,6 +174,7 @@ Namespace Ecosim
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
 
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
@@ -320,6 +316,9 @@ Namespace Ecosim
 
             'Set the master pane title
             Me.m_zgh.Configure(item.Group.Name)
+
+            ' Do not render when sim has not ran
+            If Not Me.m_core.StateMonitor.HasEcosimRan Then Return
 
             For i As Integer = 1 To m_core.nEcosimTimeSteps
                 ' Time

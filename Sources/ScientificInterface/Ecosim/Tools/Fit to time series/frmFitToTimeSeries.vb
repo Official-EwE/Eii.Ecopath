@@ -191,7 +191,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
                                         AddressOf OnRunStopped, AddressOf Me.OnModelRun)
@@ -207,7 +207,7 @@ Namespace Ecosim
                 Me.m_cmdTSWeights = Nothing
             End If
 
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
 
         End Sub
 

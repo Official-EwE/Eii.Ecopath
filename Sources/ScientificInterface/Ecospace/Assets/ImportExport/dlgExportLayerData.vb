@@ -261,7 +261,7 @@ Public Class gridExportMappings
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             For Each layer As cLayer In Me.m_lLayers
                 If layer IsNot Nothing Then
@@ -270,7 +270,7 @@ Public Class gridExportMappings
             Next
             Me.m_lLayers = Nothing
 
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub OnBrowseTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _

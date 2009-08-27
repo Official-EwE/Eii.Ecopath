@@ -110,8 +110,9 @@ Namespace Ecospace
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
         End Sub
 
-        Private Sub frmEcospaceResults_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.CoreComponents = Nothing
+            MyBase.OnFormClosed(e)
         End Sub
 
         ''' <summary> Repopulates the variables on demand. </summary>

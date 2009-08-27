@@ -97,8 +97,8 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
@@ -109,9 +109,9 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.CoreComponents = Nothing
+            MyBase.OnFormClosed(e)
         End Sub
 
         ''' -------------------------------------------------------------------
