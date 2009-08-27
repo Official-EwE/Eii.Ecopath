@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: dlgApplyShape.vb,v $
-' Revision 1.2  2009/04/07 13:58:15  jeroens
-' Fixed bug 609
-'
-' Revision 1.1  2008/12/15 19:54:04  jeroens
-' *** empty log message ***
-'
-' Revision 1.2  2008/12/15 16:02:44  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:39  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -413,19 +396,24 @@ Namespace Ecosim
         Private Function GetMultiplierFromType(ByVal type As eForcingFunctionApplication) As String
 
             Select Case type
-                Case eForcingFunctionApplication.SearchRate
-                    Return My.Resources.SHAPE_MULTIPLIER_1
+                Case eForcingFunctionApplication.SearchRate, _
+                     eForcingFunctionApplication.ProductionRate
+                    Select Case Me.m_targetType
+                        Case eApplyTargetTypes.Consumer
+                            Return My.Resources.SHAPE_MULTIPLIER_1
+                        Case eApplyTargetTypes.PrimaryProducer
+                            Return My.Resources.SHAPE_MULTIPLIER_5
+                    End Select
                 Case eForcingFunctionApplication.Vulnerability
                     Return My.Resources.SHAPE_MULTIPLIER_2
                 Case eForcingFunctionApplication.ArenaArea
                     Return My.Resources.SHAPE_MULTIPLIER_3
                 Case eForcingFunctionApplication.VulAndArea
                     Return My.Resources.SHAPE_MULTIPLIER_4
-                Case eForcingFunctionApplication.ProductionRate
-                    Return My.Resources.SHAPE_MULTIPLIER_5
                 Case Else
-                    Return String.Empty
+                    Debug.Assert(False)
             End Select
+            Return String.Empty
 
         End Function
 
