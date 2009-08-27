@@ -40,8 +40,9 @@ Public Class WebBrowserDC
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        ' ToDO_JS: Localize this
-        Me.Text = "Start"
+        ' Setting the label
+        Me.Text = My.Resources.GENERIC_LABEL_HOME
+        Me.TabText = My.Resources.GENERIC_LABEL_HOME
         ' Navigate to default URL
         Me.URL = ""
 
