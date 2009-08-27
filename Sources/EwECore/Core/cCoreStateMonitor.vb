@@ -69,6 +69,10 @@ Imports System.ComponentModel
 ''' ---------------------------------------------------------------------------
 Public Class cCoreStateMonitor
 
+    'ToDo 27-Aug-09 cCoreStateMonitor events. Broadcasting of ALL events needs to be protected from having the handler removed while the event is being sent.
+    'This is done in a hack way (via a temp handler array) in CoreExecutionStateEvent this should change to not managing the handlers ourselves 
+    'or using a blocking object during broadcasting, adding and removal of events
+
 #Region " Private members "
 
     ''' <summary>Reference to the monitored core.</summary>
@@ -149,15 +153,23 @@ Public Class cCoreStateMonitor
         End RemoveHandler
 
         RaiseEvent(ByVal statemonitor As cCoreStateMonitor)
-            For Each h As CoreExecutionStateDelegate In Me.m_executionStateHandlers
+            '27-Aug-09 Make a temp array of handlers and use that to broadcast the events
+            'handlers can be removed in response to an event this violates the m_executionStateHandlers collection
+            'A better way to handle this would be to block the adding and removing of handlers while events are being broadcast (Semaphore)
+            'this would stop any Exceptions from being thrown
+            Dim handlers() As CoreExecutionStateDelegate = Me.m_executionStateHandlers.ToArray()
+            For Each h As CoreExecutionStateDelegate In handlers
                 Try
-                    If m_sync IsNot Nothing Then
-                        Me.m_sync.Invoke(h, New Object() {Me})
-                    Else
-                        h.Invoke(Me)
+
+                    If h IsNot Nothing Then
+                        If m_sync IsNot Nothing Then
+                            Me.m_sync.Invoke(h, New Object() {Me})
+                        Else
+                            h.Invoke(Me)
+                        End If
                     End If
                 Catch ex As Exception
-
+                    System.Console.WriteLine(Me.ToString & ".CoreExecutionStateEvent() Exception: " & ex.Message)
                 End Try
             Next
         End RaiseEvent
