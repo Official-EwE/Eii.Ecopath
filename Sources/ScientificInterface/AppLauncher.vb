@@ -1201,7 +1201,6 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Private Function ConvertToLatestVersion(ByRef strFileName As String) As Boolean
 
-        Dim pm As cPluginManager = Me.m_core.PluginManager
         Dim sVersion As Single = 0.0!
         Dim db As cEwEDatabase = Nothing
         Dim bSucces As Boolean = True
@@ -1232,42 +1231,49 @@ Public Class AppLauncher
                     bSucces = False
 
                 Case cEwE6DatabaseImporter.eSourceDatabaseVersionTypes.EwE6
-                    ' Check if updates available
-                    If pm.HasDatabaseUpdates(db, 6.0) Then
 
-                        Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-                            Case MsgBoxResult.Yes
-                                Try
-                                    Dim strDir As String = Path.GetDirectoryName(strFileName)
-                                    Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
-                                    Dim strExt As String = Path.GetExtension(strFileName)
+                    If Me.m_core.PluginManager IsNot Nothing Then
 
-                                    strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
+                        ' Check if updates available
+                        If Me.m_core.PluginManager.HasDatabaseUpdates(db, 6.0) Then
 
-                                    ' Create backup copy
-                                    File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
-                                Catch ex As Exception
-                                    Me.m_core.Messages.SendMessage( _
-                                        New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
-                                                     eMessageType.DataImport, _
-                                                     eCoreComponentType.Core, _
-                                                     eMessageImportance.Warning))
+                            Select Case MsgBox(My.Resources.PROMPT_IMPORT_UPDATEBACKUP, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+                                Case MsgBoxResult.Yes
+                                    Try
+                                        Dim strDir As String = Path.GetDirectoryName(strFileName)
+                                        Dim strFile As String = Path.GetFileNameWithoutExtension(strFileName)
+                                        Dim strExt As String = Path.GetExtension(strFileName)
+
+                                        strFile = FileUtilities.ToValidFileName(String.Format("{0}_backup_{1}", strFile, Date.Now), False)
+
+                                        ' Create backup copy
+                                        File.Copy(strFileName, Path.Combine(strDir, strFile + strExt), True)
+                                    Catch ex As Exception
+                                        Me.m_core.Messages.SendMessage( _
+                                            New cMessage(String.Format(My.Resources.PROMPT_BACKUPFAILED, strFileName, ex.Message), _
+                                                         eMessageType.DataImport, _
+                                                         eCoreComponentType.Core, _
+                                                         eMessageImportance.Warning))
+                                        Return False
+                                    End Try
+                                    ' Fall through
+
+                                Case MsgBoxResult.No
+                                    ' Update existing copy
+                                    ' Fall through 
+
+                                Case MsgBoxResult.Cancel
+                                    ' Leave DB alone, don't open
                                     Return False
-                                End Try
-                                ' Fall through
 
-                            Case MsgBoxResult.No
-                                ' Update existing copy
-                                ' Fall through 
+                            End Select
 
-                            Case MsgBoxResult.Cancel
-                                ' Leave DB alone, don't open
-                                Return False
+                            ' Run all available updates on the new EwE6 database
+                            Dim dbUpd As New cDatabaseUpdater(6.0)
+                            dbUpd.UpdateDatabase(db, Me.m_core.PluginManager)
+                            dbUpd = Nothing
 
-                        End Select
-                        ' Update DB
-                        pm.UpdateDatabase(db, 6.0)
-
+                        End If
                     End If
                     bSucces = True
 
