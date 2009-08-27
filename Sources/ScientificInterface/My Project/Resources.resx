@@ -2387,4 +2387,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
     <value>Values|Font to render values</value>
   </data>
+  <data name="GENERIC_LABEL_HOME" xml:space="preserve">
+    <value>Home</value>
+    <comment>owser start page.</comment>
+  </data>
 </root>
