@@ -2081,7 +2081,10 @@ Imports EwEUtils.Drawing
             End While
 
             ' The core will reload now
-            Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
+            Try
+                Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
+            Catch ex As Exception
+            End Try
 
         End If
 
