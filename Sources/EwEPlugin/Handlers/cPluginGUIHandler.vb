@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cPluginGUIHandler.vb,v $
-' Revision 1.5  2009/05/21 20:07:30  jeroens
-' Reverted
-'
-' Revision 1.4  2009/05/19 13:38:54  jeroens
-' No longer listens to 'live' plugin assembly state changes; this will require a restart
-'
-' Revision 1.3  2009/05/11 01:50:49  jeroens
-' Renamed command classes
-'
-' Revision 1.2  2009/04/02 19:00:44  jeroens
-' Minor changes
-'
-' Revision 1.1  2008/09/26 07:31:04  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports System.Windows.Forms

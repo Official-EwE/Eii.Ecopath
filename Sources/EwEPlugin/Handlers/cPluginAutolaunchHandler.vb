@@ -1,20 +1,3 @@
-'==============================================================================
-'
-' $Log: cPluginAutolaunchHandler.vb,v $
-' Revision 1.4  2009/04/01 12:50:07  jeroens
-' Fixed incomplete port, woops
-'
-' Revision 1.3  2009/03/31 14:53:04  jeroens
-' Updated to GetPlugins interface changes
-'
-' Revision 1.2  2008/11/17 13:05:59  jeroens
-' Fixed auto-launch behaviour
-'
-' Revision 1.1  2008/09/05 16:13:02  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 ''' ===========================================================================

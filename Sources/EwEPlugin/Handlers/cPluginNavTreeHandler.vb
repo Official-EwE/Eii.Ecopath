@@ -1,28 +1,4 @@
-'==============================================================================
-'
-' $Log: cPluginNavTreeHandler.vb,v $
-' Revision 1.6  2009/04/02 20:52:01  jeroens
-' No comment. Really
-'
-' Revision 1.5  2009/04/02 18:54:46  jeroens
-' Minor changes
-'
-' Revision 1.4  2009/02/27 08:10:24  sherman
-' Changed Plugin Icon
-'
-' Revision 1.3  2008/12/03 02:33:09  jeroens
-' Added crash test
-'
-' Revision 1.2  2008/11/02 00:53:42  jeroens
-' Fixed missing selected item index
-'
-' Revision 1.1  2008/09/26 07:31:04  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
-
 Imports System.Windows.Forms
 
 ''' -----------------------------------------------------------------------

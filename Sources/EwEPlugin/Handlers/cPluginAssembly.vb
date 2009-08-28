@@ -1,41 +1,4 @@
-'==============================================================================
-'
-' $Log: cPluginAssembly.vb,v $
-' Revision 1.10  2009/05/19 13:39:49  jeroens
-' :p
-'
-' Revision 1.9  2009/04/02 19:01:13  jeroens
-' Assemblies optionally return disalbed plug-ins
-'
-' Revision 1.8  2009/04/01 17:33:33  jeroens
-' Separated Enabled state and Incompatibility
-'
-' Revision 1.7  2009/03/31 16:59:17  jeroens
-' Only return plug-ins from Enabled assemblies
-'
-' Revision 1.6  2009/03/31 16:22:34  jeroens
-' Added Assembly back in :p
-'
-' Revision 1.5  2009/03/31 14:52:09  jeroens
-' Localized
-'
-' Revision 1.4  2008/12/07 20:44:23  jeroens
-' Add IsCompatible
-'
-' Revision 1.3  2008/12/03 02:34:30  jeroens
-' Added levels of compatibility
-' Added 'IsCompatibleToRun'
-'
-' Revision 1.2  2008/11/28 02:43:25  jeroens
-' Added plugin compatibility checks to prevent the system from dying
-'
-' Revision 1.1  2008/09/26 07:31:03  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
-
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
