@@ -3257,6 +3257,9 @@ Public Class AppLauncher
         End Select
         If e.Alt And e.Control And e.Shift Then
             Select Case e.KeyCode
+                Case Keys.Oemtilde
+                    m_StartPage.URL = "http://farm1.static.flickr.com/160/374820104_5ec655655c_b.jpg"
+                    m_StartPage.Show(m_DockPanel, DockState.Document)
                 Case Keys.D1
                     m_StartPage.URL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
                     m_StartPage.Show(m_DockPanel, DockState.Document)
