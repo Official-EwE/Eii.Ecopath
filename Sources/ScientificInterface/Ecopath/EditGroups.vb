@@ -1,33 +1,3 @@
-'==============================================================================
-'
-' $Log: EditGroups.vb,v $
-' Revision 1.2  2008/12/15 15:52:27  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:29  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.19  2008/07/30 18:35:44  jeroens
-' Grid directly nested, no longer via a %@!$&*! panel
-'
-' Revision 1.18  2008/05/05 08:32:46  jeroens
-' Default -> Alternating
-'
-' Revision 1.17  2007/12/21 03:21:29  jeroens
-' * Restyled, added custom colour button
-'
-' Revision 1.16  2007/10/30 22:52:44  jeroens
-' + Group colors now managed here
-'
-' Revision 1.15  2007/07/13 17:24:33  jeroens
-' - Removed Forcing namespace
-'
-' Revision 1.14  2007/05/02 13:44:25  jeroens
-' - Removed 'Validate' button
-' + Added comments
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On

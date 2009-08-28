@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: EditGroupsStanzaEwEGrid.vb,v $
-' Revision 1.8  2009/06/02 14:50:43  jeroens
-' Can paste group names (fixes issue 627)
-'
-' Revision 1.7  2009/05/28 12:37:25  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/02/27 07:55:14  jeroens
-' Changed vbK placement
-'
-' Revision 1.5  2008/10/29 19:04:45  jeroens
-' Cleaned up a tiny bit
-'
-' Revision 1.4  2008/10/29 15:45:50  jeroens
-' Fixed issue 562
-'
-' Revision 1.3  2008/10/08 22:12:45  jeroens
-' Updated to EwEGrid interface
-'
-' Revision 1.2  2008/09/29 23:02:19  jeroens
-' Fixed bug 544
-'
-' Revision 1.1  2008/09/26 07:31:29  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore
@@ -2084,6 +2055,7 @@ Imports EwEUtils.Drawing
             Try
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
             Catch ex As Exception
+                ' this is to catch a core assertion when SumB=0
             End Try
 
         End If

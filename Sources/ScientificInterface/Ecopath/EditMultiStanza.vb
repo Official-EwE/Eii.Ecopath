@@ -78,7 +78,7 @@ Namespace Ecopath
                     lItems.Add(mgr(iIndex))
                 Next
             Else
-                lItems.Add(My.Resources.ECOSIM_PROMPT_SCENARIO_REQUIRED)
+                lItems.Add(My.Resources.PROMPT_ECOSIM_REQUIRED)
             End If
             Me.m_fpFF = New cEwEFormatProvider(Me.m_cmbFF, GetType(Integer), lItems.ToArray)
             If bEcosimLoaded Then

@@ -1841,8 +1841,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_YES" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="ECOSIM_PROMPT_SCENARIO_REQUIRED" xml:space="preserve">
-    <value>Ecosim scenario needed</value>
+  <data name="PROMPT_ECOSIM_REQUIRED" xml:space="preserve">
+    <value>Ecosim required</value>
   </data>
   <data name="HEADER_TOTALLENGTH" xml:space="preserve">
     <value>Total length</value>
