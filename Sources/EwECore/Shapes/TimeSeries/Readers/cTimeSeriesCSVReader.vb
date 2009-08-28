@@ -19,6 +19,7 @@ Public Class cTimeSeriesCSVReader
 
     ''' <summary>Path to the CSV file that was read.</summary>
     Private m_strFileName As String = ""
+    Private m_stream As FileStream = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -65,7 +66,11 @@ Public Class cTimeSeriesCSVReader
         If String.IsNullOrEmpty(Me.m_strFileName) Then Return Nothing
         If Not File.Exists(Me.m_strFileName) Then Return Nothing
 
-        Return New StreamReader(Me.m_strFileName)
+        Me.m_stream = New FileStream(Me.m_strFileName, _
+                                     FileMode.Open, _
+                                     FileAccess.Read, _
+                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
+        Return New StreamReader(Me.m_stream)
 
     End Function
 
@@ -78,7 +83,13 @@ Public Class cTimeSeriesCSVReader
     ''' Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ReleaseReader(ByVal reader As TextReader) As Boolean
-        reader.Close()
+        Try
+            reader.Close()
+            Me.m_stream.Close()
+        Catch ex As Exception
+            ' Yippee
+        End Try
+        Return True
     End Function
 
     ''' -----------------------------------------------------------------------

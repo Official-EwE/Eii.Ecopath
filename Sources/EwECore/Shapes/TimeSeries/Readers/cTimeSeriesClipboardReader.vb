@@ -50,6 +50,7 @@ Public Class cTimeSeriesClipboardReader
     ''' -----------------------------------------------------------------------
     Public Overrides Function ReleaseReader(ByVal reader As TextReader) As Boolean
         reader.Close()
+        Return True
     End Function
 
     ''' -----------------------------------------------------------------------
