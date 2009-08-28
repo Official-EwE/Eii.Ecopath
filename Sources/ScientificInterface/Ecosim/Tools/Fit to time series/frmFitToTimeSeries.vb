@@ -64,7 +64,7 @@ Namespace Ecosim
 
 #Region " Private variables "
 
-        Private m_core As EwECore.cCore = Nothing
+        Private m_core As EwECore.cCore = EwECore.cCore.GetInstance
 
         Private m_F2TSManager As cF2TSManager = Nothing
         Private m_shapeHandler As AppliedFFGUIHandler = Nothing
@@ -147,8 +147,6 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             MyBase.OnLoad(e)
-
-            Me.m_core = EwECore.cCore.GetInstance
 
             Me.m_F2TSManager = Me.m_core.EcosimFitToTimeSeries
             Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
@@ -396,6 +394,8 @@ Namespace Ecosim
         Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
 
+            Dim iMax As Integer = Me.m_core.nEcosimYears
+
             ' Initialize Component will cause this event to be triggered when the form is
             ' not up and running yet. Here's a sanity check:
             If (Me.m_shapeHandler Is Nothing) Then Return
@@ -410,7 +410,9 @@ Namespace Ecosim
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape
 
-                Me.m_nudLastYear.Maximum = CInt(shape.XMax / cCore.N_MONTHS)
+                If shape IsNot Nothing Then iMax = CInt(shape.XMax / cCore.N_MONTHS)
+
+                Me.m_nudLastYear.Maximum = iMax
                 Me.m_nudFirstYear.Value = 0
                 Me.m_nudLastYear.Value = Me.m_nudLastYear.Maximum
 
