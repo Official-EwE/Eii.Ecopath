@@ -3201,7 +3201,7 @@ Public Property PluginManager() As cPluginManager
                 ' Debug.Assert(SumB > 0, "CalculateStanzaParameters SumB = 0")
                 If SumB <= 0 Then
                     Dim msg As String = "Biomass for one of your stanza groups < 0, Please check"
-                    Me.m_publisher.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                    Me.m_publisher.SendMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.Stanza))
                     Return False
                 End If
 
