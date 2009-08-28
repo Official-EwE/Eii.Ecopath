@@ -2570,7 +2570,8 @@ Public Class cDBDataSource
         bSucces = bSucces And Me.AddCatchDataForFleet(iDBID)
         ' Create ecosim fleet forcing bits
 
-        ' Create ecospace fleet objects though
+        ' Create fleet objects though
+        bSucces = bSucces And Me.AddEcosimFleetToAllScenarios(iDBID)
         bSucces = bSucces And Me.AddEcospaceFleetToAllScenarios(iDBID)
 
         Return bSucces
@@ -2885,11 +2886,11 @@ Public Class cDBDataSource
     ''' <param name="strDescription">Description to assign to new scenario.</param>
     ''' <param name="strAuthor">Author to assign to the new scenario.</param>
     ''' <param name="strContact">Contact info to assign to the new scenario.</param>
-    ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
+    ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
     Friend Function AppendEcosimScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, ByRef iDBID As Integer) As Boolean _
+            ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.AppendEcosimScenario
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -2904,15 +2905,15 @@ Public Class cDBDataSource
             bSucces = Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioName='{0}')", strScenarioName))
 
             Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario")) + 1
+                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario")) + 1
             Catch ex As InvalidCastException
-                iDBID = 1
+                iScenarioID = 1
             End Try
 
             writer = Me.m_db.GetWriter("EcosimScenario")
 
             drow = writer.NewRow()
-            drow("ScenarioID") = iDBID
+            drow("ScenarioID") = iScenarioID
             drow("ScenarioName") = strScenarioName
             drow("Description") = strDescription
             drow("Author") = strAuthor
@@ -2924,7 +2925,14 @@ Public Class cDBDataSource
 
             ' Create ecosim groups for the new scenario
             For i As Integer = 1 To ecopathDS.GroupDBID.Length - 1
-                bSucces = bSucces And Me.CreateRepairEcosimGroup(ecopathDS.GroupDBID(i), iDBID)
+                bSucces = bSucces And Me.CreateRepairEcosimGroup(ecopathDS.GroupDBID(i), iScenarioID)
+            Next
+            ' Create ecosim fleets for the new scenario
+            For i As Integer = 1 To ecopathDS.FleetDBID.Length - 1
+                ' Sanity check to skip the 'all' fleet
+                If ecopathDS.FleetDBID(i) > 0 Then
+                    bSucces = bSucces And Me.CreateRepairEcosimFleet(ecopathDS.FleetDBID(i), iScenarioID)
+                End If
             Next
 
             ' Reload scenario definitions
@@ -3123,6 +3131,86 @@ Public Class cDBDataSource
                 bSucces = False
                 ' Log failure
                 Me.LogMessage(String.Format("Failed to add Ecosim group {0}", iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+            End Try
+        End If
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create or fixes a fleet in each ecosim scenario
+    ''' </summary>
+    ''' <param name="iEcopathFleetID">Ecopath fleet DBID</param>
+    ''' -----------------------------------------------------------------------
+    Private Function AddEcosimFleetToAllScenarios(ByVal iEcopathFleetID As Integer) As Boolean
+
+        Dim reader As IDataReader = Nothing
+        Dim bSucces As Boolean = True
+
+        Try
+            reader = Me.m_db.GetReader(String.Format("SELECT ScenarioID FROM EcoSimScenario"))
+            While reader.Read()
+                bSucces = bSucces And CreateRepairEcosimFleet(iEcopathFleetID, CInt(reader("ScenarioID")))
+            End While
+            Me.m_db.ReleaseReader(reader)
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create or repair an ecosim group in a given scenario.
+    ''' </summary>
+    ''' <param name="iEcopathFleetID">Ecopath Group DBID.</param>
+    ''' <param name="iScenarioID">Scenario ID to add the group to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Function CreateRepairEcosimFleet(ByVal iEcopathFleetID As Integer, ByVal iScenarioID As Integer) As Boolean
+
+        Dim readerFleet As IDataReader = Nothing
+        Dim writerFleet As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim bFleetFound As Boolean = False
+        Dim drow As DataRow = Nothing
+        Dim bSucces As Boolean = True
+
+        readerFleet = Me.m_db.GetReader(String.Format("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE (EcopathFleetID={0}) AND (ScenarioID={1})", iEcopathFleetID, iScenarioID))
+        If readerFleet IsNot Nothing Then
+            Try
+                readerFleet.Read()
+
+                ' Try to find existing Sim fleet ID
+                Dim iDummy As Integer = CInt(readerFleet(0))
+                ' It this did not fail we have found a fleet
+                bFleetFound = True
+            Catch ex As InvalidOperationException
+                bFleetFound = False
+            End Try
+            Me.m_db.ReleaseReader(readerFleet)
+        End If
+
+        ' *** Next: Critical bits, create missing entries in DB ***
+
+        If Not bFleetFound Then
+            Try
+                writerFleet = Me.m_db.GetWriter("EcoSimScenarioFleet")
+                drow = writerFleet.NewRow()
+                drow("ScenarioID") = iScenarioID
+                drow("EcopathFleetID") = iEcopathFleetID
+                writerFleet.AddRow(drow)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writerFleet, True)
+
+                ' Log repair state
+                Me.LogMessage(String.Format("Added missing Ecosim fleet {0}", iEcopathFleetID))
+
+            Catch ex As Exception
+                bSucces = False
+                ' Log failure
+                Me.LogMessage(String.Format("Failed to add Ecosim fleet {0}", iEcopathFleetID), eMessageType.NotSet, eMessageImportance.Critical)
             End Try
         End If
 
