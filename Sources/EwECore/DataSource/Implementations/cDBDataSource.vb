@@ -10,6 +10,7 @@ Imports System.Text
 Imports EwEPlugin
 Imports EwEUtils.Database
 Imports EwEUtils.Core
+Imports System.Globalization
 
 #End Region ' Imports
 
@@ -32,6 +33,7 @@ Public Class cDBDataSource
     ''' <summary>The <see cref="cCore">core</see> connected to this datasource.</summary>
     Private m_core As cCore = Nothing
     Private m_strName As String = ""
+    Private m_ni As NumberFormatInfo = Nothing
 
 #Region " Generic "
 
@@ -41,6 +43,11 @@ Public Class cDBDataSource
         Debug.Assert(db IsNot Nothing)
         ' Store ref to DB
         Me.m_db = db
+
+        ' Culturization ;)
+        Dim ci As CultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-us")
+        Me.m_ni = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+        Me.m_ni.NumberDecimalSeparator = "."
 
     End Sub
 
@@ -2253,7 +2260,7 @@ Public Class cDBDataSource
                 ecopathDS.PcapBase(iFleet) = CSng(reader("PCapBase"))
                 ecopathDS.CapDepreciate(iFleet) = CSng(reader("CapDepreciate"))
                 ecopathDS.CapBaseGrowth(iFleet) = CSng(reader("CapBaseGrowth"))
-                'ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
+                'ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(reader("PoolColor"), Me.m_ni), Globalization.NumberStyles.HexNumber)
                 iFleet += 1
 
             End While
@@ -3664,7 +3671,7 @@ Public Class cDBDataSource
                 If String.IsNullOrEmpty(astrZScale(ipt - 1)) Then
                     ecosimDS.zscale(ipt, iForcingShape) = 0
                 Else
-                    ecosimDS.zscale(ipt, iForcingShape) = CSng(astrZScale(ipt - 1))
+                    ecosimDS.zscale(ipt, iForcingShape) = Single.Parse(astrZScale(ipt - 1), Me.m_ni)
                 End If
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
@@ -3716,7 +3723,7 @@ Public Class cDBDataSource
                 If String.IsNullOrEmpty(astrZScale(ipt - 1)) Then
                     ecosimDS.zscale(ipt, iForcingShape) = 0
                 Else
-                    ecosimDS.zscale(ipt, iForcingShape) = CSng(astrZScale(ipt - 1))
+                    ecosimDS.zscale(ipt, iForcingShape) = Single.Parse(astrZScale(ipt - 1), Me.m_ni)
                 End If
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
@@ -3768,7 +3775,7 @@ Public Class cDBDataSource
                 If String.IsNullOrEmpty(astrZScale(ipt - 1)) Then
                     ecosimDS.Medpoints(ipt, iMediationShape) = 0
                 Else
-                    ecosimDS.Medpoints(ipt, iMediationShape) = CSng(astrZScale(ipt - 1))
+                    ecosimDS.Medpoints(ipt, iMediationShape) = Single.Parse(astrZScale(ipt - 1), Me.m_ni)
                 End If
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.NMedPoints, astrZScale.Length) + 1 To ecosimDS.NMedPoints
@@ -4009,7 +4016,7 @@ Public Class cDBDataSource
                 If String.IsNullOrEmpty(astrMemoBits(j - 1)) Then
                     ecosimDS.FishRateGear(iFishingRateShape, j) = 1
                 Else
-                    ecosimDS.FishRateGear(iFishingRateShape, j) = Single.Parse(astrMemoBits(j - 1))
+                    ecosimDS.FishRateGear(iFishingRateShape, j) = Single.Parse(astrMemoBits(j - 1), Me.m_ni)
                 End If
             Next
             ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
@@ -4054,7 +4061,7 @@ Public Class cDBDataSource
                     If String.IsNullOrEmpty(astrMemoBits(j - 1)) Then
                         ecosimDS.FishRateNo(iForcingShape, j) = 0
                     Else
-                        ecosimDS.FishRateNo(iForcingShape, j) = Single.Parse(astrMemoBits(j - 1))
+                        ecosimDS.FishRateNo(iForcingShape, j) = Single.Parse(astrMemoBits(j - 1), Me.m_ni)
                     End If
                 Next
             End If
@@ -4253,7 +4260,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.ForcePoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(ecosimDS.zscale(ipt, iShape))
+                sbZScale.Append(Convert.ToString(ecosimDS.zscale(ipt, iShape), Me.m_ni))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4309,7 +4316,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.ForcePoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(ecosimDS.zscale(ipt, iShape))
+                sbZScale.Append(Convert.ToString(ecosimDS.zscale(ipt, iShape), Me.m_ni))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4362,7 +4369,7 @@ Public Class cDBDataSource
             ' Assemble Zscale
             For ipt As Integer = 1 To ecosimDS.NMedPoints
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(ecosimDS.Medpoints(ipt, iShape))
+                sbZScale.Append(Convert.ToString(ecosimDS.Medpoints(ipt, iShape), Me.m_ni))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4609,7 +4616,7 @@ Public Class cDBDataSource
             drow("Title") = ecosimDS.FishRateGearTitle(iShape)
             For ipt As Integer = 1 To ecosimDS.NTimes
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(ecosimDS.FishRateGear(iShape, ipt))
+                sbZScale.Append(Convert.ToString(ecosimDS.FishRateGear(iShape, ipt), Me.m_ni))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4656,7 +4663,7 @@ Public Class cDBDataSource
             drow("Title") = ecosimDS.FishRateNoTitle(iShape)
             For ipt As Integer = 1 To ecosimDS.NTimes
                 If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(ecosimDS.FishRateNo(iShape, ipt))
+                sbZScale.Append(Convert.ToString(ecosimDS.FishRateNo(iShape, ipt), Me.m_ni))
             Next
             drow("Zscale") = sbZScale.ToString()
 
@@ -4787,7 +4794,7 @@ Public Class cDBDataSource
                 ' Assemble Zscale
                 For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, asData.Length - 1)
                     If (ipt > 1) Then sbZScale.Append(" ")
-                    sbZScale.Append(asData(ipt))
+                    sbZScale.Append(Convert.ToString(asData(ipt), Me.m_ni))
                 Next
                 drow("zScale") = sbZScale.ToString()
             End If
@@ -4991,7 +4998,7 @@ Public Class cDBDataSource
             For iYear As Integer = 0 To ts.XMax - 1
                 For iMonth As Integer = 1 To iRepetitions
                     If sbZScale.Length > 0 Then sbZScale.Append(" ")
-                    sbZScale.Append(ts.ShapeData(iYear))
+                    sbZScale.Append(Convert.ToString(ts.ShapeData(iYear), Me.m_ni))
                 Next
             Next
 
@@ -5044,7 +5051,7 @@ Public Class cDBDataSource
         ' Concoct time series memo
         For iYear As Integer = 0 To ts.XMax - 1
             If (iYear > 0) Then sbValues.Append(" ")
-            sbValues.Append(ts.ShapeData(iYear))
+            sbValues.Append(Convert.ToString(ts.ShapeData(iYear), Me.m_ni))
         Next
         drow("TimeValues") = sbValues.ToString()
 
@@ -5420,7 +5427,7 @@ Public Class cDBDataSource
                 sbValues.Length = 0
                 For iYear As Integer = 1 To tsDS.nDatasetNumYears(tsDS.ActiveDatasetIndex)
                     If (iYear > 1) Then sbValues.Append(" ")
-                    sbValues.Append(tsDS.sValues(iYear, iTS))
+                    sbValues.Append(Convert.ToString(tsDS.sValues(iYear, iTS), Me.m_ni))
                 Next
                 drow("TimeValues") = sbValues.ToString()
 
@@ -5532,7 +5539,7 @@ Public Class cDBDataSource
             ' Concoct time series memo
             For iYear As Integer = 0 To asValues.Length - 1
                 If (iYear > 0) Then sbValues.Append(" ")
-                sbValues.Append(asValues(iYear))
+                sbValues.Append(Convert.ToString((iYear), Me.m_ni))
             Next
             drow("TimeValues") = sbValues.ToString()
             writer.AddRow(drow)
@@ -6768,12 +6775,12 @@ Public Class cDBDataSource
                 ' Monthly PrefRow
                 astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
                 For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.PrefRow(iGroup, iMonth) = Integer.Parse(astrSplit(iMonth - 1))
+                    ecospaceDS.PrefRow(iGroup, iMonth) = Integer.Parse(astrSplit(iMonth - 1), Me.m_ni)
                 Next
                 ' Monthly PrefCol
                 astrSplit = CStr(reader("PrefCol")).Split(CChar(" "))
                 For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.Prefcol(iGroup, iMonth) = Integer.Parse(astrSplit(iMonth - 1))
+                    ecospaceDS.Prefcol(iGroup, iMonth) = Integer.Parse(astrSplit(iMonth - 1), Me.m_ni)
                 Next
 
             End While
@@ -6883,14 +6890,14 @@ Public Class cDBDataSource
                 sbTemp.Length = 0
                 For iMonth As Integer = 1 To cCore.N_MONTHS
                     If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    sbTemp.Append(ecospaceDS.PrefRow(iGroup, iMonth))
+                    sbTemp.Append(Convert.ToString(ecospaceDS.PrefRow(iGroup, iMonth), Me.m_ni))
                 Next
                 drow("PrefRow") = sbTemp.ToString()
 
                 sbTemp.Length = 0
                 For iMonth As Integer = 1 To cCore.N_MONTHS
                     If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    sbTemp.Append(ecospaceDS.Prefcol(iGroup, iMonth))
+                    sbTemp.Append(Convert.ToString(ecospaceDS.Prefcol(iGroup, iMonth), Me.m_ni))
                 Next
                 drow("PrefCol") = sbTemp.ToString()
 
@@ -7101,7 +7108,7 @@ Public Class cDBDataSource
                     iCol = 1
                     While iCol < ecospaceDS.InCol And Not bDoneReading
                         Try
-                            sSail = Single.Parse(astrSail(iCell))
+                            sSail = Single.Parse(astrSail(iCell), Me.m_ni)
                         Catch ex As Exception
                             sSail = 0.0!
                         End Try
@@ -7283,7 +7290,7 @@ Public Class cDBDataSource
                     For iCol = 1 To ecospaceDS.InCol
 
                         If (iCell > 0) Then sbSail.Append(" ") : sbPort.Append(" ")
-                        sbSail.Append(String.Format("{0:f}", ecospaceDS.Sail(iFleet, iRow, iCol)))
+                        sbSail.Append(Convert.ToString(ecospaceDS.Sail(iFleet, iRow, iCol), Me.m_ni))
                         sbPort.Append(IIf(ecospaceDS.Port(iFleet, iRow, iCol) = True, 1, 0))
                         iCell += 1
 
