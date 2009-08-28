@@ -3088,9 +3088,9 @@ Public Property PluginManager() As cPluginManager
         ''' <remarks>calculates 
         ''' vBM(isp), SplitWage(isp, MaxYears),WWa(isp, MaxYears), AhatStanza(isp),RhatStanza(isp),RzeroS(isp),SplitNo(isp, Age)
         '''</remarks>
-        Public Sub CalculateStanzaParameters(ByVal isp As Integer, ByVal Stanza As Integer, ByVal BaseStanza As Integer, ByRef first() As Integer, _
+        Public Function CalculateStanzaParameters(ByVal isp As Integer, ByVal Stanza As Integer, ByVal BaseStanza As Integer, ByRef first() As Integer, _
                                                 ByRef Second() As Integer, ByRef Bio() As Single, ByRef vbK As Single, ByRef Z() As Single, _
-                                                ByRef BaseCB As Integer, ByRef cb() As Single, ByRef BaB As Single, ByRef Bat() As Single)
+                                                ByRef BaseCB As Integer, ByRef cb() As Single, ByRef BaB As Single, ByRef Bat() As Single) As Boolean
             'isp above is split species code number
             Try
                 Dim Age As Integer
@@ -3116,7 +3116,7 @@ Public Property PluginManager() As cPluginManager
                 'don't try to calculate the paramaters
                 If Bio(BaseStanza) < 0 Or cb(BaseCB) < 0 Then
                     System.Console.WriteLine("Missing parameters for Stanza Group '" & Me.m_stanza.StanzaName(isp) & "' CalculateStanzaParameters() will not be run.")
-                    Exit Sub
+                    Exit Function
                 End If
 
                 If vbK = 0 Then
@@ -3124,7 +3124,7 @@ Public Property PluginManager() As cPluginManager
                     Me.m_publisher.SendMessage( _
                             New cMessage(String.Format(My.Resources.CoreMessages.STANZA_KinVGBF_MISSING, Me.m_stanza.StanzaName(isp)), _
                             eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
-                    Exit Sub
+                    Return False
                 End If
 
                 'Calculate how many month this group is to reach 90% of rel. Winf; K is monthly
@@ -3198,10 +3198,11 @@ Public Property PluginManager() As cPluginManager
 
                 'jb was
                 ' If SumB <= 0 Then Stop : GoTo exitSub
-                Debug.Assert(SumB > 0, "CalculateStanzaParameters SumB = 0")
+                ' Debug.Assert(SumB > 0, "CalculateStanzaParameters SumB = 0")
                 If SumB <= 0 Then
-                    'ToDo_jb CalculateStanzaParameters SumB = 0 some kind of a message.
-                    Exit Sub
+                    Dim msg As String = "Biomass for one of your stanza groups < 0, Please check"
+                    Me.m_publisher.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                    Return False
                 End If
 
                 Recruits = Bio(BaseStanza) / SumB
@@ -3254,9 +3255,11 @@ Public Property PluginManager() As cPluginManager
                 cLog.Write(ex)
                 Throw New ApplicationException("CalculateStanzaParameters() iStanza=" & isp & " Error: " & ex.Message, ex)
             End Try
+
+            Return True
             'VC: Carl had something about conversion efficiency here, but can't make head/tails.
 
-        End Sub
+        End Function
 
 
 

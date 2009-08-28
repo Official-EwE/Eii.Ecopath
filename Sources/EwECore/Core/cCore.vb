@@ -8327,6 +8327,7 @@ Public Class cCore
     Friend Function CalculateStanza(ByVal stanza As cStanzaGroup) As Boolean
         Dim FirstAge() As Integer, SecondAge() As Integer
         Dim Bio() As Single, Z() As Single, cb() As Single, Bat() As Single
+        Dim bSuccess As Boolean = True
 
         Try
             Dim iStanza As Integer = stanza.Index
@@ -8378,7 +8379,7 @@ Public Class cCore
             End If
 
             'CalculateStanzaParameters() will update cStanzaDatastructure.SplitWage() and SplitNo() for this iStanza (as well a a bunch of other variables)
-            m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
+            bSuccess = m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
                                                 stanza.LeadingCB, cb, stanza.BiomassAccumulationRate, Bat)
 
             'set Age2() for the last life stage of this stanza group to the value calculated here and CalculateStanzaParameters() (why not just once in CalculateStanzaParameters?) 
@@ -8426,7 +8427,7 @@ Public Class cCore
                         eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Stanza))
 
             m_publisher.sendAllMessages()
-            Return True
+            Return bSuccess
 
         Catch ex As Exception
             cLog.Write(ex)
