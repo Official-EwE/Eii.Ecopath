@@ -865,8 +865,9 @@ Public Class AppLauncher
 
         Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
         Dim msg As cMessage = Nothing
+        Dim strExePath As String = Path.GetDirectoryName(Application.ExecutablePath)
 
-        Me.m_pluginManager.LoadPlugins(Path.GetFullPath(".\"))
+        Me.m_pluginManager.LoadPlugins(strExePath)
 
         ' Set up settings for disabling plug-ins
         If alDisabledPlugins Is Nothing Then
