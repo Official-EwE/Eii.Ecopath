@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEScenarioDlg.vb,v $
-' Revision 1.3  2008/12/15 15:54:31  jeroens
-' no message
-'
-' Revision 1.2  2008/10/04 00:08:39  jeroens
-' Fixed potential crash
-'
-' Revision 1.1  2008/09/26 07:32:22  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -386,8 +372,7 @@ Namespace Wizard
         End Sub
 
         Private Function CanCreateScenario() As Boolean
-            Dim bHasName As Boolean = Not (String.IsNullOrEmpty(Me.tbNameCreate.Text))
-            Dim bHasUniqueName As Boolean = bHasName And (Me.Scenario Is Nothing)
+            Dim bHasUniqueName As Boolean = Me.IsUniqueScenarioName(Me.tbNameCreate.Text)
             Dim bIsCorrectMode As Boolean = (Me.m_mode = eDialogModeType.CreateScenario)
             Return bHasUniqueName And bIsCorrectMode
         End Function
@@ -437,6 +422,16 @@ Namespace Wizard
                 Next
             End Set
         End Property
+
+        Private Function IsUniqueScenarioName(ByVal strName As String) As Boolean
+            Dim bYepItIs As Boolean = Not String.IsNullOrEmpty(strName)
+            For Each sc As cEwEScenario In Me.m_lScenarios
+                If String.Compare(strName, sc.Name, True) = 0 Then
+                    bYepItIs = False
+                End If
+            Next
+            Return bYepItIs
+        End Function
 
 #End Region ' Implementation
 
