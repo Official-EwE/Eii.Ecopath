@@ -54,18 +54,12 @@ Namespace Ecosim
             Me.m_core = cCore.GetInstance()
             Me.m_NTimes = m_core.nEcosimTimeSteps
 
-            Me.LoadFormPos()
             Me.SetDefaultParams()
             Me.GatherPlotData()
             Me.CalcPlotParams()
 
             AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleguideChanged
 
-        End Sub
-
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-            Me.SaveFormPos()
-            MyBase.OnFormClosing(e)
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -215,36 +209,6 @@ Namespace Ecosim
 #End Region ' Rendering
 
 #Region " Internal mucky bits "
-
-#Region " Form positioning "
-
-        ' Maybe this one-hit wonder logic should move to EwEForm?
-
-        Private Sub LoadFormPos()
-
-            'Me.StartPosition = FormStartPosition.Manual
-            'Me.Location = My.Settings.ShowAllFitsFormLocation
-            'Me.Size = My.Settings.ShowAllFitsFormSize
-            'Me.WindowState = My.Settings.ShowAllFitsFormWindowState
-
-        End Sub
-
-        Private Sub SaveFormPos()
-
-            'If Me.WindowState = FormWindowState.Normal Then
-            '    My.Settings.ShowAllFitsFormLocation = Me.Location
-            '    My.Settings.ShowAllFitsFormSize = Me.Size
-            'Else
-            '    ' If window is maximized or minimized, use RestoreBounds to remember normal positions
-            '    My.Settings.ShowAllFitsFormLocation = Me.RestoreBounds.Location
-            '    My.Settings.ShowAllFitsFormSize = Me.RestoreBounds.Size
-            'End If
-            'My.Settings.ShowAllFitsFormWindowState = Me.WindowState
-            'My.Settings.Save()
-
-        End Sub
-
-#End Region ' Form positioning
 
         ''' <summary>
         ''' Init the form with default values
