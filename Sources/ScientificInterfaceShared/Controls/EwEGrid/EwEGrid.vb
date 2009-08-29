@@ -1,56 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEGrid.vb,v $
-' Revision 1.16  2009/05/21 18:53:41  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.15  2009/05/11 01:50:54  jeroens
-' Renamed command classes
-'
-' Revision 1.14  2009/04/06 15:56:18  jeroens
-' Fixed possible mem leaks on Selection handling
-'
-' Revision 1.13  2009/04/03 14:55:47  jeroens
-' Fixed crash on invoking disposed cells
-'
-' Revision 1.12  2009/03/27 19:40:06  jeroens
-' Further cleaning up
-'
-' Revision 1.11  2009/03/26 22:45:58  jeroens
-' Added ClearData(), ClearRow() to properly detach EwE grid cells
-'
-' Revision 1.10  2009/03/23 18:44:46  jeroens
-' Localized
-'
-' Revision 1.9  2009/03/12 14:10:51  jeroens
-' Core message rerouted to the grid
-'
-' Revision 1.8  2009/01/16 18:30:39  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.7  2009/01/06 12:39:16  jeroens
-' Added comment
-'
-' Revision 1.6  2008/12/15 15:37:28  jeroens
-' no message
-'
-' Revision 1.5  2008/11/26 02:58:58  jeroens
-' Fixed issue 565 part I
-'
-' Revision 1.4  2008/10/29 15:48:08  jeroens
-' Fixed issue 562
-'
-' Revision 1.3  2008/10/08 22:13:17  jeroens
-' Simplified selection interface
-'
-' Revision 1.2  2008/10/03 21:54:22  jeroens
-' Try/Caught selection event
-'
-' Revision 1.1  2008/09/26 07:31:15  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -737,21 +684,20 @@ Namespace Controls.EwEGrid
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
             Dim strValue As String = ""
-            Dim bIgnoreSelection As Boolean = False
 
             ' Empty or near-empty range?
             If (r.IsEmpty) Then
                 ' Select remaining grid
                 r = New Range(r.Start.Row, r.Start.Column, Me.RowsCount - r.Start.Row, Me.ColumnsCount - r.Start.Column)
-                ' Ignore selected cells
-                bIgnoreSelection = True
             End If
 
-            For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, r.End.Row)
+            ' JS 29aug09: paste behaviour changed to imitate Excel. Do not only paste in selected cells,
+            '             but paste 'all the way through'
+            For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, Me.RowsCount)
                 If Not String.IsNullOrEmpty(astrLines(iRow - r.Start.Row)) Then
                     Dim astrCols() As String = astrLines(iRow - r.Start.Row).Split(CChar(vbTab))
 
-                    For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, r.End.Column)
+                    For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, Me.ColumnsCount)
                         pos = New Position(iRow, iCol)
                         cell = Me(iRow, iCol)
 
@@ -759,18 +705,15 @@ Namespace Controls.EwEGrid
                         If cell IsNot Nothing Then
                             ' Is cell enabled for editing?
                             If (cell.DataModel.EnableEdit) Then
-                                ' Is cell either part of a selection OR should selections be ignored?
-                                If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
-                                    ' #Yes: attempt to set value
-                                    strValue = astrCols(iCol - r.Start.Column)
+                                ' #Yes: attempt to set value
+                                strValue = astrCols(iCol - r.Start.Column)
 
-                                    If (String.Compare(strValue, "") = 0) And _
-                                        ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
-                                        strValue = cCore.NULL_VALUE.ToString()
-                                    End If
-
-                                    cell.SetValue(pos, strValue)
+                                If (String.Compare(strValue, "") = 0) And _
+                                    ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
+                                    strValue = cCore.NULL_VALUE.ToString()
                                 End If
+
+                                cell.SetValue(pos, strValue)
                             End If
                         End If
                     Next iCol
