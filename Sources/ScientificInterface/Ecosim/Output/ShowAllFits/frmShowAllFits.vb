@@ -1,64 +1,3 @@
-'==============================================================================
-'
-' $Log: frmShowAllFits.vb,v $
-' Revision 1.6  2009/05/28 12:37:38  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/05/21 18:53:43  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.4  2009/05/11 01:50:58  jeroens
-' Renamed command classes
-'
-' Revision 1.3  2009/01/16 18:30:43  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/11/08 23:51:54  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/09/26 07:31:51  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.7  2008/09/23 16:14:57  jeroens
-' TS 'Apply' -> 'Enable'
-'
-' Revision 1.6  2008/09/09 14:44:52  jeroens
-' File dialog interaction performed via central command, which solves Vista incompatibility issues
-'
-' Revision 1.5  2008/08/14 01:52:53  jeroens
-' Not mybase!
-'
-' Revision 1.4  2008/07/31 16:14:00  jeroens
-' Removed showallfits form setting
-'
-' Revision 1.3  2008/05/16 02:12:08  jeroens
-' Added clipping regions to ensure graphs do not overflow
-'
-' Revision 1.2  2008/05/16 01:17:16  jeroens
-' Prevented from crashing on bizarre computed values
-'
-' Revision 1.1  2008/02/12 23:06:55  jeroens
-' Revised and debugged
-'
-' Revision 1.18  2008/02/11 03:57:01  jeroens
-' No longer buffers first year, instead obtained from Ecosim
-'
-' Revision 1.17  2008/01/21 04:06:39  jeroens
-' Fixed shape max scale issues, once and for all
-'
-' Revision 1.16  2007/12/14 02:15:24  jeroens
-' * Simplified
-' * Localized
-' * Started process to reduce buffered data
-'
-' Revision 1.15  2007/09/30 20:52:49  jeroens
-' * Renamed resource(s)
-'
-' Revision 1.14  2007/09/24 17:57:05  sherman
-' Try header
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -89,7 +28,6 @@ Namespace Ecosim
         Private m_sLineWidth As Single
         Private m_sLRMargin As Single
         Private m_sTBMargin As Single
-        Private m_fontAny As Font
         Private m_iCol As Integer
         Private m_iRow As Integer
 
@@ -111,8 +49,7 @@ Namespace Ecosim
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             Me.m_core = cCore.GetInstance()
             Me.m_NTimes = m_core.nEcosimTimeSteps
@@ -150,6 +87,8 @@ Namespace Ecosim
             Dim iRow, iCol As Integer
             Dim sPosX, sPosY As Single
             Dim data() As Single
+            Dim ftTitle As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Title)
+            Dim ftScale As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Scale)
 
             For i As Integer = 0 To Me.m_lPlots.Count - 1
 
@@ -176,7 +115,8 @@ Namespace Ecosim
                     Else
                         strTitle = plot.TimeSeries.Name
                     End If
-                    g.DrawString(strTitle, Me.m_fontAny, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
+
+                    g.DrawString(strTitle, ftTitle, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
 
                     ' Test axis for extreme values
                     If (Not Single.IsNaN(plot.YMax)) Then
@@ -242,17 +182,6 @@ Namespace Ecosim
 
                 Dim stepYear As Integer = m_NTimes \ (cCore.N_MONTHS * 4)
                 Dim fs As Single
-                If m_fontAny.Size > 12 Then
-                    fs = m_fontAny.Size - 4
-                Else
-                    fs = 8.0!
-                End If
-                Dim fStyle As FontStyle = FontStyle.Regular
-                If m_fontAny.Italic Then
-                    fStyle = fStyle Or FontStyle.Italic
-                End If
-
-                Dim f As New Font(m_fontAny.FontFamily, fs, fStyle)
 
                 Dim iEnd As Integer = m_iCol - 1
                 If iPlot < m_iCol Then
@@ -261,11 +190,14 @@ Namespace Ecosim
                 For i As Integer = 0 To iEnd
                     Dim yPos As Single = ptfTL.Y + CInt(Math.Ceiling(iPlot / m_iCol)) * pzPosGraph.Height + toDeviceSize(New SizeF(0, 0.005F + m_sTBMargin), iWidth, iHeight).Height
                     For t As Integer = 0 To 3
-                        g.DrawString((Me.m_core.EcosimFirstYear + t * stepYear).ToString, f, Brushes.Black, ptfTL.X + i * pzPosGraph.Width + (t * pzPosGraph.Width / 4), yPos)
+                        g.DrawString((Me.m_core.EcosimFirstYear + t * stepYear).ToString, ftScale, Brushes.Black, ptfTL.X + i * pzPosGraph.Width + (t * pzPosGraph.Width / 4), yPos)
                     Next
 
                 Next
             End If
+
+            ftTitle.Dispose()
+            ftScale.Dispose()
 
         End Sub
 
@@ -338,8 +270,8 @@ Namespace Ecosim
             m_bListWeight = True
 
             ' Select all options
-            For i As Integer = 0 To clbOptions.Items.Count - 1
-                clbOptions.SetItemChecked(i, True)
+            For i As Integer = 0 To m_clbOptions.Items.Count - 1
+                m_clbOptions.SetItemChecked(i, True)
             Next
 
             ' Another default
@@ -401,14 +333,6 @@ Namespace Ecosim
             m_nNumPlots = RefreshTimeSeriesListbox()
             'm_NumPlots = 15
 
-            If m_fontAny Is Nothing Then
-                If m_nNumPlots < 19 Then
-                    m_fontAny = New Font("Arial", 10, FontStyle.Bold)
-                Else
-                    m_fontAny = New Font("Arial", 8.25!, FontStyle.Bold)
-                End If
-            End If
-
             ' ToDo_JS: use EwEFormatProvider
             Try
                 m_iCol = CInt(txbPlotsPerRow.Text)
@@ -447,7 +371,7 @@ Namespace Ecosim
 
             m_lShownPlotsType.Clear()
 
-            For Each i As Integer In clbOptions.CheckedIndices
+            For Each i As Integer In Me.m_clbOptions.CheckedIndices
                 If i = 0 Then
                     m_lShownPlotsType.Add(eTimeSeriesType.BiomassForcing)
                     m_lShownPlotsType.Add(eTimeSeriesType.BiomassRel)
@@ -563,20 +487,6 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Private Sub btnFModify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFModify.Click
-
-            Dim dlgFont As New FontDialog
-            dlgFont.Font = m_fontAny
-
-            If dlgFont.ShowDialog <> Windows.Forms.DialogResult.Cancel Then
-
-                m_fontAny = dlgFont.Font
-                pbPlots.Invalidate()
-
-            End If
-
-        End Sub
-
         Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
@@ -666,7 +576,8 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub clbOptions_ItemCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbOptions.ItemCheck
+        Private Sub clbOptions_ItemCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbOptions.ItemCheck
 
             If e.Index <= 2 Then
                 If e.Index = 0 Then

@@ -129,140 +129,17 @@
   <data name="SplitContainer1.Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 322</value>
-  </data>
-  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>&amp;Close</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gpbDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="clbOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="clbOptions.Items" xml:space="preserve">
-    <value>Show biomass</value>
-  </data>
-  <data name="clbOptions.Items1" xml:space="preserve">
-    <value>Show mortality</value>
-  </data>
-  <data name="clbOptions.Items2" xml:space="preserve">
-    <value>Show catch</value>
-  </data>
-  <data name="clbOptions.Items3" xml:space="preserve">
-    <value>List weight</value>
-  </data>
-  <data name="clbOptions.Items4" xml:space="preserve">
-    <value>Show year</value>
-  </data>
-  <data name="clbOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="clbOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 79</value>
-  </data>
-  <data name="clbOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;clbOptions.Name" xml:space="preserve">
-    <value>clbOptions</value>
-  </data>
-  <data name="&gt;&gt;clbOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;clbOptions.Parent" xml:space="preserve">
-    <value>gpbDisplay</value>
-  </data>
-  <data name="&gt;&gt;clbOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gpbDisplay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 3</value>
-  </data>
-  <data name="gpbDisplay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 100</value>
-  </data>
-  <data name="gpbDisplay.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gpbDisplay.Text" xml:space="preserve">
-    <value>&amp;Display options</value>
-  </data>
-  <data name="&gt;&gt;gpbDisplay.Name" xml:space="preserve">
-    <value>gpbDisplay</value>
-  </data>
-  <data name="&gt;&gt;gpbDisplay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbDisplay.Parent" xml:space="preserve">
-    <value>SplitContainer1.Panel1</value>
-  </data>
-  <data name="&gt;&gt;gpbDisplay.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gpbGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="txbLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="txbLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 68</value>
-  </data>
-  <data name="txbLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 20</value>
-  </data>
-  <data name="txbLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="txbLineWidth.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="&gt;&gt;txbLineWidth.Name" xml:space="preserve">
-    <value>txbLineWidth</value>
-  </data>
-  <data name="&gt;&gt;txbLineWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbLineWidth.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;txbLineWidth.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="txbTBMargin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="txbTBMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 145</value>
+    <value>94, 237</value>
   </data>
   <data name="txbTBMargin.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 20</value>
   </data>
   <data name="txbTBMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="txbTBMargin.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -274,16 +151,43 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txbTBMargin.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
+    <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;txbTBMargin.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="txbLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="txbLineWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>94, 160</value>
+  </data>
+  <data name="txbLineWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 20</value>
+  </data>
+  <data name="txbLineWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="txbLineWidth.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;txbLineWidth.Name" xml:space="preserve">
+    <value>txbLineWidth</value>
+  </data>
+  <data name="&gt;&gt;txbLineWidth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txbLineWidth.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;txbLineWidth.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="txbLRMargin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="txbLRMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 120</value>
+    <value>94, 211</value>
   </data>
   <data name="txbLRMargin.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 20</value>
@@ -301,22 +205,118 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txbLRMargin.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
+    <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;txbLRMargin.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="cbScaleFP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbScaleFP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 263</value>
+  </data>
+  <data name="cbScaleFP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="cbScaleFP.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="cbScaleFP.Text" xml:space="preserve">
+    <value>Scale for printer</value>
+  </data>
+  <data name="&gt;&gt;cbScaleFP.Name" xml:space="preserve">
+    <value>cbScaleFP</value>
+  </data>
+  <data name="&gt;&gt;cbScaleFP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbScaleFP.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;cbScaleFP.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_clbOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_clbOptions.Items" xml:space="preserve">
+    <value>Show biomass</value>
+  </data>
+  <data name="m_clbOptions.Items1" xml:space="preserve">
+    <value>Show mortality</value>
+  </data>
+  <data name="m_clbOptions.Items2" xml:space="preserve">
+    <value>Show catch</value>
+  </data>
+  <data name="m_clbOptions.Items3" xml:space="preserve">
+    <value>List weight</value>
+  </data>
+  <data name="m_clbOptions.Items4" xml:space="preserve">
+    <value>Show year</value>
+  </data>
+  <data name="m_clbOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-2, 18</value>
+  </data>
+  <data name="m_clbOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_clbOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 79</value>
+  </data>
+  <data name="m_clbOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_clbOptions.Name" xml:space="preserve">
+    <value>m_clbOptions</value>
+  </data>
+  <data name="&gt;&gt;m_clbOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbOptions.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_clbOptions.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTBMargin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 240</value>
+  </data>
+  <data name="lblTBMargin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="lblTBMargin.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="lblTBMargin.Text" xml:space="preserve">
+    <value>TB margin:</value>
+  </data>
+  <data name="&gt;&gt;lblTBMargin.Name" xml:space="preserve">
+    <value>lblTBMargin</value>
+  </data>
+  <data name="&gt;&gt;lblTBMargin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTBMargin.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblTBMargin.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="txbDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="txbDotSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 94</value>
+    <value>94, 186</value>
   </data>
   <data name="txbDotSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 20</value>
   </data>
   <data name="txbDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="txbDotSize.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -328,16 +328,142 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txbDotSize.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
+    <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;txbDotSize.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="lblLRMargin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblLRMargin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 215</value>
+  </data>
+  <data name="lblLRMargin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="lblLRMargin.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="lblLRMargin.Text" xml:space="preserve">
+    <value>LR margin:</value>
+  </data>
+  <data name="&gt;&gt;lblLRMargin.Name" xml:space="preserve">
+    <value>lblLRMargin</value>
+  </data>
+  <data name="&gt;&gt;lblLRMargin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblLRMargin.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblLRMargin.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_lblDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblDisplayOptions.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblDisplayOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lblDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 18</value>
+  </data>
+  <data name="m_lblDisplayOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblDisplayOptions.Text" xml:space="preserve">
+    <value>General options</value>
+  </data>
+  <data name="m_lblDisplayOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblDisplayOptions.Name" xml:space="preserve">
+    <value>m_lblDisplayOptions</value>
+  </data>
+  <data name="&gt;&gt;m_lblDisplayOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDisplayOptions.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lblDisplayOptions.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_lblGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblGeneral.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="m_lblGeneral.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 109</value>
+  </data>
+  <data name="m_lblGeneral.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 18</value>
+  </data>
+  <data name="m_lblGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="m_lblGeneral.Text" xml:space="preserve">
+    <value>General options</value>
+  </data>
+  <data name="m_lblGeneral.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblGeneral.Name" xml:space="preserve">
+    <value>m_lblGeneral</value>
+  </data>
+  <data name="&gt;&gt;m_lblGeneral.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblGeneral.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lblGeneral.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="btnClose.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-1, 783</value>
+  </data>
+  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 23</value>
+  </data>
+  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="lblRowNum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblRowNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 44</value>
+    <value>3, 135</value>
   </data>
   <data name="lblRowNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -355,157 +481,22 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblRowNum.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
+    <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;lblRowNum.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btnFModify.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="btnFModify.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 19</value>
-  </data>
-  <data name="btnFModify.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 19</value>
-  </data>
-  <data name="btnFModify.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="btnFModify.Text" xml:space="preserve">
-    <value>&amp;...</value>
-  </data>
-  <data name="&gt;&gt;btnFModify.Name" xml:space="preserve">
-    <value>btnFModify</value>
-  </data>
-  <data name="&gt;&gt;btnFModify.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnFModify.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;btnFModify.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="cbScaleFP.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="cbScaleFP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 171</value>
-  </data>
-  <data name="cbScaleFP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 17</value>
-  </data>
-  <data name="cbScaleFP.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
-  </data>
-  <data name="cbScaleFP.Text" xml:space="preserve">
-    <value>Scale for printer</value>
-  </data>
-  <data name="&gt;&gt;cbScaleFP.Name" xml:space="preserve">
-    <value>cbScaleFP</value>
-  </data>
-  <data name="&gt;&gt;cbScaleFP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbScaleFP.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;cbScaleFP.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTBMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 145</value>
-  </data>
-  <data name="lblTBMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="lblTBMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="lblTBMargin.Text" xml:space="preserve">
-    <value>TB margin:</value>
-  </data>
-  <data name="&gt;&gt;lblTBMargin.Name" xml:space="preserve">
-    <value>lblTBMargin</value>
-  </data>
-  <data name="&gt;&gt;lblTBMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTBMargin.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;lblTBMargin.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblLRMargin.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblLRMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 119</value>
-  </data>
-  <data name="lblLRMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="lblLRMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="lblLRMargin.Text" xml:space="preserve">
-    <value>LR margin:</value>
-  </data>
-  <data name="&gt;&gt;lblLRMargin.Name" xml:space="preserve">
-    <value>lblLRMargin</value>
-  </data>
-  <data name="&gt;&gt;lblLRMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblLRMargin.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;lblLRMargin.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="lblDotSize.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblDotSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 96</value>
-  </data>
-  <data name="lblDotSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="lblDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="lblDotSize.Text" xml:space="preserve">
-    <value>Dot size:</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Name" xml:space="preserve">
-    <value>lblDotSize</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;lblDotSize.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 68</value>
+    <value>3, 163</value>
   </data>
   <data name="lblLineWidth.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
   <data name="lblLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="lblLineWidth.Text" xml:space="preserve">
     <value>Line width:</value>
@@ -517,22 +508,49 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblLineWidth.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
+    <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;lblLineWidth.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="lblDotSize.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDotSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 189</value>
+  </data>
+  <data name="lblDotSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 13</value>
+  </data>
+  <data name="lblDotSize.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
+  </data>
+  <data name="lblDotSize.Text" xml:space="preserve">
+    <value>Dot size:</value>
+  </data>
+  <data name="&gt;&gt;lblDotSize.Name" xml:space="preserve">
+    <value>lblDotSize</value>
+  </data>
+  <data name="&gt;&gt;lblDotSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDotSize.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;lblDotSize.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="txbPlotsPerRow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="txbPlotsPerRow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 44</value>
+    <value>94, 132</value>
   </data>
   <data name="txbPlotsPerRow.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 20</value>
   </data>
   <data name="txbPlotsPerRow.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="txbPlotsPerRow.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -544,61 +562,10 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txbPlotsPerRow.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;txbPlotsPerRow.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="lblFont.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblFont.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 20</value>
-  </data>
-  <data name="lblFont.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
-  </data>
-  <data name="lblFont.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="lblFont.Text" xml:space="preserve">
-    <value>Font:</value>
-  </data>
-  <data name="&gt;&gt;lblFont.Name" xml:space="preserve">
-    <value>lblFont</value>
-  </data>
-  <data name="&gt;&gt;lblFont.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblFont.Parent" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;lblFont.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="gpbGeneral.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 109</value>
-  </data>
-  <data name="gpbGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 207</value>
-  </data>
-  <data name="gpbGeneral.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="gpbGeneral.Text" xml:space="preserve">
-    <value>General options</value>
-  </data>
-  <data name="&gt;&gt;gpbGeneral.Name" xml:space="preserve">
-    <value>gpbGeneral</value>
-  </data>
-  <data name="&gt;&gt;gpbGeneral.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gpbGeneral.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
   </data>
-  <data name="&gt;&gt;gpbGeneral.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;txbPlotsPerRow.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel1.Name" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -652,7 +619,7 @@
     <value>964, 781</value>
   </data>
   <data name="plPlots.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;plPlots.Name" xml:space="preserve">
     <value>plPlots</value>
@@ -835,7 +802,7 @@
     <value>964, 25</value>
   </data>
   <data name="tsCommands.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>0</value>
   </data>
   <data name="tsCommands.Text" xml:space="preserve">
     <value>tsCommands</value>
@@ -871,7 +838,7 @@
     <value>127</value>
   </data>
   <data name="SplitContainer1.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Name" xml:space="preserve">
     <value>SplitContainer1</value>
@@ -988,7 +955,7 @@
     <value>System.Windows.Forms.PrintDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ShowAllFits</value>
+    <value>frmShowAllFits</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

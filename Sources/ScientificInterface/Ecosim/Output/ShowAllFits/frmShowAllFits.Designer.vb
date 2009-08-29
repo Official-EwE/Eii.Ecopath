@@ -24,23 +24,21 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowAllFits))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.btnClose = New System.Windows.Forms.Button
-            Me.gpbDisplay = New System.Windows.Forms.GroupBox
-            Me.clbOptions = New System.Windows.Forms.CheckedListBox
-            Me.gpbGeneral = New System.Windows.Forms.GroupBox
-            Me.txbLineWidth = New System.Windows.Forms.TextBox
             Me.txbTBMargin = New System.Windows.Forms.TextBox
+            Me.txbLineWidth = New System.Windows.Forms.TextBox
             Me.txbLRMargin = New System.Windows.Forms.TextBox
-            Me.txbDotSize = New System.Windows.Forms.TextBox
-            Me.lblRowNum = New System.Windows.Forms.Label
-            Me.btnFModify = New System.Windows.Forms.Button
             Me.cbScaleFP = New System.Windows.Forms.CheckBox
+            Me.m_clbOptions = New System.Windows.Forms.CheckedListBox
             Me.lblTBMargin = New System.Windows.Forms.Label
+            Me.txbDotSize = New System.Windows.Forms.TextBox
             Me.lblLRMargin = New System.Windows.Forms.Label
-            Me.lblDotSize = New System.Windows.Forms.Label
+            Me.m_lblDisplayOptions = New System.Windows.Forms.Label
+            Me.m_lblGeneral = New System.Windows.Forms.Label
+            Me.btnClose = New System.Windows.Forms.Button
+            Me.lblRowNum = New System.Windows.Forms.Label
             Me.lblLineWidth = New System.Windows.Forms.Label
+            Me.lblDotSize = New System.Windows.Forms.Label
             Me.txbPlotsPerRow = New System.Windows.Forms.TextBox
-            Me.lblFont = New System.Windows.Forms.Label
             Me.plPlots = New System.Windows.Forms.Panel
             Me.pbPlots = New System.Windows.Forms.PictureBox
             Me.tsCommands = New System.Windows.Forms.ToolStrip
@@ -62,8 +60,6 @@ Namespace Ecosim
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
-            Me.gpbDisplay.SuspendLayout()
-            Me.gpbGeneral.SuspendLayout()
             Me.plPlots.SuspendLayout()
             CType(Me.pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.tsCommands.SuspendLayout()
@@ -79,15 +75,85 @@ Namespace Ecosim
             'SplitContainer1.Panel1
             '
             resources.ApplyResources(Me.SplitContainer1.Panel1, "SplitContainer1.Panel1")
+            Me.SplitContainer1.Panel1.Controls.Add(Me.txbTBMargin)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.txbLineWidth)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.txbLRMargin)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.cbScaleFP)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_clbOptions)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.lblTBMargin)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.txbDotSize)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.lblLRMargin)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_lblDisplayOptions)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_lblGeneral)
             Me.SplitContainer1.Panel1.Controls.Add(Me.btnClose)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.gpbDisplay)
-            Me.SplitContainer1.Panel1.Controls.Add(Me.gpbGeneral)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.lblRowNum)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.lblLineWidth)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.lblDotSize)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.txbPlotsPerRow)
             '
             'SplitContainer1.Panel2
             '
             resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
             Me.SplitContainer1.Panel2.Controls.Add(Me.plPlots)
             Me.SplitContainer1.Panel2.Controls.Add(Me.tsCommands)
+            '
+            'txbTBMargin
+            '
+            resources.ApplyResources(Me.txbTBMargin, "txbTBMargin")
+            Me.txbTBMargin.Name = "txbTBMargin"
+            '
+            'txbLineWidth
+            '
+            resources.ApplyResources(Me.txbLineWidth, "txbLineWidth")
+            Me.txbLineWidth.Name = "txbLineWidth"
+            '
+            'txbLRMargin
+            '
+            resources.ApplyResources(Me.txbLRMargin, "txbLRMargin")
+            Me.txbLRMargin.Name = "txbLRMargin"
+            '
+            'cbScaleFP
+            '
+            resources.ApplyResources(Me.cbScaleFP, "cbScaleFP")
+            Me.cbScaleFP.Name = "cbScaleFP"
+            Me.cbScaleFP.UseVisualStyleBackColor = True
+            '
+            'm_clbOptions
+            '
+            resources.ApplyResources(Me.m_clbOptions, "m_clbOptions")
+            Me.m_clbOptions.CheckOnClick = True
+            Me.m_clbOptions.FormattingEnabled = True
+            Me.m_clbOptions.Items.AddRange(New Object() {resources.GetString("m_clbOptions.Items"), resources.GetString("m_clbOptions.Items1"), resources.GetString("m_clbOptions.Items2"), resources.GetString("m_clbOptions.Items3"), resources.GetString("m_clbOptions.Items4")})
+            Me.m_clbOptions.Name = "m_clbOptions"
+            '
+            'lblTBMargin
+            '
+            resources.ApplyResources(Me.lblTBMargin, "lblTBMargin")
+            Me.lblTBMargin.Name = "lblTBMargin"
+            '
+            'txbDotSize
+            '
+            resources.ApplyResources(Me.txbDotSize, "txbDotSize")
+            Me.txbDotSize.Name = "txbDotSize"
+            '
+            'lblLRMargin
+            '
+            resources.ApplyResources(Me.lblLRMargin, "lblLRMargin")
+            Me.lblLRMargin.Name = "lblLRMargin"
+            '
+            'm_lblDisplayOptions
+            '
+            resources.ApplyResources(Me.m_lblDisplayOptions, "m_lblDisplayOptions")
+            Me.m_lblDisplayOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblDisplayOptions.ForeColor = System.Drawing.SystemColors.Window
+            Me.m_lblDisplayOptions.Name = "m_lblDisplayOptions"
+            '
+            'm_lblGeneral
+            '
+            resources.ApplyResources(Me.m_lblGeneral, "m_lblGeneral")
+            Me.m_lblGeneral.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblGeneral.ForeColor = System.Drawing.SystemColors.Window
+            Me.m_lblGeneral.Name = "m_lblGeneral"
             '
             'btnClose
             '
@@ -96,106 +162,25 @@ Namespace Ecosim
             Me.btnClose.Name = "btnClose"
             Me.btnClose.UseVisualStyleBackColor = True
             '
-            'gpbDisplay
-            '
-            resources.ApplyResources(Me.gpbDisplay, "gpbDisplay")
-            Me.gpbDisplay.Controls.Add(Me.clbOptions)
-            Me.gpbDisplay.Name = "gpbDisplay"
-            Me.gpbDisplay.TabStop = False
-            '
-            'clbOptions
-            '
-            Me.clbOptions.CheckOnClick = True
-            resources.ApplyResources(Me.clbOptions, "clbOptions")
-            Me.clbOptions.FormattingEnabled = True
-            Me.clbOptions.Items.AddRange(New Object() {resources.GetString("clbOptions.Items"), resources.GetString("clbOptions.Items1"), resources.GetString("clbOptions.Items2"), resources.GetString("clbOptions.Items3"), resources.GetString("clbOptions.Items4")})
-            Me.clbOptions.Name = "clbOptions"
-            '
-            'gpbGeneral
-            '
-            resources.ApplyResources(Me.gpbGeneral, "gpbGeneral")
-            Me.gpbGeneral.Controls.Add(Me.txbLineWidth)
-            Me.gpbGeneral.Controls.Add(Me.txbTBMargin)
-            Me.gpbGeneral.Controls.Add(Me.txbLRMargin)
-            Me.gpbGeneral.Controls.Add(Me.txbDotSize)
-            Me.gpbGeneral.Controls.Add(Me.lblRowNum)
-            Me.gpbGeneral.Controls.Add(Me.btnFModify)
-            Me.gpbGeneral.Controls.Add(Me.cbScaleFP)
-            Me.gpbGeneral.Controls.Add(Me.lblTBMargin)
-            Me.gpbGeneral.Controls.Add(Me.lblLRMargin)
-            Me.gpbGeneral.Controls.Add(Me.lblDotSize)
-            Me.gpbGeneral.Controls.Add(Me.lblLineWidth)
-            Me.gpbGeneral.Controls.Add(Me.txbPlotsPerRow)
-            Me.gpbGeneral.Controls.Add(Me.lblFont)
-            Me.gpbGeneral.Name = "gpbGeneral"
-            Me.gpbGeneral.TabStop = False
-            '
-            'txbLineWidth
-            '
-            resources.ApplyResources(Me.txbLineWidth, "txbLineWidth")
-            Me.txbLineWidth.Name = "txbLineWidth"
-            '
-            'txbTBMargin
-            '
-            resources.ApplyResources(Me.txbTBMargin, "txbTBMargin")
-            Me.txbTBMargin.Name = "txbTBMargin"
-            '
-            'txbLRMargin
-            '
-            resources.ApplyResources(Me.txbLRMargin, "txbLRMargin")
-            Me.txbLRMargin.Name = "txbLRMargin"
-            '
-            'txbDotSize
-            '
-            resources.ApplyResources(Me.txbDotSize, "txbDotSize")
-            Me.txbDotSize.Name = "txbDotSize"
-            '
             'lblRowNum
             '
             resources.ApplyResources(Me.lblRowNum, "lblRowNum")
             Me.lblRowNum.Name = "lblRowNum"
-            '
-            'btnFModify
-            '
-            resources.ApplyResources(Me.btnFModify, "btnFModify")
-            Me.btnFModify.Name = "btnFModify"
-            Me.btnFModify.UseVisualStyleBackColor = True
-            '
-            'cbScaleFP
-            '
-            resources.ApplyResources(Me.cbScaleFP, "cbScaleFP")
-            Me.cbScaleFP.Name = "cbScaleFP"
-            Me.cbScaleFP.UseVisualStyleBackColor = True
-            '
-            'lblTBMargin
-            '
-            resources.ApplyResources(Me.lblTBMargin, "lblTBMargin")
-            Me.lblTBMargin.Name = "lblTBMargin"
-            '
-            'lblLRMargin
-            '
-            resources.ApplyResources(Me.lblLRMargin, "lblLRMargin")
-            Me.lblLRMargin.Name = "lblLRMargin"
-            '
-            'lblDotSize
-            '
-            resources.ApplyResources(Me.lblDotSize, "lblDotSize")
-            Me.lblDotSize.Name = "lblDotSize"
             '
             'lblLineWidth
             '
             resources.ApplyResources(Me.lblLineWidth, "lblLineWidth")
             Me.lblLineWidth.Name = "lblLineWidth"
             '
+            'lblDotSize
+            '
+            resources.ApplyResources(Me.lblDotSize, "lblDotSize")
+            Me.lblDotSize.Name = "lblDotSize"
+            '
             'txbPlotsPerRow
             '
             resources.ApplyResources(Me.txbPlotsPerRow, "txbPlotsPerRow")
             Me.txbPlotsPerRow.Name = "txbPlotsPerRow"
-            '
-            'lblFont
-            '
-            resources.ApplyResources(Me.lblFont, "lblFont")
-            Me.lblFont.Name = "lblFont"
             '
             'plPlots
             '
@@ -295,23 +280,21 @@ Namespace Ecosim
             '
             Me.PrintDialog1.UseEXDialog = True
             '
-            'ShowAllFits
+            'frmShowAllFits
             '
             Me.AcceptButton = Me.btnClose
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.btnClose
             Me.Controls.Add(Me.SplitContainer1)
-            Me.Name = "ShowAllFits"
+            Me.Name = "frmShowAllFits"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.PerformLayout()
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.Panel2.PerformLayout()
             Me.SplitContainer1.ResumeLayout(False)
-            Me.gpbDisplay.ResumeLayout(False)
-            Me.gpbGeneral.ResumeLayout(False)
-            Me.gpbGeneral.PerformLayout()
             Me.plPlots.ResumeLayout(False)
             CType(Me.pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.tsCommands.ResumeLayout(False)
@@ -320,15 +303,11 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents gpbDisplay As System.Windows.Forms.GroupBox
-        Friend WithEvents clbOptions As System.Windows.Forms.CheckedListBox
-        Friend WithEvents gpbGeneral As System.Windows.Forms.GroupBox
         Friend WithEvents lblTBMargin As System.Windows.Forms.Label
         Friend WithEvents lblLRMargin As System.Windows.Forms.Label
         Friend WithEvents lblDotSize As System.Windows.Forms.Label
         Friend WithEvents lblLineWidth As System.Windows.Forms.Label
         Friend WithEvents txbPlotsPerRow As System.Windows.Forms.TextBox
-        Friend WithEvents lblFont As System.Windows.Forms.Label
         Friend WithEvents tsCommands As System.Windows.Forms.ToolStrip
         Friend WithEvents cbScaleFP As System.Windows.Forms.CheckBox
         Friend WithEvents tsBtnHSPlots As System.Windows.Forms.ToolStripButton
@@ -337,14 +316,12 @@ Namespace Ecosim
         Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents tsBtnSaveData As System.Windows.Forms.ToolStripButton
         Friend WithEvents lblRowNum As System.Windows.Forms.Label
-        Friend WithEvents btnFModify As System.Windows.Forms.Button
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents plPlots As System.Windows.Forms.Panel
         Friend WithEvents txbLineWidth As System.Windows.Forms.TextBox
         Friend WithEvents txbTBMargin As System.Windows.Forms.TextBox
         Friend WithEvents txbLRMargin As System.Windows.Forms.TextBox
         Friend WithEvents txbDotSize As System.Windows.Forms.TextBox
-        Friend WithEvents btnClose As System.Windows.Forms.Button
         Friend WithEvents epInput As System.Windows.Forms.ErrorProvider
         Friend WithEvents pbPlots As System.Windows.Forms.PictureBox
         Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
@@ -356,6 +333,10 @@ Namespace Ecosim
         Friend WithEvents pdAllFits As System.Drawing.Printing.PrintDocument
         Friend WithEvents dlgPV As System.Windows.Forms.PrintPreviewDialog
         Friend WithEvents PrintDialog1 As System.Windows.Forms.PrintDialog
+        Private WithEvents m_lblDisplayOptions As System.Windows.Forms.Label
+        Private WithEvents m_clbOptions As System.Windows.Forms.CheckedListBox
+        Private WithEvents m_lblGeneral As System.Windows.Forms.Label
+        Private WithEvents btnClose As System.Windows.Forms.Button
     End Class
 
 End Namespace
