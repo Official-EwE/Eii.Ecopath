@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcospaceBasemap.vb,v $
-' Revision 1.8  2009/05/15 14:17:42  jeroens
-' Removed obsolete method
-'
-' Revision 1.7  2009/05/06 12:32:59  jeroens
-' Added meaningful datatypes
-'
-' Revision 1.6  2009/01/16 18:30:22  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.5  2009/01/08 16:18:53  jeroens
-' Fixed issue 582
-'
-' Revision 1.4  2008/11/06 01:09:47  jeroens
-' deppaws loc dna loc reyal noitargiM
-'
-' Revision 1.3  2008/11/04 05:42:06  jeroens
-' Fixed migration data
-'
-' Revision 1.2  2008/10/15 23:59:46  jeroens
-' Added migration layer
-'
-' Revision 1.1  2008/09/26 07:30:20  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports directive "
 
 Option Strict On
@@ -128,6 +99,10 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' IBMPackets
+            val = New cValueArray(eValueTypes.LayerArray, eVarNameFlags.LayerIBMPackets, eStatusFlags.OK, eCoreCounterTypes.nStanzas, AddressOf m_core.GetCoreCounter)
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -173,6 +148,11 @@ Public Class cEcospaceBasemap
             ' Migration
             layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
             Me.Layers(eVarNameFlags.LayerMigration) = layer
+
+            ' IBM layers
+            For i As Integer = 1 To Me.m_core.nStanzas
+                Me.SetVariable(eVarNameFlags.LayerIBMPackets, New cEcospaceLayerIBMPackets(theCore, Me, i), i)
+            Next
 
             'set status flags to default values
             ResetStatusFlags()
@@ -464,6 +444,17 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerIBMPackets() As cEcospaceLayer
+        Get
+            Return Me.m_dictLayers(eVarNameFlags.LayerIBMPackets)
+        End Get
+    End Property
+
     Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
         Select Case varName
             Case eVarNameFlags.LayerDepth
@@ -490,6 +481,8 @@ Public Class cEcospaceBasemap
                     Return Nothing
                 End If
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
+            Case eVarNameFlags.LayerIBMPackets
+                Return Me.m_core.m_Stanza
         End Select
         Return Nothing
     End Function

@@ -277,6 +277,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPASeed.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelCin.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceNxNLayer.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMPackets.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptManager.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptOutput.vb" />
     <Compile Include="MPAOptimization\Input Output\cMPAOptParameters.vb" />

@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: cMapDrawer.vb,v $
-' Revision 1.2  2009/01/08 16:18:57  jeroens
-' Fixed issue 582
-'
-' Revision 1.1  2008/09/26 07:32:02  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.9  2008/08/08 23:23:47  jeroens
-' Fixed failing checks on infinite values
-'
-' Revision 1.8  2008/05/13 17:20:09  jeroens
-' Revamping for showing contaminants
-'
-' Revision 1.7  2008/03/25 14:41:33  jeroens
-' Basemap cell vars exposed as Layer*
-'
-' Revision 1.6  2008/03/02 15:19:43  jeroens
-' AllowedToRun externally accessible
-'
-' Revision 1.5  2008/02/29 17:18:40  jeroens
-' Single map also drawn by cMapDrawer (removed dual implementation)
-'
-' Revision 1.4  2008/02/26 18:51:54  joeb
-' Minor changes for bug 380
-'
-' Revision 1.3  2007/10/03 01:54:28  jeroens
-' * Reworked styleguide, colormanager
-'
-'==============================================================================
-
 Option Strict On
 Option Explicit On
 
@@ -135,6 +103,7 @@ Public Class cMapDrawer
         End Set
     End Property
 
+    ' ToDo: use styleguide font here
     Public Property Font() As Font
         Get
             Return Me.m_font

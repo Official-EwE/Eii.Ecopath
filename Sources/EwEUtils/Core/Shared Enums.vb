@@ -1078,7 +1078,6 @@ Namespace Core
         GameMPAName
         GameHabitatName
 
-        'Joeh: PSD
         PSDEnabled
         PSDComputed
         VBK
@@ -1104,7 +1103,8 @@ Namespace Core
         PSDNumWeightClasses
         ClimateType
         NumPtsMovAvg
-        'End Joeh: PSD
+
+        LayerIBMPackets
 
     End Enum
 
@@ -1374,7 +1374,7 @@ Namespace Core
         EcospaceLayerRegion = 68
         EcospaceLayerRelPP = 69
         EcospaceLayerRelCin = 70
-
+        EcospaceLayerIBMPackets = 72
 
         MSEGroupOutputs = 71
 
