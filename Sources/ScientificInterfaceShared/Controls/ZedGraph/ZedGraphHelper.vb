@@ -15,8 +15,6 @@ Imports EwEUtils.Commands
 
 Namespace Controls
 
-    ' ToDo_JS: 22Feb09 - Add support for displaying units in axis labels (similar to EwECells)
-
     ''' =======================================================================
     ''' <summary>
     ''' Helper class, wraps a <see cref="ZedGraph">ZedGraph</see> graph control
@@ -39,6 +37,8 @@ Namespace Controls
         Private m_sg As cStyleGuide = Nothing
         ''' <summary>Registered lines representing EwE groups.</summary>
         Private m_dtGroupLines As New Dictionary(Of LineItem, Integer)
+        ''' <summary>Registered axis that need to display units.</summary>
+        Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
 
         Private m_bShowCursor() As Boolean
         Private m_sCursorPos() As Single
@@ -114,6 +114,7 @@ Namespace Controls
 
             ' Configure graph control
             Me.InitStyle()
+            Me.InitColors()
 
         End Sub
 
@@ -130,6 +131,8 @@ Namespace Controls
             RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.m_dtGroupLines.Clear()
+            Me.m_dtAxisLabels.Clear()
+
             Me.m_sg = Nothing
             Me.m_zgc = Nothing
             Me.m_core = Nothing
@@ -222,6 +225,31 @@ Namespace Controls
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
              Optional ByVal iPane As Integer = 1) As GraphPane
 
+            Me.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure a single <see cref="GraphPane">pane</see> in the graph.
+        ''' </summary>
+        ''' <param name="strTitle">Title for the pane.</param>
+        ''' <param name="strXAxisLabel">Label for the X-axis.</param>
+        ''' <param name="aUnitsXAxis">Units to display in the x-axis label.</param>
+        ''' <param name="strYAxisLabel">Label for the Y-axis.</param>
+        ''' <param name="aUnitsYAxis">Units to display in the Y-axis label.</param>
+        ''' <param name="bShowLegend">Flag stating whether the legend should be shown.</param>
+        ''' <param name="legendPos">Legend <see cref="LegendPos">position</see>.</param>
+        ''' <param name="iPane">The pane to configure. If not specified, the main pane
+        ''' is configured.</param>
+        ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
+             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, _
+             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, _
+             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+             Optional ByVal iPane As Integer = 1) As GraphPane
+
             Dim gp As GraphPane = Me.GetPane(iPane)
             With gp
 
@@ -230,13 +258,13 @@ Namespace Controls
                 .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
 
                 ' Configure axis
-                .XAxis.Title.Text = strXAxisLabel
+                Me.AxisLabel(.XAxis, strXAxisLabel, aUnitsXAxis)
                 .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
                 .XAxis.MinorTic.IsAllTics = False
                 .XAxis.MinorTic.IsOpposite = False
                 .XAxis.MajorTic.IsOpposite = False
 
-                .YAxis.Title.Text = strYAxisLabel
+                Me.AxisLabel(.YAxis, strYAxisLabel, aUnitsYAxis)
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.MinorTic.IsAllTics = False
                 .YAxis.MinorTic.IsOpposite = False
@@ -566,6 +594,96 @@ Namespace Controls
 
 #End Region ' Line colour management
 
+#Region " Axis label management "
+
+        Private Class cAxisLabelFormatter
+
+            Private m_axis As Axis = Nothing
+            Protected m_aUnitTypes() As cStyleGuide.eUnitType
+            Protected m_strUnitMask As String = ""
+
+            Public Sub New(ByVal axis As Axis, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                Me.m_axis = axis
+                Me.m_strUnitMask = strUnitMask
+                Me.m_aUnitTypes = aUnitTypes
+            End Sub
+
+            Public Sub Update()
+                Me.m_axis.Title.Text = Me.LabelText()
+            End Sub
+
+            Private ReadOnly Property LabelText() As String
+                Get
+                    Dim strDisplayText As String = ""
+
+                    If Me.m_aUnitTypes IsNot Nothing Then
+
+                        Select Case m_aUnitTypes.Length
+                            Case 0
+                                ' NOP
+                            Case 1
+                                strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
+                            Case 2
+                                strDisplayText = String.Format(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
+                            Case Else
+                                Debug.Assert(False)
+                        End Select
+
+                    End If
+
+                    Return strDisplayText
+                End Get
+            End Property
+
+            Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
+                Dim sg As cStyleGuide = cStyleGuide.GetInstance()
+                Dim strUnitString As String = ""
+                Select Case unitType
+                    Case cStyleGuide.eUnitType.Currency
+                        strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
+                    Case cStyleGuide.eUnitType.Time
+                        strUnitString = sg.TimeUnitText(sg.TimeUnit)
+                    Case cStyleGuide.eUnitType.Monetary
+                        strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                    Case cStyleGuide.eUnitType.Nominal
+                        strUnitString = sg.NominalUnitText()
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+                Return strUnitString
+            End Function
+        End Class
+
+        Private Sub RefreshAxisLabels()
+            For Each Axis As Axis In Me.m_dtAxisLabels.Keys
+                Me.m_dtAxisLabels(Axis).Update()
+            Next
+        End Sub
+
+        Public Sub AxisLabel(ByVal axis As Axis, _
+                             ByVal strLabel As String, _
+                             Optional ByVal aUnitTypes() As cStyleGuide.eUnitType = Nothing)
+            If String.IsNullOrEmpty(strLabel) Then
+                Try
+                    Me.m_dtAxisLabels.Remove(axis)
+                Catch ex As Exception
+                End Try
+            End If
+
+            If aUnitTypes IsNot Nothing Then
+                Try
+                    Dim alf As New cAxisLabelFormatter(axis, strLabel, aUnitTypes)
+                    Me.m_dtAxisLabels(axis) = alf
+                    alf.Update()
+                Catch ex As Exception
+                End Try
+            Else
+                axis.Title.Text = strLabel
+            End If
+        End Sub
+
+#End Region ' Axis label management
+
 #Region " Cursor "
 
         ''' -------------------------------------------------------------------
@@ -727,10 +845,17 @@ Namespace Controls
         ''' <param name="changeType"></param>
         ''' -----------------------------------------------------------------------
         Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
-            If ((changeType And cStyleGuide.eChangeType.Fonts) = cStyleGuide.eChangeType.Fonts) Then
+
+            If ((changeType And cStyleGuide.eChangeType.Fonts) > 0) Then
                 Me.InitStyle()
-            ElseIf changeType = cStyleGuide.eChangeType.Colours Then
+            End If
+
+            If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
                 Me.InitColors()
+            End If
+
+            If ((changeType And cStyleGuide.eChangeType.Units) > 0) Then
+                Me.RefreshAxisLabels()
             End If
 
         End Sub
@@ -812,6 +937,12 @@ Namespace Controls
 
                 End With
             Next iPane
+
+            ' Refresh all registered lines
+            For Each l As LineItem In Me.m_dtGroupLines.Keys
+                l.Color = Me.m_sg.GroupColor(Me.m_core, Me.m_dtGroupLines(l))
+            Next
+
         End Sub
 
         Protected Overridable Sub InitStyle()
@@ -857,12 +988,6 @@ Namespace Controls
                 End With
             Next
 
-            ' Refresh all registered lines
-            For Each l As LineItem In Me.m_dtGroupLines.Keys
-                l.Color = Me.m_sg.GroupColor(Me.m_core, Me.m_dtGroupLines(l))
-            Next
-
-
             With Me.m_zgc.MasterPane
                 .Border.IsVisible = False
                 .Title.FontSpec.Family = Me.m_sg.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
@@ -889,7 +1014,7 @@ Namespace Controls
         ''' index should be between 1 and <see cref="NumPanes">NumPanes</see>.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
+        Public Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
 
             Dim pane As GraphPane = Nothing
 
