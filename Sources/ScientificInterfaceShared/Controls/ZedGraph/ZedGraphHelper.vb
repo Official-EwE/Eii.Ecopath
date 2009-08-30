@@ -83,7 +83,20 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Overridable Sub Attach(ByVal core As cCore, ByVal zgc As ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Attach a zedgraph helper to a zedgraph control.
+        ''' </summary>
+        ''' <param name="core">Core to monitor.</param>
+        ''' <param name="zgc">ZedGraph control to control.</param>
+        ''' <param name="iNumPanels">Number of panels to create.</param>
+        ''' <remarks>
+        ''' Make sure to cleanup using <see cref="Detach">Detach</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Attach(ByVal core As cCore, _
+                                      ByVal zgc As ZedGraphControl, _
+                                      Optional ByVal iNumPanels As Integer = 1)
 
             If Me.m_zgc IsNot Nothing Then Me.Detach()
 
@@ -118,6 +131,15 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Detach a zedgraph control that was previously 
+        ''' <see cref="Attach">attached</see>.
+        ''' </summary>
+        ''' <remarks>
+        ''' Failing to detach an attached control causes memory leaks.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Overridable Sub Detach()
 
             If Me.m_zgc Is Nothing Then Return
@@ -149,6 +171,27 @@ Namespace Controls
                 Return Me.m_nPanels
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a graph pane.
+        ''' </summary>
+        ''' <param name="iPane">The one-based index of the pane to return. This 
+        ''' index should be between 1 and <see cref="NumPanes">NumPanes</see>.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
+
+            Dim pane As GraphPane = Nothing
+
+            If Me.m_nPanels = 1 Then pane = Me.m_zgc.GraphPane
+            pane = Me.m_zgc.MasterPane.PaneList(iPane - 1)
+
+            Debug.Assert(pane IsNot Nothing, "ZedGraphHelper already disconnected")
+
+            Return pane
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -188,9 +231,42 @@ Namespace Controls
             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
             Optional ByVal iPane As Integer = 1) As GraphPane
 
-            Me.ConfigurePane(strTitle, strXAxisLabel, strYAxisLabel, bShowLegend, legendPos, iPane)
+            Return Me.ConfigurePane(strTitle, _
+                                    strXAxisLabel, Nothing, dXAxisMin, dXAxisMax, _
+                                    strYAxisLabel, Nothing, dYAxisMin, dYAxisMax, _
+                                    bShowLegend, legendPos, iPane)
 
-            Dim gp As GraphPane = Me.GetPane(iPane)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure a single <see cref="GraphPane">pane</see> in the graph.
+        ''' </summary>
+        ''' <param name="strTitle">Title for the pane.</param>
+        ''' <param name="strXAxisLabel">Label for the X-axis.</param>
+        ''' <param name="aUnitsXAxis">Units to display in the x-axis label.</param>
+        ''' <param name="dXAxisMin">X-axis min scale.</param>
+        ''' <param name="dXAxisMax">X-axis max scale.</param>
+        ''' <param name="strYAxisLabel">Label for the Y-axis.</param>
+        ''' <param name="aUnitsYAxis">Units to display in the Y-axis label.</param>
+        ''' <param name="dYAxisMin">Y-axis min scale.</param>
+        ''' <param name="dYAxisMax">Y-axis max scale.</param>
+        ''' <param name="bShowLegend">Flag stating whether the legend should be shown.</param>
+        ''' <param name="legendPos">Legend <see cref="LegendPos">position</see>.</param>
+        ''' <param name="iPane">The pane to configure. If not specified, the main pane
+        ''' is configured.</param>
+        ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
+            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
+            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
+            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+            Optional ByVal iPane As Integer = 1) As GraphPane
+
+            Dim gp As GraphPane = Me.ConfigurePane(strTitle, _
+                                                   strXAxisLabel, aUnitsXAxis, _
+                                                   strYAxisLabel, aUnitsYAxis, _
+                                                   bShowLegend, legendPos, iPane)
             With gp
 
                 .XAxis.Scale.Min = dXAxisMin
@@ -200,7 +276,6 @@ Namespace Controls
                 If dYAxisMin <> dYAxisMax Then .YAxis.Scale.Max = dYAxisMax
 
             End With
-
             Me.RescaleAndRedraw()
 
             Return gp
@@ -225,7 +300,7 @@ Namespace Controls
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
              Optional ByVal iPane As Integer = 1) As GraphPane
 
-            Me.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
+            Return Me.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
 
         End Function
 
@@ -1005,27 +1080,6 @@ Namespace Controls
             Me.m_zgc.Invalidate()
 
         End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a graph pane.
-        ''' </summary>
-        ''' <param name="iPane">The one-based index of the pane to return. This 
-        ''' index should be between 1 and <see cref="NumPanes">NumPanes</see>.</param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public Function GetPane(ByVal iPane As Integer) As ZedGraph.GraphPane
-
-            Dim pane As GraphPane = Nothing
-
-            If Me.m_nPanels = 1 Then pane = Me.m_zgc.GraphPane
-            pane = Me.m_zgc.MasterPane.PaneList(iPane - 1)
-
-            Debug.Assert(pane IsNot Nothing, "ZedGraphHelper already disconnected")
-
-            Return pane
-
-        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
