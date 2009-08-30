@@ -425,7 +425,7 @@ Public MustInherit Class cCoreInputOutputBase
                 value = keyvalue.Value
 
                 Select Case value.varType
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray
+                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
                         For i = 0 To value.Length
                             If bForceReset Then
                                 value.Status(i) = status

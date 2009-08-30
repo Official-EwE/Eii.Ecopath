@@ -4345,7 +4345,10 @@ exitline:
         'set number of packets per age **** to interface?****
         m_Stanza.Npackets = m_Data.Inrow * m_Data.InCol * m_Stanza.NPacketsMultiplier
 
-        ReDim m_Stanza.Npacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets), m_Stanza.Wpacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets), m_Stanza.iPacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets), m_Stanza.jPacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
+        ReDim m_Stanza.Npacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
+        ReDim m_Stanza.Wpacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
+        ReDim m_Stanza.iPacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
+        ReDim m_Stanza.jPacket(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit, m_Stanza.Npackets)
 
         Dim cellsPerMonth As Single, Dmove As Single
 

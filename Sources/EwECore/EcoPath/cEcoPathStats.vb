@@ -128,7 +128,7 @@ Public Class cEcoPathStats
                 value = keyvalue.Value
 
                 Select Case value.varType
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray
+                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
                         For i = 0 To value.Length
                             value.Status(i) = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
                         Next i

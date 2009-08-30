@@ -252,7 +252,7 @@ Public Class cMonteCarloGroup
 
                         End If
 
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray
+                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
                         Debug.Assert(False, "cMonteCarloGroup should not contain array values.")
 
                     Case Else

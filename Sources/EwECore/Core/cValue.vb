@@ -149,6 +149,7 @@ Namespace ValueWrapper
         PointArray ' array of points
         BoolArray 'array of boolean 
         IntArray 'array of integers
+        LayerArray 'array of basemap layers
     End Enum
 
 #End Region
@@ -500,6 +501,8 @@ Namespace ValueWrapper
                         newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
                     Case eValueTypes.Bool, eValueTypes.BoolArray
                         newValue = CBool(Me.m_metadata.NullValue)
+                    Case eValueTypes.LayerArray
+                        newValue = CType(Me.m_metadata.NullValue, cEcospaceLayer)
                     Case Else
                         Status = eStatusFlags.ErrorEncountered
                         Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
@@ -524,6 +527,9 @@ Namespace ValueWrapper
                         newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
                     Case eValueTypes.Bool, eValueTypes.BoolArray
                         newValue = CBool(Val(newValue))
+                    Case eValueTypes.LayerArray
+                        ' ToDo_JS: parse string to create a proper layer (and how? no clue)
+                        newValue = CType(Me.m_metadata.NullValue, cEcospaceLayer)
                         ' Case Else
                         '    Status = eStatusFlags.ErrorEncountered
                         '    Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
@@ -605,20 +611,19 @@ Namespace ValueWrapper
 
                     Select Case Me.varType
                         Case eValueTypes.BoolArray
-                            Dim s() As Boolean
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Boolean
                             m_values = s
                         Case eValueTypes.IntArray
-                            Dim s() As Integer
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Integer
                             m_values = s
                         Case eValueTypes.PointArray
-                            Dim s() As Drawing.Point
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Drawing.Point
                             m_values = s
                         Case eValueTypes.SingleArray
-                            Dim s() As Single
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Single
+                            m_values = s
+                        Case eValueTypes.LayerArray
+                            Dim s(m_nObjects) As cEcospaceLayer
                             m_values = s
                     End Select
 
@@ -836,20 +841,19 @@ Namespace ValueWrapper
                     m_nObjects = newsize
                     Select Case Me.varType
                         Case eValueTypes.BoolArray
-                            Dim s() As Boolean
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Boolean
                             m_values = s
                         Case eValueTypes.IntArray
-                            Dim s() As Integer
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Integer
                             m_values = s
                         Case eValueTypes.PointArray
-                            Dim s() As Drawing.Point
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Drawing.Point
                             m_values = s
                         Case eValueTypes.SingleArray
-                            Dim s() As Single
-                            ReDim s(m_nObjects)
+                            Dim s(m_nObjects) As Single
+                            m_values = s
+                        Case eValueTypes.LayerArray
+                            Dim s(m_nObjects) As cEcospaceLayer
                             m_values = s
                     End Select
 
