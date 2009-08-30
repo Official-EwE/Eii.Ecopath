@@ -1,17 +1,6 @@
-'==============================================================================
-'
-' $Log: BugReporter.vb,v $
-' Revision 1.2  2008/11/06 04:57:00  jeroens
-' Fixed bug 557
-'
-' Revision 1.1  2007/10/23 23:15:29  sherman
-' Seperated BugReporter Class from AppLauncher
-'
-'==============================================================================
-
 Public Class BugReporter
     Public Shared Sub InvokeBugReport()
-        Dim ub As New EwEUtils.Utilities.UrlBuilder("mailto:s.lai@fisheries.ubc.ca")
+        Dim ub As New EwEUtils.Utilities.UrlBuilder("mailto:ewedevteam@gmail.com")
         Dim sbBody As New System.Text.StringBuilder
         Dim ac As ApplicationComponents = AppLauncher.GetInstance().ApplicationComponents()
         Dim strURL As String = ""
