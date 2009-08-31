@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<project SchemaVersion="2.0">
+    <assemblies>
+        <assembly location="..\ScientificInterface\bin\x86\Debug\EwECore.dll" documentation="..\ScientificInterface\bin\x86\Debug\EwECore.xml" />
+        <assembly location="..\ScientificInterface\bin\x86\Debug\EwEUtils.dll" documentation="..\ScientificInterface\bin\x86\Debug\EwEUtils.xml" />
+        <assembly location="..\ScientificInterface\bin\x86\Debug\EwEPlugin.dll" documentation="..\ScientificInterface\bin\x86\Debug\EwEPlugin.xml" />
+        <assembly location="..\ScientificInterface\bin\x86\Debug\ScientificInterfaceShared.dll" documentation="" />
+    </assemblies>
+    <documenters>
+        <documenter name="MSDN-CHM">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="EwE6Foundation" />
+            <property name="Title" value="EwE6 foundation libraries" />
+            <property name="Version" value="6.0.6.0830" />
+            <property name="ShowMissingSummaries" value="True" />
+            <property name="ShowMissingParams" value="True" />
+            <property name="ShowMissingTypeParamsOnTypes" value="True" />
+            <property name="ShowMissingTypeParamsOnMembers" value="True" />
+            <property name="ShowMissingReturns" value="True" />
+            <property name="ShowMissingValues" value="True" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="UBC Fisheries Centre" />
+            <property name="FeedbackEmailAddress" value="ewedevteam@gmail.com" />
+        </documenter>
+        <documenter name="Intellisense">
+            <property name="OutputDirectory" value=".\intellisense\" />
+        </documenter>
+    </documenters>
+</project>
