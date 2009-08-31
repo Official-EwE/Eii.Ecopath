@@ -65,6 +65,11 @@ Public Class cCore
     ''' </remarks>
     Public Delegate Sub CoreMessageDelegate(ByRef Message As cMessage)
 
+    ''' <summary>
+    ''' Delegate defintion used to inform external processes on the progress of
+    ''' Ecospace.
+    ''' </summary>
+    ''' <param name="EcospaceResults">Ecospace results for a single time step.</param>
     Public Delegate Sub EcoSpaceInterfaceDelegate(ByRef EcospaceResults As cEcospaceTimestep)
 
     Friend m_publisher As New cMessagePublisher
@@ -612,7 +617,7 @@ Public Class cCore
     End Enum
 
     ''' <summary>
-    ''' Enum describing the type of lock that is currently active.
+    ''' Enum describing the type of batch lock that is currently active.
     ''' </summary>
     Public Enum eBatchLockType As Integer
         ''' <summary>Lock is not active.</summary>
@@ -1971,6 +1976,10 @@ Public Class cCore
 
 #Region "EwEModel"
 
+    ''' <summary>
+    ''' The <see cref="IEwEDataSource">data source</see> that the core will use
+    ''' for reading and writing model data.
+    ''' </summary>
     Public Property DataSource() As IEwEDataSource
         Get
             Return Me.m_DataSource
@@ -5001,6 +5010,10 @@ Public Class cCore
 
     End Function
 
+    ''' <summary>
+    ''' Get a <see cref="cEcoSimGroupInput">Ecosim input group</see> for a given group index.
+    ''' </summary>
+    ''' <param name="iGroup">The index to obtain the group for.</param>
     Public ReadOnly Property EcoSimGroupInputs(ByVal iGroup As Integer) As cEcoSimGroupInput
         Get
             'test that EcoSim has been initialized
@@ -5014,6 +5027,10 @@ Public Class cCore
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get a <see cref="cEcoSimGroupOutput">Ecosim output group</see> for a given group index.
+    ''' </summary>
+    ''' <param name="iGroup">The index to obtain the group for.</param>
     Public ReadOnly Property EcoSimGroupOutputs(ByVal iGroup As Integer) As cEcosimGroupOutput
         Get
 
@@ -5028,18 +5045,13 @@ Public Class cCore
                 cLog.Write(ex)
                 Return Nothing
             End Try
-
-            'jb changes this the results can be valid when HasEcosimRan = false
-            'strange but true
-            ''test that EcoSim has been ran
-            'If Me.m_StateMonitor.HasEcosimRan Then
-            '    ' JS 06Jul07: list will take care of scenario index/item index offset
-            '    Return m_EcoSimGroupOuputs(iGroup)
-            'End If
-            'Return Nothing
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get regulation information that apply to a given fleet in Ecosim.
+    ''' </summary>
+    ''' <param name="iFleet">The fleet to obtain regulations information for.</param>
     Public ReadOnly Property EcosimFisheriesRegulations(ByVal iFleet As Integer) As cEcosimFisheriesRegulation
         Get
 
@@ -5072,8 +5084,6 @@ Public Class cCore
         End Try
     End Sub
 
-
-
     Private Function LoadEcosimFleetOutputs() As Boolean
         Dim iFlt As Integer
         Dim sCatch As Single, EndCatch As Single
@@ -5088,7 +5098,6 @@ Public Class cCore
         End If
 
         Try
-
             For Each fleet As cEcosimFleetOutput In m_EcosimFleetOutputs
                 fleet.Resize()
 
@@ -5869,6 +5878,10 @@ Public Class cCore
 
     End Property
 
+    ''' <summary>
+    ''' Get the <see cref="cEcoSimModelParameters">Ecosim model parameters</see> for
+    ''' the currently loaded Ecosim scenario.
+    ''' </summary>
     Public ReadOnly Property EcoSimModelParameters() As cEcoSimModelParameters
         Get
             If Not m_bEcoSimIsInit Then
@@ -5881,38 +5894,6 @@ Public Class cCore
             Return m_EcoSimRun
         End Get
     End Property
-
-    '''' <summary>
-    '''' Get a reference to the private copy of the EcoSim model parameters
-    '''' this object is use to get or set model paramters
-    '''' </summary>
-    '''' <returns>Valid cEcoSimModelParameters object if the EcoSIm model has been initialized
-    '''' Nothing/Null if EcoSim has NOT been initialized
-    '''' </returns>
-    '''' <remarks>
-    '''' Use the returned cEcoSimModelParameters object to get or set model run parameters
-    '''' These parameters are specific to the run of the model
-    '''' i.e. Number of year to run (NumberYears), Step Size (StepSize)
-    '''' How to use:
-    '''' 'change the number of years a model runs for
-    '''' Dim RunParameters as cEcoSimModelParameters
-    '''' RunParameters = ModelInterface.getEcoSimModelParamters'get the current run parameters
-    '''' RunParameters.NumberYears = 50 'set the number of years to run to a new value
-    '''' or
-    '''' ModelInterface.getEcoSimModelParamters.NumberYears = 50
-    ''''  </remarks>
-    ''Public Function getEcoSimModelParamters() As cEcoSimModelParameters
-
-    ''    If Not m_bEcoSimIsInit Then
-    ''        Debug.Assert(False, "EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
-    ''        'MsgBox("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first", MsgBoxStyle.Critical)
-    ''        cLog.Write("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
-    ''        Return Nothing
-    ''    End If
-
-    ''    Return m_EcoSimRun
-
-    ''End Function
 
     ''' <summary>
     ''' Create a new cEcoSimModelParameters object. This is the parameter for the current model run.
@@ -6407,6 +6388,11 @@ Public Class cCore
 
 #Region " Ecospace interface objects "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Gets the number of available Ecospace scenarios for the loaded model.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceScenarioCount() As Integer
         Get
             Try
@@ -6420,9 +6406,11 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Gets an <see cref="cEcospaceScenario">Ecospace scenario</see> from the list of available scenarios.
+    ''' Gets an <see cref="cEcospaceScenario">Ecospace scenario</see> from the
+    ''' list of available scenarios.
     ''' </summary>
-    ''' <param name="iScenario">One based indexed property of Ecospace Scenario objects</param>
+    ''' <param name="iScenario">One based indexed property of Ecospace Scenario 
+    ''' objects</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceScenarios(ByVal iScenario As Integer) As cEcospaceScenario
         Get
@@ -6442,18 +6430,36 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cEcospaceModelParameters">Ecospace model parameters</see>
+    ''' for the currently loaded Ecospace scenario.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceModelParameters() As cEcospaceModelParameters
         Get
             Return m_EcospaceModelParams
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cEcospaceBasemap">Ecospace base map</see> for the 
+    ''' currently loaded Ecospace scenario.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceBasemap() As cEcospaceBasemap
         Get
             Return Me.m_EcospaceBasemap
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cEcospaceGroup">Ecospace group</see> for a given index.
+    ''' </summary>
+    ''' <param name="iGroup">The index to obtain the Ecospace group for.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroup
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
@@ -6461,6 +6467,12 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cEcospaceFleet">Ecospace fleet</see> for a given index.
+    ''' </summary>
+    ''' <param name="iFleet">The index to obtain the Ecospace fleet for.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleet
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
@@ -6468,6 +6480,12 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cEcospaceHabitat">Ecospace habitat</see> for a given index.
+    ''' </summary>
+    ''' <param name="iHabitat">The index to obtain the Ecospace habitat for.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceHabitats(ByVal iHabitat As Integer) As cEcospaceHabitat
         Get
             ' JS 06Jul07: list will handle habitat index / item index offsets
@@ -6475,6 +6493,12 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cEcospaceRegion">Ecospace region</see> for a given index.
+    ''' </summary>
+    ''' <param name="iRegion">The index to obtain the Ecospace region for.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceRegions(ByVal iRegion As Integer) As cEcospaceRegion
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
@@ -6482,6 +6506,12 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a <see cref="cEcospaceMPA">Ecospace MPA</see> for a given index.
+    ''' </summary>
+    ''' <param name="iMPA">The index to obtain the Ecospace marine protected area for.</param>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceMPAs(ByVal iMPA As Integer) As cEcospaceMPA
         Get
             ' JS 06Jul07: list will handle MPA index / item index offsets
@@ -6489,9 +6519,11 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Ecosim Fleet summary results from last Ecosim run.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcosimFleetOutput(ByVal iFleet As Integer) As cEcosimFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
@@ -6499,9 +6531,11 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Results from last Ecospace run by group
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceGroupOutput(ByVal iGroup As Integer) As cEcospaceGroupOutput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
@@ -6509,6 +6543,11 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecospace Fleet summary results from last Ecospace run.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceFleetOutput(ByVal iFleet As Integer) As cEcospaceFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
@@ -6516,6 +6555,11 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecospace region summary results from last Ecospace run.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceRegionOutput(ByVal iRegion As Integer) As cEcospaceRegionOutput
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
@@ -6523,9 +6567,11 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Statistics from the last Ecospace model run
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceStats() As cEcospaceStats
         Get
             Return Me.m_EcospaceStats
@@ -8608,6 +8654,9 @@ Public Class cCore
 
 #Region "Monte Carlo"
 
+    ''' <summary>
+    ''' Get the Ecosim<see cref="cMonteCarloManager">Monte Carlo manager</see>.
+    ''' </summary>
     Public ReadOnly Property EcosimMonteCarlo() As cMonteCarloManager
         Get
             Return Me.m_MonteCarlo
@@ -8618,6 +8667,9 @@ Public Class cCore
 
 #Region "Fit to time series "
 
+    ''' <summary>
+    ''' Get the Ecosim <see cref="cF2TSManager">Fit to Time Series manager</see>.
+    ''' </summary>
     Public ReadOnly Property EcosimFitToTimeSeries() As cF2TSManager
         Get
             Return DirectCast(Me.m_SearchManagers(eDataTypes.FitToTimeSeries), cF2TSManager)

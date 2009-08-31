@@ -1,136 +1,4 @@
-'==============================================================================
-'
-' $Log: ICoreInputOutput.vb,v $
-' Revision 1.12  2009/06/20 20:56:43  jeroens
-' Relaxed optimization: values will be validated when actual value does not change, but validation status may be out of date
-'
-' Revision 1.11  2009/05/22 16:07:56  jeroens
-' AllowValidation made overridable
-'
-' Revision 1.10  2009/04/04 14:05:54  jeroens
-' Fixed documentation
-'
-' Revision 1.9  2009/04/02 14:30:53  jeroens
-' Base reset status flags incorporates ReadOnly check
-'
-' Revision 1.8  2009/03/17 16:07:58  jeroens
-' StanzaID -> iStanza
-'
-' Revision 1.7  2009/02/02 22:28:59  joeb
-' Added more output vars to EcoSpace fleets
-'
-' Revision 1.6  2009/01/20 22:34:26  joeb
-' Added Option ThirdIndex to GetVariable() for dealing with data by Region, Fleet, Group and time
-'
-' Revision 1.5  2009/01/16 18:30:12  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.4  2009/01/14 18:42:46  joeb
-' Added third index to IResultsWrapper.Value
-'
-' Revision 1.3  2009/01/13 17:54:49  joeb
-' renamed some variables in c3DResultsWrapper
-'
-' Revision 1.2  2008/12/09 19:44:44  joeb
-' Added IResultsWrapper this wraps a core array so it can be used by a CoreInputOutput directly instead of buffering the data
-'
-' Revision 1.1  2008/09/26 07:30:11  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.65  2008/09/15 16:58:16  joeb
-' Added more Ecospace output for Game Server
-'
-' Revision 1.64  2008/07/16 15:12:03  jeroens
-' Added functions for lazy people :p
-'
-' Revision 1.63  2008/07/02 01:55:22  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.62  2008/05/29 22:22:48  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.61  2008/01/25 17:44:06  jeroens
-' 'Documented' PP
-'
-' Revision 1.60  2007/10/30 18:41:26  jeroens
-' * Description limited to 250 chars
-'
-' Revision 1.59  2007/08/27 02:23:09  jeroens
-' - Disabled list change events; list are not going to be exposed in this EwE   installment
-' - Removed m_isMultiStanza buffer
-'
-' Revision 1.58  2007/08/25 19:24:35  jeroens
-' * Auxillary data no longer needs datatype, DBID. StringID is enough
-'
-' Revision 1.57  2007/08/15 23:38:16  joeb
-' Changed wording of an Assert
-'
-' Revision 1.56  2007/07/11 00:37:39  jeroens
-' * Exposed message source
-'
-' Revision 1.55  2007/07/06 23:51:20  jeroens
-' - Disabled *SLOW* debug assert for profiling
-'
-' Revision 1.54  2007/07/06 21:27:29  jeroens
-' + Added list item assertion
-'
-' Revision 1.53  2007/07/06 20:09:38  jeroens
-' * Rewrote base list
-'
-' Revision 1.52  2007/06/20 01:28:09  jeroens
-' + Exposes variable metadata
-'
-' Revision 1.51  2007/06/04 16:46:42  jeroens
-' Some value arrays have 0-based indexes, such as PrefHab. Changes reset status flags start index to 0 to cater to such situations.
-'
-' Revision 1.50  2007/05/30 02:54:27  jeroens
-' + Added two utility methods to set/clear status flags
-'
-' Revision 1.49  2007/05/29 15:26:41  jeroens
-' * Fixed SetVariable potential bug when clearing a value with Null (Nothing)
-'
-' Revision 1.48  2007/05/20 00:35:04  jeroens
-' * Optimized SetVariable: abort when the operation will not change the variable value
-'
-' Revision 1.47  2007/05/18 01:52:18  jeroens
-' + Added XML comments
-'
-' Revision 1.46  2007/05/04 15:25:35  jeroens
-' + MessageSource exposed
-'
-' Revision 1.45  2007/04/06 17:24:55  joeb
-' Change to Friend Overridable Function Resize() As Boolean
-'
-' Revision 1.44  2007/03/28 01:16:34  jeroens
-' * Changed all status modification access from Public to Friend
-'
-' Revision 1.43  2007/03/27 16:18:32  jeroens
-' + Included IntArray in ResetStatusFlags
-'
-' Revision 1.42  2007/03/07 15:10:15  jeroens
-' + Added cCoreInputOutputBaseList
-'
-' Revision 1.41  2007/01/25 16:44:30  jeroens
-' Minor changes
-'
-' Revision 1.40  2007/01/20 00:27:23  joeb
-' Bug Fix
-'
-' Revision 1.39  2007/01/19 18:29:49  joeb
-' Added Array of Boolean to cValueArray
-'
-' Revision 1.38  2007/01/19 00:47:31  joeb
-' Added eValueTypes.PointArray
-'
-' Revision 1.37  2007/01/17 20:11:28  joeb
-' Added Error message to an Assert
-'
-' Revision 1.36  2007/01/15 14:49:15  jeroens
-' * Improved ResetStatusFlags error assessment
-'
-'==============================================================================
 Option Strict On
-
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
@@ -243,8 +111,19 @@ Public Interface ICoreGroup
     ''' <remarks>This can be used as a flag to tell if a group is mixed consumer/producer, primary producer or a detritus group.</remarks>
     Property PP() As Single
 
+    ''' <summary>
+    ''' Helper method; gets whether this group is a consumer.
+    ''' </summary>
     ReadOnly Property IsConsumer() As Boolean
+
+    ''' <summary>
+    ''' Helper method; gets whether this group is a primary producer.
+    ''' </summary>
     ReadOnly Property IsProducer() As Boolean
+
+    ''' <summary>
+    ''' Helper method; gets whether this group is detritus.
+    ''' </summary>
     ReadOnly Property IsDetritus() As Boolean
 
 End Interface ' ICoreGroup
@@ -369,27 +248,53 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Public Functions/Methods "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the unique ID for this object
+    ''' Returns the unique ID for this object as a text string.
     ''' </summary>
-    Public Function getID() As String Implements ICoreInterface.GetID
-        ' Return unique ID
+    ''' -----------------------------------------------------------------------
+    Public Function getID() As String _
+        Implements ICoreInterface.GetID
         Return cValueID.getDataTypeID(Me.m_dataType, Me.DBID)
     End Function
 
-    Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="eDataTypes">data type</see> uniquely identifying
+    ''' the type of core data that this class implements.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DataType() As eDataTypes _
+        Implements ICoreInterface.DataType
         Get
             Return Me.m_dataType
         End Get
     End Property
 
-    Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="eCoreComponentType">core component type</see> that
+    ''' this object belongs to. Component types are useful for determining the
+    ''' level of impact that objects have on the EwE computing model.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property CoreComponent() As eCoreComponentType _
+        Implements ICoreInterface.CoreComponent
         Get
             Return Me.m_coreComponent
         End Get
     End Property
 
-    Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the remark to attach to a variable in a core data object.
+    ''' </summary>
+    ''' <param name="varName">Variable name that a remark applies to.</param>
+    ''' <param name="objSec">Secundary object within the given <paramref name="varName">variable</paramref>
+    ''' that a remark applies to.</param>
+    ''' -----------------------------------------------------------------------
+    Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
+                           Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
         Get
             Dim strValueID As String = cValueID.Generate(Me, varName, objSec)
             Return Me.m_core.Remark(strValueID)
@@ -404,6 +309,7 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Mustoverride Methods "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Public access to set the status flags by calling each validator.
     ''' </summary>
@@ -411,6 +317,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <remarks>This is the default behaviour for Input objects. Output 
     ''' objects will need to provide their own implementation due to the 
     ''' absence of validators.</remarks>
+    ''' -----------------------------------------------------------------------
     Friend Overridable Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
 
         Dim i As Integer
@@ -453,14 +360,15 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Get/Set Status"
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Returns the status of a variable in this object.
     ''' </summary>
-    ''' <param name="VarName"></param>
-    ''' <param name="iIndex"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
+    ''' <param name="VarName">Variable to request status information for.</param>
+    ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags, _
+                                          Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Return m_values.Item(VarName).Status(iIndex)
         Catch ex As Exception
@@ -469,14 +377,18 @@ Public MustInherit Class cCoreInputOutputBase
         End Try
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Replaces current status flags for a given variable with a new set of status flags.
     ''' </summary>
-    ''' <param name="VarName"></param>
-    ''' <param name="newStatus"></param>
-    ''' <param name="iIndex"></param>
+    ''' <param name="VarName">Variable to replace status information for.</param>
+    ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
+    ''' <param name="newStatus">The new status values to set.</param>
     ''' <returns>True if succesful.</returns>
-    Friend Function SetStatus(ByVal VarName As eVarNameFlags, ByVal newStatus As eStatusFlags, Optional ByVal iIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
+    ''' -----------------------------------------------------------------------
+    Friend Function SetStatus(ByVal VarName As eVarNameFlags, _
+                              ByVal newStatus As eStatusFlags, _
+                              Optional ByVal iIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
         Try
             m_values.Item(VarName).Status(iIndex) = newStatus
             Return True
@@ -486,14 +398,18 @@ Public MustInherit Class cCoreInputOutputBase
         End Try
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Adds a given set of status flags to existing status flags for a given variable.
     ''' </summary>
-    ''' <param name="VarName"></param>
-    ''' <param name="statusFlags"></param>
-    ''' <param name="iIndex"></param>
+    ''' <param name="VarName">Variable to add status information for.</param>
+    ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
+    ''' <param name="statusFlags">The status values to add.</param>
     ''' <returns>True if succesful.</returns>
-    Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags, ByVal statusFlags As eStatusFlags, Optional ByVal iIndex As Integer = -9999) As Boolean
+    ''' -----------------------------------------------------------------------
+    Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags, _
+                                   ByVal statusFlags As eStatusFlags, _
+                                   Optional ByVal iIndex As Integer = -9999) As Boolean
         Try
             m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) Or statusFlags
             Return True
@@ -503,13 +419,15 @@ Public MustInherit Class cCoreInputOutputBase
         End Try
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Clears a given set of status flags from existing status flags for a given variable.
     ''' </summary>
-    ''' <param name="VarName"></param>
-    ''' <param name="statusFlags"></param>
-    ''' <param name="iIndex"></param>
+    ''' <param name="VarName">Variable to clear status information for.</param>
+    ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
+    ''' <param name="statusFlags">The status values to clear.</param>
     ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
     Friend Function ClearStatusFlags(ByVal VarName As eVarNameFlags, ByVal statusFlags As eStatusFlags, Optional ByVal iIndex As Integer = -9999) As Boolean
         Try
             m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) And (Not statusFlags)
@@ -524,14 +442,16 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Get/set variable "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the value of a variable 
+    ''' Return the value of a variable.
     ''' </summary>
     ''' <param name="VarName"><see cref="eVarNameFlags">Name</see> of the variable to set.</param>
     ''' <param name="iIndex">Optional index for indexed variables.</param>
     ''' <param name="iIndex2">Optional index for indexed variables.</param>
     ''' <returns></returns>
     ''' <remarks>This only provides variables for one optional index Override this if you you need access to variables with two indexes</remarks>
+    ''' -----------------------------------------------------------------------
     Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
 
         Try
@@ -647,6 +567,16 @@ Public MustInherit Class cCoreInputOutputBase
 
 #Region " Properties by dot(.) operator "
 
+    ''' <summary>
+    ''' Get/set whether <see cref="SetVariable">variable updates</see> should pass
+    ''' through the formal variable validation structure.
+    ''' </summary>
+    ''' <remarks>
+    ''' If enabled, validation will allow the core to respond to value changes.
+    ''' Typically, validation should be turned OFF when populating variables from
+    ''' the EwECore, and should be turned ON to respond to changes made by 
+    ''' user interfaces or by remote calculations.
+    ''' </remarks>
     Friend Overridable Property AllowValidation() As Boolean
         Get
             Return m_bValidate
@@ -665,6 +595,20 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.Name">name</see> of a core object. 
+    ''' Every ICoreInterface derived instance in EwE6 has a name.
+    ''' </summary>
+    ''' <remarks>
+    ''' In EwE5, names were required to be unique for a given class of object
+    ''' since names served as primary indexes in the database. In EwE6, this
+    ''' behaviour has been changed. Names do no longer have to be unique for
+    ''' each <see cref="eDataTypes">class of object</see>; names merely serve
+    ''' to help identify objects in a user interface. Underneath, every object
+    ''' in the EwE6 core has a unique <see cref="eVarNameFlags.DBID">database
+    ''' ID</see> for a given datatype. The database ID is exposed to the core 
+    ''' via <see cref="DBID">DBID</see>, but is invisible outside the EwE core.
+    ''' </remarks>
     Public Property Name() As String Implements ICoreInterface.Name
         Get
             Return DirectCast(GetVariable(eVarNameFlags.Name), String)
@@ -675,6 +619,18 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the one-based <see cref="eVarNameFlags.Index">index</see> of a 
+    ''' cCoreInputOutputBase instance in the list that it is contained in.
+    ''' </summary>
+    ''' <remarks>
+    ''' In EwE5, indexes were used to link objects together. In EwE6, this 
+    ''' linkage system has been replaced with unique 
+    ''' <see cref="eVarNameFlags.DBID">database IDs</see> values per 
+    ''' <see cref="eDataTypes">object data type (or object class)</see>. The
+    ''' database ID is exposed to the core via <see cref="DBID">DBID</see>,
+    ''' but is invisible outside the EwE core.
+    ''' </remarks>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
             Return DirectCast(GetVariable(eVarNameFlags.Index), Integer)
@@ -694,7 +650,7 @@ Public MustInherit Class cCoreInputOutputBase
     End Property
 
     ''' <summary>
-    ''' Returns the persistent unique ID for an ICoreInputOutput.
+    ''' Returns the persistent unique database ID for an ICoreInputOutput.
     ''' </summary>
     ''' <remarks>
     ''' Applicaton layers built on top of the core will probably never need direct 
@@ -709,7 +665,12 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
-    Public ReadOnly Property ValidationStatus() As cVariableStatus Implements ICoreInputOutput.ValidationStatus
+    ''' <summary>
+    ''' Get the outcome of the most recently performed variable validation 
+    ''' attempt on a cCoreInutOutputBase instance.
+    ''' </summary>
+    Public ReadOnly Property ValidationStatus() As cVariableStatus _
+        Implements ICoreInputOutput.ValidationStatus
         Get
             Return m_ValidationStatus
         End Get
@@ -736,11 +697,17 @@ End Class ' CoreInputOutputBase
 
 #Region " cCoreGroupBase "
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Base implementation of a core <see cref="ICoreGroup">group</see>. This
+''' class serves as an base class for building dedicated group classes for the
+''' various EwE components.
+''' </summary>
+''' --------------------------------------------------------------------------- 
 Public Class cCoreGroupBase
     Inherits cCoreInputOutputBase
     Implements ICoreGroup
 
-    'Protected m_isMultiStanza As Boolean = False
     ''' <summary>Zero-based index of the stanza configuration this group belongs to.</summary>
     Protected m_iStanza As Integer = cCore.NULL_VALUE
 
@@ -764,18 +731,27 @@ Public Class cCoreGroupBase
 
     End Sub
 
-    Public ReadOnly Property isMultiStanza() As Boolean Implements ICoreGroup.isMultiStanza
+    ''' <summary>
+    ''' Get whether this group is part of a multi-stanza configuration.
+    ''' </summary>
+    Public ReadOnly Property isMultiStanza() As Boolean _
+        Implements ICoreGroup.isMultiStanza
         Get
             Return Me.iStanza <> cCore.NULL_VALUE
         End Get
     End Property
 
     ''' <summary>
-    ''' See <see cref="ePrimaryProductionTypes">ePrimaryProductionTypes</see> for possible values.
+    ''' The ratio that this group contributes to Primary Production.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>This method will return one of the following values:
+    ''' <list type="bullet">
+    ''' <item>0-1 for mixed consumer/producer groups</item>
+    ''' <item>1 for primary producers</item>
+    ''' <item>2 for detritus groups</item>
+    ''' </list>
+    ''' </returns>
+    ''' <remarks>This can be used as a flag to tell if a group is mixed consumer/producer, primary producer or a detritus group.</remarks>
     Public Property PP() As Single Implements ICoreGroup.PP
         Get
             Return DirectCast(GetVariable(eVarNameFlags.PP), Single)
@@ -789,34 +765,41 @@ Public Class cCoreGroupBase
     ''' Get/set the zero-based index of the stanza configuration 
     ''' this group belongs to.
     ''' </summary>
-    Public Property iStanza() As Integer Implements ICoreGroup.StanzaID
+    Public Property iStanza() As Integer _
+        Implements ICoreGroup.StanzaID
         Get
             Return m_iStanza
         End Get
         Set(ByVal value As Integer)
             m_iStanza = value
-            ''if the stanza id is not NULL then this is a multi stanza group
-            'If value <> cCore.NULL_VALUE Then
-            '    m_isMultiStanza = True
-            'Else
-            '    m_isMultiStanza = False
-            'End If
         End Set
     End Property
 
-    Public ReadOnly Property IsConsumer() As Boolean Implements ICoreGroup.IsConsumer
+    ''' <summary>
+    ''' Helper method; gets whether this group is a consumer.
+    ''' </summary>
+    Public ReadOnly Property IsConsumer() As Boolean _
+        Implements ICoreGroup.IsConsumer
         Get
             Return (Me.PP < 1.0)
         End Get
     End Property
 
-    Public ReadOnly Property IsDetritus() As Boolean Implements ICoreGroup.IsDetritus
+    ''' <summary>
+    ''' Helper method; gets whether this group is detritus.
+    ''' </summary>
+    Public ReadOnly Property IsDetritus() As Boolean _
+        Implements ICoreGroup.IsDetritus
         Get
             Return (Me.PP = 2.0)
         End Get
     End Property
 
-    Public ReadOnly Property IsProducer() As Boolean Implements ICoreGroup.IsProducer
+    ''' <summary>
+    ''' Helper method; gets whether this group is a primary producer.
+    ''' </summary>
+    Public ReadOnly Property IsProducer() As Boolean _
+        Implements ICoreGroup.IsProducer
         Get
             Return (Me.PP > 0 And Me.PP <= 1.0)
         End Get
@@ -833,7 +816,8 @@ End Class ' cCoreGroupBase
 ''' Strong-typed list that handles item index offset headaches transparently.
 ''' </summary>
 ''' <remarks>
-''' JS 27Aug07: list change event functionality is suspended to prevent confusion in different methods on how to use these list.
+''' JS 27Aug07: list change event functionality is suspended to prevent confusion
+''' in different methods on how to use these list.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCoreInputOutputList(Of T)

@@ -1,123 +1,13 @@
-'==============================================================================
-'
-' $Log: cEcoPathGroupOutput.vb,v $
-' Revision 1.12  2009/06/18 20:39:22  jeroens
-' Solved issue 559
-'
-' Revision 1.11  2009/05/22 22:31:07  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.10  2009/03/19 21:45:10  joeh
-' Add two biomass variables for the Size/Weight plot
-'
-' Revision 1.9  2009/03/18 13:27:50  jeroens
-' Moved PSD data from EcopathDS to PSDDS
-'
-' Revision 1.8  2009/03/17 02:25:49  joeh
-' Add Lorenzen mortality type
-'
-' Revision 1.7  2009/03/11 00:14:28  joeh
-' Add PSD calculation
-'
-' Revision 1.6  2009/03/06 00:47:56  joeh
-' Add Ecopath output data (Weight, Number, Biomass) over time
-'
-' Revision 1.5  2009/03/03 01:42:55  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.4  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.3  2009/02/28 00:17:51  joeh
-' Added PSD foundation
-'
-' Revision 1.2  2009/01/16 18:30:15  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:18  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.50  2008/07/02 01:55:23  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.49  2008/05/29 22:22:42  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.48  2008/03/06 02:37:43  jeroens
-' Fixed enum names
-'
-' Revision 1.47  2008/03/02 15:19:14  jeroens
-' Fixed issue 435
-'
-' Revision 1.46  2008/02/18 16:01:01  jeroens
-' Fixed null flag testing
-'
-' Revision 1.45  2008/01/11 10:16:25  jeroens
-' cEcopathGroupOutput.SetOutputStatus discontinued; instead performed by ResetStatusFlags
-'
-' Revision 1.44  2008/01/10 12:04:23  jeroens
-' Reinstated NULL check
-'
-' Revision 1.43  2007/09/13 15:50:02  joeb
-' SetNullFlag added test for Null_Value to if bZeroOnly = True
-'
-' Revision 1.42  2007/09/10 01:41:51  jeroens
-' * Allowed negative values (fixed bugs 165, 166, 180)
-'
-' Revision 1.41  2007/08/07 16:34:50  jeroens
-' + BiomAccumRate now propery represented
-' * SetNullFlag able to handle explicit =0 nulls
-'
-' Revision 1.40  2007/06/23 00:27:06  jeroens
-' * Mortality coefficients no longer flagged as null when negative; negative values are valid for this variable
-'
-' Revision 1.39  2007/05/22 13:25:37  jeroens
-' * Nitty-gritty
-'
-' Revision 1.38  2007/05/18 01:52:48  jeroens
-' * Renamed isReadOnly protected var
-'
-' Revision 1.37  2007/05/04 15:31:34  jeroens
-' + Uses invalid messages source to prevent unwanted updates
-'
-' Revision 1.36  2007/03/28 01:16:31  jeroens
-' * Changed all status modification access from Public to Friend
-'
-' Revision 1.35  2007/01/19 18:31:08  joeb
-' Changes to cValueArray constructor
-'
-' Revision 1.34  2007/01/19 00:49:51  joeb
-' Changes to cValueArray Constructor
-'
-' Revision 1.33  2006/09/29 18:17:36  joeb
-' Change setting of EE Status Flag
-'
-' Revision 1.32  2006/09/29 17:38:50  joeb
-' Setting of status flags to null for zero values
-'
-' Revision 1.31  2006/09/29 02:51:06  jeroens
-' * BiomassArea split into input and output
-'
-' Revision 1.30  2006/09/21 01:00:23  jeroens
-' * Updated to cCoreGroupBase
-'
-' Revision 1.29  2006/08/22 19:03:05  joeb
-' Renaming of Input and Output objects
-'
-' Revision 1.28  2006/08/22 04:11:07  jeroens
-' + Exposed a few more Ecopath output variables, once again
-' + Borrowed Alpha from Ecoranger
-'
-' Revision 1.27  2006/08/20 02:07:27  jeroens
-' * Strict On
-' + Exposed a few more variables
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
+''' <summary>
+''' Results from EcoPath for a single group.
+''' </summary>
+''' <remarks>
+''' This class wraps the outputs from EcoPath for one group into a single object.
+''' </remarks>
 Public Class cEcoPathGroupOutput
     Inherits cCoreGroupBase
 
@@ -1227,7 +1117,7 @@ Public Class cEcoPathGroupOutput
     Public Property AreaStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Area)
+            Return GetStatus(eVarNameFlags.Area)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1239,7 +1129,7 @@ Public Class cEcoPathGroupOutput
     Public Property BiomassAccumStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.BioAccum)
+            Return GetStatus(eVarNameFlags.BioAccum)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1251,7 +1141,7 @@ Public Class cEcoPathGroupOutput
     Public Property BiomassStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Biomass)
+            Return GetStatus(eVarNameFlags.Biomass)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1275,7 +1165,7 @@ Public Class cEcoPathGroupOutput
     Public Property EEOutputStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.EEOutput)
+            Return GetStatus(eVarNameFlags.EEOutput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1287,7 +1177,7 @@ Public Class cEcoPathGroupOutput
     Public Property GEOutputStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.GEOutput)
+            Return GetStatus(eVarNameFlags.GEOutput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1299,7 +1189,7 @@ Public Class cEcoPathGroupOutput
     Public Property GSStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.GS)
+            Return GetStatus(eVarNameFlags.GS)
 
         End Get
 
@@ -1312,7 +1202,7 @@ Public Class cEcoPathGroupOutput
     Public Property ImportedConsumptionStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.ImportedConsumption)
+            Return GetStatus(eVarNameFlags.ImportedConsumption)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1324,7 +1214,7 @@ Public Class cEcoPathGroupOutput
     Public Property MortCoBioAcumRateStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoBioAcumRate)
+            Return GetStatus(eVarNameFlags.MortCoBioAcumRate)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1336,7 +1226,7 @@ Public Class cEcoPathGroupOutput
     Public Property MortCoFishRateStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoFishRate)
+            Return GetStatus(eVarNameFlags.MortCoFishRate)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1349,7 +1239,7 @@ Public Class cEcoPathGroupOutput
     Public Property MortCoNetMigStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoNetMig)
+            Return GetStatus(eVarNameFlags.MortCoNetMig)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1361,7 +1251,7 @@ Public Class cEcoPathGroupOutput
     Public Property MortCoOtherMortStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoOtherMort)
+            Return GetStatus(eVarNameFlags.MortCoOtherMort)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1373,7 +1263,7 @@ Public Class cEcoPathGroupOutput
     Public Property MostCoPBStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoPB)
+            Return GetStatus(eVarNameFlags.MortCoPB)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1385,7 +1275,7 @@ Public Class cEcoPathGroupOutput
     Public Property MostCoPredMortStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.MortCoPredMort)
+            Return GetStatus(eVarNameFlags.MortCoPredMort)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1397,7 +1287,7 @@ Public Class cEcoPathGroupOutput
     Public Property PBOutputStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.PBOutput)
+            Return GetStatus(eVarNameFlags.PBOutput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1409,7 +1299,7 @@ Public Class cEcoPathGroupOutput
     Public Property QBStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.QBOutput)
+            Return GetStatus(eVarNameFlags.QBOutput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1421,7 +1311,7 @@ Public Class cEcoPathGroupOutput
     Public Property TTLXStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.TTLX)
+            Return GetStatus(eVarNameFlags.TTLX)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1433,7 +1323,7 @@ Public Class cEcoPathGroupOutput
     Public Property PredMortStatus(ByVal iPred As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.PredMort)
+            Return GetStatus(eVarNameFlags.PredMort)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1445,7 +1335,7 @@ Public Class cEcoPathGroupOutput
     Public Property NetMigrationStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NetMigration)
+            Return GetStatus(eVarNameFlags.NetMigration)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1457,7 +1347,7 @@ Public Class cEcoPathGroupOutput
     Public Property FlowToDetStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.FlowToDet)
+            Return GetStatus(eVarNameFlags.FlowToDet)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1469,7 +1359,7 @@ Public Class cEcoPathGroupOutput
     Public Property NetEfficiencyStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NetEfficiency)
+            Return GetStatus(eVarNameFlags.NetEfficiency)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1481,7 +1371,7 @@ Public Class cEcoPathGroupOutput
     Public Property OmnivoryIndexStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.OmnivoryIndex)
+            Return GetStatus(eVarNameFlags.OmnivoryIndex)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1493,7 +1383,7 @@ Public Class cEcoPathGroupOutput
     Public Property RespirationStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Respiration)
+            Return GetStatus(eVarNameFlags.Respiration)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1505,7 +1395,7 @@ Public Class cEcoPathGroupOutput
     Public Property AssimilationStatus(ByVal iGroup As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Assimilation)
+            Return GetStatus(eVarNameFlags.Assimilation)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1517,7 +1407,7 @@ Public Class cEcoPathGroupOutput
     Public Property SearchRateStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.SearchRate)
+            Return GetStatus(eVarNameFlags.SearchRate)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
@@ -1529,7 +1419,7 @@ Public Class cEcoPathGroupOutput
     Public Property SearchRateStatus(ByVal iPred As Integer) As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.SearchRate, iPred)
+            Return GetStatus(eVarNameFlags.SearchRate, iPred)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)

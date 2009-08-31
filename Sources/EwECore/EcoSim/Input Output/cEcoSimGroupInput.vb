@@ -1,88 +1,12 @@
-'==============================================================================
-'
-' $Log: cEcoSimGroupInput.vb,v $
-' Revision 1.6  2009/01/16 18:30:17  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.5  2008/11/27 23:38:10  joeb
-' Removed MaxFishingMort
-'
-' Revision 1.4  2008/10/08 20:32:11  joeb
-' Added CVBest and KalWt
-'
-' Revision 1.3  2008/10/08 17:53:34  jeroens
-' Added target fishing mortality policy vars
-'
-' Revision 1.2  2008/10/03 22:00:23  jeroens
-' CType -> DirectCast
-'
-' Revision 1.1  2008/09/26 07:30:19  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.11  2008/09/25 02:22:24  jeroens
-' Moved max fishing mortaility from search datastructures to Ecosim
-'
-' Revision 1.10  2008/07/02 01:55:24  jeroens
-' Added option to force status flag total reset (fixes bug 503)
-'
-' Revision 1.9  2008/05/29 22:22:43  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.8  2008/04/03 15:19:02  joeb
-' Removed VulRate access to vulnerabilities is through VulMult
-'
-' Revision 1.7  2008/02/28 20:32:13  joeb
-' Added Left and Right Salinity
-'
-' Revision 1.6  2007/12/04 02:20:28  jeroens
-' * Fixed salinity variable definitions
-'
-' Revision 1.5  2007/12/03 18:51:21  joeb
-' Added Salinity variables
-'
-' Revision 1.4  2007/08/09 16:12:57  jeroens
-' * PP-related status flags correctly updated in ResetStatusFlags
-'
-' Revision 1.3  2007/06/15 18:27:54  joeb
-' ResetStatusFlags to not set the status flag of VulRate or VulMult this is handled by the core
-'
-' Revision 1.2  2007/05/22 13:25:37  jeroens
-' * Nitty-gritty
-'
-' Revision 1.1  2007/05/01 19:02:29  joeb
-' Changed directory structure
-'
-' Revision 1.10  2007/01/19 18:31:33  joeb
-' Changes to cValueArray constructor
-'
-' Revision 1.9  2007/01/19 00:50:14  joeb
-' Changes to cValueArray constructor
-'
-' Revision 1.8  2007/01/12 01:27:34  joeb
-' Removed SeasonType() and MF() arrays
-'
-' Revision 1.7  2006/12/14 23:32:59  jeroens
-' * Updated variable definitions to metadata default value
-'
-' Revision 1.6  2006/10/11 17:00:58  jeroens
-' * Merged different sources of vbK
-'
-' Revision 1.5  2006/09/30 13:27:48  jeroens
-' Added header, strict ON
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Class to encapsulate group parameters for a single group in the cEcoSim Model
-''' Matrix data (data that is by pred,prey) will be dimensioned by nGroups
-''' i.e. VulRate(nGroups) is an array that holds vulnerability rates of predation by a group for this group/prey
+''' Inputs for EcoSim for a single group.
 ''' </summary>
 ''' <remarks>
-''' Used to pass group parameters from EcoSim to an interface via cModelInterface
+''' This class wraps the inputs to EcoSim for one group into a single object.
 ''' </remarks>
 Public Class cEcoSimGroupInput
     Inherits cCoreGroupBase
@@ -479,7 +403,7 @@ Public Class cEcoSimGroupInput
 
 
 
-   
+
     'jb remove Vulrate until it is needed
     'Public Property VulRate(ByVal iGroup As Integer) As Single
 

@@ -1,57 +1,15 @@
-'==============================================================================
-'
-' $Log: cEcoPathGroupInput.vb,v $
-' Revision 1.10  2009/05/22 22:31:07  joeh
-' Tcatch reverted to have input and output pair because of new user requirement
-'
-' Revision 1.9  2009/04/02 16:20:40  jeroens
-' PSDIncluded moved to PSD model
-'
-' Revision 1.8  2009/03/18 13:28:54  jeroens
-' Added PSDIncluded flag
-'
-' Revision 1.7  2009/03/03 01:42:55  joeh
-' Tcatch no longer has input and output pair
-'
-' Revision 1.6  2009/03/03 01:16:23  joeh
-' Add Set_Tcatch_Flags
-' Add Set_Tmax_Flags
-'
-' Revision 1.5  2009/03/02 20:09:36  joeh
-' VBK no longer has input and output pair
-'
-' Revision 1.4  2009/02/28 00:17:46  joeh
-' Added PSD foundation
-'
-' Revision 1.3  2009/02/27 07:55:15  jeroens
-' Changed vbK placement
-'
-' Revision 1.2  2009/01/16 18:30:15  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:17  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Inputs for the EcoPath
+''' Inputs for EcoPath for a single group.
 ''' </summary>
 ''' <remarks>
-''' This class wraps the inputs to EcoPath for one group into a single object
-''' Data validation and default NULL value from Ewe-5 frmInputData.vaInput_Change
+''' This class wraps the inputs to EcoPath for one group into a single object.
 ''' </remarks>
 Public Class cEcoPathGroupInput
     Inherits cCoreGroupBase
-
-    ' JS Mar-29-07: Private vars not used outside constructor: disabled
-    ' Private m_nGroups As Integer
-    ' Private m_nliving As Integer
-    ' Private m_nDetritus As Integer
 
 #Region "Private stuff"
 

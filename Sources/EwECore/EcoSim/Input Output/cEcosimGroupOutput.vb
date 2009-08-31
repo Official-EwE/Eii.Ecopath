@@ -3,6 +3,12 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
+''' <summary>
+''' Results from EcoSim for a single group.
+''' </summary>
+''' <remarks>
+''' This class wraps results from EcoSim for one group into a single object.
+''' </remarks>
 Public Class cEcosimGroupOutput
     Inherits cCoreGroupBase
 
