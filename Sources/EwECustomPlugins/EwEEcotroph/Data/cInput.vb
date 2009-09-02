@@ -1,17 +1,8 @@
-'==============================================================================
-'
-' $Log: cInput.vb,v $
-' Revision 1.1  2008/09/26 07:30:38  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.63  2008/06/05 19:43:48  joeh
-' no message
-'
-'==============================================================================
 Option Explicit On
 Option Strict On
 
 Imports System.IO
+Imports System.Globalization
 
 Public Class cInput
 
@@ -21,6 +12,9 @@ Public Class cInput
     Private Const TL_INCRM As Double = 0.1
     Private Const NUM_KINETIC_PARAMETER As Integer = 3
     Private Const NUM_EFFORT_MULTIPLIER As Integer = 11
+
+    Private m_ni As NumberFormatInfo = Nothing
+
 #Region "Transpose"
     Private m_SmoothFactor As Single
     Private m_Sigma() As Single
@@ -75,6 +69,17 @@ Public Class cInput
     Private m_CatchPastAnalysis(,) As Single
 #End Region 'Dynamics
 #End Region 'Private fields
+
+#Region " Constructor "
+
+    Public Sub New()
+        ' Culturization ;)
+        Dim ci As CultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-us")
+        Me.m_ni = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+        Me.m_ni.NumberDecimalSeparator = "."
+    End Sub
+
+#End Region ' Constructor
 
 #Region "Public properties"
 #Region "Transpose"
@@ -586,18 +591,18 @@ Public Class cInput
                 Reader = File.OpenText(FilePath)
                 Select Case FileName
                     Case "SmoothFactor"
-                        m_SmoothFactor = CSng(Reader.ReadLine)
+                        m_SmoothFactor = Single.Parse(Reader.ReadLine, Me.m_ni)
                     Case "Sigma"
                         ReDim m_Sigma(EcotrophManager.EcopathData.NumGroups)
 
                         For Idx As Integer = 1 To EcotrophManager.EcopathData.NumGroups
-                            m_Sigma(Idx) = CSng(Reader.ReadLine)
+                            m_Sigma(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "Access"
                         ReDim m_Access(EcotrophManager.EcopathData.NumGroups)
 
                         For Idx As Integer = 1 To EcotrophManager.EcopathData.NumGroups
-                            m_Access(Idx) = CSng(Reader.ReadLine)
+                            m_Access(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "CTSAParameter"
                         m_CTSANumTL = 1
@@ -608,26 +613,26 @@ Public Class cInput
                         ReDim m_CTSAFormD(m_CTSANumTL)
                         ReDim m_Catches(m_CTSANumTL)
 
-                        m_WaterTemp = CSng(Reader.ReadLine)
-                        m_TETL12 = CSng(Reader.ReadLine)
-                        m_TETL2 = CSng(Reader.ReadLine)
+                        m_WaterTemp = Single.Parse(Reader.ReadLine, Me.m_ni)
+                        m_TETL12 = Single.Parse(Reader.ReadLine, Me.m_ni)
+                        m_TETL2 = Single.Parse(Reader.ReadLine, Me.m_ni)
                         For Idx As Integer = 1 To m_CTSANumTL
-                            m_CTSATopD(Idx) = CSng(Reader.ReadLine)
+                            m_CTSATopD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                         For Idx As Integer = 1 To m_CTSANumTL
-                            m_CTSAFormD(Idx) = CSng(Reader.ReadLine)
+                            m_CTSAFormD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
-                        m_Asymptote = CSng(Reader.ReadLine)
-                        m_TL50 = CSng(Reader.ReadLine)
-                        m_Slope = CSng(Reader.ReadLine)
+                        m_Asymptote = Single.Parse(Reader.ReadLine, Me.m_ni)
+                        m_TL50 = Single.Parse(Reader.ReadLine, Me.m_ni)
+                        m_Slope = Single.Parse(Reader.ReadLine, Me.m_ni)
                         For Idx As Integer = 1 To m_CTSANumTL
-                            m_Catches(Idx) = CSng(Reader.ReadLine)
+                            m_Catches(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "KineticParameter"
                         ReDim m_KineticParameter(NUM_KINETIC_PARAMETER)
 
                         For Idx As Integer = 1 To NUM_KINETIC_PARAMETER
-                            m_KineticParameter(Idx) = CSng(Reader.ReadLine)
+                            m_KineticParameter(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "CTSACatches"
                         LineItems = ItemsPerLine(Reader, 1)
@@ -636,7 +641,7 @@ Public Class cInput
                         Select Case m_TransposeAlgorImport
                             Case My.Resources.TREE_NODE_AUTO_SMOOTH
                                 LineItems = ItemsPerLine(Reader, 2)
-                                m_SmoothFactorImport = CSng(LineItems(1))
+                                m_SmoothFactorImport = Single.Parse(LineItems(1), Me.m_ni)
                                 LineItems = ItemsPerLine(Reader, 3)
                                 m_NumFleetImport = LineItems.GetUpperBound(0) - 2
                                 m_NumGroupImport = NumberLinePerFile(Reader) - 2
@@ -646,10 +651,10 @@ Public Class cInput
                                 ReDim m_CatchesImport(m_NumFleetImport, m_NumLivingImport)
                                 For LineNum As Integer = 3 To m_NumGroupImport + 2
                                     LineItems = ItemsPerLine(Reader, LineNum)
-                                    m_TLImport(LineNum - 2) = CSng(LineItems(2))
+                                    m_TLImport(LineNum - 2) = Single.Parse(LineItems(2), Me.m_ni)
                                     If LineNum < m_NumGroupImport + 2 Then
                                         For FleetNum As Integer = 1 To m_NumFleetImport
-                                            m_CatchesImport(FleetNum, LineNum - 2) = CSng(LineItems(FleetNum + 2))
+                                            m_CatchesImport(FleetNum, LineNum - 2) = Single.Parse(LineItems(FleetNum + 2), Me.m_ni)
                                         Next
                                     End If
                                 Next
@@ -664,12 +669,12 @@ Public Class cInput
                                 ReDim m_SigmaImport(m_NumLivingImport)
                                 For LineNum As Integer = 2 To m_NumGroupImport + 1
                                     LineItems = ItemsPerLine(Reader, LineNum)
-                                    m_TLImport(LineNum - 1) = CSng(LineItems(2))
+                                    m_TLImport(LineNum - 1) = Single.Parse(LineItems(2), Me.m_ni)
                                     If LineNum < m_NumGroupImport + 1 Then
                                         For FleetNum As Integer = 1 To m_NumFleetImport
-                                            m_CatchesImport(FleetNum, LineNum - 1) = CSng(LineItems(FleetNum + 2))
+                                            m_CatchesImport(FleetNum, LineNum - 1) = Single.Parse(LineItems(FleetNum + 2), Me.m_ni)
                                         Next
-                                        m_SigmaImport(LineNum - 1) = CSng(LineItems(LineItems.GetUpperBound(0)))
+                                        m_SigmaImport(LineNum - 1) = Single.Parse(LineItems(LineItems.GetUpperBound(0)), Me.m_ni)
                                     End If
                                 Next
                             Case Else
@@ -677,12 +682,12 @@ Public Class cInput
                         End Select
                     Case "CTSAFwdCalParameter"
                         m_SeedNameFwdCal = Reader.ReadLine
-                        m_SeedValueFwdCal = CSng(Reader.ReadLine)
+                        m_SeedValueFwdCal = Single.Parse(Reader.ReadLine, Me.m_ni)
                     Case "CTSABwdCalParameter"
-                        m_TTL = CSng(Reader.ReadLine)
-                        'm_SlopeSelectivityTTL = CSng(Reader.ReadLine)
+                        m_TTL = Single.Parse(Reader.ReadLine, Me.m_ni)
+                        'm_SlopeSelectivityTTL = Single.Parse(Reader.ReadLine, Me.m_ni)
                         m_SeedNameBwdCal = Reader.ReadLine
-                        m_SeedValueBwdCal = CSng(Reader.ReadLine)
+                        m_SeedValueBwdCal = Single.Parse(Reader.ReadLine, Me.m_ni)
                     Case "DiagnosisParameter"
                         m_DiagnosisNumTL = 1
                         For TLIn As Double = TL_OUT_INIT To TL_OUT_FINAL Step TL_INCRM
@@ -692,17 +697,17 @@ Public Class cInput
                         ReDim m_DiagnosisFormD(m_DiagnosisNumTL)
 
                         For Idx As Integer = 1 To m_DiagnosisNumTL
-                            m_DiagnosisTopD(Idx) = CSng(Reader.ReadLine)
+                            m_DiagnosisTopD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                         For Idx As Integer = 1 To m_DiagnosisNumTL
-                            m_DiagnosisFormD(Idx) = CSng(Reader.ReadLine)
+                            m_DiagnosisFormD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
-                        m_DiagnosisBeta = CSng(Reader.ReadLine)
+                        m_DiagnosisBeta = Single.Parse(Reader.ReadLine, Me.m_ni)
                     Case "EffortMultiplier"
                         ReDim m_EffortMultiplier(NUM_EFFORT_MULTIPLIER)
 
                         For Idx As Integer = 1 To NUM_EFFORT_MULTIPLIER
-                            m_EffortMultiplier(Idx) = CSng(Reader.ReadLine)
+                            m_EffortMultiplier(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "DynamicsParameter"
                         m_DynamicsNumTL = 1
@@ -713,15 +718,15 @@ Public Class cInput
                         ReDim m_DynamicsFormD(m_DynamicsNumTL)
 
                         For Idx As Integer = 1 To m_DynamicsNumTL
-                            m_DynamicsTopD(Idx) = CSng(Reader.ReadLine)
+                            m_DynamicsTopD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                         For Idx As Integer = 1 To m_DynamicsNumTL
-                            m_DynamicsFormD(Idx) = CSng(Reader.ReadLine)
+                            m_DynamicsFormD(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
-                        m_DynamicsBeta = CSng(Reader.ReadLine)
+                        m_DynamicsBeta = Single.Parse(Reader.ReadLine, Me.m_ni)
                     Case "ForecastYear"
-                        m_ReferenceYear = CInt(Reader.ReadLine)
-                        m_NumForecastYear = CInt(Reader.ReadLine)
+                        m_ReferenceYear = Integer.Parse(Reader.ReadLine, Me.m_ni)
+                        m_NumForecastYear = Integer.Parse(Reader.ReadLine, Me.m_ni)
                     Case "CatchPastAnalysis"
                         LineItems = ItemsPerLine(Reader, 1)
                         m_TransposeAlgorImport = LineItems(1)
@@ -729,12 +734,12 @@ Public Class cInput
                         Select Case m_TransposeAlgorImport
                             Case My.Resources.TREE_NODE_AUTO_SMOOTH
                                 LineItems = ItemsPerLine(Reader, 2)
-                                m_SmoothFactorImport = CSng(LineItems(1))
+                                m_SmoothFactorImport = Single.Parse(LineItems(1), Me.m_ni)
                                 LineItems = ItemsPerLine(Reader, 3)
                                 m_NumPastAnalysisYear = LineItems.GetUpperBound(0)
                                 ReDim m_PastAnalysisYear(m_NumPastAnalysisYear)
                                 For YearNum As Integer = 1 To m_NumPastAnalysisYear
-                                    m_PastAnalysisYear(YearNum) = CInt(LineItems(YearNum))
+                                    m_PastAnalysisYear(YearNum) = Integer.Parse(LineItems(YearNum), Me.m_ni)
                                 Next
                                 m_NumFleetImport = 1
                                 m_NumGroupImport = NumberLinePerFile(Reader) - 3
@@ -747,9 +752,9 @@ Public Class cInput
                                     'Read catches(TL) one year at a time
                                     For LineNum As Integer = 4 To m_NumGroupImport + 3
                                         LineItems = ItemsPerLine(Reader, LineNum)
-                                        m_TLImport(LineNum - 3) = CSng(LineItems(2))
+                                        m_TLImport(LineNum - 3) = Single.Parse(LineItems(2), Me.m_ni)
                                         If LineNum < m_NumGroupImport + 3 Then
-                                            m_CatchesImport(m_NumFleetImport, LineNum - 3) = CSng(LineItems(YearNum + 2))
+                                            m_CatchesImport(m_NumFleetImport, LineNum - 3) = Single.Parse(LineItems(YearNum + 2), Me.m_ni)
                                         End If
                                     Next
                                     'Transpose catches -> EcotrophManager.AEFCatches
@@ -772,7 +777,7 @@ Public Class cInput
                                 m_NumPastAnalysisYear = LineItems.GetUpperBound(0)
                                 ReDim m_PastAnalysisYear(m_NumPastAnalysisYear)
                                 For YearNum As Integer = 1 To m_NumPastAnalysisYear
-                                    m_PastAnalysisYear(YearNum) = CInt(LineItems(YearNum))
+                                    m_PastAnalysisYear(YearNum) = Integer.Parse(LineItems(YearNum), Me.m_ni)
                                 Next
                                 m_NumFleetImport = 1
                                 m_NumGroupImport = NumberLinePerFile(Reader) - 2
@@ -786,10 +791,10 @@ Public Class cInput
                                     'Read catches(TL) one year at a time
                                     For LineNum As Integer = 3 To m_NumGroupImport + 2
                                         LineItems = ItemsPerLine(Reader, LineNum)
-                                        m_TLImport(LineNum - 2) = CSng(LineItems(2))
+                                        m_TLImport(LineNum - 2) = Single.Parse(LineItems(2), Me.m_ni)
                                         If LineNum < m_NumGroupImport + 2 Then
-                                            m_CatchesImport(m_NumFleetImport, LineNum - 2) = CSng(LineItems(YearNum + 2))
-                                            m_SigmaImport(LineNum - 2) = CSng(LineItems(LineItems.GetUpperBound(0)))
+                                            m_CatchesImport(m_NumFleetImport, LineNum - 2) = Single.Parse(LineItems(YearNum + 2), Me.m_ni)
+                                            m_SigmaImport(LineNum - 2) = Single.Parse(LineItems(LineItems.GetUpperBound(0)), Me.m_ni)
                                         End If
                                     Next
                                     'Transpose catches -> EcotrophManager.UserDefValCatches
@@ -834,19 +839,19 @@ Public Class cInput
                         ReDim m_IndexPPForecast(m_NumForecastYear)
 
                         For Idx As Integer = 1 To m_NumForecastYear
-                            m_IndexPPForecast(Idx) = CSng(Reader.ReadLine)
+                            m_IndexPPForecast(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "CatchMultiplier"
                         ReDim m_CatchMultiplier(m_NumForecastYear)
 
                         For Idx As Integer = 1 To m_NumForecastYear
-                            m_CatchMultiplier(Idx) = CSng(Reader.ReadLine)
+                            m_CatchMultiplier(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                     Case "IndexPPPastAnalysis"
                         ReDim m_IndexPPPastAnalysis(m_NumPastAnalysisYear)
 
                         For Idx As Integer = 1 To m_NumPastAnalysisYear
-                            m_IndexPPPastAnalysis(Idx) = CSng(Reader.ReadLine)
+                            m_IndexPPPastAnalysis(Idx) = Single.Parse(Reader.ReadLine, Me.m_ni)
                         Next
                 End Select
                 Reader.Close()
@@ -1056,22 +1061,22 @@ Public Class cInput
                 'first item in the Line
                 PosNextSep = Line.IndexOfAny(Chars)
                 PosInitSep = PosNextSep
-                CatchEstimate = CSng(Line.Substring(0, PosNextSep))
+                CatchEstimate = Single.Parse(Line.Substring(0, PosNextSep), Me.m_ni)
                 EndOfLine = False
                 Return CatchEstimate
                 'Case m_CatchPastAnalysis.GetUpperBound(1)
-                '    CatchEstimate = CSng(Line.Substring(PosInitSep + 1))
+                '    CatchEstimate = Single.Parse(Line.Substring(PosInitSep + 1), Me.m_ni)
                 '    Return CatchEstimate
             Case Else
                 PosNextSep = Line.IndexOfAny(Chars, PosInitSep + 1)
                 If PosNextSep <> -1 Then
-                    CatchEstimate = CSng(Line.Substring(PosInitSep + 1, PosNextSep - PosInitSep - 1))
+                    CatchEstimate = Single.Parse(Line.Substring(PosInitSep + 1, PosNextSep - PosInitSep - 1), Me.m_ni)
                     PosInitSep = PosNextSep
                     EndOfLine = False
                     Return CatchEstimate
                 Else
                     'last item in the Line reached
-                    CatchEstimate = CSng(Line.Substring(PosInitSep + 1))
+                    CatchEstimate = Single.Parse(Line.Substring(PosInitSep + 1), Me.m_ni)
                     EndOfLine = True
                     Return CatchEstimate
                 End If
