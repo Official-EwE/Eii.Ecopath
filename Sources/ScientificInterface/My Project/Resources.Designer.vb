@@ -1369,6 +1369,20 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property ExportXMLHS1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ExportXMLHS1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Eye_closed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Eye_closed", resourceCulture)
