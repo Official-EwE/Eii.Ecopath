@@ -190,7 +190,7 @@ Public Class cEcosimFleetOutput
 
     Public ReadOnly Property CatchBiomass(ByVal Time As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimFleetValueTime, Time))
+            Return CSng(GetVariable(eVarNameFlags.EcosimFleetCatchTime, Time))
         End Get
 
     End Property
