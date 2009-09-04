@@ -2106,6 +2106,9 @@ Public Property PluginManager() As cPluginManager
                             eat = 0
                     End Select
 
+                    'predation mort by link
+                    m_Data.MPred(ii) = eat / (Bprey + 1.0E-20)
+
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + eat
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + eat
                     m_Data.Consumpt(i, j) = eat   'VILLY WHAT IS THIS USED FOR?  WRONG FOR COMPLEX ARENA CASES!
@@ -3934,6 +3937,7 @@ Public Property PluginManager() As cPluginManager
             End If
 
             ReDim m_Data.Qlink(m_Data.inlinks), m_Data.ilink(m_Data.inlinks), m_Data.jlink(m_Data.inlinks), m_Data.ArenaLink(m_Data.inlinks)
+            ReDim m_Data.MPred(m_Data.inlinks)
 
             'then set list variables by feeding link (note must be at least as many links as arenas
             Dim Il As Integer

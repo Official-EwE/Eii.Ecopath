@@ -346,6 +346,10 @@ Public Class cEcosimDatastructures
     Public ForcingShapeType() As eDataTypes
 
     Public Elect(,,) As Single
+    ''' <summary>
+    '''  Mortalily rate due to predation by Link
+    ''' </summary>
+    Public MPred() As Single
 
 #Region "Regulated Fisheries arrays"
 
@@ -628,7 +632,7 @@ Public Class cEcosimDatastructures
         ReDim ilink(nGroups * nGroups)
         ReDim jlink(nGroups * nGroups)
         ReDim SimDC(nGroups, nGroups)
-
+        ReDim MPred(nGroups * nGroups)
 
         ReDim vulrate(nGroups, nGroups)
         ReDim VulMult(nGroups, nGroups)
