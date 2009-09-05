@@ -13,6 +13,10 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports System.IO
+Imports SourceGrid2.Cells
+Imports System.Globalization
+Imports System.Threading
 
 #End Region
 
@@ -767,6 +771,96 @@ Namespace Controls.EwEGrid
 
         Public Function SelectedProperties() As cProperty()
             Return m_lpropertySelected.ToArray()
+        End Function
+
+        Public Function ReadContent(ByVal sr As StreamReader) As Boolean
+
+            Dim strLine As String = ""
+            Dim astrCells As String()
+            Dim cell As ICell = Nothing
+            Dim cellValue As Object = Nothing
+            Dim iRow As Integer = 0
+            Dim iCol As Integer = 0
+            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
+            Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            nfi.NumberDecimalSeparator = "."
+
+            Try
+                While Not sr.EndOfStream And iRow < Me.RowsCount
+                    strLine = sr.ReadLine()
+                    astrCells = strLine.Split(","c)
+                    For iCol = 0 To Math.Min(Me.ColumnsCount, astrCells.Length) - 1
+                        cell = Me(iRow, iCol)
+                        If cell IsNot Nothing Then
+                            If (cell.DataModel.EnableEdit = True) And _
+                               (cell.DataModel.EditableMode <> SourceGrid2.EditableMode.None) Then
+                                If (cell.DataModel.ValueType Is GetType(String)) Then
+                                    cell.Value = astrCells(iCol)
+                                Else
+                                    astrCells(iCol) = astrCells(iCol).Trim()
+                                    If String.IsNullOrEmpty(astrCells(iCol)) Then
+                                        astrCells(iCol) = CStr(cCore.NULL_VALUE)
+                                    End If
+                                    If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                        cell.Value = Single.Parse(astrCells(iCol), nfi)
+                                    ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                        cell.Value = Double.Parse(astrCells(iCol), nfi)
+                                    ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                        cell.Value = Integer.Parse(astrCells(iCol), nfi)
+                                    ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                                        cell.Value = Boolean.Parse(astrCells(iCol))
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Next
+                    iRow += 1
+                End While
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        Public Function WriteContent(ByVal sw As StreamWriter) As Boolean
+
+            Dim cell As ICell = Nothing
+            Dim cellValue As Object = Nothing
+            Dim strValue As String = ""
+            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
+            Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            nfi.NumberDecimalSeparator = "."
+
+            Try
+                For iRow As Integer = 0 To Me.RowsCount - 1
+                    For iCol As Integer = 0 To Me.ColumnsCount - 1
+                        cell = Me(iRow, iCol)
+
+                        If (cell IsNot Nothing) Then
+                            cellValue = cell.Value
+                            If (cellValue IsNot Nothing) Then
+                                If TypeOf (cellValue) Is String Then
+                                    sw.Write(cell.DisplayText)
+                                Else
+                                    strValue = Convert.ToString(cell.GetValue(New SourceGrid2.Position(iRow, iCol)), nfi)
+                                    sw.Write(strValue)
+                                End If
+                            End If
+                        End If
+                        sw.Write(",")
+                    Next
+                    sw.WriteLine()
+                Next
+
+            Catch ex As Exception
+                Return False
+            End Try
+
+            Return True
+
         End Function
 
 #End Region ' Selection behavior

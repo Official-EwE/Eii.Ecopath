@@ -5638,6 +5638,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Load grid content from a CSV file.
+        '''</summary>
+        Friend ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_GRID_LOADFROMCSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save grid content to a CSV file.
+        '''</summary>
+        Friend ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_GRID_SAVETOCSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Set this value to all selected cells.
+        '''</summary>
+        Friend ReadOnly Property TOOLTIP_GRID_SETVALUE() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_GRID_SETVALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to For stanza groups only, partial series are acceptable.
         '''</summary>
         Friend ReadOnly Property TS_AVERAGEWEIGHT_REMARKS() As String

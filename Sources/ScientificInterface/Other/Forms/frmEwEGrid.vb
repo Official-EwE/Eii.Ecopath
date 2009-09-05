@@ -1,30 +1,3 @@
-'==============================================================================
-'
-' $Log: frmEwEGrid.vb,v $
-' Revision 1.7  2009/05/28 12:37:33  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.6  2009/03/27 20:49:31  jeroens
-' Safety check on Dispose
-'
-' Revision 1.5  2009/03/27 19:24:43  jeroens
-' Cleanup done in overrides
-' Changed all withevents cases to addhandler, removehandler
-'
-' Revision 1.4  2009/03/12 14:10:30  jeroens
-' Core message rerouted to the grid
-'
-' Revision 1.3  2009/02/05 17:48:41  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.2  2008/12/15 15:55:33  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:32:08  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -36,6 +9,9 @@ Imports EwEUtils.Core
 Imports System.Globalization
 Imports System.Threading
 Imports System.Windows.Forms
+Imports EwEUtils.Commands
+Imports System.IO
+Imports SourceGrid2.Cells
 
 #End Region
 
@@ -75,6 +51,11 @@ Public Class frmEwEGrid
         Private m_btnSet As ToolStripButton = Nothing
         ''' <summary>Flag stating whether handler is attached.</summary>
         Private m_bAttached As Boolean = False
+
+        ' Import Export
+        Private m_sep As ToolStripSeparator = Nothing
+        Private m_btnImport As ToolStripButton = Nothing
+        Private m_btnExport As ToolStripButton = Nothing
 
 #End Region ' Private variables
 
@@ -126,6 +107,8 @@ Public Class frmEwEGrid
                 End If
             End If
 
+            Me.m_sep = New ToolStripSeparator()
+
             ' Create quick edit label
             Me.m_lblSet = New ToolStripLabel(My.Resources.LABEL_SET)
 
@@ -136,19 +119,44 @@ Public Class frmEwEGrid
 
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.NavForward)
+            Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_SETVALUE
             AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+
+            ' Create import button (input grids only)
+            If Not frmEwE.IsOutputForm(frm.CoreExecutionState) Then
+                Me.m_btnImport = New ToolStripButton(My.Resources.ImportXMLHS)
+                Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_GRID_LOADFROMCSV
+                AddHandler Me.m_btnImport.Click, AddressOf OnBtnImportClick
+            End If
+
+            ' Create export button
+            Me.m_btnExport = New ToolStripButton(My.Resources.ExportXMLHS)
+            Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_GRID_SAVETOCSV
+            AddHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
 
             ' Add items to the toolstrip
             If (ci.TextInfo.IsRightToLeft) Then
+                If (Me.m_btnImport IsNot Nothing) Then
+                    Me.m_btnImport.Alignment = ToolStripItemAlignment.Left
+                    Me.m_ts.Items.Add(Me.m_btnImport)
+                End If
+                Me.m_btnExport.Alignment = ToolStripItemAlignment.Left
+                Me.m_sep.Alignment = ToolStripItemAlignment.Left
                 Me.m_lblSet.Alignment = ToolStripItemAlignment.Left
                 Me.m_ttbValue.Alignment = ToolStripItemAlignment.Left
                 Me.m_btnSet.Alignment = ToolStripItemAlignment.Left
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_lblSet, Me.m_ttbValue, Me.m_btnSet})
+                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_lblSet, Me.m_ttbValue, Me.m_btnSet})
             Else
+                If (Me.m_btnImport IsNot Nothing) Then
+                    Me.m_btnImport.Alignment = ToolStripItemAlignment.Right
+                    Me.m_ts.Items.Add(Me.m_btnImport)
+                End If
+                Me.m_btnExport.Alignment = ToolStripItemAlignment.Right
+                Me.m_sep.Alignment = ToolStripItemAlignment.Right
                 Me.m_lblSet.Alignment = ToolStripItemAlignment.Right
                 Me.m_ttbValue.Alignment = ToolStripItemAlignment.Right
                 Me.m_btnSet.Alignment = ToolStripItemAlignment.Right
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnSet, Me.m_ttbValue, Me.m_lblSet})
+                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_btnSet, Me.m_ttbValue, Me.m_lblSet})
             End If
 
             ' Set attached flag
@@ -182,6 +190,16 @@ Public Class frmEwEGrid
                 Me.m_ts.Dispose()
                 Me.m_bToolStripCreated = False
             End If
+
+            If Me.m_btnImport IsNot Nothing Then
+                RemoveHandler Me.m_btnImport.Click, AddressOf OnBtnImportClick
+                Me.m_btnImport.Dispose()
+                Me.m_btnImport = Nothing
+            End If
+
+            RemoveHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
+            Me.m_btnExport.Dispose()
+            Me.m_btnExport = Nothing
 
             RemoveHandler Me.m_ttbValue.KeyDown, AddressOf OnTextBoxKeyDown
             Me.m_ttbValue.Dispose()
@@ -226,6 +244,26 @@ Public Class frmEwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; responds to Import button press to import grid content
+        ''' from a CSV file.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnBtnImportClick(ByVal sender As Object, ByVal e As System.EventArgs)
+            Me.ImportFromCSV()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; responds to Export button press to export grid content
+        ''' to a CSV file.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnBtnExportClick(ByVal sender As Object, ByVal e As System.EventArgs)
+            Me.ExportToCSV()
         End Sub
 
 #End Region ' Control events
@@ -358,6 +396,60 @@ Public Class frmEwEGrid
 
         End Sub
 
+        Private Function GetCSVFileName() As String
+            Return Me.m_form.Text
+        End Function
+
+        Private Sub ImportFromCSV()
+
+            Dim cmdh As cCommandHandler = cCommandHandler.getinstance()
+            Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            Dim fs As Stream = Nothing
+            Dim sr As StreamReader = Nothing
+
+            cmdOF.Invoke(Me.GetCSVFileName(), ".\", My.Resources.FILEFILTER_CSV)
+            If cmdOF.Result <> Windows.Forms.DialogResult.OK Then Return
+
+            Try
+                fs = New FileStream(cmdOF.FileName, _
+                                    FileMode.Open, _
+                                    FileAccess.Read, _
+                                    FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
+            Catch ex As Exception
+                Return
+            End Try
+
+            sr = New StreamReader(fs)
+            Me.m_grid.ReadContent(sr)
+            sr.Close()
+            fs.Close()
+
+        End Sub
+
+        Private Sub ExportToCSV()
+
+            Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
+            Dim cmdSF As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim fs As Stream = Nothing
+            Dim sw As StreamWriter = Nothing
+
+            cmdSF.Invoke(Me.GetCSVFileName(), ".\", My.Resources.FILEFILTER_CSV)
+            If cmdSF.Result <> Windows.Forms.DialogResult.OK Then Return
+
+            Try
+                'Create the file
+                fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
+            Catch ex As Exception
+                ' Woops! Send message?
+                Return
+            End Try
+            sw = New StreamWriter(fs)
+            Me.m_grid.WriteContent(sw)
+            sw.Close()
+            fs.Close()
+
+        End Sub
+
 #End Region 'Internal implementation
 
     End Class
@@ -482,12 +574,8 @@ Public Class frmEwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set Input state flag.
+    ''' Get/set core execution state for the form.
     ''' </summary>
-    ''' <remarks>
-    ''' EwE Input grids all have a Quick Edit bar. This method will ensure the
-    ''' bar is there for input grids, and is missing for output grids.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Overrides Property CoreExecutionState() As eCoreExecutionState
@@ -498,8 +586,9 @@ Public Class frmEwEGrid
 
         Set(ByVal value As eCoreExecutionState)
             MyBase.CoreExecutionState = value
-            ' Use a quick edit handler on input grids
-            Me.SetQuickEditHandler(frmEwE.IsInputForm(value))
+            ' Use a quick edit handler on all grids
+            ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
+            Me.SetQuickEditHandler(True)
         End Set
 
     End Property
