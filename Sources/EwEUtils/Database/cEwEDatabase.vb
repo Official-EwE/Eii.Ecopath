@@ -1540,6 +1540,8 @@ Namespace Database
 
             ' Friendly sanity check
             If Not Me.m_bOOPEnabled Then Return False
+            If (obj Is Nothing) Then Return False
+            If (obj.DBID = 0) Then Return True
 
             ' Delete object recursively
             bSucces = Me.DeleteObjectRecursive(obj, obj.GetType())
