@@ -397,6 +397,7 @@ Public Class cMPAOptManager
         Dim map(,) As Integer
         Dim nResults As Integer
         Dim obj As cObjectiveResult
+        Dim lstTemp As List(Of cObjectiveResult)
 
         Try
 
@@ -404,21 +405,25 @@ Public Class cMPAOptManager
             Dim nC As Integer = Me.m_core.m_EcoSpaceData.InCol
             ReDim map(nR, nC)
 
+            'get a list of maps where the percentage of cells closed is what the user asked for
+            lstTemp = Me.getPercentageList(PercentAreaClosedFilter)
+            'sort the maps according the the objective function
+            lstTemp.Sort()
+
             'bound the percentile
             TopPercentile = Math.Min(100, Math.Max(1, TopPercentile))
 
             'turn the TopPercentile into the number of results
-            nResults = CInt(Math.Ceiling(Me.m_MPASearch.nInterationsCompleted * TopPercentile / 100.0!))
+            nResults = CInt(Math.Ceiling(lstTemp.Count * TopPercentile / 100.0!))
 
             'bound nResults
             If nResults < 1 Then nResults = 1
             If nResults > Me.m_MPASearch.Results.Count Then nResults = Me.m_MPASearch.Results.Count
 
-            Debug.Assert(nResults <= Me.m_MPASearch.Results.Count, Me.ToString & ".CellMap() Error computing number of results to use for map.")
-
+            'populate the results map (an integer matrix) with the number of times a cell was included in the search
             For ires As Integer = 0 To nResults - 1
 
-                obj = Me.m_MPASearch.Results.Item(ires)
+                obj = lstTemp.Item(ires)
 
                 If obj.PercentageClosed = PercentAreaClosedFilter Then
                     NumberOfResults += 1
@@ -429,6 +434,7 @@ Public Class cMPAOptManager
                 End If
             Next ires
 
+            'return the hit count map
             Return map
 
         Catch ex As Exception
@@ -438,6 +444,25 @@ Public Class cMPAOptManager
             Return Nothing
 
         End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Return a list of result maps where the area closed = PercentAreaClosedFilter
+    ''' </summary>
+    ''' <param name="PercentAreaClosedFilter">Area of the map that is Closed (has an MPA set)</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function getPercentageList(ByVal PercentAreaClosedFilter As Integer) As List(Of cObjectiveResult)
+        Dim lstOut As New List(Of cObjectiveResult)
+
+        For iResult As Integer = 0 To Me.Results.Count - 1
+            If Me.Results(iResult).PercentageClosed = PercentAreaClosedFilter Then
+                lstOut.Add(Me.Results(iResult))
+            End If
+        Next
+
+        Return lstOut
 
     End Function
 
