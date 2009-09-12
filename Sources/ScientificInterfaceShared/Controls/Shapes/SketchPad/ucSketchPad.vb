@@ -1,58 +1,3 @@
-'==============================================================================
-'
-' $Log: ucSketchPad.vb,v $
-' Revision 1.14  2009/06/19 06:29:08  jeroens
-' YMark repositioned when shape changes
-'
-' Revision 1.13  2009/06/19 03:46:49  jeroens
-' YMark positioned at XMark / Shape intersection
-'
-' Revision 1.12  2009/05/28 12:37:54  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.11  2009/04/20 13:56:11  jeroens
-' Fixed cursor feedback
-'
-' Revision 1.10  2009/04/19 14:14:29  jeroens
-' Update on style change
-'
-' Revision 1.9  2009/04/19 13:48:56  jeroens
-' Added Style
-'
-' Revision 1.8  2009/03/21 00:30:34  jeroens
-' Fixed unclear parameter names
-'
-' Revision 1.7  2009/03/20 22:31:30  jeroens
-' Backcolour responds to selection
-'
-' Revision 1.6  2009/03/20 17:55:42  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.5  2009/03/19 16:13:43  jeroens
-' X mark can be suppressed
-'
-' Revision 1.4  2009/03/02 17:43:41  jeroens
-' Cleaned up
-'
-' Revision 1.3  2009/03/02 02:05:05  jeroens
-' Properly named handlers
-' XMark can be dragged
-' Removed right-click scaling option
-'
-' Revision 1.2  2009/02/12 15:32:21  jeroens
-' Can add labels to XMark, YMark lines
-'
-' Revision 1.1  2008/12/15 15:36:41  jeroens
-' Moved from ScInt
-'
-' Revision 1.2  2008/10/07 22:04:25  jeroens
-' Added Ymax sanity checks on drawing
-'
-' Revision 1.1  2008/09/26 07:31:44  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -852,7 +797,7 @@ Namespace Controls
 
             ' Test auto scale
             If (Me.m_scalemodeYAxis = eAxisAutoScaleModeTypes.Auto) Then
-                Dim sYNew As Single = Me.m_shape.YMax(True)
+                Dim sYNew As Single = Me.m_shape.YMax
                 If (sYNew <> Me.YAxisMaxValue) Then
                     Me.YAxisMaxValue = Math.Max(Me.YAxisMinValue, sYNew)
                 End If

@@ -118,10 +118,10 @@ Public MustInherit Class cShapeData
 #Region " Properties "
 
     ''' <summary>
-    ''' Data array 
+    ''' Returns the actual shape values. Note that his method returns a copy
+    ''' of the original data array; making changes to the array returned here
+    ''' will not be reflected in the original shape.
     ''' </summary>
-    ''' <value></value>
-    ''' <remarks>This is WriteOnly so that you can not get a reference to the underlying array and change the data.</remarks>
     Public Property ShapeData() As Single()
         Get
             Return DirectCast(Me.m_xdata.Clone(), Single())
@@ -132,6 +132,10 @@ Public MustInherit Class cShapeData
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set a value in the shape for a given point.
+    ''' </summary>
+    ''' <param name="iPoint">The point to access.</param>
     Public Property ShapeData(ByVal iPoint As Integer) As Single
         Get
             Try
@@ -146,9 +150,6 @@ Public MustInherit Class cShapeData
             Try
                 m_xdata(iPoint) = value
 
-                ' Invalidate max
-                'Me.m_Ymax = cCore.NULL_VALUE
-
                 If Not Me.IsLockedUpdates() Then Me.Update()
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
@@ -158,7 +159,7 @@ Public MustInherit Class cShapeData
     End Property
 
     ''' <summary>
-    ''' Upper bound of the array. 
+    ''' Get the upper bound of the array. 
     ''' </summary>
     ''' <remarks>
     ''' This property cannot be used to resize the data. Call either 
@@ -171,17 +172,22 @@ Public MustInherit Class cShapeData
         End Get
     End Property
 
-    Public ReadOnly Property YMax(Optional ByVal bRefresh As Boolean = False) As Single
+    ''' <summary>
+    ''' Get the maximum value in the shape.
+    ''' </summary>
+    Public ReadOnly Property YMax() As Single
         Get
             Dim sYMax As Single = 0.0
             For i As Integer = 1 To Me.m_Xmax
                 sYMax = Math.Max(sYMax, Me.m_xdata(i))
             Next
-            'If ((bRefresh = True) Or (Me.m_Ymax = cCore.NULL_VALUE)) Then Me.Refresh()
             Return sYMax
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get/set whether a shape is supposed to reflect a seasonal pattern.
+    ''' </summary>
     Public Property IsSeasonal() As Boolean
         Get
             Return Me.m_bSeasonal

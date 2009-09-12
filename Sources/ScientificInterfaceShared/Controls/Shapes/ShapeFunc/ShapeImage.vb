@@ -1,35 +1,3 @@
-'==============================================================================
-'
-' $Log: ShapeImage.vb,v $
-' Revision 1.6  2009/06/19 03:41:17  jeroens
-' Removed dead code
-'
-' Revision 1.5  2009/05/28 12:37:47  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/04/27 20:31:12  joeb
-' Changed shape drawing to draw data as a discreet chunck instead of a sloping line
-'
-' Revision 1.3  2009/03/20 17:50:12  jeroens
-' Removed warning icon
-'
-' Revision 1.2  2009/02/12 15:32:20  jeroens
-' Can add labels to XMark, YMark lines
-'
-' Revision 1.1  2008/12/15 15:36:39  jeroens
-' Moved from ScInt
-'
-' Revision 1.3  2008/10/08 17:45:15  jeroens
-' Sanity check on sYMax
-'
-' Revision 1.2  2008/10/01 16:50:29  villyc
-' Ecosim monte carlo updates, plus ecosim plot bug fix
-'
-' Revision 1.1  2008/09/26 07:31:41  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -122,7 +90,7 @@ Namespace Controls
                                 Optional ByVal strXMarkLabel As String = "")
 
             If shape Is Nothing Then Return
-            If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax(True)
+            If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
             ShapeImage.DrawShapeDirect(shape.ShapeData, shape.XMax, shape.IsSeasonal, _
