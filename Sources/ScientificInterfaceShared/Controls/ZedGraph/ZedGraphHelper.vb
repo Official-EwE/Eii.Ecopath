@@ -10,6 +10,9 @@ Imports System.Windows.Forms
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Commands
+Imports System.Globalization
+Imports System.Threading
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -733,6 +736,7 @@ Namespace Controls
             For Each Axis As Axis In Me.m_dtAxisLabels.Keys
                 Me.m_dtAxisLabels(Axis).Update()
             Next
+            Me.m_zgc.Refresh()
         End Sub
 
         Public Sub AxisLabel(ByVal axis As Axis, _
@@ -844,9 +848,13 @@ Namespace Controls
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim sw As StreamWriter = Nothing
+            Dim strFN As String = ""
 
-            'ToDo_JS: globalize this
-            cmdFS.Invoke("csv files (*.csv)|*.csv|text files (*.txt)|*.txt", 0)
+            If Me.m_zgc.MasterPane.PaneList.Count = 1 Then
+                strFN = FileUtilities.ToValidFileName(Me.m_zgc.MasterPane.Title.Text, False)
+            End If
+
+            cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)
 
             If cmdFS.Result = DialogResult.OK Then
                 sw = New StreamWriter(cmdFS.FileName)
@@ -869,10 +877,15 @@ Namespace Controls
         ''' <returns>A massive string. Format to be described</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ExtractData(ByVal z As ZedGraphControl) As String
+
+            Dim cult As CultureInfo = Thread.CurrentThread.CurrentUICulture
+            Dim nfi As NumberFormatInfo = DirectCast(cult.NumberFormat.Clone(), NumberFormatInfo)
             Dim sb As New StringBuilder
             Dim sbX As StringBuilder = Nothing
             Dim sbY As StringBuilder = Nothing
             Dim gp As GraphPane = Nothing
+
+            nfi.NumberDecimalSeparator = "."
 
             ' Safety first
             If z IsNot Nothing Then
@@ -887,14 +900,13 @@ Namespace Controls
                         For Each ci As CurveItem In gp.CurveList
                             ' Print Item
                             sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
-                            sbX = New StringBuilder("X")
-                            sbY = New StringBuilder("Y")
+                            sbX = New StringBuilder("x")
+                            sbY = New StringBuilder("y")
                             For i As Integer = 0 To ci.NPts - 1
                                 sbX.Append(", ")
-                                sbX.Append(ci.Points(i).X.ToString)
-
+                                sbX.Append(Convert.ToString(ci.Points(i).X, nfi))
                                 sbY.Append(", ")
-                                sbY.Append(ci.Points(i).Y.ToString)
+                                sbY.Append(Convert.ToString(ci.Points(i).Y, nfi))
                             Next
 
                             sb.AppendLine(sbX.ToString())
