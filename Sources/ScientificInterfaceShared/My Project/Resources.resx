@@ -329,4 +329,7 @@
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
     <value>Ecotracer relative concentration</value>
   </data>
+  <data name="FILEFILTER_CSV" xml:space="preserve">
+    <value>Comma-separated text files (*.csv)|*.csv</value>
+  </data>
 </root>

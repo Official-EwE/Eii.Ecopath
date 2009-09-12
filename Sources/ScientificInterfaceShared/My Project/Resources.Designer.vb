@@ -95,6 +95,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv.
+        '''</summary>
+        Friend ReadOnly Property FILEFILTER_CSV() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_CSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_IMAGE() As String
