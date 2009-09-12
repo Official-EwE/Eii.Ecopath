@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: cArrowIndicator.vb,v $
-' Revision 1.1  2008/09/26 07:31:17  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.2  2008/06/02 05:36:03  jeroens
-' Uses provided colour for rendering
-'
-' Revision 1.1  2008/06/01 23:45:09  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.3  2008/05/28 23:21:20  jeroens
-' Arrow centered in cell
-'
-' Revision 1.2  2008/03/29 21:21:10  jeroens
-' Added Arrow size support
-'
-' Revision 1.1  2008/03/28 17:09:15  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports System.Drawing.Drawing2D
 
@@ -65,7 +42,7 @@ Namespace Controls
         ''' <param name="g">Graphics to draw onto.</param>
         ''' <param name="clr">Colour of the arrow to draw.</param>
         ''' <param name="rc">Rectangle to draw the arrow into.</param>
-        ''' <param name="sAngle">Angle for the arrow. 0 is straight up.</param>
+        ''' <param name="sAngle">Clockwise angle for the arrow. 0 is straight up.</param>
         ''' <param name="sSize">Size of the angle. [0, 1], 0 is smallest size, 1 will
         ''' size the arrow to optimally fit in the rectangle with 1 pixel margin.</param>
         ''' -----------------------------------------------------------------------
