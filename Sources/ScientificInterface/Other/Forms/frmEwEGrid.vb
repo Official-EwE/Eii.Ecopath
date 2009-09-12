@@ -285,10 +285,11 @@ Public Class frmEwEGrid
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
-            ' Flag stating that the selection is not empty
-            Dim bHasEditableCells As Boolean = False
+            If Me.m_form Is Nothing Then Return
 
+            Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
+            Dim bIsInputForm As Boolean = False
+            Dim bHasEditableCells As Boolean = False
             ' Flag stating that the selection contains a mix of variable names
             Dim bIsMixedSelection As Boolean = False
             ' The last found variable name
@@ -297,6 +298,8 @@ Public Class frmEwEGrid
             ' Flag stating that the selection contains different values
             Dim bIsMixedValue As Boolean = False
             Dim objValue As Object = Nothing
+
+            bIsInputForm = frmEwE.IsInputForm(Me.m_form.CoreExecutionState)
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
@@ -334,11 +337,13 @@ Public Class frmEwEGrid
             ' Enable set label if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_lblSet, Nothing) Then
                 Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
+                Me.m_lblSet.Visible = bIsInputForm
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_ttbValue, Nothing) Then
                 Me.m_ttbValue.Enabled = bHasEditableCells And Not bIsMixedSelection
+                Me.m_ttbValue.Visible = bIsInputForm
                 Me.m_ttbValue.Text = ""
                 If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
                     If TypeOf objValue Is String Then
@@ -357,7 +362,15 @@ Public Class frmEwEGrid
             ' Enable set button if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_btnSet, Nothing) Then
                 Me.m_btnSet.Enabled = bHasEditableCells And Not bIsMixedSelection
+                Me.m_btnSet.Visible = bIsInputForm
             End If
+
+            ' Enable import button only for input forms
+            If Not Object.ReferenceEquals(Me.m_btnImport, Nothing) Then
+                Me.m_btnImport.Visible = bIsInputForm
+            End If
+
+            cToolstripUtils.HideRepeatingSeparators(Me.m_ts)
 
         End Sub
 
