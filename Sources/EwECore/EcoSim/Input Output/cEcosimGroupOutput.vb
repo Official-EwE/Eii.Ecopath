@@ -274,7 +274,7 @@ Public Class cEcosimGroupOutput
 
     End Property
     ''' <summary>
-    ''' Predation mort rate + fishing mort rate
+    ''' Predation mort + fishing mort 
     ''' </summary>
     Public ReadOnly Property FishMort(ByVal iTime As Integer) As Single
 
