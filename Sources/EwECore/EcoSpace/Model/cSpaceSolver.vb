@@ -647,6 +647,10 @@ Public Class cSpaceSolver
                 Eatenof(i) = Eatenof(i) + eat
                 Eatenby(j) = Eatenby(j) + eat
 
+                'predation mort by link
+                ' m_Data.MPred(ii) = eat / (Bprey + 1.0E-20)
+
+
                 '******** 
                 'THIS NEEDS TO CHANGE FOR THREADED STUFF
                 '**********
