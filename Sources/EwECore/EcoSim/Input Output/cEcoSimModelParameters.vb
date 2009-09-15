@@ -114,7 +114,7 @@ Public Class cEcoSimModelParameters
             ''integers
             'SalinityForceFunctionNumber
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.SalinityForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NutForceFunctionNumber))
+            val = New cValue(New Integer, eVarNameFlags.SalinityForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinityForceFunctionNumber))
             m_values.Add(val.varName, val)
 
             'EcoSimNYears max 1000 year?!
