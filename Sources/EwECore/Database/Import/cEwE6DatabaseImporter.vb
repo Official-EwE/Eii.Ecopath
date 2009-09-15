@@ -2426,7 +2426,7 @@ Namespace Database
 
                 iNutShapeNumber = CInt(Me.FixValue(reader, "NutForceNumber", 0))
                 If Me.m_dbEwE5.GetVersion >= 1.725 Then
-                    iSalinityShapeNumber = CInt(Me.FixValue(reader, "NutForceNumber", 0))
+                    iSalinityShapeNumber = CInt(Me.FixValue(reader, "SalinityForceNo", 0))
                 End If
 
                 ' Resolve shape IDs
