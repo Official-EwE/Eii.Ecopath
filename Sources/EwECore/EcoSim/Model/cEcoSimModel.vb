@@ -3695,7 +3695,7 @@ Public Property PluginManager() As cPluginManager
         End Sub
 
 
-        Public Sub ApplySalinityModifier(ByVal A As Single, ByVal CurVal As Single, _
+        Public Sub ApplySalinityModifier(ByRef A As Single, ByVal CurVal As Single, _
                                          ByVal Optim As Single, ByVal StdLeft As Single, ByVal StdRight As Single)
             Dim Mult As Single
 
