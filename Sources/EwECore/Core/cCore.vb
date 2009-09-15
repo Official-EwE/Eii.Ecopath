@@ -6348,7 +6348,7 @@ Public Class cCore
                 m_spaceresults.iTimeStep = iTime
                 m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
                 'set references to the biomass and effort data at this time step
-                m_spaceresults.setMaps(m_EcoSpaceData.Bcell, m_EcoSpaceData.EffortSpace, m_EcoSpaceData.Ccell, m_EcoSpaceData.Inrow, m_EcoSpaceData.InCol)
+                m_spaceresults.setData(Me.m_EcoSpaceData)
 
                 'the group time-step data was populated by Ecospace
                 For igrp As Integer = 1 To nGroups
@@ -6372,6 +6372,36 @@ Public Class cCore
         End Try
     End Sub
 
+
+    ''' <summary>
+    ''' Sample code to loop over EcoSpace map of mortality by predation 
+    ''' </summary>
+    Private Sub dumpSpaceMortPred(ByVal Core As cCore, ByVal SpaceResults As cEcospaceTimestep)
+
+        'loop over all the prey/pred linkages
+        For iLink As Integer = 1 To SpaceResults.nPreyPredLinks
+            Dim mort As Single
+            'get group indexes for prey and pred
+            Dim iPreyIndex As Integer = SpaceResults.iPreyIndex(iLink)
+            Dim iPredIndex As Integer = SpaceResults.iPredIndex(iLink)
+
+            'get prey and pred names(just for display)
+            Dim PreyName As String = Core.EcoPathGroupInputs(iPreyIndex).Name
+            Dim PredName As String = Core.EcoPathGroupInputs(iPredIndex).Name
+
+            'loop over the map rows/cols and dump mortality values
+            For iRow As Integer = 1 To Core.GetCoreCounter(eCoreCounterTypes.nRows)
+                For iCol As Integer = 1 To Core.GetCoreCounter(eCoreCounterTypes.nCols)
+                    'mortality in this map cell by Link
+                    'the Prey/Pred for this Link are in iPreyIndex and iPredIndex
+                    mort = SpaceResults.MortPredRate(iRow, iCol, iLink)
+                    System.Console.WriteLine("mortality of " & PreyName + " by " & PredName & " = " & mort.ToString & " for row col " & iRow.ToString & ", " & iCol.ToString)
+                Next iCol
+            Next iRow
+
+        Next
+
+    End Sub
 
     ''' <summary>
     ''' Message handler for messages sent by Ecospace
@@ -7450,7 +7480,7 @@ Public Class cCore
             Next
 
             'load a new results object for the new scenario
-            m_spaceresults = New cEcospaceTimestep(nGroups, nRegions)
+            m_spaceresults = New cEcospaceTimestep(Me.m_EcoSimData, Me.m_EcoSpaceData)
 
             m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
 

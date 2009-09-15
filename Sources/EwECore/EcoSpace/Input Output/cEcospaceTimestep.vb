@@ -16,33 +16,39 @@ Public Class cEcospaceTimestep
     Private m_iTime As Integer
     Private m_ts As Single
     Private m_ConMax() As Single
-    Private m_biomap(,,) As Single
-    Private m_effort(,,) As Single
-    Private m_contaminants(,,) As Single
+    'Private m_biomap(,,) As Single
+    'Private m_effort(,,) As Single
+    'Private m_contaminants(,,) As Single
 
-    Private m_nRows As Integer
-    Private m_nCols As Integer
-
+    'Private m_nRows As Integer
+    'Private m_nCols As Integer
 
     Private m_biomass() As Single 'biomass by group
     Private m_relativebiomass() As Single 'biomass relative to start biomass by group
-
-
     Private m_biomassByRegion(,) As Single 'biomass by group region
+
+    Private m_spaceData As cEcospaceDataStructures
+    Private m_simData As cEcosimDatastructures
 
 #End Region
 
 #Region "Constructor & Initialization"
 
-    Public Sub New(ByVal nGrps As Integer, ByVal nRegions As Integer)
+    Public Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoSpaceData As cEcospaceDataStructures)
 
         m_dbid = cCore.NULL_VALUE
         m_name = eDataTypes.EcospaceTimestepResults
+        Me.m_simData = EcoSimData
+        Me.m_spaceData = EcoSpaceData
+
+        Debug.Assert(Me.m_simData IsNot Nothing, Me.ToString & ".New() Ecosim data cannot be null!")
+        Debug.Assert(Me.m_spaceData IsNot Nothing, Me.ToString & ".New() Ecospace data cannot be null!")
+
         Try
-            ReDim m_biomass(nGrps)
-            ReDim m_relativebiomass(nGrps)
-            ReDim m_ConMax(nGrps)
-            ReDim m_biomassByRegion(nGrps, nRegions)
+            ReDim m_biomass(Me.m_simData.nGroups)
+            ReDim m_relativebiomass(Me.m_simData.nGroups)
+            ReDim m_ConMax(Me.m_simData.nGroups)
+            ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.NoRegions)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
         End Try
@@ -50,13 +56,16 @@ Public Class cEcospaceTimestep
     End Sub
 
 
-    Friend Sub setMaps(ByRef BiomassMap(,,) As Single, ByRef EffortMap(,,) As Single, ByRef ContaminantMap(,,) As Single, ByVal nMapRows As Integer, ByVal nMapCols As Integer)
-        m_biomap = BiomassMap
-        m_effort = EffortMap
-        m_contaminants = ContaminantMap
+    'Friend Sub setData(ByRef BiomassMap(,,) As Single, ByRef EffortMap(,,) As Single, ByRef ContaminantMap(,,) As Single, ByVal nMapRows As Integer, ByVal nMapCols As Integer)
+    Friend Sub setData(ByVal EcoSpaceData As cEcospaceDataStructures)
+        'm_biomap = BiomassMap
+        'm_effort = EffortMap
+        'm_contaminants = ContaminantMap
 
-        m_nRows = nMapRows
-        m_nCols = nMapCols
+        'm_nRows = nMapRows
+        'm_nCols = nMapCols
+
+        m_spaceData = EcoSpaceData
         ' Array.Copy(BiomassMap, m_biomap, BiomassMap.Length)
     End Sub
 
@@ -90,7 +99,7 @@ Public Class cEcospaceTimestep
     ''' <remarks>BiomassMap(row,col,group) and FishingEffortMap(fleet,row,col) are both map variables but they are not indexed the same</remarks>
     Public ReadOnly Property BiomassMap() As Single(,,)
         Get
-            Return m_biomap
+            Return Me.m_spaceData.Bcell
         End Get
     End Property
 
@@ -102,7 +111,7 @@ Public Class cEcospaceTimestep
     ''' <remarks>BiomassMap(row,col,group) and FishingEffortMap(fleet,row,col) are both map variables but they are not indexed the same</remarks>
     Public ReadOnly Property FishingEffortMap() As Single(,,)
         Get
-            Return m_effort
+            Return Me.m_spaceData.EffortSpace
         End Get
     End Property
 
@@ -114,7 +123,7 @@ Public Class cEcospaceTimestep
     ''' <returns>Matrix of contaminant concentrations at this timestep</returns>
     Public ReadOnly Property ContaminantMap() As Single(,,)
         Get
-            Return m_contaminants
+            Return Me.m_spaceData.Ccell
         End Get
     End Property
 
@@ -183,13 +192,13 @@ Public Class cEcospaceTimestep
 
     Public ReadOnly Property inRows() As Integer
         Get
-            Return m_nRows
+            Return Me.m_spaceData.Inrow
         End Get
     End Property
 
     Public ReadOnly Property inCols() As Integer
         Get
-            Return m_nCols
+            Return Me.m_spaceData.InCol
         End Get
     End Property
 
@@ -215,6 +224,65 @@ Public Class cEcospaceTimestep
 
     End Property
 
+    ''' <summary>
+    ''' Number of Prey/Pred linkages
+    ''' </summary>
+    ''' <remarks>Number of links is set in cEcoSimModel.CalcEatenOfBy()</remarks>
+    Public ReadOnly Property nPreyPredLinks() As Integer
+        Get
+            Return Me.m_simData.inlinks
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gets the group index for the Prey of this Prey/Pred link
+    ''' </summary>
+    ''' <param name="iPreyPredIndex">Index of the Prey/Pred link (1 to nPreyPredLinks)</param>
+    ''' <remarks> </remarks>
+    Public ReadOnly Property iPreyIndex(ByVal iPreyPredIndex As Integer) As Integer
+
+        Get
+            Debug.Assert(iPreyPredIndex <= Me.m_simData.inlinks, Me.ToString & ".iPreyIndex(iPreyPredIndex) iPreyPredIndex out of bounds!")
+            Try
+                Return Me.m_simData.ilink(iPreyPredIndex)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+    End Property
+
+    ''' <summary>
+    ''' Gets the group index for the Predator of this Prey/Pred link
+    ''' </summary>
+    ''' <param name="iPreyPredIndex">Index of the Prey/Pred link (1 to nPreyPredLinks)</param>
+    ''' <remarks> </remarks>
+    Public ReadOnly Property iPredIndex(ByVal iPreyPredIndex As Integer) As Integer
+
+        Get
+            Debug.Assert(iPreyPredIndex <= Me.m_simData.inlinks, Me.ToString & ".iPredIndex(iPreyPredIndex) iPreyPredIndex out of bounds!")
+            Try
+                Return Me.m_simData.jlink(iPreyPredIndex)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Get
+
+    End Property
+
+    ''' <summary>
+    ''' Mortality rate map due to predation by Row, Col, Prey/Pred linkage <see cref="nPreyPredLinks">nPreyPredLinks</see>
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>MortPredRate = [prey biomass eaten] / [predator biomass]</remarks>
+    Public ReadOnly Property MortPredRate() As Single(,,)
+        Get
+            Return Me.m_spaceData.MPred
+        End Get
+    End Property
 
 #End Region
 

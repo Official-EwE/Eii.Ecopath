@@ -381,34 +381,23 @@ Public Class cEcospaceDataStructures
     ''' <remarks>computed in ScaleRelativePrimaryProductivityToEcopathLevel()</remarks>
     Public nWaterCells As Integer
 
-    'Public RecSplit() As Single
-    'Public PconSplit() As Single
-    'Public Tstanza() As Single
-    'Public NstanzaBase() As Single
     Public Basebiomass() As Single
     Public Bnew() As Single
     Public der() As Single
-    'Public EatEff() As Single
     Public EatEffBad() As Single
-    'Public Flowin() As Single
-    'Public FlowoutRate() As Single
     Public MPABiomass() As Single
     Public Mrate() As Single
     Public Mvel() As Single
     Public RelMoveBad() As Single
     Public RelVulBad() As Single
-    ' Public VulPred() As Single
     Public IsAdvected() As Boolean
 
     Public AMm(,,) As Single
     Public Bcell(,,) As Single
-    ' If ConSimOn Then
     Public Ccell(,,) As Single
     Public Clast(,,) As Single
     Public AMmTr(,,) As Single
     Public Ftr(,,) As Single
-    ' End If
-    'public Bclose(,,) As Single
     Public Bcw(,,) As Single
     Public Blast(,,) As Single
     Public C(,,) As Single
@@ -657,6 +646,9 @@ Public Class cEcospaceDataStructures
     'than everywhere on a basemap where the right habitat is available
     Public DistributionEnvelope(,,) As Boolean 'format: row, col, group
 
+    ''' <summary>Predation rate by Row, Col, Prey/Pred link</summary>
+    ''' <remarks></remarks>
+    Public MPred(,,) As Single
 
 #End Region
 
@@ -722,6 +714,7 @@ Public Class cEcospaceDataStructures
     ''' Set default values and dimemsion basic arrays
     ''' </summary>
     ''' <returns></returns>
+    ''' <param name="nPreyPredLinks">EcosimDataStructures.InLinks number of Prey/Pred links</param>
     ''' <remarks>This should be called before reading values from database. I think..... I hope!!!!!!!!!!</remarks>
     Public Function SetDefaults() As Boolean
         Dim i As Integer
@@ -776,7 +769,7 @@ Public Class cEcospaceDataStructures
             SetDefaultMeanVelocityMvel()
 
 
-            For i = 1 To nGroups                            'CJW had nvar not n1
+            For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = True
             Next 'set preferred habitat to 1 (pelagic) by default
 
@@ -1095,19 +1088,10 @@ Public Class cEcospaceDataStructures
                     Nvarsplit = Nvarsplit + 1
                 Next
             Next
-            nvartot = nGroups + Nvarsplit
+            nvartot = NGroups + Nvarsplit
 
             ReDim AMm(Inrow + 1, InCol + 1, nvartot)
             ReDim Bcell(Inrow + 1, InCol + 1, nvartot)
-
-            'If ConSimOn Then
-            'ReDim Ccell(Inrow + 1, InCol + 1, NGroups)
-            'ReDim Clast(Inrow + 1, InCol + 1, NGroups)
-            'ReDim AMmTr(Inrow + 1, InCol + 1, NGroups)
-            'ReDim Ftr(Inrow + 1, InCol + 1, NGroups)
-            ' End If
-
-            'ReDim Bclose(Inrow + 1, Incol + 1, NvarTot) 
             ReDim Bcw(Inrow + 1, InCol + 1, nvartot)
             ReDim Blast(Inrow + 1, InCol + 1, nvartot)
             ReDim C(Inrow + 1, InCol + 1, nvartot)
@@ -1165,7 +1149,6 @@ Public Class cEcospaceDataStructures
                     Next
                 Next
             Next
-
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapDims() Error: " & ex.Message)

@@ -1326,6 +1326,11 @@ Public Class cEcoSpace
 
 
             ReDim totalIterThread(m_Data.nGridSolverThreads + 1)
+
+            'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
+            'inlinks is the number of prey/pred linkages
+            ReDim Me.m_Data.MPred(Me.m_Data.Inrow + 1, Me.m_Data.InCol + 1, Me.m_ESData.inlinks)
+
             'm_Data.Depth(10, 10) = 0
             m_bsolverError = False
 
