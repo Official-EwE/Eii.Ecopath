@@ -277,7 +277,7 @@ Public Class cEcospaceTimestep
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
-    ''' <remarks>MortPredRate = [prey biomass eaten] / [predator biomass]</remarks>
+    ''' <remarks>MortPredRate = [prey biomass eaten] / [prey biomass]</remarks>
     Public ReadOnly Property MortPredRate() As Single(,,)
         Get
             Return Me.m_spaceData.MPred
