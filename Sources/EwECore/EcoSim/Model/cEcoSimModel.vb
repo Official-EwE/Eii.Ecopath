@@ -4378,6 +4378,11 @@ Public Property PluginManager() As cPluginManager
 
 
         Public Sub SetInlinks()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'WARNING 
+            'This does not set the iLink(i) and jLink(j) values properly
+            'The  iLink(i) and jLink(j) indexes as set in CalcEatenOfBy()
+            'xxxxxxxxxxxxxxxxxxxxxx
             Dim i As Integer, j As Integer
 
             'count the links
