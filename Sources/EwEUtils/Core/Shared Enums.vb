@@ -1034,6 +1034,12 @@ Namespace Core
         ''' <summary>Game generic relative biomass over time (no specific source)</summary>
         GameBiomassRel
 
+        ''' <summary>Game biomass with Fishing regulation.</summary>
+        GameBiomassFishRegulation
+        GameBiomassFishRegulationPM
+        GameBiomassLimit
+        GameBiomassBase
+
         GameBiomassByRegion
         GameCatchRegionFleetGroup
         GameGroupValue
