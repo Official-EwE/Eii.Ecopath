@@ -109,7 +109,7 @@ Public Class cEcoSpace
     'I still need to sort out how Ecosim needs to be intialized for Ecospace to access this data.
     'Ecosim must have a scenario loaded!!!! This will have to be handled by the core
     Private m_EPdata As cEcopathDataStructures
-    Private m_ESData As cEcosimDatastructures
+    Private m_SimData As cEcosimDatastructures
     Private m_Data As cEcospaceDataStructures
     Private m_Stanza As cStanzaDatastructures
     Private m_Ecosim As EcoSim.cEcoSimModel
@@ -368,10 +368,10 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Public Property EcoSimParameters() As cEcosimDatastructures
         Get
-            Return m_ESData
+            Return m_SimData
         End Get
         Set(ByVal value As cEcosimDatastructures)
-            m_ESData = value
+            m_SimData = value
         End Set
     End Property
 
@@ -475,7 +475,7 @@ Public Class cEcoSpace
 
             Debug.Assert(m_Data IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
             Debug.Assert(m_EPdata IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
-            Debug.Assert(m_ESData IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
+            Debug.Assert(m_SimData IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
             Debug.Assert(m_Ecosim IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
             Debug.Assert(m_Stanza IsNot Nothing, Me.ToString & ".Init() Data not initialized.")
 
@@ -626,8 +626,8 @@ Public Class cEcoSpace
             itt = 0
 
             If m_search.bInSearch Then
-                m_search.initForRun(Me.m_EPdata, Me.m_ESData)
-                m_search.setBaseYearEffort(Me.m_ESData)
+                m_search.initForRun(Me.m_EPdata, Me.m_SimData)
+                m_search.setBaseYearEffort(Me.m_SimData)
             End If
 
             Dim StartTime As Single = 0
@@ -650,7 +650,7 @@ Public Class cEcoSpace
 
                 'make sure the time loop indexes do not get larger then the data they reference
                 If itt > nEcospaceTimeSteps Then itt = nEcospaceTimeSteps
-                If its > m_ESData.ForcePoints Then its = m_ESData.ForcePoints 'HACK  bump back the index
+                If its > m_SimData.ForcePoints Then its = m_SimData.ForcePoints 'HACK  bump back the index
 
                 imonth = 1 + (its - 1) Mod 12
                 iYear = 1 + Math.Truncate(m_Data.TimeNow + 0.001)  'iYear will be truncated to the integer part of timenow
@@ -672,9 +672,9 @@ Public Class cEcoSpace
                 If m_search.bInSearch Then
                     For i = 1 To m_EPdata.NumFleet
                         If m_search.FblockCode(i, iYear) > 0 Then
-                            m_ESData.FishRateGear(i, its) = Fgear(i)
+                            m_SimData.FishRateGear(i, its) = Fgear(i)
                         End If
-                        m_ESData.FishRateGear(i, 0) = Fgear(i) 'm_Data.FishRateGear(i, itime)
+                        m_SimData.FishRateGear(i, 0) = Fgear(i) 'm_Data.FishRateGear(i, itime)
                     Next
                 End If
 
@@ -717,15 +717,15 @@ Public Class cEcoSpace
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
                 'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
-                For i = 0 To m_ESData.ForcingShapes
-                    m_ESData.tval(i) = m_ESData.zscale(its, i)
+                For i = 0 To m_SimData.ForcingShapes
+                    m_SimData.tval(i) = m_SimData.zscale(its, i)
                 Next
 
                 'ToDo_jb EggProdShapeSplit() make sure this is correct
                 'set current relative reproductive rates for stanzas groups
                 For i = 1 To m_Stanza.Nsplit
                     If m_Stanza.EggProdShapeSplit(i) > 0 Then
-                        RelRepStanza(i) = m_ESData.tval(m_Stanza.EggProdShapeSplit(i)) * m_Stanza.RscaleSplit(i) / m_ESData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
+                        RelRepStanza(i) = m_SimData.tval(m_Stanza.EggProdShapeSplit(i)) * m_Stanza.RscaleSplit(i) / m_SimData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
                     End If
                 Next
 
@@ -803,7 +803,7 @@ Public Class cEcoSpace
                             'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
                             'SET
                             Tbiom = (ThabArea) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                            Tpred = (ThabArea) * m_ESData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                            Tpred = (ThabArea) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
                             For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
                                     If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True _
                                         Or m_Data.PrefHab(ieco, 0) = True) _
@@ -1329,7 +1329,7 @@ Public Class cEcoSpace
 
             'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
             'inlinks is the number of prey/pred linkages
-            ReDim Me.m_Data.MPred(Me.m_Data.Inrow + 1, Me.m_Data.InCol + 1, Me.m_ESData.inlinks)
+            ReDim Me.m_Data.MPred(Me.m_Data.Inrow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
 
             'm_Data.Depth(10, 10) = 0
             m_bsolverError = False
@@ -1364,7 +1364,7 @@ Public Class cEcoSpace
                 m_tracerData.redimForEcospaceRun(m_Data.NoRegions, m_Data.NGroups, m_Data.nTimeSteps)
             End If
 
-            m_ESData.FirstTime = True
+            m_SimData.FirstTime = True
 
             'In EwE5 this was part of InitialState changed here
             'compute the IecoCode() index
@@ -1462,7 +1462,7 @@ Public Class cEcoSpace
             ScaleSailingToUnity()
 
             'calculate exponential weights for time step updating
-            m_Ecosim.Derivt(0, m_ESData.StartBiomass, der)
+            m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
             For ip = 1 To m_Data.NGroups
                 '****Following line corrects bug where Mrate was set later in the routine
                 'CJW modified Mrate calculation next line 2/2003 for migratory species
@@ -1475,14 +1475,14 @@ Public Class cEcoSpace
             Next ip
 
             For ig = 1 To m_Data.nFleets
-                m_ESData.FishRateGear(ig, 0) = 1
+                m_SimData.FishRateGear(ig, 0) = 1
             Next ig
 
             If m_Data.IsFishRateSet = False Then
                 For ig = 1 To m_Data.nFleets
                     'For i = 0 To TotalTime * 12
-                    For i = 0 To m_ESData.NTimes
-                        m_ESData.FishRateGear(ig, i) = 1
+                    For i = 0 To m_SimData.NTimes
+                        m_SimData.FishRateGear(ig, i) = 1
                     Next
                 Next
                 'ToDo_jb IsFishRateSet in EwE5 see when this gets reset to false
@@ -1513,11 +1513,11 @@ Public Class cEcoSpace
                         If m_Data.Depth(i, j) > 0 Then
                             m_Data.Bcell(i, j, ip) = Basebiomass(ip)
                             If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
-                                m_Data.Bcell(i, j, ip) = 0.1 * m_ESData.StartBiomass(ip)
+                                m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
                             End If
                             'VC Hobart Sep 2008: only assign biomass if it is within distribution envelope
                             If m_Data.DistributionEnvelope(i, j, ip) = False Then
-                                m_Data.Bcell(i, j, ip) = 0.0001 * m_ESData.StartBiomass(ip)
+                                m_Data.Bcell(i, j, ip) = 0.0001 * m_SimData.StartBiomass(ip)
                             End If
 
 
@@ -1541,9 +1541,9 @@ Public Class cEcoSpace
                             m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
                         End If
 
-                        Cper(i, j, ip) = m_ESData.Cbase(ip)
+                        Cper(i, j, ip) = m_SimData.Cbase(ip)
                         FtimeCell(i, j, ip) = 1
-                        HdenCell(i, j, ip) = m_ESData.Hden(ip)
+                        HdenCell(i, j, ip) = m_SimData.Hden(ip)
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
@@ -1571,11 +1571,11 @@ Public Class cEcoSpace
                                 'VC Hobart Sep 2008: adding distribution envelope 
                                 If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) _
                                 And m_Data.DistributionEnvelope(i, j, ieco) = True Then
-                                    m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Basebiomass(ieco) / m_ESData.StartBiomass(ieco)
-                                    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_ESData.pred(ieco)
+                                    m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Basebiomass(ieco) / m_SimData.StartBiomass(ieco)
+                                    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco)
                                 Else
                                     m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) / 10
-                                    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_ESData.pred(ieco) / 1000
+                                    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) / 1000
                                 End If
                             Else ': Print()
                                 m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
@@ -1620,7 +1620,7 @@ Public Class cEcoSpace
             '   Dim RelRepStanza() As Single
             ReDim RelRepStanza(m_Stanza.Nsplit)
             For i = 1 To m_Stanza.Nsplit
-                RelRepStanza(i) = 1 / m_ESData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
+                RelRepStanza(i) = 1 / m_SimData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
             Next i
 
             Dim waterCtr As Integer = 0
@@ -2056,7 +2056,7 @@ Public Class cEcoSpace
     Private Sub SetBiomassesEcospace()
         Dim i As Integer, j As Integer, ii As Integer ' , IterMax As Integer
 
-        ReDim m_Data.Vspace(m_ESData.inlinks), m_Data.Aspace(m_ESData.inlinks), PbSpace(m_Data.NGroups)
+        ReDim m_Data.Vspace(m_SimData.inlinks), m_Data.Aspace(m_SimData.inlinks), PbSpace(m_Data.NGroups)
 
         'calculate pbbiomass parameter from pbbase and pbm
         m_Ecosim.Set_pbm_pbbiomass()
@@ -2070,13 +2070,13 @@ Public Class cEcoSpace
         m_Ecosim.SetBBtoStartBiomass(m_Data.NGroups)
         ' ReDim der(m_Data.NGroups)
 
-        m_Ecosim.Derivt(0, m_ESData.StartBiomass, der)
+        m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
 
         'set up initial biomass density for fished areas
         For i = 1 To m_Data.NGroups
-            m_ESData.FishTime(i) = m_ESData.Fish1(i)
-            Basebiomass(i) = m_ESData.StartBiomass(i)
-            PbSpace(i) = m_ESData.pbbiomass(i)
+            m_SimData.FishTime(i) = m_SimData.Fish1(i)
+            Basebiomass(i) = m_SimData.StartBiomass(i)
+            PbSpace(i) = m_SimData.pbbiomass(i)
         Next
 
         'For ii = 1 To m_ESData.inlinks
@@ -2086,12 +2086,12 @@ Public Class cEcoSpace
         '    m_Data.Vspace(ii) = m_ESData.vulrate(i, j)
         'Next
 
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii) ' : ia = ArenaLink(ii)
-            m_Data.Aspace(ii) = m_ESData.Alink(ii)
+        For ii = 1 To m_SimData.inlinks
+            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) ' : ia = ArenaLink(ii)
+            m_Data.Aspace(ii) = m_SimData.Alink(ii)
         Next
-        For ia As Integer = 1 To m_ESData.Narena
-            m_Data.Vspace(ia) = m_ESData.VulArena(ia)
+        For ia As Integer = 1 To m_SimData.Narena
+            m_Data.Vspace(ia) = m_SimData.VulArena(ia)
         Next
 
 
@@ -2108,7 +2108,7 @@ Public Class cEcoSpace
 
             'jb EwE5 called  derivtRed with BB() this is the biomass at the current time step defined in Ecosim
             'I have changed to to call derivtRed with StartBiomass() which sould have the same effect and keep Ecosim.BB() out of this code
-            derivtRed(m_ESData.StartBiomass, Flowin, FlowoutRate, EatEff, VulPred, 1)
+            derivtRed(m_SimData.StartBiomass, Flowin, FlowoutRate, EatEff, VulPred, 1)
 
         End If
 
@@ -2130,7 +2130,7 @@ Public Class cEcoSpace
 
                 St = Sn
                 NstanzaBase(i) = RecSplit(i) / FlowoutRate(ieco)
-                PconSplit(i) = m_ESData.pred(ieco) / NstanzaBase(i)
+                PconSplit(i) = m_SimData.pred(ieco) / NstanzaBase(i)
             Next
         Next
     End Sub
@@ -2261,7 +2261,7 @@ Public Class cEcoSpace
         Dim Bprey As Single
 
         Dim aeff() As Single, Veff() As Single
-        ReDim aeff(m_ESData.inlinks), Veff(m_ESData.inlinks)
+        ReDim aeff(m_SimData.inlinks), Veff(m_SimData.inlinks)
 
         Dim Hdent() As Single
         ReDim Hdent(m_Data.NGroups)
@@ -2272,24 +2272,24 @@ Public Class cEcoSpace
         ReDim ToDetritus(m_Data.NGroups)
 
 
-        If m_ESData.MedIsUsed(0) Then m_Ecosim.SetMedFunctions(Biomass)
+        If m_SimData.MedIsUsed(0) Then m_Ecosim.SetMedFunctions(Biomass)
 
         m_Ecosim.setpred(Biomass)
-        ReDim m_ESData.Eatenof(m_Data.NGroups)
-        ReDim m_ESData.Eatenby(m_Data.NGroups)
+        ReDim m_SimData.Eatenof(m_Data.NGroups)
+        ReDim m_SimData.Eatenby(m_Data.NGroups)
 
         Dwe = 0.5
 
         'set ecosim nutrients
-        m_ESData.NutBiom = 0
+        m_SimData.NutBiom = 0
         For i = 1 To m_Data.NGroups
-            m_ESData.NutBiom = m_ESData.NutBiom + Biomass(i)
+            m_SimData.NutBiom = m_SimData.NutBiom + Biomass(i)
         Next
-        m_ESData.NutFree = m_ESData.NutTot * RelProd - m_ESData.NutBiom
-        If m_ESData.NutFree < m_ESData.NutMin Then m_ESData.NutFree = m_ESData.NutMin
+        m_SimData.NutFree = m_SimData.NutTot * RelProd - m_SimData.NutBiom
+        If m_SimData.NutFree < m_SimData.NutMin Then m_SimData.NutFree = m_SimData.NutMin
 
-        If m_ESData.IndicesOn Then
-            ReDim m_ESData.Consumpt(m_Data.NGroups, m_Data.NGroups)
+        If m_SimData.IndicesOn Then
+            ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
         End If
 
         For j = m_Data.nLiving + 1 To m_Data.NGroups
@@ -2303,88 +2303,88 @@ Public Class cEcoSpace
         'get first estimate of denominators of predation rate disc equations
         Dim ia As Integer, Vbiom() As Single, Vdenom() As Single
         'this requires first estimates of vulnerable biomasses Vbiom by foraging arena
-        ReDim Vbiom(m_ESData.Narena), Vdenom(m_ESData.Narena)
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii) : ia = m_ESData.ArenaLink(ii)
-            aeff(ii) = m_ESData.Alink(ii) * m_ESData.Ftime(j) * m_ESData.RelaSwitch(ii)
-            Veff(ia) = m_ESData.VulArena(ia) * m_ESData.Ftime(i)
-            m_Ecosim.ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_ESData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
-            Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_ESData.pred(j) / m_ESData.Hden(j)
+        ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
+        For ii = 1 To m_SimData.inlinks
+            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            aeff(ii) = m_SimData.Alink(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
+            Veff(ia) = m_SimData.VulArena(ia) * m_SimData.Ftime(i)
+            m_Ecosim.ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
+            Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_SimData.pred(j) / m_SimData.Hden(j)
         Next
 
         'then calculate first estimate using initial Hden estimates of vulnerable biomass in each arena
-        For ia = 1 To m_ESData.Narena
-            i = m_ESData.Iarena(ia)
-            If m_ESData.BoutFeeding Then
+        For ia = 1 To m_SimData.Narena
+            i = m_SimData.Iarena(ia)
+            If m_SimData.BoutFeeding Then
                 If Vdenom(ia) > 0 Then
                     Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
                 Else
                     Vbiom(ia) = Veff(ia) * Biomass(i)
                 End If
             Else
-                Vbiom(ia) = Veff(ia) * Biomass(i) / (m_ESData.VulArena(ia) + Veff(ia) + Vdenom(ia))
+                Vbiom(ia) = Veff(ia) * Biomass(i) / (m_SimData.VulArena(ia) + Veff(ia) + Vdenom(ia))
             End If
         Next
 
         'then update hden estimates based on new vulnerable biomass estimates
-        For ii = 1 To m_ESData.inlinks
-            j = m_ESData.jlink(ii)
-            ia = m_ESData.ArenaLink(ii)
+        For ii = 1 To m_SimData.inlinks
+            j = m_SimData.jlink(ii)
+            ia = m_SimData.ArenaLink(ii)
             Hdent(j) = Hdent(j) + aeff(ii) * Vbiom(ia)
         Next
 
         For j = 1 To m_Data.NGroups
-            m_ESData.Hden(j) = (1 - Dwe) * (1 + m_ESData.Htime(j) * Hdent(j)) + Dwe * m_ESData.Hden(j)
+            m_SimData.Hden(j) = (1 - Dwe) * (1 + m_SimData.Htime(j) * Hdent(j)) + Dwe * m_SimData.Hden(j)
         Next
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'then update vulnerable biomass estimates using new Hden estimates (THIS MAY NOT BE NECESSARY?)
-        ReDim Vbiom(m_ESData.Narena), Vdenom(m_ESData.Narena)
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii) : ia = m_ESData.ArenaLink(ii)
-            aeff(ii) = aeff(ii) * m_ESData.Ftime(j) * m_ESData.RelaSwitch(ii)
+        ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
+        For ii = 1 To m_SimData.inlinks
+            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            aeff(ii) = aeff(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
             'see ecosim derivt
             'aeff(ii) = m_ESData.Alink(ii) * m_ESData.Ftime(j) * m_ESData.RelaSwitch(ii)
-            Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_ESData.pred(j) / m_ESData.Hden(j)
+            Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_SimData.pred(j) / m_SimData.Hden(j)
         Next
-        For ia = 1 To m_ESData.Narena
-            i = m_ESData.Iarena(ia)
-            If m_ESData.BoutFeeding Then
+        For ia = 1 To m_SimData.Narena
+            i = m_SimData.Iarena(ia)
+            If m_SimData.BoutFeeding Then
                 If Vdenom(ia) > 0 Then
                     Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
                 Else
                     Vbiom(ia) = Veff(ia) * Biomass(i)
                 End If
             Else
-                Vbiom(ia) = Veff(ia) * Biomass(i) / (m_ESData.VulArena(ia) + Veff(ia) + Vdenom(ia))
+                Vbiom(ia) = Veff(ia) * Biomass(i) / (m_SimData.VulArena(ia) + Veff(ia) + Vdenom(ia))
             End If
         Next
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'then predict consumption flows and cumulative consumptions using the new Vbiom estimates
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii) : ia = m_ESData.ArenaLink(ii)
-            If m_ESData.TrophicOff Then Bprey = m_ESData.StartBiomass(i) Else Bprey = Biomass(i)
+        For ii = 1 To m_SimData.inlinks
+            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            If m_SimData.TrophicOff Then Bprey = m_SimData.StartBiomass(i) Else Bprey = Biomass(i)
 
             'prey
             ' For j = 1 To N  'VC ignore detritus; CJW had NumGroups 'predator
             '    aeff = A(i, j) * tval(SeasonType(i, j)) * Ftime(j)
             '    Veff = vulrate(i, j) * Ftime(i) * MedVal(MF(i, j))
-            Select Case m_ESData.FlowType(i, j) 'prey always first
+            Select Case m_SimData.FlowType(i, j) 'prey always first
                 Case 1 'donor controlled flow
                     eat = aeff(ii) * Bprey
                 Case 3 'limited total flow
                     'MsgBox ("invalid flow control type setting; edit your mdb")
-                    eat = aeff(ii) * Bprey * m_ESData.pred(j) / (1 + aeff(ii) * m_ESData.pred(j) * Bprey / m_ESData.maxflow(i, j))
+                    eat = aeff(ii) * Bprey * m_SimData.pred(j) / (1 + aeff(ii) * m_SimData.pred(j) * Bprey / m_SimData.maxflow(i, j))
                 Case 2 'prey limited flow
                     'Vprey = Veff(ii) * Bprey / (vulrate(i, j) + Veff(ii) + aeff(ii) * pred(j) / Hden(j))
-                    eat = aeff(ii) * Vbiom(ia) * m_ESData.pred(j) / m_ESData.Hden(j)
+                    eat = aeff(ii) * Vbiom(ia) * m_SimData.pred(j) / m_SimData.Hden(j)
                 Case Else
                     eat = 0
             End Select
-            m_ESData.Eatenof(i) = m_ESData.Eatenof(i) + eat
-            m_ESData.Eatenby(j) = m_ESData.Eatenby(j) + eat
-            If m_ESData.IndicesOn Then m_ESData.Consumpt(i, j) = m_ESData.Consumpt(i, j) + eat
+            m_SimData.Eatenof(i) = m_SimData.Eatenof(i) + eat
+            m_SimData.Eatenby(j) = m_SimData.Eatenby(j) + eat
+            If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
 
             'If frmSim1.IndicesOn Then Consumption(i, j) = Consumption(i, j) + eat
             'ToDetritus = ToDetritus + GS(j) * eat       'DF should be considered
@@ -2397,31 +2397,31 @@ Public Class cEcoSpace
         Next
 
         'Make the detritus calculations here:
-        m_Ecosim.SimDetritusMT(Biomass, m_ESData.Eatenby, m_ESData.Eatenof, ToDetritus)
+        m_Ecosim.SimDetritusMT(Biomass, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus)
         'm_Ecosim.SimDetritus(Biomass, ToDetritus)
 
         For i = 1 To m_Data.NGroups
 
-            m_ESData.Eatenby(i) = m_ESData.Eatenby(i) + m_ESData.QBoutside(i) * Biomass(i)
+            m_SimData.Eatenby(i) = m_SimData.Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
 
             If i <= m_Data.nLiving Then      'Living group
                 Pmult = 1.0#
                 m_Ecosim.ApplyAVmodifiers(Pmult, Veff(1), i, i, False)
-                pbb(i) = Pmult * EatEff(i) * m_ESData.PBmaxs(i) * m_ESData.NutFree / (m_ESData.NutFree + m_ESData.NutFreeBase(i)) * m_ESData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+                pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
                 'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                loss(i) = m_ESData.Eatenof(i) + (m_ESData.mo(i) * (1 - m_ESData.MoPred(i) + m_ESData.MoPred(i) * m_ESData.Ftime(i)) + m_EPdata.Emig(i) + m_ESData.FishTime(i)) * Biomass(i)
+                loss(i) = m_SimData.Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * m_SimData.Ftime(i)) + m_EPdata.Emig(i) + m_SimData.FishTime(i)) * Biomass(i)
                 'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
                 'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
                 'jb change layout so I could read it
                 'SimGEt = IIf(m_ESData.UseVarPQ And m_EPdata.vbK(i) > 0, m_ESData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i)), m_ESData.SimGE(i))
-                If m_ESData.UseVarPQ And m_EPdata.vbK(i) > 0 Then
-                    SimGEt = m_ESData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i))
+                If m_SimData.UseVarPQ And m_EPdata.vbK(i) > 0 Then
+                    SimGEt = m_SimData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i))
                 Else
-                    SimGEt = m_ESData.SimGE(i)
+                    SimGEt = m_SimData.SimGE(i)
                 End If
 
-                Flowin(i) = m_EPdata.Immig(i) + SimGEt * m_ESData.Eatenby(i) + pbb(i) * Biomass(i)
+                Flowin(i) = m_EPdata.Immig(i) + SimGEt * m_SimData.Eatenby(i) + pbb(i) * Biomass(i)
 
                 If Biomass(i) > 1.0E-20 Then
                     FlowoutRate(i) = loss(i) / Biomass(i)
@@ -2430,7 +2430,7 @@ Public Class cEcoSpace
                 End If
                 'If Abs(Flowin(i) - loss(i)) > 0.1 * loss(i) Then Stop
             Else                'Detritus group
-                loss(i) = m_ESData.Eatenof(i) + m_EPdata.Emig(i) + m_ESData.DetritusOut(i) * Biomass(i)
+                loss(i) = m_SimData.Eatenof(i) + m_EPdata.Emig(i) + m_SimData.DetritusOut(i) * Biomass(i)
                 'deriv(i) = Immig(i) + ToDetritus(i - n) - loss(i)
                 If loss(i) <> 0 And Biomass(i) > 0 Then
                     'biomeq(i) = (Immig(i) + ToDetritus(i - n)) / (loss(i) / Biomass(i))
@@ -3133,7 +3133,7 @@ exitline:
                         'mpamonth(mpatype, month) is false if fishing is allowed, true if fishing prohib
                         Valt = 0
                         For isp = 1 To m_Data.NGroups
-                            Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_ESData.relQ(ig, isp)
+                            Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
                         Next
                         If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
                         'VC Sail() above: to avoid dividing with zero
@@ -3153,10 +3153,10 @@ exitline:
                         '  water               (not MPA       or fished MPA)     and ( habitat       =  fish here or  this gear doen not fish here??)
                         'EffortSpace(ig, i, j) = TotEffort(ig) * Attract(i, j) / TotAttract
                         'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                        m_Data.EffortSpace(ig, i, j) = m_ESData.FishRateGear(ig, iCumMonth) * TotE * m_Data.Attract(i, j) / TotAttract
+                        m_Data.EffortSpace(ig, i, j) = m_SimData.FishRateGear(ig, iCumMonth) * TotE * m_Data.Attract(i, j) / TotAttract
                         Effort(ig) = Effort(ig) + m_Data.EffortSpace(ig, i, j)
                         For isp = 1 To m_Data.NGroups
-                            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_ESData.relQ(ig, isp)
+                            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_SimData.relQ(ig, isp)
                         Next
                     End If
                 Next
@@ -3243,12 +3243,12 @@ exitline:
                 'End If
 
                 If m_EPdata.fCatch(igrp) > 0 Then
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + Biomass(igrp) * m_ESData.FishTime(igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + Biomass(igrp) * m_SimData.FishTime(igrp)
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To m_EPdata.NumFleet
                         If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
                             'First get catch
-                            sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_ESData.relQ(iFlt, igrp)
+                            sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp)
                             'Sum the total catch by gear
                             m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += sum
                             'sum all fleets
@@ -3716,8 +3716,8 @@ exitline:
                 'set reference variables
                 solver.m_EcospaceModel = Me
                 solver.m_Data = m_Data
-                solver.m_ESData = m_ESData
-                solver.m_EPData = m_EPdata
+                solver.m_SimData = m_SimData
+                solver.m_PathData = m_EPdata
                 solver.m_Stanza = m_Stanza
                 solver.m_Ecosim = m_Ecosim
 
@@ -3807,7 +3807,7 @@ exitline:
                 'set reference variables
                 solver.m_EcospaceModel = Me
                 solver.m_Data = m_Data
-                solver.m_ESData = m_ESData
+                solver.m_ESData = m_SimData
                 solver.m_Stanza = m_Stanza
                 solver.m_Ecosim = m_Ecosim
                 solver.Bcw = Bcw
@@ -4319,7 +4319,7 @@ exitline:
                 'VILLY: note following assumes we extend pair list for egg prod and recpower to add multistanza options  at end of pair lists
                 m_Ecosim.Srec(ieco) = m_EPdata.B(ieco)
                 If m_Stanza.BaseEggsStanza(isp) > 0 Then
-                    m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
+                    m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.RscaleSplit(isp) * m_SimData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_SimData.tval(m_Stanza.HatchCode(isp))
                 End If
                 If m_Stanza.HatchCode(isp) = 0 Then m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) * (m_Stanza.EggsStanza(isp) / m_Stanza.BaseEggsStanza(isp)) ^ m_Stanza.RecPowerSplit(isp)
                 m_Stanza.WageS(isp, m_Stanza.Age1(isp, 1)) = 0
@@ -4921,37 +4921,37 @@ exitline:
             '    If m_Data.PrefHab(i, j) Or m_Data.PrefHab(i, 0) Then HabAreaUsed(i) = HabAreaUsed(i) + m_Data.HabArea(j)
             'Next
             If HabAreaUsed(i) > 0 Then
-                Basebiomass(i) = ThabArea * m_ESData.StartBiomass(i) / HabAreaUsed(i)
+                Basebiomass(i) = ThabArea * m_SimData.StartBiomass(i) / HabAreaUsed(i)
                 BRatio(i) = ThabArea / HabAreaUsed(i)
                 If m_Data.AdjustSpace = False Then BRatio(i) = 1
             Else
-                Basebiomass(i) = m_ESData.StartBiomass(i) 'don't really need this; set before routine called
+                Basebiomass(i) = m_SimData.StartBiomass(i) 'don't really need this; set before routine called
                 BRatio(i) = 1
             End If
         Next
         'adjust vulnerability and search parameters for these basebiomass values in preferred habitats
 
-        ReDim m_Data.Vspace(m_ESData.Narena), m_Data.Aspace(m_ESData.inlinks)
+        ReDim m_Data.Vspace(m_SimData.Narena), m_Data.Aspace(m_SimData.inlinks)
 
         'find total consumptions of prey type for each arena, added over predators
-        ReDim Qarena(m_ESData.Narena), VulBiom(m_ESData.Narena)
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii)
-            j = m_ESData.jlink(ii)
-            ia = m_ESData.ArenaLink(ii)
-            Qarena(ia) = Qarena(ia) + m_ESData.Qlink(ii) * BRatio(j)
+        ReDim Qarena(m_SimData.Narena), VulBiom(m_SimData.Narena)
+        For ii = 1 To m_SimData.inlinks
+            i = m_SimData.ilink(ii)
+            j = m_SimData.jlink(ii)
+            ia = m_SimData.ArenaLink(ii)
+            Qarena(ia) = Qarena(ia) + m_SimData.Qlink(ii) * BRatio(j)
         Next
         'then set initial vulnerable biomasses (V) by arena
-        For ii = 1 To m_ESData.Narena
-            i = m_ESData.Iarena(ii)
-            j = m_ESData.Jarena(ii)
-            If m_ESData.VulMult(i, j) > 10000000000.0# Then m_ESData.VulMult(i, j) = 10000000000.0#
-            m_Data.Vspace(ii) = (m_ESData.VulMult(i, j) + 0.0000000001) * Qarena(ii) / (m_ESData.StartBiomass(i) * BRatio(i))
+        For ii = 1 To m_SimData.Narena
+            i = m_SimData.Iarena(ii)
+            j = m_SimData.Jarena(ii)
+            If m_SimData.VulMult(i, j) > 10000000000.0# Then m_SimData.VulMult(i, j) = 10000000000.0#
+            m_Data.Vspace(ii) = (m_SimData.VulMult(i, j) + 0.0000000001) * Qarena(ii) / (m_SimData.StartBiomass(i) * BRatio(i))
             If m_Data.Vspace(ii) = 0 Then m_Data.Vspace(ii) = 1
-            If m_ESData.BoutFeeding Then
-                VulBiom(ii) = -Qarena(ii) / Math.Log(1 - 1 / (m_ESData.VulMult(i, j) + 0.0000000001))
+            If m_SimData.BoutFeeding Then
+                VulBiom(ii) = -Qarena(ii) / Math.Log(1 - 1 / (m_SimData.VulMult(i, j) + 0.0000000001))
             Else
-                VulBiom(ii) = (m_ESData.VulMult(i, j) + 0.0000000001 - 1.0#) * Qarena(ii) / (2 * m_Data.Vspace(ii))
+                VulBiom(ii) = (m_SimData.VulMult(i, j) + 0.0000000001 - 1.0#) * Qarena(ii) / (2 * m_Data.Vspace(ii))
             End If
             If VulBiom(ii) = 0 Then VulBiom(ii) = 1
 
@@ -4961,12 +4961,12 @@ exitline:
         Next
         'then set predator search rates (a) by trophic link
         Dim Dzero As Single
-        For ii = 1 To m_ESData.inlinks
-            ia = m_ESData.ArenaLink(ii)
-            j = m_ESData.jlink(ii)
+        For ii = 1 To m_SimData.inlinks
+            ia = m_SimData.ArenaLink(ii)
+            j = m_SimData.jlink(ii)
             If VulBiom(ia) > 0 Then
-                Dzero = m_ESData.CmCo(j) / (m_ESData.CmCo(j) - 1)
-                m_Data.Aspace(ii) = Dzero * m_ESData.Qlink(ii) / (VulBiom(ia) * m_ESData.pred(j))
+                Dzero = m_SimData.CmCo(j) / (m_SimData.CmCo(j) - 1)
+                m_Data.Aspace(ii) = Dzero * m_SimData.Qlink(ii) / (VulBiom(ia) * m_SimData.pred(j))
             Else
                 m_Data.Aspace(ii) = 0
             End If
@@ -4974,8 +4974,8 @@ exitline:
 
         'adjust pbbiomass for primary producers
         For i = 1 To m_Data.NGroups
-            If m_ESData.pbm(i) > 0 Then 'primary producer
-                PbSpace(i) = m_ESData.pbbiomass(i) * m_ESData.StartBiomass(i) / Basebiomass(i)
+            If m_SimData.pbm(i) > 0 Then 'primary producer
+                PbSpace(i) = m_SimData.pbbiomass(i) * m_SimData.StartBiomass(i) / Basebiomass(i)
             End If
         Next
 
