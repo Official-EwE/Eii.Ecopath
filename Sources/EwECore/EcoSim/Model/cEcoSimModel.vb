@@ -1623,7 +1623,7 @@ Public Property PluginManager() As cPluginManager
                         SumEf = SumEf + m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp)
                     Next
 
-                    If SumEf Then
+                    If SumEf > 0 Then
                         Dim bioCatch As Single
                         Dim valueCatch As Single
                         For iflt = 1 To m_Data.nGear
