@@ -1015,9 +1015,8 @@ Namespace Core
         GameViewVisibleItems
         ''' <summary>Items the client can request from the server.</summary>
         GameViewAvailableItems
-        ''' <summary>Issues that define a summit.</summary>
-        GameIssue
-        GameIssueList
+        ''' <summary>Limits imposed on variables.</summary>
+        GameDataLimits
         ''' <summary> User entered fishing rate modifiers/shapes for fleets</summary>
         GameFleetFishingRates
         ''' <summary> User entered mortality/fishing rate modifiers/shapes for groups</summary>
@@ -1037,8 +1036,6 @@ Namespace Core
         ''' <summary>Game biomass with Fishing regulation.</summary>
         GameBiomassFishRegulation
         GameBiomassFishRegulationPM
-        GameBiomassLimit
-        GameBiomassBase
 
         GameBiomassByRegion
         GameCatchRegionFleetGroup
