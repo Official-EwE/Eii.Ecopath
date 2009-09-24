@@ -1731,18 +1731,6 @@ Public Property PluginManager() As cPluginManager
                     Array.Clear(BrecYear, 0, m_Data.nGroups)
                 End If
 
-                'Moved to FireOnTimeStep
-                'this was done so that the last time the happens during a timestep is calling the timestep delegate
-                'If m_ProgressDelegate IsNot Nothing Then
-                '    Try
-                '        m_ProgressDelegate(iTime, m_Results)
-                '    Catch ex As Exception
-                '        'swallow the error so ecosim can keep running
-                '        cLog.Write(ex)
-                '        Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler through an error that was not handled.")
-                '    End Try
-                'End If
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False)
