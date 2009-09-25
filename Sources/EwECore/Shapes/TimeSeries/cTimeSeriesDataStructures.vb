@@ -402,6 +402,8 @@ Public Class cTimeSeriesDataStructures
                                 EcosimData.FisForced(DatPool(j)) = True
                                 For K = 1 To 12
                                     Tim = 12 * (DatYear(i) - DatYear(1)) + K        ': If Tim > 1200 Then Tim = 1200
+                                    'DatVal() for FishingMortality can = -9999 this means no data available
+                                    'FishRateNo() with -9999 will have fishing mortality computed in SetFTimeFromGear()
                                     EcosimData.FishRateNo(DatPool(j), Tim) = DatVal(i, j)
                                     If EcosimData.FishRateMax(DatPool(j)) < EcosimData.FishRateNo(DatPool(j), Tim) Then
                                         EcosimData.FishRateMax(DatPool(j)) = CSng(EcosimData.FishRateNo(DatPool(j), Tim) * 1.01)
