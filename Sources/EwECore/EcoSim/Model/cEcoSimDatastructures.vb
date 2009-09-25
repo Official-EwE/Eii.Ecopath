@@ -351,6 +351,11 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public MPred() As Single
 
+    ''' <summary>
+    '''  Detritus from all sources by group
+    ''' </summary>
+    Public GroupDetritus() As Single
+
 #Region "Regulated Fisheries arrays"
 
     Public DoClosedLoop As Boolean
@@ -681,6 +686,8 @@ Public Class cEcosimDatastructures
         ReDim Bbase(nGroups)
         ReDim Fopt(nGroups)
 
+        ReDim GroupDetritus(nGroups)
+
         For i = 1 To nGroups
             CVest(i) = cCore.NULL_VALUE
             Blim(i) = cCore.NULL_VALUE
@@ -689,7 +696,7 @@ Public Class cEcosimDatastructures
             Fopt(i) = cCore.NULL_VALUE
         Next
 
-        'Setting regulatory values to NULL will cause them to be set to a default value if the datavbase does not contain contain values
+        'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain contain values
         'see cEcosimModel.setDefaultValues
         For iflt As Integer = 1 To nGear
             MaxEffort(iflt) = cCore.NULL_VALUE
