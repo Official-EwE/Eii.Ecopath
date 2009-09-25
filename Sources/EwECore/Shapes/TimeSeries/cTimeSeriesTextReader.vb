@@ -6,7 +6,6 @@ Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports System.IO
-Imports System.Globalization
 Imports System.Text
 
 #End Region ' Imports
@@ -353,7 +352,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 Me.m_tsPreview.AddRow(strLine, astrCols)
 
                 Try
-                    iYear = Integer.Parse(astrCols(0), Globalization.NumberStyles.Integer)
+                    iYear = StringUtils.ConvertToInteger(astrCols(0))
                 Catch ex As Exception
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
                     bSucces = False
@@ -365,7 +364,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 ' Check year increment
                 If iPrevYear <> 0 Then
                     If iYear <> (iPrevYear + 1) Then
-                        Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARMISSING, CInt(iPrevYear + 1)), iLineNumber)
+                        Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARMISSING, iPrevYear + 1, iLineNumber))
                         bSucces = False
                     End If
                     iPrevYear = iYear
@@ -413,17 +412,13 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim strLine As String = ""
         Dim iLineNumber As Integer = 0
         Dim astrCols() As String
+        Dim sValue As Single = 0.0
 
         ' Temp buffers for creating Time Series objects
         Dim asWtType(iNumSeries) As Single
         Dim astrNames(iNumSeries) As String
         Dim aiDatPool(iNumSeries) As Integer
         Dim aiType(iNumSeries) As eTimeSeriesType
-
-        ' Culturization ;)
-        Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
-        Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
-        ni.NumberDecimalSeparator = Me.m_strDecimalSeparator
 
         ' Sanity checks
         If (tr Is Nothing) Then Return False
@@ -439,7 +434,7 @@ Public MustInherit Class cTimeSeriesTextReader
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
         If (String.Compare(astrCols(0), "weight", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asWtType(i - 1) = Single.Parse(astrCols(i), ni) : Next i
+                For i As Integer = 1 To iNumSeries : asWtType(i - 1) = StringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
@@ -449,7 +444,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ' Read pool code from columns
         Try
             For i As Integer = 1 To iNumSeries
-                aiDatPool(i - 1) = Integer.Parse(astrCols(i), ni)
+                aiDatPool(i - 1) = StringUtils.ConvertToInteger(astrCols(i))
             Next i
         Catch ex As Exception
             Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
@@ -462,7 +457,7 @@ Public MustInherit Class cTimeSeriesTextReader
             For i As Integer = 1 To iNumSeries
 
                 ' Extract time series type
-                aiType(i - 1) = DirectCast(Integer.Parse(astrCols(i), ni), eTimeSeriesType)
+                aiType(i - 1) = DirectCast(StringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
 
                 ' Validate if encountered pool code fits the corresponding core counter
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(aiType(i - 1))
@@ -512,34 +507,34 @@ Public MustInherit Class cTimeSeriesTextReader
 
             For iColumn As Integer = 1 To iNumSeries
 
-                ' Validate single value
-                Dim sValue As Single = 0.0
-                Dim strValue As String = ""
+                ' Reset value
+                sValue = cCore.NULL_VALUE
 
                 ' Has a column value?
                 If (iColumn < astrCols.Length) Then
-                    ' #Yes: is not an empty string?
-                    If (Not String.IsNullOrEmpty(astrCols(iColumn))) Then
-                        ' #Yes: get the value
-                        strValue = Me.FixKnownInvalidValue(astrCols(iColumn))
-
-                        Try
-                            ' Try to parse the value
-                            sValue = Single.Parse(strValue, ni)
-                            ' Add parsed value to preview
+                    ' #Yes: get the value
+                    Try
+                        ' Try to parse the value
+                        sValue = StringUtils.ConvertToSingle(astrCols(iColumn), cCore.NULL_VALUE, Me.m_strDecimalSeparator)
+                        ' Add parsed value to preview
+                        If sValue = cCore.NULL_VALUE Then
+                            ' Suppress 'null' in preview
+                            Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
+                        Else
+                            ' Write preview value
                             Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
                             ' Is value negative?
                             If (sValue < 0.0!) Then
                                 ' #Yes: throw an error
                                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE)
                             End If
-                        Catch ex As Exception
-                            ' JS04feb08: error parsing value
-                            Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUEFORMAT, iLineNumber)
-                            ' Add original string to preview
-                            Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = strValue
-                        End Try
-                    End If
+                        End If
+                    Catch ex As Exception
+                        ' JS04feb08: error parsing value
+                        Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUEFORMAT, iLineNumber)
+                        ' Add original string to preview
+                        Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = astrCols(iColumn)
+                    End Try
                 End If
 
                 ' Store converted value
@@ -647,13 +642,13 @@ Public MustInherit Class cTimeSeriesTextReader
 
     End Sub
 
-    Private Function FixKnownInvalidValue(ByVal strValue As String) As String
-        Select Case strValue.Trim
-            Case "-", "_", ""
-                strValue = "0"
-        End Select
-        Return strValue
-    End Function
+    'Private Function FixKnownInvalidValue(ByVal strValue As String) As String
+    '    Select Case strValue.Trim
+    '        Case "-", "_", ""
+    '            strValue = "0"
+    '    End Select
+    '    Return strValue
+    'End Function
 
 #End Region ' Helper methods
 
