@@ -115,8 +115,9 @@ Public Class cSpaceSolver
     Private RtoNext As Single
     Private SurvRat As Single
 
-
-
+    ''' <summary>Detritus by Group</summary>
+    ''' <remarks>Added for Atlantis coupling. Local copy passes to SimDetritusMT() by each thread(this prevents cross thread corruption) then used to update map </remarks>
+    Private GroupDetritus() As Single
 
     Public Sub Init()
         'local spatial variables
@@ -148,6 +149,7 @@ Public Class cSpaceSolver
         ReDim TotBiomThread(m_Data.NGroups)
         ReDim TotPredThread(m_Data.NGroups)
         ReDim TotIFDweightThread(m_Data.NGroups)
+        ReDim GroupDetritus(m_Data.NGroups)
 
         'local copies are initialized from the ecosim data
         Array.Copy(m_SimData.Hden, Hden, m_Data.NGroups + 1)
@@ -396,6 +398,9 @@ Public Class cSpaceSolver
             Next
 
             For ip = 1 To m_Data.NGroups
+
+                Me.m_Data.GroupDetritus(i, j, ip) = GroupDetritus(ip)
+
                 F(i, j, ip) = Flowin(ip)
                 AMm(i, j, ip) = -FlowoutRate(ip) - Bcw(i + 1, j, ip) - C(i - 1, j, ip) - d(i, j, ip) - e(i, j, ip)
                 If AMm(i, j, ip) >= 0 Then AMm(i, j, ip) = -1.0E+30
@@ -655,8 +660,6 @@ Public Class cSpaceSolver
                 '**********
                 If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
 
-                'ToDetritus = ToDetritus + GS(j) * eat       'DF should be considered
-
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
                     ' Debug.Assert(False, "Contaminant tracing not implemented in Ecospace")
@@ -667,8 +670,7 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
-            m_Ecosim.SimDetritusMT(Biomass, Eatenby, Eatenof, ToDetritus)
-            ' m_Ecosim.SimDetritus(Biomass, ToDetritus)
+            m_Ecosim.SimDetritusMT(Biomass, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
 

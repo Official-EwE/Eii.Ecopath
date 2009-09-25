@@ -757,7 +757,6 @@ Public Class cEcoSpace
                 runGridSolverThreads()
                 slvrTimer = slvrTimer + (Microsoft.VisualBasic.Timer - slvET)
 
-
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
                     For i = 1 To m_Data.Inrow
@@ -2055,7 +2054,6 @@ Public Class cEcoSpace
 
     Private Sub SetBiomassesEcospace()
         Dim i As Integer, j As Integer, ii As Integer ' , IterMax As Integer
-
         ReDim m_Data.Vspace(m_SimData.inlinks), m_Data.Aspace(m_SimData.inlinks), PbSpace(m_Data.NGroups)
 
         'calculate pbbiomass parameter from pbbase and pbm
@@ -2260,6 +2258,11 @@ Public Class cEcoSpace
         Dim Dwe As Single
         Dim Bprey As Single
 
+        'Detritus by group is ignored by this version of deritRed(). Each thread has its own version that it uses.
+        'So we can declare it localy and never us it to update the detritus map
+        Dim GrpDet() As Single
+        ReDim GrpDet(m_Data.NGroups)
+
         Dim aeff() As Single, Veff() As Single
         ReDim aeff(m_SimData.inlinks), Veff(m_SimData.inlinks)
 
@@ -2397,8 +2400,7 @@ Public Class cEcoSpace
         Next
 
         'Make the detritus calculations here:
-        m_Ecosim.SimDetritusMT(Biomass, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus)
-        'm_Ecosim.SimDetritus(Biomass, ToDetritus)
+        m_Ecosim.SimDetritusMT(Biomass, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus, GrpDet)
 
         For i = 1 To m_Data.NGroups
 

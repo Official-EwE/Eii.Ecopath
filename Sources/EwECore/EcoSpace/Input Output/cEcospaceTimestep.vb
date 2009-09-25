@@ -284,6 +284,18 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
+    ''' <summary>
+    ''' Detritus by group
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>Total biomass a group contributes to detritus</remarks>
+    Public ReadOnly Property GroupDetritus() As Single(,,)
+        Get
+            Return Me.m_spaceData.GroupDetritus
+        End Get
+    End Property
+
 #End Region
 
 #Region " ICoreInterface implementation "

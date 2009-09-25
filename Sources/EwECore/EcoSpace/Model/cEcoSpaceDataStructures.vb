@@ -647,8 +647,12 @@ Public Class cEcospaceDataStructures
     Public DistributionEnvelope(,,) As Boolean 'format: row, col, group
 
     ''' <summary>Predation rate by Row, Col, Prey/Pred link</summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Added for Model coupling</remarks>
     Public MPred(,,) As Single
+
+    ''' <summary>Detritus by Row, Col, group</summary>
+    ''' <remarks>Added for Model coupling</remarks>
+    Public GroupDetritus(,,) As Single
 
 #End Region
 
@@ -1120,6 +1124,7 @@ Public Class cEcospaceDataStructures
             ReDim Sail(nFleets, Inrow + 1, InCol + 1)
             ReDim Port(nFleets, Inrow + 1, InCol + 1)
 
+            ReDim GroupDetritus(Inrow + 1, InCol + 1, nvartot)
 
             'must redim the seed var here too abmpa
             ' ReDim MPASeed(Inrow + 1, InCol + 1)
