@@ -1,26 +1,10 @@
-'==============================================================================
-'
-' $Log: StringUtils.vb,v $
-' Revision 1.4  2009/06/03 19:25:34  jeroens
-' Added ToRoman
-'
-' Revision 1.3  2009/04/13 14:14:02  jeroens
-' Added path trim option
-'
-' Revision 1.2  2008/10/20 23:35:39  jeroens
-' Added shift
-'
-' Revision 1.1  2008/09/26 07:31:12  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports System.Globalization
 
 Namespace Utilities
 
@@ -299,6 +283,185 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a string into an integer value using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="strNumber"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ConvertToInteger(ByVal strNumber As String, _
+                                                Optional ByVal iNullValue As Integer = -9999, _
+                                                Optional ByVal strDecimalSepartor As String = ".", _
+                                                Optional ByVal strThousandsSepartor As String = "") As Integer
+
+            Select Case strNumber.Trim
+                Case "-", "_" : strNumber = ""
+            End Select
+
+            If Not String.IsNullOrEmpty(strNumber) Then
+
+                Try
+
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+                    ni.NumberDecimalSeparator = strDecimalSepartor
+                    ni.NumberGroupSeparator = strThousandsSepartor
+
+                    Return Convert.ToInt32(strNumber, ni)
+
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            Return iNullValue
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a string into a single value using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="strNumber"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ConvertToSingle(ByVal strNumber As String, _
+                                               Optional ByVal sNullValue As Single = -9999.0!, _
+                                               Optional ByVal strDecimalSepartor As String = ".", _
+                                               Optional ByVal strThousandsSepartor As String = "") As Single
+
+            Select Case strNumber.Trim
+                Case "-", "_" : strNumber = ""
+            End Select
+
+            If Not String.IsNullOrEmpty(strNumber) Then
+
+                Try
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+                    ni.NumberDecimalSeparator = strDecimalSepartor
+                    ni.NumberGroupSeparator = strThousandsSepartor
+
+                    Return Convert.ToSingle(strNumber, ni)
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            Return sNullValue
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a string into a single value using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="strNumber"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ConvertToDouble(ByVal strNumber As String, _
+                                               Optional ByVal dNullValue As Double = -9999.0, _
+                                               Optional ByVal strDecimalSepartor As String = ".", _
+                                               Optional ByVal strThousandsSepartor As String = "") As Double
+
+            Select Case strNumber.Trim
+                Case "-", "_" : strNumber = ""
+            End Select
+
+            If Not String.IsNullOrEmpty(strNumber) Then
+
+                Try
+
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+                    Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+                    ni.NumberDecimalSeparator = strDecimalSepartor
+                    ni.NumberGroupSeparator = strThousandsSepartor
+
+                    Return Convert.ToDouble(strNumber, ni)
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+            Return dNullValue
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a single value into a string using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="iValue"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatInteger(ByVal iValue As Integer, _
+                                             Optional ByVal strDecimalSepartor As String = ".", _
+                                             Optional ByVal strThousandsSepartor As String = "") As String
+
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            ni.NumberDecimalSeparator = strDecimalSepartor
+            ni.NumberGroupSeparator = strThousandsSepartor
+
+            Return Convert.ToString(iValue, ni)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a single value into a string using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="sValue"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatSingle(ByVal sValue As Single, _
+                                            Optional ByVal strDecimalSepartor As String = ".", _
+                                            Optional ByVal strThousandsSepartor As String = "") As String
+
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            ni.NumberDecimalSeparator = strDecimalSepartor
+            ni.NumberGroupSeparator = strThousandsSepartor
+
+            Return Convert.ToString(sValue, ni)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a double value into a string using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="dValue"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatDouble(ByVal dValue As Double, _
+                                            Optional ByVal strDecimalSepartor As String = ".", _
+                                            Optional ByVal strThousandsSepartor As String = "") As String
+
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.InstalledUICulture
+            Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            ni.NumberDecimalSeparator = strDecimalSepartor
+            ni.NumberGroupSeparator = strThousandsSepartor
+
+            Return Convert.ToString(dValue, ni)
+
+        End Function
 
     End Class
 
