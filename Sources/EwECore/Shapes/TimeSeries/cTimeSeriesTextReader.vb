@@ -509,6 +509,8 @@ Public MustInherit Class cTimeSeriesTextReader
 
                 ' Reset value
                 sValue = cCore.NULL_VALUE
+                ' Reset preview
+                Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
 
                 ' Has a column value?
                 If (iColumn < astrCols.Length) Then
@@ -517,10 +519,7 @@ Public MustInherit Class cTimeSeriesTextReader
                         ' Try to parse the value
                         sValue = StringUtils.ConvertToSingle(astrCols(iColumn), cCore.NULL_VALUE, Me.m_strDecimalSeparator)
                         ' Add parsed value to preview
-                        If sValue = cCore.NULL_VALUE Then
-                            ' Suppress 'null' in preview
-                            Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
-                        Else
+                        If (sValue <> cCore.NULL_VALUE) Then
                             ' Write preview value
                             Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
                             ' Is value negative?
