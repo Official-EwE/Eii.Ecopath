@@ -576,7 +576,7 @@ Public Property PluginManager() As cPluginManager
             Dim told As Single
             Dim RelFopt() As Single, QGrowUsed() As Single
             Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
-            Dim sumBio As Single
+            Dim sumBio As Single, sumCatch As Single
 
             Dim Fgear() As Single
 
@@ -786,10 +786,6 @@ Public Property PluginManager() As cPluginManager
 
                     CheckIfSmall(1, nvar, BB)
 
-                    For igrp As Integer = 1 To Me.nGroups
-                        sumBio += BB(igrp)
-                    Next
-
                     'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                     '*
                     If m_search.bInSearch And iyr >= m_search.BaseYear Then
@@ -807,6 +803,12 @@ Public Property PluginManager() As cPluginManager
                         Me.PopulateResults(itime, ipct)
                         Me.FireOnTimeStep(itime)
                     End If
+
+                    For igrp As Integer = 1 To Me.nGroups
+                        sumBio += BB(igrp)
+                        'zero fleet index hold sum of catch for all fleets
+                        sumCatch += m_Data.ResultsSumCatchByGroupGear(igrp, 0, itime)
+                    Next
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimEndTimeStep(BB, m_Data, itime, m_Results)
 
@@ -858,7 +860,7 @@ Public Property PluginManager() As cPluginManager
 
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimRunCompleted(m_Data)
 
-            System.Console.WriteLine("Sum Bio = " & sumBio.ToString)
+            System.Console.WriteLine("Sum Bio = " & sumBio.ToString & ", Sum Catch = " & sumCatch.ToString)
 
         End Sub
 
@@ -2151,7 +2153,7 @@ Public Property PluginManager() As cPluginManager
                 Next
 
                 'Make the detritus calculations here:
-                SimDetritusMT(Biomass, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus)
+                SimDetritusMT(Biomass, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus, m_Data.GroupDetritus)
 
                 For i = 1 To nGroups
 
@@ -2209,11 +2211,15 @@ Public Property PluginManager() As cPluginManager
         ''' <summary>
         ''' Thread safe version of SimDetritus
         ''' </summary>
-        Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single)
+        Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
             ' Dim Surplus As Single
             Dim i As Integer, j As Integer, K As Integer
             Dim ToDet As Single, DetFlowN As Single
             DetFlowN = 0
+
+            'DetritusByGroup() needs to be cleared because the values are summed into it
+            Array.Clear(DetritusByGroup, 0, Me.nGroups)
+
             For i = 1 To m_EPData.NumLiving
                 For j = m_EPData.NumLiving + 1 To nGroups
                     'First take egestion
@@ -2238,6 +2244,8 @@ Public Property PluginManager() As cPluginManager
                     End If 'If m_EPData.NumFleet > 0 Then    
 
                     ToDetritus(j - m_EPData.NumLiving) = ToDetritus(j - m_EPData.NumLiving) + ToDet
+
+                    DetritusByGroup(i) += ToDet
 
                 Next j
             Next i
@@ -3834,7 +3842,9 @@ Public Property PluginManager() As cPluginManager
             End If 'If PredEffort Then
 
             For i = 1 To m_Data.nGroups
-                If m_Data.FisForced(i) = False Or PredEffort Then
+                'jb change this to compute FishRateNo() when it is -9999(NULL_VALUE) even if it is forced
+                'this allow the user to load partial timeseries datasets and sketch in the remaining years
+                If (m_Data.FisForced(i) = False Or PredEffort Or m_Data.FishRateNo(i, t) = cCore.NULL_VALUE) Then
 
                     Ft = 0
                     For ig = 1 To m_Data.nGear
