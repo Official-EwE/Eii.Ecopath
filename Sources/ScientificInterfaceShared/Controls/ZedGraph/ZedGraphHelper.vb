@@ -759,6 +759,10 @@ Namespace Controls
             Else
                 axis.Title.Text = strLabel
             End If
+
+            axis.Scale.IsUseTenPower = True
+            axis.Scale.MagAuto = Not String.IsNullOrEmpty(strLabel)
+
         End Sub
 
 #End Region ' Axis label management
