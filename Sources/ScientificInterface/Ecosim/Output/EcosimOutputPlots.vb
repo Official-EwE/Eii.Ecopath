@@ -391,7 +391,7 @@ Namespace Ecosim
 
             Dim da() As Single = gts.ShapeData()
             For j As Integer = 1 To da.Length - 1
-                If da(j) <> 0 Then
+                If (da(j) > 0) Then
                     ppt.Add(Me.m_core.EcosimFirstYear + j - 1, da(j) * dScale)
                 End If
             Next
