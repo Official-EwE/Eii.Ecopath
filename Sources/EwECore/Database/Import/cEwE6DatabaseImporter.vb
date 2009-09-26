@@ -2205,59 +2205,42 @@ Namespace Database
 
 #Region " Shape duplicates management "
 
-        ''' <summary>
-        ''' Returns DBID for identical shape
-        ''' </summary>
-        ''' <param name="shapeDataType"></param>
-        ''' <param name="readerSrc"></param>
-        ''' <param name="bIsSeasonal"></param>
-        ''' <returns></returns>
-        Private Function GetDuplicateShapeID(ByVal shapeDataType As eDataTypes, ByVal readerSrc As IDataReader, ByVal bIsSeasonal As Boolean) As Integer
+        Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
 
-            Dim reader As IDataReader = Nothing
-            Dim iDBID As Integer = 0
+        Private Class cForcingShapeData
+            Public NumDuplicates As Integer = 0
+            Public Title As String = ""
+            Public ZScale As String = ""
+            Public ShapeDataType As eDataTypes = eDataTypes.NotSet
+            Public ShapeType As eShapeFunctionType = eShapeFunctionType.NotSet
+            Public DBID As Integer = 0
+        End Class
 
-            Select Case shapeDataType
-                Case eDataTypes.Forcing
-                    reader = Me.m_dbEwE6.GetReader("EcoSimShapeTime")
 
-                Case eDataTypes.EggProd
-                    reader = Me.m_dbEwE6.GetReader("EcosimShapeEggProd")
-
-                Case eDataTypes.Mediation
-                    reader = Me.m_dbEwE6.GetReader("EcosimShapeMediation")
-
-                Case eDataTypes.FishingEffort
-                    Return cCore.NULL_VALUE
-
-                Case eDataTypes.FishMort
-                    Return cCore.NULL_VALUE
-
-                Case Else
-                    Debug.Assert(False, "Shape type not set during import; cannot continue")
-
-            End Select
-
-            Dim strZScaleSrc As String = Me.RebuildNumberListString(CStr(Me.FixValue(readerSrc, "zScale", "")))
-
-            While reader.Read And iDBID = 0
-
-                Dim strZScale As String = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
-
-                If String.Compare(strZScale, strZScaleSrc) = 0 Then
-                    iDBID = CInt(reader("ShapeID"))
-                End If
-
-            End While
-
-            Me.m_dbEwE6.ReleaseReader(reader)
-            Return iDBID
-
-        End Function
 
 #End Region ' Shape duplicates management
 
         Private Function ImportShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
+                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+
+            ' import shape specific data in subtable
+            Select Case shapeDataType
+
+                Case eDataTypes.Forcing, eDataTypes.EggProd, eDataTypes.Mediation
+                    Return Me.ImportForcingShape(iShapeNumber, iShapeID, shapeDataType, reader, bIsSeasonal)
+
+                Case eDataTypes.FishingEffort, eDataTypes.FishMort
+                    Return Me.ImportOtherShape(iShapeNumber, iShapeID, shapeDataType, reader, bIsSeasonal)
+
+                Case Else
+                    ' Whoot
+
+            End Select
+            Return False
+
+        End Function
+
+        Private Function ImportForcingShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
                 ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2268,6 +2251,10 @@ Namespace Database
             Dim bSucces As Boolean = True
 
             ' ToDo: find if EXACT shape already exists if so, do NOT import it
+            ' 1. Read db, populate cForcingShapeData structure
+            ' 2. Find duplicate record
+            ' 3. Is duplicate?
+            '    Y: 
 
             Try
                 writer = Me.m_dbEwE6.GetWriter("EcosimShape")
@@ -2338,6 +2325,49 @@ Namespace Database
                     drow("Steep") = Me.FixValue(reader, "Steep")
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
+
+                Case Else
+                    Debug.Assert(False, "Shape type not set during import; cannot continue")
+
+            End Select
+
+            ' Forge FK
+            drow("ShapeID") = iShapeID
+
+            writer.AddRow(drow)
+            Me.m_dbEwE6.ReleaseWriter(writer)
+            writer = Nothing
+
+            Return bSucces
+        End Function
+
+        Private Function ImportOtherShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
+                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                ' Add new shape
+                writer = Me.m_dbEwE6.GetWriter("EcosimShape")
+                drow = writer.NewRow()
+                drow("ShapeID") = iShapeID
+                drow("ShapeType") = CInt(shapeDataType)
+                drow("IsSeasonal") = bIsSeasonal
+                writer.AddRow(drow)
+
+                Me.m_dbEwE6.ReleaseWriter(writer)
+                writer = Nothing
+
+            Catch ex As Exception
+                ' No need to localize, send to log only
+                Me.LogMessage(String.Format("Effort or Mort shape data {0} failed to import as type {1}: {2}", iShapeNumber, shapeDataType.ToString(), ex.Message), _
+                        eMessageType.DataImport, eMessageImportance.Information)
+                Return False
+            End Try
+
+            Select Case shapeDataType
 
                 Case eDataTypes.FishingEffort
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeFishRate"))
