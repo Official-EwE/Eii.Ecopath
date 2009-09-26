@@ -508,7 +508,7 @@ Public MustInherit Class cTimeSeriesTextReader
             For iColumn As Integer = 1 To iNumSeries
 
                 ' Reset value
-                sValue = cCore.NULL_VALUE
+                sValue = 0
                 ' Reset preview
                 Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
 
@@ -517,9 +517,9 @@ Public MustInherit Class cTimeSeriesTextReader
                     ' #Yes: get the value
                     Try
                         ' Try to parse the value
-                        sValue = StringUtils.ConvertToSingle(astrCols(iColumn), cCore.NULL_VALUE, Me.m_strDecimalSeparator)
+                        sValue = StringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
                         ' Add parsed value to preview
-                        If (sValue <> cCore.NULL_VALUE) Then
+                        If (sValue <> 0) Then
                             ' Write preview value
                             Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
                             ' Is value negative?
