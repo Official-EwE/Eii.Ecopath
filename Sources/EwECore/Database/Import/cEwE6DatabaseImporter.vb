@@ -2203,6 +2203,60 @@ Namespace Database
 
         End Sub
 
+#Region " Shape duplicates management "
+
+        ''' <summary>
+        ''' Returns DBID for identical shape
+        ''' </summary>
+        ''' <param name="shapeDataType"></param>
+        ''' <param name="readerSrc"></param>
+        ''' <param name="bIsSeasonal"></param>
+        ''' <returns></returns>
+        Private Function GetDuplicateShapeID(ByVal shapeDataType As eDataTypes, ByVal readerSrc As IDataReader, ByVal bIsSeasonal As Boolean) As Integer
+
+            Dim reader As IDataReader = Nothing
+            Dim iDBID As Integer = 0
+
+            Select Case shapeDataType
+                Case eDataTypes.Forcing
+                    reader = Me.m_dbEwE6.GetReader("EcoSimShapeTime")
+
+                Case eDataTypes.EggProd
+                    reader = Me.m_dbEwE6.GetReader("EcosimShapeEggProd")
+
+                Case eDataTypes.Mediation
+                    reader = Me.m_dbEwE6.GetReader("EcosimShapeMediation")
+
+                Case eDataTypes.FishingEffort
+                    Return cCore.NULL_VALUE
+
+                Case eDataTypes.FishMort
+                    Return cCore.NULL_VALUE
+
+                Case Else
+                    Debug.Assert(False, "Shape type not set during import; cannot continue")
+
+            End Select
+
+            Dim strZScaleSrc As String = Me.RebuildNumberListString(CStr(Me.FixValue(readerSrc, "zScale", "")))
+
+            While reader.Read And iDBID = 0
+
+                Dim strZScale As String = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
+
+                If String.Compare(strZScale, strZScaleSrc) = 0 Then
+                    iDBID = CInt(reader("ShapeID"))
+                End If
+
+            End While
+
+            Me.m_dbEwE6.ReleaseReader(reader)
+            Return iDBID
+
+        End Function
+
+#End Region ' Shape duplicates management
+
         Private Function ImportShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
                 ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
 
@@ -2212,6 +2266,8 @@ Namespace Database
             Dim strTitle As String = ""
             Dim strType As String = ""
             Dim bSucces As Boolean = True
+
+            ' ToDo: find if EXACT shape already exists if so, do NOT import it
 
             Try
                 writer = Me.m_dbEwE6.GetWriter("EcosimShape")
