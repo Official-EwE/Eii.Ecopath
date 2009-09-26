@@ -8,6 +8,7 @@ Imports EwECore.Auxiliary
 Imports System.Data
 Imports System.Text
 Imports EwEPlugin
+Imports EwEUtils.Utilities
 Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports System.Globalization
@@ -5047,6 +5048,8 @@ Public Class cDBDataSource
         Dim sbZScale As New Text.StringBuilder()
         Dim iRepetitions As Integer = 1
 
+        ' ToDo: find if FF with this name exists. If so, overwrite
+
         Try
             iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
         Catch
@@ -5450,7 +5453,7 @@ Public Class cDBDataSource
 
                 For iYear = 1 To Math.Min(tsDS.nDatasetNumYears(iDataset), astrTimeValues.Length)
                     Try
-                        tsDS.sValues(iYear, iSeries) = CSng(astrTimeValues(iYear - 1))
+                        tsDS.sValues(iYear, iSeries) = StringUtils.ConvertToSingle(astrTimeValues(iYear - 1))
                     Catch ex As Exception
                         ex = ex
                         ' Woops
