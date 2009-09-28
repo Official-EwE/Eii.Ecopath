@@ -252,6 +252,14 @@ Namespace Ecosim
             'Set the master pane title
             Me.m_zgh.Configure(item.Group.Name)
 
+            ' Clear all panes
+            For Each pt As ePaneTypes In [Enum].GetValues(GetType(ePaneTypes))
+                With Me.m_zgh.GetPane(CInt(pt))
+                    .CurveList.Clear()
+                    .AxisChange()
+                End With
+            Next
+
             ' Do not render when sim has not ran
             If Not Me.m_core.StateMonitor.HasEcosimRan Then Return
 
