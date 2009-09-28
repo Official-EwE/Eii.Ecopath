@@ -19,6 +19,8 @@ Public Class cMapDrawer
     Private m_iInCol As Integer
     Private m_iInRow As Integer
     Private m_lColors As List(Of Color)
+    Private m_bShowMPA As Boolean = False
+    Private m_bShowPackets As Boolean = False
 
     Private m_graphics As Graphics
     Private m_font As System.Drawing.Font
@@ -42,10 +44,28 @@ Public Class cMapDrawer
 
     Public Property AllowedToRun() As Boolean
         Get
-            Return m_bAllowedToRun
+            Return Me.m_bAllowedToRun
         End Get
         Set(ByVal value As Boolean)
-            m_bAllowedToRun = value
+            Me.m_bAllowedToRun = value
+        End Set
+    End Property
+
+    Public Property ShowMPA() As Boolean
+        Get
+            Return Me.m_bShowMPA
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bShowMPA = value
+        End Set
+    End Property
+
+    Public Property ShowIBMPackets() As Boolean
+        Get
+            Return Me.m_bShowPackets
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bShowPackets = value
         End Set
     End Property
 
@@ -166,13 +186,18 @@ Public Class cMapDrawer
     ''' <param name="iGroup"></param>
     ''' <param name="rcPos"></param>
     ''' <remarks></remarks>
-    Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle)
+    Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, Optional ByVal iStanza As Integer = cCore.NULL_VALUE)
         If m_map Is Nothing Then Return
         For i As Integer = 1 To m_iInRow
             For j As Integer = 1 To m_iInCol
                 Try
                     Dim sMapValue As Single = 1.0E-20
                     Dim icc As Single
+                    Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
+                                                               CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
+                                                               CSng(rcPos.Width() / m_iInCol), _
+                                                               CSng(rcPos.Height() / m_iInRow))
+                    Dim brCell As Brush = Nothing
 
                     'If ConShow And ConcMax(ip) > 0 Then
                     '    If ConShowType = 0 Then
@@ -197,21 +222,35 @@ Public Class cMapDrawer
                     'Boundary check
                     icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
 
-                    Dim tmpBrush As SolidBrush = Nothing
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
                         ' #Water
-                        tmpBrush = New SolidBrush(m_lColors(CInt(icc)))
+                        brCell = New SolidBrush(m_lColors(CInt(icc)))
                     Else
                         ' #Land
-                        tmpBrush = New SolidBrush(Color.Gray)
+                        brCell = New SolidBrush(Color.Gray)
                     End If
-                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                                                               CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                                                               CSng(rcPos.Width() / m_iInCol), _
-                                                               CSng(rcPos.Height() / m_iInRow))
-                    m_graphics.FillRectangle(tmpBrush, tmpRect)
-                    tmpBrush.Dispose()
+                    m_graphics.FillRectangle(brCell, rcfCell)
+                    brCell.Dispose()
+
+                    ' Draw MPA
+                    If Me.m_bShowMPA Then
+                        Dim iMPA As Integer = CInt(m_core.EcospaceBasemap.LayerMPA.Cell(i, j))
+                        ' Is MPA cell?
+                        If iMPA > 0 Then
+                            ' ToDo: check if MPA is closed this month
+                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Cross, Color.Black)
+                            m_graphics.FillRectangle(brCell, rcfCell)
+                            brCell.Dispose()
+                        End If
+                    End If
+
+                    ' Draw IBM packet
+                    If Me.m_bShowPackets Then
+                        ' Is Stanza group?
+
+                    End If
+
                 Catch ex As Exception
                     'Debug.Assert(False, ex.Message)
                     Exit Sub

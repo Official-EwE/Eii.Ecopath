@@ -33,31 +33,34 @@ Namespace Ecospace
             Me.m_rbShowNonHidden = New System.Windows.Forms.RadioButton
             Me.m_rbShowAll = New System.Windows.Forms.RadioButton
             Me.m_cbOverlay = New System.Windows.Forms.CheckBox
-            Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
-            Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
-            Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
-            Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
             Me.m_btnStop = New System.Windows.Forms.Button
             Me.m_pbMap = New System.Windows.Forms.PictureBox
             Me.m_pbColors = New System.Windows.Forms.PictureBox
             Me.m_lblHigh = New System.Windows.Forms.Label
             Me.m_lblLow = New System.Windows.Forms.Label
-            Me.m_lbPlotTime = New System.Windows.Forms.Label
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_pnDisplayOptions = New System.Windows.Forms.Panel
-            Me.m_lblDispOpt = New System.Windows.Forms.Label
+            Me.m_plDistribution = New System.Windows.Forms.Panel
+            Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
+            Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
+            Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
             Me.m_lblDist = New System.Windows.Forms.Label
+            Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
+            Me.m_pnDisplayOptions = New System.Windows.Forms.Panel
+            Me.m_btnDisplayGroups = New System.Windows.Forms.Button
+            Me.m_lblDispOpt = New System.Windows.Forms.Label
+            Me.m_cbIBMPackets = New System.Windows.Forms.CheckBox
+            Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
             Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
-            Me.m_btnDisplayGroups = New System.Windows.Forms.Button
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.m_plDistribution.SuspendLayout()
             Me.m_pnDisplayOptions.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
@@ -104,32 +107,6 @@ Namespace Ecospace
             Me.m_cbOverlay.Name = "m_cbOverlay"
             Me.m_cbOverlay.UseVisualStyleBackColor = True
             '
-            'm_rbDisplayCoverB
-            '
-            resources.ApplyResources(Me.m_rbDisplayCoverB, "m_rbDisplayCoverB")
-            Me.m_rbDisplayCoverB.Name = "m_rbDisplayCoverB"
-            Me.m_rbDisplayCoverB.UseVisualStyleBackColor = True
-            '
-            'm_rbDisplayContaminantC
-            '
-            resources.ApplyResources(Me.m_rbDisplayContaminantC, "m_rbDisplayContaminantC")
-            Me.m_rbDisplayContaminantC.Name = "m_rbDisplayContaminantC"
-            Me.m_rbDisplayContaminantC.UseVisualStyleBackColor = True
-            '
-            'm_rbDisplayFishingEffort
-            '
-            resources.ApplyResources(Me.m_rbDisplayFishingEffort, "m_rbDisplayFishingEffort")
-            Me.m_rbDisplayFishingEffort.Name = "m_rbDisplayFishingEffort"
-            Me.m_rbDisplayFishingEffort.UseVisualStyleBackColor = True
-            '
-            'm_rbDisplayRelBiomass
-            '
-            resources.ApplyResources(Me.m_rbDisplayRelBiomass, "m_rbDisplayRelBiomass")
-            Me.m_rbDisplayRelBiomass.Checked = True
-            Me.m_rbDisplayRelBiomass.Name = "m_rbDisplayRelBiomass"
-            Me.m_rbDisplayRelBiomass.TabStop = True
-            Me.m_rbDisplayRelBiomass.UseVisualStyleBackColor = True
-            '
             'm_btnStop
             '
             resources.ApplyResources(Me.m_btnStop, "m_btnStop")
@@ -164,11 +141,6 @@ Namespace Ecospace
             Me.m_lblLow.ForeColor = System.Drawing.Color.Blue
             Me.m_lblLow.Name = "m_lblLow"
             '
-            'm_lbPlotTime
-            '
-            resources.ApplyResources(Me.m_lbPlotTime, "m_lbPlotTime")
-            Me.m_lbPlotTime.Name = "m_lbPlotTime"
-            '
             'm_scMain
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -177,30 +149,77 @@ Namespace Ecospace
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayRelBiomass)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayFishingEffort)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
             Me.m_scMain.Panel1.Controls.Add(Me.m_pnDisplayOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayContaminantC)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_rbDisplayCoverB)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDispOpt)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDist)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_cbOverlay)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lbPlotTime)
             '
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutputs)
+            '
+            'm_plDistribution
+            '
+            resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFishingEffort)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayContaminantC)
+            Me.m_plDistribution.Controls.Add(Me.m_lblDist)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayCoverB)
+            Me.m_plDistribution.Name = "m_plDistribution"
+            '
+            'm_rbDisplayRelBiomass
+            '
+            resources.ApplyResources(Me.m_rbDisplayRelBiomass, "m_rbDisplayRelBiomass")
+            Me.m_rbDisplayRelBiomass.Checked = True
+            Me.m_rbDisplayRelBiomass.Name = "m_rbDisplayRelBiomass"
+            Me.m_rbDisplayRelBiomass.TabStop = True
+            Me.m_rbDisplayRelBiomass.UseVisualStyleBackColor = True
+            '
+            'm_rbDisplayFishingEffort
+            '
+            resources.ApplyResources(Me.m_rbDisplayFishingEffort, "m_rbDisplayFishingEffort")
+            Me.m_rbDisplayFishingEffort.Name = "m_rbDisplayFishingEffort"
+            Me.m_rbDisplayFishingEffort.UseVisualStyleBackColor = True
+            '
+            'm_rbDisplayContaminantC
+            '
+            resources.ApplyResources(Me.m_rbDisplayContaminantC, "m_rbDisplayContaminantC")
+            Me.m_rbDisplayContaminantC.Name = "m_rbDisplayContaminantC"
+            Me.m_rbDisplayContaminantC.UseVisualStyleBackColor = True
+            '
+            'm_lblDist
+            '
+            resources.ApplyResources(Me.m_lblDist, "m_lblDist")
+            Me.m_lblDist.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_lblDist.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_lblDist.Name = "m_lblDist"
+            '
+            'm_rbDisplayCoverB
+            '
+            resources.ApplyResources(Me.m_rbDisplayCoverB, "m_rbDisplayCoverB")
+            Me.m_rbDisplayCoverB.Name = "m_rbDisplayCoverB"
+            Me.m_rbDisplayCoverB.UseVisualStyleBackColor = True
             '
             'm_pnDisplayOptions
             '
             resources.ApplyResources(Me.m_pnDisplayOptions, "m_pnDisplayOptions")
             Me.m_pnDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowAll)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_lblDispOpt)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbIBMPackets)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbMPA)
+            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowSingle)
             Me.m_pnDisplayOptions.Controls.Add(Me.m_cbDisplayGroup)
             Me.m_pnDisplayOptions.Name = "m_pnDisplayOptions"
+            '
+            'm_btnDisplayGroups
+            '
+            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
+            Me.m_btnDisplayGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
+            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
             '
             'm_lblDispOpt
             '
@@ -209,12 +228,17 @@ Namespace Ecospace
             Me.m_lblDispOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblDispOpt.Name = "m_lblDispOpt"
             '
-            'm_lblDist
+            'm_cbIBMPackets
             '
-            resources.ApplyResources(Me.m_lblDist, "m_lblDist")
-            Me.m_lblDist.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDist.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblDist.Name = "m_lblDist"
+            resources.ApplyResources(Me.m_cbIBMPackets, "m_cbIBMPackets")
+            Me.m_cbIBMPackets.Name = "m_cbIBMPackets"
+            Me.m_cbIBMPackets.UseVisualStyleBackColor = True
+            '
+            'm_cbMPA
+            '
+            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
+            Me.m_cbMPA.Name = "m_cbMPA"
+            Me.m_cbMPA.UseVisualStyleBackColor = True
             '
             'm_tlpRun
             '
@@ -260,13 +284,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0
             Me.m_zgPlotLarge.ScrollMinY2 = 0
             '
-            'm_btnDisplayGroups
-            '
-            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
-            Me.m_btnDisplayGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
-            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
-            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
-            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -277,9 +294,10 @@ Namespace Ecospace
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.Panel1.ResumeLayout(False)
-            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
+            Me.m_plDistribution.ResumeLayout(False)
+            Me.m_plDistribution.PerformLayout()
             Me.m_pnDisplayOptions.ResumeLayout(False)
             Me.m_pnDisplayOptions.PerformLayout()
             Me.m_tlpRun.ResumeLayout(False)
@@ -294,27 +312,29 @@ Namespace Ecospace
         Private WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowNonHidden As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbDisplayFishingEffort As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbDisplayRelBiomass As System.Windows.Forms.RadioButton
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_pbMap As System.Windows.Forms.PictureBox
         Private WithEvents m_pbColors As System.Windows.Forms.PictureBox
         Private WithEvents m_lblHigh As System.Windows.Forms.Label
         Private WithEvents m_lblLow As System.Windows.Forms.Label
-        Private WithEvents m_lbPlotTime As System.Windows.Forms.Label
         Private WithEvents m_cbOverlay As System.Windows.Forms.CheckBox
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_tcOutputs As System.Windows.Forms.TabControl
         Private WithEvents m_tabSmallMultiples As System.Windows.Forms.TabPage
         Private WithEvents m_tabPlot As System.Windows.Forms.TabPage
-        Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblDispOpt As System.Windows.Forms.Label
         Private WithEvents m_lblDist As System.Windows.Forms.Label
         Private WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
         Private WithEvents m_zgPlotLarge As ZedGraphControl
         Private WithEvents m_btnDisplayGroups As System.Windows.Forms.Button
+        Private WithEvents m_plDistribution As System.Windows.Forms.Panel
+        Private WithEvents m_rbDisplayRelBiomass As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayFishingEffort As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
+        Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbIBMPackets As System.Windows.Forms.CheckBox
 
  
     End Class

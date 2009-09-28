@@ -1,50 +1,3 @@
-'==============================================================================
-'
-' $Log: RunEcospace.vb,v $
-' Revision 1.14  2009/06/19 22:06:37  jeroens
-' Fixed typo
-'
-' Revision 1.13  2009/05/28 12:37:11  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.12  2009/05/12 16:12:00  jeroens
-' Fixed issue 587
-'
-' Revision 1.11  2009/05/11 01:51:00  jeroens
-' Renamed command classes
-'
-' Revision 1.10  2009/04/22 00:56:48  jeroens
-' Getting pretty
-'
-' Revision 1.9  2009/04/21 17:16:24  jeroens
-' Plot -> ZedGraph
-'
-' Revision 1.8  2009/02/05 17:48:39  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.7  2009/01/16 18:30:44  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.6  2009/01/08 16:18:57  jeroens
-' Fixed issue 582
-'
-' Revision 1.5  2008/12/15 15:56:20  jeroens
-' no message
-'
-' Revision 1.4  2008/11/26 23:23:37  sherman
-' Updated Display Options group box
-'
-' Revision 1.3  2008/11/20 15:28:08  jeroens
-' Resust form no longer invoked as a dialog
-'
-' Revision 1.2  2008/11/08 23:51:19  jeroens
-' Renamed file commands
-'
-' Revision 1.1  2008/09/26 07:32:02  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -115,7 +68,9 @@ Namespace Ecospace
         'jb added
         Private m_spaceStats As cEcospaceStats
 
-        Private m_bOverlay As Boolean
+        Private m_bOverlay As Boolean = False
+        Private m_bShowMPA As Boolean = True
+
         Private m_bpConTracing As cBooleanProperty = Nothing
 
         ''' <summary>Styleguide to listen to.</summary>
@@ -186,8 +141,6 @@ Namespace Ecospace
 
             'Plot speed 1-slowest 10-fastest
             Me.m_iPlotStepSize = 1
-
-            Me.m_lbPlotTime.Text = String.Format(My.Resources.ECOSPACE_RUN_PROGRESS, 0, Me.m_core.nEcospaceYears)
 
             'Load group combo box
             Me.m_cbDisplayGroup.Items.Clear()
@@ -485,6 +438,7 @@ Namespace Ecospace
 
                             drawer.GroupFirst = ifirst
                             drawer.GroupLast = ilast
+                            drawer.ShowMPA = Me.m_bShowMPA
 
                             drawer.SignalState.Reset()
 
@@ -530,6 +484,7 @@ Namespace Ecospace
                         .GroupColors = lColors
                         .Font = Me.Font
                         .Graphics = g
+                        .ShowMPA = Me.m_bShowMPA
                     End With
                     drawer.DrawBiomassBaseMap(Me.m_iGroupToShow, rect)
                 End If
@@ -662,17 +617,19 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub m_btnStop_Click(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnStop.Click
+        Private Sub m_btnStop_Click(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_btnStop.Click
             Me.m_core.StopEcospace()
             Me.UpdateControls()
         End Sub
 
-        Private Sub btnResults_Click(ByVal sender As Object, ByVal e As EventArgs)
-            Dim results As New cFormEcospaceResults
-            results.ShowDialog()
-        End Sub
+        'Private Sub btnResults_Click(ByVal sender As Object, ByVal e As EventArgs)
+        '    Dim results As New cFormEcospaceResults
+        '    results.ShowDialog()
+        'End Sub
 
-        Private Sub OnOverlay(ByVal sender As Object, ByVal e As EventArgs) Handles m_cbOverlay.Click
+        Private Sub OnOverlay(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_cbOverlay.Click
             Me.m_bOverlay = m_cbOverlay.Checked
         End Sub
 
@@ -683,7 +640,7 @@ Namespace Ecospace
             Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
             Me.UpdateControls()
             Me.RefreshPlot()
-            Me.m_pbMap.Refresh()
+            Me.RefreshMap()
         End Sub
 
         Private Sub cbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
@@ -691,7 +648,7 @@ Namespace Ecospace
 
             If (Me.m_showGroupMode = eShowGroupType.ShowSingle) Then
                 Me.m_iGroupToShow = Me.m_cbDisplayGroup.SelectedIndex + 1
-                Me.m_pbMap.Refresh()
+                Me.RefreshMap()
                 Me.RefreshPlot()
             End If
         End Sub
@@ -705,13 +662,16 @@ Namespace Ecospace
             Me.UpdateControls()
 
             Me.RefreshPlot()
-            Me.m_pbMap.Refresh()
+            Me.RefreshMap()
         End Sub
 
-        Private Sub rbShowMapOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
-                Handles m_rbDisplayRelBiomass.CheckedChanged, m_rbDisplayFishingEffort.CheckedChanged, m_rbDisplayContaminantC.CheckedChanged, m_rbDisplayCoverB.CheckedChanged
+        Private Sub m_cbMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbMPA.CheckedChanged
+
+            Me.m_bShowMPA = m_cbMPA.Checked
             Me.UpdateControls()
-            Me.m_pbMap.Refresh()
+            Me.RefreshMap()
+
         End Sub
 
 #End Region ' Events
@@ -762,9 +722,6 @@ Namespace Ecospace
             m_iTimeStepCur = dataTimeStep.iTimeStep
 
             'Update the running simulation years progress label.
-            m_lbPlotTime.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
-                                              Me.m_sg.FormatNumber(CSng(Me.m_iTimeStepCur * Me.m_core.nEcospaceYears / Me.m_core.nEcospaceTimeSteps)), _
-                                              Me.m_core.nEcospaceYears)
             AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
 
             ' Store time step data
@@ -797,7 +754,7 @@ Namespace Ecospace
 
 
             Me.UpdateBiomassPlot()
-            m_pbMap.Invalidate()
+            Me.m_pbMap.Invalidate()
             Me.UpdateControls()
 
             Application.DoEvents()
@@ -832,10 +789,15 @@ Namespace Ecospace
 
 #Region " Internal implementation "
 
+        Private m_bInUpdate As Boolean = False
+
         Private Sub UpdateControls()
 
-            'Sanity check
+            ' Sanity check
             If Me.m_core Is Nothing Then Return
+            If Me.m_bInUpdate = True Then Return
+
+            Me.m_bInUpdate = True
 
             Dim csm As cCoreStateMonitor = Me.m_core.StateMonitor
             ' Enable run and stop buttons based on Ecospace run state
@@ -855,8 +817,17 @@ Namespace Ecospace
                     Me.m_rbShowNonHidden.Checked = True
                 Case eShowGroupType.ShowSingle
                     Me.m_rbShowSingle.Checked = True
-
             End Select
+
+            Me.m_cbOverlay.Checked = Me.m_bOverlay
+            Me.m_cbMPA.Checked = Me.m_bShowMPA
+
+            Me.m_bInUpdate = False
+
+        End Sub
+
+        Private Sub RefreshMap()
+            Me.m_pbMap.Refresh()
         End Sub
 
 #End Region ' Internal implementation
