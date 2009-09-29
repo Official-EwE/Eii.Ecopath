@@ -1093,6 +1093,7 @@ Namespace Style
             End Get
             Set(ByVal value As Integer)
                 Me.m_iThumbnailSize = value
+                Me.ThumbnailsChanged()
             End Set
         End Property
 
