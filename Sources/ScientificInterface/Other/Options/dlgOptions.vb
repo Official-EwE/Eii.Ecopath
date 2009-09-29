@@ -28,6 +28,8 @@ Namespace Other
         Private m_ucAppGeneral As ucAppGeneral
         ''' <summary></summary>
         Private m_ucAppPlugins As ucAppPlugins
+        ''' <summary></summary>
+        Private m_ucAppThumbnails As ucAppThumbnails
         ''' <summary>Current page.</summary>
         Private m_ucCurrent As UserControl = Nothing
 
@@ -41,20 +43,20 @@ Namespace Other
 
             Me.InitializeComponent()
 
-            'Initialize the color option control
-            Me.m_ucAppColors = New ucAppColors
+            Me.m_ucAppColors = New ucAppColors()
             Me.m_ucAppColors.Dock = DockStyle.Fill
 
-            'Initialize the font option control
-            Me.m_ucAppFonts = New ucAppFonts
+            Me.m_ucAppFonts = New ucAppFonts()
             Me.m_ucAppFonts.Dock = DockStyle.Fill
 
-            'Initialize the general option control
-            Me.m_ucAppGeneral = New ucAppGeneral
+            Me.m_ucAppGeneral = New ucAppGeneral()
             Me.m_ucAppGeneral.Dock = DockStyle.Fill
 
-            Me.m_ucAppPlugins = New ucAppPlugins
+            Me.m_ucAppPlugins = New ucAppPlugins()
             Me.m_ucAppPlugins.Dock = DockStyle.Fill
+
+            Me.m_ucAppThumbnails = New ucAppThumbnails()
+            Me.m_ucAppThumbnails.Dock = DockStyle.Fill
 
             Me.SelectPage("")
 
@@ -71,6 +73,7 @@ Namespace Other
             Me.m_ucAppPlugins.Save()
             Me.m_ucAppColors.Save()
             Me.m_ucAppFonts.Save()
+            Me.m_ucAppThumbnails.Save()
             Me.m_ucAppGeneral.Save()
             My.Settings.Save()
 
@@ -88,6 +91,8 @@ Namespace Other
                     ucPage = Me.m_ucAppColors
                 Case "ndFonts"
                     ucPage = Me.m_ucAppFonts
+                Case "ndThumbnails"
+                    ucPage = Me.m_ucAppThumbnails
                 Case "ndPlugins"
                     ucPage = Me.m_ucAppPlugins
 
@@ -152,6 +157,7 @@ Namespace Other
             Me.m_ucAppFonts.Dispose()
             Me.m_ucAppGeneral.Dispose()
             Me.m_ucAppPlugins.Dispose()
+            Me.m_ucAppThumbnails.Dispose()
 
         End Sub
 
