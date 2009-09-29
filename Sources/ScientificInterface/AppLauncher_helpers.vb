@@ -259,6 +259,8 @@ Partial Public Class AppLauncher
             Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
             Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
 
+            Me.m_sg.ThumbnailSize = My.Settings.ThumbnailSize
+
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
             Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
             Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
@@ -291,6 +293,8 @@ Partial Public Class AppLauncher
             My.Settings.ColorImageBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             My.Settings.ColorPlotsBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
             My.Settings.ColorMapBackground = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
+
+            My.Settings.ThumbnailSize = Me.m_sg.ThumbnailSize
 
             My.Settings.FontTitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Title)
             My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)

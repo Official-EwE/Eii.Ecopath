@@ -74,6 +74,10 @@ Namespace Style
         Private m_bHideTotalCatch As Boolean = False
         Private m_bHideTotalValue As Boolean = False
 
+        ' -- thumbnails --
+        ''' <summary>Size (width and height) of thumbnails in EwE6.</summary>
+        Private m_iThumbnailSize As Integer = 48
+
         ' -- event locks --
         ''' <summary>Event lock count.</summary>
         Private m_nEventLock As Integer = 0
@@ -650,6 +654,7 @@ Namespace Style
             Fonts = &H8
             GroupVisibility = &H10
             FleetVisibility = &H20
+            Thumbnails = &H40
             All = &HFFFFFFFF
         End Enum
 
@@ -1074,6 +1079,33 @@ Namespace Style
         End Sub
 
 #End Region ' Fonts
+
+#Region " Thumbnails "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the size of thumbnails.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ThumbnailSize() As Integer
+            Get
+                Return Me.m_iThumbnailSize
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iThumbnailSize = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Broadcast a <see cref="eChangeType.Thumbnails">thumbnails changed event</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ThumbnailsChanged()
+            Me.FireChangeEvent(eChangeType.Thumbnails)
+        End Sub
+
+#End Region ' Thumbnails
 
 #Region " Item visibility "
 
