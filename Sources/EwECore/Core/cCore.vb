@@ -2132,12 +2132,13 @@ Public Class cCore
 
         ' Update core state
         If Not Me.SaveChanges() Then Return False
-        Me.m_StateMonitor.SetEcopathLoaded(False)
 
         'm_bCoreIsInit was set in InitCore()
         If Not m_bCoreIsInit Then
             'core has not been initialized this can not be run
             Debug.Assert(False, "The Core has not been initialized. Call InitCore() first.")
+            ' Flag data as gone
+            Me.m_StateMonitor.SetEcopathLoaded(False)
             SendEcopathLoadMessage(ds, "Core not initialized")
             Return False
         End If
@@ -2209,6 +2210,8 @@ Public Class cCore
                 Me.initEcoFunctions()
 
                 If Not bsuccess Then
+                    ' Flag data as gone
+                    Me.m_StateMonitor.SetEcopathLoaded(False)
                     'this assumes that if there was a problem above then a message will have been posted already?????
                     ' Let go
                     DataSource = Nothing
@@ -2217,12 +2220,16 @@ Public Class cCore
                 End If
 
             Else
+                ' Flag data as gone
+                Me.m_StateMonitor.SetEcopathLoaded(False)
                 ' Let go
                 DataSource = Nothing
                 Return False
             End If
 
         Catch ex As Exception
+            ' Flag data as gone
+            Me.m_StateMonitor.SetEcopathLoaded(False)
             ' Major Error
             Me.SendEcopathLoadMessage(ds, ex.Message)
             ' Release datasource
