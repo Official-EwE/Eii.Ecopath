@@ -2484,7 +2484,7 @@ Public Class cCore
                 Next
 
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
-                Input.iStanza = getStanzaIDForGroup(iGroup)
+                Input.iStanza = getStanzaIndexForGroup(iGroup)
 
                 ' === PSD ===
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
@@ -2796,7 +2796,7 @@ Public Class cCore
                 Next
                 output.Alpha = Alpha
 
-                output.iStanza = getStanzaIDForGroup(iGroup)
+                output.iStanza = getStanzaIndexForGroup(iGroup)
 
                 ' === PSD ===
 
@@ -3267,14 +3267,14 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Stanza ID for this iGroup. This is the Index of the stanza grouping it is one based.
-    ''' This can be 
+    ''' Get the Stanza index for this iGroup. This index is one-based.
     ''' </summary>
     ''' <param name="iGroup"></param>
-    ''' <returns>Gets Stanza ID if this group is a stanza group. NULL_VALUE if this group does not belong to a stanza</returns>
-    ''' <remarks>This is truly HACK</remarks>
+    ''' <returns>Gets Stanza index if this group is a stanza group, or
+    ''' cCore.NULL_VALUE if this group does not belong to a stanza configuration.
+    ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function getStanzaIDForGroup(ByVal iGroup As Integer) As Integer
+    Private Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
 
         For i As Integer = 1 To m_Stanza.Nsplit
 
@@ -4268,7 +4268,7 @@ Public Class cCore
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
-        Dim iStanza As Integer = Me.getStanzaIDForGroup(group.Index)
+        Dim iStanza As Integer = Me.getStanzaIndexForGroup(group.Index)
 
         Debug.Assert(iStanza = group.iStanza)
 
@@ -4278,9 +4278,9 @@ Public Class cCore
         For iGroup As Integer = 1 To Me.nGroups
             groupCascade = Me.EcoPathGroupInputs(iGroup)
 
-            Debug.Assert(Me.getStanzaIDForGroup(iGroup) = groupCascade.iStanza)
+            Debug.Assert(Me.getStanzaIndexForGroup(iGroup) = groupCascade.iStanza)
 
-            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) Then
+            If (iGroup <> group.Index) And (Me.getStanzaIndexForGroup(iGroup) = iStanza) Then
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
@@ -4311,7 +4311,7 @@ Public Class cCore
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
-        Dim iStanza As Integer = Me.getStanzaIDForGroup(group.Index)
+        Dim iStanza As Integer = Me.getStanzaIndexForGroup(group.Index)
         Dim bIsFished As Boolean
 
         Debug.Assert(iStanza = group.iStanza)
@@ -4324,7 +4324,7 @@ Public Class cCore
 
             groupCascade = Me.EcoPathGroupInputs(iGroup)
 
-            Debug.Assert(Me.getStanzaIDForGroup(iGroup) = groupCascade.iStanza)
+            Debug.Assert(Me.getStanzaIndexForGroup(iGroup) = groupCascade.iStanza)
 
             For iFleet As Integer = 1 To Me.nFleets
                 If (Me.m_EcoPathData.Landing(iFleet, iGroup) + _
@@ -4334,7 +4334,7 @@ Public Class cCore
                 End If
             Next
 
-            If (iGroup <> group.Index) And (Me.getStanzaIDForGroup(iGroup) = iStanza) And bIsFished Then
+            If (iGroup <> group.Index) And (Me.getStanzaIndexForGroup(iGroup) = iStanza) And bIsFished Then
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
@@ -5000,7 +5000,7 @@ Public Class cCore
                 Debug.Assert(False, ex.Message)
             End Try
 
-            group.iStanza = getStanzaIDForGroup(iGroup)
+            group.iStanza = getStanzaIndexForGroup(iGroup)
 
             group.ResetStatusFlags()
 
@@ -5259,7 +5259,7 @@ Public Class cCore
             group.Name = m_EcoPathData.GroupName(iGroup)
 
             'stanza variables setting the stanza id will also set the isMultiStanza Flag
-            group.iStanza = getStanzaIDForGroup(iGroup)
+            group.iStanza = getStanzaIndexForGroup(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
             'Biomass
