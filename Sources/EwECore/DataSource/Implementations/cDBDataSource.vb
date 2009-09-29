@@ -2300,7 +2300,7 @@ Public Class cDBDataSource
                     ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
                     ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
                     ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
-                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(reader("DiscardMortality"))
+                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "DiscardMortality", 0.0!))
                 Else
                     Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False
