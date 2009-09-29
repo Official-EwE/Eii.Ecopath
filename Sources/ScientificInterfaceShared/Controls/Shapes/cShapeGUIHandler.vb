@@ -874,10 +874,14 @@ Namespace Controls
 
             ' Delete
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
-            For Each shape As cShapeData In ashapes
-                Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
-                bSucces = bSucces And Me.m_core.RemoveTimeSeries(shape.DBID)
-            Next
+            Try
+                For Each shape As cShapeData In ashapes
+                    Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
+                    bSucces = bSucces And Me.m_core.RemoveTimeSeries(shape.DBID)
+                Next
+            Catch ex As Exception
+                ' Whoah!
+            End Try
             Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
 
             ' Refresh
@@ -892,7 +896,11 @@ Namespace Controls
             Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
 
             Dim dlg As New frmShapeValue(shape)
-            dlg.ShowDialog()
+            Try
+                dlg.ShowDialog()
+            Catch ex As Exception
+                ' Whoa!
+            End Try
 
         End Sub
 

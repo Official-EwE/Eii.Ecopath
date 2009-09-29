@@ -1,50 +1,13 @@
-'==============================================================================
-'
-' $Log: ucShapeToolbox.vb,v $
-' Revision 1.8  2009/05/11 01:51:03  jeroens
-' Renamed command classes
-'
-' Revision 1.7  2009/04/19 13:44:21  jeroens
-' Stripped selection to match available shapes
-'
-' Revision 1.6  2009/04/16 21:45:00  jeroens
-' Commented
-' 0-weight TS can be enabled
-'
-' Revision 1.5  2009/04/16 17:48:01  jeroens
-' Added sanity checks that are somehow necessary when tearing the containing form away from its master dockpanel
-'
-' Revision 1.4  2009/03/20 17:55:41  jeroens
-' Shape controls are multiple selection
-'
-' Revision 1.3  2009/03/02 02:03:59  jeroens
-' Properly named handlers
-'
-' Revision 1.2  2009/01/16 23:46:21  jeroens
-' Fixed ApplyTimeSeries outdated name bug
-'
-' Revision 1.1  2008/12/15 15:36:41  jeroens
-' Moved from ScInt
-'
-' Revision 1.2  2008/11/05 05:08:40  jeroens
-' ApplyTick renamed to Enabled tick, and shown when Enabled and Weighted > 0
-'
-' Revision 1.1  2008/09/26 07:31:42  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
-Option Explicit On
 
 Imports System.Text.RegularExpressions
 Imports System.Drawing.Drawing2D
-
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -65,6 +28,7 @@ Namespace Controls
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
         Private m_sMinYScale As Single = cCore.NULL_VALUE
+        Private m_sg As cStyleGuide = Nothing
 
 #End Region ' Variables
 
@@ -73,6 +37,7 @@ Namespace Controls
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.m_sg = cStyleGuide.GetInstance()
             Me.Selection = Nothing
         End Sub
 
@@ -186,7 +151,7 @@ Namespace Controls
                 Next
             End If
 
-            Me.PopulateListViewItems()
+            Me.UpdateThumbnails()
 
             Me.Selection = ashapeSelect
 
@@ -310,7 +275,7 @@ Namespace Controls
         ''' to load the view the first time or to re-initialize the view.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateListViewItems()
+        Private Sub UpdateThumbnails()
 
             Dim largeImageList As New ImageList
             Dim item As ListViewItem = Nothing
@@ -325,7 +290,7 @@ Namespace Controls
             lvShapes.Items.Clear()
 
             'Set up the thumbnail image size
-            largeImageList.ImageSize = New Size(ShapeImage.cICON_WIDTH, ShapeImage.cICON_HEIGHT)
+            largeImageList.ImageSize = New Size(Me.m_sg.ThumbnailSize, Me.m_sg.ThumbnailSize)
 
             If Me.m_lShapes.Count > 0 Then
 
@@ -384,12 +349,16 @@ Namespace Controls
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
             End If
 
-            Me.PopulateListViewItems()
+            AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            Me.UpdateThumbnails()
 
         End Sub
 
         Private Sub DoDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
             Dim cmd As cCommand = Nothing
+
+            RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             cmd = cCommandHandler.GetInstance().GetCommand("LoadTimeSeries")
             If cmd IsNot Nothing Then
@@ -399,31 +368,7 @@ Namespace Controls
             If cmd IsNot Nothing Then
                 cmd.RemoveControl(Me.ApplyToolStripMenuItem)
             End If
-        End Sub
 
-
-        Private Sub lvShapes_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) _
-            Handles lvShapes.ItemCheck
-
-            ' JS 19april 09: it is perfectly legitimate to enable a 0-weighted time series
-            Return
-
-            'If m_bInUpdate Then Return
-
-            'Dim item As ListViewItem = lvShapes.Items(e.Index)
-
-            '' Sanity check
-            'If (item Is Nothing) Then Return
-
-            'Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
-
-            'If (TypeOf shape Is cTimeSeries) Then
-            '    If e.NewValue = CheckState.Checked Then
-            '        If (DirectCast(shape, cTimeSeries).WtType = 0) Then
-            '            e.NewValue = CheckState.Unchecked
-            '        End If
-            '    End If
-            'End If
 
         End Sub
 
@@ -438,30 +383,27 @@ Namespace Controls
             Dim shape As cShapeData = DirectCast(e.Item.Tag, cShapeData)
             If (TypeOf shape Is cTimeSeries) Then
                 DirectCast(shape, cTimeSeries).Enabled = e.Item.Checked
+                ' HACK!!!
+                cCore.GetInstance().UpdateTimeSeries()
             End If
-
-            ' HACK!!!
-            cCore.GetInstance().UpdateTimeSeries()
 
         End Sub
 
         ''' <summary>
-        ''' The event handler when the selected thumbnail changes in the listview
+        ''' The event handler when the selected thumbnail changes in the listview.
         ''' </summary>
         Private Sub lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles lvShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
-
             ' Haha
             Me.Selection = Me.Selection
 
         End Sub
 
         ''' <summary>
-        ''' Duplicate a shape data
+        ''' Duplicate a shape data.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles DuplicateToolStripMenuItem.Click
 
@@ -470,29 +412,36 @@ Namespace Controls
         End Sub
 
         ''' <summary>
-        ''' Remove a shape data
+        ''' Remove a shape data.
         ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub RemoveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveToolStripMenuItem.Click
+        Private Sub RemoveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles RemoveToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.Selection)
         End Sub
 
         ''' <summary>
-        ''' Add a shape data
+        ''' Add a shape data.
         ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub AddShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddToolStripMenuItem.Click
+        Private Sub AddShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles AddToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
 
         ''' <summary>
-        ''' Import a Time Series
+        ''' Import a Time Series.
         ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Private Sub tsBtnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ImportToolStripMenuItem.Click
+        Private Sub tsBtnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles ImportToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
+        End Sub
+
+        ''' <summary>
+        ''' Styleguide change event.
+        ''' </summary>
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.Thumbnails) > 0 Then
+                Me.UpdateThumbnails()
+            End If
         End Sub
 
 #End Region ' Event handlers

@@ -21,8 +21,8 @@ Namespace Controls
     Public Class ShapeImage
 
         Public Const cDOT_SIZE As Integer = 6
-        Public Const cICON_WIDTH As Integer = 48
-        Public Const cICON_HEIGHT As Integer = 48
+        'Public Const cICON_WIDTH As Integer = 48
+        'Public Const cICON_HEIGHT As Integer = 48
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -309,9 +309,10 @@ Namespace Controls
                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
+            Dim sg As cStyleGuide = cStyleGuide.GetInstance()
             Dim ci As CultureInfo = Nothing
             Dim dm As eSketchDrawModeTypes = eSketchDrawModeTypes.Line
-            Dim bmp As New Bitmap(cICON_WIDTH, cICON_HEIGHT)
+            Dim bmp As New Bitmap(sg.ThumbnailSize, sg.ThumbnailSize)
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim img As Image = Nothing
 
