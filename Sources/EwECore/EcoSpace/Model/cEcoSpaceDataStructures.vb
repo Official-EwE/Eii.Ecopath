@@ -1,236 +1,5 @@
-'==============================================================================
-'
-' $Log: cEcoSpaceDataStructures.vb,v $
-' Revision 1.10  2009/04/20 19:43:14  joeb
-' typo fix
-'
-' Revision 1.9  2009/04/20 19:41:54  joeb
-' Bug Fix Ecospace slowed down after running half a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
-'
-' Revision 1.8  2009/02/02 22:29:08  joeb
-' Added more output vars to EcoSpace fleets
-'
-' Revision 1.7  2009/01/20 22:32:01  joeb
-' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
-'
-' Revision 1.6  2009/01/19 20:22:53  joeb
-' Fixed bug in AverageSpatialResults() biomass does not need to be average over space. This happens at the end of the time step.
-'
-' Revision 1.5  2009/01/14 18:46:55  joeb
-' Time series results averaged over space at the end of the run
-'
-' Revision 1.4  2009/01/12 22:54:57  joeb
-' Ecospace now stores all results over time. Not just for the summary periods.
-'
-' Revision 1.3  2008/12/09 19:48:59  joeb
-' Ouput objects now use core data instead of buffering data
-'
-' Revision 1.2  2008/11/28 16:54:10  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:22  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.42  2008/09/23 16:06:27  joeb
-' Fixed bug 432 I hope...
-'
-' Revision 1.41  2008/09/12 18:30:14  joeb
-' Added BiomassByRegion to Ecospace output
-'
-' Revision 1.40  2008/09/03 08:02:29  villyc
-' Adding distribution envelopes to ecospace
-'
-' Revision 1.39  2008/09/01 11:53:38  villyc
-' Adding spatial fields (temp, salinity, ...) to Ecosim and Ecospace
-'
-' Revision 1.38  2008/08/14 18:07:03  joeb
-' Added StartYear and EndYear to MPA Optimizations
-'
-' Revision 1.37  2008/08/11 02:01:10  jeroens
-' Integrated cLayerImportanceData class
-'
-' Revision 1.36  2008/08/07 19:41:24  sherman
-' Exposed LayerImportance from the Core
-'
-' Revision 1.35  2008/08/07 18:17:33  sherman
-' Added Importance Layer to Ecospace Datastructures
-'
-' Revision 1.34  2008/04/17 20:16:26  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.33  2008/03/18 16:50:11  joeb
-' Minor tweaks
-'
-' Revision 1.32  2008/01/13 20:01:45  joeb
-' Moved Variables for EcoSeed
-'
-' Revision 1.31  2007/12/19 20:07:45  joeb
-' Added nTimeSteps number of ecospace time steps this was calculated by the core before
-'
-' Revision 1.30  2007/12/11 18:14:18  joeb
-' Minor edits
-'
-' Revision 1.29  2007/10/16 00:28:37  jeroens
-' * Fixed bug 289
-'
-' Revision 1.28  2007/08/08 18:59:45  joeb
-' Added nCellsInRegion for number of map cells in a region
-'
-' Revision 1.27  2007/07/26 18:40:02  jeroens
-' + BarrierAvoidanceWeight moved to space data
-'
-' Revision 1.26  2007/07/23 21:29:05  willw
-' added Aspace and Vspace variables
-'
-' Revision 1.25  2007/06/29 00:23:21  jeroens
-' + Added UseExact variable
-'
-' Revision 1.24  2007/06/27 23:04:52  willw
-' redimmed ismigratory to nvartot for additional use in solvegrid
-'
-' Revision 1.23  2007/06/22 16:04:27  joeb
-' Added SS output
-'
-' Revision 1.22  2007/06/18 22:07:14  willw
-' added new variables for solvegridrow (jstartcol and jendcol) the bounds for water
-'
-' Revision 1.21  2007/06/14 16:34:28  jeroens
-' * Tol and maxIter moved to Ecospace datastructures
-'
-' Revision 1.20  2007/06/13 20:29:52  willw
-' added comments for new variables
-'
-' Revision 1.19  2007/06/13 19:57:29  joeb
-' Changed  IsAdvected() to Boolean
-'
-' Revision 1.18  2007/06/12 19:20:06  willw
-' added some variables for better usage of thread time for space solver, and to make grid solver do less work
-'
-' Revision 1.17  2007/06/11 22:08:16  joeb
-' Added array for reference data fitting
-'
-' Revision 1.16  2007/06/08 15:53:53  jeroens
-' * Threads determined only when not set
-'
-' Revision 1.15  2007/06/04 20:21:12  willw
-' changed MoveScale to 2 from 0.2
-'
-' Revision 1.14  2007/06/04 18:43:28  joeb
-' Changed time step counters
-'
-' Revision 1.13  2007/05/31 19:56:39  willw
-' lots of changes for IBM, fixed multithreading for it
-'
-' Revision 1.12  2007/05/28 23:19:57  willw
-' added stuff for IBM approach
-'
-' Revision 1.11  2007/05/16 22:02:37  willw
-' lots of stuff to commit carl's changes to stanza structures
-'
-' Revision 1.10  2007/05/15 20:56:10  joeb
-' More contaminant tracing changes
-'
-' Revision 1.9  2007/05/15 15:09:03  joeb
-' Added Time Series data
-'
-' Revision 1.8  2007/05/09 18:09:54  joeb
-' Commiting a threading bug!!!!!!!
-'
-' Revision 1.7  2007/05/09 17:20:11  willw
-' net # of threads to be # of logical cpus the computers sees
-'
-' Revision 1.6  2007/05/09 16:28:38  willw
-' no message
-'
-' Revision 1.5  2007/05/08 18:39:14  willw
-' no message
-'
-' Revision 1.4  2007/05/07 21:34:14  joeb
-' Added nSpaceSolverThreads
-'
-' Revision 1.3  2007/05/07 20:37:59  joeb
-' Added Grid Solver variables to Ecospace  input objects
-'
-' Revision 1.2  2007/05/04 01:25:20  jeroens
-' + Ecosim and Ecospace scenario definitions moved to Ecopath data structures
-'
-' Revision 1.1  2007/05/01 17:12:50  joeb
-' Changed directory structure
-'
-' Revision 1.29  2007/04/30 20:02:26  joeb
-' New foraging arena code in derivtRed
-'
-' Revision 1.28  2007/03/05 23:47:30  joeb
-' *** empty log message ***
-'
-' Revision 1.27  2007/03/01 18:32:41  joeb
-' Update to new interface names
-'
-' Revision 1.26  2007/02/25 17:26:30  joeb
-' Bug Fixes
-'
-' Revision 1.25  2007/02/19 20:03:51  joeb
-' Changes to defaults and initialization
-'
-' Revision 1.24  2007/02/12 23:48:02  joeb
-' Data Summary
-'
-' Revision 1.23  2007/02/08 15:49:04  joeb
-' Changes to dimesioning of summary data
-'
-' Revision 1.22  2007/02/06 15:41:48  joeb
-' Added Ecospace results
-'
-' Revision 1.21  2007/01/30 17:01:26  jeroens
-' * MPAMonth changed to boolean
-'
-' Revision 1.20  2007/01/20 03:19:42  jeroens
-' + Included EcopathFleetDBID in fleet ReDim
-'
-' Revision 1.19  2007/01/19 01:14:37  joeb
-' Initialization of EcospaceGroups
-'
-' Revision 1.18  2007/01/18 17:49:59  jeroens
-' + MPA DBID redimmed too
-'
-' Revision 1.17  2007/01/18 15:33:27  jeroens
-' + MigratoryVars resized in SetDefaults
-'
-' Revision 1.16  2007/01/17 20:13:47  joeb
-' Changed nGroups to Public Property
-' Added dimensioning for Database ids
-'
-' Revision 1.15  2007/01/17 18:35:22  joeb
-' Changes to ReDim code for most data
-'
-' Revision 1.14  2007/01/17 16:45:09  jeroens
-' + Preparing for connection to datasource
-'
-' Revision 1.13  2007/01/16 20:46:22  joeb
-' Removed Asserts
-'
-' Revision 1.12  2007/01/16 17:20:55  jeroens
-' * Implementing more Ecospace interfaces
-'
-' Revision 1.11  2006/12/18 22:17:54  joeb
-' First working version. This will load a default spatial grid and give the same results as EwE5 Ecospace on a default grid.
-'
-' Revision 1.10  2006/12/07 15:08:54  jeroens
-' + Added habitat change vars
-'
-' Revision 1.9  2006/12/05 21:36:29  joeb
-' Bug fixes to FindSpatialEquilibrium
-'
-' Revision 1.8  2006/12/04 20:33:00  joeb
-' Added W (SOR weight)
-'
-' Revision 1.7  2006/12/04 14:33:00  jeroens
-' + Strict ON
-' + Added database variables
-'
-'==============================================================================
-
 Option Strict On
+Imports System.Math
 
 Public Class cEcospaceDataStructures
 
@@ -718,7 +487,6 @@ Public Class cEcospaceDataStructures
     ''' Set default values and dimemsion basic arrays
     ''' </summary>
     ''' <returns></returns>
-    ''' <param name="nPreyPredLinks">EcosimDataStructures.InLinks number of Prey/Pred links</param>
     ''' <remarks>This should be called before reading values from database. I think..... I hope!!!!!!!!!!</remarks>
     Public Function SetDefaults() As Boolean
         Dim i As Integer
@@ -895,7 +663,6 @@ Public Class cEcospaceDataStructures
 
 
     End Sub
-
 
     ''' <summary>
     '''  Re-dimension the habitat variables
@@ -1577,6 +1344,7 @@ Public Class cEcospaceDataStructures
         endIndex = CInt(Me.SumStart(1) * Me.NumStep) + 1
         nIndexes = Me.NumStep
     End Sub
+
 
 #End Region
 

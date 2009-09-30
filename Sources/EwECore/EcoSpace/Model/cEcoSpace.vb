@@ -1,58 +1,5 @@
-'==============================================================================
-'
-' $Log: cEcoSpace.vb,v $
-' Revision 1.22  2009/06/19 21:49:35  joeb
-' SpaceSplitUpdate sets WageS(age one) = 0
-'
-' Revision 1.21  2009/04/20 19:41:45  joeb
-' Bug Fix Ecospace slowed down after running have a run. This was caused by the SolverThreads using the wrong time counter (its instead of itt) and throwing an error and writting to the log. The log was choking on because of multiple threads writting to it at the same time..... it goes on and on...
-'
-' Revision 1.20  2009/02/02 22:29:04  joeb
-' Added more output vars to EcoSpace fleets
-'
-' Revision 1.19  2009/01/20 22:31:58  joeb
-' Renamed CatchRegionGearGroup to ResultsCatchRegionGearGroup
-'
-' Revision 1.18  2009/01/16 18:30:20  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.17  2009/01/14 18:46:52  joeb
-' Time series results averaged over space at the end of the run
-'
-' Revision 1.16  2009/01/12 22:54:54  joeb
-' Ecospace now stores all results over time. Not just for the summary periods.
-'
-' Revision 1.15  2008/12/16 16:32:46  sherman
-' Corrected EcospacePostFishingEffortModTimestep
-'
-' Revision 1.14  2008/12/16 16:29:17  sherman
-' Corrected EcospaceEndTimeStep
-'
-' Revision 1.13  2008/12/09 19:48:57  joeb
-' Ouput objects now use core data instead of buffering data
-'
-' Revision 1.12  2008/11/28 16:54:07  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.11  2008/11/18 23:10:31  joeb
-' Fixed bug in calculation of model run time for EcoSpaceSummarizeIndicators
-'
-' Revision 1.10  2008/11/18 19:37:27  joeb
-' Added Year to Solver Threads
-'
-' Revision 1.9  2008/11/17 21:09:44  joeb
-' Fixed bug where calculation of BaseCostYear happened at the start of the base year not the end
-'
-' Revision 1.8  2008/11/17 15:38:05  joeb
-' Dimensioned Fgear by fleets instead of groups
-'
-' Revision 1.7  2008/11/17 15:30:12  joeb
-' Added CVS Log header
-'
-'
-'=========================================================
-
 Imports System
+Imports System.Math
 Imports System.Threading
 Imports EwEPlugin
 Imports EwECore.EcoSeed
@@ -341,8 +288,6 @@ Public Class cEcoSpace
             Me.m_pluginManager = pm
         End Set
     End Property
-
-
 
     ''' <summary>
     ''' Ecopath data used for initial state
@@ -4982,6 +4927,222 @@ exitline:
         Next
 
     End Sub
+
+    'Private Sub SetAllCoastsToPorts()
+    '    Dim i As Integer
+    '    Dim j As Integer
+    '    Dim k As Integer
+    '    Dim l As Integer
+    '    Dim inRow As Integer = m_Data.Inrow
+    '    Dim inCol As Integer = m_Data.InCol
+    '    ReDim Port(inRow, inCol)
+
+    '    For i = 1 To inRow
+    '        For j = 1 To inCol
+    '            'Check if there is a neighboring cell which is in water
+    '            If Me.EcoSpaceParameters.Depth(i, j) <= 0 Then    'it is a land cell
+    '                For k = i - 1 To i + 1 Step 2
+    '                    For l = j - 1 To j + 1 Step 2
+    '                        If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceParameters.Depth(k, l) > 0 Then
+    '                            'For Gear = 0 To NumGear
+    '                            m_Data.Port(i, j) = True
+    '                            'Next
+    '                        End If
+    '                    Next
+    '                Next
+    '            End If
+    '        Next
+    '    Next
+    'End Sub
+
+    Public Sub CalculateCostOfSailing()
+        Dim i As Integer
+        Dim ix As Integer
+        Dim iy As Integer
+        Dim j As Integer
+        Dim K As Integer
+        Dim Ports As Integer
+        Dim minD(,) As Single
+        Dim Dist As Single
+        Dim Lati As Single
+        Dim Longi As Single
+        Dim LatPort As Single
+        Dim LonPort As Single
+        Dim PortX() As Integer
+        Dim PortY() As Integer
+        Dim Disti As Single
+
+        If m_Data.IDH_SS <= 0 Then m_Data.IDH_SS = 2
+
+        'Dim SA As Single    'SailingCost per unit distance for this gear
+        '                    'Unit distances are calculated here
+        'If Lat1 = 0 And Lon1 = 0 Then MsgBox("Enter latitude and longitude", vbOKOnly) : Exit Sub
+        'SA = cost(AF, 3)      'SailingCost(AF)
+        'Erase PortX()
+        'Erase PortY()
+        Ports = 0
+        For i = 1 To m_Data.Inrow
+            For j = 1 To m_Data.InCol
+                Me.m_Data.Port(0, i, j) = False
+                For K = 1 To Me.m_Data.nFleets
+                    If Me.m_Data.Port(K, i, j) = True Then
+                        Ports += 1
+                        Me.m_Data.Port(0, i, j) = True
+                        Exit For
+                    End If
+                Next
+            Next
+        Next
+        ReDim PortX(Ports)
+        ReDim PortY(Ports)
+        Ports = 0
+        For i = 1 To m_Data.Inrow
+            For j = 1 To m_Data.InCol
+                If Me.m_Data.Port(0, i, j) = True Then
+                    Ports += 1
+                    PortX(Ports) = i
+                    PortY(Ports) = j
+                End If
+            Next
+        Next        'If Ports = 0 Then
+        '    MsgBox("No ports/landingsplaces entered for " + frmSpace.listFleet.Text, vbInformation + vbOKOnly, "Ecospace, no ports")
+        '    Exit Sub
+        'End If
+        'OK now, there are ports
+        Dist = 0
+
+        'ReDim Vis(Inrow, Incol)
+        ReDim minD(m_Data.Inrow, m_Data.InCol)
+        For i = 1 To m_Data.Inrow
+            For j = 1 To m_Data.InCol
+                minD(i, j) = Single.MaxValue
+            Next j
+        Next i
+
+        Const sCellStepSize As Single = 1.0! ' 2.0!
+
+        For K = 1 To Ports      'go port by port
+            ix = PortX(K)
+            iy = PortY(K)
+            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / sCellStepSize)
+            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / sCellStepSize)
+            'Sail(AF, ix, iy) = 0
+            For i = 1 To m_Data.Inrow
+                For j = 1 To m_Data.InCol
+                    If Me.EcoSpaceParameters.Depth(i, j) > 0 Then 'water cell
+                        Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / sCellStepSize)
+                        Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / sCellStepSize)
+                        Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
+                        minD(i, j) = Math.Min(Dist, minD(i, j))
+                    Else
+                        minD(i, j) = 0
+                    End If
+                Next j
+            Next i
+            'test the neighboring cells
+            'Calc8Dist i, j
+            'FindMinDistFor8Neighbors i, j
+        Next
+
+        For i = 1 To m_Data.Inrow
+            For j = 1 To m_Data.InCol
+                If minD(i, j) < Single.MaxValue Then Disti = minD(i, j) Else Disti = 0.0!
+                'If ActiveFleet = 0 Then    'Same for all fleets
+                For K = 0 To Me.EcoPathParameters.NumFleet
+                    'Port(K, i, j) = Port(0, i, j)
+                    Me.m_Data.Sail(K, i, j) = Disti
+                Next
+                'Else
+                'Sail(ActiveFleet, i, j) = IIf(Min(i, j) < 200000, Min(i, j), 0)
+                ''Next place zero sailing cost for non-coastal ports
+                'If Sail(ActiveFleet, i, j) < 0 And Depth(i, j) > 0 Then Sail(ActiveFleet, i, j) = 0
+                'End If
+            Next j
+        Next i
+
+    End Sub
+
+    Private Enum eDistanceType As Integer
+        NauticalMiles
+        Kilometers
+        Degrees
+    End Enum
+
+    Private Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single, _
+                                 ByVal DistType As eDistanceType) As Single  ', Dist As Single, XDist As Single, YDist As Single) As Single
+        'On Local Error GoTo errCalDistance
+        'Villy C received this sub is from Reg Watson 04 May 2001, modified to function and dropped last terms, also made types explicit
+        'Calculates the distance between two map points Lon1,Lat1 and Lon2,Lat2
+        'Points are measured decimal degrees
+        'Returns Dist, Long Dist(X), Lat Dist(Y) in either NatMiles or km (DistType)
+        'DistType 0=NatMiles, 1=km, 2=degrees
+        'Provided by Laura Wing lwing@clausent.demon.co.uk to Ken White
+        'Uses a spherical triangle to the pole
+        '3 variations:
+        '   Same Hemisphere
+        '   Different Hemisphere
+        '   Spans Greenwich meridian or anti-meridian
+
+        'Expects - (Neg) for South Latitudes
+        'Note: always goes the shortest way... not over pole or wrong way around the world
+        'Dist does not have a sign but XDist and YDist do
+
+        Dim CoLatA As Double
+        Dim CoLatB As Double
+        Dim DifLong As Double
+        Dim PartA As Double
+        Dim PartB As Double
+        Dim XXD As Double
+        Dim AngDisDeg As Double
+        Dim DistNM As Double
+        Dim Ydist As Double
+        Dim Dist As Double
+        Dim TwoPie As Double = Math.PI * 2.0#
+        Dim DR As Double = TwoPie / 360.0# 'for converting degrees to radians for functions
+
+        CoLatA = 90 + Sign(Lat1) * Abs(Lat1)
+        CoLatB = 90 + Sign(Lat2) * Abs(Lat2)
+
+        DifLong = Abs(Lon1 - Lon2)
+
+        If DifLong > 180 Then
+            DifLong = 360 - DifLong
+        End If
+
+        Ydist = Lat1 - Lat2
+
+        PartA = Cos(CoLatA * DR) * Cos(CoLatB * DR)
+        PartB = Sin(CoLatA * DR) * Sin(CoLatB * DR) * Cos(DifLong * DR)
+        XXD = PartA + PartB
+
+        If XXD = 1.0# Then XXD = 1.000001
+        'There is no arccos so it is atn(-X/sqr(-X*X+1))+1.5708
+        AngDisDeg = (Atan(-XXD / Sqrt(-XXD * XXD + 1.0#)) + 1.5708) / TwoPie * 360.0#
+        DistNM = AngDisDeg * 60.0#
+
+        Select Case DistType
+            Case eDistanceType.NauticalMiles
+                Dist = DistNM
+                Ydist = Ydist * 60.0#
+            Case eDistanceType.Kilometers
+                Dist = DistNM * 1.85325
+                Ydist = Ydist * 60.0# * 1.85325
+            Case eDistanceType.Degrees
+                Dist = AngDisDeg
+        End Select
+        Return CSng(Dist)
+
+        'This code can not be reached
+        'Dist is returned before this can execute
+        '        Xdist = Sqrt(Dist ^ 2 - Ydist ^ 2) * Sign(Lon1 - Lon2)
+        '        Exit Function
+
+        'errCalDistance:
+        '        Xdist = -1
+        '        CalDistance = 0 '-1 vc changed this from -1 to 0
+        '        Exit Function
+
+    End Function
 
 End Class
 
