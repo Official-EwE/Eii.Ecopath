@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: EditFleets.vb,v $
-' Revision 1.2  2008/12/15 15:52:27  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:29  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2007/07/08 02:24:39  jeroens
-' - Solved conflict between exiting event and new EwEGrid selection event
-'
-' Revision 1.5  2007/06/15 14:57:43  jeroens
-' - Removed 'Append' logic
-'
-' Revision 1.4  2007/05/24 15:50:21  jeroens
-' + Added Append button
-'
-' Revision 1.3  2007/05/02 13:45:28  jeroens
-' * Redesigned to match Group/Stanza edit dialog
-'
-' Revision 1.2  2007/03/08 11:53:00  jeroens
-' ^ Cosmectics
-'
-' Revision 1.1  2007/03/07 18:14:34  jeroens
-' Initial version (not tested yet; it just compiles)
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
