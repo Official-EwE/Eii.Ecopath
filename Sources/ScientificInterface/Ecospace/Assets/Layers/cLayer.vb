@@ -1,32 +1,3 @@
-'==============================================================================
-'
-' $Log: cLayer.vb,v $
-' Revision 1.4  2009/05/15 14:04:36  jeroens
-' Uses core layer message to trigger map refreshes
-'
-' Revision 1.3  2008/11/14 01:19:12  jeroens
-' Editor and renderer can be NULL
-'
-' Revision 1.2  2008/11/08 23:54:10  jeroens
-' Made cell interface more intuitive
-'
-' Revision 1.1  2008/11/04 04:39:53  jeroens
-' Moved
-'
-' Revision 1.3  2008/10/14 20:23:32  jeroens
-' Forged basis for separate editors
-'
-' Revision 1.2  2008/10/10 20:08:29  jeroens
-' Added ValueType
-'
-' Revision 1.1  2008/10/10 18:03:21  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:58  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -88,6 +59,23 @@ Namespace Ecospace.Basemap.Layers
     ''' </remarks>
     Public Class cLayer
         Implements IDisposable
+
+        Private Class cEditorLocked
+            Inherits cLayerEditor
+
+            Public Sub New()
+                MyBase.New(Nothing)
+            End Sub
+
+            Public Overrides Property IsReadOnly() As Boolean
+                Get
+                    Return True
+                End Get
+                Set(ByVal value As Boolean)
+                End Set
+            End Property
+
+        End Class
 
         ''' <summary>
         ''' Enumerated type to indicate layer changes.
@@ -151,6 +139,10 @@ Namespace Ecospace.Basemap.Layers
         ''' </remarks>
         Private m_propName As cProperty = Nothing
 
+        ' --- shared defaults ---
+
+        Private Shared s_editorLocked As New cEditorLocked()
+
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -188,7 +180,6 @@ Namespace Ecospace.Basemap.Layers
                 ByVal editor As cLayerEditor, _
                 ByVal source As cCoreInputOutputBase, _
                 Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
-
             Me.New(data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, source, varName)
         End Sub
 
@@ -207,7 +198,6 @@ Namespace Ecospace.Basemap.Layers
                 ByVal editor As cLayerEditor, _
                 ByVal objValueSet As Single, _
                 ByVal objValueClear As Single)
-
             Me.New(data, renderer, editor, objValueSet, objValueClear, Nothing, Nothing)
         End Sub
 
@@ -244,6 +234,8 @@ Namespace Ecospace.Basemap.Layers
             ' Sanity checks
             Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
 
+            If (editor Is Nothing) Then editor = cLayer.s_editorLocked
+
             Me.m_strName = ""
             Me.m_source = source
             Me.m_varName = varName
@@ -259,10 +251,8 @@ Namespace Ecospace.Basemap.Layers
                 AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
-            If Me.m_editor IsNot Nothing Then
-                ' Update editor
-                Me.m_editor.Initialize(Me)
-            End If
+            ' Update editor
+            Me.m_editor.Initialize(Me)
 
             If Me.m_renderer IsNot Nothing Then
                 ' Update renderer
@@ -278,8 +268,8 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal layer As cLayer)
-            Me.New(layer.Data, layer.Renderer.Clone(), layer.Editor, layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
-            Me.Name = layer.Name
+            Me.New(layer.Data, layer.Renderer.Clone(), Nothing, layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
+            Me.Name = "Copy of " & layer.Name
             Me.IsSelected = layer.IsSelected
         End Sub
 
@@ -330,32 +320,36 @@ Namespace Ecospace.Basemap.Layers
             Me.m_bInUpdate = True
 
             ' Assess changes
+            Try
+                ' Map has changed via user drawing
+                If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
+                    ' Update visuals
+                    Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
 
-            ' Map has changed via user drawing
-            If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
-                ' Update visuals
-                Me.m_renderer.SetValueRange(Me.m_data.MinValue, Me.m_data.MaxValue)
-
-                ' Is a core layer?
-                If Me.m_data.DataType <> eDataTypes.NotSet Then
-                    ' #Yes: inform the core
-                    Me.m_core.onChanged(Me.m_data)
-                Else
-                    ' #No: Fire off property change to make other copies of non-core layers respond
-                    If (Me.m_propName IsNot Nothing) Then
-                        Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                    ' Is a core layer?
+                    If Me.m_data.DataType <> eDataTypes.NotSet Then
+                        ' #Yes: inform the core
+                        Me.m_core.onChanged(Me.m_data)
+                    Else
+                        ' #No: Fire off property change to make other copies of non-core layers respond
+                        If (Me.m_propName IsNot Nothing) Then
+                            Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                        End If
                     End If
+
                 End If
 
-            End If
+                If ((updateType And eChangeFlags.VisualStyle) = eChangeFlags.VisualStyle) Then
+                    Me.m_renderer.Update()
+                    Me.m_core.VisualStyleChanged(Me.m_renderer.VisualStyle)
+                End If
 
-            If ((updateType And eChangeFlags.VisualStyle) = eChangeFlags.VisualStyle) Then
-                Me.m_renderer.Update()
-                Me.m_core.VisualStyleChanged(Me.m_renderer.VisualStyle)
-            End If
+                ' Inform the world last
+                RaiseEvent LayerChanged(Me, updateType)
 
-            ' Inform the world last
-            RaiseEvent LayerChanged(Me, updateType)
+            Catch ex As Exception
+
+            End Try
 
             Me.m_bInUpdate = False
 
@@ -493,30 +487,24 @@ Namespace Ecospace.Basemap.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the layer <see cref="cLayerRenderer">renderer</see>.
+        ''' Get the layer <see cref="cLayerRenderer">renderer</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property Renderer() As cLayerRenderer
+        Public ReadOnly Property Renderer() As cLayerRenderer
             Get
                 Return Me.m_renderer
             End Get
-            Set(ByVal value As cLayerRenderer)
-                Me.m_renderer = value
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the layer <see cref="cLayerEditor">editor</see>.
+        ''' Get the layer <see cref="cLayerEditor">editor</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property Editor() As cLayerEditor
+        Public ReadOnly Property Editor() As cLayerEditor
             Get
                 Return Me.m_editor
             End Get
-            Set(ByVal value As cLayerEditor)
-                Me.m_editor = value
-            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
