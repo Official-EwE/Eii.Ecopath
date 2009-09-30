@@ -1,38 +1,3 @@
-'==============================================================================
-'
-' $Log: ucBaseMap.vb,v $
-' Revision 1.6  2009/05/28 12:37:51  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/05/15 14:08:41  jeroens
-' Safety first
-'
-' Revision 1.4  2009/01/08 16:19:01  jeroens
-' Fixed issue 582
-'
-' Revision 1.3  2008/11/08 23:50:13  jeroens
-' Made cell interface more intuitive
-'
-' Revision 1.2  2008/11/05 01:15:42  jeroens
-' Optionally clear new layer groups
-'
-' Revision 1.1  2008/11/04 04:39:21  jeroens
-' Moved
-'
-' Revision 1.4  2008/10/14 20:23:33  jeroens
-' Forged basis for separate editors
-'
-' Revision 1.3  2008/10/10 20:09:24  jeroens
-' Removed brush and cursor references
-'
-' Revision 1.2  2008/10/10 18:04:03  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.1  2008/09/26 07:32:00  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -43,6 +8,7 @@ Imports ScientificInterface.Other
 Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports EwEUtils.Win32Api
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -120,7 +86,7 @@ Namespace Ecospace
 
         Public Overrides Sub Refresh()
             Me.UpdateMap()
-            Me.UpdateInteraction()
+            Me.UpdateCursorFeedback()
         End Sub
 
         Private m_bEditable As Boolean = False
@@ -131,7 +97,7 @@ Namespace Ecospace
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bEditable = value
-                Me.UpdateInteraction()
+                Me.UpdateCursorFeedback()
             End Set
         End Property
 
@@ -158,7 +124,8 @@ Namespace Ecospace
         ''' Clean-up.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucBaseMap_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles Me.Disposed
             Me.Clear()
         End Sub
 
@@ -255,7 +222,7 @@ Namespace Ecospace
             ' Redraw it entirely
             Me.UpdateMap()
             ' Update cursor
-            Me.UpdateInteraction()
+            Me.UpdateCursorFeedback()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -285,7 +252,7 @@ Namespace Ecospace
 
             If ((cf And (cLayer.eChangeFlags.Editable Or cLayer.eChangeFlags.Selected)) > 0) Then
                 ' Refresh edit environment
-                Me.UpdateInteraction()
+                Me.UpdateCursorFeedback()
             End If
 
         End Sub
@@ -376,8 +343,7 @@ Namespace Ecospace
             Dim szCell As SizeF = Me.GetCellSize()
             Dim ptCell As Point = Nothing
             Dim rcScreen As Rectangle = Nothing
-            Dim bIsWater As Boolean = False
-            Dim bIsDepthLayer As Boolean = False
+            Dim bDrawCell As Boolean = False
 
             ' Calc area to invalidate
             Dim p1 As Point = Me.GetCellPos(ptCellFrom)
@@ -406,9 +372,6 @@ Namespace Ecospace
                     ptCell = New Point(X, Y)
                     rcScreen = Me.GetCellRect(ptCell)
 
-                    ' Test if cell is a water cell
-                    bIsWater = (CInt(ldDepth.Cell(Y, X)) > 0)
-
                     ' Draw layers in reverse order
                     For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1
 
@@ -417,10 +380,14 @@ Namespace Ecospace
                         ' Reset style flag
                         style = cStyleGuide.eStyleFlags.OK
 
-                        ' Test if layer is the depth layer
-                        bIsDepthLayer = Object.ReferenceEquals(l.Data, ldDepth)
+                        Select Case l.Data.DataType
+                            Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
+                                bDrawCell = True
+                            Case Else
+                                bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
+                        End Select
 
-                        If l.Renderer.IsVisible And (bIsWater Or bIsDepthLayer) Then
+                        If l.Renderer.IsVisible And bDrawCell Then
                             If l.HasValue(ptCell.Y, ptCell.X) Then
                                 ' Build style flags
                                 If l.IsSelected Then
@@ -457,10 +424,10 @@ Namespace Ecospace
                 End If
             End If
             ' Reflect this
-            Me.UpdateInteraction()
+            Me.UpdateCursorFeedback()
         End Sub
 
-        Public Sub UpdateInteraction()
+        Public Sub UpdateCursorFeedback()
 
             ' Sanity check
             If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
@@ -555,13 +522,14 @@ Namespace Ecospace
             ' Sanity check
             If layer Is Nothing Then Debug.Assert(False, "Need valid layer")
 
+            RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
+
             ' Clear selection
             If Object.ReferenceEquals(layer, Me.m_layerSelected) Then
                 Me.m_layerSelected = Nothing
-                Me.UpdateInteraction()
+                Me.UpdateCursorFeedback()
             End If
 
-            RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
             Me.m_layers.Remove(layer)
 
         End Sub

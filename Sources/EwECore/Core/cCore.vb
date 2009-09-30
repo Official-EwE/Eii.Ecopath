@@ -6124,6 +6124,13 @@ Public Class cCore
 
     End Sub
 
+    Friend Sub InitSailingCost()
+
+        Me.m_Ecospace.CalculateCostOfSailing()
+        Me.m_EcospaceBasemap.LayerSailingCost.Invalidate()
+
+    End Sub
+
 #End Region 'EcoSim
 
 #Region "Ecospace"
@@ -6865,6 +6872,8 @@ Public Class cCore
 
             InitEcospaceOutputs()
             InitEcotracerOutputs()
+
+            Me.InitSailingCost()
 
             SendEcospaceLoadMessage(iScenario)
 
@@ -10515,6 +10524,10 @@ Public Class cCore
                      eDataTypes.EcospaceLayerRegion, _
                      eDataTypes.EcospaceLayerRelCin, _
                      eDataTypes.EcospaceLayerRelPP
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
+
+                Case eDataTypes.EcospaceLayerPort
+                    Me.InitSailingCost()
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.EcospaceHabitat

@@ -230,7 +230,7 @@ Namespace Ecospace.Basemap.Layers
         ''' Get/set whether the layer is editable.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property IsEditable() As Boolean
+        Public Overridable Property IsEditable() As Boolean
             Get
                 Dim bEditable As Boolean = (Me.m_bEditable = True) And (Me.IsReadOnly = False)
                 'If (Me.m_propName IsNot Nothing) Then
@@ -248,7 +248,7 @@ Namespace Ecospace.Basemap.Layers
         ''' Get/set whether the layer can be made editable at all
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property IsReadOnly() As Boolean
+        Public Overridable Property IsReadOnly() As Boolean
             Get
                 Return m_bReadOnly
             End Get
@@ -306,7 +306,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -----------------------------------------------------------------------
         Protected Function GUI() As ucLayerEditor
             ' Create editor GUI if not done
-            If (Me.m_gui Is Nothing) Then
+            If (Me.m_gui Is Nothing) And (Me.IsReadOnly = False) Then
                 Try
                     Dim obj As Object = Activator.CreateInstance(Me.m_typeGUI, New Object() {})
                     ' Sanity check

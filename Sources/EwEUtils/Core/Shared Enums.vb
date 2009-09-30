@@ -479,8 +479,12 @@ Namespace Core
         LayerMigration
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
-        ''' <summary>Ecospace/MPA importance.</summary>
+        ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
+        ''' <summary>Ecospace cell port assignments.</summary>
+        LayerPort
+        ''' <summary>Ecospace sailing cost.</summary>
+        LayerSail
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
@@ -1378,6 +1382,8 @@ Namespace Core
         EcospaceLayerRelPP = 69
         EcospaceLayerRelCin = 70
         EcospaceLayerIBMPackets = 72
+        EcospaceLayerPort = 73
+        EcospaceLayerSail = 74
 
         MSEGroupOutputs = 71
 

@@ -1,45 +1,3 @@
-'==============================================================================
-'
-' $Log: Basemap.vb,v $
-' Revision 1.12  2009/05/15 14:13:11  jeroens
-' Layers disposed
-'
-' Revision 1.11  2009/05/11 01:50:48  jeroens
-' Renamed command classes
-'
-' Revision 1.10  2009/02/05 17:48:38  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.9  2009/01/16 18:30:07  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.8  2008/11/05 01:16:51  jeroens
-' Optionally clear new layer groups
-'
-' Revision 1.7  2008/11/04 04:49:00  jeroens
-' Renamed key member vars
-'
-' Revision 1.6  2008/10/16 00:00:28  jeroens
-' Added migration layer
-' MPA layer moved on top
-'
-' Revision 1.5  2008/10/15 17:05:16  jeroens
-' Rerouted editor gui baseclass
-'
-' Revision 1.4  2008/10/14 20:23:32  jeroens
-' Forged basis for separate editors
-'
-' Revision 1.3  2008/10/10 20:09:54  jeroens
-' Added layer editor GUI, initial attempt
-'
-' Revision 1.2  2008/10/10 18:04:02  jeroens
-' Updated to renamed layers classes
-'
-' Revision 1.1  2008/09/26 07:31:55  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Explicit On
@@ -148,7 +106,9 @@ Namespace Ecospace.Basemap
 
 #Region " Events "
 
-        Private Sub Basemap_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+            MyBase.OnLoad(e)
 
             Dim cmdh As cCommandHandler = cCommandHandler.GetInstance()
             Dim pm As cPropertyManager = cPropertyManager.GetInstance()
@@ -192,7 +152,9 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub Basemap_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
+            MyBase.OnFormClosed(e)
 
             RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
 
@@ -296,6 +258,8 @@ Namespace Ecospace.Basemap
             Me.RemoveAllLayers()
 
             Me.AddData(eVarNameFlags.LayerMPA)
+            Me.AddData(eVarNameFlags.LayerPort)
+            Me.AddData(eVarNameFlags.LayerSail, False)
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
             'Me.AddData(eVarNameFlags.LayerRelCin) ' Added when property changes
@@ -420,7 +384,7 @@ Namespace Ecospace.Basemap
         End Property
 
         Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditor)
-            Me.m_ucBasemap.UpdateInteraction()
+            Me.m_ucBasemap.UpdateCursorFeedback()
         End Sub
 
 #End Region ' Internals

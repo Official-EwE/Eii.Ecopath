@@ -103,6 +103,16 @@ Public Class cEcospaceBasemap
             val = New cValueArray(eValueTypes.LayerArray, eVarNameFlags.LayerIBMPackets, eStatusFlags.OK, eCoreCounterTypes.nStanzas, AddressOf m_core.GetCoreCounter)
             m_values.Add(val.varName, val)
 
+            ' LayerPort
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' LayerSail
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -132,7 +142,7 @@ Public Class cEcospaceBasemap
             Me.Layers(eVarNameFlags.LayerRelPP) = layer
 
             ' RelCin layer
-            layer = New cEcospaceLayerSingleNxM(theCore, Me, eVarNameFlags.LayerRelCin)
+            layer = New cEcospaceLayerRelCin(theCore, Me)
             Me.Layers(eVarNameFlags.LayerRelCin) = layer
 
             ' MPA Seed
@@ -148,6 +158,14 @@ Public Class cEcospaceBasemap
             ' Migration
             layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
             Me.Layers(eVarNameFlags.LayerMigration) = layer
+
+            ' Port
+            layer = New cEcospaceLayerPort(theCore, Me)
+            Me.Layers(eVarNameFlags.LayerPort) = layer
+
+            ' Sailing cost
+            layer = New cEcospaceLayerSail(theCore, Me)
+            Me.Layers(eVarNameFlags.LayerSail) = layer
 
             ' IBM layers
             For i As Integer = 1 To Me.m_core.nStanzas
@@ -330,9 +348,31 @@ Public Class cEcospaceBasemap
     ''' Get the Ecospace Depth layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerDepth() As cEcospaceLayer
+    Public ReadOnly Property LayerDepth() As cEcospaceLayerDepth
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerDepth)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDepth), cEcospaceLayerDepth)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace port layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerPort() As cEcospaceLayerPort
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerPort), cEcospaceLayerPort)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace sailing cost layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerSailingCost() As cEcospaceLayerSail
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail), cEcospaceLayerSail)
         End Get
     End Property
 
@@ -346,9 +386,9 @@ Public Class cEcospaceBasemap
     ''' and are stored in one two-dimensional array.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerHabitat() As cEcospaceLayer
+    Public ReadOnly Property LayerHabitat() As cEcospaceLayerHabitat
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerHabitat)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitat), cEcospaceLayerHabitat)
         End Get
     End Property
 
@@ -362,9 +402,9 @@ Public Class cEcospaceBasemap
     ''' and are stored in one two-dimensional array.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMPA() As cEcospaceLayer
+    Public ReadOnly Property LayerMPA() As cEcospaceLayerMPA
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerMPA)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPA), cEcospaceLayerMPA)
         End Get
     End Property
 
@@ -378,9 +418,9 @@ Public Class cEcospaceBasemap
     ''' and are stored in one two-dimensional array.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerRegion() As cEcospaceLayer
+    Public ReadOnly Property LayerRegion() As cEcospaceLayerRegion
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerRegion)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRegion), cEcospaceLayerRegion)
         End Get
     End Property
 
@@ -389,9 +429,9 @@ Public Class cEcospaceBasemap
     ''' Get the Relative Primary Production layer in Ecospace.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerRelPP() As cEcospaceLayer
+    Public ReadOnly Property LayerRelPP() As cEcospaceLayerRelPP
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerRelPP)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRelPP), cEcospaceLayerRelPP)
         End Get
     End Property
 
@@ -405,9 +445,9 @@ Public Class cEcospaceBasemap
     ''' actual layer for details.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerAdvection() As cEcospaceLayer
+    Public ReadOnly Property LayerAdvection() As cEcospaceLayerAdvection
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerAdvection)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerAdvection), cEcospaceLayerAdvection)
         End Get
     End Property
 
@@ -416,9 +456,9 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMigration() As cEcospaceLayer
+    Public ReadOnly Property LayerMigration() As cEcospaceLayerMigration
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerMigration)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMigration), cEcospaceLayerMigration)
         End Get
     End Property
 
@@ -427,9 +467,9 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerRelCin() As cEcospaceLayer
+    Public ReadOnly Property LayerRelCin() As cEcospaceLayerRelCin
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerRelCin)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRelCin), cEcospaceLayerRelCin)
         End Get
     End Property
 
@@ -438,9 +478,9 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMPASeed() As cEcospaceLayer
+    Public ReadOnly Property LayerMPASeed() As cEcospaceLayerMPASeed
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerMPASeed)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPASeed), cEcospaceLayerMPASeed)
         End Get
     End Property
 
@@ -449,9 +489,9 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerIBMPackets() As cEcospaceLayer
+    Public ReadOnly Property LayerIBMPackets() As cEcospaceLayerIBMPackets
         Get
-            Return Me.m_dictLayers(eVarNameFlags.LayerIBMPackets)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerIBMPackets), cEcospaceLayerIBMPackets)
         End Get
     End Property
 
@@ -483,6 +523,10 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
             Case eVarNameFlags.LayerIBMPackets
                 Return Me.m_core.m_Stanza
+            Case eVarNameFlags.LayerPort
+                Return Me.m_core.m_EcoSpaceData.Port
+            Case eVarNameFlags.LayerSail
+                Return Me.m_core.m_EcoSpaceData.Sail
         End Select
         Return Nothing
     End Function

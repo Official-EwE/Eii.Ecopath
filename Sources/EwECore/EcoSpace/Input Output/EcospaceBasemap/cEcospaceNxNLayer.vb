@@ -291,14 +291,15 @@ Public Class cEcospaceLayerSingleNxM
     Protected Overridable Sub RecalcMinMax()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim d As Single(,) = DirectCast(Me.Data, Single(,))
+        Dim s As Single = 0.0!
         Me.m_sMaxValue = Single.MinValue
         Me.m_sMinValue = Single.MaxValue
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
-                If d(iRow, iCol) <> cCore.NULL_VALUE Then
-                    Me.m_sMaxValue = Math.Max(d(iRow, iCol), Me.m_sMaxValue)
-                    Me.m_sMinValue = Math.Min(d(iRow, iCol), Me.m_sMinValue)
+                s = Me.Cell(iRow, iCol)
+                If s <> cCore.NULL_VALUE Then
+                    Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
+                    Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
                 End If
             Next iCol
         Next iRow

@@ -1,15 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cLayerEditorTwoState.vb,v $
-' Revision 1.2  2008/11/08 23:53:43  jeroens
-' Made cell interface more intuitive
-'
-' Revision 1.1  2008/11/04 04:40:16  jeroens
-' Split into separate files, moved
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports EwECore
@@ -30,8 +19,8 @@ Namespace Ecospace.Basemap.Layers
     Public Class cLayerEditorTwoState
         Inherits cLayerEditor
 
-        Public Sub New()
-            MyBase.New(GetType(ucLayerEditorDefault))
+        Public Sub New(Optional ByVal typeGUI As Type = Nothing)
+            MyBase.New(typeGUI)
         End Sub
 
         Public Overrides Sub StartEdit(ByVal ptClick As Point)

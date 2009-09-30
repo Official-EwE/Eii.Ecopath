@@ -2406,4 +2406,28 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="TOOLTIP_GRID_SETVALUE" xml:space="preserve">
     <value>Set this value to all selected cells</value>
   </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_ECOSEED" xml:space="preserve">
+    <value>Ecoseed</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_PORT" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMBEST" xml:space="preserve">
+    <value>Best count</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH" xml:space="preserve">
+    <value>Random search</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_SAILINGCOST" xml:space="preserve">
+    <value>Sailing cost</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_SEEDBEST" xml:space="preserve">
+    <value>Best cells</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT" xml:space="preserve">
+    <value>Current cells</value>
+  </data>
 </root>

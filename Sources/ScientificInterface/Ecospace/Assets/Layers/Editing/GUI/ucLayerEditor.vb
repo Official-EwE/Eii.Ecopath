@@ -108,8 +108,19 @@ Namespace Ecospace.Basemap.Layers
         Public Overridable Sub UpdateControls()
             If Me.Editor.Layer IsNot Nothing Then
                 Me.m_lbCaption.Text = Me.Editor.Layer.Name
+
+                If Me.Editor.IsReadOnly Then
+                    Me.m_lbImage.Image = My.Resources.ProtectFormHS
+                Else
+                    If Me.Editor.IsEditable Then
+                        Me.m_lbImage.Image = My.Resources.Editable
+                    Else
+                        Me.m_lbImage.Image = My.Resources.NotEditable
+                    End If
+            End If
             Else
                 Me.m_lbCaption.Text = ""
+                Me.m_lbImage.Image = My.Resources.ProtectFormHS
             End If
         End Sub
 

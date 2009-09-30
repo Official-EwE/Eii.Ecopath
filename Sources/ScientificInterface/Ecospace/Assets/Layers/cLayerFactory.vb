@@ -1,45 +1,3 @@
-'==============================================================================
-'
-' $Log: cLayerFactory.vb,v $
-' Revision 1.8  2009/01/17 03:24:07  jeroens
-' Added depth layer renderer
-'
-' Revision 1.7  2009/01/08 16:18:56  jeroens
-' Fixed issue 582
-'
-' Revision 1.6  2008/11/26 02:57:27  jeroens
-' MPAs use hatch patterns
-'
-' Revision 1.5  2008/11/19 14:35:09  jeroens
-' Fixed seed cell colour screw-up
-'
-' Revision 1.4  2008/11/18 03:35:59  jeroens
-' Fixed exception on best cell layer creation
-'
-' Revision 1.3  2008/11/17 17:26:53  jeroens
-' Changed MPA cell result layer render style
-'
-' Revision 1.2  2008/11/05 01:15:16  jeroens
-' Do not share editors between layers!
-'
-' Revision 1.1  2008/11/04 04:39:53  jeroens
-' Moved
-'
-' Revision 1.3  2008/10/15 23:56:28  jeroens
-' All layers added by varname, no longer by string
-' Added migration layer
-'
-' Revision 1.2  2008/10/14 20:23:32  jeroens
-' Forged basis for separate editors
-'
-' Revision 1.1  2008/10/10 18:03:21  jeroens
-' Renamed
-'
-' Revision 1.1  2008/09/26 07:31:58  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -219,7 +177,7 @@ Namespace Ecospace.Basemap.Layers
                         core.VisualStyle(strID) = vs
                     End If
 
-                    ' Represent depth as a solid colour
+                    ' Represent as a solid colour
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelPP
@@ -239,7 +197,7 @@ Namespace Ecospace.Basemap.Layers
                         core.VisualStyle(strID) = vs
                     End If
 
-                    ' Represent depth as a solid colour
+                    ' Represent as a solid colour
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
@@ -272,7 +230,7 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
                     layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = "Current cells"
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
@@ -288,7 +246,7 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorTwoState()
 
                     layer = New cLayer(layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = "Best cells"
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDBEST
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
@@ -303,7 +261,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
                         layer = New cLayer(layerData, renderer, editor)
-                        layer.Name = "Best count"
+                        layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RANDOMBEST
                         layer.Editor.IsReadOnly = True
 
                         lLayers.Add(layer)
@@ -347,6 +305,45 @@ Namespace Ecospace.Basemap.Layers
 
                     lLayers.Add(layer)
 
+                Case eVarNameFlags.LayerPort
+
+                    ' Get or create Visual Style
+                    strID = cValueID.GenerateAbstract(eDataTypes.EcospaceBasemap, CInt(bmd.GetVariable(eVarNameFlags.DBID)), eVarNameFlags.LayerPort)
+                    vs = core.VisualStyle(strID)
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.BurlyWood
+                        core.VisualStyle(strID) = vs
+                    End If
+
+                    renderer = New cLayerRendererSymbol(vs)
+                    editor = New cLayerEditorFleet()
+                    If layerData Is Nothing Then layerData = bmd.LayerPort
+                    layer = New cLayer(layerData, renderer, editor, 1.0!, 0.0!, bmd, eVarNameFlags.LayerPort)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_PORT
+
+                    lLayers.Add(layer)
+
+                Case eVarNameFlags.LayerSail
+
+                    ' Get or create Visual Style
+                    strID = cValueID.GenerateAbstract(eDataTypes.EcospaceBasemap, CInt(bmd.GetVariable(eVarNameFlags.DBID)), eVarNameFlags.LayerSail)
+                    vs = core.VisualStyle(strID)
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        core.VisualStyle(strID) = vs
+                    End If
+
+                    ' Represent as a solid colour
+                    renderer = New cLayerRendererValue(vs)
+                    editor = Nothing
+                    If layerData Is Nothing Then layerData = bmd.LayerSailingCost
+                    layer = New cLayer(layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SAILINGCOST
+
+                    lLayers.Add(layer)
+
                 Case eVarNameFlags.LayerImportance
 
                     For iLayer As Integer = 1 To core.nImportanceLayers
@@ -379,8 +376,6 @@ Namespace Ecospace.Basemap.Layers
 
         Public Shared Function GetLayerGroup(ByVal varName As eVarNameFlags) As String
 
-            ' ToDo_JS: localize this method
-
             Dim strGroup As String = ""
             Select Case varName
 
@@ -401,16 +396,20 @@ Namespace Ecospace.Basemap.Layers
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_NUMERICAL
 
                 Case eVarNameFlags.LayerMPASeed, eVarNameFlags.LayerMPASeedBest, eVarNameFlags.LayerMPASeedCurrent
-                    strGroup = "Ecoseed"
+                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_ECOSEED
 
                 Case eVarNameFlags.LayerMPARandom
-                    strGroup = "Random search"
+                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH
+
+                Case eVarNameFlags.LayerPort, eVarNameFlags.LayerSail
+                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_FISHING
 
                 Case eVarNameFlags.LayerImportance
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_IMPORTANCE
 
             End Select
             Return strGroup
+
         End Function
 
     End Class
