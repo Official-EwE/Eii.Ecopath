@@ -1,88 +1,16 @@
-'==============================================================================
-'
-' $Log: EditFleetsEwEGrid.vb,v $
-' Revision 1.3  2009/05/28 12:37:24  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.2  2008/10/29 15:45:50  jeroens
-' Fixed issue 562
-'
-' Revision 1.1  2008/09/26 07:31:29  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.25  2008/08/11 16:13:55  jeroens
-' Generalized EndEditHandler
-'
-' Revision 1.24  2008/08/10 17:05:14  jeroens
-' Removed obsolete captions
-'
-' Revision 1.23  2008/08/02 21:14:16  jeroens
-' New Groups and Fleets auto-numbered
-'
-' Revision 1.22  2008/08/02 03:04:16  jeroens
-' Renamed resources
-'
-' Revision 1.21  2008/06/02 00:01:35  jeroens
-' Added ScientificInterfaceShared
-'
-' Revision 1.20  2008/04/07 02:31:15  jeroens
-' Cleaning up resources
-'
-' Revision 1.19  2008/01/18 01:39:59  jeroens
-' Simplified code lock usage
-'
-' Revision 1.18  2007/12/13 17:05:16  jeroens
-' - No longer auto-saves
-'
-' Revision 1.17  2007/10/21 13:08:23  jeroens
-' * Core restructure batch lock can fail; now properly handled througout core and GUI
-'
-' Revision 1.16  2007/07/09 20:22:28  jeroens
-' * Renamed GridContentPanel
-' * Moved EwEGridRefresh
-'
-' Revision 1.15  2007/07/08 02:24:39  jeroens
-' - Solved conflict between exiting event and new EwEGrid selection event
-'
-' Revision 1.14  2007/06/21 22:23:37  fgao
-' Add grid selection, autosize..etc features..
-'
-' Revision 1.13  2007/06/15 16:35:23  jeroens
-' * Allowed to delete all fleets
-'
-' Revision 1.12  2007/06/02 16:26:47  jeroens
-' - NEED PROETCTION - NEED PROTECTION -
-'
-' Revision 1.11  2007/05/31 13:11:21  jeroens
-' * Renamed StyleGuide StyleFlags to eStyleFlags
-'
-' Revision 1.10  2007/05/26 00:28:39  jeroens
-' :P Ok, that was silly. Used entirely the wrong statements to deselect cells; cleared 'em instead
-'
-' Revision 1.9  2007/05/24 15:50:02  jeroens
-' + Added Append option
-' * Fixed row selection logic
-' * Fixed fleet index bug on Add multiple
-' * Fixed fleet removal crash on Remove multiple
-'
-' Revision 1.8  2007/05/04 01:20:58  jeroens
-' * Uses central enum AddRemoveItemStatus
-'
-' Revision 1.7  2007/05/02 13:45:20  jeroens
-' * Redesigned to match Group/Stanza edit dialog
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
 Imports EwECore
-Imports ScientificInterface.Other
-Imports SourceGrid2
 Imports EwEUtils.Utilities
+Imports SourceGrid2
+Imports ScientificInterface.Other
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Grid class for the Edit Fleets interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
@@ -235,7 +163,7 @@ Imports EwEUtils.Utilities
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged() As Boolean
-            If Me.m_Fleet Is Nothing Then Return True
+            If Me.m_Fleet Is Nothing Then Return False
             Return (Me.m_Fleet.Name <> Me.m_strName)
         End Function
 
@@ -856,7 +784,6 @@ Imports EwEUtils.Utilities
         Dim Fleet As cFleetInput = Nothing
         Dim iFleet As Integer = 0
         Dim bSuccess As Boolean = True
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
 
         ' Validate content of the grid
         If Not Me.ValidateContent() Then Return False
@@ -909,7 +836,7 @@ Imports EwEUtils.Utilities
 
             If Not Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-            appl.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+            cApplicationStatusNotifier.GetInstance().SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
             Dim htFleetID As New Dictionary(Of FleetInfo, Integer)
             Dim iDBID As Integer = Nothing
@@ -947,7 +874,7 @@ Imports EwEUtils.Utilities
 
             ' The core will reload now
             Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-            appl.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.GetInstance().SetStatusText("", TriState.False)
 
             ' Test whether new Fleets were loaded correctly
             Debug.Assert(Me.m_lfiFleets.Count = Me.m_core.nFleets, "Dialog and core out of sync on Fleets")

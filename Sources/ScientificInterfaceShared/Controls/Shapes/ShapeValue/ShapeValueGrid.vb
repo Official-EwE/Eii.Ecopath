@@ -1,29 +1,3 @@
-'==============================================================================
-'
-' $Log: ShapeValueGrid.vb,v $
-' Revision 1.6  2009/05/28 12:37:47  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/05/02 19:01:54  jeroens
-' Fixed index
-'
-' Revision 1.4  2009/03/23 20:21:31  jeroens
-' Fixed issue 599
-'
-' Revision 1.3  2009/03/11 18:26:10  jeroens
-' Added Year mode (for time series)
-'
-' Revision 1.2  2009/03/11 00:31:18  jeroens
-' Able to show year+month/indexed columns
-'
-' Revision 1.1  2008/12/15 15:36:39  jeroens
-' Moved from ScInt
-'
-' Revision 1.1  2008/09/26 07:31:43  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -157,6 +131,7 @@ Public Class ShapeValueGrid
 
                     cell = New EwECell(sValue, GetType(Single))
                     cell.SuppressZero = Me.m_bSuppressZeroes
+                    cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 1) = cell
 
                 Case frmShapeValue.eDisplayMode.Monthly
@@ -180,6 +155,7 @@ Public Class ShapeValueGrid
 
                     cell = New EwECell(sValue, GetType(Single))
                     cell.SuppressZero = Me.m_bSuppressZeroes
+                    cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 2) = cell
 
             End Select
@@ -192,10 +168,10 @@ Public Class ShapeValueGrid
         MyBase.FinishStyle()
     End Sub
 
-    Protected Overrides Sub bm_colSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
-        ' Allow col selection
-        MyBase.bm_colSelectClick(sender, e)
-    End Sub
+    'Protected Overrides Sub bm_colSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+    '    ' Allow col selection
+    '    MyBase.bm_colSelectClick(sender, e)
+    'End Sub
 
     Protected Overrides Sub bm_rowSelectClick(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
         ' Do not allow col selections
