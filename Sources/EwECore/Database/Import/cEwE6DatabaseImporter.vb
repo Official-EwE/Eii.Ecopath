@@ -3,6 +3,7 @@ Imports System.Data
 Imports System.IO
 Imports EwEUtils.Database
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 Namespace Database
 
@@ -97,6 +98,8 @@ Namespace Database
         Private m_iNextShapeID As Integer = 1
 
         Private m_sbLog As New Text.StringBuilder
+
+        Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
 
 #End Region ' Private bits 
 
@@ -700,7 +703,7 @@ Namespace Database
                     ' Provide default in case of an exception
                     sValue = 0
                 End Try
-                astrMemoBits(i) = CStr(sValue)
+                astrMemoBits(i) = StringUtils.FormatSingle(sValue)
             Next
 
             Return astrMemoBits
@@ -1908,14 +1911,15 @@ Namespace Database
 
                         ' No shape imported for this group yet?
                         If Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = 0 Then
-                            ' Remember key for consecutive group instances in other scenarios
-                            Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
-                            ' Import the shape
-                            Me.ImportShape(iGroupID, Me.m_iNextShapeID, eDataTypes.FishMort, reader)
-                            ' Assign shape
-                            drow("FishMortShapeID") = Me.m_iNextShapeID
-                            ' Next shape
-                            Me.m_iNextShapeID += 1
+                            ' Succesfully imported the shape?
+                            If Me.ImportShape(Me.m_iNextShapeID, eDataTypes.FishMort, reader) = Me.m_iNextShapeID Then
+                                ' Remember key for consecutive group instances in other scenarios
+                                Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
+                                ' Assign shape
+                                drow("FishMortShapeID") = Me.m_iNextShapeID
+                                ' Next shape
+                                Me.m_iNextShapeID += 1
+                            End If
                         Else
                             drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strEcopathGroup, eDataTypes.EcoSimScenario, iScenarioID)
                         End If
@@ -2071,7 +2075,7 @@ Namespace Database
                     writer.Commit()
 
                     If iShapeID = Me.m_iNextShapeID Then
-                        Me.ImportShape(iEcopathFleetID, iShapeID, eDataTypes.FishingEffort, reader)
+                        iShapeID = Me.ImportShape(iShapeID, eDataTypes.FishingEffort, reader)
                         Me.HashKey(eDataTypes.FishingEffort, strFleetName, eDataTypes.EcoSimScenario, iScenarioID) = iShapeID
                         Me.m_iNextShapeID += 1
                     End If
@@ -2167,20 +2171,28 @@ Namespace Database
                 If (shapeDataType <> eDataTypes.NotSet) Then
                     ' #Yes: is not imported yet?
                     If (Me.HashKey(shapeDataType, CStr(iShapeNumber), eDataTypes.EcoSimScenario, iScenarioID) = 0) Then
-                        ' #Yes: import succesful?
-                        If (Me.ImportShape(iShapeNumber, Me.m_iNextShapeID, shapeDataType, reader, bIsSeasonal)) Then
-                            ' Store key
-                            Me.HashKey(shapeDataType, CStr(iShapeNumber), eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
-                            ' Next
-                            Me.m_iNextShapeID += 1
-                        Else
-                            ' Failed to import shape
+
+                        ' #Yes: try to import shape
+                        Dim iAssignedShapeID As Integer = Me.ImportShape(Me.m_iNextShapeID, shapeDataType, reader, bIsSeasonal)
+
+                        ' Import failed?
+                        If (iAssignedShapeID = cCore.NULL_VALUE) Then
+                            ' #Yes: report failure
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString), _
                                     eMessageType.DataImport, eMessageImportance.Information, True)
+                        Else
+                            ' #No: remember how shape was imported
+                            Me.HashKey(shapeDataType, CStr(iShapeNumber), eDataTypes.EcoSimScenario, iScenarioID) = Me.m_iNextShapeID
+                            ' Was imported as a new shape?
+                            If (iAssignedShapeID = Me.m_iNextShapeID) Then
+                                ' #Yes: prepare next ID
+                                Me.m_iNextShapeID += 1
+                            End If
                         End If
+
                     Else
-                        ' This indicates an internal error
-                        Debug.Assert(False)
+                        ' This indicates a programming error
+                        Debug.Assert(False, "Shape type " & shapeDataType & " unknown")
                         Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE, _
                                 iShapeNumber, _
                                 shapeDataType.ToString()), _
@@ -2205,67 +2217,151 @@ Namespace Database
 
 #Region " Shape duplicates management "
 
-        Private m_lImportedForcingShapes As New List(Of cForcingShapeData)
-
         Private Class cForcingShapeData
-            Public NumDuplicates As Integer = 0
+
+            Public DBID As Integer = 0
             Public Title As String = ""
             Public ZScale As String = ""
+            Public ZMaxScale As String = ""
+            Public [Type] As String = ""
             Public ShapeDataType As eDataTypes = eDataTypes.NotSet
             Public ShapeType As eShapeFunctionType = eShapeFunctionType.NotSet
-            Public DBID As Integer = 0
+            Public Seasonal As Boolean = False
+            Public Yzero As Single = 0
+            Public YBase As Single = 0
+            Public YEnd As Single = 0
+            Public Steep As Single = 0
+            Public IMedBase As Single = 0
+
+            Public Overrides Function Equals(ByVal obj As Object) As Boolean
+
+                If Not (TypeOf (obj) Is cForcingShapeData) Then Return False
+
+                Dim src As cForcingShapeData = DirectCast(obj, cForcingShapeData)
+
+                If Me.ShapeDataType <> src.ShapeDataType Then Return False
+                If String.Compare(Me.Title, src.Title, True) <> 0 Then Return False
+                If String.Compare(Me.ZScale, src.ZScale) <> 0 Then
+                    Return False
+                End If
+                Return True
+
+            End Function
+
         End Class
 
-
+        Private Function GetDuplicate(ByVal fsd As cForcingShapeData) As cForcingShapeData
+            For Each fsdTest As cForcingShapeData In Me.m_lImportedForcingShapes
+                ' Is duplicate?
+                If fsdTest.Equals(fsd) Then
+                    ' #Yes: return duplicate
+                    Return fsdTest
+                End If
+            Next
+            Return Nothing
+        End Function
 
 #End Region ' Shape duplicates management
 
-        Private Function ImportShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
-                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+        Private Function ImportShape(ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
+                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Integer
 
             ' import shape specific data in subtable
             Select Case shapeDataType
 
                 Case eDataTypes.Forcing, eDataTypes.EggProd, eDataTypes.Mediation
-                    Return Me.ImportForcingShape(iShapeNumber, iShapeID, shapeDataType, reader, bIsSeasonal)
+                    Return Me.ImportForcingShape(iShapeID, shapeDataType, reader, bIsSeasonal)
 
                 Case eDataTypes.FishingEffort, eDataTypes.FishMort
-                    Return Me.ImportOtherShape(iShapeNumber, iShapeID, shapeDataType, reader, bIsSeasonal)
+                    Return Me.ImportFishingShape(iShapeID, shapeDataType, reader, bIsSeasonal)
 
                 Case Else
                     ' Whoot
 
             End Select
-            Return False
+            Return cCore.NULL_VALUE
 
         End Function
 
-        Private Function ImportForcingShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
-                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Imports a forcing shape, returning the actual ID assigned to the 
+        ''' shape. This code will detect shape duplicates, and may return the ID 
+        ''' of a previously imported shape in case of duplication.
+        ''' </summary>
+        ''' <param name="iShapeID">ID to assign to shape.</param>
+        ''' <param name="shapeDataType">Type of shape.</param>
+        ''' <param name="reader">Database reader to read shape from.</param>
+        ''' <param name="bIsSeasonal">States whether shape is seasonal.</param>
+        ''' <returns>The ID for the imported shape. Note that this ID may indicate
+        ''' an earlier imported shape in case of duplicates.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function ImportForcingShape(ByVal iShapeID As Integer, _
+                                            ByVal shapeDataType As eDataTypes, _
+                                            ByVal reader As IDataReader, _
+                                            Optional ByVal bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
-            Dim strZScale As String = ""
-            Dim strTitle As String = ""
-            Dim strType As String = ""
             Dim bSucces As Boolean = True
+            Dim fsd As New cForcingShapeData()
+            Dim fsdDuplicate As cForcingShapeData = Nothing
 
             ' ToDo: find if EXACT shape already exists if so, do NOT import it
             ' 1. Read db, populate cForcingShapeData structure
-            ' 2. Find duplicate record
-            ' 3. Is duplicate?
-            '    Y: 
+            Try
+                fsd.ShapeDataType = shapeDataType
+                fsd.Seasonal = bIsSeasonal
+
+                Select Case shapeDataType
+
+                    Case eDataTypes.Forcing, eDataTypes.EggProd
+                        Dim strZScale As String = ""
+                        Me.SplitZScale(CStr(reader("zScale")), strZScale, fsd.Title)
+                        fsd.ZScale = Me.RebuildNumberListString(strZScale)
+                        fsd.ZMaxScale = CStr(Me.FixValue(reader, "zMaxScale", 0))
+                        fsd.Yzero = CSng(Me.FixValue(reader, "Yzero", 0))
+                        fsd.YBase = CSng(Me.FixValue(reader, "Ybase", 0))
+                        fsd.YEnd = CSng(Me.FixValue(reader, "Yend", 0))
+                        fsd.Steep = CSng(Me.FixValue(reader, "Steep", 0))
+
+                    Case eDataTypes.Mediation
+                        fsd.ZScale = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
+                        fsd.ZMaxScale = CStr(Me.FixValue(reader, "zMaxScale", 0))
+                        fsd.IMedBase = CSng(Me.FixValue(reader, "XBaseLine", 0.25))
+                        fsd.Yzero = CSng(Me.FixValue(reader, "Yzero", 0))
+                        fsd.YBase = CSng(Me.FixValue(reader, "Ybase", 0))
+                        fsd.YEnd = CSng(Me.FixValue(reader, "Yend", 0))
+                        fsd.Steep = CSng(Me.FixValue(reader, "Steep", 0))
+
+                End Select
+
+            Catch ex As Exception
+                ' Whoah!
+                Return cCore.NULL_VALUE
+            End Try
+
+            ' 2. Find if duplicate shape exists
+            fsdDuplicate = Me.GetDuplicate(fsd)
+            If (fsdDuplicate IsNot Nothing) Then
+                ' #Yes: return original DBID
+                Console.WriteLine("Shape {0} '{1}' already exists as ID {2}", _
+                                  fsdDuplicate.ShapeDataType, fsdDuplicate.Title, fsdDuplicate.DBID)
+                Return fsdDuplicate.DBID
+            End If
+
+            ' Ah! Is a new shape!
+            fsd.DBID = iShapeID
 
             Try
-                writer = Me.m_dbEwE6.GetWriter("EcosimShape")
-
                 ' Add new shape
+                writer = Me.m_dbEwE6.GetWriter("EcosimShape")
                 drow = writer.NewRow()
                 drow("ShapeID") = iShapeID
                 ' ShapeNumber is no longer stored; determined at load
                 ' drow("nShapeNumber") = nShapeNumber 
-                drow("ShapeType") = CInt(shapeDataType)
-                drow("IsSeasonal") = bIsSeasonal
+                drow("ShapeType") = fsd.ShapeDataType
+                drow("IsSeasonal") = fsd.Seasonal
                 writer.AddRow(drow)
 
                 Me.m_dbEwE6.ReleaseWriter(writer)
@@ -2273,9 +2369,9 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(String.Format("Forcing data {0} failed to import as type {1}: {2}", iShapeNumber, shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(String.Format("Forcing data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
                         eMessageType.DataImport, eMessageImportance.Information)
-                Return False
+                Return cCore.NULL_VALUE
             End Try
 
             ' import shape specific data in subtable
@@ -2283,46 +2379,43 @@ Namespace Database
                 Case eDataTypes.Forcing
                     writer = Me.m_dbEwE6.GetWriter("EcoSimShapeTime")
                     drow = writer.NewRow()
-                    drow("zMaxScale") = Me.FixValue(reader, "zMaxScale")
-
-                    Me.SplitZScale(CStr(reader("zScale")), strZScale, strType, strTitle)
-                    drow("Title") = strTitle
-                    drow("zScale") = Me.RebuildNumberListString(strZScale)
-                    drow("Yzero") = Me.FixValue(reader, "Yzero")
-                    drow("Ybase") = Me.FixValue(reader, "Ybase")
-                    drow("Yend") = Me.FixValue(reader, "Yend")
-                    drow("Steep") = Me.FixValue(reader, "Steep")
+                    drow("Title") = fsd.Title
+                    drow("zScale") = fsd.ZScale
+                    drow("zMaxScale") = fsd.ZMaxScale
+                    drow("Yzero") = fsd.Yzero
+                    drow("Ybase") = fsd.YBase
+                    drow("Yend") = fsd.YBase
+                    drow("Steep") = fsd.YBase
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
                 Case eDataTypes.EggProd
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeEggProd")
                     drow = writer.NewRow()
-                    drow("zMaxScale") = Me.FixValue(reader, "zMaxScale")
-
-                    Me.SplitZScale(CStr(reader("zScale")), strZScale, strType, strTitle)
-                    drow("Title") = strTitle
-                    drow("zScale") = Me.RebuildNumberListString(strZScale)
-                    drow("Yzero") = Me.FixValue(reader, "Yzero")
-                    drow("Ybase") = Me.FixValue(reader, "Ybase")
-                    drow("Yend") = Me.FixValue(reader, "Yend")
-                    drow("Steep") = Me.FixValue(reader, "Steep")
+                    drow("Title") = fsd.Title
+                    drow("zScale") = fsd.ZScale
+                    drow("zMaxScale") = fsd.ZMaxScale
+                    drow("Yzero") = fsd.Yzero
+                    drow("Ybase") = fsd.YBase
+                    drow("Yend") = fsd.YBase
+                    drow("Steep") = fsd.YBase
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
                 Case eDataTypes.Mediation
                     Dim nShapeNumber As Integer = CInt(Me.m_dbEwE6.GetValue("SELECT COUNT(*) FROM EcosimShapeMediation"))
+                    fsd.Title = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
 
                     writer = Me.m_dbEwE6.GetWriter("EcosimShapeMediation")
                     drow = writer.NewRow()
-                    drow("IMedBase") = Me.FixValue(reader, "XBaseLine")
-                    drow("zScale") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
+                    drow("IMedBase") = fsd.IMedBase
+                    drow("zScale") = fsd.ZScale
                     ' New in EwE6
-                    drow("Title") = String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
-                    drow("Yzero") = Me.FixValue(reader, "Yzero")
-                    drow("Ybase") = Me.FixValue(reader, "Ybase")
-                    drow("Yend") = Me.FixValue(reader, "Yend")
-                    drow("Steep") = Me.FixValue(reader, "Steep")
+                    drow("Title") = fsd.Title
+                    drow("Yzero") = fsd.Yzero
+                    drow("Ybase") = fsd.YBase
+                    drow("Yend") = fsd.YBase
+                    drow("Steep") = fsd.YBase
                     ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
@@ -2332,17 +2425,23 @@ Namespace Database
             End Select
 
             ' Forge FK
-            drow("ShapeID") = iShapeID
+            drow("ShapeID") = fsd.DBID
 
             writer.AddRow(drow)
             Me.m_dbEwE6.ReleaseWriter(writer)
             writer = Nothing
 
-            Return bSucces
+            ' Log new shape
+            Console.WriteLine("Shape {0} '{1}' imported as ID {2}", fsd.ShapeDataType, fsd.Title, iShapeID)
+            Me.m_lImportedForcingShapes.Add(fsd)
+
+            Return fsd.DBID
         End Function
 
-        Private Function ImportOtherShape(ByVal iShapeNumber As Integer, ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
-                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+        Private Function ImportFishingShape(ByVal iShapeID As Integer, _
+                                            ByVal shapeDataType As eDataTypes, _
+                                            ByVal reader As IDataReader, _
+                                            Optional ByVal bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -2362,9 +2461,9 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(String.Format("Effort or Mort shape data {0} failed to import as type {1}: {2}", iShapeNumber, shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(String.Format("Effort or Mort shape data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
                         eMessageType.DataImport, eMessageImportance.Information)
-                Return False
+                Return cCore.NULL_VALUE
             End Try
 
             Select Case shapeDataType
@@ -2397,7 +2496,7 @@ Namespace Database
             Me.m_dbEwE6.ReleaseWriter(writer)
             writer = Nothing
 
-            Return bSucces
+            Return iShapeID
         End Function
 
         Private Function CreateDummyShape(ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
@@ -2574,7 +2673,7 @@ Namespace Database
                     ' Has shape assignments?
                     If (iEggShape + iHatchShape > 0) Then
 
-                        ' JS 24nov07: EwE5 links stanza configs (non-sim scenario dept) to shapes (ecosim secnario dept) via an index that is only
+                        ' JS 24nov07: EwE5 links stanza configs (non-sim scenario dept) to shapes (ecosim scenario dept) via an index that is only
                         '             meaningful from the context of a loaded scenario. EwE6 instead loads shapes ecosim scenario independent.
                         '             Therefore, the importer will be unable to import this link when importing more than one Ecosim scenario: 
                         '             What EwE5 scenario should this shape come from?!
@@ -2588,11 +2687,12 @@ Namespace Database
                             If iEggShape > 0 Then iEggShapeID = Me.HashKey(eDataTypes.EggProd, CStr(iEggShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
                             ' Try to resolve forcing shape ID for this scenario
                             If iHatchShape > 0 Then iHatchShapeID = Me.HashKey(eDataTypes.Forcing, CStr(iHatchShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
+                            ' Found shapes?
                             If (iEggShapeID + iHatchShapeID) > 0 Then
                                 drow = writer.NewRow()
                                 ' Map foreign keys
                                 drow("StanzaID") = HashKey(eDataTypes.Stanza, CStr(reader("stanzaName")))
-                                ' Link shapes
+                                ' Link shapes (leave missing shape links to DBNull)
                                 If (iEggShapeID > 0) Then drow("EggprodShapeID") = iEggShapeID
                                 If (iHatchShapeID > 0) Then drow("HatchCodeShapeID") = iHatchShapeID
                                 writer.AddRow(drow)
@@ -2621,12 +2721,11 @@ Namespace Database
         ''' <param name="strZScale">Zscale part.</param>
         ''' <param name="strTitle">Title part.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SplitZScale(ByVal strIn As String, ByRef strZScale As String, ByRef strType As String, ByRef strTitle As String)
+        Private Sub SplitZScale(ByVal strIn As String, ByRef strZScale As String, ByRef strTitle As String)
             ' Separate title from Zscale data. EwE5 stores the title in the first 
             ' 20 characters of the ZScale data.
-            strType = strIn.Substring(0, 1)
-            strTitle = strIn.Substring(1, 19)
-            strZScale = strIn.Substring(21)
+            strTitle = strIn.Substring(1, 19).Trim()
+            strZScale = strIn.Substring(21).Trim()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -2705,31 +2804,27 @@ Namespace Database
 #If 0 Then ' Discontinued in 1.71, now allocated from [Ecosim NxN Forcing]
                 ' Link to forcing shape
                 iShape = CInt(reader("seasonType"))
+                iShapeID = 0
                 If (iShape > 0) Then
                     Try
                         ' EwE5 shape assigment may not be valid anymore - test for success
                         iShapeID = HashKey(eDataTypes.Forcing, CStr(iShape), iScenarioID)
                     Catch e As Exception
-                        iShapeID = 0
                     End Try
-                    drow("ForcingShapeID") = iShapeID
-                Else
-                    drow("ForcingShapeID") = 0
                 End If
+                drow("ForcingShapeID") = iShapeID
 
                 ' Link to mediation shape
                 iShape = CInt(reader("MediationType"))
+                iShapeID = 0
                 If (iShape > 0) Then
                     Try
                         ' EwE5 shape assigment may not be valid anymore - test for success
                         iShapeID = HashKey(eDataTypes.Mediation, CStr(CInt(100 + iShape)))
                     Catch e As Exception
-                        iShapeID = 0
                     End Try
-                    drow("MediationShapeID") = iShapeID
-                Else
-                    drow("MediationShapeID") = 0
                 End If
+                drow("MediationShapeID") = iShapeID
 #End If
 
                 ' Store the row
@@ -2992,26 +3087,38 @@ Namespace Database
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Forcing
 
-                        Me.m_iNextShapeID += 1
+                        ' Check for duplicates
+                        Dim fsd As New cForcingShapeData()
 
-                        drow = writerShape.NewRow()
-                        drow("ShapeID") = Me.m_iNextShapeID
-                        drow("ShapeType") = eDataTypes.Forcing
-                        writerShape.AddRow(drow)
-                        'writerShape.Commit()
-
-                        drow = writerShapeTime.NewRow()
-                        drow("ShapeID") = Me.m_iNextShapeID
-                        drow("Title") = Me.FixValue(reader, "DatName", "")
-                        drow("YZero") = 0
-                        drow("YBase") = 0
-                        drow("YEnd") = 0
-                        drow("Steep") = 0
-                        drow("FunctionType") = eShapeFunctionType.NotSet
-
+                        fsd.ShapeDataType = eDataTypes.Forcing
+                        fsd.Title = CStr(Me.FixValue(reader, "DatName", "")).Trim()
                         strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                        drow("Zscale") = Me.RebuildNumberListString(strMemo, CChar(" "), 10, cCore.N_MONTHS)
-                        writerShapeTime.AddRow(drow)
+                        fsd.ZScale = Me.RebuildNumberListString(strMemo, CChar(" "), 10, cCore.N_MONTHS)
+
+                        If Me.GetDuplicate(fsd) IsNot Nothing Then
+
+                            drow = writerShape.NewRow()
+                            drow("ShapeID") = Me.m_iNextShapeID
+                            drow("ShapeType") = eDataTypes.Forcing
+                            writerShape.AddRow(drow)
+                            'writerShape.Commit()
+
+                            drow = writerShapeTime.NewRow()
+                            drow("ShapeID") = Me.m_iNextShapeID
+                            drow("Title") = fsd.Title
+                            drow("YZero") = fsd.Yzero
+                            drow("YBase") = fsd.YBase
+                            drow("YEnd") = fsd.YEnd
+                            drow("Steep") = fsd.Steep
+                            drow("FunctionType") = fsd.ShapeType
+                            drow("Zscale") = fsd.ZScale
+                            writerShapeTime.AddRow(drow)
+
+                            Console.WriteLine("Time series {0} '{1}' imported as FF ID {2}", fsd.ShapeDataType, fsd.Title, Me.m_iNextShapeID)
+                            Me.m_lImportedForcingShapes.Add(fsd)
+                            Me.m_iNextShapeID += 1
+
+                        End If
 
                     Case cTimeSeriesFactory.eTimeSeriesCategoryType.Fleet
 
@@ -3531,7 +3638,7 @@ Namespace Database
             Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Nothing
             Dim strFlags As String = ""
             Dim astrPort As String()
-            Dim astrSail As String()
+            'Dim astrSail As String()
             Dim iCell As Integer = 0
             Dim iFleetID As Integer = 1
             Dim iHabitatID As Integer = 1
@@ -3585,14 +3692,14 @@ Namespace Database
 
                         If bHasFleet Then
 
-                            astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 5)
+                            'astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 5)
                             astrPort = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Port", "0")), CChar(" "), 1)
 
-                            ' Sail data missing? Then Sail and Port data must be read from old table [EcoSpace GearxNxN]
-                            If (astrSail.Length = 1) Then
+                            ' Port data missing? Then Sail and Port data must be read from old table [EcoSpace GearxNxN]
+                            If (astrPort.Length = 1) Then
 
                                 Dim nPrevScenarioID As Integer = -1
-                                Dim asSail(,) As Single
+                                'Dim asSail(,) As Single
                                 Dim anPort(,) As Integer
 
                                 Try
@@ -3606,7 +3713,7 @@ Namespace Database
                                     readerSub = Nothing
 
                                     ' Allocate space to read cell data
-                                    ReDim asSail(nRows, nCols)
+                                    'ReDim asSail(nRows, nCols)
                                     ReDim anPort(nRows, nCols)
 
                                     readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
@@ -3614,8 +3721,8 @@ Namespace Database
 
                                     If readerSub IsNot Nothing Then
                                         While readerSub.Read()
-                                            asSail(Math.Min(nRows, CInt(reader("InRow"))), _
-                                                  Math.Min(nCols, CInt(reader("InCol")))) = CSng(Me.FixValue(readerSub, "Sail", "0"))
+                                            'asSail(Math.Min(nRows, CInt(reader("InRow"))), _
+                                            '      Math.Min(nCols, CInt(reader("InCol")))) = CSng(Me.FixValue(readerSub, "Sail", "0"))
                                             anPort(Math.Min(nRows, CInt(reader("InRow"))), _
                                                   Math.Min(nCols, CInt(reader("InCol")))) = CInt(Me.FixValue(readerSub, "Port", "0"))
                                         End While
@@ -3624,13 +3731,13 @@ Namespace Database
                                     End If
 
                                     ' Convert Sail and Port arrays into string()
-                                    ReDim astrSail(nRows * nCols)
+                                    'ReDim astrSail(nRows * nCols)
                                     ReDim astrPort(nRows * nCols)
 
                                     ' Note that the core uses 1-based offsets for reading and writing Sail and Port
                                     For iRow As Integer = 1 To nRows
                                         For iCol As Integer = 1 To nCols
-                                            astrSail(iCell) = CStr(asSail(iRow, iCol))
+                                            'astrSail(iCell) = CStr(asSail(iRow, iCol))
                                             astrPort(iCell) = CStr(anPort(iRow, iCol))
                                             iCell += 1
                                         Next iCol
@@ -3641,7 +3748,7 @@ Namespace Database
                             End If
 
                             ' Now write astrSail and astrPort to new table 'EcospaceScenarioFleetSpatial'
-                            Dim sbSail As New Text.StringBuilder()
+                            'Dim sbSail As New Text.StringBuilder()
                             Dim sbPort As New Text.StringBuilder()
 
                             readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}' AND Scenario='{1}'", strModelName, strEcospaceScenario))
@@ -3655,9 +3762,9 @@ Namespace Database
                                 For iRow As Integer = 1 To nRows
                                     For iCol As Integer = 1 To nCols
 
-                                        If iCell > 0 Then sbSail.Append(" ") : sbPort.Append(" ")
+                                        If iCell > 0 Then sbPort.Append(" ") ' : sbSail.Append(" ")
 
-                                        If (iCell < astrSail.Length) Then sbSail.Append(CSng(Val(astrSail(iCell)))) Else sbSail.Append(0)
+                                        'If (iCell < astrSail.Length) Then sbSail.Append(CSng(Val(astrSail(iCell)))) Else sbSail.Append(0)
                                         If (iCell < astrPort.Length) Then sbPort.Append(CInt(Val(astrPort(iCell)))) Else sbPort.Append(0)
 
                                         iCell += 1
@@ -3668,7 +3775,7 @@ Namespace Database
                                 drow = writerFishMap.NewRow()
                                 drow("ScenarioID") = iScenarioID
                                 drow("FleetID") = iFleetID
-                                drow("Sail") = sbSail.ToString()
+                                'drow("Sail") = sbSail.ToString()
                                 drow("Port") = sbPort.ToString()
                                 writerFishMap.AddRow(drow)
 
