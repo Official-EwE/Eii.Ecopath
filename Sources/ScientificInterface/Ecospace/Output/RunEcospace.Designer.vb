@@ -45,10 +45,9 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
             Me.m_lblDist = New System.Windows.Forms.Label
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
-            Me.m_pnDisplayOptions = New System.Windows.Forms.Panel
+            Me.m_plDisplayOptions = New System.Windows.Forms.Panel
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button
             Me.m_lblDispOpt = New System.Windows.Forms.Label
-            Me.m_cbIBMPackets = New System.Windows.Forms.CheckBox
             Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
@@ -61,7 +60,7 @@ Namespace Ecospace
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_plDistribution.SuspendLayout()
-            Me.m_pnDisplayOptions.SuspendLayout()
+            Me.m_plDisplayOptions.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabSmallMultiples.SuspendLayout()
@@ -150,7 +149,7 @@ Namespace Ecospace
             'm_scMain.Panel1
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_pnDisplayOptions)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
             '
             'm_scMain.Panel2
@@ -200,19 +199,18 @@ Namespace Ecospace
             Me.m_rbDisplayCoverB.Name = "m_rbDisplayCoverB"
             Me.m_rbDisplayCoverB.UseVisualStyleBackColor = True
             '
-            'm_pnDisplayOptions
+            'm_plDisplayOptions
             '
-            resources.ApplyResources(Me.m_pnDisplayOptions, "m_pnDisplayOptions")
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowAll)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_lblDispOpt)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbIBMPackets)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbMPA)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbOverlay)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_rbShowSingle)
-            Me.m_pnDisplayOptions.Controls.Add(Me.m_cbDisplayGroup)
-            Me.m_pnDisplayOptions.Name = "m_pnDisplayOptions"
+            resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
+            Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_lblDispOpt)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbMPA)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbDisplayGroup)
+            Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
             '
             'm_btnDisplayGroups
             '
@@ -227,12 +225,6 @@ Namespace Ecospace
             Me.m_lblDispOpt.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.m_lblDispOpt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_lblDispOpt.Name = "m_lblDispOpt"
-            '
-            'm_cbIBMPackets
-            '
-            resources.ApplyResources(Me.m_cbIBMPackets, "m_cbIBMPackets")
-            Me.m_cbIBMPackets.Name = "m_cbIBMPackets"
-            Me.m_cbIBMPackets.UseVisualStyleBackColor = True
             '
             'm_cbMPA
             '
@@ -298,8 +290,8 @@ Namespace Ecospace
             Me.m_scMain.ResumeLayout(False)
             Me.m_plDistribution.ResumeLayout(False)
             Me.m_plDistribution.PerformLayout()
-            Me.m_pnDisplayOptions.ResumeLayout(False)
-            Me.m_pnDisplayOptions.PerformLayout()
+            Me.m_plDisplayOptions.ResumeLayout(False)
+            Me.m_plDisplayOptions.PerformLayout()
             Me.m_tlpRun.ResumeLayout(False)
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabSmallMultiples.ResumeLayout(False)
@@ -325,7 +317,7 @@ Namespace Ecospace
         Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblDispOpt As System.Windows.Forms.Label
         Private WithEvents m_lblDist As System.Windows.Forms.Label
-        Private WithEvents m_pnDisplayOptions As System.Windows.Forms.Panel
+        Private WithEvents m_plDisplayOptions As System.Windows.Forms.Panel
         Private WithEvents m_zgPlotLarge As ZedGraphControl
         Private WithEvents m_btnDisplayGroups As System.Windows.Forms.Button
         Private WithEvents m_plDistribution As System.Windows.Forms.Panel
@@ -334,7 +326,6 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
         Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
-        Private WithEvents m_cbIBMPackets As System.Windows.Forms.CheckBox
 
  
     End Class

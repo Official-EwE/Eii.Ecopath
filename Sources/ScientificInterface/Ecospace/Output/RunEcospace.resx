@@ -160,10 +160,10 @@
     <value>22, 90</value>
   </data>
   <data name="m_cbDisplayGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 21</value>
+    <value>167, 21</value>
   </data>
   <data name="m_cbDisplayGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.Name" xml:space="preserve">
     <value>m_cbDisplayGroup</value>
@@ -172,10 +172,10 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cbDisplayGroup.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="m_rbShowSingle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -187,7 +187,7 @@
     <value>85, 17</value>
   </data>
   <data name="m_rbShowSingle.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_rbShowSingle.Text" xml:space="preserve">
     <value>Show group:</value>
@@ -199,10 +199,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_rbShowNonHidden.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -214,7 +214,7 @@
     <value>108, 17</value>
   </data>
   <data name="m_rbShowNonHidden.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbShowNonHidden.Text" xml:space="preserve">
     <value>Show non-hidden</value>
@@ -226,10 +226,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_rbShowAll.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -241,7 +241,7 @@
     <value>65, 17</value>
   </data>
   <data name="m_rbShowAll.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_rbShowAll.Text" xml:space="preserve">
     <value>Show all</value>
@@ -253,7 +253,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbShowAll.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowAll.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -274,7 +274,7 @@
     <value>62, 17</value>
   </data>
   <data name="m_cbOverlay.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_cbOverlay.Text" xml:space="preserve">
     <value>&amp;Overlay</value>
@@ -286,10 +286,10 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbOverlay.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cbOverlay.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_btnStop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -379,7 +379,7 @@
     <value>30, 16</value>
   </data>
   <data name="m_lblHigh.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>0</value>
   </data>
   <data name="m_lblHigh.Text" xml:space="preserve">
     <value>High</value>
@@ -409,7 +409,7 @@
     <value>31, 13</value>
   </data>
   <data name="m_lblLow.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>1</value>
   </data>
   <data name="m_lblLow.Text" xml:space="preserve">
     <value>Low</value>
@@ -451,7 +451,7 @@
     <value>105, 17</value>
   </data>
   <data name="m_rbDisplayRelBiomass.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="m_rbDisplayRelBiomass.Text" xml:space="preserve">
     <value>Relative biomass</value>
@@ -481,7 +481,7 @@
     <value>85, 17</value>
   </data>
   <data name="m_rbDisplayFishingEffort.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="m_rbDisplayFishingEffort.Text" xml:space="preserve">
     <value>Fishing effort</value>
@@ -511,7 +511,7 @@
     <value>114, 17</value>
   </data>
   <data name="m_rbDisplayContaminantC.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="m_rbDisplayContaminantC.Text" xml:space="preserve">
     <value>Contaminant conc.</value>
@@ -544,7 +544,7 @@
     <value>189, 18</value>
   </data>
   <data name="m_lblDist.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
+    <value>0</value>
   </data>
   <data name="m_lblDist.Text" xml:space="preserve">
     <value>Distribution of:</value>
@@ -577,7 +577,7 @@
     <value>154, 17</value>
   </data>
   <data name="m_rbDisplayCoverB.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>4</value>
   </data>
   <data name="m_rbDisplayCoverB.Text" xml:space="preserve">
     <value>Contaminant conc/biomass</value>
@@ -601,7 +601,7 @@
     <value>189, 115</value>
   </data>
   <data name="m_plDistribution.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_plDistribution.Name" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -615,7 +615,7 @@
   <data name="&gt;&gt;m_plDistribution.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_pnDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_plDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_btnDisplayGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -625,13 +625,13 @@
     <value>Popup</value>
   </data>
   <data name="m_btnDisplayGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>161, 41</value>
+    <value>164, 41</value>
   </data>
   <data name="m_btnDisplayGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 23</value>
   </data>
   <data name="m_btnDisplayGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_btnDisplayGroups.Name" xml:space="preserve">
     <value>m_btnDisplayGroups</value>
@@ -640,7 +640,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnDisplayGroups.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_btnDisplayGroups.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -661,10 +661,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblDispOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 18</value>
+    <value>189, 18</value>
   </data>
   <data name="m_lblDispOpt.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
+    <value>0</value>
   </data>
   <data name="m_lblDispOpt.Text" xml:space="preserve">
     <value>Display options</value>
@@ -679,43 +679,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblDispOpt.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_lblDispOpt.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_cbIBMPackets.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbIBMPackets.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_cbIBMPackets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbIBMPackets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 163</value>
-  </data>
-  <data name="m_cbIBMPackets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 17</value>
-  </data>
-  <data name="m_cbIBMPackets.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_cbIBMPackets.Text" xml:space="preserve">
-    <value>Show &amp;IBM packets</value>
-  </data>
-  <data name="&gt;&gt;m_cbIBMPackets.Name" xml:space="preserve">
-    <value>m_cbIBMPackets</value>
-  </data>
-  <data name="&gt;&gt;m_cbIBMPackets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbIBMPackets.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
-  </data>
-  <data name="&gt;&gt;m_cbIBMPackets.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_cbMPA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -730,7 +697,7 @@
     <value>84, 17</value>
   </data>
   <data name="m_cbMPA.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="m_cbMPA.Text" xml:space="preserve">
     <value>Show &amp;MPAs</value>
@@ -742,31 +709,31 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbMPA.Parent" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+    <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cbMPA.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
-  <data name="m_pnDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 126</value>
+  <data name="m_plDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 126</value>
   </data>
-  <data name="m_pnDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 188</value>
+  <data name="m_plDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>189, 164</value>
   </data>
-  <data name="m_pnDisplayOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
+  <data name="m_plDisplayOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;m_pnDisplayOptions.Name" xml:space="preserve">
-    <value>m_pnDisplayOptions</value>
+  <data name="&gt;&gt;m_plDisplayOptions.Name" xml:space="preserve">
+    <value>m_plDisplayOptions</value>
   </data>
-  <data name="&gt;&gt;m_pnDisplayOptions.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plDisplayOptions.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pnDisplayOptions.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plDisplayOptions.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_pnDisplayOptions.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_plDisplayOptions.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_tlpRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -775,7 +742,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 320</value>
+    <value>4, 296</value>
   </data>
   <data name="m_tlpRun.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -784,7 +751,7 @@
     <value>189, 23</value>
   </data>
   <data name="m_tlpRun.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_tlpRun.Name" xml:space="preserve">
     <value>m_tlpRun</value>
@@ -970,6 +937,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.909, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.1002, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

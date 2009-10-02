@@ -12,15 +12,16 @@ Public Class cMapDrawer
     Public SignalState As New ManualResetEvent(True)
 
     Private m_map(,,) As Single
+    Private m_mapIBMPackets(,,) As Boolean
     Private m_core As cCore = Nothing
 
     Private m_iGroupFirst As Integer
     Private m_iGroupLast As Integer
     Private m_iInCol As Integer
     Private m_iInRow As Integer
+    Private m_iMonth As Integer
     Private m_lColors As List(Of Color)
     Private m_bShowMPA As Boolean = False
-    Private m_bShowPackets As Boolean = False
 
     Private m_graphics As Graphics
     Private m_font As System.Drawing.Font
@@ -60,21 +61,21 @@ Public Class cMapDrawer
         End Set
     End Property
 
-    Public Property ShowIBMPackets() As Boolean
-        Get
-            Return Me.m_bShowPackets
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bShowPackets = value
-        End Set
-    End Property
-
     Public Property Map() As Single(,,)
         Get
             Return Me.m_map
         End Get
-        Set(ByVal as3Map As Single(,,))
-            Me.m_map = as3Map
+        Set(ByVal value As Single(,,))
+            Me.m_map = value
+        End Set
+    End Property
+
+    Public Property MapIBMPackets() As Boolean(,,)
+        Get
+            Return Me.m_mapIBMPackets
+        End Get
+        Set(ByVal value As Boolean(,,))
+            Me.m_mapIBMPackets = value
         End Set
     End Property
 
@@ -93,6 +94,15 @@ Public Class cMapDrawer
         End Get
         Set(ByVal value As Integer)
             Me.m_iInCol = value
+        End Set
+    End Property
+
+    Public Property Month() As Integer
+        Get
+            Return Me.m_iMonth
+        End Get
+        Set(ByVal value As Integer)
+            Me.m_iMonth = value
         End Set
     End Property
 
@@ -186,7 +196,7 @@ Public Class cMapDrawer
     ''' <param name="iGroup"></param>
     ''' <param name="rcPos"></param>
     ''' <remarks></remarks>
-    Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, Optional ByVal iStanza As Integer = cCore.NULL_VALUE)
+    Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle)
         If m_map Is Nothing Then Return
         For i As Integer = 1 To m_iInRow
             For j As Integer = 1 To m_iInCol
@@ -197,6 +207,7 @@ Public Class cMapDrawer
                                                                CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
                                                                CSng(rcPos.Width() / m_iInCol), _
                                                                CSng(rcPos.Height() / m_iInRow))
+                    Dim rcTemp As Rectangle = Nothing
                     Dim brCell As Brush = Nothing
 
                     'If ConShow And ConcMax(ip) > 0 Then
@@ -233,22 +244,28 @@ Public Class cMapDrawer
                     m_graphics.FillRectangle(brCell, rcfCell)
                     brCell.Dispose()
 
+                    rcTemp = New Rectangle(CInt(rcfCell.X), CInt(rcfCell.Y), CInt(rcfCell.Width), CInt(rcfCell.Height))
+
                     ' Draw MPA
                     If Me.m_bShowMPA Then
                         Dim iMPA As Integer = CInt(m_core.EcospaceBasemap.LayerMPA.Cell(i, j))
                         ' Is MPA cell?
                         If iMPA > 0 Then
-                            ' ToDo: check if MPA is closed this month
-                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Cross, Color.Black)
+                            If Me.m_core.EcospaceMPAs(iMPA).MPAMonth(Me.Month) Then
+                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                            Else
+                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                            End If
                             m_graphics.FillRectangle(brCell, rcfCell)
                             brCell.Dispose()
                         End If
                     End If
 
-                    ' Draw IBM packet
-                    If Me.m_bShowPackets Then
-                        ' Is Stanza group?
-
+                    If Me.m_mapIBMPackets IsNot Nothing Then
+                        If Me.MapIBMPackets(i, j, iGroup) Then
+                            m_graphics.DrawEllipse(Pens.Black, _
+                                                   Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2), -CInt(rcTemp.Height / 2)))
+                        End If
                     End If
 
                 Catch ex As Exception

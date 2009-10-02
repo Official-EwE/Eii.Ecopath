@@ -382,6 +382,12 @@ Namespace Ecospace
             ' Sanity check
             If Me.m_dataTimeStep Is Nothing Then Return
 
+            Dim sTSpy As Single = Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear
+            Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
+            Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+
+            Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+
             If Me.m_iTimeStepCur = 1 Then
                 'caution: hack)
                 Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(Me.m_core.nGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
@@ -398,6 +404,7 @@ Namespace Ecospace
                     Dim rectList As New List(Of Rectangle)
                     Dim xScale As Double = m_iNumGroupPlotsHorz * (m_iInCol + 1) + 1
                     Dim yScale As Double = m_iNumGroupPlotsVert * (m_iInRow + 1) + 1
+
                     If xScale > 0 Then xScale = m_pbMap.Width / xScale
                     If yScale > 0 Then yScale = m_pbMap.Height / yScale
 
@@ -426,13 +433,18 @@ Namespace Ecospace
 
                             If Me.m_rbDisplayRelBiomass.Checked Then
                                 drawer.Map = Me.m_dataTimeStep.BiomassMap
+                                drawer.MapIBMPackets = Me.m_dataTimeStep.IMBLocationsMap
                             ElseIf Me.m_rbDisplayContaminantC.Checked Then
                                 drawer.Map = Me.m_dataTimeStep.ContaminantMap
+                                drawer.MapIBMPackets = Nothing
                             ElseIf Me.m_rbDisplayCoverB.Checked Then
                                 drawer.Map = Me.m_as2ConcOverB
+                                drawer.MapIBMPackets = Nothing
                             End If
+
                             drawer.InCol = Me.m_iInCol
                             drawer.InRow = Me.m_iInRow
+                            drawer.Month = iMonth
 
                             ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, Me.m_core.nGroups)
 
@@ -694,7 +706,7 @@ Namespace Ecospace
         ''' <summary>
         ''' This GUI event handler will be called for every time step of the Ecospace model run. 
         ''' </summary>
-        ''' <param name="dataTimeStep">Data from the current time step</param>
+        ''' <param name="TimeStepData">Data from the current time step</param>
         ''' <remarks></remarks>
         Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
@@ -757,7 +769,7 @@ Namespace Ecospace
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
 
-            Me.DumpIBMMap(TimeStepData)
+            'Me.DumpIBMMap(TimeStepData)
 
             Application.DoEvents()
 
@@ -806,7 +818,7 @@ Namespace Ecospace
             Me.m_btnRun.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = False)
             Me.m_btnStop.Enabled = (csm.HasEcospaceLoaded = True) And (csm.IsEcospaceRunning = True)
             ' Enable display options for non-fleet maps
-            Me.m_pnDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
+            Me.m_plDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
 
             ' Enable contaminant options based on space tracer enabled state
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
