@@ -1,21 +1,11 @@
-﻿'==============================================================================
-'
-' $Log: cResultWriter.vb,v $
-' Revision 1.2  2009/05/23 11:49:33  jeroens
-' Don't for get to run main network first!
-'
-' Revision 1.1  2009/05/19 13:22:48  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -116,8 +106,11 @@ Public Class cResultWriter
     End Function
 
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
+
+        Const cNUMCOLS As Integer = 24
+
         Dim sb As New StringBuilder()
-        Dim asValues(23) As Single
+        Dim asValues(cNUMCOLS) As Single
         Dim iMonth As Integer = 0
         Dim bLineAdded As Boolean = False
 
@@ -167,6 +160,8 @@ Public Class cResultWriter
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_ENTROPY)
         sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_TLc)
+        sb.Append(", ")
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -176,7 +171,7 @@ Public Class cResultWriter
             bLineAdded = False
 
             ' For every var to output
-            For j As Integer = 1 To 23
+            For j As Integer = 1 To cNUMCOLS
 
                 ' Reset total when either processing monthly values OR processing January
                 If (bAnnualAverage = False) Or (iMonth = 0) Then
@@ -208,6 +203,8 @@ Public Class cResultWriter
                     Case 21 : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
                     Case 22 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
                     Case 23 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
+                    Case 24 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+
                 End Select
 
                 ' Processing annual averages?
@@ -216,13 +213,13 @@ Public Class cResultWriter
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
                         ' #Yes: average value and add it
                         asValues(j) /= cCore.N_MONTHS
-                        sb.Append(asValues(j))
+                        sb.Append(StringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
                     ' #No: add value
-                    sb.Append(asValues(j))
+                    sb.Append(StringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
                 End If
@@ -239,8 +236,11 @@ Public Class cResultWriter
     End Function
 
     Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
+
+        Const cNUMCOLS As Integer = 26
+
         Dim sb As New StringBuilder()
-        Dim asValues(25) As Single
+        Dim asValues(cNUMCOLS) As Single
         Dim iMonth As Integer = 0
         Dim bLineAdded As Boolean = False
 
@@ -293,6 +293,8 @@ Public Class cResultWriter
         sb.Append(My.Resources.COL_HDR_AMI)
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_ENTROPY)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_TLc)
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -302,7 +304,7 @@ Public Class cResultWriter
             bLineAdded = False
 
             ' For every var to output
-            For j As Integer = 1 To 25
+            For j As Integer = 1 To cNUMCOLS
 
                 ' Reset total when either processing monthly values OR processing January
                 If (bAnnualAverage = False) Or (iMonth = 0) Then
@@ -336,6 +338,8 @@ Public Class cResultWriter
                     Case 23 : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
                     Case 24 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
                     Case 25 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
+                    Case 26 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+
                 End Select
 
                 ' Processing annual averages?
@@ -344,13 +348,13 @@ Public Class cResultWriter
                     If (iMonth = (cCore.N_MONTHS - 1)) Then
                         ' #Yes: average value and add it
                         asValues(j) /= cCore.N_MONTHS
-                        sb.Append(asValues(j))
+                        sb.Append(StringUtils.FormatSingle(asValues(j)))
                         sb.Append(", ")
                         bLineAdded = True
                     End If
                 Else
                     ' #No: add value
-                    sb.Append(asValues(j))
+                    sb.Append(StringUtils.FormatSingle(asValues(j)))
                     sb.Append(", ")
                     bLineAdded = True
                 End If

@@ -208,7 +208,7 @@
     <Content Include="EwENetworkAnalysis\PYRAMID.EXE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Other\N_Asponsors.jpg" />
+    <Content Include="Resources\N_Asponsors.jpg" />
     <Content Include="Resources\EwENetworkAnalysis.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

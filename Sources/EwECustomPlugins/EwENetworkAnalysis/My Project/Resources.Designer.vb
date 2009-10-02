@@ -682,6 +682,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to TL of catch.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_TLc() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_TLc", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Total (t/km²).
         '''</summary>
         Friend ReadOnly Property COL_HDR_TOTAL_TKM2() As String

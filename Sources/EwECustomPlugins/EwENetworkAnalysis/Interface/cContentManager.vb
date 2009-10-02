@@ -1,37 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cContentManager.vb,v $
-' Revision 1.9  2009/06/06 02:02:54  jeroens
-' Renamed toolstrip access methods
-'
-' Revision 1.8  2009/05/30 00:00:49  jeroens
-' Toolstrip usage centralized
-'
-' Revision 1.7  2009/05/28 14:56:15  jeroens
-' Responds to styleguide changes by updating content of content managers that display the graph or the grid
-'
-' Revision 1.6  2009/05/28 13:59:57  jeroens
-' Fixed annual averages option in CSV export
-'
-' Revision 1.5  2009/05/28 12:37:06  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.4  2009/05/19 13:41:05  jeroens
-' Content manager derived pages will take care of updating NA run state
-'
-' Revision 1.3  2009/05/11 20:34:34  jeroens
-' Added monthly / annual averages CVS export
-'
-' Revision 1.2  2009/05/02 01:46:02  jeroens
-' Added HideControls
-' Added Filename
-'
-' Revision 1.1  2009/05/01 17:41:42  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms

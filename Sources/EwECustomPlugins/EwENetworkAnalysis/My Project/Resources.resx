@@ -424,9 +424,6 @@
     <value>Estimate primary production required? This may be very time consuming for larger models.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="N_Asponsors" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Other\N_Asponsors.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="EwENetworkAnalysis" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewenetworkanalysis.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -681,5 +678,11 @@
   </data>
   <data name="MNU_CONTENT_MAXTL" xml:space="preserve">
     <value>&amp;Max. trophic level</value>
+  </data>
+  <data name="N_Asponsors" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\N_Asponsors.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="COL_HDR_TLc" xml:space="preserve">
+    <value>TL of catch</value>
   </data>
 </root>
