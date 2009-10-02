@@ -696,46 +696,46 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="dataTimeStep">Data from the current time step</param>
         ''' <remarks></remarks>
-        Private Sub onEcospaceTimeStep(ByRef dataTimeStep As cEcospaceTimestep)
+        Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
             For groupIndex As Integer = 1 To m_core.nGroups
-                If dataTimeStep.iTimeStep = 1 Then
-                    m_asBaseBiomassResults(groupIndex) = dataTimeStep.RelativeBiomass(groupIndex)
+                If TimeStepData.iTimeStep = 1 Then
+                    m_asBaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
                     m_as2RelBiomassResults(groupIndex, 1) = 0
                 Else
-                    m_as2RelBiomassResults(groupIndex, dataTimeStep.iTimeStep) = dataTimeStep.RelativeBiomass(groupIndex)
-                    If dataTimeStep.RelativeBiomass(groupIndex) < 0.1 * m_asBaseBiomassResults(groupIndex) Then
-                        m_as2RelBiomassResults(groupIndex, dataTimeStep.iTimeStep) = CSng(Math.Log10(0.1))
-                    ElseIf m_as2RelBiomassResults(groupIndex, dataTimeStep.iTimeStep) > 10 * m_asBaseBiomassResults(groupIndex) Then
-                        m_as2RelBiomassResults(groupIndex, dataTimeStep.iTimeStep) = CSng(Math.Log10(10))
+                    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = TimeStepData.RelativeBiomass(groupIndex)
+                    If TimeStepData.RelativeBiomass(groupIndex) < 0.1 * m_asBaseBiomassResults(groupIndex) Then
+                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(0.1))
+                    ElseIf m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) > 10 * m_asBaseBiomassResults(groupIndex) Then
+                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(10))
                     Else
-                        m_as2RelBiomassResults(groupIndex, dataTimeStep.iTimeStep) = CSng(Math.Log10(dataTimeStep.RelativeBiomass(groupIndex) / m_asBaseBiomassResults(groupIndex)))
+                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex) / m_asBaseBiomassResults(groupIndex)))
                     End If
                 End If
             Next
 
             'Temporary variables to store the timesteps for plotting. 
             m_iTimeStepPrev = m_iTimeStepCur
-            m_iTimeStepCur = dataTimeStep.iTimeStep
+            m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label.
             AppLauncher.GetInstance().SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.UseDefault, CSng(Me.m_iTimeStepCur / Me.m_core.nEcospaceTimeSteps))
 
             ' Store time step data
-            Me.m_dataTimeStep = dataTimeStep
+            Me.m_dataTimeStep = TimeStepData
 
             ' Calc C/B
-            If (dataTimeStep.ContaminantMap IsNot Nothing) Then
-                ReDim Me.m_as2ConcOverB(dataTimeStep.inRows, dataTimeStep.inCols, Me.m_core.nGroups)
-                For iRow As Integer = 1 To dataTimeStep.inRows
-                    For iCol As Integer = 1 To dataTimeStep.inCols
+            If (TimeStepData.ContaminantMap IsNot Nothing) Then
+                ReDim Me.m_as2ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.m_core.nGroups)
+                For iRow As Integer = 1 To TimeStepData.inRows
+                    For iCol As Integer = 1 To TimeStepData.inCols
                         For iGroup As Integer = 1 To Me.m_core.nGroups
-                            Dim sB As Single = dataTimeStep.BiomassMap(iRow, iCol, iGroup)
+                            Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
                             If (sB > 0) Then
-                                Me.m_as2ConcOverB(iRow, iCol, iGroup) = dataTimeStep.ContaminantMap(iRow, iCol, iGroup) / sB
+                                Me.m_as2ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
                             End If
                         Next iGroup
                     Next iCol
@@ -743,10 +743,10 @@ Namespace Ecospace
             End If
 
             'if the size of the map has changed reset the interface
-            If m_iInRow <> dataTimeStep.inRows Or m_iInCol <> dataTimeStep.inCols Then
+            If m_iInRow <> TimeStepData.inRows Or m_iInCol <> TimeStepData.inCols Then
                 'set the map dims these are passed to the drawing threads in PlotBiomassMapThreaded()
-                m_iInRow = dataTimeStep.inRows
-                m_iInCol = dataTimeStep.inCols
+                m_iInRow = TimeStepData.inRows
+                m_iInCol = TimeStepData.inCols
 
                 CalcMapDimension(m_core.nGroups, m_iNumGroupPlotsVert, m_iNumGroupPlotsHorz)
                 CalcMapDimension(m_core.nFleets, m_iNumFleetPlotsVert, m_iNumFleetPlotsHorz)
@@ -756,6 +756,8 @@ Namespace Ecospace
             Me.UpdateBiomassPlot()
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
+
+            Me.DumpIBMMap(TimeStepData)
 
             Application.DoEvents()
 
@@ -829,6 +831,50 @@ Namespace Ecospace
         Private Sub RefreshMap()
             Me.m_pbMap.Refresh()
         End Sub
+
+
+        ''' <summary>
+        ''' Prints a map of the IMB movements to the console 
+        ''' </summary>
+        ''' <param name="SpaceData"></param>
+        ''' <remarks>FOR DEBUGGING</remarks>
+        Private Sub DumpIBMMap(ByVal SpaceData As cEcospaceTimestep)
+            Dim stanza As cStanzaGroup
+            Dim mapBuff As New System.Text.StringBuilder
+            Dim sym As String
+
+            Try
+
+                For isp As Integer = 0 To Me.m_core.nStanzas - 1
+                    stanza = Me.m_core.StanzaGroups(isp)
+
+                    For ist As Integer = 1 To stanza.NStanzas
+                        Dim iGrp As Integer = stanza.iGroups(ist)
+
+                        For irow As Integer = 1 To Me.m_iInRow
+                            For icol As Integer = 1 To Me.m_iInCol
+                                sym = "0 "
+                                If SpaceData.IMBLocationsMap(irow, icol, iGrp) = True Then
+                                    sym = "1 "
+                                End If
+                                mapBuff.Append(sym)
+                            Next icol
+                            mapBuff.Append(vbCrLf)
+                        Next irow
+                    Next ist
+                Next isp
+
+                System.Console.WriteLine("-------------------------------")
+                System.Console.WriteLine(mapBuff.ToString)
+
+            Catch ex As Exception
+                'this routine is just for debugging so don't worry to much about telling the world that it exploded
+                System.Console.WriteLine("Exception in Ecospace interface DumpIBMMap(cEcospaceTimestep)!")
+            End Try
+
+        End Sub
+
+
 
 #End Region ' Internal implementation
 

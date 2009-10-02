@@ -6361,8 +6361,8 @@ Public Class cCore
 
                 m_spaceresults.iTimeStep = iTime
                 m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
-                'set references to the biomass and effort data at this time step
-                m_spaceresults.setData(Me.m_EcoSpaceData)
+
+                m_spaceresults.ComputeIBMMap()
 
                 'the group time-step data was populated by Ecospace
                 For igrp As Integer = 1 To nGroups
@@ -7496,7 +7496,7 @@ Public Class cCore
             Next
 
             'load a new results object for the new scenario
-            m_spaceresults = New cEcospaceTimestep(Me.m_EcoSimData, Me.m_EcoSpaceData)
+            m_spaceresults = New cEcospaceTimestep(Me.m_EcoSimData, Me.m_EcoSpaceData, Me.m_Stanza)
 
             m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
 
