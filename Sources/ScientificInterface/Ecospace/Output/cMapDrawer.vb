@@ -264,7 +264,7 @@ Public Class cMapDrawer
                     If Me.m_mapIBMPackets IsNot Nothing Then
                         If Me.MapIBMPackets(i, j, iGroup) Then
                             m_graphics.DrawEllipse(Pens.Black, _
-                                                   Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2), -CInt(rcTemp.Height / 2)))
+                                                   Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
                         End If
                     End If
 
