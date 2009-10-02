@@ -2324,8 +2324,8 @@ Public Class cCore
             If DataSource.Connection IsNot Nothing Then
                 ' #Yes: Close connection
                 DataSource.Close()
-                ' Close plug-in data sources
-                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase()
+                ' Close plug-in data sources, close plug-in 
+                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase() : Me.m_pluginManager.CloseModel()
             End If
             ' Release datasource
             DataSource = Nothing
