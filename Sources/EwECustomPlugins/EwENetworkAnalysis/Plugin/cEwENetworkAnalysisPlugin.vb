@@ -1,38 +1,3 @@
-'==============================================================================
-'
-' $Log: cEwENetworkAnalysisPlugin.vb,v $
-' Revision 1.10  2009/05/21 19:27:18  jeroens
-' eCoreComponentTypes moved to EwEUtils
-'
-' Revision 1.9  2009/05/19 13:42:21  jeroens
-' Uses IDisposePlugin, remote controller
-'
-' Revision 1.8  2009/05/04 22:26:29  jeroens
-' Loading framework will show form
-'
-' Revision 1.7  2009/05/02 03:07:49  jeroens
-' Minor housekeeping
-'
-' Revision 1.6  2009/05/01 17:50:37  jeroens
-' Greatly simplified content management
-'
-' Revision 1.5  2009/04/16 19:31:32  jeroens
-' Added IsDataAvailable
-'
-' Revision 1.4  2009/01/21 19:11:01  jeroens
-' Uses changed plug-in data exchange structure
-'
-' Revision 1.3  2009/01/16 18:30:27  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/10/07 21:20:56  jeroens
-' Implemented data exchange plugin structure
-'
-' Revision 1.1  2008/09/26 07:31:00  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
@@ -271,9 +236,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
-            'this will add a new menu item to the menu bar instead of having this as a sub menu of a Plugins menu
-            'not what we want but good enough for testing
-            Return "EcopathToolStripMenuItem"
+            Return "MenuTools"
         End Get
     End Property
 
