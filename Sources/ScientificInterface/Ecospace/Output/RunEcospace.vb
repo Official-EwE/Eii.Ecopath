@@ -840,16 +840,18 @@ Namespace Ecospace
         ''' <remarks>FOR DEBUGGING</remarks>
         Private Sub DumpIBMMap(ByVal SpaceData As cEcospaceTimestep)
             Dim stanza As cStanzaGroup
-            Dim mapBuff As New System.Text.StringBuilder
-            Dim sym As String
+            Dim mapBuff As System.Text.StringBuilder
+            Dim sym As String, iGrp As Integer
 
             Try
 
                 For isp As Integer = 0 To Me.m_core.nStanzas - 1
-                    stanza = Me.m_core.StanzaGroups(isp)
 
+                    stanza = Me.m_core.StanzaGroups(isp)
                     For ist As Integer = 1 To stanza.NStanzas
-                        Dim iGrp As Integer = stanza.iGroups(ist)
+
+                        iGrp = stanza.iGroups(ist)
+                        mapBuff = New System.Text.StringBuilder
 
                         For irow As Integer = 1 To Me.m_iInRow
                             For icol As Integer = 1 To Me.m_iInCol
@@ -861,11 +863,14 @@ Namespace Ecospace
                             Next icol
                             mapBuff.Append(vbCrLf)
                         Next irow
+
+                        System.Console.WriteLine(Me.m_core.EcoPathGroupInputs(iGrp).Name)
+                        System.Console.WriteLine(mapBuff.ToString)
+                        mapBuff = Nothing
+
                     Next ist
                 Next isp
 
-                System.Console.WriteLine("-------------------------------")
-                System.Console.WriteLine(mapBuff.ToString)
 
             Catch ex As Exception
                 'this routine is just for debugging so don't worry to much about telling the world that it exploded
