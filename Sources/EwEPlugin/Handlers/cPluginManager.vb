@@ -645,6 +645,34 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, invokes the Closed plug-in point on any available and responsive 
+    ''' <see cref="IEcopathClosedPlugin">Ecopath closed plug-in</see>.
+    ''' </summary>
+    ''' <remarks>Due to avoid circular references, this project is unable to reference
+    ''' the assembly EwECore. As such, links in this help text cannot be resolved.
+    ''' Refer to the EwE Datasource documentation for calling conventions and 
+    ''' proper parameter usage.</remarks>
+    ''' ---------------------------------------------------------------------------
+    Public Function CloseModel() As Boolean
+
+        Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcopathClosedPlugin))
+        Dim bSucces As Boolean = True
+
+        For Each ipc As cPluginContext In collPlugins
+            Try
+                bSucces = bSucces And DirectCast(ipc.Plugin, IEcopathClosedPlugin).CloseModel()
+            Catch ex As Exception
+                Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "CloseModel", ex)
+            End Try
+        Next
+
+        Return bSucces
+
+    End Function
+
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, polls all plug-ins for unsaved data modifications.
     ''' </summary>
     ''' <param name="pa">cPluginAssembly to check, if any.</param>

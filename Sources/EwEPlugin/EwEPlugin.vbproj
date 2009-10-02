@@ -82,6 +82,7 @@
     <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
     <Compile Include="Plugin templates\Database\IDatabasePlugin.vb" />
     <Compile Include="Plugin templates\Database\IDatabaseUpdatePlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathClosedPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyFGearPlugin.vb" />
