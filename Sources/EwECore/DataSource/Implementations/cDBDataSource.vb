@@ -7199,7 +7199,6 @@ Public Class cDBDataSource
         Return bSucces
     End Function
 
-
     Private Function LoadEcospaceHabitatFishery(ByVal iScenarioID As Integer) As Boolean
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim reader As IDataReader = Nothing
@@ -7356,7 +7355,7 @@ Public Class cDBDataSource
                 drow = writer.NewRow()
                 drow("ScenarioID") = iScenarioID
                 drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
-                'drow("Sail") = sbSail.ToString
+                drow("Sail") = ""
                 drow("Port") = sbPort.ToString
                 writer.AddRow(drow)
 
