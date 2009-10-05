@@ -209,7 +209,7 @@ Public Class cMapDrawer
                                                                CSng(rcPos.Height() / m_iInRow))
                     Dim rcTemp As Rectangle = Nothing
                     Dim brCell As Brush = Nothing
-
+                    Dim brBlack As New SolidBrush(Color.Black)
                     'If ConShow And ConcMax(ip) > 0 Then
                     '    If ConShowType = 0 Then
                     '        MapValue = 11 * p_baseMap(i, j, ip) / ConcMax(ip)
@@ -263,8 +263,9 @@ Public Class cMapDrawer
 
                     If Me.m_mapIBMPackets IsNot Nothing Then
                         If Me.MapIBMPackets(i, j, iGroup) Then
-                            m_graphics.DrawEllipse(Pens.Black, _
-                                                   Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
+                            m_graphics.FillEllipse(brBlack, Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
+                            ' m_graphics.DrawEllipse(Pens.Black, _
+                            '                       Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
                         End If
                     End If
 
