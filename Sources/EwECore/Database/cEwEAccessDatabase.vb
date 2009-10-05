@@ -382,6 +382,7 @@ Namespace Database
 
                 Me.m_bJROSearched = True
             End If
+            Return Me.m_bJROFound
         End Function
 
         ''' -------------------------------------------------------------------
@@ -436,6 +437,7 @@ Namespace Database
             If Me.IsConnected Then Return False
 
             Try
+
                 Dim jro As New JRO.JetEngine()
                 ' Able to get JET engine?
                 If jro IsNot Nothing Then
@@ -458,6 +460,9 @@ Namespace Database
                     ' Try to compact
                     strDBSource = String.Format(strConnection, strDBFrom)
                     strDBTarget = String.Format(strConnection, strDBTo)
+
+                    'jro.CompactDatabase("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\nwind.mdb", _
+                    '"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\NewNwind.mdb;Jet OLEDB:Engine Type=5")
 
                     jro.CompactDatabase(strDBSource, strDBTarget)
 
