@@ -1123,6 +1123,12 @@ Public Class AppLauncher
         Dim bSucces As Boolean = False
         Dim strFileName As String = Me.SelectedFileName()
 
+        ' ToDo: localize this method
+        If MsgBox("To compact your database your model will need to be closed. Are you sure you want to compact your database?", _
+             MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then
+            Return False
+        End If
+
         If Me.CloseEcopathModel() = False Then Return False
 
         Me.SetStatusText("Compacting database...", TriState.True)
