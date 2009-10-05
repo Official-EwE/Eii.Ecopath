@@ -528,10 +528,10 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="runType"></param>
         ''' <param name="iCurrentIterationStep"></param>
-        ''' <param name="nTotalInterationSteps"></param>
+        ''' <param name="nTotalIterationSteps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
-            '    System.Console.WriteLine("Ecosim run " & iCurrentIterationStep.ToString & " of " & nTotalInterationSteps.ToString)
+        Private Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalIterationSteps As Integer)
+            '    System.Console.WriteLine("Ecosim run " & iCurrentIterationStep.ToString & " of " & nTotalIterationSteps.ToString)
         End Sub
 
         Private Sub m_cbFishingMortalityPenalty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

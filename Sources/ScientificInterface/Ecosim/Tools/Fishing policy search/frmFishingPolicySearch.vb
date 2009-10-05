@@ -443,7 +443,7 @@ Namespace Ecosim
 
             Try
                 'get the results object from the manager
-                'cFishingPolicyManager.SearchResults will be populate with the results of the Search at the current interation
+                'cFishingPolicyManager.SearchResults will be populate with the results of the Search at the current iteration
                 Dim results As cFPSSearchResults = m_manager.SearchResults
 
                 If m_cmbOptmApproach.SelectedIndex = 1 Then

@@ -222,7 +222,7 @@ Namespace Ecosim
             Me.m_lbIterations.Name = "m_lbIterations"
             Me.m_lbIterations.Size = New System.Drawing.Size(246, 18)
             Me.m_lbIterations.TabIndex = 5
-            Me.m_lbIterations.Text = "Interations"
+            Me.m_lbIterations.Text = "Iterations"
             Me.m_lbIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'TableLayoutPanel2
