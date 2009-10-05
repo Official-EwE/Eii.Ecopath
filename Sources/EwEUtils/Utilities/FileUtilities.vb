@@ -21,6 +21,7 @@
 Option Strict On
 
 Imports System.IO
+Imports System.Security.AccessControl
 
 Namespace Utilities
 
@@ -78,7 +79,19 @@ Namespace Utilities
                                         Optional ByVal bRecursive As Boolean = False) As String
 
             Dim strFullPath As String = Path.Combine(strStartDir, strFile)
-            If File.Exists(strFullPath) Then Return strFullPath
+            Dim fsec As FileSecurity = Nothing
+
+            Try
+                ' Try to be nice
+                If File.Exists(strFullPath) Then Return strFullPath
+                ' Ok, maybe the file is hidden. Let's be less nice.
+                fsec = File.GetAccessControl(strFullPath, AccessControlSections.Group)
+                If fsec IsNot Nothing Then
+                    Return strFullPath
+                End If
+            Catch ex As FileNotFoundException
+                ' Woops
+            End Try
 
             If bRecursive Then
                 For Each strDirectory As String In Directory.GetDirectories(strStartDir)
