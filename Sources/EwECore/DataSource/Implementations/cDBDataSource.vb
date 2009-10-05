@@ -196,18 +196,18 @@ Public Class cDBDataSource
         Return cDATABASE_NOVERSION
     End Function
 
-    Public Function BeginTransaction() As Boolean Implements DataSources.IEwEDataSource.BeginTransaction
-        Return True
-        'Return Me.m_db.BeginTransaction()
+    Public Function BeginTransaction() As Boolean _
+        Implements DataSources.IEwEDataSource.BeginTransaction
+        Return Me.m_db.BeginTransaction()
     End Function
 
-    Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean Implements DataSources.IEwEDataSource.EndTransaction
-        Return True
-        'If bCommit Then
-        '    Return Me.m_db.CommitTransaction()
-        'Else
-        '    Return Me.m_db.RollbackTransaction
-        'End If
+    Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean _
+        Implements DataSources.IEwEDataSource.EndTransaction
+        If bCommit Then
+            Return Me.m_db.CommitTransaction()
+        Else
+            Return Me.m_db.RollbackTransaction
+        End If
     End Function
 
 #Region " Helper methods "
