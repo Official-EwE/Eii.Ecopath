@@ -965,7 +965,7 @@ Public Class AppLauncher
         ' be performed in a for..ech loop because that affects the iterator
         ' used in the loop.
         For Each f As Form In Me.m_DockPanel.Contents
-            If Not m_lstrProtectedPanelNames.Contains(f.Name) Then
+            If Not Me.m_lstrProtectedPanelNames.Contains(f.Name) Then
                 lForms.Add(f)
             End If
         Next
@@ -2083,6 +2083,13 @@ Public Class AppLauncher
             ' if possible.
             If pgcmd.Form IsNot Nothing Then
                 ' #Yes: form detected
+
+                ' Protect this form from auto-closing if it is supposed to stay 'always open'
+                If (pgcmd.CoreExecutionState = eCoreExecutionState.Idle) And _
+                   (Me.m_lstrProtectedPanelNames.IndexOf(pgcmd.Form.Name) = -1) Then
+                    Me.m_lstrProtectedPanelNames.Add(pgcmd.Form.Name)
+                End If
+
                 ' Able to activate this form from the open tabs?
                 If Not ActivateForm(pgcmd.Form.Text) Then
                     ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.
@@ -2106,17 +2113,14 @@ Public Class AppLauncher
                             pgcmd.Form.Show()
                         End If
 
-                        ' Switch help
-                        ' ToDo_JS: consider allowing plug-in provided help documents
-                        Me.m_Help.HelpTopic(pgcmd.Form) = ""
                     Else
                         ' Show form
                         pgcmd.Form.MdiParent = Me
                         pgcmd.Form.Show()
-                        ' Switch help
-                        ' ToDo_JS: consider allowing plug-in provided help documents
-                        Me.m_Help.HelpTopic(pgcmd.Form) = ""
                     End If
+                    ' Switch help
+                    ' ToDo_JS: consider allowing plug-in provided help documents
+                    Me.m_Help.HelpTopic(pgcmd.Form) = ""
                 End If
             End If
         End If
@@ -2258,8 +2262,8 @@ Public Class AppLauncher
     ''' Command handler; closes all closable child forms.
     ''' </summary>
     Private Sub OnCloseAllForms(ByVal cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
-        ' Close all child forms of the parent.
-        CloseAllDocuments()
+        ' Close all child forms of the parent
+        Me.CloseAllDocuments()
     End Sub
 
     ''' <summary>

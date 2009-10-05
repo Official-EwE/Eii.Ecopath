@@ -98,7 +98,6 @@ Partial Public Class AppLauncher
                 Else
                     bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
                 End If
-                'bMustCloseForm = ((Not Me.m_csm.IsExecutionStateSuperceded(stateForm)) And frmEwE.IsOutputForm(stateForm))
 
                 If bMustCloseForm Then
                     ' #Yes: Close the form
