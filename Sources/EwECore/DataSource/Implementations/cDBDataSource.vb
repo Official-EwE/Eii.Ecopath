@@ -535,6 +535,8 @@ Public Class cDBDataSource
         Dim bSucces As Boolean = True
 
         bSucces = Me.LoadModelInfo()
+        If bSucces = False Then Return False
+
         bSucces = bSucces And Me.LoadEcopathGroups()
         bSucces = bSucces And Me.LoadFleetInfo()
         bSucces = bSucces And Me.LoadParticleSizeDistribution()
@@ -607,7 +609,7 @@ Public Class cDBDataSource
 
         ' Crash prevention check
         If Object.ReferenceEquals(reader, Nothing) Then
-            Debug.Assert(False, "Failed to access table EcopathModel")
+            'Debug.Assert(False, "Failed to access table EcopathModel")
             Return False
         End If
 
