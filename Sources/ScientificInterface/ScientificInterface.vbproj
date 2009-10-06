@@ -1559,18 +1559,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_internal\Sources\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
-      <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
-      <Name>EwEValueChain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwEMultiPlayerGame\EwEGameServer\EwEGameServer.vbproj">
-      <Project>{BD4B53EB-8A73-4262-8F73-F1E602F873A7}</Project>
-      <Name>EwEGameServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwEMultiPlayerGame\EwEGameShared\EwEGameShared.vbproj">
-      <Project>{A7E37B77-BF98-4FF5-BD04-6EEFF41BB11B}</Project>
-      <Name>EwEGameShared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
