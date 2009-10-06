@@ -125,6 +125,7 @@ Partial Public Class AppLauncher
 
         Private m_sm As cCoreStateMonitor = Nothing
         Private m_propNumDigits As cProperty = Nothing
+        Private m_propGroupDigits As cProperty = Nothing
         Private m_propUnitTime As cIntegerProperty = Nothing
         Private m_propUnitTimeText As cStringProperty = Nothing
         Private m_propUnitCurrency As cIntegerProperty = Nothing
@@ -157,8 +158,10 @@ Partial Public Class AppLauncher
 
             If Me.m_bIsEcopathLoaded Then
 
+                Me.m_propGroupDigits = pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.GroupDigits)
                 Me.m_propNumDigits = pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.NumDigits)
-                AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumDigitsChanged
+                AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+                AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
 
                 Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
                 Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
@@ -178,10 +181,14 @@ Partial Public Class AppLauncher
                 Me.OnCurrencyUnitChanged(m_propUnitCurrency, cProperty.eChangeFlags.All)
                 Me.OnTimeUnitChanged(m_propUnitTime, cProperty.eChangeFlags.All)
                 Me.OnMonetaryUnitChanged(m_propUnitMonetary, cProperty.eChangeFlags.All)
-                Me.OnNumDigitsChanged(m_propNumDigits, cProperty.eChangeFlags.All)
+                Me.OnNumberFormatChanged(m_propNumDigits, cProperty.eChangeFlags.All)
+
             Else
-                RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumDigitsChanged
+
+                RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+                RemoveHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
                 Me.m_propNumDigits = Nothing
+                Me.m_propGroupDigits = Nothing
 
                 RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
                 RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
@@ -197,6 +204,7 @@ Partial Public Class AppLauncher
                 RemoveHandler Me.m_propUnitMonetaryText.PropertyChanged, AddressOf OnMonetaryUnitChanged
                 Me.m_propUnitMonetary = Nothing
                 Me.m_propUnitMonetaryText = Nothing
+
             End If
 
             Me.m_sg.ResetVisibleFlags(False)
@@ -225,9 +233,10 @@ Partial Public Class AppLauncher
             Me.m_sg.ResumeEvents()
         End Sub
 
-        Private Sub OnNumDigitsChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+        Private Sub OnNumberFormatChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
             Me.m_sg.SuspendEvents()
             Me.m_sg.NumDigits = CInt(Me.m_propNumDigits.GetValue())
+            Me.m_sg.GroupDigits = CBool(Me.m_propGroupDigits.GetValue())
             Me.m_sg.ResumeEvents()
         End Sub
 

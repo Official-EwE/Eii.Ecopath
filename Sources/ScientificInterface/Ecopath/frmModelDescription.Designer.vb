@@ -47,8 +47,8 @@ Partial Class frmModelDescription
         Me.rbPhosporus = New System.Windows.Forms.RadioButton
         Me.tbCurrencyEnergyOther = New System.Windows.Forms.TextBox
         Me.rbCurrencyEnergyOther = New System.Windows.Forms.RadioButton
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.m_lblNutrientRelated = New System.Windows.Forms.Label
+        Me.m_lblEnergyRelated = New System.Windows.Forms.Label
         Me.rbWetWeight = New System.Windows.Forms.RadioButton
         Me.rbJoules = New System.Windows.Forms.RadioButton
         Me.rbCalorie = New System.Windows.Forms.RadioButton
@@ -60,32 +60,37 @@ Partial Class frmModelDescription
         Me.rbDay = New System.Windows.Forms.RadioButton
         Me.rbYear = New System.Windows.Forms.RadioButton
         Me.lbNote = New System.Windows.Forms.Label
+        Me.m_gbMonetaryUnits = New System.Windows.Forms.GroupBox
         Me.m_lblMonetaryUnit = New System.Windows.Forms.Label
         Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
+        Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox
+        Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox
         Me.m_chkPSD = New System.Windows.Forms.CheckBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
         Me.m_gbTimeUnits.SuspendLayout()
+        Me.m_gbMonetaryUnits.SuspendLayout()
+        Me.m_gbNumFormatting.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_udNumDigits
         '
-        Me.m_udNumDigits.Location = New System.Drawing.Point(184, 356)
+        Me.m_udNumDigits.Location = New System.Drawing.Point(166, 18)
         Me.m_udNumDigits.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
         Me.m_udNumDigits.Name = "m_udNumDigits"
         Me.m_udNumDigits.Size = New System.Drawing.Size(64, 20)
-        Me.m_udNumDigits.TabIndex = 16
+        Me.m_udNumDigits.TabIndex = 1
         '
         'lbNumDigits
         '
         Me.lbNumDigits.AutoSize = True
         Me.lbNumDigits.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lbNumDigits.Location = New System.Drawing.Point(12, 358)
+        Me.lbNumDigits.Location = New System.Drawing.Point(6, 21)
         Me.lbNumDigits.Name = "lbNumDigits"
-        Me.lbNumDigits.Size = New System.Drawing.Size(166, 13)
-        Me.lbNumDigits.TabIndex = 15
-        Me.lbNumDigits.Text = "Number of relevant decimal &digits:"
+        Me.lbNumDigits.Size = New System.Drawing.Size(119, 13)
+        Me.lbNumDigits.TabIndex = 0
+        Me.lbNumDigits.Text = "Relevant decimal &digits:"
         '
         'lblColorHeader
         '
@@ -247,16 +252,19 @@ Partial Class frmModelDescription
         Me.m_tlpUnits.ColumnCount = 2
         Me.m_tlpUnits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.71407!))
         Me.m_tlpUnits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.28593!))
-        Me.m_tlpUnits.Controls.Add(Me.m_gbCurrencyUnit, 0, 0)
-        Me.m_tlpUnits.Controls.Add(Me.m_gbTimeUnits, 1, 0)
-        Me.m_tlpUnits.Location = New System.Drawing.Point(12, 409)
+        Me.m_tlpUnits.Controls.Add(Me.m_gbCurrencyUnit, 0, 1)
+        Me.m_tlpUnits.Controls.Add(Me.m_gbTimeUnits, 1, 1)
+        Me.m_tlpUnits.Controls.Add(Me.m_gbMonetaryUnits, 1, 0)
+        Me.m_tlpUnits.Controls.Add(Me.m_gbNumFormatting, 0, 0)
+        Me.m_tlpUnits.Location = New System.Drawing.Point(12, 354)
         Me.m_tlpUnits.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpUnits.Name = "m_tlpUnits"
-        Me.m_tlpUnits.RowCount = 1
+        Me.m_tlpUnits.RowCount = 2
         Me.m_tlpUnits.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpUnits.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 195.0!))
         Me.m_tlpUnits.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 194.0!))
-        Me.m_tlpUnits.Size = New System.Drawing.Size(647, 194)
-        Me.m_tlpUnits.TabIndex = 19
+        Me.m_tlpUnits.Size = New System.Drawing.Size(647, 278)
+        Me.m_tlpUnits.TabIndex = 15
         '
         'm_gbCurrencyUnit
         '
@@ -266,19 +274,19 @@ Partial Class frmModelDescription
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbPhosporus)
         Me.m_gbCurrencyUnit.Controls.Add(Me.tbCurrencyEnergyOther)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbCurrencyEnergyOther)
-        Me.m_gbCurrencyUnit.Controls.Add(Me.Label2)
-        Me.m_gbCurrencyUnit.Controls.Add(Me.Label1)
+        Me.m_gbCurrencyUnit.Controls.Add(Me.m_lblNutrientRelated)
+        Me.m_gbCurrencyUnit.Controls.Add(Me.m_lblEnergyRelated)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbWetWeight)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbJoules)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbCalorie)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbCarbon)
         Me.m_gbCurrencyUnit.Controls.Add(Me.rbDryWeight)
         Me.m_gbCurrencyUnit.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_gbCurrencyUnit.Location = New System.Drawing.Point(0, 3)
+        Me.m_gbCurrencyUnit.Location = New System.Drawing.Point(0, 86)
         Me.m_gbCurrencyUnit.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
         Me.m_gbCurrencyUnit.Name = "m_gbCurrencyUnit"
-        Me.m_gbCurrencyUnit.Size = New System.Drawing.Size(351, 188)
-        Me.m_gbCurrencyUnit.TabIndex = 0
+        Me.m_gbCurrencyUnit.Size = New System.Drawing.Size(351, 189)
+        Me.m_gbCurrencyUnit.TabIndex = 2
         Me.m_gbCurrencyUnit.TabStop = False
         Me.m_gbCurrencyUnit.Text = "C&urrency units"
         '
@@ -340,23 +348,23 @@ Partial Class frmModelDescription
         Me.rbCurrencyEnergyOther.Text = "other:"
         Me.rbCurrencyEnergyOther.UseVisualStyleBackColor = True
         '
-        'Label2
+        'm_lblNutrientRelated
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(166, 24)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(82, 13)
-        Me.Label2.TabIndex = 11
-        Me.Label2.Text = "&Nutrient related:"
+        Me.m_lblNutrientRelated.AutoSize = True
+        Me.m_lblNutrientRelated.Location = New System.Drawing.Point(166, 24)
+        Me.m_lblNutrientRelated.Name = "m_lblNutrientRelated"
+        Me.m_lblNutrientRelated.Size = New System.Drawing.Size(82, 13)
+        Me.m_lblNutrientRelated.TabIndex = 11
+        Me.m_lblNutrientRelated.Text = "&Nutrient related:"
         '
-        'Label1
+        'm_lblEnergyRelated
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 24)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(78, 13)
-        Me.Label1.TabIndex = 11
-        Me.Label1.Text = "&Energy related:"
+        Me.m_lblEnergyRelated.AutoSize = True
+        Me.m_lblEnergyRelated.Location = New System.Drawing.Point(6, 24)
+        Me.m_lblEnergyRelated.Name = "m_lblEnergyRelated"
+        Me.m_lblEnergyRelated.Size = New System.Drawing.Size(78, 13)
+        Me.m_lblEnergyRelated.TabIndex = 11
+        Me.m_lblEnergyRelated.Text = "&Energy related:"
         '
         'rbWetWeight
         '
@@ -423,11 +431,11 @@ Partial Class frmModelDescription
         Me.m_gbTimeUnits.Controls.Add(Me.rbYear)
         Me.m_gbTimeUnits.Controls.Add(Me.lbNote)
         Me.m_gbTimeUnits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_gbTimeUnits.Location = New System.Drawing.Point(357, 3)
+        Me.m_gbTimeUnits.Location = New System.Drawing.Point(357, 86)
         Me.m_gbTimeUnits.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
         Me.m_gbTimeUnits.Name = "m_gbTimeUnits"
-        Me.m_gbTimeUnits.Size = New System.Drawing.Size(290, 188)
-        Me.m_gbTimeUnits.TabIndex = 1
+        Me.m_gbTimeUnits.Size = New System.Drawing.Size(290, 189)
+        Me.m_gbTimeUnits.TabIndex = 3
         Me.m_gbTimeUnits.TabStop = False
         Me.m_gbTimeUnits.Text = "&Time units"
         '
@@ -480,40 +488,77 @@ Partial Class frmModelDescription
         Me.lbNote.Enabled = False
         Me.lbNote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic)
         Me.lbNote.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.lbNote.Location = New System.Drawing.Point(6, 121)
+        Me.lbNote.Location = New System.Drawing.Point(6, 122)
         Me.lbNote.Name = "lbNote"
         Me.lbNote.Size = New System.Drawing.Size(278, 61)
         Me.lbNote.TabIndex = 8
         Me.lbNote.Text = "*) In Ecosim/Ecospace the time unit should be 'year'"
         Me.lbNote.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
+        'm_gbMonetaryUnits
+        '
+        Me.m_gbMonetaryUnits.Controls.Add(Me.m_lblMonetaryUnit)
+        Me.m_gbMonetaryUnits.Controls.Add(Me.m_cmbMonetaryUnit)
+        Me.m_gbMonetaryUnits.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_gbMonetaryUnits.Location = New System.Drawing.Point(357, 3)
+        Me.m_gbMonetaryUnits.Name = "m_gbMonetaryUnits"
+        Me.m_gbMonetaryUnits.Size = New System.Drawing.Size(287, 77)
+        Me.m_gbMonetaryUnits.TabIndex = 1
+        Me.m_gbMonetaryUnits.TabStop = False
+        Me.m_gbMonetaryUnits.Text = "&Monetary units"
+        '
         'm_lblMonetaryUnit
         '
         Me.m_lblMonetaryUnit.AutoSize = True
-        Me.m_lblMonetaryUnit.Location = New System.Drawing.Point(12, 385)
+        Me.m_lblMonetaryUnit.Location = New System.Drawing.Point(6, 21)
         Me.m_lblMonetaryUnit.Name = "m_lblMonetaryUnit"
-        Me.m_lblMonetaryUnit.Size = New System.Drawing.Size(74, 13)
-        Me.m_lblMonetaryUnit.TabIndex = 17
-        Me.m_lblMonetaryUnit.Text = "&Monetary unit:"
+        Me.m_lblMonetaryUnit.Size = New System.Drawing.Size(29, 13)
+        Me.m_lblMonetaryUnit.TabIndex = 0
+        Me.m_lblMonetaryUnit.Text = "&Unit:"
         '
         'm_cmbMonetaryUnit
         '
+        Me.m_cmbMonetaryUnit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cmbMonetaryUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbMonetaryUnit.FormattingEnabled = True
-        Me.m_cmbMonetaryUnit.Location = New System.Drawing.Point(184, 382)
+        Me.m_cmbMonetaryUnit.Location = New System.Drawing.Point(93, 18)
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
-        Me.m_cmbMonetaryUnit.Size = New System.Drawing.Size(179, 21)
+        Me.m_cmbMonetaryUnit.Size = New System.Drawing.Size(191, 21)
         Me.m_cmbMonetaryUnit.Sorted = True
-        Me.m_cmbMonetaryUnit.TabIndex = 18
+        Me.m_cmbMonetaryUnit.TabIndex = 1
         Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.Custom
+        '
+        'm_gbNumFormatting
+        '
+        Me.m_gbNumFormatting.Controls.Add(Me.m_cbGroupDigits)
+        Me.m_gbNumFormatting.Controls.Add(Me.lbNumDigits)
+        Me.m_gbNumFormatting.Controls.Add(Me.m_udNumDigits)
+        Me.m_gbNumFormatting.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_gbNumFormatting.Location = New System.Drawing.Point(3, 3)
+        Me.m_gbNumFormatting.Name = "m_gbNumFormatting"
+        Me.m_gbNumFormatting.Size = New System.Drawing.Size(348, 77)
+        Me.m_gbNumFormatting.TabIndex = 0
+        Me.m_gbNumFormatting.TabStop = False
+        Me.m_gbNumFormatting.Text = "&Number formatting"
+        '
+        'm_cbGroupDigits
+        '
+        Me.m_cbGroupDigits.AutoSize = True
+        Me.m_cbGroupDigits.Location = New System.Drawing.Point(9, 47)
+        Me.m_cbGroupDigits.Name = "m_cbGroupDigits"
+        Me.m_cbGroupDigits.Size = New System.Drawing.Size(82, 17)
+        Me.m_cbGroupDigits.TabIndex = 2
+        Me.m_cbGroupDigits.Text = "&Group digits"
+        Me.m_cbGroupDigits.UseVisualStyleBackColor = True
         '
         'm_chkPSD
         '
         Me.m_chkPSD.AutoSize = True
-        Me.m_chkPSD.Location = New System.Drawing.Point(15, 606)
+        Me.m_chkPSD.Location = New System.Drawing.Point(12, 639)
         Me.m_chkPSD.Name = "m_chkPSD"
         Me.m_chkPSD.Size = New System.Drawing.Size(262, 17)
-        Me.m_chkPSD.TabIndex = 20
+        Me.m_chkPSD.TabIndex = 16
         Me.m_chkPSD.Text = "Include particle size distribution calculations (&PSD)"
         Me.m_chkPSD.UseVisualStyleBackColor = True
         '
@@ -522,10 +567,8 @@ Partial Class frmModelDescription
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(671, 633)
+        Me.ClientSize = New System.Drawing.Size(671, 659)
         Me.Controls.Add(Me.m_chkPSD)
-        Me.Controls.Add(Me.m_cmbMonetaryUnit)
-        Me.Controls.Add(Me.m_lblMonetaryUnit)
         Me.Controls.Add(Me.m_tlpUnits)
         Me.Controls.Add(Me.lblAreaUnit)
         Me.Controls.Add(Me.lblArea)
@@ -537,8 +580,6 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.lblScenario)
         Me.Controls.Add(Me.m_tbName)
-        Me.Controls.Add(Me.m_udNumDigits)
-        Me.Controls.Add(Me.lbNumDigits)
         Me.Controls.Add(Me.m_lbContact)
         Me.Controls.Add(Me.lblColorHeader)
         Me.Controls.Add(Me.m_lbDescription)
@@ -553,6 +594,10 @@ Partial Class frmModelDescription
         Me.m_gbCurrencyUnit.PerformLayout()
         Me.m_gbTimeUnits.ResumeLayout(False)
         Me.m_gbTimeUnits.PerformLayout()
+        Me.m_gbMonetaryUnits.ResumeLayout(False)
+        Me.m_gbMonetaryUnits.PerformLayout()
+        Me.m_gbNumFormatting.ResumeLayout(False)
+        Me.m_gbNumFormatting.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -576,7 +621,7 @@ Partial Class frmModelDescription
     Private WithEvents lblAreaUnit As System.Windows.Forms.Label
     Private WithEvents m_tlpUnits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_gbCurrencyUnit As System.Windows.Forms.GroupBox
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblEnergyRelated As System.Windows.Forms.Label
     Private WithEvents rbWetWeight As System.Windows.Forms.RadioButton
     Private WithEvents rbJoules As System.Windows.Forms.RadioButton
     Private WithEvents rbCalorie As System.Windows.Forms.RadioButton
@@ -586,7 +631,7 @@ Partial Class frmModelDescription
     Private WithEvents rbCurrencyEnergyOther As System.Windows.Forms.RadioButton
     Private WithEvents rbNitrogen As System.Windows.Forms.RadioButton
     Private WithEvents rbPhosporus As System.Windows.Forms.RadioButton
-    Private WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents m_lblNutrientRelated As System.Windows.Forms.Label
     Private WithEvents m_gbTimeUnits As System.Windows.Forms.GroupBox
     Private WithEvents txbTimeOther As System.Windows.Forms.TextBox
     Private WithEvents rbTimeOther As System.Windows.Forms.RadioButton
@@ -598,4 +643,7 @@ Partial Class frmModelDescription
     Private WithEvents rbNutrientOther As System.Windows.Forms.RadioButton
     Friend WithEvents tbCurrencyNutrientOther As System.Windows.Forms.TextBox
     Private WithEvents m_chkPSD As System.Windows.Forms.CheckBox
+    Friend WithEvents m_cbGroupDigits As System.Windows.Forms.CheckBox
+    Private WithEvents m_gbMonetaryUnits As System.Windows.Forms.GroupBox
+    Private WithEvents m_gbNumFormatting As System.Windows.Forms.GroupBox
 End Class

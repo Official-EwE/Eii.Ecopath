@@ -1,26 +1,3 @@
-'==============================================================================
-'
-' $Log: frmModelDescription.vb,v $
-' Revision 1.6  2009/05/28 12:37:28  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.5  2009/04/23 20:11:07  jeroens
-' Added PSD enable check box
-'
-' Revision 1.4  2009/03/19 16:02:27  jeroens
-' Added FormatProvider.Release
-'
-' Revision 1.3  2009/02/05 17:48:35  jeroens
-' MessageSources -> CoreComponents
-'
-' Revision 1.2  2008/10/08 19:31:17  jeroens
-' Cleared history
-'
-' Revision 1.1  2008/09/26 07:31:30  sherman
-' --== DELETED HISTORY ==--
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore
@@ -34,6 +11,7 @@ Public Class frmModelDescription
     Private m_fpContact As cEwEFormatProvider = Nothing
     Private m_fpArea As cEwEFormatProvider = Nothing
     Private m_fpNumDigits As cEwEFormatProvider = Nothing
+    Private m_fpGroupDigits As cEwEFormatProvider = Nothing
     Private m_fpPSD As cEwEFormatProvider = Nothing
     Private m_core As cCore = Nothing
 
@@ -79,6 +57,8 @@ Public Class frmModelDescription
         Me.m_fpContact = New cPropertyFormatProvider(Me.m_tbContact, eweModel, eVarNameFlags.Contact)
         Me.m_fpArea = New cPropertyFormatProvider(Me.m_tbArea, eweModel, eVarNameFlags.Area)
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
+        Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
+
         Me.m_fpPSD = New cPropertyFormatProvider(Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
 
         Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.m_core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
@@ -129,6 +109,7 @@ Public Class frmModelDescription
         Me.m_fpDescription.Release()
         Me.m_fpName.Release()
         Me.m_fpNumDigits.Release()
+        Me.m_fpGroupDigits.Release()
         Me.m_fpPSD.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
