@@ -86,7 +86,7 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
-            If ((cf And cStyleGuide.eChangeType.NumDigits) > 0) Then
+            If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
                 Me.UpdateControls()
             End If
         End Sub

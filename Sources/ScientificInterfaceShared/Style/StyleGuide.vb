@@ -8,6 +8,7 @@ Imports System.Text
 Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
+Imports VB = Microsoft.VisualBasic
 
 #End Region ' Imports
 
@@ -31,6 +32,8 @@ Namespace Style
 
         ''' <summary>States the number of decimal digits to be displayed</summary>
         Private m_iNumDigits As Integer = 3
+        ''' <summary>States whether numbers are formatted in groups.</summary>
+        Private m_bGroupDigits As Boolean = False
 
         ' -- units --
         ''' <summary>Default currency unit.</summary>
@@ -320,7 +323,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Sets the number of decimal digits to display.
+        ''' Get/set the number of decimal digits to display.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property NumDigits() As Integer
@@ -339,7 +342,34 @@ Namespace Style
                 ' Update number of digits to maintain
                 Me.m_iNumDigits = nNumDigits
                 ' Notify listeners
-                Me.FireChangeEvent(eChangeType.NumDigits)
+                Me.FireChangeEvent(eChangeType.NumberFormatting)
+
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether formatted numbers are grouped via the thousands
+        ''' separator.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property GroupDigits() As Boolean
+            Get
+
+                Return Me.m_bGroupDigits
+
+            End Get
+            Set(ByVal bGroupDigits As Boolean)
+
+                ' Is this a change?
+                If (bGroupDigits = Me.m_bGroupDigits) Then
+                    ' #No: abort
+                    Return
+                End If
+                ' Update 
+                Me.m_bGroupDigits = bGroupDigits
+                ' Notify listeners
+                Me.FireChangeEvent(eChangeType.NumberFormatting)
 
             End Set
         End Property
@@ -383,7 +413,8 @@ Namespace Style
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
         Public Function FormatNumber(ByVal dValue As Double, Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
-                Optional ByVal iNumDigits As Integer = -1) As String
+                Optional ByVal iNumDigits As Integer = -1, _
+                Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
 
             ' Use styleguide numdigits setting if value not provided
             If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
@@ -396,9 +427,20 @@ Namespace Style
                 Return ""
             End If
 
+            If (tsGroupDigits = TriState.UseDefault) Then
+                If Me.m_bGroupDigits Then
+                    tsGroupDigits = TriState.True
+                Else
+                    tsGroupDigits = TriState.False
+                End If
+            End If
+
             ' Calculated values must be formatted with a hard number of digits
             If (style And (eStyleFlags.ValueComputed Or eStyleFlags.Sum)) > 0 Then
-                Return Microsoft.VisualBasic.FormatNumber(dValue, iNumDigits)
+                Return VB.FormatNumber(dValue, iNumDigits, _
+                                       TriState.UseDefault, _
+                                       TriState.UseDefault, _
+                                       tsGroupDigits)
             End If
 
             ' Need to try to figure out num of decimal digits?
@@ -424,7 +466,11 @@ Namespace Style
             End If
 
             ' Format the value with selected number of decimal digits
-            Return Microsoft.VisualBasic.FormatNumber(dValue, Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision))
+            Return VB.FormatNumber(dValue, _
+                                   Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision), _
+                                   TriState.UseDefault, _
+                                   TriState.UseDefault, _
+                                   tsGroupDigits)
 
         End Function
 
@@ -649,7 +695,7 @@ Namespace Style
         Public Enum eChangeType As Integer
             None = 0
             Colours = &H1
-            NumDigits = &H2
+            NumberFormatting = &H2
             Units = &H4
             Fonts = &H8
             GroupVisibility = &H10

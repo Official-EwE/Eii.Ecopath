@@ -518,7 +518,7 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
 
-                If (changeType And cStyleGuide.eChangeType.NumDigits) = 0 Then Return
+                If (changeType And cStyleGuide.eChangeType.NumberFormatting) = 0 Then Return
 
                 Dim objValueType As Type = Me.m_provider.ValueType
 
