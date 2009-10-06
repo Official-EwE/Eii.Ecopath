@@ -1,0 +1,60 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47067ab1-424a-4acb-8dd5-f38666499c64}</ProjectGuid>
+    <SHFBSchemaVersion>1.8.0.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>EwE6_core</HtmlHelpName>
+    <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007</CopyrightText>
+    <HelpTitle>EwE6 Core Class Library</HelpTitle>
+    <HelpFileVersion>6.0.6.091004</HelpFileVersion>
+    <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
+    <WorkingPath>Temp\</WorkingPath>
+    <HtmlHelp1xCompilerPath>..\..\..\..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwECore.dll" xmlns="" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwECore.xml" xmlns="" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEPlugin.dll" xmlns="" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEPlugin.xml" xmlns="" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEUtils.dll" xmlns="" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Debug\EwEUtils.xml" xmlns="" /></DocumentationSources>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False" />
+<NamespaceSummaryItem name="EwECore" isDocumented="False">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.Auxiliary" isDocumented="True">Namespace containing loose-typed, auxillary elements for the EwE computational core.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.Database" isDocumented="True">Namespace containing all elements required by the EwE core to a.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEPlugin" isDocumented="True">Namespace containing all elements required when implementing or accessing EwE plug-ins.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils" isDocumented="True">Namespace containing shared definitions and helper classes for EwE applications.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Commands" isDocumented="True">Namespace containing all elements required for EwE applications to fire and handle generic commands.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Core" isDocumented="True">Namspace containing EwE core utility classes and definitions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Database" isDocumented="True">Namspace containing database utility classes and definitions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Drawing" isDocumented="True">Namspace containing drawing and rendering utility classes and definitions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.NetUtilities" isDocumented="True">Namspace containing networking utility classes and definitions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Utilities" isDocumented="True">Namespace with generic utility classes and definitions.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwEUtils.Win32Api" isDocumented="True">Namespace containing interfaces to the Win32 API.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.Ecopath" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecopath model.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.Ecosim" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecosim model.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.FitToTimeSeries" isDocumented="True">Namespace containing fit to time series search logic.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.MSE" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="EwECore.SearchObjectives" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem></NamespaceSummaries>
+  </PropertyGroup>
+  <!-- There are no properties for these two groups but they need to appear in
+       order for Visual Studio to perform the build. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>
