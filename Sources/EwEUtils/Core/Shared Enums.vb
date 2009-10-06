@@ -335,6 +335,8 @@ Namespace Core
         Description
         ''' <summary>Number of digits to display.</summary>
         NumDigits
+        ''' <summary>Group display digits.</summary>
+        GroupDigits
         ''' <summary>Unit enumerated value for text-based values.</summary>
         UnitTime
         ''' <summary>Unit text for time-based values.</summary>

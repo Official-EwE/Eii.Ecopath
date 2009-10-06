@@ -51,12 +51,17 @@ Public Class cEwEModel
 
             ' NumDigits
             meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            m_values.Add(val.varName, val)
+
+            ' GroupDigits
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
             m_values.Add(val.varName, val)
 
             ' Time unit (enum)
             meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.UnitTime))
             m_values.Add(val.varName, val)
 
             ' Time unit (text)
@@ -152,7 +157,17 @@ Public Class cEwEModel
         End Get
 
         Set(ByVal iNumDigits As Integer)
-            setVariable(eVarNameFlags.NumDigits, iNumDigits)
+            SetVariable(eVarNameFlags.NumDigits, iNumDigits)
+        End Set
+    End Property
+
+    Public Property GroupDigits() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.GroupDigits))
+        End Get
+
+        Set(ByVal bGroupDigits As Boolean)
+            SetVariable(eVarNameFlags.GroupDigits, bGroupDigits)
         End Set
     End Property
 
