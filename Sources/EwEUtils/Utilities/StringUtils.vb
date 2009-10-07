@@ -463,6 +463,33 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Method for determining if a string represents a valid email address.
+        ''' </summary>
+        ''' <param name="strEmail">Email address to validate</param>
+        ''' <returns>True is valid, false if not valid</returns>
+        ''' <remarks>
+        ''' Uses regular expressions in this check, as it is a more thorough
+        ''' way of checking an address provided.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsValidEmail(ByVal strEmail As String) As Boolean
+            'regular expression pattern for valid email
+            'addresses, allows for the following domains:
+            'com,edu,info,gov,int,mil,net,org,biz,name,museum,coop,aero,pro,tv
+            Dim strPattern As String = "^[-a-zA-Z0-9][-.a-zA-Z0-9]*@[-.a-zA-Z0-9]+(\.[-.a-zA-Z0-9]+)*\." & _
+                                       "(com|edu|info|gov|int|mil|net|org|biz|name|museum|coop|aero|pro|tv|[a-zA-Z]{2})$"
+            Dim regexCheck As New Regex(strPattern, RegexOptions.IgnorePatternWhitespace)
+            Dim bIsEmailAddress As Boolean = False
+
+            If Not String.IsNullOrEmpty(strEmail) Then
+                bIsEmailAddress = regexCheck.IsMatch(strEmail)
+            End If
+
+            Return bIsEmailAddress
+        End Function
+
     End Class
 
 End Namespace ' Utilities
